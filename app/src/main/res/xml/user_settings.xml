@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="@string/pref_3">
+
+        <CheckBoxPreference
+            android:title="@string/action_java"
+            android:summary="@string/action_java_summary"
+            android:key="java"
+            android:defaultValue="true" />
+
+        <CheckBoxPreference
+            android:title="@string/action_cookie"
+            android:summary="@string/action_cookie_summary"
+            android:key="cookie"
+            android:defaultValue="true" />
+
+        <CheckBoxPreference
+            android:title="@string/action_cookie3"
+            android:summary="@string/action_cookie3_summary"
+            android:key="cookie3"
+            android:defaultValue="false" />
+
+        <CheckBoxPreference
+            android:title="@string/action_clearCookies"
+            android:summary="@string/action_clearCookies_summary"
+            android:key="clearCookies"
+            android:defaultValue="false" />
+
+        <CheckBoxPreference
+            android:title="@string/action_form"
+            android:summary="@string/action_form_summary"
+            android:key="form"
+            android:defaultValue="false" />
+
+        <CheckBoxPreference
+            android:title="@string/action_clearForm"
+            android:summary="@string/action_clearForm_summary"
+            android:key="clearForm"
+            android:defaultValue="true" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_4">
+
+        <CheckBoxPreference
+            android:title="@string/action_offline"
+            android:summary="@string/action_offline_summary"
+            android:key="offline"
+            android:defaultValue="false" />
+
+        <CheckBoxPreference
+            android:title="@string/action_clearCache"
+            android:summary="@string/action_clearCache_summary"
+            android:key="clearCache"
+            android:defaultValue="true" />
+
+        <CheckBoxPreference
+            android:title="@string/action_history"
+            android:summary="@string/action_history_summary"
+            android:key="history"
+            android:defaultValue="false" />
+
+        <Preference
+            android:title="@string/action_backup"
+            android:summary="@string/action_backup_summary"
+            android:key="backup_db" />
+
+        <Preference
+            android:title="@string/action_restore"
+            android:summary="@string/action_restore_summary"
+            android:key="restore_db" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_2">
+
+        <CheckBoxPreference
+            android:title="@string/action_swipe"
+            android:summary="@string/action_swipe_summary"
+            android:key="swipe"
+            android:defaultValue="true" />
+
+        <ListPreference
+            android:title="@string/action_font"
+            android:summary="@string/action_font_summary"
+            android:key="font"
+            android:defaultValue="100"
+            android:entries="@array/listArrayFont"
+            android:entryValues="@array/listValuesFont" />
+
+        <ListPreference
+            android:title="@string/action_searchEngine"
+            android:summary="@string/action_searchEngine_summary"
+            android:key="searchEngine"
+            android:defaultValue="https://startpage.com/do/search?query="
+            android:entries="@array/listArraySearchEngine"
+            android:entryValues="@array/listValuesSearchEngine" />
+
+        <ListPreference
+            android:title="@string/action_wikiLang"
+            android:summary="@string/action_wikiLang_summary"
+            android:key="wikiLang"
+            android:defaultValue="en"
+            android:entries="@array/listArrayWikiLang"
+            android:entryValues="@array/listValuesWikiLang" />
+
+        <Preference
+            android:title="@string/action_openSettings"
+            android:summary="@string/action_openSettings_summary"
+            android:key="settings" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_1">
+
+        <Preference
+            android:title="@string/action_license"
+            android:summary="@string/action_license_summary"
+            android:key="license" />
+
+        <Preference
+            android:title="@string/action_help"
+            android:summary="@string/action_help_summary"
+            android:key="help" />
+
+        <CheckBoxPreference
+            android:title="@string/action_permNotShow_title"
+            android:summary="@string/action_permNotShow_title_summary"
+            android:key="perm_notShow"
+            android:defaultValue="true" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

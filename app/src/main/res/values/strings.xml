@@ -1,0 +1,151 @@
+<resources>
+
+    // Application
+
+    <string name="app_name">Browser</string>
+    <string name="app_permissions">You must grant \"Access Storage Permission\" to save screenshots and downloads. After that you should
+        completely close the app or restart the phone. If you don\'t permit the storage access but want to use the
+        screenshot function at a later time, you can grant the permission later. Please open then: system settings - apps -
+        HHS Moodle. In the permissions section you can grant the \"write storage permission\".</string>
+    <string name="app_share_screenshot">Share screenshot using:</string>
+    <string name="app_share_image">Share image using:</string>
+    <string name="app_share_link">Share link using:</string>
+    <string name="app_share_file">Choose file with:</string>
+    <string name="app_search_hint">Enter url or search term …</string>
+    <string name="app_search_hint_site">Enter search term …</string>
+    <string name="app_search_hint_bookmark">Enter title …</string>
+    <string name="app_search">Searched for:</string>
+
+
+    // Menu Items
+
+    <string name="menu_search">Search</string>
+    <string name="menu_history">History</string>
+    <string name="menu_save">Save website</string>
+    <string name="menu_save_screenshot">Save screenshot</string>
+    <string name="menu_save_bookmark">Save as bookmark</string>
+    <string name="menu_save_readLater">Save to readLater</string>
+    <string name="menu_share">Share website</string>
+    <string name="menu_share_screenshot">Share screenshot</string>
+    <string name="menu_share_link">Share link as text</string>
+    <string name="menu_share_link_copy">Copy link to Clipboard</string>
+    <string name="menu_downloads">Open downloads</string>
+    <string name="menu_settings">Settings</string>
+    <string name="menu_searchSite">Search on site</string>
+    <string name="menu_prev">Previous</string>
+    <string name="menu_next">Next</string>
+    <string name="menu_cancel">Cancel</string>
+
+
+    // Context Menu
+
+    <string name="context_saveImage">Save image</string>
+    <string name="context_shareImage">Share image</string>
+    <string name="context_readLater">Add to readLater</string>
+    <string name="context_linkCopy_toast">Link successfully copied</string>
+    <string name="context_saveImage_toast">Saving image as:</string>
+
+
+    // Snackbar
+
+    <string name="toast_yes">OK</string>
+    <string name="toast_cancel">Cancel</string>
+    <string name="toast_notAgain">Never show</string>
+    <string name="toast_download">Downloading file:</string>
+    <string name="toast_download_1">Do you want to download:</string>
+    <string name="toast_download_2">Download completed. Show download manager?</string>
+    <string name="toast_perm">Permissions granted?</string>
+    <string name="toast_back">Can not go back.</string>
+    <string name="toast_forward">Can not go forward.</string>
+    <string name="toast_backup">Backup successful.</string>
+    <string name="toast_restore">Restore successful.</string>
+    <string name="toast_backup_not">Backup failed.</string>
+    <string name="toast_restore_not">Restore failed.</string>
+    <string name="toast_screenshot_failed">Failed to create screenshot.</string>
+    <string name="toast_cache">No internet connection. Trying to load from cache.</string>
+
+
+    // Bookmarks // ReadLater
+
+    <string name="bookmark_remove_confirmation">List item will be removed. OK?</string>
+    <string name="bookmark_remove_cannot">You need at least one list item!</string>
+    <string name="bookmark_remove_bookmark">Delete list item</string>
+    <string name="bookmark_added">Adding to bookmark list.</string>
+    <string name="bookmark_edit_title">Edit title</string>
+
+    <string name="readLater_added">Adding to readLater.</string>
+    <string name="readLater_button">Clear list</string>
+    <string name="readLater_title">Open last saved link:</string>
+    <string name="readLater_action">Open readLater list</string>
+
+
+    // Settings
+
+    <string name="pref_1">About | Help</string>
+    <string name="pref_2">App settings</string>
+    <string name="pref_3">Privacy | Security</string>
+    <string name="pref_4">Data</string>
+
+    <string name="action_permNotShow_title">Permission dialog</string>
+    <string name="action_permNotShow_title_summary">Show again: Permission dialog?</string>
+
+    <string name="action_license">License</string>
+    <string name="action_license_summary">The app is completely open source and licensed under GPL3.</string>
+
+    <string name="action_openSettings">Settings</string>
+    <string name="action_openSettings_summary">Open the system settings of the app. There you can, depending on your Android version,
+        manage several things (Storage, network traffic, permissions, …).</string>
+
+    <string name="action_swipe">Swipe</string>
+    <string name="action_swipe_summary">Swipe left or right to navigate through websites.</string>
+
+    <string name="action_font">Font size</string>
+    <string name="action_font_summary">Change font size for websites.</string>
+
+    <string name="action_backup">Backup</string>
+    <string name="action_backup_summary">Backup your bookmarks and readLater lists to sdcard. A new backup overwrites the old one.</string>
+
+    <string name="action_restore">Restore</string>
+    <string name="action_restore_summary">Restore your bookmarks and readLater lists from sdcard.</string>
+
+    <string name="action_java">Enable javascript</string>
+    <string name="action_java_summary">Some functions on the websites need javascript to work. But javascript is
+        known to be a security risk.</string>
+
+    <string name="action_cookie">Enable cookies</string>
+    <string name="action_cookie_summary">Visited websites are storing their cookies on your device, mostly to improve user
+        experience. For example settings for a search site are stored in cookies.</string>
+
+    <string name="action_cookie3">Enable third party cookies</string>
+    <string name="action_cookie3_summary">Third party cookies are not from the visited website. Mostly they collect information
+        about your browsing behavior to send you personalised advertisements.</string>
+
+    <string name="action_history">Clear history on exit</string>
+    <string name="action_history_summary">Clear your browser history on exit.</string>
+
+    <string name="action_help">Help</string>
+    <string name="action_help_summary">Show a short help dialog.</string>
+
+    <string name="action_searchEngine">Search engine</string>
+    <string name="action_searchEngine_summary">Choose your preferred search engine.</string>
+
+    <string name="action_wikiLang">Wikipedia</string>
+    <string name="action_wikiLang_summary">Choose your preferred language for Wikipedia.</string>
+
+    <string name="action_offline">Offline</string>
+    <string name="action_offline_summary">Save websites in cache for offline use. Disable clear cache to use.</string>
+
+    <string name="action_clearCache">Clear cache</string>
+    <string name="action_clearCache_summary">Clear browser cache on exit. Disable, if you want to use offline functionality.</string>
+
+    <string name="action_clearCookies">Clear cookies</string>
+    <string name="action_clearCookies_summary">Clear all cookies on exit. Website settings will get lost.</string>
+
+    <string name="action_clearForm">Clear form data</string>
+    <string name="action_clearForm_summary">Clear all form data on exit. All saved form entered data (e.g. mail addresses)
+        will get lost.</string>
+
+    <string name="action_form">Form data</string>
+    <string name="action_form_summary">Save entered form data (e.g mail addresses).</string>
+
+</resources>

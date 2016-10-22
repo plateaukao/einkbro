@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    //License Dialog
+
+    <string name="about_title">Copyright © 2016  by Gaukler Faun</string>
+    <string name="about_text">
+        For more information visit the project site in github: https://github.com/scoute-dich/Browser&lt;br>&lt;br>
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with this program.  If not, see http://www.gnu.org/licenses.&lt;br>&lt;br>&lt;br>
+
+        &lt;b>Used open source projects:&lt;/b>&lt;br>&lt;br>
+
+        &lt;i>browser&lt;br>
+        https://github.com/yoshihiroando/browser&lt;br>
+
+        Android-ObservableScrollView&lt;br>
+        https://github.com/ksoichiro/Android-ObservableScrollView&lt;/i>
+    </string>
+
+
+    //Help Dialog
+
+    <string name="help_text">
+
+        To exit the app you can just double click back in the browser. If you want, you can enable offline support in the settings.
+        Websites will then be saved in the cache.&lt;br>&lt;br>
+
+        &lt;b>The lists:&lt;/b>&lt;br>
+
+        Every list has a context menu, which you can reach by long pressing an item. The readLater and history lists can be cleared
+        with one click.&lt;br>&lt;br>
+
+        &#8226;&lt;i> Bookmark:&lt;/i> as always - save your favorite websites for a faster access.&lt;br>
+        &#8226;&lt;i> readLater:&lt;/i> here you can save websites if you want to read them anytime later, if they are not
+        important enough to be a bookmark.&lt;br>
+        &#8226;&lt;i> History:&lt;/i> well, your browser history.&lt;br>&lt;br>
+
+        &lt;b>Toolbar (bottom):&lt;/b>&lt;br>
+        &#8226;&lt;i> Click (also magnifier icon):&lt;/i> you can enter a search term (see below) or a url. By pressing \"enter\" or
+        the magnifier icon, the website will load.&lt;br>
+        &#8226;&lt;i> Long click:&lt;/i> will close the entire app (can be disabled in settings).&lt;br>
+        &#8226;&lt;i> Swipe:&lt;/i> to the left to open your bookmarks and to the right to open your readLater list.&lt;br>
+        &#8226;&lt;i> History:&lt;/i> opens a list of the last visited websites.&lt;br>&lt;br>
+
+        &lt;b>Menu:&lt;/b>&lt;br>
+        &#8226;&lt;i> Save website:&lt;/i> you can save the website to your bookmark or readLater list or save a screenshot of the
+        whole website.&lt;br>
+        &#8226;&lt;i> Share website:&lt;/i> you can share the screenshot of a website, share the link as text or copy the link
+        to the clipboard.&lt;br>
+        &#8226;&lt;i> Search on site:&lt;/i> search for text on any website.&lt;br>
+        &#8226;&lt;i> Open downloads:&lt;/i> opens the system download manager.&lt;br>
+        &#8226;&lt;i> Settings:&lt;/i> In the settings you can configure the behavior of the app, some privacy and security
+        settings.&lt;br>&lt;br>
+
+        &lt;b>Search:&lt;/b>&lt;br>
+        You can set your preferred search engine and the language for Wikipedia in the settings. You can search direct on different
+        sites by typing the following before your search term (with the space):&lt;br>&lt;br>
+
+        &#8226;&lt;i> Duckduckgo:&lt;/i> \".d \"&lt;br>
+        &#8226;&lt;i> Flickr (creative common license):&lt;/i> \".f \"&lt;br>
+        &#8226;&lt;i> Github:&lt;/i> \".g \"&lt;br>
+        &#8226;&lt;i> Google:&lt;/i> \".G \"&lt;br>
+        &#8226;&lt;i> MetaGer:&lt;/i> \".m \"&lt;br>
+        &#8226;&lt;i> Startpage:&lt;/i> \".s \"&lt;br>
+        &#8226;&lt;i> Wikipedia:&lt;/i> \".w \"
+    </string>
+
+
+    //String arrays
+
+    <string-array name="listArrayFont">
+        <item>Small (70%)</item>
+        <item>Normal (100%)</item>
+        <item>Big (130%)</item>
+    </string-array>
+
+    <string-array name="listValuesFont">
+        <item>70</item>
+        <item>100</item>
+        <item>130</item>
+    </string-array>
+
+    <string-array name="listArraySearchEngine">
+        <item>Duckduckgo</item>
+        <item>Google (if you REALLY want it …)</item>
+        <item>MetaGer</item>
+        <item>Startpage</item>
+    </string-array>
+
+    <string-array name="listValuesSearchEngine">
+        <item>https://duckduckgo.com/?q=</item>
+        <item>https://www.google.com/search?&amp;q=</item>
+        <item>https://metager.de/meta/meta.ger3?focus=web&amp;eingabe=</item>
+        <item>https://startpage.com/do/search?query=</item>
+    </string-array>
+
+    <string-array name="listArrayWikiLang">
+        <item>English</item>
+        <item>German</item>
+    </string-array>
+
+    <string-array name="listValuesWikiLang">
+        <item>en</item>
+        <item>de</item>
+    </string-array>
+
+</resources>

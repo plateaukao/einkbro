@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/progressBar">
+
+        <com.github.ksoichiro.android.observablescrollview.ObservableWebView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/webView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTintMode="add">
+
+        </com.github.ksoichiro.android.observablescrollview.ObservableWebView>
+
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:theme="@style/Actionbar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        android:minHeight="?attr/actionBarSize"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/toolbar" >
+
+        <EditText
+            android:theme="@style/EditTextStyle"
+            android:id="@+id/editText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:hint="@string/app_search_hint"
+            android:textColorHint="#eeeeee"
+            android:imeOptions="actionSearch"
+            android:lines="1"
+            android:inputType="text|textNoSuggestions"
+            android:textColor="#eeeeee">
+        </EditText>
+
+    </android.support.v7.widget.Toolbar>
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="4dip"
+        android:maxHeight="4dip"
+        android:progressBackgroundTint="@color/colorPrimary"
+        android:progressBackgroundTintMode="src_over"
+        android:progressTint="@color/colorAccent"
+        android:layout_above="@+id/toolbar"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/progressBar" />
+
+    <ImageButton
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/imageButton"
+        tools:ignore="ContentDescription"
+        android:background="?android:selectableItemBackground"
+        app:srcCompat="@drawable/arrow_up"
+        android:scaleType="fitCenter"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginBottom="24dp" />
+
+
+</RelativeLayout>
