@@ -49,8 +49,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import de.baumann.browser.databases.Database_Bookmarks;
+import de.baumann.browser.helper.Activity_settings;
 import de.baumann.browser.helper.helper_editText;
-import de.baumann.browser.helper.helpers;
+import de.baumann.browser.helper.helper_main;
 import de.baumann.browser.popups.Popup_history;
 
 public class Bookmarks extends AppCompatActivity {
@@ -99,23 +100,23 @@ public class Bookmarks extends AppCompatActivity {
                         subStr=text.substring(3);
                     }
                     if (text.contains("http")) {
-                        helpers.switchToActivity(Bookmarks.this, Browser.class, text, true);
+                        helper_main.switchToActivity(Bookmarks.this, Browser.class, text, true);
                     } else if (text.contains(".w ")) {
-                        helpers.switchToActivity(Bookmarks.this, Browser.class, "https://" + wikiLang + ".wikipedia.org/wiki/Spezial:Suche?search=" + subStr, true);
+                        helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://" + wikiLang + ".wikipedia.org/wiki/Spezial:Suche?search=" + subStr, true);
                     } else if (text.startsWith(".f ")) {
-                        helpers.switchToActivity(Bookmarks.this, Browser.class, "https://www.flickr.com/search/?advanced=1&license=2%2C3%2C4%2C5%2C6%2C9&text=" + subStr, true);
+                        helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://www.flickr.com/search/?advanced=1&license=2%2C3%2C4%2C5%2C6%2C9&text=" + subStr, true);
                     } else  if (text.startsWith(".m ")) {
-                        helpers.switchToActivity(Bookmarks.this, Browser.class, "https://metager.de/meta/meta.ger3?focus=web&eingabe=" + subStr, true);
+                        helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://metager.de/meta/meta.ger3?focus=web&eingabe=" + subStr, true);
                     } else if (text.startsWith(".g ")) {
-                        helpers.switchToActivity(Bookmarks.this, Browser.class, "https://github.com/search?utf8=✓&q=" + subStr, true);
+                        helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://github.com/search?utf8=✓&q=" + subStr, true);
                     } else  if (text.startsWith(".s ")) {
-                        helpers.switchToActivity(Bookmarks.this, Browser.class, "https://startpage.com/do/search?query=" + subStr, true);
+                        helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://startpage.com/do/search?query=" + subStr, true);
                     } else if (text.startsWith(".G ")) {
-                        helpers.switchToActivity(Bookmarks.this, Browser.class, "https://www.google.com/search?&q=" + subStr, true);
+                        helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://www.google.com/search?&q=" + subStr, true);
                     } else  if (text.startsWith(".d ")) {
-                        helpers.switchToActivity(Bookmarks.this, Browser.class, "https://duckduckgo.com/?q=" + subStr, true);
+                        helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://duckduckgo.com/?q=" + subStr, true);
                     } else {
-                        helpers.switchToActivity(Bookmarks.this, Browser.class, searchEngine + text, true);
+                        helper_main.switchToActivity(Bookmarks.this, Browser.class, searchEngine + text, true);
                     }
                     editText.setText(text);
                     editText.clearFocus();
@@ -133,7 +134,7 @@ public class Bookmarks extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 @SuppressWarnings("unchecked")
                 HashMap<String,String> map = (HashMap<String,String>)listView.getItemAtPosition(position);
-                helpers.switchToActivity(Bookmarks.this, Browser.class, map.get("url"), true);
+                helper_main.switchToActivity(Bookmarks.this, Browser.class, map.get("url"), true);
             }
         });
 
@@ -165,7 +166,7 @@ public class Bookmarks extends AppCompatActivity {
                                     (new Handler()).postDelayed(new Runnable() {
                                         public void run() {
                                             editText.requestFocus();
-                                            helpers.showKeyboard(Bookmarks.this, editText);
+                                            helper_main.showKeyboard(Bookmarks.this, editText);
                                             editText.setText(title);
                                         }
                                     }, 200);
@@ -306,6 +307,7 @@ public class Bookmarks extends AppCompatActivity {
         MenuItem prev = menu.findItem(R.id.action_prev);
         MenuItem next = menu.findItem(R.id.action_next);
         MenuItem cancel = menu.findItem(R.id.action_cancel);
+        MenuItem pass = menu.findItem(R.id.action_pass);
 
         if (sharedPref.getInt("keyboard", 0) == 0) { //could be button state or..?
             saveBookmark.setVisible(false);
@@ -317,10 +319,11 @@ public class Bookmarks extends AppCompatActivity {
             share.setVisible(false);
             searchSite.setVisible(false);
             downloads.setVisible(true);
-            settings.setVisible(false);
+            settings.setVisible(true);
             prev.setVisible(false);
             next.setVisible(false);
             cancel.setVisible(false);
+            pass.setVisible(false);
         } else if (sharedPref.getInt("keyboard", 0) == 1) {
             saveBookmark.setVisible(false);
             clear.setVisible(false);
@@ -335,6 +338,7 @@ public class Bookmarks extends AppCompatActivity {
             prev.setVisible(true);
             next.setVisible(true);
             cancel.setVisible(true);
+            pass.setVisible(false);
         } else if (sharedPref.getInt("keyboard", 0) == 2) {
             saveBookmark.setVisible(true);
             clear.setVisible(true);
@@ -349,6 +353,7 @@ public class Bookmarks extends AppCompatActivity {
             prev.setVisible(false);
             next.setVisible(false);
             cancel.setVisible(true);
+            pass.setVisible(false);
         }
 
         return true; // this is important to call so that new menu is shown
@@ -379,32 +384,36 @@ public class Bookmarks extends AppCompatActivity {
 
             if (text.isEmpty()) {
                 editText.requestFocus();
-                helpers.showKeyboard(Bookmarks.this, editText);
+                helper_main.showKeyboard(Bookmarks.this, editText);
             } else {
                 if (text.contains("http")) {
-                    helpers.switchToActivity(Bookmarks.this, Browser.class, text, true);
+                    helper_main.switchToActivity(Bookmarks.this, Browser.class, text, true);
                 } else if (text.contains(".w ")) {
-                    helpers.switchToActivity(Bookmarks.this, Browser.class, "https://" + wikiLang + ".wikipedia.org/wiki/Spezial:Suche?search=" + subStr, true);
+                    helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://" + wikiLang + ".wikipedia.org/wiki/Spezial:Suche?search=" + subStr, true);
                 } else if (text.startsWith(".f ")) {
-                    helpers.switchToActivity(Bookmarks.this, Browser.class, "https://www.flickr.com/search/?advanced=1&license=2%2C3%2C4%2C5%2C6%2C9&text=" + subStr, true);
+                    helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://www.flickr.com/search/?advanced=1&license=2%2C3%2C4%2C5%2C6%2C9&text=" + subStr, true);
                 } else  if (text.startsWith(".m ")) {
-                    helpers.switchToActivity(Bookmarks.this, Browser.class, "https://metager.de/meta/meta.ger3?focus=web&eingabe=" + subStr, true);
+                    helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://metager.de/meta/meta.ger3?focus=web&eingabe=" + subStr, true);
                 } else if (text.startsWith(".g ")) {
-                    helpers.switchToActivity(Bookmarks.this, Browser.class, "https://github.com/search?utf8=✓&q=" + subStr, true);
+                    helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://github.com/search?utf8=✓&q=" + subStr, true);
                 } else  if (text.startsWith(".s ")) {
-                    helpers.switchToActivity(Bookmarks.this, Browser.class, "https://startpage.com/do/search?query=" + subStr, true);
+                    helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://startpage.com/do/search?query=" + subStr, true);
                 } else if (text.startsWith(".G ")) {
-                    helpers.switchToActivity(Bookmarks.this, Browser.class, "https://www.google.com/search?&q=" + subStr, true);
+                    helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://www.google.com/search?&q=" + subStr, true);
                 } else  if (text.startsWith(".d ")) {
-                    helpers.switchToActivity(Bookmarks.this, Browser.class, "https://duckduckgo.com/?q=" + subStr, true);
+                    helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://duckduckgo.com/?q=" + subStr, true);
                 } else {
-                    helpers.switchToActivity(Bookmarks.this, Browser.class, searchEngine + text, true);
+                    helper_main.switchToActivity(Bookmarks.this, Browser.class, searchEngine + text, true);
                 }
             }
         }
 
+        if (id == R.id.action_settings) {
+            helper_main.switchToActivity(Bookmarks.this, Activity_settings.class, "", false);
+        }
+
         if (id == R.id.action_history) {
-            helpers.switchToActivity(Bookmarks.this, Popup_history.class, "", false);
+            helper_main.switchToActivity(Bookmarks.this, Popup_history.class, "", false);
         }
 
         if (id == R.id.action_downloads) {
@@ -421,7 +430,7 @@ public class Bookmarks extends AppCompatActivity {
             editText.setHint(R.string.app_search_hint);
             helper_editText.editText_Touch(editText, Bookmarks.this);
             helper_editText.editText_FocusChange(editText, Bookmarks.this);
-            helpers.hideKeyboard(Bookmarks.this, editText);
+            helper_main.hideKeyboard(Bookmarks.this, editText);
         }
 
         if (id == R.id.action_clear) {

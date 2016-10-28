@@ -34,7 +34,7 @@ import de.baumann.browser.R;
 import de.baumann.browser.databases.Database_ReadLater;
 import de.baumann.browser.popups.Popup_readLater;
 
-public class Intent extends Activity {
+public class Activity_intent extends Activity {
 
 
     @Override
@@ -50,7 +50,7 @@ public class Intent extends Activity {
         final  String domain = link.substring(domainInt, link.indexOf('/', domainInt));
 
         try {
-            final Database_ReadLater db = new Database_ReadLater(Intent.this);
+            final Database_ReadLater db = new Database_ReadLater(Activity_intent.this);
             db.addBookmark(domain, link);
             db.close();
 
@@ -65,7 +65,7 @@ public class Intent extends Activity {
         iMain.setAction(android.content.Intent.ACTION_VIEW);
         iMain.putExtra("url", link);
         iMain.putExtra("title", domain);
-        iMain.setClassName(Intent.this, "de.baumann.browser.Browser");
+        iMain.setClassName(Activity_intent.this, "de.baumann.browser.Browser");
 
         android.content.Intent iAction = new android.content.Intent(this, Popup_readLater.class);
         iAction.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);

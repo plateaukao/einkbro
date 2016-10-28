@@ -25,6 +25,7 @@
     <string name="menu_save_screenshot">Save screenshot</string>
     <string name="menu_save_bookmark">Save as bookmark</string>
     <string name="menu_save_readLater">Save to readLater</string>
+    <string name="menu_save_pass">Save to passStorage</string>
     <string name="menu_share">Share website</string>
     <string name="menu_share_screenshot">Share screenshot</string>
     <string name="menu_share_link">Share link as text</string>
@@ -35,6 +36,7 @@
     <string name="menu_prev">Previous</string>
     <string name="menu_next">Next</string>
     <string name="menu_cancel">Cancel</string>
+    <string name="menu_pass">Open passStorage</string>
 
 
     // Context Menu
@@ -63,9 +65,11 @@
     <string name="toast_restore_not">Restore failed.</string>
     <string name="toast_screenshot_failed">Failed to create screenshot.</string>
     <string name="toast_cache">No internet connection. Trying to load from cache.</string>
+    <string name="toast_noInternet">Can not load site. No internet connection.</string>
+    <string name="toast_exit">Do you want to exit?</string>
 
 
-    // Bookmarks // ReadLater
+    // Bookmarks // ReadLater // Password
 
     <string name="bookmark_remove_confirmation">List item will be removed. OK?</string>
     <string name="bookmark_remove_cannot">You need at least one list item!</string>
@@ -77,6 +81,13 @@
     <string name="readLater_button">Clear list</string>
     <string name="readLater_title">Open last saved link:</string>
     <string name="readLater_action">Open readLater list</string>
+
+    <string name="pass_message">Login for:</string>
+    <string name="pass_success">Adding to password list.</string>
+    <string name="pass_userName">Username</string>
+    <string name="pass_userPW">Password</string>
+    <string name="pass_copy_userName">Copy username</string>
+    <string name="pass_copy_userPW">Copy password</string>
 
 
     // Settings
@@ -103,10 +114,11 @@
     <string name="action_font_summary">Change font size for websites.</string>
 
     <string name="action_backup">Backup</string>
-    <string name="action_backup_summary">Backup your bookmarks and readLater lists to sdcard. A new backup overwrites the old one.</string>
+    <string name="action_backup_summary">Backup your bookmarks, readLater lists and the passStorage to sdcard. A new backup
+        overwrites the old one.</string>
 
     <string name="action_restore">Restore</string>
-    <string name="action_restore_summary">Restore your bookmarks and readLater lists from sdcard.</string>
+    <string name="action_restore_summary">Restore your bookmarks, readLater lists and the passStorage from sdcard.</string>
 
     <string name="action_java">Enable javascript</string>
     <string name="action_java_summary">Some functions on the websites need javascript to work. But javascript is

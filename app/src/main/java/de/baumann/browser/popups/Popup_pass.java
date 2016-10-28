@@ -32,14 +32,14 @@ import android.widget.SimpleAdapter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import de.baumann.browser.Browser;
 import de.baumann.browser.R;
-import de.baumann.browser.databases.Database_History;
-import de.baumann.browser.helper.helper_main;
+import de.baumann.browser.databases.Database_Pass;
+import de.baumann.browser.helper.class_SecurePreferences;
 
-public class Popup_history extends Activity {
+public class Popup_pass extends Activity {
 
     private ListView listView = null;
+    private class_SecurePreferences sharedPrefSec;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,21 +47,32 @@ public class Popup_history extends Activity {
 
         setContentView(R.layout.activity_popup);
 
+        sharedPrefSec = new class_SecurePreferences(Popup_pass.this, "sharedPrefSec", "Ywn-YM.XK$b:/:&CsL8;=L,y4", true);
+
         Button button = (Button) findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Popup_history.this.deleteDatabase("history.db");
-                setBookmarkList();
-            }
-        });
+        button.setVisibility(View.GONE);
 
         listView = (ListView)findViewById(R.id.list);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 @SuppressWarnings("unchecked")
                 HashMap<String,String> map = (HashMap<String,String>)listView.getItemAtPosition(position);
-                helper_main.switchToActivity(Popup_history.this, Browser.class, map.get("url"), true);
+                final String url = map.get("url");
+                final String title = map.get("title");
+                final String userName = sharedPrefSec.getString(url + "UN");
+                final String userPW = sharedPrefSec.getString(url + "PW");
+
+                android.content.Intent iMain = new android.content.Intent();
+                iMain.setAction("pass");
+                iMain.putExtra("url", url);
+                iMain.putExtra("title", title);
+                iMain.putExtra("userName", userName);
+                iMain.putExtra("userPW", userPW);
+                iMain.setClassName(Popup_pass.this, "de.baumann.browser.Browser");
+                startActivity(iMain);
+
+                finish();
             }
         });
 
@@ -73,7 +84,7 @@ public class Popup_history extends Activity {
                 final String seqnoStr = map.get("seqno");
 
                 try {
-                    Database_History db = new Database_History(Popup_history.this);
+                    Database_Pass db = new Database_Pass(Popup_pass.this);
                     final int count = db.getRecordCount();
                     db.close();
 
@@ -89,7 +100,7 @@ public class Popup_history extends Activity {
                                     @Override
                                     public void onClick(View view) {
                                         try {
-                                            Database_History db = new Database_History(Popup_history.this);
+                                            Database_Pass db = new Database_Pass(Popup_pass.this);
                                             db.deleteBookmark(Integer.parseInt(seqnoStr));
                                             db.close();
                                             setBookmarkList();
@@ -108,16 +119,16 @@ public class Popup_history extends Activity {
                 return true;
             }
         });
-
         setBookmarkList();
     }
+
 
     private void setBookmarkList() {
 
         ArrayList<HashMap<String,String>> mapList = new ArrayList<>();
 
         try {
-            Database_History db = new Database_History(Popup_history.this);
+            Database_Pass db = new Database_Pass(Popup_pass.this);
             ArrayList<String[]> bookmarkList = new ArrayList<>();
             db.getBookmarks(bookmarkList);
             if (bookmarkList.size() == 0) {
@@ -131,11 +142,13 @@ public class Popup_history extends Activity {
                 map.put("seqno", strAry[0]);
                 map.put("title", strAry[1]);
                 map.put("url", strAry[2]);
+                map.put("userName", strAry[3]);
+                map.put("userPW", strAry[4]);
                 mapList.add(map);
             }
 
             SimpleAdapter simpleAdapter = new SimpleAdapter(
-                    Popup_history.this,
+                    Popup_pass.this,
                     mapList,
                     R.layout.list_item,
                     new String[] {"title", "url"},
@@ -147,9 +160,5 @@ public class Popup_history extends Activity {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        listView.post(new Runnable(){
-            public void run() {
-                listView.setSelection(listView.getCount() - 1);
-            }});
     }
 }

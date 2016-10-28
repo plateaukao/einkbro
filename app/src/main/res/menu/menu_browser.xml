@@ -86,6 +86,12 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/action_pass"
+        android:orderInCategory="100"
+        android:title="@string/menu_pass"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/action_downloads"
         android:orderInCategory="100"
         android:title="@string/menu_downloads"

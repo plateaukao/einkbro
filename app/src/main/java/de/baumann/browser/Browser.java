@@ -37,7 +37,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Environment;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
@@ -78,11 +77,11 @@ import java.util.Locale;
 
 import de.baumann.browser.databases.Database_Bookmarks;
 import de.baumann.browser.databases.Database_ReadLater;
-import de.baumann.browser.helper.Activity_settings;
 import de.baumann.browser.helper.helper_editText;
 import de.baumann.browser.helper.helper_webView;
-import de.baumann.browser.helper.helpers;
+import de.baumann.browser.helper.helper_main;
 import de.baumann.browser.popups.Popup_history;
+import de.baumann.browser.popups.Popup_pass;
 
 public class Browser extends AppCompatActivity implements ObservableScrollViewCallbacks {
 
@@ -110,7 +109,6 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
     private static final int ID_SHARE_IMAGE = 14;
     private static final int REQUEST_CODE_LOLLIPOP = 1;
 
-    private boolean doubleBackToExitPressedOnce = false;
     private boolean isNetworkUnAvailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService( CONNECTIVITY_SERVICE );
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
@@ -172,10 +170,17 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
         helper_webView.webView_Touch(Browser.this, mWebView);
         helper_webView.webView_WebViewClient(Browser.this, swipeView, mWebView);
 
-        mWebView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
-        if (isNetworkUnAvailable()) { // loading offline
-            mWebView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
-            Snackbar.make(mWebView, R.string.toast_cache, Snackbar.LENGTH_SHORT).show();
+        mWebView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
+
+        if (isNetworkUnAvailable()) {
+            if (sharedPref.getBoolean ("offline", false)){
+                if (isNetworkUnAvailable()) { // loading offline
+                    mWebView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+                    Snackbar.make(mWebView, R.string.toast_cache, Snackbar.LENGTH_SHORT).show();
+                }
+            } else {
+                Snackbar.make(mWebView, R.string.toast_noInternet, Snackbar.LENGTH_SHORT).show();
+            }
         }
 
         mWebView.setWebChromeClient(new WebChromeClient() {
@@ -294,14 +299,44 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
         helper_editText.editText_FocusChange(editText, Browser.this);
 
         onNewIntent(getIntent());
-        helpers.grantPermissions(Browser.this);
+        helper_main.grantPermissions(Browser.this);
     }
 
-    protected void onNewIntent(Intent intent) {
-        PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
-        mWebView.loadUrl(intent.getStringExtra("url"));
-        setTitle(intent.getStringExtra("title"));
+    protected void onNewIntent(final Intent intent) {
+
+        String action = intent.getAction();
+
+        if ("pass".equals(action)) {
+            mWebView.loadUrl(intent.getStringExtra("url"));
+            setTitle(intent.getStringExtra("title"));
+            Snackbar snackbar = Snackbar
+                    .make(mWebView, R.string.pass_copy_userName, Snackbar.LENGTH_INDEFINITE)
+                    .setAction(getString(R.string.toast_yes), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                            ClipboardManager clipboard = (ClipboardManager) Browser.this.getSystemService(Context.CLIPBOARD_SERVICE);
+                            clipboard.setPrimaryClip(ClipData.newPlainText("userName", intent.getStringExtra("userName")));
+
+                            Snackbar snackbar = Snackbar
+                                    .make(mWebView, R.string.pass_copy_userPW, Snackbar.LENGTH_INDEFINITE)
+                                    .setAction(getString(R.string.toast_yes), new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            ClipboardManager clipboard = (ClipboardManager) Browser.this.getSystemService(Context.CLIPBOARD_SERVICE);
+                                            clipboard.setPrimaryClip(ClipData.newPlainText("userName", intent.getStringExtra("userPW")));
+                                        }
+                                    });
+                            snackbar.show();
+                        }
+                    });
+            snackbar.show();
+        } else {
+            mWebView.loadUrl(intent.getStringExtra("url"));
+            setTitle(intent.getStringExtra("title"));
+        }
     }
+
 
     private File createImageFile() throws IOException {
         // Create an image file name
@@ -393,11 +428,11 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
                                 request.addRequestHeader("Cookie", CookieManager.getInstance().getCookie(url));
                                 request.allowScanningByMediaScanner();
                                 request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); //Notify client once download is completed!
-                                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, helpers.newFileName());
+                                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, helper_main.newFileName());
                                 DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
                                 dm.enqueue(request);
 
-                                Snackbar.make(mWebView, getString(R.string.context_saveImage_toast) + " " + helpers.newFileName() , Snackbar.LENGTH_SHORT).show();
+                                Snackbar.make(mWebView, getString(R.string.context_saveImage_toast) + " " + helper_main.newFileName() , Snackbar.LENGTH_SHORT).show();
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -409,8 +444,8 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
                     case ID_SHARE_IMAGE:
                         if(url != null) {
 
-                            shareString = helpers.newFileName();
-                            shareFile = helpers.newFile();
+                            shareString = helper_main.newFileName();
+                            shareFile = helper_main.newFile();
 
                             try {
                                 Uri source = Uri.parse(url);
@@ -422,7 +457,7 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
                                 DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
                                 dm.enqueue(request);
 
-                                Snackbar.make(mWebView, getString(R.string.context_saveImage_toast) + " " + helpers.newFileName() , Snackbar.LENGTH_SHORT).show();
+                                Snackbar.make(mWebView, getString(R.string.context_saveImage_toast) + " " + helper_main.newFileName() , Snackbar.LENGTH_SHORT).show();
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 Snackbar.make(mWebView, R.string.toast_perm , Snackbar.LENGTH_SHORT).show();
@@ -483,25 +518,21 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
 
     @Override
     public void onBackPressed() {
+        if (mWebView.canGoBack()) {
+            Snackbar snackbar = Snackbar
+                    .make(mWebView, R.string.toast_exit, Snackbar.LENGTH_SHORT)
+                    .setAction(getString(R.string.toast_yes), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            helper_webView.closeWebView(Browser.this, mWebView);
+                        }
+                    });
+            snackbar.show();
 
-        if (doubleBackToExitPressedOnce) {
-            super.onBackPressed();
-            return;
+            mWebView.goBack();
+        } else {
+            helper_webView.closeWebView(Browser.this, mWebView);
         }
-        this.doubleBackToExitPressedOnce = true;
-        new Handler().postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                doubleBackToExitPressedOnce=false;
-                editText.clearFocus();
-                if (mWebView.canGoBack()) {
-                    mWebView.goBack();
-                } else {
-                    helper_webView.closeWebView(Browser.this, mWebView);
-                }
-            }
-        }, 750);
     }
 
     @Override
@@ -520,6 +551,7 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
         MenuItem prev = menu.findItem(R.id.action_prev);
         MenuItem next = menu.findItem(R.id.action_next);
         MenuItem cancel = menu.findItem(R.id.action_cancel);
+        MenuItem pass = menu.findItem(R.id.action_pass);
 
         if (sharedPref.getInt("keyboard", 0) == 0) { //could be button state or..?
             saveBookmark.setVisible(false);
@@ -531,10 +563,11 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
             share.setVisible(true);
             searchSite.setVisible(true);
             downloads.setVisible(true);
-            settings.setVisible(true);
+            settings.setVisible(false);
             prev.setVisible(false);
             next.setVisible(false);
             cancel.setVisible(false);
+            pass.setVisible(true);
         } else if (sharedPref.getInt("keyboard", 0) == 1) {
             saveBookmark.setVisible(false);
             clear.setVisible(false);
@@ -549,6 +582,7 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
             prev.setVisible(true);
             next.setVisible(true);
             cancel.setVisible(true);
+            pass.setVisible(false);
         } else if (sharedPref.getInt("keyboard", 0) == 2) {
             saveBookmark.setVisible(true);
             clear.setVisible(true);
@@ -563,6 +597,7 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
             prev.setVisible(false);
             next.setVisible(false);
             cancel.setVisible(true);
+            pass.setVisible(false);
         }
 
         return true; // this is important to call so that new menu is shown
@@ -593,11 +628,11 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
             if (text.equals(mWebView.getTitle()) || text.isEmpty()) {
                 editText.requestFocus();
                 editText.setText("");
-                helpers.showKeyboard(Browser.this, editText);
+                helper_main.showKeyboard(Browser.this, editText);
             } else {
 
                 editText.clearFocus();
-                helpers.hideKeyboard(Browser.this, editText);
+                helper_main.hideKeyboard(Browser.this, editText);
 
                 if (text.contains("http")) {
                     mWebView.loadUrl(text);
@@ -622,20 +657,28 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
         }
 
         if (id == R.id.action_history) {
-            helpers.switchToActivity(Browser.this, Popup_history.class, "", false);
+            helper_main.switchToActivity(Browser.this, Popup_history.class, "", false);
+        }
+
+        if (id == R.id.action_pass) {
+            helper_main.switchToActivity(Browser.this, Popup_pass.class, "", false);
         }
 
         if (id == R.id.action_save) {
             final CharSequence[] options = {
                     getString(R.string.menu_save_screenshot),
                     getString(R.string.menu_save_bookmark),
-                    getString(R.string.menu_save_readLater)};
+                    getString(R.string.menu_save_readLater),
+                    getString(R.string.menu_save_pass)};
             new AlertDialog.Builder(Browser.this)
                     .setItems(options, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int item) {
                             if (options[item].equals(getString(R.string.menu_save_bookmark))) {
                                 helper_editText.editText_saveBookmark(editText, Browser.this, mWebView);
+                            }
+                            if (options[item].equals(getString(R.string.menu_save_pass))) {
+                                helper_editText.editText_savePass(Browser.this, mWebView);
                             }
                             if (options[item].equals(getString(R.string.menu_save_readLater))) {
                                 try {
@@ -711,7 +754,7 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
                 editText.setText(getString(R.string.app_search) + " " + text);
                 mWebView.findAllAsync(text);
                 editText.clearFocus();
-                helpers.hideKeyboard(Browser.this, editText);
+                helper_main.hideKeyboard(Browser.this, editText);
             }
 
         }
@@ -734,7 +777,7 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
             helper_editText.editText_Touch(editText, Browser.this);
             helper_editText.editText_EditorAction(editText, Browser.this, mWebView);
             helper_editText.editText_FocusChange(editText, Browser.this);
-            helpers.hideKeyboard(Browser.this, editText);
+            helper_main.hideKeyboard(Browser.this, editText);
         }
 
         if (id == R.id.action_clear) {
@@ -769,19 +812,12 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
             invalidateOptionsMenu();
         }
 
-        if (id == R.id.action_settings) {
-            sharedPref.edit()
-                    .putString("url", mWebView.getUrl())
-                    .apply();
-            helpers.switchToActivity(Browser.this, Activity_settings.class, "", true);
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
     private void screenshot() {
 
-        shareFile = helpers.newFile();
+        shareFile = helper_main.newFile();
 
         try{
             mWebView.measure(View.MeasureSpec.makeMeasureSpec(
@@ -815,7 +851,7 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
                 fOut.close();
                 bitmap.recycle();
 
-                Snackbar.make(mWebView, getString(R.string.context_saveImage_toast) + " " + helpers.newFileName() , Snackbar.LENGTH_SHORT).show();
+                Snackbar.make(mWebView, getString(R.string.context_saveImage_toast) + " " + helper_main.newFileName() , Snackbar.LENGTH_SHORT).show();
 
                 Uri uri = Uri.fromFile(shareFile);
                 Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri);

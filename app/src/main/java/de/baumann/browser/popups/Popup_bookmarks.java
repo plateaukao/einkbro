@@ -35,7 +35,7 @@ import java.util.HashMap;
 import de.baumann.browser.Browser;
 import de.baumann.browser.R;
 import de.baumann.browser.databases.Database_Bookmarks;
-import de.baumann.browser.helper.helpers;
+import de.baumann.browser.helper.helper_main;
 
 public class Popup_bookmarks extends Activity {
 
@@ -55,7 +55,7 @@ public class Popup_bookmarks extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 @SuppressWarnings("unchecked")
                 HashMap<String,String> map = (HashMap<String,String>)listView.getItemAtPosition(position);
-                helpers.switchToActivity(Popup_bookmarks.this, Browser.class, map.get("url"), true);
+                helper_main.switchToActivity(Popup_bookmarks.this, Browser.class, map.get("url"), true);
             }
         });
 

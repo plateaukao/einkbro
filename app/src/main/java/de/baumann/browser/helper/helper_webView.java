@@ -23,7 +23,6 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.*;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
@@ -31,7 +30,6 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
-import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
@@ -61,21 +59,15 @@ public class helper_webView {
         webView.getSettings().setBuiltInZoomControls(true);
         webView.getSettings().setDisplayZoomControls(false);
         webView.getSettings().setTextZoom(fontSize);
-        webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
-
-        webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+        webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
+        webView.getSettings().setGeolocationEnabled(false);
         webView.getSettings().setDomStorageEnabled(true);
         webView.getSettings().setUseWideViewPort(true);
+        webView.getSettings().setLoadWithOverviewMode(true);
 
         from.registerForContextMenu(webView);
 
         if (sharedPref.getBoolean ("java", false)){
-            webView.getSettings().setGeolocationEnabled(true);
-        } else {
-            webView.getSettings().setGeolocationEnabled(false);
-        }
-
-        if (sharedPref.getBoolean ("loc", false)){
             webView.getSettings().setJavaScriptEnabled(true);
         } else {
             webView.getSettings().setJavaScriptEnabled(false);
@@ -101,7 +93,7 @@ public class helper_webView {
 
     public static void webView_Touch(final Activity from, final WebView webView) {
 
-        webView.setOnTouchListener(new OnSwipeTouchListener(from) {
+        webView.setOnTouchListener(new class_OnSwipeTouchListener(from) {
             public void onSwipeRight() {
                 if (webView.canGoBack()) {
                     webView.goBack();

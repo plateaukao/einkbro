@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    //License Dialog
+
+    <string name="about_title">Copyright © 2016  by Gaukler Faun</string>
+    <string name="about_text">
+        Für mehr Informationen besuche die Projektseite auf Github: https://github.com/scoute-dich/Browser&lt;br>&lt;br>
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with this program.  If not, see http://www.gnu.org/licenses.&lt;br>&lt;br>&lt;br>
+
+        &lt;b>Benutzte Open Source Projekte:&lt;/b>&lt;br>&lt;br>
+
+        &lt;i>Android-ObservableScrollView&lt;br>
+        https://github.com/ksoichiro/Android-ObservableScrollView&lt;br>&lt;br>
+
+        browser&lt;br>
+        https://github.com/yoshihiroando/browser&lt;br>&lt;br>
+
+        &lt;i>encrypted-userprefs&lt;br>
+        https://github.com/sveinungkb/encrypted-userprefs&lt;/i>
+    </string>
+
+
+    //Help Dialog
+
+    <string name="help_text">
+
+        &lt;b>Die Listen:&lt;/b>&lt;br>
+
+        Jede Liste hat ein Kontextmenü, welches sich bei einem langen Klick auf einen Eintrag öffnet. Die leseSpäter Liste und der
+        Verlauf können mit einem Klick geleert werden.&lt;br>&lt;br>
+
+        &#8226;&lt;i> Lesezeichen:&lt;/i> wie immer - speichere Lesezeichen für einen schnellen Zugriff.&lt;br>
+        &#8226;&lt;i> leseSpäter:&lt;/i> Hier kannst du Internetseiten speichern die du irgendwann später anzeigen lassen möchtest,
+        die aber nicht wichtig genug sind um als Lesezeichen gespeichert zu werden.&lt;br>
+        &#8226;&lt;i> Verlauf:&lt;/i> dein Browserverlauf.&lt;br>
+        &#8226;&lt;i> passSpeicher:&lt;/i> hier kannst du Logindaten von Internetseiten (verschlüsselt) speichern. Wenn eingegebene
+        Logindaten beim Verlassen des Browsers gelöscht werden sollen, solltest du \"Cookies löschen\" in den Einstellungen
+        aktivieren.&lt;br>&lt;br>
+
+        &lt;b>Toolbar (unten):&lt;/b>&lt;br>
+        &#8226;&lt;i> Klicken (auch Lupenicon):&lt;/i> du kannst einen Suchbegriff (siehe unten) oder eine URL eingeben. Wenn du
+        \"Enter\" oder die Lupe anklickst, wird die Internetseite geöffnet.&lt;br>
+        &#8226;&lt;i> Wischen:&lt;/i> wische nach Links um deine Lesezeichen oder nach rechts um die leseSpäter Liste zu öffnen.&lt;br>
+        &#8226;&lt;i> Verlauf:&lt;/i> Öffnet eine Liste mit den zuletzt besuchten Internetseiten.&lt;br>&lt;br>
+
+        &lt;b>Menü:&lt;/b>&lt;br>
+        &#8226;&lt;i> Speichere Seite:&lt;/i> du kannst die Seite als Lesezeichen, zur leseSpäter Liste oder zum passSpeicher
+        hinzufügen. Du kannst auch ein Bildschirmfoto der gesamten Internetseite auf der SD-Karte speichern.&lt;br>
+        &#8226;&lt;i> Teile Seite:&lt;/i> du kannst ein Bildschirmfoto der Seite oder den Link als Text teilen. Du kannst den Link
+        einfach in die Zwischenablage kopieren.&lt;br>
+        &#8226;&lt;i> Suche auf Seite:&lt;/i> suche nach Text auf jeder beliebigen Internetseite.&lt;br>
+        &#8226;&lt;i> Öffne passSpeicher:&lt;/i> öffne deinen Passwortspeicher.&lt;br>
+        &#8226;&lt;i> Öffne Downloadmanager:&lt;/i> öffne den Downloadmanager des Systems.&lt;br>
+        &#8226;&lt;i> Einstellungen:&lt;/i> In den Einstellungen kannst du das Verhalten der App deinen Wünschen anpassen.&lt;br>&lt;br>
+
+        &lt;b>Suche:&lt;/b>&lt;br>
+        Wenn das Eingabefeld den Seitentitel anzeigt, kannst du es mit einem Klick auf die Lupe leeren. Deine bevorzugte Suchmaschine
+        und die gewünschte Sprache für Wikipedia kannst du in den Einstellungen bestimmen. Du kannst direkt auf bestimmten Seiten suchen,
+        wenn du deinem Suchbegriff folgendes voranstellst (mit Leerzeichen):&lt;br>&lt;br>
+
+        &#8226;&lt;i> Duckduckgo:&lt;/i> \".d \"&lt;br>
+        &#8226;&lt;i> Flickr (creative common Lizenz):&lt;/i> \".f \"&lt;br>
+        &#8226;&lt;i> Github:&lt;/i> \".g \"&lt;br>
+        &#8226;&lt;i> Google:&lt;/i> \".G \"&lt;br>
+        &#8226;&lt;i> MetaGer:&lt;/i> \".m \"&lt;br>
+        &#8226;&lt;i> Startpage:&lt;/i> \".s \"&lt;br>
+        &#8226;&lt;i> Wikipedia:&lt;/i> \".w \"
+    </string>
+
+
+    //String arrays
+
+    <string-array name="listArrayFont">
+        <item>Klein (70%)</item>
+        <item>Normal (100%)</item>
+        <item>Groß (130%)</item>
+    </string-array>
+
+    <string-array name="listValuesFont">
+        <item>70</item>
+        <item>100</item>
+        <item>130</item>
+    </string-array>
+
+    <string-array name="listArraySearchEngine">
+        <item>Duckduckgo</item>
+        <item>Google (wenn du WIRKLICH möchtest …)</item>
+        <item>MetaGer</item>
+        <item>Startpage</item>
+    </string-array>
+
+    <string-array name="listValuesSearchEngine">
+        <item>https://duckduckgo.com/?q=</item>
+        <item>https://www.google.com/search?&amp;q=</item>
+        <item>https://metager.de/meta/meta.ger3?focus=web&amp;eingabe=</item>
+        <item>https://startpage.com/do/search?query=</item>
+    </string-array>
+
+    <string-array name="listArrayWikiLang">
+        <item>Englisch</item>
+        <item>Deutsch</item>
+    </string-array>
+
+    <string-array name="listValuesWikiLang">
+        <item>en</item>
+        <item>de</item>
+    </string-array>
+
+</resources>

@@ -20,21 +20,26 @@
 package de.baumann.browser.helper;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import de.baumann.browser.R;
 import de.baumann.browser.databases.Database_Bookmarks;
+import de.baumann.browser.databases.Database_Pass;
 import de.baumann.browser.popups.Popup_bookmarks;
 import de.baumann.browser.popups.Popup_readLater;
 
@@ -43,12 +48,12 @@ public class helper_editText {
 
     public static void editText_Touch(EditText editText, final Activity from) {
 
-        editText.setOnTouchListener(new OnSwipeTouchListener(from) {
+        editText.setOnTouchListener(new class_OnSwipeTouchListener(from) {
             public void onSwipeRight() {
-                helpers.switchToActivity(from, Popup_readLater.class, "", false);
+                helper_main.switchToActivity(from, Popup_readLater.class, "", false);
             }
             public void onSwipeLeft() {
-                helpers.switchToActivity(from, Popup_bookmarks.class, "", false);
+                helper_main.switchToActivity(from, Popup_bookmarks.class, "", false);
             }
         });
     }
@@ -112,7 +117,7 @@ public class helper_editText {
         (new Handler()).postDelayed(new Runnable() {
             public void run() {
                 editText.requestFocus();
-                helpers.showKeyboard(from, editText);
+                helper_main.showKeyboard(from, editText);
                 editText.setText(webView.getTitle());
             }
         }, 200);
@@ -154,6 +159,65 @@ public class helper_editText {
         });
     }
 
+    public static void editText_savePass(final Activity from, final WebView webView) {
+
+        final class_SecurePreferences sharedPrefSec = new class_SecurePreferences(from, "sharedPrefSec", "Ywn-YM.XK$b:/:&CsL8;=L,y4", true);
+
+        try {
+            final LinearLayout layout = new LinearLayout(from);
+            layout.setOrientation(LinearLayout.VERTICAL);
+            layout.setGravity(Gravity.CENTER_HORIZONTAL);
+            final EditText input = new EditText(from);
+            input.setSingleLine(true);
+            input.setHint(R.string.pass_userName);
+            final EditText input2 = new EditText(from);
+            input2.setSingleLine(true);
+            input2.setHint(R.string.pass_userPW);
+            layout.setPadding(30, 0, 50, 0);
+            layout.addView(input);
+            layout.addView(input2);
+
+            new Handler().postDelayed(new Runnable() {
+                public void run() {
+                    helper_main.showKeyboard(from,input);
+                }
+            }, 200);
+
+            final Database_Pass db = new Database_Pass(from);
+            final AlertDialog.Builder dialog = new AlertDialog.Builder(from)
+                    .setView(layout)
+                    .setMessage(from.getString(R.string.pass_message) + " " + webView.getTitle())
+                    .setPositiveButton(R.string.toast_yes, new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int whichButton) {
+
+                            String inputTag = input.getText().toString().trim();
+                            String inputTag2 = input2.getText().toString().trim();
+
+                            sharedPrefSec.put(webView.getUrl() + "UN", inputTag);
+                            sharedPrefSec.put(webView.getUrl() + "PW", inputTag2);
+
+                            db.addBookmark(webView.getTitle(), webView.getUrl(),
+                                    sharedPrefSec.getString(webView.getUrl() + "UN"),
+                                    sharedPrefSec.getString(webView.getUrl() + "PW"));
+                            db.close();
+                            Snackbar.make(webView, R.string.pass_success, Snackbar.LENGTH_SHORT).show();
+                        }
+                    })
+                    .setNegativeButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            dialog.cancel();
+                        }
+                    });
+            dialog.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
     public static void editText_searchSite (final EditText editText, final Activity from, final WebView webView) {
 
         final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
@@ -167,7 +231,7 @@ public class helper_editText {
                 editText.requestFocus();
                 editText.setText("");
                 editText.setHint(R.string.app_search_hint_site);
-                helpers.showKeyboard(from, editText);
+                helper_main.showKeyboard(from, editText);
             }
         }, 200);
 
@@ -179,7 +243,7 @@ public class helper_editText {
                     editText.setText(from.getString(R.string.app_search) + " " + text);
                     webView.findAllAsync(text);
                     editText.clearFocus();
-                    helpers.hideKeyboard(from, editText);
+                    helper_main.hideKeyboard(from, editText);
                     return true;
                 } else {
                     return false;

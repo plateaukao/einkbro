@@ -43,7 +43,7 @@ import java.util.Locale;
 
 import de.baumann.browser.R;
 
-public class helpers {
+public class helper_main {
 
     private static final int REQUEST_CODE_ASK_PERMISSIONS = 123;
 

@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    // Application
+
+    <string name="app_name">Browser</string>
+    <string name="app_permissions">Du musst der App Zugriff auf den Gerätespeicher gewähren, damit Bildschirmfotos und Downloads
+        gespeichert werden können. Danach solltest du die Anwendung komplett schließen oder das Telefon neu starten.
+        Wenn du den Zugriff verweigerst und die Funktion später doch nutzen willst, kannst du die Berechtigung
+        nachträglich erteilen. Öffne dafür: Systemeinstellungen - Apps - HHS Moodle. Im Bereich Berechtigungen kannst
+        dann die entsprechende Einstellung vornehmen.</string>
+    <string name="app_share_screenshot">Bildschrmfoto teilen mit:</string>
+    <string name="app_share_image">Bild teilen mit:</string>
+    <string name="app_share_link">Link teilen mit:</string>
+    <string name="app_share_file">Datei teilen mit:</string>
+    <string name="app_search_hint">URL oder Suchbegriff eingeben …</string>
+    <string name="app_search_hint_site">Suchbegriff eingeben …</string>
+    <string name="app_search_hint_bookmark">Titel eingeben …</string>
+    <string name="app_search">Gesucht nach:</string>
+
+
+    // Menu Items
+
+    <string name="menu_search">Suche</string>
+    <string name="menu_history">Verlauf</string>
+    <string name="menu_save">Speichere Seite</string>
+    <string name="menu_save_screenshot">Speichere Bildschirmfoto</string>
+    <string name="menu_save_bookmark">Speichere als Lesezeichen</string>
+    <string name="menu_save_readLater">Speichere zur leseSpäter Liste</string>
+    <string name="menu_save_pass">Speichere im passSpeicher</string>
+    <string name="menu_share">Teile Seite</string>
+    <string name="menu_share_screenshot">Teile Bildschirmfoto</string>
+    <string name="menu_share_link">Teile Link als Text</string>
+    <string name="menu_share_link_copy">Kopiere Link in die Zwischenablage</string>
+    <string name="menu_downloads">Öffne Downloadmanager</string>
+    <string name="menu_settings">Einstellungen</string>
+    <string name="menu_searchSite">Suche auf Seite</string>
+    <string name="menu_prev">Zurück</string>
+    <string name="menu_next">Vor</string>
+    <string name="menu_cancel">Abbrechen</string>
+    <string name="menu_pass">Öffne passSpeicher</string>
+
+
+    // Context Menu
+
+    <string name="context_saveImage">Speichere Bild</string>
+    <string name="context_shareImage">Teile Bild</string>
+    <string name="context_readLater">Speichere zur leseSpäter Liste</string>
+    <string name="context_linkCopy_toast">Link erfolgreich kopiert</string>
+    <string name="context_saveImage_toast">Speichere Bild als:</string>
+
+
+    // Snackbar
+
+    <string name="toast_yes">OK</string>
+    <string name="toast_cancel">Abbrechen</string>
+    <string name="toast_notAgain">Nicht anzeigen</string>
+    <string name="toast_download">Lade Datei herunter:</string>
+    <string name="toast_download_1">Möchtest du herunterladen:</string>
+    <string name="toast_download_2">Download vollständig. Downloadmanager öffnen?</string>
+    <string name="toast_perm">Berechtigungen erteilt?</string>
+    <string name="toast_back">Kann vorherige Seite nicht laden.</string>
+    <string name="toast_forward">Kann nächste Seite nicht laden.</string>
+    <string name="toast_backup">Sicherung erfolgreich.</string>
+    <string name="toast_restore">Wiederherstellung erfolgreich.</string>
+    <string name="toast_backup_not">Sicherung fehlgeschlagen.</string>
+    <string name="toast_restore_not">Wiederherstellung fehlgeschlagen.</string>
+    <string name="toast_screenshot_failed">Bildschirmfoto speichern fehlgeschlagen.</string>
+    <string name="toast_cache">Keine Internetverbindung. Versuche Seite aus dem Cache zu laden.</string>
+    <string name="toast_noInternet">Kann Seite nicht laden. Keine Internetverbindung.</string>
+    <string name="toast_exit">Möchtest du die App verlassen?</string>
+
+
+    // Bookmarks // ReadLater // Password
+
+    <string name="bookmark_remove_confirmation">Eintrag wird entfernt. OK?</string>
+    <string name="bookmark_remove_cannot">Du brauchst mindestens einen Eintrag.</string>
+    <string name="bookmark_remove_bookmark">Eintrag entfernen</string>
+    <string name="bookmark_added">Füge Lesezeichen hinzu.</string>
+    <string name="bookmark_edit_title">Bearbeite Titel</string>
+
+    <string name="readLater_added">Füge zur leseSpäter Liste hinzu.</string>
+    <string name="readLater_button">Liste löschen</string>
+    <string name="readLater_title">Öffne den letzten gespeicherten Link:</string>
+    <string name="readLater_action">Öffne späterLesen Liste</string>
+
+    <string name="pass_message">Logindaten für:</string>
+    <string name="pass_success">Füge zum passSpeicher hinzu.</string>
+    <string name="pass_userName">Benutzername</string>
+    <string name="pass_userPW">Passwort</string>
+    <string name="pass_copy_userName">Kopiere Benutzername</string>
+    <string name="pass_copy_userPW">Kopiere Passwort</string>
+
+
+    // Settings
+
+    <string name="pref_1">Über | Hilfe</string>
+    <string name="pref_2">App Einstellungen</string>
+    <string name="pref_3">Datenschutz | Sicherheit</string>
+    <string name="pref_4">Daten</string>
+
+    <string name="action_permNotShow_title">Berechtigungsdialog</string>
+    <string name="action_permNotShow_title_summary">Noch einmal anzeigen: Berechtigungsdialog?</string>
+
+    <string name="action_license">Lizenz</string>
+    <string name="action_license_summary">Die Anwendung ist komplett frei und steht unter der GPL3 Lizenz.</string>
+
+    <string name="action_openSettings">Einstellungen</string>
+    <string name="action_openSettings_summary">Öffne die Systemeinstellungen der App. Je nach Androidversion kannst du dort
+        verschiedene Einstellungen vornehmen (Speicherplatz, Netzwerkverkehr, Berechtigungen, …).</string>
+
+    <string name="action_swipe">Wischen</string>
+    <string name="action_swipe_summary">Nach rechts und links wischen um durch Internetseiten zu navigieren.</string>
+
+    <string name="action_font">Font size</string>
+    <string name="action_font_summary">Ändere die Schriftgröße für Internetseiten.</string>
+
+    <string name="action_backup">Sicherung</string>
+    <string name="action_backup_summary">Sichere deine Lesezeichen, die leseSpäter Liste und den passSpeicher auf der SD-Karte.
+        Eine neue Sicherung überschreibt immer die bestehende.</string>
+
+    <string name="action_restore">Wiederherstellung</string>
+    <string name="action_restore_summary">Stelle deine Lesezeichen, die leseSpäter Liste und den passSpeicher wieder her.</string>
+
+    <string name="action_java">Javascript aktivieren</string>
+    <string name="action_java_summary">Manche Funktionen von angezeigten Internetseiten benötigen Javascript. Javascript stellt
+        allerdings eine Sicherheitslücke dar.</string>
+
+    <string name="action_cookie">Aktiviere Cookies</string>
+    <string name="action_cookie_summary">Besuchte Internetseiten speichern Cookies auf deinem Gerät, meistens um die
+        Benutzerfreundlichkeit zu erhöhen. Die Einstellungen einer Suchmaschine werden z.B. in Cookies gespeichert.</string>
+
+    <string name="action_cookie3">Aktiviere Cookies von Dritten</string>
+    <string name="action_cookie3_summary">Cookies von Dritten stammen nicht von der besuchten Internetseite. Oft sammeln sie
+        Informationen über dein Surfverhalten um dir personalisierte Werbung senden zu können.</string>
+
+    <string name="action_history">Verlauf löschen</string>
+    <string name="action_history_summary">Löscht deinen Browserverlauf beim Verlassen der App.</string>
+
+    <string name="action_help">Hilfe</string>
+    <string name="action_help_summary">Ein kurzer Hilfedialog wird angezeigt.</string>
+
+    <string name="action_searchEngine">Suchmaschine</string>
+    <string name="action_searchEngine_summary">Bestimme deine bevorzugte Suchmaschine.</string>
+
+    <string name="action_wikiLang">Wikipedia</string>
+    <string name="action_wikiLang_summary">Bestimme dine bevorzugte Sprache für die Suche auf Wikipedia.</string>
+
+    <string name="action_offline">Offline</string>
+    <string name="action_offline_summary">Speichere Internetseiten im Cache um sie auch ohne Internetverbindung anzeigen zu können.
+        Dafür darf \"Cache löschen\" nicht aktiviert sein.</string>
+
+    <string name="action_clearCache">Cache löschen</string>
+    <string name="action_clearCache_summary">Löscht den Browsercache beim Verlassen der App. Nicht aktivieren, wenn du
+        Internetseiten auch offline anzeigen lassen willst.</string>
+
+    <string name="action_clearCookies">Cookies löschen</string>
+    <string name="action_clearCookies_summary">Löscht alle Cookies beim Verlassen der App. Einstellungen von Internetseiten
+        gehen dabei verloren.</string>
+
+    <string name="action_clearForm">Lösche Formularfelder</string>
+    <string name="action_clearForm_summary">Löscht beim Verlassen der App eingegebene Formulardaten (z.B. Emailadresse, eingegebener
+        Wohnort, …).</string>
+
+    <string name="action_form">Formularfelder</string>
+    <string name="action_form_summary">Speichere in Formularfelder eingegebene Daten (z.B. Emailadresse, eingegebener
+        Wohnort, …).</string>
+
+</resources>

@@ -23,7 +23,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -44,7 +43,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.channels.FileChannel;
 
-import de.baumann.browser.Browser;
 import de.baumann.browser.R;
 
 
@@ -102,7 +100,7 @@ public class Activity_settings extends AppCompatActivity {
 
                     final AlertDialog d = new AlertDialog.Builder(getActivity())
                             .setTitle(R.string.about_title)
-                            .setMessage(helpers.textSpannable(getString(R.string.about_text)))
+                            .setMessage(helper_main.textSpannable(getString(R.string.about_text)))
                             .setPositiveButton(getString(R.string.toast_yes),
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
@@ -124,7 +122,7 @@ public class Activity_settings extends AppCompatActivity {
                 public boolean onPreferenceClick(Preference pref) {
 
                     final AlertDialog d = new AlertDialog.Builder(getActivity())
-                            .setMessage(helpers.textSpannable(getString(R.string.help_text)))
+                            .setMessage(helper_main.textSpannable(getString(R.string.help_text)))
                             .setPositiveButton(getString(R.string.toast_yes),
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
@@ -180,6 +178,18 @@ public class Activity_settings extends AppCompatActivity {
                             src2.close();
                             dst2.close();
 
+                            String currentDBPath3 = "//data//" + "de.baumann.browser"
+                                    + "//databases//" + "pass.db";
+                            String backupDBPath3 = "//Android//" + "//data//" + "//browser.backup//" + "pass.db";
+                            File currentDB3 = new File(data, currentDBPath3);
+                            File backupDB3 = new File(sd, backupDBPath3);
+
+                            FileChannel src3 = new FileInputStream(currentDB3).getChannel();
+                            FileChannel dst3 = new FileOutputStream(backupDB3).getChannel();
+                            dst3.transferFrom(src3, 0, src3.size());
+                            src3.close();
+                            dst3.close();
+
                             Toast.makeText(getActivity(), R.string.toast_backup, Toast.LENGTH_SHORT).show();
                         }
                     } catch (Exception e) {
@@ -224,6 +234,19 @@ public class Activity_settings extends AppCompatActivity {
                             dst2.transferFrom(src2, 0, src2.size());
                             src2.close();
                             dst2.close();
+
+                            String currentDBPath3 = "//data//" + "de.baumann.browser"
+                                    + "//databases//" + "pass.db";
+                            String backupDBPath3 = "//Android//" + "//data//" + "//browser.backup//" + "pass.db";
+                            File currentDB3 = new File(data, currentDBPath3);
+                            File backupDB3 = new File(sd, backupDBPath3);
+
+                            FileChannel src3 = new FileInputStream(backupDB3).getChannel();
+                            FileChannel dst3 = new FileOutputStream(currentDB3).getChannel();
+                            dst3.transferFrom(src3, 0, src3.size());
+                            src3.close();
+                            dst3.close();
+
                             Toast.makeText(getActivity(), R.string.toast_restore, Toast.LENGTH_SHORT).show();
                         }
                     } catch (Exception e) {
@@ -248,29 +271,12 @@ public class Activity_settings extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        String url = sharedPref.getString("url", "");
-        sharedPref.edit()
-                .putString("url", "")
-                .apply();
-        helpers.switchToActivity(Activity_settings.this, Browser.class, url, true);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
 
         if (id == android.R.id.home) {
-            PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
-            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-            String url = sharedPref.getString("url", "");
-            sharedPref.edit()
-                    .putString("url", "")
-                    .apply();
-            helpers.switchToActivity(Activity_settings.this, Browser.class, url, true);
+            finish();
         }
 
         return super.onOptionsItemSelected(item);
