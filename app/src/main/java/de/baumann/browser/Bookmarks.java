@@ -53,6 +53,7 @@ import de.baumann.browser.helper.Activity_settings;
 import de.baumann.browser.helper.helper_editText;
 import de.baumann.browser.helper.helper_main;
 import de.baumann.browser.popups.Popup_history;
+import de.baumann.browser.popups.Popup_pass;
 
 public class Bookmarks extends AppCompatActivity {
 
@@ -323,7 +324,7 @@ public class Bookmarks extends AppCompatActivity {
             prev.setVisible(false);
             next.setVisible(false);
             cancel.setVisible(false);
-            pass.setVisible(false);
+            pass.setVisible(true);
         } else if (sharedPref.getInt("keyboard", 0) == 1) {
             saveBookmark.setVisible(false);
             clear.setVisible(false);
@@ -418,6 +419,10 @@ public class Bookmarks extends AppCompatActivity {
 
         if (id == R.id.action_downloads) {
             startActivity(new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS));
+        }
+
+        if (id == R.id.action_pass) {
+            helper_main.switchToActivity(Bookmarks.this, Popup_pass.class, "", false);
         }
 
         if (id == R.id.action_cancel) {

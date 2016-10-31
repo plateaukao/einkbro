@@ -337,7 +337,6 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
         }
     }
 
-
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yy-MM-dd_HH-mm", Locale.getDefault()).format(new Date());
