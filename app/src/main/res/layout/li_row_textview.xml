@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:descendantFocusability="beforeDescendants"
+                android:padding="10dp">
+
+  <TextView
+      android:id="@+id/text1"
+      android:maxLines="1"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentStart="false"
+      android:layout_centerVertical="false"
+      android:layout_toRightOf="@+id/icon"
+      android:ellipsize="marquee"
+      android:fontFamily="sans-serif-condensed"
+      android:textAppearance="?android:attr/textAppearanceMedium"
+      android:textStyle="bold"
+      android:paddingStart="8dp"
+      android:paddingRight="12dp"
+      android:text="@string/app_name"
+      android:textSize="16sp"/>
+
+  <TextView
+      android:id="@+id/txt_size"
+      android:maxLines="1"
+      android:fontFamily="sans-serif"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignStart="@+id/text1"
+      android:layout_below="@+id/text1"
+      android:layout_toStartOf="@+id/txt_date"
+      android:paddingLeft="8dp"
+      android:paddingRight="8dp"
+      android:text="@string/app_name"
+      android:textSize="13sp"/>
+
+  <TextView
+      android:id="@+id/txt_date"
+      android:maxLines="1"
+      android:fontFamily="sans-serif"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignEnd="@+id/text1"
+      android:layout_below="@+id/text1"
+      android:paddingStart="8dp"
+      android:paddingEnd="12dp"
+      android:text="@string/app_name"
+      android:textSize="13sp"/>
+
+  <ImageView
+      android:id="@+id/icon"
+      android:layout_width="wrap_content"
+      android:layout_height="match_parent"
+      android:layout_alignParentStart="true"
+      android:layout_marginStart="12dp"
+      android:layout_marginEnd="6dp"
+      android:contentDescription="@string/app_name"
+      android:src="@drawable/folder"
+      android:layout_centerInParent="true" />
+
+</RelativeLayout>

@@ -31,7 +31,7 @@
     <string name="menu_share_screenshot">Teile Bildschirmfoto</string>
     <string name="menu_share_link">Teile Link als Text</string>
     <string name="menu_share_link_copy">Kopiere Link in die Zwischenablage</string>
-    <string name="menu_downloads">Öffne Downloadmanager</string>
+    <string name="menu_downloads">Öffne Downloadverzeichnis</string>
     <string name="menu_settings">Einstellungen</string>
     <string name="menu_searchSite">Suche auf Seite</string>
     <string name="menu_prev">Zurück</string>
@@ -68,6 +68,8 @@
     <string name="toast_cache">Keine Internetverbindung. Versuche Seite aus dem Cache zu laden.</string>
     <string name="toast_noInternet">Kann Seite nicht laden. Keine Internetverbindung.</string>
     <string name="toast_exit">Möchtest du die App verlassen?</string>
+    <string name="toast_extension">Keine unterstützte Dateiendung</string>
+    <string name="toast_install_app">Bitte eine App installieren um die Aktion auszuführen.</string>
 
 
     // Bookmarks // ReadLater // Password
@@ -111,7 +113,7 @@
     <string name="action_swipe">Wischen</string>
     <string name="action_swipe_summary">Nach rechts und links wischen um durch Internetseiten zu navigieren.</string>
 
-    <string name="action_font">Font size</string>
+    <string name="action_font">Schriftgröße</string>
     <string name="action_font_summary">Ändere die Schriftgröße für Internetseiten.</string>
 
     <string name="action_backup">Sicherung</string>
@@ -164,5 +166,15 @@
     <string name="action_form">Formularfelder</string>
     <string name="action_form_summary">Speichere in Formularfelder eingegebene Daten (z.B. Emailadresse, eingegebener
         Wohnort, …).</string>
+
+    <string name="action_arrow">Pfeile</string>
+    <string name="action_arrow_summary">Zeige Pfeile an um durch Internetseiten zu navigieren.</string>
+
+
+    //File chooser
+
+    <string name="title_choose">Auswählen</string>
+    <string name="dialog_cancel">Abbrechen</string>
+    <string name="choose_file">Datei auswählen</string>
 
 </resources>

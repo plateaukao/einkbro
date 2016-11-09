@@ -26,4 +26,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.0.0'
     compile 'com.android.support:design:25.0.0'
     compile 'com.github.ksoichiro:android-observablescrollview:1.6.0'
+    compile 'com.4ert:sfcdialog:0.1.1'
 }

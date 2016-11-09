@@ -22,13 +22,16 @@
 
         &lt;b>Used open source projects:&lt;/b>&lt;br>&lt;br>
 
-        &lt;i>Android-ObservableScrollView&lt;br>
+        &lt;i>android-file-chooser&lt;/i>&lt;br>
+        https://github.com/hedzr/android-file-chooser&lt;br>&lt;br>
+
+        Android-ObservableScrollView&lt;br>
         https://github.com/ksoichiro/Android-ObservableScrollView&lt;br>&lt;br>
 
         browser&lt;br>
         https://github.com/yoshihiroando/browser&lt;br>&lt;br>
 
-        &lt;i>encrypted-userprefs&lt;br>
+        encrypted-userprefs&lt;br>
         https://github.com/sveinungkb/encrypted-userprefs&lt;/i>
     </string>
 

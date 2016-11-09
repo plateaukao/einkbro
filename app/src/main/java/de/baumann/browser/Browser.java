@@ -88,6 +88,8 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
     private ObservableWebView mWebView;
     private ProgressBar progressBar;
     private ImageButton imageButton;
+    private ImageButton imageButton_left;
+    private ImageButton imageButton_right;
     private ActionBar actionBar;
     private Bitmap bitmap;
     private EditText editText;
@@ -166,8 +168,20 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
         mWebView = (ObservableWebView) findViewById(R.id.webView);
         mWebView.setScrollViewCallbacks(this);
 
+        imageButton_left = (ImageButton) findViewById(R.id.imageButton_left);
+        imageButton_right = (ImageButton) findViewById(R.id.imageButton_right);
+
+        if (sharedPref.getBoolean ("arrow", false)){
+            imageButton_left.setVisibility(View.VISIBLE);
+            imageButton_right.setVisibility(View.VISIBLE);
+        } else {
+            imageButton_left.setVisibility(View.INVISIBLE);
+            imageButton_right.setVisibility(View.INVISIBLE);
+        }
+
+
+
         helper_webView.webView_Settings(Browser.this, mWebView);
-        helper_webView.webView_Touch(Browser.this, mWebView);
         helper_webView.webView_WebViewClient(Browser.this, swipeView, mWebView);
 
         mWebView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
@@ -202,6 +216,32 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
 
                 if (progress == 100) {
                     progressString = "loaded";
+                }
+
+                if (sharedPref.getBoolean ("arrow", false)){
+                    if (mWebView.canGoBack()) {
+                        imageButton_left.setVisibility(View.VISIBLE);
+                    } else {
+                        imageButton_left.setVisibility(View.INVISIBLE);
+                    }
+                    imageButton_left.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            mWebView.goBack();
+                        }
+                    });
+
+                    if (mWebView.canGoForward()) {
+                        imageButton_right.setVisibility(View.VISIBLE);
+                    } else {
+                        imageButton_right.setVisibility(View.INVISIBLE);
+                    }
+                    imageButton_right.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            mWebView.goForward();
+                        }
+                    });
                 }
 
                 editText.setText(mWebView.getTitle());
@@ -736,7 +776,7 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
         }
 
         if (id == R.id.action_downloads) {
-            startActivity(new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS));
+            helper_main.openFilePicker(Browser.this, mWebView);
         }
 
         if (id == R.id.action_searchSite) {
@@ -878,6 +918,8 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
         if (scrollState == ScrollState.UP) {
             if (progressString.equals("loaded")) {
                 imageButton.setVisibility(View.VISIBLE);
+                imageButton_left.setVisibility(View.INVISIBLE);
+                imageButton_right.setVisibility(View.INVISIBLE);
                 if (actionBar.isShowing()) {
                     actionBar.hide();
                 }
@@ -888,6 +930,31 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
                 editText.setText(mWebView.getTitle());
                 if (!actionBar.isShowing()) {
                     actionBar.show();
+                }
+                if (sharedPref.getBoolean ("arrow", false)){
+                    if (mWebView.canGoBack()) {
+                        imageButton_left.setVisibility(View.VISIBLE);
+                    } else {
+                        imageButton_left.setVisibility(View.INVISIBLE);
+                    }
+                    imageButton_left.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            mWebView.goBack();
+                        }
+                    });
+
+                    if (mWebView.canGoForward()) {
+                        imageButton_right.setVisibility(View.VISIBLE);
+                    } else {
+                        imageButton_right.setVisibility(View.INVISIBLE);
+                    }
+                    imageButton_right.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            mWebView.goForward();
+                        }
+                    });
                 }
             }
         } else {

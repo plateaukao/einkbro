@@ -82,6 +82,12 @@
             android:title="@string/action_swipe"
             android:summary="@string/action_swipe_summary"
             android:key="swipe"
+            android:defaultValue="false" />
+
+        <CheckBoxPreference
+            android:title="@string/action_arrow"
+            android:summary="@string/action_arrow_summary"
+            android:key="arrow"
             android:defaultValue="true" />
 
         <ListPreference

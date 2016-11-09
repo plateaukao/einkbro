@@ -30,7 +30,7 @@
     <string name="menu_share_screenshot">Share screenshot</string>
     <string name="menu_share_link">Share link as text</string>
     <string name="menu_share_link_copy">Copy link to Clipboard</string>
-    <string name="menu_downloads">Open downloads</string>
+    <string name="menu_downloads">Open download folder</string>
     <string name="menu_settings">Settings</string>
     <string name="menu_searchSite">Search on site</string>
     <string name="menu_prev">Previous</string>
@@ -67,6 +67,8 @@
     <string name="toast_cache">No internet connection. Trying to load from cache.</string>
     <string name="toast_noInternet">Can not load site. No internet connection.</string>
     <string name="toast_exit">Do you want to exit?</string>
+    <string name="toast_extension">No supported file extension</string>
+    <string name="toast_install_app">Please install an app to perform action.</string>
 
 
     // Bookmarks // ReadLater // Password
@@ -159,5 +161,15 @@
 
     <string name="action_form">Form data</string>
     <string name="action_form_summary">Save entered form data (e.g mail addresses).</string>
+
+    <string name="action_arrow">Arrows</string>
+    <string name="action_arrow_summary">Display arrows to navigate through websites.</string>
+
+
+    //File chooser
+
+    <string name="title_choose">Choose</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="choose_file">Select a file</string>
 
 </resources>

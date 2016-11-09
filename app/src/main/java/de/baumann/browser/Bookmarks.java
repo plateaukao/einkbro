@@ -20,10 +20,8 @@
 package de.baumann.browser;
 
 import android.app.AlertDialog;
-import android.app.DownloadManager;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -418,7 +416,7 @@ public class Bookmarks extends AppCompatActivity {
         }
 
         if (id == R.id.action_downloads) {
-            startActivity(new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS));
+            helper_main.openFilePicker(Bookmarks.this, listView);
         }
 
         if (id == R.id.action_pass) {

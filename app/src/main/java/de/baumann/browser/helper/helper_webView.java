@@ -67,6 +67,10 @@ public class helper_webView {
 
         from.registerForContextMenu(webView);
 
+        if (sharedPref.getBoolean ("swipe", false)){
+            helper_webView.webView_Touch(from, webView);
+        }
+
         if (sharedPref.getBoolean ("java", false)){
             webView.getSettings().setJavaScriptEnabled(true);
         } else {
@@ -91,7 +95,7 @@ public class helper_webView {
     }
 
 
-    public static void webView_Touch(final Activity from, final WebView webView) {
+    private static void webView_Touch(final Activity from, final WebView webView) {
 
         webView.setOnTouchListener(new class_OnSwipeTouchListener(from) {
             public void onSwipeRight() {
