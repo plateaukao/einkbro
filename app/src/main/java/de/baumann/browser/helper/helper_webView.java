@@ -97,7 +97,7 @@ public class helper_webView {
 
     private static void webView_Touch(final Activity from, final WebView webView) {
 
-        webView.setOnTouchListener(new class_OnSwipeTouchListener(from) {
+        webView.setOnTouchListener(new class_OnSwipeTouchListener_webview(from) {
             public void onSwipeRight() {
                 if (webView.canGoBack()) {
                     webView.goBack();

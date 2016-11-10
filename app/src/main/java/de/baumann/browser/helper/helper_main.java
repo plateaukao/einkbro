@@ -39,7 +39,6 @@ import android.text.SpannableString;
 import android.text.util.Linkify;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 
 import com.obsez.android.lib.filechooser.ChooserDialog;
@@ -149,128 +148,124 @@ public class helper_main {
                 .withChosenListener(new ChooserDialog.Result() {
                     @Override
                     public void onChoosePath(File pathFile) {
-                        String fileExtension = MimeTypeMap.getFileExtensionFromUrl(pathFile.toString().replace(" ", ""));
+                        String fileExtension = pathFile.getAbsolutePath().substring(pathFile.getAbsolutePath().lastIndexOf("."));
                         String text = (activity.getString(R.string.toast_extension) + ": " + fileExtension);
 
-                        if(fileExtension != null) {
-                            //do something else
-                            switch (fileExtension) {
-                                case "gif":
-                                case "bmp":
-                                case "tiff":
-                                case "svg":
-                                case "png":
-                                case "jpg":
-                                case "jpeg":
-                                    helper_main.openFile(activity, pathFile, "image/*", view);
-                                    break;
-                                case "m3u8":
-                                case "mp3":
-                                case "wma":
-                                case "midi":
-                                case "wav":
-                                case "aac":
-                                case "aif":
-                                case "amp3":
-                                case "weba":
-                                    helper_main.openFile(activity, pathFile, "audio/*", view);
-                                    break;
-                                case "mpeg":
-                                case "mp4":
-                                case "ogg":
-                                case "webm":
-                                case "qt":
-                                case "3gp":
-                                case "3g2":
-                                case "avi":
-                                case "f4v":
-                                case "flv":
-                                case "h261":
-                                case "h263":
-                                case "h264":
-                                case "asf":
-                                case "wmv":
-                                    helper_main.openFile(activity, pathFile, "video/*", view);
-                                    break;
-                                case "rtx":
-                                case "csv":
-                                case "txt":
-                                case "vcs":
-                                case "vcf":
-                                case "css":
-                                case "html":
-                                case "ics":
-                                case "conf":
-                                case "java":
-                                    helper_main.openFile(activity, pathFile, "text/*", view);
-                                    break;
-                                case "apk":
-                                    helper_main.openFile(activity, pathFile, "application/vnd.android.package-archive", view);
-                                    break;
-                                case "pdf":
-                                    helper_main.openFile(activity, pathFile, "application/pdf", view);
-                                    break;
-                                case "doc":
-                                    helper_main.openFile(activity, pathFile, "application/msword", view);
-                                    break;
-                                case "xls":
-                                    helper_main.openFile(activity, pathFile, "application/vnd.ms-excel", view);
-                                    break;
-                                case "ppt":
-                                    helper_main.openFile(activity, pathFile, "application/vnd.ms-powerpoint", view);
-                                    break;
-                                case "docx":
-                                    helper_main.openFile(activity, pathFile, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", view);
-                                    break;
-                                case "pptx":
-                                    helper_main.openFile(activity, pathFile, "application/vnd.openxmlformats-officedocument.presentationml.presentation", view);
-                                    break;
-                                case "xlsx":
-                                    helper_main.openFile(activity, pathFile, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", view);
-                                    break;
-                                case "odt":
-                                    helper_main.openFile(activity, pathFile, "application/vnd.oasis.opendocument.text", view);
-                                    break;
-                                case "ods":
-                                    helper_main.openFile(activity, pathFile, "application/vnd.oasis.opendocument.spreadsheet", view);
-                                    break;
-                                case "odp":
-                                    helper_main.openFile(activity, pathFile, "application/vnd.oasis.opendocument.presentation", view);
-                                    break;
-                                case "zip":
-                                    helper_main.openFile(activity, pathFile, "application/zip", view);
-                                    break;
-                                case "rar":
-                                    helper_main.openFile(activity, pathFile, "application/x-rar-compressed", view);
-                                    break;
-                                case "epub":
-                                    helper_main.openFile(activity, pathFile, "application/epub+zip", view);
-                                    break;
-                                case "cbz":
-                                    helper_main.openFile(activity, pathFile, "application/x-cbz", view);
-                                    break;
-                                case "cbr":
-                                    helper_main.openFile(activity, pathFile, "application/x-cbr", view);
-                                    break;
-                                case "fb2":
-                                    helper_main.openFile(activity, pathFile, "application/x-fb2", view);
-                                    break;
-                                case "rtf":
-                                    helper_main.openFile(activity, pathFile, "application/rtf", view);
-                                    break;
-                                case "opml":
-                                    helper_main.openFile(activity, pathFile, "application/opml", view);
-                                    break;
+                        switch (fileExtension) {
+                            case ".gif":
+                            case ".bmp":
+                            case ".tiff":
+                            case ".svg":
+                            case ".png":
+                            case ".jpg":
+                            case ".jpeg":
+                                helper_main.openFile(activity, pathFile, "image/*", view);
+                                break;
+                            case ".m3u8":
+                            case ".mp3":
+                            case ".wma":
+                            case ".midi":
+                            case ".wav":
+                            case ".aac":
+                            case ".aif":
+                            case ".amp3":
+                            case ".weba":
+                                helper_main.openFile(activity, pathFile, "audio/*", view);
+                                break;
+                            case ".mpeg":
+                            case ".mp4":
+                            case ".ogg":
+                            case ".webm":
+                            case ".qt":
+                            case ".3gp":
+                            case ".3g2":
+                            case ".avi":
+                            case ".f4v":
+                            case ".flv":
+                            case ".h261":
+                            case ".h263":
+                            case ".h264":
+                            case ".asf":
+                            case ".wmv":
+                                helper_main.openFile(activity, pathFile, "video/*", view);
+                                break;
+                            case ".rtx":
+                            case ".csv":
+                            case ".txt":
+                            case ".vcs":
+                            case ".vcf":
+                            case ".css":
+                            case ".ics":
+                            case ".conf":
+                            case ".config":
+                            case ".java":
+                                helper_main.openFile(activity, pathFile, "text/*", view);
+                                break;
+                            case ".html":
+                                helper_main.openFile(activity, pathFile, "text/html", view);
+                                break;
+                            case ".apk":
+                                helper_main.openFile(activity, pathFile, "application/vnd.android.package-archive", view);
+                                break;
+                            case ".pdf":
+                                helper_main.openFile(activity, pathFile, "application/pdf", view);
+                                break;
+                            case ".doc":
+                                helper_main.openFile(activity, pathFile, "application/msword", view);
+                                break;
+                            case ".xls":
+                                helper_main.openFile(activity, pathFile, "application/vnd.ms-excel", view);
+                                break;
+                            case ".ppt":
+                                helper_main.openFile(activity, pathFile, "application/vnd.ms-powerpoint", view);
+                                break;
+                            case ".docx":
+                                helper_main.openFile(activity, pathFile, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", view);
+                                break;
+                            case ".pptx":
+                                helper_main.openFile(activity, pathFile, "application/vnd.openxmlformats-officedocument.presentationml.presentation", view);
+                                break;
+                            case ".xlsx":
+                                helper_main.openFile(activity, pathFile, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", view);
+                                break;
+                            case ".odt":
+                                helper_main.openFile(activity, pathFile, "application/vnd.oasis.opendocument.text", view);
+                                break;
+                            case ".ods":
+                                helper_main.openFile(activity, pathFile, "application/vnd.oasis.opendocument.spreadsheet", view);
+                                break;
+                            case ".odp":
+                                helper_main.openFile(activity, pathFile, "application/vnd.oasis.opendocument.presentation", view);
+                                break;
+                            case ".zip":
+                                helper_main.openFile(activity, pathFile, "application/zip", view);
+                                break;
+                            case ".rar":
+                                helper_main.openFile(activity, pathFile, "application/x-rar-compressed", view);
+                                break;
+                            case ".epub":
+                                helper_main.openFile(activity, pathFile, "application/epub+zip", view);
+                                break;
+                            case ".cbz":
+                                helper_main.openFile(activity, pathFile, "application/x-cbz", view);
+                                break;
+                            case ".cbr":
+                                helper_main.openFile(activity, pathFile, "application/x-cbr", view);
+                                break;
+                            case ".fb2":
+                                helper_main.openFile(activity, pathFile, "application/x-fb2", view);
+                                break;
+                            case ".rtf":
+                                helper_main.openFile(activity, pathFile, "application/rtf", view);
+                                break;
+                            case ".opml":
+                                helper_main.openFile(activity, pathFile, "application/opml", view);
+                                break;
 
-                                default:
-                                    Snackbar.make(view, text, Snackbar.LENGTH_LONG).show();
-                                    break;
-                            }
-                        } else {
-                            //do something else
-                            Snackbar.make(view, R.string.toast_extension, Snackbar.LENGTH_LONG).show();
+                            default:
+                                Snackbar.make(view, text, Snackbar.LENGTH_LONG).show();
+                                break;
                         }
-
                     }
                 })
                 .build()

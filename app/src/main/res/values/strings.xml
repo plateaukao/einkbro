@@ -170,6 +170,5 @@
 
     <string name="title_choose">Choose</string>
     <string name="dialog_cancel">Cancel</string>
-    <string name="choose_file">Select a file</string>
 
 </resources>

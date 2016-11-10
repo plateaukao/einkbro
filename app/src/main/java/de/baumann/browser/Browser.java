@@ -179,8 +179,6 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
             imageButton_right.setVisibility(View.INVISIBLE);
         }
 
-
-
         helper_webView.webView_Settings(Browser.this, mWebView);
         helper_webView.webView_WebViewClient(Browser.this, swipeView, mWebView);
 
