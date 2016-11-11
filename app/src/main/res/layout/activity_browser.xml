@@ -41,6 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="5dp"
+            android:text="@string/app_name"
             android:hint="@string/app_search_hint"
             android:textColorHint="#eeeeee"
             android:imeOptions="actionSearch"
@@ -70,36 +71,36 @@
         android:id="@+id/imageButton"
         tools:ignore="ContentDescription"
         android:background="?android:selectableItemBackground"
-        app:srcCompat="@drawable/arrow_up"
+        app:srcCompat="@drawable/ic_up"
         android:scaleType="fitCenter"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginEnd="24dp"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginStart="12dp"
-        android:layout_marginBottom="24dp" />
+        android:layout_marginBottom="16dp" />
 
     <ImageButton
         android:id="@+id/imageButton_left"
         tools:ignore="ContentDescription"
         android:background="?android:selectableItemBackground"
-        app:srcCompat="@drawable/arrow_left_2"
+        app:srcCompat="@drawable/ic_left"
         android:scaleType="fitCenter"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
         android:layout_above="@+id/toolbar"
         android:layout_alignParentStart="true"
-        android:layout_margin="24dp" />
+        android:layout_margin="16dp" />
 
     <ImageButton
         android:id="@+id/imageButton_right"
         tools:ignore="ContentDescription"
         android:background="?android:selectableItemBackground"
-        app:srcCompat="@drawable/arrow_right_2"
+        app:srcCompat="@drawable/ic_right"
         android:scaleType="fitCenter"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
         android:layout_above="@+id/toolbar"
         android:layout_alignParentEnd="true"
-        android:layout_margin="24dp" />
+        android:layout_margin="16dp" />
 
 </RelativeLayout>

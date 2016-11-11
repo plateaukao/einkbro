@@ -31,6 +31,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -1054,5 +1055,10 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
         } else {
             imageButton.setVisibility(View.INVISIBLE);
         }
+    }
+
+    @Override
+    public AssetManager getAssets() {
+        return getResources().getAssets();
     }
 }

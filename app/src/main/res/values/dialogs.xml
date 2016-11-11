@@ -67,8 +67,10 @@
         &#8226;&lt;i> Search on site:&lt;/i> search for text on any website.&lt;br>
         &#8226;&lt;i> Open passStorage:&lt;/i> open your login data list.&lt;br>
         &#8226;&lt;i> Open downloads:&lt;/i> opens the system download manager.&lt;br>
-        &#8226;&lt;i> Settings:&lt;/i> In the settings you can configure the behavior of the app, some privacy and security
-        settings.&lt;br>&lt;br>
+        &#8226;&lt;i> Settings (start screen):&lt;/i> In the settings you can configure the behavior of the app, some privacy and
+        security settings. At the app start these settings will always be loaded.&lt;br>
+        &#8226;&lt;i> Settings (browser):&lt;/i> Here you can overwrite the default settings for a short time. These settings will
+        get lost at the next app start.&lt;br>&lt;br>
 
         &lt;b>Search:&lt;/b>&lt;br>
         If the search field shows the website title, you can clear it by pressing the magnifier icon. You can set your preferred
