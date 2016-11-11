@@ -54,11 +54,11 @@
         aktivieren.&lt;br>&lt;br>
 
         &lt;b>Toolbar (unten):&lt;/b>&lt;br>
-        &#8226;&lt;i> Klicken (auch Lupenicon):&lt;/i> du kannst einen Suchbegriff (siehe unten) oder eine URL eingeben. Wenn du
-        \"Enter\" oder die Lupe anklickst, wird die Internetseite geöffnet.&lt;br>
         &#8226;&lt;i> Wischen (nur Textfeld):&lt;/i> wische nach Links um deine Lesezeichen oder nach rechts um die leseSpäter
         Liste zu öffnen. Nach oben wischen um die App zu schließen.&lt;br>
-        &#8226;&lt;i> Verlauf:&lt;/i> Öffnet eine Liste mit den zuletzt besuchten Internetseiten.&lt;br>&lt;br>
+        &#8226;&lt;i> Suchen (linkes Icon):&lt;/i> du kannst einen Suchbegriff (siehe unten) oder eine URL eingeben. Wenn du
+        \"Enter\" oder die Lupe anklickst, wird die Internetseite geöffnet.&lt;br>
+        &#8226;&lt;i> Verlauf (rechtes Icon):&lt;/i> Öffnet eine Liste mit den zuletzt besuchten Internetseiten.&lt;br>&lt;br>
 
         &lt;b>Menü:&lt;/b>&lt;br>
         &#8226;&lt;i> Speichere Seite:&lt;/i> du kannst die Seite als Lesezeichen, zur leseSpäter Liste oder zum passSpeicher
@@ -81,7 +81,8 @@
         &#8226;&lt;i> Google:&lt;/i> \".G \"&lt;br>
         &#8226;&lt;i> MetaGer:&lt;/i> \".m \"&lt;br>
         &#8226;&lt;i> Startpage:&lt;/i> \".s \"&lt;br>
-        &#8226;&lt;i> Wikipedia:&lt;/i> \".w \"
+        &#8226;&lt;i> Wikipedia:&lt;/i> \".w \"&lt;br>
+        &#8226;&lt;i> YouTube:&lt;/i> \".y \"
     </string>
 
 
@@ -101,7 +102,7 @@
 
     <string-array name="listArraySearchEngine">
         <item>Duckduckgo</item>
-        <item>Google (wenn du WIRKLICH möchtest …)</item>
+        <item>Google</item>
         <item>MetaGer</item>
         <item>Startpage</item>
     </string-array>

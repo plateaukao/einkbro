@@ -90,6 +90,8 @@ public class helper_editText {
                             webView.loadUrl("https://startpage.com/do/search?query=" + subStr);
                         } else if (text.startsWith(".G ")) {
                             webView.loadUrl("https://www.google.com/search?&q=" + subStr);
+                        } else  if (text.startsWith(".y ")) {
+                            webView.loadUrl("https://www.youtube.com/results?search_query=" + subStr);
                         } else  if (text.startsWith(".d ")) {
                             webView.loadUrl("https://duckduckgo.com/?q=" + subStr);
                         } else {

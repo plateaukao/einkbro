@@ -114,6 +114,8 @@ public class Bookmarks extends AppCompatActivity {
                         helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://www.google.com/search?&q=" + subStr, true);
                     } else  if (text.startsWith(".d ")) {
                         helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://duckduckgo.com/?q=" + subStr, true);
+                    } else  if (text.startsWith(".y ")) {
+                        helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://www.youtube.com/results?search_query=" + subStr, true);
                     } else {
                         helper_main.switchToActivity(Bookmarks.this, Browser.class, searchEngine + text, true);
                     }
@@ -401,6 +403,8 @@ public class Bookmarks extends AppCompatActivity {
                     helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://www.google.com/search?&q=" + subStr, true);
                 } else  if (text.startsWith(".d ")) {
                     helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://duckduckgo.com/?q=" + subStr, true);
+                } else  if (text.startsWith(".y ")) {
+                    helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://www.youtube.com/results?search_query=" + subStr, true);
                 } else {
                     helper_main.switchToActivity(Bookmarks.this, Browser.class, searchEngine + text, true);
                 }

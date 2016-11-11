@@ -687,7 +687,11 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
                     mWebView.loadUrl("https://www.google.com/search?&q=" + subStr);
                 } else  if (text.startsWith(".d ")) {
                     mWebView.loadUrl("https://duckduckgo.com/?q=" + subStr);
-                }else {
+                } else  if (text.startsWith(".y ")) {
+                mWebView.loadUrl("https://www.youtube.com/results?search_query=" + subStr);
+                }
+
+                else {
                     mWebView.loadUrl(searchEngine + text);
                 }
             }

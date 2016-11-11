@@ -53,11 +53,11 @@
         login data on exit, you must enable \"clear cookies on exit\" in the settings.&lt;br>&lt;br>
 
         &lt;b>Toolbar (bottom):&lt;/b>&lt;br>
-        &#8226;&lt;i> Click (also magnifier icon):&lt;/i> you can enter a search term (see below) or a url. By pressing \"enter\" or
-        the magnifier icon, the website will load.&lt;br>
         &#8226;&lt;i> Swipe (only text field):&lt;/i> to the left to open your bookmarks and to the right to open your readLater
         list. Swipe to top to close the app.&lt;br>
-        &#8226;&lt;i> History:&lt;/i> opens a list of the last visited websites.&lt;br>&lt;br>
+        &#8226;&lt;i> Search (left icon):&lt;/i> you can enter a search term (see below) or a url. By pressing \"enter\" or
+        the magnifier icon, the website will load.&lt;br>
+        &#8226;&lt;i> History (right icon):&lt;/i> opens a list of the last visited websites.&lt;br>&lt;br>
 
         &lt;b>Menu:&lt;/b>&lt;br>
         &#8226;&lt;i> Save website:&lt;/i> you can save the website to your bookmark, readLater or passStorage list or
@@ -81,7 +81,8 @@
         &#8226;&lt;i> Google:&lt;/i> \".G \"&lt;br>
         &#8226;&lt;i> MetaGer:&lt;/i> \".m \"&lt;br>
         &#8226;&lt;i> Startpage:&lt;/i> \".s \"&lt;br>
-        &#8226;&lt;i> Wikipedia:&lt;/i> \".w \"
+        &#8226;&lt;i> Wikipedia:&lt;/i> \".w \"&lt;br>
+        &#8226;&lt;i> YouTube:&lt;/i> \".y \"
     </string>
 
 
@@ -101,7 +102,7 @@
 
     <string-array name="listArraySearchEngine">
         <item>Duckduckgo</item>
-        <item>Google (if you REALLY want it …)</item>
+        <item>Google</item>
         <item>MetaGer</item>
         <item>Startpage</item>
     </string-array>
