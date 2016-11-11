@@ -54,8 +54,9 @@ import de.baumann.browser.R;
 public class helper_main {
 
     private static final int REQUEST_CODE_ASK_PERMISSIONS = 123;
+    private static final int REQUEST_CODE_ASK_PERMISSIONS_1 = 1234;
 
-    public static void grantPermissions(final Activity from) {
+    public static void grantPermissionsStorage(final Activity from) {
 
         final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
 
@@ -89,6 +90,46 @@ public class helper_main {
                     }
                     from.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                             REQUEST_CODE_ASK_PERMISSIONS);
+                }
+            }
+        }
+    }
+
+    public static void grantPermissionsLoc(final Activity from) {
+
+        final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
+
+        if (android.os.Build.VERSION.SDK_INT >= 23) {
+
+            if (sharedPref.getBoolean ("perm_notShow", false)){
+                int hasACCESS_FINE_LOCATION = from.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+                if (hasACCESS_FINE_LOCATION != PackageManager.PERMISSION_GRANTED) {
+                    if (!from.shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                        new AlertDialog.Builder(from)
+                                .setMessage(R.string.app_permissions)
+                                .setNeutralButton(R.string.toast_notAgain, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.cancel();
+                                        sharedPref.edit()
+                                                .putBoolean("perm_notShow", false)
+                                                .apply();
+                                    }
+                                })
+                                .setPositiveButton(from.getString(R.string.toast_yes), new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        if (android.os.Build.VERSION.SDK_INT >= 23)
+                                            from.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                                    REQUEST_CODE_ASK_PERMISSIONS_1);
+                                    }
+                                })
+                                .setNegativeButton(from.getString(R.string.toast_cancel), null)
+                                .show();
+                        return;
+                    }
+                    from.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                            REQUEST_CODE_ASK_PERMISSIONS_1);
                 }
             }
         }

@@ -16,6 +16,9 @@
     <string name="app_search_hint_site">Suchbegriff eingeben …</string>
     <string name="app_search_hint_bookmark">Titel eingeben …</string>
     <string name="app_search">Gesucht nach:</string>
+    <string name="app_yes">Aktiviert</string>
+    <string name="app_no">Nein</string>
+    <string name="app_open">Ordner öffnen?</string>
 
 
     // Menu Items
@@ -38,6 +41,7 @@
     <string name="menu_next">Vor</string>
     <string name="menu_cancel">Abbrechen</string>
     <string name="menu_pass">Öffne passSpeicher</string>
+    <string name="menu_toggle">Einstellungen</string>
 
 
     // Context Menu
@@ -46,7 +50,7 @@
     <string name="context_shareImage">Teile Bild</string>
     <string name="context_readLater">Speichere zur leseSpäter Liste</string>
     <string name="context_linkCopy_toast">Link erfolgreich kopiert</string>
-    <string name="context_saveImage_toast">Speichere Bild als:</string>
+    <string name="context_saveImage_toast">Bild gespeichert als:</string>
 
 
     // Snackbar
@@ -67,7 +71,6 @@
     <string name="toast_screenshot_failed">Bildschirmfoto speichern fehlgeschlagen.</string>
     <string name="toast_cache">Keine Internetverbindung. Versuche Seite aus dem Cache zu laden.</string>
     <string name="toast_noInternet">Kann Seite nicht laden. Keine Internetverbindung.</string>
-    <string name="toast_exit">Möchtest du die App verlassen?</string>
     <string name="toast_extension">Keine unterstützte Dateiendung</string>
     <string name="toast_install_app">Bitte eine App installieren um die Aktion auszuführen.</string>
 
@@ -97,8 +100,10 @@
 
     <string name="pref_1">Über | Hilfe</string>
     <string name="pref_2">App Einstellungen</string>
-    <string name="pref_3">Datenschutz | Sicherheit</string>
+    <string name="pref_3">Beim Start aktivieren</string>
     <string name="pref_4">Daten</string>
+    <string name="pref_5">Beim Verlassen löschen</string>
+    <string name="pref_6">Suche</string>
 
     <string name="action_permNotShow_title">Berechtigungsdialog</string>
     <string name="action_permNotShow_title_summary">Noch einmal anzeigen: Berechtigungsdialog?</string>
@@ -123,15 +128,15 @@
     <string name="action_restore">Wiederherstellung</string>
     <string name="action_restore_summary">Stelle deine Lesezeichen, die leseSpäter Liste und den passSpeicher wieder her.</string>
 
-    <string name="action_java">Javascript aktivieren</string>
-    <string name="action_java_summary">Manche Funktionen von angezeigten Internetseiten benötigen Javascript. Javascript stellt
-        allerdings eine Sicherheitslücke dar.</string>
+    <string name="action_java">Javascript</string>
+    <string name="action_java_summary">Manche Funktionen von angezeigten Internetseiten benötigen Javascript.
+        Javascript stellt allerdings eine Sicherheitslücke dar.</string>
 
-    <string name="action_cookie">Aktiviere Cookies</string>
+    <string name="action_cookie">Cookies</string>
     <string name="action_cookie_summary">Besuchte Internetseiten speichern Cookies auf deinem Gerät, meistens um die
         Benutzerfreundlichkeit zu erhöhen. Die Einstellungen einer Suchmaschine werden z.B. in Cookies gespeichert.</string>
 
-    <string name="action_cookie3">Aktiviere Cookies von Dritten</string>
+    <string name="action_cookie3">Cookies von Dritten</string>
     <string name="action_cookie3_summary">Cookies von Dritten stammen nicht von der besuchten Internetseite. Oft sammeln sie
         Informationen über dein Surfverhalten um dir personalisierte Werbung senden zu können.</string>
 
@@ -169,6 +174,14 @@
 
     <string name="action_arrow">Pfeile</string>
     <string name="action_arrow_summary">Zeige Pfeile an um durch Internetseiten zu navigieren.</string>
+
+    <string name="action_loc">Positionsbestimmung</string>
+    <string name="action_loc_summary">ERlaube Internetseiten deine genaue Position zu bestimmen.</string>
+
+    <string name="action_pictures">Bilder laden</string>
+    <string name="action_pictures_summary">Bilder von Internetseiten automatisch laden. Um Datenvolumen zu sparen und die Seite
+        schneller zu laden kannst du dies
+        deaktivieren.</string>
 
 
     //File chooser

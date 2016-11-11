@@ -98,6 +98,12 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/action_toggle"
+        android:orderInCategory="100"
+        android:title="@string/menu_toggle"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/menu_settings"

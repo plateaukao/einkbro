@@ -15,6 +15,9 @@
     <string name="app_search_hint_site">Enter search term …</string>
     <string name="app_search_hint_bookmark">Enter title …</string>
     <string name="app_search">Searched for:</string>
+    <string name="app_yes">Enabled</string>
+    <string name="app_no">Disabled</string>
+    <string name="app_open">Open folder?</string>
 
 
     // Menu Items
@@ -37,11 +40,12 @@
     <string name="menu_next">Next</string>
     <string name="menu_cancel">Cancel</string>
     <string name="menu_pass">Open passStorage</string>
+    <string name="menu_toggle">Settings</string>
 
 
     // Context Menu
 
-    <string name="context_saveImage">Save image</string>
+    <string name="context_saveImage">Saved image as:</string>
     <string name="context_shareImage">Share image</string>
     <string name="context_readLater">Add to readLater</string>
     <string name="context_linkCopy_toast">Link successfully copied</string>
@@ -66,7 +70,6 @@
     <string name="toast_screenshot_failed">Failed to create screenshot.</string>
     <string name="toast_cache">No internet connection. Trying to load from cache.</string>
     <string name="toast_noInternet">Can not load site. No internet connection.</string>
-    <string name="toast_exit">Do you want to exit?</string>
     <string name="toast_extension">No supported file extension</string>
     <string name="toast_install_app">Please install an app to perform action.</string>
 
@@ -96,8 +99,10 @@
 
     <string name="pref_1">About | Help</string>
     <string name="pref_2">App settings</string>
-    <string name="pref_3">Privacy | Security</string>
+    <string name="pref_3">Enable on start</string>
     <string name="pref_4">Data</string>
+    <string name="pref_5">Clear on exit</string>
+    <string name="pref_6">Search</string>
 
     <string name="action_permNotShow_title">Permission dialog</string>
     <string name="action_permNotShow_title_summary">Show again: Permission dialog?</string>
@@ -122,15 +127,15 @@
     <string name="action_restore">Restore</string>
     <string name="action_restore_summary">Restore your bookmarks, readLater lists and the passStorage from sdcard.</string>
 
-    <string name="action_java">Enable javascript</string>
+    <string name="action_java">Javascript</string>
     <string name="action_java_summary">Some functions on the websites need javascript to work. But javascript is
         known to be a security risk.</string>
 
-    <string name="action_cookie">Enable cookies</string>
+    <string name="action_cookie">Cookies</string>
     <string name="action_cookie_summary">Visited websites are storing their cookies on your device, mostly to improve user
         experience. For example settings for a search site are stored in cookies.</string>
 
-    <string name="action_cookie3">Enable third party cookies</string>
+    <string name="action_cookie3">Third party cookies</string>
     <string name="action_cookie3_summary">Third party cookies are not from the visited website. Mostly they collect information
         about your browsing behavior to send you personalised advertisements.</string>
 
@@ -164,6 +169,12 @@
 
     <string name="action_arrow">Arrows</string>
     <string name="action_arrow_summary">Display arrows to navigate through websites.</string>
+
+    <string name="action_loc">Location</string>
+    <string name="action_loc_summary">Allow websites to get your fine location.</string>
+
+    <string name="action_pictures">Load pictures</string>
+    <string name="action_pictures_summary">Load pictures on websites. Disable to save data volume and load sites faster.</string>
 
 
     //File chooser

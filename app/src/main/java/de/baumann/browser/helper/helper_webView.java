@@ -73,16 +73,37 @@ public class helper_webView {
 
         if (sharedPref.getBoolean ("java", false)){
             webView.getSettings().setJavaScriptEnabled(true);
+            sharedPref.edit().putString("java_string", from.getString(R.string.app_yes)).apply();
         } else {
             webView.getSettings().setJavaScriptEnabled(false);
+            sharedPref.edit().putString("java_string", from.getString(R.string.app_no)).apply();
+        }
+
+        if (sharedPref.getBoolean ("pictures", false)){
+            webView.getSettings().setLoadsImagesAutomatically(true);
+            sharedPref.edit().putString("pictures_string", from.getString(R.string.app_yes)).apply();
+        } else {
+            webView.getSettings().setLoadsImagesAutomatically(false);
+            sharedPref.edit().putString("pictures_string", from.getString(R.string.app_no)).apply();
+        }
+
+        if (sharedPref.getBoolean ("loc", false)){
+            webView.getSettings().setGeolocationEnabled(true);
+            helper_main.grantPermissionsLoc(from);
+            sharedPref.edit().putString("loc_string", from.getString(R.string.app_yes)).apply();
+        } else {
+            webView.getSettings().setGeolocationEnabled(false);
+            sharedPref.edit().putString("loc_string", from.getString(R.string.app_no)).apply();
         }
 
         if (sharedPref.getBoolean ("cookie", false)){
             CookieManager cookieManager = CookieManager.getInstance();
             cookieManager.setAcceptCookie(true);
+            sharedPref.edit().putString("cookie_string", from.getString(R.string.app_yes)).apply();
         } else {
             CookieManager cookieManager = CookieManager.getInstance();
             cookieManager.setAcceptCookie(false);
+            sharedPref.edit().putString("cookie_string", from.getString(R.string.app_no)).apply();
         }
 
         if (sharedPref.getBoolean ("cookie3", false)){
@@ -148,6 +169,7 @@ public class helper_webView {
             }
 
             private boolean handleUri(final Uri uri) {
+                
                 Log.i(TAG, "Uri =" + uri);
                 final String url = uri.toString();
                 // Based on some condition you need to determine if you are going to load the url

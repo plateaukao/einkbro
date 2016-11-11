@@ -309,6 +309,7 @@ public class Bookmarks extends AppCompatActivity {
         MenuItem next = menu.findItem(R.id.action_next);
         MenuItem cancel = menu.findItem(R.id.action_cancel);
         MenuItem pass = menu.findItem(R.id.action_pass);
+        MenuItem toggle = menu.findItem(R.id.action_toggle);
 
         if (sharedPref.getInt("keyboard", 0) == 0) { //could be button state or..?
             saveBookmark.setVisible(false);
@@ -325,6 +326,7 @@ public class Bookmarks extends AppCompatActivity {
             next.setVisible(false);
             cancel.setVisible(false);
             pass.setVisible(true);
+            toggle.setVisible(false);
         } else if (sharedPref.getInt("keyboard", 0) == 1) {
             saveBookmark.setVisible(false);
             clear.setVisible(false);
@@ -340,6 +342,7 @@ public class Bookmarks extends AppCompatActivity {
             next.setVisible(true);
             cancel.setVisible(true);
             pass.setVisible(false);
+            toggle.setVisible(false);
         } else if (sharedPref.getInt("keyboard", 0) == 2) {
             saveBookmark.setVisible(true);
             clear.setVisible(true);
@@ -355,6 +358,7 @@ public class Bookmarks extends AppCompatActivity {
             next.setVisible(false);
             cancel.setVisible(true);
             pass.setVisible(false);
+            toggle.setVisible(false);
         }
 
         return true; // this is important to call so that new menu is shown

@@ -19,6 +19,7 @@
 
 package de.baumann.browser;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
@@ -54,6 +55,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.CookieManager;
 import android.webkit.DownloadListener;
+import android.webkit.GeolocationPermissions;
 import android.webkit.URLUtil;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
@@ -197,6 +199,29 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
 
         mWebView.setWebChromeClient(new WebChromeClient() {
 
+            @Override
+            public void onGeolocationPermissionsShowPrompt(final String origin, final GeolocationPermissions.Callback callback) {
+                Log.i(TAG, "onGeolocationPermissionsShowPrompt()");
+
+                final boolean remember = false;
+                AlertDialog.Builder builder = new AlertDialog.Builder(Browser.this);
+                builder.setTitle("Locations");
+                builder.setMessage("Would like to use your Current Location ")
+                        .setCancelable(true).setPositiveButton("Allow", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // origin, allow, remember
+                        callback.invoke(origin, true, remember);
+                    }
+                }).setNegativeButton("Don't Allow", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // origin, allow, remember
+                        callback.invoke(origin, false, remember);
+                    }
+                });
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
+
             public void onProgressChanged(WebView view, int progress) {
 
                 sharedPref.edit()
@@ -337,7 +362,7 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
         helper_editText.editText_FocusChange(editText, Browser.this);
 
         onNewIntent(getIntent());
-        helper_main.grantPermissions(Browser.this);
+        helper_main.grantPermissionsStorage(Browser.this);
     }
 
     protected void onNewIntent(final Intent intent) {
@@ -556,16 +581,6 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
     @Override
     public void onBackPressed() {
         if (mWebView.canGoBack()) {
-            Snackbar snackbar = Snackbar
-                    .make(mWebView, R.string.toast_exit, Snackbar.LENGTH_SHORT)
-                    .setAction(getString(R.string.toast_yes), new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            helper_webView.closeWebView(Browser.this, mWebView);
-                        }
-                    });
-            snackbar.show();
-
             mWebView.goBack();
         } else {
             helper_webView.closeWebView(Browser.this, mWebView);
@@ -647,6 +662,7 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
         return true;
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -703,6 +719,73 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
 
         if (id == R.id.action_pass) {
             helper_main.switchToActivity(Browser.this, Popup_pass.class, "", false);
+        }
+
+        if (id == R.id.action_toggle) {
+
+            final String java = getString(R.string.action_java) + ": " + sharedPref.getString("java_string", "True");
+            final String pictures = getString(R.string.action_pictures) + ": " + sharedPref.getString("pictures_string", "True");
+            final String loc = getString(R.string.action_loc) + ": " + sharedPref.getString("loc_string", "True");
+            final String cookies = getString(R.string.action_cookie) + ": " + sharedPref.getString("cookie_string", "True");
+
+            final CharSequence[] options = {
+                    java,
+                    loc,
+                    cookies,
+                    pictures};
+            new AlertDialog.Builder(Browser.this)
+                    .setItems(options, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int item) {
+                            if (options[item].equals(java)) {
+                                if (sharedPref.getString("java_string", "True").equals(getString(R.string.app_yes))){
+                                    sharedPref.edit().putString("java_string", getString(R.string.app_no)).apply();
+                                    mWebView.getSettings().setJavaScriptEnabled(false);
+                                    mWebView.reload();
+                                } else {
+                                    sharedPref.edit().putString("java_string", getString(R.string.app_yes)).apply();
+                                    mWebView.getSettings().setJavaScriptEnabled(true);
+                                    mWebView.reload();
+                                }
+                            }
+                            if (options[item].equals(pictures)) {
+                                if (sharedPref.getString("pictures_string", "True").equals(getString(R.string.app_yes))){
+                                    sharedPref.edit().putString("pictures_string", getString(R.string.app_no)).apply();
+                                    mWebView.getSettings().setLoadsImagesAutomatically(false);
+                                    mWebView.reload();
+                                } else {
+                                    sharedPref.edit().putString("pictures_string", getString(R.string.app_yes)).apply();
+                                    mWebView.getSettings().setLoadsImagesAutomatically(true);
+                                    mWebView.reload();
+                                }
+                            }
+                            if (options[item].equals(loc)) {
+                                if (sharedPref.getString("loc_string", "True").equals(getString(R.string.app_yes))){
+                                    sharedPref.edit().putString("loc_string", getString(R.string.app_no)).apply();
+                                    mWebView.getSettings().setGeolocationEnabled(false);
+                                    mWebView.reload();
+                                } else {
+                                    sharedPref.edit().putString("loc_string", getString(R.string.app_yes)).apply();
+                                    mWebView.getSettings().setGeolocationEnabled(true);
+                                    helper_main.grantPermissionsLoc(Browser.this);
+                                    mWebView.reload();
+                                }
+                            }
+                            if (options[item].equals(cookies)) {
+                                if (sharedPref.getString("cookie_string", "True").equals(getString(R.string.app_yes))){
+                                    sharedPref.edit().putString("cookie_string", getString(R.string.app_no)).apply();
+                                    CookieManager cookieManager = CookieManager.getInstance();
+                                    cookieManager.setAcceptCookie(false);
+                                    mWebView.reload();
+                                } else {
+                                    sharedPref.edit().putString("cookie_string", getString(R.string.app_yes)).apply();
+                                    CookieManager cookieManager = CookieManager.getInstance();
+                                    cookieManager.setAcceptCookie(true);
+                                    mWebView.reload();
+                                }
+                            }
+                        }
+                    }).show();
         }
 
         if (id == R.id.action_save) {
@@ -892,7 +975,16 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
                 fOut.close();
                 bitmap.recycle();
 
-                Snackbar.make(mWebView, getString(R.string.context_saveImage_toast) + " " + helper_main.newFileName() , Snackbar.LENGTH_SHORT).show();
+                Snackbar snackbar = Snackbar
+                        .make(mWebView, getString(R.string.context_saveImage_toast) + " " + helper_main.newFileName() +
+                                ". " + getString(R.string.app_open), Snackbar.LENGTH_LONG)
+                        .setAction(getString(R.string.toast_yes), new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                helper_main.openFilePicker(Browser.this, mWebView);
+                            }
+                        });
+                snackbar.show();
 
                 Uri uri = Uri.fromFile(shareFile);
                 Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri);

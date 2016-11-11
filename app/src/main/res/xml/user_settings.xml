@@ -11,6 +11,12 @@
             android:defaultValue="true" />
 
         <CheckBoxPreference
+            android:title="@string/action_loc"
+            android:summary="@string/action_loc_summary"
+            android:key="loc"
+            android:defaultValue="false" />
+
+        <CheckBoxPreference
             android:title="@string/action_cookie"
             android:summary="@string/action_cookie_summary"
             android:key="cookie"
@@ -23,15 +29,20 @@
             android:defaultValue="false" />
 
         <CheckBoxPreference
-            android:title="@string/action_clearCookies"
-            android:summary="@string/action_clearCookies_summary"
-            android:key="clearCookies"
-            android:defaultValue="false" />
-
-        <CheckBoxPreference
             android:title="@string/action_form"
             android:summary="@string/action_form_summary"
             android:key="form"
+            android:defaultValue="false" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_5">
+
+        <CheckBoxPreference
+            android:title="@string/action_clearCookies"
+            android:summary="@string/action_clearCookies_summary"
+            android:key="clearCookies"
             android:defaultValue="false" />
 
         <CheckBoxPreference
@@ -39,17 +50,6 @@
             android:summary="@string/action_clearForm_summary"
             android:key="clearForm"
             android:defaultValue="true" />
-
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:title="@string/pref_4">
-
-        <CheckBoxPreference
-            android:title="@string/action_offline"
-            android:summary="@string/action_offline_summary"
-            android:key="offline"
-            android:defaultValue="false" />
 
         <CheckBoxPreference
             android:title="@string/action_clearCache"
@@ -61,6 +61,17 @@
             android:title="@string/action_history"
             android:summary="@string/action_history_summary"
             android:key="history"
+            android:defaultValue="false" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_4">
+
+        <CheckBoxPreference
+            android:title="@string/action_offline"
+            android:summary="@string/action_offline_summary"
+            android:key="offline"
             android:defaultValue="false" />
 
         <Preference
@@ -77,6 +88,12 @@
 
     <PreferenceCategory
         android:title="@string/pref_2">
+
+        <CheckBoxPreference
+            android:title="@string/action_pictures"
+            android:summary="@string/action_pictures_summary"
+            android:key="pictures"
+            android:defaultValue="true" />
 
         <CheckBoxPreference
             android:title="@string/action_swipe"
@@ -98,6 +115,16 @@
             android:entries="@array/listArrayFont"
             android:entryValues="@array/listValuesFont" />
 
+        <Preference
+            android:title="@string/action_openSettings"
+            android:summary="@string/action_openSettings_summary"
+            android:key="settings" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/pref_6">
+
         <ListPreference
             android:title="@string/action_searchEngine"
             android:summary="@string/action_searchEngine_summary"
@@ -113,11 +140,6 @@
             android:defaultValue="en"
             android:entries="@array/listArrayWikiLang"
             android:entryValues="@array/listValuesWikiLang" />
-
-        <Preference
-            android:title="@string/action_openSettings"
-            android:summary="@string/action_openSettings_summary"
-            android:key="settings" />
 
     </PreferenceCategory>
 

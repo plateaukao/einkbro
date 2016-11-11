@@ -47,11 +47,7 @@ class class_OnSwipeTouchListener_editText implements OnTouchListener {
                     result = true;
                 }
                 else if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
-                    if (diffY > 0) {
-                        onSwipeBottom();
-                    } else {
-                        onSwipeTop();
-                    }
+                    onSwipeTop();
                 }
                 result = true;
 
@@ -69,8 +65,5 @@ class class_OnSwipeTouchListener_editText implements OnTouchListener {
     }
 
     public void onSwipeTop() {
-    }
-
-    private void onSwipeBottom() {
     }
 }
