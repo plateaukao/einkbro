@@ -3,11 +3,21 @@
     // Application
 
     <string name="app_name">Browser</string>
-    <string name="app_permissions">Du musst der App Zugriff auf den Gerätespeicher gewähren, damit Bildschirmfotos und Downloads
-        gespeichert werden können. Danach solltest du die Anwendung komplett schließen oder das Telefon neu starten.
-        Wenn du den Zugriff verweigerst und die Funktion später doch nutzen willst, kannst du die Berechtigung
-        nachträglich erteilen. Öffne dafür: Systemeinstellungen - Apps - HHS Moodle. Im Bereich Berechtigungen kannst
-        dann die entsprechende Einstellung vornehmen.</string>
+    <string name="app_permissions_title">Verlangte Berechtigungen</string>
+    <string name="app_permissions">
+
+        &lt;i>Zugriff auf SD Karte:&lt;/i>&lt;br>
+        &#8226; Dateien herunterladen: um heruntergeladene Datein auf der SD-Karte speichern zu können.&lt;br>
+        &#8226; Bildschirmfoto: um Bildschirmfotos von Internetseiten auf der SD-Karte zu speichern.&lt;br>&lt;br>
+
+        &lt;i>Zugriff auf genauen Standort:&lt;/i>&lt;br>
+        Wird von manchen Internetseiten (z.B. Google Maps) benötigt um dir z.b. Wegbeschreibungen zu einem Ziel anzeigen zu
+        können.&lt;br>&lt;br>
+
+        &lt;i>Berechtigungen nachträglich erteilen:&lt;/i>&lt;br>
+        Wenn du die Brechtigungen verweigerst, kannst du sie nachträglich erteilen, indem du \"Einstellungen -> App Info\" öffnest und
+        dort den Bereich \"Berechtigungen\" auswählst.</string>
+
     <string name="app_share_screenshot">Bildschrmfoto teilen mit:</string>
     <string name="app_share_image">Bild teilen mit:</string>
     <string name="app_share_link">Link teilen mit:</string>
@@ -17,7 +27,7 @@
     <string name="app_search_hint_bookmark">Titel eingeben …</string>
     <string name="app_search">Gesucht nach:</string>
     <string name="app_yes">Aktiviert</string>
-    <string name="app_no">Nein</string>
+    <string name="app_no">Deaktiviert</string>
     <string name="app_open">Ordner öffnen?</string>
 
 
@@ -42,6 +52,7 @@
     <string name="menu_cancel">Abbrechen</string>
     <string name="menu_pass">Öffne passSpeicher</string>
     <string name="menu_toggle">Einstellungen</string>
+    <string name="menu_help">Hilfe</string>
 
 
     // Context Menu
@@ -111,9 +122,9 @@
     <string name="action_license">Lizenz</string>
     <string name="action_license_summary">Die Anwendung ist komplett frei und steht unter der GPL3 Lizenz.</string>
 
-    <string name="action_openSettings">Einstellungen</string>
-    <string name="action_openSettings_summary">Öffne die Systemeinstellungen der App. Je nach Androidversion kannst du dort
-        verschiedene Einstellungen vornehmen (Speicherplatz, Netzwerkverkehr, Berechtigungen, …).</string>
+    <string name="action_openSettings">App Info</string>
+    <string name="action_openSettings_summary">Öffne über die Systemeinstellungen die App Info der App. Je nach Androidversion
+        kannst du dort verschiedene Einstellungen vornehmen (Speicherplatz, Netzwerkverkehr, Berechtigungen, …).</string>
 
     <string name="action_swipe">Wischen</string>
     <string name="action_swipe_summary">Nach rechts und links wischen um durch Internetseiten zu navigieren.</string>
@@ -143,8 +154,8 @@
     <string name="action_history">Verlauf löschen</string>
     <string name="action_history_summary">Löscht deinen Browserverlauf beim Verlassen der App.</string>
 
-    <string name="action_help">Hilfe</string>
-    <string name="action_help_summary">Ein kurzer Hilfedialog wird angezeigt.</string>
+    <string name="action_notShow_title">Einführung</string>
+    <string name="action_notShow_title_summary">Den kurzen Einführungsdialog beim Start anzeigen.</string>
 
     <string name="action_searchEngine">Suchmaschine</string>
     <string name="action_searchEngine_summary">Bestimme deine bevorzugte Suchmaschine.</string>
@@ -176,7 +187,7 @@
     <string name="action_arrow_summary">Zeige Pfeile an um durch Internetseiten zu navigieren.</string>
 
     <string name="action_loc">Positionsbestimmung</string>
-    <string name="action_loc_summary">ERlaube Internetseiten deine genaue Position zu bestimmen.</string>
+    <string name="action_loc_summary">Erlaube Internetseiten deine genaue Position zu bestimmen.</string>
 
     <string name="action_pictures">Bilder laden</string>
     <string name="action_pictures_summary">Bilder von Internetseiten automatisch laden. Um Datenvolumen zu sparen und die Seite
@@ -188,5 +199,13 @@
 
     <string name="title_choose">Auswählen</string>
     <string name="dialog_cancel">Abbrechen</string>
+
+    <string name="choose_menu_1">Öffnen</string>
+    <string name="choose_menu_2">Teilen</string>
+    <string name="choose_menu_3">Umbenennen</string>
+    <string name="choose_menu_4">Löschen</string>
+
+    <string name="choose_hint">Neuer Dateiname (ohne Dateiendung)</string>
+    <string name="choose_delete">Möchtest du die Datei wirklich löschen?</string>
 
 </resources>

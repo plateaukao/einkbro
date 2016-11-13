@@ -25,6 +25,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
@@ -253,6 +254,39 @@ public class Bookmarks extends AppCompatActivity {
             }
         });
         setBookmarkList();
+
+        boolean show = sharedPref.getBoolean("help_notShow", true);
+
+        if (show){
+            final AlertDialog.Builder dialog = new AlertDialog.Builder(Bookmarks.this)
+                    .setTitle(R.string.dialog_help_title)
+                    .setMessage(helper_main.textSpannable(getString(R.string.dialog_help)))
+                    .setPositiveButton(getString(R.string.toast_yes), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            final AlertDialog d = new AlertDialog.Builder(Bookmarks.this)
+                                    .setMessage(helper_main.textSpannable(getString(R.string.help_text)))
+                                    .setPositiveButton(getString(R.string.toast_yes),
+                                            new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int id) {
+                                                    dialog.cancel();
+                                                }
+                                            }).show();
+                            d.show();
+                        }
+                    })
+                    .setNegativeButton(getString(R.string.toast_notAgain), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplication());
+                            dialog.cancel();
+                            sharedPref.edit()
+                                    .putBoolean("help_notShow", false)
+                                    .apply();
+                        }
+                    });
+            dialog.show();
+        }
     }
 
     private void setBookmarkList() {
@@ -296,7 +330,6 @@ public class Bookmarks extends AppCompatActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
         MenuItem saveBookmark = menu.findItem(R.id.action_save_bookmark);
-        MenuItem clear = menu.findItem(R.id.action_clear);
         MenuItem search = menu.findItem(R.id.action_search);
         MenuItem search2 = menu.findItem(R.id.action_search2);
         MenuItem history = menu.findItem(R.id.action_history);
@@ -310,10 +343,11 @@ public class Bookmarks extends AppCompatActivity {
         MenuItem cancel = menu.findItem(R.id.action_cancel);
         MenuItem pass = menu.findItem(R.id.action_pass);
         MenuItem toggle = menu.findItem(R.id.action_toggle);
+        MenuItem search3 = menu.findItem(R.id.action_search3);
+        MenuItem help = menu.findItem(R.id.action_help);
 
         if (sharedPref.getInt("keyboard", 0) == 0) { //could be button state or..?
             saveBookmark.setVisible(false);
-            clear.setVisible(false);
             search.setVisible(true);
             search2.setVisible(false);
             history.setVisible(true);
@@ -327,9 +361,10 @@ public class Bookmarks extends AppCompatActivity {
             cancel.setVisible(false);
             pass.setVisible(true);
             toggle.setVisible(false);
+            search3.setVisible(false);
+            help.setVisible(true);
         } else if (sharedPref.getInt("keyboard", 0) == 1) {
             saveBookmark.setVisible(false);
-            clear.setVisible(false);
             search.setVisible(false);
             search2.setVisible(true);
             history.setVisible(false);
@@ -343,9 +378,10 @@ public class Bookmarks extends AppCompatActivity {
             cancel.setVisible(true);
             pass.setVisible(false);
             toggle.setVisible(false);
+            search3.setVisible(false);
+            help.setVisible(false);
         } else if (sharedPref.getInt("keyboard", 0) == 2) {
             saveBookmark.setVisible(true);
-            clear.setVisible(true);
             search.setVisible(false);
             search2.setVisible(false);
             history.setVisible(false);
@@ -359,6 +395,25 @@ public class Bookmarks extends AppCompatActivity {
             cancel.setVisible(true);
             pass.setVisible(false);
             toggle.setVisible(false);
+            search3.setVisible(false);
+            help.setVisible(false);
+        } else if (sharedPref.getInt("keyboard", 0) == 3) {
+            saveBookmark.setVisible(false);
+            search.setVisible(true);
+            search2.setVisible(false);
+            history.setVisible(false);
+            save.setVisible(false);
+            share.setVisible(false);
+            searchSite.setVisible(false);
+            downloads.setVisible(false);
+            settings.setVisible(false);
+            prev.setVisible(false);
+            next.setVisible(false);
+            cancel.setVisible(true);
+            pass.setVisible(false);
+            toggle.setVisible(false);
+            search3.setVisible(true);
+            help.setVisible(false);
         }
 
         return true; // this is important to call so that new menu is shown
@@ -390,7 +445,12 @@ public class Bookmarks extends AppCompatActivity {
 
             if (text.isEmpty()) {
                 editText.requestFocus();
+                editText.setText("");
                 helper_main.showKeyboard(Bookmarks.this, editText);
+                sharedPref.edit()
+                        .putInt("keyboard", 3)
+                        .apply();
+                Bookmarks.this.invalidateOptionsMenu();
             } else {
                 if (text.contains("http")) {
                     helper_main.switchToActivity(Bookmarks.this, Browser.class, text, true);
@@ -413,7 +473,15 @@ public class Bookmarks extends AppCompatActivity {
                 } else {
                     helper_main.switchToActivity(Bookmarks.this, Browser.class, searchEngine + text, true);
                 }
+
+                sharedPref.edit()
+                        .putInt("keyboard", 0)
+                        .apply();
             }
+        }
+
+        if (id == R.id.action_search3) {
+            helper_editText.editText_searchWeb(editText, Bookmarks.this);
         }
 
         if (id == R.id.action_settings) {
@@ -425,7 +493,8 @@ public class Bookmarks extends AppCompatActivity {
         }
 
         if (id == R.id.action_downloads) {
-            helper_main.openFilePicker(Bookmarks.this, listView);
+            String startDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
+            helper_main.openFilePicker(Bookmarks.this, listView, startDir);
         }
 
         if (id == R.id.action_pass) {
@@ -443,10 +512,6 @@ public class Bookmarks extends AppCompatActivity {
             helper_editText.editText_Touch(editText, Bookmarks.this);
             helper_editText.editText_FocusChange(editText, Bookmarks.this);
             helper_main.hideKeyboard(Bookmarks.this, editText);
-        }
-
-        if (id == R.id.action_clear) {
-            editText.setText("");
         }
 
         if (id == R.id.action_save_bookmark) {
@@ -477,6 +542,18 @@ public class Bookmarks extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+
+        if (id == R.id.action_help) {
+            final AlertDialog d = new AlertDialog.Builder(Bookmarks.this)
+                    .setMessage(helper_main.textSpannable(getString(R.string.help_text)))
+                    .setPositiveButton(getString(R.string.toast_yes),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            }).show();
+            d.show();
         }
         return super.onOptionsItemSelected(item);
     }

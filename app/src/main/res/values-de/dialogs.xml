@@ -38,6 +38,14 @@
 
     //Help Dialog
 
+    <string name="dialog_help_title">Browser</string>
+    <string name="dialog_help">
+        Öffne den Hillfedialog um Informationen zu folgenden Themen zu erlangen:&lt;br>&lt;br>
+
+        &#8226; wichtigste Funktionen&lt;br>
+        &#8226; Bedienung&lt;br>
+        &#8226; Suche</string>
+
     <string name="help_text">
 
         &lt;b>Die Listen:&lt;/b>&lt;br>

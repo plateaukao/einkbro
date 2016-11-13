@@ -4,14 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_clear"
-        android:orderInCategory="100"
-        android:title="@string/menu_search"
-        android:icon="@drawable/notification_clear_all"
-        app:showAsAction="always"
-        tools:ignore="AlwaysShowAction" />
-
-    <item
         android:id="@+id/action_save_bookmark"
         android:orderInCategory="100"
         android:title="@string/menu_search"
@@ -32,6 +24,14 @@
         android:orderInCategory="100"
         android:title="@string/menu_search"
         android:icon="@drawable/magnify"
+        app:showAsAction="always"
+        tools:ignore="AlwaysShowAction" />
+
+    <item
+        android:id="@+id/action_search3"
+        android:orderInCategory="100"
+        android:title="@string/menu_search"
+        android:icon="@drawable/format_list_bulleted"
         app:showAsAction="always"
         tools:ignore="AlwaysShowAction" />
 
@@ -107,6 +107,12 @@
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/menu_settings"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_help"
+        android:orderInCategory="100"
+        android:title="@string/menu_help"
         app:showAsAction="never" />
 
 </menu>

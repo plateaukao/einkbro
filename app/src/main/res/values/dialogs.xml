@@ -38,6 +38,14 @@
 
     //Help Dialog
 
+    <string name="dialog_help_title">Browser</string>
+    <string name="dialog_help">
+        Open the help dialog to get informations concerning:&lt;br>&lt;br>
+
+        &#8226; important functions&lt;br>
+        &#8226; handling&lt;br>
+        &#8226; search</string>
+
     <string name="help_text">
 
         &lt;b>The lists:&lt;/b>&lt;br>

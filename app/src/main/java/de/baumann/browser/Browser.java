@@ -39,6 +39,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
@@ -358,7 +359,6 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
         editText.setHint(R.string.app_search_hint);
         editText.clearFocus();
 
-        helper_editText.editText_Touch(editText, Browser.this);
         helper_editText.editText_EditorAction(editText, Browser.this, mWebView);
         helper_editText.editText_FocusChange(editText, Browser.this);
 
@@ -592,9 +592,9 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
         MenuItem saveBookmark = menu.findItem(R.id.action_save_bookmark);
-        MenuItem clear = menu.findItem(R.id.action_clear);
         MenuItem search = menu.findItem(R.id.action_search);
         MenuItem search2 = menu.findItem(R.id.action_search2);
+        MenuItem search3 = menu.findItem(R.id.action_search3);
         MenuItem history = menu.findItem(R.id.action_history);
         MenuItem save = menu.findItem(R.id.action_save);
         MenuItem share = menu.findItem(R.id.action_share);
@@ -605,12 +605,14 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
         MenuItem next = menu.findItem(R.id.action_next);
         MenuItem cancel = menu.findItem(R.id.action_cancel);
         MenuItem pass = menu.findItem(R.id.action_pass);
+        MenuItem help = menu.findItem(R.id.action_help);
+        MenuItem toggle = menu.findItem(R.id.action_toggle);
 
         if (sharedPref.getInt("keyboard", 0) == 0) { //could be button state or..?
             saveBookmark.setVisible(false);
-            clear.setVisible(false);
             search.setVisible(true);
             search2.setVisible(false);
+            search3.setVisible(false);
             history.setVisible(true);
             save.setVisible(true);
             share.setVisible(true);
@@ -621,11 +623,13 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
             next.setVisible(false);
             cancel.setVisible(false);
             pass.setVisible(true);
+            help.setVisible(false);
+            toggle.setVisible(true);
         } else if (sharedPref.getInt("keyboard", 0) == 1) {
             saveBookmark.setVisible(false);
-            clear.setVisible(false);
             search.setVisible(false);
             search2.setVisible(true);
+            search3.setVisible(false);
             history.setVisible(false);
             save.setVisible(false);
             share.setVisible(false);
@@ -636,11 +640,13 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
             next.setVisible(true);
             cancel.setVisible(true);
             pass.setVisible(false);
+            help.setVisible(false);
+            toggle.setVisible(false);
         } else if (sharedPref.getInt("keyboard", 0) == 2) {
             saveBookmark.setVisible(true);
-            clear.setVisible(true);
             search.setVisible(false);
             search2.setVisible(false);
+            search3.setVisible(false);
             history.setVisible(false);
             save.setVisible(false);
             share.setVisible(false);
@@ -651,8 +657,26 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
             next.setVisible(false);
             cancel.setVisible(true);
             pass.setVisible(false);
+            help.setVisible(false);
+            toggle.setVisible(false);
+        } else if (sharedPref.getInt("keyboard", 0) == 3) {
+            saveBookmark.setVisible(false);
+            search.setVisible(true);
+            search2.setVisible(false);
+            search3.setVisible(true);
+            history.setVisible(false);
+            save.setVisible(false);
+            share.setVisible(false);
+            searchSite.setVisible(false);
+            downloads.setVisible(false);
+            settings.setVisible(false);
+            prev.setVisible(false);
+            next.setVisible(false);
+            cancel.setVisible(true);
+            pass.setVisible(false);
+            help.setVisible(false);
+            toggle.setVisible(false);
         }
-
         return true; // this is important to call so that new menu is shown
     }
 
@@ -672,6 +696,7 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
         int id = item.getItemId();
 
         if (id == R.id.action_search) {
+            mWebView.stopLoading();
             editText.hasFocus();
             String text = editText.getText().toString();
 
@@ -681,8 +706,17 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
 
             if (text.equals(mWebView.getTitle()) || text.isEmpty()) {
                 editText.requestFocus();
-                editText.setText("");
+                (new Handler()).postDelayed(new Runnable() {
+                    public void run() {
+                        editText.setText("");
+                    }
+                }, 200);
                 helper_main.showKeyboard(Browser.this, editText);
+                sharedPref.edit()
+                        .putInt("keyboard", 3)
+                        .apply();
+                Browser.this.invalidateOptionsMenu();
+
             } else {
 
                 editText.clearFocus();
@@ -706,16 +740,28 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
                     mWebView.loadUrl("https://duckduckgo.com/?q=" + subStr);
                 } else  if (text.startsWith(".y ")) {
                 mWebView.loadUrl("https://www.youtube.com/results?search_query=" + subStr);
-                }
-
-                else {
+                } else {
                     mWebView.loadUrl(searchEngine + text);
                 }
+
+                sharedPref.edit()
+                        .putInt("keyboard", 0)
+                        .apply();
+                invalidateOptionsMenu();
+                editText.setHint(R.string.app_search_hint);
+                helper_editText.editText_Touch(editText, Browser.this);
+                helper_editText.editText_EditorAction(editText, Browser.this, mWebView);
+                helper_editText.editText_FocusChange(editText, Browser.this);
+                helper_main.hideKeyboard(Browser.this, editText);
             }
         }
 
         if (id == R.id.action_history) {
             helper_main.switchToActivity(Browser.this, Popup_history.class, "", false);
+        }
+
+        if (id == R.id.action_search3) {
+            helper_editText.editText_searchWeb(editText, Browser.this);
         }
 
         if (id == R.id.action_pass) {
@@ -862,10 +908,12 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
         }
 
         if (id == R.id.action_downloads) {
-            helper_main.openFilePicker(Browser.this, mWebView);
+            String startDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
+            helper_main.openFilePicker(Browser.this, mWebView, startDir);
         }
 
         if (id == R.id.action_searchSite) {
+            mWebView.stopLoading();
             helper_editText.editText_searchSite(editText, Browser.this, mWebView);
         }
 
@@ -903,11 +951,6 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
             helper_editText.editText_EditorAction(editText, Browser.this, mWebView);
             helper_editText.editText_FocusChange(editText, Browser.this);
             helper_main.hideKeyboard(Browser.this, editText);
-        }
-
-        if (id == R.id.action_clear) {
-            editText.setHint(R.string.app_search_hint_bookmark);
-            editText.setText("");
         }
 
         if (id == R.id.action_save_bookmark) {
@@ -982,7 +1025,8 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
                         .setAction(getString(R.string.toast_yes), new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                helper_main.openFilePicker(Browser.this, mWebView);
+                                String startDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
+                                helper_main.openFilePicker(Browser.this, mWebView, startDir);
                             }
                         });
                 snackbar.show();

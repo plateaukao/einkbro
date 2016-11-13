@@ -115,28 +115,6 @@ public class Activity_settings extends AppCompatActivity {
             });
         }
 
-        private void addHelpListener() {
-
-            Preference reset = findPreference("help");
-            reset.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                public boolean onPreferenceClick(Preference pref) {
-
-                    final AlertDialog d = new AlertDialog.Builder(getActivity())
-                            .setMessage(helper_main.textSpannable(getString(R.string.help_text)))
-                            .setPositiveButton(getString(R.string.toast_yes),
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            dialog.cancel();
-                                        }
-                                    }).show();
-                    d.show();
-                    ((TextView) d.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
-
-                    return true;
-                }
-            });
-        }
-
         private void addBackup_dbListener() {
 
             Preference reset = findPreference("backup_db");
@@ -266,7 +244,6 @@ public class Activity_settings extends AppCompatActivity {
             addOpenSettingsListener();
             addBackup_dbListener();
             addRestore_dbListener();
-            addHelpListener();
         }
     }
 

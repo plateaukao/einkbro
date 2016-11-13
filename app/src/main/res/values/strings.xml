@@ -3,10 +3,20 @@
     // Application
 
     <string name="app_name">Browser</string>
-    <string name="app_permissions">You must grant \"Access Storage Permission\" to save screenshots and downloads. After that you should
-        completely close the app or restart the phone. If you don\'t permit the storage access but want to use the
-        screenshot function at a later time, you can grant the permission later. Please open then: system settings - apps -
-        HHS Moodle. In the permissions section you can grant the \"write storage permission\".</string>
+    <string name="app_permissions_title">Used permissions</string>
+    <string name="app_permissions">
+
+        &lt;i>Access Storage Permission:&lt;/i>&lt;br>
+        &#8226; Downloads: save downloads on the sd-card.&lt;br>
+        &#8226; Screenshots: save screenshots of a website on the sd-card.&lt;br>&lt;br>
+
+        &lt;i>Access Fine Location:&lt;/i>&lt;br>
+        Some websites (p.e. Google Maps) need this permission to show for example to show you a route to a desired point
+        of interest.&lt;br>&lt;br>
+
+        &lt;i>Grant permissions later:&lt;/i>&lt;br>
+        If you don\'t permit this now, you can do it later. Please open then \"Settings -> App info\" and choose \"Permissions\".</string>
+
     <string name="app_share_screenshot">Share screenshot using:</string>
     <string name="app_share_image">Share image using:</string>
     <string name="app_share_link">Share link using:</string>
@@ -41,6 +51,7 @@
     <string name="menu_cancel">Cancel</string>
     <string name="menu_pass">Open passStorage</string>
     <string name="menu_toggle">Settings</string>
+    <string name="menu_help">Help</string>
 
 
     // Context Menu
@@ -110,9 +121,9 @@
     <string name="action_license">License</string>
     <string name="action_license_summary">The app is completely open source and licensed under GPL3.</string>
 
-    <string name="action_openSettings">Settings</string>
-    <string name="action_openSettings_summary">Open the system settings of the app. There you can, depending on your Android version,
-        manage several things (Storage, network traffic, permissions, …).</string>
+    <string name="action_openSettings">App info</string>
+    <string name="action_openSettings_summary">Open via the system settings the app info of the app. There you can,
+        depending on your Android version, manage several things (Storage, network traffic, permissions, …).</string>
 
     <string name="action_swipe">Swipe</string>
     <string name="action_swipe_summary">Swipe left or right to navigate through websites.</string>
@@ -142,8 +153,8 @@
     <string name="action_history">Clear history on exit</string>
     <string name="action_history_summary">Clear your browser history on exit.</string>
 
-    <string name="action_help">Help</string>
-    <string name="action_help_summary">Show a short help dialog.</string>
+    <string name="action_notShow_title">Introduction dialog</string>
+    <string name="action_notShow_title_summary">Show the short introduction dialog on start.</string>
 
     <string name="action_searchEngine">Search engine</string>
     <string name="action_searchEngine_summary">Choose your preferred search engine.</string>
@@ -181,5 +192,13 @@
 
     <string name="title_choose">Choose</string>
     <string name="dialog_cancel">Cancel</string>
+
+    <string name="choose_menu_1">Open</string>
+    <string name="choose_menu_2">Share</string>
+    <string name="choose_menu_3">Rename</string>
+    <string name="choose_menu_4">Delete</string>
+
+    <string name="choose_hint">New filename (without file extension)</string>
+    <string name="choose_delete">Do you really want to delete the file?</string>
 
 </resources>

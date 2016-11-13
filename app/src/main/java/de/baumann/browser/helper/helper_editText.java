@@ -257,6 +257,51 @@ public class helper_editText {
         });
     }
 
+    public static void editText_searchWeb (final EditText editText, final Activity from) {
+
+        final CharSequence[] options = {
+                "Duckduckgo",
+                "Flickr (creative common license)",
+                "Github",
+                "Google",
+                "MetaGer",
+                "Startpage",
+                "Wikipedia",
+                "YouTube"};
+        new AlertDialog.Builder(from)
+                .setItems(options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int item) {
+                        if (options[item].equals("Duckduckgo")) {
+                            editText.setText(".d ");
+                        }
+                        if (options[item].equals("Flickr (creative common license)")) {
+                            editText.setText(".f ");
+                        }
+                        if (options[item].equals("Github")) {
+                            editText.setText(".g ");
+                        }
+                        if (options[item].equals("Google")) {
+                            editText.setText(".G ");
+                        }
+                        if (options[item].equals("MetaGer")) {
+                            editText.setText(".m ");
+                        }
+                        if (options[item].equals("Startpage")) {
+                            editText.setText(".s ");
+                        }
+                        if (options[item].equals("Wikipedia")) {
+                            editText.setText(".w ");
+                        }
+                        if (options[item].equals("YouTube")) {
+                            editText.setText(".y ");
+                        }
+                        editText.setSelection(editText.length());
+                    }
+                }).show();
+
+    }
+
     public static void editText_FocusChange(final EditText editText, final Activity from) {
 
         editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
