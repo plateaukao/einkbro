@@ -133,6 +133,7 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
         setContentView(R.layout.activity_browser);
 
         PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
+        PreferenceManager.setDefaultValues(this, R.xml.user_settings_search, false);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPref.getInt("keyboard", 0);
 
@@ -359,6 +360,7 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
         editText.setHint(R.string.app_search_hint);
         editText.clearFocus();
 
+        helper_editText.editText_Touch(editText, Browser.this);
         helper_editText.editText_EditorAction(editText, Browser.this, mWebView);
         helper_editText.editText_FocusChange(editText, Browser.this);
 
@@ -378,7 +380,6 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
                     .setAction(getString(R.string.toast_yes), new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-
                             ClipboardManager clipboard = (ClipboardManager) Browser.this.getSystemService(Context.CLIPBOARD_SERVICE);
                             clipboard.setPrimaryClip(ClipData.newPlainText("userName", intent.getStringExtra("userName")));
 
@@ -439,7 +440,6 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
 
     private final BroadcastReceiver onComplete = new BroadcastReceiver() {
         public void onReceive(Context ctxt, Intent intent) {
-
             Snackbar snackbar = Snackbar
                     .make(mWebView, getString(R.string.toast_download_2), Snackbar.LENGTH_LONG)
                     .setAction(getString(R.string.toast_yes), new View.OnClickListener() {
@@ -455,7 +455,6 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
 
     private final BroadcastReceiver onComplete2 = new BroadcastReceiver() {
         public void onReceive(Context ctxt, Intent intent) {
-
             Uri myUri= Uri.fromFile(shareFile);
             Intent sharingIntent = new Intent(Intent.ACTION_SEND);
             sharingIntent.setType("image/*");
@@ -708,14 +707,14 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
                 editText.requestFocus();
                 (new Handler()).postDelayed(new Runnable() {
                     public void run() {
+                        helper_main.showKeyboard(Browser.this, editText);
+                        sharedPref.edit()
+                                .putInt("keyboard", 3)
+                                .apply();
+                        Browser.this.invalidateOptionsMenu();
                         editText.setText("");
                     }
-                }, 200);
-                helper_main.showKeyboard(Browser.this, editText);
-                sharedPref.edit()
-                        .putInt("keyboard", 3)
-                        .apply();
-                Browser.this.invalidateOptionsMenu();
+                }, 500);
 
             } else {
 

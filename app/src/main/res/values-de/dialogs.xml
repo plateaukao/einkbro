@@ -75,25 +75,17 @@
         einfach in die Zwischenablage kopieren.&lt;br>
         &#8226;&lt;i> Suche auf Seite:&lt;/i> suche nach Text auf jeder beliebigen Internetseite.&lt;br>
         &#8226;&lt;i> Öffne passSpeicher:&lt;/i> öffne deinen Passwortspeicher.&lt;br>
-        &#8226;&lt;i> Öffne Downloadmanager:&lt;/i> öffne den Downloadmanager des Systems.&lt;br>
+        &#8226;&lt;i> Öffne Downloadordner:&lt;/i> öffne den Downloadordner um Dateien anzuzeigen, zu teilen, umzubenennen
+        oder zu löschen.&lt;br>
         &#8226;&lt;i> Einstellungen (Startschirm):&lt;/i> In den Einstellungen kannst du das Verhalten der App deinen Wünschen
         anpassen. Beim Starten der App werden immer diese Einstellungen geladen.&lt;br>
         &#8226;&lt;i> Einstellungen (Browser):&lt;/i> Hier kannst du die Standardeinstellungen kurzzeitig überschreiben. Bei einem
         erneuten Start der App gehen diese Einstellungen verloren.&lt;br>&lt;br>
 
         &lt;b>Suche:&lt;/b>&lt;br>
-        Wenn das Eingabefeld den Seitentitel anzeigt, kannst du es mit einem Klick auf die Lupe leeren. Deine bevorzugte Suchmaschine
-        und die gewünschte Sprache für Wikipedia kannst du in den Einstellungen bestimmen. Du kannst direkt auf bestimmten Seiten suchen,
-        wenn du deinem Suchbegriff folgendes voranstellst (mit Leerzeichen):&lt;br>&lt;br>
-
-        &#8226;&lt;i> Duckduckgo:&lt;/i> \".d \"&lt;br>
-        &#8226;&lt;i> Flickr (creative common Lizenz):&lt;/i> \".f \"&lt;br>
-        &#8226;&lt;i> Github:&lt;/i> \".g \"&lt;br>
-        &#8226;&lt;i> Google:&lt;/i> \".G \"&lt;br>
-        &#8226;&lt;i> MetaGer:&lt;/i> \".m \"&lt;br>
-        &#8226;&lt;i> Startpage:&lt;/i> \".s \"&lt;br>
-        &#8226;&lt;i> Wikipedia:&lt;/i> \".w \"&lt;br>
-        &#8226;&lt;i> YouTube:&lt;/i> \".y \"
+        Deine bevorzugte Suchmaschine und die gewünschte Sprache für Wikipedia kannst du in den Einstellungen bestimmen. Du kannst direkt auf bestimmten Seiten suchen,
+        wenn du auf das Listensymbol rechts neben der Lupe klickst. Die zur Auswahl stehenden Internetseiten kannst du ebenfalls in den
+        Einstellungen bestimmen.
     </string>
 
 

@@ -133,6 +133,11 @@
             android:entries="@array/listArraySearchEngine"
             android:entryValues="@array/listValuesSearchEngine" />
 
+        <Preference
+            android:title="@string/action_searchChoose"
+            android:summary="@string/action_searchChoose_summary"
+            android:key="searchChoose" />
+
         <ListPreference
             android:title="@string/action_wikiLang"
             android:summary="@string/action_wikiLang_summary"

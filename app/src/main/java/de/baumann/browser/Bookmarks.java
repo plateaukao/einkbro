@@ -84,7 +84,6 @@ public class Bookmarks extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         editText = (EditText) findViewById(R.id.editText);
-        editText.setHint(R.string.app_name);
         helper_editText.editText_Touch(editText, Bookmarks.this);
         helper_editText.editText_FocusChange(editText, Bookmarks.this);
 

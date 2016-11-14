@@ -37,6 +37,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.baumann.browser.R;
 import de.baumann.browser.databases.Database_Bookmarks;
 import de.baumann.browser.databases.Database_Pass;
@@ -259,15 +262,39 @@ public class helper_editText {
 
     public static void editText_searchWeb (final EditText editText, final Activity from) {
 
-        final CharSequence[] options = {
-                "Duckduckgo",
-                "Flickr (creative common license)",
-                "Github",
-                "Google",
-                "MetaGer",
-                "Startpage",
-                "Wikipedia",
-                "YouTube"};
+        final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
+
+        List<String> listItems = new ArrayList<>();
+
+        if (sharedPref.getBoolean("Duckduckgo", true)) {
+            listItems.add("Duckduckgo");
+        }
+        if (sharedPref.getBoolean("Flickr", true)) {
+            listItems.add("Flickr (creative common license)");
+        }
+        if (sharedPref.getBoolean("Github", true)) {
+            listItems.add("Github");
+        }
+        if (sharedPref.getBoolean("Google", true)) {
+            listItems.add("Google");
+        }
+        if (sharedPref.getBoolean("MetaGer", true)) {
+            listItems.add("MetaGer");
+        }
+        if (sharedPref.getBoolean("Startpage", true)) {
+            listItems.add("Startpage");
+        }
+        if (sharedPref.getBoolean("Wikipedia", true)) {
+            listItems.add("Wikipedia");
+        }
+        if (sharedPref.getBoolean("YouTube", true)) {
+            listItems.add("YouTube");
+        }
+
+
+
+        final CharSequence[] options = listItems.toArray(new CharSequence[listItems.size()]);
+
         new AlertDialog.Builder(from)
                 .setItems(options, new DialogInterface.OnClickListener() {
                     @Override
@@ -307,11 +334,24 @@ public class helper_editText {
         editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
+                final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
                 if (hasFocus) {
+                    if (sharedPref.getInt("keyboard", 0) == 0) {
+                        sharedPref.edit()
+                                .putInt("keyboard", 3)
+                                .apply();
+                        from.invalidateOptionsMenu();
+                    }
                     editText.setText("");
                     InputMethodManager imm = (InputMethodManager) from.getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
                 } else {
+                    if (sharedPref.getInt("keyboard", 0) == 2 || sharedPref.getInt("keyboard", 0) == 3) {
+                        sharedPref.edit()
+                                .putInt("keyboard", 0)
+                                .apply();
+                        from.invalidateOptionsMenu();
+                    }
                     InputMethodManager imm = (InputMethodManager)from.getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
                 }

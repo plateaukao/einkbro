@@ -47,7 +47,8 @@
             android:imeOptions="actionSearch"
             android:lines="1"
             android:inputType="text|textNoSuggestions"
-            android:textColor="#eeeeee">
+            android:textColor="#eeeeee"
+            android:textIsSelectable="true">
         </EditText>
 
     </android.support.v7.widget.Toolbar>

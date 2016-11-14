@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <CheckBoxPreference
+        android:title="Duckduckgo"
+        android:summary="@string/action_Duckduckgo"
+        android:key="Duckduckgo"
+        android:defaultValue="true" />
+
+    <CheckBoxPreference
+        android:title="Flickr"
+        android:summary="@string/action_Flickr"
+        android:key="Flickr"
+        android:defaultValue="true" />
+
+    <CheckBoxPreference
+        android:title="Github"
+        android:summary="@string/action_Github"
+        android:key="Github"
+        android:defaultValue="true" />
+
+    <CheckBoxPreference
+        android:title="Google"
+        android:summary="@string/action_Google"
+        android:key="Google"
+        android:defaultValue="true" />
+
+    <CheckBoxPreference
+        android:title="MetaGer"
+        android:summary="@string/action_MetaGer"
+        android:key="MetaGer"
+        android:defaultValue="true" />
+
+    <CheckBoxPreference
+        android:title="Startpage"
+        android:summary="@string/action_Startpage"
+        android:key="Startpage"
+        android:defaultValue="true" />
+
+    <CheckBoxPreference
+        android:title="Wikipedia"
+        android:summary="@string/action_Wikipedia"
+        android:key="Wikipedia"
+        android:defaultValue="true" />
+
+    <CheckBoxPreference
+        android:title="YouTube"
+        android:summary="@string/action_YouTube"
+        android:key="YouTube"
+        android:defaultValue="true" />
+
+</PreferenceScreen>

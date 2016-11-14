@@ -114,6 +114,11 @@
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <activity
+            android:name=".helper.Activity_settings_search"
+            android:launchMode="singleTask"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="de.baumann.browser.provider"

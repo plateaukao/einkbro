@@ -92,6 +92,22 @@ public class Activity_settings extends AppCompatActivity {
             });
         }
 
+        private void addRestore_searchChooseListener() {
+
+            Preference reset = findPreference("searchChoose");
+
+            reset.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
+            {
+                public boolean onPreferenceClick(Preference pref)
+                {
+
+                    helper_main.switchToActivity(getActivity(), Activity_settings_search.class, "", false);
+
+                    return true;
+                }
+            });
+        }
+
         private void addLicenseListener() {
 
             Preference reset = findPreference("license");
@@ -244,6 +260,7 @@ public class Activity_settings extends AppCompatActivity {
             addOpenSettingsListener();
             addBackup_dbListener();
             addRestore_dbListener();
+            addRestore_searchChooseListener();
         }
     }
 

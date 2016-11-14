@@ -187,6 +187,21 @@
     <string name="action_pictures">Load pictures</string>
     <string name="action_pictures_summary">Load pictures on websites. Disable to save data volume and load sites faster.</string>
 
+    <string name="action_searchChoose">Websites</string>
+    <string name="action_searchChoose_summary">Choose which websites are enabled for the fast search.</string>
+
+    <string name="action_Duckduckgo">DuckDuckGo (DDG) is an Internet search engine that emphasizes protecting searchers\' privacy and
+        avoiding the filter bubble of personalized search results.</string>
+    <string name="action_Flickr">Flickr is an image hosting and video hosting website and web services suite.</string>
+    <string name="action_Github">GitHub is a web-based Git repository hosting service.</string>
+    <string name="action_Google">Google Search, commonly referred to as Google Web Search or simply Google, is a web search engine
+        developed by Google.</string>
+    <string name="action_MetaGer">MetaGer is a meta search engine focused on protecting users\' privacy.</string>
+    <string name="action_Startpage">Startpage is a meta search engine based in New York and the Netherlands,
+        which highlights privacy as its distinguishing feature from other internet search engines.</string>
+    <string name="action_Wikipedia">Wikipedia is a free online encyclopedia that, by default, allows its users to edit any article.</string>
+    <string name="action_YouTube">YouTube is an American video-sharing website headquartered in San Bruno, California, United States.</string>
+
 
     //File chooser
 
