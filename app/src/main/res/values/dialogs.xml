@@ -50,8 +50,9 @@
 
         &lt;b>The lists:&lt;/b>&lt;br>
 
-        Every list has a context menu, which you can reach by long pressing an item. The readLater and history lists can be cleared
-        with one click.&lt;br>&lt;br>
+        In every list there is one entry as default. This is needed to create a database. You can delete this entry after you saved
+        new items to your list. Every list has a context menu, which you can reach by long pressing an item. The readLater and
+        history lists can be cleared with one click.&lt;br>&lt;br>
 
         &#8226;&lt;i> Bookmark:&lt;/i> as always - save your favorite websites for a faster access.&lt;br>
         &#8226;&lt;i> readLater:&lt;/i> here you can save websites if you want to read them anytime later, if they are not

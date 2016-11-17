@@ -50,8 +50,9 @@
 
         &lt;b>Die Listen:&lt;/b>&lt;br>
 
-        Jede Liste hat ein Kontextmenü, welches sich bei einem langen Klick auf einen Eintrag öffnet. Die leseSpäter Liste und der
-        Verlauf können mit einem Klick geleert werden.&lt;br>&lt;br>
+        In jeder Liste gibt es standardmäßig einen Eintrag. Dieser wird gebraucht um eine Datenbank zu erstellen. Er kann gelöscht werden,
+        sobald du neue Einträge in deiner Liste hast. Jede Liste hat ein Kontextmenü, welches sich bei einem langen Klick auf einen
+        Eintrag öffnet. Die leseSpäter Liste und der Verlauf können mit einem Klick geleert werden.&lt;br>&lt;br>
 
         &#8226;&lt;i> Lesezeichen:&lt;/i> wie immer - speichere Lesezeichen für einen schnellen Zugriff.&lt;br>
         &#8226;&lt;i> leseSpäter:&lt;/i> Hier kannst du Internetseiten speichern die du irgendwann später anzeigen lassen möchtest,

@@ -20,12 +20,16 @@
 package de.baumann.browser.popups;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
@@ -65,39 +69,101 @@ public class Popup_bookmarks extends Activity {
                 @SuppressWarnings("unchecked")
                 HashMap<String,String> map = (HashMap<String,String>)listView.getItemAtPosition(position);
                 final String seqnoStr = map.get("seqno");
+                final String title = map.get("title");
+                final String url = map.get("url");
 
-                try {
-                    Database_Bookmarks db = new Database_Bookmarks(Popup_bookmarks.this);
-                    final int count = db.getRecordCount();
-                    db.close();
+                final CharSequence[] options = {
+                        getString(R.string.bookmark_edit_title),
+                        getString(R.string.bookmark_remove_bookmark)};
+                new AlertDialog.Builder(Popup_bookmarks.this)
+                        .setItems(options, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int item) {
+                                if (options[item].equals(getString(R.string.bookmark_edit_title))) {
+                                    try {
 
-                    if (count == 1) {
-                        Snackbar snackbar = Snackbar
-                                .make(listView, R.string.bookmark_remove_cannot, Snackbar.LENGTH_LONG);
-                        snackbar.show();
+                                        final Database_Bookmarks db = new Database_Bookmarks(Popup_bookmarks.this);
 
-                    } else {
-                        Snackbar snackbar = Snackbar
-                                .make(listView, R.string.bookmark_remove_confirmation, Snackbar.LENGTH_LONG)
-                                .setAction(R.string.toast_yes, new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        try {
-                                            Database_Bookmarks db = new Database_Bookmarks(Popup_bookmarks.this);
-                                            db.deleteBookmark(Integer.parseInt(seqnoStr));
-                                            db.close();
-                                            setBookmarkList();
-                                        } catch (PackageManager.NameNotFoundException e) {
-                                            e.printStackTrace();
-                                        }
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(Popup_bookmarks.this);
+                                        View dialogView = View.inflate(Popup_bookmarks.this, R.layout.dialog_edit, null);
+
+                                        final EditText edit_title = (EditText) dialogView.findViewById(R.id.pass_title);
+                                        edit_title.setHint(R.string.pass_title);
+                                        edit_title.setText(title);
+
+                                        builder.setView(dialogView);
+                                        builder.setTitle(R.string.bookmark_edit_title);
+                                        builder.setPositiveButton(R.string.toast_yes, new DialogInterface.OnClickListener() {
+
+                                            public void onClick(DialogInterface dialog, int whichButton) {
+
+                                                String inputTag = edit_title.getText().toString().trim();
+                                                db.deleteBookmark((Integer.parseInt(seqnoStr)));
+                                                db.addBookmark(inputTag, url);
+                                                db.close();
+                                                setBookmarkList();
+                                                Snackbar.make(listView, R.string.bookmark_added, Snackbar.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                        builder.setNegativeButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
+
+                                            public void onClick(DialogInterface dialog, int whichButton) {
+                                                dialog.cancel();
+                                            }
+                                        });
+
+                                        final AlertDialog dialog2 = builder.create();
+                                        // Display the custom alert dialog on interface
+                                        dialog2.show();
+
+                                        new Handler().postDelayed(new Runnable() {
+                                            public void run() {
+                                                helper_main.showKeyboard(Popup_bookmarks.this,edit_title);
+                                            }
+                                        }, 200);
+
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
                                     }
-                                });
-                        snackbar.show();
-                    }
+                                }
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                                if (options[item].equals(getString(R.string.bookmark_remove_bookmark))) {
+                                    try {
+                                        Database_Bookmarks db = new Database_Bookmarks(Popup_bookmarks.this);
+                                        final int count = db.getRecordCount();
+                                        db.close();
+
+                                        if (count == 1) {
+                                            Snackbar snackbar = Snackbar
+                                                    .make(listView, R.string.bookmark_remove_cannot, Snackbar.LENGTH_LONG);
+                                            snackbar.show();
+
+                                        } else {
+                                            Snackbar snackbar = Snackbar
+                                                    .make(listView, R.string.bookmark_remove_confirmation, Snackbar.LENGTH_LONG)
+                                                    .setAction(R.string.toast_yes, new View.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(View view) {
+                                                            try {
+                                                                Database_Bookmarks db = new Database_Bookmarks(Popup_bookmarks.this);
+                                                                db.deleteBookmark(Integer.parseInt(seqnoStr));
+                                                                db.close();
+                                                                setBookmarkList();
+                                                            } catch (PackageManager.NameNotFoundException e) {
+                                                                e.printStackTrace();
+                                                            }
+                                                        }
+                                                    });
+                                            snackbar.show();
+                                        }
+
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
+                            }
+                        }).show();
 
                 return true;
             }

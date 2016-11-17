@@ -23,6 +23,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -43,6 +44,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.channels.FileChannel;
 
+import de.baumann.browser.Bookmarks;
+import de.baumann.browser.Browser;
 import de.baumann.browser.R;
 
 
@@ -56,6 +59,9 @@ public class Activity_settings extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
 
         PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPref.edit().putString("started", "").apply();
+
         setTitle(R.string.menu_settings);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -265,14 +271,28 @@ public class Activity_settings extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        if (sharedPref.getString("lastActivity", "").equals("browser")) {
+            helper_main.switchToActivity(Activity_settings.this, Browser.class, sharedPref.getString("pass_copy_url", ""), true);
+        } else {
+            helper_main.switchToActivity(Activity_settings.this, Bookmarks.class, "", true);
+        }
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
 
         if (id == android.R.id.home) {
-            finish();
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+            if (sharedPref.getString("lastActivity", "").equals("browser")) {
+                helper_main.switchToActivity(Activity_settings.this, Browser.class, sharedPref.getString("pass_copy_url", ""), true);
+            } else {
+                helper_main.switchToActivity(Activity_settings.this, Bookmarks.class, "", true);
+            }
         }
-
         return super.onOptionsItemSelected(item);
     }
 }

@@ -63,9 +63,12 @@ import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.Switch;
 
 import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCallbacks;
 import com.github.ksoichiro.android.observablescrollview.ObservableWebView;
@@ -81,6 +84,7 @@ import java.util.Locale;
 
 import de.baumann.browser.databases.Database_Bookmarks;
 import de.baumann.browser.databases.Database_ReadLater;
+import de.baumann.browser.helper.Activity_settings;
 import de.baumann.browser.helper.helper_editText;
 import de.baumann.browser.helper.helper_webView;
 import de.baumann.browser.helper.helper_main;
@@ -115,6 +119,11 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
     private static final int ID_SHARE_IMAGE = 14;
     private static final int REQUEST_CODE_LOLLIPOP = 1;
 
+    private FrameLayout customViewContainer;
+    private WebChromeClient.CustomViewCallback customViewCallback;
+    private View mCustomView;
+    private myWebChromeClient mWebChromeClient;
+
     private boolean isNetworkUnAvailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService( CONNECTIVITY_SERVICE );
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
@@ -131,10 +140,14 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_browser);
+        customViewContainer = (FrameLayout) findViewById(R.id.customViewContainer);
 
         PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
         PreferenceManager.setDefaultValues(this, R.xml.user_settings_search, false);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPref.edit()
+                .putInt("keyboard", 0)
+                .apply();
         sharedPref.getInt("keyboard", 0);
 
         searchEngine = sharedPref.getString("searchEngine", "https://startpage.com/do/search?query=");
@@ -173,6 +186,9 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
         mWebView = (ObservableWebView) findViewById(R.id.webView);
         mWebView.setScrollViewCallbacks(this);
 
+        mWebChromeClient = new myWebChromeClient();
+        mWebView.setWebChromeClient(mWebChromeClient);
+
         imageButton_left = (ImageButton) findViewById(R.id.imageButton_left);
         imageButton_right = (ImageButton) findViewById(R.id.imageButton_right);
 
@@ -199,132 +215,6 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
                 Snackbar.make(mWebView, R.string.toast_noInternet, Snackbar.LENGTH_SHORT).show();
             }
         }
-
-        mWebView.setWebChromeClient(new WebChromeClient() {
-
-            @Override
-            public void onGeolocationPermissionsShowPrompt(final String origin, final GeolocationPermissions.Callback callback) {
-                Log.i(TAG, "onGeolocationPermissionsShowPrompt()");
-
-                final boolean remember = false;
-                AlertDialog.Builder builder = new AlertDialog.Builder(Browser.this);
-                builder.setTitle("Locations");
-                builder.setMessage("Would like to use your Current Location ")
-                        .setCancelable(true).setPositiveButton("Allow", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // origin, allow, remember
-                        callback.invoke(origin, true, remember);
-                    }
-                }).setNegativeButton("Don't Allow", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // origin, allow, remember
-                        callback.invoke(origin, false, remember);
-                    }
-                });
-                AlertDialog alert = builder.create();
-                alert.show();
-            }
-
-            public void onProgressChanged(WebView view, int progress) {
-
-                sharedPref.edit()
-                        .putInt("keyboard", 0)
-                        .apply();
-                invalidateOptionsMenu();
-
-                progressString = "loading";
-                imageButton.setVisibility(View.INVISIBLE);
-                actionBar = getSupportActionBar();
-                assert actionBar != null;
-                if (!actionBar.isShowing()) {
-                    actionBar.show();
-                }
-
-                if (progress == 100) {
-                    progressString = "loaded";
-                }
-
-                if (sharedPref.getBoolean ("arrow", false)){
-                    if (mWebView.canGoBack()) {
-                        imageButton_left.setVisibility(View.VISIBLE);
-                    } else {
-                        imageButton_left.setVisibility(View.INVISIBLE);
-                    }
-                    imageButton_left.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            mWebView.goBack();
-                        }
-                    });
-
-                    if (mWebView.canGoForward()) {
-                        imageButton_right.setVisibility(View.VISIBLE);
-                    } else {
-                        imageButton_right.setVisibility(View.INVISIBLE);
-                    }
-                    imageButton_right.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            mWebView.goForward();
-                        }
-                    });
-                }
-
-                editText.setText(mWebView.getTitle());
-                progressBar.setProgress(progress);
-                progressBar.setVisibility(progress == 100 ? View.GONE : View.VISIBLE);
-            }
-
-            public boolean onShowFileChooser(
-                    WebView webView, ValueCallback<Uri[]> filePathCallback,
-                    FileChooserParams fileChooserParams) {
-                if (mFilePathCallback != null) {
-                    mFilePathCallback.onReceiveValue(null);
-                }
-                mFilePathCallback = filePathCallback;
-
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                    // Create the File where the photo should go
-                    File photoFile = null;
-                    try {
-                        photoFile = createImageFile();
-                        takePictureIntent.putExtra("PhotoPath", mCameraPhotoPath);
-                    } catch (IOException e) {
-                        // Error occurred while creating the File
-                        Log.e(TAG, "Unable to create Image File", e);
-                    }
-                    // Continue only if the File was successfully created
-                    if (photoFile != null) {
-                        mCameraPhotoPath = "file:" + photoFile.getAbsolutePath();
-                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
-                                Uri.fromFile(photoFile));
-                    } else {
-                        takePictureIntent = null;
-                    }
-                }
-
-                Intent contentSelectionIntent = new Intent(Intent.ACTION_GET_CONTENT);
-                contentSelectionIntent.addCategory(Intent.CATEGORY_OPENABLE);
-                contentSelectionIntent.setType("*/*");
-
-                Intent[] intentArray;
-                if (takePictureIntent != null) {
-                    intentArray = new Intent[]{takePictureIntent};
-                } else {
-                    intentArray = new Intent[0];
-                }
-
-                Intent chooserIntent = new Intent(Intent.ACTION_CHOOSER);
-                chooserIntent.putExtra(Intent.EXTRA_INTENT, contentSelectionIntent);
-                chooserIntent.putExtra(Intent.EXTRA_TITLE, getString(R.string.app_share_file));
-                chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, intentArray);
-
-                startActivityForResult(chooserIntent, REQUEST_CODE_LOLLIPOP);
-
-                return true;
-            }
-        });
 
         mWebView.setDownloadListener(new DownloadListener() {
 
@@ -580,7 +470,10 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
 
     @Override
     public void onBackPressed() {
-        if (mWebView.canGoBack()) {
+
+        if (inCustomView()) {
+            hideCustomView();
+        } else if ((mCustomView == null) && mWebView.canGoBack()) {
             mWebView.goBack();
         } else {
             helper_webView.closeWebView(Browser.this, mWebView);
@@ -721,7 +614,9 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
                 editText.clearFocus();
                 helper_main.hideKeyboard(Browser.this, editText);
 
-                if (text.contains("http")) {
+                if (text.startsWith("www")) {
+                    mWebView.loadUrl("http://" + text);
+                } else if (text.startsWith("http")) {
                     mWebView.loadUrl(text);
                 } else if (text.contains(".w ")) {
                     mWebView.loadUrl("https://" + wikiLang + ".wikipedia.org/wiki/Spezial:Suche?search=" + subStr);
@@ -765,73 +660,128 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
 
         if (id == R.id.action_pass) {
             helper_main.switchToActivity(Browser.this, Popup_pass.class, "", false);
+            sharedPref.edit().putString("pass_copy_url", mWebView.getUrl()).apply();
+            sharedPref.edit().putString("pass_copy_title", mWebView.getTitle()).apply();
         }
 
         if (id == R.id.action_toggle) {
 
-            final String java = getString(R.string.action_java) + ": " + sharedPref.getString("java_string", "True");
-            final String pictures = getString(R.string.action_pictures) + ": " + sharedPref.getString("pictures_string", "True");
-            final String loc = getString(R.string.action_loc) + ": " + sharedPref.getString("loc_string", "True");
-            final String cookies = getString(R.string.action_cookie) + ": " + sharedPref.getString("cookie_string", "True");
+            sharedPref.edit().putString("started", "yes").apply();
 
-            final CharSequence[] options = {
-                    java,
-                    loc,
-                    cookies,
-                    pictures};
-            new AlertDialog.Builder(Browser.this)
-                    .setItems(options, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int item) {
-                            if (options[item].equals(java)) {
-                                if (sharedPref.getString("java_string", "True").equals(getString(R.string.app_yes))){
-                                    sharedPref.edit().putString("java_string", getString(R.string.app_no)).apply();
-                                    mWebView.getSettings().setJavaScriptEnabled(false);
-                                    mWebView.reload();
-                                } else {
-                                    sharedPref.edit().putString("java_string", getString(R.string.app_yes)).apply();
-                                    mWebView.getSettings().setJavaScriptEnabled(true);
-                                    mWebView.reload();
-                                }
-                            }
-                            if (options[item].equals(pictures)) {
-                                if (sharedPref.getString("pictures_string", "True").equals(getString(R.string.app_yes))){
-                                    sharedPref.edit().putString("pictures_string", getString(R.string.app_no)).apply();
-                                    mWebView.getSettings().setLoadsImagesAutomatically(false);
-                                    mWebView.reload();
-                                } else {
-                                    sharedPref.edit().putString("pictures_string", getString(R.string.app_yes)).apply();
-                                    mWebView.getSettings().setLoadsImagesAutomatically(true);
-                                    mWebView.reload();
-                                }
-                            }
-                            if (options[item].equals(loc)) {
-                                if (sharedPref.getString("loc_string", "True").equals(getString(R.string.app_yes))){
-                                    sharedPref.edit().putString("loc_string", getString(R.string.app_no)).apply();
-                                    mWebView.getSettings().setGeolocationEnabled(false);
-                                    mWebView.reload();
-                                } else {
-                                    sharedPref.edit().putString("loc_string", getString(R.string.app_yes)).apply();
-                                    mWebView.getSettings().setGeolocationEnabled(true);
-                                    helper_main.grantPermissionsLoc(Browser.this);
-                                    mWebView.reload();
-                                }
-                            }
-                            if (options[item].equals(cookies)) {
-                                if (sharedPref.getString("cookie_string", "True").equals(getString(R.string.app_yes))){
-                                    sharedPref.edit().putString("cookie_string", getString(R.string.app_no)).apply();
-                                    CookieManager cookieManager = CookieManager.getInstance();
-                                    cookieManager.setAcceptCookie(false);
-                                    mWebView.reload();
-                                } else {
-                                    sharedPref.edit().putString("cookie_string", getString(R.string.app_yes)).apply();
-                                    CookieManager cookieManager = CookieManager.getInstance();
-                                    cookieManager.setAcceptCookie(true);
-                                    mWebView.reload();
-                                }
-                            }
-                        }
-                    }).show();
+            AlertDialog.Builder builder = new AlertDialog.Builder(Browser.this);
+            View dialogView = View.inflate(Browser.this, R.layout.dialog_toggle, null);
+
+            Switch sw_java = (Switch) dialogView.findViewById(R.id.switch1);
+            Switch sw_pictures = (Switch) dialogView.findViewById(R.id.switch2);
+            Switch sw_location = (Switch) dialogView.findViewById(R.id.switch3);
+            Switch sw_cookies = (Switch) dialogView.findViewById(R.id.switch4);
+
+            if (sharedPref.getString("java_string", "True").equals(getString(R.string.app_yes))){
+                sw_java.setChecked(true);
+            } else {
+                sw_java.setChecked(false);
+            }
+            if (sharedPref.getString("pictures_string", "True").equals(getString(R.string.app_yes))){
+                sw_pictures.setChecked(true);
+            } else {
+                sw_pictures.setChecked(false);
+            }
+            if (sharedPref.getString("loc_string", "True").equals(getString(R.string.app_yes))){
+                sw_location.setChecked(true);
+            } else {
+                sw_location.setChecked(false);
+            }
+            if (sharedPref.getString("cookie_string", "True").equals(getString(R.string.app_yes))){
+                sw_cookies.setChecked(true);
+            } else {
+                sw_cookies.setChecked(false);
+            }
+
+            sw_java.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView,
+                                             boolean isChecked) {
+                    if(isChecked){
+                        sharedPref.edit().putString("java_string", getString(R.string.app_yes)).apply();
+                        mWebView.getSettings().setJavaScriptEnabled(true);
+                    }else{
+                        sharedPref.edit().putString("java_string", getString(R.string.app_no)).apply();
+                        mWebView.getSettings().setJavaScriptEnabled(false);
+                    }
+
+                }
+            });
+            sw_pictures.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView,
+                                             boolean isChecked) {
+                    if(isChecked){
+                        sharedPref.edit().putString("pictures_string", getString(R.string.app_yes)).apply();
+                        mWebView.getSettings().setLoadsImagesAutomatically(true);
+                    }else{
+                        sharedPref.edit().putString("pictures_string", getString(R.string.app_no)).apply();
+                        mWebView.getSettings().setLoadsImagesAutomatically(false);
+                    }
+
+                }
+            });
+            sw_location.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView,
+                                             boolean isChecked) {
+                    if(isChecked){
+                        sharedPref.edit().putString("loc_string", getString(R.string.app_yes)).apply();
+                        mWebView.getSettings().setGeolocationEnabled(true);
+                        helper_main.grantPermissionsLoc(Browser.this);
+                    }else{
+                        sharedPref.edit().putString("loc_string", getString(R.string.app_no)).apply();
+                        mWebView.getSettings().setGeolocationEnabled(false);
+                    }
+
+                }
+            });
+            sw_cookies.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView,
+                                             boolean isChecked) {
+                    if(isChecked){
+                        sharedPref.edit().putString("cookie_string", getString(R.string.app_yes)).apply();
+                        CookieManager cookieManager = CookieManager.getInstance();
+                        cookieManager.setAcceptCookie(true);
+                    }else{
+                        sharedPref.edit().putString("cookie_string", getString(R.string.app_no)).apply();
+                        CookieManager cookieManager = CookieManager.getInstance();
+                        cookieManager.setAcceptCookie(false);
+                    }
+
+                }
+            });
+
+            builder.setView(dialogView);
+            builder.setTitle(R.string.menu_settings);
+            builder.setPositiveButton(R.string.toast_yes, new DialogInterface.OnClickListener() {
+
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    mWebView.reload();
+                }
+            });
+            builder.setNegativeButton(R.string.menu_settings, new DialogInterface.OnClickListener() {
+
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    sharedPref.edit().putString("pass_copy_url", mWebView.getUrl()).apply();
+                    sharedPref.edit().putString("lastActivity", "browser").apply();
+                    helper_main.switchToActivity(Browser.this, Activity_settings.class, "", true);
+                }
+            });
+
+            final AlertDialog dialog2 = builder.create();
+            // Display the custom alert dialog on interface
+            dialog2.show();
+
         }
 
         if (id == R.id.action_save) {
@@ -839,7 +789,8 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
                     getString(R.string.menu_save_screenshot),
                     getString(R.string.menu_save_bookmark),
                     getString(R.string.menu_save_readLater),
-                    getString(R.string.menu_save_pass)};
+                    getString(R.string.menu_save_pass),
+                    getString(R.string.menu_createShortcut)};
             new AlertDialog.Builder(Browser.this)
                     .setItems(options, new DialogInterface.OnClickListener() {
                         @Override
@@ -862,6 +813,20 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
                             }
                             if (options[item].equals(getString(R.string.menu_save_screenshot))) {
                                 screenshot();
+                            }
+                            if (options[item].equals (getString(R.string.menu_createShortcut))) {
+                                Intent i = new Intent();
+                                i.setAction(Intent.ACTION_VIEW);
+                                i.setData(Uri.parse(mWebView.getUrl()));
+
+                                Intent shortcut = new Intent();
+                                shortcut.putExtra("android.intent.extra.shortcut.INTENT", i);
+                                shortcut.putExtra("android.intent.extra.shortcut.NAME", "THE NAME OF SHORTCUT TO BE SHOWN");
+                                shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, mWebView.getTitle());
+                                shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(Browser.this.getApplicationContext(), R.mipmap.ic_launcher));
+                                shortcut.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
+                                Browser.this.sendBroadcast(shortcut);
+                                Snackbar.make(mWebView, R.string.menu_createShortcut_success, Snackbar.LENGTH_SHORT).show();
                             }
                         }
                     }).show();
@@ -1101,7 +1066,195 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();    //To change body of overridden methods use File | Settings | File Templates.
+        mWebView.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();    //To change body of overridden methods use File | Settings | File Templates.
+        mWebView.onResume();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();    //To change body of overridden methods use File | Settings | File Templates.
+        if (inCustomView()) {
+            hideCustomView();
+        }
+    }
+
+    @Override
     public AssetManager getAssets() {
         return getResources().getAssets();
+    }
+
+    class myWebChromeClient extends WebChromeClient {
+
+        @Override
+        public void onGeolocationPermissionsShowPrompt(final String origin, final GeolocationPermissions.Callback callback) {
+            Log.i(TAG, "onGeolocationPermissionsShowPrompt()");
+
+            final boolean remember = false;
+            AlertDialog.Builder builder = new AlertDialog.Builder(Browser.this);
+            builder.setTitle(R.string.app_location_title);
+            builder.setMessage(R.string.app_location_message)
+                    .setCancelable(true).setPositiveButton(R.string.app_location_allow, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // origin, allow, remember
+                    callback.invoke(origin, true, remember);
+                }
+            }).setNegativeButton(R.string.app_location_allow_not, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // origin, allow, remember
+                    callback.invoke(origin, false, remember);
+                }
+            });
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
+
+        public void onProgressChanged(WebView view, int progress) {
+
+            sharedPref.edit()
+                    .putInt("keyboard", 0)
+                    .apply();
+            invalidateOptionsMenu();
+
+            progressString = "loading";
+            imageButton.setVisibility(View.INVISIBLE);
+            actionBar = getSupportActionBar();
+            assert actionBar != null;
+            if (!actionBar.isShowing()) {
+                actionBar.show();
+            }
+
+            if (progress == 100) {
+                progressString = "loaded";
+            }
+
+            if (sharedPref.getBoolean ("arrow", false)){
+                if (mWebView.canGoBack()) {
+                    imageButton_left.setVisibility(View.VISIBLE);
+                } else {
+                    imageButton_left.setVisibility(View.INVISIBLE);
+                }
+                imageButton_left.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mWebView.goBack();
+                    }
+                });
+
+                if (mWebView.canGoForward()) {
+                    imageButton_right.setVisibility(View.VISIBLE);
+                } else {
+                    imageButton_right.setVisibility(View.INVISIBLE);
+                }
+                imageButton_right.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mWebView.goForward();
+                    }
+                });
+            }
+
+            editText.setText(mWebView.getTitle());
+            progressBar.setProgress(progress);
+            progressBar.setVisibility(progress == 100 ? View.GONE : View.VISIBLE);
+        }
+
+        public boolean onShowFileChooser(
+                WebView webView, ValueCallback<Uri[]> filePathCallback,
+                FileChooserParams fileChooserParams) {
+            if (mFilePathCallback != null) {
+                mFilePathCallback.onReceiveValue(null);
+            }
+            mFilePathCallback = filePathCallback;
+
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                // Create the File where the photo should go
+                File photoFile = null;
+                try {
+                    photoFile = createImageFile();
+                    takePictureIntent.putExtra("PhotoPath", mCameraPhotoPath);
+                } catch (IOException e) {
+                    // Error occurred while creating the File
+                    Log.e(TAG, "Unable to create Image File", e);
+                }
+                // Continue only if the File was successfully created
+                if (photoFile != null) {
+                    mCameraPhotoPath = "file:" + photoFile.getAbsolutePath();
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                            Uri.fromFile(photoFile));
+                } else {
+                    takePictureIntent = null;
+                }
+            }
+
+            Intent contentSelectionIntent = new Intent(Intent.ACTION_GET_CONTENT);
+            contentSelectionIntent.addCategory(Intent.CATEGORY_OPENABLE);
+            contentSelectionIntent.setType("*/*");
+
+            Intent[] intentArray;
+            if (takePictureIntent != null) {
+                intentArray = new Intent[]{takePictureIntent};
+            } else {
+                intentArray = new Intent[0];
+            }
+
+            Intent chooserIntent = new Intent(Intent.ACTION_CHOOSER);
+            chooserIntent.putExtra(Intent.EXTRA_INTENT, contentSelectionIntent);
+            chooserIntent.putExtra(Intent.EXTRA_TITLE, getString(R.string.app_share_file));
+            chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, intentArray);
+
+            startActivityForResult(chooserIntent, REQUEST_CODE_LOLLIPOP);
+
+            return true;
+        }
+
+        @Override
+        public void onShowCustomView(View view,CustomViewCallback callback) {
+
+            // if a view already exists then immediately terminate the new one
+            if (mCustomView != null) {
+                callback.onCustomViewHidden();
+                return;
+            }
+            mCustomView = view;
+            mWebView.setVisibility(View.GONE);
+            customViewContainer.setVisibility(View.VISIBLE);
+            customViewContainer.addView(view);
+            customViewCallback = callback;
+        }
+
+        @Override
+        public void onHideCustomView() {
+            super.onHideCustomView();    //To change body of overridden methods use File | Settings | File Templates.
+            if (mCustomView == null)
+                return;
+
+            mWebView.setVisibility(View.VISIBLE);
+            customViewContainer.setVisibility(View.GONE);
+
+            // Hide the custom view.
+            mCustomView.setVisibility(View.GONE);
+
+            // Remove the custom view from its container.
+            customViewContainer.removeView(mCustomView);
+            customViewCallback.onCustomViewHidden();
+
+            mCustomView = null;
+        }
+    }
+
+    private boolean inCustomView() {
+        return (mCustomView != null);
+    }
+
+    private void hideCustomView() {
+        mWebChromeClient.onHideCustomView();
     }
 }

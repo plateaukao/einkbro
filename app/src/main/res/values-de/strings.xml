@@ -29,6 +29,15 @@
     <string name="app_yes">Aktiviert</string>
     <string name="app_no">Deaktiviert</string>
     <string name="app_open">Ordner öffnen?</string>
+    <string name="app_location_title">Ortbestimmung</string>
+    <string name="app_location_message">"Die Internetseite möchte deine genaue Position nutzen."</string>
+    <string name="app_location_allow">Erlauben</string>
+    <string name="app_location_allow_not">Verbieten</string>
+
+    <string name="app_title_bookmarks">Lesezeichen</string>
+    <string name="app_title_readLater">leseSpäter</string>
+    <string name="app_title_passStorage">passSpeicher</string>
+    <string name="app_title_history">Verlauf</string>
 
 
     // Menu Items
@@ -53,6 +62,8 @@
     <string name="menu_pass">Öffne passSpeicher</string>
     <string name="menu_toggle">Einstellungen</string>
     <string name="menu_help">Hilfe</string>
+    <string name="menu_createShortcut">Erstelle Verknüpfung</string>
+    <string name="menu_createShortcut_success">Verknüpfung erstellt</string>
 
 
     // Context Menu
@@ -92,19 +103,21 @@
     <string name="bookmark_remove_cannot">Du brauchst mindestens einen Eintrag.</string>
     <string name="bookmark_remove_bookmark">Eintrag entfernen</string>
     <string name="bookmark_added">Füge Lesezeichen hinzu.</string>
-    <string name="bookmark_edit_title">Bearbeite Titel</string>
+    <string name="bookmark_edit_title">Titel bearbeiten</string>
 
     <string name="readLater_added">Füge zur leseSpäter Liste hinzu.</string>
     <string name="readLater_button">Liste löschen</string>
     <string name="readLater_title">Öffne den letzten gespeicherten Link:</string>
     <string name="readLater_action">Öffne späterLesen Liste</string>
 
-    <string name="pass_message">Logindaten für:</string>
     <string name="pass_success">Füge zum passSpeicher hinzu.</string>
     <string name="pass_userName">Benutzername</string>
     <string name="pass_userPW">Passwort</string>
     <string name="pass_copy_userName">Kopiere Benutzername</string>
     <string name="pass_copy_userPW">Kopiere Passwort</string>
+    <string name="pass_title">Titel</string>
+    <string name="pass_copy">Kopiere Logindaten</string>
+    <string name="pass_edit">Bearbeite Logindaten</string>
 
 
     // Settings

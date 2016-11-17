@@ -104,4 +104,11 @@
         android:layout_alignParentEnd="true"
         android:layout_margin="16dp" />
 
+    <FrameLayout
+        android:id="@+id/customViewContainer"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:visibility="gone"
+        />
+
 </RelativeLayout>

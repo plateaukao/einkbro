@@ -73,6 +73,7 @@ public class Bookmarks extends AppCompatActivity {
         PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPref.edit()
+                .putString("started", "")
                 .putInt("keyboard", 0)
                 .putString("url", "")
                 .putString("seqno", "")
@@ -98,7 +99,9 @@ public class Bookmarks extends AppCompatActivity {
                     if (text.length() > 3) {
                         subStr=text.substring(3);
                     }
-                    if (text.contains("http")) {
+                    if (text.startsWith("www")) {
+                        helper_main.switchToActivity(Bookmarks.this, Browser.class, "http://" + text, true);
+                    } else if (text.contains("http")) {
                         helper_main.switchToActivity(Bookmarks.this, Browser.class, text, true);
                     } else if (text.contains(".w ")) {
                         helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://" + wikiLang + ".wikipedia.org/wiki/Spezial:Suche?search=" + subStr, true);
@@ -119,10 +122,6 @@ public class Bookmarks extends AppCompatActivity {
                     } else {
                         helper_main.switchToActivity(Bookmarks.this, Browser.class, searchEngine + text, true);
                     }
-                    editText.setText(text);
-                    editText.clearFocus();
-                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
                     return true;
                 } else {
                     return false;
@@ -451,7 +450,9 @@ public class Bookmarks extends AppCompatActivity {
                         .apply();
                 Bookmarks.this.invalidateOptionsMenu();
             } else {
-                if (text.contains("http")) {
+                if (text.startsWith("www")) {
+                    helper_main.switchToActivity(Bookmarks.this, Browser.class, "http://" + text, true);
+                } else if (text.contains("http")) {
                     helper_main.switchToActivity(Bookmarks.this, Browser.class, text, true);
                 } else if (text.contains(".w ")) {
                     helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://" + wikiLang + ".wikipedia.org/wiki/Spezial:Suche?search=" + subStr, true);
@@ -472,10 +473,6 @@ public class Bookmarks extends AppCompatActivity {
                 } else {
                     helper_main.switchToActivity(Bookmarks.this, Browser.class, searchEngine + text, true);
                 }
-
-                sharedPref.edit()
-                        .putInt("keyboard", 0)
-                        .apply();
             }
         }
 
@@ -484,7 +481,8 @@ public class Bookmarks extends AppCompatActivity {
         }
 
         if (id == R.id.action_settings) {
-            helper_main.switchToActivity(Bookmarks.this, Activity_settings.class, "", false);
+            sharedPref.edit().putString("lastActivity", "settings").apply();
+            helper_main.switchToActivity(Bookmarks.this, Activity_settings.class, "", true);
         }
 
         if (id == R.id.action_history) {

@@ -28,6 +28,15 @@
     <string name="app_yes">Enabled</string>
     <string name="app_no">Disabled</string>
     <string name="app_open">Open folder?</string>
+    <string name="app_location_title">Location</string>
+    <string name="app_location_message">"The website would like to use your current Location."</string>
+    <string name="app_location_allow">Allow</string>
+    <string name="app_location_allow_not">Don\'t allow</string>
+
+    <string name="app_title_bookmarks">Bookmarks</string>
+    <string name="app_title_readLater">readLater</string>
+    <string name="app_title_passStorage">passStorage</string>
+    <string name="app_title_history">History</string>
 
 
     // Menu Items
@@ -52,6 +61,8 @@
     <string name="menu_pass">Open passStorage</string>
     <string name="menu_toggle">Settings</string>
     <string name="menu_help">Help</string>
+    <string name="menu_createShortcut">Create shortcut</string>
+    <string name="menu_createShortcut_success">Shortcut created</string>
 
 
     // Context Menu
@@ -98,12 +109,14 @@
     <string name="readLater_title">Open last saved link:</string>
     <string name="readLater_action">Open readLater list</string>
 
-    <string name="pass_message">Login for:</string>
     <string name="pass_success">Adding to password list.</string>
     <string name="pass_userName">Username</string>
     <string name="pass_userPW">Password</string>
     <string name="pass_copy_userName">Copy username</string>
     <string name="pass_copy_userPW">Copy password</string>
+    <string name="pass_title">Title</string>
+    <string name="pass_copy">Copy login data</string>
+    <string name="pass_edit">Edit login data</string>
 
 
     // Settings

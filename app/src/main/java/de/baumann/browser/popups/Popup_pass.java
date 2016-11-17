@@ -20,12 +20,18 @@
 package de.baumann.browser.popups;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
@@ -35,11 +41,13 @@ import java.util.HashMap;
 import de.baumann.browser.R;
 import de.baumann.browser.databases.Database_Pass;
 import de.baumann.browser.helper.class_SecurePreferences;
+import de.baumann.browser.helper.helper_main;
 
 public class Popup_pass extends Activity {
 
     private ListView listView = null;
     private class_SecurePreferences sharedPrefSec;
+    private SharedPreferences sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +55,9 @@ public class Popup_pass extends Activity {
 
         setContentView(R.layout.activity_popup);
 
+        PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
+        PreferenceManager.setDefaultValues(this, R.xml.user_settings_search, false);
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPrefSec = new class_SecurePreferences(Popup_pass.this, "sharedPrefSec", "Ywn-YM.XK$b:/:&CsL8;=L,y4", true);
 
         Button button = (Button) findViewById(R.id.button);
@@ -82,46 +93,143 @@ public class Popup_pass extends Activity {
                 @SuppressWarnings("unchecked")
                 HashMap<String,String> map = (HashMap<String,String>)listView.getItemAtPosition(position);
                 final String seqnoStr = map.get("seqno");
+                final String userPW = map.get("userPW");
+                final String userName = map.get("userName");
+                final String title = map.get("title");
+                final String url = map.get("url");
 
-                try {
-                    Database_Pass db = new Database_Pass(Popup_pass.this);
-                    final int count = db.getRecordCount();
-                    db.close();
+                final CharSequence[] options = {
+                        getString(R.string.pass_copy),
+                        getString(R.string.pass_edit),
+                        getString(R.string.bookmark_remove_bookmark)};
+                new AlertDialog.Builder(Popup_pass.this)
+                        .setItems(options, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int item) {
+                                if (options[item].equals(getString(R.string.pass_edit))) {
 
-                    if (count == 1) {
-                        Snackbar snackbar = Snackbar
-                                .make(listView, R.string.bookmark_remove_cannot, Snackbar.LENGTH_LONG);
-                        snackbar.show();
+                                    try {
 
-                    } else {
-                        Snackbar snackbar = Snackbar
-                                .make(listView, R.string.bookmark_remove_confirmation, Snackbar.LENGTH_LONG)
-                                .setAction(R.string.toast_yes, new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        try {
-                                            Database_Pass db = new Database_Pass(Popup_pass.this);
-                                            db.deleteBookmark(Integer.parseInt(seqnoStr));
-                                            db.close();
-                                            setBookmarkList();
-                                        } catch (PackageManager.NameNotFoundException e) {
-                                            e.printStackTrace();
-                                        }
+                                        final class_SecurePreferences sharedPrefSec = new class_SecurePreferences(Popup_pass.this, "sharedPrefSec", "Ywn-YM.XK$b:/:&CsL8;=L,y4", true);
+                                        final Database_Pass db = new Database_Pass(Popup_pass.this);
+
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(Popup_pass.this);
+                                        View dialogView = View.inflate(Popup_pass.this, R.layout.dialog_login, null);
+
+                                        final EditText pass_title = (EditText) dialogView.findViewById(R.id.pass_title);
+                                        pass_title.setText(title);
+                                        final EditText pass_userName = (EditText) dialogView.findViewById(R.id.pass_userName);
+                                        pass_userName.setText(userName);
+                                        final EditText pass_userPW = (EditText) dialogView.findViewById(R.id.pass_userPW);
+                                        pass_userPW.setText(userPW);
+
+                                        builder.setView(dialogView);
+                                        builder.setTitle(R.string.pass_edit);
+                                        builder.setPositiveButton(R.string.toast_yes, new DialogInterface.OnClickListener() {
+
+                                            public void onClick(DialogInterface dialog, int whichButton) {
+
+                                                String input_pass_title = pass_title.getText().toString().trim();
+                                                String input_pass_userName = pass_userName.getText().toString().trim();
+                                                String input_pass_userPW = pass_userPW.getText().toString().trim();
+
+                                                sharedPrefSec.put(url + "UN", input_pass_userName);
+                                                sharedPrefSec.put(url + "PW", input_pass_userPW);
+                                                sharedPrefSec.put(url + "TI", input_pass_title);
+
+                                                db.deleteBookmark((Integer.parseInt(seqnoStr)));
+                                                db.addBookmark(
+                                                        sharedPrefSec.getString(url + "TI"),
+                                                        url,
+                                                        sharedPrefSec.getString(url + "UN"),
+                                                        sharedPrefSec.getString(url + "PW"));
+                                                db.close();
+                                                setBookmarkList();
+                                                Snackbar.make(listView, R.string.pass_success, Snackbar.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                        builder.setNegativeButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
+
+                                            public void onClick(DialogInterface dialog, int whichButton) {
+                                                dialog.cancel();
+                                            }
+                                        });
+
+                                        final AlertDialog dialog2 = builder.create();
+                                        // Display the custom alert dialog on interface
+                                        dialog2.show();
+
+                                        new Handler().postDelayed(new Runnable() {
+                                            public void run() {
+                                                helper_main.showKeyboard(Popup_pass.this,pass_title);
+                                            }
+                                        }, 200);
+
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
                                     }
-                                });
-                        snackbar.show();
-                    }
+                                }
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                                if (options[item].equals(getString(R.string.bookmark_remove_bookmark))) {
+                                    try {
+                                        Database_Pass db = new Database_Pass(Popup_pass.this);
+                                        final int count = db.getRecordCount();
+                                        db.close();
+
+                                        if (count == 1) {
+                                            Snackbar snackbar = Snackbar
+                                                    .make(listView, R.string.bookmark_remove_cannot, Snackbar.LENGTH_LONG);
+                                            snackbar.show();
+
+                                        } else {
+                                            Snackbar snackbar = Snackbar
+                                                    .make(listView, R.string.bookmark_remove_confirmation, Snackbar.LENGTH_LONG)
+                                                    .setAction(R.string.toast_yes, new View.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(View view) {
+                                                            try {
+                                                                Database_Pass db = new Database_Pass(Popup_pass.this);
+                                                                db.deleteBookmark(Integer.parseInt(seqnoStr));
+                                                                db.close();
+                                                                setBookmarkList();
+                                                            } catch (PackageManager.NameNotFoundException e) {
+                                                                e.printStackTrace();
+                                                            }
+                                                        }
+                                                    });
+                                            snackbar.show();
+                                        }
+
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
+                                if (options[item].equals(getString(R.string.pass_copy))) {
+
+                                    android.content.Intent iMain = new android.content.Intent();
+                                    iMain.setAction("pass");
+                                    iMain.putExtra("url", sharedPref.getString("pass_copy_url", ""));
+                                    iMain.putExtra("title", sharedPref.getString("pass_copy_title", ""));
+                                    iMain.putExtra("userName", userName);
+                                    iMain.putExtra("userPW", userPW);
+                                    iMain.setClassName(Popup_pass.this, "de.baumann.browser.Browser");
+                                    startActivity(iMain);
+
+                                    sharedPref.edit().putString("pass_copy_url", "").apply();
+                                    sharedPref.edit().putString("pass_copy_title","").apply();
+
+                                    finish();
+                                }
+
+                            }
+                        }).show();
 
                 return true;
             }
         });
         setBookmarkList();
     }
-
 
     private void setBookmarkList() {
 

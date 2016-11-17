@@ -27,14 +27,12 @@ import android.content.SharedPreferences;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -79,7 +77,9 @@ public class helper_editText {
                     if (text.length() > 3) {
                         String subStr=text.substring(3);
 
-                        if (text.contains("http")) {
+                        if (text.startsWith("www")) {
+                            webView.loadUrl("http://" + text);
+                        } else if (text.contains("http")) {
                             webView.loadUrl(text);
                         } else if (text.contains(".w ")) {
                             webView.loadUrl("https://" + wikiLang + ".wikipedia.org/wiki/Spezial:Suche?search=" + subStr);
@@ -127,9 +127,11 @@ public class helper_editText {
                 editText.requestFocus();
                 helper_main.showKeyboard(from, editText);
                 editText.setText(webView.getTitle());
+                editText.setSelection(editText.getText().length());
             }
         }, 200);
 
+        editText.setHint(R.string.app_search_hint_bookmark);
         editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -169,61 +171,62 @@ public class helper_editText {
 
     public static void editText_savePass(final Activity from, final WebView webView) {
 
-        final class_SecurePreferences sharedPrefSec = new class_SecurePreferences(from, "sharedPrefSec", "Ywn-YM.XK$b:/:&CsL8;=L,y4", true);
-
         try {
-            final LinearLayout layout = new LinearLayout(from);
-            layout.setOrientation(LinearLayout.VERTICAL);
-            layout.setGravity(Gravity.CENTER_HORIZONTAL);
-            final EditText input = new EditText(from);
-            input.setSingleLine(true);
-            input.setHint(R.string.pass_userName);
-            final EditText input2 = new EditText(from);
-            input2.setSingleLine(true);
-            input2.setHint(R.string.pass_userPW);
-            layout.setPadding(30, 0, 50, 0);
-            layout.addView(input);
-            layout.addView(input2);
+
+            final class_SecurePreferences sharedPrefSec = new class_SecurePreferences(from, "sharedPrefSec", "Ywn-YM.XK$b:/:&CsL8;=L,y4", true);
+            final Database_Pass db = new Database_Pass(from);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(from);
+            View dialogView = View.inflate(from, R.layout.dialog_login, null);
+
+            final EditText pass_title = (EditText) dialogView.findViewById(R.id.pass_title);
+            pass_title.setText(webView.getTitle());
+            final EditText pass_userName = (EditText) dialogView.findViewById(R.id.pass_userName);
+            final EditText pass_userPW = (EditText) dialogView.findViewById(R.id.pass_userPW);
+
+            builder.setView(dialogView);
+            builder.setTitle(R.string.pass_edit);
+            builder.setPositiveButton(R.string.toast_yes, new DialogInterface.OnClickListener() {
+
+                public void onClick(DialogInterface dialog, int whichButton) {
+
+                    String input_pass_title = pass_title.getText().toString().trim();
+                    String input_pass_userName = pass_userName.getText().toString().trim();
+                    String input_pass_userPW = pass_userPW.getText().toString().trim();
+
+                    sharedPrefSec.put(webView.getUrl() + "UN", input_pass_userName);
+                    sharedPrefSec.put(webView.getUrl() + "PW", input_pass_userPW);
+                    sharedPrefSec.put(webView.getUrl() + "TI", input_pass_title);
+
+                    db.addBookmark(
+                            sharedPrefSec.getString(webView.getUrl() + "TI"),
+                            webView.getUrl(),
+                            sharedPrefSec.getString(webView.getUrl() + "UN"),
+                            sharedPrefSec.getString(webView.getUrl() + "PW"));
+                    db.close();
+                    Snackbar.make(webView, R.string.pass_success, Snackbar.LENGTH_SHORT).show();
+                }
+            });
+            builder.setNegativeButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
+
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    dialog.cancel();
+                }
+            });
+
+            final AlertDialog dialog2 = builder.create();
+            // Display the custom alert dialog on interface
+            dialog2.show();
 
             new Handler().postDelayed(new Runnable() {
                 public void run() {
-                    helper_main.showKeyboard(from,input);
+                    helper_main.showKeyboard(from, pass_title);
                 }
             }, 200);
-
-            final Database_Pass db = new Database_Pass(from);
-            final AlertDialog.Builder dialog = new AlertDialog.Builder(from)
-                    .setView(layout)
-                    .setMessage(from.getString(R.string.pass_message) + " " + webView.getTitle())
-                    .setPositiveButton(R.string.toast_yes, new DialogInterface.OnClickListener() {
-
-                        public void onClick(DialogInterface dialog, int whichButton) {
-
-                            String inputTag = input.getText().toString().trim();
-                            String inputTag2 = input2.getText().toString().trim();
-
-                            sharedPrefSec.put(webView.getUrl() + "UN", inputTag);
-                            sharedPrefSec.put(webView.getUrl() + "PW", inputTag2);
-
-                            db.addBookmark(webView.getTitle(), webView.getUrl(),
-                                    sharedPrefSec.getString(webView.getUrl() + "UN"),
-                                    sharedPrefSec.getString(webView.getUrl() + "PW"));
-                            db.close();
-                            Snackbar.make(webView, R.string.pass_success, Snackbar.LENGTH_SHORT).show();
-                        }
-                    })
-                    .setNegativeButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
-
-                        public void onClick(DialogInterface dialog, int whichButton) {
-                            dialog.cancel();
-                        }
-                    });
-            dialog.show();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public static void editText_searchSite (final EditText editText, final Activity from, final WebView webView) {
@@ -291,8 +294,6 @@ public class helper_editText {
             listItems.add("YouTube");
         }
 
-
-
         final CharSequence[] options = listItems.toArray(new CharSequence[listItems.size()]);
 
         new AlertDialog.Builder(from)
@@ -326,7 +327,6 @@ public class helper_editText {
                         editText.setSelection(editText.length());
                     }
                 }).show();
-
     }
 
     public static void editText_FocusChange(final EditText editText, final Activity from) {
