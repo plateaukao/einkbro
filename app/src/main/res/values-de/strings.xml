@@ -174,7 +174,7 @@
     <string name="action_searchEngine_summary">Bestimme deine bevorzugte Suchmaschine.</string>
 
     <string name="action_wikiLang">Wikipedia</string>
-    <string name="action_wikiLang_summary">Bestimme dine bevorzugte Sprache für die Suche auf Wikipedia.</string>
+    <string name="action_wikiLang_summary">Bestimme deine bevorzugte Sprache für die Suche auf Wikipedia.</string>
 
     <string name="action_offline">Offline</string>
     <string name="action_offline_summary">Speichere Internetseiten im Cache um sie auch ohne Internetverbindung anzeigen zu können.
@@ -225,6 +225,12 @@
         Einträgen zu findende Artikel. </string>
     <string name="action_YouTube">YouTube ist ein Videoportal. Die Benutzer können auf dem Portal kostenlos Videoclips ansehen,
         bewerten, kommentieren und selbst hochladen.</string>
+
+    <string name="action_hideStatus">Statusbar</string>
+    <string name="action_hideStatus_summary">Verstecke die Statusbar während dem Browsen.</string>
+
+    <string name="action_hideTool">Toolbar</string>
+    <string name="action_hideTool_summary">Verstecke die Toolbar am unteren Bildschirmrand während dem Browsen.</string>
 
 
     //File chooser

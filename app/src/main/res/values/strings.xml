@@ -215,6 +215,11 @@
     <string name="action_Wikipedia">Wikipedia is a free online encyclopedia that, by default, allows its users to edit any article.</string>
     <string name="action_YouTube">YouTube is an American video-sharing website headquartered in San Bruno, California, United States.</string>
 
+    <string name="action_hideStatus">Statusbar</string>
+    <string name="action_hideStatus_summary">Hide the statusbar while browsing.</string>
+
+    <string name="action_hideTool">Toolbar</string>
+    <string name="action_hideTool_summary">Hide the toolbar at the bottom while browsing.</string>
 
     //File chooser
 

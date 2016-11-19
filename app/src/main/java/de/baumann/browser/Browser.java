@@ -54,7 +54,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.webkit.CookieManager;
 import android.webkit.DownloadListener;
 import android.webkit.GeolocationPermissions;
@@ -82,7 +81,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import de.baumann.browser.databases.Database_Bookmarks;
 import de.baumann.browser.databases.Database_ReadLater;
 import de.baumann.browser.helper.Activity_settings;
 import de.baumann.browser.helper.helper_editText;
@@ -138,13 +136,17 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
 
         WebView.enableSlowWholeDocumentDraw();
 
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_browser);
-        customViewContainer = (FrameLayout) findViewById(R.id.customViewContainer);
-
         PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
         PreferenceManager.setDefaultValues(this, R.xml.user_settings_search, false);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+
+        if (sharedPref.getBoolean ("hideStatus", false)){
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        }
+
+        setContentView(R.layout.activity_browser);
+        customViewContainer = (FrameLayout) findViewById(R.id.customViewContainer);
+
         sharedPref.edit()
                 .putInt("keyboard", 0)
                 .apply();
@@ -188,7 +190,9 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
         });
 
         mWebView = (ObservableWebView) findViewById(R.id.webView);
-        mWebView.setScrollViewCallbacks(this);
+        if (sharedPref.getBoolean ("hideTool", false)){
+            mWebView.setScrollViewCallbacks(this);
+        }
 
         mWebChromeClient = new myWebChromeClient();
         mWebView.setWebChromeClient(mWebChromeClient);

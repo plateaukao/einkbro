@@ -69,6 +69,12 @@
         android:title="@string/pref_4">
 
         <CheckBoxPreference
+            android:title="@string/action_pictures"
+            android:summary="@string/action_pictures_summary"
+            android:key="pictures"
+            android:defaultValue="true" />
+
+        <CheckBoxPreference
             android:title="@string/action_offline"
             android:summary="@string/action_offline_summary"
             android:key="offline"
@@ -90,12 +96,6 @@
         android:title="@string/pref_2">
 
         <CheckBoxPreference
-            android:title="@string/action_pictures"
-            android:summary="@string/action_pictures_summary"
-            android:key="pictures"
-            android:defaultValue="true" />
-
-        <CheckBoxPreference
             android:title="@string/action_swipe"
             android:summary="@string/action_swipe_summary"
             android:key="swipe"
@@ -105,6 +105,18 @@
             android:title="@string/action_arrow"
             android:summary="@string/action_arrow_summary"
             android:key="arrow"
+            android:defaultValue="true" />
+
+        <CheckBoxPreference
+            android:title="@string/action_hideStatus"
+            android:summary="@string/action_hideStatus_summary"
+            android:key="hideStatus"
+            android:defaultValue="false" />
+
+        <CheckBoxPreference
+            android:title="@string/action_hideTool"
+            android:summary="@string/action_hideTool_summary"
+            android:key="hideTool"
             android:defaultValue="true" />
 
         <ListPreference
