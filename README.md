@@ -5,7 +5,12 @@ I want to introduce my new app "Browser". As the name says, it's a browser, It i
 
 I want to release the app on f-droid. So if anybody has suggestions or finds bugs, please tell me. You can find the source code here. So have a nice try. Downloads in the second post.
 
-XDA-link: http://forum.xda-developers.com/android/apps-games/app-browser-t3500091
+### Links:
+- Download [Releases](https://github.com/scoute-dich/browser/releases)
+- Watch [Changelog](https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md)
+- See [license](https://github.com/scoute-dich/browser/blob/master/LICENSE.md)
+- See [screenshots](https://github.com/scoute-dich/browser/blob/master/SCREENSHOTS.md)
+- [XDA - Link](http://forum.xda-developers.com/android/apps-games/app-browser-t3500091)
 
 ### The lists:
 
