@@ -137,36 +137,40 @@ public class helper_editText {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if ( (actionId == EditorInfo.IME_ACTION_SEARCH) || ((event.getKeyCode() == KeyEvent.KEYCODE_ENTER) && (event.getAction() == KeyEvent.ACTION_DOWN ))){
 
-                    try {
-
-                        final Database_Bookmarks db = new Database_Bookmarks(from);
-                        String inputTag = editText.getText().toString().trim();
-
-                        db.addBookmark(inputTag, webView.getUrl());
-                        db.close();
-                        Snackbar.make(webView, R.string.bookmark_added, Snackbar.LENGTH_SHORT).show();
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                    editText.setText(webView.getTitle());
-                    editText.clearFocus();
-                    InputMethodManager imm = (InputMethodManager)from.getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
-
-                    final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
-                    sharedPref.edit()
-                            .putInt("keyboard", 0)
-                            .apply();
-                    from.invalidateOptionsMenu();
-
+                    helper_editText.editText_saveBookmark_save(editText,from,webView);
                     return true;
                 } else {
                     return false;
                 }
             }
         });
+    }
+
+    public static void editText_saveBookmark_save(final EditText editText, final Activity from, final WebView webView) {
+
+        try {
+
+            final Database_Bookmarks db = new Database_Bookmarks(from);
+            String inputTag = editText.getText().toString().trim();
+
+            db.addBookmark(inputTag, webView.getUrl());
+            db.close();
+            Snackbar.make(webView, R.string.bookmark_added, Snackbar.LENGTH_SHORT).show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        editText.setText(webView.getTitle());
+        editText.clearFocus();
+        InputMethodManager imm = (InputMethodManager)from.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+
+        final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
+        sharedPref.edit()
+                .putInt("keyboard", 0)
+                .apply();
+        from.invalidateOptionsMenu();
     }
 
     public static void editText_savePass(final Activity from, final WebView webView) {

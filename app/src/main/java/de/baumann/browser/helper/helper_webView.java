@@ -35,6 +35,7 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.EditText;
 
 import java.net.URISyntaxException;
 
@@ -173,13 +174,15 @@ public class helper_webView {
         });
     }
 
-    public static void webView_WebViewClient (final Activity from, final SwipeRefreshLayout swipeRefreshLayout, final WebView webView) {
+    public static void webView_WebViewClient (final Activity from, final SwipeRefreshLayout swipeRefreshLayout,
+                                              final WebView webView, final EditText editText) {
 
         webView.setWebViewClient(new WebViewClient() {
 
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 swipeRefreshLayout.setRefreshing(false);
+                editText.setText(webView.getTitle());
                 if (webView.getTitle() != null && !webView.getTitle().equals("about:blank")) {
                     try {
                         final Database_History db = new Database_History(from);

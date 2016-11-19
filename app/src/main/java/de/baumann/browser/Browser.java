@@ -156,6 +156,10 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        editText = (EditText) findViewById(R.id.editText);
+        editText.setHint(R.string.app_search_hint);
+        editText.clearFocus();
+
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         imageButton = (ImageButton) findViewById(R.id.imageButton);
         imageButton.setVisibility(View.INVISIBLE);
@@ -201,7 +205,7 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
         }
 
         helper_webView.webView_Settings(Browser.this, mWebView);
-        helper_webView.webView_WebViewClient(Browser.this, swipeView, mWebView);
+        helper_webView.webView_WebViewClient(Browser.this, swipeView, mWebView, editText);
 
         mWebView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
 
@@ -244,11 +248,6 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
                 snackbar.show();
             }
         });
-
-        editText = (EditText) findViewById(R.id.editText);
-        editText.setText(mWebView.getTitle());
-        editText.setHint(R.string.app_search_hint);
-        editText.clearFocus();
 
         helper_editText.editText_Touch(editText, Browser.this);
         helper_editText.editText_EditorAction(editText, Browser.this, mWebView);
@@ -918,30 +917,7 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
         }
 
         if (id == R.id.action_save_bookmark) {
-            try {
-
-                final Database_Bookmarks db = new Database_Bookmarks(this);
-                String inputTag = editText.getText().toString().trim();
-
-                db.addBookmark(inputTag, mWebView.getUrl());
-                db.close();
-                Snackbar.make(mWebView, R.string.bookmark_added, Snackbar.LENGTH_SHORT).show();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            editText.setText(mWebView.getTitle());
-            editText.setHint(R.string.app_search_hint);
-            editText.clearFocus();
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
-
-            final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-            sharedPref.edit()
-                    .putInt("keyboard", 0)
-                    .apply();
-            invalidateOptionsMenu();
+            helper_editText.editText_saveBookmark_save(editText, Browser.this, mWebView);
         }
 
         return super.onOptionsItemSelected(item);
@@ -1006,6 +982,35 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
         }
     }
 
+    private void setNavArrows() {
+
+        if (sharedPref.getBoolean ("arrow", false)){
+            if (mWebView.canGoBack()) {
+                imageButton_left.setVisibility(View.VISIBLE);
+            } else {
+                imageButton_left.setVisibility(View.INVISIBLE);
+            }
+            imageButton_left.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mWebView.goBack();
+                }
+            });
+
+            if (mWebView.canGoForward()) {
+                imageButton_right.setVisibility(View.VISIBLE);
+            } else {
+                imageButton_right.setVisibility(View.INVISIBLE);
+            }
+            imageButton_right.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mWebView.goForward();
+                }
+            });
+        }
+    }
+
     @Override
     public void onScrollChanged(int scrollY, boolean firstScroll, boolean dragging) {
     }
@@ -1034,54 +1039,10 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
                 if (!actionBar.isShowing()) {
                     actionBar.show();
                 }
-                if (sharedPref.getBoolean ("arrow", false)){
-                    if (mWebView.canGoBack()) {
-                        imageButton_left.setVisibility(View.VISIBLE);
-                    } else {
-                        imageButton_left.setVisibility(View.INVISIBLE);
-                    }
-                    imageButton_left.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            mWebView.goBack();
-                        }
-                    });
-
-                    if (mWebView.canGoForward()) {
-                        imageButton_right.setVisibility(View.VISIBLE);
-                    } else {
-                        imageButton_right.setVisibility(View.INVISIBLE);
-                    }
-                    imageButton_right.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            mWebView.goForward();
-                        }
-                    });
-                }
+                setNavArrows();
             }
         } else {
             imageButton.setVisibility(View.INVISIBLE);
-        }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();    //To change body of overridden methods use File | Settings | File Templates.
-        mWebView.onPause();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();    //To change body of overridden methods use File | Settings | File Templates.
-        mWebView.onResume();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();    //To change body of overridden methods use File | Settings | File Templates.
-        if (inCustomView()) {
-            hideCustomView();
         }
     }
 
@@ -1117,11 +1078,9 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
 
         public void onProgressChanged(WebView view, int progress) {
 
-            sharedPref.edit()
-                    .putInt("keyboard", 0)
-                    .apply();
+            sharedPref.edit().putInt("keyboard", 0).apply();
             invalidateOptionsMenu();
-
+            setNavArrows();
             progressString = "loading";
             imageButton.setVisibility(View.INVISIBLE);
             actionBar = getSupportActionBar();
@@ -1130,39 +1089,12 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
                 actionBar.show();
             }
 
+            progressBar.setProgress(progress);
+            progressBar.setVisibility(progress == 100 ? View.GONE : View.VISIBLE);
+
             if (progress == 100) {
                 progressString = "loaded";
             }
-
-            if (sharedPref.getBoolean ("arrow", false)){
-                if (mWebView.canGoBack()) {
-                    imageButton_left.setVisibility(View.VISIBLE);
-                } else {
-                    imageButton_left.setVisibility(View.INVISIBLE);
-                }
-                imageButton_left.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        mWebView.goBack();
-                    }
-                });
-
-                if (mWebView.canGoForward()) {
-                    imageButton_right.setVisibility(View.VISIBLE);
-                } else {
-                    imageButton_right.setVisibility(View.INVISIBLE);
-                }
-                imageButton_right.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        mWebView.goForward();
-                    }
-                });
-            }
-
-            editText.setText(mWebView.getTitle());
-            progressBar.setProgress(progress);
-            progressBar.setVisibility(progress == 100 ? View.GONE : View.VISIBLE);
         }
 
         public boolean onShowFileChooser(
