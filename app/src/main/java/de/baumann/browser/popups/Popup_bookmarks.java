@@ -228,5 +228,12 @@ public class Popup_bookmarks extends Activity {
     @Override
     public void onBackPressed() {
         helper_main.isClosed(Popup_bookmarks.this);
+        finish();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();    //To change body of overridden methods use File | Settings | File Templates.
+        helper_main.isClosed(Popup_bookmarks.this);
     }
 }

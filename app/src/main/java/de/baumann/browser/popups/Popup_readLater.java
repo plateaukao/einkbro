@@ -239,5 +239,12 @@ public class Popup_readLater extends Activity {
     @Override
     public void onBackPressed() {
         helper_main.isClosed(Popup_readLater.this);
+        finish();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();    //To change body of overridden methods use File | Settings | File Templates.
+        helper_main.isClosed(Popup_readLater.this);
     }
 }
