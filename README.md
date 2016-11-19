@@ -12,6 +12,7 @@ I want to release the app on f-droid. So if anybody has suggestions or finds bug
 - See [screenshots](https://github.com/scoute-dich/browser/blob/master/SCREENSHOTS.md)
 - [XDA - Link](http://forum.xda-developers.com/android/apps-games/app-browser-t3500091)
 
+
 ### The lists:
 
 - bookmarks
