@@ -276,6 +276,7 @@ public class helper_webView {
             from.deleteDatabase("history.db");
             webView.clearHistory();
         }
+        helper_main.isClosed(from);
         sharedPref.edit().putString("started", "").apply();
         from.finishAffinity();
     }

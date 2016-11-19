@@ -82,7 +82,9 @@ import java.util.Date;
 import java.util.Locale;
 
 import de.baumann.browser.databases.Database_ReadLater;
+import de.baumann.browser.helper.Activity_password;
 import de.baumann.browser.helper.Activity_settings;
+import de.baumann.browser.helper.class_SecurePreferences;
 import de.baumann.browser.helper.helper_editText;
 import de.baumann.browser.helper.helper_webView;
 import de.baumann.browser.helper.helper_main;
@@ -139,6 +141,15 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
         PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
         PreferenceManager.setDefaultValues(this, R.xml.user_settings_search, false);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+
+        class_SecurePreferences sharedPrefSec = new class_SecurePreferences(Browser.this, "sharedPrefSec", "Ywn-YM.XK$b:/:&CsL8;=L,y4", true);
+        String pw = sharedPrefSec.getString("protect_PW");
+
+        if (pw != null  && pw.length() > 0) {
+            if (sharedPref.getBoolean("isOpened", true)) {
+                helper_main.switchToActivity(Browser.this, Activity_password.class, "", false);
+            }
+        }
 
         if (sharedPref.getBoolean ("hideStatus", false)){
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -253,7 +264,7 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
             }
         });
 
-        helper_editText.editText_Touch(editText, Browser.this);
+        helper_editText.editText_Touch(editText, Browser.this, mWebView);
         helper_editText.editText_EditorAction(editText, Browser.this, mWebView);
         helper_editText.editText_FocusChange(editText, Browser.this);
 
@@ -646,7 +657,7 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
                         .apply();
                 invalidateOptionsMenu();
                 editText.setHint(R.string.app_search_hint);
-                helper_editText.editText_Touch(editText, Browser.this);
+                helper_editText.editText_Touch(editText, Browser.this, mWebView);
                 helper_editText.editText_EditorAction(editText, Browser.this, mWebView);
                 helper_editText.editText_FocusChange(editText, Browser.this);
                 helper_main.hideKeyboard(Browser.this, editText);
@@ -914,7 +925,7 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
             invalidateOptionsMenu();
             editText.setText(mWebView.getTitle());
             editText.setHint(R.string.app_search_hint);
-            helper_editText.editText_Touch(editText, Browser.this);
+            helper_editText.editText_Touch(editText, Browser.this, mWebView);
             helper_editText.editText_EditorAction(editText, Browser.this, mWebView);
             helper_editText.editText_FocusChange(editText, Browser.this);
             helper_main.hideKeyboard(Browser.this, editText);
@@ -1183,6 +1194,26 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
             customViewCallback.onCustomViewHidden();
 
             mCustomView = null;
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();    //To change body of overridden methods use File | Settings | File Templates.
+        mWebView.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();    //To change body of overridden methods use File | Settings | File Templates.
+        mWebView.onResume();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();    //To change body of overridden methods use File | Settings | File Templates.
+        if (inCustomView()) {
+            hideCustomView();
         }
     }
 

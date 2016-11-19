@@ -164,6 +164,20 @@ public class helper_main {
         editText.setSelection(editText.length());
     }
 
+    public static void isOpened (Activity from) {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
+        sharedPref.edit()
+                .putBoolean("isOpened", false)
+                .apply();
+    }
+
+    public static void isClosed (Activity from) {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
+        sharedPref.edit()
+                .putBoolean("isOpened", true)
+                .apply();
+    }
+
     public static SpannableString textSpannable (String text) {
         SpannableString s;
 

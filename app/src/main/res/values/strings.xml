@@ -94,6 +94,7 @@
     <string name="toast_noInternet">Can not load site. No internet connection.</string>
     <string name="toast_extension">No supported file extension</string>
     <string name="toast_install_app">Please install an app to perform action.</string>
+    <string name="toast_wrongPW">Uuups. Wrong password.</string>
 
 
     // Bookmarks // ReadLater // Password
@@ -221,6 +222,11 @@
     <string name="action_hideTool">Toolbar</string>
     <string name="action_hideTool_summary">Hide the toolbar at the bottom while browsing.</string>
 
+    <string name="action_protect">App protection</string>
+    <string name="action_protect_summary">Set a pin to protect app against unwanted access. Only use numbers. Let empty, if you do
+        not want to protect the app.</string>
+
+
     //File chooser
 
     <string name="title_choose">Choose</string>
@@ -233,5 +239,13 @@
 
     <string name="choose_hint">New filename (without file extension)</string>
     <string name="choose_delete">Do you really want to delete the file?</string>
+
+
+    // Password
+
+    <string name="pw_forgotten">Pin forgotten?</string>
+    <string name="pw_hint">Enter pin</string>
+    <string name="pw_forgotten_dialog">Do you want to delete all user data (also login data, saved bookmarks, notes, …) to reset
+        your app pin? The application will close.</string>
 
 </resources>

@@ -95,6 +95,7 @@
     <string name="toast_noInternet">Kann Seite nicht laden. Keine Internetverbindung.</string>
     <string name="toast_extension">Keine unterstützte Dateiendung</string>
     <string name="toast_install_app">Bitte eine App installieren um die Aktion auszuführen.</string>
+    <string name="toast_wrongPW">Uuups. Falsches Passwort.</string>
 
 
     // Bookmarks // ReadLater // Password
@@ -232,6 +233,10 @@
     <string name="action_hideTool">Toolbar</string>
     <string name="action_hideTool_summary">Verstecke die Toolbar am unteren Bildschirmrand während dem Browsen.</string>
 
+    <string name="action_protect">App Zugang</string>
+    <string name="action_protect_summary">Bestimme eine Pin um die App vor unbefugtem Zugriff zu schützen. Benutze nur Nummern.
+        Leer lassen, wenn du die App nicht schützen willst.</string>
+
 
     //File chooser
 
@@ -245,5 +250,14 @@
 
     <string name="choose_hint">Neuer Dateiname (ohne Dateiendung)</string>
     <string name="choose_delete">Möchtest du die Datei wirklich löschen?</string>
+
+
+    // Password
+
+    <string name="pw_forgotten">Pin vergessen?</string>
+    <string name="pw_hint">Pin eingeben</string>
+    <string name="pw_forgotten_dialog">Möchtest du alle persönlichen Daten (auch die Logindaten, gespeicherten Lesezeichen, Notizen,
+        …) löschen, um deine Zugangspin zurückzusetzen? Die Anwendung wird dann beendet.</string>
+
 
 </resources>

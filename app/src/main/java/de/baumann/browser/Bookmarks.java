@@ -48,7 +48,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import de.baumann.browser.databases.Database_Bookmarks;
+import de.baumann.browser.helper.Activity_password;
 import de.baumann.browser.helper.Activity_settings;
+import de.baumann.browser.helper.class_SecurePreferences;
 import de.baumann.browser.helper.helper_editText;
 import de.baumann.browser.helper.helper_main;
 import de.baumann.browser.popups.Popup_history;
@@ -68,11 +70,22 @@ public class Bookmarks extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
+        PreferenceManager.setDefaultValues(this, R.xml.user_settings_search, false);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+
+        class_SecurePreferences sharedPrefSec = new class_SecurePreferences(Bookmarks.this, "sharedPrefSec", "Ywn-YM.XK$b:/:&CsL8;=L,y4", true);
+        String pw = sharedPrefSec.getString("protect_PW");
+
+        if (pw != null  && pw.length() > 0) {
+            if (sharedPref.getBoolean("isOpened", true)) {
+                helper_main.switchToActivity(Bookmarks.this, Activity_password.class, "", false);
+            }
+        }
 
         if (sharedPref.getBoolean ("hideStatus", false)){
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
+
         setContentView(R.layout.activity_bookmarks);
 
         sharedPref.edit()
@@ -88,7 +101,7 @@ public class Bookmarks extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         editText = (EditText) findViewById(R.id.editText);
-        helper_editText.editText_Touch(editText, Bookmarks.this);
+        helper_editText.editText_Touch_Bookmark(editText, Bookmarks.this);
         helper_editText.editText_FocusChange(editText, Bookmarks.this);
 
         searchEngine = sharedPref.getString("searchEngine", "https://startpage.com/do/search?query=");
@@ -288,6 +301,12 @@ public class Bookmarks extends AppCompatActivity {
                     });
             dialog.show();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        helper_main.isClosed(Bookmarks.this);
+        finishAffinity();
     }
 
     private void setBookmarkList() {
@@ -509,7 +528,7 @@ public class Bookmarks extends AppCompatActivity {
             editText.setHint(getString(R.string.app_search_hint_bookmark));
             editText.setText("");
             editText.setHint(R.string.app_search_hint);
-            helper_editText.editText_Touch(editText, Bookmarks.this);
+            helper_editText.editText_Touch_Bookmark(editText, Bookmarks.this);
             helper_editText.editText_FocusChange(editText, Bookmarks.this);
             helper_main.hideKeyboard(Bookmarks.this, editText);
         }

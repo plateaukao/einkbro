@@ -47,10 +47,27 @@ import de.baumann.browser.popups.Popup_readLater;
 public class helper_editText {
 
 
-    public static void editText_Touch(EditText editText, final Activity from) {
+    public static void editText_Touch(EditText editText, final Activity from, final WebView webview) {
 
         editText.setOnTouchListener(new class_OnSwipeTouchListener_editText(from) {
             public void onSwipeTop() {
+                helper_webView.closeWebView(from, webview);
+                from.finishAffinity();
+            }
+            public void onSwipeRight() {
+                helper_main.switchToActivity(from, Popup_readLater.class, "", false);
+            }
+            public void onSwipeLeft() {
+                helper_main.switchToActivity(from, Popup_bookmarks.class, "", false);
+            }
+        });
+    }
+
+    public static void editText_Touch_Bookmark (EditText editText, final Activity from) {
+
+        editText.setOnTouchListener(new class_OnSwipeTouchListener_editText(from) {
+            public void onSwipeTop() {
+                helper_main.isClosed(from);
                 from.finishAffinity();
             }
             public void onSwipeRight() {

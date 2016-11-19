@@ -27,6 +27,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
@@ -35,7 +36,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.method.LinkMovementMethod;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -261,6 +264,55 @@ public class Activity_settings extends AppCompatActivity {
             });
         }
 
+        private void addProtectListener() {
+
+            Preference reset = findPreference("protect_PW");
+            reset.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                public boolean onPreferenceClick(Preference pref) {
+
+                    final Activity activity = getActivity();
+                    final class_SecurePreferences sharedPrefSec = new class_SecurePreferences(activity, "sharedPrefSec", "Ywn-YM.XK$b:/:&CsL8;=L,y4", true);
+                    final String password = sharedPrefSec.getString("protect_PW");
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                    View dialogView = View.inflate(activity, R.layout.dialog_pin, null);
+
+                    final EditText pass_userPW = (EditText) dialogView.findViewById(R.id.pass_userPin);
+                    pass_userPW.setText(password);
+
+                    builder.setView(dialogView);
+                    builder.setTitle(R.string.action_protect);
+                    builder.setPositiveButton(R.string.toast_yes, new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int whichButton) {
+
+                            String inputTag = pass_userPW.getText().toString().trim();
+                            sharedPrefSec.put("protect_PW", inputTag);
+
+                        }
+                    });
+                    builder.setNegativeButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            dialog.cancel();
+                        }
+                    });
+
+                    final AlertDialog dialog2 = builder.create();
+                    // Display the custom alert dialog on interface
+                    dialog2.show();
+
+                    new Handler().postDelayed(new Runnable() {
+                        public void run() {
+                            helper_main.showKeyboard(activity,pass_userPW);
+                        }
+                    }, 200);
+
+                    return true;
+                }
+            });
+        }
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -271,6 +323,7 @@ public class Activity_settings extends AppCompatActivity {
             addBackup_dbListener();
             addRestore_dbListener();
             addRestore_searchChooseListener();
+            addProtectListener();
         }
     }
 
