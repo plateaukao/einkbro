@@ -309,6 +309,24 @@ public class Bookmarks extends AppCompatActivity {
         finishAffinity();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();    //To change body of overridden methods use File | Settings | File Templates.
+        helper_main.isOpened(Bookmarks.this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();    //To change body of overridden methods use File | Settings | File Templates.
+        helper_main.isOpened(Bookmarks.this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();    //To change body of overridden methods use File | Settings | File Templates.
+        helper_main.isClosed(Bookmarks.this);
+    }
+
     private void setBookmarkList() {
 
         ArrayList<HashMap<String,String>> mapList = new ArrayList<>();

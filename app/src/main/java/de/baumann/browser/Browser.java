@@ -1200,6 +1200,7 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
     @Override
     protected void onPause() {
         super.onPause();    //To change body of overridden methods use File | Settings | File Templates.
+        helper_main.isOpened(Browser.this);
         mWebView.onPause();
     }
 
@@ -1207,11 +1208,13 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
     protected void onResume() {
         super.onResume();    //To change body of overridden methods use File | Settings | File Templates.
         mWebView.onResume();
+        helper_main.isOpened(Browser.this);
     }
 
     @Override
     protected void onStop() {
         super.onStop();    //To change body of overridden methods use File | Settings | File Templates.
+        helper_main.isClosed(Browser.this);
         if (inCustomView()) {
             hideCustomView();
         }

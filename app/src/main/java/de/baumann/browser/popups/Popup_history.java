@@ -177,6 +177,18 @@ public class Popup_history extends Activity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();    //To change body of overridden methods use File | Settings | File Templates.
+        helper_main.isOpened(Popup_history.this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();    //To change body of overridden methods use File | Settings | File Templates.
+        helper_main.isOpened(Popup_history.this);
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();    //To change body of overridden methods use File | Settings | File Templates.
         helper_main.isClosed(Popup_history.this);
