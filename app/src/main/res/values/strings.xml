@@ -95,6 +95,7 @@
     <string name="toast_extension">No supported file extension</string>
     <string name="toast_install_app">Please install an app to perform action.</string>
     <string name="toast_wrongPW">Uuups. Wrong password.</string>
+    <string name="toast_exit">Do you want to exit?</string>
 
 
     // Bookmarks // ReadLater // Password
@@ -226,6 +227,9 @@
     <string name="action_protect_summary">Set a pin to protect app against unwanted access. Only use numbers. Let empty, if you do
         not want to protect the app.</string>
 
+    <string name="action_rotation">Rotation</string>
+    <string name="action_rotation_summary">Set the rotation mode of the app: auto, portrait or landscape.</string>
+
 
     //File chooser
 
@@ -245,7 +249,7 @@
 
     <string name="pw_forgotten">Pin forgotten?</string>
     <string name="pw_hint">Enter pin</string>
-    <string name="pw_forgotten_dialog">Do you want to delete all user data (also login data, saved bookmarks, notes, …) to reset
+    <string name="pw_forgotten_dialog">Do you want to delete all lists and your complete user data to reset
         your app pin? The application will close.</string>
 
 </resources>

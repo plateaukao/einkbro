@@ -68,6 +68,7 @@ public class Popup_pass extends Activity {
         }
 
         setContentView(R.layout.activity_popup);
+        helper_main.setOrientation(Popup_pass.this);
 
         Button button = (Button) findViewById(R.id.button);
         button.setVisibility(View.GONE);

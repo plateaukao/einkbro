@@ -67,6 +67,7 @@ public class Popup_bookmarks extends Activity {
         }
 
         setContentView(R.layout.activity_popup);
+        helper_main.setOrientation(Popup_bookmarks.this);
 
         Button button = (Button) findViewById(R.id.button);
         button.setVisibility(View.GONE);

@@ -96,6 +96,7 @@
     <string name="toast_extension">Keine unterstützte Dateiendung</string>
     <string name="toast_install_app">Bitte eine App installieren um die Aktion auszuführen.</string>
     <string name="toast_wrongPW">Uuups. Falsches Passwort.</string>
+    <string name="toast_exit">Möchtest du die App verlassen?</string>
 
 
     // Bookmarks // ReadLater // Password
@@ -237,6 +238,9 @@
     <string name="action_protect_summary">Bestimme eine Pin um die App vor unbefugtem Zugriff zu schützen. Benutze nur Nummern.
         Leer lassen, wenn du die App nicht schützen willst.</string>
 
+    <string name="action_rotation">Ausrichtung</string>
+    <string name="action_rotation_summary">Bestimme die Ausrichtung der App: automatich, Hoch- oder Querformat.</string>
+
 
     //File chooser
 
@@ -256,8 +260,7 @@
 
     <string name="pw_forgotten">Pin vergessen?</string>
     <string name="pw_hint">Pin eingeben</string>
-    <string name="pw_forgotten_dialog">Möchtest du alle persönlichen Daten (auch die Logindaten, gespeicherten Lesezeichen, Notizen,
-        …) löschen, um deine Zugangspin zurückzusetzen? Die Anwendung wird dann beendet.</string>
-
+    <string name="pw_forgotten_dialog">Möchtest du alle Listen und deine persönlichen Daten löschen, um deine Zugangspin
+        zurückzusetzen? Die Anwendung wird dann beendet.</string>
 
 </resources>

@@ -87,6 +87,7 @@ public class Bookmarks extends AppCompatActivity {
         }
 
         setContentView(R.layout.activity_bookmarks);
+        helper_main.setOrientation(Bookmarks.this);
 
         sharedPref.edit()
                 .putString("started", "")
@@ -305,8 +306,16 @@ public class Bookmarks extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        helper_main.isClosed(Bookmarks.this);
-        finishAffinity();
+        Snackbar snackbar = Snackbar
+                .make(listView, getString(R.string.toast_exit), Snackbar.LENGTH_SHORT)
+                .setAction(getString(R.string.toast_yes), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        helper_main.isClosed(Bookmarks.this);
+                        finishAffinity();
+                    }
+                });
+        snackbar.show();
     }
 
     @Override

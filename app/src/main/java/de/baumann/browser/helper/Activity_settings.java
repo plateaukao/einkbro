@@ -67,6 +67,7 @@ public class Activity_settings extends AppCompatActivity {
         }
 
         setContentView(R.layout.activity_settings);
+        helper_main.setOrientation(Activity_settings.this);
         setTitle(R.string.menu_settings);
 
         sharedPref.edit().putString("started", "").apply();
@@ -329,6 +330,7 @@ public class Activity_settings extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        helper_main.isOpened(Activity_settings.this);
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         if (sharedPref.getString("lastActivity", "").equals("browser")) {
             helper_main.switchToActivity(Activity_settings.this, Browser.class, sharedPref.getString("pass_copy_url", ""), true);
@@ -343,6 +345,7 @@ public class Activity_settings extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == android.R.id.home) {
+            helper_main.isOpened(Activity_settings.this);
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
             if (sharedPref.getString("lastActivity", "").equals("browser")) {
                 helper_main.switchToActivity(Activity_settings.this, Browser.class, sharedPref.getString("pass_copy_url", ""), true);

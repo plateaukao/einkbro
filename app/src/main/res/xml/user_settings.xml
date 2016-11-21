@@ -125,6 +125,14 @@
             android:defaultValue="true" />
 
         <ListPreference
+            android:title="@string/action_rotation"
+            android:summary="@string/action_rotation_summary"
+            android:key="orientation"
+            android:defaultValue="auto"
+            android:entries="@array/listArrayOrientation"
+            android:entryValues="@array/listValuesOrientation" />
+
+        <ListPreference
             android:title="@string/action_font"
             android:summary="@string/action_font_summary"
             android:key="font"

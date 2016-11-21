@@ -24,7 +24,7 @@ public class DirAdapter extends ArrayAdapter<File> {
     private final List<File> m_entries;
 
     public DirAdapter(Context cxt, List<File> entries) {
-        super(cxt, R.layout.li_row_textview, R.id.text1, entries);
+        super(cxt, R.layout.list_item_file, R.id.text1, entries);
         m_entries = entries;
     }
 

@@ -128,4 +128,16 @@
         <item>de</item>
     </string-array>
 
+    <string-array name="listArrayOrientation">
+        <item>Automatisch</item>
+        <item>Hochformat</item>
+        <item>Querformat</item>
+    </string-array>
+
+    <string-array name="listValuesOrientation">
+        <item>auto</item>
+        <item>portrait</item>
+        <item>landscape</item>
+    </string-array>
+
 </resources>

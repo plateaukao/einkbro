@@ -63,6 +63,7 @@ public class Popup_history extends Activity {
         }
 
         setContentView(R.layout.activity_popup);
+        helper_main.setOrientation(Popup_history.this);
 
         Button button = (Button) findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {

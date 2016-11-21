@@ -156,6 +156,7 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
         }
 
         setContentView(R.layout.activity_browser);
+        helper_main.setOrientation(Browser.this);
         customViewContainer = (FrameLayout) findViewById(R.id.customViewContainer);
 
         sharedPref.edit()
@@ -490,7 +491,15 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
         } else if ((mCustomView == null) && mWebView.canGoBack()) {
             mWebView.goBack();
         } else {
-            helper_webView.closeWebView(Browser.this, mWebView);
+            Snackbar snackbar = Snackbar
+                    .make(mWebView, getString(R.string.toast_exit), Snackbar.LENGTH_SHORT)
+                    .setAction(getString(R.string.toast_yes), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            helper_webView.closeWebView(Browser.this, mWebView);
+                        }
+                    });
+            snackbar.show();
         }
     }
 

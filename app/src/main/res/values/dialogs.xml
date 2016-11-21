@@ -125,4 +125,16 @@
         <item>de</item>
     </string-array>
 
+    <string-array name="listArrayOrientation">
+        <item>Auto rotate</item>
+        <item>Portrait</item>
+        <item>Landscape</item>
+    </string-array>
+
+    <string-array name="listValuesOrientation">
+        <item>auto</item>
+        <item>portrait</item>
+        <item>landscape</item>
+    </string-array>
+
 </resources>

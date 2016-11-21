@@ -46,6 +46,7 @@ public class Activity_settings_search extends AppCompatActivity {
         }
 
         setContentView(R.layout.activity_settings);
+        helper_main.setOrientation(Activity_settings_search.this);
         setTitle(R.string.action_searchChoose);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

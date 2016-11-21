@@ -67,6 +67,7 @@ public class Popup_readLater extends Activity {
         }
 
         setContentView(R.layout.activity_popup);
+        helper_main.setOrientation(Popup_readLater.this);
 
         Button button = (Button) findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {

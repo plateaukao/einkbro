@@ -27,6 +27,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
@@ -176,6 +177,16 @@ public class helper_main {
         sharedPref.edit()
                 .putBoolean("isOpened", true)
                 .apply();
+    }
+
+    public static void setOrientation (Activity from) {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
+        if (sharedPref.getString("orientation", "auto").equals("landscape")) {
+            from.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
+        if (sharedPref.getString("orientation", "auto").equals("portrait")) {
+            from.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
     }
 
     public static SpannableString textSpannable (String text) {
