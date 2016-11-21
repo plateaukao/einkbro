@@ -1,7 +1,16 @@
-### v 1.0
-- first release
-
 ### Pre releases on xda:
+
+v5: (WIP)
+
+- settings:rotation mode
+
+
+v4:
+
+- pin protection
+- fullscreen optional
+- new app shortcut Icons
+
 
 v3:
 
