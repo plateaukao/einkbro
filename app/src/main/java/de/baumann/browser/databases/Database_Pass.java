@@ -66,8 +66,8 @@ public class Database_Pass extends SQLiteOpenHelper {
 
         SQLiteStatement stmt = db.compileStatement("INSERT INTO bookmarks VALUES(?, ?, ?, ?, ?)");
         stmt.bindLong(1, seqno);
-        stmt.bindString(2, "First Entry");
-        stmt.bindString(3, "https://www.startpage.com");
+        stmt.bindString(2, "Default Entry - Browser on Github");
+        stmt.bindString(3, "https://github.com/scoute-dich/browser/");
         stmt.bindString(4, "Your username");
         stmt.bindString(5, "Your password");
         stmt.executeInsert();

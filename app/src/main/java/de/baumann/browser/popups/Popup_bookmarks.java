@@ -22,7 +22,6 @@ package de.baumann.browser.popups;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -41,8 +40,6 @@ import java.util.HashMap;
 import de.baumann.browser.Browser;
 import de.baumann.browser.R;
 import de.baumann.browser.databases.Database_Bookmarks;
-import de.baumann.browser.helper.Activity_password;
-import de.baumann.browser.helper.class_SecurePreferences;
 import de.baumann.browser.helper.helper_main;
 
 public class Popup_bookmarks extends Activity {
@@ -53,21 +50,11 @@ public class Popup_bookmarks extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setContentView(R.layout.activity_popup);
+        helper_main.onStart(Popup_bookmarks.this);
+
         PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
         PreferenceManager.setDefaultValues(this, R.xml.user_settings_search, false);
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-
-        class_SecurePreferences sharedPrefSec = new class_SecurePreferences(Popup_bookmarks.this, "sharedPrefSec", "Ywn-YM.XK$b:/:&CsL8;=L,y4", true);
-        String pw = sharedPrefSec.getString("protect_PW");
-
-        if (pw != null  && pw.length() > 0) {
-            if (sharedPref.getBoolean("isOpened", true)) {
-                helper_main.switchToActivity(Popup_bookmarks.this, Activity_password.class, "", false);
-            }
-        }
-
-        setContentView(R.layout.activity_popup);
-        helper_main.setOrientation(Popup_bookmarks.this);
 
         Button button = (Button) findViewById(R.id.button);
         button.setVisibility(View.GONE);

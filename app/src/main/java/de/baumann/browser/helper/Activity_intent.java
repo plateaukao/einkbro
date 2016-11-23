@@ -62,9 +62,7 @@ public class Activity_intent extends Activity {
         int n = rand.nextInt(100000); // Gives n such that 0 <= n < 20
 
         android.content.Intent iMain = new android.content.Intent();
-        iMain.setAction(android.content.Intent.ACTION_VIEW);
         iMain.putExtra("url", link);
-        iMain.putExtra("title", domain);
         iMain.setClassName(Activity_intent.this, "de.baumann.browser.Browser");
 
         android.content.Intent iAction = new android.content.Intent(this, Popup_readLater.class);
@@ -91,6 +89,5 @@ public class Activity_intent extends Activity {
         notificationManager.notify(0, notification);
 
         finish();
-
     }
 }

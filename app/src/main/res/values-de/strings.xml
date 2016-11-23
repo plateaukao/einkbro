@@ -61,6 +61,7 @@
     <string name="menu_cancel">Abbrechen</string>
     <string name="menu_pass">Öffne passSpeicher</string>
     <string name="menu_toggle">Einstellungen</string>
+    <string name="menu_toggle_title">Einstellungen (Sitzung)</string>
     <string name="menu_help">Hilfe</string>
     <string name="menu_createShortcut">Erstelle Verknüpfung</string>
     <string name="menu_createShortcut_success">Verknüpfung erstellt</string>
@@ -148,11 +149,12 @@
     <string name="action_font_summary">Ändere die Schriftgröße für Internetseiten.</string>
 
     <string name="action_backup">Sicherung</string>
-    <string name="action_backup_summary">Sichere deine Lesezeichen, die leseSpäter Liste und den passSpeicher auf der SD-Karte.
-        Eine neue Sicherung überschreibt immer die bestehende.</string>
+    <string name="action_backup_summary">Sichere deine Lesezeichen, die leseSpäter Liste, passSpeicher und die Javascript Whitelist
+        auf der SD-Karte. Eine neue Sicherung überschreibt immer die bestehende.</string>
 
     <string name="action_restore">Wiederherstellung</string>
-    <string name="action_restore_summary">Stelle deine Lesezeichen, die leseSpäter Liste und den passSpeicher wieder her.</string>
+    <string name="action_restore_summary">Stelle deine Lesezeichen, die leseSpäter Liste, den passSpeicher und die Javascript
+        Whitelist wieder her.</string>
 
     <string name="action_java">Javascript</string>
     <string name="action_java_summary">Manche Funktionen von angezeigten Internetseiten benötigen Javascript.
@@ -240,6 +242,9 @@
 
     <string name="action_rotation">Ausrichtung</string>
     <string name="action_rotation_summary">Bestimme die Ausrichtung der App: automatich, Hoch- oder Querformat.</string>
+
+    <string name="action_whiteList">Whitelist</string>
+    <string name="action_whiteList_summary">Lösche deine Javascript Whitelist.</string>
 
 
     //File chooser

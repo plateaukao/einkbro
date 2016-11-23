@@ -41,6 +41,7 @@ import android.text.SpannableString;
 import android.text.util.Linkify;
 import android.view.Gravity;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -179,8 +180,20 @@ public class helper_main {
                 .apply();
     }
 
-    public static void setOrientation (Activity from) {
+    public static void onStart (Activity from) {
+
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
+        class_SecurePreferences sharedPrefSec = new class_SecurePreferences(from, "sharedPrefSec", "Ywn-YM.XK$b:/:&CsL8;=L,y4", true);
+        String pw = sharedPrefSec.getString("protect_PW");
+
+        if (pw != null  && pw.length() > 0) {
+            if (sharedPref.getBoolean("isOpened", true)) {
+                helper_main.switchToActivity(from, Activity_password.class, "", false);
+            }
+        }
+        if (sharedPref.getBoolean ("hideStatus", false)){
+            from.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        }
         if (sharedPref.getString("orientation", "auto").equals("landscape")) {
             from.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }

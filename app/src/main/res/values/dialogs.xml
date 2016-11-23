@@ -79,8 +79,9 @@
         &#8226;&lt;i> Settings (start screen):&lt;/i> In the settings you can configure the behavior of the app, some privacy and
         security settings. At the app start these settings will always be loaded.&lt;br>
         &#8226;&lt;i> Settings (browser):&lt;/i> Here you can overwrite the default settings for a short time. These settings will
-        get lost at the next app start.&lt;br>&lt;br>
-
+        get lost at the next app start. By clicking the red cross you can also add websites to a whitelist for javascript. They will
+        be marked with a \"green check icon\". Javascript will then always be allowed for these websites (even after restarting
+        the app).&lt;br>&lt;br>
         &lt;b>Search:&lt;/b>&lt;br>
         You can set your preferred search engine and the language for Wikipedia in the settings. You can search direct on different
         sites by clicking the list symbol right of the magnifier icon. The supported sites you can also configure in the settings.

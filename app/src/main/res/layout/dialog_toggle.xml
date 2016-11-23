@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingEnd="20dp"
@@ -18,7 +20,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/textView"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_toStartOf="@+id/switch1" />
+            android:layout_toStartOf="@+id/imageButton_js" />
 
         <Switch
             android:layout_width="wrap_content"
@@ -26,6 +28,21 @@
             android:layout_alignParentEnd="true"
             android:id="@+id/switch1"
             android:checked="false" />
+
+        <ImageButton
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            app:srcCompat="@drawable/close_red"
+            android:layout_toStartOf="@+id/switch1"
+            android:id="@+id/imageButton_js"
+            android:background="?android:selectableItemBackground"
+            tools:ignore="ContentDescription"
+            android:layout_centerVertical="true"
+            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
+            android:scaleType="centerCrop" />
 
     </RelativeLayout>
 
@@ -39,7 +56,6 @@
             android:text="@string/action_pictures"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textView2"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_toStartOf="@+id/switch2" />
 
@@ -62,7 +78,6 @@
             android:text="@string/action_loc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textView3"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_toStartOf="@+id/switch3" />
 
@@ -85,7 +100,6 @@
             android:text="@string/action_cookie"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textView4"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_toStartOf="@+id/switch4" />
 

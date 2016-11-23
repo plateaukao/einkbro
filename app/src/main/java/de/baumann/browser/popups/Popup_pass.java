@@ -40,7 +40,6 @@ import java.util.HashMap;
 
 import de.baumann.browser.R;
 import de.baumann.browser.databases.Database_Pass;
-import de.baumann.browser.helper.Activity_password;
 import de.baumann.browser.helper.class_SecurePreferences;
 import de.baumann.browser.helper.helper_main;
 
@@ -54,21 +53,13 @@ public class Popup_pass extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setContentView(R.layout.activity_popup);
+        helper_main.onStart(Popup_pass.this);
+
         PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
         PreferenceManager.setDefaultValues(this, R.xml.user_settings_search, false);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPrefSec = new class_SecurePreferences(Popup_pass.this, "sharedPrefSec", "Ywn-YM.XK$b:/:&CsL8;=L,y4", true);
-
-        String pw = sharedPrefSec.getString("protect_PW");
-
-        if (pw != null  && pw.length() > 0) {
-            if (sharedPref.getBoolean("isOpened", true)) {
-                helper_main.switchToActivity(Popup_pass.this, Activity_password.class, "", false);
-            }
-        }
-
-        setContentView(R.layout.activity_popup);
-        helper_main.setOrientation(Popup_pass.this);
 
         Button button = (Button) findViewById(R.id.button);
         button.setVisibility(View.GONE);

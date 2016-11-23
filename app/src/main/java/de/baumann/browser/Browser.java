@@ -53,7 +53,6 @@ import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.webkit.CookieManager;
 import android.webkit.DownloadListener;
 import android.webkit.GeolocationPermissions;
@@ -82,9 +81,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import de.baumann.browser.databases.Database_ReadLater;
-import de.baumann.browser.helper.Activity_password;
 import de.baumann.browser.helper.Activity_settings;
-import de.baumann.browser.helper.class_SecurePreferences;
 import de.baumann.browser.helper.helper_editText;
 import de.baumann.browser.helper.helper_webView;
 import de.baumann.browser.helper.helper_main;
@@ -101,6 +98,10 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
     private ActionBar actionBar;
     private Bitmap bitmap;
     private EditText editText;
+    private FrameLayout customViewContainer;
+    private WebChromeClient.CustomViewCallback customViewCallback;
+    private View mCustomView;
+    private myWebChromeClient mWebChromeClient;
     private SharedPreferences sharedPref;
     private File shareFile;
     private ValueCallback<Uri[]> mFilePathCallback;
@@ -108,9 +109,8 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
     private String progressString;
     private String shareString;
     private String mCameraPhotoPath;
-    private String wikiLang;
-    private String searchEngine;
     private String subStr;
+    private final String TAG = Browser.class.getSimpleName();
 
     private static final int ID_SAVE_IMAGE = 10;
     private static final int ID_READ_LATER = 11;
@@ -119,62 +119,42 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
     private static final int ID_SHARE_IMAGE = 14;
     private static final int REQUEST_CODE_LOLLIPOP = 1;
 
-    private FrameLayout customViewContainer;
-    private WebChromeClient.CustomViewCallback customViewCallback;
-    private View mCustomView;
-    private myWebChromeClient mWebChromeClient;
-
+    private void hideCustomView() {
+        mWebChromeClient.onHideCustomView();
+    }
+    private boolean inCustomView() {
+        return (mCustomView != null);
+    }
     private boolean isNetworkUnAvailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService( CONNECTIVITY_SERVICE );
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo == null || !activeNetworkInfo.isConnected();
     }
 
-    private static final String TAG = Browser.class.getSimpleName();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         WebView.enableSlowWholeDocumentDraw();
+        setContentView(R.layout.activity_browser);
+        helper_main.onStart(Browser.this);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
         PreferenceManager.setDefaultValues(this, R.xml.user_settings_search, false);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-
-        class_SecurePreferences sharedPrefSec = new class_SecurePreferences(Browser.this, "sharedPrefSec", "Ywn-YM.XK$b:/:&CsL8;=L,y4", true);
-        String pw = sharedPrefSec.getString("protect_PW");
-
-        if (pw != null  && pw.length() > 0) {
-            if (sharedPref.getBoolean("isOpened", true)) {
-                helper_main.switchToActivity(Browser.this, Activity_password.class, "", false);
-            }
-        }
-
-        if (sharedPref.getBoolean ("hideStatus", false)){
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        }
-
-        setContentView(R.layout.activity_browser);
-        helper_main.setOrientation(Browser.this);
-        customViewContainer = (FrameLayout) findViewById(R.id.customViewContainer);
-
-        sharedPref.edit()
-                .putInt("keyboard", 0)
-                .apply();
+        sharedPref.edit().putInt("keyboard", 0).apply();
         sharedPref.getInt("keyboard", 0);
 
-        searchEngine = sharedPref.getString("searchEngine", "https://startpage.com/do/search?query=");
-        wikiLang = sharedPref.getString("wikiLang", "en");
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        customViewContainer = (FrameLayout) findViewById(R.id.customViewContainer);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         editText = (EditText) findViewById(R.id.editText);
         editText.setHint(R.string.app_search_hint);
         editText.clearFocus();
 
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
         imageButton = (ImageButton) findViewById(R.id.imageButton);
         imageButton.setVisibility(View.INVISIBLE);
         imageButton.setOnClickListener(new View.OnClickListener() {
@@ -303,7 +283,6 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
             snackbar.show();
         } else {
             mWebView.loadUrl(intent.getStringExtra("url"));
-            setTitle(intent.getStringExtra("title"));
         }
     }
 
@@ -484,8 +463,47 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
     }
 
     @Override
-    public void onBackPressed() {
+    public void onScrollChanged(int scrollY, boolean firstScroll, boolean dragging) {
+    }
 
+    @Override
+    public void onDownMotionEvent() {
+    }
+
+    @Override
+    public void onUpOrCancelMotionEvent(ScrollState scrollState) {
+        actionBar = getSupportActionBar();
+        assert actionBar != null;
+        if (scrollState == ScrollState.UP) {
+            if (progressString.equals("loaded")) {
+                imageButton.setVisibility(View.VISIBLE);
+                imageButton_left.setVisibility(View.INVISIBLE);
+                imageButton_right.setVisibility(View.INVISIBLE);
+                if (actionBar.isShowing()) {
+                    actionBar.hide();
+                }
+            }
+        } else if (scrollState == ScrollState.DOWN) {
+            if (progressString.equals("loaded")) {
+                imageButton.setVisibility(View.INVISIBLE);
+                editText.setText(mWebView.getTitle());
+                if (!actionBar.isShowing()) {
+                    actionBar.show();
+                }
+                setNavArrows();
+            }
+        } else {
+            imageButton.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    @Override
+    public AssetManager getAssets() {
+        return getResources().getAssets();
+    }
+
+    @Override
+    public void onBackPressed() {
         if (inCustomView()) {
             hideCustomView();
         } else if ((mCustomView == null) && mWebView.canGoBack()) {
@@ -500,6 +518,29 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
                         }
                     });
             snackbar.show();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();    //To change body of overridden methods use File | Settings | File Templates.
+        helper_main.isOpened(Browser.this);
+        mWebView.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();    //To change body of overridden methods use File | Settings | File Templates.
+        mWebView.onResume();
+        helper_main.isOpened(Browser.this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();    //To change body of overridden methods use File | Settings | File Templates.
+        helper_main.isClosed(Browser.this);
+        if (inCustomView()) {
+            hideCustomView();
         }
     }
 
@@ -611,9 +652,13 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
         int id = item.getItemId();
 
         if (id == R.id.action_search) {
+
             mWebView.stopLoading();
             editText.hasFocus();
+
             String text = editText.getText().toString();
+            String searchEngine = sharedPref.getString("searchEngine", "https://startpage.com/do/search?query=");
+            String wikiLang = sharedPref.getString("wikiLang", "en");
 
             if (text.length() > 3) {
                 subStr=text.substring(3);
@@ -690,6 +735,10 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
         if (id == R.id.action_toggle) {
 
             sharedPref.edit().putString("started", "yes").apply();
+            String link = mWebView.getUrl();
+            int domainInt = link.indexOf("//") + 2;
+            final String domain = link.substring(domainInt, link.indexOf('/', domainInt));
+            final String whiteList = sharedPref.getString("whiteList", "");
 
             AlertDialog.Builder builder = new AlertDialog.Builder(Browser.this);
             View dialogView = View.inflate(Browser.this, R.layout.dialog_toggle, null);
@@ -698,7 +747,13 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
             Switch sw_pictures = (Switch) dialogView.findViewById(R.id.switch2);
             Switch sw_location = (Switch) dialogView.findViewById(R.id.switch3);
             Switch sw_cookies = (Switch) dialogView.findViewById(R.id.switch4);
+            final ImageButton whiteList_js = (ImageButton) dialogView.findViewById(R.id.imageButton_js);
 
+            if (whiteList.contains(domain)) {
+                whiteList_js.setImageResource(R.drawable.check_green);
+            } else {
+                whiteList_js.setImageResource(R.drawable.close_red);
+            }
             if (sharedPref.getString("java_string", "True").equals(getString(R.string.app_yes))){
                 sw_java.setChecked(true);
             } else {
@@ -720,6 +775,19 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
                 sw_cookies.setChecked(false);
             }
 
+            whiteList_js.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (whiteList.contains(domain)) {
+                        whiteList_js.setImageResource(R.drawable.close_red);
+                        String removed = whiteList.replaceAll(domain, "");
+                        sharedPref.edit().putString("whiteList", removed).apply();
+                    } else {
+                        whiteList_js.setImageResource(R.drawable.check_green);
+                        sharedPref.edit().putString("whiteList", whiteList + " " + domain).apply();
+                    }
+                }
+            });
             sw_java.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
                 @Override
@@ -785,7 +853,7 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
             });
 
             builder.setView(dialogView);
-            builder.setTitle(R.string.menu_settings);
+            builder.setTitle(R.string.menu_toggle_title);
             builder.setPositiveButton(R.string.toast_yes, new DialogInterface.OnClickListener() {
 
                 public void onClick(DialogInterface dialog, int whichButton) {
@@ -801,9 +869,9 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
                 }
             });
 
-            final AlertDialog dialog2 = builder.create();
+            final AlertDialog dialog = builder.create();
             // Display the custom alert dialog on interface
-            dialog2.show();
+            dialog.show();
 
         }
 
@@ -947,133 +1015,7 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
         return super.onOptionsItemSelected(item);
     }
 
-    private void screenshot() {
 
-        shareFile = helper_main.newFile();
-
-        try{
-            mWebView.measure(View.MeasureSpec.makeMeasureSpec(
-                    View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED),
-                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-            mWebView.layout(0, 0, mWebView.getMeasuredWidth(), mWebView.getMeasuredHeight());
-            mWebView.setDrawingCacheEnabled(true);
-            mWebView.buildDrawingCache();
-
-            bitmap = Bitmap.createBitmap(mWebView.getMeasuredWidth(),
-                    mWebView.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
-
-            Canvas canvas = new Canvas(bitmap);
-            Paint paint = new Paint();
-            int iHeight = bitmap.getHeight();
-            canvas.drawBitmap(bitmap, 0, iHeight, paint);
-            mWebView.draw(canvas);
-
-        }catch (OutOfMemoryError e) {
-            e.printStackTrace();
-            Snackbar.make(mWebView, R.string.toast_screenshot_failed, Snackbar.LENGTH_SHORT).show();
-        }
-
-        if (bitmap != null) {
-            try {
-                OutputStream fOut;
-                fOut = new FileOutputStream(shareFile);
-
-                bitmap.compress(Bitmap.CompressFormat.PNG, 50, fOut);
-                fOut.flush();
-                fOut.close();
-                bitmap.recycle();
-
-                Snackbar snackbar = Snackbar
-                        .make(mWebView, getString(R.string.context_saveImage_toast) + " " + helper_main.newFileName() +
-                                ". " + getString(R.string.app_open), Snackbar.LENGTH_LONG)
-                        .setAction(getString(R.string.toast_yes), new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                String startDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
-                                helper_main.openFilePicker(Browser.this, mWebView, startDir);
-                            }
-                        });
-                snackbar.show();
-
-                Uri uri = Uri.fromFile(shareFile);
-                Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri);
-                sendBroadcast(intent);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                Snackbar.make(mWebView, R.string.toast_perm, Snackbar.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-    private void setNavArrows() {
-
-        if (sharedPref.getBoolean ("arrow", false)){
-            if (mWebView.canGoBack()) {
-                imageButton_left.setVisibility(View.VISIBLE);
-            } else {
-                imageButton_left.setVisibility(View.INVISIBLE);
-            }
-            imageButton_left.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mWebView.goBack();
-                }
-            });
-
-            if (mWebView.canGoForward()) {
-                imageButton_right.setVisibility(View.VISIBLE);
-            } else {
-                imageButton_right.setVisibility(View.INVISIBLE);
-            }
-            imageButton_right.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mWebView.goForward();
-                }
-            });
-        }
-    }
-
-    @Override
-    public void onScrollChanged(int scrollY, boolean firstScroll, boolean dragging) {
-    }
-
-    @Override
-    public void onDownMotionEvent() {
-    }
-
-    @Override
-    public void onUpOrCancelMotionEvent(ScrollState scrollState) {
-        actionBar = getSupportActionBar();
-        assert actionBar != null;
-        if (scrollState == ScrollState.UP) {
-            if (progressString.equals("loaded")) {
-                imageButton.setVisibility(View.VISIBLE);
-                imageButton_left.setVisibility(View.INVISIBLE);
-                imageButton_right.setVisibility(View.INVISIBLE);
-                if (actionBar.isShowing()) {
-                    actionBar.hide();
-                }
-            }
-        } else if (scrollState == ScrollState.DOWN) {
-            if (progressString.equals("loaded")) {
-                imageButton.setVisibility(View.INVISIBLE);
-                editText.setText(mWebView.getTitle());
-                if (!actionBar.isShowing()) {
-                    actionBar.show();
-                }
-                setNavArrows();
-            }
-        } else {
-            imageButton.setVisibility(View.INVISIBLE);
-        }
-    }
-
-    @Override
-    public AssetManager getAssets() {
-        return getResources().getAssets();
-    }
 
     class myWebChromeClient extends WebChromeClient {
 
@@ -1100,6 +1042,7 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
             alert.show();
         }
 
+        @SuppressLint("SetJavaScriptEnabled")
         public void onProgressChanged(WebView view, int progress) {
 
             sharedPref.edit().putInt("keyboard", 0).apply();
@@ -1115,6 +1058,29 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
 
             progressBar.setProgress(progress);
             progressBar.setVisibility(progress == 100 ? View.GONE : View.VISIBLE);
+
+            String url = mWebView.getUrl();
+            int domainInt = mWebView.getUrl().indexOf("//") + 2;
+            final  String domain = url.substring(domainInt, url.indexOf('/', domainInt));
+            String whiteList = sharedPref.getString("whiteList", "");
+
+            if (whiteList.contains(domain)) {
+                mWebView.getSettings().setJavaScriptEnabled(true);
+            } else {
+                if (sharedPref.getString("started", "").equals("yes")) {
+                    if (sharedPref.getString("java_string", "True").equals(Browser.this.getString(R.string.app_yes))){
+                        mWebView.getSettings().setJavaScriptEnabled(true);
+                    } else {
+                        mWebView.getSettings().setJavaScriptEnabled(false);
+                    }
+                } else {
+                    if (sharedPref.getBoolean ("java", false)){
+                        mWebView.getSettings().setJavaScriptEnabled(true);
+                    } else {
+                        mWebView.getSettings().setJavaScriptEnabled(false);
+                    }
+                }
+            }
 
             if (progress == 100) {
                 progressString = "loaded";
@@ -1206,34 +1172,90 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
         }
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();    //To change body of overridden methods use File | Settings | File Templates.
-        helper_main.isOpened(Browser.this);
-        mWebView.onPause();
-    }
+    private void screenshot() {
 
-    @Override
-    protected void onResume() {
-        super.onResume();    //To change body of overridden methods use File | Settings | File Templates.
-        mWebView.onResume();
-        helper_main.isOpened(Browser.this);
-    }
+        shareFile = helper_main.newFile();
 
-    @Override
-    protected void onStop() {
-        super.onStop();    //To change body of overridden methods use File | Settings | File Templates.
-        helper_main.isClosed(Browser.this);
-        if (inCustomView()) {
-            hideCustomView();
+        try{
+            mWebView.measure(View.MeasureSpec.makeMeasureSpec(
+                    View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED),
+                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+            mWebView.layout(0, 0, mWebView.getMeasuredWidth(), mWebView.getMeasuredHeight());
+            mWebView.setDrawingCacheEnabled(true);
+            mWebView.buildDrawingCache();
+
+            bitmap = Bitmap.createBitmap(mWebView.getMeasuredWidth(),
+                    mWebView.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+
+            Canvas canvas = new Canvas(bitmap);
+            Paint paint = new Paint();
+            int iHeight = bitmap.getHeight();
+            canvas.drawBitmap(bitmap, 0, iHeight, paint);
+            mWebView.draw(canvas);
+
+        }catch (OutOfMemoryError e) {
+            e.printStackTrace();
+            Snackbar.make(mWebView, R.string.toast_screenshot_failed, Snackbar.LENGTH_SHORT).show();
+        }
+
+        if (bitmap != null) {
+            try {
+                OutputStream fOut;
+                fOut = new FileOutputStream(shareFile);
+
+                bitmap.compress(Bitmap.CompressFormat.PNG, 50, fOut);
+                fOut.flush();
+                fOut.close();
+                bitmap.recycle();
+
+                Snackbar snackbar = Snackbar
+                        .make(mWebView, getString(R.string.context_saveImage_toast) + " " + helper_main.newFileName() +
+                                ". " + getString(R.string.app_open), Snackbar.LENGTH_LONG)
+                        .setAction(getString(R.string.toast_yes), new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                String startDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
+                                helper_main.openFilePicker(Browser.this, mWebView, startDir);
+                            }
+                        });
+                snackbar.show();
+
+                Uri uri = Uri.fromFile(shareFile);
+                Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri);
+                sendBroadcast(intent);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                Snackbar.make(mWebView, R.string.toast_perm, Snackbar.LENGTH_SHORT).show();
+            }
         }
     }
 
-    private boolean inCustomView() {
-        return (mCustomView != null);
-    }
+    private void setNavArrows() {
+        if (sharedPref.getBoolean ("arrow", false)){
+            if (mWebView.canGoBack()) {
+                imageButton_left.setVisibility(View.VISIBLE);
+            } else {
+                imageButton_left.setVisibility(View.INVISIBLE);
+            }
+            imageButton_left.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mWebView.goBack();
+                }
+            });
 
-    private void hideCustomView() {
-        mWebChromeClient.onHideCustomView();
+            if (mWebView.canGoForward()) {
+                imageButton_right.setVisibility(View.VISIBLE);
+            } else {
+                imageButton_right.setVisibility(View.INVISIBLE);
+            }
+            imageButton_right.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mWebView.goForward();
+                }
+            });
+        }
     }
 }

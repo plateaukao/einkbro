@@ -1,8 +1,10 @@
-### Pre releases on xda:
+### Pre releases on [XDA - Link](http://forum.xda-developers.com/android/apps-games/app-browser-t3500091):
 
-v5: (WIP)
+v5:
 
 - settings:rotation mode
+- whitelist for javascript
+- small changes (thanks to all suggestions from the thread!)
 
 
 v4:

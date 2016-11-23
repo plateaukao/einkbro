@@ -80,8 +80,10 @@
         oder zu löschen.&lt;br>
         &#8226;&lt;i> Einstellungen (Startschirm):&lt;/i> In den Einstellungen kannst du das Verhalten der App deinen Wünschen
         anpassen. Beim Starten der App werden immer diese Einstellungen geladen.&lt;br>
-        &#8226;&lt;i> Einstellungen (Browser):&lt;/i> Hier kannst du die Standardeinstellungen kurzzeitig überschreiben. Bei einem
-        erneuten Start der App gehen diese Einstellungen verloren.&lt;br>&lt;br>
+        &#8226;&lt;i> Einstellungen (Browser):&lt;/i> Hier kannst du die Standardeinstellungen kurzzeitig überschreiben.  Bei einem
+        erneuten Start der App gehen diese Einstellungen verloren. Indem du auf das rote Kreuz klickst kannst du dort auch Internetseiten
+        zu einer Whitelist hinzufügen. Sie werden dann mit einem grünen Haken gekennzeichnet. Javascript ist für diese Internetseiten
+        dann immer erlaubt (auch nach einem Neustart der App).&lt;br>&lt;br>
 
         &lt;b>Suche:&lt;/b>&lt;br>
         Deine bevorzugte Suchmaschine und die gewünschte Sprache für Wikipedia kannst du in den Einstellungen bestimmen. Du kannst direkt auf bestimmten Seiten suchen,
@@ -113,9 +115,9 @@
 
     <string-array name="listValuesSearchEngine">
         <item>https://duckduckgo.com/?q=</item>
-        <item>https://www.google.com/search?&amp;q=</item>
+        <item>https://www.google.de/search?&amp;q=</item>
         <item>https://metager.de/meta/meta.ger3?focus=web&amp;eingabe=</item>
-        <item>https://startpage.com/do/search?query=</item>
+        <item>https://startpage.de/do/search?query=</item>
     </string-array>
 
     <string-array name="listArrayWikiLang">

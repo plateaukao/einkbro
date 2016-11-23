@@ -60,6 +60,7 @@
     <string name="menu_cancel">Cancel</string>
     <string name="menu_pass">Open passStorage</string>
     <string name="menu_toggle">Settings</string>
+    <string name="menu_toggle_title">Settings (session)</string>
     <string name="menu_help">Help</string>
     <string name="menu_createShortcut">Create shortcut</string>
     <string name="menu_createShortcut_success">Shortcut created</string>
@@ -147,11 +148,12 @@
     <string name="action_font_summary">Change font size for websites.</string>
 
     <string name="action_backup">Backup</string>
-    <string name="action_backup_summary">Backup your bookmarks, readLater lists and the passStorage to sdcard. A new backup
-        overwrites the old one.</string>
+    <string name="action_backup_summary">Backup your bookmarks, readLater lists, the passStorage and your javascript whitelist
+        to sdcard. A new backup overwrites the old one.</string>
 
     <string name="action_restore">Restore</string>
-    <string name="action_restore_summary">Restore your bookmarks, readLater lists and the passStorage from sdcard.</string>
+    <string name="action_restore_summary">Restore your bookmarks, readLater lists, the passStorage and the javascript whitelist
+        from sdcard.</string>
 
     <string name="action_java">Javascript</string>
     <string name="action_java_summary">Some functions on the websites need javascript to work. But javascript is
@@ -229,6 +231,9 @@
 
     <string name="action_rotation">Rotation</string>
     <string name="action_rotation_summary">Set the rotation mode of the app: auto, portrait or landscape.</string>
+
+    <string name="action_whiteList">Whitelist</string>
+    <string name="action_whiteList_summary">Clear your javascript whitelist.</string>
 
 
     //File chooser

@@ -37,14 +37,16 @@ import android.support.v7.widget.Toolbar;
 import android.text.method.LinkMovementMethod;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.nio.channels.FileChannel;
 
 import de.baumann.browser.Bookmarks;
@@ -58,27 +60,23 @@ public class Activity_settings extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
-        PreferenceManager.setDefaultValues(this, R.xml.user_settings_search, false);
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-
-        if (sharedPref.getBoolean ("hideStatus", false)){
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        }
-
         setContentView(R.layout.activity_settings);
-        helper_main.setOrientation(Activity_settings.this);
-        setTitle(R.string.menu_settings);
-
-        sharedPref.edit().putString("started", "").apply();
+        helper_main.onStart(Activity_settings.this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        setTitle(R.string.menu_settings);
 
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         if(actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
+        PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
+        PreferenceManager.setDefaultValues(this, R.xml.user_settings_search, false);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPref.edit().putString("started", "").apply();
+
         // Display the fragment as the activity_screen_main content
         getFragmentManager().beginTransaction().replace(R.id.content_frame, new SettingsFragment()).commit();
     }
@@ -151,6 +149,8 @@ public class Activity_settings extends AppCompatActivity {
             reset.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(Preference pref) {
 
+                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
                     File directory = new File(Environment.getExternalStorageDirectory() + "/Android/data/browser.backup/");
                     if (!directory.exists()) {
                         //noinspection ResultOfMethodCallIgnored
@@ -198,6 +198,14 @@ public class Activity_settings extends AppCompatActivity {
                             src3.close();
                             dst3.close();
 
+                            String whiteList = sharedPref.getString("whiteList", "");
+
+                            File whiteListBackup = new File(directory, "whiteList.txt");
+                            FileWriter writer = new FileWriter(whiteListBackup);
+                            writer.append(whiteList);
+                            writer.flush();
+                            writer.close();
+
                             Toast.makeText(getActivity(), R.string.toast_backup, Toast.LENGTH_SHORT).show();
                         }
                     } catch (Exception e) {
@@ -214,11 +222,28 @@ public class Activity_settings extends AppCompatActivity {
             reset.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(Preference pref) {
 
+                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                    File directory = new File(Environment.getExternalStorageDirectory() + "/Android/data/browser.backup/");
+
                     try {
                         File sd = Environment.getExternalStorageDirectory();
                         File data = Environment.getDataDirectory();
 
                         if (sd.canWrite()) {
+
+                            File whiteListBackup = new File(directory, "whiteList.txt");
+                            StringBuilder text = new StringBuilder();
+
+                            BufferedReader br = new BufferedReader(new FileReader(whiteListBackup));
+                            String line;
+
+                            while ((line = br.readLine()) != null) {
+                                text.append(line);
+                                text.append('\n');
+                            }
+                            br.close();
+                            sharedPref.edit().putString("whiteList", text.toString()).apply();
+
                             String currentDBPath = "//data//" + "de.baumann.browser"
                                     + "//databases//" + "browser.db";
                             String backupDBPath = "//Android//" + "//data//" + "//browser.backup//" + "browser.db";
@@ -314,6 +339,20 @@ public class Activity_settings extends AppCompatActivity {
             });
         }
 
+        private void addWhiteListListener() {
+
+            Preference reset = findPreference("whiteList");
+            reset.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                public boolean onPreferenceClick(Preference pref) {
+
+                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                    sharedPref.edit().putString("whiteList", "").apply();
+
+                    return true;
+                }
+            });
+        }
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -325,6 +364,7 @@ public class Activity_settings extends AppCompatActivity {
             addRestore_dbListener();
             addRestore_searchChooseListener();
             addProtectListener();
+            addWhiteListListener();
         }
     }
 

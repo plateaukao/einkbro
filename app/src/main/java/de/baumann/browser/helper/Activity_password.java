@@ -44,7 +44,8 @@ public class Activity_password extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_password);
-        helper_main.setOrientation(Activity_password.this);
+        helper_main.onStart(Activity_password.this);
+
         class_SecurePreferences sharedPrefSec = new class_SecurePreferences(Activity_password.this, "sharedPrefSec", "Ywn-YM.XK$b:/:&CsL8;=L,y4", true);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
