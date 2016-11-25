@@ -117,7 +117,7 @@
         <item>https://duckduckgo.com/?q=</item>
         <item>https://www.google.de/search?&amp;q=</item>
         <item>https://metager.de/meta/meta.ger3?focus=web&amp;eingabe=</item>
-        <item>https://startpage.de/do/search?query=</item>
+        <item>https://startpage.com/do/search?query=</item>
     </string-array>
 
     <string-array name="listArrayWikiLang">

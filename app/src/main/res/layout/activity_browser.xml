@@ -15,8 +15,7 @@
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/webView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:backgroundTintMode="add">
+            android:layout_height="match_parent" >
 
         </com.github.ksoichiro.android.observablescrollview.ObservableWebView>
 

@@ -153,7 +153,8 @@
 
     <string name="action_restore">Restore</string>
     <string name="action_restore_summary">Restore your bookmarks, readLater lists, the passStorage and the javascript whitelist
-        from sdcard.</string>
+        from sdcard. After you restored your passStorage you must open the edit dialog for an restored entry, by long pressing
+        and then save it (without changing anything) to get the database ready to work.</string>
 
     <string name="action_java">Javascript</string>
     <string name="action_java_summary">Some functions on the websites need javascript to work. But javascript is

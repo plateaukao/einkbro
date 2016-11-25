@@ -281,6 +281,10 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
                         }
                     });
             snackbar.show();
+        } else if (Intent.ACTION_VIEW.equals(action)) {
+            Uri data = intent.getData();
+            String link = data.toString();
+            mWebView.loadUrl(link);
         } else {
             mWebView.loadUrl(intent.getStringExtra("url"));
         }

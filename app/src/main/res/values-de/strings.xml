@@ -154,7 +154,8 @@
 
     <string name="action_restore">Wiederherstellung</string>
     <string name="action_restore_summary">Stelle deine Lesezeichen, die leseSpäter Liste, den passSpeicher und die Javascript
-        Whitelist wieder her.</string>
+        Whitelist wieder her. Nachdem du den passSpeicher wiederhergestellt hast, musst du den Bearbeitendialog eines gespeicherten
+        Eintrages öffnen und ihn dann (ohne etwas zu ändern) speichern, damit die Datenbank richtig benutzt werden kann.</string>
 
     <string name="action_java">Javascript</string>
     <string name="action_java_summary">Manche Funktionen von angezeigten Internetseiten benötigen Javascript.

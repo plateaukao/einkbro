@@ -43,6 +43,7 @@ import de.baumann.browser.R;
 import de.baumann.browser.databases.Database_History;
 
 import static android.content.ContentValues.TAG;
+import static android.webkit.WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE;
 
 public class helper_webView {
 
@@ -55,16 +56,19 @@ public class helper_webView {
         int fontSize = Integer.parseInt(fontSizeST);
 
         webView.getSettings().setAppCachePath(from.getApplicationContext().getCacheDir().getAbsolutePath());
-        webView.getSettings().setAllowFileAccess(true);
         webView.getSettings().setAppCacheEnabled(true);
+        webView.getSettings().setMixedContentMode(MIXED_CONTENT_COMPATIBILITY_MODE);
+        webView.getSettings().setAllowFileAccess(true);
+        webView.getSettings().setAllowContentAccess(true);
         webView.getSettings().setBuiltInZoomControls(true);
         webView.getSettings().setDisplayZoomControls(false);
+        webView.getSettings().setDomStorageEnabled(true);
         webView.getSettings().setTextZoom(fontSize);
         webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
         webView.getSettings().setGeolocationEnabled(false);
-        webView.getSettings().setDomStorageEnabled(true);
         webView.getSettings().setUseWideViewPort(true);
         webView.getSettings().setLoadWithOverviewMode(true);
+        webView.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
 
         from.registerForContextMenu(webView);
 
@@ -209,7 +213,7 @@ public class helper_webView {
             }
 
             private boolean handleUri(final Uri uri) {
-                
+
                 Log.i(TAG, "Uri =" + uri);
                 final String url = uri.toString();
                 // Based on some condition you need to determine if you are going to load the url
