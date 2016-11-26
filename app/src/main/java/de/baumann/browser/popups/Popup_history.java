@@ -20,13 +20,22 @@
 package de.baumann.browser.popups;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
@@ -35,7 +44,10 @@ import java.util.HashMap;
 
 import de.baumann.browser.Browser;
 import de.baumann.browser.R;
+import de.baumann.browser.databases.Database_Bookmarks;
 import de.baumann.browser.databases.Database_History;
+import de.baumann.browser.databases.Database_ReadLater;
+import de.baumann.browser.helper.helper_editText;
 import de.baumann.browser.helper.helper_main;
 
 public class Popup_history extends Activity {
@@ -76,39 +88,167 @@ public class Popup_history extends Activity {
                 @SuppressWarnings("unchecked")
                 HashMap<String,String> map = (HashMap<String,String>)listView.getItemAtPosition(position);
                 final String seqnoStr = map.get("seqno");
+                final String title = map.get("title");
+                final String url = map.get("url");
 
-                try {
-                    Database_History db = new Database_History(Popup_history.this);
-                    final int count = db.getRecordCount();
-                    db.close();
+                final CharSequence[] options = {
+                        getString(R.string.bookmark_edit_title),
+                        getString(R.string.menu_share),
+                        getString(R.string.menu_save),
+                        getString(R.string.bookmark_remove_bookmark)};
+                new AlertDialog.Builder(Popup_history.this)
+                        .setItems(options, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int item) {
+                                if (options[item].equals(getString(R.string.bookmark_edit_title))) {
+                                    try {
 
-                    if (count == 1) {
-                        Snackbar snackbar = Snackbar
-                                .make(listView, R.string.bookmark_remove_cannot, Snackbar.LENGTH_LONG);
-                        snackbar.show();
+                                        final Database_History db = new Database_History(Popup_history.this);
 
-                    } else {
-                        Snackbar snackbar = Snackbar
-                                .make(listView, R.string.bookmark_remove_confirmation, Snackbar.LENGTH_LONG)
-                                .setAction(R.string.toast_yes, new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        try {
-                                            Database_History db = new Database_History(Popup_history.this);
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(Popup_history.this);
+                                        View dialogView = View.inflate(Popup_history.this, R.layout.dialog_edit, null);
+
+                                        final EditText edit_title = (EditText) dialogView.findViewById(R.id.pass_title);
+                                        edit_title.setHint(R.string.pass_title);
+                                        edit_title.setText(title);
+
+                                        builder.setView(dialogView);
+                                        builder.setTitle(R.string.bookmark_edit_title);
+                                        builder.setPositiveButton(R.string.toast_yes, new DialogInterface.OnClickListener() {
+
+                                            public void onClick(DialogInterface dialog, int whichButton) {
+
+                                                String inputTag = edit_title.getText().toString().trim();
+                                                db.deleteBookmark((Integer.parseInt(seqnoStr)));
+                                                db.addBookmark(inputTag, url);
+                                                db.close();
+                                                setBookmarkList();
+                                                Snackbar.make(listView, R.string.bookmark_added, Snackbar.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                        builder.setNegativeButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
+
+                                            public void onClick(DialogInterface dialog, int whichButton) {
+                                                dialog.cancel();
+                                            }
+                                        });
+
+                                        final AlertDialog dialog2 = builder.create();
+                                        // Display the custom alert dialog on interface
+                                        dialog2.show();
+
+                                        new Handler().postDelayed(new Runnable() {
+                                            public void run() {
+                                                helper_main.showKeyboard(Popup_history.this,edit_title);
+                                            }
+                                        }, 200);
+
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
+                                if (options[item].equals(getString(R.string.bookmark_remove_bookmark))) {
+                                    try {
+                                        Database_History db = new Database_History(Popup_history.this);
+                                        final int count = db.getRecordCount();
+                                        db.close();
+
+                                        if (count == 1) {
+                                            Snackbar snackbar = Snackbar
+                                                    .make(listView, R.string.bookmark_remove_cannot, Snackbar.LENGTH_LONG);
+                                            snackbar.show();
+
+                                        } else {
                                             db.deleteBookmark(Integer.parseInt(seqnoStr));
                                             db.close();
                                             setBookmarkList();
-                                        } catch (PackageManager.NameNotFoundException e) {
-                                            e.printStackTrace();
                                         }
-                                    }
-                                });
-                        snackbar.show();
-                    }
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
+                                if (options[item].equals(getString(R.string.menu_share))) {
+                                    final CharSequence[] options = {
+                                            getString(R.string.menu_share_link),
+                                            getString(R.string.menu_share_link_copy)};
+                                    new AlertDialog.Builder(Popup_history.this)
+                                            .setItems(options, new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int item) {
+                                                    if (options[item].equals(getString(R.string.menu_share_link))) {
+                                                        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+                                                        sharingIntent.setType("text/plain");
+                                                        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, title);
+                                                        sharingIntent.putExtra(Intent.EXTRA_TEXT, url);
+                                                        startActivity(Intent.createChooser(sharingIntent, (getString(R.string.app_share_link))));
+                                                    }
+                                                    if (options[item].equals(getString(R.string.menu_share_link_copy))) {
+                                                        ClipboardManager clipboard = (ClipboardManager) Popup_history.this.getSystemService(Context.CLIPBOARD_SERVICE);
+                                                        clipboard.setPrimaryClip(ClipData.newPlainText("text", url));
+                                                        Snackbar.make(listView, R.string.context_linkCopy_toast, Snackbar.LENGTH_SHORT).show();
+                                                    }
+                                                }
+                                            }).show();
+                                }
+                                if (options[item].equals(getString(R.string.menu_save))) {
+                                    final CharSequence[] options = {
+                                            getString(R.string.menu_save_bookmark),
+                                            getString(R.string.menu_save_readLater),
+                                            getString(R.string.menu_save_pass),
+                                            getString(R.string.menu_createShortcut)};
+                                    new AlertDialog.Builder(Popup_history.this)
+                                            .setItems(options, new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int item) {
+                                                    if (options[item].equals(getString(R.string.menu_save_pass))) {
+                                                        helper_editText.editText_savePass(Popup_history.this, listView, title, url);
+                                                    }
+                                                    if (options[item].equals(getString(R.string.menu_save_bookmark))) {
+                                                        try {
+
+                                                            final Database_Bookmarks db = new Database_Bookmarks(Popup_history.this);
+                                                            db.addBookmark(title, url);
+                                                            db.close();
+                                                            Snackbar.make(listView, R.string.bookmark_added, Snackbar.LENGTH_SHORT).show();
+
+                                                        } catch (Exception e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                    }
+                                                    if (options[item].equals(getString(R.string.menu_save_readLater))) {
+                                                        try {
+                                                            final Database_ReadLater db = new Database_ReadLater(Popup_history.this);
+                                                            db.addBookmark(title, url);
+                                                            db.close();
+                                                            Snackbar.make(listView, R.string.readLater_added, Snackbar.LENGTH_SHORT).show();
+                                                        } catch (Exception e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                    }
+                                                    if (options[item].equals(getString(R.string.menu_createShortcut))) {
+                                                        Intent i = new Intent();
+                                                        i.setAction(Intent.ACTION_VIEW);
+                                                        i.setClassName(Popup_history.this, "de.baumann.browser.Browser");
+                                                        i.setData(Uri.parse(url));
+
+                                                        Intent shortcut = new Intent();
+                                                        shortcut.putExtra("android.intent.extra.shortcut.INTENT", i);
+                                                        shortcut.putExtra("android.intent.extra.shortcut.NAME", "THE NAME OF SHORTCUT TO BE SHOWN");
+                                                        shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, title);
+                                                        shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(Popup_history.this.getApplicationContext(), R.mipmap.ic_launcher));
+                                                        shortcut.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
+                                                        Popup_history.this.sendBroadcast(shortcut);
+                                                        Snackbar.make(listView, R.string.menu_createShortcut_success, Snackbar.LENGTH_SHORT).show();
+                                                    }
+                                                }
+                                            }).show();
+                                }
+
+                            }
+                        }).show();
 
                 return true;
             }

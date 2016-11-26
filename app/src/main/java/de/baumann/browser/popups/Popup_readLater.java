@@ -21,8 +21,13 @@ package de.baumann.browser.popups;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -39,7 +44,9 @@ import java.util.HashMap;
 
 import de.baumann.browser.Browser;
 import de.baumann.browser.R;
+import de.baumann.browser.databases.Database_Bookmarks;
 import de.baumann.browser.databases.Database_ReadLater;
+import de.baumann.browser.helper.helper_editText;
 import de.baumann.browser.helper.helper_main;
 
 public class Popup_readLater extends Activity {
@@ -85,6 +92,8 @@ public class Popup_readLater extends Activity {
 
                 final CharSequence[] options = {
                         getString(R.string.bookmark_edit_title),
+                        getString(R.string.menu_share),
+                        getString(R.string.menu_save),
                         getString(R.string.bookmark_remove_bookmark)};
                 new AlertDialog.Builder(Popup_readLater.this)
                         .setItems(options, new DialogInterface.OnClickListener() {
@@ -158,6 +167,72 @@ public class Popup_readLater extends Activity {
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
+                                }
+
+                                if (options[item].equals(getString(R.string.menu_share))) {
+                                    final CharSequence[] options = {
+                                            getString(R.string.menu_share_link),
+                                            getString(R.string.menu_share_link_copy)};
+                                    new AlertDialog.Builder(Popup_readLater.this)
+                                            .setItems(options, new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int item) {
+                                                    if (options[item].equals(getString(R.string.menu_share_link))) {
+                                                        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+                                                        sharingIntent.setType("text/plain");
+                                                        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, title);
+                                                        sharingIntent.putExtra(Intent.EXTRA_TEXT, url);
+                                                        startActivity(Intent.createChooser(sharingIntent, (getString(R.string.app_share_link))));
+                                                    }
+                                                    if (options[item].equals(getString(R.string.menu_share_link_copy))) {
+                                                        ClipboardManager clipboard = (ClipboardManager) Popup_readLater.this.getSystemService(Context.CLIPBOARD_SERVICE);
+                                                        clipboard.setPrimaryClip(ClipData.newPlainText("text", url));
+                                                        Snackbar.make(listView, R.string.context_linkCopy_toast, Snackbar.LENGTH_SHORT).show();
+                                                    }
+                                                }
+                                            }).show();
+                                }
+                                if (options[item].equals(getString(R.string.menu_save))) {
+                                    final CharSequence[] options = {
+                                            getString(R.string.menu_save_bookmark),
+                                            getString(R.string.menu_save_pass),
+                                            getString(R.string.menu_createShortcut)};
+                                    new AlertDialog.Builder(Popup_readLater.this)
+                                            .setItems(options, new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int item) {
+                                                    if (options[item].equals(getString(R.string.menu_save_pass))) {
+                                                        helper_editText.editText_savePass(Popup_readLater.this, listView, title, url);
+                                                    }
+                                                    if (options[item].equals(getString(R.string.menu_save_bookmark))) {
+                                                        try {
+
+                                                            final Database_Bookmarks db = new Database_Bookmarks(Popup_readLater.this);
+                                                            db.addBookmark(title, url);
+                                                            db.close();
+                                                            Snackbar.make(listView, R.string.bookmark_added, Snackbar.LENGTH_SHORT).show();
+
+                                                        } catch (Exception e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                    }
+                                                    if (options[item].equals(getString(R.string.menu_createShortcut))) {
+                                                        Intent i = new Intent();
+                                                        i.setAction(Intent.ACTION_VIEW);
+                                                        i.setClassName(Popup_readLater.this, "de.baumann.browser.Browser");
+                                                        i.setData(Uri.parse(url));
+
+                                                        Intent shortcut = new Intent();
+                                                        shortcut.putExtra("android.intent.extra.shortcut.INTENT", i);
+                                                        shortcut.putExtra("android.intent.extra.shortcut.NAME", "THE NAME OF SHORTCUT TO BE SHOWN");
+                                                        shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, title);
+                                                        shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(Popup_readLater.this.getApplicationContext(), R.mipmap.ic_launcher));
+                                                        shortcut.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
+                                                        Popup_readLater.this.sendBroadcast(shortcut);
+                                                        Snackbar.make(listView, R.string.menu_createShortcut_success, Snackbar.LENGTH_SHORT).show();
+                                                    }
+                                                }
+                                            }).show();
                                 }
 
                             }

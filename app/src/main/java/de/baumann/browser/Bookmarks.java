@@ -20,10 +20,14 @@
 package de.baumann.browser;
 
 import android.app.AlertDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -45,8 +49,10 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 
 import de.baumann.browser.databases.Database_Bookmarks;
+import de.baumann.browser.databases.Database_ReadLater;
 import de.baumann.browser.helper.Activity_settings;
 import de.baumann.browser.helper.helper_editText;
 import de.baumann.browser.helper.helper_main;
@@ -114,7 +120,11 @@ public class Bookmarks extends AppCompatActivity {
                     } else if (text.startsWith(".g ")) {
                         helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://github.com/search?utf8=✓&q=" + subStr, false);
                     } else  if (text.startsWith(".s ")) {
-                        helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://startpage.com/do/search?query=" + subStr, false);
+                        if (Locale.getDefault().getLanguage().contentEquals("de")) {
+                            helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://startpage.com/do/search?query=" + subStr + "&lui=deutsch&l=deutsch", false);
+                        } else {
+                            helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://startpage.com/do/search?query=" + subStr, false);
+                        }
                     } else if (text.startsWith(".G ")) {
                         helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://www.google.com/search?&q=" + subStr, false);
                     } else  if (text.startsWith(".d ")) {
@@ -122,7 +132,15 @@ public class Bookmarks extends AppCompatActivity {
                     } else  if (text.startsWith(".y ")) {
                         helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://www.youtube.com/results?search_query=" + subStr, false);
                     } else {
-                        helper_main.switchToActivity(Bookmarks.this, Browser.class, searchEngine + text, false);
+                        if (sharedPref.getString("searchEngine", "https://startpage.com/do/search?query=").equals("https://startpage.com/do/search?query=")) {
+                            if (Locale.getDefault().getLanguage().contentEquals("de")) {
+                                helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://startpage.com/do/search?query=" + text + "&lui=deutsch&l=deutsch", false);
+                            } else {
+                                helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://startpage.com/do/search?query=" + text, false);
+                            }
+                        } else {
+                            helper_main.switchToActivity(Bookmarks.this, Browser.class, searchEngine + text, false);
+                        }
                     }
                     (new Handler()).postDelayed(new Runnable() {
                         public void run() {
@@ -155,6 +173,8 @@ public class Bookmarks extends AppCompatActivity {
 
                 final CharSequence[] options = {
                         getString(R.string.bookmark_edit_title),
+                        getString(R.string.menu_share),
+                        getString(R.string.menu_save),
                         getString(R.string.bookmark_remove_bookmark)};
                 new AlertDialog.Builder(Bookmarks.this)
                         .setItems(options, new DialogInterface.OnClickListener() {
@@ -215,7 +235,6 @@ public class Bookmarks extends AppCompatActivity {
                                         }
                                     });
                                 }
-
                                 if (options[item].equals(getString(R.string.bookmark_remove_bookmark))) {
                                     try {
                                         Database_Bookmarks db = new Database_Bookmarks(Bookmarks.this);
@@ -250,7 +269,69 @@ public class Bookmarks extends AppCompatActivity {
                                         e.printStackTrace();
                                     }
                                 }
+                                if (options[item].equals(getString(R.string.menu_share))) {
+                                    final CharSequence[] options = {
+                                            getString(R.string.menu_share_link),
+                                            getString(R.string.menu_share_link_copy)};
+                                    new AlertDialog.Builder(Bookmarks.this)
+                                            .setItems(options, new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int item) {
+                                                    if (options[item].equals(getString(R.string.menu_share_link))) {
+                                                        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+                                                        sharingIntent.setType("text/plain");
+                                                        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, title);
+                                                        sharingIntent.putExtra(Intent.EXTRA_TEXT, url);
+                                                        startActivity(Intent.createChooser(sharingIntent, (getString(R.string.app_share_link))));
+                                                    }
+                                                    if (options[item].equals(getString(R.string.menu_share_link_copy))) {
+                                                        ClipboardManager clipboard = (ClipboardManager) Bookmarks.this.getSystemService(Context.CLIPBOARD_SERVICE);
+                                                        clipboard.setPrimaryClip(ClipData.newPlainText("text", url));
+                                                        Snackbar.make(listView, R.string.context_linkCopy_toast, Snackbar.LENGTH_SHORT).show();
+                                                    }
+                                                }
+                                            }).show();
+                                }
+                                if (options[item].equals(getString(R.string.menu_save))) {
+                                    final CharSequence[] options = {
+                                            getString(R.string.menu_save_readLater),
+                                            getString(R.string.menu_save_pass),
+                                            getString(R.string.menu_createShortcut)};
+                                    new AlertDialog.Builder(Bookmarks.this)
+                                            .setItems(options, new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int item) {
+                                                    if (options[item].equals(getString(R.string.menu_save_pass))) {
+                                                        helper_editText.editText_savePass(Bookmarks.this, listView, title, url);
+                                                    }
+                                                    if (options[item].equals(getString(R.string.menu_save_readLater))) {
+                                                        try {
+                                                            final Database_ReadLater db = new Database_ReadLater(Bookmarks.this);
+                                                            db.addBookmark(title, url);
+                                                            db.close();
+                                                            Snackbar.make(listView, R.string.readLater_added, Snackbar.LENGTH_SHORT).show();
+                                                        } catch (Exception e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                    }
+                                                    if (options[item].equals (getString(R.string.menu_createShortcut))) {
+                                                        Intent i = new Intent();
+                                                        i.setAction(Intent.ACTION_VIEW);
+                                                        i.setClassName(Bookmarks.this, "de.baumann.browser.Browser");
+                                                        i.setData(Uri.parse(url));
 
+                                                        Intent shortcut = new Intent();
+                                                        shortcut.putExtra("android.intent.extra.shortcut.INTENT", i);
+                                                        shortcut.putExtra("android.intent.extra.shortcut.NAME", "THE NAME OF SHORTCUT TO BE SHOWN");
+                                                        shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, title);
+                                                        shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(Bookmarks.this.getApplicationContext(), R.mipmap.ic_launcher));
+                                                        shortcut.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
+                                                        Bookmarks.this.sendBroadcast(shortcut);
+                                                        Snackbar.make(listView, R.string.menu_createShortcut_success, Snackbar.LENGTH_SHORT).show();
+                                                    }
+                                                }
+                                            }).show();
+                                }
                             }
                         }).show();
 
@@ -456,7 +537,11 @@ public class Bookmarks extends AppCompatActivity {
                 } else if (text.startsWith(".g ")) {
                     helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://github.com/search?utf8=✓&q=" + subStr, false);
                 } else  if (text.startsWith(".s ")) {
-                    helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://startpage.com/do/search?query=" + subStr, false);
+                    if (Locale.getDefault().getLanguage().contentEquals("de")) {
+                        helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://startpage.com/do/search?query=" + subStr + "&lui=deutsch&l=deutsch", false);
+                    } else {
+                        helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://startpage.com/do/search?query=" + subStr, false);
+                    }
                 } else if (text.startsWith(".G ")) {
                     helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://www.google.com/search?&q=" + subStr, false);
                 } else  if (text.startsWith(".d ")) {
@@ -464,7 +549,15 @@ public class Bookmarks extends AppCompatActivity {
                 } else  if (text.startsWith(".y ")) {
                     helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://www.youtube.com/results?search_query=" + subStr, false);
                 } else {
-                    helper_main.switchToActivity(Bookmarks.this, Browser.class, searchEngine + text, false);
+                    if (sharedPref.getString("searchEngine", "https://startpage.com/do/search?query=").equals("https://startpage.com/do/search?query=")) {
+                        if (Locale.getDefault().getLanguage().contentEquals("de")) {
+                            helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://startpage.com/do/search?query=" + text + "&lui=deutsch&l=deutsch", false);
+                        } else {
+                            helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://startpage.com/do/search?query=" + text, false);
+                        }
+                    } else {
+                        helper_main.switchToActivity(Bookmarks.this, Browser.class, searchEngine + text, false);
+                    }
                 }
                 (new Handler()).postDelayed(new Runnable() {
                     public void run() {

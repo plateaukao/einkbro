@@ -699,7 +699,11 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
                 } else if (text.startsWith(".g ")) {
                     mWebView.loadUrl("https://github.com/search?utf8=✓&q=" + subStr);
                 } else  if (text.startsWith(".s ")) {
-                    mWebView.loadUrl("https://startpage.com/do/search?query=" + subStr);
+                    if (Locale.getDefault().getLanguage().contentEquals("de")) {
+                        mWebView.loadUrl("https://startpage.com/do/search?query=" + subStr + "&lui=deutsch&l=deutsch");
+                    } else {
+                        mWebView.loadUrl("https://startpage.com/do/search?query=" + subStr);
+                    }
                 } else if (text.startsWith(".G ")) {
                     mWebView.loadUrl("https://www.google.com/search?&q=" + subStr);
                 } else  if (text.startsWith(".d ")) {
@@ -707,7 +711,15 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
                 } else  if (text.startsWith(".y ")) {
                 mWebView.loadUrl("https://www.youtube.com/results?search_query=" + subStr);
                 } else {
-                    mWebView.loadUrl(searchEngine + text);
+                    if (sharedPref.getString("searchEngine", "https://startpage.com/do/search?query=").equals("https://startpage.com/do/search?query=")) {
+                        if (Locale.getDefault().getLanguage().contentEquals("de")) {
+                            mWebView.loadUrl("https://startpage.com/do/search?query=" + text + "&lui=deutsch&l=deutsch");
+                        } else {
+                            mWebView.loadUrl("https://startpage.com/do/search?query=" + text);
+                        }
+                    } else {
+                        mWebView.loadUrl(searchEngine + text);
+                    }
                 }
 
                 sharedPref.edit()
@@ -894,7 +906,7 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
                                 helper_editText.editText_saveBookmark(editText, Browser.this, mWebView);
                             }
                             if (options[item].equals(getString(R.string.menu_save_pass))) {
-                                helper_editText.editText_savePass(Browser.this, mWebView);
+                                helper_editText.editText_savePass(Browser.this, mWebView, mWebView.getTitle(), mWebView.getUrl());
                             }
                             if (options[item].equals(getString(R.string.menu_save_readLater))) {
                                 try {
@@ -912,6 +924,7 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
                             if (options[item].equals (getString(R.string.menu_createShortcut))) {
                                 Intent i = new Intent();
                                 i.setAction(Intent.ACTION_VIEW);
+                                i.setClassName(Browser.this, "de.baumann.browser.Browser");
                                 i.setData(Uri.parse(mWebView.getUrl()));
 
                                 Intent shortcut = new Intent();

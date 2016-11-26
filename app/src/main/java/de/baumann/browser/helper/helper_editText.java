@@ -37,6 +37,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import de.baumann.browser.R;
 import de.baumann.browser.databases.Database_Bookmarks;
@@ -107,7 +108,11 @@ public class helper_editText {
                         } else if (text.startsWith(".g ")) {
                             webView.loadUrl("https://github.com/search?utf8=✓&q=" + subStr);
                         } else  if (text.startsWith(".s ")) {
-                            webView.loadUrl("https://startpage.com/do/search?query=" + subStr);
+                            if (Locale.getDefault().getLanguage().contentEquals("de")) {
+                                webView.loadUrl("https://startpage.com/do/search?query=" + subStr + "&lui=deutsch&l=deutsch");
+                            } else {
+                                webView.loadUrl("https://startpage.com/do/search?query=" + subStr);
+                            }
                         } else if (text.startsWith(".G ")) {
                             webView.loadUrl("https://www.google.com/search?&q=" + subStr);
                         } else  if (text.startsWith(".y ")) {
@@ -115,7 +120,15 @@ public class helper_editText {
                         } else  if (text.startsWith(".d ")) {
                             webView.loadUrl("https://duckduckgo.com/?q=" + subStr);
                         } else {
-                            webView.loadUrl(searchEngine + text);
+                            if (sharedPref.getString("searchEngine", "https://startpage.com/do/search?query=").equals("https://startpage.com/do/search?query=")) {
+                                if (Locale.getDefault().getLanguage().contentEquals("de")) {
+                                    webView.loadUrl("https://startpage.com/do/search?query=" + text + "&lui=deutsch&l=deutsch");
+                                } else {
+                                    webView.loadUrl("https://startpage.com/do/search?query=" + text);
+                                }
+                            } else {
+                                webView.loadUrl(searchEngine + text);
+                            }
                         }
                     }
 
@@ -190,7 +203,7 @@ public class helper_editText {
         from.invalidateOptionsMenu();
     }
 
-    public static void editText_savePass(final Activity from, final WebView webView) {
+    public static void editText_savePass(final Activity from, final View view, final String title, final String url) {
 
         try {
 
@@ -201,7 +214,7 @@ public class helper_editText {
             View dialogView = View.inflate(from, R.layout.dialog_login, null);
 
             final EditText pass_title = (EditText) dialogView.findViewById(R.id.pass_title);
-            pass_title.setText(webView.getTitle());
+            pass_title.setText(title);
             final EditText pass_userName = (EditText) dialogView.findViewById(R.id.pass_userName);
             final EditText pass_userPW = (EditText) dialogView.findViewById(R.id.pass_userPW);
 
@@ -215,17 +228,17 @@ public class helper_editText {
                     String input_pass_userName = pass_userName.getText().toString().trim();
                     String input_pass_userPW = pass_userPW.getText().toString().trim();
 
-                    sharedPrefSec.put(webView.getUrl() + "UN", input_pass_userName);
-                    sharedPrefSec.put(webView.getUrl() + "PW", input_pass_userPW);
-                    sharedPrefSec.put(webView.getUrl() + "TI", input_pass_title);
+                    sharedPrefSec.put(url + "UN", input_pass_userName);
+                    sharedPrefSec.put(url + "PW", input_pass_userPW);
+                    sharedPrefSec.put(url + "TI", input_pass_title);
 
                     db.addBookmark(
-                            sharedPrefSec.getString(webView.getUrl() + "TI"),
-                            webView.getUrl(),
-                            sharedPrefSec.getString(webView.getUrl() + "UN"),
-                            sharedPrefSec.getString(webView.getUrl() + "PW"));
+                            sharedPrefSec.getString(url + "TI"),
+                            url,
+                            sharedPrefSec.getString(url + "UN"),
+                            sharedPrefSec.getString(url + "PW"));
                     db.close();
-                    Snackbar.make(webView, R.string.pass_success, Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(view, R.string.pass_success, Snackbar.LENGTH_SHORT).show();
                 }
             });
             builder.setNegativeButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
