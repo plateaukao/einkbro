@@ -257,7 +257,11 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
 
         String action = intent.getAction();
 
-        if ("pass".equals(action)) {
+        if (Intent.ACTION_SEND.equals(action)) {
+            String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+            String searchEngine = sharedPref.getString("searchEngine", "https://startpage.com/do/search?query=");
+            mWebView.loadUrl(searchEngine + sharedText);
+        } else if ("pass".equals(action)) {
             mWebView.loadUrl(intent.getStringExtra("url"));
             setTitle(intent.getStringExtra("title"));
             Snackbar snackbar = Snackbar
@@ -699,27 +703,15 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
                 } else if (text.startsWith(".g ")) {
                     mWebView.loadUrl("https://github.com/search?utf8=✓&q=" + subStr);
                 } else  if (text.startsWith(".s ")) {
-                    if (Locale.getDefault().getLanguage().contentEquals("de")) {
-                        mWebView.loadUrl("https://startpage.com/do/search?query=" + subStr + "&lui=deutsch&l=deutsch");
-                    } else {
-                        mWebView.loadUrl("https://startpage.com/do/search?query=" + subStr);
-                    }
+                    mWebView.loadUrl("https://startpage.com/do/search?query=" + subStr);
                 } else if (text.startsWith(".G ")) {
                     mWebView.loadUrl("https://www.google.com/search?&q=" + subStr);
                 } else  if (text.startsWith(".d ")) {
                     mWebView.loadUrl("https://duckduckgo.com/?q=" + subStr);
                 } else  if (text.startsWith(".y ")) {
-                mWebView.loadUrl("https://www.youtube.com/results?search_query=" + subStr);
+                    mWebView.loadUrl("https://www.youtube.com/results?search_query=" + subStr);
                 } else {
-                    if (sharedPref.getString("searchEngine", "https://startpage.com/do/search?query=").equals("https://startpage.com/do/search?query=")) {
-                        if (Locale.getDefault().getLanguage().contentEquals("de")) {
-                            mWebView.loadUrl("https://startpage.com/do/search?query=" + text + "&lui=deutsch&l=deutsch");
-                        } else {
-                            mWebView.loadUrl("https://startpage.com/do/search?query=" + text);
-                        }
-                    } else {
-                        mWebView.loadUrl(searchEngine + text);
-                    }
+                    mWebView.loadUrl(searchEngine + text);
                 }
 
                 sharedPref.edit()

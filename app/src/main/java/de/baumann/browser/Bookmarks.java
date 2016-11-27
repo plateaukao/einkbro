@@ -120,11 +120,7 @@ public class Bookmarks extends AppCompatActivity {
                     } else if (text.startsWith(".g ")) {
                         helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://github.com/search?utf8=✓&q=" + subStr, false);
                     } else  if (text.startsWith(".s ")) {
-                        if (Locale.getDefault().getLanguage().contentEquals("de")) {
-                            helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://startpage.com/do/search?query=" + subStr + "&lui=deutsch&l=deutsch", false);
-                        } else {
-                            helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://startpage.com/do/search?query=" + subStr, false);
-                        }
+                        helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://startpage.com/do/search?query=" + subStr, false);
                     } else if (text.startsWith(".G ")) {
                         helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://www.google.com/search?&q=" + subStr, false);
                     } else  if (text.startsWith(".d ")) {
@@ -132,15 +128,7 @@ public class Bookmarks extends AppCompatActivity {
                     } else  if (text.startsWith(".y ")) {
                         helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://www.youtube.com/results?search_query=" + subStr, false);
                     } else {
-                        if (sharedPref.getString("searchEngine", "https://startpage.com/do/search?query=").equals("https://startpage.com/do/search?query=")) {
-                            if (Locale.getDefault().getLanguage().contentEquals("de")) {
-                                helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://startpage.com/do/search?query=" + text + "&lui=deutsch&l=deutsch", false);
-                            } else {
-                                helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://startpage.com/do/search?query=" + text, false);
-                            }
-                        } else {
-                            helper_main.switchToActivity(Bookmarks.this, Browser.class, searchEngine + text, false);
-                        }
+                        helper_main.switchToActivity(Bookmarks.this, Browser.class, searchEngine + text, false);
                     }
                     (new Handler()).postDelayed(new Runnable() {
                         public void run() {
@@ -537,11 +525,7 @@ public class Bookmarks extends AppCompatActivity {
                 } else if (text.startsWith(".g ")) {
                     helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://github.com/search?utf8=✓&q=" + subStr, false);
                 } else  if (text.startsWith(".s ")) {
-                    if (Locale.getDefault().getLanguage().contentEquals("de")) {
-                        helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://startpage.com/do/search?query=" + subStr + "&lui=deutsch&l=deutsch", false);
-                    } else {
-                        helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://startpage.com/do/search?query=" + subStr, false);
-                    }
+                    helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://startpage.com/do/search?query=" + subStr, false);
                 } else if (text.startsWith(".G ")) {
                     helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://www.google.com/search?&q=" + subStr, false);
                 } else  if (text.startsWith(".d ")) {
@@ -549,15 +533,7 @@ public class Bookmarks extends AppCompatActivity {
                 } else  if (text.startsWith(".y ")) {
                     helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://www.youtube.com/results?search_query=" + subStr, false);
                 } else {
-                    if (sharedPref.getString("searchEngine", "https://startpage.com/do/search?query=").equals("https://startpage.com/do/search?query=")) {
-                        if (Locale.getDefault().getLanguage().contentEquals("de")) {
-                            helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://startpage.com/do/search?query=" + text + "&lui=deutsch&l=deutsch", false);
-                        } else {
-                            helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://startpage.com/do/search?query=" + text, false);
-                        }
-                    } else {
-                        helper_main.switchToActivity(Bookmarks.this, Browser.class, searchEngine + text, false);
-                    }
+                    helper_main.switchToActivity(Bookmarks.this, Browser.class, searchEngine + text, false);
                 }
                 (new Handler()).postDelayed(new Runnable() {
                     public void run() {

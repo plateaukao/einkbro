@@ -38,6 +38,7 @@
     <string name="app_title_readLater">leseSpäter</string>
     <string name="app_title_passStorage">passSpeicher</string>
     <string name="app_title_history">Verlauf</string>
+    <string name="app_websearch">Websuche</string>
 
 
     // Menu Items

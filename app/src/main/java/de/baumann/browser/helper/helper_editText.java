@@ -108,11 +108,7 @@ public class helper_editText {
                         } else if (text.startsWith(".g ")) {
                             webView.loadUrl("https://github.com/search?utf8=✓&q=" + subStr);
                         } else  if (text.startsWith(".s ")) {
-                            if (Locale.getDefault().getLanguage().contentEquals("de")) {
-                                webView.loadUrl("https://startpage.com/do/search?query=" + subStr + "&lui=deutsch&l=deutsch");
-                            } else {
-                                webView.loadUrl("https://startpage.com/do/search?query=" + subStr);
-                            }
+                            webView.loadUrl("https://startpage.com/do/search?query=" + subStr);
                         } else if (text.startsWith(".G ")) {
                             webView.loadUrl("https://www.google.com/search?&q=" + subStr);
                         } else  if (text.startsWith(".y ")) {
@@ -120,15 +116,7 @@ public class helper_editText {
                         } else  if (text.startsWith(".d ")) {
                             webView.loadUrl("https://duckduckgo.com/?q=" + subStr);
                         } else {
-                            if (sharedPref.getString("searchEngine", "https://startpage.com/do/search?query=").equals("https://startpage.com/do/search?query=")) {
-                                if (Locale.getDefault().getLanguage().contentEquals("de")) {
-                                    webView.loadUrl("https://startpage.com/do/search?query=" + text + "&lui=deutsch&l=deutsch");
-                                } else {
-                                    webView.loadUrl("https://startpage.com/do/search?query=" + text);
-                                }
-                            } else {
-                                webView.loadUrl(searchEngine + text);
-                            }
+                            webView.loadUrl(searchEngine + text);
                         }
                     }
 
