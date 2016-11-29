@@ -15,8 +15,11 @@
       <w>mimetype</w>
       <w>moodle</w>
       <w>mpeg</w>
+      <w>omnibox</w>
       <w>opml</w>
       <w>pptx</w>
+      <w>quant</w>
+      <w>qwant</w>
       <w>seqno</w>
       <w>snackbar</w>
       <w>spezial</w>
@@ -24,6 +27,7 @@
       <w>statusbar</w>
       <w>suche</w>
       <w>weba</w>
+      <w>websearch</w>
       <w>webview</w>
       <w>whitelist</w>
       <w>xlsx</w>

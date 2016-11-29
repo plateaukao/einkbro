@@ -40,7 +40,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -95,6 +94,8 @@ public class Bookmarks extends AppCompatActivity {
         editText = (EditText) findViewById(R.id.editText);
         helper_editText.editText_Touch_Bookmark(editText, Bookmarks.this);
         helper_editText.editText_FocusChange(editText, Bookmarks.this);
+        String start = getString(R.string.app_name) + "    ";
+        editText.setText(start);
 
         searchEngine = sharedPref.getString("searchEngine", "https://startpage.com/do/search?query=");
         wikiLang = sharedPref.getString("wikiLang", "en");
@@ -120,15 +121,51 @@ public class Bookmarks extends AppCompatActivity {
                     } else if (text.startsWith(".g ")) {
                         helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://github.com/search?utf8=✓&q=" + subStr, false);
                     } else  if (text.startsWith(".s ")) {
-                        helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://startpage.com/do/search?query=" + subStr, false);
+                        if (Locale.getDefault().getLanguage().contentEquals("de")){
+                            helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://startpage.com/do/search?query=\" + subStr + \"&lui=deutsch&l=deutsch", false);
+                        } else {
+                            helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://startpage.com/do/search?query=" + subStr, false);
+                        }
                     } else if (text.startsWith(".G ")) {
-                        helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://www.google.com/search?&q=" + subStr, false);
+                        if (Locale.getDefault().getLanguage().contentEquals("de")){
+                            helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://www.google.de/search?&q=" + subStr, false);
+                        } else {
+                            helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://www.google.com/search?&q=" + subStr, false);
+                        }
                     } else  if (text.startsWith(".d ")) {
-                        helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://duckduckgo.com/?q=" + subStr, false);
+                        if (Locale.getDefault().getLanguage().contentEquals("de")){
+                            helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://duckduckgo.com/?q=" + subStr + "&kl=de-de&kad=de_DE&k1=-1&kaj=m&kam=osm&kp=-1&kak=-1&kd=1&t=h_&ia=web", false);
+                        } else {
+                            helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://duckduckgo.com/?q=" + subStr, false);
+                        }
                     } else  if (text.startsWith(".y ")) {
-                        helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://www.youtube.com/results?search_query=" + subStr, false);
+                        if (Locale.getDefault().getLanguage().contentEquals("de")){
+                            helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://www.youtube.com/results?hl=de&gl=DE&search_query=" + subStr, false);
+                        } else {
+                            helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://www.youtube.com/results?search_query=" + subStr, false);
+                        }
                     } else {
-                        helper_main.switchToActivity(Bookmarks.this, Browser.class, searchEngine + text, false);
+                        if (searchEngine.contains("https://duckduckgo.com/?q=")) {
+                            if (Locale.getDefault().getLanguage().contentEquals("de")){
+                                helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://duckduckgo.com/?q=" + text + "&kl=de-de&kad=de_DE&k1=-1&kaj=m&kam=osm&kp=-1&kak=-1&kd=1&t=h_&ia=web", false);
+                            } else {
+                                helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://duckduckgo.com/?q=" + text, false);
+                            }
+                        } else if (searchEngine.contains("https://metager.de/meta/meta.ger3?focus=web&eingabe=")) {
+                            if (Locale.getDefault().getLanguage().contentEquals("de")){
+                                helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://metager.de/meta/meta.ger3?focus=web&eingabe=" + text, false);
+                            } else {
+                                helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://metager.de/meta/meta.ger3?focus=web&eingabe=" + text +"&focus=web&encoding=utf8&lang=eng", false);
+                            }
+                        } else if (searchEngine.contains("https://startpage.com/do/search?query=")) {
+                            if (Locale.getDefault().getLanguage().contentEquals("de")){
+                                helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://startpage.com/do/search?query=" + text + "&lui=deutsch&l=deutsch", false);
+                            } else {
+                                helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://startpage.com/do/search?query=" + text, false);
+                            }
+                        }else {
+                            helper_main.switchToActivity(Bookmarks.this, Browser.class, searchEngine + text, false);
+                        }
                     }
                     (new Handler()).postDelayed(new Runnable() {
                         public void run() {
@@ -169,23 +206,15 @@ public class Bookmarks extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int item) {
                                 if (options[item].equals(getString(R.string.bookmark_edit_title))) {
+
+                                    helper_editText.showKeyboard(Bookmarks.this, editText, 2, title, getString(R.string.app_search_hint_bookmark));
+
                                     final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(Bookmarks.this);
                                     sharedPref.edit()
-                                            .putInt("keyboard", 2)
                                             .putString("url", url)
                                             .putString("seqno", seqnoStr)
                                             .apply();
-                                    invalidateOptionsMenu();
 
-                                    (new Handler()).postDelayed(new Runnable() {
-                                        public void run() {
-                                            editText.requestFocus();
-                                            editText.setText(title);
-                                            helper_main.showKeyboard(Bookmarks.this, editText);
-                                        }
-                                    }, 200);
-
-                                    editText.setHint(getString(R.string.app_search_hint_bookmark));
                                     editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                                         @Override
                                         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -201,17 +230,7 @@ public class Bookmarks extends AppCompatActivity {
                                                     db.close();
                                                     setBookmarkList();
                                                     Snackbar.make(listView, R.string.bookmark_added, Snackbar.LENGTH_SHORT).show();
-                                                    editText.setHint(getString(R.string.app_search_hint));
-                                                    editText.setText("");
                                                     editText.clearFocus();
-                                                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                                                    imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
-
-                                                    final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(Bookmarks.this);
-                                                    sharedPref.edit()
-                                                            .putInt("keyboard", 0)
-                                                            .apply();
-                                                    invalidateOptionsMenu();
 
                                                 } catch (Exception e) {
                                                     e.printStackTrace();
@@ -492,25 +511,22 @@ public class Bookmarks extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        String start = getString(R.string.app_name) + "    ";
 
         if (id == R.id.action_search) {
 
-            editText.setHint(R.string.app_search_hint);
-            editText.hasFocus();
             String text = editText.getText().toString();
 
             if (text.length() > 3) {
                 subStr=text.substring(3);
             }
 
-            if (text.isEmpty()) {
-                editText.requestFocus();
-                editText.setText("");
-                helper_main.showKeyboard(Bookmarks.this, editText);
-                sharedPref.edit()
-                        .putInt("keyboard", 3)
-                        .apply();
-                Bookmarks.this.invalidateOptionsMenu();
+            if (text.isEmpty() || text.equals(start)) {
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        helper_editText.showKeyboard(Bookmarks.this, editText, 3, "", getString(R.string.app_search_hint));
+                    }
+                }, 200);
             } else {
                 if (text.startsWith("www")) {
                     helper_main.switchToActivity(Bookmarks.this, Browser.class, "http://" + text, false);
@@ -525,15 +541,51 @@ public class Bookmarks extends AppCompatActivity {
                 } else if (text.startsWith(".g ")) {
                     helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://github.com/search?utf8=✓&q=" + subStr, false);
                 } else  if (text.startsWith(".s ")) {
-                    helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://startpage.com/do/search?query=" + subStr, false);
+                    if (Locale.getDefault().getLanguage().contentEquals("de")){
+                        helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://startpage.com/do/search?query=\" + subStr + \"&lui=deutsch&l=deutsch", false);
+                    } else {
+                        helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://startpage.com/do/search?query=" + subStr, false);
+                    }
                 } else if (text.startsWith(".G ")) {
-                    helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://www.google.com/search?&q=" + subStr, false);
+                    if (Locale.getDefault().getLanguage().contentEquals("de")){
+                        helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://www.google.de/search?&q=" + subStr, false);
+                    } else {
+                        helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://www.google.com/search?&q=" + subStr, false);
+                    }
                 } else  if (text.startsWith(".d ")) {
-                    helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://duckduckgo.com/?q=" + subStr, false);
+                    if (Locale.getDefault().getLanguage().contentEquals("de")){
+                        helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://duckduckgo.com/?q=" + subStr + "&kl=de-de&kad=de_DE&k1=-1&kaj=m&kam=osm&kp=-1&kak=-1&kd=1&t=h_&ia=web", false);
+                    } else {
+                        helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://duckduckgo.com/?q=" + subStr, false);
+                    }
                 } else  if (text.startsWith(".y ")) {
-                    helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://www.youtube.com/results?search_query=" + subStr, false);
+                    if (Locale.getDefault().getLanguage().contentEquals("de")){
+                        helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://www.youtube.com/results?hl=de&gl=DE&search_query=" + subStr, false);
+                    } else {
+                        helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://www.youtube.com/results?search_query=" + subStr, false);
+                    }
                 } else {
-                    helper_main.switchToActivity(Bookmarks.this, Browser.class, searchEngine + text, false);
+                    if (searchEngine.contains("https://duckduckgo.com/?q=")) {
+                        if (Locale.getDefault().getLanguage().contentEquals("de")){
+                            helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://duckduckgo.com/?q=" + text + "&kl=de-de&kad=de_DE&k1=-1&kaj=m&kam=osm&kp=-1&kak=-1&kd=1&t=h_&ia=web", false);
+                        } else {
+                            helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://duckduckgo.com/?q=" + text, false);
+                        }
+                    } else if (searchEngine.contains("https://metager.de/meta/meta.ger3?focus=web&eingabe=")) {
+                        if (Locale.getDefault().getLanguage().contentEquals("de")){
+                            helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://metager.de/meta/meta.ger3?focus=web&eingabe=" + text, false);
+                        } else {
+                            helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://metager.de/meta/meta.ger3?focus=web&eingabe=" + text +"&focus=web&encoding=utf8&lang=eng", false);
+                        }
+                    } else if (searchEngine.contains("https://startpage.com/do/search?query=")) {
+                        if (Locale.getDefault().getLanguage().contentEquals("de")){
+                            helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://startpage.com/do/search?query=" + text + "&lui=deutsch&l=deutsch", false);
+                        } else {
+                            helper_main.switchToActivity(Bookmarks.this, Browser.class, "https://startpage.com/do/search?query=" + text, false);
+                        }
+                    }else {
+                        helper_main.switchToActivity(Bookmarks.this, Browser.class, searchEngine + text, false);
+                    }
                 }
                 (new Handler()).postDelayed(new Runnable() {
                     public void run() {
@@ -566,16 +618,7 @@ public class Bookmarks extends AppCompatActivity {
         }
 
         if (id == R.id.action_cancel) {
-            sharedPref.edit()
-                    .putInt("keyboard", 0)
-                    .apply();
-            invalidateOptionsMenu();
-            editText.setHint(getString(R.string.app_search_hint_bookmark));
-            editText.setText("");
-            editText.setHint(R.string.app_search_hint);
-            helper_editText.editText_Touch_Bookmark(editText, Bookmarks.this);
-            helper_editText.editText_FocusChange(editText, Bookmarks.this);
-            helper_main.hideKeyboard(Bookmarks.this, editText);
+            helper_editText.hideKeyboard(Bookmarks.this, editText, 0, start, getString(R.string.app_search_hint));
         }
 
         if (id == R.id.action_save_bookmark) {
@@ -590,18 +633,7 @@ public class Bookmarks extends AppCompatActivity {
                 db.close();
                 setBookmarkList();
                 Snackbar.make(listView, R.string.bookmark_added, Snackbar.LENGTH_SHORT).show();
-                editText.setText("");
                 editText.clearFocus();
-                editText.setHint(getString(R.string.app_search_hint));
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
-
-                sharedPref.edit()
-                        .putInt("keyboard", 0)
-                        .putString("url", "")
-                        .putString("seqno", "")
-                        .apply();
-                invalidateOptionsMenu();
 
             } catch (Exception e) {
                 e.printStackTrace();

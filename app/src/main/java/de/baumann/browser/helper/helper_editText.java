@@ -108,15 +108,51 @@ public class helper_editText {
                         } else if (text.startsWith(".g ")) {
                             webView.loadUrl("https://github.com/search?utf8=✓&q=" + subStr);
                         } else  if (text.startsWith(".s ")) {
-                            webView.loadUrl("https://startpage.com/do/search?query=" + subStr);
+                            if (Locale.getDefault().getLanguage().contentEquals("de")){
+                                webView.loadUrl("https://startpage.com/do/search?query=" + subStr + "&lui=deutsch&l=deutsch");
+                            } else {
+                                webView.loadUrl("https://startpage.com/do/search?query=" + subStr);
+                            }
                         } else if (text.startsWith(".G ")) {
-                            webView.loadUrl("https://www.google.com/search?&q=" + subStr);
+                            if (Locale.getDefault().getLanguage().contentEquals("de")){
+                                webView.loadUrl("https://www.google.de/search?&q=" + subStr);
+                            } else {
+                                webView.loadUrl("https://www.google.com/search?&q=" + subStr);
+                            }
                         } else  if (text.startsWith(".y ")) {
-                            webView.loadUrl("https://www.youtube.com/results?search_query=" + subStr);
+                            if (Locale.getDefault().getLanguage().contentEquals("de")){
+                                webView.loadUrl("https://www.youtube.com/results?hl=de&gl=DE&search_query=" + subStr);
+                            } else {
+                                webView.loadUrl("https://www.youtube.com/results?search_query=" + subStr);
+                            }
                         } else  if (text.startsWith(".d ")) {
-                            webView.loadUrl("https://duckduckgo.com/?q=" + subStr);
+                            if (Locale.getDefault().getLanguage().contentEquals("de")){
+                                webView.loadUrl("https://duckduckgo.com/?q=" + subStr + "&kl=de-de&kad=de_DE&k1=-1&kaj=m&kam=osm&kp=-1&kak=-1&kd=1&t=h_&ia=web");
+                            } else {
+                                webView.loadUrl("https://duckduckgo.com/?q=" + subStr);
+                            }
                         } else {
-                            webView.loadUrl(searchEngine + text);
+                            if (searchEngine.contains("https://duckduckgo.com/?q=")) {
+                                if (Locale.getDefault().getLanguage().contentEquals("de")){
+                                    webView.loadUrl("https://duckduckgo.com/?q=" + text + "&kl=de-de&kad=de_DE&k1=-1&kaj=m&kam=osm&kp=-1&kak=-1&kd=1&t=h_&ia=web");
+                                } else {
+                                    webView.loadUrl("https://duckduckgo.com/?q=" + text);
+                                }
+                            } else if (searchEngine.contains("https://metager.de/meta/meta.ger3?focus=web&eingabe=")) {
+                                if (Locale.getDefault().getLanguage().contentEquals("de")){
+                                    webView.loadUrl("https://metager.de/meta/meta.ger3?focus=web&eingabe=" + text);
+                                } else {
+                                    webView.loadUrl("https://metager.de/meta/meta.ger3?focus=web&eingabe=" + text +"&focus=web&encoding=utf8&lang=eng");
+                                }
+                            } else if (searchEngine.contains("https://startpage.com/do/search?query=")) {
+                                if (Locale.getDefault().getLanguage().contentEquals("de")){
+                                    webView.loadUrl("https://startpage.com/do/search?query=" + subStr + "&lui=deutsch&l=deutsch");
+                                } else {
+                                    webView.loadUrl("https://startpage.com/do/search?query=" + subStr);
+                                }
+                            }else {
+                                webView.loadUrl(searchEngine + text);
+                            }
                         }
                     }
 
@@ -134,28 +170,12 @@ public class helper_editText {
 
     public static void editText_saveBookmark(final EditText editText, final Activity from, final WebView webView) {
 
-        final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
-        sharedPref.edit()
-                .putInt("keyboard", 2)
-                .apply();
-        from.invalidateOptionsMenu();
-
-        (new Handler()).postDelayed(new Runnable() {
-            public void run() {
-                editText.requestFocus();
-                helper_main.showKeyboard(from, editText);
-                editText.setText(webView.getTitle());
-                editText.setSelection(editText.getText().length());
-            }
-        }, 200);
-
-        editText.setHint(R.string.app_search_hint_bookmark);
+        helper_editText.showKeyboard(from, editText, 2, webView.getTitle(), from.getString(R.string.app_search_hint_bookmark));
         editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if ( (actionId == EditorInfo.IME_ACTION_SEARCH) || ((event.getKeyCode() == KeyEvent.KEYCODE_ENTER) && (event.getAction() == KeyEvent.ACTION_DOWN ))){
-
-                    helper_editText.editText_saveBookmark_save(editText,from,webView);
+                    helper_editText.editText_saveBookmark_save(editText, from, webView);
                     return true;
                 } else {
                     return false;
@@ -178,17 +198,7 @@ public class helper_editText {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        editText.setText(webView.getTitle());
-        editText.clearFocus();
-        InputMethodManager imm = (InputMethodManager)from.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
-
-        final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
-        sharedPref.edit()
-                .putInt("keyboard", 0)
-                .apply();
-        from.invalidateOptionsMenu();
+        helper_editText.hideKeyboard(from, editText, 0, webView.getTitle(), from.getString(R.string.app_search_hint));
     }
 
     public static void editText_savePass(final Activity from, final View view, final String title, final String url) {
@@ -239,12 +249,7 @@ public class helper_editText {
             final AlertDialog dialog2 = builder.create();
             // Display the custom alert dialog on interface
             dialog2.show();
-
-            new Handler().postDelayed(new Runnable() {
-                public void run() {
-                    helper_main.showKeyboard(from, pass_title);
-                }
-            }, 200);
+            helper_editText.showKeyboard(from, pass_title, 0, "", from.getString(R.string.pass_title));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -253,30 +258,15 @@ public class helper_editText {
 
     public static void editText_searchSite (final EditText editText, final Activity from, final WebView webView) {
 
-        final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
-        sharedPref.edit()
-                .putInt("keyboard", 1)
-                .apply();
-        from.invalidateOptionsMenu();
-
-        (new Handler()).postDelayed(new Runnable() {
-            public void run() {
-                editText.requestFocus();
-                editText.setText("");
-                editText.setHint(R.string.app_search_hint_site);
-                helper_main.showKeyboard(from, editText);
-            }
-        }, 200);
-
+        helper_editText.showKeyboard(from, editText, 1, "", from.getString(R.string.app_search_hint_site));
         editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if ((actionId == EditorInfo.IME_ACTION_SEARCH) || ((event.getKeyCode() == KeyEvent.KEYCODE_ENTER) && (event.getAction() == KeyEvent.ACTION_DOWN ))){
                     String text = editText.getText().toString();
-                    editText.setText(from.getString(R.string.app_search) + " " + text);
                     webView.findAllAsync(text);
-                    editText.clearFocus();
-                    helper_main.hideKeyboard(from, editText);
+                    helper_editText.hideKeyboard(from, editText, 1, from.getString(R.string.app_search) + " " + text, from.getString(R.string.app_search_hint_site));
+                    helper_editText.editText_EditorAction(editText, from, webView);
                     return true;
                 } else {
                     return false;
@@ -316,9 +306,11 @@ public class helper_editText {
             listItems.add("YouTube");
         }
 
+
         final CharSequence[] options = listItems.toArray(new CharSequence[listItems.size()]);
 
         new AlertDialog.Builder(from)
+                .setTitle(R.string.action_searchChooseTitle)
                 .setItems(options, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int item) {
@@ -351,31 +343,61 @@ public class helper_editText {
                 }).show();
     }
 
+    public static void hideKeyboard(Activity from, EditText editText, int i, String text, String hint) {
+        editText.clearFocus();
+        editText.setText(text);
+        editText.setHint(hint);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
+        sharedPref.edit()
+                .putInt("keyboard", i)
+                .apply();
+        from.invalidateOptionsMenu();
+        InputMethodManager imm = (InputMethodManager) from.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+    }
+
+    public static void showKeyboard(final Activity from, final EditText editText, final int i, String text, String hint) {
+        final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
+        editText.requestFocus();
+        editText.hasFocus();
+        editText.setText(text);
+        editText.setHint(hint);
+        editText.setSelection(editText.length());
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                sharedPref.edit()
+                        .putInt("keyboard", i)
+                        .apply();
+                from.invalidateOptionsMenu();
+                InputMethodManager imm = (InputMethodManager) from.getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
+            }
+        }, 100);
+    }
+
     public static void editText_FocusChange(final EditText editText, final Activity from) {
 
         editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
                 if (hasFocus) {
-                    if (sharedPref.getInt("keyboard", 0) == 0) {
-                        sharedPref.edit()
-                                .putInt("keyboard", 3)
-                                .apply();
-                        from.invalidateOptionsMenu();
-                    }
-                    editText.setText("");
-                    InputMethodManager imm = (InputMethodManager) from.getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
+                    helper_editText.showKeyboard(from, editText, 3, "", from.getString(R.string.app_search_hint));
                 } else {
-                    if (sharedPref.getInt("keyboard", 0) == 2 || sharedPref.getInt("keyboard", 0) == 3) {
-                        sharedPref.edit()
-                                .putInt("keyboard", 0)
-                                .apply();
-                        from.invalidateOptionsMenu();
-                    }
-                    InputMethodManager imm = (InputMethodManager)from.getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+                    helper_editText.hideKeyboard(from, editText, 0, "", from.getString(R.string.app_search_hint));
+                }
+            }
+        });
+    }
+
+    public static void editText_FocusChange_searchSite(final EditText editText, final Activity from) {
+
+        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    helper_editText.showKeyboard(from, editText, 1, "", from.getString(R.string.app_search_hint_site));
+                } else {
+                    helper_editText.hideKeyboard(from, editText, 0, "", from.getString(R.string.app_search_hint));
                 }
             }
         });

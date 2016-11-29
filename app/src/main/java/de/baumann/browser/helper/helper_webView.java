@@ -72,11 +72,11 @@ public class helper_webView {
 
         from.registerForContextMenu(webView);
 
-        if (sharedPref.getBoolean ("swipe", false)){
+        if (sharedPref.getString ("nav", "2").equals("1") || sharedPref.getString ("nav", "2").equals("3")){
             helper_webView.webView_Touch(from, webView);
         }
 
-        if (sharedPref.getBoolean ("cookie3", false)){
+        if (sharedPref.getString ("cookie", "1").equals("2") || sharedPref.getString ("cookie", "1").equals("3")){
             CookieManager cookieManager = CookieManager.getInstance();
             cookieManager.setAcceptThirdPartyCookies(webView,true);
         } else {
@@ -145,7 +145,7 @@ public class helper_webView {
                 sharedPref.edit().putString("loc_string", from.getString(R.string.app_no)).apply();
             }
 
-            if (sharedPref.getBoolean ("cookie", false)){
+            if (sharedPref.getString ("cookie", "1").equals("1") || sharedPref.getString ("cookie", "1").equals("3")){
                 CookieManager cookieManager = CookieManager.getInstance();
                 cookieManager.setAcceptCookie(true);
                 sharedPref.edit().putString("cookie_string", from.getString(R.string.app_yes)).apply();

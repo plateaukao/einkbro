@@ -98,6 +98,7 @@
     <string name="toast_install_app">Please install an app to perform action.</string>
     <string name="toast_wrongPW">Uuups. Wrong password.</string>
     <string name="toast_exit">Do you want to exit?</string>
+    <string name="toast_whiteList">Whitelist deleted.</string>
 
 
     // Bookmarks // ReadLater // Password
@@ -142,20 +143,15 @@
     <string name="action_openSettings_summary">Open via the system settings the app info of the app. There you can,
         depending on your Android version, manage several things (Storage, network traffic, permissions, …).</string>
 
-    <string name="action_swipe">Swipe</string>
-    <string name="action_swipe_summary">Swipe left or right to navigate through websites.</string>
-
     <string name="action_font">Font size</string>
     <string name="action_font_summary">Change font size for websites.</string>
 
     <string name="action_backup">Backup</string>
-    <string name="action_backup_summary">Backup your bookmarks, readLater lists, the passStorage and your javascript whitelist
-        to sdcard. A new backup overwrites the old one.</string>
+    <string name="action_backup_summary">Backup and restore your bookmarks, readLater lists, the passStorage and your javascript
+        whitelist. A new backup overwrites the old one. After you restored your passStorage you must open the edit dialog for an
+        restored entry, by long pressing and then save it (without changing anything) to get the database ready to work.</string>
 
     <string name="action_restore">Restore</string>
-    <string name="action_restore_summary">Restore your bookmarks, readLater lists, the passStorage and the javascript whitelist
-        from sdcard. After you restored your passStorage you must open the edit dialog for an restored entry, by long pressing
-        and then save it (without changing anything) to get the database ready to work.</string>
 
     <string name="action_java">Javascript</string>
     <string name="action_java_summary">Some functions on the websites need javascript to work. But javascript is
@@ -163,11 +159,8 @@
 
     <string name="action_cookie">Cookies</string>
     <string name="action_cookie_summary">Visited websites are storing their cookies on your device, mostly to improve user
-        experience. For example settings for a search site are stored in cookies.</string>
-
-    <string name="action_cookie3">Third party cookies</string>
-    <string name="action_cookie3_summary">Third party cookies are not from the visited website. Mostly they collect information
-        about your browsing behavior to send you personalised advertisements.</string>
+        experience. For example settings for a search site are stored in cookies. Third party cookies are not from the visited
+        website. Mostly they collect information about your browsing behavior to send you personalised advertisements.</string>
 
     <string name="action_history">Clear history on exit</string>
     <string name="action_history_summary">Clear your browser history on exit.</string>
@@ -197,9 +190,6 @@
     <string name="action_form">Form data</string>
     <string name="action_form_summary">Save entered form data (e.g mail addresses).</string>
 
-    <string name="action_arrow">Arrows</string>
-    <string name="action_arrow_summary">Display arrows to navigate through websites.</string>
-
     <string name="action_loc">Location</string>
     <string name="action_loc_summary">Allow websites to get your fine location.</string>
 
@@ -208,6 +198,7 @@
 
     <string name="action_searchChoose">Websites</string>
     <string name="action_searchChoose_summary">Choose which websites are enabled for the fast search.</string>
+    <string name="action_searchChooseTitle">Choose a site to search</string>
 
     <string name="action_Duckduckgo">DuckDuckGo (DDG) is an Internet search engine that emphasizes protecting searchers\' privacy and
         avoiding the filter bubble of personalized search results.</string>
@@ -221,12 +212,6 @@
     <string name="action_Wikipedia">Wikipedia is a free online encyclopedia that, by default, allows its users to edit any article.</string>
     <string name="action_YouTube">YouTube is an American video-sharing website headquartered in San Bruno, California, United States.</string>
 
-    <string name="action_hideStatus">Statusbar</string>
-    <string name="action_hideStatus_summary">Hide the statusbar while browsing.</string>
-
-    <string name="action_hideTool">Toolbar</string>
-    <string name="action_hideTool_summary">Hide the toolbar at the bottom while browsing.</string>
-
     <string name="action_protect">App protection</string>
     <string name="action_protect_summary">Set a pin to protect app against unwanted access. Only use numbers. Let empty, if you do
         not want to protect the app.</string>
@@ -237,6 +222,14 @@
     <string name="action_whiteList">Whitelist</string>
     <string name="action_whiteList_summary">Clear your javascript whitelist.</string>
 
+    <string name="action_fullscreen">Fullscreen</string>
+    <string name="action_fullscreen_summary">Hide the status- and/or the toolbar at the bottom while browsing.</string>
+
+    <string name="action_nav">Navigation</string>
+    <string name="action_nav_summary">Use arrows and/or swipe gestures to navigate back and forward in your browser history.</string>
+
+    <string name="action_donate">Donate</string>
+    <string name="action_donate_summary">If you like the app you can donate to me via Paypal.</string>
 
     //File chooser
 
@@ -250,6 +243,7 @@
 
     <string name="choose_hint">New filename (without file extension)</string>
     <string name="choose_delete">Do you really want to delete the file?</string>
+    <string name="choose_title">Edit filename</string>
 
 
     // Password

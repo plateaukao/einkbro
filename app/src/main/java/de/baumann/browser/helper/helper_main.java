@@ -23,7 +23,6 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -39,12 +38,9 @@ import android.support.v4.content.FileProvider;
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.util.Linkify;
-import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.obsez.android.lib.filechooser.ChooserDialog;
@@ -154,18 +150,6 @@ public class helper_main {
         }
     }
 
-    public static void hideKeyboard(Activity from, EditText editText) {
-        InputMethodManager imm = (InputMethodManager)from.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
-        editText.clearFocus();
-    }
-
-    public static void showKeyboard(Activity from, EditText editText) {
-        InputMethodManager imm = (InputMethodManager) from.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
-        editText.setSelection(editText.length());
-    }
-
     public static void isOpened (Activity from) {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
         sharedPref.edit()
@@ -191,7 +175,7 @@ public class helper_main {
                 helper_main.switchToActivity(from, Activity_password.class, "", false);
             }
         }
-        if (sharedPref.getBoolean ("hideStatus", false)){
+        if (sharedPref.getString ("fullscreen", "2").equals("1") || sharedPref.getString ("fullscreen", "2").equals("3")){
             from.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
         if (sharedPref.getString("orientation", "auto").equals("landscape")) {
@@ -423,53 +407,40 @@ public class helper_main {
                                         }
                                         if (options[item].equals(activity.getString(R.string.choose_menu_3))) {
 
-                                            final LinearLayout layout = new LinearLayout(activity);
-                                            layout.setOrientation(LinearLayout.VERTICAL);
-                                            layout.setGravity(Gravity.CENTER_HORIZONTAL);
-                                            final EditText input = new EditText(activity);
-                                            input.setSingleLine(true);
-                                            input.setHint(activity.getString(R.string.choose_hint));
-                                            input.setText(fileNameWE);
-                                            layout.setPadding(30, 0, 50, 0);
-                                            layout.addView(input);
+                                            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                                            View dialogView = View.inflate(activity, R.layout.dialog_edit_file, null);
 
-                                            new Handler().postDelayed(new Runnable() {
-                                                public void run() {
-                                                    helper_main.showKeyboard(activity,input);
+                                            final EditText edit_title = (EditText) dialogView.findViewById(R.id.pass_title);
+
+                                            builder.setView(dialogView);
+                                            builder.setTitle(R.string.choose_title);
+                                            builder.setPositiveButton(R.string.toast_yes, new DialogInterface.OnClickListener() {
+
+                                                public void onClick(DialogInterface dialog, int whichButton) {
+
+                                                    String inputTag = edit_title.getText().toString().trim();
+
+                                                    File dir = pathFile.getParentFile();
+                                                    File to = new File(dir,inputTag + fileExtension);
+
+                                                    pathFile.renameTo(to);
+                                                    pathFile.delete();
+
+                                                    new Handler().postDelayed(new Runnable() {
+                                                        public void run() {
+                                                            String dir = pathFile.getParentFile().getAbsolutePath();
+                                                            helper_main.openFilePicker(activity, view, dir);
+                                                        }
+                                                    }, 500);
                                                 }
-                                            }, 200);
+                                            });
+                                            builder.setNegativeButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
 
-                                            final AlertDialog.Builder dialog2 = new AlertDialog.Builder(activity);
-
-                                                    dialog2.setView(layout);
-                                                    dialog2.setMessage(activity.getString(R.string.choose_hint));
-                                                    dialog2.setPositiveButton(R.string.toast_yes, new DialogInterface.OnClickListener() {
-
-                                                        public void onClick(DialogInterface dialog, int whichButton) {
-
-                                                            String inputTag = input.getText().toString().trim();
-
-                                                            File dir = pathFile.getParentFile();
-                                                            File to = new File(dir,inputTag + fileExtension);
-
-                                                            pathFile.renameTo(to);
-                                                            pathFile.delete();
-
-                                                            new Handler().postDelayed(new Runnable() {
-                                                                public void run() {
-                                                                    String dir = pathFile.getParentFile().getAbsolutePath();
-                                                                    helper_main.openFilePicker(activity, view, dir);
-                                                                }
-                                                            }, 500);
-                                                        }
-                                                    });
-                                                    dialog2.setNegativeButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
-
-                                                        public void onClick(DialogInterface dialog, int whichButton) {
-                                                            dialog.cancel();
-                                                        }
-                                                    });
-                                            dialog2.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                                                public void onClick(DialogInterface dialog, int whichButton) {
+                                                    dialog.cancel();
+                                                }
+                                            });
+                                            builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
                                                 @Override
                                                 public void onCancel(DialogInterface dialog) {
                                                     // dialog dismiss without button press
@@ -477,7 +448,11 @@ public class helper_main {
                                                     helper_main.openFilePicker(activity, view, dir);
                                                 }
                                             });
+
+                                            final AlertDialog dialog2 = builder.create();
+                                            // Display the custom alert dialog on interface
                                             dialog2.show();
+                                            helper_editText.showKeyboard(activity, edit_title, 0, fileNameWE, activity.getString(R.string.choose_hint));
                                         }
                                     }
                                 });

@@ -27,7 +27,6 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
@@ -149,142 +148,143 @@ public class Activity_settings extends AppCompatActivity {
             reset.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(Preference pref) {
 
-                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                    final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-                    File directory = new File(Environment.getExternalStorageDirectory() + "/Android/data/browser.backup/");
-                    if (!directory.exists()) {
-                        //noinspection ResultOfMethodCallIgnored
-                        directory.mkdirs();
-                    }
+                    final CharSequence[] options = {
+                            getString(R.string.action_backup),
+                            getString(R.string.action_restore)};
+                    new AlertDialog.Builder(getActivity())
+                            .setItems(options, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int item) {
+                                    if (options[item].equals(getString(R.string.action_backup))) {
+                                        File directory = new File(Environment.getExternalStorageDirectory() + "/Android/data/browser.backup/");
+                                        if (!directory.exists()) {
+                                            //noinspection ResultOfMethodCallIgnored
+                                            directory.mkdirs();
+                                        }
 
-                    try {
-                        File sd = Environment.getExternalStorageDirectory();
-                        File data = Environment.getDataDirectory();
+                                        try {
+                                            File sd = Environment.getExternalStorageDirectory();
+                                            File data = Environment.getDataDirectory();
 
-                        if (sd.canWrite()) {
-                            String currentDBPath = "//data//" + "de.baumann.browser"
-                                    + "//databases//" + "browser.db";
-                            String backupDBPath = "//Android//" + "//data//" + "//browser.backup//" + "browser.db";
-                            File currentDB = new File(data, currentDBPath);
-                            File backupDB = new File(sd, backupDBPath);
+                                            if (sd.canWrite()) {
+                                                String currentDBPath = "//data//" + "de.baumann.browser"
+                                                        + "//databases//" + "browser.db";
+                                                String backupDBPath = "//Android//" + "//data//" + "//browser.backup//" + "browser.db";
+                                                File currentDB = new File(data, currentDBPath);
+                                                File backupDB = new File(sd, backupDBPath);
 
-                            FileChannel src = new FileInputStream(currentDB).getChannel();
-                            FileChannel dst = new FileOutputStream(backupDB).getChannel();
-                            dst.transferFrom(src, 0, src.size());
-                            src.close();
-                            dst.close();
+                                                FileChannel src = new FileInputStream(currentDB).getChannel();
+                                                FileChannel dst = new FileOutputStream(backupDB).getChannel();
+                                                dst.transferFrom(src, 0, src.size());
+                                                src.close();
+                                                dst.close();
 
-                            String currentDBPath2 = "//data//" + "de.baumann.browser"
-                                    + "//databases//" + "readLater.db";
-                            String backupDBPath2 = "//Android//" + "//data//" + "//browser.backup//" + "readLater.db";
-                            File currentDB2 = new File(data, currentDBPath2);
-                            File backupDB2 = new File(sd, backupDBPath2);
+                                                String currentDBPath2 = "//data//" + "de.baumann.browser"
+                                                        + "//databases//" + "readLater.db";
+                                                String backupDBPath2 = "//Android//" + "//data//" + "//browser.backup//" + "readLater.db";
+                                                File currentDB2 = new File(data, currentDBPath2);
+                                                File backupDB2 = new File(sd, backupDBPath2);
 
-                            FileChannel src2 = new FileInputStream(currentDB2).getChannel();
-                            FileChannel dst2 = new FileOutputStream(backupDB2).getChannel();
-                            dst2.transferFrom(src2, 0, src2.size());
-                            src2.close();
-                            dst2.close();
+                                                FileChannel src2 = new FileInputStream(currentDB2).getChannel();
+                                                FileChannel dst2 = new FileOutputStream(backupDB2).getChannel();
+                                                dst2.transferFrom(src2, 0, src2.size());
+                                                src2.close();
+                                                dst2.close();
 
-                            String currentDBPath3 = "//data//" + "de.baumann.browser"
-                                    + "//databases//" + "pass.db";
-                            String backupDBPath3 = "//Android//" + "//data//" + "//browser.backup//" + "pass.db";
-                            File currentDB3 = new File(data, currentDBPath3);
-                            File backupDB3 = new File(sd, backupDBPath3);
+                                                String currentDBPath3 = "//data//" + "de.baumann.browser"
+                                                        + "//databases//" + "pass.db";
+                                                String backupDBPath3 = "//Android//" + "//data//" + "//browser.backup//" + "pass.db";
+                                                File currentDB3 = new File(data, currentDBPath3);
+                                                File backupDB3 = new File(sd, backupDBPath3);
 
-                            FileChannel src3 = new FileInputStream(currentDB3).getChannel();
-                            FileChannel dst3 = new FileOutputStream(backupDB3).getChannel();
-                            dst3.transferFrom(src3, 0, src3.size());
-                            src3.close();
-                            dst3.close();
+                                                FileChannel src3 = new FileInputStream(currentDB3).getChannel();
+                                                FileChannel dst3 = new FileOutputStream(backupDB3).getChannel();
+                                                dst3.transferFrom(src3, 0, src3.size());
+                                                src3.close();
+                                                dst3.close();
 
-                            String whiteList = sharedPref.getString("whiteList", "");
+                                                String whiteList = sharedPref.getString("whiteList", "");
 
-                            File whiteListBackup = new File(directory, "whiteList.txt");
-                            FileWriter writer = new FileWriter(whiteListBackup);
-                            writer.append(whiteList);
-                            writer.flush();
-                            writer.close();
+                                                File whiteListBackup = new File(directory, "whiteList.txt");
+                                                FileWriter writer = new FileWriter(whiteListBackup);
+                                                writer.append(whiteList);
+                                                writer.flush();
+                                                writer.close();
 
-                            Toast.makeText(getActivity(), R.string.toast_backup, Toast.LENGTH_SHORT).show();
-                        }
-                    } catch (Exception e) {
-                        Toast.makeText(getActivity(), R.string.toast_backup_not, Toast.LENGTH_SHORT).show();
-                    }
-                    return true;
-                }
-            });
-        }
+                                                Toast.makeText(getActivity(), R.string.toast_backup, Toast.LENGTH_SHORT).show();
+                                            }
+                                        } catch (Exception e) {
+                                            Toast.makeText(getActivity(), R.string.toast_backup_not, Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                    if (options[item].equals(getString(R.string.action_restore))) {
+                                        File directory = new File(Environment.getExternalStorageDirectory() + "/Android/data/browser.backup/");
 
-        private void addRestore_dbListener() {
+                                        try {
+                                            File sd = Environment.getExternalStorageDirectory();
+                                            File data = Environment.getDataDirectory();
 
-            Preference reset = findPreference("restore_db");
-            reset.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                public boolean onPreferenceClick(Preference pref) {
+                                            if (sd.canWrite()) {
 
-                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-                    File directory = new File(Environment.getExternalStorageDirectory() + "/Android/data/browser.backup/");
+                                                File whiteListBackup = new File(directory, "whiteList.txt");
+                                                StringBuilder text = new StringBuilder();
 
-                    try {
-                        File sd = Environment.getExternalStorageDirectory();
-                        File data = Environment.getDataDirectory();
+                                                BufferedReader br = new BufferedReader(new FileReader(whiteListBackup));
+                                                String line;
 
-                        if (sd.canWrite()) {
+                                                while ((line = br.readLine()) != null) {
+                                                    text.append(line);
+                                                    text.append('\n');
+                                                }
+                                                br.close();
+                                                sharedPref.edit().putString("whiteList", text.toString()).apply();
 
-                            File whiteListBackup = new File(directory, "whiteList.txt");
-                            StringBuilder text = new StringBuilder();
+                                                String currentDBPath = "//data//" + "de.baumann.browser"
+                                                        + "//databases//" + "browser.db";
+                                                String backupDBPath = "//Android//" + "//data//" + "//browser.backup//" + "browser.db";
+                                                File currentDB = new File(data, currentDBPath);
+                                                File backupDB = new File(sd, backupDBPath);
 
-                            BufferedReader br = new BufferedReader(new FileReader(whiteListBackup));
-                            String line;
+                                                FileChannel src = new FileInputStream(backupDB).getChannel();
+                                                FileChannel dst = new FileOutputStream(currentDB).getChannel();
+                                                dst.transferFrom(src, 0, src.size());
+                                                src.close();
+                                                dst.close();
 
-                            while ((line = br.readLine()) != null) {
-                                text.append(line);
-                                text.append('\n');
-                            }
-                            br.close();
-                            sharedPref.edit().putString("whiteList", text.toString()).apply();
+                                                String currentDBPath2 = "//data//" + "de.baumann.browser"
+                                                        + "//databases//" + "readLater.db";
+                                                String backupDBPath2 = "//Android//" + "//data//" + "//browser.backup//" + "readLater.db";
+                                                File currentDB2 = new File(data, currentDBPath2);
+                                                File backupDB2 = new File(sd, backupDBPath2);
 
-                            String currentDBPath = "//data//" + "de.baumann.browser"
-                                    + "//databases//" + "browser.db";
-                            String backupDBPath = "//Android//" + "//data//" + "//browser.backup//" + "browser.db";
-                            File currentDB = new File(data, currentDBPath);
-                            File backupDB = new File(sd, backupDBPath);
+                                                FileChannel src2 = new FileInputStream(backupDB2).getChannel();
+                                                FileChannel dst2 = new FileOutputStream(currentDB2).getChannel();
+                                                dst2.transferFrom(src2, 0, src2.size());
+                                                src2.close();
+                                                dst2.close();
 
-                            FileChannel src = new FileInputStream(backupDB).getChannel();
-                            FileChannel dst = new FileOutputStream(currentDB).getChannel();
-                            dst.transferFrom(src, 0, src.size());
-                            src.close();
-                            dst.close();
+                                                String currentDBPath3 = "//data//" + "de.baumann.browser"
+                                                        + "//databases//" + "pass.db";
+                                                String backupDBPath3 = "//Android//" + "//data//" + "//browser.backup//" + "pass.db";
+                                                File currentDB3 = new File(data, currentDBPath3);
+                                                File backupDB3 = new File(sd, backupDBPath3);
 
-                            String currentDBPath2 = "//data//" + "de.baumann.browser"
-                                    + "//databases//" + "readLater.db";
-                            String backupDBPath2 = "//Android//" + "//data//" + "//browser.backup//" + "readLater.db";
-                            File currentDB2 = new File(data, currentDBPath2);
-                            File backupDB2 = new File(sd, backupDBPath2);
+                                                FileChannel src3 = new FileInputStream(backupDB3).getChannel();
+                                                FileChannel dst3 = new FileOutputStream(currentDB3).getChannel();
+                                                dst3.transferFrom(src3, 0, src3.size());
+                                                src3.close();
+                                                dst3.close();
 
-                            FileChannel src2 = new FileInputStream(backupDB2).getChannel();
-                            FileChannel dst2 = new FileOutputStream(currentDB2).getChannel();
-                            dst2.transferFrom(src2, 0, src2.size());
-                            src2.close();
-                            dst2.close();
-
-                            String currentDBPath3 = "//data//" + "de.baumann.browser"
-                                    + "//databases//" + "pass.db";
-                            String backupDBPath3 = "//Android//" + "//data//" + "//browser.backup//" + "pass.db";
-                            File currentDB3 = new File(data, currentDBPath3);
-                            File backupDB3 = new File(sd, backupDBPath3);
-
-                            FileChannel src3 = new FileInputStream(backupDB3).getChannel();
-                            FileChannel dst3 = new FileOutputStream(currentDB3).getChannel();
-                            dst3.transferFrom(src3, 0, src3.size());
-                            src3.close();
-                            dst3.close();
-
-                            Toast.makeText(getActivity(), R.string.toast_restore, Toast.LENGTH_SHORT).show();
-                        }
-                    } catch (Exception e) {
-                        Toast.makeText(getActivity(), R.string.toast_restore_not, Toast.LENGTH_SHORT).show();
-                    }
+                                                Toast.makeText(getActivity(), R.string.toast_restore, Toast.LENGTH_SHORT).show();
+                                            }
+                                        } catch (Exception e) {
+                                            Toast.makeText(getActivity(), R.string.toast_restore_not, Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                }
+                            }).show();
                     return true;
                 }
             });
@@ -327,12 +327,7 @@ public class Activity_settings extends AppCompatActivity {
                     final AlertDialog dialog2 = builder.create();
                     // Display the custom alert dialog on interface
                     dialog2.show();
-
-                    new Handler().postDelayed(new Runnable() {
-                        public void run() {
-                            helper_main.showKeyboard(activity,pass_userPW);
-                        }
-                    }, 200);
+                    helper_editText.showKeyboard(activity, pass_userPW, 0, password, activity.getString(R.string.pw_hint));
 
                     return true;
                 }
@@ -347,7 +342,21 @@ public class Activity_settings extends AppCompatActivity {
 
                     SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
                     sharedPref.edit().putString("whiteList", "").apply();
+                    Toast.makeText(getActivity(), R.string.toast_whiteList, Toast.LENGTH_SHORT).show();
 
+                    return true;
+                }
+            });
+        }
+
+        private void addDonateListListener() {
+
+            Preference reset = findPreference("donate");
+            reset.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                public boolean onPreferenceClick(Preference pref) {
+                    Uri uri = Uri.parse("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=NP6TGYDYP9SHY"); // missing 'http://' will cause crashed
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    startActivity(intent);
                     return true;
                 }
             });
@@ -361,10 +370,10 @@ public class Activity_settings extends AppCompatActivity {
             addLicenseListener();
             addOpenSettingsListener();
             addBackup_dbListener();
-            addRestore_dbListener();
             addRestore_searchChooseListener();
             addProtectListener();
             addWhiteListListener();
+            addDonateListListener();
         }
     }
 

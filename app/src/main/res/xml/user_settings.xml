@@ -6,30 +6,30 @@
 
         <CheckBoxPreference
             android:title="@string/action_java"
+            android:icon="@drawable/language_javascript"
             android:summary="@string/action_java_summary"
             android:key="java"
             android:defaultValue="true" />
 
         <CheckBoxPreference
             android:title="@string/action_loc"
+            android:icon="@drawable/map_marker"
             android:summary="@string/action_loc_summary"
             android:key="loc"
             android:defaultValue="false" />
 
-        <CheckBoxPreference
+        <ListPreference
             android:title="@string/action_cookie"
+            android:icon="@drawable/cookie"
             android:summary="@string/action_cookie_summary"
             android:key="cookie"
-            android:defaultValue="true" />
-
-        <CheckBoxPreference
-            android:title="@string/action_cookie3"
-            android:summary="@string/action_cookie3_summary"
-            android:key="cookie3"
-            android:defaultValue="false" />
+            android:defaultValue="1"
+            android:entries="@array/listArrayCookies"
+            android:entryValues="@array/listValuesCookies" />
 
         <CheckBoxPreference
             android:title="@string/action_form"
+            android:icon="@drawable/account_card_details"
             android:summary="@string/action_form_summary"
             android:key="form"
             android:defaultValue="false" />
@@ -41,24 +41,28 @@
 
         <CheckBoxPreference
             android:title="@string/action_clearCookies"
+            android:icon="@drawable/cookie"
             android:summary="@string/action_clearCookies_summary"
             android:key="clearCookies"
             android:defaultValue="false" />
 
         <CheckBoxPreference
             android:title="@string/action_clearForm"
+            android:icon="@drawable/account_card_details"
             android:summary="@string/action_clearForm_summary"
             android:key="clearForm"
             android:defaultValue="true" />
 
         <CheckBoxPreference
             android:title="@string/action_clearCache"
+            android:icon="@drawable/delete"
             android:summary="@string/action_clearCache_summary"
             android:key="clearCache"
             android:defaultValue="true" />
 
         <CheckBoxPreference
             android:title="@string/action_history"
+            android:icon="@drawable/history2"
             android:summary="@string/action_history_summary"
             android:key="history"
             android:defaultValue="false" />
@@ -70,33 +74,33 @@
 
         <CheckBoxPreference
             android:title="@string/action_pictures"
+            android:icon="@drawable/image"
             android:summary="@string/action_pictures_summary"
             android:key="pictures"
             android:defaultValue="true" />
 
         <CheckBoxPreference
             android:title="@string/action_offline"
+            android:icon="@drawable/wifi_off"
             android:summary="@string/action_offline_summary"
             android:key="offline"
             android:defaultValue="false" />
 
         <Preference
             android:title="@string/action_protect"
+            android:icon="@drawable/key"
             android:summary="@string/action_protect_summary"
             android:key="protect_PW" />
 
         <Preference
             android:title="@string/action_backup"
+            android:icon="@drawable/backup_restore"
             android:summary="@string/action_backup_summary"
             android:key="backup_db" />
 
         <Preference
-            android:title="@string/action_restore"
-            android:summary="@string/action_restore_summary"
-            android:key="restore_db" />
-
-        <Preference
             android:title="@string/action_whiteList"
+            android:icon="@drawable/language_javascript"
             android:summary="@string/action_whiteList_summary"
             android:key="whiteList" />
 
@@ -105,32 +109,27 @@
     <PreferenceCategory
         android:title="@string/pref_2">
 
-        <CheckBoxPreference
-            android:title="@string/action_swipe"
-            android:summary="@string/action_swipe_summary"
-            android:key="swipe"
-            android:defaultValue="false" />
+        <ListPreference
+            android:title="@string/action_nav"
+            android:icon="@drawable/swap_horizontal"
+            android:summary="@string/action_nav_summary"
+            android:key="nav"
+            android:defaultValue="2"
+            android:entries="@array/listArrayNav"
+            android:entryValues="@array/listValuesNav" />
 
-        <CheckBoxPreference
-            android:title="@string/action_arrow"
-            android:summary="@string/action_arrow_summary"
-            android:key="arrow"
-            android:defaultValue="true" />
-
-        <CheckBoxPreference
-            android:title="@string/action_hideStatus"
-            android:summary="@string/action_hideStatus_summary"
-            android:key="hideStatus"
-            android:defaultValue="false" />
-
-        <CheckBoxPreference
-            android:title="@string/action_hideTool"
-            android:summary="@string/action_hideTool_summary"
-            android:key="hideTool"
-            android:defaultValue="true" />
+        <ListPreference
+            android:title="@string/action_fullscreen"
+            android:icon="@drawable/fullscreen"
+            android:summary="@string/action_fullscreen_summary"
+            android:key="fullscreen"
+            android:defaultValue="2"
+            android:entries="@array/listArrayFull"
+            android:entryValues="@array/listValuesFull" />
 
         <ListPreference
             android:title="@string/action_rotation"
+            android:icon="@drawable/screen_rotation"
             android:summary="@string/action_rotation_summary"
             android:key="orientation"
             android:defaultValue="auto"
@@ -139,6 +138,7 @@
 
         <ListPreference
             android:title="@string/action_font"
+            android:icon="@drawable/format_size"
             android:summary="@string/action_font_summary"
             android:key="font"
             android:defaultValue="100"
@@ -147,6 +147,7 @@
 
         <Preference
             android:title="@string/action_openSettings"
+            android:icon="@drawable/settings"
             android:summary="@string/action_openSettings_summary"
             android:key="settings" />
 
@@ -157,6 +158,7 @@
 
         <ListPreference
             android:title="@string/action_searchEngine"
+            android:icon="@drawable/magnify2"
             android:summary="@string/action_searchEngine_summary"
             android:key="searchEngine"
             android:defaultValue="https://duckduckgo.com/?q="
@@ -165,11 +167,13 @@
 
         <Preference
             android:title="@string/action_searchChoose"
+            android:icon="@drawable/earth2"
             android:summary="@string/action_searchChoose_summary"
             android:key="searchChoose" />
 
         <ListPreference
             android:title="@string/action_wikiLang"
+            android:icon="@drawable/wikipedia"
             android:summary="@string/action_wikiLang_summary"
             android:key="wikiLang"
             android:defaultValue="en"
@@ -183,17 +187,26 @@
 
         <Preference
             android:title="@string/action_license"
+            android:icon="@drawable/copyright"
             android:summary="@string/action_license_summary"
             android:key="license" />
 
+        <Preference
+            android:title="@string/action_donate"
+            android:icon="@drawable/coin"
+            android:summary="@string/action_donate_summary"
+            android:key="donate" />
+
         <CheckBoxPreference
             android:title="@string/action_notShow_title"
+            android:icon="@drawable/information_outline"
             android:summary="@string/action_notShow_title_summary"
             android:key="help_notShow"
             android:defaultValue="true" />
 
         <CheckBoxPreference
             android:title="@string/action_permNotShow_title"
+            android:icon="@drawable/security"
             android:summary="@string/action_permNotShow_title_summary"
             android:key="perm_notShow"
             android:defaultValue="true" />

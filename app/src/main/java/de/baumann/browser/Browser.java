@@ -39,7 +39,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Environment;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
@@ -168,6 +167,7 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
                     editText.setText(mWebView.getTitle());
                     actionBar.show();
                 }
+                setNavArrows();
             }
         });
 
@@ -182,7 +182,7 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
         });
 
         mWebView = (ObservableWebView) findViewById(R.id.webView);
-        if (sharedPref.getBoolean ("hideTool", false)){
+        if (sharedPref.getString ("fullscreen", "2").equals("2") || sharedPref.getString ("fullscreen", "2").equals("3")){
             mWebView.setScrollViewCallbacks(this);
         }
 
@@ -662,8 +662,6 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
         if (id == R.id.action_search) {
 
             mWebView.stopLoading();
-            editText.hasFocus();
-
             String text = editText.getText().toString();
             String searchEngine = sharedPref.getString("searchEngine", "https://startpage.com/do/search?query=");
             String wikiLang = sharedPref.getString("wikiLang", "en");
@@ -673,26 +671,15 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
             }
 
             if (text.equals(mWebView.getTitle()) || text.isEmpty()) {
-                editText.requestFocus();
-                (new Handler()).postDelayed(new Runnable() {
-                    public void run() {
-                        helper_main.showKeyboard(Browser.this, editText);
-                        sharedPref.edit()
-                                .putInt("keyboard", 3)
-                                .apply();
-                        Browser.this.invalidateOptionsMenu();
-                        editText.setText("");
-                    }
-                }, 500);
+                helper_editText.showKeyboard(Browser.this, editText, 3, "", getString(R.string.app_search_hint));
 
             } else {
-
-                editText.clearFocus();
-                helper_main.hideKeyboard(Browser.this, editText);
+                helper_editText.hideKeyboard(Browser.this, editText, 0, text, getString(R.string.app_search_hint));
+                helper_editText.editText_EditorAction(editText, Browser.this, mWebView);
 
                 if (text.startsWith("www")) {
                     mWebView.loadUrl("http://" + text);
-                } else if (text.startsWith("http")) {
+                } else if (text.contains("http")) {
                     mWebView.loadUrl(text);
                 } else if (text.contains(".w ")) {
                     mWebView.loadUrl("https://" + wikiLang + ".wikipedia.org/wiki/Spezial:Suche?search=" + subStr);
@@ -703,26 +690,52 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
                 } else if (text.startsWith(".g ")) {
                     mWebView.loadUrl("https://github.com/search?utf8=✓&q=" + subStr);
                 } else  if (text.startsWith(".s ")) {
-                    mWebView.loadUrl("https://startpage.com/do/search?query=" + subStr);
+                    if (Locale.getDefault().getLanguage().contentEquals("de")){
+                        mWebView.loadUrl("https://startpage.com/do/search?query=" + subStr + "&lui=deutsch&l=deutsch");
+                    } else {
+                        mWebView.loadUrl("https://startpage.com/do/search?query=" + subStr);
+                    }
                 } else if (text.startsWith(".G ")) {
-                    mWebView.loadUrl("https://www.google.com/search?&q=" + subStr);
-                } else  if (text.startsWith(".d ")) {
-                    mWebView.loadUrl("https://duckduckgo.com/?q=" + subStr);
+                    if (Locale.getDefault().getLanguage().contentEquals("de")){
+                        mWebView.loadUrl("https://www.google.de/search?&q=" + subStr);
+                    } else {
+                        mWebView.loadUrl("https://www.google.com/search?&q=" + subStr);
+                    }
                 } else  if (text.startsWith(".y ")) {
-                    mWebView.loadUrl("https://www.youtube.com/results?search_query=" + subStr);
+                    if (Locale.getDefault().getLanguage().contentEquals("de")){
+                        mWebView.loadUrl("https://www.youtube.com/results?hl=de&gl=DE&search_query=" + subStr);
+                    } else {
+                        mWebView.loadUrl("https://www.youtube.com/results?search_query=" + subStr);
+                    }
+                } else  if (text.startsWith(".d ")) {
+                    if (Locale.getDefault().getLanguage().contentEquals("de")){
+                        mWebView.loadUrl("https://duckduckgo.com/?q=" + subStr + "&kl=de-de&kad=de_DE&k1=-1&kaj=m&kam=osm&kp=-1&kak=-1&kd=1&t=h_&ia=web");
+                    } else {
+                        mWebView.loadUrl("https://duckduckgo.com/?q=" + subStr);
+                    }
                 } else {
-                    mWebView.loadUrl(searchEngine + text);
+                    if (searchEngine.contains("https://duckduckgo.com/?q=")) {
+                        if (Locale.getDefault().getLanguage().contentEquals("de")){
+                            mWebView.loadUrl("https://duckduckgo.com/?q=" + text + "&kl=de-de&kad=de_DE&k1=-1&kaj=m&kam=osm&kp=-1&kak=-1&kd=1&t=h_&ia=web");
+                        } else {
+                            mWebView.loadUrl("https://duckduckgo.com/?q=" + text);
+                        }
+                    } else if (searchEngine.contains("https://metager.de/meta/meta.ger3?focus=web&eingabe=")) {
+                        if (Locale.getDefault().getLanguage().contentEquals("de")){
+                            mWebView.loadUrl("https://metager.de/meta/meta.ger3?focus=web&eingabe=" + text);
+                        } else {
+                            mWebView.loadUrl("https://metager.de/meta/meta.ger3?focus=web&eingabe=" + text +"&focus=web&encoding=utf8&lang=eng");
+                        }
+                    } else if (searchEngine.contains("https://startpage.com/do/search?query=")) {
+                        if (Locale.getDefault().getLanguage().contentEquals("de")){
+                            mWebView.loadUrl("https://startpage.com/do/search?query=" + text + "&lui=deutsch&l=deutsch");
+                        } else {
+                            mWebView.loadUrl("https://startpage.com/do/search?query=" + text);
+                        }
+                    }else {
+                        mWebView.loadUrl(searchEngine + text);
+                    }
                 }
-
-                sharedPref.edit()
-                        .putInt("keyboard", 0)
-                        .apply();
-                invalidateOptionsMenu();
-                editText.setHint(R.string.app_search_hint);
-                helper_editText.editText_Touch(editText, Browser.this, mWebView);
-                helper_editText.editText_EditorAction(editText, Browser.this, mWebView);
-                helper_editText.editText_FocusChange(editText, Browser.this);
-                helper_main.hideKeyboard(Browser.this, editText);
             }
         }
 
@@ -978,6 +991,7 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
 
         if (id == R.id.action_searchSite) {
             mWebView.stopLoading();
+            helper_editText.editText_FocusChange_searchSite(editText, Browser.this);
             helper_editText.editText_searchSite(editText, Browser.this, mWebView);
         }
 
@@ -988,10 +1002,8 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
             if (text.startsWith(getString(R.string.app_search))) {
                 helper_editText.editText_searchSite(editText, Browser.this, mWebView);
             } else {
-                editText.setText(getString(R.string.app_search) + " " + text);
                 mWebView.findAllAsync(text);
-                editText.clearFocus();
-                helper_main.hideKeyboard(Browser.this, editText);
+                helper_editText.hideKeyboard(Browser.this, editText, 1, getString(R.string.app_search) + " " + text, getString(R.string.app_search_hint_site));
             }
 
         }
@@ -1005,16 +1017,9 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
         }
 
         if (id == R.id.action_cancel) {
-            sharedPref.edit()
-                    .putInt("keyboard", 0)
-                    .apply();
-            invalidateOptionsMenu();
-            editText.setText(mWebView.getTitle());
-            editText.setHint(R.string.app_search_hint);
-            helper_editText.editText_Touch(editText, Browser.this, mWebView);
-            helper_editText.editText_EditorAction(editText, Browser.this, mWebView);
             helper_editText.editText_FocusChange(editText, Browser.this);
-            helper_main.hideKeyboard(Browser.this, editText);
+            helper_editText.editText_EditorAction(editText, Browser.this, mWebView);
+            helper_editText.hideKeyboard(Browser.this, editText, 0, mWebView.getTitle(), getString(R.string.app_search_hint));
         }
 
         if (id == R.id.action_save_bookmark) {
@@ -1241,7 +1246,7 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
     }
 
     private void setNavArrows() {
-        if (sharedPref.getBoolean ("arrow", false)){
+        if (sharedPref.getString ("nav", "2").equals("2") || sharedPref.getString ("nav", "2").equals("3")){
             if (mWebView.canGoBack()) {
                 imageButton_left.setVisibility(View.VISIBLE);
             } else {

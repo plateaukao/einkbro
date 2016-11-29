@@ -99,6 +99,7 @@
     <string name="toast_install_app">Bitte eine App installieren um die Aktion auszuführen.</string>
     <string name="toast_wrongPW">Uuups. Falsches Passwort.</string>
     <string name="toast_exit">Möchtest du die App verlassen?</string>
+    <string name="toast_whiteList">Whitelist gelöscht.</string>
 
 
     // Bookmarks // ReadLater // Password
@@ -143,20 +144,16 @@
     <string name="action_openSettings_summary">Öffne über die Systemeinstellungen die App Info der App. Je nach Androidversion
         kannst du dort verschiedene Einstellungen vornehmen (Speicherplatz, Netzwerkverkehr, Berechtigungen, …).</string>
 
-    <string name="action_swipe">Wischen</string>
-    <string name="action_swipe_summary">Nach rechts und links wischen um durch Internetseiten zu navigieren.</string>
-
     <string name="action_font">Schriftgröße</string>
     <string name="action_font_summary">Ändere die Schriftgröße für Internetseiten.</string>
 
     <string name="action_backup">Sicherung</string>
     <string name="action_backup_summary">Sichere deine Lesezeichen, die leseSpäter Liste, passSpeicher und die Javascript Whitelist
-        auf der SD-Karte. Eine neue Sicherung überschreibt immer die bestehende.</string>
+        auf der SD-Karte oder stelle sie wieder her. Eine neue Sicherung überschreibt immer die bestehende. Nachdem du den
+        passSpeicher wiederhergestellt hast, musst du den Bearbeitendialog eines gespeicherten Eintrages öffnen und ihn dann
+        (ohne etwas zu ändern) speichern, damit die Datenbank richtig benutzt werden kann.</string>
 
     <string name="action_restore">Wiederherstellung</string>
-    <string name="action_restore_summary">Stelle deine Lesezeichen, die leseSpäter Liste, den passSpeicher und die Javascript
-        Whitelist wieder her. Nachdem du den passSpeicher wiederhergestellt hast, musst du den Bearbeitendialog eines gespeicherten
-        Eintrages öffnen und ihn dann (ohne etwas zu ändern) speichern, damit die Datenbank richtig benutzt werden kann.</string>
 
     <string name="action_java">Javascript</string>
     <string name="action_java_summary">Manche Funktionen von angezeigten Internetseiten benötigen Javascript.
@@ -164,11 +161,9 @@
 
     <string name="action_cookie">Cookies</string>
     <string name="action_cookie_summary">Besuchte Internetseiten speichern Cookies auf deinem Gerät, meistens um die
-        Benutzerfreundlichkeit zu erhöhen. Die Einstellungen einer Suchmaschine werden z.B. in Cookies gespeichert.</string>
-
-    <string name="action_cookie3">Cookies von Dritten</string>
-    <string name="action_cookie3_summary">Cookies von Dritten stammen nicht von der besuchten Internetseite. Oft sammeln sie
-        Informationen über dein Surfverhalten um dir personalisierte Werbung senden zu können.</string>
+        Benutzerfreundlichkeit zu erhöhen. Die Einstellungen einer Suchmaschine werden z.B. in Cookies gespeichert. Cookies von
+        Dritten stammen nicht von der besuchten Internetseite. Oft sammeln sie Informationen über dein Surfverhalten um dir
+        personalisierte Werbung senden zu können.</string>
 
     <string name="action_history">Verlauf löschen</string>
     <string name="action_history_summary">Löscht deinen Browserverlauf beim Verlassen der App.</string>
@@ -202,9 +197,6 @@
     <string name="action_form_summary">Speichere in Formularfelder eingegebene Daten (z.B. Emailadresse, eingegebener
         Wohnort, …).</string>
 
-    <string name="action_arrow">Pfeile</string>
-    <string name="action_arrow_summary">Zeige Pfeile an um durch Internetseiten zu navigieren.</string>
-
     <string name="action_loc">Positionsbestimmung</string>
     <string name="action_loc_summary">Erlaube Internetseiten deine genaue Position zu bestimmen.</string>
 
@@ -216,6 +208,7 @@
     <string name="action_searchChoose">Internetseiten</string>
     <string name="action_searchChoose_summary">Wähle die Internetseiten aus, welche für eine schnelle Suche zur Verfügung stehen
         sollen.</string>
+    <string name="action_searchChooseTitle">Wähle eine Seite zum Suchen</string>
 
     <string name="action_Duckduckgo">DuckDuckGo ist eine Suchmaschine, die keine persönlichen Informationen sammelt und dadurch
         auch Filterblasen verhindern soll.</string>
@@ -232,12 +225,6 @@
     <string name="action_YouTube">YouTube ist ein Videoportal. Die Benutzer können auf dem Portal kostenlos Videoclips ansehen,
         bewerten, kommentieren und selbst hochladen.</string>
 
-    <string name="action_hideStatus">Statusbar</string>
-    <string name="action_hideStatus_summary">Verstecke die Statusbar während dem Browsen.</string>
-
-    <string name="action_hideTool">Toolbar</string>
-    <string name="action_hideTool_summary">Verstecke die Toolbar am unteren Bildschirmrand während dem Browsen.</string>
-
     <string name="action_protect">App Zugang</string>
     <string name="action_protect_summary">Bestimme eine Pin um die App vor unbefugtem Zugriff zu schützen. Benutze nur Nummern.
         Leer lassen, wenn du die App nicht schützen willst.</string>
@@ -248,6 +235,15 @@
     <string name="action_whiteList">Whitelist</string>
     <string name="action_whiteList_summary">Lösche deine Javascript Whitelist.</string>
 
+    <string name="action_fullscreen">Vollbild</string>
+    <string name="action_fullscreen_summary">Verstecke während dem Browsen die Status- und/oder die Toolbar am unteren Bildschirmrand.</string>
+
+    <string name="action_nav">Navigation</string>
+    <string name="action_nav_summary">Benutze Pfeile und/oder Wischgesten um durch zur vorherigen oder nächsten Internetseite zu
+        gelangen.</string>
+
+    <string name="action_donate">Spenden</string>
+    <string name="action_donate_summary">Wenn dir die App gefällt würde ich mich über eine Spende (Paypal) freuen.</string>
 
     //File chooser
 
@@ -261,6 +257,7 @@
 
     <string name="choose_hint">Neuer Dateiname (ohne Dateiendung)</string>
     <string name="choose_delete">Möchtest du die Datei wirklich löschen?</string>
+    <string name="choose_title">Dateiname bearbeiten</string>
 
 
     // Password

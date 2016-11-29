@@ -29,7 +29,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -105,11 +104,9 @@ public class Popup_readLater extends Activity {
                                         final Database_ReadLater db = new Database_ReadLater(Popup_readLater.this);
 
                                         AlertDialog.Builder builder = new AlertDialog.Builder(Popup_readLater.this);
-                                        View dialogView = View.inflate(Popup_readLater.this, R.layout.dialog_edit, null);
+                                        View dialogView = View.inflate(Popup_readLater.this, R.layout.dialog_edit_title, null);
 
                                         final EditText edit_title = (EditText) dialogView.findViewById(R.id.pass_title);
-                                        edit_title.setHint(R.string.pass_title);
-                                        edit_title.setText(title);
 
                                         builder.setView(dialogView);
                                         builder.setTitle(R.string.bookmark_edit_title);
@@ -135,12 +132,7 @@ public class Popup_readLater extends Activity {
                                         final AlertDialog dialog2 = builder.create();
                                         // Display the custom alert dialog on interface
                                         dialog2.show();
-
-                                        new Handler().postDelayed(new Runnable() {
-                                            public void run() {
-                                                helper_main.showKeyboard(Popup_readLater.this,edit_title);
-                                            }
-                                        }, 200);
+                                        helper_editText.showKeyboard(Popup_readLater.this, edit_title, 0, title, getString(R.string.app_search_hint_bookmark));
 
                                     } catch (Exception e) {
                                         e.printStackTrace();

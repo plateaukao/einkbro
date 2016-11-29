@@ -1,8 +1,8 @@
 [![Donate](https://www.paypalobjects.com/de_DE/DE/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=NP6TGYDYP9SHY)
 
 # browser
-A simple Android browser based on webview. The goal is to provide a lightweight but powerfull browser. It is based on several 
-lists (see below) and has (and will ot have tabs).
+A simple Android browser based on webview. The goal is to provide a lightweight but power full browser. It is based on several 
+lists (see below) and hasn't (and will not have) tabs.
 
 
 ### Links:
@@ -49,6 +49,7 @@ lists (see below) and has (and will ot have tabs).
 ### Some nice extra features
 
 - open links in background
+- Websearch (from shared text)
 - screenshots of the whole website
 - build in file browser (open, share, rename, delete files)
 

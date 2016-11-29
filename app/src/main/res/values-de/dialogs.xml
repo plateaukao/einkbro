@@ -22,7 +22,7 @@
 
         &lt;b>Benutzte Open Source Projekte:&lt;/b>&lt;br>&lt;br>
 
-        &lt;i>android-file-chooser&lt;/i>&lt;br>
+        &lt;i>android-file-chooser&lt;br>
         https://github.com/hedzr/android-file-chooser&lt;br>&lt;br>
 
         Android-ObservableScrollView&lt;br>
@@ -32,7 +32,10 @@
         https://github.com/yoshihiroando/browser&lt;br>&lt;br>
 
         encrypted-userprefs&lt;br>
-        https://github.com/sveinungkb/encrypted-userprefs&lt;/i>
+        https://github.com/sveinungkb/encrypted-userprefs&lt;br>&lt;br>
+
+        MaterialDesignIcons&lt;br>
+        https://github.com/Templarian/MaterialDesign&lt;/i>
     </string>
 
 
@@ -140,6 +143,46 @@
         <item>auto</item>
         <item>portrait</item>
         <item>landscape</item>
+    </string-array>
+
+    <string-array name="listArrayCookies">
+        <item>Cookies akteptieren</item>
+        <item>Cookies von 3. akteptieren</item>
+        <item>Alle Cookies aktzeptieren</item>
+        <item>Keine Cookies aktzeptieren</item>
+    </string-array>
+
+    <string-array name="listValuesCookies">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+
+    <string-array name="listArrayFull">
+        <item>Statusbar verstecken</item>
+        <item>Toolbar verstecken</item>
+        <item>Beides verstecken</item>
+    </string-array>
+
+    <string-array name="listValuesFull">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="listArrayNav">
+        <item>Wischgesten benutzen</item>
+        <item>Pfeile benutzen</item>
+        <item>Beides benutzen</item>
+        <item>Keines von beiden</item>
+    </string-array>
+
+    <string-array name="listValuesNav">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
     </string-array>
 
 </resources>

@@ -25,7 +25,6 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -41,6 +40,7 @@ import java.util.HashMap;
 import de.baumann.browser.R;
 import de.baumann.browser.databases.Database_Pass;
 import de.baumann.browser.helper.class_SecurePreferences;
+import de.baumann.browser.helper.helper_editText;
 import de.baumann.browser.helper.helper_main;
 
 public class Popup_pass extends Activity {
@@ -118,7 +118,6 @@ public class Popup_pass extends Activity {
                                         View dialogView = View.inflate(Popup_pass.this, R.layout.dialog_login, null);
 
                                         final EditText pass_title = (EditText) dialogView.findViewById(R.id.pass_title);
-                                        pass_title.setText(title);
                                         final EditText pass_userName = (EditText) dialogView.findViewById(R.id.pass_userName);
                                         pass_userName.setText(userName);
                                         final EditText pass_userPW = (EditText) dialogView.findViewById(R.id.pass_userPW);
@@ -159,12 +158,7 @@ public class Popup_pass extends Activity {
                                         final AlertDialog dialog2 = builder.create();
                                         // Display the custom alert dialog on interface
                                         dialog2.show();
-
-                                        new Handler().postDelayed(new Runnable() {
-                                            public void run() {
-                                                helper_main.showKeyboard(Popup_pass.this,pass_title);
-                                            }
-                                        }, 200);
+                                        helper_editText.showKeyboard(Popup_pass.this, pass_title, 0, title, getString(R.string.app_search_hint_bookmark));
 
                                     } catch (Exception e) {
                                         e.printStackTrace();

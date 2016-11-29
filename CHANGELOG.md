@@ -1,4 +1,21 @@
+### v 1.0 (first release):
+
+- improved: search results in German
+- improved: settings screen
+- improved: license dialog
+- improved minor ui/code tweaks
+- added: websearch (from shared text)
+- added: donate (settings)
+
+
 ### Pre releases on [XDA - Link](http://forum.xda-developers.com/android/apps-games/app-browser-t3500091):
+
+v6:
+
+- fixed German startpage search
+- context menu for all lists
+- small changes
+
 
 v5:
 
@@ -24,5 +41,5 @@ v3:
 
 v2:
 
-- youtube fullscrenn videos
+- youtube fullscreen videos
 - open urls simplified
