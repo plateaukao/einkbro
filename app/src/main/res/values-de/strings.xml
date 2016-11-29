@@ -113,7 +113,8 @@
     <string name="readLater_added">Füge zur leseSpäter Liste hinzu.</string>
     <string name="readLater_button">Liste löschen</string>
     <string name="readLater_title">Öffne den letzten gespeicherten Link:</string>
-    <string name="readLater_action">Öffne späterLesen Liste</string>
+    <string name="readLater_action">Liste öffnen</string>
+    <string name="readLater_action2">Link hinzufügen</string>
 
     <string name="pass_success">Füge zum passSpeicher hinzu.</string>
     <string name="pass_userName">Benutzername</string>

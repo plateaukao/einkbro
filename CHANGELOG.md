@@ -1,9 +1,10 @@
-### v 1.0 (first release):
+### v 1.0+ (first release):
 
+- improved: readLater notification (v1.1)
 - improved: search results in German
 - improved: settings screen
 - improved: license dialog
-- improved minor ui/code tweaks
+- improved: minor ui/code tweaks
 - added: websearch (from shared text)
 - added: donate (settings)
 
