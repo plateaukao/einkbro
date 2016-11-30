@@ -7,6 +7,7 @@
 - improved: minor ui/code tweaks
 - added: websearch (from shared text)
 - added: donate (settings)
+- fixed: navigation settings (v1.2)
 
 
 ### Pre releases on [XDA - Link](http://forum.xda-developers.com/android/apps-games/app-browser-t3500091):
