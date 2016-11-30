@@ -240,7 +240,7 @@
     <string name="action_fullscreen_summary">Verstecke während dem Browsen die Status- und/oder die Toolbar am unteren Bildschirmrand.</string>
 
     <string name="action_nav">Navigation</string>
-    <string name="action_nav_summary">Benutze Pfeile und/oder Wischgesten um durch zur vorherigen oder nächsten Internetseite zu
+    <string name="action_nav_summary">Benutze Pfeile und/oder Wischgesten um zur vorherigen oder nächsten Internetseite zu
         gelangen.</string>
 
     <string name="action_donate">Spenden</string>

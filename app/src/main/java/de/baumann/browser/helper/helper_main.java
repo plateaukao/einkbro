@@ -222,7 +222,7 @@ public class helper_main {
 
                         final String fileExtension = pathFile.getAbsolutePath().substring(pathFile.getAbsolutePath().lastIndexOf("."));
                         final String fileName = pathFile.getAbsolutePath().substring(pathFile.getAbsolutePath().lastIndexOf("/")+1);
-                        final String  fileNameWE = fileName.substring(0, fileName.lastIndexOf("."));
+                        final String fileNameWE = fileName.substring(0, fileName.lastIndexOf("."));
 
                         final CharSequence[] options = {
                                 activity.getString(R.string.choose_menu_1),

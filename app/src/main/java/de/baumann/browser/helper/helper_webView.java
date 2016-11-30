@@ -68,7 +68,6 @@ public class helper_webView {
         webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
         webView.getSettings().setUseWideViewPort(true);
         webView.getSettings().setLoadWithOverviewMode(true);
-        webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
 
         from.registerForContextMenu(webView);
 
