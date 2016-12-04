@@ -246,6 +246,9 @@
     <string name="action_donate">Spenden</string>
     <string name="action_donate_summary">Wenn dir die App gefällt würde ich mich über eine Spende (Paypal) freuen.</string>
 
+    <string name="action_changelog">Änderungen</string>
+    <string name="action_changelog_summary">Was gibt es Neues … (wird eine Internetseite öffnen)</string>
+
     //File chooser
 
     <string name="title_choose">Auswählen</string>

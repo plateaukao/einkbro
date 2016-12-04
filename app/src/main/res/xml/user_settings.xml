@@ -192,6 +192,12 @@
             android:key="license" />
 
         <Preference
+            android:title="@string/action_changelog"
+            android:icon="@drawable/format_list_bulleted2"
+            android:summary="@string/action_changelog_summary"
+            android:key="changelog" />
+
+        <Preference
             android:title="@string/action_donate"
             android:icon="@drawable/coin"
             android:summary="@string/action_donate_summary"

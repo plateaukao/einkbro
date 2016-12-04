@@ -362,6 +362,19 @@ public class Activity_settings extends AppCompatActivity {
             });
         }
 
+        private void addChangelogListener() {
+
+            Preference reset = findPreference("changelog");
+            reset.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                public boolean onPreferenceClick(Preference pref) {
+                    Uri uri = Uri.parse("https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md"); // missing 'http://' will cause crashed
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    startActivity(intent);
+                    return true;
+                }
+            });
+        }
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -374,6 +387,7 @@ public class Activity_settings extends AppCompatActivity {
             addProtectListener();
             addWhiteListListener();
             addDonateListListener();
+            addChangelogListener();
         }
     }
 
