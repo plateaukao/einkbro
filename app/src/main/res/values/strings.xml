@@ -230,7 +230,7 @@
     <string name="action_nav_summary">Use arrows and/or swipe gestures to navigate back and forward in your browser history.</string>
 
     <string name="action_donate">Donate</string>
-    <string name="action_donate_summary">If you like the app you can donate to me via Paypal.</string>
+    <string name="action_donate_summary">If you like the app, you can donate to me via Paypal.</string>
 
     <string name="action_changelog">Changelog</string>
     <string name="action_changelog_summary">See what\'s new … (will open a website)</string>

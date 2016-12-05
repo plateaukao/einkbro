@@ -1,4 +1,4 @@
-### v 1.0+ (first release):
+### v 1.0+ (first public release):
 
 - improved: readLater notification (v1.1)
 - improved: search results in German
@@ -7,6 +7,7 @@
 - improved: minor ui/code tweaks
 - added: websearch (from shared text)
 - added: donate (settings)
+- added: changelog (settings) (v1.4)
 - fixed: navigation settings (v1.2)
 - fixed: screenshot (v1.3)
 
