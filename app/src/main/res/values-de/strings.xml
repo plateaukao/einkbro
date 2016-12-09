@@ -15,7 +15,7 @@
         können.&lt;br>&lt;br>
 
         &lt;i>Berechtigungen nachträglich erteilen:&lt;/i>&lt;br>
-        Wenn du die Brechtigungen verweigerst, kannst du sie nachträglich erteilen, indem du \"Einstellungen -> App Info\" öffnest und
+        Wenn du die Berechtigungen verweigerst, kannst du sie nachträglich erteilen, indem du \"Einstellungen -> App Info\" öffnest und
         dort den Bereich \"Berechtigungen\" auswählst.</string>
 
     <string name="app_share_screenshot">Bildschrmfoto teilen mit:</string>
@@ -66,6 +66,10 @@
     <string name="menu_help">Hilfe</string>
     <string name="menu_createShortcut">Erstelle Verknüpfung</string>
     <string name="menu_createShortcut_success">Verknüpfung erstellt</string>
+
+    <string name="action_sort">Einträge sortieren</string>
+    <string name="action_sort_title">Sortiere nach Titel</string>
+    <string name="action_sort_url">Sortiere nach Datum</string>
 
 
     // Context Menu

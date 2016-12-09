@@ -1,18 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:minWidth="300dp"
-    android:maxWidth="300dp">
+    android:maxWidth="300dp"
+    android:layout_gravity="center_vertical|center_horizontal">
 
-    <Button
-        android:text="@string/readLater_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?android:selectableItemBackground"
-        android:id="@+id/button"
-        android:textColor="@color/colorAccent" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="center_horizontal"
+        android:layout_gravity="center_vertical|center_horizontal">
+
+        <Button
+            android:text="@string/readLater_button"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:paddingStart="16dp"
+            android:paddingEnd="8dp"
+            android:background="?android:selectableItemBackground"
+            android:id="@+id/button"
+            android:textColor="@color/colorAccent" />
+
+        <ImageButton
+            android:id="@+id/butSort"
+            android:paddingStart="8dp"
+            android:paddingEnd="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:src="@drawable/sort_descending"
+            android:background="?android:selectableItemBackground"
+            tools:ignore="ContentDescription"
+            android:scaleType="fitCenter"
+            android:layout_gravity="center_vertical|center_horizontal" />
+
+
+    </LinearLayout>
+
+
 
     <ListView
         android:id="@+id/list"

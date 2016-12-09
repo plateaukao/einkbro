@@ -660,10 +660,10 @@ public class Bookmarks extends AppCompatActivity {
         try {
             Database_Bookmarks db = new Database_Bookmarks(Bookmarks.this);
             ArrayList<String[]> bookmarkList = new ArrayList<>();
-            db.getBookmarks(bookmarkList);
+            db.getBookmarks(bookmarkList, Bookmarks.this);
             if (bookmarkList.size() == 0) {
                 db.loadInitialData();
-                db.getBookmarks(bookmarkList);
+                db.getBookmarks(bookmarkList, Bookmarks.this);
             }
             db.close();
 

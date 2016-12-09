@@ -26,6 +26,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -34,7 +35,10 @@ import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
@@ -61,9 +65,86 @@ public class Popup_bookmarks extends Activity {
 
         PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
         PreferenceManager.setDefaultValues(this, R.xml.user_settings_search, false);
+        final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 
         Button button = (Button) findViewById(R.id.button);
-        button.setVisibility(View.GONE);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar snackbar = Snackbar
+                        .make(listView, R.string.bookmark_remove_confirmation, Snackbar.LENGTH_LONG)
+                        .setAction(R.string.toast_yes, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Popup_bookmarks.this.deleteDatabase("browser.db");
+                                setBookmarkList();
+                            }
+                        });
+                snackbar.show();
+            }
+        });
+
+        ImageButton buttonSort = (ImageButton) findViewById(R.id.butSort);
+        buttonSort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(Popup_bookmarks.this);
+                View dialogView = View.inflate(Popup_bookmarks.this, R.layout.dialog_sort, null);
+
+                final CheckBox ch_title = (CheckBox) dialogView.findViewById(R.id.checkBoxTitle);
+                final CheckBox ch_create = (CheckBox) dialogView.findViewById(R.id.checkBoxCreate);
+
+
+                if (sharedPref.getString("sortBO", "title").equals("title")) {
+                    ch_title.setChecked(true);
+                } else {
+                    ch_title.setChecked(false);
+                }
+                if (sharedPref.getString("sortBO", "title").equals("seqno")) {
+                    ch_create.setChecked(true);
+                } else {
+                    ch_create.setChecked(false);
+                }
+
+                ch_title.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView,
+                                                 boolean isChecked) {
+                        if(isChecked){
+                            ch_create.setChecked(false);
+                            sharedPref.edit().putString("sortBO", "title").apply();
+                            setBookmarkList();
+                        }
+                    }
+                });
+                ch_create.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView,
+                                                 boolean isChecked) {
+                        if(isChecked){
+                            ch_title.setChecked(false);
+                            sharedPref.edit().putString("sortBO", "seqno").apply();
+                            setBookmarkList();
+                        }
+                    }
+                });
+
+                builder.setView(dialogView);
+                builder.setTitle(R.string.action_sort);
+                builder.setPositiveButton(R.string.toast_yes, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        dialog.dismiss();
+                    }
+                });
+
+                final AlertDialog dialog2 = builder.create();
+                // Display the custom alert dialog on interface
+                dialog2.show();
+            }
+        });
 
         listView = (ListView)findViewById(R.id.list);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -247,10 +328,10 @@ public class Popup_bookmarks extends Activity {
         try {
             Database_Bookmarks db = new Database_Bookmarks(Popup_bookmarks.this);
             ArrayList<String[]> bookmarkList = new ArrayList<>();
-            db.getBookmarks(bookmarkList);
+            db.getBookmarks(bookmarkList, Popup_bookmarks.this);
             if (bookmarkList.size() == 0) {
                 db.loadInitialData();
-                db.getBookmarks(bookmarkList);
+                db.getBookmarks(bookmarkList, Popup_bookmarks.this);
             }
             db.close();
 

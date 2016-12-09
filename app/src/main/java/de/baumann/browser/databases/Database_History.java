@@ -20,13 +20,17 @@
 package de.baumann.browser.databases;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
+import android.preference.PreferenceManager;
 
 import java.util.ArrayList;
+
+import de.baumann.browser.R;
 
 public class Database_History extends SQLiteOpenHelper {
     public Database_History(Context context)
@@ -90,19 +94,35 @@ public class Database_History extends SQLiteOpenHelper {
         return ret;
     }
 
-    public void getBookmarks(ArrayList<String[]> data) {
+    public void getBookmarks(ArrayList<String[]> data, Context context) {
         SQLiteDatabase db = getReadableDatabase();
 
-        String sql = "SELECT seqno,title,url FROM bookmarks ORDER BY seqno";
-        Cursor c = db.rawQuery(sql, null);
-        c.moveToFirst();
-        for (int i = 0; i < c.getCount(); i++) {
-            String[] strAry = {c.getString(0), c.getString(1), c.getString(2)};
-            data.add(strAry);
-            c.moveToNext();
+        PreferenceManager.setDefaultValues(context, R.xml.user_settings, false);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+
+        if (sp.getString("sortHI", "seqno").equals("title")) {
+            String sql = "SELECT seqno,title,url FROM bookmarks ORDER BY title";
+            Cursor c = db.rawQuery(sql, null);
+            c.moveToFirst();
+            for (int i = 0; i < c.getCount(); i++) {
+                String[] strAry = {c.getString(0), c.getString(1), c.getString(2)};
+                data.add(strAry);
+                c.moveToNext();
+            }
+            c.close();
+            db.close();
+        } else if (sp.getString("sortHI", "seqno").equals("seqno")) {
+            String sql = "SELECT seqno,title,url FROM bookmarks ORDER BY seqno";
+            Cursor c = db.rawQuery(sql, null);
+            c.moveToFirst();
+            for (int i = 0; i < c.getCount(); i++) {
+                String[] strAry = {c.getString(0), c.getString(1), c.getString(2)};
+                data.add(strAry);
+                c.moveToNext();
+            }
+            c.close();
+            db.close();
         }
-        c.close();
-        db.close();
     }
 
     public void addBookmark(String title, String url) {

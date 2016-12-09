@@ -8,6 +8,7 @@
 - added: websearch (from shared text)
 - added: donate (settings)
 - added: changelog (settings) (v1.4)
+- added: sort lists by title and date (v1.5)
 - fixed: navigation settings (v1.2)
 - fixed: screenshot (v1.3)
 

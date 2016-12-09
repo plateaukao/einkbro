@@ -30,7 +30,10 @@ import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
@@ -63,6 +66,68 @@ public class Popup_pass extends Activity {
 
         Button button = (Button) findViewById(R.id.button);
         button.setVisibility(View.GONE);
+
+        ImageButton buttonSort = (ImageButton) findViewById(R.id.butSort);
+        buttonSort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(Popup_pass.this);
+                View dialogView = View.inflate(Popup_pass.this, R.layout.dialog_sort, null);
+
+                final CheckBox ch_title = (CheckBox) dialogView.findViewById(R.id.checkBoxTitle);
+                final CheckBox ch_create = (CheckBox) dialogView.findViewById(R.id.checkBoxCreate);
+
+
+                if (sharedPref.getString("sortPS", "title").equals("title")) {
+                    ch_title.setChecked(true);
+                } else {
+                    ch_title.setChecked(false);
+                }
+                if (sharedPref.getString("sortPS", "title").equals("seqno")) {
+                    ch_create.setChecked(true);
+                } else {
+                    ch_create.setChecked(false);
+                }
+
+                ch_title.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView,
+                                                 boolean isChecked) {
+                        if(isChecked){
+                            ch_create.setChecked(false);
+                            sharedPref.edit().putString("sortPS", "title").apply();
+                            setBookmarkList();
+                        }
+                    }
+                });
+                ch_create.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView,
+                                                 boolean isChecked) {
+                        if(isChecked){
+                            ch_title.setChecked(false);
+                            sharedPref.edit().putString("sortPS", "seqno").apply();
+                            setBookmarkList();
+                        }
+                    }
+                });
+
+                builder.setView(dialogView);
+                builder.setTitle(R.string.action_sort);
+                builder.setPositiveButton(R.string.toast_yes, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        dialog.dismiss();
+                    }
+                });
+
+                final AlertDialog dialog2 = builder.create();
+                // Display the custom alert dialog on interface
+                dialog2.show();
+            }
+        });
 
         listView = (ListView)findViewById(R.id.list);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -233,10 +298,10 @@ public class Popup_pass extends Activity {
         try {
             Database_Pass db = new Database_Pass(Popup_pass.this);
             ArrayList<String[]> bookmarkList = new ArrayList<>();
-            db.getBookmarks(bookmarkList);
+            db.getBookmarks(bookmarkList, Popup_pass.this);
             if (bookmarkList.size() == 0) {
                 db.loadInitialData();
-                db.getBookmarks(bookmarkList);
+                db.getBookmarks(bookmarkList, Popup_pass.this);
             }
             db.close();
 
