@@ -104,6 +104,7 @@
     <string name="toast_wrongPW">Uuups. Falsches Passwort.</string>
     <string name="toast_exit">Möchtest du die App verlassen?</string>
     <string name="toast_whiteList">Whitelist gelöscht.</string>
+    <string name="toast_list">Komplette Liste löschen?</string>
 
 
     // Bookmarks // ReadLater // Password
@@ -153,8 +154,8 @@
     <string name="action_font_summary">Ändere die Schriftgröße für Internetseiten.</string>
 
     <string name="action_backup">Sicherung</string>
-    <string name="action_backup_summary">Sichere deine Lesezeichen, die leseSpäter Liste, passSpeicher und die Javascript Whitelist
-        auf der SD-Karte oder stelle sie wieder her. Eine neue Sicherung überschreibt immer die bestehende. Nachdem du den
+    <string name="action_backup_summary">Sichere deine Lesezeichen, die leseSpäter Liste, den passSpeicher, den Verlauf und die
+        Javascript Whitelist oder stelle sie wieder her. Eine neue Sicherung überschreibt immer die bestehende. Nachdem du den
         passSpeicher wiederhergestellt hast, musst du den Bearbeitendialog eines gespeicherten Eintrages öffnen und ihn dann
         (ohne etwas zu ändern) speichern, damit die Datenbank richtig benutzt werden kann.</string>
 
@@ -252,6 +253,7 @@
 
     <string name="action_changelog">Änderungen</string>
     <string name="action_changelog_summary">Was gibt es Neues … (wird eine Internetseite öffnen)</string>
+
 
     //File chooser
 

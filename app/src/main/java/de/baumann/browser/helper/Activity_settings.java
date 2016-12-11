@@ -205,6 +205,18 @@ public class Activity_settings extends AppCompatActivity {
                                                 src3.close();
                                                 dst3.close();
 
+                                                String currentDBPath4 = "//data//" + "de.baumann.browser"
+                                                        + "//databases//" + "history.db";
+                                                String backupDBPath4 = "//Android//" + "//data//" + "//browser.backup//" + "history.db";
+                                                File currentDB4 = new File(data, currentDBPath4);
+                                                File backupDB4 = new File(sd, backupDBPath4);
+
+                                                FileChannel src4 = new FileInputStream(currentDB4).getChannel();
+                                                FileChannel dst4 = new FileOutputStream(backupDB4).getChannel();
+                                                dst4.transferFrom(src4, 0, src4.size());
+                                                src4.close();
+                                                dst4.close();
+
                                                 String whiteList = sharedPref.getString("whiteList", "");
 
                                                 File whiteListBackup = new File(directory, "whiteList.txt");
@@ -276,6 +288,18 @@ public class Activity_settings extends AppCompatActivity {
                                                 dst3.transferFrom(src3, 0, src3.size());
                                                 src3.close();
                                                 dst3.close();
+
+                                                String currentDBPath4 = "//data//" + "de.baumann.browser"
+                                                        + "//databases//" + "history.db";
+                                                String backupDBPath4 = "//Android//" + "//data//" + "//browser.backup//" + "history.db";
+                                                File currentDB4 = new File(data, currentDBPath4);
+                                                File backupDB4 = new File(sd, backupDBPath4);
+
+                                                FileChannel src4 = new FileInputStream(backupDB4).getChannel();
+                                                FileChannel dst4 = new FileOutputStream(currentDB4).getChannel();
+                                                dst4.transferFrom(src4, 0, src4.size());
+                                                src4.close();
+                                                dst4.close();
 
                                                 Toast.makeText(getActivity(), R.string.toast_restore, Toast.LENGTH_SHORT).show();
                                             }

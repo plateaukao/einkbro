@@ -72,7 +72,7 @@ public class Popup_bookmarks extends Activity {
             @Override
             public void onClick(View view) {
                 Snackbar snackbar = Snackbar
-                        .make(listView, R.string.bookmark_remove_confirmation, Snackbar.LENGTH_LONG)
+                        .make(listView, R.string.toast_list, Snackbar.LENGTH_LONG)
                         .setAction(R.string.toast_yes, new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {

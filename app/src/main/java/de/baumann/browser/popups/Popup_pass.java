@@ -65,7 +65,21 @@ public class Popup_pass extends Activity {
         sharedPrefSec = new class_SecurePreferences(Popup_pass.this, "sharedPrefSec", "Ywn-YM.XK$b:/:&CsL8;=L,y4", true);
 
         Button button = (Button) findViewById(R.id.button);
-        button.setVisibility(View.GONE);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar snackbar = Snackbar
+                        .make(listView, R.string.toast_list, Snackbar.LENGTH_LONG)
+                        .setAction(R.string.toast_yes, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Popup_pass.this.deleteDatabase("pass.db");
+                                setBookmarkList();
+                            }
+                        });
+                snackbar.show();
+            }
+        });
 
         ImageButton buttonSort = (ImageButton) findViewById(R.id.butSort);
         buttonSort.setOnClickListener(new View.OnClickListener() {

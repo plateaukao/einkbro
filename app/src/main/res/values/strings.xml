@@ -103,6 +103,7 @@
     <string name="toast_wrongPW">Uuups. Wrong password.</string>
     <string name="toast_exit">Do you want to exit?</string>
     <string name="toast_whiteList">Whitelist deleted.</string>
+    <string name="toast_list">Delete whole list?</string>
 
 
     // Bookmarks // ReadLater // Password
@@ -152,8 +153,8 @@
     <string name="action_font_summary">Change font size for websites.</string>
 
     <string name="action_backup">Backup</string>
-    <string name="action_backup_summary">Backup and restore your bookmarks, readLater lists, the passStorage and your javascript
-        whitelist. A new backup overwrites the old one. After you restored your passStorage you must open the edit dialog for an
+    <string name="action_backup_summary">Backup and restore your bookmarks, the readLater list, the passStorage, your history and
+        your javascript whitelist. A new backup overwrites the old one. After you restored your passStorage you must open the edit dialog for an
         restored entry, by long pressing and then save it (without changing anything) to get the database ready to work.</string>
 
     <string name="action_restore">Restore</string>
@@ -238,6 +239,7 @@
 
     <string name="action_changelog">Changelog</string>
     <string name="action_changelog_summary">See what\'s new … (will open a website)</string>
+
 
     //File chooser
 

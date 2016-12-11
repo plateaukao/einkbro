@@ -1,3 +1,8 @@
+### v 1.6:
+
+- fixed: some strings
+- improved: bachup and restore databases
+
 ### v 1.0+ (first public release):
 
 - improved: readLater notification (v1.1)

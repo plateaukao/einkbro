@@ -72,8 +72,16 @@ public class Popup_history extends Activity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Popup_history.this.deleteDatabase("history.db");
-                setBookmarkList();
+                Snackbar snackbar = Snackbar
+                        .make(listView, R.string.toast_list, Snackbar.LENGTH_LONG)
+                        .setAction(R.string.toast_yes, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Popup_history.this.deleteDatabase("history.db");
+                                setBookmarkList();
+                            }
+                        });
+                snackbar.show();
             }
         });
 
