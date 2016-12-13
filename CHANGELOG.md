@@ -1,3 +1,7 @@
+### v 1.7:
+
+- fixed: F-Droid build error
+
 ### v 1.6:
 
 - fixed: some strings
