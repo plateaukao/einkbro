@@ -904,6 +904,12 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
                     getString(R.string.menu_save_pass),
                     getString(R.string.menu_createShortcut)};
             new AlertDialog.Builder(Browser.this)
+                    .setPositiveButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            dialog.cancel();
+                        }
+                    })
                     .setItems(options, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int item) {
@@ -951,6 +957,12 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
                     getString(R.string.menu_share_link),
                     getString(R.string.menu_share_link_copy)};
             new AlertDialog.Builder(Browser.this)
+                    .setPositiveButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            dialog.cancel();
+                        }
+                    })
                     .setItems(options, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int item) {

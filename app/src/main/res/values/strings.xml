@@ -38,6 +38,7 @@
     <string name="app_title_passStorage">passStorage</string>
     <string name="app_title_history">History</string>
     <string name="app_websearch">Web search</string>
+    <string name="app_conf">Confirmation</string>
 
 
     // Menu Items
@@ -104,6 +105,7 @@
     <string name="toast_exit">Do you want to exit?</string>
     <string name="toast_whiteList">Whitelist deleted.</string>
     <string name="toast_list">Delete whole list?</string>
+    <string name="toast_whiteList_confirm">Do you really want to delete the whitelist?</string>
 
 
     // Bookmarks // ReadLater // Password

@@ -183,6 +183,12 @@ public class Popup_pass extends Activity {
                         getString(R.string.pass_edit),
                         getString(R.string.bookmark_remove_bookmark)};
                 new AlertDialog.Builder(Popup_pass.this)
+                        .setPositiveButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
+
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                dialog.cancel();
+                            }
+                        })
                         .setItems(options, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int item) {

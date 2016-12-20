@@ -1,3 +1,9 @@
+### v 1.8 (WIP)
+
+- improved: pin screen layout
+- added: cancel button on some dialogs
+- added: cancel dialog when clearing whitelist
+
 ### v 1.7:
 
 - fixed: F-Droid build error
@@ -5,7 +11,7 @@
 ### v 1.6:
 
 - fixed: some strings
-- improved: bachup and restore databases
+- improved: backup and restore databases
 
 ### v 1.0+ (first public release):
 

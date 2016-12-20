@@ -231,7 +231,12 @@ public class helper_main {
                                 activity.getString(R.string.choose_menu_4)};
 
                         final AlertDialog.Builder dialog = new AlertDialog.Builder(activity);
+                                dialog.setPositiveButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
 
+                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                        dialog.cancel();
+                                    }
+                                });
                                 dialog.setItems(options, new DialogInterface.OnClickListener() {
                                     @SuppressWarnings("ResultOfMethodCallIgnored")
                                     @Override

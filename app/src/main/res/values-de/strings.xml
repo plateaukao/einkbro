@@ -39,6 +39,7 @@
     <string name="app_title_passStorage">passSpeicher</string>
     <string name="app_title_history">Verlauf</string>
     <string name="app_websearch">Websuche</string>
+    <string name="app_conf">Bestätigung</string>
 
 
     // Menu Items
@@ -105,6 +106,7 @@
     <string name="toast_exit">Möchtest du die App verlassen?</string>
     <string name="toast_whiteList">Whitelist gelöscht.</string>
     <string name="toast_list">Komplette Liste löschen?</string>
+    <string name="toast_whiteList_confirm">Möchtest du die Whitelist wirklich löschen?</string>
 
 
     // Bookmarks // ReadLater // Password

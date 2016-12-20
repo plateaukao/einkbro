@@ -2,7 +2,7 @@
 
 # browser
 A simple Android browser based on webview. The goal is to provide a lightweight but power full browser. It is based on several 
-lists (see below) and hasn't (and will not have) tabs.
+lists (see below) and has not (and will not have) tabs.
 
 
 ### Links:

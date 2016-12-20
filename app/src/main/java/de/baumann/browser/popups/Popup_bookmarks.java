@@ -170,6 +170,12 @@ public class Popup_bookmarks extends Activity {
                         getString(R.string.menu_save),
                         getString(R.string.bookmark_remove_bookmark)};
                 new AlertDialog.Builder(Popup_bookmarks.this)
+                        .setPositiveButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
+
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                dialog.cancel();
+                            }
+                        })
                         .setItems(options, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int item) {

@@ -154,6 +154,18 @@ public class Activity_settings extends AppCompatActivity {
                             getString(R.string.action_backup),
                             getString(R.string.action_restore)};
                     new AlertDialog.Builder(getActivity())
+                            .setPositiveButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
+
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    dialog.cancel();
+                                }
+                            })
+                            .setPositiveButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
+
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    dialog.cancel();
+                                }
+                            })
                             .setItems(options, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int item) {
@@ -364,9 +376,24 @@ public class Activity_settings extends AppCompatActivity {
             reset.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(Preference pref) {
 
-                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-                    sharedPref.edit().putString("whiteList", "").apply();
-                    Toast.makeText(getActivity(), R.string.toast_whiteList, Toast.LENGTH_SHORT).show();
+                    final android.support.v7.app.AlertDialog.Builder dialog = new android.support.v7.app.AlertDialog.Builder(getActivity())
+                            .setTitle(R.string.app_conf)
+                            .setMessage(helper_main.textSpannable(getString(R.string.toast_whiteList_confirm)))
+                            .setPositiveButton(R.string.toast_yes, new DialogInterface.OnClickListener() {
+
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                                    sharedPref.edit().putString("whiteList", "").apply();
+                                    Toast.makeText(getActivity(), R.string.toast_whiteList, Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                            .setNegativeButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
+
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    dialog.cancel();
+                                }
+                            });
+                    dialog.show();
 
                     return true;
                 }
