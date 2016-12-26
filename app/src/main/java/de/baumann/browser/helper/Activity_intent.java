@@ -48,7 +48,7 @@ public class Activity_intent extends Activity {
         Uri data = intent.getData();
         String link = data.toString();
         int domainInt = link.indexOf("//") + 2;
-        final  String domain = link.substring(domainInt, link.indexOf('/', domainInt));
+        final  String domain = link.substring(domainInt, link.indexOf('.', domainInt));
 
         PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
         PreferenceManager.setDefaultValues(this, R.xml.user_settings_search, false);
