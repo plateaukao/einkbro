@@ -111,6 +111,10 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
     private String subStr;
     private final String TAG = Browser.class.getSimpleName();
 
+    private String linkIntent2;
+    private String linkIntent3;
+    private String domain;
+
     private static final int ID_SAVE_IMAGE = 10;
     private static final int ID_READ_LATER = 11;
     private static final int ID_COPY_LINK = 12;
@@ -422,12 +426,31 @@ public class Browser extends AppCompatActivity implements ObservableScrollViewCa
 
                     case ID_READ_LATER:
                         if (url != null) {
-                            int domainInt = url.indexOf("//") + 2;
-                            final  String domain = url.substring(domainInt, url.indexOf('/', domainInt));
+
+                            if (url.contains("https://")) {
+                                linkIntent2 = url.replace("https://", "|");
+                            } else if (url.contains("http://")){
+                                linkIntent2 = url.replace("http://", "|");
+                            }
+
+                            if (linkIntent2.contains("www.")) {
+                                linkIntent3 = linkIntent2.replace("www.", "").toUpperCase();
+                            } else {
+                                linkIntent3 = linkIntent2.toUpperCase();
+                            }
+
+                            if (linkIntent3.contains("/")) {
+                                domain = linkIntent3.substring(linkIntent3.indexOf('|')+1, linkIntent3.indexOf('/'));
+                            } else {
+                                domain = linkIntent3.substring(linkIntent3.indexOf('|')+1, linkIntent3.lastIndexOf('.'));
+                            }
+
+                            String domain2 = domain.substring(0,1).toUpperCase() + domain.substring(1).toLowerCase();
+
 
                             try {
                                 final Database_ReadLater db = new Database_ReadLater(Browser.this);
-                                db.addBookmark(domain, url);
+                                db.addBookmark(domain2, url);
                                 db.close();
                                 Snackbar.make(mWebView, R.string.readLater_added, Snackbar.LENGTH_SHORT).show();
                             } catch (Exception e) {

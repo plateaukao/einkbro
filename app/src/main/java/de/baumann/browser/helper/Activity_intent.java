@@ -37,6 +37,7 @@ import de.baumann.browser.popups.Popup_readLater;
 
 public class Activity_intent extends Activity {
 
+    private String linkIntent2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,21 +47,41 @@ public class Activity_intent extends Activity {
         android.content.Intent intent = getIntent();
 
         Uri data = intent.getData();
-        String link = data.toString();
-        int domainInt = link.indexOf("//") + 2;
-        final  String domain = link.substring(domainInt, link.indexOf('.', domainInt));
+        String linkIntent = data.toString();
+
+        if (linkIntent.contains("https://")) {
+            linkIntent2 = linkIntent.replace("https://", "|");
+        } else if (linkIntent.contains("http://")){
+            linkIntent2 = linkIntent.replace("http://", "|");
+        }
+
+        String linkIntent3;
+        if (linkIntent2.contains("www.")) {
+            linkIntent3 = linkIntent2.replace("www.", "").toUpperCase();
+        } else {
+            linkIntent3 = linkIntent2.toUpperCase();
+        }
+
+        String domain;
+        if (linkIntent3.contains("/")) {
+            domain = linkIntent3.substring(linkIntent3.indexOf('|')+1, linkIntent3.indexOf('/'));
+        } else {
+            domain = linkIntent3.substring(linkIntent3.indexOf('|')+1, linkIntent3.lastIndexOf('.'));
+        }
+
+        String domain2 = domain.substring(0,1).toUpperCase() + domain.substring(1).toLowerCase();
 
         PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
         PreferenceManager.setDefaultValues(this, R.xml.user_settings_search, false);
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        sharedPref.edit().putString("add_readLater_link", link).apply();
-        sharedPref.edit().putString("add_readLater_domain", domain).apply();
+        sharedPref.edit().putString("add_readLater_link", linkIntent).apply();
+        sharedPref.edit().putString("add_readLater_domain", domain2).apply();
 
         Random rand = new Random();
         int n = rand.nextInt(100000); // Gives n such that 0 <= n < 20
 
         android.content.Intent iMain = new android.content.Intent();
-        iMain.putExtra("url", link);
+        iMain.putExtra("url", linkIntent);
         iMain.setClassName(Activity_intent.this, "de.baumann.browser.Browser");
 
         android.content.Intent iAction = new android.content.Intent(this, Popup_readLater.class);
@@ -81,7 +102,7 @@ public class Activity_intent extends Activity {
         Notification notification = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.earth)
                 .setContentTitle(getString(R.string.readLater_title))
-                .setContentText(link)
+                .setContentText(linkIntent)
                 .setContentIntent(piMain)
                 .setAutoCancel(true)
                 .addAction(action)
