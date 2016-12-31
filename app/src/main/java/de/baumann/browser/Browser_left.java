@@ -285,17 +285,36 @@ public class Browser_left extends AppCompatActivity implements ObservableScrollV
         String action = intent.getAction();
 
         if (Intent.ACTION_SEND.equals(action)) {
-            String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
-            String searchEngine = sharedPref.getString("searchEngine", "https://startpage.com/do/search?query=");
-            mWebView.loadUrl(searchEngine + sharedText);
+            new Handler().postDelayed(new Runnable() {
+                public void run() {
+                    String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+                    String searchEngine = sharedPref.getString("searchEngine", "https://startpage.com/do/search?query=");
+                    mWebView.loadUrl(searchEngine + sharedText);
+                }
+            }, 300);
         } else if (Intent.ACTION_VIEW.equals(action)) {
-            Uri data = intent.getData();
-            String link = data.toString();
-            mWebView.loadUrl(link);
+            new Handler().postDelayed(new Runnable() {
+                public void run() {
+                    String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+                    mWebView.loadUrl(sharedText);
+                }
+            }, 300);
         } else if ("closeAPP".equals(action)) {
             finishAffinity();
-        }  else {
-            mWebView.loadUrl(intent.getStringExtra("URL"));
+        }  else if ("readLater".equals(action)) {
+            helper_main.switchToActivity(Browser_left.this, Popup_readLater.class, "", false);
+        }  else if ("bookmarks".equals(action)) {
+            helper_main.switchToActivity(Browser_left.this, Popup_bookmarks.class, "", false);
+        }  else if ("history".equals(action)) {
+            helper_main.switchToActivity(Browser_left.this, Popup_history.class, "", false);
+        }  else if ("pass".equals(action)) {
+            helper_main.switchToActivity(Browser_left.this, Popup_pass.class, "", false);
+        } else {
+            new Handler().postDelayed(new Runnable() {
+                public void run() {
+                    mWebView.loadUrl(intent.getStringExtra("URL"));
+                }
+            }, 300);
         }
     }
 
@@ -619,7 +638,6 @@ public class Browser_left extends AppCompatActivity implements ObservableScrollV
                             });
                     snackbar.show();
                 } else if (URL.contains("openLogin")) {
-                    mWebView.loadUrl(URL.replace("openLogin", ""));
                     Snackbar snackbar = Snackbar
                             .make(mWebView, R.string.pass_copy_userName, Snackbar.LENGTH_INDEFINITE)
                             .setAction(getString(R.string.toast_yes), new View.OnClickListener() {
@@ -641,6 +659,7 @@ public class Browser_left extends AppCompatActivity implements ObservableScrollV
                                 }
                             });
                     snackbar.show();
+                    mWebView.loadUrl(URL.replace("openLogin", ""));
                 } else {
                     mWebView.loadUrl(URL);
                 }

@@ -24,6 +24,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -33,7 +34,7 @@ import android.support.v7.app.NotificationCompat;
 import java.util.Random;
 
 import de.baumann.browser.R;
-import de.baumann.browser.popups.Popup_readLater;
+import de.baumann.browser.popups.shortcut_readLater;
 
 public class Activity_intent extends Activity {
 
@@ -69,11 +70,13 @@ public class Activity_intent extends Activity {
         int n = rand.nextInt(100000); // Gives n such that 0 <= n < 20
 
         android.content.Intent iMain = new android.content.Intent();
-        iMain.putExtra("url", data.toString());
+        iMain.putExtra(Intent.EXTRA_TEXT, data.toString());
+        iMain.setAction(Intent.ACTION_VIEW);
         iMain.setClassName(Activity_intent.this, "de.baumann.browser.Browser_left");
 
-        android.content.Intent iAction = new android.content.Intent(this, Popup_readLater.class);
+        android.content.Intent iAction = new android.content.Intent(this, shortcut_readLater.class);
         iAction.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+
 
         android.content.Intent iAction_2 = new android.content.Intent(this, Activity_intent_add.class);
         iAction_2.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);

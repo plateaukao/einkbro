@@ -288,7 +288,11 @@ public class Browser_right extends AppCompatActivity implements ObservableScroll
         if ("closeAPP".equals(action)) {
             finishAffinity();
         } else {
-            mWebView.loadUrl(intent.getStringExtra("URL"));
+            new Handler().postDelayed(new Runnable() {
+                public void run() {
+                    mWebView.loadUrl(intent.getStringExtra("URL"));
+                }
+            }, 300);
         }
     }
 

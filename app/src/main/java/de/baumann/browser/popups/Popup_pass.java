@@ -49,7 +49,6 @@ import de.baumann.browser.helper.helper_main;
 public class Popup_pass extends Activity {
 
     private ListView listView = null;
-    private class_SecurePreferences sharedPrefSec;
     private SharedPreferences sharedPref;
 
     @Override
@@ -62,7 +61,6 @@ public class Popup_pass extends Activity {
         PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
         PreferenceManager.setDefaultValues(this, R.xml.user_settings_search, false);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        sharedPrefSec = new class_SecurePreferences(Popup_pass.this, "sharedPrefSec", "Ywn-YM.XK$b:/:&CsL8;=L,y4", true);
 
         Button button = (Button) findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
@@ -150,25 +148,14 @@ public class Popup_pass extends Activity {
 
                 @SuppressWarnings("unchecked")
                 HashMap<String,String> map = (HashMap<String,String>)listView.getItemAtPosition(position);
+                final String userPW = map.get("userPW");
+                final String userName = map.get("userName");
                 final String url = map.get("url");
-                final String title = map.get("title");
-                final String userName = sharedPrefSec.getString(url + "UN");
-                final String userPW = sharedPrefSec.getString(url + "PW");
 
                 sharedPref.edit().putString("copyPW", userPW).apply();
                 sharedPref.edit().putString("copyUN", userName).apply();
                 sharedPref.edit().putString("openURL", "openLogin" + url).apply();
-
-                android.content.Intent iMain = new android.content.Intent();
-                iMain.setAction("pass");
-                iMain.putExtra("url", url);
-                iMain.putExtra("title", title);
-                iMain.putExtra("userName", userName);
-                iMain.putExtra("userPW", userPW);
-                iMain.setClassName(Popup_pass.this, "de.baumann.browser.Browser_left");
-                startActivity(iMain);
-
-                finish();
+                finishAffinity();
             }
         });
 
