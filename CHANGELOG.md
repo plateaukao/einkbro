@@ -4,6 +4,7 @@
 - improved: sort dialog behavior
 - removed: app shortcuts support
 - added: second tab
+- added: set bookmark as startsite (long click)
 - added: cancel button on some dialogs
 - added: cancel dialog when clearing whitelist
 - fixed: force close (links without "/")
