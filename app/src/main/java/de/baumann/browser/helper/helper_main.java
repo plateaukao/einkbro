@@ -40,6 +40,7 @@ import android.text.SpannableString;
 import android.text.util.Linkify;
 import android.view.View;
 import android.view.WindowManager;
+import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -143,11 +144,19 @@ public class helper_main {
     public static void switchToActivity(Activity from, Class to, String Extra, boolean finishFromActivity) {
         Intent intent = new Intent(from, to);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        intent.putExtra("url", Extra);
+        intent.putExtra("URL", Extra);
         from.startActivity(intent);
         if (finishFromActivity) {
             from.finish();
         }
+    }
+
+    public static void closeApp (Activity from, Class to, WebView webView) {
+        helper_webView.closeWebView(from, webView);
+        Intent intent = new Intent(from, to);
+        intent.setAction("closeAPP");
+        from.startActivity(intent);
+        from.finishAffinity();
     }
 
     public static void isOpened (Activity from) {

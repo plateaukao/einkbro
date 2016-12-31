@@ -40,6 +40,7 @@
     <string name="app_title_history">Verlauf</string>
     <string name="app_websearch">Websuche</string>
     <string name="app_conf">Bestätigung</string>
+    <string name="app_domain">Unbekannte domain</string>
 
 
     // Menu Items
@@ -67,6 +68,7 @@
     <string name="menu_help">Hilfe</string>
     <string name="menu_createShortcut">Erstelle Verknüpfung</string>
     <string name="menu_createShortcut_success">Verknüpfung erstellt</string>
+    <string name="menu_go">Starte Suche</string>
 
     <string name="action_sort">Einträge sortieren</string>
     <string name="action_sort_title">Sortiere nach Titel</string>
@@ -80,6 +82,8 @@
     <string name="context_readLater">Speichere zur leseSpäter Liste</string>
     <string name="context_linkCopy_toast">Link erfolgreich kopiert</string>
     <string name="context_saveImage_toast">Bild gespeichert als:</string>
+    <string name="context_right">Öffne im rechten Tab</string>
+    <string name="context_left">Öffne im linken Tab</string>
 
 
     // Snackbar
@@ -116,6 +120,8 @@
     <string name="bookmark_remove_bookmark">Eintrag entfernen</string>
     <string name="bookmark_added">Füge Lesezeichen hinzu.</string>
     <string name="bookmark_edit_title">Titel bearbeiten</string>
+    <string name="bookmark_fav">Als Startseite verwenden</string>
+    <string name="bookmark_fav_toast">Erfolgreich als Startseite gesetzt</string>
 
     <string name="readLater_added">Füge zur leseSpäter Liste hinzu.</string>
     <string name="readLater_button">Liste löschen</string>
@@ -176,8 +182,9 @@
     <string name="action_history">Verlauf löschen</string>
     <string name="action_history_summary">Löscht deinen Browserverlauf beim Verlassen der App.</string>
 
-    <string name="action_notShow_title">Einführung</string>
-    <string name="action_notShow_title_summary">Den kurzen Einführungsdialog beim Start anzeigen.</string>
+    <string name="action_notShow_title">Hilfe</string>
+    <string name="action_notShow_title_summary">Öffne den Hillfedialog um Informationen zu folgenden Themen zu erlangen:
+        wichtigste Funktionen, Bedienung und Suche.</string>
 
     <string name="action_searchEngine">Suchmaschine</string>
     <string name="action_searchEngine_summary">Bestimme deine bevorzugte Suchmaschine.</string>

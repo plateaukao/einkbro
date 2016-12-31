@@ -1,8 +1,12 @@
 ### v 1.8 (WIP)
 
 - improved: pin screen layout
+- improved: sort dialog behavior
+- removed: app shortcuts support
+- added: second tab
 - added: cancel button on some dialogs
 - added: cancel dialog when clearing whitelist
+- fixed: force close (links without "/")
 
 ### v 1.7:
 

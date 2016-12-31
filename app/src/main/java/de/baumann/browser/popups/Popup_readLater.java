@@ -45,7 +45,6 @@ import android.widget.SimpleAdapter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import de.baumann.browser.Browser;
 import de.baumann.browser.R;
 import de.baumann.browser.databases.Database_Bookmarks;
 import de.baumann.browser.databases.Database_ReadLater;
@@ -90,9 +89,21 @@ public class Popup_readLater extends Activity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(Popup_readLater.this);
                 View dialogView = View.inflate(Popup_readLater.this, R.layout.dialog_sort, null);
 
+                builder.setView(dialogView);
+                builder.setTitle(R.string.action_sort);
+                builder.setPositiveButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        dialog.dismiss();
+                    }
+                });
+
+                final AlertDialog dialog2 = builder.create();
+                // Display the custom alert dialog on interface
+                dialog2.show();
+
                 final CheckBox ch_title = (CheckBox) dialogView.findViewById(R.id.checkBoxTitle);
                 final CheckBox ch_create = (CheckBox) dialogView.findViewById(R.id.checkBoxCreate);
-
 
                 if (sharedPref.getString("sortRL", "title").equals("title")) {
                     ch_title.setChecked(true);
@@ -114,6 +125,7 @@ public class Popup_readLater extends Activity {
                             ch_create.setChecked(false);
                             sharedPref.edit().putString("sortRL", "title").apply();
                             setBookmarkList();
+                            dialog2.dismiss();
                         }
                     }
                 });
@@ -126,22 +138,10 @@ public class Popup_readLater extends Activity {
                             ch_title.setChecked(false);
                             sharedPref.edit().putString("sortRL", "seqno").apply();
                             setBookmarkList();
+                            dialog2.dismiss();
                         }
                     }
                 });
-
-                builder.setView(dialogView);
-                builder.setTitle(R.string.action_sort);
-                builder.setPositiveButton(R.string.toast_yes, new DialogInterface.OnClickListener() {
-
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        dialog.dismiss();
-                    }
-                });
-
-                final AlertDialog dialog2 = builder.create();
-                // Display the custom alert dialog on interface
-                dialog2.show();
             }
         });
 
@@ -150,7 +150,8 @@ public class Popup_readLater extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 @SuppressWarnings("unchecked")
                 HashMap<String,String> map = (HashMap<String,String>)listView.getItemAtPosition(position);
-                helper_main.switchToActivity(Popup_readLater.this, Browser.class, map.get("url"), true);
+                sharedPref.edit().putString("openURL", map.get("url")).apply();
+                finish();
             }
         });
 
@@ -303,7 +304,7 @@ public class Popup_readLater extends Activity {
                                                     if (options[item].equals(getString(R.string.menu_createShortcut))) {
                                                         Intent i = new Intent();
                                                         i.setAction(Intent.ACTION_VIEW);
-                                                        i.setClassName(Popup_readLater.this, "de.baumann.browser.Browser");
+                                                        i.setClassName(Popup_readLater.this, "de.baumann.browser.Browser_left");
                                                         i.setData(Uri.parse(url));
 
                                                         Intent shortcut = new Intent();

@@ -41,14 +41,6 @@
 
     //Help Dialog
 
-    <string name="dialog_help_title">Browser</string>
-    <string name="dialog_help">
-        Open the help dialog to get informations concerning:&lt;br>&lt;br>
-
-        &#8226; important functions&lt;br>
-        &#8226; handling&lt;br>
-        &#8226; search</string>
-
     <string name="help_text">
 
         &lt;b>The lists:&lt;/b>&lt;br>
@@ -69,7 +61,13 @@
         list. Swipe to top to close the app.&lt;br>
         &#8226;&lt;i> Search (left icon):&lt;/i> you can enter a search term (see below) or a url. By pressing \"enter\" or
         the magnifier icon, the website will load.&lt;br>
-        &#8226;&lt;i> History (right icon):&lt;/i> opens a list of the last visited websites.&lt;br>&lt;br>
+        &#8226;&lt;i> History (right icon):&lt;/i> opens a list of the last visited websites.&lt;br>
+        &#8226;&lt;i> Click:&lt;/i> switch between the left (teal colored) and the right (orange) tab.&lt;br>&lt;br>
+
+        &lt;b>The tabs:&lt;/b>&lt;br>
+
+        You have two (not more) tabs. The left (teal colored) and the right (orange) one. You can switch between them,
+        by clicking the toolbar.&lt;br>&lt;br>
 
         &lt;b>Menu:&lt;/b>&lt;br>
         &#8226;&lt;i> Save website:&lt;/i> you can save the website to your bookmark, readLater or passStorage list or
@@ -79,12 +77,12 @@
         &#8226;&lt;i> Search on site:&lt;/i> search for text on any website.&lt;br>
         &#8226;&lt;i> Open passStorage:&lt;/i> open your login data list.&lt;br>
         &#8226;&lt;i> Open download directory:&lt;/i> opens the download directory to show, share, rename or delete files.&lt;br>
-        &#8226;&lt;i> Settings (start screen):&lt;/i> In the settings you can configure the behavior of the app, some privacy and
+        &#8226;&lt;i> Settings (popup dialog):&lt;/i> Here you can overwrite the default settings for a short time. These settings
+        will get lost at the next app start. By clicking the red cross you can also add websites to a whitelist for javascript.
+        They will be marked with a \"green check icon\". Javascript will then always be allowed for these websites (even after
+        restarting the app). To open the main settings screen, click on \"Settings\" at the bottom of the popup dialog.&lt;br>&lt;br>
+        &#8226;&lt;i> Settings:&lt;/i> In the settings you can configure the behavior of the app, some privacy and
         security settings. At the app start these settings will always be loaded.&lt;br>
-        &#8226;&lt;i> Settings (browser):&lt;/i> Here you can overwrite the default settings for a short time. These settings will
-        get lost at the next app start. By clicking the red cross you can also add websites to a whitelist for javascript. They will
-        be marked with a \"green check icon\". Javascript will then always be allowed for these websites (even after restarting
-        the app).&lt;br>&lt;br>
         &lt;b>Search:&lt;/b>&lt;br>
         You can set your preferred search engine and the language for Wikipedia in the settings. You can search direct on different
         sites by clicking the list symbol right of the magnifier icon. The supported sites you can also configure in the settings.

@@ -28,12 +28,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="5dp"
+            android:text="@string/app_name"
             android:hint="@string/app_search_hint"
             android:textColorHint="#eeeeee"
             android:imeOptions="actionSearch"
-            android:lines="1"
-            android:inputType="text|textNoSuggestions"
-            android:textColor="#eeeeee">
+            android:fontFamily="sans-serif-condensed"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:inputType="text"
+            android:textColor="#eeeeee"
+            android:textIsSelectable="true">
         </EditText>
 
     </android.support.v7.widget.Toolbar>

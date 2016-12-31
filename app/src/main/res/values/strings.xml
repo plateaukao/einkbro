@@ -39,6 +39,7 @@
     <string name="app_title_history">History</string>
     <string name="app_websearch">Web search</string>
     <string name="app_conf">Confirmation</string>
+    <string name="app_domain">Unknown domain</string>
 
 
     // Menu Items
@@ -66,6 +67,7 @@
     <string name="menu_help">Help</string>
     <string name="menu_createShortcut">Create shortcut</string>
     <string name="menu_createShortcut_success">Shortcut created</string>
+    <string name="menu_go">Start search</string>
 
     <string name="action_sort">Sort entries</string>
     <string name="action_sort_title">Sort by title</string>
@@ -79,6 +81,8 @@
     <string name="context_readLater">Add to readLater</string>
     <string name="context_linkCopy_toast">Link successfully copied</string>
     <string name="context_saveImage_toast">Saving image as:</string>
+    <string name="context_right">Open in right tab</string>
+    <string name="context_left">open in left tab</string>
 
 
     // Snackbar
@@ -115,6 +119,8 @@
     <string name="bookmark_remove_bookmark">Delete list item</string>
     <string name="bookmark_added">Adding to bookmark list.</string>
     <string name="bookmark_edit_title">Edit title</string>
+    <string name="bookmark_fav">Set as startpage</string>
+    <string name="bookmark_fav_toast">Successfully set as startpage</string>
 
     <string name="readLater_added">Adding to readLater.</string>
     <string name="readLater_button">Clear list</string>
@@ -173,8 +179,9 @@
     <string name="action_history">Clear history on exit</string>
     <string name="action_history_summary">Clear your browser history on exit.</string>
 
-    <string name="action_notShow_title">Introduction dialog</string>
-    <string name="action_notShow_title_summary">Show the short introduction dialog on start.</string>
+    <string name="action_notShow_title">Help</string>
+    <string name="action_notShow_title_summary">Open the help dialog to get informations concerning: important functions,
+        handling and search.</string>
 
     <string name="action_searchEngine">Search engine</string>
     <string name="action_searchEngine_summary">Choose your preferred search engine.</string>

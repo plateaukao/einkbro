@@ -88,9 +88,21 @@ public class Popup_pass extends Activity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(Popup_pass.this);
                 View dialogView = View.inflate(Popup_pass.this, R.layout.dialog_sort, null);
 
+                builder.setView(dialogView);
+                builder.setTitle(R.string.action_sort);
+                builder.setPositiveButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        dialog.dismiss();
+                    }
+                });
+
+                final AlertDialog dialog2 = builder.create();
+                // Display the custom alert dialog on interface
+                dialog2.show();
+
                 final CheckBox ch_title = (CheckBox) dialogView.findViewById(R.id.checkBoxTitle);
                 final CheckBox ch_create = (CheckBox) dialogView.findViewById(R.id.checkBoxCreate);
-
 
                 if (sharedPref.getString("sortPS", "title").equals("title")) {
                     ch_title.setChecked(true);
@@ -112,6 +124,7 @@ public class Popup_pass extends Activity {
                             ch_create.setChecked(false);
                             sharedPref.edit().putString("sortPS", "title").apply();
                             setBookmarkList();
+                            dialog2.dismiss();
                         }
                     }
                 });
@@ -124,22 +137,10 @@ public class Popup_pass extends Activity {
                             ch_title.setChecked(false);
                             sharedPref.edit().putString("sortPS", "seqno").apply();
                             setBookmarkList();
+                            dialog2.dismiss();
                         }
                     }
                 });
-
-                builder.setView(dialogView);
-                builder.setTitle(R.string.action_sort);
-                builder.setPositiveButton(R.string.toast_yes, new DialogInterface.OnClickListener() {
-
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        dialog.dismiss();
-                    }
-                });
-
-                final AlertDialog dialog2 = builder.create();
-                // Display the custom alert dialog on interface
-                dialog2.show();
             }
         });
 
@@ -154,13 +155,17 @@ public class Popup_pass extends Activity {
                 final String userName = sharedPrefSec.getString(url + "UN");
                 final String userPW = sharedPrefSec.getString(url + "PW");
 
+                sharedPref.edit().putString("copyPW", userPW).apply();
+                sharedPref.edit().putString("copyUN", userName).apply();
+                sharedPref.edit().putString("openURL", "openLogin" + url).apply();
+
                 android.content.Intent iMain = new android.content.Intent();
                 iMain.setAction("pass");
                 iMain.putExtra("url", url);
                 iMain.putExtra("title", title);
                 iMain.putExtra("userName", userName);
                 iMain.putExtra("userPW", userPW);
-                iMain.setClassName(Popup_pass.this, "de.baumann.browser.Browser");
+                iMain.setClassName(Popup_pass.this, "de.baumann.browser.Browser_left");
                 startActivity(iMain);
 
                 finish();
@@ -287,17 +292,9 @@ public class Popup_pass extends Activity {
 
                                 if (options[item].equals(getString(R.string.pass_copy))) {
 
-                                    android.content.Intent iMain = new android.content.Intent();
-                                    iMain.setAction("pass");
-                                    iMain.putExtra("url", sharedPref.getString("pass_copy_url", ""));
-                                    iMain.putExtra("title", sharedPref.getString("pass_copy_title", ""));
-                                    iMain.putExtra("userName", userName);
-                                    iMain.putExtra("userPW", userPW);
-                                    iMain.setClassName(Popup_pass.this, "de.baumann.browser.Browser");
-                                    startActivity(iMain);
-
-                                    sharedPref.edit().putString("pass_copy_url", "").apply();
-                                    sharedPref.edit().putString("pass_copy_title","").apply();
+                                    sharedPref.edit().putString("copyPW", userPW).apply();
+                                    sharedPref.edit().putString("copyUN", userName).apply();
+                                    sharedPref.edit().putString("openURL", "copyLogin").apply();
 
                                     finish();
                                 }

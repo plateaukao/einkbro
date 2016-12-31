@@ -42,124 +42,88 @@ import java.util.Locale;
 import de.baumann.browser.R;
 import de.baumann.browser.databases.Database_Bookmarks;
 import de.baumann.browser.databases.Database_Pass;
-import de.baumann.browser.popups.Popup_bookmarks;
-import de.baumann.browser.popups.Popup_readLater;
 
 public class helper_editText {
 
-
-    public static void editText_Touch(EditText editText, final Activity from, final WebView webview) {
-
-        editText.setOnTouchListener(new class_OnSwipeTouchListener_editText(from) {
-            public void onSwipeTop() {
-                helper_webView.closeWebView(from, webview);
-                from.finishAffinity();
-            }
-            public void onSwipeRight() {
-                helper_main.switchToActivity(from, Popup_readLater.class, "", false);
-            }
-            public void onSwipeLeft() {
-                helper_main.switchToActivity(from, Popup_bookmarks.class, "", false);
-            }
-        });
-    }
-
-    public static void editText_Touch_Bookmark (EditText editText, final Activity from) {
-
-        editText.setOnTouchListener(new class_OnSwipeTouchListener_editText(from) {
-            public void onSwipeTop() {
-                helper_main.isClosed(from);
-                from.finishAffinity();
-            }
-            public void onSwipeRight() {
-                helper_main.switchToActivity(from, Popup_readLater.class, "", false);
-            }
-            public void onSwipeLeft() {
-                helper_main.switchToActivity(from, Popup_bookmarks.class, "", false);
-            }
-        });
-    }
-
-    public static void editText_EditorAction(final EditText editText, final Activity from, final WebView webView) {
+    public static void editText_EditorAction(final EditText editText, final Activity from, final WebView mWebView, final TextView urlBar) {
 
         final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
-        final String searchEngine = sharedPref.getString("searchEngine", "https://startpage.com/do/search?query=");
-        final String wikiLang = sharedPref.getString("wikiLang", "en");
 
         editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+
                 if ( (actionId == EditorInfo.IME_ACTION_SEARCH) || ((event.getKeyCode() == KeyEvent.KEYCODE_ENTER) && (event.getAction() == KeyEvent.ACTION_DOWN ))){
+
                     String text = editText.getText().toString();
+                    String searchEngine = sharedPref.getString("searchEngine", "https://startpage.com/do/search?query=");
+                    String wikiLang = sharedPref.getString("wikiLang", "en");
 
-                    if (text.length() > 3) {
-                        String subStr=text.substring(3);
 
-                        if (text.startsWith("www")) {
-                            webView.loadUrl("http://" + text);
-                        } else if (text.contains("http")) {
-                            webView.loadUrl(text);
-                        } else if (text.contains(".w ")) {
-                            webView.loadUrl("https://" + wikiLang + ".wikipedia.org/wiki/Spezial:Suche?search=" + subStr);
-                        } else if (text.startsWith(".f ")) {
-                            webView.loadUrl("https://www.flickr.com/search/?advanced=1&license=2%2C3%2C4%2C5%2C6%2C9&text=" + subStr);
-                        } else  if (text.startsWith(".m ")) {
-                            webView.loadUrl("https://metager.de/meta/meta.ger3?focus=web&eingabe=" + subStr);
-                        } else if (text.startsWith(".g ")) {
-                            webView.loadUrl("https://github.com/search?utf8=✓&q=" + subStr);
-                        } else  if (text.startsWith(".s ")) {
-                            if (Locale.getDefault().getLanguage().contentEquals("de")){
-                                webView.loadUrl("https://startpage.com/do/search?query=" + subStr + "&lui=deutsch&l=deutsch");
-                            } else {
-                                webView.loadUrl("https://startpage.com/do/search?query=" + subStr);
-                            }
-                        } else if (text.startsWith(".G ")) {
-                            if (Locale.getDefault().getLanguage().contentEquals("de")){
-                                webView.loadUrl("https://www.google.de/search?&q=" + subStr);
-                            } else {
-                                webView.loadUrl("https://www.google.com/search?&q=" + subStr);
-                            }
-                        } else  if (text.startsWith(".y ")) {
-                            if (Locale.getDefault().getLanguage().contentEquals("de")){
-                                webView.loadUrl("https://www.youtube.com/results?hl=de&gl=DE&search_query=" + subStr);
-                            } else {
-                                webView.loadUrl("https://www.youtube.com/results?search_query=" + subStr);
-                            }
-                        } else  if (text.startsWith(".d ")) {
-                            if (Locale.getDefault().getLanguage().contentEquals("de")){
-                                webView.loadUrl("https://duckduckgo.com/?q=" + subStr + "&kl=de-de&kad=de_DE&k1=-1&kaj=m&kam=osm&kp=-1&kak=-1&kd=1&t=h_&ia=web");
-                            } else {
-                                webView.loadUrl("https://duckduckgo.com/?q=" + subStr);
-                            }
+                    if (text.startsWith("www")) {
+                        mWebView.loadUrl("http://" + text);
+                    } else if (text.contains("http")) {
+                        mWebView.loadUrl(text);
+                    } else if (text.contains(".w ")) {
+                        mWebView.loadUrl("https://" + wikiLang + ".wikipedia.org/wiki/Spezial:Suche?search=" + text.substring(3));
+                    } else if (text.startsWith(".f ")) {
+                        mWebView.loadUrl("https://www.flickr.com/search/?advanced=1&license=2%2C3%2C4%2C5%2C6%2C9&text=" + text.substring(3));
+                    } else  if (text.startsWith(".m ")) {
+                        mWebView.loadUrl("https://metager.de/meta/meta.ger3?focus=web&eingabe=" + text.substring(3));
+                    } else if (text.startsWith(".g ")) {
+                        mWebView.loadUrl("https://github.com/search?utf8=✓&q=" + text.substring(3));
+                    } else  if (text.startsWith(".s ")) {
+                        if (Locale.getDefault().getLanguage().contentEquals("de")){
+                            mWebView.loadUrl("https://startpage.com/do/search?query=" + text.substring(3) + "&lui=deutsch&l=deutsch");
                         } else {
-                            if (searchEngine.contains("https://duckduckgo.com/?q=")) {
-                                if (Locale.getDefault().getLanguage().contentEquals("de")){
-                                    webView.loadUrl("https://duckduckgo.com/?q=" + text + "&kl=de-de&kad=de_DE&k1=-1&kaj=m&kam=osm&kp=-1&kak=-1&kd=1&t=h_&ia=web");
-                                } else {
-                                    webView.loadUrl("https://duckduckgo.com/?q=" + text);
-                                }
-                            } else if (searchEngine.contains("https://metager.de/meta/meta.ger3?focus=web&eingabe=")) {
-                                if (Locale.getDefault().getLanguage().contentEquals("de")){
-                                    webView.loadUrl("https://metager.de/meta/meta.ger3?focus=web&eingabe=" + text);
-                                } else {
-                                    webView.loadUrl("https://metager.de/meta/meta.ger3?focus=web&eingabe=" + text +"&focus=web&encoding=utf8&lang=eng");
-                                }
-                            } else if (searchEngine.contains("https://startpage.com/do/search?query=")) {
-                                if (Locale.getDefault().getLanguage().contentEquals("de")){
-                                    webView.loadUrl("https://startpage.com/do/search?query=" + subStr + "&lui=deutsch&l=deutsch");
-                                } else {
-                                    webView.loadUrl("https://startpage.com/do/search?query=" + subStr);
-                                }
-                            }else {
-                                webView.loadUrl(searchEngine + text);
+                            mWebView.loadUrl("https://startpage.com/do/search?query=" + text.substring(3));
+                        }
+                    } else if (text.startsWith(".G ")) {
+                        if (Locale.getDefault().getLanguage().contentEquals("de")){
+                            mWebView.loadUrl("https://www.google.de/search?&q=" + text.substring(3));
+                        } else {
+                            mWebView.loadUrl("https://www.google.com/search?&q=" + text.substring(3));
+                        }
+                    } else  if (text.startsWith(".y ")) {
+                        if (Locale.getDefault().getLanguage().contentEquals("de")){
+                            mWebView.loadUrl("https://www.youtube.com/results?hl=de&gl=DE&search_query=" + text.substring(3));
+                        } else {
+                            mWebView.loadUrl("https://www.youtube.com/results?search_query=" + text.substring(3));
+                        }
+                    } else  if (text.startsWith(".d ")) {
+                        if (Locale.getDefault().getLanguage().contentEquals("de")){
+                            mWebView.loadUrl("https://duckduckgo.com/?q=" + text.substring(3) + "&kl=de-de&kad=de_DE&k1=-1&kaj=m&kam=osm&kp=-1&kak=-1&kd=1&t=h_&ia=web");
+                        } else {
+                            mWebView.loadUrl("https://duckduckgo.com/?q=" + text.substring(3));
+                        }
+                    } else {
+                        if (searchEngine.contains("https://duckduckgo.com/?q=")) {
+                            if (Locale.getDefault().getLanguage().contentEquals("de")){
+                                mWebView.loadUrl("https://duckduckgo.com/?q=" + text + "&kl=de-de&kad=de_DE&k1=-1&kaj=m&kam=osm&kp=-1&kak=-1&kd=1&t=h_&ia=web");
+                            } else {
+                                mWebView.loadUrl("https://duckduckgo.com/?q=" + text);
                             }
+                        } else if (searchEngine.contains("https://metager.de/meta/meta.ger3?focus=web&eingabe=")) {
+                            if (Locale.getDefault().getLanguage().contentEquals("de")){
+                                mWebView.loadUrl("https://metager.de/meta/meta.ger3?focus=web&eingabe=" + text);
+                            } else {
+                                mWebView.loadUrl("https://metager.de/meta/meta.ger3?focus=web&eingabe=" + text +"&focus=web&encoding=utf8&lang=eng");
+                            }
+                        } else if (searchEngine.contains("https://startpage.com/do/search?query=")) {
+                            if (Locale.getDefault().getLanguage().contentEquals("de")){
+                                mWebView.loadUrl("https://startpage.com/do/search?query=" + text + "&lui=deutsch&l=deutsch");
+                            } else {
+                                mWebView.loadUrl("https://startpage.com/do/search?query=" + text);
+                            }
+                        }else {
+                            mWebView.loadUrl(searchEngine + text);
                         }
                     }
 
-                    editText.setText(text);
-                    editText.clearFocus();
-                    InputMethodManager imm = (InputMethodManager)from.getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+                    helper_editText.hideKeyboard(from, editText, 0, text, from.getString(R.string.app_search_hint));
+                    helper_editText.editText_EditorAction(editText, from, mWebView, urlBar);
+                    urlBar.setVisibility(View.VISIBLE);
+                    editText.setVisibility(View.GONE);
                     return true;
                 } else {
                     return false;
@@ -256,7 +220,7 @@ public class helper_editText {
         }
     }
 
-    public static void editText_searchSite (final EditText editText, final Activity from, final WebView webView) {
+    public static void editText_searchSite (final EditText editText, final Activity from, final WebView webView, final TextView urlBar) {
 
         helper_editText.showKeyboard(from, editText, 1, "", from.getString(R.string.app_search_hint_site));
         editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -266,7 +230,7 @@ public class helper_editText {
                     String text = editText.getText().toString();
                     webView.findAllAsync(text);
                     helper_editText.hideKeyboard(from, editText, 1, from.getString(R.string.app_search) + " " + text, from.getString(R.string.app_search_hint_site));
-                    helper_editText.editText_EditorAction(editText, from, webView);
+                    helper_editText.editText_EditorAction(editText, from, webView, urlBar);
                     return true;
                 } else {
                     return false;

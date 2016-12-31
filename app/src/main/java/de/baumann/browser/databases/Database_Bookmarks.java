@@ -68,7 +68,7 @@ public class Database_Bookmarks extends SQLiteOpenHelper {
 
         SQLiteStatement stmt = db.compileStatement("INSERT INTO bookmarks VALUES(?, ?, ?)");
         stmt.bindLong(1, seqno);
-        stmt.bindString(2, "Default entry - Browser on Github");
+        stmt.bindString(2, "Default entry - Browser_left on Github");
         stmt.bindString(3, "https://github.com/scoute-dich/browser/");
         stmt.executeInsert();
 

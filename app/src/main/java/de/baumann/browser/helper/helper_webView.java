@@ -35,7 +35,7 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.EditText;
+import android.widget.TextView;
 
 import java.net.URISyntaxException;
 
@@ -177,14 +177,16 @@ public class helper_webView {
     }
 
     public static void webView_WebViewClient (final Activity from, final SwipeRefreshLayout swipeRefreshLayout,
-                                              final WebView webView, final EditText editText) {
+                                              final WebView webView, final TextView urlBar) {
 
         webView.setWebViewClient(new WebViewClient() {
 
             public void onPageFinished(WebView view, String url) {
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
                 super.onPageFinished(view, url);
                 swipeRefreshLayout.setRefreshing(false);
-                editText.setText(webView.getTitle());
+                urlBar.setText(webView.getTitle());
+                sharedPref.edit().putString("openURL", "").apply();
                 if (webView.getTitle() != null && !webView.getTitle().equals("about:blank")) {
                     try {
                         final Database_History db = new Database_History(from);
@@ -280,6 +282,5 @@ public class helper_webView {
         }
         helper_main.isClosed(from);
         sharedPref.edit().putString("started", "").apply();
-        from.finishAffinity();
     }
 }

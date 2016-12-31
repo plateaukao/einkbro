@@ -18,7 +18,6 @@
             android:text="@string/action_java"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textView"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_toStartOf="@+id/imageButton_js" />
 

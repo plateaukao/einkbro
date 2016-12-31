@@ -3,13 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
-        android:id="@+id/action_save_bookmark"
-        android:orderInCategory="100"
-        android:title="@string/menu_search"
-        android:icon="@drawable/content_save"
-        app:showAsAction="always"
-        tools:ignore="AlwaysShowAction" />
 
     <item
         android:id="@+id/action_search"
@@ -19,13 +12,6 @@
         app:showAsAction="always"
         tools:ignore="AlwaysShowAction" />
 
-    <item
-        android:id="@+id/action_search2"
-        android:orderInCategory="100"
-        android:title="@string/menu_search"
-        android:icon="@drawable/magnify"
-        app:showAsAction="always"
-        tools:ignore="AlwaysShowAction" />
 
     <item
         android:id="@+id/action_search3"
@@ -44,46 +30,12 @@
         tools:ignore="AlwaysShowAction" />
 
     <item
-        android:id="@+id/action_save"
-        android:orderInCategory="100"
-        android:title="@string/menu_save"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/action_prev"
-        android:orderInCategory="100"
-        android:title="@string/menu_prev"
-        android:icon="@drawable/arrow_left"
-        app:showAsAction="always"
-        tools:ignore="AlwaysShowAction" />
-
-    <item
-        android:id="@+id/action_next"
-        android:orderInCategory="100"
-        android:title="@string/menu_next"
-        android:icon="@drawable/arrow_right"
-        app:showAsAction="always"
-        tools:ignore="AlwaysShowAction" />
-
-    <item
         android:id="@+id/action_cancel"
         android:orderInCategory="100"
         android:title="@string/menu_cancel"
         android:icon="@drawable/close"
         app:showAsAction="always"
         tools:ignore="AlwaysShowAction" />
-
-    <item
-        android:id="@+id/action_share"
-        android:orderInCategory="100"
-        android:title="@string/menu_share"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/action_searchSite"
-        android:orderInCategory="100"
-        android:title="@string/menu_searchSite"
-        app:showAsAction="never" />
 
     <item
         android:id="@+id/action_pass"
@@ -95,12 +47,6 @@
         android:id="@+id/action_downloads"
         android:orderInCategory="100"
         android:title="@string/menu_downloads"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/action_toggle"
-        android:orderInCategory="100"
-        android:title="@string/menu_toggle"
         app:showAsAction="never" />
 
     <item

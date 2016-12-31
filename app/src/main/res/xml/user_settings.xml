@@ -203,11 +203,11 @@
             android:summary="@string/action_donate_summary"
             android:key="donate" />
 
-        <CheckBoxPreference
+        <Preference
             android:title="@string/action_notShow_title"
             android:icon="@drawable/information_outline"
             android:summary="@string/action_notShow_title_summary"
-            android:key="help_notShow"
+            android:key="help"
             android:defaultValue="true" />
 
         <CheckBoxPreference

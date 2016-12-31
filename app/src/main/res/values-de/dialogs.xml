@@ -41,14 +41,6 @@
 
     //Help Dialog
 
-    <string name="dialog_help_title">Browser</string>
-    <string name="dialog_help">
-        Öffne den Hillfedialog um Informationen zu folgenden Themen zu erlangen:&lt;br>&lt;br>
-
-        &#8226; wichtigste Funktionen&lt;br>
-        &#8226; Bedienung&lt;br>
-        &#8226; Suche</string>
-
     <string name="help_text">
 
         &lt;b>Die Listen:&lt;/b>&lt;br>
@@ -70,7 +62,13 @@
         Liste zu öffnen. Nach oben wischen um die App zu schließen.&lt;br>
         &#8226;&lt;i> Suchen (linkes Icon):&lt;/i> du kannst einen Suchbegriff (siehe unten) oder eine URL eingeben. Wenn du
         \"Enter\" oder die Lupe anklickst, wird die Internetseite geöffnet.&lt;br>
-        &#8226;&lt;i> Verlauf (rechtes Icon):&lt;/i> Öffnet eine Liste mit den zuletzt besuchten Internetseiten.&lt;br>&lt;br>
+        &#8226;&lt;i> Verlauf (rechtes Icon):&lt;/i> Öffnet eine Liste mit den zuletzt besuchten Internetseiten.&lt;br>
+        &#8226;&lt;i> Klick:&lt;/i> wecchsle zwischen dem linken (teal farbenen) und dem rechten (orange) Tab.&lt;br>&lt;br>
+
+        &lt;b>Die Tabs:&lt;/b>&lt;br>
+
+        Du hast zwei Tabs. Den linken (teal farbenen) und den rechten (orange). Du kannst schnell zwischen ihnen wecchseln,
+        indem du auf die Toolbar klickst.&lt;br>&lt;br>
 
         &lt;b>Menü:&lt;/b>&lt;br>
         &#8226;&lt;i> Speichere Seite:&lt;/i> du kannst die Seite als Lesezeichen, zur leseSpäter Liste oder zum passSpeicher
@@ -81,13 +79,13 @@
         &#8226;&lt;i> Öffne passSpeicher:&lt;/i> öffne deinen Passwortspeicher.&lt;br>
         &#8226;&lt;i> Öffne Downloadordner:&lt;/i> öffne den Downloadordner um Dateien anzuzeigen, zu teilen, umzubenennen
         oder zu löschen.&lt;br>
-        &#8226;&lt;i> Einstellungen (Startschirm):&lt;/i> In den Einstellungen kannst du das Verhalten der App deinen Wünschen
+        &#8226;&lt;i> Einstellungen (Popup Dialog):&lt;/i> Hier kannst du die Standardeinstellungen kurzzeitig überschreiben. Bei
+        einem erneuten Start der App gehen diese Einstellungen verloren. Indem du auf das rote Kreuz klickst kannst du dort auch
+        Internetseiten zu einer Whitelist hinzufügen. Sie werden dann mit einem grünen Haken gekennzeichnet. Javascript ist für
+        diese Internetseiten dann immer erlaubt (auch nach einem Neustart der App). Um zu den Einstellungen zu gelangen klicke auf
+        \"Einstellungen\" im Popup Dialog.&lt;br>&lt;br>
+        &#8226;&lt;i> Einstellungen:&lt;/i> In den Einstellungen kannst du das Verhalten der App deinen Wünschen
         anpassen. Beim Starten der App werden immer diese Einstellungen geladen.&lt;br>
-        &#8226;&lt;i> Einstellungen (Browser):&lt;/i> Hier kannst du die Standardeinstellungen kurzzeitig überschreiben.  Bei einem
-        erneuten Start der App gehen diese Einstellungen verloren. Indem du auf das rote Kreuz klickst kannst du dort auch Internetseiten
-        zu einer Whitelist hinzufügen. Sie werden dann mit einem grünen Haken gekennzeichnet. Javascript ist für diese Internetseiten
-        dann immer erlaubt (auch nach einem Neustart der App).&lt;br>&lt;br>
-
         &lt;b>Suche:&lt;/b>&lt;br>
         Deine bevorzugte Suchmaschine und die gewünschte Sprache für Wikipedia kannst du in den Einstellungen bestimmen. Du kannst direkt auf bestimmten Seiten suchen,
         wenn du auf das Listensymbol rechts neben der Lupe klickst. Die zur Auswahl stehenden Internetseiten kannst du ebenfalls in den
@@ -146,10 +144,10 @@
     </string-array>
 
     <string-array name="listArrayCookies">
-        <item>Cookies akteptieren</item>
-        <item>Cookies von 3. akteptieren</item>
-        <item>Alle Cookies aktzeptieren</item>
-        <item>Keine Cookies aktzeptieren</item>
+        <item>Cookies zulassen</item>
+        <item>Cookies von 3. zulassen</item>
+        <item>Alle Cookies zulassen</item>
+        <item>Keine Cookies zulassen</item>
     </string-array>
 
     <string-array name="listValuesCookies">

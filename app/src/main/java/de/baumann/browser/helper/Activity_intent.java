@@ -37,8 +37,6 @@ import de.baumann.browser.popups.Popup_readLater;
 
 public class Activity_intent extends Activity {
 
-    private String linkIntent2;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,26 +45,16 @@ public class Activity_intent extends Activity {
         android.content.Intent intent = getIntent();
 
         Uri data = intent.getData();
-        String linkIntent = data.toString();
-
-        if (linkIntent.contains("https://")) {
-            linkIntent2 = linkIntent.replace("https://", "|");
-        } else if (linkIntent.contains("http://")){
-            linkIntent2 = linkIntent.replace("http://", "|");
-        }
-
-        String linkIntent3;
-        if (linkIntent2.contains("www.")) {
-            linkIntent3 = linkIntent2.replace("www.", "").toUpperCase();
-        } else {
-            linkIntent3 = linkIntent2.toUpperCase();
-        }
 
         String domain;
-        if (linkIntent3.contains("/")) {
-            domain = linkIntent3.substring(linkIntent3.indexOf('|')+1, linkIntent3.indexOf('/'));
+        if(Uri.parse(data.toString()).getHost().length() == 0) {
+            domain = getString(R.string.app_domain);
         } else {
-            domain = linkIntent3.substring(linkIntent3.indexOf('|')+1, linkIntent3.lastIndexOf('.'));
+            domain = Uri.parse(data.toString()).getHost();
+        }
+
+        if (domain.contains("www.")) {
+            domain = domain.replace("www.", "").toUpperCase();
         }
 
         String domain2 = domain.substring(0,1).toUpperCase() + domain.substring(1).toLowerCase();
@@ -74,15 +62,15 @@ public class Activity_intent extends Activity {
         PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
         PreferenceManager.setDefaultValues(this, R.xml.user_settings_search, false);
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        sharedPref.edit().putString("add_readLater_link", linkIntent).apply();
+        sharedPref.edit().putString("add_readLater_link", data.toString()).apply();
         sharedPref.edit().putString("add_readLater_domain", domain2).apply();
 
         Random rand = new Random();
         int n = rand.nextInt(100000); // Gives n such that 0 <= n < 20
 
         android.content.Intent iMain = new android.content.Intent();
-        iMain.putExtra("url", linkIntent);
-        iMain.setClassName(Activity_intent.this, "de.baumann.browser.Browser");
+        iMain.putExtra("url", data.toString());
+        iMain.setClassName(Activity_intent.this, "de.baumann.browser.Browser_left");
 
         android.content.Intent iAction = new android.content.Intent(this, Popup_readLater.class);
         iAction.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
@@ -102,7 +90,7 @@ public class Activity_intent extends Activity {
         Notification notification = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.earth)
                 .setContentTitle(getString(R.string.readLater_title))
-                .setContentText(linkIntent)
+                .setContentText(data.toString())
                 .setContentIntent(piMain)
                 .setAutoCancel(true)
                 .addAction(action)

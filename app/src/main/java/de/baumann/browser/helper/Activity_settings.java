@@ -48,9 +48,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.nio.channels.FileChannel;
 
-import de.baumann.browser.Bookmarks;
-import de.baumann.browser.Browser;
+import de.baumann.browser.Browser_left;
 import de.baumann.browser.R;
+import de.baumann.browser.Browser_right;
 
 
 public class Activity_settings extends AppCompatActivity {
@@ -128,6 +128,29 @@ public class Activity_settings extends AppCompatActivity {
                     final AlertDialog d = new AlertDialog.Builder(getActivity())
                             .setTitle(R.string.about_title)
                             .setMessage(helper_main.textSpannable(getString(R.string.about_text)))
+                            .setPositiveButton(getString(R.string.toast_yes),
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            dialog.cancel();
+                                        }
+                                    }).show();
+                    d.show();
+                    ((TextView) d.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
+
+                    return true;
+                }
+            });
+        }
+
+        private void addHelpListener() {
+
+            Preference reset = findPreference("help");
+            reset.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                public boolean onPreferenceClick(Preference pref) {
+
+                    final AlertDialog d = new AlertDialog.Builder(getActivity())
+                            .setTitle(R.string.action_notShow_title)
+                            .setMessage(helper_main.textSpannable(getString(R.string.help_text)))
                             .setPositiveButton(getString(R.string.toast_yes),
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
@@ -439,6 +462,7 @@ public class Activity_settings extends AppCompatActivity {
             addWhiteListListener();
             addDonateListListener();
             addChangelogListener();
+            addHelpListener();
         }
     }
 
@@ -446,10 +470,10 @@ public class Activity_settings extends AppCompatActivity {
     public void onBackPressed() {
         helper_main.isOpened(Activity_settings.this);
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        if (sharedPref.getString("lastActivity", "").equals("browser")) {
-            helper_main.switchToActivity(Activity_settings.this, Browser.class, sharedPref.getString("pass_copy_url", ""), true);
+        if (sharedPref.getString("lastActivity", "").equals("browser_left")) {
+            helper_main.switchToActivity(Activity_settings.this, Browser_left.class, sharedPref.getString("pass_copy_url", ""), true);
         } else {
-            helper_main.switchToActivity(Activity_settings.this, Bookmarks.class, "", true);
+            helper_main.switchToActivity(Activity_settings.this, Browser_right.class, sharedPref.getString("pass_copy_url", ""), true);
         }
     }
 
@@ -461,10 +485,10 @@ public class Activity_settings extends AppCompatActivity {
         if (id == android.R.id.home) {
             helper_main.isOpened(Activity_settings.this);
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-            if (sharedPref.getString("lastActivity", "").equals("browser")) {
-                helper_main.switchToActivity(Activity_settings.this, Browser.class, sharedPref.getString("pass_copy_url", ""), true);
+            if (sharedPref.getString("lastActivity", "").equals("browser_left")) {
+                helper_main.switchToActivity(Activity_settings.this, Browser_left.class, sharedPref.getString("pass_copy_url", ""), true);
             } else {
-                helper_main.switchToActivity(Activity_settings.this, Bookmarks.class, "", true);
+                helper_main.switchToActivity(Activity_settings.this, Browser_right.class, sharedPref.getString("pass_copy_url", ""), true);
             }
         }
         return super.onOptionsItemSelected(item);
