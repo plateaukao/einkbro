@@ -29,13 +29,13 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,8 +62,11 @@ public class Popup_pass extends Activity {
         PreferenceManager.setDefaultValues(this, R.xml.user_settings_search, false);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 
-        Button button = (Button) findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
+        TextView listTitle = (TextView) findViewById(R.id.listTitle);
+        listTitle.setText(R.string.app_title_passStorage);
+
+        ImageButton butDel = (ImageButton) findViewById(R.id.butDel);
+        butDel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar snackbar = Snackbar
@@ -79,8 +82,8 @@ public class Popup_pass extends Activity {
             }
         });
 
-        ImageButton buttonSort = (ImageButton) findViewById(R.id.butSort);
-        buttonSort.setOnClickListener(new View.OnClickListener() {
+        ImageButton butSort = (ImageButton) findViewById(R.id.butSort);
+        butSort.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(Popup_pass.this);

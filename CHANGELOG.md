@@ -1,8 +1,8 @@
-### v 1.8 (WIP)
+### v 1.8
 
 - improved: pin screen layout
 - improved: sort dialog behavior
-- removed: app shortcuts support
+- improved: wsitched to xml icons
 - removed: bookmark screen
 - added: second tab
 - added: set bookmark as start site (long click)

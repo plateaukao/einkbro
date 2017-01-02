@@ -48,6 +48,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -77,13 +78,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 
 import de.baumann.browser.databases.Database_ReadLater;
 import de.baumann.browser.helper.Activity_settings;
-import de.baumann.browser.helper.class_OnSwipeTouchListener_editText;
+import de.baumann.browser.helper.helper_browser;
 import de.baumann.browser.helper.helper_editText;
 import de.baumann.browser.helper.helper_webView;
 import de.baumann.browser.helper.helper_main;
@@ -149,28 +148,6 @@ public class Browser_left extends AppCompatActivity implements ObservableScrollV
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setOnTouchListener(new class_OnSwipeTouchListener_editText(Browser_left.this) {
-            public void onSwipeTop() {
-                helper_webView.closeWebView(Browser_left.this, mWebView);
-                helper_main.closeApp(Browser_left.this, Browser_right.class, mWebView);
-                finishAffinity();
-            }
-            public void onSwipeRight() {
-                helper_main.switchToActivity(Browser_left.this, Popup_readLater.class, "", false);
-            }
-            public void onSwipeLeft() {
-                helper_main.switchToActivity(Browser_left.this, Popup_bookmarks.class, "", false);
-            }
-        });
-        toolbar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sharedPref.edit().putString("openURL", "").apply();
-                Intent intent = new Intent(Browser_left.this, Browser_right.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                startActivity(intent);
-            }
-        });
 
         actionBar = getSupportActionBar();
 
@@ -195,7 +172,7 @@ public class Browser_left extends AppCompatActivity implements ObservableScrollV
                     urlBar.setText(mWebView.getTitle());
                     actionBar.show();
                 }
-                setNavArrows();
+                helper_browser.setNavArrows(Browser_left.this, mWebView, imageButton_left, imageButton_right);
             }
         });
 
@@ -273,6 +250,7 @@ public class Browser_left extends AppCompatActivity implements ObservableScrollV
             }
         });
 
+        helper_browser.toolbar(Browser_left.this, Browser_right.class, mWebView, toolbar);
         helper_editText.editText_EditorAction(editText, Browser_left.this, mWebView, urlBar);
         helper_editText.editText_FocusChange(editText, Browser_left.this);
         helper_main.grantPermissionsStorage(Browser_left.this);
@@ -316,18 +294,6 @@ public class Browser_left extends AppCompatActivity implements ObservableScrollV
                 }
             }, 300);
         }
-    }
-
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yy-MM-dd_HH-mm", Locale.getDefault()).format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-        return File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
     }
 
     @Override
@@ -566,7 +532,7 @@ public class Browser_left extends AppCompatActivity implements ObservableScrollV
             if (!actionBar.isShowing()) {
                 actionBar.show();
             }
-            setNavArrows();
+            helper_browser.setNavArrows(Browser_left.this, mWebView, imageButton_left, imageButton_right);
         } else {
             imageButton.setVisibility(View.INVISIBLE);
         }
@@ -679,104 +645,14 @@ public class Browser_left extends AppCompatActivity implements ObservableScrollV
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        MenuItem saveBookmark = menu.findItem(R.id.action_save_bookmark);
-        MenuItem search = menu.findItem(R.id.action_search);
-        MenuItem search_go = menu.findItem(R.id.action_search_go);
-        MenuItem search_onSite_go = menu.findItem(R.id.action_search_onSite_go);
-        MenuItem search_chooseWebsite = menu.findItem(R.id.action_search_chooseWebsite);
-        MenuItem history = menu.findItem(R.id.action_history);
-        MenuItem save = menu.findItem(R.id.action_save);
-        MenuItem share = menu.findItem(R.id.action_share);
-        MenuItem search_onSite = menu.findItem(R.id.action_search_onSite);
-        MenuItem downloads = menu.findItem(R.id.action_downloads);
-        MenuItem settings = menu.findItem(R.id.action_settings);
-        MenuItem prev = menu.findItem(R.id.action_prev);
-        MenuItem next = menu.findItem(R.id.action_next);
-        MenuItem cancel = menu.findItem(R.id.action_cancel);
-        MenuItem pass = menu.findItem(R.id.action_pass);
-        MenuItem help = menu.findItem(R.id.action_help);
-        MenuItem toggle = menu.findItem(R.id.action_toggle);
-
-        if (sharedPref.getInt("keyboard", 0) == 0) { //could be button state or..?
-            saveBookmark.setVisible(false);
-            search.setVisible(true);
-            search_onSite_go.setVisible(false);
-            search_chooseWebsite.setVisible(false);
-            history.setVisible(true);
-            save.setVisible(true);
-            share.setVisible(true);
-            search_onSite.setVisible(true);
-            downloads.setVisible(true);
-            settings.setVisible(false);
-            prev.setVisible(false);
-            next.setVisible(false);
-            cancel.setVisible(false);
-            pass.setVisible(true);
-            help.setVisible(false);
-            toggle.setVisible(true);
-            search_go.setVisible(false);
-        } else if (sharedPref.getInt("keyboard", 0) == 1) {
-            saveBookmark.setVisible(false);
-            search.setVisible(false);
-            search_onSite_go.setVisible(true);
-            search_chooseWebsite.setVisible(false);
-            history.setVisible(false);
-            save.setVisible(false);
-            share.setVisible(false);
-            search_onSite.setVisible(false);
-            downloads.setVisible(false);
-            settings.setVisible(false);
-            prev.setVisible(true);
-            next.setVisible(true);
-            cancel.setVisible(true);
-            pass.setVisible(false);
-            help.setVisible(false);
-            toggle.setVisible(false);
-            search_go.setVisible(false);
-        } else if (sharedPref.getInt("keyboard", 0) == 2) {
-            saveBookmark.setVisible(true);
-            search.setVisible(false);
-            search_onSite_go.setVisible(false);
-            search_chooseWebsite.setVisible(false);
-            history.setVisible(false);
-            save.setVisible(false);
-            share.setVisible(false);
-            search_onSite.setVisible(false);
-            downloads.setVisible(false);
-            settings.setVisible(false);
-            prev.setVisible(false);
-            next.setVisible(false);
-            cancel.setVisible(true);
-            pass.setVisible(false);
-            help.setVisible(false);
-            toggle.setVisible(false);
-            search_go.setVisible(false);
-        } else if (sharedPref.getInt("keyboard", 0) == 3) {
-            saveBookmark.setVisible(false);
-            search.setVisible(false);
-            search_onSite_go.setVisible(false);
-            search_chooseWebsite.setVisible(true);
-            history.setVisible(false);
-            save.setVisible(false);
-            share.setVisible(false);
-            search_onSite.setVisible(false);
-            downloads.setVisible(false);
-            settings.setVisible(false);
-            prev.setVisible(false);
-            next.setVisible(false);
-            cancel.setVisible(true);
-            pass.setVisible(false);
-            help.setVisible(false);
-            toggle.setVisible(false);
-            search_go.setVisible(true);
-        }
+        helper_browser.prepareMenu(Browser_left.this, menu);
         return true; // this is important to call so that new menu is shown
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_browser2, menu);
+        getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
 
@@ -1181,6 +1057,20 @@ public class Browser_left extends AppCompatActivity implements ObservableScrollV
             editText.setVisibility(View.GONE);
         }
 
+        if (id == R.id.action_help) {
+            final AlertDialog d = new AlertDialog.Builder(Browser_left.this)
+                    .setTitle(R.string.action_notShow_title)
+                    .setMessage(helper_main.textSpannable(getString(R.string.help_text)))
+                    .setPositiveButton(getString(R.string.toast_yes),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            }).show();
+            d.show();
+            ((TextView) d.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -1243,7 +1133,7 @@ public class Browser_left extends AppCompatActivity implements ObservableScrollV
             }
 
             if (actionBar.isShowing()) {
-                setNavArrows();
+                helper_browser.setNavArrows(Browser_left.this, mWebView, imageButton_left, imageButton_right);
             }
         }
 
@@ -1260,7 +1150,7 @@ public class Browser_left extends AppCompatActivity implements ObservableScrollV
                 // Create the File where the photo should go
                 File photoFile = null;
                 try {
-                    photoFile = createImageFile();
+                    photoFile = helper_browser.createImageFile();
                     takePictureIntent.putExtra("PhotoPath", mCameraPhotoPath);
                 } catch (IOException e) {
                     // Error occurred while creating the File
@@ -1388,34 +1278,6 @@ public class Browser_left extends AppCompatActivity implements ObservableScrollV
                 e.printStackTrace();
                 Snackbar.make(mWebView, R.string.toast_perm, Snackbar.LENGTH_SHORT).show();
             }
-        }
-    }
-
-    private void setNavArrows() {
-        if (sharedPref.getString ("nav", "2").equals("2") || sharedPref.getString ("nav", "2").equals("3")){
-            if (mWebView.canGoBack()) {
-                imageButton_left.setVisibility(View.VISIBLE);
-            } else {
-                imageButton_left.setVisibility(View.INVISIBLE);
-            }
-            imageButton_left.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mWebView.goBack();
-                }
-            });
-
-            if (mWebView.canGoForward()) {
-                imageButton_right.setVisibility(View.VISIBLE);
-            } else {
-                imageButton_right.setVisibility(View.INVISIBLE);
-            }
-            imageButton_right.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mWebView.goForward();
-                }
-            });
         }
     }
 }

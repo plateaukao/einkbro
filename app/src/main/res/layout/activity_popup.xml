@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="ContentDescription"
     android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -8,40 +9,46 @@
     android:maxWidth="300dp"
     android:layout_gravity="center_vertical|center_horizontal">
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:gravity="center_horizontal"
-        android:layout_gravity="center_vertical|center_horizontal">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp">
 
-        <Button
+        <TextView
             android:text="@string/readLater_button"
             android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:paddingStart="16dp"
-            android:paddingEnd="8dp"
-            android:background="?android:selectableItemBackground"
-            android:id="@+id/button"
-            android:textColor="@color/colorAccent" />
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:fontFamily="sans-serif-condensed"
+            android:textStyle="bold"
+            android:id="@+id/listTitle"
+            tools:ignore="RelativeOverlap"
+            android:layout_centerVertical="true"
+            android:textColor="#757575" />
+
+        <ImageButton
+            android:id="@+id/butDel"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_alignParentEnd="true"
+            android:padding="5dp"
+            android:src="@drawable/delete2"
+            android:background="@drawable/custom_button2"
+            android:scaleType="fitCenter" />
 
         <ImageButton
             android:id="@+id/butSort"
-            android:paddingStart="8dp"
-            android:paddingEnd="16dp"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_toStartOf="@+id/butDel"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:padding="5dp"
             android:src="@drawable/sort_descending"
-            android:background="?android:selectableItemBackground"
-            tools:ignore="ContentDescription"
-            android:scaleType="fitCenter"
-            android:layout_gravity="center_vertical|center_horizontal" />
+            android:background="@drawable/custom_button2"
+            android:scaleType="fitCenter" />
 
-
-    </LinearLayout>
-
-
+    </RelativeLayout>
 
     <ListView
         android:id="@+id/list"

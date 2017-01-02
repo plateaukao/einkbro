@@ -183,8 +183,7 @@
     <string name="action_history_summary">Löscht deinen Browserverlauf beim Verlassen der App.</string>
 
     <string name="action_notShow_title">Hilfe</string>
-    <string name="action_notShow_title_summary">Öffne den Hillfedialog um Informationen zu folgenden Themen zu erlangen:
-        wichtigste Funktionen, Bedienung und Suche.</string>
+    <string name="action_notShow_title_summary">Zeige den Menüeintrag \"Hilfe\" an. Deaktivieren um den Eintrag auszublenden.</string>
 
     <string name="action_searchEngine">Suchmaschine</string>
     <string name="action_searchEngine_summary">Bestimme deine bevorzugte Suchmaschine.</string>

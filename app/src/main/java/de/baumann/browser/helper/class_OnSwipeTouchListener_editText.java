@@ -6,11 +6,11 @@ import android.view.MotionEvent;
 import android.view.View;
 
 
-public class class_OnSwipeTouchListener_editText implements View.OnTouchListener {
+class class_OnSwipeTouchListener_editText implements View.OnTouchListener {
 
     private final GestureDetector gestureDetector;
 
-    public class_OnSwipeTouchListener_editText(Context context) {
+    class_OnSwipeTouchListener_editText(Context context) {
         gestureDetector = new GestureDetector(context, new GestureListener());
     }
 

@@ -180,8 +180,7 @@
     <string name="action_history_summary">Clear your browser history on exit.</string>
 
     <string name="action_notShow_title">Help</string>
-    <string name="action_notShow_title_summary">Open the help dialog to get informations concerning: important functions,
-        handling and search.</string>
+    <string name="action_notShow_title_summary">Show the menu entry \"help\". Disable to hide this entry.</string>
 
     <string name="action_searchEngine">Search engine</string>
     <string name="action_searchEngine_summary">Choose your preferred search engine.</string>
