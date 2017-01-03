@@ -1,3 +1,7 @@
+### v 1.8.1
+
+- fixed: f-droid build failure
+
 ### v 1.8
 
 - improved: pin screen layout
