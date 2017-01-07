@@ -1,3 +1,7 @@
+### v 1.9
+
+- added: encryption of passStore databases
+
 ### v 1.8.1
 
 - fixed: f-droid build failure

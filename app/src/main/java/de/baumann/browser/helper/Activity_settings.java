@@ -206,8 +206,8 @@ public class Activity_settings extends AppCompatActivity {
                                                 dst2.close();
 
                                                 String currentDBPath3 = "//data//" + "de.baumann.browser"
-                                                        + "//databases//" + "pass.db";
-                                                String backupDBPath3 = "//Android//" + "//data//" + "//browser.backup//" + "pass.db";
+                                                        + "//databases//" + "pass_encrypted.db";
+                                                String backupDBPath3 = "//Android//" + "//data//" + "//browser.backup//" + "pass_encrypted.db";
                                                 File currentDB3 = new File(data, currentDBPath3);
                                                 File backupDB3 = new File(sd, backupDBPath3);
 
@@ -290,8 +290,8 @@ public class Activity_settings extends AppCompatActivity {
                                                 dst2.close();
 
                                                 String currentDBPath3 = "//data//" + "de.baumann.browser"
-                                                        + "//databases//" + "pass.db";
-                                                String backupDBPath3 = "//Android//" + "//data//" + "//browser.backup//" + "pass.db";
+                                                        + "//databases//" + "pass_encrypted.db";
+                                                String backupDBPath3 = "//Android//" + "//data//" + "//browser.backup//" + "pass_encrypted.db";
                                                 File currentDB3 = new File(data, currentDBPath3);
                                                 File backupDB3 = new File(sd, backupDBPath3);
 

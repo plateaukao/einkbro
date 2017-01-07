@@ -35,6 +35,8 @@ import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import net.sqlcipher.database.SQLiteDatabase;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -166,6 +168,8 @@ public class helper_editText {
     }
 
     public static void editText_savePass(final Activity from, final View view, final String title, final String url) {
+
+        SQLiteDatabase.loadLibs(from);
 
         try {
 
