@@ -79,9 +79,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Locale;
+import java.util.Random;
 
 import de.baumann.browser.databases.Database_ReadLater;
 import de.baumann.browser.helper.Activity_settings;
+import de.baumann.browser.helper.class_SecurePreferences;
 import de.baumann.browser.helper.helper_browser;
 import de.baumann.browser.helper.helper_editText;
 import de.baumann.browser.helper.helper_webView;
@@ -142,9 +144,24 @@ public class Browser_left extends AppCompatActivity implements ObservableScrollV
         PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
         PreferenceManager.setDefaultValues(this, R.xml.user_settings_search, false);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+
         sharedPref.edit().putString("openURL", sharedPref.getString("startURL", "https://github.com/scoute-dich/browser/")).apply();
         sharedPref.edit().putInt("keyboard", 0).apply();
         sharedPref.getInt("keyboard", 0);
+
+        class_SecurePreferences sharedPrefSec = new class_SecurePreferences(Browser_left.this, "sharedPrefSec", "Ywn-YM.XK$b:/:&CsL8;=L,y4", true);
+
+        if (sharedPref.getString("saveDCOK", "no").equals("no")) {
+            char[] chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!§$%&/()=?;:_-.,+#*<>".toCharArray();
+            StringBuilder sb = new StringBuilder();
+            Random random = new Random();
+            for (int i = 0; i < 25; i++) {
+                char c = chars[random.nextInt(chars.length)];
+                sb.append(c);
+            }
+            sharedPrefSec.put("saveDC", sb.toString());
+            sharedPref.edit().putString("saveDCOK", "yes").apply();
+        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

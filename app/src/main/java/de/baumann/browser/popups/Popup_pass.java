@@ -37,7 +37,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
-import net.sqlcipher.database.SQLiteDatabase;
+import com.mobapphome.mahencryptorlib.MAHEncryptor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,6 +52,7 @@ public class Popup_pass extends Activity {
 
     private ListView listView = null;
     private SharedPreferences sharedPref;
+    private class_SecurePreferences sharedPrefSec;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +64,7 @@ public class Popup_pass extends Activity {
         PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
         PreferenceManager.setDefaultValues(this, R.xml.user_settings_search, false);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPrefSec = new class_SecurePreferences(Popup_pass.this, "sharedPrefSec", "Ywn-YM.XK$b:/:&CsL8;=L,y4", true);
 
         TextView listTitle = (TextView) findViewById(R.id.listTitle);
         listTitle.setText(R.string.app_title_passStorage);
@@ -157,10 +159,19 @@ public class Popup_pass extends Activity {
                 final String userName = map.get("userName");
                 final String url = map.get("url");
 
-                sharedPref.edit().putString("copyPW", userPW).apply();
-                sharedPref.edit().putString("copyUN", userName).apply();
-                sharedPref.edit().putString("openURL", "openLogin" + url).apply();
-                finishAffinity();
+                try {
+                    MAHEncryptor mahEncryptor = MAHEncryptor.newInstance(sharedPrefSec.getString("saveDC"));
+                    String decrypted_userName = mahEncryptor.decode(userName);
+                    String decrypted_userPW = mahEncryptor.decode(userPW);
+                    sharedPref.edit().putString("copyPW", decrypted_userPW).apply();
+                    sharedPref.edit().putString("copyUN", decrypted_userName).apply();
+                    sharedPref.edit().putString("openURL", "openLogin" + url).apply();
+                    finishAffinity();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Snackbar.make(listView, R.string.toast_error, Snackbar.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -201,9 +212,16 @@ public class Popup_pass extends Activity {
 
                                         final EditText pass_title = (EditText) dialogView.findViewById(R.id.pass_title);
                                         final EditText pass_userName = (EditText) dialogView.findViewById(R.id.pass_userName);
-                                        pass_userName.setText(userName);
                                         final EditText pass_userPW = (EditText) dialogView.findViewById(R.id.pass_userPW);
-                                        pass_userPW.setText(userPW);
+
+
+                                        final MAHEncryptor mahEncryptor = MAHEncryptor.newInstance(sharedPrefSec.getString("saveDC"));
+                                        final String decrypted_userName = mahEncryptor.decode(userName);
+                                        final String decrypted_userPW = mahEncryptor.decode(userPW);
+
+                                        pass_title.setText(title);
+                                        pass_userName.setText(decrypted_userName);
+                                        pass_userPW.setText(decrypted_userPW);
 
                                         builder.setView(dialogView);
                                         builder.setTitle(R.string.pass_edit);
@@ -211,23 +229,25 @@ public class Popup_pass extends Activity {
 
                                             public void onClick(DialogInterface dialog, int whichButton) {
 
-                                                String input_pass_title = pass_title.getText().toString().trim();
-                                                String input_pass_userName = pass_userName.getText().toString().trim();
-                                                String input_pass_userPW = pass_userPW.getText().toString().trim();
+                                                try {
+                                                    String input_pass_title = pass_title.getText().toString().trim();
+                                                    String encrypted_userName = mahEncryptor.encode(pass_userName.getText().toString().trim());
+                                                    String encrypted_userPW = mahEncryptor.encode(pass_userPW.getText().toString().trim());
 
-                                                sharedPrefSec.put(url + "UN", input_pass_userName);
-                                                sharedPrefSec.put(url + "PW", input_pass_userPW);
-                                                sharedPrefSec.put(url + "TI", input_pass_title);
+                                                    db.deleteBookmark((Integer.parseInt(seqnoStr)));
+                                                    db.addBookmark(
+                                                            input_pass_title,
+                                                            url,
+                                                            encrypted_userName,
+                                                            encrypted_userPW);
+                                                    db.close();
+                                                    setBookmarkList();
+                                                    Snackbar.make(listView, R.string.pass_success, Snackbar.LENGTH_SHORT).show();
 
-                                                db.deleteBookmark((Integer.parseInt(seqnoStr)));
-                                                db.addBookmark(
-                                                        sharedPrefSec.getString(url + "TI"),
-                                                        url,
-                                                        sharedPrefSec.getString(url + "UN"),
-                                                        sharedPrefSec.getString(url + "PW"));
-                                                db.close();
-                                                setBookmarkList();
-                                                Snackbar.make(listView, R.string.pass_success, Snackbar.LENGTH_SHORT).show();
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
+                                                    Snackbar.make(listView, R.string.toast_error, Snackbar.LENGTH_SHORT).show();
+                                                }
                                             }
                                         });
                                         builder.setNegativeButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
@@ -244,6 +264,7 @@ public class Popup_pass extends Activity {
 
                                     } catch (Exception e) {
                                         e.printStackTrace();
+                                        Snackbar.make(listView, R.string.toast_error, Snackbar.LENGTH_SHORT).show();
                                     }
                                 }
 
@@ -271,6 +292,7 @@ public class Popup_pass extends Activity {
                                                                 setBookmarkList();
                                                             } catch (PackageManager.NameNotFoundException e) {
                                                                 e.printStackTrace();
+                                                                Snackbar.make(listView, R.string.toast_error, Snackbar.LENGTH_SHORT).show();
                                                             }
                                                         }
                                                     });
@@ -284,11 +306,19 @@ public class Popup_pass extends Activity {
 
                                 if (options[item].equals(getString(R.string.pass_copy))) {
 
-                                    sharedPref.edit().putString("copyPW", userPW).apply();
-                                    sharedPref.edit().putString("copyUN", userName).apply();
-                                    sharedPref.edit().putString("openURL", "copyLogin").apply();
+                                    try {
+                                        MAHEncryptor mahEncryptor = MAHEncryptor.newInstance(sharedPrefSec.getString("saveDC"));
+                                        String decrypted_userName = mahEncryptor.decode(userName);
+                                        String decrypted_userPW = mahEncryptor.decode(userPW);
+                                        sharedPref.edit().putString("copyPW", decrypted_userPW).apply();
+                                        sharedPref.edit().putString("copyUN", decrypted_userName).apply();
+                                        sharedPref.edit().putString("openURL", "copyLogin").apply();
+                                        finishAffinity();
 
-                                    finish();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                        Snackbar.make(listView, R.string.toast_error, Snackbar.LENGTH_SHORT).show();
+                                    }
                                 }
 
                             }
@@ -297,7 +327,6 @@ public class Popup_pass extends Activity {
                 return true;
             }
         });
-        SQLiteDatabase.loadLibs(Popup_pass.this);
         setBookmarkList();
     }
 

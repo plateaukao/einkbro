@@ -1,3 +1,8 @@
+### v 2.0
+
+- improved: encryption of passStore databases
+- fixed: F-Droid build error
+
 ### v 1.9
 
 - added: encryption of passStore databases

@@ -7,8 +7,8 @@ android {
         applicationId "de.baumann.browser"
         minSdkVersion 21
         targetSdkVersion 25
-        versionCode 13
-        versionName "1.9"
+        versionCode 15
+        versionName "2.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -17,7 +17,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    sourceSets.main.jni.srcDirs = []
     return void
 }
 
@@ -27,5 +26,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.1.0'
     compile 'com.android.support:design:25.1.0'
     compile 'com.github.ksoichiro:android-observablescrollview:1.6.0'
-    compile 'net.zetetic:android-database-sqlcipher:3.5.4'
+    compile 'com.mobapphome.library:mah-encryptor-lib:1.0.1'
 }

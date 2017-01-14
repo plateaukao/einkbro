@@ -77,7 +77,6 @@ public class Activity_intent extends Activity {
         android.content.Intent iAction = new android.content.Intent(this, shortcut_readLater.class);
         iAction.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
 
-
         android.content.Intent iAction_2 = new android.content.Intent(this, Activity_intent_add.class);
         iAction_2.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
 

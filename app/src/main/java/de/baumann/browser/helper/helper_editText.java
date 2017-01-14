@@ -35,7 +35,7 @@ import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import net.sqlcipher.database.SQLiteDatabase;
+import com.mobapphome.mahencryptorlib.MAHEncryptor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -169,59 +169,56 @@ public class helper_editText {
 
     public static void editText_savePass(final Activity from, final View view, final String title, final String url) {
 
-        SQLiteDatabase.loadLibs(from);
+        final class_SecurePreferences sharedPrefSec = new class_SecurePreferences(from, "sharedPrefSec", "Ywn-YM.XK$b:/:&CsL8;=L,y4", true);
 
-        try {
+        AlertDialog.Builder builder = new AlertDialog.Builder(from);
+        View dialogView = View.inflate(from, R.layout.dialog_login, null);
 
-            final class_SecurePreferences sharedPrefSec = new class_SecurePreferences(from, "sharedPrefSec", "Ywn-YM.XK$b:/:&CsL8;=L,y4", true);
-            final Database_Pass db = new Database_Pass(from);
+        final EditText pass_title = (EditText) dialogView.findViewById(R.id.pass_title);
+        final EditText pass_userName = (EditText) dialogView.findViewById(R.id.pass_userName);
+        final EditText pass_userPW = (EditText) dialogView.findViewById(R.id.pass_userPW);
+        pass_title.setText(title);
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(from);
-            View dialogView = View.inflate(from, R.layout.dialog_login, null);
+        builder.setView(dialogView);
+        builder.setTitle(R.string.pass_edit);
+        builder.setPositiveButton(R.string.toast_yes, new DialogInterface.OnClickListener() {
 
-            final EditText pass_title = (EditText) dialogView.findViewById(R.id.pass_title);
-            pass_title.setText(title);
-            final EditText pass_userName = (EditText) dialogView.findViewById(R.id.pass_userName);
-            final EditText pass_userPW = (EditText) dialogView.findViewById(R.id.pass_userPW);
+            public void onClick(DialogInterface dialog, int whichButton) {
 
-            builder.setView(dialogView);
-            builder.setTitle(R.string.pass_edit);
-            builder.setPositiveButton(R.string.toast_yes, new DialogInterface.OnClickListener() {
+                String input_pass_title = pass_title.getText().toString().trim();
 
-                public void onClick(DialogInterface dialog, int whichButton) {
+                try {
+                    Database_Pass db = new Database_Pass(from);
 
-                    String input_pass_title = pass_title.getText().toString().trim();
-                    String input_pass_userName = pass_userName.getText().toString().trim();
-                    String input_pass_userPW = pass_userPW.getText().toString().trim();
-
-                    sharedPrefSec.put(url + "UN", input_pass_userName);
-                    sharedPrefSec.put(url + "PW", input_pass_userPW);
-                    sharedPrefSec.put(url + "TI", input_pass_title);
+                    MAHEncryptor mahEncryptor = MAHEncryptor.newInstance(sharedPrefSec.getString("saveDC"));
+                    String encrypted_userName = mahEncryptor.encode(pass_userName.getText().toString().trim());
+                    String encrypted_userPW = mahEncryptor.encode(pass_userPW.getText().toString().trim());
 
                     db.addBookmark(
-                            sharedPrefSec.getString(url + "TI"),
+                            input_pass_title,
                             url,
-                            sharedPrefSec.getString(url + "UN"),
-                            sharedPrefSec.getString(url + "PW"));
+                            encrypted_userName,
+                            encrypted_userPW);
                     db.close();
                     Snackbar.make(view, R.string.pass_success, Snackbar.LENGTH_SHORT).show();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Snackbar.make(view, R.string.toast_error, Snackbar.LENGTH_SHORT).show();
                 }
-            });
-            builder.setNegativeButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
+            }
+        });
+        builder.setNegativeButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
 
-                public void onClick(DialogInterface dialog, int whichButton) {
-                    dialog.cancel();
-                }
-            });
+            public void onClick(DialogInterface dialog, int whichButton) {
+                dialog.cancel();
+            }
+        });
 
-            final AlertDialog dialog2 = builder.create();
-            // Display the custom alert dialog on interface
-            dialog2.show();
-            helper_editText.showKeyboard(from, pass_title, 0, "", from.getString(R.string.pass_title));
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        final AlertDialog dialog2 = builder.create();
+        // Display the custom alert dialog on interface
+        dialog2.show();
+        helper_editText.showKeyboard(from, pass_title, 0, "", from.getString(R.string.pass_title));
     }
 
     public static void editText_searchSite (final EditText editText, final Activity from, final WebView webView, final TextView urlBar) {

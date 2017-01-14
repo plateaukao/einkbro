@@ -110,6 +110,7 @@
     <string name="toast_whiteList">Whitelist deleted.</string>
     <string name="toast_list">Delete whole list?</string>
     <string name="toast_whiteList_confirm">Do you really want to delete the whitelist?</string>
+    <string name="toast_error">Uuups. Something went wrong.</string>
 
 
     // Bookmarks // ReadLater // Password
