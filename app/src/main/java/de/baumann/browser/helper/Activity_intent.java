@@ -29,6 +29,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.NotificationCompat;
 
 import java.util.Random;
@@ -89,11 +90,22 @@ public class Activity_intent extends Activity {
         NotificationCompat.Action action_2 = new NotificationCompat.Action.Builder
                 (R.drawable.format_list_bulleted, getString(R.string.readLater_action2), piAction_2).build();
 
-        Notification notification = new NotificationCompat.Builder(this)
+        android.support.v4.app.NotificationCompat.Builder builderSummary =
+                new android.support.v4.app.NotificationCompat.Builder(Activity_intent.this)
+                        .setSmallIcon(R.drawable.earth)
+                        .setColor(ContextCompat.getColor(Activity_intent.this, R.color.colorPrimary))
+                        .setGroup("Browser")
+                        .setGroupSummary(true)
+                        .setContentIntent(piMain);
+
+        Notification notification = new android.support.v4.app.NotificationCompat.Builder(Activity_intent.this)
+                .setColor(ContextCompat.getColor(Activity_intent.this, R.color.colorPrimary))
                 .setSmallIcon(R.drawable.earth)
                 .setContentTitle(getString(R.string.readLater_title))
                 .setContentText(data.toString())
                 .setContentIntent(piMain)
+                .setAutoCancel(true)
+                .setGroup("Browser")
                 .setAutoCancel(true)
                 .addAction(action)
                 .addAction(action_2)
@@ -102,7 +114,8 @@ public class Activity_intent extends Activity {
                 .build();
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.notify(0, notification);
+        notificationManager.notify(n, notification);
+        notificationManager.notify(0, builderSummary.build());
 
         finish();
     }

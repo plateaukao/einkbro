@@ -125,7 +125,7 @@
 
     <string name="readLater_added">Adding to readLater.</string>
     <string name="readLater_button">Clear list</string>
-    <string name="readLater_title">Open last saved link:</string>
+    <string name="readLater_title">Open link:</string>
     <string name="readLater_action">open list</string>
     <string name="readLater_action2">add link</string>
 

@@ -1,3 +1,7 @@
+### v 2.1
+
+- added: bundled notifications
+
 ### v 2.0
 
 - improved: encryption of passStore databases
