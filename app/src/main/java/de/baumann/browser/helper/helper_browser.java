@@ -65,7 +65,6 @@ public class helper_browser {
         MenuItem next = menu.findItem(R.id.action_next);
         MenuItem cancel = menu.findItem(R.id.action_cancel);
         MenuItem pass = menu.findItem(R.id.action_pass);
-        MenuItem help = menu.findItem(R.id.action_help);
         MenuItem toggle = menu.findItem(R.id.action_toggle);
 
         if (sharedPref.getInt("keyboard", 0) == 0) { //could be button state or..?
@@ -83,12 +82,8 @@ public class helper_browser {
             next.setVisible(false);
             cancel.setVisible(false);
             pass.setVisible(true);
-            help.setVisible(false);
             toggle.setVisible(true);
             search_go.setVisible(false);
-            if (sharedPref.getBoolean ("help_menuShow", true)){
-                help.setVisible(true); // here pass the index of save menu item
-            }
         } else if (sharedPref.getInt("keyboard", 0) == 1) {
             saveBookmark.setVisible(false);
             search.setVisible(false);
@@ -104,7 +99,6 @@ public class helper_browser {
             next.setVisible(true);
             cancel.setVisible(true);
             pass.setVisible(false);
-            help.setVisible(false);
             toggle.setVisible(false);
             search_go.setVisible(false);
         } else if (sharedPref.getInt("keyboard", 0) == 2) {
@@ -122,7 +116,6 @@ public class helper_browser {
             next.setVisible(false);
             cancel.setVisible(true);
             pass.setVisible(false);
-            help.setVisible(false);
             toggle.setVisible(false);
             search_go.setVisible(false);
         } else if (sharedPref.getInt("keyboard", 0) == 3) {
@@ -140,7 +133,6 @@ public class helper_browser {
             next.setVisible(false);
             cancel.setVisible(true);
             pass.setVisible(false);
-            help.setVisible(false);
             toggle.setVisible(false);
             search_go.setVisible(true);
         }

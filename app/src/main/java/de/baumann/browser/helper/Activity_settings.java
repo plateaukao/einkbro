@@ -33,11 +33,9 @@ import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.method.LinkMovementMethod;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -51,6 +49,7 @@ import java.nio.channels.FileChannel;
 import de.baumann.browser.Browser_left;
 import de.baumann.browser.R;
 import de.baumann.browser.Browser_right;
+import de.baumann.browser.about.About_activity;
 
 
 public class Activity_settings extends AppCompatActivity {
@@ -107,13 +106,10 @@ public class Activity_settings extends AppCompatActivity {
 
             Preference reset = findPreference("searchChoose");
 
-            reset.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
-            {
-                public boolean onPreferenceClick(Preference pref)
-                {
+            reset.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                public boolean onPreferenceClick(Preference pref) {
 
                     helper_main.switchToActivity(getActivity(), Activity_settings_search.class, "", false);
-
                     return true;
                 }
             });
@@ -125,18 +121,7 @@ public class Activity_settings extends AppCompatActivity {
             reset.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(Preference pref) {
 
-                    final AlertDialog d = new AlertDialog.Builder(getActivity())
-                            .setTitle(R.string.about_title)
-                            .setMessage(helper_main.textSpannable(getString(R.string.about_text)))
-                            .setPositiveButton(getString(R.string.toast_yes),
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            dialog.cancel();
-                                        }
-                                    }).show();
-                    d.show();
-                    ((TextView) d.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
-
+                    helper_main.switchToActivity(getActivity(), About_activity.class, "", false);
                     return true;
                 }
             });
@@ -400,32 +385,6 @@ public class Activity_settings extends AppCompatActivity {
             });
         }
 
-        private void addDonateListListener() {
-
-            Preference reset = findPreference("donate");
-            reset.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                public boolean onPreferenceClick(Preference pref) {
-                    Uri uri = Uri.parse("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=NP6TGYDYP9SHY"); // missing 'http://' will cause crashed
-                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                    startActivity(intent);
-                    return true;
-                }
-            });
-        }
-
-        private void addChangelogListener() {
-
-            Preference reset = findPreference("changelog");
-            reset.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                public boolean onPreferenceClick(Preference pref) {
-                    Uri uri = Uri.parse("https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md"); // missing 'http://' will cause crashed
-                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                    startActivity(intent);
-                    return true;
-                }
-            });
-        }
-
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -437,8 +396,6 @@ public class Activity_settings extends AppCompatActivity {
             addRestore_searchChooseListener();
             addProtectListener();
             addWhiteListListener();
-            addDonateListListener();
-            addChangelogListener();
         }
     }
 

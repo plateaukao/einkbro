@@ -48,7 +48,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -1030,20 +1029,6 @@ public class Browser_right extends AppCompatActivity implements ObservableScroll
             helper_editText.editText_saveBookmark_save(editText, Browser_right.this, mWebView);
             urlBar.setVisibility(View.VISIBLE);
             editText.setVisibility(View.GONE);
-        }
-
-        if (id == R.id.action_help) {
-            final AlertDialog d = new AlertDialog.Builder(Browser_right.this)
-                    .setTitle(R.string.action_notShow_title)
-                    .setMessage(helper_main.textSpannable(getString(R.string.help_text)))
-                    .setPositiveButton(getString(R.string.toast_yes),
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                }
-                            }).show();
-            d.show();
-            ((TextView) d.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
         }
 
         return super.onOptionsItemSelected(item);

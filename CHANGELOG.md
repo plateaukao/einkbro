@@ -1,3 +1,10 @@
+### v 2.2
+
+- added: about screen
+- added: intro screen
+- fixed: save website (passStorage): set title
+- fixed: notification not dismissed
+
 ### v 2.1
 
 - added: bundled notifications

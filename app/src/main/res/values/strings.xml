@@ -64,7 +64,6 @@
     <string name="menu_pass">Open passStorage</string>
     <string name="menu_toggle">Settings</string>
     <string name="menu_toggle_title">Settings (session)</string>
-    <string name="menu_help">Help</string>
     <string name="menu_createShortcut">Create shortcut</string>
     <string name="menu_createShortcut_success">Shortcut created</string>
     <string name="menu_go">Start search</string>
@@ -151,8 +150,8 @@
     <string name="action_permNotShow_title">Permission dialog</string>
     <string name="action_permNotShow_title_summary">Show again: Permission dialog?</string>
 
-    <string name="action_license">License</string>
-    <string name="action_license_summary">The app is completely open source and licensed under GPL3.</string>
+    <string name="action_license">About</string>
+    <string name="action_license_summary">Learn more about this app (help, changelog, license, …).</string>
 
     <string name="action_openSettings">App info</string>
     <string name="action_openSettings_summary">Open via the system settings the app info of the app. There you can,
@@ -179,9 +178,6 @@
 
     <string name="action_history">Clear history on exit</string>
     <string name="action_history_summary">Clear your browser history on exit.</string>
-
-    <string name="action_notShow_title">Help</string>
-    <string name="action_notShow_title_summary">Show the menu entry \"help\". Disable to hide this entry.</string>
 
     <string name="action_searchEngine">Search engine</string>
     <string name="action_searchEngine_summary">Choose your preferred search engine.</string>
@@ -243,11 +239,63 @@
     <string name="action_nav">Navigation</string>
     <string name="action_nav_summary">Use arrows and/or swipe gestures to navigate back and forward in your browser history.</string>
 
-    <string name="action_donate">Donate</string>
-    <string name="action_donate_summary">If you like the app, you can donate to me via Paypal.</string>
 
-    <string name="action_changelog">Changelog</string>
-    <string name="action_changelog_summary">See what\'s new … (will open a website)</string>
+    // Intro
+
+    <string name="intro_skip">Skip</string>
+    <string name="intro_finish">Let\'s start.</string>
+
+    <string name="intro1_title">Browser</string>
+    <string name="intro1_text">Thank you for choosing \"Browser\". It\'s fully open source and still in development.
+        Here\'s a short intro how to use …</string>
+
+    <string name="intro2_title">The lists</string>
+    <string name="intro2_text">\"Browser\" is organized in lists: bookmarks, readLater, passStorage and the history.</string>
+
+    <string name="intro3_title">Toolbar</string>
+    <string name="intro3_text">Swipe left to open bookmarks, right to open readLater and up to close the app.</string>
+
+    <string name="intro4_title">Settings</string>
+    <string name="intro4_text">In the settings popup you can configure the behavior of \"Browser\" for the current session. To open
+    the main settings, just click the \"Settings\" button.</string>
+
+    <string name="intro5_title">Help</string>
+    <string name="intro5_text">To get more infos how to use \"Browser\" just open the \"help dialog\" in the \"about section\" in the settings.</string>
+
+
+    // About
+
+    <string name="about_title_main">About</string>
+    <string name="about_title_dev">Developer</string>
+    <string name="about_title_libs">Used open source libraries</string>
+
+    <string name="about_changelog">Changelog</string>
+    <string name="about_changelog_summary">Open Github site and see what\'s new … (needs internet connection)</string>
+
+    <string name="about_license">License</string>
+    <string name="about_license_summary">The app is licensed under GPL and completely open source and free (as in freedom).</string>
+
+    <string name="about_dev">Gaukler Faun</string>
+    <string name="about_dev_summary">Open my profile on Github (needs internet connection).</string>
+
+    <string name="about_intro">Intro</string>
+    <string name="about_intro_summary">Show the intro screen one more time.</string>
+
+    <string name="about_help">Help</string>
+    <string name="about_help_summary">Show the \"help dialog\" with useful infos how to use Browser.</string>
+
+    <string name="about_donate">Donate</string>
+    <string name="about_donate_summary">If you like the app, you can donate to me via Paypal (needs internet connection).</string>
+
+    <string name="about_license_1">Used for the file picker.</string>
+    <string name="about_license_2">Used to hide the toolbar while scrolling.</string>
+    <string name="about_license_3">Used to build the intro screen.</string>
+    <string name="about_license_4">The beginning of all. Mainly used for the databases.</string>
+    <string name="about_license_5">Used to encrypt pin (for app protection).</string>
+    <string name="about_license_6">Used to en- and decrypt login data saved in the passStore.</string>
+    <string name="about_license_7">Used to create the \"About screen\".</string>
+    <string name="about_license_8">The source of nearly all icons.</string>
+
 
 
     //File chooser

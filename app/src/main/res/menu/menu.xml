@@ -117,10 +117,4 @@
         android:title="@string/menu_settings"
         app:showAsAction="never" />
 
-    <item
-        android:id="@+id/action_help"
-        android:orderInCategory="100"
-        android:title="@string/menu_help"
-        app:showAsAction="never" />
-
 </menu>

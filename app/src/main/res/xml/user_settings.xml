@@ -167,7 +167,7 @@
 
         <Preference
             android:title="@string/action_searchChoose"
-            android:icon="@drawable/earth2"
+            android:icon="@drawable/search_web"
             android:summary="@string/action_searchChoose_summary"
             android:key="searchChoose" />
 
@@ -187,28 +187,9 @@
 
         <Preference
             android:title="@string/action_license"
-            android:icon="@drawable/copyright"
+            android:icon="@drawable/information_outline"
             android:summary="@string/action_license_summary"
             android:key="license" />
-
-        <Preference
-            android:title="@string/action_changelog"
-            android:icon="@drawable/format_list_bulleted2"
-            android:summary="@string/action_changelog_summary"
-            android:key="changelog" />
-
-        <Preference
-            android:title="@string/action_donate"
-            android:icon="@drawable/coin"
-            android:summary="@string/action_donate_summary"
-            android:key="donate" />
-
-        <CheckBoxPreference
-            android:title="@string/action_notShow_title"
-            android:icon="@drawable/information_outline"
-            android:summary="@string/action_notShow_title_summary"
-            android:key="help_menuShow"
-            android:defaultValue="true" />
 
         <CheckBoxPreference
             android:title="@string/action_permNotShow_title"

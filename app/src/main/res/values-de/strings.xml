@@ -65,7 +65,6 @@
     <string name="menu_pass">Öffne passSpeicher</string>
     <string name="menu_toggle">Einstellungen</string>
     <string name="menu_toggle_title">Einstellungen (Sitzung)</string>
-    <string name="menu_help">Hilfe</string>
     <string name="menu_createShortcut">Erstelle Verknüpfung</string>
     <string name="menu_createShortcut_success">Verknüpfung erstellt</string>
     <string name="menu_go">Starte Suche</string>
@@ -152,8 +151,8 @@
     <string name="action_permNotShow_title">Berechtigungsdialog</string>
     <string name="action_permNotShow_title_summary">Noch einmal anzeigen: Berechtigungsdialog?</string>
 
-    <string name="action_license">Lizenz</string>
-    <string name="action_license_summary">Die Anwendung ist komplett frei und steht unter der GPL3 Lizenz.</string>
+    <string name="action_license">Über</string>
+    <string name="action_license_summary">Erfahre mehr über die Anwendung (Hilfe, Changlog, Lizenz, …).</string>
 
     <string name="action_openSettings">App Info</string>
     <string name="action_openSettings_summary">Öffne über die Systemeinstellungen die App Info der App. Je nach Androidversion
@@ -182,9 +181,6 @@
 
     <string name="action_history">Verlauf löschen</string>
     <string name="action_history_summary">Löscht deinen Browserverlauf beim Verlassen der App.</string>
-
-    <string name="action_notShow_title">Hilfe</string>
-    <string name="action_notShow_title_summary">Zeige den Menüeintrag \"Hilfe\" an. Deaktivieren um den Eintrag auszublenden.</string>
 
     <string name="action_searchEngine">Suchmaschine</string>
     <string name="action_searchEngine_summary">Bestimme deine bevorzugte Suchmaschine.</string>
@@ -257,11 +253,65 @@
     <string name="action_nav_summary">Benutze Pfeile und/oder Wischgesten um zur vorherigen oder nächsten Internetseite zu
         gelangen.</string>
 
-    <string name="action_donate">Spenden</string>
-    <string name="action_donate_summary">Wenn dir die App gefällt, würde ich mich über eine Spende (Paypal) freuen.</string>
 
-    <string name="action_changelog">Änderungen</string>
-    <string name="action_changelog_summary">Was gibt es Neues … (wird eine Internetseite öffnen)</string>
+    // Intro
+
+    <string name="intro_skip">Überspringen</string>
+    <string name="intro_finish">Los geht\'s!</string>
+
+    <string name="intro1_title">Browser</string>
+    <string name="intro1_text">Danke, dass du dich für \"Browser\" entschieden hast. Er ist komplett quelloffen und wird ständig
+        weiter entwickelt. Hier eine kurze Einführung …</string>
+
+    <string name="intro2_title">Die Listen</string>
+    <string name="intro2_text">\"Browser\" ist in Listen organisiert: Lesezeichen, leseSpäter, passSpeicher und der Verlauf.</string>
+
+    <string name="intro3_title">Toolbar</string>
+    <string name="intro3_text">Wische nach links um die Lesezeichen, nach rechts um die leseSpäter Liste zu öffnen. Wische nach oben um
+        die App zu beenden.</string>
+
+    <string name="intro4_title">Einstellungen</string>
+    <string name="intro4_text">Im Einstellungen Popup kannst du die Browsereinstellungen für die aktuelle Session einstellen. Um zu den
+        Haupteinstellungen zu gelangen einfach den \"Einstellungen\" Knopf drücken.</string>
+
+    <string name="intro5_title">Hilfe</string>
+    <string name="intro5_text">Um noch mehr Informationen zur Bedienung von \"Browser\" zu bekommen musst du den \"Hilfedialog\"
+        im \"Über\" Bereich in den Einstellungen öffnen.</string>
+
+
+    // About
+
+    <string name="about_title_main">Über</string>
+    <string name="about_title_dev">Entwickler</string>
+    <string name="about_title_libs">Benutzte Open Source Bibliotheken</string>
+
+    <string name="about_changelog">Änderungen</string>
+    <string name="about_changelog_summary">Öffne die Github Seite und schaue, was es Neues gibt … (braucht eine Internetverbindung)</string>
+
+    <string name="about_license">Lizenz</string>
+    <string name="about_license_summary">Die App steht unter der GPL Lizenz und ist komplett frei (wie in Freiheit). Der Quellcode kann
+        eingesehen werden.</string>
+
+    <string name="about_dev">Gaukler Faun</string>
+    <string name="about_dev_summary">Öffne mein Github Profil (braucht eine Internetverbindung).</string>
+
+    <string name="about_intro">Einführung</string>
+    <string name="about_intro_summary">Zeige noch einmal die Einführung an.</string>
+
+    <string name="about_help">Hilfe</string>
+    <string name="about_help_summary">Zeige den \"Hilfedialog\" mit nützlichen Infos an, wie Browser zu bedienen ist.</string>
+
+    <string name="about_donate">Spende</string>
+    <string name="about_donate_summary">Wenn dir die App gefällt, kannst du mir gerne etwas über Paypal spenden (braucht eine Internetverbindung).</string>
+
+    <string name="about_license_1">Gebraucht für den Dateimanager.</string>
+    <string name="about_license_2">Gebraucht um die Toolbar während dem Scrollen zu verstecken.</string>
+    <string name="about_license_3">Gebraucht um die Einführung anzuzeigen.</string>
+    <string name="about_license_4">Der Anfang von allem. Wird hauptsächlich für die Datenbanken benutzt.</string>
+    <string name="about_license_5">Gebraucht um die Pin und den Schlüssel für die Logindaten zu verschlüsseln.</string>
+    <string name="about_license_6">Gebraucht um die Logindaten des passSpeichers zu ver- und entschlüsseln.</string>
+    <string name="about_license_7">Gebraucht um den \"Über Schirm\" zu erstellen.</string>
+    <string name="about_license_8">Die Quelle von fast allen Icons.</string>
 
 
     //File chooser

@@ -48,7 +48,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -82,6 +81,7 @@ import java.util.Locale;
 import java.util.Random;
 
 import de.baumann.browser.databases.Database_ReadLater;
+import de.baumann.browser.helper.Activity_intro;
 import de.baumann.browser.helper.Activity_settings;
 import de.baumann.browser.helper.class_SecurePreferences;
 import de.baumann.browser.helper.helper_browser;
@@ -144,6 +144,12 @@ public class Browser_left extends AppCompatActivity implements ObservableScrollV
         PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
         PreferenceManager.setDefaultValues(this, R.xml.user_settings_search, false);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+
+        boolean show = sharedPref.getBoolean("introShowDo_notShow", true);
+
+        if (show){
+            helper_main.switchToActivity(Browser_left.this, Activity_intro.class, "", false);
+        }
 
         sharedPref.edit().putString("openURL", sharedPref.getString("startURL", "https://github.com/scoute-dich/browser/")).apply();
         sharedPref.edit().putInt("keyboard", 0).apply();
@@ -1072,20 +1078,6 @@ public class Browser_left extends AppCompatActivity implements ObservableScrollV
             helper_editText.editText_saveBookmark_save(editText, Browser_left.this, mWebView);
             urlBar.setVisibility(View.VISIBLE);
             editText.setVisibility(View.GONE);
-        }
-
-        if (id == R.id.action_help) {
-            final AlertDialog d = new AlertDialog.Builder(Browser_left.this)
-                    .setTitle(R.string.action_notShow_title)
-                    .setMessage(helper_main.textSpannable(getString(R.string.help_text)))
-                    .setPositiveButton(getString(R.string.toast_yes),
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                }
-                            }).show();
-            d.show();
-            ((TextView) d.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
         }
 
         return super.onOptionsItemSelected(item);

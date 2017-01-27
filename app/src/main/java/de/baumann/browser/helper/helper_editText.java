@@ -177,7 +177,12 @@ public class helper_editText {
         final EditText pass_title = (EditText) dialogView.findViewById(R.id.pass_title);
         final EditText pass_userName = (EditText) dialogView.findViewById(R.id.pass_userName);
         final EditText pass_userPW = (EditText) dialogView.findViewById(R.id.pass_userPW);
-        pass_title.setText(title);
+
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                pass_title.setText(title);
+            }
+        }, 100);
 
         builder.setView(dialogView);
         builder.setTitle(R.string.pass_edit);

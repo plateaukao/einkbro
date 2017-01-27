@@ -68,7 +68,7 @@ public class Activity_intent extends Activity {
         sharedPref.edit().putString("add_readLater_domain", domain2).apply();
 
         Random rand = new Random();
-        int n = rand.nextInt(100000); // Gives n such that 0 <= n < 20
+        int n = rand.nextInt(100000);
 
         android.content.Intent iMain = new android.content.Intent();
         iMain.putExtra(Intent.EXTRA_TEXT, data.toString());
@@ -92,6 +92,7 @@ public class Activity_intent extends Activity {
 
         android.support.v4.app.NotificationCompat.Builder builderSummary =
                 new android.support.v4.app.NotificationCompat.Builder(Activity_intent.this)
+                        .setAutoCancel(true)
                         .setSmallIcon(R.drawable.earth)
                         .setColor(ContextCompat.getColor(Activity_intent.this, R.color.colorPrimary))
                         .setGroup("Browser")
@@ -106,9 +107,9 @@ public class Activity_intent extends Activity {
                 .setContentIntent(piMain)
                 .setAutoCancel(true)
                 .setGroup("Browser")
-                .setAutoCancel(true)
                 .addAction(action)
                 .addAction(action_2)
+                .setStyle(new android.support.v4.app.NotificationCompat.BigTextStyle().bigText(data.toString()))
                 .setPriority(Notification.PRIORITY_MAX)
                 .setVibrate(new long[0])
                 .build();
