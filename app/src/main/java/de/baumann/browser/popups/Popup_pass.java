@@ -19,7 +19,6 @@
 
 package de.baumann.browser.popups;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -27,12 +26,16 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -48,7 +51,7 @@ import de.baumann.browser.helper.class_SecurePreferences;
 import de.baumann.browser.helper.helper_editText;
 import de.baumann.browser.helper.helper_main;
 
-public class Popup_pass extends Activity {
+public class Popup_pass extends AppCompatActivity {
 
     private ListView listView = null;
     private SharedPreferences sharedPref;
@@ -58,6 +61,9 @@ public class Popup_pass extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        getWindow().setStatusBarColor(ContextCompat.getColor(Popup_pass.this, R.color.colorThreeDark));
+
         setContentView(R.layout.activity_popup);
         helper_main.onStart(Popup_pass.this);
 
@@ -66,88 +72,19 @@ public class Popup_pass extends Activity {
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPrefSec = new class_SecurePreferences(Popup_pass.this, "sharedPrefSec", "Ywn-YM.XK$b:/:&CsL8;=L,y4", true);
 
-        TextView listTitle = (TextView) findViewById(R.id.listTitle);
-        listTitle.setText(R.string.app_title_passStorage);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
-        ImageButton butDel = (ImageButton) findViewById(R.id.butDel);
-        butDel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar snackbar = Snackbar
-                        .make(listView, R.string.toast_list, Snackbar.LENGTH_LONG)
-                        .setAction(R.string.toast_yes, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Popup_pass.this.deleteDatabase("pass.db");
-                                setBookmarkList();
-                            }
-                        });
-                snackbar.show();
-            }
-        });
-
-        ImageButton butSort = (ImageButton) findViewById(R.id.butSort);
-        butSort.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(Popup_pass.this);
-                View dialogView = View.inflate(Popup_pass.this, R.layout.dialog_sort, null);
-
-                builder.setView(dialogView);
-                builder.setTitle(R.string.action_sort);
-                builder.setPositiveButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
-
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        dialog.dismiss();
-                    }
-                });
-
-                final AlertDialog dialog2 = builder.create();
-                // Display the custom alert dialog on interface
-                dialog2.show();
-
-                final CheckBox ch_title = (CheckBox) dialogView.findViewById(R.id.checkBoxTitle);
-                final CheckBox ch_create = (CheckBox) dialogView.findViewById(R.id.checkBoxCreate);
-
-                if (sharedPref.getString("sortPS", "title").equals("title")) {
-                    ch_title.setChecked(true);
-                } else {
-                    ch_title.setChecked(false);
-                }
-                if (sharedPref.getString("sortPS", "title").equals("seqno")) {
-                    ch_create.setChecked(true);
-                } else {
-                    ch_create.setChecked(false);
-                }
-
-                ch_title.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView,
-                                                 boolean isChecked) {
-                        if(isChecked){
-                            ch_create.setChecked(false);
-                            sharedPref.edit().putString("sortPS", "title").apply();
-                            setBookmarkList();
-                            dialog2.dismiss();
-                        }
-                    }
-                });
-                ch_create.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView,
-                                                 boolean isChecked) {
-                        if(isChecked){
-                            ch_title.setChecked(false);
-                            sharedPref.edit().putString("sortPS", "seqno").apply();
-                            setBookmarkList();
-                            dialog2.dismiss();
-                        }
-                    }
-                });
-            }
-        });
+        EditText editText = (EditText) findViewById(R.id.editText);
+        editText.setVisibility(View.GONE);
+        editText.setHint(R.string.app_search_hint);
+        editText.clearFocus();
+        TextView urlBar = (TextView) findViewById(R.id.urlBar);
+        urlBar.setText(R.string.app_title_passStorage);
 
         listView = (ListView)findViewById(R.id.list);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -391,5 +328,53 @@ public class Popup_pass extends Activity {
     protected void onStop() {
         super.onStop();    //To change body of overridden methods use File | Settings | File Templates.
         helper_main.isClosed(Popup_pass.this);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        menu.findItem(R.id.action_cancel).setVisible(false);
+        menu.findItem(R.id.action_sort).setVisible(false);
+        menu.findItem(R.id.action_filter).setVisible(false);
+        menu.findItem(R.id.action_save_bookmark).setVisible(false);
+
+        return true; // this is important to call so that new menu is shown
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_popup, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+
+        switch (item.getItemId()) {
+
+            case android.R.id.home:
+                finish();
+                return true;
+
+            case R.id.action_delete:
+                Snackbar snackbar = Snackbar
+                        .make(listView, R.string.toast_list, Snackbar.LENGTH_LONG)
+                        .setAction(R.string.toast_yes, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Popup_pass.this.deleteDatabase("pass.db");
+                                recreate();
+                            }
+                        });
+                snackbar.show();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

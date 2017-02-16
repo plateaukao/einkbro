@@ -67,7 +67,7 @@
             android:name=".popups.Popup_bookmarks"
             android:launchMode="singleTask"
             android:configChanges="orientation|screenSize"
-            android:theme="@style/AppThemeDialog"
+            android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/app_name">
 
             <intent-filter>
@@ -79,7 +79,7 @@
             android:name=".popups.Popup_readLater"
             android:launchMode="singleTask"
             android:configChanges="orientation|screenSize"
-            android:theme="@style/AppThemeDialog"
+            android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/app_name">
 
             <intent-filter>
@@ -91,7 +91,7 @@
             android:name=".popups.Popup_history"
             android:launchMode="singleTask"
             android:configChanges="orientation|screenSize"
-            android:theme="@style/AppThemeDialog"
+            android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/app_name">
 
             <intent-filter>
@@ -103,7 +103,7 @@
             android:name=".popups.Popup_pass"
             android:launchMode="singleTask"
             android:configChanges="orientation|screenSize"
-            android:theme="@style/AppThemeDialog"
+            android:theme="@style/AppTheme.NoActionBar"
             android:label="@string/app_name">
 
             <intent-filter>

@@ -40,7 +40,7 @@ import android.widget.TextView;
 import java.net.URISyntaxException;
 
 import de.baumann.browser.R;
-import de.baumann.browser.databases.Database_History;
+import de.baumann.browser.databases.DbAdapter_History;
 
 import static android.content.ContentValues.TAG;
 import static android.webkit.WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE;
@@ -188,12 +188,14 @@ public class helper_webView {
                 urlBar.setText(webView.getTitle());
                 sharedPref.edit().putString("openURL", "").apply();
                 if (webView.getTitle() != null && !webView.getTitle().equals("about:blank")) {
-                    try {
-                        final Database_History db = new Database_History(from);
-                        db.addBookmark(webView.getTitle(), webView.getUrl());
-                        db.close();
-                    } catch (Exception e) {
-                        e.printStackTrace();
+
+                    DbAdapter_History db = new DbAdapter_History(from);
+                    db.open();
+
+                    if(db.isExist(helper_main.createDateSecond())){
+                        Log.i(TAG, "Entry exists" + webView.getUrl());
+                    }else{
+                        db.insert(webView.getTitle(), webView.getUrl(), "", "", helper_main.createDateSecond());
                     }
                 }
             }

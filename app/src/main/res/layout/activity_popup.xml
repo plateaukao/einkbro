@@ -1,58 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="ContentDescription"
-    android:orientation="vertical"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:minWidth="300dp"
     android:maxWidth="300dp"
     android:layout_gravity="center_vertical|center_horizontal">
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="12dp">
-
-        <TextView
-            android:text="@string/readLater_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:fontFamily="sans-serif-condensed"
-            android:textStyle="bold"
-            android:id="@+id/listTitle"
-            tools:ignore="RelativeOverlap"
-            android:layout_centerVertical="true"
-            android:textColor="#757575" />
-
-        <ImageButton
-            android:id="@+id/butDel"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_alignParentEnd="true"
-            android:padding="5dp"
-            android:src="@drawable/delete2"
-            android:background="@drawable/custom_button2"
-            android:scaleType="fitCenter" />
-
-        <ImageButton
-            android:id="@+id/butSort"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_toStartOf="@+id/butDel"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:padding="5dp"
-            android:src="@drawable/sort_descending"
-            android:background="@drawable/custom_button2"
-            android:scaleType="fitCenter" />
-
-    </RelativeLayout>
-
     <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/toolbar"/>
 
-</LinearLayout>
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorThree"
+        android:theme="@style/Actionbar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        android:minHeight="?attr/actionBarSize"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/toolbar" >
+
+        <EditText
+            android:theme="@style/EditTextStyle"
+            android:id="@+id/editText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:text="@string/app_name"
+            android:hint="@string/app_search_hint"
+            android:textColorHint="#eeeeee"
+            android:imeOptions="actionSearch"
+            android:fontFamily="sans-serif-condensed"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:inputType="text"
+            android:textColor="#eeeeee"
+            android:textIsSelectable="true">
+        </EditText>
+
+        <TextView
+            android:id="@+id/urlBar"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:gravity="center_vertical"
+            android:minHeight="?attr/actionBarSize"
+            android:layout_margin="5dp"
+            android:text="@string/app_name"
+            android:fontFamily="sans-serif-condensed"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:scrollHorizontally="true"
+            android:textAppearance="?android:attr/textAppearanceMedium" >
+        </TextView>
+
+    </android.support.v7.widget.Toolbar>
+
+</RelativeLayout>

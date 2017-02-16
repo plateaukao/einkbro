@@ -167,8 +167,8 @@ public class Activity_settings extends AppCompatActivity {
 
                                             if (sd.canWrite()) {
                                                 String currentDBPath = "//data//" + "de.baumann.browser"
-                                                        + "//databases//" + "browser.db";
-                                                String backupDBPath = "//Android//" + "//data//" + "//browser.backup//" + "browser.db";
+                                                        + "//databases//" + "bookmarks_DB_v01.db";
+                                                String backupDBPath = "//Android//" + "//data//" + "//browser.backup//" + "bookmarks_DB_v01.db";
                                                 File currentDB = new File(data, currentDBPath);
                                                 File backupDB = new File(sd, backupDBPath);
 
@@ -179,8 +179,8 @@ public class Activity_settings extends AppCompatActivity {
                                                 dst.close();
 
                                                 String currentDBPath2 = "//data//" + "de.baumann.browser"
-                                                        + "//databases//" + "readLater.db";
-                                                String backupDBPath2 = "//Android//" + "//data//" + "//browser.backup//" + "readLater.db";
+                                                        + "//databases//" + "readLater_DB_v01.db";
+                                                String backupDBPath2 = "//Android//" + "//data//" + "//browser.backup//" + "readLater_DB_v01.db";
                                                 File currentDB2 = new File(data, currentDBPath2);
                                                 File backupDB2 = new File(sd, backupDBPath2);
 
@@ -203,8 +203,8 @@ public class Activity_settings extends AppCompatActivity {
                                                 dst3.close();
 
                                                 String currentDBPath4 = "//data//" + "de.baumann.browser"
-                                                        + "//databases//" + "history.db";
-                                                String backupDBPath4 = "//Android//" + "//data//" + "//browser.backup//" + "history.db";
+                                                        + "//databases//" + "history_DB_v01.db";
+                                                String backupDBPath4 = "//Android//" + "//data//" + "//browser.backup//" + "history_DB_v01.db";
                                                 File currentDB4 = new File(data, currentDBPath4);
                                                 File backupDB4 = new File(sd, backupDBPath4);
 
@@ -251,8 +251,8 @@ public class Activity_settings extends AppCompatActivity {
                                                 sharedPref.edit().putString("whiteList", text.toString()).apply();
 
                                                 String currentDBPath = "//data//" + "de.baumann.browser"
-                                                        + "//databases//" + "browser.db";
-                                                String backupDBPath = "//Android//" + "//data//" + "//browser.backup//" + "browser.db";
+                                                        + "//databases//" + "bookmarks_DB_v01.db";
+                                                String backupDBPath = "//Android//" + "//data//" + "//browser.backup//" + "bookmarks_DB_v01.db";
                                                 File currentDB = new File(data, currentDBPath);
                                                 File backupDB = new File(sd, backupDBPath);
 
@@ -263,8 +263,8 @@ public class Activity_settings extends AppCompatActivity {
                                                 dst.close();
 
                                                 String currentDBPath2 = "//data//" + "de.baumann.browser"
-                                                        + "//databases//" + "readLater.db";
-                                                String backupDBPath2 = "//Android//" + "//data//" + "//browser.backup//" + "readLater.db";
+                                                        + "//databases//" + "readLater_DB_v01.db";
+                                                String backupDBPath2 = "//Android//" + "//data//" + "//browser.backup//" + "readLater_DB_v01.db";
                                                 File currentDB2 = new File(data, currentDBPath2);
                                                 File backupDB2 = new File(sd, backupDBPath2);
 
@@ -287,8 +287,8 @@ public class Activity_settings extends AppCompatActivity {
                                                 dst3.close();
 
                                                 String currentDBPath4 = "//data//" + "de.baumann.browser"
-                                                        + "//databases//" + "history.db";
-                                                String backupDBPath4 = "//Android//" + "//data//" + "//browser.backup//" + "history.db";
+                                                        + "//databases//" + "history_DB_v01.db";
+                                                String backupDBPath4 = "//Android//" + "//data//" + "//browser.backup//" + "history_DB_v01.db";
                                                 File currentDB4 = new File(data, currentDBPath4);
                                                 File backupDB4 = new File(sd, backupDBPath4);
 

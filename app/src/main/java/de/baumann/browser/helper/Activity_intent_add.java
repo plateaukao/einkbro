@@ -23,9 +23,10 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.widget.Toast;
 
 import de.baumann.browser.R;
-import de.baumann.browser.databases.Database_ReadLater;
+import de.baumann.browser.databases.DbAdapter_ReadLater;
 
 public class Activity_intent_add extends Activity {
 
@@ -40,13 +41,12 @@ public class Activity_intent_add extends Activity {
         String link = sharedPref.getString("add_readLater_link", "");
         String domain = sharedPref.getString("add_readLater_domain", "");
 
-        try {
-            final Database_ReadLater db = new Database_ReadLater(Activity_intent_add.this);
-            db.addBookmark(domain, link);
-            db.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        DbAdapter_ReadLater db = new DbAdapter_ReadLater(Activity_intent_add.this);
+        db.open();
+        if(db.isExist(link)){
+            Toast.makeText(Activity_intent_add.this, getString(R.string.toast_newTitle), Toast.LENGTH_LONG).show();
+        }else{
+            db.insert(domain, link, "", "", helper_main.createDate());
         }
         finish();
     }

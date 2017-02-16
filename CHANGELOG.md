@@ -1,3 +1,9 @@
+### v 2.3
+
+- added: search in lists
+- added: no duplicate bookmarks
+- improved: database model
+
 ### v 2.2
 
 - added: about screen

@@ -44,6 +44,7 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -53,6 +54,7 @@ import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.webkit.CookieManager;
 import android.webkit.DownloadListener;
 import android.webkit.GeolocationPermissions;
@@ -79,7 +81,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Locale;
 
-import de.baumann.browser.databases.Database_ReadLater;
+import de.baumann.browser.databases.DbAdapter_ReadLater;
 import de.baumann.browser.helper.Activity_settings;
 import de.baumann.browser.helper.helper_browser;
 import de.baumann.browser.helper.helper_editText;
@@ -131,6 +133,9 @@ public class Browser_right extends AppCompatActivity implements ObservableScroll
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        getWindow().setStatusBarColor(ContextCompat.getColor(Browser_right.this, R.color.colorTwoDark));
 
         WebView.enableSlowWholeDocumentDraw();
         setContentView(R.layout.activity_browser_right);
@@ -400,13 +405,13 @@ public class Browser_right extends AppCompatActivity implements ObservableScroll
 
                                     String domain2 = domain.substring(0,1).toUpperCase() + domain.substring(1).toLowerCase();
 
-                                    try {
-                                        final Database_ReadLater db = new Database_ReadLater(Browser_right.this);
-                                        db.addBookmark(domain2, url);
-                                        db.close();
-                                        Snackbar.make(mWebView, R.string.readLater_added, Snackbar.LENGTH_SHORT).show();
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
+                                    DbAdapter_ReadLater db = new DbAdapter_ReadLater(Browser_right.this);
+                                    db.open();
+                                    if(db.isExist(mWebView.getUrl())){
+                                        Snackbar.make(editText, getString(R.string.toast_newTitle), Snackbar.LENGTH_LONG).show();
+                                    }else{
+                                        db.insert(domain2, url, "", "", helper_main.createDate());
+                                        Snackbar.make(mWebView, R.string.bookmark_added, Snackbar.LENGTH_LONG).show();
                                     }
                                 }
                             }
@@ -463,13 +468,13 @@ public class Browser_right extends AppCompatActivity implements ObservableScroll
 
                                     String domain2 = domain.substring(0,1).toUpperCase() + domain.substring(1).toLowerCase();
 
-                                    try {
-                                        final Database_ReadLater db = new Database_ReadLater(Browser_right.this);
-                                        db.addBookmark(domain2, url);
-                                        db.close();
-                                        Snackbar.make(mWebView, R.string.readLater_added, Snackbar.LENGTH_SHORT).show();
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
+                                    DbAdapter_ReadLater db = new DbAdapter_ReadLater(Browser_right.this);
+                                    db.open();
+                                    if(db.isExist(mWebView.getUrl())){
+                                        Snackbar.make(editText, getString(R.string.toast_newTitle), Snackbar.LENGTH_LONG).show();
+                                    }else{
+                                        db.insert(domain2, url, "", "", helper_main.createDate());
+                                        Snackbar.make(mWebView, R.string.bookmark_added, Snackbar.LENGTH_LONG).show();
                                     }
                                 }
                             }
@@ -831,13 +836,13 @@ public class Browser_right extends AppCompatActivity implements ObservableScroll
                                 helper_editText.editText_savePass(Browser_right.this, mWebView, mWebView.getTitle(), mWebView.getUrl());
                             }
                             if (options[item].equals(getString(R.string.menu_save_readLater))) {
-                                try {
-                                    final Database_ReadLater db = new Database_ReadLater(Browser_right.this);
-                                    db.addBookmark(mWebView.getTitle(), mWebView.getUrl());
-                                    db.close();
-                                    Snackbar.make(mWebView, R.string.readLater_added, Snackbar.LENGTH_SHORT).show();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
+                                DbAdapter_ReadLater db = new DbAdapter_ReadLater(Browser_right.this);
+                                db.open();
+                                if(db.isExist(mWebView.getUrl())){
+                                    Snackbar.make(editText, getString(R.string.toast_newTitle), Snackbar.LENGTH_LONG).show();
+                                }else{
+                                    db.insert(mWebView.getTitle(), mWebView.getUrl(), "", "", helper_main.createDate());
+                                    Snackbar.make(mWebView, R.string.bookmark_added, Snackbar.LENGTH_LONG).show();
                                 }
                             }
                             if (options[item].equals(getString(R.string.menu_save_screenshot))) {

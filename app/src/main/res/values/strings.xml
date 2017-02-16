@@ -72,6 +72,11 @@
     <string name="action_sort_title">Sort by title</string>
     <string name="action_sort_url">Sort by date</string>
 
+    <string name="action_filter_title">Search in titles</string>
+    <string name="action_filter_create">Search in creation dates</string>
+    <string name="action_filter_url">Search in URLs</string>
+    <string name="action_delete">Delete list</string>
+
 
     // Context Menu
 
@@ -110,20 +115,19 @@
     <string name="toast_list">Delete whole list?</string>
     <string name="toast_whiteList_confirm">Do you really want to delete the whitelist?</string>
     <string name="toast_error">Uuups. Something went wrong.</string>
+    <string name="toast_newTitle">Entry already exists.</string>
 
 
     // Bookmarks // ReadLater // Password
 
     <string name="bookmark_remove_confirmation">List item will be removed. OK?</string>
     <string name="bookmark_remove_cannot">You need at least one list item!</string>
-    <string name="bookmark_remove_bookmark">Delete list item</string>
-    <string name="bookmark_added">Adding to bookmark list.</string>
-    <string name="bookmark_edit_title">Edit title</string>
-    <string name="bookmark_fav">Set as startpage</string>
-    <string name="bookmark_fav_toast">Successfully set as startpage</string>
+    <string name="bookmark_remove_bookmark">Delete entry</string>
+    <string name="bookmark_added">Adding entry.</string>
+    <string name="bookmark_setFav">Successfully set as favorite.</string>
+    <string name="bookmark_setFav_not">You can only choose one favorite.</string>
+    <string name="bookmark_edit_title">Edit entry</string>
 
-    <string name="readLater_added">Adding to readLater.</string>
-    <string name="readLater_button">Clear list</string>
     <string name="readLater_title">Open link:</string>
     <string name="readLater_action">open list</string>
     <string name="readLater_action2">add link</string>

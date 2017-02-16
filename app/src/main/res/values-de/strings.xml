@@ -47,12 +47,12 @@
 
     <string name="menu_search">Suche</string>
     <string name="menu_history">Verlauf</string>
-    <string name="menu_save">Speichere Seite</string>
+    <string name="menu_save">Seite speichern</string>
     <string name="menu_save_screenshot">Speichere Bildschirmfoto</string>
     <string name="menu_save_bookmark">Speichere als Lesezeichen</string>
     <string name="menu_save_readLater">Speichere zur leseSpäter Liste</string>
     <string name="menu_save_pass">Speichere im passSpeicher</string>
-    <string name="menu_share">Teile Seite</string>
+    <string name="menu_share">Seite teilen</string>
     <string name="menu_share_screenshot">Teile Bildschirmfoto</string>
     <string name="menu_share_link">Teile Link als Text</string>
     <string name="menu_share_link_copy">Kopiere Link in die Zwischenablage</string>
@@ -72,6 +72,11 @@
     <string name="action_sort">Einträge sortieren</string>
     <string name="action_sort_title">Sortiere nach Titel</string>
     <string name="action_sort_url">Sortiere nach Datum</string>
+
+    <string name="action_filter_title">Suche in Titeln</string>
+    <string name="action_filter_create">Suche nach Datum</string>
+    <string name="action_filter_url">Suche nach URL</string>
+    <string name="action_delete">Liste löschen</string>
 
 
     // Context Menu
@@ -111,6 +116,7 @@
     <string name="toast_list">Komplette Liste löschen?</string>
     <string name="toast_whiteList_confirm">Möchtest du die Whitelist wirklich löschen?</string>
     <string name="toast_error">Uuups. Etwas ist schief gelaufen.</string>
+    <string name="toast_newTitle">Eintrag existiert bereits.</string>
 
 
     // Bookmarks // ReadLater // Password
@@ -118,13 +124,11 @@
     <string name="bookmark_remove_confirmation">Eintrag wird entfernt. OK?</string>
     <string name="bookmark_remove_cannot">Du brauchst mindestens einen Eintrag.</string>
     <string name="bookmark_remove_bookmark">Eintrag entfernen</string>
-    <string name="bookmark_added">Füge Lesezeichen hinzu.</string>
-    <string name="bookmark_edit_title">Titel bearbeiten</string>
-    <string name="bookmark_fav">Als Startseite verwenden</string>
-    <string name="bookmark_fav_toast">Erfolgreich als Startseite gesetzt</string>
+    <string name="bookmark_added">Eintrag wird hinzugefügt.</string>
+    <string name="bookmark_setFav">Erfolgreich als Favorit gespeichert.</string>
+    <string name="bookmark_setFav_not">Du kannst nur einen Favorit auswählen.</string>
+    <string name="bookmark_edit_title">Eintrag bearbeiten</string>
 
-    <string name="readLater_added">Füge zur leseSpäter Liste hinzu.</string>
-    <string name="readLater_button">Liste löschen</string>
     <string name="readLater_title">Öffne Link:</string>
     <string name="readLater_action">Liste öffnen</string>
     <string name="readLater_action2">Link hinzufügen</string>

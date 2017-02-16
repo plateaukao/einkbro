@@ -42,8 +42,6 @@
 
     </RelativeLayout>
 
-
-
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -95,7 +93,7 @@
         android:layout_alignParentEnd="true"
         android:id="@+id/imageButton"
         tools:ignore="ContentDescription"
-        android:background="@drawable/custom_button"
+        android:background="@drawable/custom_button_green"
         android:padding="8dp"
         app:srcCompat="@drawable/arrow_up"
         android:scaleType="fitCenter"
@@ -108,9 +106,9 @@
     <ImageButton
         android:id="@+id/imageButton_left"
         tools:ignore="ContentDescription"
-        android:background="@drawable/custom_button"
+        android:background="@drawable/custom_button_green"
         android:padding="8dp"
-        app:srcCompat="@drawable/arrow_left2"
+        app:srcCompat="@drawable/arrow_left"
         android:scaleType="fitCenter"
         android:layout_width="46dp"
         android:layout_height="46dp"
@@ -121,9 +119,9 @@
     <ImageButton
         android:id="@+id/imageButton_right"
         tools:ignore="ContentDescription"
-        android:background="@drawable/custom_button"
+        android:background="@drawable/custom_button_green"
         android:padding="8dp"
-        app:srcCompat="@drawable/arrow_right2"
+        app:srcCompat="@drawable/arrow_right"
         android:scaleType="fitCenter"
         android:layout_width="46dp"
         android:layout_height="46dp"

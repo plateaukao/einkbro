@@ -42,8 +42,8 @@ import java.util.List;
 import java.util.Locale;
 
 import de.baumann.browser.R;
-import de.baumann.browser.databases.Database_Bookmarks;
 import de.baumann.browser.databases.Database_Pass;
+import de.baumann.browser.databases.DbAdapter_Bookmarks;
 
 public class helper_editText {
 
@@ -152,17 +152,16 @@ public class helper_editText {
 
     public static void editText_saveBookmark_save(final EditText editText, final Activity from, final WebView webView) {
 
-        try {
+        DbAdapter_Bookmarks db = new DbAdapter_Bookmarks(from);
+        db.open();
 
-            final Database_Bookmarks db = new Database_Bookmarks(from);
-            String inputTag = editText.getText().toString().trim();
+        String inputTag = editText.getText().toString().trim();
 
-            db.addBookmark(inputTag, webView.getUrl());
-            db.close();
-            Snackbar.make(webView, R.string.bookmark_added, Snackbar.LENGTH_SHORT).show();
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        if(db.isExist(webView.getUrl())){
+            Snackbar.make(editText, from.getString(R.string.toast_newTitle), Snackbar.LENGTH_LONG).show();
+        }else{
+            db.insert(inputTag, webView.getUrl(), "", "", helper_main.createDate());
+            Snackbar.make(webView, R.string.bookmark_added, Snackbar.LENGTH_LONG).show();
         }
         helper_editText.hideKeyboard(from, editText, 0, webView.getTitle(), from.getString(R.string.app_search_hint));
     }
@@ -342,7 +341,7 @@ public class helper_editText {
                 InputMethodManager imm = (InputMethodManager) from.getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
             }
-        }, 100);
+        }, 200);
     }
 
     public static void editText_FocusChange(final EditText editText, final Activity from) {
