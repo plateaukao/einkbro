@@ -54,8 +54,8 @@
     <string name="menu_save_pass">Speichere im passSpeicher</string>
     <string name="menu_share">Seite teilen</string>
     <string name="menu_share_screenshot">Teile Bildschirmfoto</string>
-    <string name="menu_share_link">Teile Link als Text</string>
-    <string name="menu_share_link_copy">Kopiere Link in die Zwischenablage</string>
+    <string name="menu_share_link">Link als Text teilen</string>
+    <string name="menu_share_link_copy">Link in die Zwischenablage</string>
     <string name="menu_downloads">Öffne Downloadverzeichnis</string>
     <string name="menu_settings">Einstellungen</string>
     <string name="menu_searchSite">Suche auf Seite</string>
@@ -81,8 +81,8 @@
 
     // Context Menu
 
-    <string name="context_saveImage">Speichere Bild</string>
-    <string name="context_shareImage">Teile Bild</string>
+    <string name="context_saveImage">Bild speichern</string>
+    <string name="context_shareImage">Bild teilen</string>
     <string name="context_readLater">Speichere zur leseSpäter Liste</string>
     <string name="context_linkCopy_toast">Link erfolgreich kopiert</string>
     <string name="context_saveImage_toast">Bild gespeichert als:</string>

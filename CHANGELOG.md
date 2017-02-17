@@ -1,19 +1,20 @@
 ### v 2.3
 
-- added: search in lists
-- added: no duplicate bookmarks
+- new: search in lists
+- new: no duplicate bookmarks
+- improved: UI (lists, colors, buttons)
 - improved: database model
 
 ### v 2.2
 
-- added: about screen
-- added: intro screen
+- new: about screen
+- new: intro screen
 - fixed: save website (passStorage): set title
 - fixed: notification not dismissed
 
 ### v 2.1
 
-- added: bundled notifications
+- new: bundled notifications
 
 ### v 2.0
 
@@ -22,7 +23,7 @@
 
 ### v 1.9
 
-- added: encryption of passStore databases
+- new: encryption of passStore databases
 
 ### v 1.8.1
 
@@ -34,10 +35,10 @@
 - improved: sort dialog behavior
 - improved: wsitched to xml icons
 - removed: bookmark screen
-- added: second tab
-- added: set bookmark as start site (long click)
-- added: cancel button on some dialogs
-- added: cancel dialog when clearing whitelist
+- new: second tab
+- new: set bookmark as start site (long click)
+- new: cancel button on some dialogs
+- new: cancel dialog when clearing whitelist
 - fixed: force close (links without "/")
 
 ### v 1.7:
@@ -56,10 +57,10 @@
 - improved: settings screen
 - improved: license dialog
 - improved: minor ui/code tweaks
-- added: websearch (from shared text)
-- added: donate (settings)
-- added: changelog (settings) (v1.4)
-- added: sort lists by title and date (v1.5)
+- new: websearch (from shared text)
+- new: donate (settings)
+- new: changelog (settings) (v1.4)
+- new: sort lists by title and date (v1.5)
 - fixed: navigation settings (v1.2)
 - fixed: screenshot (v1.3)
 

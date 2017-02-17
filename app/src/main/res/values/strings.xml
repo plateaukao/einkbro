@@ -54,7 +54,7 @@
     <string name="menu_share">Share website</string>
     <string name="menu_share_screenshot">Share screenshot</string>
     <string name="menu_share_link">Share link as text</string>
-    <string name="menu_share_link_copy">Copy link to Clipboard</string>
+    <string name="menu_share_link_copy">Share link to Clipboard</string>
     <string name="menu_downloads">Open download folder</string>
     <string name="menu_settings">Settings</string>
     <string name="menu_searchSite">Search on site</string>
@@ -80,7 +80,7 @@
 
     // Context Menu
 
-    <string name="context_saveImage">Saved image as:</string>
+    <string name="context_saveImage">Save image</string>
     <string name="context_shareImage">Share image</string>
     <string name="context_readLater">Add to readLater</string>
     <string name="context_linkCopy_toast">Link successfully copied</string>
