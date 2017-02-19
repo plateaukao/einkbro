@@ -841,7 +841,7 @@ public class Browser_right extends AppCompatActivity implements ObservableScroll
                                 if(db.isExist(mWebView.getUrl())){
                                     Snackbar.make(editText, getString(R.string.toast_newTitle), Snackbar.LENGTH_LONG).show();
                                 }else{
-                                    db.insert(mWebView.getTitle(), mWebView.getUrl(), "", "", helper_main.createDate());
+                                    db.insert(helper_webView.getTitle (mWebView), mWebView.getUrl(), "", "", helper_main.createDate());
                                     Snackbar.make(mWebView, R.string.bookmark_added, Snackbar.LENGTH_LONG).show();
                                 }
                             }

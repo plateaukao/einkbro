@@ -91,6 +91,11 @@ public class DbAdapter_History {
         sqlDb.execSQL("DELETE FROM "+dbTable+" WHERE _id="+id);
     }
 
+    //delete data
+    public void deleteDouble(String history_content) {
+        sqlDb.execSQL("DELETE FROM "+dbTable+" WHERE history_content='"+history_content+"'");
+    }
+
     //fetch data
     public Cursor fetchAllData(Context context) {
 

@@ -4,20 +4,6 @@
     <PreferenceCategory
         android:title="@string/pref_3">
 
-        <CheckBoxPreference
-            android:title="@string/action_java"
-            android:icon="@drawable/language_javascript"
-            android:summary="@string/action_java_summary"
-            android:key="java"
-            android:defaultValue="true" />
-
-        <CheckBoxPreference
-            android:title="@string/action_loc"
-            android:icon="@drawable/map_marker"
-            android:summary="@string/action_loc_summary"
-            android:key="loc"
-            android:defaultValue="false" />
-
         <ListPreference
             android:title="@string/action_cookie"
             android:icon="@drawable/cookie"
@@ -32,6 +18,20 @@
             android:icon="@drawable/account_card_details"
             android:summary="@string/action_form_summary"
             android:key="form"
+            android:defaultValue="false" />
+
+        <CheckBoxPreference
+            android:title="@string/action_java"
+            android:icon="@drawable/language_javascript"
+            android:summary="@string/action_java_summary"
+            android:key="java"
+            android:defaultValue="true" />
+
+        <CheckBoxPreference
+            android:title="@string/action_loc"
+            android:icon="@drawable/map_marker"
+            android:summary="@string/action_loc_summary"
+            android:key="loc"
             android:defaultValue="false" />
 
     </PreferenceCategory>
@@ -54,37 +54,23 @@
             android:defaultValue="true" />
 
         <CheckBoxPreference
-            android:title="@string/action_clearCache"
-            android:icon="@drawable/delete"
-            android:summary="@string/action_clearCache_summary"
-            android:key="clearCache"
-            android:defaultValue="true" />
-
-        <CheckBoxPreference
             android:title="@string/action_history"
             android:icon="@drawable/history2"
             android:summary="@string/action_history_summary"
             android:key="history"
             android:defaultValue="false" />
 
+        <CheckBoxPreference
+            android:title="@string/action_clearCache"
+            android:icon="@drawable/delete"
+            android:summary="@string/action_clearCache_summary"
+            android:key="clearCache"
+            android:defaultValue="true" />
+
     </PreferenceCategory>
 
     <PreferenceCategory
         android:title="@string/pref_4">
-
-        <CheckBoxPreference
-            android:title="@string/action_pictures"
-            android:icon="@drawable/image"
-            android:summary="@string/action_pictures_summary"
-            android:key="pictures"
-            android:defaultValue="true" />
-
-        <CheckBoxPreference
-            android:title="@string/action_offline"
-            android:icon="@drawable/wifi_off"
-            android:summary="@string/action_offline_summary"
-            android:key="offline"
-            android:defaultValue="false" />
 
         <Preference
             android:title="@string/action_protect"
@@ -103,6 +89,20 @@
             android:icon="@drawable/language_javascript"
             android:summary="@string/action_whiteList_summary"
             android:key="whiteList" />
+
+        <CheckBoxPreference
+            android:title="@string/action_pictures"
+            android:icon="@drawable/image"
+            android:summary="@string/action_pictures_summary"
+            android:key="pictures"
+            android:defaultValue="true" />
+
+        <CheckBoxPreference
+            android:title="@string/action_offline"
+            android:icon="@drawable/wifi_off"
+            android:summary="@string/action_offline_summary"
+            android:key="offline"
+            android:defaultValue="false" />
 
     </PreferenceCategory>
 

@@ -47,6 +47,10 @@ import static android.webkit.WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE;
 
 public class helper_webView {
 
+    public static String getTitle (WebView webview) {
+        return  webview.getTitle().substring(0,1).toUpperCase() + webview.getTitle().substring(1).toLowerCase();
+    }
+
 
     @SuppressLint("SetJavaScriptEnabled")
     public static void webView_Settings(final Activity from, final WebView webView) {
@@ -187,15 +191,17 @@ public class helper_webView {
                 swipeRefreshLayout.setRefreshing(false);
                 urlBar.setText(webView.getTitle());
                 sharedPref.edit().putString("openURL", "").apply();
-                if (webView.getTitle() != null && !webView.getTitle().equals("about:blank")) {
+
+                if (webView.getTitle() != null && !webView.getTitle().equals("about:blank")  && !webView.getTitle().isEmpty()) {
 
                     DbAdapter_History db = new DbAdapter_History(from);
                     db.open();
+                    db.deleteDouble(webView.getUrl());
 
                     if(db.isExist(helper_main.createDateSecond())){
                         Log.i(TAG, "Entry exists" + webView.getUrl());
                     }else{
-                        db.insert(webView.getTitle(), webView.getUrl(), "", "", helper_main.createDateSecond());
+                        db.insert(helper_webView.getTitle (webView), webView.getUrl(), "", "", helper_main.createDateSecond());
                     }
                 }
             }

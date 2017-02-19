@@ -271,8 +271,8 @@
     <string name="intro2_text">\"Browser\" ist in Listen organisiert: Lesezeichen, leseSpäter, passSpeicher und der Verlauf.</string>
 
     <string name="intro3_title">Toolbar</string>
-    <string name="intro3_text">Wische nach links um die Lesezeichen, nach rechts um die leseSpäter Liste zu öffnen. Wische nach oben um
-        die App zu beenden.</string>
+    <string name="intro3_text">Wische nach links um die Lesezeichen, nach rechts um die leseSpäter Liste zu öffnen. Wische nach oben
+        oder drücke lange auf die toolbar um die App zu beenden.</string>
 
     <string name="intro4_title">Einstellungen</string>
     <string name="intro4_text">Im Einstellungen Popup kannst du die Browsereinstellungen für die aktuelle Session einstellen. Um zu den

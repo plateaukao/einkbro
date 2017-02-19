@@ -257,7 +257,8 @@
     <string name="intro2_text">\"Browser\" is organized in lists: bookmarks, readLater, passStorage and the history.</string>
 
     <string name="intro3_title">Toolbar</string>
-    <string name="intro3_text">Swipe left to open bookmarks, right to open readLater and up to close the app.</string>
+    <string name="intro3_text">Swipe left to open bookmarks, right to open readLater and up to close the app. You can also long
+        press on the toolbar to close the app.</string>
 
     <string name="intro4_title">Settings</string>
     <string name="intro4_text">In the settings popup you can configure the behavior of \"Browser\" for the current session. To open

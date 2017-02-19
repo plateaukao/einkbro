@@ -102,7 +102,7 @@ public class DbAdapter_ReadLater {
 
         if (sp.getString("sortDBR", "title").equals("title")) {
             return sqlDb.query(dbTable, columns, null, null, null, null, "readLater_title");
-        } else if (sp.getString("sortDBB", "title").equals("create")) {
+        } else if (sp.getString("sortDBR", "title").equals("create")) {
             return sqlDb.query(dbTable, columns, null, null, null, null, "readLater_creation");
         }
 

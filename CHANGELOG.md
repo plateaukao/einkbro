@@ -1,3 +1,11 @@
+### v 2.4 (WIP)
+
+- fix: sort readLater by date
+- fix: sort by title (needs uppercase on first letter in the entries
+- fix: double entries in history
+- fix: app icon color
+- fix: open shortcuts
+
 ### v 2.3
 
 - new: search in lists
