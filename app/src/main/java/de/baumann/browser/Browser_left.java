@@ -860,106 +860,70 @@ public class Browser_left extends AppCompatActivity implements ObservableScrollV
 
         }
 
-        if (id == R.id.action_save) {
-            final CharSequence[] options = {
-                    getString(R.string.menu_save_screenshot),
-                    getString(R.string.menu_save_bookmark),
-                    getString(R.string.menu_save_readLater),
-                    getString(R.string.menu_save_pass),
-                    getString(R.string.menu_createShortcut)};
-            new AlertDialog.Builder(Browser_left.this)
-                    .setPositiveButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
-
-                        public void onClick(DialogInterface dialog, int whichButton) {
-                            dialog.cancel();
-                        }
-                    })
-                    .setItems(options, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int item) {
-                            if (options[item].equals(getString(R.string.menu_save_bookmark))) {
-                                urlBar.setVisibility(View.GONE);
-                                editText.setVisibility(View.VISIBLE);
-                                helper_editText.editText_saveBookmark(editText, Browser_left.this, mWebView);
-                            }
-                            if (options[item].equals(getString(R.string.menu_save_pass))) {
-                                helper_editText.editText_savePass(Browser_left.this, mWebView, mWebView.getTitle(), mWebView.getUrl());
-                            }
-                            if (options[item].equals(getString(R.string.menu_save_readLater))) {
-                                DbAdapter_ReadLater db = new DbAdapter_ReadLater(Browser_left.this);
-                                db.open();
-                                if(db.isExist(mWebView.getUrl())){
-                                    Snackbar.make(editText, getString(R.string.toast_newTitle), Snackbar.LENGTH_LONG).show();
-                                }else{
-                                    db.insert(helper_webView.getTitle (mWebView), mWebView.getUrl(), "", "", helper_main.createDate());
-                                    Snackbar.make(mWebView, R.string.bookmark_added, Snackbar.LENGTH_LONG).show();
-                                }
-                            }
-                            if (options[item].equals(getString(R.string.menu_save_screenshot))) {
-                                screenshot();
-                            }
-                            if (options[item].equals (getString(R.string.menu_createShortcut))) {
-                                Intent i = new Intent();
-                                i.setAction(Intent.ACTION_VIEW);
-                                i.setClassName(Browser_left.this, "de.baumann.browser.Browser_left");
-                                i.setData(Uri.parse(mWebView.getUrl()));
-
-                                Intent shortcut = new Intent();
-                                shortcut.putExtra("android.intent.extra.shortcut.INTENT", i);
-                                shortcut.putExtra("android.intent.extra.shortcut.NAME", "THE NAME OF SHORTCUT TO BE SHOWN");
-                                shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, mWebView.getTitle());
-                                shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(Browser_left.this.getApplicationContext(), R.mipmap.ic_launcher));
-                                shortcut.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
-                                Browser_left.this.sendBroadcast(shortcut);
-                                Snackbar.make(mWebView, R.string.menu_createShortcut_success, Snackbar.LENGTH_SHORT).show();
-                            }
-                        }
-                    }).show();
+        if (id == R.id.menu_save_screenshot) {
+            screenshot();
         }
 
-        if (id == R.id.action_share) {
-            final CharSequence[] options = {
-                    getString(R.string.menu_share_screenshot),
-                    getString(R.string.menu_share_link),
-                    getString(R.string.menu_share_link_copy)};
-            new AlertDialog.Builder(Browser_left.this)
-                    .setPositiveButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
+        if (id == R.id.menu_save_bookmark) {
+            urlBar.setVisibility(View.GONE);
+            editText.setVisibility(View.VISIBLE);
+            helper_editText.editText_saveBookmark(editText, Browser_left.this, mWebView);
+        }
 
-                        public void onClick(DialogInterface dialog, int whichButton) {
-                            dialog.cancel();
-                        }
-                    })
-                    .setItems(options, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int item) {
-                            if (options[item].equals(getString(R.string.menu_share_link))) {
-                                Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-                                sharingIntent.setType("text/plain");
-                                sharingIntent.putExtra(Intent.EXTRA_SUBJECT, mWebView.getTitle());
-                                sharingIntent.putExtra(Intent.EXTRA_TEXT, mWebView.getUrl());
-                                startActivity(Intent.createChooser(sharingIntent, (getString(R.string.app_share_link))));
-                            }
-                            if (options[item].equals(getString(R.string.menu_share_screenshot))) {
-                                screenshot();
+        if (id == R.id.menu_save_readLater) {
+            DbAdapter_ReadLater db = new DbAdapter_ReadLater(Browser_left.this);
+            db.open();
+            if(db.isExist(mWebView.getUrl())){
+                Snackbar.make(editText, getString(R.string.toast_newTitle), Snackbar.LENGTH_LONG).show();
+            }else{
+                db.insert(helper_webView.getTitle (mWebView), mWebView.getUrl(), "", "", helper_main.createDate());
+                Snackbar.make(mWebView, R.string.bookmark_added, Snackbar.LENGTH_LONG).show();
+            }
+        }
 
-                                if (shareFile.exists()) {
-                                    Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-                                    sharingIntent.setType("image/png");
-                                    sharingIntent.putExtra(Intent.EXTRA_SUBJECT, mWebView.getTitle());
-                                    sharingIntent.putExtra(Intent.EXTRA_TEXT, mWebView.getUrl());
-                                    Uri bmpUri = Uri.fromFile(shareFile);
-                                    sharingIntent.putExtra(Intent.EXTRA_STREAM, bmpUri);
-                                    startActivity(Intent.createChooser(sharingIntent, (getString(R.string.app_share_screenshot))));
-                                }
-                            }
-                            if (options[item].equals(getString(R.string.menu_share_link_copy))) {
-                                String  url = mWebView.getUrl();
-                                ClipboardManager clipboard = (ClipboardManager) Browser_left.this.getSystemService(Context.CLIPBOARD_SERVICE);
-                                clipboard.setPrimaryClip(ClipData.newPlainText("text", url));
-                                Snackbar.make(mWebView, R.string.context_linkCopy_toast, Snackbar.LENGTH_SHORT).show();
-                            }
-                        }
-                    }).show();
+        if (id == R.id.menu_save_pass) {
+            helper_editText.editText_savePass(Browser_left.this, mWebView, mWebView.getTitle(), mWebView.getUrl());
+        }
+
+        if (id == R.id.menu_createShortcut) {
+            Intent i = new Intent();
+            i.setAction(Intent.ACTION_VIEW);
+            i.setClassName(Browser_left.this, "de.baumann.browser.Browser_left");
+            i.setData(Uri.parse(mWebView.getUrl()));
+
+            Intent shortcut = new Intent();
+            shortcut.putExtra("android.intent.extra.shortcut.INTENT", i);
+            shortcut.putExtra("android.intent.extra.shortcut.NAME", "THE NAME OF SHORTCUT TO BE SHOWN");
+            shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, mWebView.getTitle());
+            shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(Browser_left.this.getApplicationContext(), R.mipmap.ic_launcher));
+            shortcut.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
+            Browser_left.this.sendBroadcast(shortcut);
+            Snackbar.make(mWebView, R.string.menu_createShortcut_success, Snackbar.LENGTH_SHORT).show();
+        }
+
+        if (id == R.id.menu_share_screenshot) {
+            Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+            sharingIntent.setType("image/png");
+            sharingIntent.putExtra(Intent.EXTRA_SUBJECT, mWebView.getTitle());
+            sharingIntent.putExtra(Intent.EXTRA_TEXT, mWebView.getUrl());
+            Uri bmpUri = Uri.fromFile(shareFile);
+            sharingIntent.putExtra(Intent.EXTRA_STREAM, bmpUri);
+            startActivity(Intent.createChooser(sharingIntent, (getString(R.string.app_share_screenshot))));
+        }
+
+        if (id == R.id.menu_share_link) {
+            Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+            sharingIntent.setType("text/plain");
+            sharingIntent.putExtra(Intent.EXTRA_SUBJECT, mWebView.getTitle());
+            sharingIntent.putExtra(Intent.EXTRA_TEXT, mWebView.getUrl());
+            startActivity(Intent.createChooser(sharingIntent, (getString(R.string.app_share_link))));
+        }
+
+        if (id == R.id.menu_share_link_copy) {
+            String  url = mWebView.getUrl();
+            ClipboardManager clipboard = (ClipboardManager) Browser_left.this.getSystemService(Context.CLIPBOARD_SERVICE);
+            clipboard.setPrimaryClip(ClipData.newPlainText("text", url));
+            Snackbar.make(mWebView, R.string.context_linkCopy_toast, Snackbar.LENGTH_SHORT).show();
         }
 
         if (id == R.id.action_downloads) {

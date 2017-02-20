@@ -142,6 +142,15 @@
     <string name="pass_copy">Kopiere Logindaten</string>
     <string name="pass_edit">Bearbeite Logindaten</string>
 
+    <string name="filter_today">Heute</string>
+    <string name="filter_yesterday">Gestern</string>
+    <string name="filter_before">Vorgestern</string>
+    <string name="filter_month">Dieser Monat</string>
+    <string name="filter_own">Eigene Suche</string>
+    <string name="filter_clear">Suche abbrechen</string>
+    <string name="sort_title">Titel</string>
+    <string name="sort_date">Datum</string>
+
 
     // Settings
 

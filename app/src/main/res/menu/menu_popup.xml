@@ -23,8 +23,27 @@
                 android:title="@string/action_filter_title" />
             <item android:id="@+id/filter_url"
                 android:title="@string/action_filter_url" />
-            <item android:id="@+id/filter_creation"
-                android:title="@string/action_filter_create" />
+            <item
+                android:id="@+id/filter_creation"
+                android:orderInCategory="100"
+                android:title="@string/action_filter_create"
+                app:showAsAction="ifRoom" >
+                <!-- "file" submenu -->
+                <menu>
+                    <item android:id="@+id/filter_clear"
+                        android:title="@string/filter_clear" />
+                    <item android:id="@+id/filter_own"
+                        android:title="@string/filter_own" />
+                    <item android:id="@+id/filter_month"
+                        android:title="@string/filter_month" />
+                    <item android:id="@+id/filter_before"
+                        android:title="@string/filter_before" />
+                    <item android:id="@+id/filter_yesterday"
+                        android:title="@string/filter_yesterday" />
+                    <item android:id="@+id/filter_today"
+                        android:title="@string/filter_today" />
+                </menu>
+            </item>
         </menu>
     </item>
 

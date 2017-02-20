@@ -55,7 +55,21 @@
         android:id="@+id/action_save"
         android:orderInCategory="100"
         android:title="@string/menu_save"
-        app:showAsAction="never" />
+        app:showAsAction="never" >
+        <!-- "file" submenu -->
+        <menu>
+            <item android:id="@+id/menu_save_screenshot"
+                android:title="@string/menu_save_screenshot" />
+            <item android:id="@+id/menu_save_bookmark"
+                android:title="@string/menu_save_bookmark" />
+            <item android:id="@+id/menu_save_readLater"
+                android:title="@string/menu_save_readLater" />
+            <item android:id="@+id/menu_save_pass"
+                android:title="@string/menu_save_pass" />
+            <item android:id="@+id/menu_createShortcut"
+                android:title="@string/menu_createShortcut" />
+        </menu>
+    </item>
 
     <item
         android:id="@+id/action_prev"
@@ -85,7 +99,17 @@
         android:id="@+id/action_share"
         android:orderInCategory="100"
         android:title="@string/menu_share"
-        app:showAsAction="never" />
+        app:showAsAction="never" >
+        <!-- "file" submenu -->
+        <menu>
+            <item android:id="@+id/menu_share_screenshot"
+                android:title="@string/menu_share_screenshot" />
+            <item android:id="@+id/menu_share_link"
+                android:title="@string/menu_share_link" />
+            <item android:id="@+id/menu_share_link_copy"
+                android:title="@string/menu_share_link_copy" />
+        </menu>
+    </item>
 
     <item
         android:id="@+id/action_search_onSite"

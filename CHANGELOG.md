@@ -1,7 +1,9 @@
-### v 2.4 (WIP)
+### v 2.4
 
+- added: sub menus
+- improved: toolbar in lists
 - fix: sort readLater by date
-- fix: sort by title (needs uppercase on first letter in the entries
+- fix: sort by title (needs uppercase on first letter in the entries)
 - fix: double entries in history
 - fix: app icon color
 - fix: open shortcuts

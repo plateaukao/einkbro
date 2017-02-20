@@ -50,6 +50,11 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
 import de.baumann.browser.R;
 import de.baumann.browser.databases.DbAdapter_Bookmarks;
 import de.baumann.browser.databases.DbAdapter_ReadLater;
@@ -91,7 +96,7 @@ public class Popup_bookmarks extends AppCompatActivity {
         editText.setHint(R.string.app_search_hint);
         editText.clearFocus();
         urlBar = (TextView) findViewById(R.id.urlBar);
-        urlBar.setText(R.string.app_title_bookmarks);
+        setTitle();
 
         listView = (ListView)findViewById(R.id.list);
 
@@ -335,6 +340,14 @@ public class Popup_bookmarks extends AppCompatActivity {
         });
     }
 
+    private void setTitle () {
+        if (sharedPref.getString("sortDBB", "title").equals("title")) {
+            urlBar.setText(getString(R.string.app_title_bookmarks) + " | " + getString(R.string.sort_title));
+        } else {
+            urlBar.setText(getString(R.string.app_title_bookmarks) + " | " + getString(R.string.sort_date));
+        }
+    }
+
     @Override
     public void onBackPressed() {
         sharedPref.edit().putInt("keyboard", 0).apply();
@@ -410,25 +423,72 @@ public class Popup_bookmarks extends AppCompatActivity {
                 editText.setVisibility(View.VISIBLE);
                 helper_editText.showKeyboard(Popup_bookmarks.this, editText, 1, "", getString(R.string.action_filter_url));
                 return true;
-            case R.id.filter_creation:
+
+            case R.id.filter_today:
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                Calendar cal = Calendar.getInstance();
+                final String search = dateFormat.format(cal.getTime());
+                sharedPref.edit().putString("filter_bookmarksBY", "bookmarks_creation").apply();
+                setBookmarksList();
+                editText.setText(search);
+                urlBar.setText(getString(R.string.app_title_bookmarks) + " | " + getString(R.string.filter_today));
+                return true;
+            case R.id.filter_yesterday:
+                DateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                Calendar cal2 = Calendar.getInstance();
+                cal2.add(Calendar.DATE, -1);
+                final String search2 = dateFormat2.format(cal2.getTime());
+                sharedPref.edit().putString("filter_bookmarksBY", "bookmarks_creation").apply();
+                setBookmarksList();
+                editText.setText(search2);
+                urlBar.setText(getString(R.string.app_title_bookmarks) + " | " + getString(R.string.filter_yesterday));
+                return true;
+            case R.id.filter_before:
+                DateFormat dateFormat3 = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                Calendar cal3 = Calendar.getInstance();
+                cal3.add(Calendar.DATE, -2);
+                final String search3 = dateFormat3.format(cal3.getTime());
+                sharedPref.edit().putString("filter_bookmarksBY", "bookmarks_creation").apply();
+                setBookmarksList();
+                editText.setText(search3);
+                urlBar.setText(getString(R.string.app_title_bookmarks) + " | " + getString(R.string.filter_before));
+                return true;
+            case R.id.filter_month:
+                DateFormat dateFormat4 = new SimpleDateFormat("yyyy-MM", Locale.getDefault());
+                Calendar cal4 = Calendar.getInstance();
+                final String search4 = dateFormat4.format(cal4.getTime());
+                sharedPref.edit().putString("filter_bookmarksBY", "bookmarks_creation").apply();
+                setBookmarksList();
+                editText.setText(search4);
+                urlBar.setText(getString(R.string.app_title_bookmarks) + " | " + getString(R.string.filter_month));
+                return true;
+            case R.id.filter_own:
                 sharedPref.edit().putString("filter_bookmarksBY", "bookmarks_creation").apply();
                 setBookmarksList();
                 editText.setVisibility(View.VISIBLE);
                 helper_editText.showKeyboard(Popup_bookmarks.this, editText, 1, "", getString(R.string.action_filter_create));
                 return true;
+            case R.id.filter_clear:
+                editText.setVisibility(View.GONE);
+                setTitle();
+                helper_editText.hideKeyboard(Popup_bookmarks.this, editText, 0, getString(R.string.app_title_history), getString(R.string.app_search_hint));
+                setBookmarksList();
+                return true;
 
             case R.id.sort_title:
                 sharedPref.edit().putString("sortDBB", "title").apply();
                 setBookmarksList();
+                setTitle();
                 return true;
             case R.id.sort_creation:
                 sharedPref.edit().putString("sortDBB", "create").apply();
                 setBookmarksList();
+                setTitle();
                 return true;
 
             case R.id.action_cancel:
                 editText.setVisibility(View.GONE);
-                urlBar.setText(R.string.app_title_bookmarks);
+                setTitle();
                 helper_editText.hideKeyboard(Popup_bookmarks.this, editText, 0, getString(R.string.app_title_bookmarks), getString(R.string.app_search_hint));
                 setBookmarksList();
                 return true;
@@ -462,7 +522,7 @@ public class Popup_bookmarks extends AppCompatActivity {
                 Snackbar.make(listView, R.string.bookmark_added, Snackbar.LENGTH_SHORT).show();
 
                 editText.setVisibility(View.GONE);
-                urlBar.setText(R.string.app_title_bookmarks);
+                setTitle();
 
                 sharedPref.edit().putString("edit_id", "").apply();
                 sharedPref.edit().putString("edit_content", "").apply();
