@@ -71,7 +71,7 @@ public class Activity_intent extends Activity {
         int n = rand.nextInt(100000);
 
         android.content.Intent iMain = new android.content.Intent();
-        iMain.putExtra(Intent.EXTRA_TEXT, data.toString());
+        iMain.setData(data);
         iMain.setAction(Intent.ACTION_VIEW);
         iMain.setClassName(Activity_intent.this, "de.baumann.browser.Browser_left");
 

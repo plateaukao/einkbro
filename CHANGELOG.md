@@ -1,3 +1,7 @@
+### v 2.5
+
+- fix: open links from notification
+
 ### v 2.4
 
 - added: sub menus
