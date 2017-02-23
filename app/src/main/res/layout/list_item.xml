@@ -1,40 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:descendantFocusability="blocksDescendants"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <TextView
-        android:id="@+id/textView_title"
+    <ImageView
+        android:id="@+id/icon_notes"
+        android:layout_width="36dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="12dp"
+        android:layout_centerVertical="true"
+        app:srcCompat="@drawable/file"
+        tools:ignore="ContentDescription"
+        android:visibility="gone"
+        android:scaleType="centerInside" />
+
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-condensed"
-        android:textStyle="bold"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_marginTop="16dp"
-        android:textSize="18sp"
-        android:layout_marginEnd="16dp"
-        android:lines="1"
-        android:paddingEnd="12dp"
-        android:paddingStart="12dp" />
+        android:layout_margin="13dp"
+        android:layout_toEndOf="@+id/icon_notes" >
 
-    <TextView
-        android:id="@+id/textView_des"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif"
-        android:textSize="12sp"
-        android:layout_marginBottom="16dp"
-        android:lines="1"
-        android:layout_marginEnd="16dp"
-        android:paddingEnd="12dp"
-        android:paddingStart="12dp" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp">
 
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:textSize="12sp"
-        android:fontFamily="sans-serif"
-        android:lines="1" />
+            <TextView
+                android:id="@+id/textView_title_notes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@+id/att_notes"
+                android:fontFamily="sans-serif-condensed"
+                android:typeface="sans"
+                android:textStyle="bold"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:lines="1" />
 
-</LinearLayout>
+            <ImageView
+                android:id="@+id/att_notes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/textView_title_notes"
+                android:layout_alignBottom="@+id/textView_title_notes"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="12dp"
+                android:scaleType="center"
+                tools:ignore="ContentDescription" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textView_des_notes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@+id/textView_create_notes"
+                android:layout_alignParentStart="true"
+                android:layout_alignStart="@+id/textView_create_notes"
+                android:fontFamily="sans-serif"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:typeface="serif"
+                android:lines="1" />
+
+            <TextView
+                android:id="@+id/textView_create_notes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="12dp"
+                android:fontFamily="sans-serif-condensed"
+                android:textStyle="normal"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:lines="1" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

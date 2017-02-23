@@ -1,9 +1,6 @@
-### v 2.5
+### v 2.4 - 2.6
 
-- fix: open links from notification
-
-### v 2.4
-
+- added: new file manager
 - added: sub menus
 - improved: toolbar in lists
 - fix: sort readLater by date
@@ -11,6 +8,8 @@
 - fix: double entries in history
 - fix: app icon color
 - fix: open shortcuts
+- fix: open links from notification
+- fix: delete data on exit
 
 ### v 2.3
 

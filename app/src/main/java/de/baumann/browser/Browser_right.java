@@ -87,6 +87,7 @@ import de.baumann.browser.helper.helper_browser;
 import de.baumann.browser.helper.helper_editText;
 import de.baumann.browser.helper.helper_main;
 import de.baumann.browser.helper.helper_webView;
+import de.baumann.browser.popups.Popup_files;
 import de.baumann.browser.popups.Popup_history;
 import de.baumann.browser.popups.Popup_pass;
 
@@ -138,7 +139,7 @@ public class Browser_right extends AppCompatActivity implements ObservableScroll
         getWindow().setStatusBarColor(ContextCompat.getColor(Browser_right.this, R.color.colorTwoDark));
 
         WebView.enableSlowWholeDocumentDraw();
-        setContentView(R.layout.activity_browser_right);
+        setContentView(R.layout.activity_browser);
         helper_main.onStart(Browser_right.this);
 
         PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
@@ -149,6 +150,7 @@ public class Browser_right extends AppCompatActivity implements ObservableScroll
         sharedPref.getInt("keyboard", 0);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setBackgroundColor(ContextCompat.getColor(Browser_right.this, R.color.colorTwo));
         setSupportActionBar(toolbar);
 
         actionBar = getSupportActionBar();
@@ -180,7 +182,7 @@ public class Browser_right extends AppCompatActivity implements ObservableScroll
 
         SwipeRefreshLayout swipeView = (SwipeRefreshLayout) findViewById(R.id.swipe);
         assert swipeView != null;
-        swipeView.setColorSchemeResources(R.color.colorPrimary, R.color.colorAccent);
+        swipeView.setColorSchemeResources(R.color.colorTwo, R.color.colorAccent);
         swipeView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -265,6 +267,7 @@ public class Browser_right extends AppCompatActivity implements ObservableScroll
         String action = intent.getAction();
 
         if ("closeAPP".equals(action)) {
+            helper_webView.closeWebView(Browser_right.this, mWebView);
             finishAffinity();
         } else {
             new Handler().postDelayed(new Runnable() {
@@ -302,11 +305,11 @@ public class Browser_right extends AppCompatActivity implements ObservableScroll
     private final BroadcastReceiver onComplete = new BroadcastReceiver() {
         public void onReceive(Context ctxt, Intent intent) {
             Snackbar snackbar = Snackbar
-                    .make(mWebView, getString(R.string.toast_download_2), Snackbar.LENGTH_LONG)
+                    .make(mWebView, getString(R.string.app_open), Snackbar.LENGTH_LONG)
                     .setAction(getString(R.string.toast_yes), new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            startActivity(new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS));
+                            helper_main.switchToActivity(Browser_right.this, Popup_files.class, "", false);
                         }
                     });
             snackbar.show();
@@ -877,8 +880,7 @@ public class Browser_right extends AppCompatActivity implements ObservableScroll
         }
 
         if (id == R.id.action_downloads) {
-            String startDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
-            helper_main.openFilePicker(Browser_right.this, mWebView, startDir);
+            helper_main.switchToActivity(Browser_right.this, Popup_files.class, "", false);
         }
 
         if (id == R.id.action_search_go) {
@@ -1193,8 +1195,7 @@ public class Browser_right extends AppCompatActivity implements ObservableScroll
                         .setAction(getString(R.string.toast_yes), new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                String startDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
-                                helper_main.openFilePicker(Browser_right.this, mWebView, startDir);
+                                helper_main.switchToActivity(Browser_right.this, Popup_files.class, "", false);
                             }
                         });
                 snackbar.show();

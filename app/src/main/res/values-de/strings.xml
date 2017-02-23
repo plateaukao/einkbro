@@ -38,6 +38,7 @@
     <string name="app_title_readLater">leseSpäter</string>
     <string name="app_title_passStorage">passSpeicher</string>
     <string name="app_title_history">Verlauf</string>
+    <string name="app_title_downloads">Downloads</string>
     <string name="app_websearch">Websuche</string>
     <string name="app_conf">Bestätigung</string>
     <string name="app_domain">Unbekannte domain</string>
@@ -68,10 +69,12 @@
     <string name="menu_createShortcut">Erstelle Verknüpfung</string>
     <string name="menu_createShortcut_success">Verknüpfung erstellt</string>
     <string name="menu_go">Starte Suche</string>
+    <string name="menu_picture">Zeige Vorschau</string>
 
     <string name="action_sort">Einträge sortieren</string>
     <string name="action_sort_title">Sortiere nach Titel</string>
     <string name="action_sort_url">Sortiere nach Datum</string>
+    <string name="action_sort_extension">Sortiere nach Erweiterung</string>
 
     <string name="action_filter_title">Suche in Titeln</string>
     <string name="action_filter_create">Suche nach Datum</string>
@@ -97,7 +100,6 @@
     <string name="toast_notAgain">Nicht anzeigen</string>
     <string name="toast_download">Lade Datei herunter:</string>
     <string name="toast_download_1">Möchtest du herunterladen:</string>
-    <string name="toast_download_2">Download vollständig. Downloadmanager öffnen?</string>
     <string name="toast_perm">Berechtigungen erteilt?</string>
     <string name="toast_back">Kann vorherige Seite nicht laden.</string>
     <string name="toast_forward">Kann nächste Seite nicht laden.</string>
@@ -108,7 +110,6 @@
     <string name="toast_screenshot_failed">Bildschirmfoto speichern fehlgeschlagen.</string>
     <string name="toast_cache">Keine Internetverbindung. Versuche Seite aus dem Cache zu laden.</string>
     <string name="toast_noInternet">Kann Seite nicht laden. Keine Internetverbindung.</string>
-    <string name="toast_extension">Keine unterstützte Dateiendung</string>
     <string name="toast_install_app">Bitte eine App installieren um die Aktion auszuführen.</string>
     <string name="toast_wrongPW">Uuups. Falsches Passwort.</string>
     <string name="toast_exit">Möchtest du die App verlassen?</string>
@@ -122,7 +123,6 @@
     // Bookmarks // ReadLater // Password
 
     <string name="bookmark_remove_confirmation">Eintrag wird entfernt. OK?</string>
-    <string name="bookmark_remove_cannot">Du brauchst mindestens einen Eintrag.</string>
     <string name="bookmark_remove_bookmark">Eintrag entfernen</string>
     <string name="bookmark_added">Eintrag wird hinzugefügt.</string>
     <string name="bookmark_setFav">Erfolgreich als Favorit gespeichert.</string>
@@ -150,6 +150,7 @@
     <string name="filter_clear">Suche abbrechen</string>
     <string name="sort_title">Titel</string>
     <string name="sort_date">Datum</string>
+    <string name="sort_extension">Erweiterung</string>
 
 
     // Settings
@@ -317,11 +318,8 @@
     <string name="about_donate">Spende</string>
     <string name="about_donate_summary">Wenn dir die App gefällt, kannst du mir gerne etwas über Paypal spenden (braucht eine Internetverbindung).</string>
 
-    <string name="about_license_1">Gebraucht für den Dateimanager.</string>
     <string name="about_license_2">Gebraucht um die Toolbar während dem Scrollen zu verstecken.</string>
     <string name="about_license_3">Gebraucht um die Einführung anzuzeigen.</string>
-    <string name="about_license_4">Der Anfang von allem. Wird hauptsächlich für die Datenbanken benutzt.</string>
-    <string name="about_license_5">Gebraucht um die Pin und den Schlüssel für die Logindaten zu verschlüsseln.</string>
     <string name="about_license_6">Gebraucht um die Logindaten des passSpeichers zu ver- und entschlüsseln.</string>
     <string name="about_license_7">Gebraucht um den \"Über Schirm\" zu erstellen.</string>
     <string name="about_license_8">Die Quelle von fast allen Icons.</string>
@@ -329,24 +327,15 @@
 
     //File chooser
 
-    <string name="title_choose">Auswählen</string>
-    <string name="dialog_cancel">Abbrechen</string>
-
-    <string name="choose_menu_1">Öffnen</string>
     <string name="choose_menu_2">Teilen</string>
     <string name="choose_menu_3">Umbenennen</string>
     <string name="choose_menu_4">Löschen</string>
-
-    <string name="choose_hint">Neuer Dateiname (ohne Dateiendung)</string>
-    <string name="choose_delete">Möchtest du die Datei wirklich löschen?</string>
-    <string name="choose_title">Dateiname bearbeiten</string>
 
 
     // Password
 
     <string name="pw_forgotten">Pin vergessen?</string>
     <string name="pw_hint">Pin eingeben</string>
-    <string name="pw_forgotten_dialog">Möchtest du alle Listen und deine persönlichen Daten löschen, um deine Zugangspin
-        zurückzusetzen? Die Anwendung wird dann beendet.</string>
+    <string name="pw_forgotten_dialog">Alle persönlichen Daten löschen, um die Pin zurückzusetzen?</string>
 
 </resources>

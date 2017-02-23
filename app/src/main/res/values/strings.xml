@@ -37,6 +37,7 @@
     <string name="app_title_readLater">readLater</string>
     <string name="app_title_passStorage">passStorage</string>
     <string name="app_title_history">History</string>
+    <string name="app_title_downloads">Downloads</string>
     <string name="app_websearch">Web search</string>
     <string name="app_conf">Confirmation</string>
     <string name="app_domain">Unknown domain</string>
@@ -67,10 +68,12 @@
     <string name="menu_createShortcut">Create shortcut</string>
     <string name="menu_createShortcut_success">Shortcut created</string>
     <string name="menu_go">Start search</string>
+    <string name="menu_picture">Show previews</string>
 
     <string name="action_sort">Sort entries</string>
     <string name="action_sort_title">Sort by title</string>
     <string name="action_sort_url">Sort by date</string>
+    <string name="action_sort_extension">Sort by extension</string>
 
     <string name="action_filter_title">Search in titles</string>
     <string name="action_filter_create">Search in creation dates</string>
@@ -96,7 +99,6 @@
     <string name="toast_notAgain">Never show</string>
     <string name="toast_download">Downloading file:</string>
     <string name="toast_download_1">Do you want to download:</string>
-    <string name="toast_download_2">Download completed. Show download manager?</string>
     <string name="toast_perm">Permissions granted?</string>
     <string name="toast_back">Can not go back.</string>
     <string name="toast_forward">Can not go forward.</string>
@@ -107,7 +109,6 @@
     <string name="toast_screenshot_failed">Failed to create screenshot.</string>
     <string name="toast_cache">No internet connection. Trying to load from cache.</string>
     <string name="toast_noInternet">Can not load site. No internet connection.</string>
-    <string name="toast_extension">No supported file extension</string>
     <string name="toast_install_app">Please install an app to perform action.</string>
     <string name="toast_wrongPW">Uuups. Wrong password.</string>
     <string name="toast_exit">Do you want to exit?</string>
@@ -121,7 +122,6 @@
     // Bookmarks // ReadLater // Password
 
     <string name="bookmark_remove_confirmation">List item will be removed. OK?</string>
-    <string name="bookmark_remove_cannot">You need at least one list item!</string>
     <string name="bookmark_remove_bookmark">Delete entry</string>
     <string name="bookmark_added">Adding entry.</string>
     <string name="bookmark_setFav">Successfully set as favorite.</string>
@@ -149,6 +149,7 @@
     <string name="filter_clear">Cancel search</string>
     <string name="sort_title">title</string>
     <string name="sort_date">date</string>
+    <string name="sort_extension">extension</string>
 
 
     // Settings
@@ -301,37 +302,24 @@
     <string name="about_donate">Donate</string>
     <string name="about_donate_summary">If you like the app, you can donate to me via Paypal (needs internet connection).</string>
 
-    <string name="about_license_1">Used for the file picker.</string>
     <string name="about_license_2">Used to hide the toolbar while scrolling.</string>
     <string name="about_license_3">Used to build the intro screen.</string>
-    <string name="about_license_4">The beginning of all. Mainly used for the databases.</string>
-    <string name="about_license_5">Used to encrypt pin (for app protection).</string>
     <string name="about_license_6">Used to en- and decrypt login data saved in the passStore.</string>
     <string name="about_license_7">Used to create the \"About screen\".</string>
     <string name="about_license_8">The source of nearly all icons.</string>
 
 
-
     //File chooser
 
-    <string name="title_choose">Choose</string>
-    <string name="dialog_cancel">Cancel</string>
-
-    <string name="choose_menu_1">Open</string>
     <string name="choose_menu_2">Share</string>
     <string name="choose_menu_3">Rename</string>
     <string name="choose_menu_4">Delete</string>
-
-    <string name="choose_hint">New filename (without file extension)</string>
-    <string name="choose_delete">Do you really want to delete the file?</string>
-    <string name="choose_title">Edit filename</string>
 
 
     // Password
 
     <string name="pw_forgotten">Pin forgotten?</string>
     <string name="pw_hint">Enter pin</string>
-    <string name="pw_forgotten_dialog">Do you want to delete all lists and your complete user data to reset
-        your app pin? The application will close.</string>
+    <string name="pw_forgotten_dialog">Delete all data to reset your app pin?</string>
 
 </resources>

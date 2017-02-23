@@ -38,6 +38,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.mobapphome.mahencryptorlib.MAHEncryptor;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -81,15 +83,17 @@ public class Activity_settings extends AppCompatActivity {
 
     public static class SettingsFragment extends PreferenceFragment {
 
+        private SharedPreferences sharedPref;
+        private MAHEncryptor mahEncryptor;
+        private String toDecode;
+
         private void addOpenSettingsListener() {
 
             final Activity activity = getActivity();
             Preference reset = findPreference("settings");
 
-            reset.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
-            {
-                public boolean onPreferenceClick(Preference pref)
-                {
+            reset.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                public boolean onPreferenceClick(Preference pref) {
 
                     Intent intent = new Intent();
                     intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
@@ -132,8 +136,6 @@ public class Activity_settings extends AppCompatActivity {
             Preference reset = findPreference("backup_db");
             reset.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(Preference pref) {
-
-                    final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
                     final CharSequence[] options = {
                             getString(R.string.action_backup),
@@ -191,8 +193,8 @@ public class Activity_settings extends AppCompatActivity {
                                                 dst2.close();
 
                                                 String currentDBPath3 = "//data//" + "de.baumann.browser"
-                                                        + "//databases//" + "pass.db";
-                                                String backupDBPath3 = "//Android//" + "//data//" + "//browser.backup//" + "pass.db";
+                                                        + "//databases//" + "pass_DB_v01.db";
+                                                String backupDBPath3 = "//Android//" + "//data//" + "//browser.backup//" + "pass_DB_v01.db";
                                                 File currentDB3 = new File(data, currentDBPath3);
                                                 File backupDB3 = new File(sd, backupDBPath3);
 
@@ -275,8 +277,8 @@ public class Activity_settings extends AppCompatActivity {
                                                 dst2.close();
 
                                                 String currentDBPath3 = "//data//" + "de.baumann.browser"
-                                                        + "//databases//" + "pass.db";
-                                                String backupDBPath3 = "//Android//" + "//data//" + "//browser.backup//" + "pass.db";
+                                                        + "//databases//" + "pass_DB_v01.db";
+                                                String backupDBPath3 = "//Android//" + "//data//" + "//browser.backup//" + "pass_DB_v01.db";
                                                 File currentDB3 = new File(data, currentDBPath3);
                                                 File backupDB3 = new File(sd, backupDBPath3);
 
@@ -317,15 +319,17 @@ public class Activity_settings extends AppCompatActivity {
             reset.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(Preference pref) {
 
-                    final Activity activity = getActivity();
-                    final class_SecurePreferences sharedPrefSec = new class_SecurePreferences(activity, "sharedPrefSec", "Ywn-YM.XK$b:/:&CsL8;=L,y4", true);
-                    final String password = sharedPrefSec.getString("protect_PW");
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-                    View dialogView = View.inflate(activity, R.layout.dialog_pin, null);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    View dialogView = View.inflate(getActivity(), R.layout.dialog_pin, null);
 
                     final EditText pass_userPW = (EditText) dialogView.findViewById(R.id.pass_userPin);
-                    pass_userPW.setText(password);
+
+                    try {
+                        toDecode = mahEncryptor.decode(sharedPref.getString("protect_PW", ""));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    pass_userPW.setText(toDecode);
 
                     builder.setView(dialogView);
                     builder.setTitle(R.string.action_protect);
@@ -333,9 +337,12 @@ public class Activity_settings extends AppCompatActivity {
 
                         public void onClick(DialogInterface dialog, int whichButton) {
 
-                            String inputTag = pass_userPW.getText().toString().trim();
-                            sharedPrefSec.put("protect_PW", inputTag);
-
+                            try {
+                                String toEncode = mahEncryptor.encode(pass_userPW.getText().toString().trim());
+                                sharedPref.edit().putString("protect_PW", toEncode).apply();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
                     builder.setNegativeButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
@@ -348,7 +355,7 @@ public class Activity_settings extends AppCompatActivity {
                     final AlertDialog dialog2 = builder.create();
                     // Display the custom alert dialog on interface
                     dialog2.show();
-                    helper_editText.showKeyboard(activity, pass_userPW, 0, password, activity.getString(R.string.pw_hint));
+                    helper_editText.showKeyboard(getActivity(), pass_userPW, 0, toDecode, getActivity().getString(R.string.pw_hint));
 
                     return true;
                 }
@@ -367,7 +374,6 @@ public class Activity_settings extends AppCompatActivity {
                             .setPositiveButton(R.string.toast_yes, new DialogInterface.OnClickListener() {
 
                                 public void onClick(DialogInterface dialog, int whichButton) {
-                                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
                                     sharedPref.edit().putString("whiteList", "").apply();
                                     Toast.makeText(getActivity(), R.string.toast_whiteList, Toast.LENGTH_SHORT).show();
                                 }
@@ -388,6 +394,17 @@ public class Activity_settings extends AppCompatActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+
+            PreferenceManager.setDefaultValues(getActivity(), R.xml.user_settings, false);
+            PreferenceManager.setDefaultValues(getActivity(), R.xml.user_settings_search, false);
+            sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+            try {
+                mahEncryptor = MAHEncryptor.newInstance(sharedPref.getString("saved_key", ""));
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(getActivity(), R.string.toast_error, Toast.LENGTH_SHORT).show();
+            }
 
             addPreferencesFromResource(R.xml.user_settings);
             addLicenseListener();

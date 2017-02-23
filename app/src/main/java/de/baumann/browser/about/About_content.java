@@ -131,13 +131,6 @@ class About_content {
         convenienceCardBuilder.title(R.string.about_title_libs);
 
         convenienceCardBuilder.addItem(new MaterialAboutActionItem.Builder()
-                .text("Android File Chooser")
-                .subText(R.string.about_license_1)
-                .icon(R.drawable.github_circle)
-                .setOnClickListener(ConvenienceBuilder.createWebViewDialogOnClickAction(c, "Android File Chooser", "https://github.com/hedzr/android-file-chooser", true, false))
-                .build());
-
-        convenienceCardBuilder.addItem(new MaterialAboutActionItem.Builder()
                 .text("Android Observable ScrollView")
                 .subText(R.string.about_license_2)
                 .icon(R.drawable.github_circle)
@@ -149,20 +142,6 @@ class About_content {
                 .subText(R.string.about_license_3)
                 .icon(R.drawable.github_circle)
                 .setOnClickListener(ConvenienceBuilder.createWebViewDialogOnClickAction(c, "Android Onboarder", "https://github.com/chyrta/AndroidOnboarder", true, false))
-                .build());
-
-        convenienceCardBuilder.addItem(new MaterialAboutActionItem.Builder()
-                .text("Browser")
-                .subText(R.string.about_license_4)
-                .icon(R.drawable.github_circle)
-                .setOnClickListener(ConvenienceBuilder.createWebViewDialogOnClickAction(c, "Browser", "https://github.com/yoshihiroando/browser", true, false))
-                .build());
-
-        convenienceCardBuilder.addItem(new MaterialAboutActionItem.Builder()
-                .text("Encrypted Userprefs")
-                .subText(R.string.about_license_5)
-                .icon(R.drawable.github_circle)
-                .setOnClickListener(ConvenienceBuilder.createWebViewDialogOnClickAction(c, "Encrypted Userprefs", "https://github.com/sveinungkb/encrypted-userprefs", true, false))
                 .build());
 
         convenienceCardBuilder.addItem(new MaterialAboutActionItem.Builder()

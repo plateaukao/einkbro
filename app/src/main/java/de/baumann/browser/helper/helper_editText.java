@@ -42,8 +42,8 @@ import java.util.List;
 import java.util.Locale;
 
 import de.baumann.browser.R;
-import de.baumann.browser.databases.Database_Pass;
 import de.baumann.browser.databases.DbAdapter_Bookmarks;
+import de.baumann.browser.databases.DbAdapter_Pass;
 
 public class helper_editText {
 
@@ -168,8 +168,6 @@ public class helper_editText {
 
     public static void editText_savePass(final Activity from, final View view, final String title, final String url) {
 
-        final class_SecurePreferences sharedPrefSec = new class_SecurePreferences(from, "sharedPrefSec", "Ywn-YM.XK$b:/:&CsL8;=L,y4", true);
-
         AlertDialog.Builder builder = new AlertDialog.Builder(from);
         View dialogView = View.inflate(from, R.layout.dialog_login, null);
 
@@ -192,20 +190,20 @@ public class helper_editText {
                 String input_pass_title = pass_title.getText().toString().trim();
 
                 try {
-                    Database_Pass db = new Database_Pass(from);
 
-                    MAHEncryptor mahEncryptor = MAHEncryptor.newInstance(sharedPrefSec.getString("saveDC"));
+                    final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
+                    MAHEncryptor mahEncryptor = MAHEncryptor.newInstance(sharedPref.getString("saved_key", ""));
                     String encrypted_userName = mahEncryptor.encode(pass_userName.getText().toString().trim());
                     String encrypted_userPW = mahEncryptor.encode(pass_userPW.getText().toString().trim());
 
-                    db.addBookmark(
-                            input_pass_title,
-                            url,
-                            encrypted_userName,
-                            encrypted_userPW);
-                    db.close();
-                    Snackbar.make(view, R.string.pass_success, Snackbar.LENGTH_SHORT).show();
-
+                    DbAdapter_Pass db = new DbAdapter_Pass(from);
+                    db.open();
+                    if(db.isExist(input_pass_title)){
+                        Snackbar.make(view, from.getString(R.string.toast_newTitle), Snackbar.LENGTH_LONG).show();
+                    }else{
+                        db.insert(input_pass_title, url, encrypted_userName, encrypted_userPW, helper_main.createDate());
+                        Snackbar.make(view, R.string.pass_success, Snackbar.LENGTH_LONG).show();
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     Snackbar.make(view, R.string.toast_error, Snackbar.LENGTH_SHORT).show();

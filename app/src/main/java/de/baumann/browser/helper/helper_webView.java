@@ -285,7 +285,7 @@ public class helper_webView {
         }
 
         if (sharedPref.getBoolean ("history", false)){
-            from.deleteDatabase("history.db");
+            from.deleteDatabase("history_DB_v01.db");
             webView.clearHistory();
         }
         helper_main.isClosed(from);

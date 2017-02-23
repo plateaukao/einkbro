@@ -4,14 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_save_bookmark"
-        android:orderInCategory="100"
-        android:title="@string/menu_search"
-        android:icon="@drawable/content_save"
-        app:showAsAction="always"
-        tools:ignore="AlwaysShowAction" />
-
-    <item
         android:id="@+id/action_filter"
         android:orderInCategory="100"
         android:title="@string/action_sort"
@@ -56,10 +48,20 @@
         <menu>
             <item android:id="@+id/sort_title"
                 android:title="@string/action_sort_title" />
-            <item android:id="@+id/sort_creation"
+            <item android:id="@+id/sort_extension"
+                android:title="@string/action_sort_extension" />
+            <item android:id="@+id/sort_date"
                 android:title="@string/action_sort_url" />
         </menu>
     </item>
+
+    <item
+        android:id="@+id/action_save_bookmark"
+        android:orderInCategory="100"
+        android:title="@string/menu_search"
+        android:icon="@drawable/content_save"
+        app:showAsAction="always"
+        tools:ignore="AlwaysShowAction" />
 
     <item
         android:id="@+id/action_cancel"
@@ -69,9 +71,10 @@
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/action_delete"
+        android:id="@+id/action_picture"
         android:orderInCategory="100"
-        android:title="@string/action_delete"
-        app:showAsAction="never" />
+        android:title="@string/menu_picture"
+        android:icon="@drawable/image_light"
+        app:showAsAction="ifRoom" />
 
 </menu>

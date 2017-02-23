@@ -22,7 +22,7 @@ package de.baumann.browser.popups;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
@@ -37,25 +37,24 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 import com.mobapphome.mahencryptorlib.MAHEncryptor;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import de.baumann.browser.R;
-import de.baumann.browser.databases.Database_Pass;
-import de.baumann.browser.helper.class_SecurePreferences;
+import de.baumann.browser.databases.DbAdapter_Pass;
 import de.baumann.browser.helper.helper_editText;
 import de.baumann.browser.helper.helper_main;
 
 public class Popup_pass extends AppCompatActivity {
 
+    private DbAdapter_Pass db;
+
     private ListView listView = null;
     private SharedPreferences sharedPref;
-    private class_SecurePreferences sharedPrefSec;
+    private  MAHEncryptor mahEncryptor;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +69,13 @@ public class Popup_pass extends AppCompatActivity {
         PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
         PreferenceManager.setDefaultValues(this, R.xml.user_settings_search, false);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        sharedPrefSec = new class_SecurePreferences(Popup_pass.this, "sharedPrefSec", "Ywn-YM.XK$b:/:&CsL8;=L,y4", true);
+
+        try {
+            mahEncryptor = MAHEncryptor.newInstance(sharedPref.getString("saved_key", ""));
+        } catch (Exception e) {
+            e.printStackTrace();
+            Snackbar.make(listView, R.string.toast_error, Snackbar.LENGTH_SHORT).show();
+        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -87,22 +92,46 @@ public class Popup_pass extends AppCompatActivity {
         urlBar.setText(R.string.app_title_passStorage);
 
         listView = (ListView)findViewById(R.id.list);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                @SuppressWarnings("unchecked")
-                HashMap<String,String> map = (HashMap<String,String>)listView.getItemAtPosition(position);
-                final String userPW = map.get("userPW");
-                final String userName = map.get("userName");
-                final String url = map.get("url");
+        //calling Notes_DbAdapter
+        db = new DbAdapter_Pass(this);
+        db.open();
+        setFilesList();
+    }
+
+    private void setFilesList() {
+
+        //display data
+        final int layoutstyle=R.layout.list_item;
+        int[] xml_id = new int[] {
+                R.id.textView_title_notes,
+                R.id.textView_des_notes,
+                R.id.textView_create_notes
+        };
+        String[] column = new String[] {
+                "pass_title",
+                "pass_content",
+                "pass_creation"
+        };
+        final Cursor row = db.fetchAllData(this);
+        SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, layoutstyle, row, column, xml_id, 0);
+
+        listView.setAdapter(adapter);
+        //onClick function
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterview, View view, int position, long id) {
+                Cursor row2 = (Cursor) listView.getItemAtPosition(position);
+                final String pass_content = row2.getString(row2.getColumnIndexOrThrow("pass_content"));
+                final String pass_icon = row2.getString(row2.getColumnIndexOrThrow("pass_icon"));
+                final String pass_attachment = row2.getString(row2.getColumnIndexOrThrow("pass_attachment"));
 
                 try {
-                    MAHEncryptor mahEncryptor = MAHEncryptor.newInstance(sharedPrefSec.getString("saveDC"));
-                    String decrypted_userName = mahEncryptor.decode(userName);
-                    String decrypted_userPW = mahEncryptor.decode(userPW);
+                    String decrypted_userName = mahEncryptor.decode(pass_icon);
+                    String decrypted_userPW = mahEncryptor.decode(pass_attachment);
                     sharedPref.edit().putString("copyPW", decrypted_userPW).apply();
                     sharedPref.edit().putString("copyUN", decrypted_userName).apply();
-                    sharedPref.edit().putString("openURL", "openLogin" + url).apply();
+                    sharedPref.edit().putString("openURL", "openLogin" + pass_content).apply();
                     finishAffinity();
 
                 } catch (Exception e) {
@@ -114,14 +143,12 @@ public class Popup_pass extends AppCompatActivity {
 
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-
-                @SuppressWarnings("unchecked")
-                HashMap<String,String> map = (HashMap<String,String>)listView.getItemAtPosition(position);
-                final String seqnoStr = map.get("seqno");
-                final String userPW = map.get("userPW");
-                final String userName = map.get("userName");
-                final String title = map.get("title");
-                final String url = map.get("url");
+                Cursor row2 = (Cursor) listView.getItemAtPosition(position);
+                final String _id = row2.getString(row2.getColumnIndexOrThrow("_id"));
+                final String pass_title = row2.getString(row2.getColumnIndexOrThrow("pass_title"));
+                final String pass_content = row2.getString(row2.getColumnIndexOrThrow("pass_content"));
+                final String pass_icon = row2.getString(row2.getColumnIndexOrThrow("pass_icon"));
+                final String pass_attachment = row2.getString(row2.getColumnIndexOrThrow("pass_attachment"));
 
                 final CharSequence[] options = {
                         getString(R.string.pass_copy),
@@ -141,24 +168,19 @@ public class Popup_pass extends AppCompatActivity {
 
                                     try {
 
-                                        final class_SecurePreferences sharedPrefSec = new class_SecurePreferences(Popup_pass.this, "sharedPrefSec", "Ywn-YM.XK$b:/:&CsL8;=L,y4", true);
-                                        final Database_Pass db = new Database_Pass(Popup_pass.this);
-
                                         AlertDialog.Builder builder = new AlertDialog.Builder(Popup_pass.this);
                                         View dialogView = View.inflate(Popup_pass.this, R.layout.dialog_login, null);
 
-                                        final EditText pass_title = (EditText) dialogView.findViewById(R.id.pass_title);
-                                        final EditText pass_userName = (EditText) dialogView.findViewById(R.id.pass_userName);
-                                        final EditText pass_userPW = (EditText) dialogView.findViewById(R.id.pass_userPW);
+                                        final EditText pass_titleET = (EditText) dialogView.findViewById(R.id.pass_title);
+                                        final EditText pass_userNameET = (EditText) dialogView.findViewById(R.id.pass_userName);
+                                        final EditText pass_userPWET = (EditText) dialogView.findViewById(R.id.pass_userPW);
 
+                                        final String decrypted_userName = mahEncryptor.decode(pass_icon);
+                                        final String decrypted_userPW = mahEncryptor.decode(pass_attachment);
 
-                                        final MAHEncryptor mahEncryptor = MAHEncryptor.newInstance(sharedPrefSec.getString("saveDC"));
-                                        final String decrypted_userName = mahEncryptor.decode(userName);
-                                        final String decrypted_userPW = mahEncryptor.decode(userPW);
-
-                                        pass_title.setText(title);
-                                        pass_userName.setText(decrypted_userName);
-                                        pass_userPW.setText(decrypted_userPW);
+                                        pass_titleET.setText(pass_title);
+                                        pass_userNameET.setText(decrypted_userName);
+                                        pass_userPWET.setText(decrypted_userPW);
 
                                         builder.setView(dialogView);
                                         builder.setTitle(R.string.pass_edit);
@@ -167,18 +189,12 @@ public class Popup_pass extends AppCompatActivity {
                                             public void onClick(DialogInterface dialog, int whichButton) {
 
                                                 try {
-                                                    String input_pass_title = pass_title.getText().toString().trim();
-                                                    String encrypted_userName = mahEncryptor.encode(pass_userName.getText().toString().trim());
-                                                    String encrypted_userPW = mahEncryptor.encode(pass_userPW.getText().toString().trim());
+                                                    String input_pass_title = pass_titleET.getText().toString().trim();
+                                                    String encrypted_userName = mahEncryptor.encode(pass_userNameET.getText().toString().trim());
+                                                    String encrypted_userPW = mahEncryptor.encode(pass_userPWET.getText().toString().trim());
 
-                                                    db.deleteBookmark((Integer.parseInt(seqnoStr)));
-                                                    db.addBookmark(
-                                                            input_pass_title,
-                                                            url,
-                                                            encrypted_userName,
-                                                            encrypted_userPW);
-                                                    db.close();
-                                                    setBookmarkList();
+                                                    db.update(Integer.parseInt(_id), input_pass_title, pass_content, encrypted_userName, encrypted_userPW, helper_main.createDate());
+                                                    setFilesList();
                                                     Snackbar.make(listView, R.string.pass_success, Snackbar.LENGTH_SHORT).show();
 
                                                 } catch (Exception e) {
@@ -197,7 +213,7 @@ public class Popup_pass extends AppCompatActivity {
                                         final AlertDialog dialog2 = builder.create();
                                         // Display the custom alert dialog on interface
                                         dialog2.show();
-                                        helper_editText.showKeyboard(Popup_pass.this, pass_title, 0, title, getString(R.string.app_search_hint_bookmark));
+                                        helper_editText.showKeyboard(Popup_pass.this, pass_titleET, 0, pass_title, getString(R.string.app_search_hint_bookmark));
 
                                     } catch (Exception e) {
                                         e.printStackTrace();
@@ -206,47 +222,23 @@ public class Popup_pass extends AppCompatActivity {
                                 }
 
                                 if (options[item].equals(getString(R.string.bookmark_remove_bookmark))) {
-                                    try {
-                                        Database_Pass db = new Database_Pass(Popup_pass.this);
-                                        final int count = db.getRecordCount();
-                                        db.close();
-
-                                        if (count == 1) {
-                                            Snackbar snackbar = Snackbar
-                                                    .make(listView, R.string.bookmark_remove_cannot, Snackbar.LENGTH_LONG);
-                                            snackbar.show();
-
-                                        } else {
-                                            Snackbar snackbar = Snackbar
-                                                    .make(listView, R.string.bookmark_remove_confirmation, Snackbar.LENGTH_LONG)
-                                                    .setAction(R.string.toast_yes, new View.OnClickListener() {
-                                                        @Override
-                                                        public void onClick(View view) {
-                                                            try {
-                                                                Database_Pass db = new Database_Pass(Popup_pass.this);
-                                                                db.deleteBookmark(Integer.parseInt(seqnoStr));
-                                                                db.close();
-                                                                setBookmarkList();
-                                                            } catch (PackageManager.NameNotFoundException e) {
-                                                                e.printStackTrace();
-                                                                Snackbar.make(listView, R.string.toast_error, Snackbar.LENGTH_SHORT).show();
-                                                            }
-                                                        }
-                                                    });
-                                            snackbar.show();
-                                        }
-
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
+                                    Snackbar snackbar = Snackbar
+                                            .make(listView, R.string.bookmark_remove_confirmation, Snackbar.LENGTH_LONG)
+                                            .setAction(R.string.toast_yes, new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View view) {
+                                                    db.delete(Integer.parseInt(_id));
+                                                    setFilesList();
+                                                }
+                                            });
+                                    snackbar.show();
                                 }
 
                                 if (options[item].equals(getString(R.string.pass_copy))) {
 
                                     try {
-                                        MAHEncryptor mahEncryptor = MAHEncryptor.newInstance(sharedPrefSec.getString("saveDC"));
-                                        String decrypted_userName = mahEncryptor.decode(userName);
-                                        String decrypted_userPW = mahEncryptor.decode(userPW);
+                                        String decrypted_userName = mahEncryptor.decode(pass_icon);
+                                        String decrypted_userPW = mahEncryptor.decode(pass_attachment);
                                         sharedPref.edit().putString("copyPW", decrypted_userPW).apply();
                                         sharedPref.edit().putString("copyUN", decrypted_userName).apply();
                                         sharedPref.edit().putString("openURL", "copyLogin").apply();
@@ -261,49 +253,10 @@ public class Popup_pass extends AppCompatActivity {
                             }
                         }).show();
 
+
                 return true;
             }
         });
-        setBookmarkList();
-    }
-
-    private void setBookmarkList() {
-
-        ArrayList<HashMap<String,String>> mapList = new ArrayList<>();
-
-        try {
-            Database_Pass db = new Database_Pass(Popup_pass.this);
-            ArrayList<String[]> bookmarkList = new ArrayList<>();
-            db.getBookmarks(bookmarkList, Popup_pass.this);
-            if (bookmarkList.size() == 0) {
-                db.loadInitialData();
-                db.getBookmarks(bookmarkList, Popup_pass.this);
-            }
-            db.close();
-
-            for (String[] strAry : bookmarkList) {
-                HashMap<String, String> map = new HashMap<>();
-                map.put("seqno", strAry[0]);
-                map.put("title", strAry[1]);
-                map.put("url", strAry[2]);
-                map.put("userName", strAry[3]);
-                map.put("userPW", strAry[4]);
-                mapList.add(map);
-            }
-
-            SimpleAdapter simpleAdapter = new SimpleAdapter(
-                    Popup_pass.this,
-                    mapList,
-                    R.layout.list_item,
-                    new String[] {"title", "url"},
-                    new int[] {R.id.textView_title, R.id.textView_des}
-            );
-
-            listView.setAdapter(simpleAdapter);
-
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override

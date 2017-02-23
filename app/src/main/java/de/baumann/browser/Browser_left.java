@@ -85,12 +85,12 @@ import java.util.Random;
 import de.baumann.browser.databases.DbAdapter_ReadLater;
 import de.baumann.browser.helper.Activity_intro;
 import de.baumann.browser.helper.Activity_settings;
-import de.baumann.browser.helper.class_SecurePreferences;
 import de.baumann.browser.helper.helper_browser;
 import de.baumann.browser.helper.helper_editText;
 import de.baumann.browser.helper.helper_webView;
 import de.baumann.browser.helper.helper_main;
 import de.baumann.browser.popups.Popup_bookmarks;
+import de.baumann.browser.popups.Popup_files;
 import de.baumann.browser.popups.Popup_history;
 import de.baumann.browser.popups.Popup_pass;
 import de.baumann.browser.popups.Popup_readLater;
@@ -143,7 +143,7 @@ public class Browser_left extends AppCompatActivity implements ObservableScrollV
         getWindow().setStatusBarColor(ContextCompat.getColor(Browser_left.this, R.color.colorPrimaryDark));
 
         WebView.enableSlowWholeDocumentDraw();
-        setContentView(R.layout.activity_browser_left);
+        setContentView(R.layout.activity_browser);
         helper_main.onStart(Browser_left.this);
 
         PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
@@ -160,9 +160,7 @@ public class Browser_left extends AppCompatActivity implements ObservableScrollV
         sharedPref.edit().putInt("keyboard", 0).apply();
         sharedPref.getInt("keyboard", 0);
 
-        class_SecurePreferences sharedPrefSec = new class_SecurePreferences(Browser_left.this, "sharedPrefSec", "Ywn-YM.XK$b:/:&CsL8;=L,y4", true);
-
-        if (sharedPref.getString("saveDCOK", "no").equals("no")) {
+        if (sharedPref.getString("saved_key_ok", "no").equals("no")) {
             char[] chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!§$%&/()=?;:_-.,+#*<>".toCharArray();
             StringBuilder sb = new StringBuilder();
             Random random = new Random();
@@ -170,8 +168,8 @@ public class Browser_left extends AppCompatActivity implements ObservableScrollV
                 char c = chars[random.nextInt(chars.length)];
                 sb.append(c);
             }
-            sharedPrefSec.put("saveDC", sb.toString());
-            sharedPref.edit().putString("saveDCOK", "yes").apply();
+            sharedPref.edit().putString("saved_key", sb.toString()).apply();
+            sharedPref.edit().putString("saved_key_ok", "yes").apply();
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -307,6 +305,7 @@ public class Browser_left extends AppCompatActivity implements ObservableScrollV
                 }
             }, 300);
         } else if ("closeAPP".equals(action)) {
+            helper_webView.closeWebView(Browser_left.this, mWebView);
             finishAffinity();
         }  else if ("readLater".equals(action)) {
             helper_main.switchToActivity(Browser_left.this, Popup_readLater.class, "", false);
@@ -352,11 +351,11 @@ public class Browser_left extends AppCompatActivity implements ObservableScrollV
     private final BroadcastReceiver onComplete = new BroadcastReceiver() {
         public void onReceive(Context ctxt, Intent intent) {
             Snackbar snackbar = Snackbar
-                    .make(mWebView, getString(R.string.toast_download_2), Snackbar.LENGTH_LONG)
+                    .make(mWebView, getString(R.string.app_open), Snackbar.LENGTH_LONG)
                     .setAction(getString(R.string.toast_yes), new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            startActivity(new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS));
+                            helper_main.switchToActivity(Browser_left.this, Popup_files.class, "", false);
                         }
                     });
             snackbar.show();
@@ -584,8 +583,8 @@ public class Browser_left extends AppCompatActivity implements ObservableScrollV
                     .setAction(getString(R.string.toast_yes), new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-
                             helper_main.closeApp(Browser_left.this, Browser_right.class, mWebView);
+                            helper_webView.closeWebView(Browser_left.this, mWebView);
                             finishAffinity();
                         }
                     });
@@ -927,8 +926,7 @@ public class Browser_left extends AppCompatActivity implements ObservableScrollV
         }
 
         if (id == R.id.action_downloads) {
-            String startDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
-            helper_main.openFilePicker(Browser_left.this, mWebView, startDir);
+            helper_main.switchToActivity(Browser_left.this, Popup_files.class, "", false);
         }
 
         if (id == R.id.action_search_go) {
@@ -1243,8 +1241,7 @@ public class Browser_left extends AppCompatActivity implements ObservableScrollV
                         .setAction(getString(R.string.toast_yes), new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                String startDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath();
-                                helper_main.openFilePicker(Browser_left.this, mWebView, startDir);
+                                helper_main.switchToActivity(Browser_left.this, Popup_files.class, "", false);
                             }
                         });
                 snackbar.show();

@@ -19,12 +19,12 @@
 
 package de.baumann.browser.helper;
 
-import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
@@ -32,24 +32,30 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.mobapphome.mahencryptorlib.MAHEncryptor;
+
 import de.baumann.browser.R;
 
 
 public class Activity_password extends AppCompatActivity {
 
     private TextView text;
+    private String protect;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_password);
-        class_SecurePreferences sharedPrefSec = new class_SecurePreferences(Activity_password.this, "sharedPrefSec", "Ywn-YM.XK$b:/:&CsL8;=L,y4", true);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
         }
+
+        PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
+        PreferenceManager.setDefaultValues(this, R.xml.user_settings_search, false);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 
         text = (TextView) findViewById(R.id.pass_userPin);
 
@@ -143,7 +149,14 @@ public class Activity_password extends AppCompatActivity {
             }
         });
 
-        final String protect = sharedPrefSec.getString("protect_PW");
+        try {
+            final MAHEncryptor mahEncryptor = MAHEncryptor.newInstance(sharedPref.getString("saved_key", ""));
+            protect = mahEncryptor.decode(sharedPref.getString("protect_PW", ""));
+        } catch (Exception e) {
+            e.printStackTrace();
+            Snackbar.make(ib0, R.string.toast_error, Snackbar.LENGTH_SHORT).show();
+        }
+
 
         ImageButton enter = (ImageButton) findViewById(R.id.imageButtonEnter);
         assert enter != null;
@@ -161,7 +174,7 @@ public class Activity_password extends AppCompatActivity {
             }
         });
 
-        ImageButton cancel = (ImageButton) findViewById(R.id.imageButtonCancel);
+        final ImageButton cancel = (ImageButton) findViewById(R.id.imageButtonCancel);
         assert cancel != null;
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -170,17 +183,16 @@ public class Activity_password extends AppCompatActivity {
             }
         });
 
-        Button clear = (Button) findViewById(R.id.buttonReset);
+        final Button clear = (Button) findViewById(R.id.buttonReset);
         assert clear != null;
         clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final AlertDialog.Builder dialog = new AlertDialog.Builder(Activity_password.this)
-                        .setTitle(R.string.app_conf)
-                        .setMessage(helper_main.textSpannable(getString(R.string.pw_forgotten_dialog)))
-                        .setPositiveButton(R.string.toast_yes, new DialogInterface.OnClickListener() {
-
-                            public void onClick(DialogInterface dialog, int whichButton) {
+                Snackbar snackbar = Snackbar
+                        .make(clear, getString(R.string.pw_forgotten_dialog), Snackbar.LENGTH_LONG)
+                        .setAction(getString(R.string.toast_yes), new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
                                 try {
                                     // clearing app data
                                     Runtime runtime = Runtime.getRuntime();
@@ -189,14 +201,8 @@ public class Activity_password extends AppCompatActivity {
                                     e.printStackTrace();
                                 }
                             }
-                        })
-                        .setNegativeButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
-
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                dialog.cancel();
-                            }
                         });
-                dialog.show();
+                snackbar.show();
             }
         });
     }
