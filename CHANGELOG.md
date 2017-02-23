@@ -3,6 +3,7 @@
 - added: new file manager
 - added: sub menus
 - improved: toolbar in lists
+- improved: removed unnecessary code
 - fix: sort readLater by date
 - fix: sort by title (needs uppercase on first letter in the entries)
 - fix: double entries in history
