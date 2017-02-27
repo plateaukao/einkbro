@@ -195,15 +195,6 @@ public class helper_browser {
                 activity.startActivity(intent);
             }
         });
-        toolbar.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                helper_webView.closeWebView(activity, webview);
-                helper_main.closeApp(activity, to, webview);
-                activity.finishAffinity();
-                return true;
-            }
-        });
     }
 
     public static File createImageFile() throws IOException {
