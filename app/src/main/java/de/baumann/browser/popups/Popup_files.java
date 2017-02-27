@@ -24,7 +24,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -50,6 +49,8 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.io.File;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -60,7 +61,6 @@ import java.util.Locale;
 
 import de.baumann.browser.R;
 import de.baumann.browser.databases.DbAdapter_Files;
-import de.baumann.browser.helper.class_Thumbnail;
 import de.baumann.browser.helper.helper_editText;
 import de.baumann.browser.helper.helper_main;
 
@@ -123,6 +123,10 @@ public class Popup_files extends AppCompatActivity {
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath()));
         final File[] files = f.listFiles();
 
+        if (files.length == 0) {
+            Snackbar.make(listView, R.string.toast_files, Snackbar.LENGTH_LONG).show();
+        }
+
         // looping through all items <item>
         for (File file : files) {
 
@@ -135,7 +139,7 @@ public class Popup_files extends AppCompatActivity {
 
             String file_ext;
             if (file.isDirectory()) {
-                file_ext = "";
+                file_ext = ".";
             } else {
                 file_ext = file.getAbsolutePath().substring(file.getAbsolutePath().lastIndexOf("."));
             }
@@ -146,6 +150,12 @@ public class Popup_files extends AppCompatActivity {
             } else {
                 db.insert(file_Name, file_Size, file_ext, file_path, file_date);
             }
+        }
+
+        try {
+            db.insert("...", "", "", "", "");
+        } catch (Exception e) {
+            Snackbar.make(listView, R.string.toast_directory, Snackbar.LENGTH_LONG).show();
         }
 
         //display data
@@ -182,12 +192,11 @@ public class Popup_files extends AppCompatActivity {
                     switch (files_icon) {
                         case ".gif":case ".bmp":case ".tiff":case ".svg":
                         case ".png":case ".jpg":case ".JPG":case ".jpeg":
-                            if (sharedPref.getInt("showThumbnail", 0) == 0) {
-                                iv.setImageResource(R.drawable.file_image);
-                            } else {
-                                class_Thumbnail thumb = new class_Thumbnail(BitmapFactory.decodeFile(files_attachment));
-                                thumb.centerCrop();
-                                iv.setImageBitmap(thumb.getBitmap());
+                            try {
+                                Uri uri = Uri.fromFile(pathFile);
+                                Picasso.with(Popup_files.this).load(uri).resize(76, 76).centerCrop().into(iv);
+                            } catch (Exception e) {
+                                Log.w("HHS_Moodle", "Error Load image", e);
                             }
                             break;
                         case ".m3u8":case ".mp3":case ".wma":case ".midi":case ".wav":case ".aac":
@@ -217,6 +226,9 @@ public class Popup_files extends AppCompatActivity {
                         case ".zip":
                         case ".rar":
                             iv.setImageResource(R.drawable.zip_box);
+                            break;
+                        case "":
+                            iv.setImageResource(R.drawable.arrow_up_dark);
                             break;
                         default:
                             iv.setImageResource(R.drawable.file);
@@ -258,8 +270,21 @@ public class Popup_files extends AppCompatActivity {
                 final File pathFile = new File(files_attachment);
 
                 if(pathFile.isDirectory()) {
-                    sharedPref.edit().putString("files_startFolder", files_attachment).apply();
-                    setFilesList();
+                    try {
+                        sharedPref.edit().putString("files_startFolder", files_attachment).apply();
+                        setFilesList();
+                    } catch (Exception e) {
+                        Snackbar.make(listView, R.string.toast_directory, Snackbar.LENGTH_LONG).show();
+                    }
+                } else if(files_attachment.equals("")) {
+                    try {
+                        final File pathActual = new File(sharedPref.getString("files_startFolder",
+                                Environment.getExternalStorageDirectory().getPath()));
+                        sharedPref.edit().putString("files_startFolder", pathActual.getParent()).apply();
+                        setFilesList();
+                    } catch (Exception e) {
+                        Snackbar.make(listView, R.string.toast_directory, Snackbar.LENGTH_LONG).show();
+                    }
                 } else {
                     helper_main.open(files_icon, Popup_files.this, pathFile, listView);
                 }
@@ -275,50 +300,50 @@ public class Popup_files extends AppCompatActivity {
 
                 final File pathFile = new File(files_attachment);
 
-                final CharSequence[] options = {
-                        getString(R.string.choose_menu_2),
-                        getString(R.string.choose_menu_3),
-                        getString(R.string.choose_menu_4)};
+                if (pathFile.isDirectory()) {
+                    Snackbar snackbar = Snackbar
+                            .make(listView, R.string.bookmark_remove_confirmation, Snackbar.LENGTH_LONG)
+                            .setAction(R.string.toast_yes, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    deleteRecursive(pathFile);
+                                    setFilesList();
+                                }
+                            });
+                    snackbar.show();
 
-                final AlertDialog.Builder dialog = new AlertDialog.Builder(Popup_files.this);
-                dialog.setPositiveButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
+                } else {
+                    final CharSequence[] options = {
+                            getString(R.string.choose_menu_2),
+                            getString(R.string.choose_menu_3),
+                            getString(R.string.choose_menu_4)};
 
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        dialog.cancel();
-                    }
-                });
-                dialog.setItems(options, new DialogInterface.OnClickListener() {
-                    @SuppressWarnings("ResultOfMethodCallIgnored")
-                    @Override
-                    public void onClick(DialogInterface dialog, int item) {
+                    final AlertDialog.Builder dialog = new AlertDialog.Builder(Popup_files.this);
+                    dialog.setPositiveButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
 
-                        if (options[item].equals(getString(R.string.choose_menu_2))) {
-
-                            if (pathFile.exists()) {
-                                Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-                                sharingIntent.setType("image/png");
-                                sharingIntent.putExtra(Intent.EXTRA_SUBJECT, files_title);
-                                sharingIntent.putExtra(Intent.EXTRA_TEXT, files_title);
-                                Uri bmpUri = Uri.fromFile(pathFile);
-                                sharingIntent.putExtra(Intent.EXTRA_STREAM, bmpUri);
-                                startActivity(Intent.createChooser(sharingIntent, (getString(R.string.app_share_file))));
-                            }
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            dialog.cancel();
                         }
-                        if (options[item].equals(getString(R.string.choose_menu_4))) {
+                    });
+                    dialog.setItems(options, new DialogInterface.OnClickListener() {
+                        @SuppressWarnings("ResultOfMethodCallIgnored")
+                        @Override
+                        public void onClick(DialogInterface dialog, int item) {
 
-                            if (pathFile.isDirectory()) {
-                                Snackbar snackbar = Snackbar
-                                        .make(listView, R.string.bookmark_remove_confirmation, Snackbar.LENGTH_LONG)
-                                        .setAction(R.string.toast_yes, new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View view) {
-                                                deleteRecursive(pathFile);
-                                                setFilesList();
-                                            }
-                                        });
-                                snackbar.show();
+                            if (options[item].equals(getString(R.string.choose_menu_2))) {
 
-                            } else {
+                                if (pathFile.exists()) {
+                                    Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+                                    sharingIntent.setType("image/png");
+                                    sharingIntent.putExtra(Intent.EXTRA_SUBJECT, files_title);
+                                    sharingIntent.putExtra(Intent.EXTRA_TEXT, files_title);
+                                    Uri bmpUri = Uri.fromFile(pathFile);
+                                    sharingIntent.putExtra(Intent.EXTRA_STREAM, bmpUri);
+                                    startActivity(Intent.createChooser(sharingIntent, (getString(R.string.app_share_file))));
+                                }
+                            }
+                            if (options[item].equals(getString(R.string.choose_menu_4))) {
+
                                 Snackbar snackbar = Snackbar
                                         .make(listView, R.string.bookmark_remove_confirmation, Snackbar.LENGTH_LONG)
                                         .setAction(R.string.toast_yes, new View.OnClickListener() {
@@ -330,15 +355,15 @@ public class Popup_files extends AppCompatActivity {
                                         });
                                 snackbar.show();
                             }
+                            if (options[item].equals(getString(R.string.choose_menu_3))) {
+                                sharedPref.edit().putString("pathFile", files_attachment).apply();
+                                editText.setVisibility(View.VISIBLE);
+                                helper_editText.showKeyboard(Popup_files.this, editText, 2, files_title, getString(R.string.bookmark_edit_title));
+                            }
                         }
-                        if (options[item].equals(getString(R.string.choose_menu_3))) {
-                            sharedPref.edit().putString("pathFile", files_attachment).apply();
-                            editText.setVisibility(View.VISIBLE);
-                            helper_editText.showKeyboard(Popup_files.this, editText, 2, files_title, getString(R.string.bookmark_edit_title));
-                        }
-                    }
-                });
-                dialog.show();
+                    });
+                    dialog.show();
+                }
 
                 return true;
             }
@@ -391,22 +416,6 @@ public class Popup_files extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        if (sharedPref.getString("files_startFolder",
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath())
-                .equals(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath())) {
-            sharedPref.edit().putInt("keyboard", 0).apply();
-            helper_main.isClosed(Popup_files.this);
-            finish();
-        } else {
-            final File pathFile = new File(sharedPref.getString("files_startFolder",
-                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath()));
-            sharedPref.edit().putString("files_startFolder", pathFile.getParent()).apply();
-            setFilesList();
-        }
-    }
-
-    @Override
     protected void onPause() {
         super.onPause();    //To change body of overridden methods use File | Settings | File Templates.
         helper_main.isOpened(Popup_files.this);
@@ -435,12 +444,10 @@ public class Popup_files extends AppCompatActivity {
         } else if (sharedPref.getInt("keyboard", 0) == 1){
             // filter
             menu.findItem(R.id.action_sort).setVisible(false);
-            menu.findItem(R.id.action_picture).setVisible(false);
             menu.findItem(R.id.action_save_bookmark).setVisible(false);
         } else {
             // filter
             menu.findItem(R.id.action_sort).setVisible(false);
-            menu.findItem(R.id.action_picture).setVisible(false);
             menu.findItem(R.id.action_filter).setVisible(false);
         }
         return true; // this is important to call so that new menu is shown
@@ -573,16 +580,6 @@ public class Popup_files extends AppCompatActivity {
                 sharedPref.edit().putString("sortDBF", "file_date").apply();
                 setFilesList();
                 setTitle();
-                return true;
-
-            case R.id.action_picture:
-                if (sharedPref.getInt("showThumbnail", 0) == 0) {
-                    sharedPref.edit().putInt("showThumbnail", 1).apply();
-                    setFilesList();
-                } else {
-                    sharedPref.edit().putInt("showThumbnail", 0).apply();
-                    setFilesList();
-                }
                 return true;
 
             case android.R.id.home:

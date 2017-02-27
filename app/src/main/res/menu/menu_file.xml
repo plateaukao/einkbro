@@ -70,11 +70,4 @@
         android:icon="@drawable/close"
         app:showAsAction="ifRoom" />
 
-    <item
-        android:id="@+id/action_picture"
-        android:orderInCategory="100"
-        android:title="@string/menu_picture"
-        android:icon="@drawable/image_light"
-        app:showAsAction="ifRoom" />
-
 </menu>

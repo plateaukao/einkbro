@@ -68,7 +68,6 @@
     <string name="menu_createShortcut">Create shortcut</string>
     <string name="menu_createShortcut_success">Shortcut created</string>
     <string name="menu_go">Start search</string>
-    <string name="menu_picture">Show previews</string>
 
     <string name="action_sort">Sort entries</string>
     <string name="action_sort_title">Sort by title</string>
@@ -117,6 +116,8 @@
     <string name="toast_whiteList_confirm">Do you really want to delete the whitelist?</string>
     <string name="toast_error">Uuups. Something went wrong.</string>
     <string name="toast_newTitle">Entry already exists.</string>
+    <string name="toast_directory">Can\'t open Directory.</string>
+    <string name="toast_files">No files in directory.</string>
 
 
     // Bookmarks // ReadLater // Password
@@ -307,6 +308,7 @@
     <string name="about_license_6">Used to en- and decrypt login data saved in the passStore.</string>
     <string name="about_license_7">Used to create the \"About screen\".</string>
     <string name="about_license_8">The source of nearly all icons.</string>
+    <string name="about_license_9">A powerful image downloading and caching library for Android.</string>
 
 
     //File chooser

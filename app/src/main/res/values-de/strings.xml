@@ -69,7 +69,6 @@
     <string name="menu_createShortcut">Erstelle Verknüpfung</string>
     <string name="menu_createShortcut_success">Verknüpfung erstellt</string>
     <string name="menu_go">Starte Suche</string>
-    <string name="menu_picture">Zeige Vorschau</string>
 
     <string name="action_sort">Einträge sortieren</string>
     <string name="action_sort_title">Sortiere nach Titel</string>
@@ -118,6 +117,8 @@
     <string name="toast_whiteList_confirm">Möchtest du die Whitelist wirklich löschen?</string>
     <string name="toast_error">Uuups. Etwas ist schief gelaufen.</string>
     <string name="toast_newTitle">Eintrag existiert bereits.</string>
+    <string name="toast_directory">Kann Verzeichnis nicht öffnen.</string>
+    <string name="toast_files">Keine Dateien im Verzeichnis.</string>
 
 
     // Bookmarks // ReadLater // Password
@@ -323,6 +324,7 @@
     <string name="about_license_6">Gebraucht um die Logindaten des passSpeichers zu ver- und entschlüsseln.</string>
     <string name="about_license_7">Gebraucht um den \"Über Schirm\" zu erstellen.</string>
     <string name="about_license_8">Die Quelle von fast allen Icons.</string>
+    <string name="about_license_9">Bibliothek zum Downloaden und Anzeigen von Bildern.</string>
 
 
     //File chooser
