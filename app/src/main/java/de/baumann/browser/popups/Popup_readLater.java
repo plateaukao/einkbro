@@ -53,6 +53,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import de.baumann.browser.Browser_left;
 import de.baumann.browser.R;
 import de.baumann.browser.databases.DbAdapter_Bookmarks;
 import de.baumann.browser.databases.DbAdapter_ReadLater;
@@ -103,6 +104,28 @@ public class Popup_readLater extends AppCompatActivity {
         db.open();
 
         setReadLaterList();
+        onNewIntent(getIntent());
+    }
+
+    protected void onNewIntent(final Intent intent) {
+
+        String action = intent.getAction();
+
+        if ("appShortcut".equals(action)) {
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterview, View view, int position, long id) {
+
+                    Cursor row = (Cursor) listView.getItemAtPosition(position);
+                    final String bookmarks_content = row.getString(row.getColumnIndexOrThrow("bookmarks_content"));
+
+                    Intent i = new Intent(Popup_readLater.this, Browser_left.class);
+                    i.putExtra("URL", bookmarks_content);
+                    startActivity(i);
+                    finish();
+                }
+            });
+        }
     }
 
     private void setReadLaterList() {

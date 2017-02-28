@@ -332,9 +332,6 @@ public class Popup_bookmarks extends AppCompatActivity {
 
                             }
                         }).show();
-
-
-
                 return true;
             }
         });

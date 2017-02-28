@@ -8,9 +8,9 @@
         android:shortcutLongLabel="@string/app_title_bookmarks"
         android:shortcutDisabledMessage="@string/app_title_bookmarks">
         <intent
-            android:action="android.intent.action.VIEW"
+            android:action="bookmarks"
             android:targetPackage="de.baumann.browser"
-            android:targetClass="de.baumann.browser.popups.Popup_bookmarks" />
+            android:targetClass="de.baumann.browser.Browser_left" />
         <!-- If your shortcut is associated with multiple intents, include them
              here. The last intent in the list is what the user sees when they
              launch this shortcut. -->
@@ -25,9 +25,9 @@
         android:shortcutLongLabel="@string/app_title_readLater"
         android:shortcutDisabledMessage="@string/app_title_readLater">
         <intent
-            android:action="android.intent.action.VIEW"
+            android:action="readLater"
             android:targetPackage="de.baumann.browser"
-            android:targetClass="de.baumann.browser.popups.Popup_readLater" />
+            android:targetClass="de.baumann.browser.Browser_left" />
         <!-- If your shortcut is associated with multiple intents, include them
              here. The last intent in the list is what the user sees when they
              launch this shortcut. -->
@@ -42,9 +42,9 @@
         android:shortcutLongLabel="@string/app_title_passStorage"
         android:shortcutDisabledMessage="@string/app_title_passStorage">
         <intent
-            android:action="android.intent.action.VIEW"
+            android:action="pass"
             android:targetPackage="de.baumann.browser"
-            android:targetClass="de.baumann.browser.popups.Popup_pass" />
+            android:targetClass="de.baumann.browser.Browser_left" />
         <!-- If your shortcut is associated with multiple intents, include them
              here. The last intent in the list is what the user sees when they
              launch this shortcut. -->
@@ -59,9 +59,9 @@
         android:shortcutLongLabel="@string/app_title_history"
         android:shortcutDisabledMessage="@string/app_title_history">
         <intent
-            android:action="android.intent.action.VIEW"
+            android:action="history"
             android:targetPackage="de.baumann.browser"
-            android:targetClass="de.baumann.browser.popups.Popup_history" />
+            android:targetClass="de.baumann.browser.Browser_left" />
         <!-- If your shortcut is associated with multiple intents, include them
              here. The last intent in the list is what the user sees when they
              launch this shortcut. -->

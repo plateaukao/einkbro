@@ -178,6 +178,7 @@ public class Popup_files extends AppCompatActivity {
                 Cursor row2 = (Cursor) listView.getItemAtPosition(position);
                 final String files_icon = row2.getString(row2.getColumnIndexOrThrow("files_icon"));
                 final String files_attachment = row2.getString(row2.getColumnIndexOrThrow("files_attachment"));
+                final String files_title = row2.getString(row2.getColumnIndexOrThrow("files_title"));
 
                 final File pathFile = new File(files_attachment);
 
@@ -234,6 +235,10 @@ public class Popup_files extends AppCompatActivity {
                             iv.setImageResource(R.drawable.file);
                             break;
                     }
+                }
+
+                if (files_title.equals("...")) {
+                    iv.setImageResource(R.drawable.arrow_up_dark);
                 }
                 return v;
             }

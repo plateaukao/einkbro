@@ -119,6 +119,7 @@
     <string name="toast_newTitle">Eintrag existiert bereits.</string>
     <string name="toast_directory">Kann Verzeichnis nicht öffnen.</string>
     <string name="toast_files">Keine Dateien im Verzeichnis.</string>
+    <string name="toast_extension">Kein unterstützter Dateityp</string>
 
 
     // Bookmarks // ReadLater // Password
@@ -283,7 +284,7 @@
 
     <string name="intro3_title">Toolbar</string>
     <string name="intro3_text">Wische nach links um die Lesezeichen, nach rechts um die leseSpäter Liste zu öffnen. Wische nach oben
-        oder drücke lange auf die toolbar um die App zu beenden.</string>
+        um die App zu beenden.</string>
 
     <string name="intro4_title">Einstellungen</string>
     <string name="intro4_text">Im Einstellungen Popup kannst du die Browsereinstellungen für die aktuelle Session einstellen. Um zu den

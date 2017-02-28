@@ -2,6 +2,7 @@
 
 - added: new file manager
 - added: sub menus
+- removed: toolbar long click
 - improved: toolbar in lists
 - improved: removed unnecessary code
 - fix: sort readLater by date

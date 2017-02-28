@@ -239,6 +239,9 @@ public class helper_main {
     }
 
     public static void open (String extension, Activity activity, File pathFile, View view) {
+        File file = new File(pathFile.getAbsolutePath());
+        final String fileExtension = file.getAbsolutePath().substring(file.getAbsolutePath().lastIndexOf("."));
+        String text = activity.getString(R.string.toast_extension) + ": " + fileExtension;
         switch (extension) {
             case ".gif":
             case ".bmp":
@@ -352,6 +355,9 @@ public class helper_main {
                 break;
 
             default:
+                Snackbar snackbar = Snackbar
+                        .make(view, text, Snackbar.LENGTH_LONG);
+                snackbar.show();
 
                 break;
         }
