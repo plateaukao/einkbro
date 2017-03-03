@@ -7,8 +7,8 @@ android {
         applicationId "de.baumann.browser"
         minSdkVersion 21
         targetSdkVersion 25
-        versionCode 25
-        versionName "2.6"
+        versionCode 26
+        versionName "2.7"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -28,6 +28,6 @@ dependencies {
     compile 'com.github.ksoichiro:android-observablescrollview:1.6.0'
     compile 'com.mobapphome.library:mah-encryptor-lib:1.0.1'
     compile 'com.github.chyrta:AndroidOnboarder:0.6'
-    compile 'com.github.daniel-stoneuk:material-about-library:1.5.0'
+    compile 'com.github.daniel-stoneuk:material-about-library:1.7.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
 }

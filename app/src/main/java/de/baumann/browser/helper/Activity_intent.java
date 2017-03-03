@@ -59,7 +59,7 @@ public class Activity_intent extends Activity {
             domain = domain.replace("www.", "").toUpperCase();
         }
 
-        String domain2 = domain.substring(0,1).toUpperCase() + domain.substring(1).toLowerCase();
+        String domain2 = domain.substring(0,1).toUpperCase() + domain.substring(1);
 
         PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
         PreferenceManager.setDefaultValues(this, R.xml.user_settings_search, false);

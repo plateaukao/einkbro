@@ -27,6 +27,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -132,7 +133,7 @@ public class Popup_files extends AppCompatActivity {
 
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
 
-            String file_Name = file.getName().substring(0,1).toUpperCase() + file.getName().substring(1).toLowerCase();
+            String file_Name = file.getName().substring(0,1).toUpperCase() + file.getName().substring(1);
             String file_Size = getReadableFileSize(file.length());
             String file_date = formatter.format(new Date(file.lastModified()));
             String file_path = file.getAbsolutePath();
@@ -238,7 +239,11 @@ public class Popup_files extends AppCompatActivity {
                 }
 
                 if (files_title.equals("...")) {
-                    iv.setImageResource(R.drawable.arrow_up_dark);
+                    new Handler().postDelayed(new Runnable() {
+                        public void run() {
+                            iv.setImageResource(R.drawable.arrow_up_dark);
+                        }
+                    }, 500);
                 }
                 return v;
             }

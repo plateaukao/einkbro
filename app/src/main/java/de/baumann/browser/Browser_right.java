@@ -377,7 +377,7 @@ public class Browser_right extends AppCompatActivity implements ObservableScroll
                                 if(url != null) {
 
                                     shareString = helper_main.newFileName();
-                                    shareFile = helper_main.newFile();
+                                    shareFile = helper_main.newFile(mWebView);
 
                                     try {
                                         Uri source = Uri.parse(url);
@@ -406,7 +406,7 @@ public class Browser_right extends AppCompatActivity implements ObservableScroll
                                         domain = Uri.parse(url).getHost();
                                     }
 
-                                    String domain2 = domain.substring(0,1).toUpperCase() + domain.substring(1).toLowerCase();
+                                    String domain2 = domain.substring(0,1).toUpperCase() + domain.substring(1);
 
                                     DbAdapter_ReadLater db = new DbAdapter_ReadLater(Browser_right.this);
                                     db.open();
@@ -469,7 +469,7 @@ public class Browser_right extends AppCompatActivity implements ObservableScroll
                                         domain = Uri.parse(url).getHost();
                                     }
 
-                                    String domain2 = domain.substring(0,1).toUpperCase() + domain.substring(1).toLowerCase();
+                                    String domain2 = domain.substring(0,1).toUpperCase() + domain.substring(1);
 
                                     DbAdapter_ReadLater db = new DbAdapter_ReadLater(Browser_right.this);
                                     db.open();
@@ -1155,7 +1155,7 @@ public class Browser_right extends AppCompatActivity implements ObservableScroll
 
     private void screenshot() {
 
-        shareFile = helper_main.newFile();
+        shareFile = helper_main.newFile(mWebView);
 
         try{
             mWebView.measure(View.MeasureSpec.makeMeasureSpec(
@@ -1190,7 +1190,7 @@ public class Browser_right extends AppCompatActivity implements ObservableScroll
                 bitmap.recycle();
 
                 Snackbar snackbar = Snackbar
-                        .make(mWebView, getString(R.string.context_saveImage_toast) + " " + helper_main.newFileName() +
+                        .make(mWebView, getString(R.string.context_saveImage_toast) + " " + shareFile.getName() +
                                 ". " + getString(R.string.app_open), Snackbar.LENGTH_LONG)
                         .setAction(getString(R.string.toast_yes), new View.OnClickListener() {
                             @Override

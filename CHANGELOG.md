@@ -1,3 +1,8 @@
+### v 2.7
+
+- fix: directory up icon
+- fix: saving all entries lowercase
+
 ### v 2.4 - 2.6
 
 - added: new file manager

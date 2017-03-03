@@ -225,10 +225,21 @@ public class helper_main {
         return s;
     }
 
-    public static File newFile () {
+    public static File newFile (WebView webView) {
+        final  String domain;
+
+        if(Uri.parse(webView.getUrl()).getHost().length() == 0) {
+            domain = "";
+        } else {
+            domain = Uri.parse(webView.getUrl()).getHost();
+        }
+
+        String shortDomain = domain.substring(0, Math.min(domain.length(), 20));
+        String title = shortDomain.replaceAll("\\P{L}+", "-");
+
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.getDefault());
-        String filename = dateFormat.format(date) + ".jpg";
+        String filename = dateFormat.format(date) + "_" + title + ".jpg";
         return  new File(Environment.getExternalStorageDirectory() + "/" + Environment.DIRECTORY_DOWNLOADS + "/" + filename);
     }
 
