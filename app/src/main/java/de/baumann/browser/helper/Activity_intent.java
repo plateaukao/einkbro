@@ -34,6 +34,7 @@ import android.support.v7.app.NotificationCompat;
 
 import java.util.Random;
 
+import de.baumann.browser.Browser_left;
 import de.baumann.browser.R;
 import de.baumann.browser.popups.Popup_readLater;
 
@@ -75,8 +76,8 @@ public class Activity_intent extends Activity {
         iMain.setAction(Intent.ACTION_VIEW);
         iMain.setClassName(Activity_intent.this, "de.baumann.browser.Browser_left");
 
-        android.content.Intent iAction = new android.content.Intent(this, Popup_readLater.class);
-        iAction.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        android.content.Intent iAction = new android.content.Intent(this, Browser_left.class);
+        iAction.setAction("readLater");
 
         android.content.Intent iAction_2 = new android.content.Intent(this, Activity_intent_add.class);
         iAction_2.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);

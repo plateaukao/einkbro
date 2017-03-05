@@ -1,3 +1,8 @@
+### v 2.8 (WIP)
+
+- fix: open links from readLater list (opened from notifications)
+
+
 ### v 2.7
 
 - fix: directory up icon
