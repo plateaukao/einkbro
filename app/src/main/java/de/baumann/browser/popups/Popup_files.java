@@ -50,7 +50,7 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import java.io.File;
 import java.text.DateFormat;
@@ -124,11 +124,12 @@ public class Popup_files extends AppCompatActivity {
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath()));
         final File[] files = f.listFiles();
 
+        // looping through all items <item>
+        assert files != null;
         if (files.length == 0) {
             Snackbar.make(listView, R.string.toast_files, Snackbar.LENGTH_LONG).show();
         }
 
-        // looping through all items <item>
         for (File file : files) {
 
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
@@ -179,8 +180,6 @@ public class Popup_files extends AppCompatActivity {
                 Cursor row2 = (Cursor) listView.getItemAtPosition(position);
                 final String files_icon = row2.getString(row2.getColumnIndexOrThrow("files_icon"));
                 final String files_attachment = row2.getString(row2.getColumnIndexOrThrow("files_attachment"));
-                final String files_title = row2.getString(row2.getColumnIndexOrThrow("files_title"));
-
                 final File pathFile = new File(files_attachment);
 
                 View v = super.getView(position, convertView, parent);
@@ -192,23 +191,43 @@ public class Popup_files extends AppCompatActivity {
                     iv.setImageResource(R.drawable.folder);
                 } else {
                     switch (files_icon) {
+                        case "":
+                            new Handler().postDelayed(new Runnable() {
+                                public void run() {
+                                    iv.setImageResource(R.drawable.arrow_up_dark);
+                                }
+                            }, 200);
+                            break;
                         case ".gif":case ".bmp":case ".tiff":case ".svg":
                         case ".png":case ".jpg":case ".JPG":case ".jpeg":
                             try {
-                                Uri uri = Uri.fromFile(pathFile);
-                                Picasso.with(Popup_files.this).load(uri).resize(76, 76).centerCrop().into(iv);
+                                Glide.with(Popup_files.this)
+                                        .load(files_attachment) // or URI/path
+                                        .override(76, 76)
+                                        .centerCrop()
+                                        .into(iv); //imageView to set thumbnail to
                             } catch (Exception e) {
-                                Log.w("HHS_Moodle", "Error Load image", e);
+                                Log.w("HHS_Moodle", "Error load thumbnail", e);
+                                iv.setImageResource(R.drawable.file_image);
                             }
                             break;
                         case ".m3u8":case ".mp3":case ".wma":case ".midi":case ".wav":case ".aac":
-                        case ".aif":case ".amp3":case ".weba":
+                        case ".aif":case ".amp3":case ".weba":case ".ogg":
                             iv.setImageResource(R.drawable.file_music);
                             break;
-                        case ".mpeg":case ".mp4":case ".ogg":case ".webm":case ".qt":case ".3gp":
+                        case ".mpeg":case ".mp4":case ".webm":case ".qt":case ".3gp":
                         case ".3g2":case ".avi":case ".f4v":case ".flv":case ".h261":case ".h263":
                         case ".h264":case ".asf":case ".wmv":
-                            iv.setImageResource(R.drawable.file_video);
+                            try {
+                                Glide.with(Popup_files.this)
+                                        .load(files_attachment) // or URI/path
+                                        .override(76, 76)
+                                        .centerCrop()
+                                        .into(iv); //imageView to set thumbnail to
+                            } catch (Exception e) {
+                                Log.w("HHS_Moodle", "Error load thumbnail", e);
+                                iv.setImageResource(R.drawable.file_video);
+                            }
                             break;
                         case ".vcs":case ".vcf":case ".css":case ".ics":case ".conf":case ".config":
                         case ".java":case ".html":
@@ -229,22 +248,12 @@ public class Popup_files extends AppCompatActivity {
                         case ".rar":
                             iv.setImageResource(R.drawable.zip_box);
                             break;
-                        case "":
-                            iv.setImageResource(R.drawable.arrow_up_dark);
-                            break;
                         default:
                             iv.setImageResource(R.drawable.file);
                             break;
                     }
                 }
 
-                if (files_title.equals("...")) {
-                    new Handler().postDelayed(new Runnable() {
-                        public void run() {
-                            iv.setImageResource(R.drawable.arrow_up_dark);
-                        }
-                    }, 500);
-                }
                 return v;
             }
         };
@@ -316,6 +325,7 @@ public class Popup_files extends AppCompatActivity {
                             .setAction(R.string.toast_yes, new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
+                                    sharedPref.edit().putString("files_startFolder", pathFile.getParent()).apply();
                                     deleteRecursive(pathFile);
                                     setFilesList();
                                 }

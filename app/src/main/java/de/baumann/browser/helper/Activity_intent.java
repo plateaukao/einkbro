@@ -36,7 +36,6 @@ import java.util.Random;
 
 import de.baumann.browser.Browser_left;
 import de.baumann.browser.R;
-import de.baumann.browser.popups.Popup_readLater;
 
 public class Activity_intent extends Activity {
 

@@ -145,6 +145,13 @@ class About_content {
                 .build());
 
         convenienceCardBuilder.addItem(new MaterialAboutActionItem.Builder()
+                .text("Glide")
+                .subText(R.string.about_license_9)
+                .icon(R.drawable.github_circle)
+                .setOnClickListener(ConvenienceBuilder.createWebViewDialogOnClickAction(c, "Glide", "https://github.com/bumptech/glide", true, false))
+                .build());
+
+        convenienceCardBuilder.addItem(new MaterialAboutActionItem.Builder()
                 .text("MAH Encryptor Lib")
                 .subText(R.string.about_license_6)
                 .icon(R.drawable.github_circle)
@@ -164,15 +171,7 @@ class About_content {
                 .icon(R.drawable.github_circle)
                 .setOnClickListener(ConvenienceBuilder.createWebViewDialogOnClickAction(c, "Material Design Icons", "https://github.com/Templarian/MaterialDesign", true, false))
                 .build());
-
-        convenienceCardBuilder.addItem(new MaterialAboutActionItem.Builder()
-                .text("Picasso")
-                .subText(R.string.about_license_9)
-                .icon(R.drawable.github_circle)
-                .setOnClickListener(ConvenienceBuilder.createWebViewDialogOnClickAction(c, "Picasso", "https://github.com/square/picasso", true, false))
-                .build());
         
         return new MaterialAboutList(appCardBuilder.build(), authorCardBuilder.build(), convenienceCardBuilder.build());
     }
-
 }

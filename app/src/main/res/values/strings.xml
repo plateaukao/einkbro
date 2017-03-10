@@ -308,7 +308,7 @@
     <string name="about_license_6">Used to en- and decrypt login data saved in the passStore.</string>
     <string name="about_license_7">Used to create the \"About screen\".</string>
     <string name="about_license_8">The source of nearly all icons.</string>
-    <string name="about_license_9">A powerful image downloading and caching library for Android.</string>
+    <string name="about_license_9">A powerful library to display media files for Android.</string>
 
 
     //File chooser

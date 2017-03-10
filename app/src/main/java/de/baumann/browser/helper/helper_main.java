@@ -188,12 +188,14 @@ public class helper_main {
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
 
-        try {
-            final MAHEncryptor mahEncryptor = MAHEncryptor.newInstance(sharedPref.getString("saved_key", ""));
-            pw = mahEncryptor.decode(sharedPref.getString("protect_PW", ""));
-        } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(from, R.string.toast_error, Toast.LENGTH_SHORT).show();
+        if (sharedPref.getString("protect_PW", "").length() > 0) {
+            try {
+                final MAHEncryptor mahEncryptor = MAHEncryptor.newInstance(sharedPref.getString("saved_key", ""));
+                pw = mahEncryptor.decode(sharedPref.getString("protect_PW", ""));
+            } catch (Exception e) {
+                e.printStackTrace();
+                Toast.makeText(from, R.string.toast_error, Toast.LENGTH_SHORT).show();
+            }
         }
 
         if (pw != null  && pw.length() > 0) {
