@@ -1,4 +1,4 @@
-### v 2.8 (WIP)
+### v 2.8
 - new: video thumbnails
 - fix: open links from readLater list (opened from notifications)
 - fix: error message on start
