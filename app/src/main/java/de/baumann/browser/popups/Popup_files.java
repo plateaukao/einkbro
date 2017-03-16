@@ -56,7 +56,9 @@ import java.io.File;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
 
@@ -116,6 +118,7 @@ public class Popup_files extends AppCompatActivity {
         setFilesList();
     }
 
+
     private void setFilesList() {
 
         deleteDatabase("files_DB_v01.db");
@@ -124,8 +127,26 @@ public class Popup_files extends AppCompatActivity {
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath()));
         final File[] files = f.listFiles();
 
+        Arrays.sort(files, new Comparator<File>() {
+            @Override
+            public int compare(File file1, File file2) {
+                if(file1.isDirectory()){
+                    if (file2.isDirectory()){
+                        return String.valueOf(file1.getName().toLowerCase()).compareTo(file2.getName().toLowerCase());
+                    }else{
+                        return -1;
+                    }
+                }else {
+                    if (file2.isDirectory()){
+                        return 1;
+                    }else{
+                        return String.valueOf(file1.getName().toLowerCase()).compareTo(file2.getName().toLowerCase());
+                    }
+                }
+            }
+        });
+
         // looping through all items <item>
-        assert files != null;
         if (files.length == 0) {
             Snackbar.make(listView, R.string.toast_files, Snackbar.LENGTH_LONG).show();
         }

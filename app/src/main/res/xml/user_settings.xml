@@ -132,7 +132,7 @@
             android:icon="@drawable/screen_rotation"
             android:summary="@string/action_rotation_summary"
             android:key="orientation"
-            android:defaultValue="auto"
+            android:defaultValue="@string/def_rot"
             android:entries="@array/listArrayOrientation"
             android:entryValues="@array/listValuesOrientation" />
 
@@ -161,7 +161,7 @@
             android:icon="@drawable/magnify2"
             android:summary="@string/action_searchEngine_summary"
             android:key="searchEngine"
-            android:defaultValue="https://duckduckgo.com/?q="
+            android:defaultValue="@string/def_search"
             android:entries="@array/listArraySearchEngine"
             android:entryValues="@array/listValuesSearchEngine" />
 
@@ -176,7 +176,7 @@
             android:icon="@drawable/wikipedia"
             android:summary="@string/action_wikiLang_summary"
             android:key="wikiLang"
-            android:defaultValue="en"
+            android:defaultValue="@string/def_wiki"
             android:entries="@array/listArrayWikiLang"
             android:entryValues="@array/listValuesWikiLang" />
 
