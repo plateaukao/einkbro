@@ -1,3 +1,7 @@
+### v 3.0
+- lint: disable missing translation
+- updated: support libraries
+
 ### v 2.8 - 2.9
 - new: video thumbnails
 - fix: open links from readLater list (opened from notifications)

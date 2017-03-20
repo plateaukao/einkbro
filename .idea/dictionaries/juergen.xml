@@ -2,8 +2,52 @@
   <dictionary name="juergen">
     <words>
       <w>abcdefghijklmnopqrstuvwxyz</w>
+      <w>adapterview</w>
+      <w>baumann</w>
+      <w>bulleted</w>
+      <w>ctxt</w>
+      <w>deutsch</w>
+      <w>dich</w>
+      <w>docx</w>
+      <w>duckduckgo</w>
+      <w>eingabe</w>
       <w>encryptor</w>
+      <w>epub</w>
+      <w>flickr</w>
+      <w>gaukler</w>
+      <w>github</w>
+      <w>infos</w>
+      <w>layoutstyle</w>
+      <w>mimetype</w>
+      <w>moodle</w>
+      <w>mpeg</w>
+      <w>msword</w>
+      <w>officedocument</w>
+      <w>onboard</w>
+      <w>onboarder</w>
+      <w>opendocument</w>
+      <w>openxmlformats</w>
+      <w>opml</w>
+      <w>paypal</w>
+      <w>pptx</w>
+      <w>presentationml</w>
+      <w>snackbar</w>
+      <w>spezial</w>
+      <w>spreadsheetml</w>
+      <w>startpage</w>
+      <w>statusbar</w>
       <w>stoneuk</w>
+      <w>suche</w>
+      <w>tgydyp</w>
+      <w>uuups</w>
+      <w>weba</w>
+      <w>webscr</w>
+      <w>websearch</w>
+      <w>webview</w>
+      <w>whitelist</w>
+      <w>wordprocessingml</w>
+      <w>xclick</w>
+      <w>xlsx</w>
     </words>
   </dictionary>
 </component>
