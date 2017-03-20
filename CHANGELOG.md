@@ -1,4 +1,5 @@
 ### v 3.0
+- fix: F-Droid build error
 - lint: disable missing translation
 - updated: support libraries
 
