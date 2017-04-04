@@ -292,7 +292,7 @@ public class Browser_left extends AppCompatActivity implements ObservableScrollV
             new Handler().postDelayed(new Runnable() {
                 public void run() {
                     String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
-                    String searchEngine = sharedPref.getString("searchEngine", "https://startpage.com/do/search?query=");
+                    String searchEngine = sharedPref.getString("searchEngine", "https://duckduckgo.com/?q=");
                     mWebView.loadUrl(searchEngine + sharedText);
                 }
             }, 300);
@@ -932,7 +932,7 @@ public class Browser_left extends AppCompatActivity implements ObservableScrollV
         if (id == R.id.action_search_go) {
 
             String text = editText.getText().toString();
-            String searchEngine = sharedPref.getString("searchEngine", "https://startpage.com/do/search?query=");
+            String searchEngine = sharedPref.getString("searchEngine", "https://duckduckgo.com/?q=");
             String wikiLang = sharedPref.getString("wikiLang", "en");
 
             if (text.length() > 3) {

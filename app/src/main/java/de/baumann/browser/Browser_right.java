@@ -886,7 +886,7 @@ public class Browser_right extends AppCompatActivity implements ObservableScroll
         if (id == R.id.action_search_go) {
 
             String text = editText.getText().toString();
-            String searchEngine = sharedPref.getString("searchEngine", "https://startpage.com/do/search?query=");
+            String searchEngine = sharedPref.getString("searchEngine", "https://duckduckgo.com/?q=");
             String wikiLang = sharedPref.getString("wikiLang", "en");
 
             if (text.length() > 3) {

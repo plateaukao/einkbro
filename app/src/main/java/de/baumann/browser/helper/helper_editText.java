@@ -58,7 +58,7 @@ public class helper_editText {
                 if ( (actionId == EditorInfo.IME_ACTION_SEARCH) || ((event.getKeyCode() == KeyEvent.KEYCODE_ENTER) && (event.getAction() == KeyEvent.ACTION_DOWN ))){
 
                     String text = editText.getText().toString();
-                    String searchEngine = sharedPref.getString("searchEngine", "https://startpage.com/do/search?query=");
+                    String searchEngine = sharedPref.getString("searchEngine", "https://duckduckgo.com/?q=");
                     String wikiLang = sharedPref.getString("wikiLang", "en");
 
 

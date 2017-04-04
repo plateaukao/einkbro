@@ -171,7 +171,7 @@
     </string-array>
 
     <string name="def_wiki">en</string>
-    <string name="def_search">https://duckduckgo.com/?q</string>
+    <string name="def_search">https://duckduckgo.com/?q=</string>
     <string name="def_rot">auto</string>
 
 </resources>

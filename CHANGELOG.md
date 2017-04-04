@@ -1,3 +1,8 @@
+### v 3.1
+- fix: possible crash an Android < Lollipop when opening settings
+- fix: search from toolbar
+- fix: crash when website title contains apostrophe
+
 ### v 3.0
 - fix: F-Droid build error
 - lint: disable missing translation

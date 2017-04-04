@@ -32,8 +32,6 @@
             android:layout_height="wrap_content"
             android:minHeight="4dip"
             android:maxHeight="4dip"
-            android:progressBackgroundTint="@color/colorTrans"
-            android:progressBackgroundTintMode="src_over"
             android:progressTint="@color/colorAccent"
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"

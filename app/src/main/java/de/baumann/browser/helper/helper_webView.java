@@ -48,7 +48,8 @@ import static android.webkit.WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE;
 public class helper_webView {
 
     public static String getTitle (WebView webview) {
-        return  webview.getTitle().substring(0,1).toUpperCase() + webview.getTitle().substring(1);
+
+        return  webview.getTitle().substring(0,1).toUpperCase() + webview.getTitle().substring(1).replace("'", "\\'");
     }
 
 
@@ -201,7 +202,13 @@ public class helper_webView {
                     if(db.isExist(helper_main.createDateSecond())){
                         Log.i(TAG, "Entry exists" + webView.getUrl());
                     }else{
-                        db.insert(helper_webView.getTitle (webView), webView.getUrl(), "", "", helper_main.createDateSecond());
+                        if (helper_webView.getTitle (webView).contains("'")) {
+                            String title = helper_webView.getTitle (webView).replace("'", "");
+                            db.insert(title, webView.getUrl(), "", "", helper_main.createDateSecond());
+
+                        } else {
+                            db.insert(helper_webView.getTitle (webView), webView.getUrl(), "", "", helper_main.createDateSecond());
+                        }
                     }
                 }
             }
