@@ -1,4 +1,4 @@
-### v 3.1
+### v 3.1 - v 3.2
 - fix: possible crash an Android < Lollipop when opening settings
 - fix: search from toolbar
 - fix: crash when website title contains apostrophe
