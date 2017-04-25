@@ -79,7 +79,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Locale;
 import java.util.Random;
 
 import de.baumann.browser.databases.DbAdapter_ReadLater;
@@ -116,7 +115,6 @@ public class Browser_left extends AppCompatActivity implements ObservableScrollV
 
     private String shareString;
     private String mCameraPhotoPath;
-    private String subStr;
     private final String TAG = Browser_right.class.getSimpleName();
 
     private String domain;
@@ -198,7 +196,7 @@ public class Browser_left extends AppCompatActivity implements ObservableScrollV
                     urlBar.setText(mWebView.getTitle());
                     actionBar.show();
                 }
-                helper_browser.setNavArrows(Browser_left.this, mWebView, imageButton_left, imageButton_right);
+                helper_browser.setNavArrows(mWebView, imageButton_left, imageButton_right);
             }
         });
 
@@ -560,7 +558,7 @@ public class Browser_left extends AppCompatActivity implements ObservableScrollV
             if (!actionBar.isShowing()) {
                 actionBar.show();
             }
-            helper_browser.setNavArrows(Browser_left.this, mWebView, imageButton_left, imageButton_right);
+            helper_browser.setNavArrows(mWebView, imageButton_left, imageButton_right);
         } else {
             imageButton.setVisibility(View.INVISIBLE);
         }
@@ -932,73 +930,7 @@ public class Browser_left extends AppCompatActivity implements ObservableScrollV
         if (id == R.id.action_search_go) {
 
             String text = editText.getText().toString();
-            String searchEngine = sharedPref.getString("searchEngine", "https://duckduckgo.com/?q=");
-            String wikiLang = sharedPref.getString("wikiLang", "en");
-
-            if (text.length() > 3) {
-                subStr=text.substring(3);
-            }
-
-            if (text.startsWith("www")) {
-                mWebView.loadUrl("http://" + text);
-            } else if (text.contains("http")) {
-                mWebView.loadUrl(text);
-            } else if (text.contains(".w ")) {
-                mWebView.loadUrl("https://" + wikiLang + ".wikipedia.org/wiki/Spezial:Suche?search=" + subStr);
-            } else if (text.startsWith(".f ")) {
-                mWebView.loadUrl("https://www.flickr.com/search/?advanced=1&license=2%2C3%2C4%2C5%2C6%2C9&text=" + subStr);
-            } else  if (text.startsWith(".m ")) {
-                mWebView.loadUrl("https://metager.de/meta/meta.ger3?focus=web&eingabe=" + subStr);
-            } else if (text.startsWith(".g ")) {
-                mWebView.loadUrl("https://github.com/search?utf8=✓&q=" + subStr);
-            } else  if (text.startsWith(".s ")) {
-                if (Locale.getDefault().getLanguage().contentEquals("de")){
-                    mWebView.loadUrl("https://startpage.com/do/search?query=" + subStr + "&lui=deutsch&l=deutsch");
-                } else {
-                    mWebView.loadUrl("https://startpage.com/do/search?query=" + subStr);
-                }
-            } else if (text.startsWith(".G ")) {
-                if (Locale.getDefault().getLanguage().contentEquals("de")){
-                    mWebView.loadUrl("https://www.google.de/search?&q=" + subStr);
-                } else {
-                    mWebView.loadUrl("https://www.google.com/search?&q=" + subStr);
-                }
-            } else  if (text.startsWith(".y ")) {
-                if (Locale.getDefault().getLanguage().contentEquals("de")){
-                    mWebView.loadUrl("https://www.youtube.com/results?hl=de&gl=DE&search_query=" + subStr);
-                } else {
-                    mWebView.loadUrl("https://www.youtube.com/results?search_query=" + subStr);
-                }
-            } else  if (text.startsWith(".d ")) {
-                if (Locale.getDefault().getLanguage().contentEquals("de")){
-                    mWebView.loadUrl("https://duckduckgo.com/?q=" + subStr + "&kl=de-de&kad=de_DE&k1=-1&kaj=m&kam=osm&kp=-1&kak=-1&kd=1&t=h_&ia=web");
-                } else {
-                    mWebView.loadUrl("https://duckduckgo.com/?q=" + subStr);
-                }
-            } else {
-                if (searchEngine.contains("https://duckduckgo.com/?q=")) {
-                    if (Locale.getDefault().getLanguage().contentEquals("de")){
-                        mWebView.loadUrl("https://duckduckgo.com/?q=" + text + "&kl=de-de&kad=de_DE&k1=-1&kaj=m&kam=osm&kp=-1&kak=-1&kd=1&t=h_&ia=web");
-                    } else {
-                        mWebView.loadUrl("https://duckduckgo.com/?q=" + text);
-                    }
-                } else if (searchEngine.contains("https://metager.de/meta/meta.ger3?focus=web&eingabe=")) {
-                    if (Locale.getDefault().getLanguage().contentEquals("de")){
-                        mWebView.loadUrl("https://metager.de/meta/meta.ger3?focus=web&eingabe=" + text);
-                    } else {
-                        mWebView.loadUrl("https://metager.de/meta/meta.ger3?focus=web&eingabe=" + text +"&focus=web&encoding=utf8&lang=eng");
-                    }
-                } else if (searchEngine.contains("https://startpage.com/do/search?query=")) {
-                    if (Locale.getDefault().getLanguage().contentEquals("de")){
-                        mWebView.loadUrl("https://startpage.com/do/search?query=" + text + "&lui=deutsch&l=deutsch");
-                    } else {
-                        mWebView.loadUrl("https://startpage.com/do/search?query=" + text);
-                    }
-                }else {
-                    mWebView.loadUrl(searchEngine + text);
-                }
-            }
-
+            helper_webView.openURL(Browser_left.this, mWebView, editText);
             helper_editText.hideKeyboard(Browser_left.this, editText, 0, text, getString(R.string.app_search_hint));
             helper_editText.editText_EditorAction(editText, Browser_left.this, mWebView, urlBar);
             urlBar.setVisibility(View.VISIBLE);
@@ -1051,7 +983,7 @@ public class Browser_left extends AppCompatActivity implements ObservableScrollV
         return super.onOptionsItemSelected(item);
     }
 
-    class myWebChromeClient extends WebChromeClient {
+    public class myWebChromeClient extends WebChromeClient {
 
         @Override
         public void onGeolocationPermissionsShowPrompt(final String origin, final GeolocationPermissions.Callback callback) {
@@ -1110,7 +1042,7 @@ public class Browser_left extends AppCompatActivity implements ObservableScrollV
             }
 
             if (actionBar.isShowing()) {
-                helper_browser.setNavArrows(Browser_left.this, mWebView, imageButton_left, imageButton_right);
+                helper_browser.setNavArrows(mWebView, imageButton_left, imageButton_right);
             }
         }
 

@@ -152,20 +152,6 @@
         <item>4</item>
     </string-array>
 
-    <string-array name="listArrayNav">
-        <item>Use swipe gestures</item>
-        <item>Use arrows</item>
-        <item>Use both</item>
-        <item>Nothing</item>
-    </string-array>
-
-    <string-array name="listValuesNav">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-    </string-array>
-
     <string name="def_wiki">en</string>
     <string name="def_search">https://duckduckgo.com/?q=</string>
     <string name="def_rot">auto</string>

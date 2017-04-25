@@ -138,34 +138,31 @@ public class helper_browser {
         }
     }
 
-    public static void setNavArrows(Activity activity, final WebView webview, ImageButton img_left, ImageButton img_right) {
+    public static void setNavArrows(final WebView webview, ImageButton img_left, ImageButton img_right) {
 
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
-
-        if (sharedPref.getString ("nav", "2").equals("2") || sharedPref.getString ("nav", "2").equals("3")){
-            if (webview.canGoBack()) {
-                img_left.setVisibility(View.VISIBLE);
-            } else {
-                img_left.setVisibility(View.INVISIBLE);
-            }
+        if (webview.canGoBack()) {
+            img_left.setVisibility(View.VISIBLE);
             img_left.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     webview.goBack();
                 }
             });
+        } else {
+            img_left.setVisibility(View.INVISIBLE);
+        }
 
-            if (webview.canGoForward()) {
-                img_right.setVisibility(View.VISIBLE);
-            } else {
-                img_right.setVisibility(View.INVISIBLE);
-            }
+
+        if (webview.canGoForward()) {
+            img_right.setVisibility(View.VISIBLE);
             img_right.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     webview.goForward();
                 }
             });
+        } else {
+            img_right.setVisibility(View.INVISIBLE);
         }
     }
 

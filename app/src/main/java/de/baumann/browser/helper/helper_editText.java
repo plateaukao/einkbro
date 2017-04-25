@@ -39,7 +39,6 @@ import com.mobapphome.mahencryptorlib.MAHEncryptor;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import de.baumann.browser.R;
 import de.baumann.browser.databases.DbAdapter_Bookmarks;
@@ -49,8 +48,6 @@ public class helper_editText {
 
     public static void editText_EditorAction(final EditText editText, final Activity from, final WebView mWebView, final TextView urlBar) {
 
-        final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
-
         editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -58,70 +55,7 @@ public class helper_editText {
                 if ( (actionId == EditorInfo.IME_ACTION_SEARCH) || ((event.getKeyCode() == KeyEvent.KEYCODE_ENTER) && (event.getAction() == KeyEvent.ACTION_DOWN ))){
 
                     String text = editText.getText().toString();
-                    String searchEngine = sharedPref.getString("searchEngine", "https://duckduckgo.com/?q=");
-                    String wikiLang = sharedPref.getString("wikiLang", "en");
-
-
-                    if (text.startsWith("www")) {
-                        mWebView.loadUrl("http://" + text);
-                    } else if (text.contains("http")) {
-                        mWebView.loadUrl(text);
-                    } else if (text.contains(".w ")) {
-                        mWebView.loadUrl("https://" + wikiLang + ".wikipedia.org/wiki/Spezial:Suche?search=" + text.substring(3));
-                    } else if (text.startsWith(".f ")) {
-                        mWebView.loadUrl("https://www.flickr.com/search/?advanced=1&license=2%2C3%2C4%2C5%2C6%2C9&text=" + text.substring(3));
-                    } else  if (text.startsWith(".m ")) {
-                        mWebView.loadUrl("https://metager.de/meta/meta.ger3?focus=web&eingabe=" + text.substring(3));
-                    } else if (text.startsWith(".g ")) {
-                        mWebView.loadUrl("https://github.com/search?utf8=✓&q=" + text.substring(3));
-                    } else  if (text.startsWith(".s ")) {
-                        if (Locale.getDefault().getLanguage().contentEquals("de")){
-                            mWebView.loadUrl("https://startpage.com/do/search?query=" + text.substring(3) + "&lui=deutsch&l=deutsch");
-                        } else {
-                            mWebView.loadUrl("https://startpage.com/do/search?query=" + text.substring(3));
-                        }
-                    } else if (text.startsWith(".G ")) {
-                        if (Locale.getDefault().getLanguage().contentEquals("de")){
-                            mWebView.loadUrl("https://www.google.de/search?&q=" + text.substring(3));
-                        } else {
-                            mWebView.loadUrl("https://www.google.com/search?&q=" + text.substring(3));
-                        }
-                    } else  if (text.startsWith(".y ")) {
-                        if (Locale.getDefault().getLanguage().contentEquals("de")){
-                            mWebView.loadUrl("https://www.youtube.com/results?hl=de&gl=DE&search_query=" + text.substring(3));
-                        } else {
-                            mWebView.loadUrl("https://www.youtube.com/results?search_query=" + text.substring(3));
-                        }
-                    } else  if (text.startsWith(".d ")) {
-                        if (Locale.getDefault().getLanguage().contentEquals("de")){
-                            mWebView.loadUrl("https://duckduckgo.com/?q=" + text.substring(3) + "&kl=de-de&kad=de_DE&k1=-1&kaj=m&kam=osm&kp=-1&kak=-1&kd=1&t=h_&ia=web");
-                        } else {
-                            mWebView.loadUrl("https://duckduckgo.com/?q=" + text.substring(3));
-                        }
-                    } else {
-                        if (searchEngine.contains("https://duckduckgo.com/?q=")) {
-                            if (Locale.getDefault().getLanguage().contentEquals("de")){
-                                mWebView.loadUrl("https://duckduckgo.com/?q=" + text + "&kl=de-de&kad=de_DE&k1=-1&kaj=m&kam=osm&kp=-1&kak=-1&kd=1&t=h_&ia=web");
-                            } else {
-                                mWebView.loadUrl("https://duckduckgo.com/?q=" + text);
-                            }
-                        } else if (searchEngine.contains("https://metager.de/meta/meta.ger3?focus=web&eingabe=")) {
-                            if (Locale.getDefault().getLanguage().contentEquals("de")){
-                                mWebView.loadUrl("https://metager.de/meta/meta.ger3?focus=web&eingabe=" + text);
-                            } else {
-                                mWebView.loadUrl("https://metager.de/meta/meta.ger3?focus=web&eingabe=" + text +"&focus=web&encoding=utf8&lang=eng");
-                            }
-                        } else if (searchEngine.contains("https://startpage.com/do/search?query=")) {
-                            if (Locale.getDefault().getLanguage().contentEquals("de")){
-                                mWebView.loadUrl("https://startpage.com/do/search?query=" + text + "&lui=deutsch&l=deutsch");
-                            } else {
-                                mWebView.loadUrl("https://startpage.com/do/search?query=" + text);
-                            }
-                        }else {
-                            mWebView.loadUrl(searchEngine + text);
-                        }
-                    }
-
+                    helper_webView.openURL(from, mWebView, editText);
                     helper_editText.hideKeyboard(from, editText, 0, text, from.getString(R.string.app_search_hint));
                     helper_editText.editText_EditorAction(editText, from, mWebView, urlBar);
                     urlBar.setVisibility(View.VISIBLE);

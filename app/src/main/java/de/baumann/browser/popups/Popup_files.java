@@ -51,6 +51,7 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.io.File;
 import java.text.DateFormat;
@@ -213,24 +214,7 @@ public class Popup_files extends AppCompatActivity {
                 } else {
                     switch (files_icon) {
                         case "":
-                            new Handler().postDelayed(new Runnable() {
-                                public void run() {
-                                    iv.setImageResource(R.drawable.arrow_up_dark);
-                                }
-                            }, 200);
-                            break;
-                        case ".gif":case ".bmp":case ".tiff":case ".svg":
-                        case ".png":case ".jpg":case ".JPG":case ".jpeg":
-                            try {
-                                Glide.with(Popup_files.this)
-                                        .load(files_attachment) // or URI/path
-                                        .override(76, 76)
-                                        .centerCrop()
-                                        .into(iv); //imageView to set thumbnail to
-                            } catch (Exception e) {
-                                Log.w("HHS_Moodle", "Error load thumbnail", e);
-                                iv.setImageResource(R.drawable.file_image);
-                            }
+                            iv.setImageResource(R.drawable.arrow_up_dark);
                             break;
                         case ".m3u8":case ".mp3":case ".wma":case ".midi":case ".wav":case ".aac":
                         case ".aif":case ".amp3":case ".weba":case ".ogg":
@@ -269,10 +253,33 @@ public class Popup_files extends AppCompatActivity {
                         case ".rar":
                             iv.setImageResource(R.drawable.zip_box);
                             break;
+                        case ".gif":case ".bmp":case ".tiff":case ".svg":
+                        case ".png":case ".jpg":case ".JPG":case ".jpeg":
+                            try {
+                                Glide.with(Popup_files.this)
+                                        .load(files_attachment) // or URI/path
+                                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                        .skipMemoryCache(true)
+                                        .override(76, 76)
+                                        .centerCrop()
+                                        .into(iv); //imageView to set thumbnail to
+                            } catch (Exception e) {
+                                Log.w("HHS_Moodle", "Error load thumbnail", e);
+                                iv.setImageResource(R.drawable.file_image);
+                            }
+                            break;
                         default:
                             iv.setImageResource(R.drawable.file);
                             break;
                     }
+                }
+
+                if (files_attachment.isEmpty()) {
+                    new Handler().postDelayed(new Runnable() {
+                        public void run() {
+                            iv.setImageResource(R.drawable.arrow_up_dark);
+                        }
+                    }, 350);
                 }
 
                 return v;

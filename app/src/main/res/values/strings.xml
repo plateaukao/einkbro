@@ -99,8 +99,6 @@
     <string name="toast_download">Downloading file:</string>
     <string name="toast_download_1">Do you want to download:</string>
     <string name="toast_perm">Permissions granted?</string>
-    <string name="toast_back">Can not go back.</string>
-    <string name="toast_forward">Can not go forward.</string>
     <string name="toast_backup">Backup successful.</string>
     <string name="toast_restore">Restore successful.</string>
     <string name="toast_backup_not">Backup failed.</string>
@@ -251,9 +249,6 @@
 
     <string name="action_fullscreen">Fullscreen</string>
     <string name="action_fullscreen_summary">Hide the status- and/or the toolbar at the bottom while browsing.</string>
-
-    <string name="action_nav">Navigation</string>
-    <string name="action_nav_summary">Use arrows and/or swipe gestures to navigate back and forward in your browser history.</string>
 
 
     // Intro

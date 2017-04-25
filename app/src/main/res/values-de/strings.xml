@@ -100,8 +100,6 @@
     <string name="toast_download">Lade Datei herunter:</string>
     <string name="toast_download_1">Möchtest du herunterladen:</string>
     <string name="toast_perm">Berechtigungen erteilt?</string>
-    <string name="toast_back">Kann vorherige Seite nicht laden.</string>
-    <string name="toast_forward">Kann nächste Seite nicht laden.</string>
     <string name="toast_backup">Sicherung erfolgreich.</string>
     <string name="toast_restore">Wiederherstellung erfolgreich.</string>
     <string name="toast_backup_not">Sicherung fehlgeschlagen.</string>
@@ -264,10 +262,6 @@
 
     <string name="action_fullscreen">Vollbild</string>
     <string name="action_fullscreen_summary">Verstecke während dem Browsen die Status- und/oder die Toolbar am unteren Bildschirmrand.</string>
-
-    <string name="action_nav">Navigation</string>
-    <string name="action_nav_summary">Benutze Pfeile und/oder Wischgesten um zur vorherigen oder nächsten Internetseite zu
-        gelangen.</string>
 
 
     // Intro

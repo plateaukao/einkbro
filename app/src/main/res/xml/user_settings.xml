@@ -110,15 +110,6 @@
         android:title="@string/pref_2">
 
         <ListPreference
-            android:title="@string/action_nav"
-            android:icon="@drawable/swap_horizontal"
-            android:summary="@string/action_nav_summary"
-            android:key="nav"
-            android:defaultValue="2"
-            android:entries="@array/listArrayNav"
-            android:entryValues="@array/listValuesNav" />
-
-        <ListPreference
             android:title="@string/action_fullscreen"
             android:icon="@drawable/fullscreen"
             android:summary="@string/action_fullscreen_summary"

@@ -1,3 +1,7 @@
+### v 3.3 (WIP)
+- removed: swipe to navigate
+- improved:opening urls
+
 ### v 3.1 - v 3.2
 - fix: possible crash an Android < Lollipop when opening settings
 - fix: search from toolbar
