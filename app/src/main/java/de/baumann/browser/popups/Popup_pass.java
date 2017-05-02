@@ -260,30 +260,6 @@ public class Popup_pass extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        helper_main.isClosed(Popup_pass.this);
-        finish();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();    //To change body of overridden methods use File | Settings | File Templates.
-        helper_main.isOpened(Popup_pass.this);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();    //To change body of overridden methods use File | Settings | File Templates.
-        helper_main.isOpened(Popup_pass.this);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();    //To change body of overridden methods use File | Settings | File Templates.
-        helper_main.isClosed(Popup_pass.this);
-    }
-
-    @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
 

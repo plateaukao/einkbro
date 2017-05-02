@@ -265,7 +265,6 @@ public class Browser_right extends AppCompatActivity implements ObservableScroll
         String action = intent.getAction();
 
         if ("closeAPP".equals(action)) {
-            helper_webView.closeWebView(Browser_right.this, mWebView);
             finishAffinity();
         } else {
             new Handler().postDelayed(new Runnable() {
@@ -535,9 +534,7 @@ public class Browser_right extends AppCompatActivity implements ObservableScroll
                     .setAction(getString(R.string.toast_yes), new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            helper_webView.closeWebView(Browser_right.this, mWebView);
                             helper_main.closeApp(Browser_right.this, Browser_left.class, mWebView);
-                            finishAffinity();
                         }
                     });
             snackbar.show();
@@ -545,17 +542,9 @@ public class Browser_right extends AppCompatActivity implements ObservableScroll
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();    //To change body of overridden methods use File | Settings | File Templates.
-        helper_main.isOpened(Browser_right.this);
-        mWebView.onPause();
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();    //To change body of overridden methods use File | Settings | File Templates.
         mWebView.onResume();
-        helper_main.isOpened(Browser_right.this);
         final String URL = sharedPref.getString("openURL","https://github.com/scoute-dich/browser/");
         new Handler().postDelayed(new Runnable() {
             public void run() {
@@ -616,7 +605,6 @@ public class Browser_right extends AppCompatActivity implements ObservableScroll
     @Override
     protected void onStop() {
         super.onStop();    //To change body of overridden methods use File | Settings | File Templates.
-        helper_main.isClosed(Browser_right.this);
         if (inCustomView()) {
             hideCustomView();
         }
@@ -937,7 +925,7 @@ public class Browser_right extends AppCompatActivity implements ObservableScroll
         return super.onOptionsItemSelected(item);
     }
 
-    class myWebChromeClient extends WebChromeClient {
+    private class myWebChromeClient extends WebChromeClient {
 
         @Override
         public void onGeolocationPermissionsShowPrompt(final String origin, final GeolocationPermissions.Callback callback) {

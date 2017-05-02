@@ -27,6 +27,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.util.Patterns;
@@ -226,7 +227,12 @@ public class helper_webView {
                     try {
                         Intent intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME);
                         if (intent.resolveActivity(from.getPackageManager()) != null) {
-                            from.startActivity(intent);
+                            try {
+                                from.startActivity(intent);
+                            } catch (Exception e) {
+                                Snackbar.make(webView, R.string.toast_error, Snackbar.LENGTH_SHORT).show();
+                            }
+
                             return true;
                         }
                         //try to find fallback url
@@ -272,7 +278,6 @@ public class helper_webView {
             from.deleteDatabase("history_DB_v01.db");
             webView.clearHistory();
         }
-        helper_main.isClosed(from);
         sharedPref.edit().putString("started", "").apply();
     }
 

@@ -1,6 +1,7 @@
-### v 3.3 (WIP)
+### v 3.3
 - removed: swipe to navigate
 - improved:opening urls
+- fixed: pin screen not showing
 
 ### v 3.1 - v 3.2
 - fix: possible crash an Android < Lollipop when opening settings

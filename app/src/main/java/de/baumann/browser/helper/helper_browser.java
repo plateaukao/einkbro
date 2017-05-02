@@ -152,7 +152,6 @@ public class helper_browser {
             img_left.setVisibility(View.INVISIBLE);
         }
 
-
         if (webview.canGoForward()) {
             img_right.setVisibility(View.VISIBLE);
             img_right.setOnClickListener(new View.OnClickListener() {
@@ -172,9 +171,7 @@ public class helper_browser {
 
         toolbar.setOnTouchListener(new class_OnSwipeTouchListener_editText(activity) {
             public void onSwipeTop() {
-                helper_webView.closeWebView(activity, webview);
                 helper_main.closeApp(activity, to, webview);
-                activity.finishAffinity();
             }
             public void onSwipeRight() {
                 helper_main.switchToActivity(activity, Popup_readLater.class, "", false);

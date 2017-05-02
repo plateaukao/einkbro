@@ -142,11 +142,13 @@ public class Browser_left extends AppCompatActivity implements ObservableScrollV
 
         WebView.enableSlowWholeDocumentDraw();
         setContentView(R.layout.activity_browser);
+        helper_main.checkPin(Browser_left.this);
         helper_main.onStart(Browser_left.this);
 
         PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
         PreferenceManager.setDefaultValues(this, R.xml.user_settings_search, false);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPref.edit().putBoolean("isOpened", true).apply();
 
         boolean show = sharedPref.getBoolean("introShowDo_notShow", true);
 
@@ -303,7 +305,6 @@ public class Browser_left extends AppCompatActivity implements ObservableScrollV
                 }
             }, 300);
         } else if ("closeAPP".equals(action)) {
-            helper_webView.closeWebView(Browser_left.this, mWebView);
             finishAffinity();
         }  else if ("readLater".equals(action)) {
             helper_main.switchToActivity(Browser_left.this, Popup_readLater.class, "", false);
@@ -582,8 +583,6 @@ public class Browser_left extends AppCompatActivity implements ObservableScrollV
                         @Override
                         public void onClick(View view) {
                             helper_main.closeApp(Browser_left.this, Browser_right.class, mWebView);
-                            helper_webView.closeWebView(Browser_left.this, mWebView);
-                            finishAffinity();
                         }
                     });
             snackbar.show();
@@ -591,17 +590,9 @@ public class Browser_left extends AppCompatActivity implements ObservableScrollV
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();    //To change body of overridden methods use File | Settings | File Templates.
-        helper_main.isOpened(Browser_left.this);
-        mWebView.onPause();
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();    //To change body of overridden methods use File | Settings | File Templates.
         mWebView.onResume();
-        helper_main.isOpened(Browser_left.this);
         final String URL = sharedPref.getString("openURL","https://github.com/scoute-dich/browser/");
         new Handler().postDelayed(new Runnable() {
             public void run() {
@@ -662,7 +653,6 @@ public class Browser_left extends AppCompatActivity implements ObservableScrollV
     @Override
     protected void onStop() {
         super.onStop();    //To change body of overridden methods use File | Settings | File Templates.
-        helper_main.isClosed(Browser_left.this);
         if (inCustomView()) {
             hideCustomView();
         }
@@ -983,7 +973,7 @@ public class Browser_left extends AppCompatActivity implements ObservableScrollV
         return super.onOptionsItemSelected(item);
     }
 
-    public class myWebChromeClient extends WebChromeClient {
+    private class myWebChromeClient extends WebChromeClient {
 
         @Override
         public void onGeolocationPermissionsShowPrompt(final String origin, final GeolocationPermissions.Callback callback) {

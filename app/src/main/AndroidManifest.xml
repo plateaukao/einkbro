@@ -171,13 +171,6 @@
             android:configChanges="orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <activity
-            android:name="de.baumann.browser.helper.Activity_password"
-            android:launchMode="singleTask"
-            android:configChanges="orientation|screenSize"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" />
-
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="de.baumann.browser.provider"

@@ -40,6 +40,9 @@ import android.text.util.Linkify;
 import android.view.View;
 import android.view.WindowManager;
 import android.webkit.WebView;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mobapphome.mahencryptorlib.MAHEncryptor;
@@ -57,6 +60,7 @@ public class helper_main {
     private static final int REQUEST_CODE_ASK_PERMISSIONS = 123;
     private static final int REQUEST_CODE_ASK_PERMISSIONS_1 = 1234;
     private static String pw;
+    private static String protect;
 
     public static void grantPermissionsStorage(final Activity from) {
 
@@ -170,23 +174,28 @@ public class helper_main {
         from.finishAffinity();
     }
 
-    public static void isOpened (Activity from) {
+    public static void onStart (final Activity from) {
+
+        PreferenceManager.setDefaultValues(from, R.xml.user_settings, false);
+        PreferenceManager.setDefaultValues(from, R.xml.user_settings_search, false);
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
-        sharedPref.edit()
-                .putBoolean("isOpened", false)
-                .apply();
+
+        if (sharedPref.getString ("fullscreen", "2").equals("1") || sharedPref.getString ("fullscreen", "2").equals("3")){
+            from.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        }
+        if (sharedPref.getString("orientation", "auto").equals("landscape")) {
+            from.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
+        if (sharedPref.getString("orientation", "auto").equals("portrait")) {
+            from.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
     }
 
-    public static void isClosed (Activity from) {
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
-        sharedPref.edit()
-                .putBoolean("isOpened", true)
-                .apply();
-    }
+    public static void checkPin (final Activity from) {
 
-    public static void onStart (Activity from) {
-
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
+        PreferenceManager.setDefaultValues(from, R.xml.user_settings, false);
+        PreferenceManager.setDefaultValues(from, R.xml.user_settings_search, false);
+        final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
 
         if (sharedPref.getString("protect_PW", "").length() > 0) {
             try {
@@ -199,9 +208,171 @@ public class helper_main {
         }
 
         if (pw != null  && pw.length() > 0) {
-            if (sharedPref.getBoolean("isOpened", true)) {
-                helper_main.switchToActivity(from, Activity_password.class, "", false);
+            AlertDialog.Builder builder = new AlertDialog.Builder(from, R.style.YourStyle);
+            final View dialogView = View.inflate(from, R.layout.dialog_password, null);
+
+            final TextView text = (TextView) dialogView.findViewById(R.id.pass_userPin);
+
+            Button ib0 = (Button) dialogView.findViewById(R.id.button0);
+            assert ib0 != null;
+            ib0.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    enterNum(dialogView, "0");
+                }
+            });
+
+            Button ib1 = (Button) dialogView.findViewById(R.id.button1);
+            assert ib1 != null;
+            ib1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    enterNum(dialogView, "1");
+                }
+            });
+
+            Button ib2 = (Button) dialogView.findViewById(R.id.button2);
+            assert ib2 != null;
+            ib2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    enterNum(dialogView, "2");
+                }
+            });
+
+            Button ib3 = (Button) dialogView.findViewById(R.id.button3);
+            assert ib3 != null;
+            ib3.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    enterNum(dialogView, "3");
+                }
+            });
+
+            Button ib4 = (Button) dialogView.findViewById(R.id.button4);
+            assert ib4 != null;
+            ib4.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    enterNum(dialogView, "4");
+                }
+            });
+
+            Button ib5 = (Button) dialogView.findViewById(R.id.button5);
+            assert ib5 != null;
+            ib5.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    enterNum(dialogView, "5");
+                }
+            });
+
+            Button ib6 = (Button) dialogView.findViewById(R.id.button6);
+            assert ib6 != null;
+            ib6.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    enterNum(dialogView, "6");
+                }
+            });
+
+            Button ib7 = (Button) dialogView.findViewById(R.id.button7);
+            assert ib7 != null;
+            ib7.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    enterNum(dialogView, "7");
+                }
+            });
+
+            Button ib8 = (Button) dialogView.findViewById(R.id.button8);
+            assert ib8 != null;
+            ib8.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    enterNum(dialogView, "8");
+                }
+            });
+
+            Button ib9 = (Button) dialogView.findViewById(R.id.button9);
+            assert ib9 != null;
+            ib9.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    enterNum(dialogView, "9");
+                }
+            });
+
+            try {
+                final MAHEncryptor mahEncryptor = MAHEncryptor.newInstance(sharedPref.getString("saved_key", ""));
+                protect = mahEncryptor.decode(sharedPref.getString("protect_PW", ""));
+            } catch (Exception e) {
+                e.printStackTrace();
+                Snackbar.make(ib0, R.string.toast_error, Snackbar.LENGTH_SHORT).show();
             }
+
+
+            ImageButton enter = (ImageButton) dialogView.findViewById(R.id.imageButtonEnter);
+            assert enter != null;
+
+
+            final ImageButton cancel = (ImageButton) dialogView.findViewById(R.id.imageButtonCancel);
+            assert cancel != null;
+            cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    text.setText("");
+                }
+            });
+
+            final Button clear = (Button) dialogView.findViewById(R.id.buttonReset);
+            assert clear != null;
+            clear.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Snackbar snackbar = Snackbar
+                            .make(clear, from.getString(R.string.pw_forgotten_dialog), Snackbar.LENGTH_LONG)
+                            .setAction(from.getString(R.string.toast_yes), new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    try {
+                                        // clearing app data
+                                        Runtime runtime = Runtime.getRuntime();
+                                        runtime.exec("pm clear de.baumann.browser");
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+                    snackbar.show();
+                }
+            });
+
+            builder.setView(dialogView);
+            builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    from.finishAffinity();
+                }
+            });
+
+            final AlertDialog dialog = builder.create();
+            // Display the custom alert dialog on interface
+            dialog.show();
+
+            enter.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String Password = text.getText().toString().trim();
+
+                    if (Password.equals(protect)) {
+                        sharedPref.edit().putBoolean("isOpened", false).apply();
+                        dialog.dismiss();
+                    } else {
+                        Snackbar.make(text, R.string.toast_wrongPW, Snackbar.LENGTH_LONG).show();
+                    }
+                }
+            });
         }
         if (sharedPref.getString ("fullscreen", "2").equals("1") || sharedPref.getString ("fullscreen", "2").equals("3")){
             from.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -212,6 +383,13 @@ public class helper_main {
         if (sharedPref.getString("orientation", "auto").equals("portrait")) {
             from.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
+    }
+
+    private static void enterNum (View view, String number) {
+        TextView text = (TextView) view.findViewById(R.id.pass_userPin);
+        String textNow = text.getText().toString().trim();
+        String pin = textNow + number;
+        text.setText(pin);
     }
 
     public static SpannableString textSpannable (String text) {
