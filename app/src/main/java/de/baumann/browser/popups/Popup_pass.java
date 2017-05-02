@@ -70,6 +70,10 @@ public class Popup_pass extends AppCompatActivity {
         PreferenceManager.setDefaultValues(this, R.xml.user_settings_search, false);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 
+        if (sharedPref.getBoolean("isOpened", false)) {
+            helper_main.checkPin(Popup_pass.this);
+        }
+
         try {
             mahEncryptor = MAHEncryptor.newInstance(sharedPref.getString("saved_key", ""));
         } catch (Exception e) {

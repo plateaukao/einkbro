@@ -84,6 +84,10 @@ public class Popup_bookmarks extends AppCompatActivity {
         PreferenceManager.setDefaultValues(this, R.xml.user_settings_search, false);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 
+        if (sharedPref.getBoolean("isOpened", false)) {
+            helper_main.checkPin(Popup_bookmarks.this);
+        }
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
