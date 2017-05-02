@@ -93,10 +93,6 @@ public class Popup_files extends AppCompatActivity {
         PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
         PreferenceManager.setDefaultValues(this, R.xml.user_settings_search, false);
 
-        if (sharedPref.getBoolean("isOpened", false)) {
-            helper_main.checkPin(Popup_files.this);
-        }
-
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPref.edit().putString("files_startFolder",
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath()).apply();
