@@ -1,3 +1,7 @@
+### v 3.4
+- improved: sorting of list entries
+- fix: keyboard not open (landscape)
+
 ### v 3.3
 - removed: swipe to navigate
 - improved:opening urls

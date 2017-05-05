@@ -105,9 +105,11 @@ public class DbAdapter_History {
         String[] columns = new String[]{"_id", "history_title", "history_content", "history_icon","history_attachment","history_creation"};
 
         if (sp.getString("sortDBH", "title").equals("title")) {
-            return sqlDb.query(dbTable, columns, null, null, null, null, "history_title");
+            return sqlDb.query(dbTable, columns, null, null, null, null, "history_title" + " COLLATE NOCASE ASC;");
         } else if (sp.getString("sortDBH", "title").equals("create")) {
-            return sqlDb.query(dbTable, columns, null, null, null, null, "history_creation");
+            String orderBy = "history_creation" + "," +
+                    "history_title" + " COLLATE NOCASE ASC;";
+            return sqlDb.query(dbTable, columns, null, null, null, null, orderBy);
         }
 
         return null;

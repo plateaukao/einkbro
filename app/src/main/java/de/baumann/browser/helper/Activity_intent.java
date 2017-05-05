@@ -56,16 +56,14 @@ public class Activity_intent extends Activity {
         }
 
         if (domain.contains("www.")) {
-            domain = domain.replace("www.", "").toUpperCase();
+            domain = domain.replace("www.", "");
         }
-
-        String domain2 = domain.substring(0,1).toUpperCase() + domain.substring(1);
 
         PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
         PreferenceManager.setDefaultValues(this, R.xml.user_settings_search, false);
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPref.edit().putString("add_readLater_link", data.toString()).apply();
-        sharedPref.edit().putString("add_readLater_domain", domain2).apply();
+        sharedPref.edit().putString("add_readLater_domain", domain).apply();
 
         Random rand = new Random();
         int n = rand.nextInt(100000);

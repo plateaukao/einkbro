@@ -52,7 +52,7 @@ public class helper_webView {
 
     public static String getTitle (WebView webview) {
 
-        return  webview.getTitle().substring(0,1).toUpperCase() + webview.getTitle().substring(1).replace("'", "\\'");
+        return  webview.getTitle().replace("'", "\\'");
     }
 
 

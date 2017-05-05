@@ -101,9 +101,13 @@ public class DbAdapter_ReadLater {
         String[] columns = new String[]{"_id", "readLater_title", "readLater_content", "readLater_icon","readLater_attachment","readLater_creation"};
 
         if (sp.getString("sortDBR", "title").equals("title")) {
-            return sqlDb.query(dbTable, columns, null, null, null, null, "readLater_title");
+            return sqlDb.query(dbTable, columns, null, null, null, null, "readLater_title" + " COLLATE NOCASE ASC;");
         } else if (sp.getString("sortDBR", "title").equals("create")) {
-            return sqlDb.query(dbTable, columns, null, null, null, null, "readLater_creation");
+
+            String orderBy = "readLater_creation" + "," +
+                    "readLater_title" + " COLLATE NOCASE ASC;";
+
+            return sqlDb.query(dbTable, columns, null, null, null, null, orderBy);
         }
 
         return null;

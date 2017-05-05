@@ -374,15 +374,6 @@ public class helper_main {
                 }
             });
         }
-        if (sharedPref.getString ("fullscreen", "2").equals("1") || sharedPref.getString ("fullscreen", "2").equals("3")){
-            from.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        }
-        if (sharedPref.getString("orientation", "auto").equals("landscape")) {
-            from.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        }
-        if (sharedPref.getString("orientation", "auto").equals("portrait")) {
-            from.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
     }
 
     private static void enterNum (View view, String number) {

@@ -271,7 +271,7 @@ public class helper_editText {
                         .apply();
                 from.invalidateOptionsMenu();
                 InputMethodManager imm = (InputMethodManager) from.getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
+                imm.showSoftInput(editText, InputMethodManager.SHOW_FORCED);
             }
         }, 200);
     }
