@@ -44,6 +44,7 @@ import java.util.Locale;
 
 import de.baumann.browser.R;
 import de.baumann.browser.databases.DbAdapter_History;
+import de.baumann.browser.utils.Utils_AdClient;
 
 import static android.content.ContentValues.TAG;
 import static android.webkit.WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE;
@@ -161,8 +162,12 @@ public class helper_webView {
 
     public static void webView_WebViewClient (final Activity from, final SwipeRefreshLayout swipeRefreshLayout,
                                               final WebView webView, final TextView urlBar) {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
 
-        webView.setWebViewClient(new WebViewClient() {
+
+        // crude if-else just to get the functionality in, feel free to make this more concise if you like
+        if (sharedPref.getString("blockads_string", "").equals("Enabled")) {
+        webView.setWebViewClient(new Utils_AdClient() {
 
             public void onPageFinished(WebView view, String url) {
                 SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
@@ -256,6 +261,104 @@ public class helper_webView {
             }
 
         });
+        }
+        else{
+            webView.setWebViewClient(new WebViewClient() {
+
+                public void onPageFinished(WebView view, String url) {
+                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
+                    super.onPageFinished(view, url);
+                    swipeRefreshLayout.setRefreshing(false);
+                    urlBar.setText(webView.getTitle());
+                    sharedPref.edit().putString("openURL", "").apply();
+
+                    if (webView.getTitle() != null && !webView.getTitle().equals("about:blank")  && !webView.getTitle().isEmpty()) {
+
+                        DbAdapter_History db = new DbAdapter_History(from);
+                        db.open();
+                        db.deleteDouble(webView.getUrl());
+
+                        if(db.isExist(helper_main.createDateSecond())){
+                            Log.i(TAG, "Entry exists" + webView.getUrl());
+                        }else{
+                            if (helper_webView.getTitle (webView).contains("'")) {
+                                String title = helper_webView.getTitle (webView).replace("'", "");
+                                db.insert(title, webView.getUrl(), "", "", helper_main.createDateSecond());
+
+                            } else {
+                                db.insert(helper_webView.getTitle (webView), webView.getUrl(), "", "", helper_main.createDateSecond());
+                            }
+                        }
+                    }
+                }
+
+                @SuppressWarnings("deprecation")
+                @Override
+                public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                    final Uri uri = Uri.parse(url);
+                    return handleUri(uri);
+                }
+
+                @TargetApi(Build.VERSION_CODES.N)
+                @Override
+                public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                    final Uri uri = request.getUrl();
+                    return handleUri(uri);
+                }
+
+                private boolean handleUri(final Uri uri) {
+
+                    Log.i(TAG, "Uri =" + uri);
+                    final String url = uri.toString();
+                    // Based on some condition you need to determine if you are going to load the url
+                    // in your web view itself or in a browser.
+                    // You can use `host` or `scheme` or any part of the `uri` to decide.
+
+                    if (url.startsWith("http")) return false;//open web links as usual
+                    //try to find browse activity to handle uri
+                    Uri parsedUri = Uri.parse(url);
+                    PackageManager packageManager = from.getPackageManager();
+                    Intent browseIntent = new Intent(Intent.ACTION_VIEW).setData(parsedUri);
+                    if (browseIntent.resolveActivity(packageManager) != null) {
+                        from.startActivity(browseIntent);
+                        return true;
+                    }
+                    //if not activity found, try to parse intent://
+                    if (url.startsWith("intent:")) {
+                        try {
+                            Intent intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME);
+                            if (intent.resolveActivity(from.getPackageManager()) != null) {
+                                try {
+                                    from.startActivity(intent);
+                                } catch (Exception e) {
+                                    Snackbar.make(webView, R.string.toast_error, Snackbar.LENGTH_SHORT).show();
+                                }
+
+                                return true;
+                            }
+                            //try to find fallback url
+                            String fallbackUrl = intent.getStringExtra("browser_fallback_url");
+                            if (fallbackUrl != null) {
+                                webView.loadUrl(fallbackUrl);
+                                return true;
+                            }
+                            //invite to install
+                            Intent marketIntent = new Intent(Intent.ACTION_VIEW).setData(
+                                    Uri.parse("market://details?id=" + intent.getPackage()));
+                            if (marketIntent.resolveActivity(packageManager) != null) {
+                                from.startActivity(marketIntent);
+                                return true;
+                            }
+                        } catch (URISyntaxException e) {
+                            //not an intent uri
+                        }
+                    }
+                    return true;//do nothing in other cases
+                }
+
+            });
+
+        }
     }
 
     public static void closeWebView (Activity from, WebView webView) {
