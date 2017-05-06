@@ -93,6 +93,8 @@ import de.baumann.browser.popups.Popup_files;
 import de.baumann.browser.popups.Popup_history;
 import de.baumann.browser.popups.Popup_pass;
 import de.baumann.browser.popups.Popup_readLater;
+import de.baumann.browser.utils.Utils_AdBlocker;
+import de.baumann.browser.utils.Utils_UserAgent;
 
 public class Browser_left extends AppCompatActivity implements ObservableScrollViewCallbacks {
 
@@ -132,6 +134,8 @@ public class Browser_left extends AppCompatActivity implements ObservableScrollV
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo == null || !activeNetworkInfo.isConnected();
     }
+    //request desktop
+    public final Utils_UserAgent myUserAgent= new Utils_UserAgent();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -280,6 +284,12 @@ public class Browser_left extends AppCompatActivity implements ObservableScrollV
         helper_editText.editText_EditorAction(editText, Browser_left.this, mWebView, urlBar);
         helper_editText.editText_FocusChange(editText, Browser_left.this);
         helper_main.grantPermissionsStorage(Browser_left.this);
+
+
+        //////////////////ad block
+        Utils_AdBlocker.init(this);
+        //////////////////ad block
+
 
         onNewIntent(getIntent());
     }
@@ -719,6 +729,8 @@ public class Browser_left extends AppCompatActivity implements ObservableScrollV
             Switch sw_pictures = (Switch) dialogView.findViewById(R.id.switch2);
             Switch sw_location = (Switch) dialogView.findViewById(R.id.switch3);
             Switch sw_cookies = (Switch) dialogView.findViewById(R.id.switch4);
+            Switch sw_blockads = (Switch) dialogView.findViewById(R.id.switch5);
+            Switch sw_requestdesk = (Switch) dialogView.findViewById(R.id.switch6);
             final ImageButton whiteList_js = (ImageButton) dialogView.findViewById(R.id.imageButton_js);
 
             if (whiteList.contains(domain)) {
@@ -746,7 +758,16 @@ public class Browser_left extends AppCompatActivity implements ObservableScrollV
             } else {
                 sw_cookies.setChecked(false);
             }
-
+            if (sharedPref.getString("request_string", "True").equals(getString(R.string.app_yes))){
+                sw_requestdesk.setChecked(true);
+            } else {
+                sw_requestdesk.setChecked(false);
+            }
+            if (sharedPref.getString("blockads_string", "True").equals(getString(R.string.app_yes))){
+                sw_blockads.setChecked(true);
+            } else {
+                sw_blockads.setChecked(false);
+            }
             whiteList_js.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -823,7 +844,40 @@ public class Browser_left extends AppCompatActivity implements ObservableScrollV
 
                 }
             });
+            sw_blockads.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView,
+                                             boolean isChecked) {
+                    SwipeRefreshLayout swipeView = (SwipeRefreshLayout) findViewById(R.id.swipe);
+
+                    if(isChecked){
+                        //used commit() instead of apply because the new WVC depends on the sharedpref
+                        //immediately being available, wouldnt want to miss the change in background process
+                        //lag from using apply(), feel free to use apply if you prefer though.
+                        sharedPref.edit().putString("blockads_string", getString(R.string.app_yes)).commit();
+                        helper_webView.webView_WebViewClient(Browser_left.this, swipeView, mWebView, urlBar);
+                    }else{
+                        sharedPref.edit().putString("blockads_string", getString(R.string.app_no)).commit();
+                        helper_webView.webView_WebViewClient(Browser_left.this, swipeView, mWebView, urlBar);
+                    }
+                }
+            });
+            sw_requestdesk.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView,
+                                             boolean isChecked) {
+                    if(isChecked){
+                        sharedPref.edit().putString("request_string", getString(R.string.app_yes)).apply();
+                        myUserAgent.setUserAgent(Browser_left.this, mWebView, true, mWebView.getUrl());
+
+                    }else{
+                        sharedPref.edit().putString("request_string", getString(R.string.app_no)).apply();
+                        myUserAgent.setUserAgent(Browser_left.this, mWebView, false, mWebView.getUrl());
+                    }
+                }
+            });
             builder.setView(dialogView);
             builder.setTitle(R.string.menu_toggle_title);
             builder.setPositiveButton(R.string.toast_yes, new DialogInterface.OnClickListener() {
