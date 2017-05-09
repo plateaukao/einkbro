@@ -75,11 +75,16 @@ public class Utils_UserAgent {
         }
     }
     public static void clearCookieByUrl(String url, CookieManager pCookieManager, CookieSyncManager pCookieSyncManager) {
-        Uri uri = Uri.parse(url);
-        String host = uri.getHost();
-        clearCookieByUrlInternal(url,pCookieManager,pCookieSyncManager);
-        clearCookieByUrlInternal("http://." + host,pCookieManager,pCookieSyncManager);
-        clearCookieByUrlInternal("https://." + host,pCookieManager,pCookieSyncManager);
+        try {
+            Uri uri = Uri.parse(url);
+            String host = uri.getHost();
+            clearCookieByUrlInternal(url,pCookieManager,pCookieSyncManager);
+            clearCookieByUrlInternal("http://." + host,pCookieManager,pCookieSyncManager);
+            clearCookieByUrlInternal("https://." + host,pCookieManager,pCookieSyncManager);
+        } catch (Exception e) {
+
+        }
+
     }
     private static void clearCookieByUrlInternal(String url, CookieManager pCookieManager, CookieSyncManager pCookieSyncManager) {
         if (TextUtils.isEmpty(url)) {

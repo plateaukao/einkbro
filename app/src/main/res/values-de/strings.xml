@@ -263,6 +263,12 @@
     <string name="action_fullscreen">Vollbild</string>
     <string name="action_fullscreen_summary">Verstecke während dem Browsen die Status- und/oder die Toolbar am unteren Bildschirmrand.</string>
 
+    <string name="action_adBlock">Werbung blockieren</string>
+    <string name="action_adBlock_summary">Blockiere (nicht alle, aber die meisten) unerwünschten Anzeigen während dem Browsen.</string>
+
+    <string name="action_desktop">Desktopseite</string>
+    <string name="action_desktop_summary">Versuche von Internetseiten die Desktopseite zu laden. Dies funktioniert nur eingeschränkt.</string>
+
 
     // Intro
 
@@ -294,6 +300,7 @@
     <string name="about_title_main">Über</string>
     <string name="about_title_dev">Entwickler</string>
     <string name="about_title_libs">Benutzte Open Source Bibliotheken</string>
+    <string name="about_title_cont">Beteiligte</string>
 
     <string name="about_changelog">Änderungen</string>
     <string name="about_changelog_summary">Öffne die Github Seite und schaue, was es Neues gibt … (braucht eine Internetverbindung)</string>
@@ -320,6 +327,8 @@
     <string name="about_license_7">Gebraucht um den \"Über Schirm\" zu erstellen.</string>
     <string name="about_license_8">Die Quelle von fast allen Icons.</string>
     <string name="about_license_9">Bibliothek Anzeigen von Mediadateien für Android.</string>
+
+    <string name="about_cont_summary">Hat geholfen das Blockieren von Werbung und \"Desktopseite anzeigen\" zu ermöglichen.</string>
 
 
     //File chooser

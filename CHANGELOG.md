@@ -1,3 +1,8 @@
+### v 3.5
+- fix: keyboard issue
+- added: request desktop site (@CGSLURP LLC)
+- added: adblocker (@CGSLURP LLC)
+
 ### v 3.4
 - improved: sorting of list entries
 - fix: keyboard not open (landscape)

@@ -126,6 +126,16 @@ class About_content {
                 .setOnClickListener(ConvenienceBuilder.createWebsiteOnClickAction(c, Uri.parse("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=NP6TGYDYP9SHY")))
                 .build());
 
+        MaterialAboutCard.Builder contributorCardBuilder = new MaterialAboutCard.Builder();
+        contributorCardBuilder.title(R.string.about_title_cont);
+
+        contributorCardBuilder.addItem(new MaterialAboutActionItem.Builder()
+                .text("CGSLURP LLC")
+                .subText(R.string.about_cont_summary)
+                .icon(R.drawable.github_circle)
+                .setOnClickListener(ConvenienceBuilder.createWebViewDialogOnClickAction(c, c.getString(R.string.about_dev), "https://github.com/futrDevelopment", true, false))
+                .build());
+
 
         MaterialAboutCard.Builder convenienceCardBuilder = new MaterialAboutCard.Builder();
         convenienceCardBuilder.title(R.string.about_title_libs);
@@ -172,6 +182,6 @@ class About_content {
                 .setOnClickListener(ConvenienceBuilder.createWebViewDialogOnClickAction(c, "Material Design Icons", "https://github.com/Templarian/MaterialDesign", true, false))
                 .build());
         
-        return new MaterialAboutList(appCardBuilder.build(), authorCardBuilder.build(), convenienceCardBuilder.build());
+        return new MaterialAboutList(appCardBuilder.build(), authorCardBuilder.build(), contributorCardBuilder.build(), convenienceCardBuilder.build());
     }
 }
