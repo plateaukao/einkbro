@@ -114,6 +114,7 @@ public class Browser_1 extends AppCompatActivity implements ObservableScrollView
     private SharedPreferences sharedPref;
     private File shareFile;
     private ValueCallback<Uri[]> mFilePathCallback;
+    private Toolbar toolbar;
 
     private String shareString;
     private String mCameraPhotoPath;
@@ -177,7 +178,7 @@ public class Browser_1 extends AppCompatActivity implements ObservableScrollView
             sharedPref.edit().putString("saved_key_ok", "yes").apply();
         }
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setBackgroundColor(ContextCompat.getColor(Browser_1.this, R.color.colorPrimaryGreen));
         setSupportActionBar(toolbar);
 
@@ -608,23 +609,7 @@ public class Browser_1 extends AppCompatActivity implements ObservableScrollView
 
     @Override
     public void onUpOrCancelMotionEvent(ScrollState scrollState) {
-        if (scrollState == ScrollState.UP) {
-            imageButton.setVisibility(View.VISIBLE);
-            imageButton_left.setVisibility(View.INVISIBLE);
-            imageButton_right.setVisibility(View.INVISIBLE);
-            if (actionBar.isShowing()) {
-                actionBar.hide();
-            }
-        } else if (scrollState == ScrollState.DOWN) {
-            imageButton.setVisibility(View.INVISIBLE);
-            urlBar.setText(mWebView.getTitle());
-            if (!actionBar.isShowing()) {
-                actionBar.show();
-            }
-            helper_browser.setNavArrows(mWebView, imageButton_left, imageButton_right);
-        } else {
-            imageButton.setVisibility(View.INVISIBLE);
-        }
+        helper_browser.scroll(Browser_1.this, scrollState, toolbar, imageButton, imageButton_left, imageButton_right, urlBar, mWebView);
     }
 
     @Override

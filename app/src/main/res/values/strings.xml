@@ -256,6 +256,13 @@
     <string name="action_fullscreen">Fullscreen</string>
     <string name="action_fullscreen_summary">Hide the status- and/or the toolbar at the bottom while browsing.</string>
 
+    <string name="action_adBlock">Block ads</string>
+    <string name="action_adBlock_summary">Block (not all, but most) unwanted ads while browsing.</string>
+
+    <string name="action_desktop">Request desktop</string>
+    <string name="action_desktop_summary">Try to show the desktop site of websites by default. This feature is a little bit buggy.</string>
+
+
 
     // Intro
 
@@ -285,6 +292,7 @@
     <string name="about_title_main">About</string>
     <string name="about_title_dev">Developer</string>
     <string name="about_title_libs">Used open source libraries</string>
+    <string name="about_title_cont">Contributors</string>
 
     <string name="about_changelog">Changelog</string>
     <string name="about_changelog_summary">Open Github site and see what\'s new … (needs internet connection)</string>
@@ -310,6 +318,8 @@
     <string name="about_license_7">Used to create the \"About screen\".</string>
     <string name="about_license_8">The source of nearly all icons.</string>
     <string name="about_license_9">A powerful library to display media files for Android.</string>
+
+    <string name="about_cont_summary">Helped to implement \"adblocking\", the five tabs and \"request desktop site\".</string>
 
 
     //File chooser

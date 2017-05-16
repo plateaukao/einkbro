@@ -135,6 +135,22 @@ public class helper_webView {
             sharedPref.edit().putString("cookie_string", activity.getString(R.string.app_no)).apply();
         }
 
+        if (sharedPref.getBoolean ("blockads_bo", false)){
+            sharedPref.edit().putString("blockads_string", activity.getString(R.string.app_yes)).apply();
+        } else {
+            sharedPref.edit().putString("blockads_string", activity.getString(R.string.app_no)).apply();
+        }
+
+        Utils_UserAgent myUserAgent= new Utils_UserAgent();
+
+        if (sharedPref.getBoolean ("request_bo", false)){
+            sharedPref.edit().putString("request_string", activity.getString(R.string.app_yes)).apply();
+            myUserAgent.setUserAgent(activity, webView, true, webView.getUrl());
+        } else {
+            sharedPref.edit().putString("request_string", activity.getString(R.string.app_no)).apply();
+            myUserAgent.setUserAgent(activity, webView, false, webView.getUrl());
+        }
+
         webView.setOnTouchListener(new class_OnSwipeTouchListener_webview(activity) {
             public void onSwipeRight() {
                 sharedPref.edit().putString("openURL", "").apply();

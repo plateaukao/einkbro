@@ -19,10 +19,13 @@
 
 package de.baumann.browser.helper;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.TypedArray;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
@@ -33,6 +36,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageButton;
+import android.widget.TextView;
+
+import com.github.ksoichiro.android.observablescrollview.ScrollState;
 
 import java.io.File;
 import java.io.IOException;
@@ -172,6 +178,56 @@ public class helper_browser {
             });
         } else {
             img_right.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    public static void scroll (Activity activity, ScrollState scrollState, final Toolbar toolbar, ImageButton imageButton,
+                        ImageButton imageButton_left, ImageButton imageButton_right, TextView urlBar, WebView webView) {
+        if (scrollState == ScrollState.UP) {
+
+            if (toolbar.getVisibility() == View.VISIBLE) {
+
+                int[] attrs = new int[] {R.attr.actionBarSize};
+                TypedArray ta = activity.obtainStyledAttributes(attrs);
+                int toolBarHeight = ta.getDimensionPixelSize(0, -1);
+                ta.recycle();
+
+                imageButton.setVisibility(View.VISIBLE);
+                imageButton_left.setVisibility(View.INVISIBLE);
+                imageButton_right.setVisibility(View.INVISIBLE);
+                toolbar.animate()
+                        .translationY(toolBarHeight)
+                        .setListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                super.onAnimationEnd(animation);
+                                toolbar.setVisibility(View.GONE);
+                            }
+                        });
+            }
+
+        } else if (scrollState == ScrollState.DOWN) {
+
+            if (toolbar.getVisibility() == View.GONE) {
+                imageButton.setVisibility(View.INVISIBLE);
+                urlBar.setText(webView.getTitle());
+                toolbar.setVisibility(View.VISIBLE);
+                toolbar.setAlpha(0.0f);
+                toolbar.animate()
+                        .translationY(0)
+                        .alpha(1.0f)
+                        .setListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                super.onAnimationEnd(animation);
+                                toolbar.setVisibility(View.VISIBLE);
+                            }
+                        });
+                helper_browser.setNavArrows(webView, imageButton_left, imageButton_right);
+            }
+
+        } else {
+            imageButton.setVisibility(View.INVISIBLE);
         }
     }
 
