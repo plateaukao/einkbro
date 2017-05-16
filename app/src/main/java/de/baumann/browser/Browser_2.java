@@ -137,7 +137,7 @@ public class Browser_2 extends AppCompatActivity implements ObservableScrollView
         super.onCreate(savedInstanceState);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        getWindow().setStatusBarColor(ContextCompat.getColor(Browser_2.this, R.color.colorPrimaryEarth));
+        getWindow().setStatusBarColor(ContextCompat.getColor(Browser_2.this, R.color.colorPrimaryBlueDark));
 
         WebView.enableSlowWholeDocumentDraw();
         setContentView(R.layout.activity_browser);
@@ -151,7 +151,7 @@ public class Browser_2 extends AppCompatActivity implements ObservableScrollView
         sharedPref.getInt("keyboard", 0);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setBackgroundColor(ContextCompat.getColor(Browser_2.this, R.color.colorPrimaryEarth));
+        toolbar.setBackgroundColor(ContextCompat.getColor(Browser_2.this, R.color.colorPrimaryBlue));
         setSupportActionBar(toolbar);
 
         actionBar = getSupportActionBar();
@@ -183,7 +183,7 @@ public class Browser_2 extends AppCompatActivity implements ObservableScrollView
 
         SwipeRefreshLayout swipeView = (SwipeRefreshLayout) findViewById(R.id.swipe);
         assert swipeView != null;
-        swipeView.setColorSchemeResources(R.color.colorTwo, R.color.colorAccent);
+        swipeView.setColorSchemeResources(R.color.colorPrimaryBlue, R.color.colorAccent);
         swipeView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
