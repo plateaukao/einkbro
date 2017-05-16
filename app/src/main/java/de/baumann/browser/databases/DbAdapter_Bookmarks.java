@@ -107,11 +107,9 @@ public class DbAdapter_Bookmarks {
         String[] columns = new String[]{"_id", "bookmarks_title", "bookmarks_content", "bookmarks_icon","bookmarks_attachment","bookmarks_creation"};
 
         if (sp.getString("sortDBB", "title").equals("title")) {
-            return sqlDb.query(dbTable, columns, null, null, null, null, "bookmarks_title" + " COLLATE NOCASE ASC;");
+            return sqlDb.query(dbTable, columns, null, null, null, null, "bookmarks_title");
         } else if (sp.getString("sortDBB", "title").equals("create")) {
-            String orderBy = "bookmarks_creation" + "," +
-                    "bookmarks_title" + " COLLATE NOCASE ASC;";
-            return sqlDb.query(dbTable, columns, null, null, null, null, orderBy);
+            return sqlDb.query(dbTable, columns, null, null, null, null, "bookmarks_creation");
         }
 
         return null;

@@ -112,7 +112,7 @@
         android:layout_marginTop="16dp">
 
         <TextView
-            android:text="@string/action_adBlock"
+            android:text="Block Ads"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -131,7 +131,7 @@
         android:layout_marginTop="16dp">
 
         <TextView
-            android:text="@string/action_desktop"
+            android:text="Request Desktop"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"

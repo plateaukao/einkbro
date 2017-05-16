@@ -34,7 +34,7 @@ import android.support.v7.app.NotificationCompat;
 
 import java.util.Random;
 
-import de.baumann.browser.Browser_left;
+import de.baumann.browser.Browser_1;
 import de.baumann.browser.R;
 
 public class Activity_intent extends Activity {
@@ -56,14 +56,16 @@ public class Activity_intent extends Activity {
         }
 
         if (domain.contains("www.")) {
-            domain = domain.replace("www.", "");
+            domain = domain.replace("www.", "").toUpperCase();
         }
+
+        String domain2 = domain.substring(0,1).toUpperCase() + domain.substring(1);
 
         PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
         PreferenceManager.setDefaultValues(this, R.xml.user_settings_search, false);
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPref.edit().putString("add_readLater_link", data.toString()).apply();
-        sharedPref.edit().putString("add_readLater_domain", domain).apply();
+        sharedPref.edit().putString("add_readLater_domain", domain2).apply();
 
         Random rand = new Random();
         int n = rand.nextInt(100000);
@@ -71,9 +73,9 @@ public class Activity_intent extends Activity {
         android.content.Intent iMain = new android.content.Intent();
         iMain.setData(data);
         iMain.setAction(Intent.ACTION_VIEW);
-        iMain.setClassName(Activity_intent.this, "de.baumann.browser.Browser_left");
+        iMain.setClassName(Activity_intent.this, "de.baumann.browser.Browser_1");
 
-        android.content.Intent iAction = new android.content.Intent(this, Browser_left.class);
+        android.content.Intent iAction = new android.content.Intent(this, Browser_1.class);
         iAction.setAction("readLater");
 
         android.content.Intent iAction_2 = new android.content.Intent(this, Activity_intent_add.class);

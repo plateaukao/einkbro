@@ -53,7 +53,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-import de.baumann.browser.Browser_left;
+import de.baumann.browser.Browser_1;
 import de.baumann.browser.R;
 import de.baumann.browser.databases.DbAdapter_Bookmarks;
 import de.baumann.browser.databases.DbAdapter_ReadLater;
@@ -123,7 +123,7 @@ public class Popup_readLater extends AppCompatActivity {
                     Cursor row = (Cursor) listView.getItemAtPosition(position);
                     final String bookmarks_content = row.getString(row.getColumnIndexOrThrow("bookmarks_content"));
 
-                    Intent i = new Intent(Popup_readLater.this, Browser_left.class);
+                    Intent i = new Intent(Popup_readLater.this, Browser_1.class);
                     i.putExtra("URL", bookmarks_content);
                     startActivity(i);
                     finish();
@@ -290,7 +290,7 @@ public class Popup_readLater extends AppCompatActivity {
                                                     if (options[item].equals(getString(R.string.menu_createShortcut))) {
                                                         Intent i = new Intent();
                                                         i.setAction(Intent.ACTION_VIEW);
-                                                        i.setClassName(Popup_readLater.this, "de.baumann.browser.Browser_left");
+                                                        i.setClassName(Popup_readLater.this, "de.baumann.browser.Browser_1");
                                                         i.setData(Uri.parse(readLater_content));
 
                                                         Intent shortcut = new Intent();

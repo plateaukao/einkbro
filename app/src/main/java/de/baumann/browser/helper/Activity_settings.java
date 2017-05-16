@@ -49,9 +49,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.nio.channels.FileChannel;
 
-import de.baumann.browser.Browser_left;
+import de.baumann.browser.Browser_1;
 import de.baumann.browser.R;
-import de.baumann.browser.Browser_right;
+import de.baumann.browser.Browser_2;
 import de.baumann.browser.about.About_activity;
 
 
@@ -423,9 +423,9 @@ public class Activity_settings extends AppCompatActivity {
     public void onBackPressed() {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         if (sharedPref.getString("lastActivity", "").equals("browser_left")) {
-            helper_main.switchToActivity(Activity_settings.this, Browser_left.class, sharedPref.getString("pass_copy_url", ""), true);
+            helper_main.switchToActivity(Activity_settings.this, Browser_1.class, sharedPref.getString("pass_copy_url", ""), true);
         } else {
-            helper_main.switchToActivity(Activity_settings.this, Browser_right.class, sharedPref.getString("pass_copy_url", ""), true);
+            helper_main.switchToActivity(Activity_settings.this, Browser_2.class, sharedPref.getString("pass_copy_url", ""), true);
         }
     }
 
@@ -437,9 +437,9 @@ public class Activity_settings extends AppCompatActivity {
         if (id == android.R.id.home) {
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
             if (sharedPref.getString("lastActivity", "").equals("browser_left")) {
-                helper_main.switchToActivity(Activity_settings.this, Browser_left.class, sharedPref.getString("pass_copy_url", ""), true);
+                helper_main.switchToActivity(Activity_settings.this, Browser_1.class, sharedPref.getString("pass_copy_url", ""), true);
             } else {
-                helper_main.switchToActivity(Activity_settings.this, Browser_right.class, sharedPref.getString("pass_copy_url", ""), true);
+                helper_main.switchToActivity(Activity_settings.this, Browser_2.class, sharedPref.getString("pass_copy_url", ""), true);
             }
         }
         return super.onOptionsItemSelected(item);

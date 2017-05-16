@@ -22,7 +22,7 @@
         android:hardwareAccelerated="true"
         tools:ignore="GoogleAppIndexingWarning" >
 
-        <activity android:name=".Browser_left"
+        <activity android:name=".Browser_1"
             android:launchMode="singleInstance"
             android:configChanges="orientation|screenSize"
             android:label="@string/app_name"
@@ -51,7 +51,37 @@
 
         </activity>
 
-        <activity android:name=".Browser_right"
+        <activity android:name=".Browser_2"
+            android:launchMode="singleInstance"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="closeAPP" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Browser_3"
+            android:launchMode="singleInstance"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="closeAPP" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Browser_4"
+            android:launchMode="singleInstance"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="closeAPP" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Browser_5"
             android:launchMode="singleInstance"
             android:configChanges="orientation|screenSize"
             android:label="@string/app_name"

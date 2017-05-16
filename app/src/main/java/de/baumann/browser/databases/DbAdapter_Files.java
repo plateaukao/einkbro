@@ -90,25 +90,13 @@ public class DbAdapter_Files {
         String[] columns = new String[]{"_id", "files_title", "files_content", "files_icon","files_attachment","files_creation"};
 
         if (sp.getString("sortDBF", "title").equals("title")) {
-            return sqlDb.query(dbTable, columns, null, null, null, null, "files_title" + " COLLATE NOCASE ASC;");
+            return sqlDb.query(dbTable, columns, null, null, null, null, "files_title");
         } else if (sp.getString("sortDBF", "title").equals("file_Size")) {
-
-            String orderBy = "files_content" + "," +
-                    "files_title" + " COLLATE NOCASE ASC;";
-
-            return sqlDb.query(dbTable, columns, null, null, null, null, orderBy);
+            return sqlDb.query(dbTable, columns, null, null, null, null, "files_content");
         } else if (sp.getString("sortDBF", "title").equals("file_ext")) {
-
-            String orderBy = "files_icon" + "," +
-                    "files_title" + " COLLATE NOCASE ASC;";
-
-            return sqlDb.query(dbTable, columns, null, null, null, null, orderBy);
+            return sqlDb.query(dbTable, columns, null, null, null, null, "files_icon");
         } else if (sp.getString("sortDBF", "title").equals("file_date")) {
-
-            String orderBy = "files_creation" + "," +
-                    "files_title" + " COLLATE NOCASE ASC;";
-
-            return sqlDb.query(dbTable, columns, null, null, null, null, orderBy);
+            return sqlDb.query(dbTable, columns, null, null, null, null, "files_creation");
         }
 
         return null;

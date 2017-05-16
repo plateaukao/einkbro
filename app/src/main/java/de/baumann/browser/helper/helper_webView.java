@@ -51,10 +51,11 @@ import static android.content.ContentValues.TAG;
 import static android.webkit.WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE;
 
 public class helper_webView {
+    public static Utils_UserAgent mUtils_UserAgent= new Utils_UserAgent();
 
     public static String getTitle (WebView webview) {
 
-        return  webview.getTitle().replace("'", "\\'");
+        return  webview.getTitle().substring(0,1).toUpperCase() + webview.getTitle().substring(1).replace("'", "\\'");
     }
 
 
@@ -88,55 +89,76 @@ public class helper_webView {
             cookieManager.setAcceptThirdPartyCookies(webView,false);
         }
 
-        if (sharedPref.getBoolean ("java", false)){
-            webView.getSettings().setJavaScriptEnabled(true);
-            sharedPref.edit().putString("java_string", from.getString(R.string.app_yes)).apply();
-        } else {
-            webView.getSettings().setJavaScriptEnabled(false);
-            sharedPref.edit().putString("java_string", from.getString(R.string.app_no)).apply();
-        }
+        if (sharedPref.getString("started", "").equals("yes")) {
+            if (sharedPref.getString("java_string", "True").equals(from.getString(R.string.app_yes))){
+                webView.getSettings().setJavaScriptEnabled(true);
+                sharedPref.edit().putString("java_string", from.getString(R.string.app_yes)).apply();
+            } else {
+                webView.getSettings().setJavaScriptEnabled(false);
+                sharedPref.edit().putString("java_string", from.getString(R.string.app_no)).apply();
+            }
 
-        if (sharedPref.getBoolean ("pictures", false)){
-            webView.getSettings().setLoadsImagesAutomatically(true);
-            sharedPref.edit().putString("pictures_string", from.getString(R.string.app_yes)).apply();
-        } else {
-            webView.getSettings().setLoadsImagesAutomatically(false);
-            sharedPref.edit().putString("pictures_string", from.getString(R.string.app_no)).apply();
-        }
+            if (sharedPref.getString("pictures_string", "True").equals(from.getString(R.string.app_yes))){
+                webView.getSettings().setLoadsImagesAutomatically(true);
+                sharedPref.edit().putString("pictures_string", from.getString(R.string.app_yes)).apply();
+            } else {
+                webView.getSettings().setLoadsImagesAutomatically(false);
+                sharedPref.edit().putString("pictures_string", from.getString(R.string.app_no)).apply();
+            }
 
-        if (sharedPref.getBoolean ("loc", false)){
-            webView.getSettings().setGeolocationEnabled(true);
-            helper_main.grantPermissionsLoc(from);
-            sharedPref.edit().putString("loc_string", from.getString(R.string.app_yes)).apply();
-        } else {
-            webView.getSettings().setGeolocationEnabled(false);
-            sharedPref.edit().putString("loc_string", from.getString(R.string.app_no)).apply();
-        }
+            if (sharedPref.getString("loc_string", "True").equals(from.getString(R.string.app_yes))){
+                webView.getSettings().setGeolocationEnabled(true);
+                helper_main.grantPermissionsLoc(from);
+                sharedPref.edit().putString("loc_string", from.getString(R.string.app_yes)).apply();
+            } else {
+                webView.getSettings().setGeolocationEnabled(false);
+                sharedPref.edit().putString("loc_string", from.getString(R.string.app_no)).apply();
+            }
 
-        if (sharedPref.getString ("cookie", "1").equals("1") || sharedPref.getString ("cookie", "1").equals("3")){
-            CookieManager cookieManager = CookieManager.getInstance();
-            cookieManager.setAcceptCookie(true);
-            sharedPref.edit().putString("cookie_string", from.getString(R.string.app_yes)).apply();
+            if (sharedPref.getString("cookie_string", "True").equals(from.getString(R.string.app_yes))){
+                CookieManager cookieManager = CookieManager.getInstance();
+                cookieManager.setAcceptCookie(true);
+                sharedPref.edit().putString("cookie_string", from.getString(R.string.app_yes)).apply();
+            } else {
+                CookieManager cookieManager = CookieManager.getInstance();
+                cookieManager.setAcceptCookie(false);
+                sharedPref.edit().putString("cookie_string", from.getString(R.string.app_no)).apply();
+            }
         } else {
-            CookieManager cookieManager = CookieManager.getInstance();
-            cookieManager.setAcceptCookie(false);
-            sharedPref.edit().putString("cookie_string", from.getString(R.string.app_no)).apply();
-        }
+            if (sharedPref.getBoolean ("java", false)){
+                webView.getSettings().setJavaScriptEnabled(true);
+                sharedPref.edit().putString("java_string", from.getString(R.string.app_yes)).apply();
+            } else {
+                webView.getSettings().setJavaScriptEnabled(false);
+                sharedPref.edit().putString("java_string", from.getString(R.string.app_no)).apply();
+            }
 
-        if (sharedPref.getBoolean ("blockads_bo", false)){
-            sharedPref.edit().putString("blockads_string", from.getString(R.string.app_yes)).apply();
-        } else {
-            sharedPref.edit().putString("blockads_string", from.getString(R.string.app_no)).apply();
-        }
+            if (sharedPref.getBoolean ("pictures", false)){
+                webView.getSettings().setLoadsImagesAutomatically(true);
+                sharedPref.edit().putString("pictures_string", from.getString(R.string.app_yes)).apply();
+            } else {
+                webView.getSettings().setLoadsImagesAutomatically(false);
+                sharedPref.edit().putString("pictures_string", from.getString(R.string.app_no)).apply();
+            }
 
-        Utils_UserAgent myUserAgent= new Utils_UserAgent();
+            if (sharedPref.getBoolean ("loc", false)){
+                webView.getSettings().setGeolocationEnabled(true);
+                helper_main.grantPermissionsLoc(from);
+                sharedPref.edit().putString("loc_string", from.getString(R.string.app_yes)).apply();
+            } else {
+                webView.getSettings().setGeolocationEnabled(false);
+                sharedPref.edit().putString("loc_string", from.getString(R.string.app_no)).apply();
+            }
 
-        if (sharedPref.getBoolean ("request_bo", false)){
-            sharedPref.edit().putString("request_string", from.getString(R.string.app_yes)).apply();
-            myUserAgent.setUserAgent(from, webView, true, webView.getUrl());
-        } else {
-            sharedPref.edit().putString("request_string", from.getString(R.string.app_no)).apply();
-            myUserAgent.setUserAgent(from, webView, false, webView.getUrl());
+            if (sharedPref.getString ("cookie", "1").equals("1") || sharedPref.getString ("cookie", "1").equals("3")){
+                CookieManager cookieManager = CookieManager.getInstance();
+                cookieManager.setAcceptCookie(true);
+                sharedPref.edit().putString("cookie_string", from.getString(R.string.app_yes)).apply();
+            } else {
+                CookieManager cookieManager = CookieManager.getInstance();
+                cookieManager.setAcceptCookie(false);
+                sharedPref.edit().putString("cookie_string", from.getString(R.string.app_no)).apply();
+            }
         }
     }
 
@@ -146,11 +168,36 @@ public class helper_webView {
 
 
         // crude if-else just to get the functionality in, feel free to make this more concise if you like
-        if (sharedPref.getString("blockads_string", "").equals(from.getString(R.string.app_yes))) {
+        if (sharedPref.getString("blockads_string", "").equals("Enabled")) {
         webView.setWebViewClient(new Utils_AdClient() {
 
             public void onPageFinished(WebView view, String url) {
                 SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
+
+                //request desktop desktop definition
+                String desktopUA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
+
+                //request desktop optimization
+                //this compares the sharedPref setting to the current user agent and
+                //corrects the user agent only if it is not the same as the shared pref
+                //then zooms out to keep it neat if it is the desktop setting.
+                if(sharedPref.getString("request_string", "").equals("Enabled")){
+                    //sharedPref.edit().putString("request_string", getString(R.string.app_yes)).apply();
+                    if (!mUtils_UserAgent.getUserAgent(view).equals(desktopUA)) {
+                        mUtils_UserAgent.setUserAgent(view.getContext(), view, true, view.getUrl());
+                    }
+                }else{
+                    if (mUtils_UserAgent.getUserAgent(view).equals(desktopUA)) {
+                        mUtils_UserAgent.setUserAgent(view.getContext(), view, false, view.getUrl());
+                    }
+                }
+                // request desktop check every time to make the page look neat
+                if (sharedPref.getString("request_string" , "").equals("Enabled")){
+                    if (mUtils_UserAgent.getUserAgent(view).equals(desktopUA));
+                    view.zoomOut();
+                }
+                //end request desktop optimization
+
                 super.onPageFinished(view, url);
                 swipeRefreshLayout.setRefreshing(false);
                 urlBar.setText(webView.getTitle());
@@ -241,11 +288,37 @@ public class helper_webView {
             }
 
         });
-        } else{
+        }
+        else{
             webView.setWebViewClient(new WebViewClient() {
 
                 public void onPageFinished(WebView view, String url) {
                     SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
+
+                    //access the constant desktop user agent defined in Utils_UserAgent
+                    String desktopUA = Utils_UserAgent.DESKTOP_USER_AGENT;;
+
+                    //request desktop optimization
+                    //this compares the sharedPref setting to the current user agent and
+                    //corrects the user agent only if it is not the same as the shared pref
+                    //then zooms out to keep it neat if it is the desktop setting.
+                    if(sharedPref.getString("request_string", "").equals("Enabled")){
+                        //sharedPref.edit().putString("request_string", getString(R.string.app_yes)).apply();
+                        if (!mUtils_UserAgent.getUserAgent(view).equals(desktopUA)) {
+                            mUtils_UserAgent.setUserAgent(view.getContext(), view, true, view.getUrl());
+                        }
+                    }else{
+                        if (mUtils_UserAgent.getUserAgent(view).equals(desktopUA)) {
+                            mUtils_UserAgent.setUserAgent(view.getContext(), view, false, view.getUrl());
+                        }
+                    }
+                    // request desktop check every time to make the page look neat
+                    if (sharedPref.getString("request_string" , "").equals("Enabled")){
+                        if (mUtils_UserAgent.getUserAgent(view).equals(desktopUA));
+                        view.zoomOut();
+                    }
+                    //end request desktop optimization
+
                     super.onPageFinished(view, url);
                     swipeRefreshLayout.setRefreshing(false);
                     urlBar.setText(webView.getTitle());

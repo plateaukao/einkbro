@@ -101,11 +101,9 @@ public class DbAdapter_Pass {
         String[] columns = new String[]{"_id", "pass_title", "pass_content", "pass_icon","pass_attachment","pass_creation"};
 
         if (sp.getString("sortDBB", "title").equals("title")) {
-            return sqlDb.query(dbTable, columns, null, null, null, null, "pass_title" + " COLLATE NOCASE ASC;");
+            return sqlDb.query(dbTable, columns, null, null, null, null, "pass_title");
         } else if (sp.getString("sortDBB", "title").equals("create")) {
-            String orderBy = "pass_creation" + "," +
-                    "pass_title" + " COLLATE NOCASE ASC;";
-            return sqlDb.query(dbTable, columns, null, null, null, null, orderBy);
+            return sqlDb.query(dbTable, columns, null, null, null, null, "pass_creation");
         }
 
         return null;

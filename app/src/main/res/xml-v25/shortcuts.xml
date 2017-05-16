@@ -10,7 +10,7 @@
         <intent
             android:action="bookmarks"
             android:targetPackage="de.baumann.browser"
-            android:targetClass="de.baumann.browser.Browser_left" />
+            android:targetClass="de.baumann.browser.Browser_1" />
         <!-- If your shortcut is associated with multiple intents, include them
              here. The last intent in the list is what the user sees when they
              launch this shortcut. -->
@@ -27,7 +27,7 @@
         <intent
             android:action="readLater"
             android:targetPackage="de.baumann.browser"
-            android:targetClass="de.baumann.browser.Browser_left" />
+            android:targetClass="de.baumann.browser.Browser_1" />
         <!-- If your shortcut is associated with multiple intents, include them
              here. The last intent in the list is what the user sees when they
              launch this shortcut. -->
@@ -44,7 +44,7 @@
         <intent
             android:action="pass"
             android:targetPackage="de.baumann.browser"
-            android:targetClass="de.baumann.browser.Browser_left" />
+            android:targetClass="de.baumann.browser.Browser_1" />
         <!-- If your shortcut is associated with multiple intents, include them
              here. The last intent in the list is what the user sees when they
              launch this shortcut. -->
@@ -61,7 +61,7 @@
         <intent
             android:action="history"
             android:targetPackage="de.baumann.browser"
-            android:targetClass="de.baumann.browser.Browser_left" />
+            android:targetClass="de.baumann.browser.Browser_1" />
         <!-- If your shortcut is associated with multiple intents, include them
              here. The last intent in the list is what the user sees when they
              launch this shortcut. -->

@@ -263,12 +263,6 @@
     <string name="action_fullscreen">Vollbild</string>
     <string name="action_fullscreen_summary">Verstecke während dem Browsen die Status- und/oder die Toolbar am unteren Bildschirmrand.</string>
 
-    <string name="action_adBlock">Werbung blockieren</string>
-    <string name="action_adBlock_summary">Blockiere (nicht alle, aber die meisten) unerwünschten Anzeigen während dem Browsen.</string>
-
-    <string name="action_desktop">Desktopseite</string>
-    <string name="action_desktop_summary">Versuche von Internetseiten die Desktopseite zu laden. Dies funktioniert nur eingeschränkt.</string>
-
 
     // Intro
 

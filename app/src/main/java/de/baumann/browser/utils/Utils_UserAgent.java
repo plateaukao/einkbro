@@ -39,6 +39,8 @@ import java.util.Vector;
  */
 
 public class Utils_UserAgent {
+    //streamlined desktop UA access
+    public static final String DESKTOP_USER_AGENT = "Mozilla/5.0 (Mozilla/5.0 (X11; CrOS x86_64 8172.45.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.64 Safari/537.36";
 
     public String getDefaultUA(Context context) {
         return WebSettings.getDefaultUserAgent(context);
@@ -52,39 +54,28 @@ public class Utils_UserAgent {
     // self explanatory. sets the user agent after clearing any anonymous session cookies.
     public void setUserAgent(Context context, WebView mWebView, boolean choice, String url) {
         if (mWebView != null) {
-            String DESKTOP_USER_AGENT; String DEFAULT_USER_AGENT;
-            DEFAULT_USER_AGENT = getDefaultUA(context);
-            //DESKTOP_USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
-            DESKTOP_USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:47.0) Gecko/20100101 Firefox/47.0";
-
+            String DEFAULT_USER_AGENT = getDefaultUA(context);
             if (choice) {
                 CookieManager mCookieManager = CookieManager.getInstance();
                 CookieSyncManager mCookieSyncManager = CookieSyncManager.createInstance(context);
                 clearCookieByUrl(url, mCookieManager, mCookieSyncManager);
                 mWebView.getSettings().setUserAgentString(DESKTOP_USER_AGENT);
-                mWebView.reload();
                 mWebView.zoomOut();
             } else {
                 CookieManager mCookieManager = CookieManager.getInstance();
                 CookieSyncManager mCookieSyncManager = CookieSyncManager.createInstance(context);
                 clearCookieByUrl(url, mCookieManager, mCookieSyncManager);
                 mWebView.getSettings().setUserAgentString(DEFAULT_USER_AGENT);
-                mWebView.reload();
                 mWebView.zoomOut();
             }
         }
     }
     public static void clearCookieByUrl(String url, CookieManager pCookieManager, CookieSyncManager pCookieSyncManager) {
-        try {
-            Uri uri = Uri.parse(url);
-            String host = uri.getHost();
-            clearCookieByUrlInternal(url,pCookieManager,pCookieSyncManager);
-            clearCookieByUrlInternal("http://." + host,pCookieManager,pCookieSyncManager);
-            clearCookieByUrlInternal("https://." + host,pCookieManager,pCookieSyncManager);
-        } catch (Exception e) {
-
-        }
-
+        Uri uri = Uri.parse(url);
+        String host = uri.getHost();
+        clearCookieByUrlInternal(url,pCookieManager,pCookieSyncManager);
+        clearCookieByUrlInternal("http://." + host,pCookieManager,pCookieSyncManager);
+        clearCookieByUrlInternal("https://." + host,pCookieManager,pCookieSyncManager);
     }
     private static void clearCookieByUrlInternal(String url, CookieManager pCookieManager, CookieSyncManager pCookieSyncManager) {
         if (TextUtils.isEmpty(url)) {

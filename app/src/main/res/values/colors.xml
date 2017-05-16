@@ -2,7 +2,12 @@
 <resources>
     <color name="colorPrimary">#4caf50</color>
     <color name="colorPrimaryDark">#388e3c</color>
+    <color name="colorPrimaryPink">#ef5350</color>
+    <color name="colorPrimaryIndigo">#7986cb</color>
+    <color name="colorPrimaryEarth">#795548</color>
+    <color name="colorPrimaryGold">#ffb74d</color>
     <color name="colorAccent">#ff9800</color>
+
 
     <color name="colorTwo">#2196f3</color>
     <color name="colorTwoDark">#1976d2</color>

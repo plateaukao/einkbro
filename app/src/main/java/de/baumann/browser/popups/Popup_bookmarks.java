@@ -318,7 +318,7 @@ public class Popup_bookmarks extends AppCompatActivity {
                                                     if (options[item].equals(getString(R.string.menu_createShortcut))) {
                                                         Intent i = new Intent();
                                                         i.setAction(Intent.ACTION_VIEW);
-                                                        i.setClassName(Popup_bookmarks.this, "de.baumann.browser.Browser_left");
+                                                        i.setClassName(Popup_bookmarks.this, "de.baumann.browser.Browser_1");
                                                         i.setData(Uri.parse(bookmarks_content));
 
                                                         Intent shortcut = new Intent();

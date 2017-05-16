@@ -280,7 +280,7 @@ public class Popup_history extends AppCompatActivity {
                                                     if (options[item].equals(getString(R.string.menu_createShortcut))) {
                                                         Intent i = new Intent();
                                                         i.setAction(Intent.ACTION_VIEW);
-                                                        i.setClassName(Popup_history.this, "de.baumann.browser.Browser_left");
+                                                        i.setClassName(Popup_history.this, "de.baumann.browser.Browser_1");
                                                         i.setData(Uri.parse(history_content));
 
                                                         Intent shortcut = new Intent();
