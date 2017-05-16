@@ -210,7 +210,7 @@ public class Browser_2 extends AppCompatActivity implements ObservableScrollView
             imageButton_right.setVisibility(View.INVISIBLE);
         }
 
-        helper_webView.webView_Settings(Browser_2.this, mWebView);
+        helper_webView.webView_Settings(Browser_2.this, mWebView, Browser_1.class, Browser_3.class);
         helper_webView.webView_WebViewClient(Browser_2.this, swipeView, mWebView, urlBar);
 
         mWebView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
@@ -255,7 +255,7 @@ public class Browser_2 extends AppCompatActivity implements ObservableScrollView
             }
         });
 
-        helper_browser.toolbar(Browser_2.this, Browser_3.class, mWebView, toolbar);
+        helper_browser.toolbar(Browser_2.this, mWebView, toolbar);
         helper_editText.editText_EditorAction(editText, Browser_2.this, mWebView, urlBar);
         helper_editText.editText_FocusChange(editText, Browser_2.this);
         helper_main.grantPermissionsStorage(Browser_2.this);
@@ -348,11 +348,11 @@ public class Browser_2 extends AppCompatActivity implements ObservableScrollView
                     getString(R.string.context_saveImage),
                     getString(R.string.context_shareImage),
                     getString(R.string.context_readLater),
-                    getString(R.string.context_1),
-                    getString(R.string.context_2),
-                    getString(R.string.context_3),
-                    getString(R.string.context_4),
-                    getString(R.string.context_5)
+                    helper_browser.tab_1(Browser_2.this, getString(R.string.context_replace)),
+                    helper_browser.tab_2(Browser_2.this, getString(R.string.context_replace)),
+                    helper_browser.tab_3(Browser_2.this, getString(R.string.context_replace)),
+                    helper_browser.tab_4(Browser_2.this, getString(R.string.context_replace)),
+                    helper_browser.tab_5(Browser_2.this, getString(R.string.context_replace))
             };
             new AlertDialog.Builder(Browser_2.this)
                     .setPositiveButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
@@ -427,27 +427,27 @@ public class Browser_2 extends AppCompatActivity implements ObservableScrollView
                                     }
                                 }
                             }
-                            if (options[item].equals(getString(R.string.context_1))) {
+                            if (options[item].equals(helper_browser.tab_1(Browser_2.this, getString(R.string.context_replace)))) {
                                 if (url != null) {
                                     helper_main.switchToActivity(Browser_2.this, Browser_1.class, url, false);
                                 }
                             }
-                            if (options[item].equals(getString(R.string.context_2))) {
+                            if (options[item].equals(helper_browser.tab_2(Browser_2.this, getString(R.string.context_replace)))) {
                                 if (url != null) {
                                     helper_main.switchToActivity(Browser_2.this, Browser_2.class, url, false);
                                 }
                             }
-                            if (options[item].equals(getString(R.string.context_3))) {
+                            if (options[item].equals(helper_browser.tab_3(Browser_2.this, getString(R.string.context_replace)))) {
                                 if (url != null) {
                                     helper_main.switchToActivity(Browser_2.this, Browser_3.class, url, false);
                                 }
                             }
-                            if (options[item].equals(getString(R.string.context_4))) {
+                            if (options[item].equals(helper_browser.tab_4(Browser_2.this, getString(R.string.context_replace)))) {
                                 if (url != null) {
                                     helper_main.switchToActivity(Browser_2.this, Browser_4.class, url, false);
                                 }
                             }
-                            if (options[item].equals(getString(R.string.context_5))) {
+                            if (options[item].equals(helper_browser.tab_5(Browser_2.this, getString(R.string.context_replace)))) {
                                 if (url != null) {
                                     helper_main.switchToActivity(Browser_2.this, Browser_5.class, url, false);
                                 }
@@ -461,11 +461,11 @@ public class Browser_2 extends AppCompatActivity implements ObservableScrollView
                     getString(R.string.menu_share_link_copy),
                     getString(R.string.menu_share_link),
                     getString(R.string.context_readLater),
-                    getString(R.string.context_1),
-                    getString(R.string.context_2),
-                    getString(R.string.context_3),
-                    getString(R.string.context_4),
-                    getString(R.string.context_5)
+                    helper_browser.tab_1(Browser_2.this, getString(R.string.context_replace)),
+                    helper_browser.tab_2(Browser_2.this, getString(R.string.context_replace)),
+                    helper_browser.tab_3(Browser_2.this, getString(R.string.context_replace)),
+                    helper_browser.tab_4(Browser_2.this, getString(R.string.context_replace)),
+                    helper_browser.tab_5(Browser_2.this, getString(R.string.context_replace))
             };
             new AlertDialog.Builder(Browser_2.this)
                     .setPositiveButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
@@ -515,27 +515,27 @@ public class Browser_2 extends AppCompatActivity implements ObservableScrollView
                                     }
                                 }
                             }
-                            if (options[item].equals(getString(R.string.context_1))) {
+                            if (options[item].equals(helper_browser.tab_1(Browser_2.this, getString(R.string.context_replace)))) {
                                 if (url != null) {
                                     helper_main.switchToActivity(Browser_2.this, Browser_1.class, url, false);
                                 }
                             }
-                            if (options[item].equals(getString(R.string.context_2))) {
+                            if (options[item].equals(helper_browser.tab_2(Browser_2.this, getString(R.string.context_replace)))) {
                                 if (url != null) {
                                     helper_main.switchToActivity(Browser_2.this, Browser_2.class, url, false);
                                 }
                             }
-                            if (options[item].equals(getString(R.string.context_3))) {
+                            if (options[item].equals(helper_browser.tab_3(Browser_2.this, getString(R.string.context_replace)))) {
                                 if (url != null) {
                                     helper_main.switchToActivity(Browser_2.this, Browser_3.class, url, false);
                                 }
                             }
-                            if (options[item].equals(getString(R.string.context_4))) {
+                            if (options[item].equals(helper_browser.tab_4(Browser_2.this, getString(R.string.context_replace)))) {
                                 if (url != null) {
                                     helper_main.switchToActivity(Browser_2.this, Browser_4.class, url, false);
                                 }
                             }
-                            if (options[item].equals(getString(R.string.context_5))) {
+                            if (options[item].equals(helper_browser.tab_5(Browser_2.this, getString(R.string.context_replace)))) {
                                 if (url != null) {
                                     helper_main.switchToActivity(Browser_2.this, Browser_5.class, url, false);
                                 }
@@ -1064,34 +1064,43 @@ public class Browser_2 extends AppCompatActivity implements ObservableScrollView
             progressBar.setProgress(progress);
             progressBar.setVisibility(progress == 100 ? View.GONE : View.VISIBLE);
 
-            String whiteList = sharedPref.getString("whiteList", "");
+            try {
+                String whiteList = sharedPref.getString("whiteList", "");
 
-            if(Uri.parse(mWebView.getUrl()).getHost().length() == 0) {
-                domain = getString(R.string.app_domain);
-            } else {
-                domain = Uri.parse(mWebView.getUrl()).getHost();
-            }
-
-            if (whiteList.contains(domain)) {
-                mWebView.getSettings().setJavaScriptEnabled(true);
-            } else {
-                if (sharedPref.getString("started", "").equals("yes")) {
-                    if (sharedPref.getString("java_string", "True").equals(Browser_2.this.getString(R.string.app_yes))){
-                        mWebView.getSettings().setJavaScriptEnabled(true);
-                    } else {
-                        mWebView.getSettings().setJavaScriptEnabled(false);
-                    }
+                if(Uri.parse(mWebView.getUrl()).getHost().length() == 0) {
+                    domain = getString(R.string.app_domain);
                 } else {
-                    if (sharedPref.getBoolean ("java", false)){
-                        mWebView.getSettings().setJavaScriptEnabled(true);
+                    domain = Uri.parse(mWebView.getUrl()).getHost();
+                }
+
+                if (whiteList.contains(domain)) {
+                    mWebView.getSettings().setJavaScriptEnabled(true);
+                } else {
+                    if (sharedPref.getString("started", "").equals("yes")) {
+                        if (sharedPref.getString("java_string", "True").equals(Browser_2.this.getString(R.string.app_yes))){
+                            mWebView.getSettings().setJavaScriptEnabled(true);
+                        } else {
+                            mWebView.getSettings().setJavaScriptEnabled(false);
+                        }
                     } else {
-                        mWebView.getSettings().setJavaScriptEnabled(false);
+                        if (sharedPref.getBoolean ("java", false)){
+                            mWebView.getSettings().setJavaScriptEnabled(true);
+                        } else {
+                            mWebView.getSettings().setJavaScriptEnabled(false);
+                        }
                     }
                 }
+            } catch (Exception e) {
+                // Error occurred while creating the File
+                Log.e(TAG, "Browser Error", e);
             }
 
             if (actionBar.isShowing()) {
                 helper_browser.setNavArrows(mWebView, imageButton_left, imageButton_right);
+            }
+
+            if (progress > 70) {
+                sharedPref.edit().putString("tab_2", helper_webView.getTitle(mWebView)).apply();
             }
         }
 

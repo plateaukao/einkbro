@@ -87,11 +87,13 @@
     <string name="context_readLater">Add to readLater</string>
     <string name="context_linkCopy_toast">Link successfully copied</string>
     <string name="context_saveImage_toast">Saving image as:</string>
-    <string name="context_1">Open in Africa Tab (1)</string>
-    <string name="context_2">Open in America Tab (2)</string>
-    <string name="context_3">Open in Asia Tab (3)</string>
-    <string name="context_4">Open in Australia Tab (4)</string>
-    <string name="context_5">Open in Europe Tab (5)</string>
+    <string name="context_1">Africa Tab</string>
+    <string name="context_2">America Tab</string>
+    <string name="context_3">Asia Tab</string>
+    <string name="context_4">Australia Tab</string>
+    <string name="context_5">Europe Tab</string>
+    <string name="context_replace">Replace</string>
+    <string name="context_open">Open</string>
 
 
 

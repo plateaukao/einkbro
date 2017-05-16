@@ -88,11 +88,13 @@
     <string name="context_readLater">Speichere zur leseSpäter Liste</string>
     <string name="context_linkCopy_toast">Link erfolgreich kopiert</string>
     <string name="context_saveImage_toast">Bild gespeichert als:</string>
-    <string name="context_1">Öffne im Afrika Tab (1)</string>
-    <string name="context_2">Öffne im Amerika Tab Tab (2)</string>
-    <string name="context_3">Öffne im Asien Tab (3)</string>
-    <string name="context_4">Öffne im Australien Tab (4)</string>
-    <string name="context_5">Öffne im Europa Tab (5)</string>
+    <string name="context_1">Afrika Tab</string>
+    <string name="context_2">Amerika Tab</string>
+    <string name="context_3">Asien Tab</string>
+    <string name="context_4">Australien Tab</string>
+    <string name="context_5">Europa Tab</string>
+    <string name="context_replace">Ersetze</string>
+    <string name="context_open">Öffne</string>
 
 
     // Snackbar

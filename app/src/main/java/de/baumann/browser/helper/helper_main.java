@@ -171,6 +171,13 @@ public class helper_main {
     public static void closeApp (Activity from, WebView webView) {
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
+
+        sharedPref.edit().putString("tab_1", "").apply();
+        sharedPref.edit().putString("tab_2", "").apply();
+        sharedPref.edit().putString("tab_3", "").apply();
+        sharedPref.edit().putString("tab_4", "").apply();
+        sharedPref.edit().putString("tab_5", "").apply();
+
         if (sharedPref.getBoolean ("clearCookies", false)){
             CookieManager cookieManager = CookieManager.getInstance();
             cookieManager.removeAllCookies(null);

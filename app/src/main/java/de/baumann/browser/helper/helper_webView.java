@@ -52,22 +52,32 @@ import static android.content.ContentValues.TAG;
 import static android.webkit.WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE;
 
 public class helper_webView {
+
     public static Utils_UserAgent mUtils_UserAgent= new Utils_UserAgent();
 
     public static String getTitle (WebView webview) {
 
-        return  webview.getTitle().substring(0,1).toUpperCase() + webview.getTitle().substring(1).replace("'", "\\'");
+        String title = "";
+
+        try {
+            title = webview.getTitle().substring(0,1).toUpperCase() + webview.getTitle().substring(1).replace("'", "\\'");
+        } catch (Exception e) {
+            // Error occurred while creating the File
+            Log.e(TAG, "Unable to get title", e);
+        }
+
+        return title ;
     }
 
 
     @SuppressLint("SetJavaScriptEnabled")
-    public static void webView_Settings(final Activity from, final WebView webView) {
+    public static void webView_Settings(final Activity activity, final WebView webView, final Class activity_left,  final  Class activity_right) {
 
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
+        final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
         String fontSizeST = sharedPref.getString("font", "100");
         int fontSize = Integer.parseInt(fontSizeST);
 
-        webView.getSettings().setAppCachePath(from.getApplicationContext().getCacheDir().getAbsolutePath());
+        webView.getSettings().setAppCachePath(activity.getApplicationContext().getCacheDir().getAbsolutePath());
         webView.getSettings().setAppCacheEnabled(true);
         webView.getSettings().setMixedContentMode(MIXED_CONTENT_COMPATIBILITY_MODE);
         webView.getSettings().setAllowFileAccess(true);
@@ -80,7 +90,7 @@ public class helper_webView {
         webView.getSettings().setUseWideViewPort(true);
         webView.getSettings().setLoadWithOverviewMode(true);
 
-        from.registerForContextMenu(webView);
+        activity.registerForContextMenu(webView);
 
         if (sharedPref.getString ("cookie", "1").equals("2") || sharedPref.getString ("cookie", "1").equals("3")){
             CookieManager cookieManager = CookieManager.getInstance();
@@ -90,77 +100,57 @@ public class helper_webView {
             cookieManager.setAcceptThirdPartyCookies(webView,false);
         }
 
-        if (sharedPref.getString("started", "").equals("yes")) {
-            if (sharedPref.getString("java_string", "True").equals(from.getString(R.string.app_yes))){
-                webView.getSettings().setJavaScriptEnabled(true);
-                sharedPref.edit().putString("java_string", from.getString(R.string.app_yes)).apply();
-            } else {
-                webView.getSettings().setJavaScriptEnabled(false);
-                sharedPref.edit().putString("java_string", from.getString(R.string.app_no)).apply();
-            }
-
-            if (sharedPref.getString("pictures_string", "True").equals(from.getString(R.string.app_yes))){
-                webView.getSettings().setLoadsImagesAutomatically(true);
-                sharedPref.edit().putString("pictures_string", from.getString(R.string.app_yes)).apply();
-            } else {
-                webView.getSettings().setLoadsImagesAutomatically(false);
-                sharedPref.edit().putString("pictures_string", from.getString(R.string.app_no)).apply();
-            }
-
-            if (sharedPref.getString("loc_string", "True").equals(from.getString(R.string.app_yes))){
-                webView.getSettings().setGeolocationEnabled(true);
-                helper_main.grantPermissionsLoc(from);
-                sharedPref.edit().putString("loc_string", from.getString(R.string.app_yes)).apply();
-            } else {
-                webView.getSettings().setGeolocationEnabled(false);
-                sharedPref.edit().putString("loc_string", from.getString(R.string.app_no)).apply();
-            }
-
-            if (sharedPref.getString("cookie_string", "True").equals(from.getString(R.string.app_yes))){
-                CookieManager cookieManager = CookieManager.getInstance();
-                cookieManager.setAcceptCookie(true);
-                sharedPref.edit().putString("cookie_string", from.getString(R.string.app_yes)).apply();
-            } else {
-                CookieManager cookieManager = CookieManager.getInstance();
-                cookieManager.setAcceptCookie(false);
-                sharedPref.edit().putString("cookie_string", from.getString(R.string.app_no)).apply();
-            }
+        if (sharedPref.getBoolean ("java", false)){
+            webView.getSettings().setJavaScriptEnabled(true);
+            sharedPref.edit().putString("java_string", activity.getString(R.string.app_yes)).apply();
         } else {
-            if (sharedPref.getBoolean ("java", false)){
-                webView.getSettings().setJavaScriptEnabled(true);
-                sharedPref.edit().putString("java_string", from.getString(R.string.app_yes)).apply();
-            } else {
-                webView.getSettings().setJavaScriptEnabled(false);
-                sharedPref.edit().putString("java_string", from.getString(R.string.app_no)).apply();
-            }
-
-            if (sharedPref.getBoolean ("pictures", false)){
-                webView.getSettings().setLoadsImagesAutomatically(true);
-                sharedPref.edit().putString("pictures_string", from.getString(R.string.app_yes)).apply();
-            } else {
-                webView.getSettings().setLoadsImagesAutomatically(false);
-                sharedPref.edit().putString("pictures_string", from.getString(R.string.app_no)).apply();
-            }
-
-            if (sharedPref.getBoolean ("loc", false)){
-                webView.getSettings().setGeolocationEnabled(true);
-                helper_main.grantPermissionsLoc(from);
-                sharedPref.edit().putString("loc_string", from.getString(R.string.app_yes)).apply();
-            } else {
-                webView.getSettings().setGeolocationEnabled(false);
-                sharedPref.edit().putString("loc_string", from.getString(R.string.app_no)).apply();
-            }
-
-            if (sharedPref.getString ("cookie", "1").equals("1") || sharedPref.getString ("cookie", "1").equals("3")){
-                CookieManager cookieManager = CookieManager.getInstance();
-                cookieManager.setAcceptCookie(true);
-                sharedPref.edit().putString("cookie_string", from.getString(R.string.app_yes)).apply();
-            } else {
-                CookieManager cookieManager = CookieManager.getInstance();
-                cookieManager.setAcceptCookie(false);
-                sharedPref.edit().putString("cookie_string", from.getString(R.string.app_no)).apply();
-            }
+            webView.getSettings().setJavaScriptEnabled(false);
+            sharedPref.edit().putString("java_string", activity.getString(R.string.app_no)).apply();
         }
+
+        if (sharedPref.getBoolean ("pictures", false)){
+            webView.getSettings().setLoadsImagesAutomatically(true);
+            sharedPref.edit().putString("pictures_string", activity.getString(R.string.app_yes)).apply();
+        } else {
+            webView.getSettings().setLoadsImagesAutomatically(false);
+            sharedPref.edit().putString("pictures_string", activity.getString(R.string.app_no)).apply();
+        }
+
+        if (sharedPref.getBoolean ("loc", false)){
+            webView.getSettings().setGeolocationEnabled(true);
+            helper_main.grantPermissionsLoc(activity);
+            sharedPref.edit().putString("loc_string", activity.getString(R.string.app_yes)).apply();
+        } else {
+            webView.getSettings().setGeolocationEnabled(false);
+            sharedPref.edit().putString("loc_string", activity.getString(R.string.app_no)).apply();
+        }
+
+        if (sharedPref.getString ("cookie", "1").equals("1") || sharedPref.getString ("cookie", "1").equals("3")){
+            CookieManager cookieManager = CookieManager.getInstance();
+            cookieManager.setAcceptCookie(true);
+            sharedPref.edit().putString("cookie_string", activity.getString(R.string.app_yes)).apply();
+        } else {
+            CookieManager cookieManager = CookieManager.getInstance();
+            cookieManager.setAcceptCookie(false);
+            sharedPref.edit().putString("cookie_string", activity.getString(R.string.app_no)).apply();
+        }
+
+        webView.setOnTouchListener(new class_OnSwipeTouchListener_webview(activity) {
+            public void onSwipeRight() {
+                sharedPref.edit().putString("openURL", "").apply();
+                Intent intent = new Intent(activity, activity_left);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                activity.startActivity(intent);
+            }
+            public void onSwipeLeft() {
+                sharedPref.edit().putString("openURL", "").apply();
+                Intent intent = new Intent(activity, activity_right);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                activity.startActivity(intent);
+            }
+        });
+
+
     }
 
     public static void webView_WebViewClient (final Activity from, final SwipeRefreshLayout swipeRefreshLayout,

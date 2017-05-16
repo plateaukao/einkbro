@@ -20,11 +20,14 @@
 package de.baumann.browser.helper;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,9 +40,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import de.baumann.browser.Browser_1;
+import de.baumann.browser.Browser_2;
+import de.baumann.browser.Browser_3;
+import de.baumann.browser.Browser_4;
+import de.baumann.browser.Browser_5;
 import de.baumann.browser.R;
 import de.baumann.browser.popups.Popup_bookmarks;
 import de.baumann.browser.popups.Popup_readLater;
+
+import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
 
 public class helper_browser {
 
@@ -165,7 +175,7 @@ public class helper_browser {
         }
     }
 
-    public static void toolbar (final Activity activity, final  Class to, final WebView webview, Toolbar toolbar) {
+    public static void toolbar (final Activity activity, final WebView webview, Toolbar toolbar) {
 
         final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
 
@@ -183,10 +193,56 @@ public class helper_browser {
         toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sharedPref.edit().putString("openURL", "").apply();
-                Intent intent = new Intent(activity, to);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                activity.startActivity(intent);
+                final CharSequence[] options = {
+                        helper_browser.tab_1(activity, activity.getString(R.string.context_open)),
+                        helper_browser.tab_2(activity, activity.getString(R.string.context_open)),
+                        helper_browser.tab_3(activity, activity.getString(R.string.context_open)),
+                        helper_browser.tab_4(activity, activity.getString(R.string.context_open)),
+                        helper_browser.tab_5(activity, activity.getString(R.string.context_open))
+                };
+                new AlertDialog.Builder(activity)
+                        .setPositiveButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
+
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                dialog.cancel();
+                            }
+                        })
+                        .setItems(options, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int item) {
+
+                                if (options[item].equals(helper_browser.tab_1(activity, activity.getString(R.string.context_open)))) {
+                                    sharedPref.edit().putString("openURL", "").apply();
+                                    Intent intent = new Intent(activity, Browser_1.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                    activity.startActivity(intent);
+                                }
+                                if (options[item].equals(helper_browser.tab_2(activity, activity.getString(R.string.context_open)))) {
+                                    sharedPref.edit().putString("openURL", "").apply();
+                                    Intent intent = new Intent(activity, Browser_2.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                    activity.startActivity(intent);
+                                }
+                                if (options[item].equals(helper_browser.tab_3(activity, activity.getString(R.string.context_open)))) {
+                                    sharedPref.edit().putString("openURL", "").apply();
+                                    Intent intent = new Intent(activity, Browser_3.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                    activity.startActivity(intent);
+                                }
+                                if (options[item].equals(helper_browser.tab_4(activity, activity.getString(R.string.context_open)))) {
+                                    sharedPref.edit().putString("openURL", "").apply();
+                                    Intent intent = new Intent(activity, Browser_4.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                    activity.startActivity(intent);
+                                }
+                                if (options[item].equals(helper_browser.tab_5(activity, activity.getString(R.string.context_open)))) {
+                                    sharedPref.edit().putString("openURL", "").apply();
+                                    Intent intent = new Intent(activity, Browser_5.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                    activity.startActivity(intent);
+                                }
+                            }
+                        }).show();
             }
         });
     }
@@ -201,5 +257,116 @@ public class helper_browser {
                 ".jpg",         /* suffix */
                 storageDir      /* directory */
         );
+    }
+
+    public static String tab_1 (Activity activity, String string) {
+        final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
+        String s;
+
+        final String tab_string = sharedPref.getString("tab_1", "");
+
+        try {
+            if (tab_string.isEmpty()) {
+                s = "(1) " + string + ": \"" + activity.getString(R.string.context_1);
+            } else if (tab_string.length() > 16){
+                s = "(1) " + string + ": \"" + tab_string.substring(0,20) + " ..." + "\"";
+            } else {
+                s = "(1) " + string + ": \"" + tab_string + "\"";
+            }
+        } catch (Exception e) {
+            // Error occurred while creating the File
+            Log.e(TAG, "Unable to get String", e);
+            s = "(1) " + string + ": \"" + activity.getString(R.string.context_1);
+        }
+        return s;
+    }
+
+    public static String tab_2 (Activity activity, String string) {
+        final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
+        String s;
+
+        final String tab_string = sharedPref.getString("tab_2", "");
+
+        try {
+            if (tab_string.isEmpty()) {
+                s = "(2) " + string + ": \"" + activity.getString(R.string.context_2);
+            } else if (tab_string.length() > 16){
+                s = "(2) " + string + ": \"" + tab_string.substring(0,20) + " ..." + "\"";
+            } else {
+                s = "(2) " + string + ": \"" + tab_string + "\"";
+            }
+        } catch (Exception e) {
+            // Error occurred while creating the File
+            Log.e(TAG, "Unable to get String", e);
+            s = "(2) " + string + ": \"" + activity.getString(R.string.context_2);
+        }
+
+        return s;
+    }
+
+    public static String tab_3 (Activity activity, String string) {
+        final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
+        String s;
+
+        final String tab_string = sharedPref.getString("tab_3", "");
+
+        try {
+            if (tab_string.isEmpty()) {
+                s = "(3) " + string + ": \"" + activity.getString(R.string.context_3);
+            } else if (tab_string.length() > 16){
+                s = "(3) " + string + ": \"" + tab_string.substring(0,20) + " ..." + "\"";
+            } else {
+                s = "(3) " + string + ": \"" + tab_string + "\"";
+            }
+        } catch (Exception e) {
+            // Error occurred while creating the File
+            Log.e(TAG, "Unable to get String", e);
+            s = "(3) " + string + ": \"" + activity.getString(R.string.context_3);
+        }
+        return s;
+    }
+
+    public static String tab_4 (Activity activity, String string) {
+        final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
+        String s;
+
+        final String tab_string = sharedPref.getString("tab_4", "");
+
+        try {
+            if (tab_string.isEmpty()) {
+                s = "(4) " + string + ": \"" + activity.getString(R.string.context_4);
+            } else if (tab_string.length() > 16){
+                s = "(4) " + string + ": \"" + tab_string.substring(0,20) + " ..." + "\"";
+            } else {
+                s = "(4) " + string + ": \"" + tab_string + "\"";
+            }
+        } catch (Exception e) {
+            // Error occurred while creating the File
+            Log.e(TAG, "Unable to get String", e);
+            s = "(4) " + string + ": \"" + activity.getString(R.string.context_4);
+        }
+        return s;
+    }
+
+    public static String tab_5 (Activity activity, String string) {
+        final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
+        String s;
+
+        final String tab_string = sharedPref.getString("tab_5", "");
+
+        try {
+            if (tab_string.isEmpty()) {
+                s = "(5) " + string + ": \"" + activity.getString(R.string.context_5);
+            } else if (tab_string.length() > 16){
+                s = "(5) " + string + ": \"" + tab_string.substring(0,20) + " ..." + "\"";
+            } else {
+                s = "(5) " + string + ": \"" + tab_string + "\"";
+            }
+        } catch (Exception e) {
+            // Error occurred while creating the File
+            Log.e(TAG, "Unable to get String", e);
+            s = "(5) " + string + ": \"" + activity.getString(R.string.context_5);
+        }
+        return s;
     }
 }
