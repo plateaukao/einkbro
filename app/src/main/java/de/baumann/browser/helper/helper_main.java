@@ -39,6 +39,7 @@ import android.text.SpannableString;
 import android.text.util.Linkify;
 import android.view.View;
 import android.view.WindowManager;
+import android.webkit.CookieManager;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -53,6 +54,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import de.baumann.browser.Browser_1;
 import de.baumann.browser.R;
 
 public class helper_main {
@@ -166,12 +168,36 @@ public class helper_main {
         }
     }
 
-    public static void closeApp (Activity from, Class to, WebView webView) {
-        helper_webView.closeWebView(from, webView);
-        Intent intent = new Intent(from, to);
+    public static void closeApp (Activity from, WebView webView) {
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
+        if (sharedPref.getBoolean ("clearCookies", false)){
+            CookieManager cookieManager = CookieManager.getInstance();
+            cookieManager.removeAllCookies(null);
+            cookieManager.flush();
+        }
+
+        if (sharedPref.getBoolean ("clearCache", false)){
+            webView.clearCache(true);
+        }
+
+        if (sharedPref.getBoolean ("clearForm", false)){
+            webView.clearFormData();
+        }
+
+        if (sharedPref.getBoolean ("history", false)){
+            from.deleteDatabase("history_DB_v01.db");
+            webView.clearHistory();
+        }
+        sharedPref.edit().putString("started", "").apply();
+        sharedPref.edit().putInt("closeApp", 1).apply();
+
+        Intent intent = new Intent(from, Browser_1.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.setAction("closeAPP");
         from.startActivity(intent);
-        from.finishAffinity();
+        from.finish();
     }
 
     public static void onStart (final Activity from) {

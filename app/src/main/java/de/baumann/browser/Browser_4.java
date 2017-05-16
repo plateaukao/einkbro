@@ -575,7 +575,7 @@ public class Browser_4 extends AppCompatActivity implements ObservableScrollView
                     .setAction(getString(R.string.toast_yes), new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            helper_main.closeApp(Browser_4.this, Browser_1.class, mWebView);
+                            helper_main.closeApp(Browser_4.this, mWebView);
                         }
                     });
             snackbar.show();
@@ -585,6 +585,11 @@ public class Browser_4 extends AppCompatActivity implements ObservableScrollView
     @Override
     protected void onResume() {
         super.onResume();    //To change body of overridden methods use File | Settings | File Templates.
+
+        if (sharedPref.getInt("closeApp", 0) == 1) {
+            finish();
+        }
+
         mWebView.onResume();
         final String URL = sharedPref.getString("openURL","https://github.com/scoute-dich/browser/");
         new Handler().postDelayed(new Runnable() {

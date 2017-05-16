@@ -171,7 +171,7 @@ public class helper_browser {
 
         toolbar.setOnTouchListener(new class_OnSwipeTouchListener_editText(activity) {
             public void onSwipeTop() {
-                helper_main.closeApp(activity, to, webview);
+                helper_main.closeApp(activity, webview);
             }
             public void onSwipeRight() {
                 helper_main.switchToActivity(activity, Popup_readLater.class, "", false);

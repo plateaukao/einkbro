@@ -42,6 +42,7 @@ import android.widget.TextView;
 import java.net.URISyntaxException;
 import java.util.Locale;
 
+import de.baumann.browser.Browser_1;
 import de.baumann.browser.R;
 import de.baumann.browser.databases.DbAdapter_History;
 import de.baumann.browser.utils.Utils_AdClient;
@@ -412,30 +413,6 @@ public class helper_webView {
 
         }
     }
-
-    public static void closeWebView (Activity from, WebView webView) {
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
-        if (sharedPref.getBoolean ("clearCookies", false)){
-            CookieManager cookieManager = CookieManager.getInstance();
-            cookieManager.removeAllCookies(null);
-            cookieManager.flush();
-        }
-
-        if (sharedPref.getBoolean ("clearCache", false)){
-            webView.clearCache(true);
-        }
-
-        if (sharedPref.getBoolean ("clearForm", false)){
-            webView.clearFormData();
-        }
-
-        if (sharedPref.getBoolean ("history", false)){
-            from.deleteDatabase("history_DB_v01.db");
-            webView.clearHistory();
-        }
-        sharedPref.edit().putString("started", "").apply();
-    }
-
 
     public static void openURL (Activity from, WebView mWebView, EditText editText) {
 

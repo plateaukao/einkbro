@@ -153,6 +153,7 @@ public class Browser_1 extends AppCompatActivity implements ObservableScrollView
         PreferenceManager.setDefaultValues(this, R.xml.user_settings_search, false);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPref.edit().putBoolean("isOpened", true).apply();
+        sharedPref.edit().putInt("closeApp", 0).apply();
 
         boolean show = sharedPref.getBoolean("introShowDo_notShow", true);
 
@@ -643,7 +644,7 @@ public class Browser_1 extends AppCompatActivity implements ObservableScrollView
                     .setAction(getString(R.string.toast_yes), new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            helper_main.closeApp(Browser_1.this, Browser_2.class, mWebView);
+                            helper_main.closeApp(Browser_1.this, mWebView);
                         }
                     });
             snackbar.show();
