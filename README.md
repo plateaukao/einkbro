@@ -13,7 +13,7 @@ lists (see below) and has only five tabs (Who needs more?).
 - [XDA - Link](http://forum.xda-developers.com/android/apps-games/app-browser-t3500091)
 
 
-### The lists
+### The lists:
 
 - bookmarks
 - history
@@ -21,7 +21,7 @@ lists (see below) and has only five tabs (Who needs more?).
 - passStorage: save links withe login data (username, password)
 
 
-### Security/Data
+### Security/Data:
 
 - enable/disable cookies, javascript, location access, form data
 - whitelist for javascript
@@ -32,7 +32,7 @@ lists (see below) and has only five tabs (Who needs more?).
 - AdBlocker
 
 
-### UI/Handling
+### UI/Handling:
 
 - optimized for one hand handling (omnibox at bottom)
 - Android 7 app shortcuts
@@ -43,13 +43,13 @@ lists (see below) and has only five tabs (Who needs more?).
 - five tabs
 
 
-### Search
+### Search:
 
 - fast search on different websites
 - search on site
 
 
-### Some nice extra features
+### Some nice extra features:
 
 - open links in background
 - Websearch (from shared text)
