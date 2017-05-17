@@ -43,7 +43,7 @@
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryGreen"
+        android:background="@color/colorPrimary_1"
         android:theme="@style/Actionbar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         android:minHeight="?attr/actionBarSize"

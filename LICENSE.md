@@ -13,14 +13,20 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 **Used open source libraries:**
 
-_android-file-chooser_
-https://github.com/hedzr/android-file-chooser
-
-_Android-ObservableScrollView_
+"Android Observable ScrollView"
 https://github.com/ksoichiro/Android-ObservableScrollView
 
-_browser_
-https://github.com/yoshihiroando/browser
+"Android Onboarder"
+https://github.com/chyrta/AndroidOnboarder
 
-_encrypted-userprefs_
-https://github.com/sveinungkb/encrypted-userprefs
+"Glide"
+https://github.com/bumptech/glide
+
+"MAH Encryptor Lib"
+https://github.com/hummatli/MAHEncryptorLib
+
+"Material About Library"
+https://github.com/daniel-stoneuk/material-about-library
+
+"Material Design Icons"
+https://github.com/Templarian/MaterialDesign

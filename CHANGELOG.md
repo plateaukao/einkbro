@@ -1,3 +1,14 @@
+### v 3.6 (WIP)
+- new : five tabs
+- improved: Adblock integration
+- improved: Desktop site request
+- improved: sorting of lists
+
+### v 3.5
+- fix: keyboard issue
+- added: request desktop site (@CGSLURP LLC)
+- added: adblocker (@CGSLURP LLC)
+
 ### v 3.4
 - improved: sorting of list entries
 - fix: keyboard not open (landscape)

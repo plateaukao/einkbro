@@ -28,14 +28,18 @@ import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.github.ksoichiro.android.observablescrollview.ScrollState;
@@ -249,49 +253,67 @@ public class helper_browser {
         toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final CharSequence[] options = {
-                        helper_browser.tab_1(activity, activity.getString(R.string.context_open)),
-                        helper_browser.tab_2(activity, activity.getString(R.string.context_open)),
-                        helper_browser.tab_3(activity, activity.getString(R.string.context_open)),
-                        helper_browser.tab_4(activity, activity.getString(R.string.context_open)),
-                        helper_browser.tab_5(activity, activity.getString(R.string.context_open))
+
+
+                final Item[] items = {
+                        new Item(helper_browser.tab_1(activity, activity.getString(R.string.context_open)), R.drawable.circle_1),
+                        new Item(helper_browser.tab_2(activity, activity.getString(R.string.context_open)), R.drawable.circle_2),
+                        new Item(helper_browser.tab_3(activity, activity.getString(R.string.context_open)), R.drawable.circle_3),
+                        new Item(helper_browser.tab_4(activity, activity.getString(R.string.context_open)), R.drawable.circle_4),
+                        new Item(helper_browser.tab_5(activity, activity.getString(R.string.context_open)), R.drawable.circle_5),
                 };
-                new AlertDialog.Builder(activity)
+
+                ListAdapter adapter = new ArrayAdapter<Item>(
+                        activity,
+                        android.R.layout.select_dialog_item,
+                        android.R.id.text1,
+                        items){
+                    @NonNull
+                    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+                        //Use super class to create the View
+                        View v = super.getView(position, convertView, parent);
+                        TextView tv = (TextView)v.findViewById(android.R.id.text1);
+                        tv.setTextSize(16);
+                        tv.setCompoundDrawablesWithIntrinsicBounds(items[position].icon, 0, 0, 0);
+                        //Add margin between image and text (support various screen densities)
+                        int dp5 = (int) (12 * activity.getResources().getDisplayMetrics().density + 0.5f);
+                        tv.setCompoundDrawablePadding(dp5);
+
+                        return v;
+                    }
+                };
+
+                new android.app.AlertDialog.Builder(activity)
                         .setPositiveButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
 
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 dialog.cancel();
                             }
                         })
-                        .setItems(options, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int item) {
+                        .setAdapter(adapter, new DialogInterface.OnClickListener() {
 
-                                if (options[item].equals(helper_browser.tab_1(activity, activity.getString(R.string.context_open)))) {
+                            public void onClick(DialogInterface dialog, int item) {
+                                if (item == 0) {
                                     sharedPref.edit().putString("openURL", "").apply();
                                     Intent intent = new Intent(activity, Browser_1.class);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                                     activity.startActivity(intent);
-                                }
-                                if (options[item].equals(helper_browser.tab_2(activity, activity.getString(R.string.context_open)))) {
+                                } else if (item == 1) {
                                     sharedPref.edit().putString("openURL", "").apply();
                                     Intent intent = new Intent(activity, Browser_2.class);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                                     activity.startActivity(intent);
-                                }
-                                if (options[item].equals(helper_browser.tab_3(activity, activity.getString(R.string.context_open)))) {
+                                } else if (item == 2) {
                                     sharedPref.edit().putString("openURL", "").apply();
                                     Intent intent = new Intent(activity, Browser_3.class);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                                     activity.startActivity(intent);
-                                }
-                                if (options[item].equals(helper_browser.tab_4(activity, activity.getString(R.string.context_open)))) {
+                                } else if (item == 3) {
                                     sharedPref.edit().putString("openURL", "").apply();
                                     Intent intent = new Intent(activity, Browser_4.class);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                                     activity.startActivity(intent);
-                                }
-                                if (options[item].equals(helper_browser.tab_5(activity, activity.getString(R.string.context_open)))) {
+                                } else if (item == 4) {
                                     sharedPref.edit().putString("openURL", "").apply();
                                     Intent intent = new Intent(activity, Browser_5.class);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -301,6 +323,20 @@ public class helper_browser {
                         }).show();
             }
         });
+    }
+
+    public static class Item{
+        public final String text;
+        public final int icon;
+        public Item(String text, Integer icon) {
+            this.text = text;
+            this.icon = icon;
+        }
+
+        @Override
+        public String toString() {
+            return text;
+        }
     }
 
     public static File createImageFile() throws IOException {
@@ -323,16 +359,16 @@ public class helper_browser {
 
         try {
             if (tab_string.isEmpty()) {
-                s = "(1) " + string + ": \"" + activity.getString(R.string.context_1);
+                s = string + ": " + activity.getString(R.string.context_1);
             } else if (tab_string.length() > 16){
-                s = "(1) " + string + ": \"" + tab_string.substring(0,20) + " ..." + "\"";
+                s = string + ": " + tab_string.substring(0,20) + " ...";
             } else {
-                s = "(1) " + string + ": \"" + tab_string + "\"";
+                s = string + ": " + tab_string;
             }
         } catch (Exception e) {
             // Error occurred while creating the File
             Log.e(TAG, "Unable to get String", e);
-            s = "(1) " + string + ": \"" + activity.getString(R.string.context_1);
+            s = string + ": " + activity.getString(R.string.context_1);
         }
         return s;
     }
@@ -345,16 +381,16 @@ public class helper_browser {
 
         try {
             if (tab_string.isEmpty()) {
-                s = "(2) " + string + ": \"" + activity.getString(R.string.context_2);
+                s = string + ": " + activity.getString(R.string.context_2);
             } else if (tab_string.length() > 16){
-                s = "(2) " + string + ": \"" + tab_string.substring(0,20) + " ..." + "\"";
+                s = string + ": " + tab_string.substring(0,20) + " ...";
             } else {
-                s = "(2) " + string + ": \"" + tab_string + "\"";
+                s = string + ": " + tab_string;
             }
         } catch (Exception e) {
             // Error occurred while creating the File
             Log.e(TAG, "Unable to get String", e);
-            s = "(2) " + string + ": \"" + activity.getString(R.string.context_2);
+            s = string + ": " + activity.getString(R.string.context_2);
         }
 
         return s;
@@ -368,16 +404,16 @@ public class helper_browser {
 
         try {
             if (tab_string.isEmpty()) {
-                s = "(3) " + string + ": \"" + activity.getString(R.string.context_3);
+                s = string + ": " + activity.getString(R.string.context_3);
             } else if (tab_string.length() > 16){
-                s = "(3) " + string + ": \"" + tab_string.substring(0,20) + " ..." + "\"";
+                s = string + ": " + tab_string.substring(0,20) + " ...";
             } else {
-                s = "(3) " + string + ": \"" + tab_string + "\"";
+                s = string + ": " + tab_string;
             }
         } catch (Exception e) {
             // Error occurred while creating the File
             Log.e(TAG, "Unable to get String", e);
-            s = "(3) " + string + ": \"" + activity.getString(R.string.context_3);
+            s = string + ": " + activity.getString(R.string.context_3);
         }
         return s;
     }
@@ -390,16 +426,16 @@ public class helper_browser {
 
         try {
             if (tab_string.isEmpty()) {
-                s = "(4) " + string + ": \"" + activity.getString(R.string.context_4);
+                s = string + ": " + activity.getString(R.string.context_4);
             } else if (tab_string.length() > 16){
-                s = "(4) " + string + ": \"" + tab_string.substring(0,20) + " ..." + "\"";
+                s = string + ": " + tab_string.substring(0,20) + " ...";
             } else {
-                s = "(4) " + string + ": \"" + tab_string + "\"";
+                s = string + ": " + tab_string;
             }
         } catch (Exception e) {
             // Error occurred while creating the File
             Log.e(TAG, "Unable to get String", e);
-            s = "(4) " + string + ": \"" + activity.getString(R.string.context_4);
+            s = string + ": " + activity.getString(R.string.context_4);
         }
         return s;
     }
@@ -412,16 +448,16 @@ public class helper_browser {
 
         try {
             if (tab_string.isEmpty()) {
-                s = "(5) " + string + ": \"" + activity.getString(R.string.context_5);
+                s = string + ": " + activity.getString(R.string.context_5);
             } else if (tab_string.length() > 16){
-                s = "(5) " + string + ": \"" + tab_string.substring(0,20) + " ..." + "\"";
+                s = string + ": " + tab_string.substring(0,20) + " ...";
             } else {
-                s = "(5) " + string + ": \"" + tab_string + "\"";
+                s = string + ": " + tab_string;
             }
         } catch (Exception e) {
             // Error occurred while creating the File
             Log.e(TAG, "Unable to get String", e);
-            s = "(5) " + string + ": \"" + activity.getString(R.string.context_5);
+            s = string + ": " + activity.getString(R.string.context_5);
         }
         return s;
     }

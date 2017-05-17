@@ -1,8 +1,8 @@
 [![Donate](https://www.paypalobjects.com/de_DE/DE/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=NP6TGYDYP9SHY)
 
-# browser
+# Elemets
 A simple Android browser based on webview. The goal is to provide a lightweight but power full browser. It is based on several 
-lists (see below) and has not (and will not have) tabs.
+lists (see below) and has only five tabs (Who needs more?).
 
 
 ### Links:
@@ -29,6 +29,7 @@ lists (see below) and has not (and will not have) tabs.
 - toggle image loading
 - offline use
 - backup databases
+- AdBlocker
 
 
 ### UI/Handling
@@ -38,6 +39,8 @@ lists (see below) and has not (and will not have) tabs.
 - full material design
 - Navigation through websites: arrows and/or swipe
 - fullscreen browsing (optional)
+- request desktop site
+- five tabs
 
 
 ### Search
@@ -52,9 +55,3 @@ lists (see below) and has not (and will not have) tabs.
 - Websearch (from shared text)
 - screenshots of the whole website
 - build in file browser (open, share, rename, delete files)
-
-
-### What features will not be implemented
-
-- tabs (I know, it's the normal way, but I have no idea how to implement. I learned all about developing from tutorials, so I'm not as good as you might think...)
-- Ad blocker (there are more than enough apps to do that better)

@@ -71,7 +71,7 @@ public class helper_webView {
 
 
     @SuppressLint("SetJavaScriptEnabled")
-    public static void webView_Settings(final Activity activity, final WebView webView, final Class activity_left,  final  Class activity_right) {
+    public static void webView_Settings(final Activity activity, final WebView webView) {
 
         final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
         String fontSizeST = sharedPref.getString("font", "100");
@@ -150,23 +150,6 @@ public class helper_webView {
             sharedPref.edit().putString("request_string", activity.getString(R.string.app_no)).apply();
             myUserAgent.setUserAgent(activity, webView, false, webView.getUrl());
         }
-
-        webView.setOnTouchListener(new class_OnSwipeTouchListener_webview(activity) {
-            public void onSwipeRight() {
-                sharedPref.edit().putString("openURL", "").apply();
-                Intent intent = new Intent(activity, activity_left);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                activity.startActivity(intent);
-            }
-            public void onSwipeLeft() {
-                sharedPref.edit().putString("openURL", "").apply();
-                Intent intent = new Intent(activity, activity_right);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                activity.startActivity(intent);
-            }
-        });
-
-
     }
 
     public static void webView_WebViewClient (final Activity from, final SwipeRefreshLayout swipeRefreshLayout,

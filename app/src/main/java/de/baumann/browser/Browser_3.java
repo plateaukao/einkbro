@@ -121,7 +121,7 @@ public class Browser_3 extends AppCompatActivity implements ObservableScrollView
         super.onCreate(savedInstanceState);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        getWindow().setStatusBarColor(ContextCompat.getColor(Browser_3.this, R.color.colorPrimaryRedDark));
+        getWindow().setStatusBarColor(ContextCompat.getColor(Browser_3.this, R.color.colorPrimaryDark_3));
 
         WebView.enableSlowWholeDocumentDraw();
         setContentView(R.layout.activity_browser);
@@ -135,7 +135,7 @@ public class Browser_3 extends AppCompatActivity implements ObservableScrollView
         sharedPref.getInt("keyboard", 0);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setBackgroundColor(ContextCompat.getColor(Browser_3.this, R.color.colorPrimaryRed));
+        toolbar.setBackgroundColor(ContextCompat.getColor(Browser_3.this, R.color.colorPrimary_3));
         setSupportActionBar(toolbar);
 
         actionBar = getSupportActionBar();
@@ -167,7 +167,7 @@ public class Browser_3 extends AppCompatActivity implements ObservableScrollView
 
         SwipeRefreshLayout swipeView = (SwipeRefreshLayout) findViewById(R.id.swipe);
         assert swipeView != null;
-        swipeView.setColorSchemeResources(R.color.colorPrimaryRed, R.color.colorAccent);
+        swipeView.setColorSchemeResources(R.color.colorPrimary_3, R.color.colorAccent);
         swipeView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -194,7 +194,7 @@ public class Browser_3 extends AppCompatActivity implements ObservableScrollView
             imageButton_right.setVisibility(View.INVISIBLE);
         }
 
-        helper_webView.webView_Settings(Browser_3.this, mWebView, Browser_2.class, Browser_4.class);
+        helper_webView.webView_Settings(Browser_3.this, mWebView);
         helper_webView.webView_WebViewClient(Browser_3.this, swipeView, mWebView, urlBar);
 
         mWebView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
