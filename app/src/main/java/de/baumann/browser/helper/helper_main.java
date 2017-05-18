@@ -34,6 +34,7 @@ import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.FileProvider;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.util.Linkify;
@@ -43,19 +44,26 @@ import android.webkit.CookieManager;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mobapphome.mahencryptorlib.MAHEncryptor;
 
 import java.io.File;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Random;
 
 import de.baumann.browser.Browser_1;
+import de.baumann.browser.Browser_2;
+import de.baumann.browser.Browser_3;
+import de.baumann.browser.Browser_4;
+import de.baumann.browser.Browser_5;
 import de.baumann.browser.R;
+import de.baumann.browser.lists.List_bookmarks;
+import de.baumann.browser.lists.List_readLater;
 
 public class helper_main {
 
@@ -177,6 +185,8 @@ public class helper_main {
         sharedPref.edit().putString("tab_3", "").apply();
         sharedPref.edit().putString("tab_4", "").apply();
         sharedPref.edit().putString("tab_5", "").apply();
+        sharedPref.edit().putString("started", "").apply();
+        sharedPref.edit().putInt("closeApp", 1).apply();
 
         if (sharedPref.getBoolean ("clearCookies", false)){
             CookieManager cookieManager = CookieManager.getInstance();
@@ -196,21 +206,129 @@ public class helper_main {
             from.deleteDatabase("history_DB_v01.db");
             webView.clearHistory();
         }
-        sharedPref.edit().putString("started", "").apply();
-        sharedPref.edit().putInt("closeApp", 1).apply();
 
-        Intent intent = new Intent(from, Browser_1.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.setAction("closeAPP");
-        from.startActivity(intent);
         from.finish();
+    }
+
+    public static void toolbar(final Activity activity, Toolbar toolbar) {
+
+        final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
+
+        toolbar.setOnTouchListener(new class_OnSwipeTouchListener_editText(activity) {
+            public void onSwipeTop() {
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
+
+                sharedPref.edit().putString("tab_1", "").apply();
+                sharedPref.edit().putString("tab_2", "").apply();
+                sharedPref.edit().putString("tab_3", "").apply();
+                sharedPref.edit().putString("tab_4", "").apply();
+                sharedPref.edit().putString("tab_5", "").apply();
+                sharedPref.edit().putString("started", "").apply();
+                sharedPref.edit().putInt("closeApp", 1).apply();
+                activity.finish();
+            }
+            public void onSwipeRight() {
+                helper_main.switchToActivity(activity, List_readLater.class, "", true);
+            }
+            public void onSwipeLeft() {
+                helper_main.switchToActivity(activity, List_bookmarks.class, "", true);
+            }
+        });
+        toolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                View dialogView = View.inflate(activity, R.layout.dialog_tabs, null);
+
+                builder.setView(dialogView);
+                builder.setPositiveButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        dialog.cancel();
+                        dialog.cancel();
+                    }
+                });
+
+                final AlertDialog dialog = builder.create();
+                // Display the custom alert dialog on interface
+                dialog.show();
+
+                TextView context_1 = (TextView) dialogView.findViewById(R.id.context_1);
+                context_1.setText(helper_browser.tab_1(activity));
+                LinearLayout context_1_Layout = (LinearLayout) dialogView.findViewById(R.id.context_1_Layout);
+                context_1_Layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        sharedPref.edit().putString("openURL", "").apply();
+                        Intent intent = new Intent(activity, Browser_1.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        activity.startActivity(intent);
+                        dialog.cancel();
+                    }
+                });
+
+                TextView context_2 = (TextView) dialogView.findViewById(R.id.context_2);
+                context_2.setText(helper_browser.tab_2(activity));
+                LinearLayout context_2_Layout = (LinearLayout) dialogView.findViewById(R.id.context_2_Layout);
+                context_2_Layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        sharedPref.edit().putString("openURL", "").apply();
+                        Intent intent = new Intent(activity, Browser_2.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        activity.startActivity(intent);
+                        dialog.cancel();
+                    }
+                });
+
+                TextView context_3 = (TextView) dialogView.findViewById(R.id.context_3);
+                context_3.setText(helper_browser.tab_3(activity));
+                LinearLayout context_3_Layout = (LinearLayout) dialogView.findViewById(R.id.context_3_Layout);
+                context_3_Layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        sharedPref.edit().putString("openURL", "").apply();
+                        Intent intent = new Intent(activity, Browser_3.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        activity.startActivity(intent);
+                        dialog.cancel();
+                    }
+                });
+
+                TextView context_4 = (TextView) dialogView.findViewById(R.id.context_4);
+                context_4.setText(helper_browser.tab_4(activity));
+                LinearLayout context_4_Layout = (LinearLayout) dialogView.findViewById(R.id.context_4_Layout);
+                context_4_Layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        sharedPref.edit().putString("openURL", "").apply();
+                        Intent intent = new Intent(activity, Browser_4.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        activity.startActivity(intent);
+                        dialog.cancel();
+                    }
+                });
+
+                TextView context_5 = (TextView) dialogView.findViewById(R.id.context_5);
+                context_5.setText(helper_browser.tab_5(activity));
+                LinearLayout context_5_Layout = (LinearLayout) dialogView.findViewById(R.id.context_5_Layout);
+                context_5_Layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        sharedPref.edit().putString("openURL", "").apply();
+                        Intent intent = new Intent(activity, Browser_5.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        activity.startActivity(intent);
+                        dialog.cancel();
+                    }
+                });
+            }
+        });
     }
 
     public static void onStart (final Activity from) {
 
-        PreferenceManager.setDefaultValues(from, R.xml.user_settings, false);
-        PreferenceManager.setDefaultValues(from, R.xml.user_settings_search, false);
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
 
         if (sharedPref.getString ("fullscreen", "2").equals("1") || sharedPref.getString ("fullscreen", "2").equals("3")){
@@ -222,12 +340,34 @@ public class helper_main {
         if (sharedPref.getString("orientation", "auto").equals("portrait")) {
             from.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
+
+        sharedPref.edit().putBoolean("isOpened", true).apply();
+        sharedPref.edit().putInt("closeApp", 0).apply();
+        sharedPref.edit().putString("openURL", sharedPref.getString("startURL", "https://github.com/scoute-dich/browser/")).apply();
+        sharedPref.edit().putInt("keyboard", 0).apply();
+        sharedPref.getInt("keyboard", 0);
+
+        boolean show = sharedPref.getBoolean("introShowDo_notShow", true);
+
+        if (show){
+            helper_main.switchToActivity(from, Activity_intro.class, "", false);
+        }
+
+        if (sharedPref.getString("saved_key_ok", "no").equals("no")) {
+            char[] chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!§$%&/()=?;:_-.,+#*<>".toCharArray();
+            StringBuilder sb = new StringBuilder();
+            Random random = new Random();
+            for (int i = 0; i < 25; i++) {
+                char c = chars[random.nextInt(chars.length)];
+                sb.append(c);
+            }
+            sharedPref.edit().putString("saved_key", sb.toString()).apply();
+            sharedPref.edit().putString("saved_key_ok", "yes").apply();
+        }
     }
 
     public static void checkPin (final Activity from) {
 
-        PreferenceManager.setDefaultValues(from, R.xml.user_settings, false);
-        PreferenceManager.setDefaultValues(from, R.xml.user_settings_search, false);
         final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
 
         if (sharedPref.getString("protect_PW", "").length() > 0) {
@@ -241,7 +381,7 @@ public class helper_main {
         }
 
         if (pw != null  && pw.length() > 0) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(from, R.style.YourStyle);
+            AlertDialog.Builder builder = new AlertDialog.Builder(from, R.style.PinDialog);
             final View dialogView = View.inflate(from, R.layout.dialog_password, null);
 
             final TextView text = (TextView) dialogView.findViewById(R.id.pass_userPin);
@@ -439,6 +579,11 @@ public class helper_main {
     }
 
     public static File newFile (WebView webView) {
+        return  new File(Environment.getExternalStorageDirectory() + "/" + Environment.DIRECTORY_DOWNLOADS + "/" + newFileName(webView));
+    }
+
+    public static String newFileName (WebView webView) {
+
         final  String domain;
 
         if(Uri.parse(webView.getUrl()).getHost().length() == 0) {
@@ -450,16 +595,7 @@ public class helper_main {
         String shortDomain = domain.substring(0, Math.min(domain.length(), 20));
         String title = shortDomain.replaceAll("\\P{L}+", "-");
 
-        Date date = new Date();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.getDefault());
-        String filename = dateFormat.format(date) + "_" + title + ".jpg";
-        return  new File(Environment.getExternalStorageDirectory() + "/" + Environment.DIRECTORY_DOWNLOADS + "/" + filename);
-    }
-
-    public static String newFileName () {
-        Date date = new Date();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.getDefault());
-        return  dateFormat.format(date) + ".jpg";
+        return  title + ".jpg";
     }
 
     public static void open (String extension, Activity activity, File pathFile, View view) {
@@ -467,54 +603,17 @@ public class helper_main {
         final String fileExtension = file.getAbsolutePath().substring(file.getAbsolutePath().lastIndexOf("."));
         String text = activity.getString(R.string.toast_extension) + ": " + fileExtension;
         switch (extension) {
-            case ".gif":
-            case ".bmp":
-            case ".tiff":
-            case ".svg":
-            case ".png":
-            case ".jpg":
-            case ".JPG":
-            case ".jpeg":
+            case ".gif":case ".bmp":case ".tiff":case ".svg":case ".png":case ".jpg":case ".JPG":case ".jpeg":
                 helper_main.openFile(activity, pathFile, "image/*", view);
                 break;
-            case ".m3u8":
-            case ".mp3":
-            case ".wma":
-            case ".midi":
-            case ".wav":
-            case ".aac":
-            case ".aif":
-            case ".amp3":
-            case ".weba":
+            case ".m3u8":case ".mp3":case ".wma":case ".midi":case ".wav":case ".aac":case ".aif":case ".amp3":case ".weba":
                 helper_main.openFile(activity, pathFile, "audio/*", view);
                 break;
-            case ".mpeg":
-            case ".mp4":
-            case ".ogg":
-            case ".webm":
-            case ".qt":
-            case ".3gp":
-            case ".3g2":
-            case ".avi":
-            case ".f4v":
-            case ".flv":
-            case ".h261":
-            case ".h263":
-            case ".h264":
-            case ".asf":
-            case ".wmv":
+            case ".mpeg":case ".mp4":case ".ogg":case ".webm":case ".qt":case ".3gp":case ".3g2":case ".avi":case ".f4v":
+            case ".flv":case ".h261":case ".h263":case ".h264":case ".asf":case ".wmv":
                 helper_main.openFile(activity, pathFile, "video/*", view);
                 break;
-            case ".rtx":
-            case ".csv":
-            case ".txt":
-            case ".vcs":
-            case ".vcf":
-            case ".css":
-            case ".ics":
-            case ".conf":
-            case ".config":
-            case ".java":
+            case ".rtx":case ".csv":case ".txt":case ".vcs":case ".vcf":case ".css":case ".ics":case ".conf":case ".config":case ".java":
                 helper_main.openFile(activity, pathFile, "text/*", view);
                 break;
             case ".html":
@@ -579,10 +678,8 @@ public class helper_main {
                 break;
 
             default:
-                Snackbar snackbar = Snackbar
-                        .make(view, text, Snackbar.LENGTH_LONG);
+                Snackbar snackbar = Snackbar.make(view, text, Snackbar.LENGTH_LONG);
                 snackbar.show();
-
                 break;
         }
     }

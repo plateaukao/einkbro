@@ -17,7 +17,7 @@
     If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.baumann.browser.popups;
+package de.baumann.browser.lists;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -47,7 +47,7 @@ import de.baumann.browser.databases.DbAdapter_Pass;
 import de.baumann.browser.helper.helper_editText;
 import de.baumann.browser.helper.helper_main;
 
-public class Popup_pass extends AppCompatActivity {
+public class List_pass extends AppCompatActivity {
 
     private DbAdapter_Pass db;
 
@@ -61,17 +61,17 @@ public class Popup_pass extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        getWindow().setStatusBarColor(ContextCompat.getColor(Popup_pass.this, R.color.colorThreeDark));
+        getWindow().setStatusBarColor(ContextCompat.getColor(List_pass.this, R.color.colorThreeDark));
 
         setContentView(R.layout.activity_popup);
-        helper_main.onStart(Popup_pass.this);
+        helper_main.onStart(List_pass.this);
 
         PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
         PreferenceManager.setDefaultValues(this, R.xml.user_settings_search, false);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 
         if (sharedPref.getBoolean("isOpened", false)) {
-            helper_main.checkPin(Popup_pass.this);
+            helper_main.checkPin(List_pass.this);
         }
 
         try {
@@ -87,6 +87,8 @@ public class Popup_pass extends AppCompatActivity {
         if(actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
+        helper_main.toolbar (this, toolbar);
 
         EditText editText = (EditText) findViewById(R.id.editText);
         editText.setVisibility(View.GONE);
@@ -158,7 +160,7 @@ public class Popup_pass extends AppCompatActivity {
                         getString(R.string.pass_copy),
                         getString(R.string.pass_edit),
                         getString(R.string.bookmark_remove_bookmark)};
-                new AlertDialog.Builder(Popup_pass.this)
+                new AlertDialog.Builder(List_pass.this)
                         .setPositiveButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
 
                             public void onClick(DialogInterface dialog, int whichButton) {
@@ -172,8 +174,8 @@ public class Popup_pass extends AppCompatActivity {
 
                                     try {
 
-                                        AlertDialog.Builder builder = new AlertDialog.Builder(Popup_pass.this);
-                                        View dialogView = View.inflate(Popup_pass.this, R.layout.dialog_login, null);
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(List_pass.this);
+                                        View dialogView = View.inflate(List_pass.this, R.layout.dialog_login, null);
 
                                         final EditText pass_titleET = (EditText) dialogView.findViewById(R.id.pass_title);
                                         final EditText pass_userNameET = (EditText) dialogView.findViewById(R.id.pass_userName);
@@ -217,7 +219,7 @@ public class Popup_pass extends AppCompatActivity {
                                         final AlertDialog dialog2 = builder.create();
                                         // Display the custom alert dialog on interface
                                         dialog2.show();
-                                        helper_editText.showKeyboard(Popup_pass.this, pass_titleET, 0, pass_title, getString(R.string.app_search_hint_bookmark));
+                                        helper_editText.showKeyboard(List_pass.this, pass_titleET, 0, pass_title, getString(R.string.app_search_hint_bookmark));
 
                                     } catch (Exception e) {
                                         e.printStackTrace();
@@ -300,7 +302,7 @@ public class Popup_pass extends AppCompatActivity {
                         .setAction(R.string.toast_yes, new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Popup_pass.this.deleteDatabase("pass.db");
+                                List_pass.this.deleteDatabase("pass.db");
                                 recreate();
                             }
                         });

@@ -47,25 +47,12 @@ public class Activity_intent extends Activity {
         android.content.Intent intent = getIntent();
 
         Uri data = intent.getData();
+        String url = data.toString();
+        String domain = helper_webView.getDomain(this, url);
 
-        String domain;
-        if(Uri.parse(data.toString()).getHost().length() == 0) {
-            domain = getString(R.string.app_domain);
-        } else {
-            domain = Uri.parse(data.toString()).getHost();
-        }
-
-        if (domain.contains("www.")) {
-            domain = domain.replace("www.", "").toUpperCase();
-        }
-
-        String domain2 = domain.substring(0,1).toUpperCase() + domain.substring(1);
-
-        PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
-        PreferenceManager.setDefaultValues(this, R.xml.user_settings_search, false);
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        sharedPref.edit().putString("add_readLater_link", data.toString()).apply();
-        sharedPref.edit().putString("add_readLater_domain", domain2).apply();
+        sharedPref.edit().putString("add_readLater_link", url).apply();
+        sharedPref.edit().putString("add_readLater_domain", domain).apply();
 
         Random rand = new Random();
         int n = rand.nextInt(100000);
@@ -95,18 +82,18 @@ public class Activity_intent extends Activity {
                         .setAutoCancel(true)
                         .setSmallIcon(R.drawable.earth)
                         .setColor(ContextCompat.getColor(Activity_intent.this, R.color.colorPrimary_1))
-                        .setGroup("Browser")
+                        .setGroup("Elements")
                         .setGroupSummary(true)
                         .setContentIntent(piMain);
 
         Notification notification = new android.support.v4.app.NotificationCompat.Builder(Activity_intent.this)
                 .setColor(ContextCompat.getColor(Activity_intent.this, R.color.colorPrimary_1))
                 .setSmallIcon(R.drawable.earth)
-                .setContentTitle(getString(R.string.readLater_title))
-                .setContentText(data.toString())
+                .setContentTitle(getString(R.string.readLater_title) + " " + domain)
+                .setContentText(url)
                 .setContentIntent(piMain)
                 .setAutoCancel(true)
-                .setGroup("Browser")
+                .setGroup("Elements")
                 .addAction(action)
                 .addAction(action_2)
                 .setStyle(new android.support.v4.app.NotificationCompat.BigTextStyle().bigText(data.toString()))

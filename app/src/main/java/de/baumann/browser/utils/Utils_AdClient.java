@@ -23,13 +23,20 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 * */
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
+import android.util.Log;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import java.util.HashMap;
 import java.util.Map;
+
+import static android.content.ContentValues.TAG;
+
 /**
  * Created by Ozymandias on 5/3/2017.
  * Abstraction of https://github.com/AmniX/AdBlockedWebView-Android
@@ -41,32 +48,50 @@ public class Utils_AdClient extends WebViewClient {
 
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
+        final Uri uri = Uri.parse(url);
+        return handleUri(uri, view);
+    }
+
+    @TargetApi(Build.VERSION_CODES.N)
+    @Override
+    public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+        final Uri uri = request.getUrl();
+        return handleUri(uri, view);
+    }
+
+    private boolean handleUri(final Uri uri, WebView view) {
+
+        Log.i(TAG, "Uri =" + uri);
+        final String url = uri.toString();
+
         if (url.endsWith(".mp4")) {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setDataAndType(Uri.parse(url), "video/*");
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             view.getContext().startActivity(intent);
-
             return true;
+
         } else if (url.startsWith("tel:") || url.startsWith("sms:") || url.startsWith("smsto:")
                 || url.startsWith("mms:") || url.startsWith("mmsto:")) {
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             view.getContext().startActivity(intent);
-
             return true;
+
         } else {
-            return super.shouldOverrideUrlLoading(view, url);
+            return true;
         }
     }
 
-    private Map<String, Boolean> loadedUrls = new HashMap<>();
-    //could simply place this section inside and if/else statement
-    //inside the activities webview client.  but this way there is a class
+    private final Map<String, Boolean> loadedUrls = new HashMap<>();
+    // could simply place this section inside and if/else statement
+    // inside the activities webview client.  but this way there is a class
     // available to call that is separate from the activity and easier for
     // others to incorporate into their activities as well.
+
     @SuppressWarnings("deprecation")
     @Override
     public WebResourceResponse shouldInterceptRequest(WebView view, String url) {

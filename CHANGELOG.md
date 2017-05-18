@@ -1,8 +1,11 @@
 ### v 3.6 (WIP)
-- new : five tabs
+- new: five tabs (@CGSLURP LLC)
+- new: toolbar and button animations
+- new: toolbar gestures in lists
 - improved: Adblock integration
 - improved: Desktop site request
 - improved: sorting of lists
+- improved: code simplified
 
 ### v 3.5
 - fix: keyboard issue

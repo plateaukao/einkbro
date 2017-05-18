@@ -70,7 +70,7 @@ public class helper_editText {
 
     public static void editText_saveBookmark(final EditText editText, final Activity from, final WebView webView) {
 
-        helper_editText.showKeyboard(from, editText, 2, helper_webView.getTitle (webView), from.getString(R.string.app_search_hint_bookmark));
+        helper_editText.showKeyboard(from, editText, 2, helper_webView.getTitle (from, webView), from.getString(R.string.app_search_hint_bookmark));
         editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {

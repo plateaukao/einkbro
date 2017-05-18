@@ -30,13 +30,10 @@ import de.baumann.browser.databases.DbAdapter_ReadLater;
 
 public class Activity_intent_add extends Activity {
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
-        PreferenceManager.setDefaultValues(this, R.xml.user_settings_search, false);
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         String link = sharedPref.getString("add_readLater_link", "");
         String domain = sharedPref.getString("add_readLater_domain", "");

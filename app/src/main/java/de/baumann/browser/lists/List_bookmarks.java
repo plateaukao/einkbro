@@ -17,7 +17,7 @@
     If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.baumann.browser.popups;
+package de.baumann.browser.lists;
 
 import android.app.AlertDialog;
 import android.content.ClipData;
@@ -40,10 +40,12 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.FilterQueryProvider;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
@@ -55,17 +57,16 @@ import java.util.Locale;
 
 import de.baumann.browser.R;
 import de.baumann.browser.databases.DbAdapter_Bookmarks;
-import de.baumann.browser.databases.DbAdapter_History;
 import de.baumann.browser.databases.DbAdapter_ReadLater;
 import de.baumann.browser.helper.helper_editText;
 import de.baumann.browser.helper.helper_main;
 
-public class Popup_history extends AppCompatActivity {
+public class List_bookmarks extends AppCompatActivity {
 
     private ListView listView = null;
     private EditText editText;
     private TextView urlBar;
-    private DbAdapter_History db;
+    private DbAdapter_Bookmarks db;
     private SimpleCursorAdapter adapter;
     private SharedPreferences sharedPref;
 
@@ -74,17 +75,17 @@ public class Popup_history extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        getWindow().setStatusBarColor(ContextCompat.getColor(Popup_history.this, R.color.colorThreeDark));
+        getWindow().setStatusBarColor(ContextCompat.getColor(List_bookmarks.this, R.color.colorThreeDark));
 
         setContentView(R.layout.activity_popup);
-        helper_main.onStart(Popup_history.this);
+        helper_main.onStart(List_bookmarks.this);
 
         PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
         PreferenceManager.setDefaultValues(this, R.xml.user_settings_search, false);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 
         if (sharedPref.getBoolean("isOpened", false)) {
-            helper_main.checkPin(Popup_history.this);
+            helper_main.checkPin(List_bookmarks.this);
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -93,6 +94,8 @@ public class Popup_history extends AppCompatActivity {
         if(actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
+        helper_main.toolbar (this, toolbar);
 
         editText = (EditText) findViewById(R.id.editText);
         editText.setVisibility(View.GONE);
@@ -104,13 +107,13 @@ public class Popup_history extends AppCompatActivity {
         listView = (ListView)findViewById(R.id.list);
 
         //calling Notes_DbAdapter
-        db = new DbAdapter_History(this);
+        db = new DbAdapter_Bookmarks(this);
         db.open();
 
-        setHistoryList();
+        setBookmarksList();
     }
 
-    private void setHistoryList() {
+    private void setBookmarksList() {
 
         //display data
         final int layoutstyle=R.layout.list_item;
@@ -120,16 +123,66 @@ public class Popup_history extends AppCompatActivity {
                 R.id.textView_create_notes
         };
         String[] column = new String[] {
-                "history_title",
-                "history_content",
-                "history_creation"
+                "bookmarks_title",
+                "bookmarks_content",
+                "bookmarks_creation"
         };
         final Cursor row = db.fetchAllData(this);
-        adapter = new SimpleCursorAdapter(this, layoutstyle,row,column, xml_id, 0);
+        adapter = new SimpleCursorAdapter(this, layoutstyle,row,column, xml_id, 0) {
+            @Override
+            public View getView (final int position, View convertView, ViewGroup parent) {
+
+                Cursor row2 = (Cursor) listView.getItemAtPosition(position);
+                final String _id = row2.getString(row2.getColumnIndexOrThrow("_id"));
+                final String bookmarks_title = row2.getString(row2.getColumnIndexOrThrow("bookmarks_title"));
+                final String bookmarks_content = row2.getString(row2.getColumnIndexOrThrow("bookmarks_content"));
+                final String bookmarks_icon = row2.getString(row2.getColumnIndexOrThrow("bookmarks_icon"));
+                final String bookmarks_attachment = row2.getString(row2.getColumnIndexOrThrow("bookmarks_attachment"));
+                final String bookmarks_creation = row2.getString(row2.getColumnIndexOrThrow("bookmarks_creation"));
+
+                View v = super.getView(position, convertView, parent);
+                final ImageView iv_attachment = (ImageView) v.findViewById(R.id.att_notes);
+
+                switch (bookmarks_attachment) {
+                    case "":
+                        iv_attachment.setVisibility(View.VISIBLE);
+                        iv_attachment.setImageResource(R.drawable.star_outline);
+                        break;
+                    default:
+                        iv_attachment.setVisibility(View.VISIBLE);
+                        iv_attachment.setImageResource(R.drawable.star_grey);
+                        break;
+                }
+
+                iv_attachment.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View arg0) {
+                        if (bookmarks_attachment.equals("")) {
+
+                            if(db.isExistFav("true")){
+                                Snackbar.make(listView, R.string.bookmark_setFav_not, Snackbar.LENGTH_LONG).show();
+                            }else{
+                                iv_attachment.setImageResource(R.drawable.star_grey);
+                                db.update(Integer.parseInt(_id), bookmarks_title, bookmarks_content, bookmarks_icon, "true", bookmarks_creation);
+                                setBookmarksList();
+                                sharedPref.edit().putString("startURL", bookmarks_content).apply();
+                                Snackbar.make(listView, R.string.bookmark_setFav, Snackbar.LENGTH_LONG).show();
+                            }
+                        } else {
+                            iv_attachment.setImageResource(R.drawable.star_outline);
+                            db.update(Integer.parseInt(_id), bookmarks_title, bookmarks_content, bookmarks_icon, "", bookmarks_creation);
+                            setBookmarksList();
+                        }
+                    }
+                });
+                return v;
+            }
+        };
 
         //display data by filter
-        final String note_search = sharedPref.getString("filter_historyBY", "history_title");
-        sharedPref.edit().putString("filter_historyBY", "history_title").apply();
+        final String note_search = sharedPref.getString("filter_bookmarksBY", "bookmarks_title");
+        sharedPref.edit().putString("filter_bookmarksBY", "bookmarks_title").apply();
         editText.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable s) {
             }
@@ -152,8 +205,9 @@ public class Popup_history extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterview, View view, int position, long id) {
 
                 Cursor row = (Cursor) listView.getItemAtPosition(position);
-                final String history_content = row.getString(row.getColumnIndexOrThrow("history_content"));
-                sharedPref.edit().putString("openURL", history_content).apply();
+                final String bookmarks_content = row.getString(row.getColumnIndexOrThrow("bookmarks_content"));
+
+                sharedPref.edit().putString("openURL", bookmarks_content).apply();
                 finish();
             }
         });
@@ -163,18 +217,18 @@ public class Popup_history extends AppCompatActivity {
 
                 Cursor row2 = (Cursor) listView.getItemAtPosition(position);
                 final String _id = row2.getString(row2.getColumnIndexOrThrow("_id"));
-                final String history_title = row2.getString(row2.getColumnIndexOrThrow("history_title"));
-                final String history_content = row2.getString(row2.getColumnIndexOrThrow("history_content"));
-                final String history_icon = row2.getString(row2.getColumnIndexOrThrow("history_icon"));
-                final String history_attachment = row2.getString(row2.getColumnIndexOrThrow("history_attachment"));
-                final String history_creation = row2.getString(row2.getColumnIndexOrThrow("history_creation"));
+                final String bookmarks_title = row2.getString(row2.getColumnIndexOrThrow("bookmarks_title"));
+                final String bookmarks_content = row2.getString(row2.getColumnIndexOrThrow("bookmarks_content"));
+                final String bookmarks_icon = row2.getString(row2.getColumnIndexOrThrow("bookmarks_icon"));
+                final String bookmarks_attachment = row2.getString(row2.getColumnIndexOrThrow("bookmarks_attachment"));
+                final String bookmarks_creation = row2.getString(row2.getColumnIndexOrThrow("bookmarks_creation"));
 
                 final CharSequence[] options = {
                         getString(R.string.menu_share),
                         getString(R.string.menu_save),
                         getString(R.string.bookmark_edit_title),
                         getString(R.string.bookmark_remove_bookmark)};
-                new AlertDialog.Builder(Popup_history.this)
+                new AlertDialog.Builder(List_bookmarks.this)
                         .setPositiveButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
 
                             public void onClick(DialogInterface dialog, int whichButton) {
@@ -186,12 +240,12 @@ public class Popup_history extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int item) {
                                 if (options[item].equals(getString(R.string.bookmark_edit_title))) {
                                     sharedPref.edit().putString("edit_id", _id).apply();
-                                    sharedPref.edit().putString("edit_content", history_content).apply();
-                                    sharedPref.edit().putString("edit_icon", history_icon).apply();
-                                    sharedPref.edit().putString("edit_attachment", history_attachment).apply();
-                                    sharedPref.edit().putString("edit_creation", history_creation).apply();
+                                    sharedPref.edit().putString("edit_content", bookmarks_content).apply();
+                                    sharedPref.edit().putString("edit_icon", bookmarks_icon).apply();
+                                    sharedPref.edit().putString("edit_attachment", bookmarks_attachment).apply();
+                                    sharedPref.edit().putString("edit_creation", bookmarks_creation).apply();
                                     editText.setVisibility(View.VISIBLE);
-                                    helper_editText.showKeyboard(Popup_history.this, editText, 2, history_title, getString(R.string.bookmark_edit_title));
+                                    helper_editText.showKeyboard(List_bookmarks.this, editText, 2, bookmarks_title, getString(R.string.bookmark_edit_title));
                                 }
 
                                 if (options[item].equals(getString(R.string.bookmark_remove_bookmark))) {
@@ -201,17 +255,16 @@ public class Popup_history extends AppCompatActivity {
                                                 @Override
                                                 public void onClick(View view) {
                                                     db.delete(Integer.parseInt(_id));
-                                                    setHistoryList();
+                                                    setBookmarksList();
                                                 }
                                             });
                                     snackbar.show();
                                 }
-
                                 if (options[item].equals(getString(R.string.menu_share))) {
                                     final CharSequence[] options = {
                                             getString(R.string.menu_share_link),
                                             getString(R.string.menu_share_link_copy)};
-                                    new AlertDialog.Builder(Popup_history.this)
+                                    new AlertDialog.Builder(List_bookmarks.this)
                                             .setPositiveButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
 
                                                 public void onClick(DialogInterface dialog, int whichButton) {
@@ -224,13 +277,13 @@ public class Popup_history extends AppCompatActivity {
                                                     if (options[item].equals(getString(R.string.menu_share_link))) {
                                                         Intent sharingIntent = new Intent(Intent.ACTION_SEND);
                                                         sharingIntent.setType("text/plain");
-                                                        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, history_title);
-                                                        sharingIntent.putExtra(Intent.EXTRA_TEXT, history_content);
+                                                        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, bookmarks_title);
+                                                        sharingIntent.putExtra(Intent.EXTRA_TEXT, bookmarks_content);
                                                         startActivity(Intent.createChooser(sharingIntent, (getString(R.string.app_share_link))));
                                                     }
                                                     if (options[item].equals(getString(R.string.menu_share_link_copy))) {
-                                                        ClipboardManager clipboard = (ClipboardManager) Popup_history.this.getSystemService(Context.CLIPBOARD_SERVICE);
-                                                        clipboard.setPrimaryClip(ClipData.newPlainText("text", history_content));
+                                                        ClipboardManager clipboard = (ClipboardManager) List_bookmarks.this.getSystemService(Context.CLIPBOARD_SERVICE);
+                                                        clipboard.setPrimaryClip(ClipData.newPlainText("text", bookmarks_content));
                                                         Snackbar.make(listView, R.string.context_linkCopy_toast, Snackbar.LENGTH_SHORT).show();
                                                     }
                                                 }
@@ -238,11 +291,10 @@ public class Popup_history extends AppCompatActivity {
                                 }
                                 if (options[item].equals(getString(R.string.menu_save))) {
                                     final CharSequence[] options = {
-                                            getString(R.string.menu_save_bookmark),
                                             getString(R.string.menu_save_readLater),
                                             getString(R.string.menu_save_pass),
                                             getString(R.string.menu_createShortcut)};
-                                    new AlertDialog.Builder(Popup_history.this)
+                                    new AlertDialog.Builder(List_bookmarks.this)
                                             .setPositiveButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
 
                                                 public void onClick(DialogInterface dialog, int whichButton) {
@@ -253,43 +305,31 @@ public class Popup_history extends AppCompatActivity {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int item) {
                                                     if (options[item].equals(getString(R.string.menu_save_pass))) {
-                                                        helper_editText.editText_savePass(Popup_history.this, listView, history_title, history_content);
-                                                    }
-                                                    if (options[item].equals(getString(R.string.menu_save_bookmark))) {
-
-                                                        DbAdapter_Bookmarks db = new DbAdapter_Bookmarks(Popup_history.this);
-                                                        db.open();
-
-                                                        if(db.isExist(history_content)){
-                                                            Snackbar.make(listView, getString(R.string.toast_newTitle), Snackbar.LENGTH_LONG).show();
-                                                        }else{
-                                                            db.insert(history_title, history_content, "", "", helper_main.createDate());
-                                                            Snackbar.make(listView, R.string.bookmark_added, Snackbar.LENGTH_LONG).show();
-                                                        }
+                                                        helper_editText.editText_savePass(List_bookmarks.this, listView, bookmarks_title, bookmarks_content);
                                                     }
                                                     if (options[item].equals(getString(R.string.menu_save_readLater))) {
-                                                        DbAdapter_ReadLater db = new DbAdapter_ReadLater(Popup_history.this);
+                                                        DbAdapter_ReadLater db = new DbAdapter_ReadLater(List_bookmarks.this);
                                                         db.open();
-                                                        if(db.isExist(history_content)){
-                                                            Snackbar.make(listView, getString(R.string.toast_newTitle), Snackbar.LENGTH_LONG).show();
+                                                        if(db.isExist(bookmarks_content)){
+                                                            Snackbar.make(editText, getString(R.string.toast_newTitle), Snackbar.LENGTH_LONG).show();
                                                         }else{
-                                                            db.insert(history_title, history_content, "", "", helper_main.createDate());
+                                                            db.insert(bookmarks_title, bookmarks_content, "", "", helper_main.createDate());
                                                             Snackbar.make(listView, R.string.bookmark_added, Snackbar.LENGTH_LONG).show();
                                                         }
                                                     }
                                                     if (options[item].equals(getString(R.string.menu_createShortcut))) {
                                                         Intent i = new Intent();
                                                         i.setAction(Intent.ACTION_VIEW);
-                                                        i.setClassName(Popup_history.this, "de.baumann.browser.Browser_1");
-                                                        i.setData(Uri.parse(history_content));
+                                                        i.setClassName(List_bookmarks.this, "de.baumann.browser.Browser_1");
+                                                        i.setData(Uri.parse(bookmarks_content));
 
                                                         Intent shortcut = new Intent();
                                                         shortcut.putExtra("android.intent.extra.shortcut.INTENT", i);
                                                         shortcut.putExtra("android.intent.extra.shortcut.NAME", "THE NAME OF SHORTCUT TO BE SHOWN");
-                                                        shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, history_title);
-                                                        shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(Popup_history.this.getApplicationContext(), R.mipmap.ic_launcher));
+                                                        shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, bookmarks_title);
+                                                        shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(List_bookmarks.this.getApplicationContext(), R.mipmap.ic_launcher));
                                                         shortcut.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
-                                                        Popup_history.this.sendBroadcast(shortcut);
+                                                        List_bookmarks.this.sendBroadcast(shortcut);
                                                         Snackbar.make(listView, R.string.menu_createShortcut_success, Snackbar.LENGTH_SHORT).show();
                                                     }
                                                 }
@@ -301,18 +341,13 @@ public class Popup_history extends AppCompatActivity {
                 return true;
             }
         });
-
-        listView.post(new Runnable(){
-            public void run() {
-                listView.setSelection(listView.getCount() - 1);
-            }});
     }
 
     private void setTitle () {
-        if (sharedPref.getString("sortDBH", "title").equals("title")) {
-            urlBar.setText(getString(R.string.app_title_history) + " | " + getString(R.string.sort_title));
+        if (sharedPref.getString("sortDBB", "title").equals("title")) {
+            urlBar.setText(getString(R.string.app_title_bookmarks) + " | " + getString(R.string.sort_title));
         } else {
-            urlBar.setText(getString(R.string.app_title_history) + " | " + getString(R.string.sort_date));
+            urlBar.setText(getString(R.string.app_title_bookmarks) + " | " + getString(R.string.sort_date));
         }
     }
 
@@ -355,85 +390,85 @@ public class Popup_history extends AppCompatActivity {
         switch (item.getItemId()) {
 
             case R.id.filter_title:
-                sharedPref.edit().putString("filter_historyBY", "history_title").apply();
-                setHistoryList();
+                sharedPref.edit().putString("filter_bookmarksBY", "bookmarks_title").apply();
+                setBookmarksList();
                 editText.setVisibility(View.VISIBLE);
-                helper_editText.showKeyboard(Popup_history.this, editText, 1, "", getString(R.string.action_filter_title));
+                helper_editText.showKeyboard(List_bookmarks.this, editText, 1, "", getString(R.string.action_filter_title));
                 return true;
             case R.id.filter_url:
-                sharedPref.edit().putString("filter_historyBY", "history_content").apply();
-                setHistoryList();
+                sharedPref.edit().putString("filter_bookmarksBY", "bookmarks_content").apply();
+                setBookmarksList();
                 editText.setVisibility(View.VISIBLE);
-                helper_editText.showKeyboard(Popup_history.this, editText, 1, "", getString(R.string.action_filter_url));
+                helper_editText.showKeyboard(List_bookmarks.this, editText, 1, "", getString(R.string.action_filter_url));
                 return true;
 
             case R.id.filter_today:
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                 Calendar cal = Calendar.getInstance();
                 final String search = dateFormat.format(cal.getTime());
-                sharedPref.edit().putString("filter_historyBY", "history_creation").apply();
-                setHistoryList();
+                sharedPref.edit().putString("filter_bookmarksBY", "bookmarks_creation").apply();
+                setBookmarksList();
                 editText.setText(search);
-                urlBar.setText(getString(R.string.app_title_history) + " | " + getString(R.string.filter_today));
+                urlBar.setText(getString(R.string.app_title_bookmarks) + " | " + getString(R.string.filter_today));
                 return true;
             case R.id.filter_yesterday:
                 DateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                 Calendar cal2 = Calendar.getInstance();
                 cal2.add(Calendar.DATE, -1);
                 final String search2 = dateFormat2.format(cal2.getTime());
-                sharedPref.edit().putString("filter_historyBY", "history_creation").apply();
-                setHistoryList();
+                sharedPref.edit().putString("filter_bookmarksBY", "bookmarks_creation").apply();
+                setBookmarksList();
                 editText.setText(search2);
-                urlBar.setText(getString(R.string.app_title_history) + " | " + getString(R.string.filter_yesterday));
+                urlBar.setText(getString(R.string.app_title_bookmarks) + " | " + getString(R.string.filter_yesterday));
                 return true;
             case R.id.filter_before:
                 DateFormat dateFormat3 = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                 Calendar cal3 = Calendar.getInstance();
                 cal3.add(Calendar.DATE, -2);
                 final String search3 = dateFormat3.format(cal3.getTime());
-                sharedPref.edit().putString("filter_historyBY", "history_creation").apply();
-                setHistoryList();
+                sharedPref.edit().putString("filter_bookmarksBY", "bookmarks_creation").apply();
+                setBookmarksList();
                 editText.setText(search3);
-                urlBar.setText(getString(R.string.app_title_history) + " | " + getString(R.string.filter_before));
+                urlBar.setText(getString(R.string.app_title_bookmarks) + " | " + getString(R.string.filter_before));
                 return true;
             case R.id.filter_month:
                 DateFormat dateFormat4 = new SimpleDateFormat("yyyy-MM", Locale.getDefault());
                 Calendar cal4 = Calendar.getInstance();
                 final String search4 = dateFormat4.format(cal4.getTime());
-                sharedPref.edit().putString("filter_historyBY", "history_creation").apply();
-                setHistoryList();
+                sharedPref.edit().putString("filter_bookmarksBY", "bookmarks_creation").apply();
+                setBookmarksList();
                 editText.setText(search4);
-                urlBar.setText(getString(R.string.app_title_history) + " | " + getString(R.string.filter_month));
+                urlBar.setText(getString(R.string.app_title_bookmarks) + " | " + getString(R.string.filter_month));
                 return true;
             case R.id.filter_own:
-                sharedPref.edit().putString("filter_historyBY", "history_creation").apply();
-                setHistoryList();
+                sharedPref.edit().putString("filter_bookmarksBY", "bookmarks_creation").apply();
+                setBookmarksList();
                 editText.setVisibility(View.VISIBLE);
-                helper_editText.showKeyboard(Popup_history.this, editText, 1, "", getString(R.string.action_filter_create));
+                helper_editText.showKeyboard(List_bookmarks.this, editText, 1, "", getString(R.string.action_filter_create));
                 return true;
             case R.id.filter_clear:
                 editText.setVisibility(View.GONE);
                 setTitle();
-                helper_editText.hideKeyboard(Popup_history.this, editText, 0, getString(R.string.app_title_history), getString(R.string.app_search_hint));
-                setHistoryList();
+                helper_editText.hideKeyboard(List_bookmarks.this, editText, 0, getString(R.string.app_title_history), getString(R.string.app_search_hint));
+                setBookmarksList();
                 return true;
 
             case R.id.sort_title:
-                sharedPref.edit().putString("sortDBH", "title").apply();
-                setHistoryList();
+                sharedPref.edit().putString("sortDBB", "title").apply();
+                setBookmarksList();
                 setTitle();
                 return true;
             case R.id.sort_creation:
-                sharedPref.edit().putString("sortDBH", "create").apply();
-                setHistoryList();
+                sharedPref.edit().putString("sortDBB", "create").apply();
+                setBookmarksList();
                 setTitle();
                 return true;
 
             case R.id.action_cancel:
                 editText.setVisibility(View.GONE);
                 setTitle();
-                helper_editText.hideKeyboard(Popup_history.this, editText, 0, getString(R.string.app_title_history), getString(R.string.app_search_hint));
-                setHistoryList();
+                helper_editText.hideKeyboard(List_bookmarks.this, editText, 0, getString(R.string.app_title_bookmarks), getString(R.string.app_search_hint));
+                setBookmarksList();
                 return true;
 
             case R.id.action_delete:
@@ -442,7 +477,7 @@ public class Popup_history extends AppCompatActivity {
                         .setAction(R.string.toast_yes, new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Popup_history.this.deleteDatabase("history_DB_v01.db");
+                                List_bookmarks.this.deleteDatabase("bookmarks_DB_v01.db");
                                 recreate();
                             }
                         });
@@ -459,8 +494,8 @@ public class Popup_history extends AppCompatActivity {
 
                 String inputTag = editText.getText().toString().trim();
                 db.update(Integer.parseInt(edit_id), inputTag, edit_content, edit_icon, edit_attachment, edit_creation);
-                helper_editText.hideKeyboard(Popup_history.this, editText, 0, getString(R.string.app_title_history), getString(R.string.app_search_hint));
-                setHistoryList();
+                helper_editText.hideKeyboard(List_bookmarks.this, editText, 0, getString(R.string.app_title_bookmarks), getString(R.string.app_search_hint));
+                setBookmarksList();
 
                 Snackbar.make(listView, R.string.bookmark_added, Snackbar.LENGTH_SHORT).show();
 

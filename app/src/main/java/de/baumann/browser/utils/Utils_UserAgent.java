@@ -40,17 +40,12 @@ import java.util.Vector;
 
 public class Utils_UserAgent {
     //streamlined desktop UA access
-    public static final String DESKTOP_USER_AGENT = "Mozilla/5.0 (Mozilla/5.0 (X11; CrOS x86_64 8172.45.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.64 Safari/537.36";
+    private static final String DESKTOP_USER_AGENT = "Mozilla/5.0 (Mozilla/5.0 (X11; CrOS x86_64 8172.45.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.64 Safari/537.36";
 
-    public String getDefaultUA(Context context) {
+    private String getDefaultUA(Context context) {
         return WebSettings.getDefaultUserAgent(context);
     }
-    // this is for if you ever want to do a check on what the *current* user agent is broadcasted as.
-    public String getUserAgent(WebView mWebView) {
-        if (mWebView != null) {
-            return mWebView.getSettings().getUserAgentString();
-        } else { return "";}
-    }
+
     // self explanatory. sets the user agent after clearing any anonymous session cookies.
     public void setUserAgent(Context context, WebView mWebView, boolean choice, String url) {
         if (mWebView != null) {
@@ -70,14 +65,14 @@ public class Utils_UserAgent {
             }
         }
     }
-    public static void clearCookieByUrl(String url, CookieManager pCookieManager, CookieSyncManager pCookieSyncManager) {
+    private static void clearCookieByUrl(String url, CookieManager pCookieManager, CookieSyncManager pCookieSyncManager) {
         try {
             Uri uri = Uri.parse(url);
             String host = uri.getHost();
             clearCookieByUrlInternal(url,pCookieManager,pCookieSyncManager);
             clearCookieByUrlInternal("http://." + host,pCookieManager,pCookieSyncManager);
             clearCookieByUrlInternal("https://." + host,pCookieManager,pCookieSyncManager);
-        } catch (Exception e) {
+        } catch (Exception ignored) {
 
         }
     }
@@ -105,15 +100,15 @@ public class Utils_UserAgent {
         for (int i = 0; i < len; i++) {
             cookieField[i] = cookieField[i].trim();
         }
-        Vector<String> allCookieField = new Vector<String>();
-        for (int i = 0; i < len; i++) {
-            if (TextUtils.isEmpty(cookieField[i])) {
+        Vector<String> allCookieField = new Vector<>();
+        for (String aCookieField : cookieField) {
+            if (TextUtils.isEmpty(aCookieField)) {
                 continue;
             }
-            if (!cookieField[i].contains("=")) {
+            if (!aCookieField.contains("=")) {
                 continue;
             }
-            String[] singleCookieField = cookieField[i].split("=");
+            String[] singleCookieField = aCookieField.split("=");
             allCookieField.add(singleCookieField[0]);
         }
         if (allCookieField.isEmpty()) {

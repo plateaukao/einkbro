@@ -1,21 +1,9 @@
 <resources>
 
-    <style name="YourStyle">
-        <item name="android:layout_width">fill_parent</item>
-        <item name="android:layout_height">fill_parent</item>
-
-
-        <!-- No backgrounds, titles or window float -->
-        <item name="android:windowBackground">@null</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowIsFloating">false</item>
-    </style>
-
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary_1</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark_1</item>
+        <item name="colorPrimary">@color/colorThree</item>
+        <item name="colorPrimaryDark">@color/colorThreeDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowAnimationStyle">@null</item>
     </style>
@@ -31,10 +19,6 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
     <style name="Actionbar" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:textColorSecondary">#ffffff</item>
     </style>
@@ -48,8 +32,17 @@
         <item name="android:backgroundDimEnabled">false</item>
     </style>
 
+    <style name="PinDialog">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+        <!-- No backgrounds, titles or window float -->
+        <item name="android:windowBackground">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">false</item>
+    </style>
+
     <style name="EditTextStyle" parent="AppTheme">
-        <item name="colorControlNormal">@color/colorPrimary_1</item>
+        <item name="colorControlNormal">#00ffffff</item>
         <item name="colorControlActivated">@color/colorAccent</item>
         <item name="colorControlHighlight">@color/colorAccent</item>
     </style>

@@ -21,8 +21,7 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-* */
-/**
+
  * Created by Ozymandias on 5/3/2017.
  * Abstraction of https://github.com/AmniX/AdBlockedWebView-Android*
  */
@@ -51,8 +50,8 @@ public class Utils_AdBlocker {
             protected Void doInBackground(Void... params) {
                 try {
                     loadFromAssets(context);
-                } catch (IOException e) {
-                    // noop
+                } catch (IOException ignored) {
+
                 }
                 return null;
             }

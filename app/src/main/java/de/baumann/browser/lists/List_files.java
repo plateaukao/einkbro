@@ -17,7 +17,7 @@
     If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.baumann.browser.popups;
+package de.baumann.browser.lists;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -57,9 +57,7 @@ import java.io.File;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
 
@@ -71,7 +69,7 @@ import de.baumann.browser.helper.helper_main;
 import static android.content.ContentValues.TAG;
 import static java.lang.String.valueOf;
 
-public class Popup_files extends AppCompatActivity {
+public class List_files extends AppCompatActivity {
 
     private ListView listView = null;
     private EditText editText;
@@ -85,10 +83,10 @@ public class Popup_files extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        getWindow().setStatusBarColor(ContextCompat.getColor(Popup_files.this, R.color.colorThreeDark));
+        getWindow().setStatusBarColor(ContextCompat.getColor(List_files.this, R.color.colorThreeDark));
 
         setContentView(R.layout.activity_popup);
-        helper_main.onStart(Popup_files.this);
+        helper_main.onStart(List_files.this);
 
         PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
         PreferenceManager.setDefaultValues(this, R.xml.user_settings_search, false);
@@ -103,6 +101,8 @@ public class Popup_files extends AppCompatActivity {
         if(actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
+        helper_main.toolbar (this, toolbar);
 
         editText = (EditText) findViewById(R.id.editText);
         editText.setVisibility(View.GONE);
@@ -206,7 +206,7 @@ public class Popup_files extends AppCompatActivity {
                         case ".3g2":case ".avi":case ".f4v":case ".flv":case ".h261":case ".h263":
                         case ".h264":case ".asf":case ".wmv":
                             try {
-                                Glide.with(Popup_files.this)
+                                Glide.with(List_files.this)
                                         .load(files_attachment) // or URI/path
                                         .override(76, 76)
                                         .centerCrop()
@@ -238,7 +238,7 @@ public class Popup_files extends AppCompatActivity {
                         case ".gif":case ".bmp":case ".tiff":case ".svg":
                         case ".png":case ".jpg":case ".JPG":case ".jpeg":
                             try {
-                                Glide.with(Popup_files.this)
+                                Glide.with(List_files.this)
                                         .load(files_attachment) // or URI/path
                                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                                         .skipMemoryCache(true)
@@ -315,7 +315,7 @@ public class Popup_files extends AppCompatActivity {
                         Snackbar.make(listView, R.string.toast_directory, Snackbar.LENGTH_LONG).show();
                     }
                 } else {
-                    helper_main.open(files_icon, Popup_files.this, pathFile, listView);
+                    helper_main.open(files_icon, List_files.this, pathFile, listView);
                 }
             }
         });
@@ -348,7 +348,7 @@ public class Popup_files extends AppCompatActivity {
                             getString(R.string.choose_menu_3),
                             getString(R.string.choose_menu_4)};
 
-                    final AlertDialog.Builder dialog = new AlertDialog.Builder(Popup_files.this);
+                    final AlertDialog.Builder dialog = new AlertDialog.Builder(List_files.this);
                     dialog.setPositiveButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
 
                         public void onClick(DialogInterface dialog, int whichButton) {
@@ -388,7 +388,7 @@ public class Popup_files extends AppCompatActivity {
                             if (options[item].equals(getString(R.string.choose_menu_3))) {
                                 sharedPref.edit().putString("pathFile", files_attachment).apply();
                                 editText.setVisibility(View.VISIBLE);
-                                helper_editText.showKeyboard(Popup_files.this, editText, 2, files_title, getString(R.string.bookmark_edit_title));
+                                helper_editText.showKeyboard(List_files.this, editText, 2, files_title, getString(R.string.bookmark_edit_title));
                             }
                         }
                     });
@@ -485,13 +485,13 @@ public class Popup_files extends AppCompatActivity {
                 sharedPref.edit().putString("filter_filesBY", "files_title").apply();
                 setFilesList();
                 editText.setVisibility(View.VISIBLE);
-                helper_editText.showKeyboard(Popup_files.this, editText, 1, "", getString(R.string.action_filter_title));
+                helper_editText.showKeyboard(List_files.this, editText, 1, "", getString(R.string.action_filter_title));
                 return true;
             case R.id.filter_url:
                 sharedPref.edit().putString("filter_filesBY", "files_icon").apply();
                 setFilesList();
                 editText.setVisibility(View.VISIBLE);
-                helper_editText.showKeyboard(Popup_files.this, editText, 1, "", getString(R.string.action_filter_url));
+                helper_editText.showKeyboard(List_files.this, editText, 1, "", getString(R.string.action_filter_url));
                 return true;
 
             case R.id.filter_today:
@@ -536,12 +536,12 @@ public class Popup_files extends AppCompatActivity {
                 sharedPref.edit().putString("filter_filesBY", "files_creation").apply();
                 setFilesList();
                 editText.setVisibility(View.VISIBLE);
-                helper_editText.showKeyboard(Popup_files.this, editText, 1, "", getString(R.string.action_filter_create));
+                helper_editText.showKeyboard(List_files.this, editText, 1, "", getString(R.string.action_filter_create));
                 return true;
             case R.id.filter_clear:
                 editText.setVisibility(View.GONE);
                 setTitle();
-                helper_editText.hideKeyboard(Popup_files.this, editText, 0, getString(R.string.app_title_history), getString(R.string.app_search_hint));
+                helper_editText.hideKeyboard(List_files.this, editText, 0, getString(R.string.app_title_history), getString(R.string.app_search_hint));
                 setFilesList();
                 return true;
 
@@ -559,7 +559,7 @@ public class Popup_files extends AppCompatActivity {
                 pathFile.renameTo(to);
                 pathFile.delete();
 
-                helper_editText.hideKeyboard(Popup_files.this, editText, 0, getString(R.string.app_title_bookmarks), getString(R.string.app_search_hint));
+                helper_editText.hideKeyboard(List_files.this, editText, 0, getString(R.string.app_title_bookmarks), getString(R.string.app_search_hint));
                 setFilesList();
 
                 Snackbar.make(listView, R.string.bookmark_added, Snackbar.LENGTH_SHORT).show();
@@ -574,7 +574,7 @@ public class Popup_files extends AppCompatActivity {
             case R.id.action_cancel:
                 editText.setVisibility(View.GONE);
                 setTitle();
-                helper_editText.hideKeyboard(Popup_files.this, editText, 0, getString(R.string.app_title_bookmarks), getString(R.string.app_search_hint));
+                helper_editText.hideKeyboard(List_files.this, editText, 0, getString(R.string.app_title_bookmarks), getString(R.string.app_search_hint));
                 setFilesList();
                 return true;
 

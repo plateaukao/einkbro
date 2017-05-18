@@ -40,6 +40,7 @@
                 android:typeface="sans"
                 android:textStyle="bold"
                 android:textAppearance="?android:attr/textAppearanceMedium"
+                android:ellipsize="end"
                 android:lines="1" />
 
             <ImageView
@@ -71,6 +72,7 @@
                 android:fontFamily="sans-serif"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:typeface="serif"
+                android:ellipsize="end"
                 android:lines="1" />
 
             <TextView
@@ -82,6 +84,7 @@
                 android:fontFamily="sans-serif-condensed"
                 android:textStyle="normal"
                 android:textAppearance="?android:attr/textAppearanceSmall"
+                android:ellipsize="end"
                 android:lines="1" />
 
         </RelativeLayout>

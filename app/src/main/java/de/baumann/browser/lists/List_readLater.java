@@ -17,7 +17,7 @@
     If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.baumann.browser.popups;
+package de.baumann.browser.lists;
 
 import android.app.AlertDialog;
 import android.content.ClipData;
@@ -60,7 +60,7 @@ import de.baumann.browser.databases.DbAdapter_ReadLater;
 import de.baumann.browser.helper.helper_editText;
 import de.baumann.browser.helper.helper_main;
 
-public class Popup_readLater extends AppCompatActivity {
+public class List_readLater extends AppCompatActivity {
 
     private ListView listView = null;
     private EditText editText;
@@ -74,17 +74,17 @@ public class Popup_readLater extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        getWindow().setStatusBarColor(ContextCompat.getColor(Popup_readLater.this, R.color.colorThreeDark));
+        getWindow().setStatusBarColor(ContextCompat.getColor(List_readLater.this, R.color.colorThreeDark));
 
         setContentView(R.layout.activity_popup);
-        helper_main.onStart(Popup_readLater.this);
+        helper_main.onStart(List_readLater.this);
 
         PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
         PreferenceManager.setDefaultValues(this, R.xml.user_settings_search, false);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
 
         if (sharedPref.getBoolean("isOpened", false)) {
-            helper_main.checkPin(Popup_readLater.this);
+            helper_main.checkPin(List_readLater.this);
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -93,6 +93,8 @@ public class Popup_readLater extends AppCompatActivity {
         if(actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
+        helper_main.toolbar (this, toolbar);
 
         editText = (EditText) findViewById(R.id.editText);
         editText.setVisibility(View.GONE);
@@ -123,7 +125,7 @@ public class Popup_readLater extends AppCompatActivity {
                     Cursor row = (Cursor) listView.getItemAtPosition(position);
                     final String bookmarks_content = row.getString(row.getColumnIndexOrThrow("bookmarks_content"));
 
-                    Intent i = new Intent(Popup_readLater.this, Browser_1.class);
+                    Intent i = new Intent(List_readLater.this, Browser_1.class);
                     i.putExtra("URL", bookmarks_content);
                     startActivity(i);
                     finish();
@@ -196,7 +198,7 @@ public class Popup_readLater extends AppCompatActivity {
                         getString(R.string.menu_save),
                         getString(R.string.bookmark_edit_title),
                         getString(R.string.bookmark_remove_bookmark)};
-                new AlertDialog.Builder(Popup_readLater.this)
+                new AlertDialog.Builder(List_readLater.this)
                         .setPositiveButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
 
                             public void onClick(DialogInterface dialog, int whichButton) {
@@ -213,7 +215,7 @@ public class Popup_readLater extends AppCompatActivity {
                                     sharedPref.edit().putString("edit_attachment", readLater_attachment).apply();
                                     sharedPref.edit().putString("edit_creation", readLater_creation).apply();
                                     editText.setVisibility(View.VISIBLE);
-                                    helper_editText.showKeyboard(Popup_readLater.this, editText, 2, readLater_title, getString(R.string.bookmark_edit_title));
+                                    helper_editText.showKeyboard(List_readLater.this, editText, 2, readLater_title, getString(R.string.bookmark_edit_title));
                                 }
 
                                 if (options[item].equals(getString(R.string.bookmark_remove_bookmark))) {
@@ -233,7 +235,7 @@ public class Popup_readLater extends AppCompatActivity {
                                     final CharSequence[] options = {
                                             getString(R.string.menu_share_link),
                                             getString(R.string.menu_share_link_copy)};
-                                    new AlertDialog.Builder(Popup_readLater.this)
+                                    new AlertDialog.Builder(List_readLater.this)
                                             .setPositiveButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
 
                                                 public void onClick(DialogInterface dialog, int whichButton) {
@@ -251,7 +253,7 @@ public class Popup_readLater extends AppCompatActivity {
                                                         startActivity(Intent.createChooser(sharingIntent, (getString(R.string.app_share_link))));
                                                     }
                                                     if (options[item].equals(getString(R.string.menu_share_link_copy))) {
-                                                        ClipboardManager clipboard = (ClipboardManager) Popup_readLater.this.getSystemService(Context.CLIPBOARD_SERVICE);
+                                                        ClipboardManager clipboard = (ClipboardManager) List_readLater.this.getSystemService(Context.CLIPBOARD_SERVICE);
                                                         clipboard.setPrimaryClip(ClipData.newPlainText("text", readLater_content));
                                                         Snackbar.make(listView, R.string.context_linkCopy_toast, Snackbar.LENGTH_SHORT).show();
                                                     }
@@ -263,7 +265,7 @@ public class Popup_readLater extends AppCompatActivity {
                                             getString(R.string.menu_save_bookmark),
                                             getString(R.string.menu_save_pass),
                                             getString(R.string.menu_createShortcut)};
-                                    new AlertDialog.Builder(Popup_readLater.this)
+                                    new AlertDialog.Builder(List_readLater.this)
                                             .setPositiveButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
 
                                                 public void onClick(DialogInterface dialog, int whichButton) {
@@ -274,10 +276,10 @@ public class Popup_readLater extends AppCompatActivity {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int item) {
                                                     if (options[item].equals(getString(R.string.menu_save_pass))) {
-                                                        helper_editText.editText_savePass(Popup_readLater.this, listView, readLater_title, readLater_content);
+                                                        helper_editText.editText_savePass(List_readLater.this, listView, readLater_title, readLater_content);
                                                     }
                                                     if (options[item].equals(getString(R.string.menu_save_bookmark))) {
-                                                        DbAdapter_Bookmarks db = new DbAdapter_Bookmarks(Popup_readLater.this);
+                                                        DbAdapter_Bookmarks db = new DbAdapter_Bookmarks(List_readLater.this);
                                                         db.open();
 
                                                         if(db.isExist(readLater_content)){
@@ -290,16 +292,16 @@ public class Popup_readLater extends AppCompatActivity {
                                                     if (options[item].equals(getString(R.string.menu_createShortcut))) {
                                                         Intent i = new Intent();
                                                         i.setAction(Intent.ACTION_VIEW);
-                                                        i.setClassName(Popup_readLater.this, "de.baumann.browser.Browser_1");
+                                                        i.setClassName(List_readLater.this, "de.baumann.browser.Browser_1");
                                                         i.setData(Uri.parse(readLater_content));
 
                                                         Intent shortcut = new Intent();
                                                         shortcut.putExtra("android.intent.extra.shortcut.INTENT", i);
                                                         shortcut.putExtra("android.intent.extra.shortcut.NAME", "THE NAME OF SHORTCUT TO BE SHOWN");
                                                         shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, readLater_content);
-                                                        shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(Popup_readLater.this.getApplicationContext(), R.mipmap.ic_launcher));
+                                                        shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(List_readLater.this.getApplicationContext(), R.mipmap.ic_launcher));
                                                         shortcut.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
-                                                        Popup_readLater.this.sendBroadcast(shortcut);
+                                                        List_readLater.this.sendBroadcast(shortcut);
                                                         Snackbar.make(listView, R.string.menu_createShortcut_success, Snackbar.LENGTH_SHORT).show();
                                                     }
                                                 }
@@ -368,13 +370,13 @@ public class Popup_readLater extends AppCompatActivity {
                 sharedPref.edit().putString("filter_readLaterBY", "readLater_title").apply();
                 setReadLaterList();
                 editText.setVisibility(View.VISIBLE);
-                helper_editText.showKeyboard(Popup_readLater.this, editText, 1, "", getString(R.string.action_filter_title));
+                helper_editText.showKeyboard(List_readLater.this, editText, 1, "", getString(R.string.action_filter_title));
                 return true;
             case R.id.filter_url:
                 sharedPref.edit().putString("filter_readLaterBY", "readLater_content").apply();
                 setReadLaterList();
                 editText.setVisibility(View.VISIBLE);
-                helper_editText.showKeyboard(Popup_readLater.this, editText, 1, "", getString(R.string.action_filter_url));
+                helper_editText.showKeyboard(List_readLater.this, editText, 1, "", getString(R.string.action_filter_url));
                 return true;
 
             case R.id.filter_today:
@@ -419,12 +421,12 @@ public class Popup_readLater extends AppCompatActivity {
                 sharedPref.edit().putString("filter_readLaterBY", "readLater_creation").apply();
                 setReadLaterList();
                 editText.setVisibility(View.VISIBLE);
-                helper_editText.showKeyboard(Popup_readLater.this, editText, 1, "", getString(R.string.action_filter_create));
+                helper_editText.showKeyboard(List_readLater.this, editText, 1, "", getString(R.string.action_filter_create));
                 return true;
             case R.id.filter_clear:
                 editText.setVisibility(View.GONE);
                 setTitle();
-                helper_editText.hideKeyboard(Popup_readLater.this, editText, 0, getString(R.string.app_title_history), getString(R.string.app_search_hint));
+                helper_editText.hideKeyboard(List_readLater.this, editText, 0, getString(R.string.app_title_history), getString(R.string.app_search_hint));
                 setReadLaterList();
                 return true;
 
@@ -442,7 +444,7 @@ public class Popup_readLater extends AppCompatActivity {
             case R.id.action_cancel:
                 editText.setVisibility(View.GONE);
                 setTitle();
-                helper_editText.hideKeyboard(Popup_readLater.this, editText, 0, getString(R.string.app_title_readLater), getString(R.string.app_search_hint));
+                helper_editText.hideKeyboard(List_readLater.this, editText, 0, getString(R.string.app_title_readLater), getString(R.string.app_search_hint));
                 setReadLaterList();
                 return true;
 
@@ -452,7 +454,7 @@ public class Popup_readLater extends AppCompatActivity {
                         .setAction(R.string.toast_yes, new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Popup_readLater.this.deleteDatabase("readLater_DB_v01.db");
+                                List_readLater.this.deleteDatabase("readLater_DB_v01.db");
                                 recreate();
                             }
                         });
@@ -469,7 +471,7 @@ public class Popup_readLater extends AppCompatActivity {
 
                 String inputTag = editText.getText().toString().trim();
                 db.update(Integer.parseInt(edit_id), inputTag, edit_content, edit_icon, edit_attachment, edit_creation);
-                helper_editText.hideKeyboard(Popup_readLater.this, editText, 0, getString(R.string.app_title_readLater), getString(R.string.app_search_hint));
+                helper_editText.hideKeyboard(List_readLater.this, editText, 0, getString(R.string.app_title_readLater), getString(R.string.app_search_hint));
                 setReadLaterList();
 
                 Snackbar.make(listView, R.string.bookmark_added, Snackbar.LENGTH_SHORT).show();

@@ -42,7 +42,6 @@ import android.widget.TextView;
 import java.net.URISyntaxException;
 import java.util.Locale;
 
-import de.baumann.browser.Browser_1;
 import de.baumann.browser.R;
 import de.baumann.browser.databases.DbAdapter_History;
 import de.baumann.browser.utils.Utils_AdClient;
@@ -53,31 +52,41 @@ import static android.webkit.WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE;
 
 public class helper_webView {
 
-    public static Utils_UserAgent mUtils_UserAgent= new Utils_UserAgent();
-
-    public static String getTitle (WebView webview) {
-
-        String title = "";
-
+    public static String getTitle (Activity activity, WebView webview) {
+        String title;
         try {
-            title = webview.getTitle().substring(0,1).toUpperCase() + webview.getTitle().substring(1).replace("'", "\\'");
+            title = webview.getTitle().replace("'", "\\'");
         } catch (Exception e) {
-            // Error occurred while creating the File
+            title = helper_webView.getDomain(activity, "");
             Log.e(TAG, "Unable to get title", e);
         }
-
         return title ;
+    }
+
+    public static String getDomain (Activity activity, String url) {
+        String domain;
+        try {
+            if(Uri.parse(url).getHost().length() == 0) {
+                domain = activity.getString(R.string.app_domain);
+            } else {
+                domain = Uri.parse(url).getHost().replace("www.", "");
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Unable to get domain", e);
+            domain = activity.getString(R.string.app_domain);
+        }
+        return domain ;
     }
 
 
     @SuppressLint("SetJavaScriptEnabled")
-    public static void webView_Settings(final Activity activity, final WebView webView) {
+    public static void webView_Settings(final Activity from, final WebView webView) {
 
-        final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
         String fontSizeST = sharedPref.getString("font", "100");
         int fontSize = Integer.parseInt(fontSizeST);
 
-        webView.getSettings().setAppCachePath(activity.getApplicationContext().getCacheDir().getAbsolutePath());
+        webView.getSettings().setAppCachePath(from.getApplicationContext().getCacheDir().getAbsolutePath());
         webView.getSettings().setAppCacheEnabled(true);
         webView.getSettings().setMixedContentMode(MIXED_CONTENT_COMPATIBILITY_MODE);
         webView.getSettings().setAllowFileAccess(true);
@@ -90,7 +99,7 @@ public class helper_webView {
         webView.getSettings().setUseWideViewPort(true);
         webView.getSettings().setLoadWithOverviewMode(true);
 
-        activity.registerForContextMenu(webView);
+        from.registerForContextMenu(webView);
 
         if (sharedPref.getString ("cookie", "1").equals("2") || sharedPref.getString ("cookie", "1").equals("3")){
             CookieManager cookieManager = CookieManager.getInstance();
@@ -102,98 +111,72 @@ public class helper_webView {
 
         if (sharedPref.getBoolean ("java", false)){
             webView.getSettings().setJavaScriptEnabled(true);
-            sharedPref.edit().putString("java_string", activity.getString(R.string.app_yes)).apply();
+            sharedPref.edit().putString("java_string", from.getString(R.string.app_yes)).apply();
         } else {
             webView.getSettings().setJavaScriptEnabled(false);
-            sharedPref.edit().putString("java_string", activity.getString(R.string.app_no)).apply();
+            sharedPref.edit().putString("java_string", from.getString(R.string.app_no)).apply();
         }
 
         if (sharedPref.getBoolean ("pictures", false)){
             webView.getSettings().setLoadsImagesAutomatically(true);
-            sharedPref.edit().putString("pictures_string", activity.getString(R.string.app_yes)).apply();
+            sharedPref.edit().putString("pictures_string", from.getString(R.string.app_yes)).apply();
         } else {
             webView.getSettings().setLoadsImagesAutomatically(false);
-            sharedPref.edit().putString("pictures_string", activity.getString(R.string.app_no)).apply();
+            sharedPref.edit().putString("pictures_string", from.getString(R.string.app_no)).apply();
         }
 
         if (sharedPref.getBoolean ("loc", false)){
             webView.getSettings().setGeolocationEnabled(true);
-            helper_main.grantPermissionsLoc(activity);
-            sharedPref.edit().putString("loc_string", activity.getString(R.string.app_yes)).apply();
+            helper_main.grantPermissionsLoc(from);
+            sharedPref.edit().putString("loc_string", from.getString(R.string.app_yes)).apply();
         } else {
             webView.getSettings().setGeolocationEnabled(false);
-            sharedPref.edit().putString("loc_string", activity.getString(R.string.app_no)).apply();
+            sharedPref.edit().putString("loc_string", from.getString(R.string.app_no)).apply();
         }
 
         if (sharedPref.getString ("cookie", "1").equals("1") || sharedPref.getString ("cookie", "1").equals("3")){
             CookieManager cookieManager = CookieManager.getInstance();
             cookieManager.setAcceptCookie(true);
-            sharedPref.edit().putString("cookie_string", activity.getString(R.string.app_yes)).apply();
+            sharedPref.edit().putString("cookie_string", from.getString(R.string.app_yes)).apply();
         } else {
             CookieManager cookieManager = CookieManager.getInstance();
             cookieManager.setAcceptCookie(false);
-            sharedPref.edit().putString("cookie_string", activity.getString(R.string.app_no)).apply();
+            sharedPref.edit().putString("cookie_string", from.getString(R.string.app_no)).apply();
         }
 
         if (sharedPref.getBoolean ("blockads_bo", false)){
-            sharedPref.edit().putString("blockads_string", activity.getString(R.string.app_yes)).apply();
+            sharedPref.edit().putString("blockads_string", from.getString(R.string.app_yes)).apply();
         } else {
-            sharedPref.edit().putString("blockads_string", activity.getString(R.string.app_no)).apply();
+            sharedPref.edit().putString("blockads_string", from.getString(R.string.app_no)).apply();
         }
 
         Utils_UserAgent myUserAgent= new Utils_UserAgent();
 
         if (sharedPref.getBoolean ("request_bo", false)){
-            sharedPref.edit().putString("request_string", activity.getString(R.string.app_yes)).apply();
-            myUserAgent.setUserAgent(activity, webView, true, webView.getUrl());
+            sharedPref.edit().putString("request_string", from.getString(R.string.app_yes)).apply();
+            myUserAgent.setUserAgent(from, webView, true, webView.getUrl());
         } else {
-            sharedPref.edit().putString("request_string", activity.getString(R.string.app_no)).apply();
-            myUserAgent.setUserAgent(activity, webView, false, webView.getUrl());
+            sharedPref.edit().putString("request_string", from.getString(R.string.app_no)).apply();
+            myUserAgent.setUserAgent(from, webView, false, webView.getUrl());
         }
     }
 
     public static void webView_WebViewClient (final Activity from, final SwipeRefreshLayout swipeRefreshLayout,
                                               final WebView webView, final TextView urlBar) {
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
 
+        final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
 
         // crude if-else just to get the functionality in, feel free to make this more concise if you like
-        if (sharedPref.getString("blockads_string", "").equals("Enabled")) {
-        webView.setWebViewClient(new Utils_AdClient() {
+        if (sharedPref.getString("blockads_string", "").equals(from.getString(R.string.app_yes))) {
+            webView.setWebViewClient(new Utils_AdClient() {
 
-            public void onPageFinished(WebView view, String url) {
-                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
+                public void onPageFinished(WebView view, String url) {
+                    super.onPageFinished(view, url);
 
-                //request desktop desktop definition
-                String desktopUA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
-
-                //request desktop optimization
-                //this compares the sharedPref setting to the current user agent and
-                //corrects the user agent only if it is not the same as the shared pref
-                //then zooms out to keep it neat if it is the desktop setting.
-                if(sharedPref.getString("request_string", "").equals("Enabled")){
-                    //sharedPref.edit().putString("request_string", getString(R.string.app_yes)).apply();
-                    if (!mUtils_UserAgent.getUserAgent(view).equals(desktopUA)) {
-                        mUtils_UserAgent.setUserAgent(view.getContext(), view, true, view.getUrl());
-                    }
-                }else{
-                    if (mUtils_UserAgent.getUserAgent(view).equals(desktopUA)) {
-                        mUtils_UserAgent.setUserAgent(view.getContext(), view, false, view.getUrl());
-                    }
-                }
-                // request desktop check every time to make the page look neat
-                if (sharedPref.getString("request_string" , "").equals("Enabled")){
-                    if (mUtils_UserAgent.getUserAgent(view).equals(desktopUA));
-                    view.zoomOut();
-                }
-                //end request desktop optimization
-
-                super.onPageFinished(view, url);
-                swipeRefreshLayout.setRefreshing(false);
-                urlBar.setText(webView.getTitle());
-                sharedPref.edit().putString("openURL", "").apply();
-
-                if (webView.getTitle() != null && !webView.getTitle().equals("about:blank")  && !webView.getTitle().isEmpty()) {
+                    String title = helper_webView.getTitle(from, webView);
+                    swipeRefreshLayout.setRefreshing(false);
+                    urlBar.setText(title);
+                    sharedPref.edit().putString("openURL", "").apply();
 
                     DbAdapter_History db = new DbAdapter_History(from);
                     db.open();
@@ -202,135 +185,94 @@ public class helper_webView {
                     if(db.isExist(helper_main.createDateSecond())){
                         Log.i(TAG, "Entry exists" + webView.getUrl());
                     }else{
-                        if (helper_webView.getTitle (webView).contains("'")) {
-                            String title = helper_webView.getTitle (webView).replace("'", "");
-                            db.insert(title, webView.getUrl(), "", "", helper_main.createDateSecond());
-
-                        } else {
-                            db.insert(helper_webView.getTitle (webView), webView.getUrl(), "", "", helper_main.createDateSecond());
-                        }
+                        db.insert(title, webView.getUrl(), "", "", helper_main.createDateSecond());
                     }
                 }
-            }
 
-            @SuppressWarnings("deprecation")
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                final Uri uri = Uri.parse(url);
-                return handleUri(uri);
-            }
-
-            @TargetApi(Build.VERSION_CODES.N)
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                final Uri uri = request.getUrl();
-                return handleUri(uri);
-            }
-
-            private boolean handleUri(final Uri uri) {
-
-                Log.i(TAG, "Uri =" + uri);
-                final String url = uri.toString();
-                // Based on some condition you need to determine if you are going to load the url
-                // in your web view itself or in a browser.
-                // You can use `host` or `scheme` or any part of the `uri` to decide.
-
-                if (url.startsWith("http")) return false;//open web links as usual
-                //try to find browse activity to handle uri
-                Uri parsedUri = Uri.parse(url);
-                PackageManager packageManager = from.getPackageManager();
-                Intent browseIntent = new Intent(Intent.ACTION_VIEW).setData(parsedUri);
-                if (browseIntent.resolveActivity(packageManager) != null) {
-                    from.startActivity(browseIntent);
-                    return true;
+                @SuppressWarnings("deprecation")
+                @Override
+                public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                    final Uri uri = Uri.parse(url);
+                    return handleUri(uri);
                 }
-                //if not activity found, try to parse intent://
-                if (url.startsWith("intent:")) {
-                    try {
-                        Intent intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME);
-                        if (intent.resolveActivity(from.getPackageManager()) != null) {
-                            try {
-                                from.startActivity(intent);
-                            } catch (Exception e) {
-                                Snackbar.make(webView, R.string.toast_error, Snackbar.LENGTH_SHORT).show();
+
+                @TargetApi(Build.VERSION_CODES.N)
+                @Override
+                public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                    final Uri uri = request.getUrl();
+                    return handleUri(uri);
+                }
+
+                private boolean handleUri(final Uri uri) {
+
+                    Log.i(TAG, "Uri =" + uri);
+                    final String url = uri.toString();
+                    // Based on some condition you need to determine if you are going to load the url
+                    // in your web view itself or in a browser.
+                    // You can use `host` or `scheme` or any part of the `uri` to decide.
+
+                    if (url.startsWith("http")) return false;//open web links as usual
+                    //try to find browse activity to handle uri
+                    Uri parsedUri = Uri.parse(url);
+                    PackageManager packageManager = from.getPackageManager();
+                    Intent browseIntent = new Intent(Intent.ACTION_VIEW).setData(parsedUri);
+                    if (browseIntent.resolveActivity(packageManager) != null) {
+                        from.startActivity(browseIntent);
+                        return true;
+                    }
+                    //if not activity found, try to parse intent://
+                    if (url.startsWith("intent:")) {
+                        try {
+                            Intent intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME);
+                            if (intent.resolveActivity(from.getPackageManager()) != null) {
+                                try {
+                                    from.startActivity(intent);
+                                } catch (Exception e) {
+                                    Snackbar.make(webView, R.string.toast_error, Snackbar.LENGTH_SHORT).show();
+                                }
+
+                                return true;
                             }
-
-                            return true;
+                            //try to find fallback url
+                            String fallbackUrl = intent.getStringExtra("browser_fallback_url");
+                            if (fallbackUrl != null) {
+                                webView.loadUrl(fallbackUrl);
+                                return true;
+                            }
+                            //invite to install
+                            Intent marketIntent = new Intent(Intent.ACTION_VIEW).setData(
+                                    Uri.parse("market://details?id=" + intent.getPackage()));
+                            if (marketIntent.resolveActivity(packageManager) != null) {
+                                from.startActivity(marketIntent);
+                                return true;
+                            }
+                        } catch (URISyntaxException e) {
+                            //not an intent uri
                         }
-                        //try to find fallback url
-                        String fallbackUrl = intent.getStringExtra("browser_fallback_url");
-                        if (fallbackUrl != null) {
-                            webView.loadUrl(fallbackUrl);
-                            return true;
-                        }
-                        //invite to install
-                        Intent marketIntent = new Intent(Intent.ACTION_VIEW).setData(
-                                Uri.parse("market://details?id=" + intent.getPackage()));
-                        if (marketIntent.resolveActivity(packageManager) != null) {
-                            from.startActivity(marketIntent);
-                            return true;
-                        }
-                    } catch (URISyntaxException e) {
-                        //not an intent uri
                     }
+                    return true;//do nothing in other cases
                 }
-                return true;//do nothing in other cases
-            }
 
-        });
-        }
-        else{
+            });
+        } else{
             webView.setWebViewClient(new WebViewClient() {
 
                 public void onPageFinished(WebView view, String url) {
-                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
-
-                    //access the constant desktop user agent defined in Utils_UserAgent
-                    String desktopUA = Utils_UserAgent.DESKTOP_USER_AGENT;;
-
-                    //request desktop optimization
-                    //this compares the sharedPref setting to the current user agent and
-                    //corrects the user agent only if it is not the same as the shared pref
-                    //then zooms out to keep it neat if it is the desktop setting.
-                    if(sharedPref.getString("request_string", "").equals("Enabled")){
-                        //sharedPref.edit().putString("request_string", getString(R.string.app_yes)).apply();
-                        if (!mUtils_UserAgent.getUserAgent(view).equals(desktopUA)) {
-                            mUtils_UserAgent.setUserAgent(view.getContext(), view, true, view.getUrl());
-                        }
-                    }else{
-                        if (mUtils_UserAgent.getUserAgent(view).equals(desktopUA)) {
-                            mUtils_UserAgent.setUserAgent(view.getContext(), view, false, view.getUrl());
-                        }
-                    }
-                    // request desktop check every time to make the page look neat
-                    if (sharedPref.getString("request_string" , "").equals("Enabled")){
-                        if (mUtils_UserAgent.getUserAgent(view).equals(desktopUA));
-                        view.zoomOut();
-                    }
-                    //end request desktop optimization
-
                     super.onPageFinished(view, url);
+
+                    String title = helper_webView.getTitle(from, webView);
                     swipeRefreshLayout.setRefreshing(false);
-                    urlBar.setText(webView.getTitle());
+                    urlBar.setText(title);
                     sharedPref.edit().putString("openURL", "").apply();
 
-                    if (webView.getTitle() != null && !webView.getTitle().equals("about:blank")  && !webView.getTitle().isEmpty()) {
+                    DbAdapter_History db = new DbAdapter_History(from);
+                    db.open();
+                    db.deleteDouble(webView.getUrl());
 
-                        DbAdapter_History db = new DbAdapter_History(from);
-                        db.open();
-                        db.deleteDouble(webView.getUrl());
-
-                        if(db.isExist(helper_main.createDateSecond())){
-                            Log.i(TAG, "Entry exists" + webView.getUrl());
-                        }else{
-                            if (helper_webView.getTitle (webView).contains("'")) {
-                                String title = helper_webView.getTitle (webView).replace("'", "");
-                                db.insert(title, webView.getUrl(), "", "", helper_main.createDateSecond());
-
-                            } else {
-                                db.insert(helper_webView.getTitle (webView), webView.getUrl(), "", "", helper_main.createDateSecond());
-                            }
-                        }
+                    if(db.isExist(helper_main.createDateSecond())){
+                        Log.i(TAG, "Entry exists" + webView.getUrl());
+                    }else{
+                        db.insert(title, webView.getUrl(), "", "", helper_main.createDateSecond());
                     }
                 }
 
