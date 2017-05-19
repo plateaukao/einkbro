@@ -75,14 +75,14 @@ public class Activity_intent extends Activity {
         NotificationCompat.Action action = new NotificationCompat.Action.Builder
                 (R.drawable.format_list_bulleted, getString(R.string.readLater_action), piAction).build();
         NotificationCompat.Action action_2 = new NotificationCompat.Action.Builder
-                (R.drawable.format_list_bulleted, getString(R.string.readLater_action2), piAction_2).build();
+                (R.drawable.format_list_bulleted, getString(R.string.app_title_readLater), piAction_2).build();
 
         android.support.v4.app.NotificationCompat.Builder builderSummary =
                 new android.support.v4.app.NotificationCompat.Builder(Activity_intent.this)
                         .setAutoCancel(true)
                         .setSmallIcon(R.drawable.earth)
                         .setColor(ContextCompat.getColor(Activity_intent.this, R.color.colorPrimary_1))
-                        .setGroup("Elements")
+                        .setGroup("Browser")
                         .setGroupSummary(true)
                         .setContentIntent(piMain);
 
@@ -93,7 +93,7 @@ public class Activity_intent extends Activity {
                 .setContentText(url)
                 .setContentIntent(piMain)
                 .setAutoCancel(true)
-                .setGroup("Elements")
+                .setGroup("Browser")
                 .addAction(action)
                 .addAction(action_2)
                 .setStyle(new android.support.v4.app.NotificationCompat.BigTextStyle().bigText(data.toString()))

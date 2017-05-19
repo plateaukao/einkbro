@@ -34,20 +34,24 @@ import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.FileProvider;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.util.Linkify;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.webkit.CookieManager;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.mobapphome.mahencryptorlib.MAHEncryptor;
 
 import java.io.File;
@@ -180,11 +184,6 @@ public class helper_main {
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
 
-        sharedPref.edit().putString("tab_1", "").apply();
-        sharedPref.edit().putString("tab_2", "").apply();
-        sharedPref.edit().putString("tab_3", "").apply();
-        sharedPref.edit().putString("tab_4", "").apply();
-        sharedPref.edit().putString("tab_5", "").apply();
         sharedPref.edit().putString("started", "").apply();
         sharedPref.edit().putInt("closeApp", 1).apply();
 
@@ -256,7 +255,18 @@ public class helper_main {
 
                 TextView context_1 = (TextView) dialogView.findViewById(R.id.context_1);
                 context_1.setText(helper_browser.tab_1(activity));
-                LinearLayout context_1_Layout = (LinearLayout) dialogView.findViewById(R.id.context_1_Layout);
+                ImageView context_1_preView = (ImageView) dialogView.findViewById(R.id.context_1_preView);
+                try {
+                    Glide.with(activity)
+                            .load(activity.getFilesDir() + "/tab_1.jpg") // or URI/path
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .skipMemoryCache(true)
+                            .into(context_1_preView); //imageView to set thumbnail to
+                } catch (Exception e) {
+                    Log.w("Browser", "Error load thumbnail", e);
+                    context_1_preView.setVisibility(View.GONE);
+                }
+                CardView context_1_Layout = (CardView) dialogView.findViewById(R.id.context_1_Layout);
                 context_1_Layout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -270,7 +280,18 @@ public class helper_main {
 
                 TextView context_2 = (TextView) dialogView.findViewById(R.id.context_2);
                 context_2.setText(helper_browser.tab_2(activity));
-                LinearLayout context_2_Layout = (LinearLayout) dialogView.findViewById(R.id.context_2_Layout);
+                ImageView context_2_preView = (ImageView) dialogView.findViewById(R.id.context_2_preView);
+                try {
+                    Glide.with(activity)
+                            .load(activity.getFilesDir() + "/tab_2.jpg") // or URI/path
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .skipMemoryCache(true)
+                            .into(context_2_preView); //imageView to set thumbnail to
+                } catch (Exception e) {
+                    Log.w("Browser", "Error load thumbnail", e);
+                    context_2_preView.setVisibility(View.GONE);
+                }
+                CardView context_2_Layout = (CardView) dialogView.findViewById(R.id.context_2_Layout);
                 context_2_Layout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -284,7 +305,18 @@ public class helper_main {
 
                 TextView context_3 = (TextView) dialogView.findViewById(R.id.context_3);
                 context_3.setText(helper_browser.tab_3(activity));
-                LinearLayout context_3_Layout = (LinearLayout) dialogView.findViewById(R.id.context_3_Layout);
+                ImageView context_3_preView = (ImageView) dialogView.findViewById(R.id.context_3_preView);
+                try {
+                    Glide.with(activity)
+                            .load(activity.getFilesDir() + "/tab_3.jpg") // or URI/path
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .skipMemoryCache(true)
+                            .into(context_3_preView); //imageView to set thumbnail to
+                } catch (Exception e) {
+                    Log.w("Browser", "Error load thumbnail", e);
+                    context_3_preView.setVisibility(View.GONE);
+                }
+                CardView context_3_Layout = (CardView) dialogView.findViewById(R.id.context_3_Layout);
                 context_3_Layout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -298,7 +330,18 @@ public class helper_main {
 
                 TextView context_4 = (TextView) dialogView.findViewById(R.id.context_4);
                 context_4.setText(helper_browser.tab_4(activity));
-                LinearLayout context_4_Layout = (LinearLayout) dialogView.findViewById(R.id.context_4_Layout);
+                ImageView context_4_preView = (ImageView) dialogView.findViewById(R.id.context_4_preView);
+                try {
+                    Glide.with(activity)
+                            .load(activity.getFilesDir() + "/tab_4.jpg") // or URI/path
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .skipMemoryCache(true)
+                            .into(context_4_preView); //imageView to set thumbnail to
+                } catch (Exception e) {
+                    Log.w("Browser", "Error load thumbnail", e);
+                    context_4_preView.setVisibility(View.GONE);
+                }
+                CardView context_4_Layout = (CardView) dialogView.findViewById(R.id.context_4_Layout);
                 context_4_Layout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -312,7 +355,18 @@ public class helper_main {
 
                 TextView context_5 = (TextView) dialogView.findViewById(R.id.context_5);
                 context_5.setText(helper_browser.tab_5(activity));
-                LinearLayout context_5_Layout = (LinearLayout) dialogView.findViewById(R.id.context_5_Layout);
+                ImageView context_5_preView = (ImageView) dialogView.findViewById(R.id.context_5_preView);
+                try {
+                    Glide.with(activity)
+                            .load(activity.getFilesDir() + "/tab_5.jpg") // or URI/path
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .skipMemoryCache(true)
+                            .into(context_5_preView); //imageView to set thumbnail to
+                } catch (Exception e) {
+                    Log.w("Browser", "Error load thumbnail", e);
+                    context_5_preView.setVisibility(View.GONE);
+                }
+                CardView context_5_Layout = (CardView) dialogView.findViewById(R.id.context_5_Layout);
                 context_5_Layout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

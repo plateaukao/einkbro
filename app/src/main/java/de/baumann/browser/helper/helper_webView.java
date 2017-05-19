@@ -55,7 +55,7 @@ public class helper_webView {
     public static String getTitle (Activity activity, WebView webview) {
         String title;
         try {
-            title = webview.getTitle().replace("'", "\\'");
+            title = webview.getTitle().replace("'","");
         } catch (Exception e) {
             title = helper_webView.getDomain(activity, "");
             Log.e(TAG, "Unable to get title", e);

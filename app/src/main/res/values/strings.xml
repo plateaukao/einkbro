@@ -2,7 +2,7 @@
 
     // Application
 
-    <string name="app_name">Elemets</string>
+    <string name="app_name">Browser</string>
     <string name="app_permissions_title">Used permissions</string>
     <string name="app_permissions">
 
@@ -84,16 +84,13 @@
 
     <string name="context_saveImage">Save image</string>
     <string name="context_shareImage">Share image</string>
-    <string name="context_readLater">Add to readLater</string>
     <string name="context_linkCopy_toast">Link successfully copied</string>
     <string name="context_saveImage_toast">Saving image:</string>
-    <string name="context_1">Ether Tab</string>
-    <string name="context_2">Air Tab</string>
-    <string name="context_3">Water Tab</string>
-    <string name="context_4">Earth Tab</string>
-    <string name="context_5">Fire Tab</string>
-    <string name="context_replace">Replace</string>
-    <string name="context_open">Open</string>
+    <string name="context_1">Green Tab</string>
+    <string name="context_2">Orange Tab</string>
+    <string name="context_3">Blue Tab</string>
+    <string name="context_4">Brown Tab</string>
+    <string name="context_5">Red Tab</string>
 
 
 
@@ -136,7 +133,6 @@
 
     <string name="readLater_title">Open link:</string>
     <string name="readLater_action">open list</string>
-    <string name="readLater_action2">add link</string>
 
     <string name="pass_success">Adding to password list.</string>
     <string name="pass_userName">Username</string>
@@ -269,23 +265,23 @@
     <string name="intro_skip">Skip</string>
     <string name="intro_finish">Let\'s start.</string>
 
-    <string name="intro1_title">Elemets</string>
-    <string name="intro1_text">Thank you for choosing \"Elemets\". It\'s fully open source and still in development.
+    <string name="intro1_title">Browser</string>
+    <string name="intro1_text">Thank you for choosing \"Browser\". It\'s fully open source and still in development.
         Here\'s a short intro how to use …</string>
 
     <string name="intro2_title">The lists</string>
-    <string name="intro2_text">\"Elemets\" is organized in lists: bookmarks, readLater, passStorage and the history.</string>
+    <string name="intro2_text">\"Browser\" is organized in lists: bookmarks, readLater, passStorage and the history.</string>
 
     <string name="intro3_title">Toolbar</string>
     <string name="intro3_text">Swipe left to open bookmarks, right to open readLater and up to close the app. Click the toolbar
     to switch between the tabs.</string>
 
     <string name="intro4_title">Settings</string>
-    <string name="intro4_text">In the settings popup you can configure the behavior of \"Elemets\" for the current session. To open
+    <string name="intro4_text">In the settings popup you can configure the behavior of \"Browser\" for the current session. To open
     the main settings, just click the \"Settings\" button.</string>
 
     <string name="intro5_title">Help</string>
-    <string name="intro5_text">To get more infos how to use \"Elemets\" just open the \"help dialog\" in the \"about section\" in the settings.</string>
+    <string name="intro5_text">To get more infos how to use \"Browser\" just open the \"help dialog\" in the \"about section\" in the settings.</string>
 
 
     // About

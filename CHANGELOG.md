@@ -1,4 +1,5 @@
 ### v 3.6 (WIP)
+- new: always hide statusbar on fullscreen videos
 - new: five tabs (@CGSLURP LLC)
 - new: toolbar and button animations
 - new: toolbar gestures in lists

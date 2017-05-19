@@ -1,6 +1,6 @@
 [![Donate](https://www.paypalobjects.com/de_DE/DE/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=NP6TGYDYP9SHY)
 
-# Elemets
+# Five
 A simple Android browser based on webview. The goal is to provide a lightweight but power full browser. It is based on several 
 lists (see below) and has only five tabs (Who needs more?).
 
@@ -37,7 +37,7 @@ lists (see below) and has only five tabs (Who needs more?).
 - optimized for one hand handling (omnibox at bottom)
 - Android 7 app shortcuts
 - full material design
-- Navigation through websites: arrows and/or swipe
+- Navigation through websites with arrows
 - fullscreen browsing (optional)
 - request desktop site
 - five tabs

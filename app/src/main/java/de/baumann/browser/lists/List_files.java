@@ -92,6 +92,7 @@ public class List_files extends AppCompatActivity {
         PreferenceManager.setDefaultValues(this, R.xml.user_settings_search, false);
 
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPref.edit().putString("openURL", "").apply();
         sharedPref.edit().putString("files_startFolder",
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath()).apply();
 
@@ -147,7 +148,11 @@ public class List_files extends AppCompatActivity {
             if (file.isDirectory()) {
                 file_ext = ".";
             } else {
-                file_ext = file.getAbsolutePath().substring(file.getAbsolutePath().lastIndexOf("."));
+                try {
+                    file_ext = file.getAbsolutePath().substring(file.getAbsolutePath().lastIndexOf("."));
+                } catch (Exception e) {
+                    file_ext = file.getAbsolutePath().substring(file.getAbsolutePath().lastIndexOf("/"));
+                }
             }
 
             db.open();

@@ -69,6 +69,7 @@ public class List_pass extends AppCompatActivity {
         PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
         PreferenceManager.setDefaultValues(this, R.xml.user_settings_search, false);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPref.edit().putString("openURL", "").apply();
 
         if (sharedPref.getBoolean("isOpened", false)) {
             helper_main.checkPin(List_pass.this);

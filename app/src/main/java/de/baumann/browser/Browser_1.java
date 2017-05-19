@@ -74,6 +74,7 @@ import com.github.ksoichiro.android.observablescrollview.ObservableScrollViewCal
 import com.github.ksoichiro.android.observablescrollview.ObservableWebView;
 import com.github.ksoichiro.android.observablescrollview.ScrollState;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -91,6 +92,7 @@ import de.baumann.browser.lists.List_pass;
 import de.baumann.browser.lists.List_readLater;
 import de.baumann.browser.utils.Utils_AdBlocker;
 
+@SuppressWarnings("ResultOfMethodCallIgnored")
 public class Browser_1 extends AppCompatActivity implements ObservableScrollViewCallbacks {
 
     // Views
@@ -142,6 +144,17 @@ public class Browser_1 extends AppCompatActivity implements ObservableScrollView
         
         activity = Browser_1.this;
 
+        File tab_1 = new File(activity.getFilesDir() + "/tab_1.jpg");
+        tab_1.delete();
+        File tab_2 = new File(activity.getFilesDir() + "/tab_2.jpg");
+        tab_2.delete();
+        File tab_3 = new File(activity.getFilesDir() + "/tab_3.jpg");
+        tab_3.delete();
+        File tab_4 = new File(activity.getFilesDir() + "/tab_4.jpg");
+        tab_4.delete();
+        File tab_5 = new File(activity.getFilesDir() + "/tab_5.jpg");
+        tab_5.delete();
+
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         getWindow().setStatusBarColor(ContextCompat.getColor(activity, R.color.colorPrimaryDark_1));
         WebView.enableSlowWholeDocumentDraw();
@@ -152,6 +165,12 @@ public class Browser_1 extends AppCompatActivity implements ObservableScrollView
         PreferenceManager.setDefaultValues(activity, R.xml.user_settings, false);
         PreferenceManager.setDefaultValues(activity, R.xml.user_settings_search, false);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
+
+        sharedPref.edit().putString("tab_1", "").apply();
+        sharedPref.edit().putString("tab_2", "").apply();
+        sharedPref.edit().putString("tab_3", "").apply();
+        sharedPref.edit().putString("tab_4", "").apply();
+        sharedPref.edit().putString("tab_5", "").apply();
 
         if (sharedPref.getString ("fullscreen", "2").equals("2") || sharedPref.getString ("fullscreen", "2").equals("3")){
             setContentView(R.layout.activity_browser_scroll);
@@ -752,6 +771,8 @@ public class Browser_1 extends AppCompatActivity implements ObservableScrollView
         @SuppressLint("SetJavaScriptEnabled")
         public void onProgressChanged(WebView view, int progress) {
 
+            sharedPref.edit().putString("tab_1", helper_webView.getTitle(activity, mWebView)).apply();
+
             progressBar.setProgress(progress);
             progressBar.setVisibility(progress == 100 ? View.GONE : View.VISIBLE);
 
@@ -777,16 +798,41 @@ public class Browser_1 extends AppCompatActivity implements ObservableScrollView
                 }
             } catch (Exception e) {
                 // Error occurred while creating the File
-                Log.e(TAG, "Elements Error", e);
+                Log.e(TAG, "Browser Error", e);
             }
 
             if (progress == 100) {
-                sharedPref.edit().putString("tab_1", helper_webView.getTitle(activity, mWebView)).apply();
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Bitmap bitmap = Bitmap.createBitmap(mWebView.getWidth(),
+                                mWebView.getHeight(), Bitmap.Config.ARGB_8888);
+                        Canvas canvas = new Canvas(bitmap);
+                        mWebView.draw(canvas);
+
+                        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 40, bytes);
+                        File file = new File(activity.getFilesDir() + "/tab_1.jpg");
+                        try {
+                            file.createNewFile();
+                            FileOutputStream outputStream = new FileOutputStream(file);
+                            outputStream.write(bytes.toByteArray());
+                            outputStream.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, 100);
+            }
+
+            if (progress == 100) {
                 imageButton.setVisibility(View.INVISIBLE);
                 relativeLayout.animate().translationY(0);
                 helper_browser.setNavArrows(mWebView, imageButton_left, imageButton_right);
             }
         }
+
 
         public boolean onShowFileChooser(
                 WebView webView, ValueCallback<Uri[]> filePathCallback,
@@ -846,6 +892,11 @@ public class Browser_1 extends AppCompatActivity implements ObservableScrollView
                 callback.onCustomViewHidden();
                 return;
             }
+
+            if (sharedPref.getString ("fullscreen", "2").equals("2") || sharedPref.getString ("fullscreen", "2").equals("4")){
+                getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            }
+
             mCustomView = view;
             mWebView.setVisibility(View.GONE);
             customViewContainer.setVisibility(View.VISIBLE);
@@ -861,6 +912,10 @@ public class Browser_1 extends AppCompatActivity implements ObservableScrollView
 
             mWebView.setVisibility(View.VISIBLE);
             customViewContainer.setVisibility(View.GONE);
+
+            if (sharedPref.getString ("fullscreen", "2").equals("2") || sharedPref.getString ("fullscreen", "2").equals("4")){
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            }
 
             // Hide the custom view.
             mCustomView.setVisibility(View.GONE);

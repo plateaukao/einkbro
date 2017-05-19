@@ -12,6 +12,12 @@
     <color name="colorPrimaryDark_4">#5d4037</color>
     <color name="colorPrimaryDark_5">#d32f2f</color>
 
+    <color name="colorPrimary_1_trans">#404caf50</color>
+    <color name="colorPrimary_2_trans">#40ff9800</color>
+    <color name="colorPrimary_3_trans">#402196f3</color>
+    <color name="colorPrimary_4_trans">#40795548</color>
+    <color name="colorPrimary_5_trans">#40f44336</color>
+
     <color name="colorAccent">#ff9800</color>
 
     <color name="colorThree">#607d8b</color>
