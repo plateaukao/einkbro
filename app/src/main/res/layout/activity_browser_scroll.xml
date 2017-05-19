@@ -128,6 +128,243 @@
             android:layout_alignParentEnd="true"
             android:layout_margin="16dp" />
 
+        <HorizontalScrollView
+            android:id="@+id/scrollTabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/toolbar"
+            android:background="@color/black_transparent"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/context_1_Layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:layout_width="200dp"
+                            android:layout_height="100dp"
+                            android:layout_alignParentTop="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/circle_1"
+                            tools:ignore="ContentDescription" />
+
+                        <ImageView
+                            android:id="@+id/context_1_preView"
+                            android:layout_width="200dp"
+                            android:layout_height="100dp"
+                            android:layout_alignParentTop="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/circle_1"
+                            tools:ignore="ContentDescription" />
+
+                        <TextView
+                            android:id="@+id/context_1"
+                            android:layout_width="200dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/context_1_preView"
+                            android:background="@color/colorPrimary_1_trans"
+                            android:ellipsize="end"
+                            android:lines="1"
+                            android:maxLines="3"
+                            android:padding="8dp"
+                            android:text="@string/context_1"
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                    </RelativeLayout>
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/context_2_Layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:layout_width="200dp"
+                            android:layout_height="100dp"
+                            android:layout_alignParentTop="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/circle_2"
+                            tools:ignore="ContentDescription" />
+
+                        <ImageView
+                            android:id="@+id/context_2_preView"
+                            android:layout_width="200dp"
+                            android:layout_height="100dp"
+                            android:layout_alignParentTop="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/circle_2"
+                            tools:ignore="ContentDescription" />
+
+                        <TextView
+                            android:id="@+id/context_2"
+                            android:layout_width="200dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/context_2_preView"
+                            android:background="@color/colorPrimary_2_trans"
+                            android:ellipsize="end"
+                            android:lines="1"
+                            android:maxLines="3"
+                            android:padding="8dp"
+                            android:text="@string/context_2"
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                    </RelativeLayout>
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/context_3_Layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:layout_width="200dp"
+                            android:layout_height="100dp"
+                            android:layout_alignParentTop="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/circle_3"
+                            tools:ignore="ContentDescription" />
+
+                        <ImageView
+                            android:id="@+id/context_3_preView"
+                            android:layout_width="200dp"
+                            android:layout_height="100dp"
+                            android:layout_alignParentTop="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/circle_3"
+                            tools:ignore="ContentDescription" />
+
+                        <TextView
+                            android:id="@+id/context_3"
+                            android:layout_width="200dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/context_3_preView"
+                            android:background="@color/colorPrimary_3_trans"
+                            android:ellipsize="end"
+                            android:lines="1"
+                            android:maxLines="3"
+                            android:padding="8dp"
+                            android:text="@string/context_3"
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                    </RelativeLayout>
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/context_4_Layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:layout_width="200dp"
+                            android:layout_height="100dp"
+                            android:layout_alignParentTop="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/circle_4"
+                            tools:ignore="ContentDescription" />
+
+                        <ImageView
+                            android:id="@+id/context_4_preView"
+                            android:layout_width="200dp"
+                            android:layout_height="100dp"
+                            android:layout_alignParentTop="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/circle_4"
+                            tools:ignore="ContentDescription" />
+
+                        <TextView
+                            android:id="@+id/context_4"
+                            android:layout_width="200dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/context_4_preView"
+                            android:background="@color/colorPrimary_4_trans"
+                            android:ellipsize="end"
+                            android:lines="1"
+                            android:maxLines="3"
+                            android:padding="8dp"
+                            android:text="@string/context_4"
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                    </RelativeLayout>
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/context_5_Layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:layout_width="200dp"
+                            android:layout_height="100dp"
+                            android:layout_alignParentTop="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/circle_5"
+                            tools:ignore="ContentDescription" />
+
+                        <ImageView
+                            android:id="@+id/context_5_preView"
+                            android:layout_width="200dp"
+                            android:layout_height="100dp"
+                            android:layout_alignParentTop="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/circle_5"
+                            tools:ignore="ContentDescription" />
+
+                        <TextView
+                            android:id="@+id/context_5"
+                            android:layout_width="200dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/context_5_preView"
+                            android:background="@color/colorPrimary_5_trans"
+                            android:ellipsize="end"
+                            android:lines="1"
+                            android:maxLines="3"
+                            android:padding="8dp"
+                            android:text="@string/context_5"
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                    </RelativeLayout>
+
+                </android.support.v7.widget.CardView>
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
+
         <FrameLayout
             android:id="@+id/customViewContainer"
             android:layout_width="fill_parent"

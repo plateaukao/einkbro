@@ -802,6 +802,10 @@ public class Browser_1 extends AppCompatActivity implements ObservableScrollView
             }
 
             if (progress == 100) {
+                imageButton.setVisibility(View.INVISIBLE);
+                if (sharedPref.getString ("fullscreen", "2").equals("1") || sharedPref.getString ("fullscreen", "2").equals("3")){
+                    relativeLayout.animate().translationY(0);
+                }
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
@@ -824,11 +828,6 @@ public class Browser_1 extends AppCompatActivity implements ObservableScrollView
                         }
                     }
                 }, 100);
-            }
-
-            if (progress == 100) {
-                imageButton.setVisibility(View.INVISIBLE);
-                relativeLayout.animate().translationY(0);
                 helper_browser.setNavArrows(mWebView, imageButton_left, imageButton_right);
             }
         }

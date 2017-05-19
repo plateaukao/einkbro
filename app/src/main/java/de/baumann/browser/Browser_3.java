@@ -722,6 +722,7 @@ public class Browser_3 extends AppCompatActivity implements ObservableScrollView
         return super.onOptionsItemSelected(item);
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     private class myWebChromeClient extends WebChromeClient {
 
         @Override
@@ -780,36 +781,33 @@ public class Browser_3 extends AppCompatActivity implements ObservableScrollView
                 Log.e(TAG, "Browser Error", e);
             }
 
-            if (progress == 100) {
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Bitmap bitmap = Bitmap.createBitmap(mWebView.getWidth(),
-                                mWebView.getHeight(), Bitmap.Config.ARGB_8888);
-                        Canvas canvas = new Canvas(bitmap);
-                        mWebView.draw(canvas);
-
-                        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 40, bytes);
-                        File file = new File(activity.getFilesDir() + "/tab_3.jpg");
-                        try {
-                            file.createNewFile();
-                            FileOutputStream outputStream = new FileOutputStream(file);
-                            outputStream.write(bytes.toByteArray());
-                            outputStream.close();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, 100);
-            }
-
-            if (progress == 100) {
-                imageButton.setVisibility(View.INVISIBLE);
+            imageButton.setVisibility(View.INVISIBLE);
+            if (sharedPref.getString ("fullscreen", "2").equals("1") || sharedPref.getString ("fullscreen", "2").equals("3")){
                 relativeLayout.animate().translationY(0);
-                helper_browser.setNavArrows(mWebView, imageButton_left, imageButton_right);
             }
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Bitmap bitmap = Bitmap.createBitmap(mWebView.getWidth(),
+                            mWebView.getHeight(), Bitmap.Config.ARGB_8888);
+                    Canvas canvas = new Canvas(bitmap);
+                    mWebView.draw(canvas);
+
+                    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 40, bytes);
+                    File file = new File(activity.getFilesDir() + "/tab_3.jpg");
+                    try {
+                        file.createNewFile();
+                        FileOutputStream outputStream = new FileOutputStream(file);
+                        outputStream.write(bytes.toByteArray());
+                        outputStream.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, 100);
+            helper_browser.setNavArrows(mWebView, imageButton_left, imageButton_right);
         }
 
         public boolean onShowFileChooser(
