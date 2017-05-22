@@ -5,6 +5,7 @@
 - new: toolbar gestures in lists
 - new: save link destination
 - fix: download pictures
+- fix: startpage on whitelist
 - improved: portrait layout
 - improved: Adblock integration
 - improved: Desktop site request

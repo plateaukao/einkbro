@@ -68,6 +68,8 @@ public class helper_webView {
         try {
             if(Uri.parse(url).getHost().length() == 0) {
                 domain = activity.getString(R.string.app_domain);
+            } else if (Uri.parse(url).getHost().contains("startpage.de") || Uri.parse(url).getHost().contains("startpage.com")){
+                domain = "startpage.com";
             } else {
                 domain = Uri.parse(url).getHost().replace("www.", "");
             }
