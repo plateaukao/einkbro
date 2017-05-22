@@ -1,25 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary_1">#4caf50</color>
-    <color name="colorPrimary_2">#ff9800</color>
-    <color name="colorPrimary_3">#2196f3</color>
-    <color name="colorPrimary_4">#795548</color>
-    <color name="colorPrimary_5">#f44336</color>
+    <color name="colorPrimary_2">#2196f3</color>
 
     <color name="colorPrimaryDark_1">#388e3c</color>
-    <color name="colorPrimaryDark_2">#f57c00</color>
-    <color name="colorPrimaryDark_3">#1976d2</color>
-    <color name="colorPrimaryDark_4">#5d4037</color>
-    <color name="colorPrimaryDark_5">#d32f2f</color>
-
-    <color name="colorPrimary_1_trans">#404caf50</color>
-    <color name="colorPrimary_2_trans">#40ff9800</color>
-    <color name="colorPrimary_3_trans">#402196f3</color>
-    <color name="colorPrimary_4_trans">#40795548</color>
-    <color name="colorPrimary_5_trans">#40f44336</color>
+    <color name="colorPrimaryDark_2">#1976d2</color>
 
     <color name="colorAccent">#ff9800</color>
+    <color name="colorAccent_trans">#80ff9800</color>
 
-    <color name="colorThree">#607d8b</color>
-    <color name="colorThreeDark">#455a64</color>
+    <color name="colorLight">#fafafa</color>
+    <color name="colorDark">#757575</color>
+
+    <color name="colorLight_trans">#80fafafa</color>
+    <color name="colorDark_trans">#80757575</color>
+
 </resources>

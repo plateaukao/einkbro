@@ -82,15 +82,12 @@
 
     // Context Menu
 
+    <string name="context_save">Save link destination</string>
     <string name="context_saveImage">Save image</string>
     <string name="context_shareImage">Share image</string>
     <string name="context_linkCopy_toast">Link successfully copied</string>
     <string name="context_saveImage_toast">Saving image:</string>
-    <string name="context_1">Green Tab</string>
-    <string name="context_2">Orange Tab</string>
-    <string name="context_3">Blue Tab</string>
-    <string name="context_4">Brown Tab</string>
-    <string name="context_5">Red Tab</string>
+    <string name="context_tab">Emty tab</string>
 
 
 

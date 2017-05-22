@@ -64,6 +64,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -107,11 +108,14 @@ public class Browser_1 extends AppCompatActivity implements ObservableScrollView
     private View mCustomView;
     private EditText editText;
     private RelativeLayout relativeLayout;
+    private HorizontalScrollView scrollTabs;
+
 
     // Strings
 
     private String mCameraPhotoPath;
-    private final String TAG = "Elements";
+    private final String TAG = "Browser";
+    private String sharePath;
 
 
     // Others
@@ -144,39 +148,20 @@ public class Browser_1 extends AppCompatActivity implements ObservableScrollView
         
         activity = Browser_1.this;
 
-        File tab_1 = new File(activity.getFilesDir() + "/tab_1.jpg");
-        tab_1.delete();
-        File tab_2 = new File(activity.getFilesDir() + "/tab_2.jpg");
-        tab_2.delete();
-        File tab_3 = new File(activity.getFilesDir() + "/tab_3.jpg");
-        tab_3.delete();
-        File tab_4 = new File(activity.getFilesDir() + "/tab_4.jpg");
-        tab_4.delete();
-        File tab_5 = new File(activity.getFilesDir() + "/tab_5.jpg");
-        tab_5.delete();
-
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        getWindow().setStatusBarColor(ContextCompat.getColor(activity, R.color.colorPrimaryDark_1));
-        WebView.enableSlowWholeDocumentDraw();
-        helper_main.checkPin(activity);
-        helper_main.onStart(activity);
-        helper_main.grantPermissionsStorage(activity);
-
         PreferenceManager.setDefaultValues(activity, R.xml.user_settings, false);
         PreferenceManager.setDefaultValues(activity, R.xml.user_settings_search, false);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
+        sharedPref.edit().putBoolean("isOpened", true).apply();
 
-        sharedPref.edit().putString("tab_1", "").apply();
-        sharedPref.edit().putString("tab_2", "").apply();
-        sharedPref.edit().putString("tab_3", "").apply();
-        sharedPref.edit().putString("tab_4", "").apply();
-        sharedPref.edit().putString("tab_5", "").apply();
+        helper_browser.resetTabs(activity);
 
-        if (sharedPref.getString ("fullscreen", "2").equals("2") || sharedPref.getString ("fullscreen", "2").equals("3")){
-            setContentView(R.layout.activity_browser_scroll);
-        } else {
-            setContentView(R.layout.activity_browser);
-        }
+        WebView.enableSlowWholeDocumentDraw();
+        setContentView(R.layout.activity_browser);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        getWindow().setStatusBarColor(ContextCompat.getColor(activity, R.color.colorPrimaryDark_1));
+        helper_main.checkPin(activity);
+        helper_main.onStart(activity);
+        helper_main.grantPermissionsStorage(activity);
 
 
         // find Views
@@ -188,13 +173,15 @@ public class Browser_1 extends AppCompatActivity implements ObservableScrollView
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         editText = (EditText) findViewById(R.id.editText);
         urlBar = (TextView) findViewById(R.id.urlBar);
-        imageButton = (ImageButton) findViewById(R.id.imageButton);
         imageButton_left = (ImageButton) findViewById(R.id.imageButton_left);
         imageButton_right = (ImageButton) findViewById(R.id.imageButton_right);
+        imageButton = (ImageButton) findViewById(R.id.imageButton);
+        scrollTabs  = (HorizontalScrollView) activity.findViewById(R.id.scrollTabs);
 
 
         // setupViews
 
+        helper_browser.setupViews(activity, toolbar, mWebView, editText, imageButton, imageButton_left, imageButton_right, relativeLayout);
         toolbar.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorPrimary_1));
         setSupportActionBar(toolbar);
 
@@ -208,20 +195,15 @@ public class Browser_1 extends AppCompatActivity implements ObservableScrollView
             }
         });
 
-        helper_browser.setupViews(activity, toolbar, mWebView, editText, imageButton, imageButton_left, imageButton_right);
-
 
         // setup WebView
-
-        if (sharedPref.getString ("fullscreen", "2").equals("2") || sharedPref.getString ("fullscreen", "2").equals("3")){
-            mWebView.setScrollViewCallbacks(this);
-        }
 
         helper_webView.webView_Settings(activity, mWebView);
         helper_webView.webView_WebViewClient(activity, swipeView, mWebView, urlBar);
 
         mWebChromeClient = new myWebChromeClient();
         mWebView.setWebChromeClient(mWebChromeClient);
+        mWebView.setScrollViewCallbacks(this);
         mWebView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
 
         if (isNetworkUnAvailable()) {
@@ -317,6 +299,9 @@ public class Browser_1 extends AppCompatActivity implements ObservableScrollView
             // Display the custom alert dialog on interface
             dialog.show();
 
+            sharePath = mWebView.getUrl().substring(mWebView.getUrl().lastIndexOf("/")+1);
+            shareFile = helper_main.newFile(sharePath);
+
             TextView menu_share_link_copy = (TextView) dialogView.findViewById(R.id.menu_share_link_copy);
             menu_share_link_copy.setText(R.string.context_saveImage);
             LinearLayout menu_share_link_copy_Layout = (LinearLayout) dialogView.findViewById(R.id.menu_share_link_copy_Layout);
@@ -330,10 +315,10 @@ public class Browser_1 extends AppCompatActivity implements ObservableScrollView
                             request.addRequestHeader("Cookie", CookieManager.getInstance().getCookie(url));
                             request.allowScanningByMediaScanner();
                             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); //Notify client once download is completed!
-                            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, helper_main.newFileName(mWebView));
+                            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, sharePath);
                             DownloadManager dm = (DownloadManager) activity.getSystemService(DOWNLOAD_SERVICE);
                             dm.enqueue(request);
-                            Snackbar.make(mWebView, activity.getString(R.string.context_saveImage_toast) + " " + helper_main.newFileName(mWebView) , Snackbar.LENGTH_SHORT).show();
+                            Snackbar.make(mWebView, activity.getString(R.string.context_saveImage_toast) + " " + sharePath , Snackbar.LENGTH_SHORT).show();
                         } catch (Exception e) {
                             e.printStackTrace();
                             Snackbar.make(mWebView, R.string.toast_perm , Snackbar.LENGTH_SHORT).show();
@@ -358,11 +343,11 @@ public class Browser_1 extends AppCompatActivity implements ObservableScrollView
                             request.addRequestHeader("Cookie", CookieManager.getInstance().getCookie(url));
                             request.allowScanningByMediaScanner();
                             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); //Notify client once download is completed!
-                            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, helper_main.newFileName(mWebView));
+                            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, sharePath);
                             DownloadManager dm = (DownloadManager) activity.getSystemService(DOWNLOAD_SERVICE);
                             dm.enqueue(request);
 
-                            Snackbar.make(mWebView, activity.getString(R.string.context_saveImage_toast) + " " + helper_main.newFileName(mWebView) , Snackbar.LENGTH_SHORT).show();
+                            Snackbar.make(mWebView, activity.getString(R.string.context_saveImage_toast) + " " + sharePath , Snackbar.LENGTH_SHORT).show();
                         } catch (Exception e) {
                             e.printStackTrace();
                             Snackbar.make(mWebView, R.string.toast_perm , Snackbar.LENGTH_SHORT).show();
@@ -458,7 +443,168 @@ public class Browser_1 extends AppCompatActivity implements ObservableScrollView
                 }
             });
         } else if (result.getType() == WebView.HitTestResult.SRC_ANCHOR_TYPE) {
-            helper_browser.contextLink(activity, mWebView, url, editText);
+            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+            final  View dialogView = View.inflate(activity, R.layout.dialog_context, null);
+
+            builder.setView(dialogView);
+            builder.setPositiveButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
+
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    dialog.cancel();
+                    dialog.cancel();
+                }
+            });
+
+            final AlertDialog dialog = builder.create();
+            // Display the custom alert dialog on interface
+            dialog.show();
+
+            LinearLayout context_save_Layout = (LinearLayout) dialogView.findViewById(R.id.context_save_Layout);
+            context_save_Layout.setVisibility(View.VISIBLE);
+            context_save_Layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(url != null) {
+                        final String filename = url.substring(url.lastIndexOf("/")+1);
+                        dialog.cancel();
+                        Snackbar snackbar = Snackbar
+                                .make(mWebView, getString(R.string.toast_download_1) + " " + filename, Snackbar.LENGTH_LONG)
+                                .setAction(getString(R.string.toast_yes), new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        try {
+                                            Uri source = Uri.parse(url);
+                                            DownloadManager.Request request = new DownloadManager.Request(source);
+                                            request.addRequestHeader("Cookie", CookieManager.getInstance().getCookie(url));
+                                            request.allowScanningByMediaScanner();
+                                            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); //Notify client once download is completed!
+                                            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
+                                            DownloadManager dm = (DownloadManager) activity.getSystemService(DOWNLOAD_SERVICE);
+                                            dm.enqueue(request);
+                                            Snackbar.make(mWebView, getString(R.string.toast_download) + " " + filename , Snackbar.LENGTH_SHORT).show();
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                            Snackbar.make(mWebView, R.string.toast_perm , Snackbar.LENGTH_SHORT).show();
+                                        }
+                                        activity.registerReceiver(onComplete_download, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+                                    }
+                                });
+                        snackbar.show();
+                    }
+                }
+            });
+
+            LinearLayout menu_share_link_copy_Layout = (LinearLayout) dialogView.findViewById(R.id.menu_share_link_copy_Layout);
+            menu_share_link_copy_Layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (url != null) {
+                        ClipboardManager clipboard = (ClipboardManager) activity.getSystemService(Context.CLIPBOARD_SERVICE);
+                        clipboard.setPrimaryClip(ClipData.newPlainText("text", url));
+                        Snackbar.make(mWebView, R.string.context_linkCopy_toast, Snackbar.LENGTH_SHORT).show();
+                        dialog.cancel();
+                    }
+                }
+            });
+
+            LinearLayout menu_share_link_Layout = (LinearLayout) dialogView.findViewById(R.id.menu_share_link_Layout);
+            menu_share_link_Layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (url != null) {
+                        Intent sendIntent = new Intent();
+                        sendIntent.setAction(Intent.ACTION_SEND);
+                        sendIntent.putExtra(Intent.EXTRA_TEXT, url);
+                        sendIntent.setType("text/plain");
+                        activity.startActivity(Intent.createChooser(sendIntent, activity.getResources()
+                                .getString(R.string.app_share_link)));
+                        dialog.cancel();
+                    }
+                }
+            });
+
+            LinearLayout menu_save_readLater_Layout = (LinearLayout) dialogView.findViewById(R.id.menu_save_readLater_Layout);
+            menu_save_readLater_Layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (url != null) {
+                        DbAdapter_ReadLater db = new DbAdapter_ReadLater(activity);
+                        db.open();
+                        if(db.isExist(mWebView.getUrl())){
+                            Snackbar.make(editText, activity.getString(R.string.toast_newTitle), Snackbar.LENGTH_LONG).show();
+                        }else{
+                            db.insert(helper_webView.getDomain(activity, url), url, "", "", helper_main.createDate());
+                            Snackbar.make(mWebView, R.string.bookmark_added, Snackbar.LENGTH_LONG).show();
+                        }
+                        dialog.cancel();
+                    }
+                }
+            });
+
+            TextView context_1 = (TextView) dialogView.findViewById(R.id.context_1);
+            context_1.setText(helper_browser.tab_1(activity));
+            LinearLayout context_1_Layout = (LinearLayout) dialogView.findViewById(R.id.context_1_Layout);
+            context_1_Layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (url != null) {
+                        helper_main.switchToActivity(activity, Browser_1.class, url, false);
+                        dialog.cancel();
+                    }
+                }
+            });
+
+            TextView context_2 = (TextView) dialogView.findViewById(R.id.context_2);
+            context_2.setText(helper_browser.tab_2(activity));
+            LinearLayout context_2_Layout = (LinearLayout) dialogView.findViewById(R.id.context_2_Layout);
+            context_2_Layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (url != null) {
+                        helper_main.switchToActivity(activity, Browser_2.class, url, false);
+                        dialog.cancel();
+                    }
+                }
+            });
+
+            TextView context_3 = (TextView) dialogView.findViewById(R.id.context_3);
+            context_3.setText(helper_browser.tab_3(activity));
+            LinearLayout context_3_Layout = (LinearLayout) dialogView.findViewById(R.id.context_3_Layout);
+            context_3_Layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (url != null) {
+                        helper_main.switchToActivity(activity, Browser_3.class, url, false);
+                        dialog.cancel();
+                    }
+                }
+            });
+
+            TextView context_4 = (TextView) dialogView.findViewById(R.id.context_4);
+            context_4.setText(helper_browser.tab_4(activity));
+            LinearLayout context_4_Layout = (LinearLayout) dialogView.findViewById(R.id.context_4_Layout);
+            context_4_Layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (url != null) {
+                        helper_main.switchToActivity(activity, Browser_4.class, url, false);
+                        dialog.cancel();
+                    }
+                }
+            });
+
+            TextView context_5 = (TextView) dialogView.findViewById(R.id.context_5);
+            context_5.setText(helper_browser.tab_5(activity));
+            LinearLayout context_5_Layout = (LinearLayout) dialogView.findViewById(R.id.context_5_Layout);
+            context_5_Layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (url != null) {
+                        helper_main.switchToActivity(activity, Browser_5.class, url, false);
+                        dialog.cancel();
+                    }
+                }
+            });
         }
     }
 
@@ -472,7 +618,8 @@ public class Browser_1 extends AppCompatActivity implements ObservableScrollView
 
     @Override
     public void onUpOrCancelMotionEvent(ScrollState scrollState) {
-        helper_browser.scroll(activity, scrollState, relativeLayout, imageButton, imageButton_left, imageButton_right, urlBar, mWebView);
+        helper_browser.scroll(activity, scrollState, relativeLayout, imageButton, imageButton_left, imageButton_right,
+                urlBar, mWebView, scrollTabs);
     }
 
     @Override
@@ -482,7 +629,10 @@ public class Browser_1 extends AppCompatActivity implements ObservableScrollView
 
     @Override
     public void onBackPressed() {
-        if (inCustomView()) {
+
+        if (scrollTabs.getVisibility() == View.VISIBLE) {
+            scrollTabs.setVisibility(View.GONE);
+        } else if (inCustomView()) {
             hideCustomView();
         } else if ((mCustomView == null) && mWebView.canGoBack()) {
             mWebView.goBack();
@@ -505,6 +655,7 @@ public class Browser_1 extends AppCompatActivity implements ObservableScrollView
         if (sharedPref.getInt("closeApp", 0) == 1) {
             helper_main.closeApp(activity, mWebView);
         }
+        sharedPref.edit().putInt("actualTab", 1).apply();
         mWebView.onResume();
         final String URL = sharedPref.getString("openURL","https://github.com/scoute-dich/browser/");
         new Handler().postDelayed(new Runnable() {
@@ -659,6 +810,7 @@ public class Browser_1 extends AppCompatActivity implements ObservableScrollView
         }
 
         if (id == R.id.menu_share_screenshot) {
+            screenshot();
             Intent sharingIntent = new Intent(Intent.ACTION_SEND);
             sharingIntent.setType("image/png");
             sharingIntent.putExtra(Intent.EXTRA_SUBJECT, helper_webView.getTitle (activity, mWebView));
@@ -772,9 +924,14 @@ public class Browser_1 extends AppCompatActivity implements ObservableScrollView
         public void onProgressChanged(WebView view, int progress) {
 
             sharedPref.edit().putString("tab_1", helper_webView.getTitle(activity, mWebView)).apply();
-
             progressBar.setProgress(progress);
             progressBar.setVisibility(progress == 100 ? View.GONE : View.VISIBLE);
+            imageButton.setVisibility(View.INVISIBLE);
+            relativeLayout.animate().translationY(0);
+
+            if (scrollTabs.getVisibility() == View.VISIBLE) {
+                scrollTabs.setVisibility(View.GONE);
+            }
 
             try {
                 String whiteList = sharedPref.getString("whiteList", "");
@@ -802,23 +959,21 @@ public class Browser_1 extends AppCompatActivity implements ObservableScrollView
             }
 
             if (progress == 100) {
-                imageButton.setVisibility(View.INVISIBLE);
-                if (sharedPref.getString ("fullscreen", "2").equals("1") || sharedPref.getString ("fullscreen", "2").equals("3")){
-                    relativeLayout.animate().translationY(0);
-                }
+
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        Bitmap bitmap = Bitmap.createBitmap(mWebView.getWidth(),
-                                mWebView.getHeight(), Bitmap.Config.ARGB_8888);
-                        Canvas canvas = new Canvas(bitmap);
-                        mWebView.draw(canvas);
-
-                        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 40, bytes);
-                        File file = new File(activity.getFilesDir() + "/tab_1.jpg");
                         try {
+                            int width = mWebView.getWidth();
+                            int high = (width/175) * 100;
+                            Bitmap bitmap = Bitmap.createBitmap(width, high , Bitmap.Config.ARGB_8888);
+                            Canvas canvas = new Canvas(bitmap);
+                            mWebView.draw(canvas);
+
+                            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 40, bytes);
+                            File file = new File(activity.getFilesDir() + "/tab_1.jpg");
                             file.createNewFile();
                             FileOutputStream outputStream = new FileOutputStream(file);
                             outputStream.write(bytes.toByteArray());
@@ -973,7 +1128,8 @@ public class Browser_1 extends AppCompatActivity implements ObservableScrollView
 
     private void screenshot() {
 
-        shareFile = helper_main.newFile(mWebView);
+        sharePath = helper_webView.getDomain(activity, mWebView.getUrl()) + "_" + helper_main.createDate() + ".jpg";
+        shareFile = helper_main.newFile(sharePath);
 
         try{
             mWebView.measure(View.MeasureSpec.makeMeasureSpec(
@@ -982,7 +1138,6 @@ public class Browser_1 extends AppCompatActivity implements ObservableScrollView
             mWebView.layout(0, 0, mWebView.getMeasuredWidth(), mWebView.getMeasuredHeight());
             mWebView.setDrawingCacheEnabled(true);
             mWebView.buildDrawingCache();
-
             bitmap = Bitmap.createBitmap(mWebView.getMeasuredWidth(),
                     mWebView.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
 
@@ -1050,7 +1205,7 @@ public class Browser_1 extends AppCompatActivity implements ObservableScrollView
     private final BroadcastReceiver onComplete_share = new BroadcastReceiver() {
         public void onReceive(Context ctxt, Intent intent) {
 
-            Uri myUri= Uri.fromFile(helper_main.newFile(mWebView));
+            Uri myUri= Uri.fromFile(shareFile);
             Intent sharingIntent = new Intent(Intent.ACTION_SEND);
             sharingIntent.setType("image/*");
             sharingIntent.putExtra(Intent.EXTRA_STREAM, myUri);

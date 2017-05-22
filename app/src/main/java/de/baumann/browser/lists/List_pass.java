@@ -61,26 +61,14 @@ public class List_pass extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        getWindow().setStatusBarColor(ContextCompat.getColor(List_pass.this, R.color.colorThreeDark));
+        getWindow().setStatusBarColor(ContextCompat.getColor(List_pass.this, R.color.colorPrimaryDark_2));
 
         setContentView(R.layout.activity_popup);
-        helper_main.onStart(List_pass.this);
 
         PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
         PreferenceManager.setDefaultValues(this, R.xml.user_settings_search, false);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPref.edit().putString("openURL", "").apply();
-
-        if (sharedPref.getBoolean("isOpened", false)) {
-            helper_main.checkPin(List_pass.this);
-        }
-
-        try {
-            mahEncryptor = MAHEncryptor.newInstance(sharedPref.getString("saved_key", ""));
-        } catch (Exception e) {
-            e.printStackTrace();
-            Snackbar.make(listView, R.string.toast_error, Snackbar.LENGTH_SHORT).show();
-        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -89,7 +77,16 @@ public class List_pass extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+        helper_main.checkPin(this);
+        helper_main.onStart(this);
         helper_main.toolbar (this, toolbar);
+
+        try {
+            mahEncryptor = MAHEncryptor.newInstance(sharedPref.getString("saved_key", ""));
+        } catch (Exception e) {
+            e.printStackTrace();
+            Snackbar.make(listView, R.string.toast_error, Snackbar.LENGTH_SHORT).show();
+        }
 
         EditText editText = (EditText) findViewById(R.id.editText);
         editText.setVisibility(View.GONE);
@@ -264,6 +261,14 @@ public class List_pass extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();    //To change body of overridden methods use File | Settings | File Templates.
+        if (sharedPref.getInt("closeApp", 0) == 1) {
+            finish();
+        }
     }
 
     @Override

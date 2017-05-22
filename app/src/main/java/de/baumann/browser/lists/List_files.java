@@ -83,18 +83,14 @@ public class List_files extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        getWindow().setStatusBarColor(ContextCompat.getColor(List_files.this, R.color.colorThreeDark));
+        getWindow().setStatusBarColor(ContextCompat.getColor(List_files.this, R.color.colorPrimaryDark_2));
 
         setContentView(R.layout.activity_popup);
-        helper_main.onStart(List_files.this);
 
         PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
         PreferenceManager.setDefaultValues(this, R.xml.user_settings_search, false);
-
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPref.edit().putString("openURL", "").apply();
-        sharedPref.edit().putString("files_startFolder",
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath()).apply();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -103,6 +99,8 @@ public class List_files extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+        helper_main.checkPin(this);
+        helper_main.onStart(this);
         helper_main.toolbar (this, toolbar);
 
         editText = (EditText) findViewById(R.id.editText);
@@ -447,6 +445,14 @@ public class List_files extends AppCompatActivity {
             urlBar.setText(getString(R.string.app_title_downloads) + " | " + getString(R.string.sort_date));
         } else {
             urlBar.setText(getString(R.string.app_title_downloads) + " | " + getString(R.string.sort_extension));
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();    //To change body of overridden methods use File | Settings | File Templates.
+        if (sharedPref.getInt("closeApp", 0) == 1) {
+            finish();
         }
     }
 

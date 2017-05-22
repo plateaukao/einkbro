@@ -3,18 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="ContentDescription">
 
     <RelativeLayout
+        android:id="@+id/relativeLayout_webView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/toolbar">
+        android:layout_alignParentBottom="true">
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipe"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/progressBar">
+            android:layout_height="match_parent" >
 
             <com.github.ksoichiro.android.observablescrollview.ObservableWebView
                 xmlns:android="http://schemas.android.com/apk/res/android"
@@ -26,6 +27,13 @@
 
         </android.support.v4.widget.SwipeRefreshLayout>
 
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/bottom_layout" >
+
         <ProgressBar
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
@@ -34,341 +42,369 @@
             android:maxHeight="4dip"
             android:progressTint="@color/colorAccent"
             android:layout_centerHorizontal="true"
-            android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
+            android:layout_above="@+id/toolbar"
             android:id="@+id/progressBar" />
 
-    </RelativeLayout>
-
-    <android.support.v7.widget.Toolbar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary_1"
-        android:theme="@style/Actionbar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        android:minHeight="?attr/actionBarSize"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/toolbar" >
-
-        <EditText
-            android:theme="@style/EditTextStyle"
-            android:id="@+id/editText"
+        <android.support.v7.widget.Toolbar
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="5dp"
-            android:text="@string/app_name"
-            android:hint="@string/app_search_hint"
-            android:textColorHint="#eeeeee"
-            android:imeOptions="actionSearch"
-            android:fontFamily="sans-serif-condensed"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:inputType="text"
-            android:textColor="#eeeeee"
-            android:textIsSelectable="true">
-        </EditText>
-
-        <TextView
-            android:id="@+id/urlBar"
-            android:layout_width="match_parent"
-            android:layout_height="36dp"
-            android:gravity="center_vertical"
-            android:minHeight="?attr/actionBarSize"
-            android:layout_margin="5dp"
-            android:text="@string/app_name"
-            android:fontFamily="sans-serif-condensed"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:scrollHorizontally="true"
-            android:textAppearance="?android:attr/textAppearanceMedium" >
-        </TextView>
-
-    </android.support.v7.widget.Toolbar>
-
-    <ImageButton
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:id="@+id/imageButton"
-        tools:ignore="ContentDescription"
-        android:background="@drawable/custom_button"
-        android:padding="8dp"
-        app:srcCompat="@drawable/arrow_up"
-        android:scaleType="fitCenter"
-        android:layout_width="46dp"
-        android:layout_height="46dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginBottom="16dp" />
-
-    <ImageButton
-        android:id="@+id/imageButton_left"
-        tools:ignore="ContentDescription"
-        android:background="@drawable/custom_button"
-        android:padding="8dp"
-        app:srcCompat="@drawable/arrow_left"
-        android:scaleType="fitCenter"
-        android:layout_width="46dp"
-        android:layout_height="46dp"
-        android:layout_above="@+id/toolbar"
-        android:layout_alignParentStart="true"
-        android:layout_margin="16dp" />
-
-    <ImageButton
-        android:id="@+id/imageButton_right"
-        tools:ignore="ContentDescription"
-        android:background="@drawable/custom_button"
-        android:padding="8dp"
-        app:srcCompat="@drawable/arrow_right"
-        android:scaleType="fitCenter"
-        android:layout_width="46dp"
-        android:layout_height="46dp"
-        android:layout_above="@+id/toolbar"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="16dp" />
-
-    <HorizontalScrollView
-        android:id="@+id/scrollTabs"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/toolbar"
-        android:background="@color/black_transparent"
-        android:visibility="gone">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:background="@color/colorPrimary_1"
+            android:theme="@style/Actionbar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            android:minHeight="56dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:id="@+id/toolbar" >
 
-            <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/context_1_Layout"
+            <EditText
+                android:visibility="gone"
+                android:theme="@style/EditTextStyle"
+                android:id="@+id/editText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:text="@string/app_name"
+                android:hint="@string/app_search_hint"
+                android:textColorHint="#eeeeee"
+                android:imeOptions="actionSearch"
+                android:fontFamily="sans-serif-condensed"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:inputType="text"
+                android:textColor="#eeeeee"
+                android:textIsSelectable="true">
+            </EditText>
+
+            <TextView
+                android:id="@+id/urlBar"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:gravity="center_vertical"
+                android:minHeight="?attr/actionBarSize"
+                android:layout_margin="5dp"
+                android:text="@string/app_name"
+                android:fontFamily="sans-serif-condensed"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:scrollHorizontally="true"
+                android:textAppearance="?android:attr/textAppearanceMedium" >
+            </TextView>
+
+        </android.support.v7.widget.Toolbar>
+
+        <ImageButton
+            android:visibility="gone"
+            android:id="@+id/imageButton"
+            android:background="@drawable/custom_button"
+            android:padding="8dp"
+            app:srcCompat="@drawable/arrow_up"
+            android:scaleType="fitCenter"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_above="@+id/toolbar"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="16dp" />
+
+        <ImageButton
+            android:visibility="gone"
+            android:id="@+id/imageButton_left"
+            android:background="@drawable/custom_button"
+            android:padding="8dp"
+            app:srcCompat="@drawable/arrow_left"
+            android:scaleType="fitCenter"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_above="@+id/toolbar"
+            android:layout_alignParentStart="true"
+            android:layout_margin="16dp" />
+
+        <ImageButton
+            android:visibility="gone"
+            android:id="@+id/imageButton_right"
+            android:background="@drawable/custom_button"
+            android:padding="8dp"
+            app:srcCompat="@drawable/arrow_right"
+            android:scaleType="fitCenter"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_above="@+id/toolbar"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="16dp" />
+
+        <RelativeLayout
+            android:animateLayoutChanges="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/toolbar">
+
+            <HorizontalScrollView
+                android:id="@+id/scrollTabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp">
+                android:background="@color/colorDark_trans"
+                android:visibility="gone"
+                tools:ignore="UselessParent">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-                    <ImageView
-                        android:layout_width="200dp"
-                        android:layout_height="100dp"
-                        android:layout_alignParentTop="true"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/circle_1"
-                        tools:ignore="ContentDescription" />
-
-                    <ImageView
-                        android:id="@+id/context_1_preView"
-                        android:layout_width="200dp"
-                        android:layout_height="100dp"
-                        android:layout_alignParentTop="true"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/circle_1"
-                        tools:ignore="ContentDescription" />
-
-                    <TextView
-                        android:id="@+id/context_1"
-                        android:layout_width="200dp"
+                    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/context_1_Layout"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/context_1_preView"
-                        android:background="@color/colorPrimary_1_trans"
-                        android:ellipsize="end"
-                        android:lines="1"
-                        android:maxLines="3"
-                        android:padding="8dp"
-                        android:text="@string/context_1"
-                        android:textAppearance="?android:attr/textAppearanceSmall" />
+                        android:layout_margin="8dp">
 
-                </RelativeLayout>
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
 
-            </android.support.v7.widget.CardView>
+                            <ImageView
+                                android:layout_width="175dp"
+                                android:layout_height="100dp"
+                                android:layout_alignParentTop="true"
+                                android:scaleType="fitStart"
+                                android:src="@drawable/numeric_1_box"
+                                tools:ignore="ContentDescription" />
 
-            <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/context_2_Layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp">
+                            <ImageView
+                                android:id="@+id/context_1_preView"
+                                android:layout_width="175dp"
+                                android:layout_height="100dp"
+                                android:layout_alignParentTop="true"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/numeric_1_box"
+                                tools:ignore="ContentDescription" />
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                            <TextView
+                                android:id="@+id/context_1"
+                                android:layout_width="175dp"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/context_1_preView"
+                                android:background="@color/colorAccent_trans"
+                                android:ellipsize="end"
+                                android:lines="1"
+                                android:maxLines="3"
+                                android:padding="8dp"
+                                android:text="@string/context_tab"
+                                android:fontFamily="sans-serif-condensed"
+                                android:typeface="sans"
+                                android:textStyle="bold"
+                                android:textColor="@color/colorLight"
+                                android:textAppearance="?android:attr/textAppearanceSmall" />
 
-                    <ImageView
-                        android:layout_width="200dp"
-                        android:layout_height="100dp"
-                        android:layout_alignParentTop="true"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/circle_2"
-                        tools:ignore="ContentDescription" />
+                        </RelativeLayout>
 
-                    <ImageView
-                        android:id="@+id/context_2_preView"
-                        android:layout_width="200dp"
-                        android:layout_height="100dp"
-                        android:layout_alignParentTop="true"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/circle_2"
-                        tools:ignore="ContentDescription" />
+                    </android.support.v7.widget.CardView>
 
-                    <TextView
-                        android:id="@+id/context_2"
-                        android:layout_width="200dp"
+                    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/context_2_Layout"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/context_2_preView"
-                        android:background="@color/colorPrimary_2_trans"
-                        android:ellipsize="end"
-                        android:lines="1"
-                        android:maxLines="3"
-                        android:padding="8dp"
-                        android:text="@string/context_2"
-                        android:textAppearance="?android:attr/textAppearanceSmall" />
+                        android:layout_margin="8dp">
 
-                </RelativeLayout>
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
 
-            </android.support.v7.widget.CardView>
+                            <ImageView
+                                android:layout_width="175dp"
+                                android:layout_height="100dp"
+                                android:layout_alignParentTop="true"
+                                android:scaleType="fitStart"
+                                android:src="@drawable/numeric_2_box"
+                                tools:ignore="ContentDescription" />
 
-            <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/context_3_Layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp">
+                            <ImageView
+                                android:id="@+id/context_2_preView"
+                                android:layout_width="175dp"
+                                android:layout_height="100dp"
+                                android:layout_alignParentTop="true"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/numeric_2_box"
+                                tools:ignore="ContentDescription" />
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                            <TextView
+                                android:id="@+id/context_2"
+                                android:layout_width="175dp"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/context_2_preView"
+                                android:background="@color/colorAccent_trans"
+                                android:ellipsize="end"
+                                android:lines="1"
+                                android:maxLines="3"
+                                android:padding="8dp"
+                                android:text="@string/context_tab"
+                                android:fontFamily="sans-serif-condensed"
+                                android:typeface="sans"
+                                android:textStyle="bold"
+                                android:textColor="@color/colorLight"
+                                android:textAppearance="?android:attr/textAppearanceSmall" />
 
-                    <ImageView
-                        android:layout_width="200dp"
-                        android:layout_height="100dp"
-                        android:layout_alignParentTop="true"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/circle_3"
-                        tools:ignore="ContentDescription" />
+                        </RelativeLayout>
 
-                    <ImageView
-                        android:id="@+id/context_3_preView"
-                        android:layout_width="200dp"
-                        android:layout_height="100dp"
-                        android:layout_alignParentTop="true"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/circle_3"
-                        tools:ignore="ContentDescription" />
+                    </android.support.v7.widget.CardView>
 
-                    <TextView
-                        android:id="@+id/context_3"
-                        android:layout_width="200dp"
+                    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/context_3_Layout"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/context_3_preView"
-                        android:background="@color/colorPrimary_3_trans"
-                        android:ellipsize="end"
-                        android:lines="1"
-                        android:maxLines="3"
-                        android:padding="8dp"
-                        android:text="@string/context_3"
-                        android:textAppearance="?android:attr/textAppearanceSmall" />
+                        android:layout_margin="8dp">
 
-                </RelativeLayout>
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
 
-            </android.support.v7.widget.CardView>
+                            <ImageView
+                                android:layout_width="175dp"
+                                android:layout_height="100dp"
+                                android:layout_alignParentTop="true"
+                                android:scaleType="fitStart"
+                                android:src="@drawable/numeric_3_box"
+                                tools:ignore="ContentDescription" />
 
-            <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/context_4_Layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp">
+                            <ImageView
+                                android:id="@+id/context_3_preView"
+                                android:layout_width="175dp"
+                                android:layout_height="100dp"
+                                android:layout_alignParentTop="true"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/numeric_3_box"
+                                tools:ignore="ContentDescription" />
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                            <TextView
+                                android:id="@+id/context_3"
+                                android:layout_width="175dp"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/context_3_preView"
+                                android:background="@color/colorAccent_trans"
+                                android:ellipsize="end"
+                                android:lines="1"
+                                android:maxLines="3"
+                                android:padding="8dp"
+                                android:text="@string/context_tab"
+                                android:fontFamily="sans-serif-condensed"
+                                android:typeface="sans"
+                                android:textStyle="bold"
+                                android:textColor="@color/colorLight"
+                                android:textAppearance="?android:attr/textAppearanceSmall" />
 
-                    <ImageView
-                        android:layout_width="200dp"
-                        android:layout_height="100dp"
-                        android:layout_alignParentTop="true"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/circle_4"
-                        tools:ignore="ContentDescription" />
+                        </RelativeLayout>
 
-                    <ImageView
-                        android:id="@+id/context_4_preView"
-                        android:layout_width="200dp"
-                        android:layout_height="100dp"
-                        android:layout_alignParentTop="true"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/circle_4"
-                        tools:ignore="ContentDescription" />
+                    </android.support.v7.widget.CardView>
 
-                    <TextView
-                        android:id="@+id/context_4"
-                        android:layout_width="200dp"
+                    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/context_4_Layout"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/context_4_preView"
-                        android:background="@color/colorPrimary_4_trans"
-                        android:ellipsize="end"
-                        android:lines="1"
-                        android:maxLines="3"
-                        android:padding="8dp"
-                        android:text="@string/context_4"
-                        android:textAppearance="?android:attr/textAppearanceSmall" />
+                        android:layout_margin="8dp">
 
-                </RelativeLayout>
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
 
-            </android.support.v7.widget.CardView>
+                            <ImageView
+                                android:layout_width="175dp"
+                                android:layout_height="100dp"
+                                android:layout_alignParentTop="true"
+                                android:scaleType="fitStart"
+                                android:src="@drawable/numeric_4_box"
+                                tools:ignore="ContentDescription" />
 
-            <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/context_5_Layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp">
+                            <ImageView
+                                android:id="@+id/context_4_preView"
+                                android:layout_width="175dp"
+                                android:layout_height="100dp"
+                                android:layout_alignParentTop="true"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/numeric_4_box"
+                                tools:ignore="ContentDescription" />
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                            <TextView
+                                android:id="@+id/context_4"
+                                android:layout_width="175dp"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/context_4_preView"
+                                android:background="@color/colorAccent_trans"
+                                android:ellipsize="end"
+                                android:lines="1"
+                                android:maxLines="3"
+                                android:padding="8dp"
+                                android:text="@string/context_tab"
+                                android:fontFamily="sans-serif-condensed"
+                                android:typeface="sans"
+                                android:textStyle="bold"
+                                android:textColor="@color/colorLight"
+                                android:textAppearance="?android:attr/textAppearanceSmall" />
 
-                    <ImageView
-                        android:layout_width="200dp"
-                        android:layout_height="100dp"
-                        android:layout_alignParentTop="true"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/circle_5"
-                        tools:ignore="ContentDescription" />
+                        </RelativeLayout>
 
-                    <ImageView
-                        android:id="@+id/context_5_preView"
-                        android:layout_width="200dp"
-                        android:layout_height="100dp"
-                        android:layout_alignParentTop="true"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/circle_5"
-                        tools:ignore="ContentDescription" />
+                    </android.support.v7.widget.CardView>
 
-                    <TextView
-                        android:id="@+id/context_5"
-                        android:layout_width="200dp"
+                    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/context_5_Layout"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/context_5_preView"
-                        android:background="@color/colorPrimary_5_trans"
-                        android:ellipsize="end"
-                        android:lines="1"
-                        android:maxLines="3"
-                        android:padding="8dp"
-                        android:text="@string/context_5"
-                        android:textAppearance="?android:attr/textAppearanceSmall" />
+                        android:layout_margin="8dp">
 
-                </RelativeLayout>
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
 
-            </android.support.v7.widget.CardView>
+                            <ImageView
+                                android:layout_width="175dp"
+                                android:layout_height="100dp"
+                                android:layout_alignParentTop="true"
+                                android:scaleType="fitStart"
+                                android:src="@drawable/numeric_5_box"
+                                tools:ignore="ContentDescription" />
 
-        </LinearLayout>
+                            <ImageView
+                                android:id="@+id/context_5_preView"
+                                android:layout_width="175dp"
+                                android:layout_height="100dp"
+                                android:layout_alignParentTop="true"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/numeric_5_box"
+                                tools:ignore="ContentDescription" />
 
-    </HorizontalScrollView>
+                            <TextView
+                                android:id="@+id/context_5"
+                                android:layout_width="175dp"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/context_5_preView"
+                                android:background="@color/colorAccent_trans"
+                                android:ellipsize="end"
+                                android:lines="1"
+                                android:maxLines="3"
+                                android:padding="8dp"
+                                android:text="@string/context_tab"
+                                android:fontFamily="sans-serif-condensed"
+                                android:typeface="sans"
+                                android:textStyle="bold"
+                                android:textColor="@color/colorLight"
+                                android:textAppearance="?android:attr/textAppearanceSmall" />
 
-    <FrameLayout
-        android:id="@+id/customViewContainer"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:background="@android:color/background_light"
-        android:visibility="gone" />
+                        </RelativeLayout>
+
+                    </android.support.v7.widget.CardView>
+
+                </LinearLayout>
+
+            </HorizontalScrollView>
+
+        </RelativeLayout>
+
+
+        <FrameLayout
+            android:id="@+id/customViewContainer"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:visibility="gone"
+            android:background="@android:color/background_light" />
+
+    </RelativeLayout>
 
 </RelativeLayout>

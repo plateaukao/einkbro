@@ -33,6 +33,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
@@ -161,7 +162,7 @@ public class helper_main {
 
     public static String createDate () {
         Date date = new Date();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd_HH:mm", Locale.getDefault());
         return  format.format(date);
     }
 
@@ -244,6 +245,11 @@ public class helper_main {
 
                     TextView context_1 = (TextView) activity.findViewById(R.id.context_1);
                     context_1.setText(helper_browser.tab_1(activity));
+                    if ( sharedPref.getInt("actualTab", 1) == 1) {
+                        context_1.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorAccent));
+                    } else {
+                        context_1.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorAccent_trans));
+                    }
                     ImageView context_1_preView = (ImageView) activity.findViewById(R.id.context_1_preView);
                     try {
                         Glide.with(activity)
@@ -269,6 +275,11 @@ public class helper_main {
 
                     TextView context_2 = (TextView) activity.findViewById(R.id.context_2);
                     context_2.setText(helper_browser.tab_2(activity));
+                    if ( sharedPref.getInt("actualTab", 1) == 2) {
+                        context_2.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorAccent));
+                    } else {
+                        context_2.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorAccent_trans));
+                    }
                     ImageView context_2_preView = (ImageView) activity.findViewById(R.id.context_2_preView);
                     try {
                         Glide.with(activity)
@@ -294,6 +305,11 @@ public class helper_main {
 
                     TextView context_3 = (TextView) activity.findViewById(R.id.context_3);
                     context_3.setText(helper_browser.tab_3(activity));
+                    if ( sharedPref.getInt("actualTab", 1) == 3) {
+                        context_3.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorAccent));
+                    } else {
+                        context_3.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorAccent_trans));
+                    }
                     ImageView context_3_preView = (ImageView) activity.findViewById(R.id.context_3_preView);
                     try {
                         Glide.with(activity)
@@ -319,6 +335,11 @@ public class helper_main {
 
                     TextView context_4 = (TextView) activity.findViewById(R.id.context_4);
                     context_4.setText(helper_browser.tab_4(activity));
+                    if ( sharedPref.getInt("actualTab", 1) == 4) {
+                        context_4.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorAccent));
+                    } else {
+                        context_4.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorAccent_trans));
+                    }
                     ImageView context_4_preView = (ImageView) activity.findViewById(R.id.context_4_preView);
                     try {
                         Glide.with(activity)
@@ -344,6 +365,11 @@ public class helper_main {
 
                     TextView context_5 = (TextView) activity.findViewById(R.id.context_5);
                     context_5.setText(helper_browser.tab_5(activity));
+                    if ( sharedPref.getInt("actualTab", 1) == 5) {
+                        context_5.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorAccent));
+                    } else {
+                        context_5.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorAccent_trans));
+                    }
                     ImageView context_5_preView = (ImageView) activity.findViewById(R.id.context_5_preView);
                     try {
                         Glide.with(activity)
@@ -374,21 +400,20 @@ public class helper_main {
         });
     }
 
-    public static void onStart (final Activity from) {
+    public static void onStart (final Activity activity) {
 
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
 
         if (sharedPref.getString ("fullscreen", "2").equals("1") || sharedPref.getString ("fullscreen", "2").equals("3")){
-            from.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
         if (sharedPref.getString("orientation", "auto").equals("landscape")) {
-            from.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
         if (sharedPref.getString("orientation", "auto").equals("portrait")) {
-            from.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
-        sharedPref.edit().putBoolean("isOpened", true).apply();
         sharedPref.edit().putInt("closeApp", 0).apply();
         sharedPref.edit().putString("openURL", sharedPref.getString("startURL", "https://github.com/scoute-dich/browser/")).apply();
         sharedPref.edit().putInt("keyboard", 0).apply();
@@ -397,7 +422,7 @@ public class helper_main {
         boolean show = sharedPref.getBoolean("introShowDo_notShow", true);
 
         if (show){
-            helper_main.switchToActivity(from, Activity_intro.class, "", false);
+            helper_main.switchToActivity(activity, Activity_intro.class, "", false);
         }
 
         if (sharedPref.getString("saved_key_ok", "no").equals("no")) {
@@ -427,7 +452,7 @@ public class helper_main {
             }
         }
 
-        if (pw != null  && pw.length() > 0) {
+        if (pw != null  && pw.length() > 0 && sharedPref.getBoolean("isOpened", false)) {
             AlertDialog.Builder builder = new AlertDialog.Builder(from, R.style.PinDialog);
             final View dialogView = View.inflate(from, R.layout.dialog_password, null);
 
@@ -584,7 +609,6 @@ public class helper_main {
                 @Override
                 public void onClick(View view) {
                     String Password = text.getText().toString().trim();
-
                     if (Password.equals(protect)) {
                         sharedPref.edit().putBoolean("isOpened", false).apply();
                         dialog.dismiss();
@@ -625,24 +649,8 @@ public class helper_main {
         return s;
     }
 
-    public static File newFile (WebView webView) {
-        return  new File(Environment.getExternalStorageDirectory() + "/" + Environment.DIRECTORY_DOWNLOADS + "/" + newFileName(webView));
-    }
-
-    public static String newFileName (WebView webView) {
-
-        final  String domain;
-
-        if(Uri.parse(webView.getUrl()).getHost().length() == 0) {
-            domain = "";
-        } else {
-            domain = Uri.parse(webView.getUrl()).getHost();
-        }
-
-        String shortDomain = domain.substring(0, Math.min(domain.length(), 20));
-        String title = shortDomain.replaceAll("\\P{L}+", "-");
-
-        return  title + ".jpg";
+    public static File newFile (String fileName) {
+        return  new File(Environment.getExternalStorageDirectory() + "/" + Environment.DIRECTORY_DOWNLOADS + "/" + fileName);
     }
 
     public static void open (String extension, Activity activity, File pathFile, View view) {

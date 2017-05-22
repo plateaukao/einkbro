@@ -1,148 +1,159 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingEnd="20dp"
-    android:paddingStart="25dp"
-    android:paddingTop="15dp" >
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp">
+        android:paddingEnd="20dp"
+        android:paddingStart="25dp"
+        android:paddingTop="15dp" >
 
-        <TextView
-            android:text="@string/action_java"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_toStartOf="@+id/imageButton_js" />
-
-        <Switch
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:id="@+id/switch1"
-            android:checked="false" />
+            android:layout_marginTop="16dp">
 
-        <ImageButton
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp"
-            app:srcCompat="@drawable/close_red"
-            android:layout_toStartOf="@+id/switch1"
-            android:id="@+id/imageButton_js"
-            android:background="?android:selectableItemBackground"
-            tools:ignore="ContentDescription"
-            android:layout_centerVertical="true"
-            android:layout_centerInParent="true"
-            android:layout_centerHorizontal="true"
-            android:scaleType="centerCrop" />
+            <TextView
+                android:text="@string/action_java"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_toStartOf="@+id/imageButton_js" />
 
-    </RelativeLayout>
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/switch1"
+                android:checked="false" />
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp">
+            <ImageButton
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                app:srcCompat="@drawable/close_red"
+                android:layout_toStartOf="@+id/switch1"
+                android:id="@+id/imageButton_js"
+                android:background="?android:selectableItemBackground"
+                tools:ignore="ContentDescription"
+                android:layout_centerVertical="true"
+                android:layout_centerInParent="true"
+                android:layout_centerHorizontal="true"
+                android:scaleType="centerCrop" />
 
-        <TextView
-            android:text="@string/action_loc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_toStartOf="@+id/switch3" />
+        </RelativeLayout>
 
-        <Switch
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:id="@+id/switch3"
-            android:checked="false" />
+            android:layout_marginTop="16dp">
 
-    </RelativeLayout>
+            <TextView
+                android:text="@string/action_loc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_toStartOf="@+id/switch3" />
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp">
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/switch3"
+                android:checked="false" />
 
-        <TextView
-            android:text="@string/action_cookie"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_toStartOf="@+id/switch4" />
+        </RelativeLayout>
 
-        <Switch
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:id="@+id/switch4"
-            android:checked="false" />
+            android:layout_marginTop="16dp">
 
-    </RelativeLayout>
+            <TextView
+                android:text="@string/action_cookie"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_toStartOf="@+id/switch4" />
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp">
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/switch4"
+                android:checked="false" />
 
-        <TextView
-            android:text="@string/action_pictures"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_toStartOf="@+id/switch2" />
+        </RelativeLayout>
 
-        <Switch
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:id="@+id/switch2"
-            android:checked="false" />
+            android:layout_marginTop="16dp">
 
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp">
+            <TextView
+                android:text="@string/action_pictures"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_toStartOf="@+id/switch2" />
 
-        <TextView
-            android:text="@string/action_adBlock"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_toStartOf="@+id/switch5" />
-        <Switch
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/switch2"
+                android:checked="false" />
+
+        </RelativeLayout>
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:id="@+id/switch5"
-            android:checked="false" />
-    </RelativeLayout>
+            android:layout_marginTop="16dp">
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp">
+            <TextView
+                android:text="@string/action_adBlock"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_toStartOf="@+id/switch5" />
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/switch5"
+                android:checked="false" />
+        </RelativeLayout>
 
-        <TextView
-            android:text="@string/action_desktop"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_toStartOf="@+id/switch6" />
-
-        <Switch
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:id="@+id/switch6"
-            android:checked="false" />
+            android:layout_marginTop="16dp">
 
-    </RelativeLayout>
-</LinearLayout>
+            <TextView
+                android:text="@string/action_desktop"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_toStartOf="@+id/switch6" />
+
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/switch6"
+                android:checked="false" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</ScrollView>
+
+

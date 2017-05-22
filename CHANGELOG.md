@@ -3,10 +3,14 @@
 - new: five tabs (@CGSLURP LLC)
 - new: toolbar and button animations
 - new: toolbar gestures in lists
+- new: save link destination
+- fix: download pictures
+- improved: portrait layout
 - improved: Adblock integration
 - improved: Desktop site request
 - improved: sorting of lists
 - improved: code simplified
+- improved: UI (colors, strings, layouts)
 
 ### v 3.5
 - fix: keyboard issue

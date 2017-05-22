@@ -74,19 +74,14 @@ public class List_history extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        getWindow().setStatusBarColor(ContextCompat.getColor(List_history.this, R.color.colorThreeDark));
+        getWindow().setStatusBarColor(ContextCompat.getColor(List_history.this, R.color.colorPrimaryDark_2));
 
         setContentView(R.layout.activity_popup);
-        helper_main.onStart(List_history.this);
 
         PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
         PreferenceManager.setDefaultValues(this, R.xml.user_settings_search, false);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPref.edit().putString("openURL", "").apply();
-
-        if (sharedPref.getBoolean("isOpened", false)) {
-            helper_main.checkPin(List_history.this);
-        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -95,6 +90,8 @@ public class List_history extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+        helper_main.checkPin(this);
+        helper_main.onStart(this);
         helper_main.toolbar (this, toolbar);
 
         editText = (EditText) findViewById(R.id.editText);
@@ -316,6 +313,14 @@ public class List_history extends AppCompatActivity {
             urlBar.setText(getString(R.string.app_title_history) + " | " + getString(R.string.sort_title));
         } else {
             urlBar.setText(getString(R.string.app_title_history) + " | " + getString(R.string.sort_date));
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();    //To change body of overridden methods use File | Settings | File Templates.
+        if (sharedPref.getInt("closeApp", 0) == 1) {
+            finish();
         }
     }
 

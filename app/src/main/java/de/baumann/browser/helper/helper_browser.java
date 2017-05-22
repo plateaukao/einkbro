@@ -21,18 +21,14 @@ package de.baumann.browser.helper;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
-import android.net.Uri;
+import android.graphics.Point;
 import android.os.Environment;
 import android.preference.PreferenceManager;
-import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
@@ -47,7 +43,6 @@ import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -68,37 +63,64 @@ import de.baumann.browser.Browser_3;
 import de.baumann.browser.Browser_4;
 import de.baumann.browser.Browser_5;
 import de.baumann.browser.R;
-import de.baumann.browser.databases.DbAdapter_ReadLater;
 import de.baumann.browser.lists.List_bookmarks;
 import de.baumann.browser.lists.List_readLater;
 import de.baumann.browser.utils.Utils_UserAgent;
 
 import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
 
+@SuppressWarnings("ResultOfMethodCallIgnored")
 public class helper_browser {
 
     public static void setupViews (Activity activity, final Toolbar toolbar, final WebView webView,
                                    EditText editText, final ImageButton imageButton, final ImageButton imageButton_left,
-                                   final ImageButton imageButton_right) {
+                                   final ImageButton imageButton_right, final RelativeLayout toolbarLayout) {
 
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
 
-        editText.setVisibility(View.GONE);
+        RelativeLayout relativeLayout_webView = (RelativeLayout) activity.findViewById(R.id.relativeLayout_webView);
+        int[] attrs = new int[] {R.attr.actionBarSize};
+        TypedArray ta = activity.obtainStyledAttributes(attrs);
+        int toolBarHeight = ta.getDimensionPixelSize(0, -1);
+        ta.recycle();
+
+        Point size = new Point();
+        activity.getWindowManager().getDefaultDisplay().getSize(size);
+        int height = size.y;
+
+        if (sharedPref.getString ("fullscreen", "2").equals("1")){
+
+            RelativeLayout.LayoutParams layout_description = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
+                    height - toolBarHeight);
+
+            relativeLayout_webView.setLayoutParams(layout_description);
+
+        } else if (sharedPref.getString ("fullscreen", "2").equals("4")){
+
+            int result = 0;
+            int resourceId = activity.getResources().getIdentifier("status_bar_height", "dimen", "android");
+            if (resourceId > 0) {
+                result = activity.getResources().getDimensionPixelSize(resourceId);
+            }
+
+            RelativeLayout.LayoutParams layout_description = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
+                    height - toolBarHeight - result);
+
+            relativeLayout_webView.setLayoutParams(layout_description);
+        }
+
         editText.setHint(R.string.app_search_hint);
         editText.clearFocus();
 
-        imageButton.setVisibility(View.INVISIBLE);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 webView.scrollTo(0,0);
-                imageButton.setVisibility(View.INVISIBLE);
-                toolbar.animate().translationY(0);
+                imageButton.setVisibility(View.GONE);
                 helper_browser.setNavArrows(webView, imageButton_left, imageButton_right);
+                toolbarLayout.animate().translationY(0);
             }
         });
-
-        imageButton_left.setVisibility(View.GONE);
-        imageButton_right.setVisibility(View.GONE);
 
         helper_browser.toolbar(activity, webView, toolbar);
         helper_editText.editText_EditorAction(editText, activity, webView, editText);
@@ -108,19 +130,13 @@ public class helper_browser {
 
     public static void switcher (final Activity activity, final WebView mWebView, final TextView urlBar) {
 
-        final String domain;
         final Utils_UserAgent myUserAgent= new Utils_UserAgent();
-
         final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
+
         sharedPref.edit().putString("started", "yes").apply();
 
-        if(Uri.parse(mWebView.getUrl()).getHost().length() == 0) {
-            domain = activity.getString(R.string.app_domain);
-        } else {
-            domain = Uri.parse(mWebView.getUrl()).getHost();
-        }
-
         final String whiteList = sharedPref.getString("whiteList", "");
+        final String domain = helper_webView.getDomain(activity, mWebView.getUrl());
 
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(activity);
         View dialogView = View.inflate(activity, R.layout.dialog_toggle, null);
@@ -291,8 +307,6 @@ public class helper_browser {
         builder.setNegativeButton(R.string.menu_settings, new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int whichButton) {
-                sharedPref.edit().putString("pass_copy_url", mWebView.getUrl()).apply();
-                sharedPref.edit().putString("lastActivity", "browser_1").apply();
                 helper_main.switchToActivity(activity, Activity_settings.class, "", true);
             }
         });
@@ -406,7 +420,7 @@ public class helper_browser {
                 }
             });
         } else {
-            img_left.setVisibility(View.INVISIBLE);
+            img_left.setVisibility(View.GONE);
         }
 
         if (webview.canGoForward()) {
@@ -418,12 +432,18 @@ public class helper_browser {
                 }
             });
         } else {
-            img_right.setVisibility(View.INVISIBLE);
+            img_right.setVisibility(View.GONE);
         }
     }
 
     public static void scroll (Activity activity, ScrollState scrollState, final RelativeLayout relativeLayout, ImageButton imageButton,
-                               ImageButton imageButton_left, ImageButton imageButton_right, TextView urlBar, WebView webView) {
+                               ImageButton imageButton_left, ImageButton imageButton_right, TextView urlBar, WebView webView, HorizontalScrollView scrollTabs) {
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
+
+        if (scrollTabs.getVisibility() == View.VISIBLE) {
+            scrollTabs.setVisibility(View.GONE);
+        }
 
         int[] attrs = new int[] {R.attr.actionBarSize};
         TypedArray ta = activity.obtainStyledAttributes(attrs);
@@ -433,19 +453,23 @@ public class helper_browser {
         if (scrollState == ScrollState.UP) {
 
             imageButton.setVisibility(View.VISIBLE);
-            imageButton_left.setVisibility(View.INVISIBLE);
-            imageButton_right.setVisibility(View.INVISIBLE);
-            relativeLayout.animate().translationY(toolBarHeight);
+            imageButton_left.setVisibility(View.GONE);
+            imageButton_right.setVisibility(View.GONE);
+
+            if (sharedPref.getString ("fullscreen", "2").equals("2") || sharedPref.getString ("fullscreen", "2").equals("3")){
+                relativeLayout.animate().translationY(toolBarHeight);
+            }
+
 
         } else if (scrollState == ScrollState.DOWN) {
 
             urlBar.setText(webView.getTitle());
-            relativeLayout.animate().translationY(0);
             helper_browser.setNavArrows(webView, imageButton_left, imageButton_right);
-            imageButton.setVisibility(View.INVISIBLE);
+            imageButton.setVisibility(View.GONE);
+            relativeLayout.animate().translationY(0);
 
         } else {
-            imageButton.setVisibility(View.INVISIBLE);
+            imageButton.setVisibility(View.GONE);
         }
     }
 
@@ -474,6 +498,9 @@ public class helper_browser {
 
                     TextView context_1 = (TextView) activity.findViewById(R.id.context_1);
                     context_1.setText(helper_browser.tab_1(activity));
+                    if ( sharedPref.getInt("actualTab", 1) == 1) {
+                        context_1.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorAccent));
+                    }
                     ImageView context_1_preView = (ImageView) activity.findViewById(R.id.context_1_preView);
                     try {
                         Glide.with(activity)
@@ -499,6 +526,9 @@ public class helper_browser {
 
                     TextView context_2 = (TextView) activity.findViewById(R.id.context_2);
                     context_2.setText(helper_browser.tab_2(activity));
+                    if ( sharedPref.getInt("actualTab", 1) == 2) {
+                        context_2.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorAccent));
+                    }
                     ImageView context_2_preView = (ImageView) activity.findViewById(R.id.context_2_preView);
                     try {
                         Glide.with(activity)
@@ -524,6 +554,9 @@ public class helper_browser {
 
                     TextView context_3 = (TextView) activity.findViewById(R.id.context_3);
                     context_3.setText(helper_browser.tab_3(activity));
+                    if ( sharedPref.getInt("actualTab", 1) == 3) {
+                        context_3.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorAccent));
+                    }
                     ImageView context_3_preView = (ImageView) activity.findViewById(R.id.context_3_preView);
                     try {
                         Glide.with(activity)
@@ -549,6 +582,9 @@ public class helper_browser {
 
                     TextView context_4 = (TextView) activity.findViewById(R.id.context_4);
                     context_4.setText(helper_browser.tab_4(activity));
+                    if ( sharedPref.getInt("actualTab", 1) == 4) {
+                        context_4.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorAccent));
+                    }
                     ImageView context_4_preView = (ImageView) activity.findViewById(R.id.context_4_preView);
                     try {
                         Glide.with(activity)
@@ -574,6 +610,9 @@ public class helper_browser {
 
                     TextView context_5 = (TextView) activity.findViewById(R.id.context_5);
                     context_5.setText(helper_browser.tab_5(activity));
+                    if ( sharedPref.getInt("actualTab", 1) == 5) {
+                        context_5.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorAccent));
+                    }
                     ImageView context_5_preView = (ImageView) activity.findViewById(R.id.context_5_preView);
                     try {
                         Glide.with(activity)
@@ -604,138 +643,6 @@ public class helper_browser {
         });
     }
 
-    public static void contextLink (final Activity activity, final WebView mWebView, final String url, final EditText editText) {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        View dialogView = View.inflate(activity, R.layout.dialog_context, null);
-
-        builder.setView(dialogView);
-        builder.setPositiveButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
-
-            public void onClick(DialogInterface dialog, int whichButton) {
-                dialog.cancel();
-                dialog.cancel();
-            }
-        });
-
-        final AlertDialog dialog = builder.create();
-        // Display the custom alert dialog on interface
-        dialog.show();
-
-        LinearLayout menu_share_link_copy_Layout = (LinearLayout) dialogView.findViewById(R.id.menu_share_link_copy_Layout);
-        menu_share_link_copy_Layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (url != null) {
-                    ClipboardManager clipboard = (ClipboardManager) activity.getSystemService(Context.CLIPBOARD_SERVICE);
-                    clipboard.setPrimaryClip(ClipData.newPlainText("text", url));
-                    Snackbar.make(mWebView, R.string.context_linkCopy_toast, Snackbar.LENGTH_SHORT).show();
-                    dialog.cancel();
-                }
-            }
-        });
-
-        LinearLayout menu_share_link_Layout = (LinearLayout) dialogView.findViewById(R.id.menu_share_link_Layout);
-        menu_share_link_Layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (url != null) {
-                    Intent sendIntent = new Intent();
-                    sendIntent.setAction(Intent.ACTION_SEND);
-                    sendIntent.putExtra(Intent.EXTRA_TEXT, url);
-                    sendIntent.setType("text/plain");
-                    activity.startActivity(Intent.createChooser(sendIntent, activity.getResources()
-                            .getString(R.string.app_share_link)));
-                    dialog.cancel();
-                }
-            }
-        });
-
-        LinearLayout menu_save_readLater_Layout = (LinearLayout) dialogView.findViewById(R.id.menu_save_readLater_Layout);
-        menu_save_readLater_Layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (url != null) {
-                    DbAdapter_ReadLater db = new DbAdapter_ReadLater(activity);
-                    db.open();
-                    if(db.isExist(mWebView.getUrl())){
-                        Snackbar.make(editText, activity.getString(R.string.toast_newTitle), Snackbar.LENGTH_LONG).show();
-                    }else{
-                        db.insert(helper_webView.getDomain(activity, url), url, "", "", helper_main.createDate());
-                        Snackbar.make(mWebView, R.string.bookmark_added, Snackbar.LENGTH_LONG).show();
-                    }
-                    dialog.cancel();
-                }
-            }
-        });
-
-        TextView context_1 = (TextView) dialogView.findViewById(R.id.context_1);
-        context_1.setText(helper_browser.tab_1(activity));
-        LinearLayout context_1_Layout = (LinearLayout) dialogView.findViewById(R.id.context_1_Layout);
-        context_1_Layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (url != null) {
-                    helper_main.switchToActivity(activity, Browser_1.class, url, false);
-                    dialog.cancel();
-                }
-            }
-        });
-
-        TextView context_2 = (TextView) dialogView.findViewById(R.id.context_2);
-        context_2.setText(helper_browser.tab_2(activity));
-        LinearLayout context_2_Layout = (LinearLayout) dialogView.findViewById(R.id.context_2_Layout);
-        context_2_Layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (url != null) {
-                    helper_main.switchToActivity(activity, Browser_2.class, url, false);
-                    dialog.cancel();
-                }
-            }
-        });
-
-        TextView context_3 = (TextView) dialogView.findViewById(R.id.context_3);
-        context_3.setText(helper_browser.tab_3(activity));
-        LinearLayout context_3_Layout = (LinearLayout) dialogView.findViewById(R.id.context_3_Layout);
-        context_3_Layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (url != null) {
-                    helper_main.switchToActivity(activity, Browser_3.class, url, false);
-                    dialog.cancel();
-                }
-            }
-        });
-
-        TextView context_4 = (TextView) dialogView.findViewById(R.id.context_4);
-        context_4.setText(helper_browser.tab_4(activity));
-        LinearLayout context_4_Layout = (LinearLayout) dialogView.findViewById(R.id.context_4_Layout);
-        context_4_Layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (url != null) {
-                    helper_main.switchToActivity(activity, Browser_4.class, url, false);
-                    dialog.cancel();
-                }
-            }
-        });
-
-        TextView context_5 = (TextView) dialogView.findViewById(R.id.context_5);
-        context_5.setText(helper_browser.tab_5(activity));
-        LinearLayout context_5_Layout = (LinearLayout) dialogView.findViewById(R.id.context_5_Layout);
-        context_5_Layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (url != null) {
-                    helper_main.switchToActivity(activity, Browser_5.class, url, false);
-                    dialog.cancel();
-                }
-            }
-        });
-
-    }
-
     public static File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yy-MM-dd_HH-mm", Locale.getDefault()).format(new Date());
@@ -756,14 +663,14 @@ public class helper_browser {
 
         try {
             if (tab_string.isEmpty()) {
-                s = activity.getString(R.string.context_1);
+                s = activity.getString(R.string.context_tab);
             } else {
                 s = tab_string;
             }
         } catch (Exception e) {
             // Error occurred while creating the File
             Log.e(TAG, "Unable to get String", e);
-            s = activity.getString(R.string.context_1);
+            s = activity.getString(R.string.context_tab);
         }
         return s;
     }
@@ -776,14 +683,14 @@ public class helper_browser {
 
         try {
             if (tab_string.isEmpty()) {
-                s = activity.getString(R.string.context_2);
+                s = activity.getString(R.string.context_tab);
             } else {
                 s = tab_string;
             }
         } catch (Exception e) {
             // Error occurred while creating the File
             Log.e(TAG, "Unable to get String", e);
-            s = activity.getString(R.string.context_2);
+            s = activity.getString(R.string.context_tab);
         }
         return s;
     }
@@ -796,14 +703,14 @@ public class helper_browser {
 
         try {
             if (tab_string.isEmpty()) {
-                s = activity.getString(R.string.context_3);
+                s = activity.getString(R.string.context_tab);
             } else {
                 s = tab_string;
             }
         } catch (Exception e) {
             // Error occurred while creating the File
             Log.e(TAG, "Unable to get String", e);
-            s = activity.getString(R.string.context_3);
+            s = activity.getString(R.string.context_tab);
         }
         return s;
     }
@@ -816,14 +723,14 @@ public class helper_browser {
 
         try {
             if (tab_string.isEmpty()) {
-                s = activity.getString(R.string.context_4);
+                s = activity.getString(R.string.context_tab);
             } else {
                 s = tab_string;
             }
         } catch (Exception e) {
             // Error occurred while creating the File
             Log.e(TAG, "Unable to get String", e);
-            s = activity.getString(R.string.context_4);
+            s = activity.getString(R.string.context_tab);
         }
         return s;
     }
@@ -836,15 +743,37 @@ public class helper_browser {
 
         try {
             if (tab_string.isEmpty()) {
-                s = activity.getString(R.string.context_5);
+                s = activity.getString(R.string.context_tab);
             } else {
                 s = tab_string;
             }
         } catch (Exception e) {
             // Error occurred while creating the File
             Log.e(TAG, "Unable to get String", e);
-            s = activity.getString(R.string.context_5);
+            s = activity.getString(R.string.context_tab);
         }
         return s;
+    }
+
+    public static void resetTabs (Activity activity) {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
+
+        File tab_1 = new File(activity.getFilesDir() + "/tab_1.jpg");
+        tab_1.delete();
+        File tab_2 = new File(activity.getFilesDir() + "/tab_2.jpg");
+        tab_2.delete();
+        File tab_3 = new File(activity.getFilesDir() + "/tab_3.jpg");
+        tab_3.delete();
+        File tab_4 = new File(activity.getFilesDir() + "/tab_4.jpg");
+        tab_4.delete();
+        File tab_5 = new File(activity.getFilesDir() + "/tab_5.jpg");
+        tab_5.delete();
+
+        sharedPref.edit().putString("tab_1", "").apply();
+        sharedPref.edit().putString("tab_2", "").apply();
+        sharedPref.edit().putString("tab_3", "").apply();
+        sharedPref.edit().putString("tab_4", "").apply();
+        sharedPref.edit().putString("tab_5", "").apply();
+        sharedPref.edit().putInt("actualTab", 1).apply();
     }
 }

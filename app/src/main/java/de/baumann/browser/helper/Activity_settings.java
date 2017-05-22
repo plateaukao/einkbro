@@ -51,11 +51,12 @@ import java.nio.channels.FileChannel;
 
 import de.baumann.browser.Browser_1;
 import de.baumann.browser.R;
-import de.baumann.browser.Browser_2;
 import de.baumann.browser.about.About_activity;
 
 
 public class Activity_settings extends AppCompatActivity {
+
+    private SharedPreferences sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +78,8 @@ public class Activity_settings extends AppCompatActivity {
 
         PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
         PreferenceManager.setDefaultValues(this, R.xml.user_settings_search, false);
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPref.edit().putString("openURL", sharedPref.getString("startURL", "https://github.com/scoute-dich/browser/")).apply();
         sharedPref.edit().putString("started", "").apply();
 
         // Display the fragment as the activity_screen_main content
@@ -421,12 +423,8 @@ public class Activity_settings extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        if (sharedPref.getString("lastActivity", "").equals("browser_left")) {
-            helper_main.switchToActivity(Activity_settings.this, Browser_1.class, sharedPref.getString("pass_copy_url", ""), true);
-        } else {
-            helper_main.switchToActivity(Activity_settings.this, Browser_2.class, sharedPref.getString("pass_copy_url", ""), true);
-        }
+        helper_browser.resetTabs(this);
+        helper_main.switchToActivity(Activity_settings.this, Browser_1.class, sharedPref.getString("startURL", "https://github.com/scoute-dich/browser/"), true);
     }
 
     @Override
@@ -435,12 +433,8 @@ public class Activity_settings extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == android.R.id.home) {
-            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-            if (sharedPref.getString("lastActivity", "").equals("browser_left")) {
-                helper_main.switchToActivity(Activity_settings.this, Browser_1.class, sharedPref.getString("pass_copy_url", ""), true);
-            } else {
-                helper_main.switchToActivity(Activity_settings.this, Browser_2.class, sharedPref.getString("pass_copy_url", ""), true);
-            }
+            helper_browser.resetTabs(this);
+            helper_main.switchToActivity(Activity_settings.this, Browser_1.class, sharedPref.getString("startURL", "https://github.com/scoute-dich/browser/"), true);
         }
         return super.onOptionsItemSelected(item);
     }

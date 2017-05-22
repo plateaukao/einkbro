@@ -30,15 +30,15 @@ public class Activity_intro extends OnboarderActivity {
 
         // You can define title and description colors (by default white)
         onboarderPage1.setTitleColor(R.color.colorAccent);
-        onboarderPage1.setBackgroundColor(R.color.colorThreeDark);
+        onboarderPage1.setBackgroundColor(R.color.colorPrimary_2);
         onboarderPage2.setTitleColor(R.color.colorAccent);
-        onboarderPage2.setBackgroundColor(R.color.colorThreeDark);
+        onboarderPage2.setBackgroundColor(R.color.colorPrimary_2);
         onboarderPage3.setTitleColor(R.color.colorAccent);
-        onboarderPage3.setBackgroundColor(R.color.colorThreeDark);
+        onboarderPage3.setBackgroundColor(R.color.colorPrimary_2);
         onboarderPage4.setTitleColor(R.color.colorAccent);
-        onboarderPage4.setBackgroundColor(R.color.colorThreeDark);
+        onboarderPage4.setBackgroundColor(R.color.colorPrimary_2);
         onboarderPage5.setTitleColor(R.color.colorAccent);
-        onboarderPage5.setBackgroundColor(R.color.colorThreeDark);
+        onboarderPage5.setBackgroundColor(R.color.colorPrimary_2);
 
         // Add your pages to the lists
         onboarderPages.add(onboarderPage1);
@@ -48,8 +48,8 @@ public class Activity_intro extends OnboarderActivity {
         onboarderPages.add(onboarderPage5);
 
         // And pass your pages to 'setOnboardPagesReady' method
-        setActiveIndicatorColor(android.R.color.white);
-        setInactiveIndicatorColor(android.R.color.darker_gray);
+        setActiveIndicatorColor(R.color.colorLight);
+        setInactiveIndicatorColor(R.color.colorLight_trans);
         shouldDarkenButtonsLayout(true);
         setSkipButtonTitle(getString(R.string.intro_skip));
         setFinishButtonTitle(getString(R.string.intro_finish));
