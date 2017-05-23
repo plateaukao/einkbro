@@ -32,38 +32,39 @@
         new items to your list. Every list has a context menu, which you can reach by long pressing an item. The readLater and
         history lists can be cleared with one click.&lt;br>&lt;br>
 
-        &#8226;&lt;i> Bookmark:&lt;/i> as always - save your favorite websites for a faster access.&lt;br>
-        &#8226;&lt;i> readLater:&lt;/i> here you can save websites if you want to read them anytime later, if they are not
+        &lt;i> Bookmark:&lt;/i> as always - save your favorite websites for a faster access.&lt;br>
+        &lt;i> readLater:&lt;/i> here you can save websites if you want to read them anytime later, if they are not
         important enough to be a bookmark.&lt;br>
-        &#8226;&lt;i> History:&lt;/i> well, your browser history.&lt;br>
-        &#8226;&lt;i> passStorage:&lt;/i> here you can save (encrypted) login data from websites. If you want to delete entered
+        &lt;i> History:&lt;/i> well, your browser history.&lt;br>
+        &lt;i> passStorage:&lt;/i> here you can save (encrypted) login data from websites. If you want to delete entered
         login data on exit, you must enable \"clear cookies on exit\" in the settings.&lt;br>&lt;br>
 
         &lt;b>Toolbar (bottom):&lt;/b>&lt;br>
-        &#8226;&lt;i> Swipe:&lt;/i> to the left to open your bookmarks and to the right to open your readLater
+        &lt;i> Swipe:&lt;/i> to the left to open your bookmarks and to the right to open your readLater
         list. Swipe to top to close the app.&lt;br>
-        &#8226;&lt;i> Search (left icon):&lt;/i> you can enter a search term (see below) or a url. By pressing \"enter\" or
+        &lt;i> Search (left icon):&lt;/i> you can enter a search term (see below) or a url. By pressing \"enter\" or
         the magnifier icon, the website will load.&lt;br>
-        &#8226;&lt;i> History (right icon):&lt;/i> opens a list of the last visited websites.&lt;br>
-        &#8226;&lt;i> Click:&lt;/i> switch between the tabs.&lt;br>&lt;br>
+        &lt;i> History (right icon):&lt;/i> opens a list of the last visited websites.&lt;br>
+        &lt;i> Click:&lt;/i> switch between the tabs.&lt;br>&lt;br>
 
         &lt;b>The tabs:&lt;/b>&lt;br>
 
-        You have five tabs and can switch between them, by clicking the toolbar.&lt;br>&lt;br>
+        You have five tabs and can switch between them, by clicking the toolbar. To open a tab simply click on the preview.
+        If you long press on a preview your favorite will open in this tab. The opened tab is highlighted.&lt;br>&lt;br>
 
         &lt;b>Menu:&lt;/b>&lt;br>
-        &#8226;&lt;i> Save website:&lt;/i> you can save the website to your bookmark, readLater or passStorage list or
+        &lt;i> Save website:&lt;/i> you can save the website to your bookmark, readLater or passStorage list or
         save a screenshot of the whole website.&lt;br>
-        &#8226;&lt;i> Share website:&lt;/i> you can share the screenshot of a website, share the link as text or copy the link
+        &lt;i> Share website:&lt;/i> you can share the screenshot of a website, share the link as text or copy the link
         to the clipboard.&lt;br>
-        &#8226;&lt;i> Search on site:&lt;/i> search for text on any website.&lt;br>
-        &#8226;&lt;i> Open passStorage:&lt;/i> open your login data list.&lt;br>
-        &#8226;&lt;i> Open download directory:&lt;/i> opens the download directory to show, share, rename or delete files.&lt;br>
-        &#8226;&lt;i> Settings (popup dialog):&lt;/i> Here you can overwrite the default settings for a short time. These settings
+        &lt;i> Search on site:&lt;/i> search for text on any website.&lt;br>
+        &lt;i> Open passStorage:&lt;/i> open your login data list.&lt;br>
+        &lt;i> Open download directory:&lt;/i> opens the download directory to show, share, rename or delete files.&lt;br>
+        &lt;i> Settings (popup dialog):&lt;/i> Here you can overwrite the default settings for a short time. These settings
         will get lost at the next app start. By clicking the red cross you can also add websites to a whitelist for javascript.
         They will be marked with a \"green check icon\". Javascript will then always be allowed for these websites (even after
         restarting the app). To open the main settings screen, click on \"Settings\" at the bottom of the popup dialog.&lt;br>
-        &#8226;&lt;i> Settings:&lt;/i> In the settings you can configure the behavior of the app, some privacy and
+        &lt;i> Settings:&lt;/i> In the settings you can configure the behavior of the app, some privacy and
         security settings. At the app start these settings will always be loaded.&lt;br>&lt;br>
 
         &lt;b>Search:&lt;/b>&lt;br>

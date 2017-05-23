@@ -33,27 +33,19 @@ import android.os.Build;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.util.Linkify;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.webkit.CookieManager;
 import android.webkit.WebView;
 import android.widget.Button;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.mobapphome.mahencryptorlib.MAHEncryptor;
 
 import java.io.File;
@@ -62,14 +54,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
 
-import de.baumann.browser.Browser_1;
-import de.baumann.browser.Browser_2;
-import de.baumann.browser.Browser_3;
-import de.baumann.browser.Browser_4;
-import de.baumann.browser.Browser_5;
 import de.baumann.browser.R;
-import de.baumann.browser.lists.List_bookmarks;
-import de.baumann.browser.lists.List_readLater;
 
 public class helper_main {
 
@@ -172,6 +157,23 @@ public class helper_main {
         return  format.format(date);
     }
 
+    public static File newFile (String fileName) {
+        return  new File(Environment.getExternalStorageDirectory() + "/" + Environment.DIRECTORY_DOWNLOADS + "/" + fileName);
+    }
+
+    public static SpannableString textSpannable (String text) {
+        SpannableString s;
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            s = new SpannableString(Html.fromHtml(text,Html.FROM_HTML_MODE_LEGACY));
+        } else {
+            //noinspection deprecation
+            s = new SpannableString(Html.fromHtml(text));
+        }
+        Linkify.addLinks(s, Linkify.WEB_URLS);
+        return s;
+    }
+
     public static void switchToActivity(Activity from, Class to, String Extra, boolean finishFromActivity) {
         Intent intent = new Intent(from, to);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -208,196 +210,8 @@ public class helper_main {
             webView.clearHistory();
         }
 
+        helper_browser.resetTabs(from);
         from.finish();
-    }
-
-    public static void toolbar(final Activity activity, Toolbar toolbar) {
-
-        final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
-
-        toolbar.setOnTouchListener(new class_OnSwipeTouchListener_editText(activity) {
-            public void onSwipeTop() {
-                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
-
-                sharedPref.edit().putString("tab_1", "").apply();
-                sharedPref.edit().putString("tab_2", "").apply();
-                sharedPref.edit().putString("tab_3", "").apply();
-                sharedPref.edit().putString("tab_4", "").apply();
-                sharedPref.edit().putString("tab_5", "").apply();
-                sharedPref.edit().putString("started", "").apply();
-                sharedPref.edit().putInt("closeApp", 1).apply();
-                activity.finish();
-            }
-            public void onSwipeRight() {
-                helper_main.switchToActivity(activity, List_readLater.class, "", true);
-            }
-            public void onSwipeLeft() {
-                helper_main.switchToActivity(activity, List_bookmarks.class, "", true);
-            }
-        });
-        toolbar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                final HorizontalScrollView scrollTabs = (HorizontalScrollView) activity.findViewById(R.id.scrollTabs);
-                if (scrollTabs.getVisibility() == View.GONE) {
-                    scrollTabs.setVisibility(View.VISIBLE);
-
-                    TextView context_1 = (TextView) activity.findViewById(R.id.context_1);
-                    context_1.setText(helper_browser.tab_1(activity));
-                    if ( sharedPref.getInt("actualTab", 1) == 1) {
-                        context_1.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorAccent));
-                    } else {
-                        context_1.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorAccent_trans));
-                    }
-                    ImageView context_1_preView = (ImageView) activity.findViewById(R.id.context_1_preView);
-                    try {
-                        Glide.with(activity)
-                                .load(activity.getFilesDir() + "/tab_1.jpg") // or URI/path
-                                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                                .skipMemoryCache(true)
-                                .into(context_1_preView); //imageView to set thumbnail to
-                    } catch (Exception e) {
-                        Log.w("Browser", "Error load thumbnail", e);
-                        context_1_preView.setVisibility(View.GONE);
-                    }
-                    CardView context_1_Layout = (CardView) activity.findViewById(R.id.context_1_Layout);
-                    context_1_Layout.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            sharedPref.edit().putString("openURL", "").apply();
-                            Intent intent = new Intent(activity, Browser_1.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                            activity.startActivity(intent);
-                            scrollTabs.setVisibility(View.GONE);
-                        }
-                    });
-
-                    TextView context_2 = (TextView) activity.findViewById(R.id.context_2);
-                    context_2.setText(helper_browser.tab_2(activity));
-                    if ( sharedPref.getInt("actualTab", 1) == 2) {
-                        context_2.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorAccent));
-                    } else {
-                        context_2.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorAccent_trans));
-                    }
-                    ImageView context_2_preView = (ImageView) activity.findViewById(R.id.context_2_preView);
-                    try {
-                        Glide.with(activity)
-                                .load(activity.getFilesDir() + "/tab_2.jpg") // or URI/path
-                                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                                .skipMemoryCache(true)
-                                .into(context_2_preView); //imageView to set thumbnail to
-                    } catch (Exception e) {
-                        Log.w("Browser", "Error load thumbnail", e);
-                        context_2_preView.setVisibility(View.GONE);
-                    }
-                    CardView context_2_Layout = (CardView) activity.findViewById(R.id.context_2_Layout);
-                    context_2_Layout.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            sharedPref.edit().putString("openURL", "").apply();
-                            Intent intent = new Intent(activity, Browser_2.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                            activity.startActivity(intent);
-                            scrollTabs.setVisibility(View.GONE);
-                        }
-                    });
-
-                    TextView context_3 = (TextView) activity.findViewById(R.id.context_3);
-                    context_3.setText(helper_browser.tab_3(activity));
-                    if ( sharedPref.getInt("actualTab", 1) == 3) {
-                        context_3.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorAccent));
-                    } else {
-                        context_3.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorAccent_trans));
-                    }
-                    ImageView context_3_preView = (ImageView) activity.findViewById(R.id.context_3_preView);
-                    try {
-                        Glide.with(activity)
-                                .load(activity.getFilesDir() + "/tab_3.jpg") // or URI/path
-                                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                                .skipMemoryCache(true)
-                                .into(context_3_preView); //imageView to set thumbnail to
-                    } catch (Exception e) {
-                        Log.w("Browser", "Error load thumbnail", e);
-                        context_3_preView.setVisibility(View.GONE);
-                    }
-                    CardView context_3_Layout = (CardView) activity.findViewById(R.id.context_3_Layout);
-                    context_3_Layout.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            sharedPref.edit().putString("openURL", "").apply();
-                            Intent intent = new Intent(activity, Browser_3.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                            activity.startActivity(intent);
-                            scrollTabs.setVisibility(View.GONE);
-                        }
-                    });
-
-                    TextView context_4 = (TextView) activity.findViewById(R.id.context_4);
-                    context_4.setText(helper_browser.tab_4(activity));
-                    if ( sharedPref.getInt("actualTab", 1) == 4) {
-                        context_4.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorAccent));
-                    } else {
-                        context_4.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorAccent_trans));
-                    }
-                    ImageView context_4_preView = (ImageView) activity.findViewById(R.id.context_4_preView);
-                    try {
-                        Glide.with(activity)
-                                .load(activity.getFilesDir() + "/tab_4.jpg") // or URI/path
-                                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                                .skipMemoryCache(true)
-                                .into(context_4_preView); //imageView to set thumbnail to
-                    } catch (Exception e) {
-                        Log.w("Browser", "Error load thumbnail", e);
-                        context_4_preView.setVisibility(View.GONE);
-                    }
-                    CardView context_4_Layout = (CardView) activity.findViewById(R.id.context_4_Layout);
-                    context_4_Layout.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            sharedPref.edit().putString("openURL", "").apply();
-                            Intent intent = new Intent(activity, Browser_4.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                            activity.startActivity(intent);
-                            scrollTabs.setVisibility(View.GONE);
-                        }
-                    });
-
-                    TextView context_5 = (TextView) activity.findViewById(R.id.context_5);
-                    context_5.setText(helper_browser.tab_5(activity));
-                    if ( sharedPref.getInt("actualTab", 1) == 5) {
-                        context_5.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorAccent));
-                    } else {
-                        context_5.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorAccent_trans));
-                    }
-                    ImageView context_5_preView = (ImageView) activity.findViewById(R.id.context_5_preView);
-                    try {
-                        Glide.with(activity)
-                                .load(activity.getFilesDir() + "/tab_5.jpg") // or URI/path
-                                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                                .skipMemoryCache(true)
-                                .into(context_5_preView); //imageView to set thumbnail to
-                    } catch (Exception e) {
-                        Log.w("Browser", "Error load thumbnail", e);
-                        context_5_preView.setVisibility(View.GONE);
-                    }
-                    CardView context_5_Layout = (CardView) activity.findViewById(R.id.context_5_Layout);
-                    context_5_Layout.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            sharedPref.edit().putString("openURL", "").apply();
-                            Intent intent = new Intent(activity, Browser_5.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                            activity.startActivity(intent);
-                            scrollTabs.setVisibility(View.GONE);
-                        }
-                    });
-
-                } else {
-                    scrollTabs.setVisibility(View.GONE);
-                }
-            }
-        });
     }
 
     public static void onStart (final Activity activity) {
@@ -634,23 +448,6 @@ public class helper_main {
         String textNow = text.getText().toString().trim();
         String pin = textNow + number;
         text.setText(pin);
-    }
-
-    public static SpannableString textSpannable (String text) {
-        SpannableString s;
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            s = new SpannableString(Html.fromHtml(text,Html.FROM_HTML_MODE_LEGACY));
-        } else {
-            //noinspection deprecation
-            s = new SpannableString(Html.fromHtml(text));
-        }
-        Linkify.addLinks(s, Linkify.WEB_URLS);
-        return s;
-    }
-
-    public static File newFile (String fileName) {
-        return  new File(Environment.getExternalStorageDirectory() + "/" + Environment.DIRECTORY_DOWNLOADS + "/" + fileName);
     }
 
     public static void open (String extension, Activity activity, File pathFile, View view) {

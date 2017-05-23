@@ -26,7 +26,6 @@ import android.content.Context;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import java.util.Vector;
@@ -52,31 +51,29 @@ public class Utils_UserAgent {
             String DEFAULT_USER_AGENT = getDefaultUA(context);
             if (choice) {
                 CookieManager mCookieManager = CookieManager.getInstance();
-                CookieSyncManager mCookieSyncManager = CookieSyncManager.createInstance(context);
-                clearCookieByUrl(url, mCookieManager, mCookieSyncManager);
+                clearCookieByUrl(url, mCookieManager);
                 mWebView.getSettings().setUserAgentString(DESKTOP_USER_AGENT);
                 mWebView.zoomOut();
             } else {
                 CookieManager mCookieManager = CookieManager.getInstance();
-                CookieSyncManager mCookieSyncManager = CookieSyncManager.createInstance(context);
-                clearCookieByUrl(url, mCookieManager, mCookieSyncManager);
+                clearCookieByUrl(url, mCookieManager);
                 mWebView.getSettings().setUserAgentString(DEFAULT_USER_AGENT);
                 mWebView.zoomOut();
             }
         }
     }
-    private static void clearCookieByUrl(String url, CookieManager pCookieManager, CookieSyncManager pCookieSyncManager) {
+    private static void clearCookieByUrl(String url, CookieManager pCookieManager) {
         try {
             Uri uri = Uri.parse(url);
             String host = uri.getHost();
-            clearCookieByUrlInternal(url,pCookieManager,pCookieSyncManager);
-            clearCookieByUrlInternal("http://." + host,pCookieManager,pCookieSyncManager);
-            clearCookieByUrlInternal("https://." + host,pCookieManager,pCookieSyncManager);
+            clearCookieByUrlInternal(url,pCookieManager);
+            clearCookieByUrlInternal("http://." + host,pCookieManager);
+            clearCookieByUrlInternal("https://." + host,pCookieManager);
         } catch (Exception ignored) {
 
         }
     }
-    private static void clearCookieByUrlInternal(String url, CookieManager pCookieManager, CookieSyncManager pCookieSyncManager) {
+    private static void clearCookieByUrlInternal(String url, CookieManager pCookieManager) {
         if (TextUtils.isEmpty(url)) {
             return;
         }
@@ -89,7 +86,7 @@ public class Utils_UserAgent {
         for (int i = 0; i < len; i++) {
             pCookieManager.setCookie(url, cookie.get(i) + "=-1");
         }
-        pCookieSyncManager.sync();
+        pCookieManager.flush();
     }
     private static Vector<String> getCookieNamesByUrl(String cookie) {
         if (TextUtils.isEmpty(cookie)) {

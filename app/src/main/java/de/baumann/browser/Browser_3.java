@@ -280,33 +280,42 @@ public class Browser_3 extends AppCompatActivity implements ObservableScrollView
         final WebView.HitTestResult result = mWebView.getHitTestResult();
         final String url = result.getExtra();
 
-        if(result.getType() == WebView.HitTestResult.IMAGE_TYPE){
-            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-            View dialogView = View.inflate(activity, R.layout.dialog_context, null);
+        if(url != null) {
 
-            builder.setView(dialogView);
-            builder.setPositiveButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
+            if(result.getType() == WebView.HitTestResult.IMAGE_TYPE){
 
-                public void onClick(DialogInterface dialog, int whichButton) {
-                    dialog.cancel();
-                    dialog.cancel();
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                View dialogView = View.inflate(activity, R.layout.dialog_context, null);
+
+                builder.setView(dialogView);
+                builder.setPositiveButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        dialog.cancel();
+                        dialog.cancel();
+                    }
+                });
+
+                final AlertDialog dialog = builder.create();
+                // Display the custom alert dialog on interface
+                dialog.show();
+
+                if (url.endsWith(".gif") || url.endsWith(".bmp") || url.endsWith(".tiff") ||
+                        url.endsWith(".svg") || url.endsWith(".png") || url.endsWith(".jpg") ||
+                        url.endsWith(".JPG") || url.endsWith(".jpeg")) {
+                    sharePath = mWebView.getUrl().substring(mWebView.getUrl().lastIndexOf("/")+1);
+                } else {
+                    sharePath = helper_webView.getDomain(activity, url) + ".png";
                 }
-            });
 
-            final AlertDialog dialog = builder.create();
-            // Display the custom alert dialog on interface
-            dialog.show();
+                shareFile = helper_main.newFile(sharePath);
 
-            sharePath = mWebView.getUrl().substring(mWebView.getUrl().lastIndexOf("/")+1);
-            shareFile = helper_main.newFile(sharePath);
-
-            TextView menu_share_link_copy = (TextView) dialogView.findViewById(R.id.menu_share_link_copy);
-            menu_share_link_copy.setText(R.string.context_saveImage);
-            LinearLayout menu_share_link_copy_Layout = (LinearLayout) dialogView.findViewById(R.id.menu_share_link_copy_Layout);
-            menu_share_link_copy_Layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(url != null) {
+                TextView menu_share_link_copy = (TextView) dialogView.findViewById(R.id.menu_share_link_copy);
+                menu_share_link_copy.setText(R.string.context_saveImage);
+                LinearLayout menu_share_link_copy_Layout = (LinearLayout) dialogView.findViewById(R.id.menu_share_link_copy_Layout);
+                menu_share_link_copy_Layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
                         try {
                             Uri source = Uri.parse(url);
                             DownloadManager.Request request = new DownloadManager.Request(source);
@@ -324,17 +333,14 @@ public class Browser_3 extends AppCompatActivity implements ObservableScrollView
                         activity.registerReceiver(onComplete_download, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
                         dialog.cancel();
                     }
-                }
-            });
+                });
 
-            TextView menu_share_link = (TextView) dialogView.findViewById(R.id.menu_share_link);
-            menu_share_link.setText(R.string.context_shareImage);
-            LinearLayout menu_share_link_Layout = (LinearLayout) dialogView.findViewById(R.id.menu_share_link_Layout);
-            menu_share_link_Layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(url != null) {
-
+                TextView menu_share_link = (TextView) dialogView.findViewById(R.id.menu_share_link);
+                menu_share_link.setText(R.string.context_shareImage);
+                LinearLayout menu_share_link_Layout = (LinearLayout) dialogView.findViewById(R.id.menu_share_link_Layout);
+                menu_share_link_Layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
                         try {
                             Uri source = Uri.parse(url);
                             DownloadManager.Request request = new DownloadManager.Request(source);
@@ -353,16 +359,14 @@ public class Browser_3 extends AppCompatActivity implements ObservableScrollView
                         activity.registerReceiver(onComplete_share, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
                         dialog.cancel();
                     }
-                }
-            });
+                });
 
-            TextView menu_save_readLater = (TextView) dialogView.findViewById(R.id.menu_save_readLater);
-            menu_save_readLater.setText(R.string.menu_save_readLater);
-            LinearLayout menu_save_readLater_Layout = (LinearLayout) dialogView.findViewById(R.id.menu_save_readLater_Layout);
-            menu_save_readLater_Layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (url != null) {
+                TextView menu_save_readLater = (TextView) dialogView.findViewById(R.id.menu_save_readLater);
+                menu_save_readLater.setText(R.string.menu_save_readLater);
+                LinearLayout menu_save_readLater_Layout = (LinearLayout) dialogView.findViewById(R.id.menu_save_readLater_Layout);
+                menu_save_readLater_Layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
                         DbAdapter_ReadLater db = new DbAdapter_ReadLater(activity);
                         db.open();
                         if(db.isExist(mWebView.getUrl())){
@@ -373,96 +377,86 @@ public class Browser_3 extends AppCompatActivity implements ObservableScrollView
                         }
                         dialog.cancel();
                     }
-                }
-            });
+                });
 
-            TextView context_1 = (TextView) dialogView.findViewById(R.id.context_1);
-            context_1.setText(helper_browser.tab_1(activity));
-            LinearLayout context_1_Layout = (LinearLayout) dialogView.findViewById(R.id.context_1_Layout);
-            context_1_Layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (url != null) {
+                TextView context_1 = (TextView) dialogView.findViewById(R.id.context_1);
+                context_1.setText(helper_browser.tab_1(activity));
+                LinearLayout context_1_Layout = (LinearLayout) dialogView.findViewById(R.id.context_1_Layout);
+                context_1_Layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
                         helper_main.switchToActivity(activity, Browser_1.class, url, false);
                         dialog.cancel();
                     }
-                }
-            });
+                });
 
-            TextView context_2 = (TextView) dialogView.findViewById(R.id.context_2);
-            context_2.setText(helper_browser.tab_2(activity));
-            LinearLayout context_2_Layout = (LinearLayout) dialogView.findViewById(R.id.context_2_Layout);
-            context_2_Layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (url != null) {
+                TextView context_2 = (TextView) dialogView.findViewById(R.id.context_2);
+                context_2.setText(helper_browser.tab_2(activity));
+                LinearLayout context_2_Layout = (LinearLayout) dialogView.findViewById(R.id.context_2_Layout);
+                context_2_Layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
                         helper_main.switchToActivity(activity, Browser_2.class, url, false);
                         dialog.cancel();
                     }
-                }
-            });
+                });
 
-            TextView context_3 = (TextView) dialogView.findViewById(R.id.context_3);
-            context_3.setText(helper_browser.tab_3(activity));
-            LinearLayout context_3_Layout = (LinearLayout) dialogView.findViewById(R.id.context_3_Layout);
-            context_3_Layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (url != null) {
+                TextView context_3 = (TextView) dialogView.findViewById(R.id.context_3);
+                context_3.setText(helper_browser.tab_3(activity));
+                LinearLayout context_3_Layout = (LinearLayout) dialogView.findViewById(R.id.context_3_Layout);
+                context_3_Layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
                         helper_main.switchToActivity(activity, Browser_3.class, url, false);
                         dialog.cancel();
                     }
-                }
-            });
+                });
 
-            TextView context_4 = (TextView) dialogView.findViewById(R.id.context_4);
-            context_4.setText(helper_browser.tab_4(activity));
-            LinearLayout context_4_Layout = (LinearLayout) dialogView.findViewById(R.id.context_4_Layout);
-            context_4_Layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (url != null) {
+                TextView context_4 = (TextView) dialogView.findViewById(R.id.context_4);
+                context_4.setText(helper_browser.tab_4(activity));
+                LinearLayout context_4_Layout = (LinearLayout) dialogView.findViewById(R.id.context_4_Layout);
+                context_4_Layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
                         helper_main.switchToActivity(activity, Browser_4.class, url, false);
                         dialog.cancel();
                     }
-                }
-            });
+                });
 
-            TextView context_5 = (TextView) dialogView.findViewById(R.id.context_5);
-            context_5.setText(helper_browser.tab_5(activity));
-            LinearLayout context_5_Layout = (LinearLayout) dialogView.findViewById(R.id.context_5_Layout);
-            context_5_Layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (url != null) {
+                TextView context_5 = (TextView) dialogView.findViewById(R.id.context_5);
+                context_5.setText(helper_browser.tab_5(activity));
+                LinearLayout context_5_Layout = (LinearLayout) dialogView.findViewById(R.id.context_5_Layout);
+                context_5_Layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
                         helper_main.switchToActivity(activity, Browser_5.class, url, false);
                         dialog.cancel();
                     }
-                }
-            });
-        } else if (result.getType() == WebView.HitTestResult.SRC_ANCHOR_TYPE) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-            final  View dialogView = View.inflate(activity, R.layout.dialog_context, null);
+                });
 
-            builder.setView(dialogView);
-            builder.setPositiveButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
+            } else if (result.getType() == WebView.HitTestResult.SRC_ANCHOR_TYPE) {
 
-                public void onClick(DialogInterface dialog, int whichButton) {
-                    dialog.cancel();
-                    dialog.cancel();
-                }
-            });
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                final  View dialogView = View.inflate(activity, R.layout.dialog_context, null);
 
-            final AlertDialog dialog = builder.create();
-            // Display the custom alert dialog on interface
-            dialog.show();
+                builder.setView(dialogView);
+                builder.setPositiveButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
 
-            LinearLayout context_save_Layout = (LinearLayout) dialogView.findViewById(R.id.context_save_Layout);
-            context_save_Layout.setVisibility(View.VISIBLE);
-            context_save_Layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(url != null) {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        dialog.cancel();
+                        dialog.cancel();
+                    }
+                });
+
+                final AlertDialog dialog = builder.create();
+                // Display the custom alert dialog on interface
+                dialog.show();
+
+                LinearLayout context_save_Layout = (LinearLayout) dialogView.findViewById(R.id.context_save_Layout);
+                context_save_Layout.setVisibility(View.VISIBLE);
+                context_save_Layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
                         final String filename = url.substring(url.lastIndexOf("/")+1);
                         dialog.cancel();
                         Snackbar snackbar = Snackbar
@@ -489,27 +483,23 @@ public class Browser_3 extends AppCompatActivity implements ObservableScrollView
                                 });
                         snackbar.show();
                     }
-                }
-            });
+                });
 
-            LinearLayout menu_share_link_copy_Layout = (LinearLayout) dialogView.findViewById(R.id.menu_share_link_copy_Layout);
-            menu_share_link_copy_Layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (url != null) {
+                LinearLayout menu_share_link_copy_Layout = (LinearLayout) dialogView.findViewById(R.id.menu_share_link_copy_Layout);
+                menu_share_link_copy_Layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
                         ClipboardManager clipboard = (ClipboardManager) activity.getSystemService(Context.CLIPBOARD_SERVICE);
                         clipboard.setPrimaryClip(ClipData.newPlainText("text", url));
                         Snackbar.make(mWebView, R.string.context_linkCopy_toast, Snackbar.LENGTH_SHORT).show();
                         dialog.cancel();
                     }
-                }
-            });
+                });
 
-            LinearLayout menu_share_link_Layout = (LinearLayout) dialogView.findViewById(R.id.menu_share_link_Layout);
-            menu_share_link_Layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (url != null) {
+                LinearLayout menu_share_link_Layout = (LinearLayout) dialogView.findViewById(R.id.menu_share_link_Layout);
+                menu_share_link_Layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
                         Intent sendIntent = new Intent();
                         sendIntent.setAction(Intent.ACTION_SEND);
                         sendIntent.putExtra(Intent.EXTRA_TEXT, url);
@@ -518,14 +508,12 @@ public class Browser_3 extends AppCompatActivity implements ObservableScrollView
                                 .getString(R.string.app_share_link)));
                         dialog.cancel();
                     }
-                }
-            });
+                });
 
-            LinearLayout menu_save_readLater_Layout = (LinearLayout) dialogView.findViewById(R.id.menu_save_readLater_Layout);
-            menu_save_readLater_Layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (url != null) {
+                LinearLayout menu_save_readLater_Layout = (LinearLayout) dialogView.findViewById(R.id.menu_save_readLater_Layout);
+                menu_save_readLater_Layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
                         DbAdapter_ReadLater db = new DbAdapter_ReadLater(activity);
                         db.open();
                         if(db.isExist(mWebView.getUrl())){
@@ -536,73 +524,63 @@ public class Browser_3 extends AppCompatActivity implements ObservableScrollView
                         }
                         dialog.cancel();
                     }
-                }
-            });
+                });
 
-            TextView context_1 = (TextView) dialogView.findViewById(R.id.context_1);
-            context_1.setText(helper_browser.tab_1(activity));
-            LinearLayout context_1_Layout = (LinearLayout) dialogView.findViewById(R.id.context_1_Layout);
-            context_1_Layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (url != null) {
+                TextView context_1 = (TextView) dialogView.findViewById(R.id.context_1);
+                context_1.setText(helper_browser.tab_1(activity));
+                LinearLayout context_1_Layout = (LinearLayout) dialogView.findViewById(R.id.context_1_Layout);
+                context_1_Layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
                         helper_main.switchToActivity(activity, Browser_1.class, url, false);
                         dialog.cancel();
                     }
-                }
-            });
+                });
 
-            TextView context_2 = (TextView) dialogView.findViewById(R.id.context_2);
-            context_2.setText(helper_browser.tab_2(activity));
-            LinearLayout context_2_Layout = (LinearLayout) dialogView.findViewById(R.id.context_2_Layout);
-            context_2_Layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (url != null) {
+                TextView context_2 = (TextView) dialogView.findViewById(R.id.context_2);
+                context_2.setText(helper_browser.tab_2(activity));
+                LinearLayout context_2_Layout = (LinearLayout) dialogView.findViewById(R.id.context_2_Layout);
+                context_2_Layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
                         helper_main.switchToActivity(activity, Browser_2.class, url, false);
                         dialog.cancel();
                     }
-                }
-            });
+                });
 
-            TextView context_3 = (TextView) dialogView.findViewById(R.id.context_3);
-            context_3.setText(helper_browser.tab_3(activity));
-            LinearLayout context_3_Layout = (LinearLayout) dialogView.findViewById(R.id.context_3_Layout);
-            context_3_Layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (url != null) {
+                TextView context_3 = (TextView) dialogView.findViewById(R.id.context_3);
+                context_3.setText(helper_browser.tab_3(activity));
+                LinearLayout context_3_Layout = (LinearLayout) dialogView.findViewById(R.id.context_3_Layout);
+                context_3_Layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
                         helper_main.switchToActivity(activity, Browser_3.class, url, false);
                         dialog.cancel();
                     }
-                }
-            });
+                });
 
-            TextView context_4 = (TextView) dialogView.findViewById(R.id.context_4);
-            context_4.setText(helper_browser.tab_4(activity));
-            LinearLayout context_4_Layout = (LinearLayout) dialogView.findViewById(R.id.context_4_Layout);
-            context_4_Layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (url != null) {
+                TextView context_4 = (TextView) dialogView.findViewById(R.id.context_4);
+                context_4.setText(helper_browser.tab_4(activity));
+                LinearLayout context_4_Layout = (LinearLayout) dialogView.findViewById(R.id.context_4_Layout);
+                context_4_Layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
                         helper_main.switchToActivity(activity, Browser_4.class, url, false);
                         dialog.cancel();
                     }
-                }
-            });
+                });
 
-            TextView context_5 = (TextView) dialogView.findViewById(R.id.context_5);
-            context_5.setText(helper_browser.tab_5(activity));
-            LinearLayout context_5_Layout = (LinearLayout) dialogView.findViewById(R.id.context_5_Layout);
-            context_5_Layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (url != null) {
+                TextView context_5 = (TextView) dialogView.findViewById(R.id.context_5);
+                context_5.setText(helper_browser.tab_5(activity));
+                LinearLayout context_5_Layout = (LinearLayout) dialogView.findViewById(R.id.context_5_Layout);
+                context_5_Layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
                         helper_main.switchToActivity(activity, Browser_5.class, url, false);
                         dialog.cancel();
                     }
-                }
-            });
+                });
+            }
         }
     }
 
@@ -653,6 +631,13 @@ public class Browser_3 extends AppCompatActivity implements ObservableScrollView
         if (sharedPref.getInt("closeApp", 0) == 1) {
             helper_main.closeApp(activity, mWebView);
         }
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                helper_editText.hideKeyboard(activity, editText, 0, helper_webView.getTitle (activity, mWebView), getString(R.string.app_search_hint));
+            }
+        }, 100);
         sharedPref.edit().putInt("actualTab", 3).apply();
         mWebView.onResume();
         final String URL = sharedPref.getString("openURL","https://github.com/scoute-dich/browser/");

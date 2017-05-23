@@ -60,6 +60,7 @@ import de.baumann.browser.databases.DbAdapter_Bookmarks;
 import de.baumann.browser.databases.DbAdapter_ReadLater;
 import de.baumann.browser.helper.helper_editText;
 import de.baumann.browser.helper.helper_main;
+import de.baumann.browser.helper.helper_toolbar;
 
 public class List_bookmarks extends AppCompatActivity {
 
@@ -93,7 +94,7 @@ public class List_bookmarks extends AppCompatActivity {
 
         helper_main.checkPin(this);
         helper_main.onStart(this);
-        helper_main.toolbar (this, toolbar);
+        helper_toolbar.toolbarActivities(this, toolbar);
 
         editText = (EditText) findViewById(R.id.editText);
         editText.setVisibility(View.GONE);
@@ -518,10 +519,17 @@ public class List_bookmarks extends AppCompatActivity {
 
             case android.R.id.home:
                 sharedPref.edit().putInt("keyboard", 0).apply();
+                sharedPref.edit().putString("openURL", "").apply();
                 finish();
                 return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        sharedPref.edit().putString("openURL", "").apply();
+        finish();
     }
 }

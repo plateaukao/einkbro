@@ -1,6 +1,6 @@
 [![Donate](https://www.paypalobjects.com/de_DE/DE/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=NP6TGYDYP9SHY)
 
-# Five
+# Browser
 A simple Android browser based on webview. The goal is to provide a lightweight but power full browser. It is based on several 
 lists (see below) and has only five tabs (Who needs more?).
 

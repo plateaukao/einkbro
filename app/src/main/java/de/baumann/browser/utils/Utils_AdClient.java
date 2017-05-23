@@ -48,44 +48,6 @@ public class Utils_AdClient extends WebViewClient {
 
     }
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public boolean shouldOverrideUrlLoading(WebView view, String url) {
-        final Uri uri = Uri.parse(url);
-        return handleUri(uri, view);
-    }
-
-    @TargetApi(Build.VERSION_CODES.N)
-    @Override
-    public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-        final Uri uri = request.getUrl();
-        return handleUri(uri, view);
-    }
-
-    private boolean handleUri(final Uri uri, WebView view) {
-
-        Log.i(TAG, "Uri =" + uri);
-        final String url = uri.toString();
-
-        if (url.endsWith(".mp4")) {
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setDataAndType(Uri.parse(url), "video/*");
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            view.getContext().startActivity(intent);
-            return true;
-
-        } else if (url.startsWith("tel:") || url.startsWith("sms:") || url.startsWith("smsto:")
-                || url.startsWith("mms:") || url.startsWith("mmsto:")) {
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            view.getContext().startActivity(intent);
-            return true;
-
-        } else {
-            return true;
-        }
-    }
-
     private final Map<String, Boolean> loadedUrls = new HashMap<>();
     // could simply place this section inside and if/else statement
     // inside the activities webview client.  but this way there is a class

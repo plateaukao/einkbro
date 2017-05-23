@@ -33,6 +33,7 @@ import android.util.Log;
 import android.util.Patterns;
 import android.webkit.CookieManager;
 import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -40,11 +41,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import de.baumann.browser.R;
 import de.baumann.browser.databases.DbAdapter_History;
-import de.baumann.browser.utils.Utils_AdClient;
+import de.baumann.browser.utils.Utils_AdBlocker;
 import de.baumann.browser.utils.Utils_UserAgent;
 
 import static android.content.ContentValues.TAG;
@@ -168,183 +171,118 @@ public class helper_webView {
 
         final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
 
-        // crude if-else just to get the functionality in, feel free to make this more concise if you like
-        if (sharedPref.getString("blockads_string", "").equals(from.getString(R.string.app_yes))) {
-            webView.setWebViewClient(new Utils_AdClient() {
+        webView.setWebViewClient(new WebViewClient() {
 
-                public void onPageFinished(WebView view, String url) {
-                    super.onPageFinished(view, url);
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
 
-                    String title = helper_webView.getTitle(from, webView);
-                    swipeRefreshLayout.setRefreshing(false);
-                    urlBar.setText(title);
-                    sharedPref.edit().putString("openURL", "").apply();
+                String title = helper_webView.getTitle(from, webView);
+                swipeRefreshLayout.setRefreshing(false);
+                urlBar.setText(title);
+                sharedPref.edit().putString("openURL", "").apply();
 
-                    DbAdapter_History db = new DbAdapter_History(from);
-                    db.open();
-                    db.deleteDouble(webView.getUrl());
+                DbAdapter_History db = new DbAdapter_History(from);
+                db.open();
+                db.deleteDouble(webView.getUrl());
 
-                    if(db.isExist(helper_main.createDateSecond())){
-                        Log.i(TAG, "Entry exists" + webView.getUrl());
-                    }else{
-                        db.insert(title, webView.getUrl(), "", "", helper_main.createDateSecond());
-                    }
+                if(db.isExist(helper_main.createDateSecond())){
+                    Log.i(TAG, "Entry exists" + webView.getUrl());
+                }else{
+                    db.insert(title, webView.getUrl(), "", "", helper_main.createDateSecond());
+                }
+            }
+
+            private final Map<String, Boolean> loadedUrls = new HashMap<>();
+            // could simply place this section inside and if/else statement
+            // inside the activities webview client.  but this way there is a class
+            // available to call that is separate from the activity and easier for
+            // others to incorporate into their activities as well.
+
+            @SuppressWarnings("deprecation")
+            @Override
+            public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
+
+                boolean ad;
+                if (!loadedUrls.containsKey(url)) {
+                    ad = Utils_AdBlocker.isAd(url);
+                    loadedUrls.put(url, ad);
+                } else {
+                    ad = loadedUrls.get(url);
                 }
 
-                @SuppressWarnings("deprecation")
-                @Override
-                public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                    final Uri uri = Uri.parse(url);
-                    return handleUri(uri);
+                if (sharedPref.getString("blockads_string", "").equals(from.getString(R.string.app_yes))) {
+                    return ad ? Utils_AdBlocker.createEmptyResource() :
+                            super.shouldInterceptRequest(view, url);
+                } else {
+                    return super.shouldInterceptRequest(view, url);
                 }
+            }
 
-                @TargetApi(Build.VERSION_CODES.N)
-                @Override
-                public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                    final Uri uri = request.getUrl();
-                    return handleUri(uri);
+            @SuppressWarnings("deprecation")
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                final Uri uri = Uri.parse(url);
+                return handleUri(uri);
+            }
+
+            @TargetApi(Build.VERSION_CODES.N)
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                final Uri uri = request.getUrl();
+                return handleUri(uri);
+            }
+
+            private boolean handleUri(final Uri uri) {
+
+                Log.i(TAG, "Uri =" + uri);
+                final String url = uri.toString();
+                // Based on some condition you need to determine if you are going to load the url
+                // in your web view itself or in a browser.
+                // You can use `host` or `scheme` or any part of the `uri` to decide.
+
+                if (url.startsWith("http")) return false;//open web links as usual
+                //try to find browse activity to handle uri
+                Uri parsedUri = Uri.parse(url);
+                PackageManager packageManager = from.getPackageManager();
+                Intent browseIntent = new Intent(Intent.ACTION_VIEW).setData(parsedUri);
+                if (browseIntent.resolveActivity(packageManager) != null) {
+                    from.startActivity(browseIntent);
+                    return true;
                 }
-
-                private boolean handleUri(final Uri uri) {
-
-                    Log.i(TAG, "Uri =" + uri);
-                    final String url = uri.toString();
-                    // Based on some condition you need to determine if you are going to load the url
-                    // in your web view itself or in a browser.
-                    // You can use `host` or `scheme` or any part of the `uri` to decide.
-
-                    if (url.startsWith("http")) return false;//open web links as usual
-                    //try to find browse activity to handle uri
-                    Uri parsedUri = Uri.parse(url);
-                    PackageManager packageManager = from.getPackageManager();
-                    Intent browseIntent = new Intent(Intent.ACTION_VIEW).setData(parsedUri);
-                    if (browseIntent.resolveActivity(packageManager) != null) {
-                        from.startActivity(browseIntent);
-                        return true;
-                    }
-                    //if not activity found, try to parse intent://
-                    if (url.startsWith("intent:")) {
-                        try {
-                            Intent intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME);
-                            if (intent.resolveActivity(from.getPackageManager()) != null) {
-                                try {
-                                    from.startActivity(intent);
-                                } catch (Exception e) {
-                                    Snackbar.make(webView, R.string.toast_error, Snackbar.LENGTH_SHORT).show();
-                                }
-
-                                return true;
+                //if not activity found, try to parse intent://
+                if (url.startsWith("intent:")) {
+                    try {
+                        Intent intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME);
+                        if (intent.resolveActivity(from.getPackageManager()) != null) {
+                            try {
+                                from.startActivity(intent);
+                            } catch (Exception e) {
+                                Snackbar.make(webView, R.string.toast_error, Snackbar.LENGTH_SHORT).show();
                             }
-                            //try to find fallback url
-                            String fallbackUrl = intent.getStringExtra("browser_fallback_url");
-                            if (fallbackUrl != null) {
-                                webView.loadUrl(fallbackUrl);
-                                return true;
-                            }
-                            //invite to install
-                            Intent marketIntent = new Intent(Intent.ACTION_VIEW).setData(
-                                    Uri.parse("market://details?id=" + intent.getPackage()));
-                            if (marketIntent.resolveActivity(packageManager) != null) {
-                                from.startActivity(marketIntent);
-                                return true;
-                            }
-                        } catch (URISyntaxException e) {
-                            //not an intent uri
+
+                            return true;
                         }
-                    }
-                    return true;//do nothing in other cases
-                }
-
-            });
-        } else{
-            webView.setWebViewClient(new WebViewClient() {
-
-                public void onPageFinished(WebView view, String url) {
-                    super.onPageFinished(view, url);
-
-                    String title = helper_webView.getTitle(from, webView);
-                    swipeRefreshLayout.setRefreshing(false);
-                    urlBar.setText(title);
-                    sharedPref.edit().putString("openURL", "").apply();
-
-                    DbAdapter_History db = new DbAdapter_History(from);
-                    db.open();
-                    db.deleteDouble(webView.getUrl());
-
-                    if(db.isExist(helper_main.createDateSecond())){
-                        Log.i(TAG, "Entry exists" + webView.getUrl());
-                    }else{
-                        db.insert(title, webView.getUrl(), "", "", helper_main.createDateSecond());
-                    }
-                }
-
-                @SuppressWarnings("deprecation")
-                @Override
-                public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                    final Uri uri = Uri.parse(url);
-                    return handleUri(uri);
-                }
-
-                @TargetApi(Build.VERSION_CODES.N)
-                @Override
-                public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                    final Uri uri = request.getUrl();
-                    return handleUri(uri);
-                }
-
-                private boolean handleUri(final Uri uri) {
-
-                    Log.i(TAG, "Uri =" + uri);
-                    final String url = uri.toString();
-                    // Based on some condition you need to determine if you are going to load the url
-                    // in your web view itself or in a browser.
-                    // You can use `host` or `scheme` or any part of the `uri` to decide.
-
-                    if (url.startsWith("http")) return false;//open web links as usual
-                    //try to find browse activity to handle uri
-                    Uri parsedUri = Uri.parse(url);
-                    PackageManager packageManager = from.getPackageManager();
-                    Intent browseIntent = new Intent(Intent.ACTION_VIEW).setData(parsedUri);
-                    if (browseIntent.resolveActivity(packageManager) != null) {
-                        from.startActivity(browseIntent);
-                        return true;
-                    }
-                    //if not activity found, try to parse intent://
-                    if (url.startsWith("intent:")) {
-                        try {
-                            Intent intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME);
-                            if (intent.resolveActivity(from.getPackageManager()) != null) {
-                                try {
-                                    from.startActivity(intent);
-                                } catch (Exception e) {
-                                    Snackbar.make(webView, R.string.toast_error, Snackbar.LENGTH_SHORT).show();
-                                }
-
-                                return true;
-                            }
-                            //try to find fallback url
-                            String fallbackUrl = intent.getStringExtra("browser_fallback_url");
-                            if (fallbackUrl != null) {
-                                webView.loadUrl(fallbackUrl);
-                                return true;
-                            }
-                            //invite to install
-                            Intent marketIntent = new Intent(Intent.ACTION_VIEW).setData(
-                                    Uri.parse("market://details?id=" + intent.getPackage()));
-                            if (marketIntent.resolveActivity(packageManager) != null) {
-                                from.startActivity(marketIntent);
-                                return true;
-                            }
-                        } catch (URISyntaxException e) {
-                            //not an intent uri
+                        //try to find fallback url
+                        String fallbackUrl = intent.getStringExtra("browser_fallback_url");
+                        if (fallbackUrl != null) {
+                            webView.loadUrl(fallbackUrl);
+                            return true;
                         }
+                        //invite to install
+                        Intent marketIntent = new Intent(Intent.ACTION_VIEW).setData(
+                                Uri.parse("market://details?id=" + intent.getPackage()));
+                        if (marketIntent.resolveActivity(packageManager) != null) {
+                            from.startActivity(marketIntent);
+                            return true;
+                        }
+                    } catch (URISyntaxException e) {
+                        //not an intent uri
                     }
-                    return true;//do nothing in other cases
                 }
+                return true;//do nothing in other cases
+            }
 
-            });
-
-        }
+        });
     }
 
     public static void openURL (Activity from, WebView mWebView, EditText editText) {

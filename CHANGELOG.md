@@ -5,13 +5,14 @@
 - new: toolbar gestures in lists
 - new: save link destination
 - fix: download pictures
-- fix: startpage on whitelist
+- fix: startpage on javascript whitelist
 - improved: portrait layout
 - improved: Adblock integration
 - improved: Desktop site request
 - improved: sorting of lists
 - improved: code simplified
 - improved: UI (colors, strings, layouts)
+- updated: help dialog, introscreen
 
 ### v 3.5
 - fix: keyboard issue
