@@ -1,4 +1,8 @@
-### v 3.6 (WIP)
+### v 3.7 (WIP)
+- fix: toolbar swipe (lists)
+- fix: hide navigation buttons
+
+### v 3.6
 - new: always hide statusbar on fullscreen videos
 - new: five tabs (@CGSLURP LLC)
 - new: toolbar and button animations

@@ -77,10 +77,10 @@ public class helper_toolbar {
                 activity.finish();
             }
             public void onSwipeRight() {
-                helper_main.switchToActivity(activity, List_readLater.class, "", false);
+                helper_main.switchToActivity(activity, List_readLater.class, "", true);
             }
             public void onSwipeLeft() {
-                helper_main.switchToActivity(activity, List_bookmarks.class, "", false);
+                helper_main.switchToActivity(activity, List_bookmarks.class, "", true);
             }
         });
         toolbar.setOnClickListener(new View.OnClickListener() {

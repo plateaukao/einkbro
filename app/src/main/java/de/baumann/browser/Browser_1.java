@@ -911,12 +911,6 @@ public class Browser_1 extends AppCompatActivity implements ObservableScrollView
             sharedPref.edit().putString("tab_1", helper_webView.getTitle(activity, mWebView)).apply();
             progressBar.setProgress(progress);
             progressBar.setVisibility(progress == 100 ? View.GONE : View.VISIBLE);
-            imageButton.setVisibility(View.INVISIBLE);
-            relativeLayout.animate().translationY(0);
-
-            if (scrollTabs.getVisibility() == View.VISIBLE) {
-                scrollTabs.setVisibility(View.GONE);
-            }
 
             try {
                 String whiteList = sharedPref.getString("whiteList", "");
@@ -941,6 +935,15 @@ public class Browser_1 extends AppCompatActivity implements ObservableScrollView
             } catch (Exception e) {
                 // Error occurred while creating the File
                 Log.e(TAG, "Browser Error", e);
+            }
+
+            if (progress <= 10) {
+                imageButton.setVisibility(View.INVISIBLE);
+                relativeLayout.animate().translationY(0);
+
+                if (scrollTabs.getVisibility() == View.VISIBLE) {
+                    scrollTabs.setVisibility(View.GONE);
+                }
             }
 
             if (progress == 100) {
@@ -968,10 +971,12 @@ public class Browser_1 extends AppCompatActivity implements ObservableScrollView
                         }
                     }
                 }, 100);
-                helper_browser.setNavArrows(mWebView, imageButton_left, imageButton_right);
+
+                if (imageButton.getVisibility() != View.VISIBLE) {
+                    helper_browser.setNavArrows(mWebView, imageButton_left, imageButton_right);
+                }
             }
         }
-
 
         public boolean onShowFileChooser(
                 WebView webView, ValueCallback<Uri[]> filePathCallback,
