@@ -59,8 +59,8 @@ import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class helper_browser {
 
-    public static void setupViews (Activity activity, final Toolbar toolbar, final WebView webView,
-                                   EditText editText, final ImageButton imageButton, final ImageButton imageButton_left,
+    public static void setupViews (final Activity activity, final Toolbar toolbar, final WebView webView, final TextView urlBar,
+                                   final EditText editText, final ImageButton imageButton, final ImageButton imageButton_left,
                                    final ImageButton imageButton_right, final RelativeLayout toolbarLayout) {
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
@@ -106,6 +106,15 @@ public class helper_browser {
                 imageButton.setVisibility(View.GONE);
                 helper_browser.setNavArrows(webView, imageButton_left, imageButton_right);
                 toolbarLayout.animate().translationY(0);
+            }
+        });
+
+        toolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                urlBar.setVisibility(View.GONE);
+                editText.setVisibility(View.VISIBLE);
+                helper_editText.showKeyboard(activity, editText, 3, "", activity.getString(R.string.app_search_hint));
             }
         });
 
@@ -310,7 +319,6 @@ public class helper_browser {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
 
         MenuItem saveBookmark = menu.findItem(R.id.action_save_bookmark);
-        MenuItem search = menu.findItem(R.id.action_search);
         MenuItem search_go = menu.findItem(R.id.action_search_go);
         MenuItem search_onSite_go = menu.findItem(R.id.action_search_onSite_go);
         MenuItem search_chooseWebsite = menu.findItem(R.id.action_search_chooseWebsite);
@@ -328,7 +336,6 @@ public class helper_browser {
 
         if (sharedPref.getInt("keyboard", 0) == 0) { //could be button state or..?
             saveBookmark.setVisible(false);
-            search.setVisible(true);
             search_onSite_go.setVisible(false);
             search_chooseWebsite.setVisible(false);
             history.setVisible(true);
@@ -345,7 +352,6 @@ public class helper_browser {
             search_go.setVisible(false);
         } else if (sharedPref.getInt("keyboard", 0) == 1) {
             saveBookmark.setVisible(false);
-            search.setVisible(false);
             search_onSite_go.setVisible(true);
             search_chooseWebsite.setVisible(false);
             history.setVisible(false);
@@ -362,7 +368,6 @@ public class helper_browser {
             search_go.setVisible(false);
         } else if (sharedPref.getInt("keyboard", 0) == 2) {
             saveBookmark.setVisible(true);
-            search.setVisible(false);
             search_onSite_go.setVisible(false);
             search_chooseWebsite.setVisible(false);
             history.setVisible(false);
@@ -379,7 +384,6 @@ public class helper_browser {
             search_go.setVisible(false);
         } else if (sharedPref.getInt("keyboard", 0) == 3) {
             saveBookmark.setVisible(false);
-            search.setVisible(false);
             search_onSite_go.setVisible(false);
             search_chooseWebsite.setVisible(true);
             history.setVisible(false);

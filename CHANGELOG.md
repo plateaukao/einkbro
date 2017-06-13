@@ -1,6 +1,10 @@
 ### v 3.7 (WIP)
+- added: changelog after update
+- added: long click on toolbar opens tab overview
+- added: click on toolbar opens search/enter URL
 - fix: toolbar swipe (lists)
 - fix: hide navigation buttons
+- fix: contributor title
 - fix: always loading homepage when closing settings
 - improved: cookie settings
 

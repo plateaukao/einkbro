@@ -1,9 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    //Changelog Dialog
+
+    <string name="changelog_text">
+
+        &lt;b>Neues Verhalten der Toolbar:&lt;/b>&lt;br>
+        Wenn du auf die Toolbar klickst öffnet sich die Suche bzw. das Feld um eine URL einzugeben.
+        Um die Tabs zu wechseln, musst du lange auf die Toolbar klicken.&lt;br>&lt;br>
+
+        &lt;b>v 3.7&lt;/b>&lt;br>&lt;br>
+        - added: changelog after update&lt;br>
+        - added: long click on toolbar opens tab overview&lt;br>
+        - added: click on toolbar opens search/enter URL&lt;br>
+        - fix: toolbar swipe (lists)&lt;br>
+        - fix: hide navigation buttons&lt;br>
+        - fix: contributor title&lt;br>
+        - fix: always loading homepage when closing settings&lt;br>
+        - improved: cookie settings
+    </string>
+
     //License Dialog
 
-    <string name="about_title">Copyright © 2016  by Gaukler Faun</string>
+    <string name="about_title">Copyright © 2017  by Gaukler Faun</string>
     <string name="about_text">
         Für mehr Informationen besuche die Projektseite auf Github: https://github.com/scoute-dich/Browser&lt;br>&lt;br>
 

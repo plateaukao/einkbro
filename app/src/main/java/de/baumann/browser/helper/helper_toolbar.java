@@ -60,10 +60,12 @@ public class helper_toolbar {
                 helper_main.switchToActivity(activity, List_bookmarks.class, "", false);
             }
         });
-        toolbar.setOnClickListener(new View.OnClickListener() {
+
+        toolbar.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public void onClick(View view) {
+            public boolean onLongClick(View v) {
                 helper_toolbar.toolbarOnclick(activity);
+                return true;
             }
         });
     }

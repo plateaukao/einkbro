@@ -3,6 +3,7 @@
     // Application
 
     <string name="app_name">Browser</string>
+    <string name="app_changelog">Changelog</string>
     <string name="app_permissions_title">Used permissions</string>
     <string name="app_permissions">
 

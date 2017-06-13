@@ -179,7 +179,7 @@ public class Browser_3 extends AppCompatActivity implements ObservableScrollView
 
         // setupViews
 
-        helper_browser.setupViews(activity, toolbar, mWebView, editText, imageButton, imageButton_left, imageButton_right, relativeLayout);
+        helper_browser.setupViews(activity, toolbar, mWebView, urlBar, editText, imageButton, imageButton_left, imageButton_right, relativeLayout);
         toolbar.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorPrimary_1));
         setSupportActionBar(toolbar);
 
@@ -728,12 +728,6 @@ public class Browser_3 extends AppCompatActivity implements ObservableScrollView
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        if (id == R.id.action_search) {
-            urlBar.setVisibility(View.GONE);
-            editText.setVisibility(View.VISIBLE);
-            helper_editText.showKeyboard(activity, editText, 3, "", getString(R.string.app_search_hint));
-        }
 
         if (id == R.id.action_history) {
             helper_main.switchToActivity(activity, List_history.class, "", false);

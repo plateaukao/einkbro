@@ -133,7 +133,7 @@ class About_content {
                 .text("CGSLURP LLC")
                 .subText(R.string.about_cont_summary)
                 .icon(R.drawable.github_circle)
-                .setOnClickListener(ConvenienceBuilder.createWebViewDialogOnClickAction(c, c.getString(R.string.about_dev), "https://github.com/futrDevelopment", true, false))
+                .setOnClickListener(ConvenienceBuilder.createWebViewDialogOnClickAction(c, "CGSLURP LLC", "https://github.com/futrDevelopment", true, false))
                 .build());
 
 
