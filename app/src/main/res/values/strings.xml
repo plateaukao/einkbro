@@ -125,7 +125,7 @@
     <string name="bookmark_remove_bookmark">Delete entry</string>
     <string name="bookmark_added">Adding entry.</string>
     <string name="bookmark_setFav">Successfully set as favorite.</string>
-    <string name="bookmark_setFav_not">You can only choose one favorite.</string>
+    <string name="bookmark_setFav_not">You can only choose one favorite. Please disable current.</string>
     <string name="bookmark_edit_title">Edit entry</string>
 
     <string name="readLater_title">Open link:</string>

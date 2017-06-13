@@ -1,6 +1,8 @@
 ### v 3.7 (WIP)
 - fix: toolbar swipe (lists)
 - fix: hide navigation buttons
+- fix: always loading homepage when closing settings
+- improved: cookie settings
 
 ### v 3.6
 - new: always hide statusbar on fullscreen videos

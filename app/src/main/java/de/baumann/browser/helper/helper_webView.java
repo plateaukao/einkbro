@@ -106,12 +106,21 @@ public class helper_webView {
 
         from.registerForContextMenu(webView);
 
-        if (sharedPref.getString ("cookie", "1").equals("2") || sharedPref.getString ("cookie", "1").equals("3")){
+        if (sharedPref.getString ("cookie", "2").equals("1")){
             CookieManager cookieManager = CookieManager.getInstance();
+            cookieManager.setAcceptCookie(true);
             cookieManager.setAcceptThirdPartyCookies(webView,true);
-        } else {
+            sharedPref.edit().putString("cookie_string", from.getString(R.string.app_yes)).apply();
+        } else if (sharedPref.getString ("cookie", "2").equals("2")) {
             CookieManager cookieManager = CookieManager.getInstance();
+            cookieManager.setAcceptCookie(true);
             cookieManager.setAcceptThirdPartyCookies(webView,false);
+            sharedPref.edit().putString("cookie_string", from.getString(R.string.app_yes)).apply();
+        } else if (sharedPref.getString ("cookie", "2").equals("3")) {
+            CookieManager cookieManager = CookieManager.getInstance();
+            cookieManager.setAcceptCookie(false);
+            cookieManager.setAcceptThirdPartyCookies(webView,false);
+            sharedPref.edit().putString("cookie_string", from.getString(R.string.app_no)).apply();
         }
 
         if (sharedPref.getBoolean ("java", false)){
@@ -137,16 +146,6 @@ public class helper_webView {
         } else {
             webView.getSettings().setGeolocationEnabled(false);
             sharedPref.edit().putString("loc_string", from.getString(R.string.app_no)).apply();
-        }
-
-        if (sharedPref.getString ("cookie", "1").equals("1") || sharedPref.getString ("cookie", "1").equals("3")){
-            CookieManager cookieManager = CookieManager.getInstance();
-            cookieManager.setAcceptCookie(true);
-            sharedPref.edit().putString("cookie_string", from.getString(R.string.app_yes)).apply();
-        } else {
-            CookieManager cookieManager = CookieManager.getInstance();
-            cookieManager.setAcceptCookie(false);
-            sharedPref.edit().putString("cookie_string", from.getString(R.string.app_no)).apply();
         }
 
         if (sharedPref.getBoolean ("blockads_bo", false)){

@@ -49,7 +49,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.nio.channels.FileChannel;
 
-import de.baumann.browser.Browser_1;
 import de.baumann.browser.R;
 import de.baumann.browser.about.About_activity;
 
@@ -423,8 +422,7 @@ public class Activity_settings extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        helper_browser.resetTabs(this);
-        helper_main.switchToActivity(Activity_settings.this, Browser_1.class, sharedPref.getString("startURL", "https://github.com/scoute-dich/browser/"), true);
+        updateSettings();
     }
 
     @Override
@@ -433,9 +431,51 @@ public class Activity_settings extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == android.R.id.home) {
-            helper_browser.resetTabs(this);
-            helper_main.switchToActivity(Activity_settings.this, Browser_1.class, sharedPref.getString("startURL", "https://github.com/scoute-dich/browser/"), true);
+            updateSettings();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void updateSettings () {
+        sharedPref.edit().putString("openURL", "settings").apply();
+        if (sharedPref.getBoolean ("java", false)){
+            sharedPref.edit().putString("java_string", getString(R.string.app_yes)).apply();
+        } else {
+            sharedPref.edit().putString("java_string", getString(R.string.app_no)).apply();
+        }
+
+        if (sharedPref.getString ("cookie", "2").equals("1")){
+            sharedPref.edit().putString("cookie_string", getString(R.string.app_yes)).apply();
+        } else if (sharedPref.getString ("cookie", "2").equals("2")) {
+            sharedPref.edit().putString("cookie_string", getString(R.string.app_yes)).apply();
+        } else if (sharedPref.getString ("cookie", "2").equals("3")) {
+            sharedPref.edit().putString("cookie_string", getString(R.string.app_no)).apply();
+        }
+
+        if (sharedPref.getBoolean ("loc", false)){
+            sharedPref.edit().putString("loc_string", getString(R.string.app_yes)).apply();
+        } else {
+            sharedPref.edit().putString("loc_string", getString(R.string.app_no)).apply();
+        }
+
+        if (sharedPref.getBoolean ("blockads_bo", false)){
+            sharedPref.edit().putString("blockads_string", getString(R.string.app_yes)).apply();
+        } else {
+            sharedPref.edit().putString("blockads_string", getString(R.string.app_no)).apply();
+        }
+
+        if (sharedPref.getBoolean ("request_bo", false)){
+            sharedPref.edit().putString("request_string", getString(R.string.app_yes)).apply();
+        } else {
+            sharedPref.edit().putString("request_string", getString(R.string.app_no)).apply();
+        }
+
+        if (sharedPref.getBoolean ("pictures", false)){
+            sharedPref.edit().putString("pictures_string", getString(R.string.app_yes)).apply();
+        } else {
+            sharedPref.edit().putString("pictures_string", getString(R.string.app_no)).apply();
+        }
+
+        finishAffinity();
     }
 }

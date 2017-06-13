@@ -294,7 +294,8 @@ public class helper_browser {
         builder.setNegativeButton(R.string.menu_settings, new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int whichButton) {
-                helper_main.switchToActivity(activity, Activity_settings.class, "", true);
+                helper_main.switchToActivity(activity, Activity_settings.class, "", false);
+                dialog.cancel();
             }
         });
 

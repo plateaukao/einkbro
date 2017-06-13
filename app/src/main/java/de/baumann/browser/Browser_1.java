@@ -647,6 +647,8 @@ public class Browser_1 extends AppCompatActivity implements ObservableScrollView
             public void run() {
                 if (URL.equals(mWebView.getUrl()) || URL.equals("")) {
                     Log.i(TAG, "Tab switched");
+                } else if (URL.equals("settings")) {
+                    mWebView.reload();
                 } else if (URL.equals("copyLogin")) {
                     Snackbar snackbar = Snackbar
                             .make(mWebView, R.string.pass_copy_userName, Snackbar.LENGTH_INDEFINITE)

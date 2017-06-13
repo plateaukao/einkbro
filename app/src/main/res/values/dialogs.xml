@@ -124,9 +124,8 @@
     </string-array>
 
     <string-array name="listArrayCookies">
-        <item>Accept cookies</item>
-        <item>Accept 3. party cookies</item>
-        <item>Accept both</item>
+        <item>Accept all cookies</item>
+        <item>Accept all except 3. party cookies</item>
         <item>Accept no cookies</item>
     </string-array>
 
@@ -134,7 +133,6 @@
         <item>1</item>
         <item>2</item>
         <item>3</item>
-        <item>4</item>
     </string-array>
 
     <string-array name="listArrayFull">
