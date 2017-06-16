@@ -157,6 +157,12 @@ public class helper_main {
         return  format.format(date);
     }
 
+    public static String createDate_Second () {
+        Date date = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss", Locale.getDefault());
+        return  format.format(date);
+    }
+
     public static File newFile (String fileName) {
         return  new File(Environment.getExternalStorageDirectory() + "/" + Environment.DIRECTORY_DOWNLOADS + "/" + fileName);
     }

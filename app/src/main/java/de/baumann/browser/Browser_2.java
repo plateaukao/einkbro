@@ -47,6 +47,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -66,6 +67,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -85,6 +87,7 @@ import de.baumann.browser.databases.DbAdapter_ReadLater;
 import de.baumann.browser.helper.helper_browser;
 import de.baumann.browser.helper.helper_editText;
 import de.baumann.browser.helper.helper_main;
+import de.baumann.browser.helper.helper_toolbar;
 import de.baumann.browser.helper.helper_webView;
 import de.baumann.browser.lists.List_bookmarks;
 import de.baumann.browser.lists.List_files;
@@ -379,60 +382,35 @@ public class Browser_2 extends AppCompatActivity implements ObservableScrollView
                     }
                 });
 
-                TextView context_1 = (TextView) dialogView.findViewById(R.id.context_1);
-                context_1.setText(helper_browser.tab_1(activity));
-                LinearLayout context_1_Layout = (LinearLayout) dialogView.findViewById(R.id.context_1_Layout);
-                context_1_Layout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        helper_main.switchToActivity(activity, Browser_1.class, url, false);
-                        dialog.cancel();
-                    }
-                });
+                TextView context_1 = (TextView) dialogView.findViewById(R.id.scrollView_1);
+                ImageView context_1_preView = (ImageView) dialogView.findViewById(R.id.context_1_preView);
+                CardView context_1_Layout = (CardView) dialogView.findViewById(R.id.scrollView_1_Layout);
+                helper_toolbar.toolbarContext(activity, context_1, context_1_preView, context_1_Layout, url,
+                        1, helper_browser.tab_1(activity), "/tab_1.jpg", dialog, Browser_1.class);
 
-                TextView context_2 = (TextView) dialogView.findViewById(R.id.context_2);
-                context_2.setText(helper_browser.tab_2(activity));
-                LinearLayout context_2_Layout = (LinearLayout) dialogView.findViewById(R.id.context_2_Layout);
-                context_2_Layout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        helper_main.switchToActivity(activity, Browser_2.class, url, false);
-                        dialog.cancel();
-                    }
-                });
+                TextView context_2 = (TextView) dialogView.findViewById(R.id.scrollView_2);
+                ImageView context_2_preView = (ImageView) dialogView.findViewById(R.id.context_2_preView);
+                CardView context_2_Layout = (CardView) dialogView.findViewById(R.id.scrollView_2_Layout);
+                helper_toolbar.toolbarContext(activity, context_2, context_2_preView, context_2_Layout, url,
+                        2, helper_browser.tab_2(activity), "/tab_2.jpg", dialog, Browser_2.class);
 
-                TextView context_3 = (TextView) dialogView.findViewById(R.id.context_3);
-                context_3.setText(helper_browser.tab_3(activity));
-                LinearLayout context_3_Layout = (LinearLayout) dialogView.findViewById(R.id.context_3_Layout);
-                context_3_Layout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        helper_main.switchToActivity(activity, Browser_3.class, url, false);
-                        dialog.cancel();
-                    }
-                });
+                TextView context_3 = (TextView) dialogView.findViewById(R.id.scrollView_3);
+                ImageView context_3_preView = (ImageView) dialogView.findViewById(R.id.context_3_preView);
+                CardView context_3_Layout = (CardView) dialogView.findViewById(R.id.scrollView_3_Layout);
+                helper_toolbar.toolbarContext(activity, context_3, context_3_preView, context_3_Layout, url,
+                        3, helper_browser.tab_3(activity), "/tab_3.jpg", dialog, Browser_3.class);
 
-                TextView context_4 = (TextView) dialogView.findViewById(R.id.context_4);
-                context_4.setText(helper_browser.tab_4(activity));
-                LinearLayout context_4_Layout = (LinearLayout) dialogView.findViewById(R.id.context_4_Layout);
-                context_4_Layout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        helper_main.switchToActivity(activity, Browser_4.class, url, false);
-                        dialog.cancel();
-                    }
-                });
+                TextView context_4 = (TextView) dialogView.findViewById(R.id.scrollView_4);
+                ImageView context_4_preView = (ImageView) dialogView.findViewById(R.id.context_4_preView);
+                CardView context_4_Layout = (CardView) dialogView.findViewById(R.id.scrollView_4_Layout);
+                helper_toolbar.toolbarContext(activity, context_4, context_4_preView, context_4_Layout, url,
+                        4, helper_browser.tab_4(activity), "/tab_4.jpg", dialog, Browser_4.class);
 
-                TextView context_5 = (TextView) dialogView.findViewById(R.id.context_5);
-                context_5.setText(helper_browser.tab_5(activity));
-                LinearLayout context_5_Layout = (LinearLayout) dialogView.findViewById(R.id.context_5_Layout);
-                context_5_Layout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        helper_main.switchToActivity(activity, Browser_5.class, url, false);
-                        dialog.cancel();
-                    }
-                });
+                TextView context_5 = (TextView) dialogView.findViewById(R.id.scrollView_5);
+                ImageView context_5_preView = (ImageView) dialogView.findViewById(R.id.context_5_preView);
+                CardView context_5_Layout = (CardView) dialogView.findViewById(R.id.scrollView_5_Layout);
+                helper_toolbar.toolbarContext(activity, context_5, context_5_preView, context_5_Layout, url,
+                        5, helper_browser.tab_5(activity), "/tab_5.jpg", dialog, Browser_5.class);
 
             } else if (result.getType() == WebView.HitTestResult.SRC_ANCHOR_TYPE) {
 
@@ -526,60 +504,35 @@ public class Browser_2 extends AppCompatActivity implements ObservableScrollView
                     }
                 });
 
-                TextView context_1 = (TextView) dialogView.findViewById(R.id.context_1);
-                context_1.setText(helper_browser.tab_1(activity));
-                LinearLayout context_1_Layout = (LinearLayout) dialogView.findViewById(R.id.context_1_Layout);
-                context_1_Layout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        helper_main.switchToActivity(activity, Browser_1.class, url, false);
-                        dialog.cancel();
-                    }
-                });
+                TextView context_1 = (TextView) dialogView.findViewById(R.id.scrollView_1);
+                ImageView context_1_preView = (ImageView) dialogView.findViewById(R.id.context_1_preView);
+                CardView context_1_Layout = (CardView) dialogView.findViewById(R.id.scrollView_1_Layout);
+                helper_toolbar.toolbarContext(activity, context_1, context_1_preView, context_1_Layout, url,
+                        1, helper_browser.tab_1(activity), "/tab_1.jpg", dialog, Browser_1.class);
 
-                TextView context_2 = (TextView) dialogView.findViewById(R.id.context_2);
-                context_2.setText(helper_browser.tab_2(activity));
-                LinearLayout context_2_Layout = (LinearLayout) dialogView.findViewById(R.id.context_2_Layout);
-                context_2_Layout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        helper_main.switchToActivity(activity, Browser_2.class, url, false);
-                        dialog.cancel();
-                    }
-                });
+                TextView context_2 = (TextView) dialogView.findViewById(R.id.scrollView_2);
+                ImageView context_2_preView = (ImageView) dialogView.findViewById(R.id.context_2_preView);
+                CardView context_2_Layout = (CardView) dialogView.findViewById(R.id.scrollView_2_Layout);
+                helper_toolbar.toolbarContext(activity, context_2, context_2_preView, context_2_Layout, url,
+                        2, helper_browser.tab_2(activity), "/tab_2.jpg", dialog, Browser_2.class);
 
-                TextView context_3 = (TextView) dialogView.findViewById(R.id.context_3);
-                context_3.setText(helper_browser.tab_3(activity));
-                LinearLayout context_3_Layout = (LinearLayout) dialogView.findViewById(R.id.context_3_Layout);
-                context_3_Layout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        helper_main.switchToActivity(activity, Browser_3.class, url, false);
-                        dialog.cancel();
-                    }
-                });
+                TextView context_3 = (TextView) dialogView.findViewById(R.id.scrollView_3);
+                ImageView context_3_preView = (ImageView) dialogView.findViewById(R.id.context_3_preView);
+                CardView context_3_Layout = (CardView) dialogView.findViewById(R.id.scrollView_3_Layout);
+                helper_toolbar.toolbarContext(activity, context_3, context_3_preView, context_3_Layout, url,
+                        3, helper_browser.tab_3(activity), "/tab_3.jpg", dialog, Browser_3.class);
 
-                TextView context_4 = (TextView) dialogView.findViewById(R.id.context_4);
-                context_4.setText(helper_browser.tab_4(activity));
-                LinearLayout context_4_Layout = (LinearLayout) dialogView.findViewById(R.id.context_4_Layout);
-                context_4_Layout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        helper_main.switchToActivity(activity, Browser_4.class, url, false);
-                        dialog.cancel();
-                    }
-                });
+                TextView context_4 = (TextView) dialogView.findViewById(R.id.scrollView_4);
+                ImageView context_4_preView = (ImageView) dialogView.findViewById(R.id.context_4_preView);
+                CardView context_4_Layout = (CardView) dialogView.findViewById(R.id.scrollView_4_Layout);
+                helper_toolbar.toolbarContext(activity, context_4, context_4_preView, context_4_Layout, url,
+                        4, helper_browser.tab_4(activity), "/tab_4.jpg", dialog, Browser_4.class);
 
-                TextView context_5 = (TextView) dialogView.findViewById(R.id.context_5);
-                context_5.setText(helper_browser.tab_5(activity));
-                LinearLayout context_5_Layout = (LinearLayout) dialogView.findViewById(R.id.context_5_Layout);
-                context_5_Layout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        helper_main.switchToActivity(activity, Browser_5.class, url, false);
-                        dialog.cancel();
-                    }
-                });
+                TextView context_5 = (TextView) dialogView.findViewById(R.id.scrollView_5);
+                ImageView context_5_preView = (ImageView) dialogView.findViewById(R.id.context_5_preView);
+                CardView context_5_Layout = (CardView) dialogView.findViewById(R.id.scrollView_5_Layout);
+                helper_toolbar.toolbarContext(activity, context_5, context_5_preView, context_5_Layout, url,
+                        5, helper_browser.tab_5(activity), "/tab_5.jpg", dialog, Browser_5.class);
             }
         }
     }
@@ -860,6 +813,7 @@ public class Browser_2 extends AppCompatActivity implements ObservableScrollView
             urlBar.setVisibility(View.VISIBLE);
             urlBar.setText(helper_webView.getTitle (activity, mWebView));
             editText.setVisibility(View.GONE);
+            mWebView.findAllAsync("");
             helper_editText.editText_FocusChange(editText, activity);
             helper_editText.editText_EditorAction(editText, activity, mWebView, urlBar);
             helper_editText.hideKeyboard(activity, editText, 0, helper_webView.getTitle (activity, mWebView), getString(R.string.app_search_hint));
@@ -1112,7 +1066,7 @@ public class Browser_2 extends AppCompatActivity implements ObservableScrollView
 
     private void screenshot() {
 
-        sharePath = helper_webView.getDomain(activity, mWebView.getUrl()) + "_" + helper_main.createDate() + ".jpg";
+        sharePath = helper_webView.getDomain(activity, mWebView.getUrl()) + "_" + helper_main.createDate_Second() + ".jpg";
         shareFile = helper_main.newFile(sharePath);
 
         try{

@@ -20,6 +20,7 @@
 package de.baumann.browser.helper;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -89,6 +90,45 @@ public class helper_toolbar {
             @Override
             public void onClick(View view) {
                 helper_toolbar.toolbarOnclick(activity);
+            }
+        });
+        toolbar.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                helper_toolbar.toolbarOnclick(activity);
+                return true;
+            }
+        });
+    }
+
+    public static void toolbarContext (final Activity activity, TextView textView, ImageView imageView,
+                                     CardView cardView, final String url,
+                                     int tab, String text, String picture, final Dialog dialog, final Class to) {
+
+        final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
+
+        textView.setText(text);
+        if ( sharedPref.getInt("actualTab", 1) == tab) {
+            textView.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorAccent));
+        }
+
+        try {
+            Glide.with(activity)
+                    .load(activity.getFilesDir() + picture) // or URI/path
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .into(imageView); //imageView to set thumbnail to
+        } catch (Exception e) {
+            Log.w("Browser", "Error load thumbnail", e);
+            imageView.setVisibility(View.GONE);
+        }
+
+
+        cardView.setOnClickListener(new View.OnClickListener()  {
+            @Override
+            public void onClick(View view) {
+                helper_main.switchToActivity(activity, to, url, false);
+                dialog.cancel();
             }
         });
     }

@@ -6,7 +6,9 @@
 - fix: hide navigation buttons
 - fix: contributor title
 - fix: always loading homepage when closing settings
+- fix: cancel search on site
 - improved: cookie settings
+- improved: open links in new tab
 
 ### v 3.6
 - new: always hide statusbar on fullscreen videos

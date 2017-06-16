@@ -17,7 +17,9 @@
         - fix: hide navigation buttons&lt;br>
         - fix: contributor title&lt;br>
         - fix: always loading homepage when closing settings&lt;br>
-        - improved: cookie settings
+        - fix: cancel search on site&lt;br>
+        - improved: cookie settings&lt;br>
+        - improved: open links in new tab
     </string>
 
     //License Dialog
