@@ -2,7 +2,7 @@
 
     // Application
 
-    <string name="app_name">Брузер</string>
+    <string name="app_name">Браузер</string>
     <string name="app_changelog">Список изменений</string>
     <string name="app_permissions_title">Используемые разрешения</string>
 
@@ -170,6 +170,7 @@
     <string name="action_searchChooseTitle">Выберите сайт для поиска</string>
 
 
+    <string name="action_protect_summary">Установите pin для защиты приложения от нежелательного доступа. Используйте только цифры. Оставьте поле пустым если вы не хотите защитить приложение.</string>
 
     <string name="action_rotation">Поворот</string>
     <string name="action_rotation_summary">Установить режим поворота приложения: автоматически, портретный или альбомный.</string>
@@ -207,7 +208,7 @@
 
     <string name="about_changelog">Список изменений</string>
     <string name="about_changelog_summary">Открыть страницу на Github для просмотра изменений... \n
-  (требуется подключение к интернету)</string>
+     (требуется подключение к интернету)</string>
 
     <string name="about_license">Лицензия</string>
 
