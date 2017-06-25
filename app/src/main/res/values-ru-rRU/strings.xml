@@ -1,0 +1,247 @@
+<resources>
+
+    // Application
+
+    <string name="app_name">Браузер</string>
+    <string name="app_changelog">Список изменений</string>
+    <string name="app_permissions_title">Используемые разрешения</string>
+
+    <string name="app_share_screenshot">Поделиться снимком экрана при помощи:</string>
+    <string name="app_share_image">Поделиться изображением при помощи:</string>
+    <string name="app_share_link">Поделиться ссылкой при помощи:</string>
+    <string name="app_search_hint_bookmark">Введите заголовок...</string>
+    <string name="app_yes">Включено</string>
+    <string name="app_no">Отключено</string>
+    <string name="app_open">Открыть папку?</string>
+    <string name="app_location_title">Местоположение</string>
+    <string name="app_location_message">"Сайт хочет использовать ваще текущее местоположение."</string>
+    <string name="app_location_allow">Разрешить</string>
+    <string name="app_location_allow_not">Не разрешать</string>
+
+    <string name="app_title_bookmarks">Закладки</string>
+    <string name="app_title_history">История</string>
+    <string name="app_title_downloads">Загрузки</string>
+    <string name="app_conf">Подтверждение</string>
+    <string name="app_domain">Неизвестный домен</string>
+
+
+    // Menu Items
+
+    <string name="menu_search">Поиск</string>
+    <string name="menu_history">История</string>
+    <string name="menu_save">Сохранить страницу</string>
+    <string name="menu_save_screenshot">Сохранить снимок экрана</string>
+    <string name="menu_save_bookmark">Сохранить как закладку</string>
+    <string name="menu_save_readLater">Сохранить в readLater</string>
+    <string name="menu_save_pass">Сохранить в passStorage</string>
+    <string name="menu_share">Поделиться страницей</string>
+    <string name="menu_share_screenshot">Поделиться снимком экрана</string>
+    <string name="menu_share_link">Поделиться ссылкой</string>
+    <string name="menu_downloads">Открыть папку загрузок</string>
+    <string name="menu_settings">Настройки</string>
+    <string name="menu_searchSite">Поиск на сайте</string>
+    <string name="menu_prev">Предыдущий</string>
+    <string name="menu_cancel">Отмена</string>
+    <string name="menu_pass">Открыть passStorage</string>
+    <string name="menu_toggle">Настройки</string>
+    <string name="menu_createShortcut">Создать ярлык</string>
+    <string name="menu_createShortcut_success">Ярлык создан</string>
+    <string name="menu_go">Начать поиск</string>
+
+    <string name="action_sort_title">Сортировать по заголовку</string>
+    <string name="action_sort_url">Сортировать по дате</string>
+    <string name="action_sort_extension">Сортировать по расширению</string>
+
+    <string name="action_filter_title">Поиск в заголовках</string>
+    <string name="action_delete">Удалить список</string>
+
+
+    // Context Menu
+
+    <string name="context_saveImage">Сохранить изображение</string>
+    <string name="context_shareImage">Поделиться изображением</string>
+    <string name="context_linkCopy_toast">Ссылка успешно скопирована</string>
+    <string name="context_tab">Пустая вкладка</string>
+
+
+
+    // Snackbar
+
+    <string name="toast_yes">ОК</string>
+    <string name="toast_cancel">Отмена</string>
+    <string name="toast_notAgain">Никогда не показывать</string>
+    <string name="toast_download">Загрузка файла:</string>
+    <string name="toast_backup">Резервное копирование успешно завершено.</string>
+    <string name="toast_restore">Успешно восстановлено.</string>
+    <string name="toast_backup_not">Резервное копирование не удалось.</string>
+    <string name="toast_restore_not">Восстановление прервано.</string>
+    <string name="toast_screenshot_failed">Не удалось сделать снимок экрана.</string>
+    <string name="toast_cache">Нет интернет соединения. Попытка загрузить из кэша.</string>
+    <string name="toast_noInternet">Невозможно загрузить сайт. Нет интернет соединения.</string>
+    <string name="toast_install_app">Пожалуйста установите приложение чтобы выполнить действие.</string>
+    <string name="toast_wrongPW">Ой. Неверный пароль.</string>
+    <string name="toast_exit">Хотите выйти?</string>
+    <string name="toast_whiteList">Белый список удален.</string>
+    <string name="toast_list">Удалить весь список?</string>
+    <string name="toast_whiteList_confirm">Вы действительно хотите удалить белый список?</string>
+    <string name="toast_error">Ой. Что-то пошло не так.</string>
+    <string name="toast_directory">Невозможно открыть папку.</string>
+    <string name="toast_files">Нет файлов в папке</string>
+    <string name="toast_extension">Не поддерживаемое расширение файла</string>
+
+
+    // Bookmarks // ReadLater // Password
+
+    <string name="bookmark_setFav">Успешно отмечено как избранное.</string>
+
+    <string name="readLater_title">Открыть ссылку:</string>
+
+    <string name="pass_userName">Имя пользователя</string>
+    <string name="pass_userPW">Пароль</string>
+    <string name="pass_copy_userName">Скопировать имя пользователя</string>
+    <string name="pass_copy_userPW">Скопировать пароль</string>
+    <string name="pass_title">Заголовок</string>
+    <string name="pass_edit">Изменить данные для входа</string>
+
+    <string name="filter_today">Сегодня</string>
+    <string name="filter_yesterday">Вчера</string>
+    <string name="filter_before">Позавчера</string>
+    <string name="filter_month">Этот месяц</string>
+    <string name="filter_clear">Отменить поиск</string>
+    <string name="sort_title">заголовок</string>
+    <string name="sort_extension">расширение</string>
+
+
+    // Settings
+
+    <string name="pref_1">О приложении | Помощь</string>
+    <string name="pref_5">Очистить при выходе</string>
+    <string name="pref_6">Поиск</string>
+
+
+    <string name="action_license">О приложении</string>
+    <string name="action_license_summary">Узнать больше об этом приложении (помощь, список изменений, лицензия, ...).</string>
+
+    <string name="action_openSettings">Информация о приложении</string>
+
+    <string name="action_font">Размер шрифта</string>
+    <string name="action_font_summary">Изменить размер шрифта для сайтов.</string>
+
+
+    <string name="action_restore">Восстановление</string>
+
+    <string name="action_java">Javascript</string>
+    <string name="action_java_summary">Некоторые функции сайтов требуют javascript для работы. Но JavaScript, как известно, является угрозой безопасности.</string>
+
+    <string name="action_cookie">Куки</string>
+
+    <string name="action_history">Очистить историю браузера при выходе</string>
+    <string name="action_history_summary">Очистить вашу историю браузера при выходе.</string>
+
+    <string name="action_searchEngine">Поисковая система</string>
+    <string name="action_searchEngine_summary">Выберите предпочитаемую поисковую систему</string>
+
+    <string name="action_wikiLang">Википедия</string>
+    <string name="action_wikiLang_summary">Выберите предпочитаемый язык Википедии.</string>
+
+    <string name="action_offline">Оффлайн</string>
+    <string name="action_offline_summary">Сохранять сайты в кэше для оффлайн-доступа. Отключите очищение кэша для использования.</string>
+
+    <string name="action_clearCache">Очистить кэш</string>
+    <string name="action_clearCache_summary">Очистить кэш браузере при выходе. Отключите, если хотите использовать оффлайн функции.</string>
+
+    <string name="action_clearCookies">Очистить куки</string>
+    <string name="action_clearCookies_summary">Очистить куки при выходе. Настройки сайтов будут потеряны.</string>
+
+    <string name="action_clearForm">Очистить данные форм</string>
+    <string name="action_clearForm_summary">Очистить данные форм при выходе. Все сохраненные данные (например, почтовые адреса) будут потеряны.</string>
+
+    <string name="action_form">Данные форм</string>
+    <string name="action_form_summary">Сохранить введенные данные форм (например, почтовые адреса).</string>
+
+    <string name="action_loc">Местоположение</string>
+    <string name="action_loc_summary">Разрешить сайтам получать ваще местоположение.</string>
+
+    <string name="action_pictures">Загружать изображения</string>
+    <string name="action_pictures_summary">Загружать изображения на сайтах. Отключите для экономии трафика и ускорения загрузки сайтов.</string>
+
+    <string name="action_searchChoose">Веб сайты</string>
+    <string name="action_searchChoose_summary">Выберите сайты доступные для быстрого поиска.</string>
+    <string name="action_searchChooseTitle">Выберите сайт для поиска</string>
+
+
+    <string name="action_protect_summary">Установите pin для защиты приложения от нежелательного доступа. Используйте только цифры. Оставьте поле пустым если вы не хотите защитить приложение.</string>
+
+    <string name="action_rotation">Поворот</string>
+    <string name="action_rotation_summary">Установить режим поворота приложения: автоматически, портретный или альбомный.</string>
+
+    <string name="action_whiteList">Белый список</string>
+    <string name="action_whiteList_summary">Очистить ваш белый список javascript.</string>
+
+    <string name="action_fullscreen_summary">Скрыть панель статуса и/или инструментов при просмотре.</string>
+
+    <string name="action_adBlock">Блокировать рекламу</string>
+    <string name="action_adBlock_summary">Блокировать большинство нежелательной рекламы</string>
+
+    <string name="action_desktop">Полная версия</string>
+
+
+
+    // Intro
+
+    <string name="intro_skip">Пропустить</string>
+    <string name="intro_finish">Давайте начнем.</string>
+
+    <string name="intro1_title">Browser</string>
+
+    <string name="intro2_title">Списки</string>
+
+    <string name="intro3_title">Панель инструментов</string>
+
+
+    <string name="intro5_title">Помощь</string>
+
+
+    // About
+
+    <string name="about_title_dev">Разработчик</string>
+
+    <string name="about_changelog">Список изменений</string>
+    <string name="about_changelog_summary">Открыть страницу на Github для просмотра изменений... \n
+     (требуется подключение к интернету)</string>
+
+    <string name="about_license">Лицензия</string>
+
+    <string name="about_dev">Gaukler Faun</string>
+    <string name="about_dev_summary">Открыть мой профиль на Github (требуется подключение к интернету).</string>
+
+    <string name="about_intro">Вступление</string>
+    <string name="about_intro_summary">Показать экран введения еще раз.</string>
+
+    <string name="about_help">Помощь</string>
+
+    <string name="about_donate">Пожертвовать</string>
+    <string name="about_donate_summary">Если вам понравилось приложение, вы можете пожертвовать мне при помощи PayPal (требуется подключение к интернету).</string>
+
+    <string name="about_license_2">Используется для скрытия панели инструментов при прокрутке.</string>
+    <string name="about_license_3">Используется для создания экрана введения.</string>
+    <string name="about_license_6">Используется для шифрования данных для входа сохраняемых в passStore.</string>
+    <string name="about_license_8">Источник почти всех иконок.</string>
+    <string name="about_license_9">Мощная библиотека для отображения медиа-файлов на Android</string>
+
+
+
+    //File chooser
+
+    <string name="choose_menu_2">Поделиться</string>
+    <string name="choose_menu_3">Переименовать</string>
+    <string name="choose_menu_4">Удалить</string>
+
+
+    // Password
+
+    <string name="pw_forgotten">Забыли pin-код?</string>
+    <string name="pw_hint">Введите pin</string>
+    <string name="pw_forgotten_dialog">Стереть все данные для восстановления pin-кода?</string>
+
+</resources>
