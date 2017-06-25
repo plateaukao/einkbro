@@ -92,6 +92,8 @@ public class List_files extends AppCompatActivity {
         PreferenceManager.setDefaultValues(this, R.xml.user_settings_search, false);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPref.edit().putString("openURL", "").apply();
+        sharedPref.edit().putString("files_startFolder",
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath()).apply();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -125,8 +127,10 @@ public class List_files extends AppCompatActivity {
 
         deleteDatabase("files_DB_v01.db");
 
-        File f = new File(sharedPref.getString("files_startFolder",
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getPath()));
+        String path = sharedPref.getString("files_startFolder",
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath());
+
+        File f = new File(path);
         final File[] files = f.listFiles();
 
         // looping through all items <item>

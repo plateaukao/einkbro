@@ -315,6 +315,7 @@
     <string name="about_license_9">A powerful library to display media files for Android.</string>
 
     <string name="about_cont_summary">Helped to implement \"adblocking\", the five tabs and \"request desktop site\".</string>
+    <string name="about_cont_summary_2">Russian translation.</string>
 
 
     //File chooser

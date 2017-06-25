@@ -27,10 +27,11 @@ import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.NotificationCompat;
 
 import java.util.Random;
 
@@ -69,6 +70,9 @@ public class Activity_intent extends Activity {
         iAction_2.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
 
         PendingIntent piMain = PendingIntent.getActivity(this, n, iMain, 0);
+        PendingIntent piLL_1 = PendingIntent.getActivity(this, n, iAction, 0);
+        PendingIntent piLL_2 = PendingIntent.getActivity(this, n, iAction_2, 0);
+
         PendingIntent piAction = PendingIntent.getActivity(this, n, iAction, 0);
         PendingIntent piAction_2 = PendingIntent.getActivity(this, n, iAction_2, 0);
 
@@ -77,34 +81,49 @@ public class Activity_intent extends Activity {
         NotificationCompat.Action action_2 = new NotificationCompat.Action.Builder
                 (R.drawable.format_list_bulleted, getString(R.string.app_title_readLater), piAction_2).build();
 
-        android.support.v4.app.NotificationCompat.Builder builderSummary =
-                new android.support.v4.app.NotificationCompat.Builder(Activity_intent.this)
-                        .setAutoCancel(true)
-                        .setSmallIcon(R.drawable.earth)
-                        .setColor(ContextCompat.getColor(Activity_intent.this, R.color.colorPrimary_1))
-                        .setGroup("Browser")
-                        .setGroupSummary(true)
-                        .setContentIntent(piMain);
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            android.support.v4.app.NotificationCompat.Builder builderSummary =
+                    new android.support.v4.app.NotificationCompat.Builder(Activity_intent.this)
+                            .setAutoCancel(true)
+                            .setSmallIcon(R.drawable.earth)
+                            .setColor(ContextCompat.getColor(Activity_intent.this, R.color.colorPrimary_1))
+                            .setGroup("Browser")
+                            .setGroupSummary(true)
+                            .setContentIntent(piMain);
 
-        Notification notification = new android.support.v4.app.NotificationCompat.Builder(Activity_intent.this)
-                .setColor(ContextCompat.getColor(Activity_intent.this, R.color.colorPrimary_1))
-                .setSmallIcon(R.drawable.earth)
-                .setContentTitle(getString(R.string.readLater_title) + " " + domain)
-                .setContentText(url)
-                .setContentIntent(piMain)
-                .setAutoCancel(true)
-                .setGroup("Browser")
-                .addAction(action)
-                .addAction(action_2)
-                .setStyle(new android.support.v4.app.NotificationCompat.BigTextStyle().bigText(data.toString()))
-                .setPriority(Notification.PRIORITY_MAX)
-                .setVibrate(new long[0])
-                .build();
+            Notification notification = new NotificationCompat.Builder(Activity_intent.this)
+                    .setColor(ContextCompat.getColor(Activity_intent.this, R.color.colorPrimary_1))
+                    .setSmallIcon(R.drawable.earth)
+                    .setContentTitle(getString(R.string.readLater_title) + " " + domain)
+                    .setContentText(url)
+                    .setContentIntent(piMain)
+                    .setAutoCancel(true)
+                    .setGroup("Browser")
+                    .addAction(action)
+                    .addAction(action_2)
+                    .setStyle(new android.support.v4.app.NotificationCompat.BigTextStyle().bigText(data.toString()))
+                    .setPriority(Notification.PRIORITY_MAX)
+                    .setVibrate(new long[0])
+                    .build();
 
-        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.notify(n, notification);
-        notificationManager.notify(0, builderSummary.build());
-
+            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            notificationManager.notify(n, notification);
+            notificationManager.notify(0, builderSummary.build());
+        } else {
+            Notification notification = new NotificationCompat.Builder(this)
+                    .setCategory(Notification.CATEGORY_MESSAGE)
+                    .setContentTitle(getString(R.string.readLater_title) + " " + domain)
+                    .setContentText(url)
+                    .setSmallIcon(R.drawable.earth)
+                    .setAutoCancel(true)
+                    .addAction(R.drawable.earth, getString(R.string.readLater_action), piLL_1)
+                    .addAction(R.drawable.format_list_bulleted, getString(R.string.app_title_readLater), piLL_2)
+                    .setContentIntent(piMain)
+                    .setPriority(Notification.PRIORITY_HIGH).build();
+            NotificationManager notificationManager =
+                    (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            notificationManager.notify(n, notification);
+        }
         finish();
     }
 }
