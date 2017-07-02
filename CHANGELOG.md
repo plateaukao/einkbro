@@ -1,10 +1,12 @@
 ### v 3.8 (WIP)
+- fix: some random force closes
 - fix: crash when opening file manager
 - fix: notifications on Lollipop/Marshmallow devices
+- improved: taking screenshots
 - new: Russian translation
 
 
-### v 3.7 (WIP)
+### v 3.7
 - added: changelog after update
 - added: long click on toolbar opens tab overview
 - added: click on toolbar opens search/enter URL

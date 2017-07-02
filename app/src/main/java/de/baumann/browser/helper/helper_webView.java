@@ -103,6 +103,7 @@ public class helper_webView {
         webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
         webView.getSettings().setUseWideViewPort(true);
         webView.getSettings().setLoadWithOverviewMode(true);
+        webView.requestDisallowInterceptTouchEvent(true);
 
         from.registerForContextMenu(webView);
 

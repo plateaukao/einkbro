@@ -1095,7 +1095,7 @@ public class Browser_2 extends AppCompatActivity implements ObservableScrollView
                 OutputStream fOut;
                 fOut = new FileOutputStream(shareFile);
 
-                bitmap.compress(Bitmap.CompressFormat.PNG, 50, fOut);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 50, fOut);
                 fOut.flush();
                 fOut.close();
                 bitmap.recycle();
