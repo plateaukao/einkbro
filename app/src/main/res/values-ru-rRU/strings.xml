@@ -9,7 +9,7 @@
     <string name="app_share_screenshot">Поделиться снимком экрана при помощи:</string>
     <string name="app_share_image">Поделиться изображением при помощи:</string>
     <string name="app_share_link">Поделиться ссылкой при помощи:</string>
-    <string name="app_search_hint_bookmark">Введите заголовок...</string>
+    <string name="app_search_hint_bookmark">Введите заголовок…</string>
     <string name="app_yes">Включено</string>
     <string name="app_no">Отключено</string>
     <string name="app_open">Открыть папку?</string>
@@ -120,7 +120,7 @@
 
 
     <string name="action_license">О приложении</string>
-    <string name="action_license_summary">Узнать больше об этом приложении (помощь, список изменений, лицензия, ...).</string>
+    <string name="action_license_summary">Узнать больше об этом приложении (помощь, список изменений, лицензия, …).</string>
 
     <string name="action_openSettings">Информация о приложении</string>
 
@@ -207,7 +207,7 @@
     <string name="about_title_dev">Разработчик</string>
 
     <string name="about_changelog">Список изменений</string>
-    <string name="about_changelog_summary">Открыть страницу на Github для просмотра изменений... \n
+    <string name="about_changelog_summary">Открыть страницу на Github для просмотра изменений… \n
      (требуется подключение к интернету)</string>
 
     <string name="about_license">Лицензия</string>

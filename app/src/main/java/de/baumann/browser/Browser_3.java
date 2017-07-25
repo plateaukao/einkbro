@@ -45,7 +45,6 @@ import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
@@ -112,6 +111,7 @@ public class Browser_3 extends AppCompatActivity implements ObservableScrollView
     private EditText editText;
     private RelativeLayout relativeLayout;
     private HorizontalScrollView scrollTabs;
+    private Toolbar toolbar;
 
 
     // Strings
@@ -167,7 +167,7 @@ public class Browser_3 extends AppCompatActivity implements ObservableScrollView
 
         // find Views
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         mWebView = (ObservableWebView) findViewById(R.id.webView);
         relativeLayout = (RelativeLayout) findViewById(R.id.bottom_layout);
         customViewContainer = (FrameLayout) findViewById(R.id.customViewContainer);
@@ -186,21 +186,11 @@ public class Browser_3 extends AppCompatActivity implements ObservableScrollView
         toolbar.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorPrimary_1));
         setSupportActionBar(toolbar);
 
-        SwipeRefreshLayout swipeView = (SwipeRefreshLayout) findViewById(R.id.swipe);
-        assert swipeView != null;
-        swipeView.setColorSchemeResources(R.color.colorPrimary_1, R.color.colorAccent);
-        swipeView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                mWebView.reload();
-            }
-        });
-
 
         // setup WebView
 
         helper_webView.webView_Settings(activity, mWebView);
-        helper_webView.webView_WebViewClient(activity, swipeView, mWebView, urlBar);
+        helper_webView.webView_WebViewClient(activity, mWebView, urlBar);
 
         mWebChromeClient = new myWebChromeClient();
         mWebView.setWebChromeClient(mWebChromeClient);
@@ -547,7 +537,7 @@ public class Browser_3 extends AppCompatActivity implements ObservableScrollView
 
     @Override
     public void onUpOrCancelMotionEvent(ScrollState scrollState) {
-        helper_browser.scroll(activity, scrollState, relativeLayout, imageButton, imageButton_left, imageButton_right,
+        helper_browser.scroll(activity, scrollState, relativeLayout, toolbar, imageButton, imageButton_left, imageButton_right,
                 urlBar, mWebView, scrollTabs);
     }
 
@@ -645,6 +635,12 @@ public class Browser_3 extends AppCompatActivity implements ObservableScrollView
                             });
                     snackbar.show();
                     mWebView.loadUrl(URL.replace("openLogin", ""));
+                } else if (URL.contains("exit")) {
+                    sharedPref.edit().putString("openURL", "").apply();
+                    sharedPref.edit().putString("tab_3", "").apply();
+                    File tab_3 = new File(activity.getFilesDir() + "/tab_3.jpg");
+                    tab_3.delete();
+                    finish();
                 } else {
                     mWebView.loadUrl(URL);
                 }
@@ -825,6 +821,10 @@ public class Browser_3 extends AppCompatActivity implements ObservableScrollView
             editText.setVisibility(View.GONE);
         }
 
+        if (id == R.id.action_reload) {
+            mWebView.reload();
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -883,15 +883,6 @@ public class Browser_3 extends AppCompatActivity implements ObservableScrollView
             } catch (Exception e) {
                 // Error occurred while creating the File
                 Log.e(TAG, "Browser Error", e);
-            }
-
-            if (progress <= 10) {
-                imageButton.setVisibility(View.INVISIBLE);
-                relativeLayout.animate().translationY(0);
-
-                if (scrollTabs.getVisibility() == View.VISIBLE) {
-                    scrollTabs.setVisibility(View.GONE);
-                }
             }
 
             if (progress == 100) {

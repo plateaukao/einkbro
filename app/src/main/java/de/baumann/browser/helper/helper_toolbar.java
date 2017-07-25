@@ -48,7 +48,7 @@ import de.baumann.browser.lists.List_readLater;
 
 public class helper_toolbar {
 
-    public static void toolbarBrowser (final Activity activity, final WebView webview, final Toolbar toolbar) {
+    static void toolbarBrowser (final Activity activity, final WebView webview, final Toolbar toolbar) {
 
         toolbar.setOnTouchListener(new class_OnSwipeTouchListener_editText(activity) {
             public void onSwipeTop() {
@@ -108,7 +108,7 @@ public class helper_toolbar {
         final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
 
         textView.setText(text);
-        if ( sharedPref.getInt("actualTab", 1) == tab) {
+        if (sharedPref.getInt("actualTab", 1) == tab) {
             textView.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorAccent));
         }
 
@@ -133,14 +133,14 @@ public class helper_toolbar {
         });
     }
 
-    private static void toolbarViews (final Activity activity, TextView textView, ImageView imageView,
-                                         CardView cardView, final HorizontalScrollView horizontalScrollView,
-                                         int tab, String text, String picture, final Class newTab) {
+    private static void toolbarViews (final Activity activity, final TextView textView, ImageView imageView,
+                                      CardView cardView, final HorizontalScrollView horizontalScrollView,
+                                      int tab, String text, final String picture, final Class newTab, final ImageView close) {
 
         final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
 
         textView.setText(text);
-        if ( sharedPref.getInt("actualTab", 1) == tab) {
+        if (sharedPref.getInt("actualTab", 1) == tab) {
             textView.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorAccent));
         }
 
@@ -153,6 +153,12 @@ public class helper_toolbar {
         } catch (Exception e) {
             Log.w("Browser", "Error load thumbnail", e);
             imageView.setVisibility(View.GONE);
+        }
+
+        if (!text.equals(activity.getString(R.string.context_tab))) {
+            close.setVisibility(View.VISIBLE);
+        } else {
+            close.setVisibility(View.GONE);
         }
 
         cardView.setOnClickListener(new View.OnClickListener() {
@@ -178,6 +184,17 @@ public class helper_toolbar {
             }
         });
 
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sharedPref.edit().putString("openURL", "exit").apply();
+                Intent intent = new Intent(activity, newTab);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                activity.startActivity(intent);
+                horizontalScrollView.setVisibility(View.GONE);
+            }
+        });
+
     }
 
     private static void toolbarOnclick (final Activity activity) {
@@ -189,33 +206,38 @@ public class helper_toolbar {
 
             TextView context_1 = (TextView) activity.findViewById(R.id.context_1);
             ImageView context_1_preView = (ImageView) activity.findViewById(R.id.context_1_preView);
+            ImageView close_1 = (ImageView) activity.findViewById(R.id.close_1);
             CardView context_1_Layout = (CardView) activity.findViewById(R.id.context_1_Layout);
             helper_toolbar.toolbarViews(activity, context_1, context_1_preView, context_1_Layout, scrollTabs,
-                    1, helper_browser.tab_1(activity), "/tab_1.jpg", Browser_1.class);
+                    1, helper_browser.tab_1(activity), "/tab_1.jpg", Browser_1.class, close_1);
 
             TextView context_2 = (TextView) activity.findViewById(R.id.context_2);
             ImageView context_2_preView = (ImageView) activity.findViewById(R.id.context_2_preView);
+            ImageView close_2 = (ImageView) activity.findViewById(R.id.close_2);
             CardView context_2_Layout = (CardView) activity.findViewById(R.id.context_2_Layout);
             helper_toolbar.toolbarViews(activity, context_2, context_2_preView, context_2_Layout, scrollTabs,
-                    2, helper_browser.tab_2(activity), "/tab_2.jpg", Browser_2.class);
+                    2, helper_browser.tab_2(activity), "/tab_2.jpg", Browser_2.class, close_2);
 
             TextView context_3 = (TextView) activity.findViewById(R.id.context_3);
             ImageView context_3_preView = (ImageView) activity.findViewById(R.id.context_3_preView);
+            ImageView close_3 = (ImageView) activity.findViewById(R.id.close_3);
             CardView context_3_Layout = (CardView) activity.findViewById(R.id.context_3_Layout);
             helper_toolbar.toolbarViews(activity, context_3, context_3_preView, context_3_Layout, scrollTabs,
-                    3, helper_browser.tab_3(activity), "/tab_3.jpg", Browser_3.class);
+                    3, helper_browser.tab_3(activity), "/tab_3.jpg", Browser_3.class, close_3);
 
             TextView context_4 = (TextView) activity.findViewById(R.id.context_4);
             ImageView context_4_preView = (ImageView) activity.findViewById(R.id.context_4_preView);
+            ImageView close_4 = (ImageView) activity.findViewById(R.id.close_4);
             CardView context_4_Layout = (CardView) activity.findViewById(R.id.context_4_Layout);
             helper_toolbar.toolbarViews(activity, context_4, context_4_preView, context_4_Layout, scrollTabs,
-                    4, helper_browser.tab_4(activity), "/tab_4.jpg", Browser_4.class);
+                    4, helper_browser.tab_4(activity), "/tab_4.jpg", Browser_4.class, close_4);
 
             TextView context_5 = (TextView) activity.findViewById(R.id.context_5);
             ImageView context_5_preView = (ImageView) activity.findViewById(R.id.context_5_preView);
+            ImageView close_5 = (ImageView) activity.findViewById(R.id.close_5);
             CardView context_5_Layout = (CardView) activity.findViewById(R.id.context_5_Layout);
             helper_toolbar.toolbarViews(activity, context_5, context_5_preView, context_5_Layout, scrollTabs,
-                    5, helper_browser.tab_5(activity), "/tab_5.jpg", Browser_5.class);
+                    5, helper_browser.tab_5(activity), "/tab_5.jpg", Browser_5.class, close_5);
 
         } else {
             scrollTabs.setVisibility(View.GONE);

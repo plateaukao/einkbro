@@ -119,7 +119,8 @@ public class Activity_intent extends Activity {
                     .addAction(R.drawable.earth, getString(R.string.readLater_action), piLL_1)
                     .addAction(R.drawable.format_list_bulleted, getString(R.string.app_title_readLater), piLL_2)
                     .setContentIntent(piMain)
-                    .setPriority(Notification.PRIORITY_HIGH).build();
+                    .setPriority(Notification.PRIORITY_HIGH)
+                    .setVibrate(new long[0]).build();
             NotificationManager notificationManager =
                     (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             notificationManager.notify(n, notification);

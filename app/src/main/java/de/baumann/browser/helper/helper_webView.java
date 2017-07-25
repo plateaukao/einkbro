@@ -28,7 +28,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.util.Patterns;
 import android.webkit.CookieManager;
@@ -166,8 +165,7 @@ public class helper_webView {
         }
     }
 
-    public static void webView_WebViewClient (final Activity from, final SwipeRefreshLayout swipeRefreshLayout,
-                                              final WebView webView, final TextView urlBar) {
+    public static void webView_WebViewClient (final Activity from, final WebView webView, final TextView urlBar) {
 
         final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
 
@@ -177,7 +175,6 @@ public class helper_webView {
                 super.onPageFinished(view, url);
 
                 String title = helper_webView.getTitle(from, webView);
-                swipeRefreshLayout.setRefreshing(false);
                 urlBar.setText(title);
                 sharedPref.edit().putString("openURL", "").apply();
 

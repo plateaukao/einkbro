@@ -70,6 +70,10 @@
     <string name="menu_createShortcut">Erstelle Verknüpfung</string>
     <string name="menu_createShortcut_success">Verknüpfung erstellt</string>
     <string name="menu_go">Starte Suche</string>
+    <string name="menu_favorite">Leere Seite als Favorit</string>
+    <string name="menu_open">Öffnen …</string>
+    <string name="menu_more">Mehr …</string>
+    <string name="menu_reload">Seite neu laden</string>
 
     <string name="action_sort">Einträge sortieren</string>
     <string name="action_sort_title">Sortiere nach Titel</string>

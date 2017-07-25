@@ -79,6 +79,9 @@ public class List_files extends AppCompatActivity {
     private SimpleCursorAdapter adapter;
     private SharedPreferences sharedPref;
 
+    private int top;
+    private int index;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,6 +125,11 @@ public class List_files extends AppCompatActivity {
         setFilesList();
     }
 
+    private void isEdited () {
+        index = listView.getFirstVisiblePosition();
+        View v = listView.getChildAt(0);
+        top = (v == null) ? 0 : (v.getTop() - listView.getPaddingTop());
+    }
 
     private void setFilesList() {
 
@@ -295,6 +303,7 @@ public class List_files extends AppCompatActivity {
         });
 
         listView.setAdapter(adapter);
+        listView.setSelectionFromTop(index, top);
         //onClick function
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -330,6 +339,8 @@ public class List_files extends AppCompatActivity {
 
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                isEdited();
 
                 Cursor row2 = (Cursor) listView.getItemAtPosition(position);
                 final String files_title = row2.getString(row2.getColumnIndexOrThrow("files_title"));

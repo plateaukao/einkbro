@@ -74,4 +74,10 @@
         android:title="@string/action_delete"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/action_favorite"
+        android:orderInCategory="100"
+        android:title="@string/menu_favorite"
+        app:showAsAction="never" />
+
 </menu>

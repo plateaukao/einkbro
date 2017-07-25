@@ -1,10 +1,14 @@
 ### v 3.8 (WIP)
+- removed: swipe to refresh
 - fix: some random force closes
-- fix: crash when opening file manager
 - fix: notifications on Lollipop/Marshmallow devices
+- fix: do not scroll to list end after editing entry
 - improved: taking screenshots
+- new: menu -> reload website
 - new: Russian translation
-
+- new: show current url when starting editing mode in toolbar
+- new: close tabs from tab preview
+- new: set empty page as favorite
 
 ### v 3.7
 - added: changelog after update

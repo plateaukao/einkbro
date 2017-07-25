@@ -23,11 +23,9 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.content.res.TypedArray;
 import android.graphics.Point;
 import android.os.Environment;
 import android.preference.PreferenceManager;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -66,10 +64,6 @@ public class helper_browser {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
 
         RelativeLayout relativeLayout_webView = (RelativeLayout) activity.findViewById(R.id.relativeLayout_webView);
-        int[] attrs = new int[] {R.attr.actionBarSize};
-        TypedArray ta = activity.obtainStyledAttributes(attrs);
-        int toolBarHeight = ta.getDimensionPixelSize(0, -1);
-        ta.recycle();
 
         Point size = new Point();
         activity.getWindowManager().getDefaultDisplay().getSize(size);
@@ -78,7 +72,7 @@ public class helper_browser {
         if (sharedPref.getString ("fullscreen", "2").equals("1")){
 
             RelativeLayout.LayoutParams layout_description = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
-                    height - toolBarHeight);
+                    height - toolbar.getHeight());
 
             relativeLayout_webView.setLayoutParams(layout_description);
 
@@ -91,7 +85,7 @@ public class helper_browser {
             }
 
             RelativeLayout.LayoutParams layout_description = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
-                    height - toolBarHeight - result);
+                    height - toolbar.getHeight() - result);
 
             relativeLayout_webView.setLayoutParams(layout_description);
         }
@@ -114,7 +108,8 @@ public class helper_browser {
             public void onClick(View view) {
                 urlBar.setVisibility(View.GONE);
                 editText.setVisibility(View.VISIBLE);
-                helper_editText.showKeyboard(activity, editText, 3, "", activity.getString(R.string.app_search_hint));
+                helper_editText.showKeyboard(activity, editText, 3, webView.getUrl(), activity.getString(R.string.app_search_hint));
+                editText.selectAll();
             }
         });
 
@@ -263,17 +258,16 @@ public class helper_browser {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
-                SwipeRefreshLayout swipeView = (SwipeRefreshLayout) activity.findViewById(R.id.swipe);
 
                 if(isChecked){
                     //used commit() instead of apply because the new WVC depends on the sharedPref
                     //immediately being available, would not want to miss the change in background process
                     //lag from using apply(), feel free to use apply if you prefer though.
                     sharedPref.edit().putString("blockads_string", activity.getString(R.string.app_yes)).commit();
-                    helper_webView.webView_WebViewClient(activity, swipeView, mWebView, urlBar);
+                    helper_webView.webView_WebViewClient(activity, mWebView, urlBar);
                 }else{
                     sharedPref.edit().putString("blockads_string", activity.getString(R.string.app_no)).commit();
-                    helper_webView.webView_WebViewClient(activity, swipeView, mWebView, urlBar);
+                    helper_webView.webView_WebViewClient(activity, mWebView, urlBar);
                 }
             }
         });
@@ -325,14 +319,11 @@ public class helper_browser {
         MenuItem history = menu.findItem(R.id.action_history);
         MenuItem save = menu.findItem(R.id.action_save);
         MenuItem share = menu.findItem(R.id.action_share);
-        MenuItem search_onSite = menu.findItem(R.id.action_search_onSite);
-        MenuItem downloads = menu.findItem(R.id.action_downloads);
-        MenuItem settings = menu.findItem(R.id.action_settings);
         MenuItem prev = menu.findItem(R.id.action_prev);
         MenuItem next = menu.findItem(R.id.action_next);
         MenuItem cancel = menu.findItem(R.id.action_cancel);
-        MenuItem pass = menu.findItem(R.id.action_pass);
-        MenuItem toggle = menu.findItem(R.id.action_toggle);
+        MenuItem open = menu.findItem(R.id.action_open);
+        MenuItem other = menu.findItem(R.id.action_other);
 
         if (sharedPref.getInt("keyboard", 0) == 0) { //could be button state or..?
             saveBookmark.setVisible(false);
@@ -341,14 +332,11 @@ public class helper_browser {
             history.setVisible(true);
             save.setVisible(true);
             share.setVisible(true);
-            search_onSite.setVisible(true);
-            downloads.setVisible(true);
-            settings.setVisible(false);
+            other.setVisible(true);
+            open.setVisible(true);
             prev.setVisible(false);
             next.setVisible(false);
             cancel.setVisible(false);
-            pass.setVisible(true);
-            toggle.setVisible(true);
             search_go.setVisible(false);
         } else if (sharedPref.getInt("keyboard", 0) == 1) {
             saveBookmark.setVisible(false);
@@ -357,14 +345,11 @@ public class helper_browser {
             history.setVisible(false);
             save.setVisible(false);
             share.setVisible(false);
-            search_onSite.setVisible(false);
-            downloads.setVisible(false);
-            settings.setVisible(false);
+            other.setVisible(false);
+            open.setVisible(false);
             prev.setVisible(true);
             next.setVisible(true);
             cancel.setVisible(true);
-            pass.setVisible(false);
-            toggle.setVisible(false);
             search_go.setVisible(false);
         } else if (sharedPref.getInt("keyboard", 0) == 2) {
             saveBookmark.setVisible(true);
@@ -373,14 +358,11 @@ public class helper_browser {
             history.setVisible(false);
             save.setVisible(false);
             share.setVisible(false);
-            search_onSite.setVisible(false);
-            downloads.setVisible(false);
-            settings.setVisible(false);
+            other.setVisible(false);
+            open.setVisible(false);
             prev.setVisible(false);
             next.setVisible(false);
             cancel.setVisible(true);
-            pass.setVisible(false);
-            toggle.setVisible(false);
             search_go.setVisible(false);
         } else if (sharedPref.getInt("keyboard", 0) == 3) {
             saveBookmark.setVisible(false);
@@ -389,14 +371,11 @@ public class helper_browser {
             history.setVisible(false);
             save.setVisible(false);
             share.setVisible(false);
-            search_onSite.setVisible(false);
-            downloads.setVisible(false);
-            settings.setVisible(false);
+            other.setVisible(false);
+            open.setVisible(false);
             prev.setVisible(false);
             next.setVisible(false);
             cancel.setVisible(true);
-            pass.setVisible(false);
-            toggle.setVisible(false);
             search_go.setVisible(true);
         }
     }
@@ -428,7 +407,8 @@ public class helper_browser {
         }
     }
 
-    public static void scroll (Activity activity, ScrollState scrollState, final RelativeLayout relativeLayout, ImageButton imageButton,
+    public static void scroll (final Activity activity, ScrollState scrollState, final RelativeLayout relativeLayout, final Toolbar toolbar,
+                               ImageButton imageButton,
                                ImageButton imageButton_left, ImageButton imageButton_right, TextView urlBar, WebView webView, HorizontalScrollView scrollTabs) {
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
@@ -437,11 +417,6 @@ public class helper_browser {
             scrollTabs.setVisibility(View.GONE);
         }
 
-        int[] attrs = new int[] {R.attr.actionBarSize};
-        TypedArray ta = activity.obtainStyledAttributes(attrs);
-        int toolBarHeight = ta.getDimensionPixelSize(0, -1);
-        ta.recycle();
-
         if (scrollState == ScrollState.UP) {
 
             imageButton.setVisibility(View.VISIBLE);
@@ -449,7 +424,7 @@ public class helper_browser {
             imageButton_right.setVisibility(View.GONE);
 
             if (sharedPref.getString ("fullscreen", "2").equals("2") || sharedPref.getString ("fullscreen", "2").equals("3")){
-                relativeLayout.animate().translationY(toolBarHeight);
+                relativeLayout.animate().translationY(toolbar.getHeight());
             }
 
 

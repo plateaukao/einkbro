@@ -56,6 +56,8 @@ public class List_pass extends AppCompatActivity {
     private SharedPreferences sharedPref;
     private  MAHEncryptor mahEncryptor;
 
+    private int top;
+    private int index;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +106,12 @@ public class List_pass extends AppCompatActivity {
         setFilesList();
     }
 
+    private void isEdited () {
+        index = listView.getFirstVisiblePosition();
+        View v = listView.getChildAt(0);
+        top = (v == null) ? 0 : (v.getTop() - listView.getPaddingTop());
+    }
+
     private void setFilesList() {
 
         //display data
@@ -122,6 +130,7 @@ public class List_pass extends AppCompatActivity {
         SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, layoutstyle, row, column, xml_id, 0);
 
         listView.setAdapter(adapter);
+        listView.setSelectionFromTop(index, top);
         //onClick function
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -148,6 +157,9 @@ public class List_pass extends AppCompatActivity {
 
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                isEdited();
+
                 Cursor row2 = (Cursor) listView.getItemAtPosition(position);
                 final String _id = row2.getString(row2.getColumnIndexOrThrow("_id"));
                 final String pass_title = row2.getString(row2.getColumnIndexOrThrow("pass_title"));
@@ -280,6 +292,7 @@ public class List_pass extends AppCompatActivity {
         menu.findItem(R.id.action_sort).setVisible(false);
         menu.findItem(R.id.action_filter).setVisible(false);
         menu.findItem(R.id.action_save_bookmark).setVisible(false);
+        menu.findItem(R.id.action_favorite).setVisible(false);
 
         return true; // this is important to call so that new menu is shown
     }

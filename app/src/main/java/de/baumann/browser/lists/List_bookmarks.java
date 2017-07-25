@@ -71,6 +71,9 @@ public class List_bookmarks extends AppCompatActivity {
     private SimpleCursorAdapter adapter;
     private SharedPreferences sharedPref;
 
+    private int top;
+    private int index;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,6 +113,12 @@ public class List_bookmarks extends AppCompatActivity {
         db.open();
 
         setBookmarksList();
+    }
+
+    private void isEdited () {
+        index = listView.getFirstVisiblePosition();
+        View v = listView.getChildAt(0);
+        top = (v == null) ? 0 : (v.getTop() - listView.getPaddingTop());
     }
 
     private void setBookmarksList() {
@@ -157,6 +166,9 @@ public class List_bookmarks extends AppCompatActivity {
 
                     @Override
                     public void onClick(View arg0) {
+
+                        isEdited();
+
                         if (bookmarks_attachment.equals("")) {
 
                             if(db.isExistFav("true")){
@@ -198,6 +210,7 @@ public class List_bookmarks extends AppCompatActivity {
         });
 
         listView.setAdapter(adapter);
+        listView.setSelectionFromTop(index, top);
         //onClick function
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -213,6 +226,8 @@ public class List_bookmarks extends AppCompatActivity {
 
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                isEdited();
 
                 Cursor row2 = (Cursor) listView.getItemAtPosition(position);
                 final String _id = row2.getString(row2.getColumnIndexOrThrow("_id"));
@@ -489,6 +504,15 @@ public class List_bookmarks extends AppCompatActivity {
                             }
                         });
                 snackbar.show();
+                return true;
+
+            case R.id.action_favorite:
+                if(db.isExistFav("true")){
+                    Snackbar.make(listView, R.string.bookmark_setFav_not, Snackbar.LENGTH_LONG).show();
+                }else{
+                    sharedPref.edit().putString("startURL", "").apply();
+                    Snackbar.make(listView, R.string.bookmark_setFav, Snackbar.LENGTH_LONG).show();
+                }
                 return true;
 
             case R.id.action_save_bookmark:

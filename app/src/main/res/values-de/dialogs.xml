@@ -5,21 +5,17 @@
 
     <string name="changelog_text">
 
-        &lt;b>Neues Verhalten der Toolbar:&lt;/b>&lt;br>
-        Wenn du auf die Toolbar klickst öffnet sich die Suche bzw. das Feld um eine URL einzugeben.
-        Um die Tabs zu wechseln, musst du lange auf die Toolbar klicken.&lt;br>&lt;br>
-
-        &lt;b>v 3.7&lt;/b>&lt;br>&lt;br>
-        - added: changelog after update&lt;br>
-        - added: long click on toolbar opens tab overview&lt;br>
-        - added: click on toolbar opens search/enter URL&lt;br>
-        - fix: toolbar swipe (lists)&lt;br>
-        - fix: hide navigation buttons&lt;br>
-        - fix: contributor title&lt;br>
-        - fix: always loading homepage when closing settings&lt;br>
-        - fix: cancel search on site&lt;br>
-        - improved: cookie settings&lt;br>
-        - improved: open links in new tab
+        &lt;b>v 3.8&lt;/b>&lt;br>&lt;br>
+        - removed: swipe to refresh&lt;br>
+        - fix: some random force closes&lt;br>
+        - fix: notifications on Lollipop/Marshmallow devices&lt;br>
+        - fix: do not scroll to list end after editing entry&lt;br>
+        - improved: taking screenshots&lt;br>
+        - new: menu -> reload website&lt;br>
+        - new: Russian translation&lt;br>
+        - new: show current url when starting editing mode in toolbar&lt;br>
+        - new: close tabs from tab preview&lt;br>
+        - new: set empty page as favorite&lt;br>
     </string>
 
     //License Dialog

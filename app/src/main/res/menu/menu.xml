@@ -104,33 +104,48 @@
     </item>
 
     <item
-        android:id="@+id/action_search_onSite"
+        android:id="@+id/action_open"
         android:orderInCategory="100"
-        android:title="@string/menu_searchSite"
-        app:showAsAction="never" />
+        android:title="@string/menu_open"
+        app:showAsAction="never" >
+        <!-- "file" submenu -->
+        <menu>
+            <item
+                android:id="@+id/action_pass"
+                android:orderInCategory="100"
+                android:title="@string/menu_pass"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/action_downloads"
+                android:orderInCategory="100"
+                android:title="@string/menu_downloads"
+                app:showAsAction="never" />
+        </menu>
+    </item>
 
     <item
-        android:id="@+id/action_pass"
+        android:id="@+id/action_other"
         android:orderInCategory="100"
-        android:title="@string/menu_pass"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/action_downloads"
-        android:orderInCategory="100"
-        android:title="@string/menu_downloads"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/action_toggle"
-        android:orderInCategory="100"
-        android:title="@string/menu_toggle"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/menu_settings"
-        app:showAsAction="never" />
+        android:title="@string/menu_more"
+        app:showAsAction="never" >
+        <!-- "file" submenu -->
+        <menu>
+            <item
+                android:id="@+id/action_search_onSite"
+                android:orderInCategory="100"
+                android:title="@string/menu_searchSite"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/action_reload"
+                android:orderInCategory="100"
+                android:title="@string/menu_reload"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/action_toggle"
+                android:orderInCategory="100"
+                android:title="@string/menu_toggle"
+                app:showAsAction="never" />
+        </menu>
+    </item>
 
 </menu>

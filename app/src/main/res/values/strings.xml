@@ -69,6 +69,10 @@
     <string name="menu_createShortcut">Create shortcut</string>
     <string name="menu_createShortcut_success">Shortcut created</string>
     <string name="menu_go">Start search</string>
+    <string name="menu_favorite">Blank page as favorite</string>
+    <string name="menu_open">Open …</string>
+    <string name="menu_more">More …</string>
+    <string name="menu_reload">Reload website</string>
 
     <string name="action_sort">Sort entries</string>
     <string name="action_sort_title">Sort by title</string>

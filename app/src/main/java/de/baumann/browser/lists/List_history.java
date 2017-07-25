@@ -70,6 +70,9 @@ public class List_history extends AppCompatActivity {
     private SimpleCursorAdapter adapter;
     private SharedPreferences sharedPref;
 
+    private int top;
+    private int index;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,6 +112,17 @@ public class List_history extends AppCompatActivity {
         db.open();
 
         setHistoryList();
+
+        listView.post(new Runnable(){
+            public void run() {
+                listView.setSelection(listView.getCount() - 1);
+            }});
+    }
+
+    private void isEdited () {
+        index = listView.getFirstVisiblePosition();
+        View v = listView.getChildAt(0);
+        top = (v == null) ? 0 : (v.getTop() - listView.getPaddingTop());
     }
 
     private void setHistoryList() {
@@ -147,6 +161,7 @@ public class List_history extends AppCompatActivity {
         });
 
         listView.setAdapter(adapter);
+        listView.setSelectionFromTop(index, top);
         //onClick function
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -161,6 +176,8 @@ public class List_history extends AppCompatActivity {
 
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                isEdited();
 
                 Cursor row2 = (Cursor) listView.getItemAtPosition(position);
                 final String _id = row2.getString(row2.getColumnIndexOrThrow("_id"));
@@ -302,11 +319,6 @@ public class List_history extends AppCompatActivity {
                 return true;
             }
         });
-
-        listView.post(new Runnable(){
-            public void run() {
-                listView.setSelection(listView.getCount() - 1);
-            }});
     }
 
     private void setTitle () {
@@ -328,6 +340,8 @@ public class List_history extends AppCompatActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
+
+        menu.findItem(R.id.action_favorite).setVisible(false);
 
         if (sharedPref.getInt("keyboard", 0) == 0) {
             // normal
