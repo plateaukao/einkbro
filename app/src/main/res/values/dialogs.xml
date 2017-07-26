@@ -11,6 +11,7 @@
         - fix: notifications on Lollipop/Marshmallow devices&lt;br>
         - fix: do not scroll to list end after editing entry&lt;br>
         - improved: taking screenshots&lt;br>
+        - improved: long click menu in lists&lt;br>
         - new: menu -> reload website&lt;br>
         - new: Russian translation&lt;br>
         - new: show current url when starting editing mode in toolbar&lt;br>

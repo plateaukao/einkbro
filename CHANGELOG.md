@@ -1,9 +1,10 @@
-### v 3.8 (WIP)
+### v 3.8
 - removed: swipe to refresh
 - fix: some random force closes
 - fix: notifications on Lollipop/Marshmallow devices
 - fix: do not scroll to list end after editing entry
 - improved: taking screenshots
+- improved: long click menu in lists
 - new: menu -> reload website
 - new: Russian translation
 - new: show current url when starting editing mode in toolbar

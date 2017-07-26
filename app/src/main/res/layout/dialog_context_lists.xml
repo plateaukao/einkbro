@@ -1,0 +1,372 @@
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_margin"
+            android:orientation="horizontal"
+            android:id="@+id/menu_shareSite_Layout"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/menu_shareSite"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/menu_share"
+                android:gravity="center_vertical"
+                android:ellipsize="end"
+                android:lines="1" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_margin"
+            android:orientation="horizontal"
+            android:id="@+id/menu_saveSite_Layout"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/menu_saveSite"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/menu_save"
+                android:gravity="center_vertical"
+                android:ellipsize="end"
+                android:lines="1" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_margin"
+            android:orientation="horizontal"
+            android:id="@+id/menu_edit_Layout"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/menu_edit"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/bookmark_edit_title"
+                android:gravity="center_vertical"
+                android:ellipsize="end"
+                android:lines="1" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_margin"
+            android:orientation="horizontal"
+            android:id="@+id/menu_remove_Layout"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/menu_remove"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/bookmark_remove_bookmark"
+                android:gravity="center_vertical"
+                android:ellipsize="end"
+                android:lines="1" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/context_save_Layout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_margin"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/context_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:lines="1"
+                android:text="@string/context_save"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        </LinearLayout>
+
+        <HorizontalScrollView
+            android:id="@+id/scrollTabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorDark_trans"
+            android:layout_marginStart="@dimen/activity_margin"
+            android:layout_marginEnd="@dimen/activity_margin"
+            tools:ignore="UselessParent">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/scrollView_1_Layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:layout_width="175dp"
+                            android:layout_height="100dp"
+                            android:layout_alignParentTop="true"
+                            android:scaleType="fitStart"
+                            android:src="@drawable/numeric_1_box"
+                            tools:ignore="ContentDescription" />
+
+                        <ImageView
+                            android:id="@+id/context_1_preView"
+                            android:layout_width="175dp"
+                            android:layout_height="100dp"
+                            android:layout_alignParentTop="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/numeric_1_box"
+                            tools:ignore="ContentDescription" />
+
+                        <TextView
+                            android:id="@+id/scrollView_1"
+                            android:layout_width="175dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/context_1_preView"
+                            android:background="@color/colorAccent_trans"
+                            android:ellipsize="end"
+                            android:lines="1"
+                            android:maxLines="3"
+                            android:padding="8dp"
+                            android:text="@string/context_tab"
+                            android:fontFamily="sans-serif-condensed"
+                            android:typeface="sans"
+                            android:textStyle="bold"
+                            android:textColor="@color/colorLight"
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                    </RelativeLayout>
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/scrollView_2_Layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:layout_width="175dp"
+                            android:layout_height="100dp"
+                            android:layout_alignParentTop="true"
+                            android:scaleType="fitStart"
+                            android:src="@drawable/numeric_2_box"
+                            tools:ignore="ContentDescription" />
+
+                        <ImageView
+                            android:id="@+id/context_2_preView"
+                            android:layout_width="175dp"
+                            android:layout_height="100dp"
+                            android:layout_alignParentTop="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/numeric_2_box"
+                            tools:ignore="ContentDescription" />
+
+                        <TextView
+                            android:id="@+id/scrollView_2"
+                            android:layout_width="175dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/context_2_preView"
+                            android:background="@color/colorAccent_trans"
+                            android:ellipsize="end"
+                            android:lines="1"
+                            android:maxLines="3"
+                            android:padding="8dp"
+                            android:text="@string/context_tab"
+                            android:fontFamily="sans-serif-condensed"
+                            android:typeface="sans"
+                            android:textStyle="bold"
+                            android:textColor="@color/colorLight"
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                    </RelativeLayout>
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/scrollView_3_Layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:layout_width="175dp"
+                            android:layout_height="100dp"
+                            android:layout_alignParentTop="true"
+                            android:scaleType="fitStart"
+                            android:src="@drawable/numeric_3_box"
+                            tools:ignore="ContentDescription" />
+
+                        <ImageView
+                            android:id="@+id/context_3_preView"
+                            android:layout_width="175dp"
+                            android:layout_height="100dp"
+                            android:layout_alignParentTop="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/numeric_3_box"
+                            tools:ignore="ContentDescription" />
+
+                        <TextView
+                            android:id="@+id/scrollView_3"
+                            android:layout_width="175dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/context_3_preView"
+                            android:background="@color/colorAccent_trans"
+                            android:ellipsize="end"
+                            android:lines="1"
+                            android:maxLines="3"
+                            android:padding="8dp"
+                            android:text="@string/context_tab"
+                            android:fontFamily="sans-serif-condensed"
+                            android:typeface="sans"
+                            android:textStyle="bold"
+                            android:textColor="@color/colorLight"
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                    </RelativeLayout>
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/scrollView_4_Layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:layout_width="175dp"
+                            android:layout_height="100dp"
+                            android:layout_alignParentTop="true"
+                            android:scaleType="fitStart"
+                            android:src="@drawable/numeric_4_box"
+                            tools:ignore="ContentDescription" />
+
+                        <ImageView
+                            android:id="@+id/context_4_preView"
+                            android:layout_width="175dp"
+                            android:layout_height="100dp"
+                            android:layout_alignParentTop="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/numeric_4_box"
+                            tools:ignore="ContentDescription" />
+
+                        <TextView
+                            android:id="@+id/scrollView_4"
+                            android:layout_width="175dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/context_4_preView"
+                            android:background="@color/colorAccent_trans"
+                            android:ellipsize="end"
+                            android:lines="1"
+                            android:maxLines="3"
+                            android:padding="8dp"
+                            android:text="@string/context_tab"
+                            android:fontFamily="sans-serif-condensed"
+                            android:typeface="sans"
+                            android:textStyle="bold"
+                            android:textColor="@color/colorLight"
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                    </RelativeLayout>
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/scrollView_5_Layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:layout_width="175dp"
+                            android:layout_height="100dp"
+                            android:layout_alignParentTop="true"
+                            android:scaleType="fitStart"
+                            android:src="@drawable/numeric_5_box"
+                            tools:ignore="ContentDescription" />
+
+                        <ImageView
+                            android:id="@+id/context_5_preView"
+                            android:layout_width="175dp"
+                            android:layout_height="100dp"
+                            android:layout_alignParentTop="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/numeric_5_box"
+                            tools:ignore="ContentDescription" />
+
+                        <TextView
+                            android:id="@+id/scrollView_5"
+                            android:layout_width="175dp"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/context_5_preView"
+                            android:background="@color/colorAccent_trans"
+                            android:ellipsize="end"
+                            android:lines="1"
+                            android:maxLines="3"
+                            android:padding="8dp"
+                            android:text="@string/context_tab"
+                            android:fontFamily="sans-serif-condensed"
+                            android:typeface="sans"
+                            android:textStyle="bold"
+                            android:textColor="@color/colorLight"
+                            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                    </RelativeLayout>
+
+                </android.support.v7.widget.CardView>
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
+
+    </LinearLayout>
+
+</ScrollView>

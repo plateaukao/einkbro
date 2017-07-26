@@ -599,6 +599,9 @@ public class Browser_1 extends AppCompatActivity implements ObservableScrollView
         if (sharedPref.getInt("closeApp", 0) == 1) {
             helper_main.closeApp(activity, mWebView);
         }
+        if (scrollTabs.getVisibility() == View.VISIBLE) {
+            scrollTabs.setVisibility(View.GONE);
+        }
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -908,6 +911,12 @@ public class Browser_1 extends AppCompatActivity implements ObservableScrollView
             } catch (Exception e) {
                 // Error occurred while creating the File
                 Log.e(TAG, "Browser Error", e);
+            }
+
+            if (progress < 10) {
+                if (scrollTabs.getVisibility() == View.VISIBLE) {
+                    scrollTabs.setVisibility(View.GONE);
+                }
             }
 
             if (progress == 100) {
