@@ -51,6 +51,7 @@ lists (see below) and has only five tabs (Who needs more?).
 
 ### Some nice extra features:
 
+- Adblocker
 - open links in background
 - Websearch (from shared text)
 - screenshots of the whole website
