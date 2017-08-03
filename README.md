@@ -1,8 +1,12 @@
 [![Donate](https://www.paypalobjects.com/de_DE/DE/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=NP6TGYDYP9SHY)
 
 # Browser
+
 A simple Android browser based on webview. The goal is to provide a lightweight but power full browser. It is based on several 
 lists (see below) and has only five tabs (Who needs more?).
+
+<a href="https://f-droid.org/packages/de.baumann.browser/" target="_blank">
+<img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="80"/></a>
 
 
 ### Links:
@@ -11,7 +15,6 @@ lists (see below) and has only five tabs (Who needs more?).
 - See [license](https://github.com/scoute-dich/browser/blob/master/LICENSE.md)
 - See [screenshots](https://github.com/scoute-dich/browser/blob/master/SCREENSHOTS.md)
 - [XDA - Link](http://forum.xda-developers.com/android/apps-games/app-browser-t3500091)
-
 
 ### The lists:
 
