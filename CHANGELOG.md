@@ -1,3 +1,13 @@
+### v 3.9 (WIP)
+- removed: notification actions (to buggy)
+- fix: notification behavior (open multiple links)
+- fix: force close on toolbar click
+- fix: website partially not visible
+- improved: refresh website
+- new: homepage setup
+- new: open links directly (optional)
+- new: moved from activities to fragments
+
 ### v 3.8
 - removed: swipe to refresh
 - fix: some random force closes

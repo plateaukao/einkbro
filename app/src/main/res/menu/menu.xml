@@ -35,13 +35,8 @@
         app:showAsAction="always"
         tools:ignore="AlwaysShowAction" />
 
-    <item
-        android:id="@+id/action_history"
-        android:orderInCategory="100"
-        android:title="@string/menu_history"
-        android:icon="@drawable/history"
-        app:showAsAction="always"
-        tools:ignore="AlwaysShowAction" />
+
+
 
     <item
         android:id="@+id/action_save"
@@ -131,21 +126,37 @@
         <!-- "file" submenu -->
         <menu>
             <item
-                android:id="@+id/action_search_onSite"
-                android:orderInCategory="100"
-                android:title="@string/menu_searchSite"
-                app:showAsAction="never" />
-            <item
                 android:id="@+id/action_reload"
                 android:orderInCategory="100"
                 android:title="@string/menu_reload"
                 app:showAsAction="never" />
             <item
-                android:id="@+id/action_toggle"
+                android:id="@+id/action_search_onSite"
                 android:orderInCategory="100"
-                android:title="@string/menu_toggle"
+                android:title="@string/menu_searchSite"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/action_help"
+                android:orderInCategory="100"
+                android:title="@string/menu_Help"
                 app:showAsAction="never" />
         </menu>
     </item>
+
+    <item
+        android:id="@+id/action_history"
+        android:orderInCategory="100"
+        android:title="@string/menu_history"
+        android:icon="@drawable/history"
+        app:showAsAction="always"
+        tools:ignore="AlwaysShowAction" />
+
+    <item
+        android:id="@+id/action_toggle"
+        android:orderInCategory="100"
+        android:title="@string/menu_toggle"
+        android:icon="@drawable/settings_light"
+        app:showAsAction="never"
+        tools:ignore="AlwaysShowAction" />
 
 </menu>

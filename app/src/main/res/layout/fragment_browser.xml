@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="ContentDescription" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.github.ksoichiro.android.observablescrollview.ObservableWebView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/webView"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:maxHeight="4dip"
+            android:minHeight="4dip"
+            android:progressTint="@color/colorAccent" />
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:background="@drawable/custom_button"
+            android:padding="8dp"
+            app:srcCompat="@drawable/arrow_up"
+            android:scaleType="fitCenter"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:visibility="gone"
+            android:layout_margin="16dp" />
+
+        <ImageButton
+            android:id="@+id/imageButton_left"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_margin="16dp"
+            android:background="@drawable/custom_button"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            android:visibility="gone"
+            app:srcCompat="@drawable/arrow_left" />
+
+        <ImageButton
+            android:id="@+id/imageButton_right"
+            android:background="@drawable/custom_button"
+            android:padding="8dp"
+            app:srcCompat="@drawable/arrow_right"
+            android:scaleType="fitCenter"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:visibility="gone"
+            android:layout_margin="16dp" />
+
+        <FrameLayout
+            android:id="@+id/customViewContainer"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:visibility="gone"
+            android:background="@android:color/background_light" />
+
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>

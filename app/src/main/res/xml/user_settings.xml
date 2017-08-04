@@ -124,6 +124,15 @@
         android:title="@string/pref_2">
 
         <ListPreference
+            android:title="@string/action_tabMain"
+            android:icon="@drawable/cellphone_iphone"
+            android:summary="@string/action_tabMain_summary"
+            android:key="tabMain"
+            android:defaultValue="0"
+            android:entries="@array/listArrayTabMain"
+            android:entryValues="@array/listValuesTabMain" />
+
+        <ListPreference
             android:title="@string/action_fullscreen"
             android:icon="@drawable/fullscreen"
             android:summary="@string/action_fullscreen_summary"
@@ -149,6 +158,13 @@
             android:defaultValue="100"
             android:entries="@array/listArrayFont"
             android:entryValues="@array/listValuesFont" />
+
+        <CheckBoxPreference
+            android:title="@string/action_openLink"
+            android:icon="@drawable/link_variant"
+            android:summary="@string/action_openLink_summary"
+            android:key="openLink"
+            android:defaultValue="true" />
 
         <Preference
             android:title="@string/action_openSettings"

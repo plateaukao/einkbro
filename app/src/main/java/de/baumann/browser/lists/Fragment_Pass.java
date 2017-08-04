@@ -1,22 +1,3 @@
-/*
-    This file is part of the Browser webview app.
-
-    HHS Moodle WebApp is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    HHS Moodle WebApp is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with the Browser webview app.
-
-    If not, see <http://www.gnu.org/licenses/>.
- */
-
 package de.baumann.browser.lists;
 
 import android.app.AlertDialog;
@@ -26,14 +7,15 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -44,45 +26,42 @@ import com.mobapphome.mahencryptorlib.MAHEncryptor;
 
 import de.baumann.browser.R;
 import de.baumann.browser.databases.DbAdapter_Pass;
+import de.baumann.browser.helper.CustomViewPager;
 import de.baumann.browser.helper.helper_editText;
 import de.baumann.browser.helper.helper_main;
 import de.baumann.browser.helper.helper_toolbar;
 
-public class List_pass extends AppCompatActivity {
+public class Fragment_Pass extends Fragment {
 
-    private DbAdapter_Pass db;
-
+    private MAHEncryptor mahEncryptor;
     private ListView listView = null;
+    private EditText editText;
+    private DbAdapter_Pass db;
     private SharedPreferences sharedPref;
-    private  MAHEncryptor mahEncryptor;
+    private TextView listBar;
+    private Toolbar toolbar;
+    private CustomViewPager viewPager;
 
     private int top;
     private int index;
+    
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_lists, container, false);
 
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        getWindow().setStatusBarColor(ContextCompat.getColor(List_pass.this, R.color.colorPrimaryDark_2));
+        setHasOptionsMenu(true);
 
-        setContentView(R.layout.activity_popup);
+        PreferenceManager.setDefaultValues(getActivity(), R.xml.user_settings, false);
+        PreferenceManager.setDefaultValues(getActivity(), R.xml.user_settings_search, false);
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-        PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
-        PreferenceManager.setDefaultValues(this, R.xml.user_settings_search, false);
-        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        sharedPref.edit().putString("openURL", "").apply();
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        if(actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-
-        helper_main.checkPin(this);
-        helper_main.onStart(this);
-        helper_toolbar.toolbarActivities(this, toolbar);
+        toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        editText = (EditText) getActivity().findViewById(R.id.editText);
+        listBar = (TextView) getActivity().findViewById(R.id.listBar);
+        listView = (ListView)rootView.findViewById(R.id.list);
+        viewPager = (CustomViewPager) getActivity().findViewById(R.id.viewpager);
 
         try {
             mahEncryptor = MAHEncryptor.newInstance(sharedPref.getString("saved_key", ""));
@@ -91,19 +70,11 @@ public class List_pass extends AppCompatActivity {
             Snackbar.make(listView, R.string.toast_error, Snackbar.LENGTH_SHORT).show();
         }
 
-        EditText editText = (EditText) findViewById(R.id.editText);
-        editText.setVisibility(View.GONE);
-        editText.setHint(R.string.app_search_hint);
-        editText.clearFocus();
-        TextView urlBar = (TextView) findViewById(R.id.urlBar);
-        urlBar.setText(R.string.app_title_passStorage);
-
-        listView = (ListView)findViewById(R.id.list);
-
         //calling Notes_DbAdapter
-        db = new DbAdapter_Pass(this);
+        db = new DbAdapter_Pass(getActivity());
         db.open();
-        setFilesList();
+
+        return rootView;
     }
 
     private void isEdited () {
@@ -126,8 +97,8 @@ public class List_pass extends AppCompatActivity {
                 "pass_content",
                 "pass_creation"
         };
-        final Cursor row = db.fetchAllData(this);
-        SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, layoutstyle, row, column, xml_id, 0);
+        final Cursor row = db.fetchAllData(getActivity());
+        SimpleCursorAdapter adapter = new SimpleCursorAdapter(getActivity(), layoutstyle, row, column, xml_id, 0);
 
         listView.setAdapter(adapter);
         listView.setSelectionFromTop(index, top);
@@ -146,7 +117,12 @@ public class List_pass extends AppCompatActivity {
                     sharedPref.edit().putString("copyPW", decrypted_userPW).apply();
                     sharedPref.edit().putString("copyUN", decrypted_userName).apply();
                     sharedPref.edit().putString("openURL", "openLogin" + pass_content).apply();
-                    finishAffinity();
+                    if (sharedPref.getInt("appShortcut", 0) == 0) {
+                        viewPager.setCurrentItem(sharedPref.getInt("tab", 0));
+                    } else {
+                        sharedPref.edit().putInt("appShortcut", 0).apply();
+                        viewPager.setCurrentItem(0);
+                    }
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -171,7 +147,7 @@ public class List_pass extends AppCompatActivity {
                         getString(R.string.pass_copy),
                         getString(R.string.pass_edit),
                         getString(R.string.bookmark_remove_bookmark)};
-                new AlertDialog.Builder(List_pass.this)
+                new AlertDialog.Builder(getActivity())
                         .setPositiveButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
 
                             public void onClick(DialogInterface dialog, int whichButton) {
@@ -185,8 +161,8 @@ public class List_pass extends AppCompatActivity {
 
                                     try {
 
-                                        AlertDialog.Builder builder = new AlertDialog.Builder(List_pass.this);
-                                        View dialogView = View.inflate(List_pass.this, R.layout.dialog_login, null);
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                                        View dialogView = View.inflate(getActivity(), R.layout.dialog_login, null);
 
                                         final EditText pass_titleET = (EditText) dialogView.findViewById(R.id.pass_title);
                                         final EditText pass_userNameET = (EditText) dialogView.findViewById(R.id.pass_userName);
@@ -230,7 +206,7 @@ public class List_pass extends AppCompatActivity {
                                         final AlertDialog dialog2 = builder.create();
                                         // Display the custom alert dialog on interface
                                         dialog2.show();
-                                        helper_editText.showKeyboard(List_pass.this, pass_titleET, 0, pass_title, getString(R.string.app_search_hint_bookmark));
+                                        helper_editText.showKeyboard(getActivity(), pass_titleET, 0, pass_title, getString(R.string.app_search_hint_bookmark));
 
                                     } catch (Exception e) {
                                         e.printStackTrace();
@@ -259,7 +235,12 @@ public class List_pass extends AppCompatActivity {
                                         sharedPref.edit().putString("copyPW", decrypted_userPW).apply();
                                         sharedPref.edit().putString("copyUN", decrypted_userName).apply();
                                         sharedPref.edit().putString("openURL", "copyLogin").apply();
-                                        finishAffinity();
+                                        if (sharedPref.getInt("appShortcut", 0) == 0) {
+                                            viewPager.setCurrentItem(sharedPref.getInt("tab", 0));
+                                        } else {
+                                            sharedPref.edit().putInt("appShortcut", 0).apply();
+                                            viewPager.setCurrentItem(0);
+                                        }
 
                                     } catch (Exception e) {
                                         e.printStackTrace();
@@ -276,32 +257,42 @@ public class List_pass extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();    //To change body of overridden methods use File | Settings | File Templates.
-        if (sharedPref.getInt("closeApp", 0) == 1) {
-            finish();
-        }
+    public void doBack() {
+        //BackPressed in activity will call this;
+        Snackbar snackbar = Snackbar
+                .make(listView, getString(R.string.toast_exit), Snackbar.LENGTH_SHORT)
+                .setAction(getString(R.string.toast_yes), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        getActivity().finish();
+                    }
+                });
+        snackbar.show();
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_popup, menu);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
         super.onPrepareOptionsMenu(menu);
+
+        AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
+        appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        setFilesList();
+        helper_toolbar.toolbarGestures(getActivity(), toolbar, viewPager, "", editText, listBar, "");
+
+        listBar.setText(R.string.app_title_passStorage);
 
         menu.findItem(R.id.action_cancel).setVisible(false);
         menu.findItem(R.id.action_sort).setVisible(false);
         menu.findItem(R.id.action_filter).setVisible(false);
         menu.findItem(R.id.action_save_bookmark).setVisible(false);
         menu.findItem(R.id.action_favorite).setVisible(false);
-
-        return true; // this is important to call so that new menu is shown
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_popup, menu);
-        return true;
     }
 
     @Override
@@ -318,26 +309,24 @@ public class List_pass extends AppCompatActivity {
                         .setAction(R.string.toast_yes, new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                List_pass.this.deleteDatabase("pass.db");
-                                recreate();
+                                getActivity().deleteDatabase("pass.db");
+                                getActivity().recreate();
                             }
                         });
                 snackbar.show();
                 return true;
 
             case android.R.id.home:
-                sharedPref.edit().putInt("keyboard", 0).apply();
-                sharedPref.edit().putString("openURL", "").apply();
-                finish();
+                if (sharedPref.getInt("appShortcut", 0) == 0) {
+                    viewPager.setCurrentItem(sharedPref.getInt("tab", 0));
+                } else {
+                    sharedPref.edit().putInt("appShortcut", 0).apply();
+                    viewPager.setCurrentItem(0);
+                }
                 return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onBackPressed() {
-        sharedPref.edit().putString("openURL", "").apply();
-        finish();
-    }
 }

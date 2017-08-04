@@ -23,7 +23,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.graphics.Point;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
@@ -35,13 +34,9 @@ import android.webkit.CookieManager;
 import android.webkit.WebView;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
-
-import com.github.ksoichiro.android.observablescrollview.ScrollState;
 
 import java.io.File;
 import java.io.IOException;
@@ -57,38 +52,10 @@ import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class helper_browser {
 
-    public static void setupViews (final Activity activity, final Toolbar toolbar, final WebView webView, final TextView urlBar,
+    public static void setupViews (final Activity activity, final WebView webView,
                                    final EditText editText, final ImageButton imageButton, final ImageButton imageButton_left,
-                                   final ImageButton imageButton_right, final RelativeLayout toolbarLayout) {
+                                   final ImageButton imageButton_right, final Toolbar toolbar) {
 
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
-
-        RelativeLayout relativeLayout_webView = (RelativeLayout) activity.findViewById(R.id.relativeLayout_webView);
-
-        Point size = new Point();
-        activity.getWindowManager().getDefaultDisplay().getSize(size);
-        int height = size.y;
-
-        if (sharedPref.getString ("fullscreen", "2").equals("1")){
-
-            RelativeLayout.LayoutParams layout_description = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
-                    height - toolbar.getHeight());
-
-            relativeLayout_webView.setLayoutParams(layout_description);
-
-        } else if (sharedPref.getString ("fullscreen", "2").equals("4")){
-
-            int result = 0;
-            int resourceId = activity.getResources().getIdentifier("status_bar_height", "dimen", "android");
-            if (resourceId > 0) {
-                result = activity.getResources().getDimensionPixelSize(resourceId);
-            }
-
-            RelativeLayout.LayoutParams layout_description = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
-                    height - toolbar.getHeight() - result);
-
-            relativeLayout_webView.setLayoutParams(layout_description);
-        }
 
         editText.setHint(R.string.app_search_hint);
         editText.clearFocus();
@@ -98,22 +65,12 @@ public class helper_browser {
             public void onClick(View view) {
                 webView.scrollTo(0,0);
                 imageButton.setVisibility(View.GONE);
+                toolbar.setVisibility(View.VISIBLE);
                 helper_browser.setNavArrows(webView, imageButton_left, imageButton_right);
-                toolbarLayout.animate().translationY(0);
             }
         });
 
-        toolbar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                urlBar.setVisibility(View.GONE);
-                editText.setVisibility(View.VISIBLE);
-                helper_editText.showKeyboard(activity, editText, 3, webView.getUrl(), activity.getString(R.string.app_search_hint));
-                editText.selectAll();
-            }
-        });
 
-        helper_toolbar.toolbarBrowser(activity, webView, toolbar);
         helper_editText.editText_EditorAction(editText, activity, webView, editText);
         helper_editText.editText_FocusChange(editText, activity);
     }
@@ -324,35 +281,29 @@ public class helper_browser {
         MenuItem cancel = menu.findItem(R.id.action_cancel);
         MenuItem open = menu.findItem(R.id.action_open);
         MenuItem other = menu.findItem(R.id.action_other);
+        MenuItem reload = menu.findItem(R.id.action_reload);
+        MenuItem settings = menu.findItem(R.id.action_toggle);
 
-        if (sharedPref.getInt("keyboard", 0) == 0) { //could be button state or..?
+        if (sharedPref.getInt("keyboard", 0) == 0) {
             saveBookmark.setVisible(false);
             search_onSite_go.setVisible(false);
             search_chooseWebsite.setVisible(false);
-            history.setVisible(true);
-            save.setVisible(true);
-            share.setVisible(true);
-            other.setVisible(true);
-            open.setVisible(true);
             prev.setVisible(false);
             next.setVisible(false);
             cancel.setVisible(false);
             search_go.setVisible(false);
         } else if (sharedPref.getInt("keyboard", 0) == 1) {
             saveBookmark.setVisible(false);
-            search_onSite_go.setVisible(true);
             search_chooseWebsite.setVisible(false);
             history.setVisible(false);
             save.setVisible(false);
             share.setVisible(false);
             other.setVisible(false);
             open.setVisible(false);
-            prev.setVisible(true);
-            next.setVisible(true);
-            cancel.setVisible(true);
             search_go.setVisible(false);
+            settings.setVisible(false);
+            reload.setVisible(false);
         } else if (sharedPref.getInt("keyboard", 0) == 2) {
-            saveBookmark.setVisible(true);
             search_onSite_go.setVisible(false);
             search_chooseWebsite.setVisible(false);
             history.setVisible(false);
@@ -362,12 +313,12 @@ public class helper_browser {
             open.setVisible(false);
             prev.setVisible(false);
             next.setVisible(false);
-            cancel.setVisible(true);
             search_go.setVisible(false);
+            settings.setVisible(false);
+            reload.setVisible(false);
         } else if (sharedPref.getInt("keyboard", 0) == 3) {
             saveBookmark.setVisible(false);
             search_onSite_go.setVisible(false);
-            search_chooseWebsite.setVisible(true);
             history.setVisible(false);
             save.setVisible(false);
             share.setVisible(false);
@@ -375,8 +326,8 @@ public class helper_browser {
             open.setVisible(false);
             prev.setVisible(false);
             next.setVisible(false);
-            cancel.setVisible(true);
-            search_go.setVisible(true);
+            settings.setVisible(false);
+            reload.setVisible(false);
         }
     }
 
@@ -407,39 +358,6 @@ public class helper_browser {
         }
     }
 
-    public static void scroll (final Activity activity, ScrollState scrollState, final RelativeLayout relativeLayout, final Toolbar toolbar,
-                               ImageButton imageButton,
-                               ImageButton imageButton_left, ImageButton imageButton_right, TextView urlBar, WebView webView, HorizontalScrollView scrollTabs) {
-
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
-
-        if (scrollTabs.getVisibility() == View.VISIBLE) {
-            scrollTabs.setVisibility(View.GONE);
-        }
-
-        if (scrollState == ScrollState.UP) {
-
-            imageButton.setVisibility(View.VISIBLE);
-            imageButton_left.setVisibility(View.GONE);
-            imageButton_right.setVisibility(View.GONE);
-
-            if (sharedPref.getString ("fullscreen", "2").equals("2") || sharedPref.getString ("fullscreen", "2").equals("3")){
-                relativeLayout.animate().translationY(toolbar.getHeight());
-            }
-
-
-        } else if (scrollState == ScrollState.DOWN) {
-
-            urlBar.setText(webView.getTitle());
-            helper_browser.setNavArrows(webView, imageButton_left, imageButton_right);
-            imageButton.setVisibility(View.GONE);
-            relativeLayout.animate().translationY(0);
-
-        } else {
-            imageButton.setVisibility(View.GONE);
-        }
-    }
-
     public static File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yy-MM-dd_HH-mm", Locale.getDefault()).format(new Date());
@@ -456,7 +374,7 @@ public class helper_browser {
         final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
         String s;
 
-        final String tab_string = sharedPref.getString("tab_1", "");
+        final String tab_string = sharedPref.getString("tab_0", "");
 
         try {
             if (tab_string.isEmpty()) {
@@ -476,7 +394,7 @@ public class helper_browser {
         final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
         String s;
 
-        final String tab_string = sharedPref.getString("tab_2", "");
+        final String tab_string = sharedPref.getString("tab_1", "");
 
         try {
             if (tab_string.isEmpty()) {
@@ -496,7 +414,7 @@ public class helper_browser {
         final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
         String s;
 
-        final String tab_string = sharedPref.getString("tab_3", "");
+        final String tab_string = sharedPref.getString("tab_2", "");
 
         try {
             if (tab_string.isEmpty()) {
@@ -516,7 +434,7 @@ public class helper_browser {
         final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
         String s;
 
-        final String tab_string = sharedPref.getString("tab_4", "");
+        final String tab_string = sharedPref.getString("tab_3", "");
 
         try {
             if (tab_string.isEmpty()) {
@@ -536,7 +454,7 @@ public class helper_browser {
         final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
         String s;
 
-        final String tab_string = sharedPref.getString("tab_5", "");
+        final String tab_string = sharedPref.getString("tab_4", "");
 
         try {
             if (tab_string.isEmpty()) {
@@ -555,22 +473,22 @@ public class helper_browser {
     public static void resetTabs (Activity activity) {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
 
-        File tab_1 = new File(activity.getFilesDir() + "/tab_1.jpg");
+        File tab_1 = new File(activity.getFilesDir() + "/tab_0.jpg");
         tab_1.delete();
-        File tab_2 = new File(activity.getFilesDir() + "/tab_2.jpg");
+        File tab_2 = new File(activity.getFilesDir() + "/tab_1.jpg");
         tab_2.delete();
-        File tab_3 = new File(activity.getFilesDir() + "/tab_3.jpg");
+        File tab_3 = new File(activity.getFilesDir() + "/tab_2.jpg");
         tab_3.delete();
-        File tab_4 = new File(activity.getFilesDir() + "/tab_4.jpg");
+        File tab_4 = new File(activity.getFilesDir() + "/tab_3.jpg");
         tab_4.delete();
-        File tab_5 = new File(activity.getFilesDir() + "/tab_5.jpg");
+        File tab_5 = new File(activity.getFilesDir() + "/tab_4.jpg");
         tab_5.delete();
 
+        sharedPref.edit().putString("tab_0", "").apply();
         sharedPref.edit().putString("tab_1", "").apply();
         sharedPref.edit().putString("tab_2", "").apply();
         sharedPref.edit().putString("tab_3", "").apply();
         sharedPref.edit().putString("tab_4", "").apply();
-        sharedPref.edit().putString("tab_5", "").apply();
-        sharedPref.edit().putInt("actualTab", 1).apply();
+        sharedPref.edit().putInt("actualTab", 0).apply();
     }
 }

@@ -22,11 +22,11 @@
 
         <!-- Browser Main Tab -->
 
-        <activity android:name=".Browser_1"
+        <activity android:name=".Activity_Main"
             android:launchMode="singleInstance"
             android:configChanges="orientation|screenSize"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar_Tabs">
+            android:theme="@style/AppTheme.NoActionBar">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -51,87 +51,31 @@
         </activity>
 
 
-        <!-- Browser Tabs -->
-
-        <activity android:name=".Browser_2"
-            android:launchMode="singleInstance"
-            android:configChanges="orientation|screenSize"
-            android:theme="@style/AppTheme.NoActionBar_Tabs" />
-
-        <activity android:name=".Browser_3"
-            android:launchMode="singleInstance"
-            android:configChanges="orientation|screenSize"
-            android:theme="@style/AppTheme.NoActionBar_Tabs" />
-
-        <activity android:name=".Browser_4"
-            android:launchMode="singleInstance"
-            android:configChanges="orientation|screenSize"
-            android:theme="@style/AppTheme.NoActionBar_Tabs" />
-
-        <activity android:name=".Browser_5"
-            android:launchMode="singleInstance"
-            android:configChanges="orientation|screenSize"
-            android:theme="@style/AppTheme.NoActionBar_Tabs" />
-
-
-        <!-- List activities -->
-
-        <activity
-            android:name=".lists.List_bookmarks"
-            android:launchMode="singleInstance"
-            android:configChanges="orientation|screenSize"
-            android:theme="@style/AppTheme.NoActionBar_Activities" />
-
-        <activity
-            android:name=".lists.List_readLater"
-            android:launchMode="singleInstance"
-            android:configChanges="orientation|screenSize"
-            android:theme="@style/AppTheme.NoActionBar_Activities" />
-
-        <activity
-            android:name=".lists.List_history"
-            android:launchMode="singleInstance"
-            android:configChanges="orientation|screenSize"
-            android:theme="@style/AppTheme.NoActionBar_Activities" />
-
-        <activity
-            android:name=".lists.List_pass"
-            android:launchMode="singleInstance"
-            android:configChanges="orientation|screenSize"
-            android:theme="@style/AppTheme.NoActionBar_Activities" />
-
-        <activity
-            android:name=".lists.List_files"
-            android:launchMode="singleInstance"
-            android:configChanges="orientation|screenSize"
-            android:theme="@style/AppTheme.NoActionBar_Activities" />
-
-
         <!-- Other activities -->
 
         <activity
             android:name=".about.About_activity"
             android:launchMode="singleInstance"
             android:configChanges="orientation|screenSize"
-            android:theme="@style/AppTheme.NoActionBar_Activities" />
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".helper.Activity_intro"
             android:launchMode="singleInstance"
             android:configChanges="orientation|screenSize"
-            android:theme="@style/AppTheme.NoActionBar_Activities" />
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".helper.Activity_settings"
             android:launchMode="singleInstance"
             android:configChanges="orientation|screenSize"
-            android:theme="@style/AppTheme.NoActionBar_Activities" />
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".helper.Activity_settings_search"
             android:launchMode="singleInstance"
             android:configChanges="orientation|screenSize"
-            android:theme="@style/AppTheme.NoActionBar_Activities" />
+            android:theme="@style/AppTheme.NoActionBar" />
 
 
         <!-- Intents -->
@@ -152,17 +96,6 @@
                 <action android:name="android.intent.action.VIEW" />
                 <data android:scheme="http" />
                 <data android:scheme="https" />
-            </intent-filter>
-        </activity>
-
-        <activity
-            android:name=".helper.Activity_intent_add"
-            android:noHistory="true"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:label="@string/app_name" >
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
 

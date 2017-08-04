@@ -31,6 +31,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.FileProvider;
@@ -190,7 +191,7 @@ public class helper_main {
         }
     }
 
-    public static void closeApp (Activity from, WebView webView) {
+    public static void closeApp (final Activity from, WebView webView) {
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
 
@@ -217,7 +218,14 @@ public class helper_main {
         }
 
         helper_browser.resetTabs(from);
-        from.finish();
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                from.finish();
+            }
+        }, 500);
+
     }
 
     public static void onStart (final Activity activity) {
@@ -234,9 +242,11 @@ public class helper_main {
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
-        sharedPref.edit().putInt("closeApp", 0).apply();
         sharedPref.edit().putString("openURL", sharedPref.getString("startURL", "https://github.com/scoute-dich/browser/")).apply();
         sharedPref.edit().putInt("keyboard", 0).apply();
+        sharedPref.edit().putInt("tab", 0).apply();
+        sharedPref.edit().putInt("closeApp", 0).apply();
+        sharedPref.edit().putInt("appShortcut", 0).apply();
         sharedPref.getInt("keyboard", 0);
 
         boolean show = sharedPref.getBoolean("introShowDo_notShow", true);

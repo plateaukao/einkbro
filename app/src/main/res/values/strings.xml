@@ -47,7 +47,7 @@
     // Menu Items
 
     <string name="menu_search">Search</string>
-    <string name="menu_history">History</string>
+    <string name="menu_history">Open history</string>
     <string name="menu_save">Save website</string>
     <string name="menu_save_screenshot">Save screenshot</string>
     <string name="menu_save_bookmark">Save as bookmark</string>
@@ -73,6 +73,7 @@
     <string name="menu_open">Open …</string>
     <string name="menu_more">More …</string>
     <string name="menu_reload">Reload website</string>
+    <string name="menu_Help">Help</string>
 
     <string name="action_sort">Sort entries</string>
     <string name="action_sort_title">Sort by title</string>
@@ -260,6 +261,13 @@
     <string name="action_desktop">Request desktop</string>
     <string name="action_desktop_summary">Try to show the desktop site of websites by default. This feature is a little bit buggy.</string>
 
+    <string name="action_openLink">Open links in background</string>
+    <string name="action_openLink_summary">Checking this will open links in the background and put a notification on your
+        statusbar to open the link later. Disable to open links immediately.</string>
+
+    <string name="action_tabMain">Start tab</string>
+    <string name="action_tabMain_summary">Which tab should be displayed on app start?</string>
+
 
 
     // Intro
@@ -302,11 +310,7 @@
     <string name="about_dev">Gaukler Faun</string>
     <string name="about_dev_summary">Open my profile on Github (needs internet connection).</string>
 
-    <string name="about_intro">Intro</string>
-    <string name="about_intro_summary">Show the intro screen one more time.</string>
-
     <string name="about_help">Help</string>
-    <string name="about_help_summary">Show the \"help dialog\" with useful infos how to use Browser.</string>
 
     <string name="about_donate">Donate</string>
     <string name="about_donate_summary">If you like the app, you can donate to me via Paypal (needs internet connection).</string>
@@ -334,5 +338,22 @@
     <string name="pw_forgotten">Pin forgotten?</string>
     <string name="pw_hint">Enter pin</string>
     <string name="pw_forgotten_dialog">Delete all data to reset your app pin?</string>
+
+
+    // Arrays
+
+    <string-array name="listArrayTabMain">
+        <item>Browser</item>
+        <item>Bookmarks</item>
+        <item>readLater</item>
+        <item>History</item>
+    </string-array>
+
+    <string-array name="listValuesTabMain">
+        <item>0</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+    </string-array>
 
 </resources>

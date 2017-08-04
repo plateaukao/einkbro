@@ -215,9 +215,6 @@
     <string name="about_dev">Gaukler Faun</string>
     <string name="about_dev_summary">Открыть мой профиль на Github (требуется подключение к интернету).</string>
 
-    <string name="about_intro">Вступление</string>
-    <string name="about_intro_summary">Показать экран введения еще раз.</string>
-
     <string name="about_help">Помощь</string>
 
     <string name="about_donate">Пожертвовать</string>

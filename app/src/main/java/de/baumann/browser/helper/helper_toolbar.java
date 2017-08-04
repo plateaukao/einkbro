@@ -21,7 +21,6 @@ package de.baumann.browser.helper;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
@@ -29,7 +28,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.webkit.WebView;
+import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -37,137 +36,151 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
-import de.baumann.browser.Browser_1;
-import de.baumann.browser.Browser_2;
-import de.baumann.browser.Browser_3;
-import de.baumann.browser.Browser_4;
-import de.baumann.browser.Browser_5;
+import java.io.File;
+
 import de.baumann.browser.R;
-import de.baumann.browser.lists.List_bookmarks;
-import de.baumann.browser.lists.List_readLater;
+
+import static android.content.ContentValues.TAG;
 
 public class helper_toolbar {
 
-    static void toolbarBrowser (final Activity activity, final WebView webview, final Toolbar toolbar) {
+    public static void toolBarPreview (final Activity activity, TextView textView, ImageView imageView,
+                                       int tab, String text, final String picture, ImageView close) {
 
-        toolbar.setOnTouchListener(new class_OnSwipeTouchListener_editText(activity) {
-            public void onSwipeTop() {
-                helper_main.closeApp(activity, webview);
-            }
-            public void onSwipeRight() {
-                helper_main.switchToActivity(activity, List_readLater.class, "", false);
-            }
-            public void onSwipeLeft() {
-                helper_main.switchToActivity(activity, List_bookmarks.class, "", false);
-            }
-        });
+        final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
 
-        toolbar.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                helper_toolbar.toolbarOnclick(activity);
-                return true;
-            }
-        });
+        textView.setText(text);
+        if (sharedPref.getInt("tab", 0) == tab) {
+            textView.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorAccent));
+        } else {
+            textView.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorAccent_trans));
+        }
+
+        if (text.equals(activity.getString(R.string.context_tab))) {
+            close.setVisibility(View.GONE);
+        } else {
+            close.setVisibility(View.VISIBLE);
+        }
+
+        try {
+            Glide.with(activity)
+                    .load(activity.getFilesDir() + picture) // or URI/path
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .into(imageView); //imageView to set thumbnail to
+        } catch (Exception e) {
+            Log.w("Browser", "Error load thumbnail", e);
+            imageView.setVisibility(View.GONE);
+        }
     }
 
-    public static void toolbarActivities (final Activity activity, final Toolbar toolbar) {
+    public static void toolbarGestures (final Activity activity, final Toolbar toolbar, final CustomViewPager viewPager,
+                                        final String url, final EditText editText, final TextView urlBar, final String text) {
+
+        toolbar.setVisibility(View.VISIBLE);
+        final HorizontalScrollView scrollTabs = (HorizontalScrollView) activity.findViewById(R.id.scrollTabs);
 
         toolbar.setOnTouchListener(new class_OnSwipeTouchListener_editText(activity) {
             public void onSwipeTop() {
                 SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
                 sharedPref.edit().putInt("closeApp", 1).apply();
-                activity.finish();
+                if (viewPager.getCurrentItem() == 0) {
+                    viewPager.setCurrentItem(1);
+                } else {
+                    viewPager.setCurrentItem(0);
+                }
             }
             public void onSwipeRight() {
-                helper_main.switchToActivity(activity, List_readLater.class, "", true);
+                viewPager.setCurrentItem(6);
+                scrollTabs.setVisibility(View.GONE);
             }
             public void onSwipeLeft() {
-                helper_main.switchToActivity(activity, List_bookmarks.class, "", true);
+                viewPager.setCurrentItem(5);
+                scrollTabs.setVisibility(View.GONE);
             }
         });
+
         toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                helper_toolbar.toolbarOnclick(activity);
+
+                if (viewPager.getCurrentItem() < 5) {
+                    urlBar.setVisibility(View.GONE);
+                    editText.setVisibility(View.VISIBLE);
+                    helper_editText.showKeyboard(activity, editText, 3, text, activity.getString(R.string.app_search_hint));
+                    editText.selectAll();
+                } else {
+                    Log.i(TAG, "Switched to list");
+                }
             }
         });
+
         toolbar.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                helper_toolbar.toolbarOnclick(activity);
+                if (viewPager.getCurrentItem() < 5) {
+                    final HorizontalScrollView scrollTabs = (HorizontalScrollView) activity.findViewById(R.id.scrollTabs);
+
+                    if (scrollTabs.getVisibility() == View.GONE) {
+                        scrollTabs.setVisibility(View.VISIBLE);
+
+                        TextView context_1 = (TextView) activity.findViewById(R.id.context_1);
+                        ImageView context_1_preView = (ImageView) activity.findViewById(R.id.context_1_preView);
+                        ImageView close_1 = (ImageView) activity.findViewById(R.id.close_1);
+                        CardView context_1_Layout = (CardView) activity.findViewById(R.id.context_1_Layout);
+                        helper_toolbar.cardViewClick(activity, context_1_Layout, scrollTabs, 0, close_1, viewPager, url, "0");
+                        helper_toolbar.toolBarPreview(activity, context_1,context_1_preView, 0, helper_browser.tab_1(activity), "/tab_0.jpg", close_1);
+
+                        TextView context_2 = (TextView) activity.findViewById(R.id.context_2);
+                        ImageView context_2_preView = (ImageView) activity.findViewById(R.id.context_2_preView);
+                        ImageView close_2 = (ImageView) activity.findViewById(R.id.close_2);
+                        CardView context_2_Layout = (CardView) activity.findViewById(R.id.context_2_Layout);
+                        helper_toolbar.cardViewClick(activity, context_2_Layout, scrollTabs, 1, close_2, viewPager, url, "1");
+                        helper_toolbar.toolBarPreview(activity, context_2,context_2_preView, 1, helper_browser.tab_2(activity), "/tab_1.jpg", close_2);
+
+                        TextView context_3 = (TextView) activity.findViewById(R.id.context_3);
+                        ImageView context_3_preView = (ImageView) activity.findViewById(R.id.context_3_preView);
+                        ImageView close_3 = (ImageView) activity.findViewById(R.id.close_3);
+                        CardView context_3_Layout = (CardView) activity.findViewById(R.id.context_3_Layout);
+                        helper_toolbar.cardViewClick(activity, context_3_Layout, scrollTabs, 2, close_3, viewPager, url, "2");
+                        helper_toolbar.toolBarPreview(activity, context_3,context_3_preView, 2, helper_browser.tab_3(activity), "/tab_2.jpg", close_3);
+
+                        TextView context_4 = (TextView) activity.findViewById(R.id.context_4);
+                        ImageView context_4_preView = (ImageView) activity.findViewById(R.id.context_4_preView);
+                        ImageView close_4 = (ImageView) activity.findViewById(R.id.close_4);
+                        CardView context_4_Layout = (CardView) activity.findViewById(R.id.context_4_Layout);
+                        helper_toolbar.cardViewClick(activity, context_4_Layout, scrollTabs, 3, close_4, viewPager, url, "3");
+                        helper_toolbar.toolBarPreview(activity, context_4,context_4_preView, 3, helper_browser.tab_4(activity), "/tab_3.jpg", close_4);
+
+                        TextView context_5 = (TextView) activity.findViewById(R.id.context_5);
+                        ImageView context_5_preView = (ImageView) activity.findViewById(R.id.context_5_preView);
+                        ImageView close_5 = (ImageView) activity.findViewById(R.id.close_5);
+                        CardView context_5_Layout = (CardView) activity.findViewById(R.id.context_5_Layout);
+                        helper_toolbar.cardViewClick(activity, context_5_Layout, scrollTabs, 4, close_5, viewPager, url, "4");
+                        helper_toolbar.toolBarPreview(activity, context_5,context_5_preView, 4, helper_browser.tab_5(activity), "/tab_4.jpg", close_5);
+
+                    } else {
+                        scrollTabs.setVisibility(View.GONE);
+                    }
+                } else {
+                    Log.i(TAG, "Switched to list");
+                }
                 return true;
             }
         });
     }
-
-    public static void toolbarContext (final Activity activity, TextView textView, ImageView imageView,
-                                     CardView cardView, final String url,
-                                     int tab, String text, String picture, final Dialog dialog, final Class to) {
-
-        final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
-
-        textView.setText(text);
-        if (sharedPref.getInt("actualTab", 1) == tab) {
-            textView.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorAccent));
-        }
-
-        try {
-            Glide.with(activity)
-                    .load(activity.getFilesDir() + picture) // or URI/path
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
-                    .into(imageView); //imageView to set thumbnail to
-        } catch (Exception e) {
-            Log.w("Browser", "Error load thumbnail", e);
-            imageView.setVisibility(View.GONE);
-        }
-
-
-        cardView.setOnClickListener(new View.OnClickListener()  {
-            @Override
-            public void onClick(View view) {
-                helper_main.switchToActivity(activity, to, url, false);
-                dialog.cancel();
-            }
-        });
-    }
-
-    private static void toolbarViews (final Activity activity, final TextView textView, ImageView imageView,
-                                      CardView cardView, final HorizontalScrollView horizontalScrollView,
-                                      int tab, String text, final String picture, final Class newTab, final ImageView close) {
+    
+    private static void cardViewClick (final Activity activity, CardView cardView, final HorizontalScrollView horizontalScrollView,
+                                      final int newTab, final ImageView close, final CustomViewPager viewPager, final String url,
+                                      final String tab) {
 
         final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
-
-        textView.setText(text);
-        if (sharedPref.getInt("actualTab", 1) == tab) {
-            textView.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorAccent));
-        }
-
-        try {
-            Glide.with(activity)
-                    .load(activity.getFilesDir() + picture) // or URI/path
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
-                    .into(imageView); //imageView to set thumbnail to
-        } catch (Exception e) {
-            Log.w("Browser", "Error load thumbnail", e);
-            imageView.setVisibility(View.GONE);
-        }
-
-        if (!text.equals(activity.getString(R.string.context_tab))) {
-            close.setVisibility(View.VISIBLE);
-        } else {
-            close.setVisibility(View.GONE);
-        }
 
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sharedPref.edit().putString("openURL", "").apply();
-                Intent intent = new Intent(activity, newTab);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                activity.startActivity(intent);
+                sharedPref.edit().putString("openURL", url).apply();
+                viewPager.setCurrentItem(newTab);
                 horizontalScrollView.setVisibility(View.GONE);
             }
         });
@@ -176,9 +189,7 @@ public class helper_toolbar {
             @Override
             public boolean onLongClick(View v) {
                 sharedPref.edit().putString("openURL", sharedPref.getString("startURL", "https://github.com/scoute-dich/browser/")).apply();
-                Intent intent = new Intent(activity, newTab);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                activity.startActivity(intent);
+                viewPager.setCurrentItem(newTab);
                 horizontalScrollView.setVisibility(View.GONE);
                 return false;
             }
@@ -187,60 +198,48 @@ public class helper_toolbar {
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sharedPref.edit().putString("openURL", "exit").apply();
-                Intent intent = new Intent(activity, newTab);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                activity.startActivity(intent);
+                File preview = new File(activity.getFilesDir() + "/tab_" + tab + ".jpg");
+                preview.delete();
+                sharedPref.edit().putInt("tab_" + tab + "_exit", 1).apply();
+                sharedPref.edit().putString("tab_" + tab, "").apply();
                 horizontalScrollView.setVisibility(View.GONE);
             }
         });
-
     }
 
-    private static void toolbarOnclick (final Activity activity) {
+    public static void cardViewClickMenu (final Activity activity, CardView cardView, final HorizontalScrollView horizontalScrollView,
+                                      final int newTab, final ImageView close, final CustomViewPager viewPager, final String url,
+                                          final Dialog dialog, final String tab) {
 
-        final HorizontalScrollView scrollTabs = (HorizontalScrollView) activity.findViewById(R.id.scrollTabs);
+        final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
 
-        if (scrollTabs.getVisibility() == View.GONE) {
-            scrollTabs.setVisibility(View.VISIBLE);
+        cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sharedPref.edit().putString("openURL", url).apply();
+                viewPager.setCurrentItem(newTab);
+                dialog.cancel();
+            }
+        });
 
-            TextView context_1 = (TextView) activity.findViewById(R.id.context_1);
-            ImageView context_1_preView = (ImageView) activity.findViewById(R.id.context_1_preView);
-            ImageView close_1 = (ImageView) activity.findViewById(R.id.close_1);
-            CardView context_1_Layout = (CardView) activity.findViewById(R.id.context_1_Layout);
-            helper_toolbar.toolbarViews(activity, context_1, context_1_preView, context_1_Layout, scrollTabs,
-                    1, helper_browser.tab_1(activity), "/tab_1.jpg", Browser_1.class, close_1);
+        cardView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                sharedPref.edit().putString("openURL", sharedPref.getString("startURL", "https://github.com/scoute-dich/browser/")).apply();
+                viewPager.setCurrentItem(newTab);
+                dialog.cancel();
+                return false;
+            }
+        });
 
-            TextView context_2 = (TextView) activity.findViewById(R.id.context_2);
-            ImageView context_2_preView = (ImageView) activity.findViewById(R.id.context_2_preView);
-            ImageView close_2 = (ImageView) activity.findViewById(R.id.close_2);
-            CardView context_2_Layout = (CardView) activity.findViewById(R.id.context_2_Layout);
-            helper_toolbar.toolbarViews(activity, context_2, context_2_preView, context_2_Layout, scrollTabs,
-                    2, helper_browser.tab_2(activity), "/tab_2.jpg", Browser_2.class, close_2);
-
-            TextView context_3 = (TextView) activity.findViewById(R.id.context_3);
-            ImageView context_3_preView = (ImageView) activity.findViewById(R.id.context_3_preView);
-            ImageView close_3 = (ImageView) activity.findViewById(R.id.close_3);
-            CardView context_3_Layout = (CardView) activity.findViewById(R.id.context_3_Layout);
-            helper_toolbar.toolbarViews(activity, context_3, context_3_preView, context_3_Layout, scrollTabs,
-                    3, helper_browser.tab_3(activity), "/tab_3.jpg", Browser_3.class, close_3);
-
-            TextView context_4 = (TextView) activity.findViewById(R.id.context_4);
-            ImageView context_4_preView = (ImageView) activity.findViewById(R.id.context_4_preView);
-            ImageView close_4 = (ImageView) activity.findViewById(R.id.close_4);
-            CardView context_4_Layout = (CardView) activity.findViewById(R.id.context_4_Layout);
-            helper_toolbar.toolbarViews(activity, context_4, context_4_preView, context_4_Layout, scrollTabs,
-                    4, helper_browser.tab_4(activity), "/tab_4.jpg", Browser_4.class, close_4);
-
-            TextView context_5 = (TextView) activity.findViewById(R.id.context_5);
-            ImageView context_5_preView = (ImageView) activity.findViewById(R.id.context_5_preView);
-            ImageView close_5 = (ImageView) activity.findViewById(R.id.close_5);
-            CardView context_5_Layout = (CardView) activity.findViewById(R.id.context_5_Layout);
-            helper_toolbar.toolbarViews(activity, context_5, context_5_preView, context_5_Layout, scrollTabs,
-                    5, helper_browser.tab_5(activity), "/tab_5.jpg", Browser_5.class, close_5);
-
-        } else {
-            scrollTabs.setVisibility(View.GONE);
-        }
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                File preview = new File(activity.getFilesDir() + "/tab_" + tab + ".jpg");
+                preview.delete();
+                sharedPref.edit().putString("tab_" + tab, "").apply();
+                horizontalScrollView.setVisibility(View.GONE);
+            }
+        });
     }
 }

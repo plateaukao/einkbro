@@ -1,32 +1,20 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme_Tabs" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary_1</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark_1</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowAnimationStyle">@null</item>
     </style>
 
-    <style name="AppTheme_Activities" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/colorPrimary_2</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark_2</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowAnimationStyle">@null</item>
-    </style>
-
-    <style name="NotificationNotesActionButtonStyle" parent="AppTheme_Activities">
+    <style name="NotificationNotesActionButtonStyle" parent="AppTheme">
         <item name="android:textSize">14sp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:minWidth">70dp</item>
     </style>
 
-    <style name="AppTheme.NoActionBar_Tabs" parent="AppTheme_Tabs">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="AppTheme.NoActionBar_Activities" parent="AppTheme_Activities">
+    <style name="AppTheme.NoActionBar" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
@@ -39,7 +27,7 @@
         <item name="android:textColorSecondary">#ffffff</item>
     </style>
 
-    <style name="Theme.Transparent" parent="AppTheme_Activities">
+    <style name="Theme.Transparent" parent="AppTheme">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowContentOverlay">@null</item>
@@ -49,8 +37,8 @@
     </style>
 
     <style name="PinDialog">
-        <item name="colorPrimary">@color/colorPrimary_2</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark_2</item>
+        <item name="colorPrimary">@color/colorPrimary_1</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark_1</item>
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">fill_parent</item>
         <!-- No backgrounds, titles or window float -->
@@ -59,7 +47,7 @@
         <item name="android:windowIsFloating">false</item>
     </style>
 
-    <style name="EditTextStyle" parent="AppTheme_Activities">
+    <style name="EditTextStyle" parent="AppTheme">
         <item name="colorControlNormal">#00ffffff</item>
         <item name="colorControlActivated">@color/colorAccent</item>
         <item name="colorControlHighlight">@color/colorAccent</item>

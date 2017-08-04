@@ -137,6 +137,8 @@ public class helper_editText {
                     }else{
                         db.insert(input_pass_title, url, encrypted_userName, encrypted_userPW, helper_main.createDate());
                         Snackbar.make(view, R.string.pass_success, Snackbar.LENGTH_LONG).show();
+                        InputMethodManager imm = (InputMethodManager) from.getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(pass_title.getWindowToken(), 0);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

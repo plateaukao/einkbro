@@ -1,22 +1,3 @@
-/*
-    This file is part of the Browser webview app.
-
-    HHS Moodle WebApp is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    HHS Moodle WebApp is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with the Browser webview app.
-
-    If not, see <http://www.gnu.org/licenses/>.
- */
-
 package de.baumann.browser.lists;
 
 import android.app.AlertDialog;
@@ -30,18 +11,18 @@ import android.os.Environment;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.FilterQueryProvider;
@@ -63,6 +44,7 @@ import java.util.Locale;
 
 import de.baumann.browser.R;
 import de.baumann.browser.databases.DbAdapter_Files;
+import de.baumann.browser.helper.CustomViewPager;
 import de.baumann.browser.helper.helper_editText;
 import de.baumann.browser.helper.helper_main;
 import de.baumann.browser.helper.helper_toolbar;
@@ -70,59 +52,53 @@ import de.baumann.browser.helper.helper_toolbar;
 import static android.content.ContentValues.TAG;
 import static java.lang.String.valueOf;
 
-public class List_files extends AppCompatActivity {
+public class Fragment_Files extends Fragment {
 
     private ListView listView = null;
     private EditText editText;
-    private TextView urlBar;
     private DbAdapter_Files db;
     private SimpleCursorAdapter adapter;
     private SharedPreferences sharedPref;
+    private TextView listBar;
+    private Toolbar toolbar;
+    private CustomViewPager viewPager;
 
     private int top;
     private int index;
+    
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_lists, container, false);
 
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        getWindow().setStatusBarColor(ContextCompat.getColor(List_files.this, R.color.colorPrimaryDark_2));
+        setHasOptionsMenu(true);
 
-        setContentView(R.layout.activity_popup);
+        PreferenceManager.setDefaultValues(getActivity(), R.xml.user_settings, false);
+        PreferenceManager.setDefaultValues(getActivity(), R.xml.user_settings_search, false);
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-        PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
-        PreferenceManager.setDefaultValues(this, R.xml.user_settings_search, false);
-        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        sharedPref.edit().putString("openURL", "").apply();
-        sharedPref.edit().putString("files_startFolder",
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath()).apply();
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        if(actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-
-        helper_main.checkPin(this);
-        helper_main.onStart(this);
-        helper_toolbar.toolbarActivities(this, toolbar);
-
-        editText = (EditText) findViewById(R.id.editText);
-        editText.setVisibility(View.GONE);
-        editText.setHint(R.string.app_search_hint);
-        editText.clearFocus();
-        urlBar = (TextView) findViewById(R.id.urlBar);
-        setTitle();
-
-        listView = (ListView)findViewById(R.id.list);
+        toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        editText = (EditText) getActivity().findViewById(R.id.editText);
+        listBar = (TextView) getActivity().findViewById(R.id.listBar);
+        listView = (ListView)rootView.findViewById(R.id.list);
+        viewPager = (CustomViewPager) getActivity().findViewById(R.id.viewpager);
 
         //calling Notes_DbAdapter
-        db = new DbAdapter_Files(this);
+        db = new DbAdapter_Files(getActivity());
         db.open();
 
-        setFilesList();
+        return rootView;
+    }
+
+    private void setTitle () {
+        if (sharedPref.getString("sortDBF", "title").equals("title")) {
+            listBar.setText(getString(R.string.app_title_downloads) + " | " + getString(R.string.sort_title));
+        } else if (sharedPref.getString("sortDBF", "title").equals("file_date")) {
+            listBar.setText(getString(R.string.app_title_downloads) + " | " + getString(R.string.sort_date));
+        } else {
+            listBar.setText(getString(R.string.app_title_downloads) + " | " + getString(R.string.sort_extension));
+        }
     }
 
     private void isEdited () {
@@ -133,7 +109,7 @@ public class List_files extends AppCompatActivity {
 
     private void setFilesList() {
 
-        deleteDatabase("files_DB_v01.db");
+        getActivity().deleteDatabase("files_DB_v01.db");
 
         String path = sharedPref.getString("files_startFolder",
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath());
@@ -192,8 +168,8 @@ public class List_files extends AppCompatActivity {
                 "files_content",
                 "files_creation"
         };
-        final Cursor row = db.fetchAllData(this);
-        adapter = new SimpleCursorAdapter(this, layoutstyle,row,column, xml_id, 0) {
+        final Cursor row = db.fetchAllData(getActivity());
+        adapter = new SimpleCursorAdapter(getActivity(), layoutstyle,row,column, xml_id, 0) {
             @Override
             public View getView (final int position, View convertView, ViewGroup parent) {
 
@@ -222,7 +198,7 @@ public class List_files extends AppCompatActivity {
                         case ".3g2":case ".avi":case ".f4v":case ".flv":case ".h261":case ".h263":
                         case ".h264":case ".asf":case ".wmv":
                             try {
-                                Glide.with(List_files.this)
+                                Glide.with(getActivity())
                                         .load(files_attachment) // or URI/path
                                         .override(76, 76)
                                         .centerCrop()
@@ -254,7 +230,7 @@ public class List_files extends AppCompatActivity {
                         case ".gif":case ".bmp":case ".tiff":case ".svg":
                         case ".png":case ".jpg":case ".JPG":case ".jpeg":
                             try {
-                                Glide.with(List_files.this)
+                                Glide.with(getActivity())
                                         .load(files_attachment) // or URI/path
                                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                                         .skipMemoryCache(true)
@@ -332,7 +308,7 @@ public class List_files extends AppCompatActivity {
                         Snackbar.make(listView, R.string.toast_directory, Snackbar.LENGTH_LONG).show();
                     }
                 } else {
-                    helper_main.open(files_icon, List_files.this, pathFile, listView);
+                    helper_main.open(files_icon, getActivity(), pathFile, listView);
                 }
             }
         });
@@ -367,7 +343,7 @@ public class List_files extends AppCompatActivity {
                             getString(R.string.choose_menu_3),
                             getString(R.string.choose_menu_4)};
 
-                    final AlertDialog.Builder dialog = new AlertDialog.Builder(List_files.this);
+                    final AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
                     dialog.setPositiveButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
 
                         public void onClick(DialogInterface dialog, int whichButton) {
@@ -407,7 +383,7 @@ public class List_files extends AppCompatActivity {
                             if (options[item].equals(getString(R.string.choose_menu_3))) {
                                 sharedPref.edit().putString("pathFile", files_attachment).apply();
                                 editText.setVisibility(View.VISIBLE);
-                                helper_editText.showKeyboard(List_files.this, editText, 2, files_title, getString(R.string.bookmark_edit_title));
+                                helper_editText.showKeyboard(getActivity(), editText, 2, files_title, getString(R.string.bookmark_edit_title));
                             }
                         }
                     });
@@ -454,27 +430,35 @@ public class List_files extends AppCompatActivity {
         return valueOf(dec.format(fileSize) + suffix);
     }
 
-    private void setTitle () {
-        if (sharedPref.getString("sortDBF", "title").equals("title")) {
-            urlBar.setText(getString(R.string.app_title_downloads) + " | " + getString(R.string.sort_title));
-        } else if (sharedPref.getString("sortDBF", "title").equals("file_date")) {
-            urlBar.setText(getString(R.string.app_title_downloads) + " | " + getString(R.string.sort_date));
-        } else {
-            urlBar.setText(getString(R.string.app_title_downloads) + " | " + getString(R.string.sort_extension));
-        }
+    public void doBack() {
+        //BackPressed in activity will call this;
+        Snackbar snackbar = Snackbar
+                .make(listView, getString(R.string.toast_exit), Snackbar.LENGTH_SHORT)
+                .setAction(getString(R.string.toast_yes), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        getActivity().finish();
+                    }
+                });
+        snackbar.show();
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();    //To change body of overridden methods use File | Settings | File Templates.
-        if (sharedPref.getInt("closeApp", 0) == 1) {
-            finish();
-        }
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_file, menu);
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
+    public void onPrepareOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
         super.onPrepareOptionsMenu(menu);
+
+        AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
+        appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        setTitle();
+        setFilesList();
+        helper_toolbar.toolbarGestures(getActivity(), toolbar, viewPager, "", editText, listBar, "");
 
         if (sharedPref.getInt("keyboard", 0) == 0) {
             // normal
@@ -489,17 +473,9 @@ public class List_files extends AppCompatActivity {
             menu.findItem(R.id.action_sort).setVisible(false);
             menu.findItem(R.id.action_filter).setVisible(false);
         }
-        return true; // this is important to call so that new menu is shown
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_file, menu);
-        return true;
-    }
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -512,13 +488,13 @@ public class List_files extends AppCompatActivity {
                 sharedPref.edit().putString("filter_filesBY", "files_title").apply();
                 setFilesList();
                 editText.setVisibility(View.VISIBLE);
-                helper_editText.showKeyboard(List_files.this, editText, 1, "", getString(R.string.action_filter_title));
+                helper_editText.showKeyboard(getActivity(), editText, 1, "", getString(R.string.action_filter_title));
                 return true;
             case R.id.filter_url:
                 sharedPref.edit().putString("filter_filesBY", "files_icon").apply();
                 setFilesList();
                 editText.setVisibility(View.VISIBLE);
-                helper_editText.showKeyboard(List_files.this, editText, 1, "", getString(R.string.action_filter_url));
+                helper_editText.showKeyboard(getActivity(), editText, 1, "", getString(R.string.action_filter_url));
                 return true;
 
             case R.id.filter_today:
@@ -528,7 +504,7 @@ public class List_files extends AppCompatActivity {
                 sharedPref.edit().putString("filter_filesBY", "files_creation").apply();
                 setFilesList();
                 editText.setText(search);
-                urlBar.setText(getString(R.string.app_title_bookmarks) + " | " + getString(R.string.filter_today));
+                listBar.setText(getString(R.string.app_title_bookmarks) + " | " + getString(R.string.filter_today));
                 return true;
             case R.id.filter_yesterday:
                 DateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
@@ -538,7 +514,7 @@ public class List_files extends AppCompatActivity {
                 sharedPref.edit().putString("filter_filesBY", "files_creation").apply();
                 setFilesList();
                 editText.setText(search2);
-                urlBar.setText(getString(R.string.app_title_bookmarks) + " | " + getString(R.string.filter_yesterday));
+                listBar.setText(getString(R.string.app_title_bookmarks) + " | " + getString(R.string.filter_yesterday));
                 return true;
             case R.id.filter_before:
                 DateFormat dateFormat3 = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
@@ -548,7 +524,7 @@ public class List_files extends AppCompatActivity {
                 sharedPref.edit().putString("filter_filesBY", "files_creation").apply();
                 setFilesList();
                 editText.setText(search3);
-                urlBar.setText(getString(R.string.app_title_bookmarks) + " | " + getString(R.string.filter_before));
+                listBar.setText(getString(R.string.app_title_bookmarks) + " | " + getString(R.string.filter_before));
                 return true;
             case R.id.filter_month:
                 DateFormat dateFormat4 = new SimpleDateFormat("yyyy-MM", Locale.getDefault());
@@ -557,18 +533,18 @@ public class List_files extends AppCompatActivity {
                 sharedPref.edit().putString("filter_filesBY", "files_creation").apply();
                 setFilesList();
                 editText.setText(search4);
-                urlBar.setText(getString(R.string.app_title_bookmarks) + " | " + getString(R.string.filter_month));
+                listBar.setText(getString(R.string.app_title_bookmarks) + " | " + getString(R.string.filter_month));
                 return true;
             case R.id.filter_own:
                 sharedPref.edit().putString("filter_filesBY", "files_creation").apply();
                 setFilesList();
                 editText.setVisibility(View.VISIBLE);
-                helper_editText.showKeyboard(List_files.this, editText, 1, "", getString(R.string.action_filter_create));
+                helper_editText.showKeyboard(getActivity(), editText, 1, "", getString(R.string.action_filter_create));
                 return true;
             case R.id.filter_clear:
                 editText.setVisibility(View.GONE);
                 setTitle();
-                helper_editText.hideKeyboard(List_files.this, editText, 0, getString(R.string.app_title_history), getString(R.string.app_search_hint));
+                helper_editText.hideKeyboard(getActivity(), editText, 0, getString(R.string.app_title_history), getString(R.string.app_search_hint));
                 setFilesList();
                 return true;
 
@@ -586,7 +562,7 @@ public class List_files extends AppCompatActivity {
                 pathFile.renameTo(to);
                 pathFile.delete();
 
-                helper_editText.hideKeyboard(List_files.this, editText, 0, getString(R.string.app_title_bookmarks), getString(R.string.app_search_hint));
+                helper_editText.hideKeyboard(getActivity(), editText, 0, getString(R.string.app_title_bookmarks), getString(R.string.app_search_hint));
                 setFilesList();
 
                 Snackbar.make(listView, R.string.bookmark_added, Snackbar.LENGTH_SHORT).show();
@@ -601,7 +577,7 @@ public class List_files extends AppCompatActivity {
             case R.id.action_cancel:
                 editText.setVisibility(View.GONE);
                 setTitle();
-                helper_editText.hideKeyboard(List_files.this, editText, 0, getString(R.string.app_title_bookmarks), getString(R.string.app_search_hint));
+                helper_editText.hideKeyboard(getActivity(), editText, 0, getString(R.string.app_title_bookmarks), getString(R.string.app_search_hint));
                 setFilesList();
                 return true;
 
@@ -622,18 +598,11 @@ public class List_files extends AppCompatActivity {
                 return true;
 
             case android.R.id.home:
-                sharedPref.edit().putInt("keyboard", 0).apply();
-                sharedPref.edit().putString("openURL", "").apply();
-                finish();
+                viewPager.setCurrentItem(sharedPref.getInt("tab", 0));
                 return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onBackPressed() {
-        sharedPref.edit().putString("openURL", "").apply();
-        finish();
-    }
 }

@@ -48,7 +48,7 @@
     // Menu Items
 
     <string name="menu_search">Suche</string>
-    <string name="menu_history">Verlauf</string>
+    <string name="menu_history">Öffne Verlauf</string>
     <string name="menu_save">Seite speichern</string>
     <string name="menu_save_screenshot">Speichere Bildschirmfoto</string>
     <string name="menu_save_bookmark">Speichere als Lesezeichen</string>
@@ -74,6 +74,7 @@
     <string name="menu_open">Öffnen …</string>
     <string name="menu_more">Mehr …</string>
     <string name="menu_reload">Seite neu laden</string>
+    <string name="menu_Help">Hilfe</string>
 
     <string name="action_sort">Einträge sortieren</string>
     <string name="action_sort_title">Sortiere nach Titel</string>
@@ -272,6 +273,12 @@
     <string name="action_desktop">Desktopseite</string>
     <string name="action_desktop_summary">Versuche von Internetseiten die Desktopseite zu laden. Dies funktioniert nur eingeschränkt.</string>
 
+    <string name="action_openLink">Links im Hintergrund öffnen</string>
+    <string name="action_openLink_summary">Wenn aktiviert werden Links im Hintergrund geöffnet und eine Benachrichtigung erscheint an
+        deiner Statusbar, von der aus du den Link später öffnen kannst. Nicht aktivieren um Links sofort zu öffnen.</string>
+
+    <string name="action_tabMain">Starttab</string>
+    <string name="action_tabMain_summary">Welcher Tab soll beim Appstart angezeigt werden?</string>
 
     // Intro
 
@@ -315,11 +322,7 @@
     <string name="about_dev">Gaukler Faun</string>
     <string name="about_dev_summary">Öffne mein Github Profil (braucht eine Internetverbindung).</string>
 
-    <string name="about_intro">Einführung</string>
-    <string name="about_intro_summary">Zeige noch einmal die Einführung an.</string>
-
     <string name="about_help">Hilfe</string>
-    <string name="about_help_summary">Zeige den \"Hilfedialog\" mit nützlichen Infos an, wie Browser zu bedienen ist.</string>
 
     <string name="about_donate">Spende</string>
     <string name="about_donate_summary">Wenn dir die App gefällt, kannst du mir gerne etwas über Paypal spenden (braucht eine Internetverbindung).</string>
@@ -349,5 +352,22 @@
     <string name="pw_forgotten">Pin vergessen?</string>
     <string name="pw_hint">Pin eingeben</string>
     <string name="pw_forgotten_dialog">Alle persönlichen Daten löschen, um die Pin zurückzusetzen?</string>
+
+
+    // Arrays
+
+    <string-array name="listArrayTabMain">
+        <item>Browser</item>
+        <item>Lesezeichen</item>
+        <item>readLater</item>
+        <item>Verlauf</item>
+    </string-array>
+
+    <string-array name="listValuesTabMain">
+        <item>0</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+    </string-array>
 
 </resources>

@@ -72,43 +72,6 @@ class About_content {
                 })
                 .build());
 
-        appCardBuilder.addItem(new MaterialAboutActionItem.Builder()
-                .text(R.string.about_intro)
-                .subText(R.string.about_intro_summary)
-                .icon(R.drawable.information_outline)
-                .setOnClickListener(new MaterialAboutActionItem.OnClickListener() {
-                    @Override
-                    public void onClick() {
-                        Intent intent = new Intent(c, Activity_intro.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        c.startActivity(intent);
-                    }
-                })
-                .build());
-
-        appCardBuilder.addItem(new MaterialAboutActionItem.Builder()
-                .text(R.string.about_help)
-                .subText(R.string.about_help_summary)
-                .icon(R.drawable.help_circle_outline)
-                .setOnClickListener(new MaterialAboutActionItem.OnClickListener() {
-                    @Override
-                    public void onClick() {
-                        final AlertDialog d = new AlertDialog.Builder(c)
-                                .setTitle(R.string.about_help)
-                                .setMessage(helper_main.textSpannable(c.getString(R.string.help_text)))
-                                .setPositiveButton(c.getString(R.string.toast_yes),
-                                        new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int id) {
-                                                dialog.cancel();
-                                            }
-                                        }).show();
-                        d.show();
-                        ((TextView) d.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
-                    }
-                })
-                .build());
-
-
         MaterialAboutCard.Builder authorCardBuilder = new MaterialAboutCard.Builder();
         authorCardBuilder.title(R.string.about_title_dev);
 

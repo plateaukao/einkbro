@@ -104,8 +104,6 @@ public class helper_webView {
         webView.getSettings().setLoadWithOverviewMode(true);
         webView.requestDisallowInterceptTouchEvent(true);
 
-        from.registerForContextMenu(webView);
-
         if (sharedPref.getString ("cookie", "2").equals("1")){
             CookieManager cookieManager = CookieManager.getInstance();
             cookieManager.setAcceptCookie(true);

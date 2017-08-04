@@ -1,22 +1,3 @@
-/*
-    This file is part of the Browser webview app.
-
-    HHS Moodle WebApp is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    HHS Moodle WebApp is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with the Browser webview app.
-
-    If not, see <http://www.gnu.org/licenses/>.
- */
-
 package de.baumann.browser.lists;
 
 import android.app.AlertDialog;
@@ -31,21 +12,22 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.FilterQueryProvider;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -57,70 +39,60 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-import de.baumann.browser.Browser_1;
-import de.baumann.browser.Browser_2;
-import de.baumann.browser.Browser_3;
-import de.baumann.browser.Browser_4;
-import de.baumann.browser.Browser_5;
 import de.baumann.browser.R;
 import de.baumann.browser.databases.DbAdapter_Bookmarks;
 import de.baumann.browser.databases.DbAdapter_ReadLater;
+import de.baumann.browser.helper.CustomViewPager;
 import de.baumann.browser.helper.helper_browser;
 import de.baumann.browser.helper.helper_editText;
 import de.baumann.browser.helper.helper_main;
 import de.baumann.browser.helper.helper_toolbar;
 
-public class List_bookmarks extends AppCompatActivity {
+public class Fragment_Bookmarks extends Fragment {
 
     private ListView listView = null;
     private EditText editText;
-    private TextView urlBar;
     private DbAdapter_Bookmarks db;
     private SimpleCursorAdapter adapter;
     private SharedPreferences sharedPref;
+    private TextView listBar;
+    private Toolbar toolbar;
+    private CustomViewPager viewPager;
 
     private int top;
     private int index;
+    
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_lists, container, false);
 
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        getWindow().setStatusBarColor(ContextCompat.getColor(List_bookmarks.this, R.color.colorPrimaryDark_2));
+        setHasOptionsMenu(true);
 
-        setContentView(R.layout.activity_popup);
+        PreferenceManager.setDefaultValues(getActivity(), R.xml.user_settings, false);
+        PreferenceManager.setDefaultValues(getActivity(), R.xml.user_settings_search, false);
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-        PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
-        PreferenceManager.setDefaultValues(this, R.xml.user_settings_search, false);
-        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        sharedPref.edit().putString("openURL", "").apply();
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        if(actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
-
-        helper_main.checkPin(this);
-        helper_main.onStart(this);
-        helper_toolbar.toolbarActivities(this, toolbar);
-
-        editText = (EditText) findViewById(R.id.editText);
-        editText.setVisibility(View.GONE);
-        editText.setHint(R.string.app_search_hint);
-        editText.clearFocus();
-        urlBar = (TextView) findViewById(R.id.urlBar);
-        setTitle();
-
-        listView = (ListView)findViewById(R.id.list);
+        toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        editText = (EditText) getActivity().findViewById(R.id.editText);
+        listBar = (TextView) getActivity().findViewById(R.id.listBar);
+        listView = (ListView)rootView.findViewById(R.id.list);
+        viewPager = (CustomViewPager) getActivity().findViewById(R.id.viewpager);
 
         //calling Notes_DbAdapter
-        db = new DbAdapter_Bookmarks(this);
+        db = new DbAdapter_Bookmarks(getActivity());
         db.open();
 
-        setBookmarksList();
+        return rootView;
+    }
+
+    private void setTitle () {
+        if (sharedPref.getString("sortDBB", "title").equals("title")) {
+            listBar.setText(getString(R.string.app_title_bookmarks) + " | " + getString(R.string.sort_title));
+        } else {
+            listBar.setText(getString(R.string.app_title_bookmarks) + " | " + getString(R.string.sort_date));
+        }
     }
 
     private void isEdited () {
@@ -143,8 +115,8 @@ public class List_bookmarks extends AppCompatActivity {
                 "bookmarks_content",
                 "bookmarks_creation"
         };
-        final Cursor row = db.fetchAllData(this);
-        adapter = new SimpleCursorAdapter(this, layoutstyle,row,column, xml_id, 0) {
+        final Cursor row = db.fetchAllData(getActivity());
+        adapter = new SimpleCursorAdapter(getActivity(), layoutstyle,row,column, xml_id, 0) {
             @Override
             public View getView (final int position, View convertView, ViewGroup parent) {
 
@@ -221,14 +193,20 @@ public class List_bookmarks extends AppCompatActivity {
         listView.setSelectionFromTop(index, top);
         //onClick function
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
             @Override
             public void onItemClick(AdapterView<?> adapterview, View view, int position, long id) {
 
                 Cursor row = (Cursor) listView.getItemAtPosition(position);
-                final String bookmarks_content = row.getString(row.getColumnIndexOrThrow("bookmarks_content"));
-
+                String bookmarks_content = row.getString(row.getColumnIndexOrThrow("bookmarks_content"));
                 sharedPref.edit().putString("openURL", bookmarks_content).apply();
-                finish();
+
+                if (sharedPref.getInt("appShortcut", 0) == 0) {
+                    viewPager.setCurrentItem(sharedPref.getInt("tab", 0));
+                } else {
+                    sharedPref.edit().putInt("appShortcut", 0).apply();
+                    viewPager.setCurrentItem(0);
+                }
             }
         });
 
@@ -245,8 +223,8 @@ public class List_bookmarks extends AppCompatActivity {
                 final String bookmarks_attachment = row2.getString(row2.getColumnIndexOrThrow("bookmarks_attachment"));
                 final String bookmarks_creation = row2.getString(row2.getColumnIndexOrThrow("bookmarks_creation"));
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(List_bookmarks.this);
-                final  View dialogView = View.inflate(List_bookmarks.this, R.layout.dialog_context_lists, null);
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                final  View dialogView = View.inflate(getActivity(), R.layout.dialog_context_lists, null);
 
                 builder.setView(dialogView);
                 builder.setPositiveButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
@@ -268,7 +246,7 @@ public class List_bookmarks extends AppCompatActivity {
                         final CharSequence[] options = {
                                 getString(R.string.menu_share_link),
                                 getString(R.string.menu_share_link_copy)};
-                        new AlertDialog.Builder(List_bookmarks.this)
+                        new AlertDialog.Builder(getActivity())
                                 .setPositiveButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
 
                                     public void onClick(DialogInterface dialog, int whichButton) {
@@ -286,7 +264,7 @@ public class List_bookmarks extends AppCompatActivity {
                                             startActivity(Intent.createChooser(sharingIntent, (getString(R.string.app_share_link))));
                                         }
                                         if (options[item].equals(getString(R.string.menu_share_link_copy))) {
-                                            ClipboardManager clipboard = (ClipboardManager) List_bookmarks.this.getSystemService(Context.CLIPBOARD_SERVICE);
+                                            ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
                                             clipboard.setPrimaryClip(ClipData.newPlainText("text", bookmarks_content));
                                             Snackbar.make(listView, R.string.context_linkCopy_toast, Snackbar.LENGTH_SHORT).show();
                                         }
@@ -304,7 +282,7 @@ public class List_bookmarks extends AppCompatActivity {
                                 getString(R.string.menu_save_readLater),
                                 getString(R.string.menu_save_pass),
                                 getString(R.string.menu_createShortcut)};
-                        new AlertDialog.Builder(List_bookmarks.this)
+                        new AlertDialog.Builder(getActivity())
                                 .setPositiveButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
 
                                     public void onClick(DialogInterface dialog, int whichButton) {
@@ -315,13 +293,13 @@ public class List_bookmarks extends AppCompatActivity {
                                     @Override
                                     public void onClick(DialogInterface dialog, int item) {
                                         if (options[item].equals(getString(R.string.menu_save_pass))) {
-                                            helper_editText.editText_savePass(List_bookmarks.this, listView, bookmarks_title, bookmarks_content);
+                                            helper_editText.editText_savePass(getActivity(), listView, bookmarks_title, bookmarks_content);
                                         }
                                         if (options[item].equals(getString(R.string.menu_save_readLater))) {
-                                            DbAdapter_ReadLater db = new DbAdapter_ReadLater(List_bookmarks.this);
+                                            DbAdapter_ReadLater db = new DbAdapter_ReadLater(getActivity());
                                             db.open();
                                             if(db.isExist(bookmarks_content)){
-                                                Snackbar.make(editText, getString(R.string.toast_newTitle), Snackbar.LENGTH_LONG).show();
+                                                Snackbar.make(listView, getString(R.string.toast_newTitle), Snackbar.LENGTH_LONG).show();
                                             }else{
                                                 db.insert(bookmarks_title, bookmarks_content, "", "", helper_main.createDate());
                                                 Snackbar.make(listView, R.string.bookmark_added, Snackbar.LENGTH_LONG).show();
@@ -330,16 +308,16 @@ public class List_bookmarks extends AppCompatActivity {
                                         if (options[item].equals(getString(R.string.menu_createShortcut))) {
                                             Intent i = new Intent();
                                             i.setAction(Intent.ACTION_VIEW);
-                                            i.setClassName(List_bookmarks.this, "de.baumann.browser.Browser_1");
+                                            i.setClassName(getActivity(), "de.baumann.browser.Activity_Main");
                                             i.setData(Uri.parse(bookmarks_content));
 
                                             Intent shortcut = new Intent();
                                             shortcut.putExtra("android.intent.extra.shortcut.INTENT", i);
                                             shortcut.putExtra("android.intent.extra.shortcut.NAME", "THE NAME OF SHORTCUT TO BE SHOWN");
                                             shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, bookmarks_title);
-                                            shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(List_bookmarks.this.getApplicationContext(), R.mipmap.ic_launcher));
+                                            shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(getActivity().getApplicationContext(), R.mipmap.ic_launcher));
                                             shortcut.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
-                                            List_bookmarks.this.sendBroadcast(shortcut);
+                                            getActivity().sendBroadcast(shortcut);
                                             Snackbar.make(listView, R.string.menu_createShortcut_success, Snackbar.LENGTH_SHORT).show();
                                         }
                                     }
@@ -359,7 +337,7 @@ public class List_bookmarks extends AppCompatActivity {
                         sharedPref.edit().putString("edit_attachment", bookmarks_attachment).apply();
                         sharedPref.edit().putString("edit_creation", bookmarks_creation).apply();
                         editText.setVisibility(View.VISIBLE);
-                        helper_editText.showKeyboard(List_bookmarks.this, editText, 2, bookmarks_title, getString(R.string.bookmark_edit_title));
+                        helper_editText.showKeyboard(getActivity(), editText, 2, bookmarks_title, getString(R.string.bookmark_edit_title));
                     }
                 });
 
@@ -381,60 +359,79 @@ public class List_bookmarks extends AppCompatActivity {
                     }
                 });
 
-                TextView context_1 = (TextView) dialogView.findViewById(R.id.scrollView_1);
+                HorizontalScrollView scrollTabs = (HorizontalScrollView) dialogView.findViewById(R.id.scrollTabs);
+
+                TextView context_1 = (TextView) dialogView.findViewById(R.id.context_1);
                 ImageView context_1_preView = (ImageView) dialogView.findViewById(R.id.context_1_preView);
-                CardView context_1_Layout = (CardView) dialogView.findViewById(R.id.scrollView_1_Layout);
-                helper_toolbar.toolbarContext(List_bookmarks.this, context_1, context_1_preView, context_1_Layout, bookmarks_content,
-                        1, helper_browser.tab_1(List_bookmarks.this), "/tab_1.jpg", dialog, Browser_1.class);
+                CardView context_1_Layout = (CardView) dialogView.findViewById(R.id.context_1_Layout);
+                ImageView close_1 = (ImageView) dialogView.findViewById(R.id.close_1);
+                helper_toolbar.cardViewClickMenu(getActivity(), context_1_Layout, scrollTabs, 0, close_1, viewPager, bookmarks_content, dialog, "0");
+                helper_toolbar.toolBarPreview(getActivity(), context_1,context_1_preView, 0, helper_browser.tab_1(getActivity()), "/tab_0.jpg", close_1);
 
-                TextView context_2 = (TextView) dialogView.findViewById(R.id.scrollView_2);
+                TextView context_2 = (TextView) dialogView.findViewById(R.id.context_2);
                 ImageView context_2_preView = (ImageView) dialogView.findViewById(R.id.context_2_preView);
-                CardView context_2_Layout = (CardView) dialogView.findViewById(R.id.scrollView_2_Layout);
-                helper_toolbar.toolbarContext(List_bookmarks.this, context_2, context_2_preView, context_2_Layout, bookmarks_content,
-                        2, helper_browser.tab_2(List_bookmarks.this), "/tab_2.jpg", dialog, Browser_2.class);
+                CardView context_2_Layout = (CardView) dialogView.findViewById(R.id.context_2_Layout);
+                ImageView close_2 = (ImageView) dialogView.findViewById(R.id.close_2);
+                helper_toolbar.cardViewClickMenu(getActivity(), context_2_Layout, scrollTabs, 1, close_2, viewPager, bookmarks_content, dialog, "1");
+                helper_toolbar.toolBarPreview(getActivity(), context_2,context_2_preView, 1, helper_browser.tab_2(getActivity()), "/tab_1.jpg", close_2);
 
-                TextView context_3 = (TextView) dialogView.findViewById(R.id.scrollView_3);
+                TextView context_3 = (TextView) dialogView.findViewById(R.id.context_3);
                 ImageView context_3_preView = (ImageView) dialogView.findViewById(R.id.context_3_preView);
-                CardView context_3_Layout = (CardView) dialogView.findViewById(R.id.scrollView_3_Layout);
-                helper_toolbar.toolbarContext(List_bookmarks.this, context_3, context_3_preView, context_3_Layout, bookmarks_content,
-                        3, helper_browser.tab_3(List_bookmarks.this), "/tab_3.jpg", dialog, Browser_3.class);
+                CardView context_3_Layout = (CardView) dialogView.findViewById(R.id.context_3_Layout);
+                ImageView close_3 = (ImageView) dialogView.findViewById(R.id.close_3);
+                helper_toolbar.cardViewClickMenu(getActivity(), context_3_Layout, scrollTabs, 2, close_3, viewPager, bookmarks_content, dialog, "2");
+                helper_toolbar.toolBarPreview(getActivity(), context_3,context_3_preView, 2, helper_browser.tab_3(getActivity()), "/tab_2.jpg", close_3);
 
-                TextView context_4 = (TextView) dialogView.findViewById(R.id.scrollView_4);
+                TextView context_4 = (TextView) dialogView.findViewById(R.id.context_4);
                 ImageView context_4_preView = (ImageView) dialogView.findViewById(R.id.context_4_preView);
-                CardView context_4_Layout = (CardView) dialogView.findViewById(R.id.scrollView_4_Layout);
-                helper_toolbar.toolbarContext(List_bookmarks.this, context_4, context_4_preView, context_4_Layout, bookmarks_content,
-                        4, helper_browser.tab_4(List_bookmarks.this), "/tab_4.jpg", dialog, Browser_4.class);
+                CardView context_4_Layout = (CardView) dialogView.findViewById(R.id.context_4_Layout);
+                ImageView close_4 = (ImageView) dialogView.findViewById(R.id.close_4);
+                helper_toolbar.cardViewClickMenu(getActivity(), context_4_Layout, scrollTabs, 3, close_4, viewPager, bookmarks_content, dialog, "3");
+                helper_toolbar.toolBarPreview(getActivity(), context_4,context_4_preView, 3, helper_browser.tab_4(getActivity()), "/tab_3.jpg", close_4);
 
-                TextView context_5 = (TextView) dialogView.findViewById(R.id.scrollView_5);
+                TextView context_5 = (TextView) dialogView.findViewById(R.id.context_5);
                 ImageView context_5_preView = (ImageView) dialogView.findViewById(R.id.context_5_preView);
-                CardView context_5_Layout = (CardView) dialogView.findViewById(R.id.scrollView_5_Layout);
-                helper_toolbar.toolbarContext(List_bookmarks.this, context_5, context_5_preView, context_5_Layout, bookmarks_content,
-                        5, helper_browser.tab_5(List_bookmarks.this), "/tab_5.jpg", dialog, Browser_5.class);
+                CardView context_5_Layout = (CardView) dialogView.findViewById(R.id.context_5_Layout);
+                ImageView close_5 = (ImageView) dialogView.findViewById(R.id.close_5);
+                helper_toolbar.cardViewClickMenu(getActivity(), context_5_Layout, scrollTabs, 4, close_5, viewPager, bookmarks_content, dialog, "4");
+                helper_toolbar.toolBarPreview(getActivity(), context_5,context_5_preView, 4, helper_browser.tab_5(getActivity()), "/tab_4.jpg", close_5);
 
                 return true;
             }
         });
     }
 
-    private void setTitle () {
-        if (sharedPref.getString("sortDBB", "title").equals("title")) {
-            urlBar.setText(getString(R.string.app_title_bookmarks) + " | " + getString(R.string.sort_title));
-        } else {
-            urlBar.setText(getString(R.string.app_title_bookmarks) + " | " + getString(R.string.sort_date));
-        }
+    public void doBack() {
+        //BackPressed in activity will call this;
+        Snackbar snackbar = Snackbar
+                .make(listView, getString(R.string.toast_exit), Snackbar.LENGTH_SHORT)
+                .setAction(getString(R.string.toast_yes), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                        sharedPref.edit().putInt("closeApp", 1).apply();
+                        viewPager.setCurrentItem(5);
+                    }
+                });
+        snackbar.show();
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();    //To change body of overridden methods use File | Settings | File Templates.
-        if (sharedPref.getInt("closeApp", 0) == 1) {
-            finish();
-        }
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_popup, menu);
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
+    public void onPrepareOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
         super.onPrepareOptionsMenu(menu);
+
+        AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
+        appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        setTitle();
+        setBookmarksList();
+        helper_toolbar.toolbarGestures(getActivity(), toolbar, viewPager, "", editText, listBar, "");
 
         if (sharedPref.getInt("keyboard", 0) == 0) {
             // normal
@@ -451,15 +448,6 @@ public class List_bookmarks extends AppCompatActivity {
             menu.findItem(R.id.action_delete).setVisible(false);
             menu.findItem(R.id.action_sort).setVisible(false);
         }
-
-        return true; // this is important to call so that new menu is shown
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_popup, menu);
-        return true;
     }
 
     @Override
@@ -474,13 +462,13 @@ public class List_bookmarks extends AppCompatActivity {
                 sharedPref.edit().putString("filter_bookmarksBY", "bookmarks_title").apply();
                 setBookmarksList();
                 editText.setVisibility(View.VISIBLE);
-                helper_editText.showKeyboard(List_bookmarks.this, editText, 1, "", getString(R.string.action_filter_title));
+                helper_editText.showKeyboard(getActivity(), editText, 1, "", getString(R.string.action_filter_title));
                 return true;
             case R.id.filter_url:
                 sharedPref.edit().putString("filter_bookmarksBY", "bookmarks_content").apply();
                 setBookmarksList();
                 editText.setVisibility(View.VISIBLE);
-                helper_editText.showKeyboard(List_bookmarks.this, editText, 1, "", getString(R.string.action_filter_url));
+                helper_editText.showKeyboard(getActivity(), editText, 1, "", getString(R.string.action_filter_url));
                 return true;
 
             case R.id.filter_today:
@@ -490,7 +478,7 @@ public class List_bookmarks extends AppCompatActivity {
                 sharedPref.edit().putString("filter_bookmarksBY", "bookmarks_creation").apply();
                 setBookmarksList();
                 editText.setText(search);
-                urlBar.setText(getString(R.string.app_title_bookmarks) + " | " + getString(R.string.filter_today));
+                listBar.setText(getString(R.string.app_title_bookmarks) + " | " + getString(R.string.filter_today));
                 return true;
             case R.id.filter_yesterday:
                 DateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
@@ -500,7 +488,7 @@ public class List_bookmarks extends AppCompatActivity {
                 sharedPref.edit().putString("filter_bookmarksBY", "bookmarks_creation").apply();
                 setBookmarksList();
                 editText.setText(search2);
-                urlBar.setText(getString(R.string.app_title_bookmarks) + " | " + getString(R.string.filter_yesterday));
+                listBar.setText(getString(R.string.app_title_bookmarks) + " | " + getString(R.string.filter_yesterday));
                 return true;
             case R.id.filter_before:
                 DateFormat dateFormat3 = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
@@ -510,7 +498,7 @@ public class List_bookmarks extends AppCompatActivity {
                 sharedPref.edit().putString("filter_bookmarksBY", "bookmarks_creation").apply();
                 setBookmarksList();
                 editText.setText(search3);
-                urlBar.setText(getString(R.string.app_title_bookmarks) + " | " + getString(R.string.filter_before));
+                listBar.setText(getString(R.string.app_title_bookmarks) + " | " + getString(R.string.filter_before));
                 return true;
             case R.id.filter_month:
                 DateFormat dateFormat4 = new SimpleDateFormat("yyyy-MM", Locale.getDefault());
@@ -519,18 +507,18 @@ public class List_bookmarks extends AppCompatActivity {
                 sharedPref.edit().putString("filter_bookmarksBY", "bookmarks_creation").apply();
                 setBookmarksList();
                 editText.setText(search4);
-                urlBar.setText(getString(R.string.app_title_bookmarks) + " | " + getString(R.string.filter_month));
+                listBar.setText(getString(R.string.app_title_bookmarks) + " | " + getString(R.string.filter_month));
                 return true;
             case R.id.filter_own:
                 sharedPref.edit().putString("filter_bookmarksBY", "bookmarks_creation").apply();
                 setBookmarksList();
                 editText.setVisibility(View.VISIBLE);
-                helper_editText.showKeyboard(List_bookmarks.this, editText, 1, "", getString(R.string.action_filter_create));
+                helper_editText.showKeyboard(getActivity(), editText, 1, "", getString(R.string.action_filter_create));
                 return true;
             case R.id.filter_clear:
                 editText.setVisibility(View.GONE);
                 setTitle();
-                helper_editText.hideKeyboard(List_bookmarks.this, editText, 0, getString(R.string.app_title_history), getString(R.string.app_search_hint));
+                helper_editText.hideKeyboard(getActivity(), editText, 0, getString(R.string.app_title_history), getString(R.string.app_search_hint));
                 setBookmarksList();
                 return true;
 
@@ -548,7 +536,7 @@ public class List_bookmarks extends AppCompatActivity {
             case R.id.action_cancel:
                 editText.setVisibility(View.GONE);
                 setTitle();
-                helper_editText.hideKeyboard(List_bookmarks.this, editText, 0, getString(R.string.app_title_bookmarks), getString(R.string.app_search_hint));
+                helper_editText.hideKeyboard(getActivity(), editText, 0, getString(R.string.app_title_bookmarks), getString(R.string.app_search_hint));
                 setBookmarksList();
                 return true;
 
@@ -558,8 +546,8 @@ public class List_bookmarks extends AppCompatActivity {
                         .setAction(R.string.toast_yes, new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                List_bookmarks.this.deleteDatabase("bookmarks_DB_v01.db");
-                                recreate();
+                                getActivity().deleteDatabase("bookmarks_DB_v01.db");
+                                getActivity().recreate();
                             }
                         });
                 snackbar.show();
@@ -584,7 +572,7 @@ public class List_bookmarks extends AppCompatActivity {
 
                 String inputTag = editText.getText().toString().trim();
                 db.update(Integer.parseInt(edit_id), inputTag, edit_content, edit_icon, edit_attachment, edit_creation);
-                helper_editText.hideKeyboard(List_bookmarks.this, editText, 0, getString(R.string.app_title_bookmarks), getString(R.string.app_search_hint));
+                helper_editText.hideKeyboard(getActivity(), editText, 0, getString(R.string.app_title_bookmarks), getString(R.string.app_search_hint));
                 setBookmarksList();
 
                 Snackbar.make(listView, R.string.bookmark_added, Snackbar.LENGTH_SHORT).show();
@@ -601,18 +589,16 @@ public class List_bookmarks extends AppCompatActivity {
                 return true;
 
             case android.R.id.home:
-                sharedPref.edit().putInt("keyboard", 0).apply();
-                sharedPref.edit().putString("openURL", "").apply();
-                finish();
+                if (sharedPref.getInt("appShortcut", 0) == 0) {
+                    viewPager.setCurrentItem(sharedPref.getInt("tab", 0));
+                } else {
+                    sharedPref.edit().putInt("appShortcut", 0).apply();
+                    viewPager.setCurrentItem(0);
+                }
                 return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onBackPressed() {
-        sharedPref.edit().putString("openURL", "").apply();
-        finish();
-    }
 }
