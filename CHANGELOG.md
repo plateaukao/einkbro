@@ -5,9 +5,10 @@
 - fix: website partially not visible
 - improved: refresh website (long click "history icon")
 - improved: help dialog (menu -> more -> Help)
-- new: homepage setup
+- new: homepage setup (bookmark list)
 - new: open links directly (optional)
 - new: moved from activities to fragments
+- new: bookmarks, readLater, history as startpage (settings)
 
 ### v 3.8
 - removed: swipe to refresh

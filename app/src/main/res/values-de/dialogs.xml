@@ -13,9 +13,10 @@
         - fix: website partially not visible&lt;br>
         - improved: refresh website (long click "history icon")&lt;br>
         - improved: help dialog (menu -> more -> Help)&lt;br>
-        - new: homepage setup&lt;br>
+        - new: homepage setup (bookmark list)&lt;br>
         - new: open links directly (optional)&lt;br>
-        - new: moved from activities to fragments
+        - new: moved from activities to fragments&lt;br>
+        - new: bookmarks, readLater, history as startpage (settings)
     </string>
 
     //License Dialog
