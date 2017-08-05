@@ -56,7 +56,6 @@ public class helper_browser {
                                    final EditText editText, final ImageButton imageButton, final ImageButton imageButton_left,
                                    final ImageButton imageButton_right, final Toolbar toolbar) {
 
-
         editText.setHint(R.string.app_search_hint);
         editText.clearFocus();
 
@@ -69,7 +68,6 @@ public class helper_browser {
                 helper_browser.setNavArrows(webView, imageButton_left, imageButton_right);
             }
         });
-
 
         helper_editText.editText_EditorAction(editText, activity, webView, editText);
         helper_editText.editText_FocusChange(editText, activity);
@@ -254,13 +252,12 @@ public class helper_browser {
         builder.setNegativeButton(R.string.menu_settings, new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int whichButton) {
-                helper_main.switchToActivity(activity, Activity_settings.class, "", false);
+                helper_main.switchToActivity(activity, Activity_settings.class);
                 dialog.cancel();
             }
         });
 
-        final android.app.AlertDialog dialog = builder.create();
-        // Display the custom alert dialog on interface
+        android.app.AlertDialog dialog = builder.create();
         dialog.show();
     }
 
@@ -281,7 +278,6 @@ public class helper_browser {
         MenuItem cancel = menu.findItem(R.id.action_cancel);
         MenuItem open = menu.findItem(R.id.action_open);
         MenuItem other = menu.findItem(R.id.action_other);
-        MenuItem reload = menu.findItem(R.id.action_reload);
         MenuItem settings = menu.findItem(R.id.action_toggle);
 
         if (sharedPref.getInt("keyboard", 0) == 0) {
@@ -302,7 +298,6 @@ public class helper_browser {
             open.setVisible(false);
             search_go.setVisible(false);
             settings.setVisible(false);
-            reload.setVisible(false);
         } else if (sharedPref.getInt("keyboard", 0) == 2) {
             search_onSite_go.setVisible(false);
             search_chooseWebsite.setVisible(false);
@@ -315,7 +310,6 @@ public class helper_browser {
             next.setVisible(false);
             search_go.setVisible(false);
             settings.setVisible(false);
-            reload.setVisible(false);
         } else if (sharedPref.getInt("keyboard", 0) == 3) {
             saveBookmark.setVisible(false);
             search_onSite_go.setVisible(false);
@@ -327,7 +321,6 @@ public class helper_browser {
             prev.setVisible(false);
             next.setVisible(false);
             settings.setVisible(false);
-            reload.setVisible(false);
         }
     }
 
@@ -383,7 +376,6 @@ public class helper_browser {
                 s = tab_string;
             }
         } catch (Exception e) {
-            // Error occurred while creating the File
             Log.e(TAG, "Unable to get String", e);
             s = activity.getString(R.string.context_tab);
         }
@@ -403,7 +395,6 @@ public class helper_browser {
                 s = tab_string;
             }
         } catch (Exception e) {
-            // Error occurred while creating the File
             Log.e(TAG, "Unable to get String", e);
             s = activity.getString(R.string.context_tab);
         }
@@ -423,7 +414,6 @@ public class helper_browser {
                 s = tab_string;
             }
         } catch (Exception e) {
-            // Error occurred while creating the File
             Log.e(TAG, "Unable to get String", e);
             s = activity.getString(R.string.context_tab);
         }
@@ -443,7 +433,6 @@ public class helper_browser {
                 s = tab_string;
             }
         } catch (Exception e) {
-            // Error occurred while creating the File
             Log.e(TAG, "Unable to get String", e);
             s = activity.getString(R.string.context_tab);
         }
@@ -463,7 +452,6 @@ public class helper_browser {
                 s = tab_string;
             }
         } catch (Exception e) {
-            // Error occurred while creating the File
             Log.e(TAG, "Unable to get String", e);
             s = activity.getString(R.string.context_tab);
         }

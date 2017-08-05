@@ -42,58 +42,59 @@
 
     //Help Dialog
 
-    <string name="help_text">
+    <string name="help_lists_title">&lt;b>Die Listen:&lt;/b></string>
+    <string name="help_lists">Jede Liste hat ein Kontextmenü, welches sich bei einem langen Klick auf einen Eintrag öffnet. Listen können mit einem
+        Klick geleert werden (Menü). Du kannst Listen nach datum und Titel sortieren und ihnen nach Einträgen suchen.&lt;br>&lt;br>
 
-        &lt;b>Die Listen:&lt;/b>&lt;br>
-
-        In jeder Liste gibt es standardmäßig einen Eintrag. Dieser wird gebraucht um eine Datenbank zu erstellen. Er kann gelöscht werden,
-        sobald du neue Einträge in deiner Liste hast. Jede Liste hat ein Kontextmenü, welches sich bei einem langen Klick auf einen
-        Eintrag öffnet. Die leseSpäter Liste und der Verlauf können mit einem Klick geleert werden.&lt;br>&lt;br>
-
-        &lt;i> Lesezeichen:&lt;/i> wie immer - speichere Lesezeichen für einen schnellen Zugriff.&lt;br>
-        &lt;i> leseSpäter:&lt;/i> Hier kannst du Internetseiten speichern die du irgendwann später anzeigen lassen möchtest,
-        die aber nicht wichtig genug sind um als Lesezeichen gespeichert zu werden.&lt;br>
-        &lt;i> Verlauf:&lt;/i> dein Browserverlauf.&lt;br>
-        &lt;i> passSpeicher:&lt;/i> hier kannst du Logindaten von Internetseiten (verschlüsselt) speichern. Wenn eingegebene
+        &lt;i>Lesezeichen:&lt;/i> wie immer - speichere Lesezeichen für einen schnellen Zugriff. Wenn du einen Stern anklickst,
+        kannst du das Lesezeichen als Startseite festlegen. Du kannst auch eine leere Startseite festlegen (Menu -> leere
+        Startseite).&lt;br>&lt;br>
+        &lt;i>leseSpäter:&lt;/i> Hier kannst du Internetseiten speichern die du irgendwann später anschauen möchtest,
+        die aber nicht wichtig genug sind um als Lesezeichen gespeichert zu werden.&lt;br>&lt;br>
+        &lt;i>Verlauf:&lt;/i> dein Browserverlauf.&lt;br>&lt;br>
+        &lt;i>passSpeicher:&lt;/i> hier kannst du Logindaten von Internetseiten (verschlüsselt) speichern. Wenn eingegebene
         Logindaten beim Verlassen des Browsers gelöscht werden sollen, solltest du \"Cookies löschen\" in den Einstellungen
-        aktivieren.&lt;br>&lt;br>
+        aktivieren.</string>
 
-        &lt;b>Toolbar (unten):&lt;/b>&lt;br>
-        &lt;i> Wischen:&lt;/i> wische nach links um deine Lesezeichen oder nach rechts um die leseSpäter
-        Liste zu öffnen. Nach oben wischen um die App zu schließen.&lt;br>
-        &lt;i> Suchen (linkes Icon):&lt;/i> du kannst einen Suchbegriff (siehe unten) oder eine URL eingeben. Wenn du
-        \"Enter\" oder die Lupe anklickst, wird die Internetseite geöffnet.&lt;br>
-        &lt;i> Verlauf (rechtes Icon):&lt;/i> Öffnet eine Liste mit den zuletzt besuchten Internetseiten.&lt;br>
-        &lt;i> Klick:&lt;/i> wechsle zwischen den Tabs.&lt;br>&lt;br>
+    <string name="help_toolbar_title">&lt;b>Toolbar:&lt;/b></string>
+    <string name="help_toolbar">
+        &lt;i>Wischen:&lt;/i> wische nach links um deine Lesezeichen oder nach rechts um die leseSpäter
+        Liste zu öffnen. Nach oben wischen um die App zu schließen. Dies funktioniert überall.&lt;br>&lt;br>
+        &lt;i>Klicken (nur im Browser):&lt;/i> du kannst einen Suchbegriff (siehe unten) oder eine URL eingeben. Wenn du
+        \"Enter\" oder die Lupe anklickst, wird die Internetseite geöffnet.&lt;br>&lt;br>
+        &lt;i>Langer Klick (nur im Browser):&lt;/i> öffnet die Tabvorschau (siehe unten).&lt;br>&lt;br>
+        &lt;i>Verlauf (nur im Browser):&lt;/i> Öffnet eine Liste mit den zuletzt besuchten Internetseiten. Ein langer Klick lädt
+        die aktuelle Internetseite neu.</string>
 
-        &lt;b>Die Tabs:&lt;/b>&lt;br>
+    <string name="help_tabs_title">&lt;b>Tabvorschau:&lt;/b></string>
+    <string name="help_tabs">
+        Um einen Tab zu öffnen musst du einfach die entsprechende Vorschau anklicken. Wenn du eine Vorschau lange anklickst,
+        öffnet sich im entsprechenden Tab dein Favorit. Der jeweils geöffnete Tab ist hervorgehoben. Der \"Schließenknopf\"
+        setzt de Tab zurück.</string>
 
-        Du hast fünf Tabs und kannst schnell zwischen ihnen wechseln, indem du auf die Toolbar klickst. Um einen Tab zu öffnen
-        musst du einfach die entsprechende Vorschau anklicken. Wenn du eine Vorschau lange anklickst öffnet sich im entsprechenden
-        Tab dein Favorit. Der jeweils geöffnete Tab ist hervorgehoben.&lt;br>&lt;br>
-
-        &lt;b>Menü:&lt;/b>&lt;br>
-        &lt;i> Speichere Seite:&lt;/i> du kannst die Seite als Lesezeichen, zur leseSpäter Liste oder zum passSpeicher
-        hinzufügen. Du kannst auch ein Bildschirmfoto der gesamten Internetseite auf der SD-Karte speichern.&lt;br>
-        &lt;i> Teile Seite:&lt;/i> du kannst ein Bildschirmfoto der Seite oder den Link als Text teilen. Du kannst den Link
-        einfach in die Zwischenablage kopieren.&lt;br>
-        &lt;i> Suche auf Seite:&lt;/i> suche nach Text auf jeder beliebigen Internetseite.&lt;br>
-        &lt;i> Öffne passSpeicher:&lt;/i> öffne deinen Passwortspeicher.&lt;br>
-        &lt;i> Öffne Downloadordner:&lt;/i> öffne den Downloadordner um Dateien anzuzeigen, zu teilen, umzubenennen
-        oder zu löschen.&lt;br>
-        &lt;i> Einstellungen (Popup Dialog):&lt;/i> Hier kannst du die Standardeinstellungen kurzzeitig überschreiben. Bei
+    <string name="help_menu_title">&lt;b>Menü:&lt;/b></string>
+    <string name="help_menu">
+        &lt;i>Speichere Seite:&lt;/i> du kannst die Seite als Lesezeichen, zur leseSpäter Liste oder zum passSpeicher
+        hinzufügen. Du kannst auch ein Bildschirmfoto der gesamten Internetseite auf der SD-Karte speichern.&lt;br>&lt;br>
+        &lt;i>Teile Seite:&lt;/i> du kannst ein Bildschirmfoto der Seite oder den Link als Text teilen. Du kannst den Link
+        einfach in die Zwischenablage kopieren.&lt;br>&lt;br>
+        &lt;i>Suche auf Seite:&lt;/i> suche nach Text auf jeder beliebigen Internetseite.&lt;br>&lt;br>
+        &lt;i>Öffne passSpeicher:&lt;/i> öffne deinen Passwortspeicher.&lt;br>&lt;br>
+        &lt;i>Öffne Downloadordner:&lt;/i> öffne den Downloadordner um Dateien anzuzeigen, zu teilen, umzubenennen
+        oder zu löschen.&lt;br>&lt;br>
+        &lt;i>Einstellungen (Popup Dialog):&lt;/i> Hier kannst du die Standardeinstellungen kurzzeitig überschreiben. Bei
         einem erneuten Start der App gehen diese Einstellungen verloren. Indem du auf das rote Kreuz klickst kannst du dort auch
         Internetseiten zu einer Whitelist hinzufügen. Sie werden dann mit einem grünen Haken gekennzeichnet. Javascript ist für
         diese Internetseiten dann immer erlaubt (auch nach einem Neustart der App). Um zu den Einstellungen zu gelangen klicke auf
-        \"Einstellungen\" im Popup Dialog.&lt;br>
-        &lt;i> Einstellungen:&lt;/i> In den Einstellungen kannst du das Verhalten der App deinen Wünschen
-        anpassen. Beim Starten der App werden immer diese Einstellungen geladen.&lt;br>&lt;br>
+        \"Einstellungen\" im Popup Dialog.&lt;br>&lt;br>
+        &lt;i>Einstellungen:&lt;/i> In den Einstellungen kannst du das Verhalten der App deinen Wünschen
+        anpassen. Beim Starten der App werden immer diese Einstellungen geladen.</string>
 
-        &lt;b>Suche:&lt;/b>&lt;br>
+    <string name="help_search_title">&lt;b>Suche:&lt;/b></string>
+    <string name="help_search">
         Deine bevorzugte Suchmaschine und die gewünschte Sprache für Wikipedia kannst du in den Einstellungen bestimmen. Du kannst direkt auf bestimmten Seiten suchen,
         wenn du auf das Listensymbol rechts neben der Lupe klickst. Die zur Auswahl stehenden Internetseiten kannst du ebenfalls in den
-        Einstellungen bestimmen.
-    </string>
+        Einstellungen bestimmen.</string>
 
 
     //String arrays
@@ -175,5 +176,19 @@
     <string name="def_wiki">en</string>
     <string name="def_search">https://duckduckgo.com/?q=</string>
     <string name="def_rot">auto</string>
+
+    <string-array name="listArrayTabMain">
+        <item>Browser</item>
+        <item>Lesezeichen</item>
+        <item>readLater</item>
+        <item>Verlauf</item>
+    </string-array>
+
+    <string-array name="listValuesTabMain">
+        <item>0</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+    </string-array>
 
 </resources>

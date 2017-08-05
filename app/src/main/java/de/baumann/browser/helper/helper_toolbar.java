@@ -42,6 +42,7 @@ import de.baumann.browser.R;
 
 import static android.content.ContentValues.TAG;
 
+@SuppressWarnings("ResultOfMethodCallIgnored")
 public class helper_toolbar {
 
     public static void toolBarPreview (final Activity activity, TextView textView, ImageView imageView,
@@ -74,8 +75,8 @@ public class helper_toolbar {
         }
     }
 
-    public static void toolbarGestures (final Activity activity, final Toolbar toolbar, final CustomViewPager viewPager,
-                                        final String url, final EditText editText, final TextView urlBar, final String text) {
+    public static void toolbarGestures(final Activity activity, final Toolbar toolbar, final CustomViewPager viewPager,
+                                       final EditText editText, final TextView urlBar, final String text) {
 
         toolbar.setVisibility(View.VISIBLE);
         final HorizontalScrollView scrollTabs = (HorizontalScrollView) activity.findViewById(R.id.scrollTabs);
@@ -128,35 +129,35 @@ public class helper_toolbar {
                         ImageView context_1_preView = (ImageView) activity.findViewById(R.id.context_1_preView);
                         ImageView close_1 = (ImageView) activity.findViewById(R.id.close_1);
                         CardView context_1_Layout = (CardView) activity.findViewById(R.id.context_1_Layout);
-                        helper_toolbar.cardViewClick(activity, context_1_Layout, scrollTabs, 0, close_1, viewPager, url, "0");
+                        helper_toolbar.cardViewClick(activity, context_1_Layout, scrollTabs, 0, close_1, viewPager, "", "0");
                         helper_toolbar.toolBarPreview(activity, context_1,context_1_preView, 0, helper_browser.tab_1(activity), "/tab_0.jpg", close_1);
 
                         TextView context_2 = (TextView) activity.findViewById(R.id.context_2);
                         ImageView context_2_preView = (ImageView) activity.findViewById(R.id.context_2_preView);
                         ImageView close_2 = (ImageView) activity.findViewById(R.id.close_2);
                         CardView context_2_Layout = (CardView) activity.findViewById(R.id.context_2_Layout);
-                        helper_toolbar.cardViewClick(activity, context_2_Layout, scrollTabs, 1, close_2, viewPager, url, "1");
+                        helper_toolbar.cardViewClick(activity, context_2_Layout, scrollTabs, 1, close_2, viewPager, "", "1");
                         helper_toolbar.toolBarPreview(activity, context_2,context_2_preView, 1, helper_browser.tab_2(activity), "/tab_1.jpg", close_2);
 
                         TextView context_3 = (TextView) activity.findViewById(R.id.context_3);
                         ImageView context_3_preView = (ImageView) activity.findViewById(R.id.context_3_preView);
                         ImageView close_3 = (ImageView) activity.findViewById(R.id.close_3);
                         CardView context_3_Layout = (CardView) activity.findViewById(R.id.context_3_Layout);
-                        helper_toolbar.cardViewClick(activity, context_3_Layout, scrollTabs, 2, close_3, viewPager, url, "2");
+                        helper_toolbar.cardViewClick(activity, context_3_Layout, scrollTabs, 2, close_3, viewPager, "", "2");
                         helper_toolbar.toolBarPreview(activity, context_3,context_3_preView, 2, helper_browser.tab_3(activity), "/tab_2.jpg", close_3);
 
                         TextView context_4 = (TextView) activity.findViewById(R.id.context_4);
                         ImageView context_4_preView = (ImageView) activity.findViewById(R.id.context_4_preView);
                         ImageView close_4 = (ImageView) activity.findViewById(R.id.close_4);
                         CardView context_4_Layout = (CardView) activity.findViewById(R.id.context_4_Layout);
-                        helper_toolbar.cardViewClick(activity, context_4_Layout, scrollTabs, 3, close_4, viewPager, url, "3");
+                        helper_toolbar.cardViewClick(activity, context_4_Layout, scrollTabs, 3, close_4, viewPager, "", "3");
                         helper_toolbar.toolBarPreview(activity, context_4,context_4_preView, 3, helper_browser.tab_4(activity), "/tab_3.jpg", close_4);
 
                         TextView context_5 = (TextView) activity.findViewById(R.id.context_5);
                         ImageView context_5_preView = (ImageView) activity.findViewById(R.id.context_5_preView);
                         ImageView close_5 = (ImageView) activity.findViewById(R.id.close_5);
                         CardView context_5_Layout = (CardView) activity.findViewById(R.id.context_5_Layout);
-                        helper_toolbar.cardViewClick(activity, context_5_Layout, scrollTabs, 4, close_5, viewPager, url, "4");
+                        helper_toolbar.cardViewClick(activity, context_5_Layout, scrollTabs, 4, close_5, viewPager, "", "4");
                         helper_toolbar.toolBarPreview(activity, context_5,context_5_preView, 4, helper_browser.tab_5(activity), "/tab_4.jpg", close_5);
 
                     } else {

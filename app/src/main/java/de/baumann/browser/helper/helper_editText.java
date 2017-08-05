@@ -153,9 +153,8 @@ public class helper_editText {
             }
         });
 
-        final AlertDialog dialog2 = builder.create();
-        // Display the custom alert dialog on interface
-        dialog2.show();
+        AlertDialog dialog = builder.create();
+        dialog.show();
         helper_editText.showKeyboard(from, pass_title, 0, "", from.getString(R.string.pass_title));
     }
 

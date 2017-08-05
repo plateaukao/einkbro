@@ -281,10 +281,11 @@ public class Fragment_Pass extends Fragment {
         super.onPrepareOptionsMenu(menu);
 
         AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
+        assert appCompatActivity.getSupportActionBar() != null;
         appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         setFilesList();
-        helper_toolbar.toolbarGestures(getActivity(), toolbar, viewPager, "", editText, listBar, "");
+        helper_toolbar.toolbarGestures(getActivity(), toolbar, viewPager, editText, listBar, "");
 
         listBar.setText(R.string.app_title_passStorage);
 

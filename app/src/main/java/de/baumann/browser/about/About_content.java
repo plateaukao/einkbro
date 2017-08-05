@@ -3,7 +3,6 @@ package de.baumann.browser.about;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
@@ -17,7 +16,6 @@ import com.danielstone.materialaboutlibrary.model.MaterialAboutCard;
 import com.danielstone.materialaboutlibrary.model.MaterialAboutList;
 
 import de.baumann.browser.R;
-import de.baumann.browser.helper.Activity_intro;
 import de.baumann.browser.helper.helper_main;
 
 class About_content {

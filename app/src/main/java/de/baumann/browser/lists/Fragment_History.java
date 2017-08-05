@@ -382,6 +382,7 @@ public class Fragment_History extends Fragment {
         super.onPrepareOptionsMenu(menu);
 
         AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
+        assert appCompatActivity.getSupportActionBar() != null;
         appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         setTitle();
@@ -390,7 +391,7 @@ public class Fragment_History extends Fragment {
             public void run() {
                 listView.setSelection(listView.getCount() - 1);
             }});
-        helper_toolbar.toolbarGestures(getActivity(), toolbar, viewPager, "", editText, listBar, "");
+        helper_toolbar.toolbarGestures(getActivity(), toolbar, viewPager, editText, listBar, "");
 
         if (sharedPref.getInt("keyboard", 0) == 0) {
             // normal

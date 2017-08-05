@@ -117,7 +117,7 @@ public class Activity_settings extends AppCompatActivity {
             reset.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(Preference pref) {
 
-                    helper_main.switchToActivity(getActivity(), Activity_settings_search.class, "", false);
+                    helper_main.switchToActivity(getActivity(), Activity_settings_search.class);
                     return true;
                 }
             });
@@ -129,7 +129,7 @@ public class Activity_settings extends AppCompatActivity {
             reset.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 public boolean onPreferenceClick(Preference pref) {
 
-                    helper_main.switchToActivity(getActivity(), About_activity.class, "", false);
+                    helper_main.switchToActivity(getActivity(), About_activity.class);
                     return true;
                 }
             });

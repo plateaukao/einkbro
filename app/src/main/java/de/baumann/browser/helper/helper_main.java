@@ -105,7 +105,7 @@ public class helper_main {
         }
     }
 
-    public static void grantPermissionsLoc(final Activity from) {
+    static void grantPermissionsLoc(final Activity from) {
 
         final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
 
@@ -181,14 +181,10 @@ public class helper_main {
         return s;
     }
 
-    public static void switchToActivity(Activity from, Class to, String Extra, boolean finishFromActivity) {
+    static void switchToActivity(Activity from, Class to) {
         Intent intent = new Intent(from, to);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        intent.putExtra("URL", Extra);
         from.startActivity(intent);
-        if (finishFromActivity) {
-            from.finish();
-        }
     }
 
     public static void closeApp (final Activity from, WebView webView) {
@@ -252,7 +248,7 @@ public class helper_main {
         boolean show = sharedPref.getBoolean("introShowDo_notShow", true);
 
         if (show){
-            helper_main.switchToActivity(activity, Activity_intro.class, "", false);
+            helper_main.switchToActivity(activity, Activity_intro.class);
         }
 
         if (sharedPref.getString("saved_key_ok", "no").equals("no")) {

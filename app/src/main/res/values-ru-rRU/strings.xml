@@ -215,8 +215,6 @@
     <string name="about_dev">Gaukler Faun</string>
     <string name="about_dev_summary">Открыть мой профиль на Github (требуется подключение к интернету).</string>
 
-    <string name="about_help">Помощь</string>
-
     <string name="about_donate">Пожертвовать</string>
     <string name="about_donate_summary">Если вам понравилось приложение, вы можете пожертвовать мне при помощи PayPal (требуется подключение к интернету).</string>
 
@@ -225,7 +223,6 @@
     <string name="about_license_6">Используется для шифрования данных для входа сохраняемых в passStore.</string>
     <string name="about_license_8">Источник почти всех иконок.</string>
     <string name="about_license_9">Мощная библиотека для отображения медиа-файлов на Android</string>
-
 
 
     //File chooser

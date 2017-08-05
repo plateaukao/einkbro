@@ -135,7 +135,6 @@
     <string name="bookmark_edit_title">Edit entry</string>
 
     <string name="readLater_title">Open link:</string>
-    <string name="readLater_action">open list</string>
 
     <string name="pass_success">Adding to password list.</string>
     <string name="pass_userName">Username</string>
@@ -310,8 +309,6 @@
     <string name="about_dev">Gaukler Faun</string>
     <string name="about_dev_summary">Open my profile on Github (needs internet connection).</string>
 
-    <string name="about_help">Help</string>
-
     <string name="about_donate">Donate</string>
     <string name="about_donate_summary">If you like the app, you can donate to me via Paypal (needs internet connection).</string>
 
@@ -338,22 +335,5 @@
     <string name="pw_forgotten">Pin forgotten?</string>
     <string name="pw_hint">Enter pin</string>
     <string name="pw_forgotten_dialog">Delete all data to reset your app pin?</string>
-
-
-    // Arrays
-
-    <string-array name="listArrayTabMain">
-        <item>Browser</item>
-        <item>Bookmarks</item>
-        <item>readLater</item>
-        <item>History</item>
-    </string-array>
-
-    <string-array name="listValuesTabMain">
-        <item>0</item>
-        <item>5</item>
-        <item>6</item>
-        <item>7</item>
-    </string-array>
 
 </resources>

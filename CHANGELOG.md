@@ -3,7 +3,8 @@
 - fix: notification behavior (open multiple links)
 - fix: force close on toolbar click
 - fix: website partially not visible
-- improved: refresh website
+- improved: refresh website (long click "history icon")
+- improved: help dialog (menu -> more -> Help)
 - new: homepage setup
 - new: open links directly (optional)
 - new: moved from activities to fragments

@@ -52,6 +52,7 @@ import de.baumann.browser.helper.helper_toolbar;
 import static android.content.ContentValues.TAG;
 import static java.lang.String.valueOf;
 
+@SuppressWarnings("ResultOfMethodCallIgnored")
 public class Fragment_Files extends Fragment {
 
     private ListView listView = null;
@@ -454,11 +455,12 @@ public class Fragment_Files extends Fragment {
         super.onPrepareOptionsMenu(menu);
 
         AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
+        assert appCompatActivity.getSupportActionBar() != null;
         appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         setTitle();
         setFilesList();
-        helper_toolbar.toolbarGestures(getActivity(), toolbar, viewPager, "", editText, listBar, "");
+        helper_toolbar.toolbarGestures(getActivity(), toolbar, viewPager, editText, listBar, "");
 
         if (sharedPref.getInt("keyboard", 0) == 0) {
             // normal

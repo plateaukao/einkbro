@@ -582,6 +582,7 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
         }
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     private class myWebChromeClient extends WebChromeClient {
 
         @Override
@@ -811,8 +812,9 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
         sharedPref.edit().putInt("keyboard", 0).apply();
 
         AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
+        assert appCompatActivity.getSupportActionBar() != null;
         appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        helper_toolbar.toolbarGestures(getActivity(), toolbar, viewPager, "", editText, urlBar, mWebView.getUrl());
+        helper_toolbar.toolbarGestures(getActivity(), toolbar, viewPager, editText, urlBar, mWebView.getUrl());
 
         final String URL = sharedPref.getString("openURL","https://github.com/scoute-dich/browser/");
 
@@ -1177,16 +1179,50 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
         }
 
         if (id == R.id.action_help) {
-            final AlertDialog d = new AlertDialog.Builder(getActivity())
-                    .setTitle(R.string.about_help)
-                    .setMessage(helper_main.textSpannable(getString(R.string.help_text)))
-                    .setPositiveButton(getString(R.string.toast_yes),
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                }
-                            }).show();
-            d.show();
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            View dialogView = View.inflate(getActivity(), R.layout.dialog_help, null);
+
+            TextView help_lists_title = (TextView) dialogView.findViewById(R.id.help_lists_title);
+            TextView help_lists = (TextView) dialogView.findViewById(R.id.help_lists);
+
+            TextView help_toolbar_title = (TextView) dialogView.findViewById(R.id.help_toolbar_title);
+            TextView help_toolbar = (TextView) dialogView.findViewById(R.id.help_toolbar);
+
+            TextView help_tabs_title = (TextView) dialogView.findViewById(R.id.help_tabs_title);
+            TextView help_tabs = (TextView) dialogView.findViewById(R.id.help_tabs);
+
+            TextView help_menu_title = (TextView) dialogView.findViewById(R.id.help_menu_title);
+            TextView help_menu = (TextView) dialogView.findViewById(R.id.help_menu);
+
+            TextView help_search_title = (TextView) dialogView.findViewById(R.id.help_search_title);
+            TextView help_search = (TextView) dialogView.findViewById(R.id.help_search);
+
+            help_lists_title.setText(helper_main.textSpannable(getString(R.string.help_lists_title)));
+            help_lists.setText(helper_main.textSpannable(getString(R.string.help_lists)));
+
+            help_toolbar_title.setText(helper_main.textSpannable(getString(R.string.help_toolbar_title)));
+            help_toolbar.setText(helper_main.textSpannable(getString(R.string.help_toolbar)));
+
+            help_tabs_title.setText(helper_main.textSpannable(getString(R.string.help_tabs_title)));
+            help_tabs.setText(helper_main.textSpannable(getString(R.string.help_tabs)));
+
+            help_menu_title.setText(helper_main.textSpannable(getString(R.string.help_menu_title)));
+            help_menu.setText(helper_main.textSpannable(getString(R.string.help_menu)));
+
+            help_search_title.setText(helper_main.textSpannable(getString(R.string.help_search_title)));
+            help_search.setText(helper_main.textSpannable(getString(R.string.help_search)));
+
+            builder.setView(dialogView);
+            builder.setPositiveButton(R.string.toast_yes, new DialogInterface.OnClickListener() {
+
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    dialog.cancel();
+                }
+            });
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
         }
 
         return super.onOptionsItemSelected(item);
