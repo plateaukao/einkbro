@@ -1,4 +1,4 @@
-### v 3.9 (WIP)
+### v 3.9
 - removed: notification actions (to buggy)
 - fix: notification behavior (open multiple links)
 - fix: force close on toolbar click
