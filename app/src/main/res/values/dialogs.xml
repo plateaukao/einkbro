@@ -8,16 +8,28 @@
 
         &lt;b>v 3.9&lt;/b>&lt;br>&lt;br>
         - removed: notification actions (to buggy)&lt;br>
+        - removed: direct opening a donation website&lt;br>
         - fix: notification behavior (open multiple links)&lt;br>
         - fix: force close on toolbar click&lt;br>
         - fix: website partially not visible&lt;br>
         - improved: refresh website (long click "history icon")&lt;br>
         - improved: help dialog (menu -> more -> Help)&lt;br>
+        - new: switched to Picasso library to load images&lt;br>
         - new: homepage setup&lt;br>
         - new: open links directly (optional)&lt;br>
         - new: moved from activities to fragments&lt;br>
         - new: bookmarks, readLater, history as startpage (settings)
     </string>
+
+
+    //Donate Dialog
+
+    <string name="donate_text">
+        Google does not allow developers the redirecting to donation pages without a without using their payment system.
+        If you want to donate anyway please visit the projectsite on Github. For this you must open the license dialog above.
+        Thanks.
+    </string>
+
 
     //License Dialog
 

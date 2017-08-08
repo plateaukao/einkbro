@@ -22,6 +22,7 @@ package de.baumann.browser.helper;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
@@ -33,8 +34,8 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
@@ -64,11 +65,8 @@ public class helper_toolbar {
         }
 
         try {
-            Glide.with(activity)
-                    .load(activity.getFilesDir() + picture) // or URI/path
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
-                    .into(imageView); //imageView to set thumbnail to
+            Uri uri = Uri.fromFile(new File(activity.getFilesDir() + picture));
+            Picasso.with(activity).load(uri).memoryPolicy(MemoryPolicy.NO_CACHE).into(imageView);
         } catch (Exception e) {
             Log.w("Browser", "Error load thumbnail", e);
             imageView.setVisibility(View.GONE);
@@ -129,35 +127,35 @@ public class helper_toolbar {
                         ImageView context_1_preView = (ImageView) activity.findViewById(R.id.context_1_preView);
                         ImageView close_1 = (ImageView) activity.findViewById(R.id.close_1);
                         CardView context_1_Layout = (CardView) activity.findViewById(R.id.context_1_Layout);
-                        helper_toolbar.cardViewClick(activity, context_1_Layout, scrollTabs, 0, close_1, viewPager, "", "0");
+                        helper_toolbar.cardViewClick(activity, context_1_Layout, scrollTabs, 0, close_1, viewPager, "0");
                         helper_toolbar.toolBarPreview(activity, context_1,context_1_preView, 0, helper_browser.tab_1(activity), "/tab_0.jpg", close_1);
 
                         TextView context_2 = (TextView) activity.findViewById(R.id.context_2);
                         ImageView context_2_preView = (ImageView) activity.findViewById(R.id.context_2_preView);
                         ImageView close_2 = (ImageView) activity.findViewById(R.id.close_2);
                         CardView context_2_Layout = (CardView) activity.findViewById(R.id.context_2_Layout);
-                        helper_toolbar.cardViewClick(activity, context_2_Layout, scrollTabs, 1, close_2, viewPager, "", "1");
+                        helper_toolbar.cardViewClick(activity, context_2_Layout, scrollTabs, 1, close_2, viewPager, "1");
                         helper_toolbar.toolBarPreview(activity, context_2,context_2_preView, 1, helper_browser.tab_2(activity), "/tab_1.jpg", close_2);
 
                         TextView context_3 = (TextView) activity.findViewById(R.id.context_3);
                         ImageView context_3_preView = (ImageView) activity.findViewById(R.id.context_3_preView);
                         ImageView close_3 = (ImageView) activity.findViewById(R.id.close_3);
                         CardView context_3_Layout = (CardView) activity.findViewById(R.id.context_3_Layout);
-                        helper_toolbar.cardViewClick(activity, context_3_Layout, scrollTabs, 2, close_3, viewPager, "", "2");
+                        helper_toolbar.cardViewClick(activity, context_3_Layout, scrollTabs, 2, close_3, viewPager, "2");
                         helper_toolbar.toolBarPreview(activity, context_3,context_3_preView, 2, helper_browser.tab_3(activity), "/tab_2.jpg", close_3);
 
                         TextView context_4 = (TextView) activity.findViewById(R.id.context_4);
                         ImageView context_4_preView = (ImageView) activity.findViewById(R.id.context_4_preView);
                         ImageView close_4 = (ImageView) activity.findViewById(R.id.close_4);
                         CardView context_4_Layout = (CardView) activity.findViewById(R.id.context_4_Layout);
-                        helper_toolbar.cardViewClick(activity, context_4_Layout, scrollTabs, 3, close_4, viewPager, "", "3");
+                        helper_toolbar.cardViewClick(activity, context_4_Layout, scrollTabs, 3, close_4, viewPager, "3");
                         helper_toolbar.toolBarPreview(activity, context_4,context_4_preView, 3, helper_browser.tab_4(activity), "/tab_3.jpg", close_4);
 
                         TextView context_5 = (TextView) activity.findViewById(R.id.context_5);
                         ImageView context_5_preView = (ImageView) activity.findViewById(R.id.context_5_preView);
                         ImageView close_5 = (ImageView) activity.findViewById(R.id.close_5);
                         CardView context_5_Layout = (CardView) activity.findViewById(R.id.context_5_Layout);
-                        helper_toolbar.cardViewClick(activity, context_5_Layout, scrollTabs, 4, close_5, viewPager, "", "4");
+                        helper_toolbar.cardViewClick(activity, context_5_Layout, scrollTabs, 4, close_5, viewPager, "4");
                         helper_toolbar.toolBarPreview(activity, context_5,context_5_preView, 4, helper_browser.tab_5(activity), "/tab_4.jpg", close_5);
 
                     } else {
@@ -171,8 +169,8 @@ public class helper_toolbar {
         });
     }
     
-    private static void cardViewClick (final Activity activity, CardView cardView, final HorizontalScrollView horizontalScrollView,
-                                      final int newTab, final ImageView close, final CustomViewPager viewPager, final String url,
+    private static void cardViewClick(final Activity activity, CardView cardView, final HorizontalScrollView horizontalScrollView,
+                                      final int newTab, final ImageView close, final CustomViewPager viewPager,
                                       final String tab) {
 
         final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
@@ -180,7 +178,7 @@ public class helper_toolbar {
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sharedPref.edit().putString("openURL", url).apply();
+                sharedPref.edit().putString("openURL", "").apply();
                 viewPager.setCurrentItem(newTab);
                 horizontalScrollView.setVisibility(View.GONE);
             }

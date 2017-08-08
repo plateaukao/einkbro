@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.text.method.LinkMovementMethod;
 import android.widget.TextView;
@@ -82,9 +81,24 @@ class About_content {
 
         authorCardBuilder.addItem(new MaterialAboutActionItem.Builder()
                 .text(R.string.about_donate)
-                .subText(R.string.about_donate_summary)
+                .subText(R.string.about_donate)
                 .icon(R.drawable.coin)
-                .setOnClickListener(ConvenienceBuilder.createWebsiteOnClickAction(c, Uri.parse("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=NP6TGYDYP9SHY")))
+                .setOnClickListener(new MaterialAboutActionItem.OnClickListener() {
+                    @Override
+                    public void onClick() {
+                        final AlertDialog d = new AlertDialog.Builder(c)
+                                .setTitle(R.string.about_title)
+                                .setMessage(helper_main.textSpannable(c.getString(R.string.donate_text)))
+                                .setPositiveButton(c.getString(R.string.toast_yes),
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                dialog.cancel();
+                                            }
+                                        }).show();
+                        d.show();
+                        ((TextView) d.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
+                    }
+                })
                 .build());
 
         MaterialAboutCard.Builder contributorCardBuilder = new MaterialAboutCard.Builder();
@@ -123,13 +137,6 @@ class About_content {
                 .build());
 
         convenienceCardBuilder.addItem(new MaterialAboutActionItem.Builder()
-                .text("Glide")
-                .subText(R.string.about_license_9)
-                .icon(R.drawable.github_circle)
-                .setOnClickListener(ConvenienceBuilder.createWebViewDialogOnClickAction(c, "Glide", "https://github.com/bumptech/glide", true, false))
-                .build());
-
-        convenienceCardBuilder.addItem(new MaterialAboutActionItem.Builder()
                 .text("MAH Encryptor Lib")
                 .subText(R.string.about_license_6)
                 .icon(R.drawable.github_circle)
@@ -148,6 +155,13 @@ class About_content {
                 .subText(R.string.about_license_8)
                 .icon(R.drawable.github_circle)
                 .setOnClickListener(ConvenienceBuilder.createWebViewDialogOnClickAction(c, "Material Design Icons", "https://github.com/Templarian/MaterialDesign", true, false))
+                .build());
+
+        convenienceCardBuilder.addItem(new MaterialAboutActionItem.Builder()
+                .text("Picasso")
+                .subText(R.string.about_license_9)
+                .icon(R.drawable.github_circle)
+                .setOnClickListener(ConvenienceBuilder.createWebViewDialogOnClickAction(c, "Picasso", "https://github.com/square/picasso", true, false))
                 .build());
 
         return new MaterialAboutList(appCardBuilder.build(), authorCardBuilder.build(), contributorCardBuilder.build(), convenienceCardBuilder.build());

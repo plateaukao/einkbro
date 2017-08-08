@@ -31,8 +31,8 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.text.DateFormat;
@@ -78,6 +78,8 @@ public class Fragment_Files extends Fragment {
         PreferenceManager.setDefaultValues(getActivity(), R.xml.user_settings, false);
         PreferenceManager.setDefaultValues(getActivity(), R.xml.user_settings_search, false);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        sharedPref.edit().putString("files_startFolder",
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath()).apply();
 
         toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         editText = (EditText) getActivity().findViewById(R.id.editText);
@@ -174,87 +176,52 @@ public class Fragment_Files extends Fragment {
             @Override
             public View getView (final int position, View convertView, ViewGroup parent) {
 
-                Cursor row2 = (Cursor) listView.getItemAtPosition(position);
-                final String files_icon = row2.getString(row2.getColumnIndexOrThrow("files_icon"));
-                final String files_attachment = row2.getString(row2.getColumnIndexOrThrow("files_attachment"));
-                final File pathFile = new File(files_attachment);
+                Cursor row = (Cursor) listView.getItemAtPosition(position);
+                final String files_icon = row.getString(row.getColumnIndexOrThrow("files_icon"));
+                final String files_attachment = row.getString(row.getColumnIndexOrThrow("files_attachment"));
 
                 View v = super.getView(position, convertView, parent);
                 final ImageView iv = (ImageView) v.findViewById(R.id.icon_notes);
 
                 iv.setVisibility(View.VISIBLE);
+                Uri uri = Uri.fromFile(new File(files_attachment));
 
-                if (pathFile.isDirectory()) {
-                    iv.setImageResource(R.drawable.folder);
-                } else {
-                    switch (files_icon) {
-                        case "":
-                            iv.setImageResource(R.drawable.arrow_up_dark);
-                            break;
-                        case ".m3u8":case ".mp3":case ".wma":case ".midi":case ".wav":case ".aac":
-                        case ".aif":case ".amp3":case ".weba":case ".ogg":
-                            iv.setImageResource(R.drawable.file_music);
-                            break;
-                        case ".mpeg":case ".mp4":case ".webm":case ".qt":case ".3gp":
-                        case ".3g2":case ".avi":case ".f4v":case ".flv":case ".h261":case ".h263":
-                        case ".h264":case ".asf":case ".wmv":
-                            try {
-                                Glide.with(getActivity())
-                                        .load(files_attachment) // or URI/path
-                                        .override(76, 76)
-                                        .centerCrop()
-                                        .into(iv); //imageView to set thumbnail to
-                            } catch (Exception e) {
-                                Log.w("HHS_Moodle", "Error load thumbnail", e);
-                                iv.setImageResource(R.drawable.file_video);
-                            }
-                            break;
-                        case ".vcs":case ".vcf":case ".css":case ".ics":case ".conf":case ".config":
-                        case ".java":case ".html":
-                            iv.setImageResource(R.drawable.file_xml);
-                            break;
-                        case ".apk":
-                            iv.setImageResource(R.drawable.android);
-                            break;
-                        case ".pdf":
-                            iv.setImageResource(R.drawable.file_pdf);
-                            break;
-                        case ".rtf":case ".csv":case ".txt":
-                        case ".doc":case ".xls":case ".ppt":case ".docx":case ".pptx":case ".xlsx":
-                        case ".odt":case ".ods":case ".odp":
-                            iv.setImageResource(R.drawable.file_document);
-                            break;
-                        case ".zip":
-                        case ".rar":
-                            iv.setImageResource(R.drawable.zip_box);
-                            break;
-                        case ".gif":case ".bmp":case ".tiff":case ".svg":
-                        case ".png":case ".jpg":case ".JPG":case ".jpeg":
-                            try {
-                                Glide.with(getActivity())
-                                        .load(files_attachment) // or URI/path
-                                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                                        .skipMemoryCache(true)
-                                        .override(76, 76)
-                                        .centerCrop()
-                                        .into(iv); //imageView to set thumbnail to
-                            } catch (Exception e) {
-                                Log.w("HHS_Moodle", "Error load thumbnail", e);
-                                iv.setImageResource(R.drawable.file_image);
-                            }
-                            break;
-                        default:
-                            iv.setImageResource(R.drawable.file);
-                            break;
-                    }
-                }
-
-                if (files_attachment.isEmpty()) {
+                if (files_icon.equals("")) {
                     new Handler().postDelayed(new Runnable() {
                         public void run() {
                             iv.setImageResource(R.drawable.arrow_up_dark);
                         }
                     }, 350);
+                } else if (files_icon.matches("(.)")) {
+                    iv.setImageResource(R.drawable.folder);
+                } else if (files_icon.matches("(.m3u8|.mp3|.wma|.midi|.wav|.aac|.aif|.amp3|.weba|.ogg)")) {
+                    iv.setImageResource(R.drawable.file_music);
+                } else if (files_icon.equals("(.mpeg|.mp4|.webm|.qt|.3gp|.3g2|.avi|.flv|.h261|.h263|.h264|.asf|.wmv)")) {
+                    try {
+                        Picasso.with(getActivity()).load(uri).resize(76, 76).memoryPolicy(MemoryPolicy.NO_CACHE).into(iv);
+                    } catch (Exception e) {
+                        Log.w("Browser", "Error load thumbnail", e);
+                        iv.setImageResource(R.drawable.file_video);
+                    }
+                } else if(files_icon.matches("(.gif|.bmp|.tiff|.scg|.png|.jpg|.JPG|.jpeg)")) {
+                    try {
+                        Picasso.with(getActivity()).load(uri).resize(76, 76).memoryPolicy(MemoryPolicy.NO_CACHE).into(iv);
+                    } catch (Exception e) {
+                        Log.w("Browser", "Error load thumbnail", e);
+                        iv.setImageResource(R.drawable.file_image);
+                    }
+                } else if (files_icon.matches("(.vcs|.vcf|.css|.ics|.conf|.config|.java|.html)")) {
+                    iv.setImageResource(R.drawable.file_xml);
+                } else if (files_icon.matches("(.apk)")) {
+                    iv.setImageResource(R.drawable.android);
+                } else if (files_icon.matches("(.pdf)")) {
+                    iv.setImageResource(R.drawable.file_pdf);
+                } else if (files_icon.matches("(.rtf|.csv|.txt|.doc|.xls|.ppt|.docx|.pptx|.xlsx|.odt|.ods|.odp)")) {
+                    iv.setImageResource(R.drawable.file_document);
+                } else if (files_icon.matches("(.zip|.rar)")) {
+                    iv.setImageResource(R.drawable.zip_box);
+                } else {
+                    iv.setImageResource(R.drawable.file);
                 }
 
                 return v;
@@ -571,6 +538,7 @@ public class Fragment_Files extends Fragment {
 
                 editText.setVisibility(View.GONE);
                 setTitle();
+                getActivity().invalidateOptionsMenu();
 
                 sharedPref.edit().putString("pathFile", "").apply();
 

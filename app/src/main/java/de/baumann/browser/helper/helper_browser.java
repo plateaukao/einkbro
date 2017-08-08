@@ -47,8 +47,6 @@ import java.util.Locale;
 import de.baumann.browser.R;
 import de.baumann.browser.utils.Utils_UserAgent;
 
-import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
-
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class helper_browser {
 
@@ -376,7 +374,7 @@ public class helper_browser {
                 s = tab_string;
             }
         } catch (Exception e) {
-            Log.e(TAG, "Unable to get String", e);
+            Log.e("Browser", "Unable to get String", e);
             s = activity.getString(R.string.context_tab);
         }
         return s;
@@ -395,7 +393,7 @@ public class helper_browser {
                 s = tab_string;
             }
         } catch (Exception e) {
-            Log.e(TAG, "Unable to get String", e);
+            Log.e("Browser", "Unable to get String", e);
             s = activity.getString(R.string.context_tab);
         }
         return s;
@@ -414,7 +412,7 @@ public class helper_browser {
                 s = tab_string;
             }
         } catch (Exception e) {
-            Log.e(TAG, "Unable to get String", e);
+            Log.e("Browser", "Unable to get String", e);
             s = activity.getString(R.string.context_tab);
         }
         return s;
@@ -433,7 +431,7 @@ public class helper_browser {
                 s = tab_string;
             }
         } catch (Exception e) {
-            Log.e(TAG, "Unable to get String", e);
+            Log.e("Browser", "Unable to get String", e);
             s = activity.getString(R.string.context_tab);
         }
         return s;
@@ -452,7 +450,7 @@ public class helper_browser {
                 s = tab_string;
             }
         } catch (Exception e) {
-            Log.e(TAG, "Unable to get String", e);
+            Log.e("Browser", "Unable to get String", e);
             s = activity.getString(R.string.context_tab);
         }
         return s;

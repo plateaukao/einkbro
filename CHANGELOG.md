@@ -1,10 +1,12 @@
-### v 3.9
+### v 3.9 (WIP)
 - removed: notification actions (to buggy)
+- removed: direct opening a donation website&lt;br>
 - fix: notification behavior (open multiple links)
 - fix: force close on toolbar click
 - fix: website partially not visible
 - improved: refresh website (long click "history icon")
 - improved: help dialog (menu -> more -> Help)
+- new: switched to Picasso library to load images
 - new: homepage setup (bookmark list)
 - new: open links directly (optional)
 - new: moved from activities to fragments
