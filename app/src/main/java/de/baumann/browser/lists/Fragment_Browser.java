@@ -85,7 +85,8 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
 
     private ObservableWebView mWebView;
     private ProgressBar progressBar;
-    private ImageButton imageButton;
+    private ImageButton imageButton_up;
+    private ImageButton imageButton_down;
     private ImageButton imageButton_left;
     private ImageButton imageButton_right;
     private TextView urlBar;
@@ -156,14 +157,15 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
         urlBar = (TextView) activity.findViewById(R.id.urlBar);
         imageButton_left = (ImageButton) rootView.findViewById(R.id.imageButton_left);
         imageButton_right = (ImageButton) rootView.findViewById(R.id.imageButton_right);
-        imageButton = (ImageButton) rootView.findViewById(R.id.imageButton);
+        imageButton_up = (ImageButton) rootView.findViewById(R.id.imageButton);
+        imageButton_down = (ImageButton) rootView.findViewById(R.id.imageButton_down);
         scrollTabs  = (HorizontalScrollView) activity.findViewById(R.id.scrollTabs);
         viewPager = (CustomViewPager) activity.findViewById(R.id.viewpager);
 
 
         // setupViews
 
-        helper_browser.setupViews(activity, mWebView, editText, imageButton, imageButton_left, imageButton_right, toolbar);
+        helper_browser.setupViews(activity, mWebView, editText, imageButton_up, imageButton_down, imageButton_left, imageButton_right, toolbar);
 
 
         // setup WebView
@@ -562,7 +564,8 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
 
         if (scrollState == ScrollState.UP) {
 
-            imageButton.setVisibility(View.VISIBLE);
+            imageButton_up.setVisibility(View.VISIBLE);
+            imageButton_down.setVisibility(View.VISIBLE);
             imageButton_left.setVisibility(View.GONE);
             imageButton_right.setVisibility(View.GONE);
 
@@ -574,11 +577,13 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
 
             urlBar.setText(mWebView.getTitle());
             helper_browser.setNavArrows(mWebView, imageButton_left, imageButton_right);
-            imageButton.setVisibility(View.GONE);
+            imageButton_up.setVisibility(View.GONE);
+            imageButton_down.setVisibility(View.GONE);
             toolbar.setVisibility(View.VISIBLE);
 
         } else {
-            imageButton.setVisibility(View.GONE);
+            imageButton_up.setVisibility(View.GONE);
+            imageButton_down.setVisibility(View.GONE);
         }
     }
 
@@ -672,7 +677,7 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
                     }
                 }, 100);
 
-                if (imageButton.getVisibility() != View.VISIBLE) {
+                if (imageButton_up.getVisibility() != View.VISIBLE) {
                     helper_browser.setNavArrows(mWebView, imageButton_left, imageButton_right);
                 }
             }

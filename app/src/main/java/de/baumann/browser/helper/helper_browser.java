@@ -51,19 +51,28 @@ import de.baumann.browser.utils.Utils_UserAgent;
 public class helper_browser {
 
     public static void setupViews (final Activity activity, final WebView webView,
-                                   final EditText editText, final ImageButton imageButton, final ImageButton imageButton_left,
+                                   final EditText editText, final ImageButton imageButton_up,
+                                   final ImageButton imageButton_down, final ImageButton imageButton_left,
                                    final ImageButton imageButton_right, final Toolbar toolbar) {
 
         editText.setHint(R.string.app_search_hint);
         editText.clearFocus();
 
-        imageButton.setOnClickListener(new View.OnClickListener() {
+        imageButton_up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 webView.scrollTo(0,0);
-                imageButton.setVisibility(View.GONE);
+                imageButton_up.setVisibility(View.GONE);
+                imageButton_down.setVisibility(View.GONE);
                 toolbar.setVisibility(View.VISIBLE);
                 helper_browser.setNavArrows(webView, imageButton_left, imageButton_right);
+            }
+        });
+
+        imageButton_down.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                webView.pageDown(true);
             }
         });
 

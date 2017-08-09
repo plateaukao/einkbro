@@ -8,7 +8,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -182,30 +181,25 @@ public class Fragment_Files extends Fragment {
 
                 View v = super.getView(position, convertView, parent);
                 final ImageView iv = (ImageView) v.findViewById(R.id.icon_notes);
+                final ImageView iv2 = (ImageView) v.findViewById(R.id.icon_notes2);
 
                 iv.setVisibility(View.VISIBLE);
                 Uri uri = Uri.fromFile(new File(files_attachment));
 
-                if (files_icon.equals("")) {
-                    new Handler().postDelayed(new Runnable() {
-                        public void run() {
-                            iv.setImageResource(R.drawable.arrow_up_dark);
-                        }
-                    }, 350);
+                if (files_icon.matches("")) {
+                    iv.setVisibility(View.INVISIBLE);
+                    iv2.setVisibility(View.VISIBLE);
+                    iv.setImageResource(R.drawable.arrow_up_dark);
                 } else if (files_icon.matches("(.)")) {
                     iv.setImageResource(R.drawable.folder);
                 } else if (files_icon.matches("(.m3u8|.mp3|.wma|.midi|.wav|.aac|.aif|.amp3|.weba|.ogg)")) {
                     iv.setImageResource(R.drawable.file_music);
-                } else if (files_icon.equals("(.mpeg|.mp4|.webm|.qt|.3gp|.3g2|.avi|.flv|.h261|.h263|.h264|.asf|.wmv)")) {
-                    try {
-                        Picasso.with(getActivity()).load(uri).resize(76, 76).memoryPolicy(MemoryPolicy.NO_CACHE).into(iv);
-                    } catch (Exception e) {
-                        Log.w("Browser", "Error load thumbnail", e);
-                        iv.setImageResource(R.drawable.file_video);
-                    }
+                } else if (files_icon.matches("(.mpeg|.mp4|.webm|.qt|.3gp|.3g2|.avi|.flv|.h261|.h263|.h264|.asf|.wmv)")) {
+                    iv.setImageResource(R.drawable.file_video);
                 } else if(files_icon.matches("(.gif|.bmp|.tiff|.scg|.png|.jpg|.JPG|.jpeg)")) {
                     try {
-                        Picasso.with(getActivity()).load(uri).resize(76, 76).memoryPolicy(MemoryPolicy.NO_CACHE).into(iv);
+                        iv2.setVisibility(View.INVISIBLE);
+                        Picasso.with(getActivity()).load(uri).resize(76, 76).centerCrop().memoryPolicy(MemoryPolicy.NO_CACHE).into(iv);
                     } catch (Exception e) {
                         Log.w("Browser", "Error load thumbnail", e);
                         iv.setImageResource(R.drawable.file_image);

@@ -1,11 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:descendantFocusability="blocksDescendants"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:descendantFocusability="blocksDescendants"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:ignore="ContentDescription">
+
+    <ImageView
+        android:id="@+id/icon_notes2"
+        android:layout_width="36dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="12dp"
+        android:layout_centerVertical="true"
+        android:visibility="gone"
+        android:scaleType="centerInside"
+        app:srcCompat="@drawable/arrow_up_dark"/>
 
     <ImageView
         android:id="@+id/icon_notes"
@@ -13,8 +24,6 @@
         android:layout_height="match_parent"
         android:layout_marginStart="12dp"
         android:layout_centerVertical="true"
-        app:srcCompat="@drawable/arrow_up_dark"
-        tools:ignore="ContentDescription"
         android:visibility="gone"
         android:scaleType="centerInside" />
 
@@ -52,8 +61,7 @@
                 android:layout_centerVertical="true"
                 android:layout_alignParentEnd="true"
                 android:layout_marginStart="12dp"
-                android:scaleType="center"
-                tools:ignore="ContentDescription" />
+                android:scaleType="center" />
 
         </RelativeLayout>
 

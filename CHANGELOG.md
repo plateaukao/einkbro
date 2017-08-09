@@ -1,4 +1,10 @@
-### v 3.9 (WIP)
+### v 4.0
+- removed: donation link on Github
+- removed: video thumbnail
+- improved: file manager (icons, image preview)
+- added: scroll to end of website arrow
+
+### v 3.9
 - removed: notification actions (to buggy)
 - removed: direct opening a donation website&lt;br>
 - fix: notification behavior (open multiple links)

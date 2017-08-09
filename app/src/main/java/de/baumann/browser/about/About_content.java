@@ -79,28 +79,6 @@ class About_content {
                 .setOnClickListener(ConvenienceBuilder.createWebViewDialogOnClickAction(c, c.getString(R.string.about_dev), "https://github.com/scoute-dich/", true, false))
                 .build());
 
-        authorCardBuilder.addItem(new MaterialAboutActionItem.Builder()
-                .text(R.string.about_donate)
-                .subText(R.string.about_donate)
-                .icon(R.drawable.coin)
-                .setOnClickListener(new MaterialAboutActionItem.OnClickListener() {
-                    @Override
-                    public void onClick() {
-                        final AlertDialog d = new AlertDialog.Builder(c)
-                                .setTitle(R.string.about_title)
-                                .setMessage(helper_main.textSpannable(c.getString(R.string.donate_text)))
-                                .setPositiveButton(c.getString(R.string.toast_yes),
-                                        new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int id) {
-                                                dialog.cancel();
-                                            }
-                                        }).show();
-                        d.show();
-                        ((TextView) d.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
-                    }
-                })
-                .build());
-
         MaterialAboutCard.Builder contributorCardBuilder = new MaterialAboutCard.Builder();
         contributorCardBuilder.title(R.string.about_title_cont);
 

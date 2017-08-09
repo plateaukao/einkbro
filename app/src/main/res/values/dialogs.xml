@@ -4,30 +4,13 @@
     //Changelog Dialog
 
     <string name="changelog_text">
-        &lt;b>For all important changes please read the new help dialog (Menu -> More -> Help).&lt;/b>&lt;br>&lt;br>
+        &lt;b>For informations about the handling there is a help dialog (Menu -> More -> Help).&lt;/b>&lt;br>&lt;br>
 
-        &lt;b>v 3.9&lt;/b>&lt;br>&lt;br>
-        - removed: notification actions (to buggy)&lt;br>
-        - removed: direct opening a donation website&lt;br>
-        - fix: notification behavior (open multiple links)&lt;br>
-        - fix: force close on toolbar click&lt;br>
-        - fix: website partially not visible&lt;br>
-        - improved: refresh website (long click "history icon")&lt;br>
-        - improved: help dialog (menu -> more -> Help)&lt;br>
-        - new: switched to Picasso library to load images&lt;br>
-        - new: homepage setup&lt;br>
-        - new: open links directly (optional)&lt;br>
-        - new: moved from activities to fragments&lt;br>
-        - new: bookmarks, readLater, history as startpage (settings)
-    </string>
-
-
-    //Donate Dialog
-
-    <string name="donate_text">
-        Google does not allow developers the redirecting to donation pages without a without using their payment system.
-        If you want to donate anyway please visit the projectsite on Github. For this you must open the license dialog above.
-        Thanks.
+        &lt;b>v 4.0&lt;/b>&lt;br>&lt;br>
+        - removed: donation link on Github&lt;br>
+        - removed: video thumbnail&lt;br>
+        - improved: file manager (icons, image preview)&lt;br>
+        - added: scroll to end of website arrow
     </string>
 
 

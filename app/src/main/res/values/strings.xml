@@ -309,9 +309,6 @@
     <string name="about_dev">Gaukler Faun</string>
     <string name="about_dev_summary">Open my profile on Github (needs internet connection).</string>
 
-    <string name="about_donate">Donate</string>
-    <string name="about_donate_summary">If you like the app, you can donate to me via Paypal (needs internet connection).</string>
-
     <string name="about_license_2">Used to hide the toolbar while scrolling.</string>
     <string name="about_license_3">Used to build the intro screen.</string>
     <string name="about_license_6">Used to en- and decrypt login data saved in the passStore.</string>

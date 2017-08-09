@@ -321,9 +321,6 @@
     <string name="about_dev">Gaukler Faun</string>
     <string name="about_dev_summary">Öffne mein Github Profil (braucht eine Internetverbindung).</string>
 
-    <string name="about_donate">Spende</string>
-    <string name="about_donate_summary">Wenn dir die App gefällt, kannst du mir gerne etwas über Paypal spenden (braucht eine Internetverbindung).</string>
-
     <string name="about_license_2">Gebraucht um die Toolbar während dem Scrollen zu verstecken.</string>
     <string name="about_license_3">Gebraucht um die Einführung anzuzeigen.</string>
     <string name="about_license_6">Gebraucht um die Logindaten des passSpeichers zu ver- und entschlüsseln.</string>
