@@ -110,8 +110,6 @@
     <string name="toast_backup_not">Sicherung fehlgeschlagen.</string>
     <string name="toast_restore_not">Wiederherstellung fehlgeschlagen.</string>
     <string name="toast_screenshot_failed">Bildschirmfoto speichern fehlgeschlagen.</string>
-    <string name="toast_cache">Keine Internetverbindung. Versuche Seite aus dem Cache zu laden.</string>
-    <string name="toast_noInternet">Kann Seite nicht laden. Keine Internetverbindung.</string>
     <string name="toast_install_app">Bitte eine App installieren um die Aktion auszuführen.</string>
     <string name="toast_wrongPW">Uuups. Falsches Passwort.</string>
     <string name="toast_exit">Möchtest du die App verlassen?</string>
@@ -204,10 +202,6 @@
 
     <string name="action_wikiLang">Wikipedia</string>
     <string name="action_wikiLang_summary">Bestimme deine bevorzugte Sprache für die Suche auf Wikipedia.</string>
-
-    <string name="action_offline">Offline</string>
-    <string name="action_offline_summary">Speichere Internetseiten im Cache um sie auch ohne Internetverbindung anzeigen zu können.
-        Dafür darf \"Cache löschen\" nicht aktiviert sein.</string>
 
     <string name="action_clearCache">Cache löschen</string>
     <string name="action_clearCache_summary">Löscht den Browsercache beim Verlassen der App. Nicht aktivieren, wenn du

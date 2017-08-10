@@ -76,8 +76,6 @@
     <string name="toast_backup_not">Резервное копирование не удалось.</string>
     <string name="toast_restore_not">Восстановление прервано.</string>
     <string name="toast_screenshot_failed">Не удалось сделать снимок экрана.</string>
-    <string name="toast_cache">Нет интернет соединения. Попытка загрузить из кэша.</string>
-    <string name="toast_noInternet">Невозможно загрузить сайт. Нет интернет соединения.</string>
     <string name="toast_install_app">Пожалуйста установите приложение чтобы выполнить действие.</string>
     <string name="toast_wrongPW">Ой. Неверный пароль.</string>
     <string name="toast_exit">Хотите выйти?</string>
@@ -144,9 +142,6 @@
     <string name="action_wikiLang">Википедия</string>
     <string name="action_wikiLang_summary">Выберите предпочитаемый язык Википедии.</string>
 
-    <string name="action_offline">Оффлайн</string>
-    <string name="action_offline_summary">Сохранять сайты в кэше для оффлайн-доступа. Отключите очищение кэша для использования.</string>
-
     <string name="action_clearCache">Очистить кэш</string>
     <string name="action_clearCache_summary">Очистить кэш браузере при выходе. Отключите, если хотите использовать оффлайн функции.</string>
 
@@ -168,7 +163,6 @@
     <string name="action_searchChoose">Веб сайты</string>
     <string name="action_searchChoose_summary">Выберите сайты доступные для быстрого поиска.</string>
     <string name="action_searchChooseTitle">Выберите сайт для поиска</string>
-
 
     <string name="action_protect_summary">Установите pin для защиты приложения от нежелательного доступа. Используйте только цифры. Оставьте поле пустым если вы не хотите защитить приложение.</string>
 

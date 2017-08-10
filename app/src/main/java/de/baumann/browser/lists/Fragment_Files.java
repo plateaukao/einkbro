@@ -406,6 +406,22 @@ public class Fragment_Files extends Fragment {
     }
 
     @Override
+    public void setUserVisibleHint(final boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        if (isVisibleToUser) {
+            AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
+            assert appCompatActivity.getSupportActionBar() != null;
+            appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            setTitle();
+            setFilesList();
+            helper_toolbar.toolbarGestures(getActivity(), toolbar, viewPager, editText, listBar, "");
+        } else {
+            Log.i("Browser", "Browser: isVisibleToUser false");
+        }
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_file, menu);
     }
@@ -414,14 +430,6 @@ public class Fragment_Files extends Fragment {
     public void onPrepareOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         super.onPrepareOptionsMenu(menu);
-
-        AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
-        assert appCompatActivity.getSupportActionBar() != null;
-        appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        setTitle();
-        setFilesList();
-        helper_toolbar.toolbarGestures(getActivity(), toolbar, viewPager, editText, listBar, "");
 
         if (sharedPref.getInt("keyboard", 0) == 0) {
             // normal
@@ -522,19 +530,17 @@ public class Fragment_Files extends Fragment {
                 File dir = pathFile.getParentFile();
                 File to = new File(dir,inputTag);
 
-                pathFile.renameTo(to);
-                pathFile.delete();
-
-                helper_editText.hideKeyboard(getActivity(), editText, 0, getString(R.string.app_title_bookmarks), getString(R.string.app_search_hint));
-                setFilesList();
-
-                Snackbar.make(listView, R.string.bookmark_added, Snackbar.LENGTH_SHORT).show();
-
-                editText.setVisibility(View.GONE);
-                setTitle();
-                getActivity().invalidateOptionsMenu();
-
-                sharedPref.edit().putString("pathFile", "").apply();
+                if(db.isExist(inputTag)){
+                    Snackbar.make(listView, getString(R.string.toast_newTitle), Snackbar.LENGTH_LONG).show();
+                } else {
+                    pathFile.renameTo(to);
+                    pathFile.delete();
+                    Snackbar.make(listView, R.string.bookmark_added, Snackbar.LENGTH_SHORT).show();
+                    editText.setVisibility(View.GONE);
+                    setTitle();
+                    helper_editText.hideKeyboard(getActivity(), editText, 0, getString(R.string.app_title_bookmarks), getString(R.string.app_search_hint));
+                    setFilesList();
+                }
 
                 return true;
 

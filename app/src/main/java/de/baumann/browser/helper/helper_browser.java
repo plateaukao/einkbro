@@ -61,7 +61,7 @@ public class helper_browser {
         imageButton_up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                webView.scrollTo(0,0);
+                webView.pageUp(true);
                 imageButton_up.setVisibility(View.GONE);
                 imageButton_down.setVisibility(View.GONE);
                 toolbar.setVisibility(View.VISIBLE);

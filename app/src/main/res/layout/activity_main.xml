@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="ContentDescription"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
@@ -13,64 +14,52 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="@color/colorPrimary_1"
-        android:theme="@style/Actionbar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         android:minHeight="56dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/toolbar" >
+        android:background="@color/colorPrimary_1"
+        android:theme="@style/Actionbar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" >
 
         <EditText
             android:id="@+id/editText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="5dp"
             android:ellipsize="end"
+            android:maxLines="1"
             android:fontFamily="sans-serif-condensed"
             android:hint="@string/app_search_hint"
             android:imeOptions="actionSearch"
             android:inputType="text"
-            android:maxLines="1"
             android:text="@string/app_name"
             android:textColor="#eeeeee"
             android:textColorHint="#eeeeee"
-            android:textIsSelectable="true"
-            android:theme="@style/EditTextStyle"
-            android:visibility="gone">
-        </EditText>
+            android:theme="@style/EditTextStyle" />
 
         <TextView
             android:id="@+id/urlBar"
             android:layout_width="match_parent"
-            android:layout_height="36dp"
+            android:layout_height="match_parent"
             android:gravity="center_vertical"
-            android:minHeight="?attr/actionBarSize"
-            android:layout_margin="5dp"
             android:text="@string/app_name"
             android:fontFamily="sans-serif-condensed"
             android:ellipsize="end"
             android:maxLines="1"
-            android:scrollHorizontally="true"
-            android:textAppearance="?android:attr/textAppearanceMedium" >
-        </TextView>
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
             android:id="@+id/listBar"
             android:layout_width="match_parent"
-            android:layout_height="36dp"
+            android:layout_height="match_parent"
             android:gravity="center_vertical"
-            android:minHeight="?attr/actionBarSize"
-            android:layout_margin="5dp"
             android:text="@string/app_name"
             android:fontFamily="sans-serif-condensed"
             android:ellipsize="end"
             android:maxLines="1"
-            android:scrollHorizontally="true"
-            android:textAppearance="?android:attr/textAppearanceMedium" >
-        </TextView>
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
     </android.support.v7.widget.Toolbar>
 
@@ -102,8 +91,7 @@
                         android:layout_height="100dp"
                         android:layout_alignParentTop="true"
                         android:scaleType="fitStart"
-                        android:src="@drawable/numeric_1_box"
-                        tools:ignore="ContentDescription" />
+                        android:src="@drawable/numeric_1_box" />
 
                     <ImageView
                         android:id="@+id/context_1_preView"
@@ -111,19 +99,19 @@
                         android:layout_height="100dp"
                         android:layout_alignParentTop="true"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/numeric_1_box"
-                        tools:ignore="ContentDescription" />
+                        android:src="@drawable/numeric_1_box" />
 
                     <ImageView
                         android:id="@+id/close_1"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
                         android:layout_gravity="end"
-                        android:padding="4dp"
+                        android:layout_margin="3dp"
+                        android:padding="6dp"
                         android:scaleType="fitStart"
-                        android:src="@drawable/close_circle"
+                        android:src="@drawable/close"
                         android:visibility="gone"
-                        tools:ignore="ContentDescription" />
+                        android:background="@drawable/circle" />
 
                     <TextView
                         android:id="@+id/context_1"
@@ -161,8 +149,7 @@
                         android:layout_height="100dp"
                         android:layout_alignParentTop="true"
                         android:scaleType="fitStart"
-                        android:src="@drawable/numeric_2_box"
-                        tools:ignore="ContentDescription" />
+                        android:src="@drawable/numeric_2_box" />
 
                     <ImageView
                         android:id="@+id/context_2_preView"
@@ -170,19 +157,19 @@
                         android:layout_height="100dp"
                         android:layout_alignParentTop="true"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/numeric_2_box"
-                        tools:ignore="ContentDescription" />
+                        android:src="@drawable/numeric_2_box" />
 
                     <ImageView
                         android:id="@+id/close_2"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
                         android:layout_gravity="end"
-                        android:padding="4dp"
+                        android:layout_margin="3dp"
+                        android:padding="6dp"
                         android:scaleType="fitStart"
-                        android:src="@drawable/close_circle"
+                        android:src="@drawable/close"
                         android:visibility="gone"
-                        tools:ignore="ContentDescription" />
+                        android:background="@drawable/circle" />
 
                     <TextView
                         android:id="@+id/context_2"
@@ -222,8 +209,7 @@
                         android:layout_height="100dp"
                         android:layout_alignParentTop="true"
                         android:scaleType="fitStart"
-                        android:src="@drawable/numeric_3_box"
-                        tools:ignore="ContentDescription" />
+                        android:src="@drawable/numeric_3_box" />
 
                     <ImageView
                         android:id="@+id/context_3_preView"
@@ -231,18 +217,19 @@
                         android:layout_height="100dp"
                         android:layout_alignParentTop="true"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/numeric_3_box"
-                        tools:ignore="ContentDescription" />
+                        android:src="@drawable/numeric_3_box" />
+
                     <ImageView
                         android:id="@+id/close_3"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
                         android:layout_gravity="end"
-                        android:padding="4dp"
+                        android:layout_margin="3dp"
+                        android:padding="6dp"
                         android:scaleType="fitStart"
-                        android:src="@drawable/close_circle"
+                        android:src="@drawable/close"
                         android:visibility="gone"
-                        tools:ignore="ContentDescription" />
+                        android:background="@drawable/circle" />
 
                     <TextView
                         android:id="@+id/context_3"
@@ -280,8 +267,7 @@
                         android:layout_height="100dp"
                         android:layout_alignParentTop="true"
                         android:scaleType="fitStart"
-                        android:src="@drawable/numeric_4_box"
-                        tools:ignore="ContentDescription" />
+                        android:src="@drawable/numeric_4_box" />
 
                     <ImageView
                         android:id="@+id/context_4_preView"
@@ -289,19 +275,19 @@
                         android:layout_height="100dp"
                         android:layout_alignParentTop="true"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/numeric_4_box"
-                        tools:ignore="ContentDescription" />
+                        android:src="@drawable/numeric_4_box" />
 
                     <ImageView
                         android:id="@+id/close_4"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
                         android:layout_gravity="end"
-                        android:padding="4dp"
+                        android:layout_margin="3dp"
+                        android:padding="6dp"
                         android:scaleType="fitStart"
-                        android:src="@drawable/close_circle"
+                        android:src="@drawable/close"
                         android:visibility="gone"
-                        tools:ignore="ContentDescription" />
+                        android:background="@drawable/circle" />
 
                     <TextView
                         android:id="@+id/context_4"
@@ -339,8 +325,7 @@
                         android:layout_height="100dp"
                         android:layout_alignParentTop="true"
                         android:scaleType="fitStart"
-                        android:src="@drawable/numeric_5_box"
-                        tools:ignore="ContentDescription" />
+                        android:src="@drawable/numeric_5_box" />
 
                     <ImageView
                         android:id="@+id/context_5_preView"
@@ -348,19 +333,19 @@
                         android:layout_height="100dp"
                         android:layout_alignParentTop="true"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/numeric_5_box"
-                        tools:ignore="ContentDescription" />
+                        android:src="@drawable/numeric_5_box" />
 
                     <ImageView
                         android:id="@+id/close_5"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
                         android:layout_gravity="end"
-                        android:padding="4dp"
+                        android:layout_margin="3dp"
+                        android:padding="6dp"
                         android:scaleType="fitStart"
-                        android:src="@drawable/close_circle"
+                        android:src="@drawable/close"
                         android:visibility="gone"
-                        tools:ignore="ContentDescription" />
+                        android:background="@drawable/circle" />
 
                     <TextView
                         android:id="@+id/context_5"

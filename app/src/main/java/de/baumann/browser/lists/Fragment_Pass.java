@@ -10,6 +10,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -271,6 +272,22 @@ public class Fragment_Pass extends Fragment {
     }
 
     @Override
+    public void setUserVisibleHint(final boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        if (isVisibleToUser) {
+            AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
+            assert appCompatActivity.getSupportActionBar() != null;
+            appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            setFilesList();
+            helper_toolbar.toolbarGestures(getActivity(), toolbar, viewPager, editText, listBar, "");
+            listBar.setText(R.string.app_title_passStorage);
+        } else {
+            Log.i("Browser", "Browser: isVisibleToUser false");
+        }
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_popup, menu);
     }
@@ -279,15 +296,6 @@ public class Fragment_Pass extends Fragment {
     public void onPrepareOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         super.onPrepareOptionsMenu(menu);
-
-        AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
-        assert appCompatActivity.getSupportActionBar() != null;
-        appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        setFilesList();
-        helper_toolbar.toolbarGestures(getActivity(), toolbar, viewPager, editText, listBar, "");
-
-        listBar.setText(R.string.app_title_passStorage);
 
         menu.findItem(R.id.action_cancel).setVisible(false);
         menu.findItem(R.id.action_sort).setVisible(false);

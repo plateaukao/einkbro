@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:tools="http://schemas.android.com/tools"
+<menu
+    xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -11,18 +12,16 @@
         app:showAsAction="ifRoom" >
         <!-- "file" submenu -->
         <menu>
+            <item android:id="@+id/filter_clear"
+                android:title="@string/filter_clear" />
             <item android:id="@+id/filter_title"
                 android:title="@string/action_filter_title" />
-            <item android:id="@+id/filter_url"
-                android:title="@string/action_filter_url" />
             <item
                 android:orderInCategory="100"
                 android:title="@string/action_filter_create"
                 app:showAsAction="ifRoom" >
                 <!-- "file" submenu -->
                 <menu>
-                    <item android:id="@+id/filter_clear"
-                        android:title="@string/filter_clear" />
                     <item android:id="@+id/filter_own"
                         android:title="@string/filter_own" />
                     <item android:id="@+id/filter_month"

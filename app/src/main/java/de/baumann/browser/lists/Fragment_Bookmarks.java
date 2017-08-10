@@ -18,6 +18,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -417,6 +418,22 @@ public class Fragment_Bookmarks extends Fragment {
     }
 
     @Override
+    public void setUserVisibleHint(final boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        if (isVisibleToUser) {
+            AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
+            assert appCompatActivity.getSupportActionBar() != null;
+            appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            setTitle();
+            setBookmarksList();
+            helper_toolbar.toolbarGestures(getActivity(), toolbar, viewPager, editText, listBar, "");
+        } else {
+            Log.i("Browser", "Browser: isVisibleToUser false");
+        }
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_popup, menu);
     }
@@ -425,14 +442,6 @@ public class Fragment_Bookmarks extends Fragment {
     public void onPrepareOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         super.onPrepareOptionsMenu(menu);
-
-        AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
-        assert appCompatActivity.getSupportActionBar() != null;
-        appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        setTitle();
-        setBookmarksList();
-        helper_toolbar.toolbarGestures(getActivity(), toolbar, viewPager, editText, listBar, "");
 
         if (sharedPref.getInt("keyboard", 0) == 0) {
             // normal

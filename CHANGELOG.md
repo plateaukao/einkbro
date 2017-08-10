@@ -1,3 +1,10 @@
+### v 4.1 (WIP)
+- removed: offline support (use screenshot for saving)
+- removed: unnecessary permissions
+- fix: reset menu after editing file name
+- fix: overwriting of files while renaming
+- improved: layout close button
+
 ### v 4.0
 - removed: donation link on Github
 - removed: video thumbnail

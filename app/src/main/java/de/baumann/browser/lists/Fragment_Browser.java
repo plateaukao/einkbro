@@ -15,8 +15,6 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -75,7 +73,6 @@ import de.baumann.browser.helper.helper_toolbar;
 import de.baumann.browser.helper.helper_webView;
 import de.baumann.browser.utils.Utils_AdBlocker;
 
-import static android.content.Context.CONNECTIVITY_SERVICE;
 import static android.content.Context.DOWNLOAD_SERVICE;
 
 public class Fragment_Browser extends Fragment implements ObservableScrollViewCallbacks {
@@ -123,12 +120,7 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
     private boolean inCustomView() {
         return (mCustomView != null);
     }
-    private boolean isNetworkUnAvailable() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService( CONNECTIVITY_SERVICE );
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo == null || !activeNetworkInfo.isConnected();
-    }
-    
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -210,21 +202,8 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
 
         // other stuff
 
-        if (isNetworkUnAvailable()) {
-            if (sharedPref.getBoolean ("offline", false)){
-                if (isNetworkUnAvailable()) { // loading offline
-                    mWebView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
-                    mWebView.reload();
-                    Snackbar.make(mWebView, R.string.toast_cache, Snackbar.LENGTH_INDEFINITE).show();
-                }
-            } else {
-                Snackbar.make(mWebView, R.string.toast_noInternet, Snackbar.LENGTH_SHORT).show();
-            }
-        }
-
         Utils_AdBlocker.init(activity);
         registerForContextMenu(mWebView);
-
 
         return rootView;
     }
@@ -246,7 +225,6 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
         }, 500);
 
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -822,16 +800,6 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
         helper_toolbar.toolbarGestures(getActivity(), toolbar, viewPager, editText, urlBar, mWebView.getUrl());
 
         final String URL = sharedPref.getString("openURL","https://github.com/scoute-dich/browser/");
-
-        if (isNetworkUnAvailable()) {
-            if (sharedPref.getBoolean ("offline", false)){
-                if (isNetworkUnAvailable()) {
-                    Snackbar.make(mWebView, R.string.toast_cache, Snackbar.LENGTH_LONG).show();
-                }
-            } else {
-                Snackbar.make(mWebView, R.string.toast_noInternet, Snackbar.LENGTH_LONG).show();
-            }
-        }
 
         if (URL.equals(mWebView.getUrl()) || URL.equals("") && sharedPref.getInt("tab_" + tab_number  + "_exit", 0) == 0) {
             Log.i(TAG, "Tab switched");

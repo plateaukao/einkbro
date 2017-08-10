@@ -49,13 +49,6 @@
             android:defaultValue="true" />
 
         <CheckBoxPreference
-            android:title="@string/action_offline"
-            android:icon="@drawable/wifi_off"
-            android:summary="@string/action_offline_summary"
-            android:key="offline"
-            android:defaultValue="false" />
-
-        <CheckBoxPreference
             android:title="@string/action_desktop"
             android:icon="@drawable/desktop_mac"
             android:summary="@string/action_desktop_summary"

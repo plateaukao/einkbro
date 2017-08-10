@@ -110,8 +110,6 @@
     <string name="toast_backup_not">Backup failed.</string>
     <string name="toast_restore_not">Restore failed.</string>
     <string name="toast_screenshot_failed">Failed to create screenshot.</string>
-    <string name="toast_cache">No internet connection. Trying to load from cache.</string>
-    <string name="toast_noInternet">Can not load site. No internet connection.</string>
     <string name="toast_install_app">Please install an app to perform action.</string>
     <string name="toast_wrongPW">Uuups. Wrong password.</string>
     <string name="toast_exit">Do you want to exit?</string>
@@ -202,9 +200,6 @@
 
     <string name="action_wikiLang">Wikipedia</string>
     <string name="action_wikiLang_summary">Choose your preferred language for Wikipedia.</string>
-
-    <string name="action_offline">Offline</string>
-    <string name="action_offline_summary">Save websites in cache for offline use. Disable clear cache to use.</string>
 
     <string name="action_clearCache">Clear cache</string>
     <string name="action_clearCache_summary">Clear browser cache on exit. Disable, if you want to use offline functionality.</string>
