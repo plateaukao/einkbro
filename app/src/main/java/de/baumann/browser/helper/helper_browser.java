@@ -50,7 +50,7 @@ import de.baumann.browser.utils.Utils_UserAgent;
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class helper_browser {
 
-    public static void setupViews (final Activity activity, final WebView webView,
+    public static void setupViews (final WebView webView,
                                    final EditText editText, final ImageButton imageButton_up,
                                    final ImageButton imageButton_down, final ImageButton imageButton_left,
                                    final ImageButton imageButton_right, final Toolbar toolbar) {
@@ -76,8 +76,6 @@ public class helper_browser {
             }
         });
 
-        helper_editText.editText_EditorAction(editText, activity, webView, editText);
-        helper_editText.editText_FocusChange(editText, activity);
     }
 
 
@@ -371,7 +369,7 @@ public class helper_browser {
     }
 
     public static String tab_1 (Activity activity) {
-        final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
         String s;
 
         final String tab_string = sharedPref.getString("tab_0", "");
@@ -390,7 +388,7 @@ public class helper_browser {
     }
 
     public static String tab_2 (Activity activity) {
-        final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
         String s;
 
         final String tab_string = sharedPref.getString("tab_1", "");
@@ -409,7 +407,7 @@ public class helper_browser {
     }
 
     public static String tab_3 (Activity activity) {
-        final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
         String s;
 
         final String tab_string = sharedPref.getString("tab_2", "");
@@ -428,7 +426,7 @@ public class helper_browser {
     }
 
     public static String tab_4 (Activity activity) {
-        final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
         String s;
 
         final String tab_string = sharedPref.getString("tab_3", "");
@@ -447,7 +445,7 @@ public class helper_browser {
     }
 
     public static String tab_5 (Activity activity) {
-        final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
         String s;
 
         final String tab_string = sharedPref.getString("tab_4", "");

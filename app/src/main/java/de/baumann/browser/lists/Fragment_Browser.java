@@ -3,6 +3,7 @@ package de.baumann.browser.lists;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.ClipData;
@@ -157,11 +158,7 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
 
         // setupViews
 
-        helper_browser.setupViews(activity, mWebView, editText, imageButton_up, imageButton_down, imageButton_left, imageButton_right, toolbar);
-
-
-        // setup WebView
-
+        helper_browser.setupViews(mWebView, editText, imageButton_up, imageButton_down, imageButton_left, imageButton_right, toolbar);
         helper_webView.webView_Settings(activity, mWebView);
         helper_webView.webView_WebViewClient(activity, mWebView, urlBar);
 
@@ -223,7 +220,6 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
                 }
             }
         }, 500);
-
     }
 
     @Override
@@ -256,25 +252,23 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
 
         final WebView.HitTestResult result = mWebView.getHitTestResult();
         final String url = result.getExtra();
+        final AlertDialog dialog;
+        final View dialogView = View.inflate(activity, R.layout.dialog_context, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 
         if(url != null) {
 
             if(result.getType() == WebView.HitTestResult.IMAGE_TYPE){
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-                View dialogView = View.inflate(activity, R.layout.dialog_context, null);
 
                 builder.setView(dialogView);
                 builder.setPositiveButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
                         dialog.cancel();
-                        dialog.cancel();
                     }
                 });
 
-                final AlertDialog dialog = builder.create();
-                // Display the custom alert dialog on interface
+                dialog = builder.create();
                 dialog.show();
 
                 try {
@@ -354,48 +348,9 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
                     }
                 });
 
-                HorizontalScrollView scrollTabs = (HorizontalScrollView) dialogView.findViewById(R.id.scrollTabs);
-
-                TextView context_1 = (TextView) dialogView.findViewById(R.id.context_1);
-                ImageView context_1_preView = (ImageView) dialogView.findViewById(R.id.context_1_preView);
-                CardView context_1_Layout = (CardView) dialogView.findViewById(R.id.context_1_Layout);
-                ImageView close_1 = (ImageView) dialogView.findViewById(R.id.close_1);
-                helper_toolbar.cardViewClickMenu(getActivity(), context_1_Layout, scrollTabs, 0, close_1, viewPager, url, dialog, "0");
-                helper_toolbar.toolBarPreview(getActivity(), context_1,context_1_preView, 0, helper_browser.tab_1(getActivity()), "/tab_0.jpg", close_1);
-
-                TextView context_2 = (TextView) dialogView.findViewById(R.id.context_2);
-                ImageView context_2_preView = (ImageView) dialogView.findViewById(R.id.context_2_preView);
-                CardView context_2_Layout = (CardView) dialogView.findViewById(R.id.context_2_Layout);
-                ImageView close_2 = (ImageView) dialogView.findViewById(R.id.close_2);
-                helper_toolbar.cardViewClickMenu(getActivity(), context_2_Layout, scrollTabs, 1, close_2, viewPager, url, dialog, "1");
-                helper_toolbar.toolBarPreview(getActivity(), context_2,context_2_preView, 1, helper_browser.tab_2(getActivity()), "/tab_1.jpg", close_2);
-
-                TextView context_3 = (TextView) dialogView.findViewById(R.id.context_3);
-                ImageView context_3_preView = (ImageView) dialogView.findViewById(R.id.context_3_preView);
-                CardView context_3_Layout = (CardView) dialogView.findViewById(R.id.context_3_Layout);
-                ImageView close_3 = (ImageView) dialogView.findViewById(R.id.close_3);
-                helper_toolbar.cardViewClickMenu(getActivity(), context_3_Layout, scrollTabs, 2, close_3, viewPager, url, dialog, "2");
-                helper_toolbar.toolBarPreview(getActivity(), context_3,context_3_preView, 2, helper_browser.tab_3(getActivity()), "/tab_2.jpg", close_3);
-
-                TextView context_4 = (TextView) dialogView.findViewById(R.id.context_4);
-                ImageView context_4_preView = (ImageView) dialogView.findViewById(R.id.context_4_preView);
-                CardView context_4_Layout = (CardView) dialogView.findViewById(R.id.context_4_Layout);
-                ImageView close_4 = (ImageView) dialogView.findViewById(R.id.close_4);
-                helper_toolbar.cardViewClickMenu(getActivity(), context_4_Layout, scrollTabs, 3, close_4, viewPager, url, dialog, "3");
-                helper_toolbar.toolBarPreview(getActivity(), context_4,context_4_preView, 3, helper_browser.tab_4(getActivity()), "/tab_3.jpg", close_4);
-
-                TextView context_5 = (TextView) dialogView.findViewById(R.id.context_5);
-                ImageView context_5_preView = (ImageView) dialogView.findViewById(R.id.context_5_preView);
-                CardView context_5_Layout = (CardView) dialogView.findViewById(R.id.context_5_Layout);
-                ImageView close_5 = (ImageView) dialogView.findViewById(R.id.close_5);
-                helper_toolbar.cardViewClickMenu(getActivity(), context_5_Layout, scrollTabs, 4, close_5, viewPager, url, dialog, "4");
-                helper_toolbar.toolBarPreview(getActivity(), context_5,context_5_preView, 4, helper_browser.tab_5(getActivity()), "/tab_4.jpg", close_5);
-
+                contextMenu(dialogView, url, dialog);
 
             } else if (result.getType() == WebView.HitTestResult.SRC_ANCHOR_TYPE) {
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-                final  View dialogView = View.inflate(activity, R.layout.dialog_context, null);
 
                 builder.setView(dialogView);
                 builder.setPositiveButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
@@ -406,8 +361,7 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
                     }
                 });
 
-                final AlertDialog dialog = builder.create();
-                // Display the custom alert dialog on interface
+                dialog = builder.create();
                 dialog.show();
 
                 LinearLayout context_save_Layout = (LinearLayout) dialogView.findViewById(R.id.context_save_Layout);
@@ -484,43 +438,7 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
                     }
                 });
 
-                HorizontalScrollView scrollTabs = (HorizontalScrollView) dialogView.findViewById(R.id.scrollTabs);
-
-                TextView context_1 = (TextView) dialogView.findViewById(R.id.context_1);
-                ImageView context_1_preView = (ImageView) dialogView.findViewById(R.id.context_1_preView);
-                CardView context_1_Layout = (CardView) dialogView.findViewById(R.id.context_1_Layout);
-                ImageView close_1 = (ImageView) dialogView.findViewById(R.id.close_1);
-                helper_toolbar.cardViewClickMenu(getActivity(), context_1_Layout, scrollTabs, 0, close_1, viewPager, url, dialog, "0");
-                helper_toolbar.toolBarPreview(getActivity(), context_1,context_1_preView, 0, helper_browser.tab_1(getActivity()), "/tab_0.jpg", close_1);
-
-                TextView context_2 = (TextView) dialogView.findViewById(R.id.context_2);
-                ImageView context_2_preView = (ImageView) dialogView.findViewById(R.id.context_2_preView);
-                CardView context_2_Layout = (CardView) dialogView.findViewById(R.id.context_2_Layout);
-                ImageView close_2 = (ImageView) dialogView.findViewById(R.id.close_2);
-                helper_toolbar.cardViewClickMenu(getActivity(), context_2_Layout, scrollTabs, 1, close_2, viewPager, url, dialog, "1");
-                helper_toolbar.toolBarPreview(getActivity(), context_2,context_2_preView, 1, helper_browser.tab_2(getActivity()), "/tab_1.jpg", close_2);
-
-                TextView context_3 = (TextView) dialogView.findViewById(R.id.context_3);
-                ImageView context_3_preView = (ImageView) dialogView.findViewById(R.id.context_3_preView);
-                CardView context_3_Layout = (CardView) dialogView.findViewById(R.id.context_3_Layout);
-                ImageView close_3 = (ImageView) dialogView.findViewById(R.id.close_3);
-                helper_toolbar.cardViewClickMenu(getActivity(), context_3_Layout, scrollTabs, 2, close_3, viewPager, url, dialog, "2");
-                helper_toolbar.toolBarPreview(getActivity(), context_3,context_3_preView, 2, helper_browser.tab_3(getActivity()), "/tab_2.jpg", close_3);
-
-                TextView context_4 = (TextView) dialogView.findViewById(R.id.context_4);
-                ImageView context_4_preView = (ImageView) dialogView.findViewById(R.id.context_4_preView);
-                CardView context_4_Layout = (CardView) dialogView.findViewById(R.id.context_4_Layout);
-                ImageView close_4 = (ImageView) dialogView.findViewById(R.id.close_4);
-                helper_toolbar.cardViewClickMenu(getActivity(), context_4_Layout, scrollTabs, 3, close_4, viewPager, url, dialog, "3");
-                helper_toolbar.toolBarPreview(getActivity(), context_4,context_4_preView, 3, helper_browser.tab_4(getActivity()), "/tab_3.jpg", close_4);
-
-                TextView context_5 = (TextView) dialogView.findViewById(R.id.context_5);
-                ImageView context_5_preView = (ImageView) dialogView.findViewById(R.id.context_5_preView);
-                CardView context_5_Layout = (CardView) dialogView.findViewById(R.id.context_5_Layout);
-                ImageView close_5 = (ImageView) dialogView.findViewById(R.id.close_5);
-                helper_toolbar.cardViewClickMenu(getActivity(), context_5_Layout, scrollTabs, 4, close_5, viewPager, url, dialog, "4");
-                helper_toolbar.toolBarPreview(getActivity(), context_5,context_5_preView, 4, helper_browser.tab_5(getActivity()), "/tab_4.jpg", close_5);
-
+                contextMenu(dialogView, url, dialog);
             }
         }
     }
@@ -760,6 +678,46 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
 
     // Methods
 
+    private void contextMenu (View dialogView, String url, Dialog dialog) {
+        HorizontalScrollView scrollTabs = (HorizontalScrollView) dialogView.findViewById(R.id.scrollTabs);
+
+        TextView context_1 = (TextView) dialogView.findViewById(R.id.context_1);
+        ImageView context_1_preView = (ImageView) dialogView.findViewById(R.id.context_1_preView);
+        CardView context_1_Layout = (CardView) dialogView.findViewById(R.id.context_1_Layout);
+        ImageView close_1 = (ImageView) dialogView.findViewById(R.id.close_1);
+        helper_toolbar.cardViewClickMenu(getActivity(), context_1_Layout, scrollTabs, 0, close_1, viewPager, url, dialog, "0");
+        helper_toolbar.toolBarPreview(getActivity(), context_1,context_1_preView, 0, helper_browser.tab_1(getActivity()), "/tab_0.jpg", close_1);
+
+        TextView context_2 = (TextView) dialogView.findViewById(R.id.context_2);
+        ImageView context_2_preView = (ImageView) dialogView.findViewById(R.id.context_2_preView);
+        CardView context_2_Layout = (CardView) dialogView.findViewById(R.id.context_2_Layout);
+        ImageView close_2 = (ImageView) dialogView.findViewById(R.id.close_2);
+        helper_toolbar.cardViewClickMenu(getActivity(), context_2_Layout, scrollTabs, 1, close_2, viewPager, url, dialog, "1");
+        helper_toolbar.toolBarPreview(getActivity(), context_2,context_2_preView, 1, helper_browser.tab_2(getActivity()), "/tab_1.jpg", close_2);
+
+        TextView context_3 = (TextView) dialogView.findViewById(R.id.context_3);
+        ImageView context_3_preView = (ImageView) dialogView.findViewById(R.id.context_3_preView);
+        CardView context_3_Layout = (CardView) dialogView.findViewById(R.id.context_3_Layout);
+        ImageView close_3 = (ImageView) dialogView.findViewById(R.id.close_3);
+        helper_toolbar.cardViewClickMenu(getActivity(), context_3_Layout, scrollTabs, 2, close_3, viewPager, url, dialog, "2");
+        helper_toolbar.toolBarPreview(getActivity(), context_3,context_3_preView, 2, helper_browser.tab_3(getActivity()), "/tab_2.jpg", close_3);
+
+        TextView context_4 = (TextView) dialogView.findViewById(R.id.context_4);
+        ImageView context_4_preView = (ImageView) dialogView.findViewById(R.id.context_4_preView);
+        CardView context_4_Layout = (CardView) dialogView.findViewById(R.id.context_4_Layout);
+        ImageView close_4 = (ImageView) dialogView.findViewById(R.id.close_4);
+        helper_toolbar.cardViewClickMenu(getActivity(), context_4_Layout, scrollTabs, 3, close_4, viewPager, url, dialog, "3");
+        helper_toolbar.toolBarPreview(getActivity(), context_4,context_4_preView, 3, helper_browser.tab_4(getActivity()), "/tab_3.jpg", close_4);
+
+        TextView context_5 = (TextView) dialogView.findViewById(R.id.context_5);
+        ImageView context_5_preView = (ImageView) dialogView.findViewById(R.id.context_5_preView);
+        CardView context_5_Layout = (CardView) dialogView.findViewById(R.id.context_5_Layout);
+        ImageView close_5 = (ImageView) dialogView.findViewById(R.id.close_5);
+        helper_toolbar.cardViewClickMenu(getActivity(), context_5_Layout, scrollTabs, 4, close_5, viewPager, url, dialog, "4");
+        helper_toolbar.toolBarPreview(getActivity(), context_5,context_5_preView, 4, helper_browser.tab_5(getActivity()), "/tab_4.jpg", close_5);
+
+    }
+
     public void doBack() {
         //BackPressed in activity will call this;
         if (scrollTabs.getVisibility() == View.VISIBLE) {
@@ -794,9 +752,12 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
         sharedPref.edit().putInt("tab", viewPager.getCurrentItem()).apply();
         sharedPref.edit().putInt("keyboard", 0).apply();
 
-        AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
-        assert appCompatActivity.getSupportActionBar() != null;
-        appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        if (sharedPref.getInt("appShortcut", 0) == 0) {
+            AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
+            assert appCompatActivity.getSupportActionBar() != null;
+            appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        }
+
         helper_toolbar.toolbarGestures(getActivity(), toolbar, viewPager, editText, urlBar, mWebView.getUrl());
 
         final String URL = sharedPref.getString("openURL","https://github.com/scoute-dich/browser/");
@@ -985,7 +946,6 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
         });
     }
 
-
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -1028,7 +988,7 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
         if (id == R.id.menu_save_bookmark) {
             urlBar.setVisibility(View.GONE);
             editText.setVisibility(View.VISIBLE);
-            helper_editText.editText_saveBookmark(editText, activity, mWebView);
+            helper_editText.showKeyboard(activity, editText, 2, helper_webView.getTitle(activity, mWebView), getString(R.string.app_search_hint_bookmark));
         }
 
         if (id == R.id.menu_save_readLater) {
@@ -1098,7 +1058,6 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
             String text = editText.getText().toString();
             helper_webView.openURL(activity, mWebView, editText);
             helper_editText.hideKeyboard(activity, editText, 0, text, getString(R.string.app_search_hint));
-            helper_editText.editText_EditorAction(editText, activity, mWebView, urlBar);
             urlBar.setVisibility(View.VISIBLE);
             editText.setVisibility(View.GONE);
         }
@@ -1106,9 +1065,7 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
         if (id == R.id.action_search_onSite) {
             urlBar.setVisibility(View.GONE);
             editText.setVisibility(View.VISIBLE);
-            helper_editText.showKeyboard(activity, editText, 1, "", getString(R.string.app_search_hint));
-            helper_editText.editText_FocusChange_searchSite(editText, activity);
-            helper_editText.editText_searchSite(editText, activity, mWebView, urlBar);
+            helper_editText.showKeyboard(activity, editText, 1, "", getString(R.string.app_search_hint_site));
         }
 
         if (id == R.id.action_search_onSite_go) {
@@ -1116,7 +1073,7 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
             String text = editText.getText().toString();
 
             if (text.startsWith(getString(R.string.app_search))) {
-                helper_editText.editText_searchSite(editText, activity, mWebView, urlBar);
+                helper_editText.showKeyboard(activity, editText, 1, "", getString(R.string.app_search_hint_site));
             } else {
                 mWebView.findAllAsync(text);
                 helper_editText.hideKeyboard(activity, editText, 1, getString(R.string.app_search) + " " + text, getString(R.string.app_search_hint_site));
@@ -1136,13 +1093,11 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
             urlBar.setText(helper_webView.getTitle (activity, mWebView));
             editText.setVisibility(View.GONE);
             mWebView.findAllAsync("");
-            helper_editText.editText_FocusChange(editText, activity);
-            helper_editText.editText_EditorAction(editText, activity, mWebView, urlBar);
             helper_editText.hideKeyboard(activity, editText, 0, helper_webView.getTitle (activity, mWebView), getString(R.string.app_search_hint));
         }
 
         if (id == R.id.action_save_bookmark) {
-            helper_editText.editText_saveBookmark_save(editText, activity, mWebView);
+            helper_editText.editText_saveBookmark(editText, activity, mWebView);
             urlBar.setVisibility(View.VISIBLE);
             editText.setVisibility(View.GONE);
         }

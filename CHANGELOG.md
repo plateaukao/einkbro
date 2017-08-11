@@ -3,7 +3,9 @@
 - removed: unnecessary permissions
 - fix: reset menu after editing file name
 - fix: overwriting of files while renaming
+- fix: several code improvements
 - improved: layout close button
+- added: override Google AMP-links
 
 ### v 4.0
 - removed: donation link on Github

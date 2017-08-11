@@ -34,9 +34,9 @@
     </style>
 
     <style name="EditTextStyle" parent="AppTheme">
-        <item name="colorControlNormal">#00ffffff</item>
+        <item name="colorControlNormal">@color/colorPrimary_1</item>
         <item name="colorControlActivated">@color/colorAccent</item>
-        <item name="colorControlHighlight">@color/colorAccent</item>
+        <item name="colorControlHighlight">@color/colorPrimary_1</item>
     </style>
 
 </resources>

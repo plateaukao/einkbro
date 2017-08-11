@@ -151,7 +151,7 @@ public class Activity_Main extends AppCompatActivity {
                     listBar.setVisibility(View.VISIBLE);
                 }
             }
-        }, 250);
+        }, 150);
 
 
     }
@@ -159,12 +159,13 @@ public class Activity_Main extends AppCompatActivity {
     protected void onNewIntent(final Intent intent) {
 
         String action = intent.getAction();
+        Handler handler = new Handler();
 
         if (Intent.ACTION_SEND.equals(action)) {
             String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
             String searchEngine = sharedPref.getString("searchEngine", "https://duckduckgo.com/?q=");
             sharedPref.edit().putString("openURL", searchEngine + sharedText).apply();
-            Handler handler = new Handler();
+            handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -175,7 +176,7 @@ public class Activity_Main extends AppCompatActivity {
             Uri data = intent.getData();
             String link = data.toString();
             sharedPref.edit().putString("openURL", link).apply();
-            Handler handler = new Handler();
+            handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -184,16 +185,37 @@ public class Activity_Main extends AppCompatActivity {
             }, 250);
         } else if ("readLater".equals(action)) {
             sharedPref.edit().putInt("appShortcut", 1).apply();
-            viewPager.setCurrentItem(6);
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    viewPager.setCurrentItem(6);
+                }
+            }, 250);
         } else if ("bookmarks".equals(action)) {
             sharedPref.edit().putInt("appShortcut", 1).apply();
-            viewPager.setCurrentItem(5);
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    viewPager.setCurrentItem(5);
+                }
+            }, 250);
+
         } else if ("history".equals(action)) {
             sharedPref.edit().putInt("appShortcut", 1).apply();
-            viewPager.setCurrentItem(7);
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    viewPager.setCurrentItem(7);
+                }
+            }, 250);
         } else if ("pass".equals(action)) {
             sharedPref.edit().putInt("appShortcut", 1).apply();
-            viewPager.setCurrentItem(8);
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    viewPager.setCurrentItem(8);
+                }
+            }, 250);
         }
     }
 

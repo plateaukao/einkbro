@@ -213,7 +213,6 @@ public class helper_main {
             webView.clearHistory();
         }
 
-        helper_browser.resetTabs(from);
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -221,7 +220,6 @@ public class helper_main {
                 from.finish();
             }
         }, 500);
-
     }
 
     public static void onStart (final Activity activity) {
@@ -382,10 +380,8 @@ public class helper_main {
                 Snackbar.make(ib0, R.string.toast_error, Snackbar.LENGTH_SHORT).show();
             }
 
-
             ImageButton enter = (ImageButton) dialogView.findViewById(R.id.imageButtonEnter);
             assert enter != null;
-
 
             final ImageButton cancel = (ImageButton) dialogView.findViewById(R.id.imageButtonCancel);
             assert cancel != null;
@@ -428,7 +424,6 @@ public class helper_main {
             });
 
             final AlertDialog dialog = builder.create();
-            // Display the custom alert dialog on interface
             dialog.show();
 
             enter.setOnClickListener(new View.OnClickListener() {

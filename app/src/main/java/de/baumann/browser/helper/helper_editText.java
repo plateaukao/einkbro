@@ -27,13 +27,10 @@ import android.content.SharedPreferences;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.mobapphome.mahencryptorlib.MAHEncryptor;
 
@@ -46,45 +43,7 @@ import de.baumann.browser.databases.DbAdapter_Pass;
 
 public class helper_editText {
 
-    public static void editText_EditorAction(final EditText editText, final Activity from, final WebView mWebView, final TextView urlBar) {
-
-        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-
-                if ( (actionId == EditorInfo.IME_ACTION_SEARCH) || ((event.getKeyCode() == KeyEvent.KEYCODE_ENTER) && (event.getAction() == KeyEvent.ACTION_DOWN ))){
-
-                    String text = editText.getText().toString();
-                    helper_webView.openURL(from, mWebView, editText);
-                    helper_editText.hideKeyboard(from, editText, 0, text, from.getString(R.string.app_search_hint));
-                    helper_editText.editText_EditorAction(editText, from, mWebView, urlBar);
-                    urlBar.setVisibility(View.VISIBLE);
-                    editText.setVisibility(View.GONE);
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        });
-    }
-
     public static void editText_saveBookmark(final EditText editText, final Activity from, final WebView webView) {
-
-        helper_editText.showKeyboard(from, editText, 2, helper_webView.getTitle (from, webView), from.getString(R.string.app_search_hint_bookmark));
-        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if ( (actionId == EditorInfo.IME_ACTION_SEARCH) || ((event.getKeyCode() == KeyEvent.KEYCODE_ENTER) && (event.getAction() == KeyEvent.ACTION_DOWN ))){
-                    helper_editText.editText_saveBookmark_save(editText, from, webView);
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        });
-    }
-
-    public static void editText_saveBookmark_save(final EditText editText, final Activity from, final WebView webView) {
 
         DbAdapter_Bookmarks db = new DbAdapter_Bookmarks(from);
         db.open();
@@ -158,28 +117,9 @@ public class helper_editText {
         helper_editText.showKeyboard(from, pass_title, 0, "", from.getString(R.string.pass_title));
     }
 
-    public static void editText_searchSite (final EditText editText, final Activity from, final WebView webView, final TextView urlBar) {
-
-        helper_editText.showKeyboard(from, editText, 1, "", from.getString(R.string.app_search_hint_site));
-        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if ((actionId == EditorInfo.IME_ACTION_SEARCH) || ((event.getKeyCode() == KeyEvent.KEYCODE_ENTER) && (event.getAction() == KeyEvent.ACTION_DOWN ))){
-                    String text = editText.getText().toString();
-                    webView.findAllAsync(text);
-                    helper_editText.hideKeyboard(from, editText, 1, from.getString(R.string.app_search) + " " + text, from.getString(R.string.app_search_hint_site));
-                    helper_editText.editText_EditorAction(editText, from, webView, urlBar);
-                    return true;
-                } else {
-                    return false;
-                }
-            }
-        });
-    }
-
     public static void editText_searchWeb (final EditText editText, final Activity from) {
 
-        final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
 
         List<String> listItems = new ArrayList<>();
 
@@ -250,16 +190,13 @@ public class helper_editText {
         editText.setText(text);
         editText.setHint(hint);
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
-        sharedPref.edit()
-                .putInt("keyboard", i)
-                .apply();
+        sharedPref.edit().putInt("keyboard", i).apply();
         from.invalidateOptionsMenu();
         InputMethodManager imm = (InputMethodManager) from.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
     }
 
     public static void showKeyboard(final Activity from, final EditText editText, final int i, String text, String hint) {
-        final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
         editText.requestFocus();
         editText.hasFocus();
         editText.setText(text);
@@ -267,41 +204,12 @@ public class helper_editText {
         editText.setSelection(editText.length());
         new Handler().postDelayed(new Runnable() {
             public void run() {
-                sharedPref.edit()
-                        .putInt("keyboard", i)
-                        .apply();
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
+                sharedPref.edit().putInt("keyboard", i).apply();
                 from.invalidateOptionsMenu();
                 InputMethodManager imm = (InputMethodManager) from.getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.showSoftInput(editText, InputMethodManager.SHOW_FORCED);
             }
         }, 200);
-    }
-
-    public static void editText_FocusChange(final EditText editText, final Activity from) {
-
-        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    helper_editText.showKeyboard(from, editText, 3, "", from.getString(R.string.app_search_hint));
-                } else {
-                    helper_editText.hideKeyboard(from, editText, 0, "", from.getString(R.string.app_search_hint));
-                }
-            }
-        });
-    }
-
-    public static void editText_FocusChange_searchSite(final EditText editText, final Activity from) {
-
-        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    helper_editText.showKeyboard(from, editText, 1, "", from.getString(R.string.app_search_hint_site));
-                } else {
-                    helper_editText.hideKeyboard(from, editText, 0, "", from.getString(R.string.app_search_hint));
-                }
-            }
-        });
     }
 }
