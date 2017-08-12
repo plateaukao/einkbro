@@ -74,7 +74,6 @@ import de.baumann.browser.helper.helper_toolbar;
 import de.baumann.browser.helper.helper_webView;
 import de.baumann.browser.utils.Utils_AdBlocker;
 
-import static android.content.ContentValues.TAG;
 import static android.content.Context.DOWNLOAD_SERVICE;
 
 public class Fragment_Browser extends Fragment implements ObservableScrollViewCallbacks {
@@ -166,7 +165,6 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
         toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 if (viewPager.getCurrentItem() < 5) {
                     urlBar.setVisibility(View.GONE);
                     editText.setVisibility(View.VISIBLE);
@@ -205,7 +203,7 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
                                 DownloadManager dm = (DownloadManager) activity.getSystemService(DOWNLOAD_SERVICE);
                                 dm.enqueue(request);
 
-                                Snackbar.make(mWebView, getString(R.string.toast_download) + " " + filename , Snackbar.LENGTH_SHORT).show();
+                                Snackbar.make(mWebView, getString(R.string.toast_download) + " " + filename , Snackbar.LENGTH_LONG).show();
                             }
                         });
                 snackbar.show();

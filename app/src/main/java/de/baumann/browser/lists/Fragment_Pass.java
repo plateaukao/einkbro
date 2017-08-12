@@ -36,7 +36,6 @@ public class Fragment_Pass extends Fragment {
 
     private MAHEncryptor mahEncryptor;
     private ListView listView = null;
-    private EditText editText;
     private DbAdapter_Pass db;
     private SharedPreferences sharedPref;
     private TextView listBar;
@@ -59,7 +58,6 @@ public class Fragment_Pass extends Fragment {
         sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-        editText = (EditText) getActivity().findViewById(R.id.editText);
         listBar = (TextView) getActivity().findViewById(R.id.listBar);
         listView = (ListView)rootView.findViewById(R.id.list);
         viewPager = (CustomViewPager) getActivity().findViewById(R.id.viewpager);
@@ -318,8 +316,9 @@ public class Fragment_Pass extends Fragment {
                         .setAction(R.string.toast_yes, new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                getActivity().deleteDatabase("pass.db");
-                                getActivity().recreate();
+                                getActivity().deleteDatabase("pass_DB_v01.db");
+                                db.open();
+                                setFilesList();
                             }
                         });
                 snackbar.show();

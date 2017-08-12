@@ -501,7 +501,8 @@ public class Fragment_ReadLater extends Fragment {
                             @Override
                             public void onClick(View view) {
                                 getActivity().deleteDatabase("readLater_DB_v01.db");
-                                getActivity().recreate();
+                                db.open();
+                                setReadLaterList();
                             }
                         });
                 snackbar.show();

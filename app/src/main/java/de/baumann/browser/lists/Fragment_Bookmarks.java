@@ -557,7 +557,8 @@ public class Fragment_Bookmarks extends Fragment {
                             @Override
                             public void onClick(View view) {
                                 getActivity().deleteDatabase("bookmarks_DB_v01.db");
-                                getActivity().recreate();
+                                db.open();
+                                setBookmarksList();
                             }
                         });
                 snackbar.show();

@@ -31,6 +31,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
+import android.widget.Toast;
 
 import java.util.Random;
 
@@ -54,6 +55,8 @@ public class Activity_intent extends Activity {
         sharedPref.edit().putString("add_readLater_link", url).apply();
         sharedPref.edit().putString("add_readLater_domain", domain).apply();
 
+        Toast.makeText(this, getString(R.string.toast_link) + " " + domain, Toast.LENGTH_LONG).show();
+
         Random rand = new Random();
         int n = rand.nextInt(100000);
 
@@ -73,8 +76,7 @@ public class Activity_intent extends Activity {
                                 .setSmallIcon(R.drawable.earth)
                                 .setColor(ContextCompat.getColor(Activity_intent.this, R.color.colorPrimary_1))
                                 .setGroup("Browser")
-                                .setGroupSummary(true)
-                                .setContentIntent(piMain);
+                                .setGroupSummary(true);
 
                 Notification notification = new NotificationCompat.Builder(Activity_intent.this)
                         .setColor(ContextCompat.getColor(Activity_intent.this, R.color.colorPrimary_1))

@@ -1,11 +1,14 @@
-### v 4.1 (WIP)
+### v 4.1
 - removed: offline support (use screenshot for saving)
 - removed: unnecessary permissions
 - fix: reset menu after editing file name
 - fix: overwriting of files while renaming
 - fix: several code improvements
+- fix: delete passStorage
 - improved: layout close button
+- improved: bundled Notifications
 - added: Google encrypted search (override AMP-links)
+- added: advanced backup/restore data
 
 ### v 4.0
 - removed: donation link on Github

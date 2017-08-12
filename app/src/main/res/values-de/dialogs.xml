@@ -6,11 +6,17 @@
     <string name="changelog_text">
         &lt;b>Für mehr Informationen zur Bedienung gibt es einen Hilfedialog (Menü -> Mehr -> Hilfe).&lt;/b>&lt;br>&lt;br>
 
-        &lt;b>v 4.0&lt;/b>&lt;br>&lt;br>
-        - removed: donation link on Github&lt;br>
-        - removed: video thumbnail&lt;br>
-        - improved: file manager (icons, image preview)&lt;br>
-        - added: scroll to end of website arrow
+        &lt;b>v 4.1&lt;/b>&lt;br>&lt;br>
+        - removed: offline support (use screenshot for saving)&lt;br>
+        - removed: unnecessary permissions&lt;br>
+        - fix: reset menu after editing file name&lt;br>
+        - fix: overwriting of files while renaming&lt;br>
+        - fix: several code improvements&lt;br>
+        - fix: delete passStorage&lt;br>
+        - improved: layout close button&lt;br>
+        - improved: bundled Notifications&lt;br>
+        - added: Google encrypted search (override AMP-links)&lt;br>
+        - added: advanced backup/restore data
     </string>
 
 

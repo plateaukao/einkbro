@@ -517,7 +517,8 @@ public class Fragment_History extends Fragment {
                             @Override
                             public void onClick(View view) {
                                 getActivity().deleteDatabase("history_DB_v01.db");
-                                getActivity().recreate();
+                                db.open();
+                                setHistoryList();
                             }
                         });
                 snackbar.show();

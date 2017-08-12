@@ -74,6 +74,7 @@
     <string name="menu_more">More …</string>
     <string name="menu_reload">Reload website</string>
     <string name="menu_Help">Help</string>
+    <string name="menu_all">… all of them</string>
 
     <string name="action_sort">Sort entries</string>
     <string name="action_sort_title">Sort by title</string>
@@ -121,6 +122,10 @@
     <string name="toast_directory">Can\'t open Directory.</string>
     <string name="toast_files">No files in directory.</string>
     <string name="toast_extension">No supported file extension</string>
+    <string name="toast_link">Link received:</string>
+    <string name="toast_confirmation_title">Confirmation</string>
+    <string name="toast_confirmation_backup">This will overwrite your current backup. Do you really want this?</string>
+    <string name="toast_confirmation_restore">This will overwrite your current database. Do you really want this?</string>
 
 
     // Bookmarks // ReadLater // Password
@@ -262,7 +267,6 @@
 
     <string name="action_tabMain">Start tab</string>
     <string name="action_tabMain_summary">Which tab should be displayed on app start?</string>
-
 
 
     // Intro
