@@ -238,6 +238,7 @@
     <string name="action_Github">GitHub ist ein webbasierter Online-Dienst, der Software-Entwicklungsprojekte auf seinen Servern
         bereitstellt.</string>
     <string name="action_Google">Google ist eine Internet-Suchmaschine des US-amerikanischen Unternehmens Google Inc.</string>
+    <string name="action_Google_enc">Encrypted Google Suche, benutze dies um AMP-Links zu vermeiden.</string>
     <string name="action_MetaGer">MetaGer ist eine deutsche Metasuchmaschine im Internet, die an der Universität Hannover als Dienst
         des Regionalen Rechenzentrums für Niedersachsen seit April 1996 entwickelt wurde.</string>
     <string name="action_Startpage">Startpage ist eine Suchmaschine, welche die eingegebenen Suchanfragen an die Google-Suchmaschine

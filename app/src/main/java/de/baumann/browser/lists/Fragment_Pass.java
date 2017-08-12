@@ -280,7 +280,7 @@ public class Fragment_Pass extends Fragment {
             assert appCompatActivity.getSupportActionBar() != null;
             appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             setFilesList();
-            helper_toolbar.toolbarGestures(getActivity(), toolbar, viewPager, editText, listBar, "");
+            helper_toolbar.toolbarGestures(getActivity(), toolbar, viewPager);
             listBar.setText(R.string.app_title_passStorage);
         } else {
             Log.i("Browser", "Browser: isVisibleToUser false");

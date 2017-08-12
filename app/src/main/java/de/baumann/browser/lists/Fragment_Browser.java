@@ -74,6 +74,7 @@ import de.baumann.browser.helper.helper_toolbar;
 import de.baumann.browser.helper.helper_webView;
 import de.baumann.browser.utils.Utils_AdBlocker;
 
+import static android.content.ContentValues.TAG;
 import static android.content.Context.DOWNLOAD_SERVICE;
 
 public class Fragment_Browser extends Fragment implements ObservableScrollViewCallbacks {
@@ -161,6 +162,21 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
         helper_browser.setupViews(mWebView, editText, imageButton_up, imageButton_down, imageButton_left, imageButton_right, toolbar);
         helper_webView.webView_Settings(activity, mWebView);
         helper_webView.webView_WebViewClient(activity, mWebView, urlBar);
+
+        toolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (viewPager.getCurrentItem() < 5) {
+                    urlBar.setVisibility(View.GONE);
+                    editText.setVisibility(View.VISIBLE);
+                    helper_editText.showKeyboard(activity, editText, 3, sharedPref.getString("webView_url", ""), activity.getString(R.string.app_search_hint));
+                    editText.selectAll();
+                } else {
+                    Log.i(TAG, "Switched to list");
+                }
+            }
+        });
 
         mWebChromeClient = new myWebChromeClient();
         mWebView.setWebChromeClient(mWebChromeClient);
@@ -758,7 +774,7 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
             appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         }
 
-        helper_toolbar.toolbarGestures(getActivity(), toolbar, viewPager, editText, urlBar, mWebView.getUrl());
+        helper_toolbar.toolbarGestures(getActivity(), toolbar, viewPager);
 
         final String URL = sharedPref.getString("openURL","https://github.com/scoute-dich/browser/");
 

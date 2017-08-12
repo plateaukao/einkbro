@@ -9,10 +9,6 @@
     <string name="about_title">Copyright © 2017  by Gaukler Faun</string>
 
 
-    //Help Dialog
-
-
-
     //String arrays
 
     <string-array name="listArrayFont">
@@ -30,12 +26,14 @@
     <string-array name="listArraySearchEngine">
         <item>Duckduckgo</item>
         <item>Google</item>
+        <item>Google (encrypted)</item>
         <item>MetaGer</item>
         <item>Startpage</item>
     </string-array>
 
     <string-array name="listValuesSearchEngine">
         <item>https://duckduckgo.com/?q=</item>
+        <item>https://www.google.com/search?&amp;q=</item>
         <item>https://encrypted.google.com/search?q=</item>
         <item>https://metager.de/meta/meta.ger3?focus=web&amp;eingabe=</item>
         <item>https://startpage.com/do/search?query=</item>

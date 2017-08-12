@@ -230,6 +230,7 @@
     <string name="action_Github">GitHub is a web-based Git repository hosting service.</string>
     <string name="action_Google">Google Search, commonly referred to as Google Web Search or simply Google, is a web search engine
         developed by Google.</string>
+    <string name="action_Google_enc">Encrypted Google Search, use to override AMP-link loading.</string>
     <string name="action_MetaGer">MetaGer is a meta search engine focused on protecting users\' privacy.</string>
     <string name="action_Startpage">Startpage is a meta search engine based in New York and the Netherlands,
         which highlights privacy as its distinguishing feature from other internet search engines.</string>

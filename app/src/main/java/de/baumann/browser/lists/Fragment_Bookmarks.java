@@ -427,7 +427,7 @@ public class Fragment_Bookmarks extends Fragment {
             appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             setTitle();
             setBookmarksList();
-            helper_toolbar.toolbarGestures(getActivity(), toolbar, viewPager, editText, listBar, "");
+            helper_toolbar.toolbarGestures(getActivity(), toolbar, viewPager);
         } else {
             Log.i("Browser", "Browser: isVisibleToUser false");
         }

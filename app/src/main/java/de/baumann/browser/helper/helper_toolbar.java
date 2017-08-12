@@ -73,8 +73,7 @@ public class helper_toolbar {
         }
     }
 
-    public static void toolbarGestures(final Activity activity, final Toolbar toolbar, final CustomViewPager viewPager,
-                                       final EditText editText, final TextView urlBar, final String text) {
+    public static void toolbarGestures(final Activity activity, final Toolbar toolbar, final CustomViewPager viewPager) {
 
         toolbar.setVisibility(View.VISIBLE);
         final HorizontalScrollView scrollTabs = (HorizontalScrollView) activity.findViewById(R.id.scrollTabs);
@@ -96,21 +95,6 @@ public class helper_toolbar {
             public void onSwipeLeft() {
                 viewPager.setCurrentItem(5);
                 scrollTabs.setVisibility(View.GONE);
-            }
-        });
-
-        toolbar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if (viewPager.getCurrentItem() < 5) {
-                    urlBar.setVisibility(View.GONE);
-                    editText.setVisibility(View.VISIBLE);
-                    helper_editText.showKeyboard(activity, editText, 3, text, activity.getString(R.string.app_search_hint));
-                    editText.selectAll();
-                } else {
-                    Log.i(TAG, "Switched to list");
-                }
             }
         });
 

@@ -26,6 +26,12 @@
         android:defaultValue="true" />
 
     <CheckBoxPreference
+        android:title="Google (encrypted)"
+        android:summary="@string/action_Google_enc"
+        android:key="GoogleEnc"
+        android:defaultValue="true" />
+
+    <CheckBoxPreference
         android:title="MetaGer"
         android:summary="@string/action_MetaGer"
         android:key="MetaGer"

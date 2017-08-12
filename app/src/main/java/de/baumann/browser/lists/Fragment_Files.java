@@ -415,7 +415,7 @@ public class Fragment_Files extends Fragment {
             appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             setTitle();
             setFilesList();
-            helper_toolbar.toolbarGestures(getActivity(), toolbar, viewPager, editText, listBar, "");
+            helper_toolbar.toolbarGestures(getActivity(), toolbar, viewPager);
         } else {
             Log.i("Browser", "Browser: isVisibleToUser false");
         }

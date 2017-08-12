@@ -41,6 +41,7 @@ import android.widget.TextView;
 
 import java.net.URISyntaxException;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import de.baumann.browser.R;
@@ -174,6 +175,7 @@ public class helper_webView {
                 String title = helper_webView.getTitle(from, webView);
                 urlBar.setText(title);
                 sharedPref.edit().putString("openURL", "").apply();
+                sharedPref.edit().putString("webView_url", webView.getUrl()).apply();
 
                 DbAdapter_History db = new DbAdapter_History(from);
                 db.open();
@@ -275,7 +277,6 @@ public class helper_webView {
                 }
                 return true;//do nothing in other cases
             }
-
         });
     }
 
@@ -308,16 +309,54 @@ public class helper_webView {
                 mWebView.loadUrl("https://metager.de/meta/meta.ger3?focus=web&eingabe=" + subStr);
             } else if (text.startsWith(".g ")) {
                 mWebView.loadUrl("https://github.com/search?utf8=✓&q=" + subStr);
-            } else  if (text.startsWith(".s ")) {
-                mWebView.loadUrl("https://startpage.com/do/search?query=" + subStr);
-            } else if (text.startsWith(".G ")) {
+            } else if (text.startsWith(".e ")) {
                 mWebView.loadUrl("https://encrypted.google.com/search?q=" + subStr);
+            } else  if (text.startsWith(".s ")) {
+                if (Locale.getDefault().getLanguage().contentEquals("de")){
+                    mWebView.loadUrl("https://startpage.com/do/search?query=" + subStr + "&lui=deutsch&l=deutsch");
+                } else {
+                    mWebView.loadUrl("https://startpage.com/do/search?query=" + subStr);
+                }
+            } else if (text.startsWith(".G ")) {
+                if (Locale.getDefault().getLanguage().contentEquals("de")){
+                    mWebView.loadUrl("https://www.google.de/search?&q=" + subStr);
+                } else {
+                    mWebView.loadUrl("https://www.google.com/search?&q=" + subStr);
+                }
             } else  if (text.startsWith(".y ")) {
-                mWebView.loadUrl("https://www.youtube.com/results?search_query=" + subStr);
+                if (Locale.getDefault().getLanguage().contentEquals("de")){
+                    mWebView.loadUrl("https://www.youtube.com/results?hl=de&gl=DE&search_query=" + subStr);
+                } else {
+                    mWebView.loadUrl("https://www.youtube.com/results?search_query=" + subStr);
+                }
             } else  if (text.startsWith(".d ")) {
-                mWebView.loadUrl("https://duckduckgo.com/?q=" + subStr);
+                if (Locale.getDefault().getLanguage().contentEquals("de")){
+                    mWebView.loadUrl("https://duckduckgo.com/?q=" + subStr + "&kl=de-de&kad=de_DE&k1=-1&kaj=m&kam=osm&kp=-1&kak=-1&kd=1&t=h_&ia=web");
+                } else {
+                    mWebView.loadUrl("https://duckduckgo.com/?q=" + subStr);
+                }
             } else {
-                mWebView.loadUrl(searchEngine + text);
+                if (searchEngine.contains("https://duckduckgo.com/?q=")) {
+                    if (Locale.getDefault().getLanguage().contentEquals("de")){
+                        mWebView.loadUrl("https://duckduckgo.com/?q=" + text + "&kl=de-de&kad=de_DE&k1=-1&kaj=m&kam=osm&kp=-1&kak=-1&kd=1&t=h_&ia=web");
+                    } else {
+                        mWebView.loadUrl("https://duckduckgo.com/?q=" + text);
+                    }
+                } else if (searchEngine.contains("https://metager.de/meta/meta.ger3?focus=web&eingabe=")) {
+                    if (Locale.getDefault().getLanguage().contentEquals("de")){
+                        mWebView.loadUrl("https://metager.de/meta/meta.ger3?focus=web&eingabe=" + text);
+                    } else {
+                        mWebView.loadUrl("https://metager.de/meta/meta.ger3?focus=web&eingabe=" + text +"&focus=web&encoding=utf8&lang=eng");
+                    }
+                } else if (searchEngine.contains("https://startpage.com/do/search?query=")) {
+                    if (Locale.getDefault().getLanguage().contentEquals("de")){
+                        mWebView.loadUrl("https://startpage.com/do/search?query=" + text + "&lui=deutsch&l=deutsch");
+                    } else {
+                        mWebView.loadUrl("https://startpage.com/do/search?query=" + text);
+                    }
+                }else {
+                    mWebView.loadUrl(searchEngine + text);
+                }
             }
         }
     }

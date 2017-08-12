@@ -135,6 +135,9 @@ public class helper_editText {
         if (sharedPref.getBoolean("Google", true)) {
             listItems.add("Google");
         }
+        if (sharedPref.getBoolean("GoogleEnc", true)) {
+            listItems.add("Google (encrypted)");
+        }
         if (sharedPref.getBoolean("MetaGer", true)) {
             listItems.add("MetaGer");
         }
@@ -147,7 +150,6 @@ public class helper_editText {
         if (sharedPref.getBoolean("YouTube", true)) {
             listItems.add("YouTube");
         }
-
 
         final CharSequence[] options = listItems.toArray(new CharSequence[listItems.size()]);
 
@@ -167,6 +169,9 @@ public class helper_editText {
                         }
                         if (options[item].equals("Google")) {
                             editText.setText(".G ");
+                        }
+                        if (options[item].equals("Google (encrypted)")) {
+                            editText.setText(".e ");
                         }
                         if (options[item].equals("MetaGer")) {
                             editText.setText(".m ");

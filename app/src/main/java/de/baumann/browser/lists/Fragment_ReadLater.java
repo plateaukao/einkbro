@@ -370,7 +370,7 @@ public class Fragment_ReadLater extends Fragment {
             appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             setTitle();
             setReadLaterList();
-            helper_toolbar.toolbarGestures(getActivity(), toolbar, viewPager, editText, listBar, "");
+            helper_toolbar.toolbarGestures(getActivity(), toolbar, viewPager);
         } else {
             Log.i("Browser", "Browser: isVisibleToUser false");
         }

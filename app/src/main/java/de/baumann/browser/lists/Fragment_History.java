@@ -386,7 +386,7 @@ public class Fragment_History extends Fragment {
                 public void run() {
                     listView.setSelection(listView.getCount() - 1);
                 }});
-            helper_toolbar.toolbarGestures(getActivity(), toolbar, viewPager, editText, listBar, "");
+            helper_toolbar.toolbarGestures(getActivity(), toolbar, viewPager);
         } else {
             Log.i("Browser", "Browser: isVisibleToUser false");
         }
