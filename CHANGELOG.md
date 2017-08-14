@@ -1,3 +1,7 @@
+### v 4.2 (WIP)
+- fix: hiding keyboard after searching in lists
+- fix: history - scroll to latest entry
+
 ### v 4.1
 - removed: offline support (use screenshot for saving)
 - removed: unnecessary permissions

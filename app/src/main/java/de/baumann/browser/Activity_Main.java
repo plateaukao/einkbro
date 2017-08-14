@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ import java.util.List;
 
 import de.baumann.browser.helper.CustomViewPager;
 import de.baumann.browser.helper.helper_browser;
+import de.baumann.browser.helper.helper_editText;
 import de.baumann.browser.helper.helper_main;
 import de.baumann.browser.lists.Fragment_Bookmarks;
 import de.baumann.browser.lists.Fragment_Browser;
@@ -40,6 +42,7 @@ public class Activity_Main extends AppCompatActivity {
     private CustomViewPager viewPager;
     private TextView urlBar;
     private TextView listBar;
+    private EditText editText;
 
 
     // Others
@@ -93,6 +96,7 @@ public class Activity_Main extends AppCompatActivity {
 
         urlBar = (TextView) findViewById(R.id.urlBar);
         listBar = (TextView) findViewById(R.id.listBar);
+        editText = (EditText) findViewById(R.id.editText) ;
 
         viewPager = (CustomViewPager) findViewById(R.id.viewpager);
         viewPager.setPagingEnabled();
@@ -106,6 +110,9 @@ public class Activity_Main extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
+
+                helper_editText.hideKeyboard(Activity_Main.this, editText, 0, "", getString(R.string.app_search_hint));
+
                 if (position < 5) {
                     Fragment_Browser fragment = (Fragment_Browser) viewPager.getAdapter().instantiateItem(viewPager, viewPager.getCurrentItem());
                     fragment.fragmentAction();

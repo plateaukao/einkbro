@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -382,10 +383,13 @@ public class Fragment_History extends Fragment {
             appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             setTitle();
             setHistoryList();
-            listView.post(new Runnable(){
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
                 public void run() {
                     listView.setSelection(listView.getCount() - 1);
-                }});
+                }
+            }, 100);
             helper_toolbar.toolbarGestures(getActivity(), toolbar, viewPager);
         } else {
             Log.i("Browser", "Browser: isVisibleToUser false");
