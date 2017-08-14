@@ -55,9 +55,10 @@ public class Activity_Main extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Activity activity = Activity_Main.this;
+
         setContentView(R.layout.activity_main);
         WebView.enableSlowWholeDocumentDraw();
-        Activity activity = Activity_Main.this;
 
         PreferenceManager.setDefaultValues(activity, R.xml.user_settings, false);
         PreferenceManager.setDefaultValues(activity, R.xml.user_settings_search, false);

@@ -136,9 +136,6 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
         sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
         sharedPref.edit().putInt("tab_" + tab_number + "_exit", 0).apply();
 
-        activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        activity.getWindow().setStatusBarColor(ContextCompat.getColor(activity, R.color.colorPrimaryDark_1));
-
 
         // find Views
 

@@ -2,8 +2,8 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/colorPrimary_1</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark_1</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowAnimationStyle">@null</item>
     </style>
@@ -23,8 +23,8 @@
 
 
     <style name="PinDialog">
-        <item name="colorPrimary">@color/colorPrimary_1</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark_1</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">fill_parent</item>
         <!-- No backgrounds, titles or window float -->
@@ -34,9 +34,9 @@
     </style>
 
     <style name="EditTextStyle" parent="AppTheme">
-        <item name="colorControlNormal">@color/colorPrimary_1</item>
+        <item name="colorControlNormal">@color/colorPrimary</item>
         <item name="colorControlActivated">@color/colorAccent</item>
-        <item name="colorControlHighlight">@color/colorPrimary_1</item>
+        <item name="colorControlHighlight">@color/colorPrimary</item>
     </style>
 
 </resources>

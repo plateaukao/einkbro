@@ -1,9 +1,10 @@
 <ScrollView android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="ContentDescription">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
@@ -118,8 +119,7 @@
                             android:layout_height="100dp"
                             android:layout_alignParentTop="true"
                             android:scaleType="fitStart"
-                            android:src="@drawable/numeric_1_box"
-                            tools:ignore="ContentDescription" />
+                            android:src="@drawable/numeric_1_box" />
 
                         <ImageView
                             android:id="@+id/context_1_preView"
@@ -127,19 +127,19 @@
                             android:layout_height="100dp"
                             android:layout_alignParentTop="true"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/numeric_1_box"
-                            tools:ignore="ContentDescription" />
+                            android:src="@drawable/numeric_1_box" />
 
                         <ImageView
                             android:id="@+id/close_1"
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
                             android:layout_gravity="end"
-                            android:padding="4dp"
+                            android:layout_margin="3dp"
+                            android:padding="6dp"
                             android:scaleType="fitStart"
-                            android:src="@drawable/close_circle"
+                            android:src="@drawable/close"
                             android:visibility="gone"
-                            tools:ignore="ContentDescription" />
+                            android:background="@drawable/circle" />
 
                         <TextView
                             android:id="@+id/context_1"
@@ -177,8 +177,7 @@
                             android:layout_height="100dp"
                             android:layout_alignParentTop="true"
                             android:scaleType="fitStart"
-                            android:src="@drawable/numeric_2_box"
-                            tools:ignore="ContentDescription" />
+                            android:src="@drawable/numeric_2_box" />
 
                         <ImageView
                             android:id="@+id/context_2_preView"
@@ -186,19 +185,19 @@
                             android:layout_height="100dp"
                             android:layout_alignParentTop="true"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/numeric_2_box"
-                            tools:ignore="ContentDescription" />
+                            android:src="@drawable/numeric_2_box" />
 
                         <ImageView
                             android:id="@+id/close_2"
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
                             android:layout_gravity="end"
-                            android:padding="4dp"
+                            android:layout_margin="3dp"
+                            android:padding="6dp"
                             android:scaleType="fitStart"
-                            android:src="@drawable/close_circle"
+                            android:src="@drawable/close"
                             android:visibility="gone"
-                            tools:ignore="ContentDescription" />
+                            android:background="@drawable/circle" />
 
                         <TextView
                             android:id="@+id/context_2"
@@ -238,8 +237,7 @@
                             android:layout_height="100dp"
                             android:layout_alignParentTop="true"
                             android:scaleType="fitStart"
-                            android:src="@drawable/numeric_3_box"
-                            tools:ignore="ContentDescription" />
+                            android:src="@drawable/numeric_3_box" />
 
                         <ImageView
                             android:id="@+id/context_3_preView"
@@ -247,18 +245,19 @@
                             android:layout_height="100dp"
                             android:layout_alignParentTop="true"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/numeric_3_box"
-                            tools:ignore="ContentDescription" />
+                            android:src="@drawable/numeric_3_box" />
+
                         <ImageView
                             android:id="@+id/close_3"
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
                             android:layout_gravity="end"
-                            android:padding="4dp"
+                            android:layout_margin="3dp"
+                            android:padding="6dp"
                             android:scaleType="fitStart"
-                            android:src="@drawable/close_circle"
+                            android:src="@drawable/close"
                             android:visibility="gone"
-                            tools:ignore="ContentDescription" />
+                            android:background="@drawable/circle" />
 
                         <TextView
                             android:id="@+id/context_3"
@@ -296,8 +295,7 @@
                             android:layout_height="100dp"
                             android:layout_alignParentTop="true"
                             android:scaleType="fitStart"
-                            android:src="@drawable/numeric_4_box"
-                            tools:ignore="ContentDescription" />
+                            android:src="@drawable/numeric_4_box" />
 
                         <ImageView
                             android:id="@+id/context_4_preView"
@@ -305,19 +303,19 @@
                             android:layout_height="100dp"
                             android:layout_alignParentTop="true"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/numeric_4_box"
-                            tools:ignore="ContentDescription" />
+                            android:src="@drawable/numeric_4_box" />
 
                         <ImageView
                             android:id="@+id/close_4"
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
                             android:layout_gravity="end"
-                            android:padding="4dp"
+                            android:layout_margin="3dp"
+                            android:padding="6dp"
                             android:scaleType="fitStart"
-                            android:src="@drawable/close_circle"
+                            android:src="@drawable/close"
                             android:visibility="gone"
-                            tools:ignore="ContentDescription" />
+                            android:background="@drawable/circle" />
 
                         <TextView
                             android:id="@+id/context_4"
@@ -355,8 +353,7 @@
                             android:layout_height="100dp"
                             android:layout_alignParentTop="true"
                             android:scaleType="fitStart"
-                            android:src="@drawable/numeric_5_box"
-                            tools:ignore="ContentDescription" />
+                            android:src="@drawable/numeric_5_box" />
 
                         <ImageView
                             android:id="@+id/context_5_preView"
@@ -364,19 +361,19 @@
                             android:layout_height="100dp"
                             android:layout_alignParentTop="true"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/numeric_5_box"
-                            tools:ignore="ContentDescription" />
+                            android:src="@drawable/numeric_5_box" />
 
                         <ImageView
                             android:id="@+id/close_5"
-                            android:layout_width="36dp"
-                            android:layout_height="36dp"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
                             android:layout_gravity="end"
-                            android:padding="4dp"
+                            android:layout_margin="3dp"
+                            android:padding="6dp"
                             android:scaleType="fitStart"
-                            android:src="@drawable/close_circle"
+                            android:src="@drawable/close"
                             android:visibility="gone"
-                            tools:ignore="ContentDescription" />
+                            android:background="@drawable/circle" />
 
                         <TextView
                             android:id="@+id/context_5"

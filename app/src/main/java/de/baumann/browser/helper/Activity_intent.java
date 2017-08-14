@@ -74,12 +74,12 @@ public class Activity_intent extends Activity {
                         new android.support.v4.app.NotificationCompat.Builder(Activity_intent.this)
                                 .setAutoCancel(true)
                                 .setSmallIcon(R.drawable.earth)
-                                .setColor(ContextCompat.getColor(Activity_intent.this, R.color.colorPrimary_1))
+                                .setColor(ContextCompat.getColor(Activity_intent.this, R.color.colorPrimary))
                                 .setGroup("Browser")
                                 .setGroupSummary(true);
 
                 Notification notification = new NotificationCompat.Builder(Activity_intent.this)
-                        .setColor(ContextCompat.getColor(Activity_intent.this, R.color.colorPrimary_1))
+                        .setColor(ContextCompat.getColor(Activity_intent.this, R.color.colorPrimary))
                         .setSmallIcon(R.drawable.earth)
                         .setContentTitle(getString(R.string.readLater_title) + " " + domain)
                         .setContentText(url)

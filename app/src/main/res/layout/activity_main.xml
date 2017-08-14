@@ -19,7 +19,7 @@
         android:layout_height="56dp"
         android:minHeight="56dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/colorPrimary_1"
+        android:background="@color/colorPrimary"
         android:theme="@style/Actionbar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" >
 

@@ -34,11 +34,14 @@ import android.os.Environment;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.util.Linkify;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.CookieManager;
 import android.webkit.WebView;
@@ -225,6 +228,14 @@ public class helper_main {
     public static void onStart (final Activity activity) {
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
+
+        //Toolbar toolbar = (Toolbar) activity.findViewById(R.id.toolbar);
+        //toolbar.setBackgroundColor(ContextCompat.getColor(activity, (R.color.colorAccent)));
+
+        //Window window = activity.getWindow();
+        //window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        //window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        //window.setStatusBarColor(ContextCompat.getColor(activity, (R.color.colorAccent)));
 
         if (sharedPref.getString ("fullscreen", "2").equals("1") || sharedPref.getString ("fullscreen", "2").equals("3")){
             activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);

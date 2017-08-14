@@ -30,15 +30,15 @@ public class Activity_intro extends OnboarderActivity {
 
         // You can define title and description colors (by default white)
         onboarderPage1.setTitleColor(R.color.colorAccent);
-        onboarderPage1.setBackgroundColor(R.color.colorPrimaryDark_1);
+        onboarderPage1.setBackgroundColor(R.color.colorPrimaryDark);
         onboarderPage2.setTitleColor(R.color.colorAccent);
-        onboarderPage2.setBackgroundColor(R.color.colorPrimaryDark_1);
+        onboarderPage2.setBackgroundColor(R.color.colorPrimaryDark);
         onboarderPage3.setTitleColor(R.color.colorAccent);
-        onboarderPage3.setBackgroundColor(R.color.colorPrimaryDark_1);
+        onboarderPage3.setBackgroundColor(R.color.colorPrimaryDark);
         onboarderPage4.setTitleColor(R.color.colorAccent);
-        onboarderPage4.setBackgroundColor(R.color.colorPrimaryDark_1);
+        onboarderPage4.setBackgroundColor(R.color.colorPrimaryDark);
         onboarderPage5.setTitleColor(R.color.colorAccent);
-        onboarderPage5.setBackgroundColor(R.color.colorPrimaryDark_1);
+        onboarderPage5.setBackgroundColor(R.color.colorPrimaryDark);
 
         // Add your pages to the lists
         onboarderPages.add(onboarderPage1);
