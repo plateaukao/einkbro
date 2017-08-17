@@ -6,12 +6,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import de.baumann.browser.R;
+import de.baumann.browser.helper.helper_main;
 
 public class About_activity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        helper_main.setTheme(this);
         setContentView(R.layout.activity_about);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

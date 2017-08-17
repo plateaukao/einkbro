@@ -117,6 +117,15 @@
         android:title="@string/pref_2">
 
         <ListPreference
+            android:title="@string/action_theme"
+            android:icon="@drawable/format_color_fill"
+            android:summary="@string/action_theme_summary"
+            android:key="theme"
+            android:defaultValue="0"
+            android:entries="@array/listArrayTheme"
+            android:entryValues="@array/listValuesTheme" />
+
+        <ListPreference
             android:title="@string/action_tabMain"
             android:icon="@drawable/cellphone_iphone"
             android:summary="@string/action_tabMain_summary"
@@ -204,13 +213,6 @@
             android:icon="@drawable/information_outline"
             android:summary="@string/action_license_summary"
             android:key="license" />
-
-        <CheckBoxPreference
-            android:title="@string/action_permNotShow_title"
-            android:icon="@drawable/security"
-            android:summary="@string/action_permNotShow_title_summary"
-            android:key="perm_notShow"
-            android:defaultValue="true" />
 
     </PreferenceCategory>
 

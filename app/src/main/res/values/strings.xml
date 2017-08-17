@@ -126,6 +126,7 @@
     <string name="toast_confirmation_title">Confirmation</string>
     <string name="toast_confirmation_backup">This will overwrite your current backup. Do you really want this?</string>
     <string name="toast_confirmation_restore">This will overwrite your current database. Do you really want this?</string>
+    <string name="toast_restart">Restart app to apply changes?</string>
 
 
     // Bookmarks // ReadLater // Password
@@ -161,15 +162,12 @@
 
     // Settings
 
-    <string name="pref_1">About | Help</string>
+    <string name="pref_1">Learn more</string>
     <string name="pref_2">App settings</string>
     <string name="pref_3">Enable on start</string>
     <string name="pref_4">Data</string>
     <string name="pref_5">Clear on exit</string>
     <string name="pref_6">Search</string>
-
-    <string name="action_permNotShow_title">Permission dialog</string>
-    <string name="action_permNotShow_title_summary">Show again: Permission dialog?</string>
 
     <string name="action_license">About</string>
     <string name="action_license_summary">Learn more about this app (help, changelog, license, …).</string>
@@ -195,7 +193,7 @@
     <string name="action_cookie">Cookies</string>
     <string name="action_cookie_summary">Visited websites are storing their cookies on your device, mostly to improve user
         experience. For example settings for a search site are stored in cookies. Third party cookies are not from the visited
-        website. Mostly they collect information about your browsing behavior to send you personalised advertisements.</string>
+        website. Mostly they collect information about your browsing behavior.</string>
 
     <string name="action_history">Clear history on exit</string>
     <string name="action_history_summary">Clear your browser history on exit.</string>
@@ -267,6 +265,9 @@
 
     <string name="action_tabMain">Start tab</string>
     <string name="action_tabMain_summary">Which tab should be displayed on app start?</string>
+
+    <string name="action_theme">Theme</string>
+    <string name="action_theme_summary">Don\'t like green? Change the color!</string>
 
 
     // Intro

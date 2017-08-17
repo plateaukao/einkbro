@@ -14,6 +14,7 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
+        android:theme="@style/AppTheme"
         android:label="@string/app_name"
         android:fullBackupContent="true"
         tools:ignore="GoogleAppIndexingWarning" >
@@ -23,8 +24,7 @@
         <activity android:name=".Activity_Main"
             android:launchMode="singleInstance"
             android:configChanges="orientation|screenSize"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:label="@string/app_name" >
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -54,26 +54,22 @@
         <activity
             android:name=".about.About_activity"
             android:launchMode="singleInstance"
-            android:configChanges="orientation|screenSize"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:configChanges="orientation|screenSize" />
 
         <activity
             android:name=".helper.Activity_intro"
             android:launchMode="singleInstance"
-            android:configChanges="orientation|screenSize"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:configChanges="orientation|screenSize" />
 
         <activity
             android:name=".helper.Activity_settings"
             android:launchMode="singleInstance"
-            android:configChanges="orientation|screenSize"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:configChanges="orientation|screenSize" />
 
         <activity
             android:name=".helper.Activity_settings_search"
             android:launchMode="singleInstance"
-            android:configChanges="orientation|screenSize"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:configChanges="orientation|screenSize" />
 
 
         <!-- Intents -->

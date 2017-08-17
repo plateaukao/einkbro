@@ -36,6 +36,8 @@ public class Activity_settings_search extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        helper_main.setTheme(this);
+
         setContentView(R.layout.activity_settings);
         helper_main.onStart(Activity_settings_search.this);
 

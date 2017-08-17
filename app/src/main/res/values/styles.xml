@@ -1,17 +1,195 @@
 <resources>
 
-    <!-- Base application theme. -->
+    <!-- green -->
+
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent_trans">@color/colorAccent_trans</item>
         <item name="android:windowAnimationStyle">@null</item>
-    </style>
-
-    <style name="AppTheme.NoActionBar" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="@attr/customTextViewStyle">@style/EditTextStyle</item>
     </style>
+
+    <style name="EditTextStyle" parent="AppTheme">
+        <item name="colorControlActivated">@color/colorAccent</item>
+        <item name="android:textColorHighlight">@color/colorAccent_trans</item>
+    </style>
+
+
+    <!-- blue -->
+
+    <style name="AppTheme_blue" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary_blue</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark_blue</item>
+        <item name="colorAccent">@color/colorAccent_blue</item>
+        <item name="colorAccent_trans">@color/colorAccent_trans_blue</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="@attr/customTextViewStyle">@style/EditTextStyle_blue</item>
+    </style>
+
+    <style name="EditTextStyle_blue" parent="AppTheme_blue">
+        <item name="colorControlActivated">@color/colorAccent_blue</item>
+        <item name="android:textColorHighlight">@color/colorAccent_trans_blue</item>
+    </style>
+
+
+    <!-- pink -->
+
+    <style name="AppTheme_pink" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary_pink</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark_pink</item>
+        <item name="colorAccent">@color/colorAccent_pink</item>
+        <item name="colorAccent_trans">@color/colorAccent_trans_pink</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="@attr/customTextViewStyle">@style/EditTextStyle_pink</item>
+    </style>
+
+    <style name="EditTextStyle_pink" parent="AppTheme">
+        <item name="colorControlActivated">@color/colorAccent_pink</item>
+        <item name="android:textColorHighlight">@color/colorAccent_trans_pink</item>
+    </style>
+
+
+    <!-- purple -->
+
+    <style name="AppTheme_purple" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary_purple</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark_purple</item>
+        <item name="colorAccent">@color/colorAccent_purple</item>
+        <item name="colorAccent_trans">@color/colorAccent_trans_purple</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="@attr/customTextViewStyle">@style/EditTextStyle_purple</item>
+    </style>
+
+    <style name="EditTextStyle_purple" parent="AppTheme_blue">
+        <item name="colorControlActivated">@color/colorAccent_purple</item>
+        <item name="android:textColorHighlight">@color/colorAccent_trans_purple</item>
+    </style>
+
+
+    <!-- teal -->
+
+    <style name="AppTheme_teal" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary_teal</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark_teal</item>
+        <item name="colorAccent">@color/colorAccent_teal</item>
+        <item name="colorAccent_trans">@color/colorAccent_trans_teal</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="@attr/customTextViewStyle">@style/EditTextStyle_teal</item>
+    </style>
+
+    <style name="EditTextStyle_teal" parent="AppTheme">
+        <item name="colorControlActivated">@color/colorAccent_teal</item>
+        <item name="android:textColorHighlight">@color/colorAccent_trans_teal</item>
+    </style>
+
+
+    <!-- red -->
+
+    <style name="AppTheme_red" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary_red</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark_red</item>
+        <item name="colorAccent">@color/colorAccent_red</item>
+        <item name="colorAccent_trans">@color/colorAccent_trans_red</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="@attr/customTextViewStyle">@style/EditTextStyle_red</item>
+    </style>
+
+    <style name="EditTextStyle_red" parent="AppTheme_blue">
+        <item name="colorControlActivated">@color/colorAccent_red</item>
+        <item name="android:textColorHighlight">@color/colorAccent_trans_red</item>
+    </style>
+
+
+    <!-- orange -->
+
+    <style name="AppTheme_orange" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary_orange</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark_orange</item>
+        <item name="colorAccent">@color/colorAccent_orange</item>
+        <item name="colorAccent_trans">@color/colorAccent_trans_orange</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="@attr/customTextViewStyle">@style/EditTextStyle_orange</item>
+    </style>
+
+    <style name="EditTextStyle_orange" parent="AppTheme_blue">
+        <item name="colorControlActivated">@color/colorAccent_orange</item>
+        <item name="android:textColorHighlight">@color/colorAccent_trans_orange</item>
+    </style>
+
+
+    <!-- brown -->
+
+    <style name="AppTheme_brown" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary_brown</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark_brown</item>
+        <item name="colorAccent">@color/colorAccent_brown</item>
+        <item name="colorAccent_trans">@color/colorAccent_trans_brown</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="@attr/customTextViewStyle">@style/EditTextStyle_brown</item>
+    </style>
+
+    <style name="EditTextStyle_brown" parent="AppTheme">
+        <item name="colorControlActivated">@color/colorAccent_brown</item>
+        <item name="android:textColorHighlight">@color/colorAccent_trans_brown</item>
+    </style>
+
+
+    <!-- grey -->
+
+    <style name="AppTheme_grey" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary_grey</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark_grey</item>
+        <item name="colorAccent">@color/colorAccent_grey</item>
+        <item name="colorAccent_trans">@color/colorAccent_trans_grey</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="@attr/customTextViewStyle">@style/EditTextStyle_grey</item>
+    </style>
+
+    <style name="EditTextStyle_grey" parent="AppTheme_blue">
+        <item name="colorControlActivated">@color/colorAccent_grey</item>
+        <item name="android:textColorHighlight">@color/colorAccent_trans_grey</item>
+    </style>
+
+
+    <!-- darkGrey -->
+
+    <style name="AppTheme_darkGrey" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary_darkGrey</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark_darkGrey</item>
+        <item name="colorAccent">@color/colorAccent_darkGrey</item>
+        <item name="colorAccent_trans">@color/colorAccent_trans_darkGrey</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="@attr/customTextViewStyle">@style/EditTextStyle_darkGrey</item>
+    </style>
+
+    <style name="EditTextStyle_darkGrey" parent="AppTheme_blue">
+        <item name="colorControlActivated">@color/colorAccent_darkGrey</item>
+        <item name="android:textColorHighlight">@color/colorAccent_trans_darkGrey</item>
+    </style>
+
+
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
@@ -23,20 +201,12 @@
 
 
     <style name="PinDialog">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">fill_parent</item>
         <!-- No backgrounds, titles or window float -->
         <item name="android:windowBackground">@null</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowIsFloating">false</item>
-    </style>
-
-    <style name="EditTextStyle" parent="AppTheme">
-        <item name="colorControlNormal">@color/colorPrimary</item>
-        <item name="colorControlActivated">@color/colorAccent</item>
-        <item name="colorControlHighlight">@color/colorPrimary</item>
     </style>
 
 </resources>

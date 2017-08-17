@@ -22,9 +22,9 @@ import android.os.Environment;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
@@ -66,6 +66,7 @@ import java.io.OutputStream;
 
 import de.baumann.browser.R;
 import de.baumann.browser.databases.DbAdapter_ReadLater;
+import de.baumann.browser.helper.Activity_settings;
 import de.baumann.browser.helper.CustomViewPager;
 import de.baumann.browser.helper.helper_browser;
 import de.baumann.browser.helper.helper_editText;
@@ -94,6 +95,7 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
     private HorizontalScrollView scrollTabs;
     private Toolbar toolbar;
     private CustomViewPager viewPager;
+    private AppBarLayout appBarLayout;
 
 
     // Strings
@@ -114,6 +116,7 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
     private Bitmap bitmap;
     private ValueCallback<Uri[]> mFilePathCallback;
     private static final int REQUEST_CODE_LOLLIPOP = 1;
+    private HorizontalScrollView horizontalScrollView;
 
 
     // Booleans
@@ -126,6 +129,7 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View rootView = inflater.inflate(R.layout.fragment_browser, container, false);
 
         setHasOptionsMenu(true);
@@ -151,11 +155,13 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
         imageButton_down = (ImageButton) rootView.findViewById(R.id.imageButton_down);
         scrollTabs  = (HorizontalScrollView) activity.findViewById(R.id.scrollTabs);
         viewPager = (CustomViewPager) activity.findViewById(R.id.viewpager);
+        appBarLayout = (AppBarLayout) activity.findViewById(R.id.appBarLayout);
+        horizontalScrollView = (HorizontalScrollView) getActivity().findViewById(R.id.scrollTabs);
 
 
         // setupViews
 
-        helper_browser.setupViews(mWebView, editText, imageButton_up, imageButton_down, imageButton_left, imageButton_right, toolbar);
+        helper_browser.setupViews(mWebView, editText, imageButton_up, imageButton_down, imageButton_left, imageButton_right, appBarLayout);
         helper_webView.webView_Settings(activity, mWebView);
         helper_webView.webView_WebViewClient(activity, mWebView, urlBar);
 
@@ -163,6 +169,7 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
             @Override
             public void onClick(View view) {
                 if (viewPager.getCurrentItem() < 5) {
+                    horizontalScrollView.setVisibility(View.GONE);
                     urlBar.setVisibility(View.GONE);
                     editText.setVisibility(View.VISIBLE);
                     helper_editText.showKeyboard(activity, editText, 3, sharedPref.getString("webView_url", ""), activity.getString(R.string.app_search_hint));
@@ -477,7 +484,7 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
             imageButton_right.setVisibility(View.GONE);
 
             if (sharedPref.getString ("fullscreen", "2").equals("2") || sharedPref.getString ("fullscreen", "2").equals("3")){
-                toolbar.setVisibility(View.GONE);
+                appBarLayout.setVisibility(View.GONE);
             }
 
         } else if (scrollState == ScrollState.DOWN) {
@@ -486,7 +493,7 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
             helper_browser.setNavArrows(mWebView, imageButton_left, imageButton_right);
             imageButton_up.setVisibility(View.GONE);
             imageButton_down.setVisibility(View.GONE);
-            toolbar.setVisibility(View.VISIBLE);
+            appBarLayout.setVisibility(View.VISIBLE);
 
         } else {
             imageButton_up.setVisibility(View.GONE);
@@ -777,6 +784,8 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
             Log.i(TAG, "Tab switched");
         } else if (URL.equals("settings")) {
             mWebView.reload();
+        } else if (URL.equals("settings_recreate")) {
+            getActivity().recreate();
         } else if (URL.equals("copyLogin")) {
             Snackbar snackbar = Snackbar
                     .make(mWebView, R.string.pass_copy_userName, Snackbar.LENGTH_INDEFINITE)
@@ -969,6 +978,8 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+
+        horizontalScrollView.setVisibility(View.GONE);
 
         int id = item.getItemId();
 

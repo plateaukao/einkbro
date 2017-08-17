@@ -55,10 +55,11 @@ public class Activity_Main extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Activity activity = Activity_Main.this;
+        helper_main.setTheme(Activity_Main.this);
 
         setContentView(R.layout.activity_main);
         WebView.enableSlowWholeDocumentDraw();
+        Activity activity = Activity_Main.this;
 
         PreferenceManager.setDefaultValues(activity, R.xml.user_settings, false);
         PreferenceManager.setDefaultValues(activity, R.xml.user_settings_search, false);
@@ -97,8 +98,7 @@ public class Activity_Main extends AppCompatActivity {
 
         urlBar = (TextView) findViewById(R.id.urlBar);
         listBar = (TextView) findViewById(R.id.listBar);
-        editText = (EditText) findViewById(R.id.editText) ;
-
+        editText = (EditText) findViewById(R.id.editText);
         viewPager = (CustomViewPager) findViewById(R.id.viewpager);
         viewPager.setPagingEnabled();
         viewPager.setOffscreenPageLimit(10);

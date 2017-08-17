@@ -25,7 +25,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Environment;
 import android.preference.PreferenceManager;
-import android.support.v7.widget.Toolbar;
+import android.support.design.widget.AppBarLayout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -53,7 +53,7 @@ public class helper_browser {
     public static void setupViews (final WebView webView,
                                    final EditText editText, final ImageButton imageButton_up,
                                    final ImageButton imageButton_down, final ImageButton imageButton_left,
-                                   final ImageButton imageButton_right, final Toolbar toolbar) {
+                                   final ImageButton imageButton_right, final AppBarLayout appBarLayout) {
 
         editText.setHint(R.string.app_search_hint);
         editText.clearFocus();
@@ -64,7 +64,7 @@ public class helper_browser {
                 webView.pageUp(true);
                 imageButton_up.setVisibility(View.GONE);
                 imageButton_down.setVisibility(View.GONE);
-                toolbar.setVisibility(View.VISIBLE);
+                appBarLayout.setVisibility(View.VISIBLE);
                 helper_browser.setNavArrows(webView, imageButton_left, imageButton_right);
             }
         });
@@ -75,7 +75,6 @@ public class helper_browser {
                 webView.pageDown(true);
             }
         });
-
     }
 
 

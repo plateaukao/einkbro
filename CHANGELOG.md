@@ -1,6 +1,10 @@
 ### v 4.2 (WIP)
 - fix: hiding keyboard after searching in lists
 - fix: history - scroll to latest entry
+- improved: code and UI
+- new: offer restart to apply some settings
+- new: theme support
+- new: show actual settings
 
 ### v 4.1
 - removed: offline support (use screenshot for saving)
@@ -11,14 +15,14 @@
 - fix: delete passStorage
 - improved: layout close button
 - improved: bundled Notifications
-- added: Google encrypted search (override AMP-links)
-- added: advanced backup/restore data
+- new: Google encrypted search (override AMP-links)
+- new: advanced backup/restore data
 
 ### v 4.0
 - removed: donation link on Github
 - removed: video thumbnail
 - improved: file manager (icons, image preview)
-- added: scroll to end of website arrow
+- new: scroll to end of website arrow
 
 ### v 3.9
 - removed: notification actions (to buggy)
@@ -48,9 +52,9 @@
 - new: set empty page as favorite
 
 ### v 3.7
-- added: changelog after update
-- added: long click on toolbar opens tab overview
-- added: click on toolbar opens search/enter URL
+- new: changelog after update
+- new: long click on toolbar opens tab overview
+- new: click on toolbar opens search/enter URL
 - fix: toolbar swipe (lists)
 - fix: hide navigation buttons
 - fix: contributor title
@@ -77,8 +81,8 @@
 
 ### v 3.5
 - fix: keyboard issue
-- added: request desktop site (@CGSLURP LLC)
-- added: adblocker (@CGSLURP LLC)
+- new: request desktop site (@CGSLURP LLC)
+- new: adblocker (@CGSLURP LLC)
 
 ### v 3.4
 - improved: sorting of list entries

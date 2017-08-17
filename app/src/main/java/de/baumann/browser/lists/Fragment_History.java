@@ -69,6 +69,8 @@ public class Fragment_History extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
         View rootView = inflater.inflate(R.layout.fragment_lists, container, false);
 
         setHasOptionsMenu(true);
@@ -378,19 +380,20 @@ public class Fragment_History extends Fragment {
         super.setUserVisibleHint(isVisibleToUser);
 
         if (isVisibleToUser) {
+            getContext().getTheme().applyStyle(R.style.AppTheme_blue, true);
             AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
             assert appCompatActivity.getSupportActionBar() != null;
             appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             setTitle();
-            setHistoryList();
+            listView.setSelection(listView.getCount() - 1);
+            helper_toolbar.toolbarGestures(getActivity(), toolbar, viewPager);
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    listView.setSelection(listView.getCount() - 1);
+                  setHistoryList();
                 }
             }, 100);
-            helper_toolbar.toolbarGestures(getActivity(), toolbar, viewPager);
         } else {
             Log.i("Browser", "Browser: isVisibleToUser false");
         }

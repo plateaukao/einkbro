@@ -27,6 +27,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
@@ -62,6 +63,8 @@ public class Activity_settings extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        helper_main.setTheme(this);
+
         setContentView(R.layout.activity_settings);
         helper_main.onStart(Activity_settings.this);
 
@@ -79,7 +82,6 @@ public class Activity_settings extends AppCompatActivity {
         PreferenceManager.setDefaultValues(this, R.xml.user_settings, false);
         PreferenceManager.setDefaultValues(this, R.xml.user_settings_search, false);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        sharedPref.edit().putString("openURL", sharedPref.getString("startURL", "https://github.com/scoute-dich/browser/")).apply();
         sharedPref.edit().putString("started", "").apply();
 
         // Display the fragment as the activity_screen_main content
@@ -478,7 +480,36 @@ public class Activity_settings extends AppCompatActivity {
                                 }
                             });
                     dialog.show();
+                    return true;
+                }
+            });
+        }
 
+        private void addThemeListener() {
+            Preference reset = findPreference("theme");
+            reset.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                public boolean onPreferenceClick(Preference pref) {
+                    recreate();
+                    return true;
+                }
+            });
+        }
+
+        private void addFullscreenListener() {
+            Preference reset = findPreference("fullscreen");
+            reset.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                public boolean onPreferenceClick(Preference pref) {
+                    recreate();
+                    return true;
+                }
+            });
+        }
+
+        private void addOrientationListener() {
+            Preference reset = findPreference("orientation");
+            reset.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                public boolean onPreferenceClick(Preference pref) {
+                    recreate();
                     return true;
                 }
             });
@@ -507,6 +538,21 @@ public class Activity_settings extends AppCompatActivity {
             addRestore_searchChooseListener();
             addProtectListener();
             addWhiteListListener();
+            addThemeListener();addFullscreenListener();
+            addOrientationListener();
+        }
+
+        private void recreate () {
+            Snackbar snackbar = Snackbar
+                    .make(frameLayout, getString(R.string.toast_restart), Snackbar.LENGTH_INDEFINITE)
+                    .setAction(getString(R.string.toast_yes), new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            sharedPref.edit().putString("openURL", "settings_recreate").apply();
+                            getActivity().finish();
+                        }
+                    });
+            snackbar.show();
         }
 
         private void backup_Bookmarks () {

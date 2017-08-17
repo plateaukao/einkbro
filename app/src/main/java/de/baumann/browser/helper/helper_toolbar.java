@@ -22,12 +22,14 @@ package de.baumann.browser.helper;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.preference.PreferenceManager;
-import android.support.v4.content.ContextCompat;
+import android.support.annotation.ColorInt;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
@@ -52,9 +54,17 @@ public class helper_toolbar {
 
         textView.setText(text);
         if (sharedPref.getInt("tab", 0) == tab) {
-            textView.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorAccent));
+            TypedValue typedValue = new TypedValue();
+            Resources.Theme theme = activity.getTheme();
+            theme.resolveAttribute(R.attr.colorAccent, typedValue, true);
+            @ColorInt int color = typedValue.data;
+            textView.setBackgroundColor(color);
         } else {
-            textView.setBackgroundColor(ContextCompat.getColor(activity, R.color.colorAccent_trans));
+            TypedValue typedValue = new TypedValue();
+            Resources.Theme theme = activity.getTheme();
+            theme.resolveAttribute(R.attr.colorAccent_trans, typedValue, true);
+            @ColorInt int color = typedValue.data;
+            textView.setBackgroundColor(color);
         }
 
         if (text.equals(activity.getString(R.string.context_tab))) {

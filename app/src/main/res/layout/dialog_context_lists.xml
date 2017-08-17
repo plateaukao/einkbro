@@ -1,7 +1,8 @@
-<ScrollView android:layout_width="match_parent"
+<ScrollView
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:ignore="ContentDescription,HardcodedText"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="ContentDescription"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
@@ -114,17 +115,15 @@
             android:id="@+id/scrollTabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorDark_trans"
             android:layout_marginStart="@dimen/activity_margin"
-            android:layout_marginEnd="@dimen/activity_margin"
-            tools:ignore="UselessParent">
+            android:layout_marginEnd="@dimen/activity_margin" >
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                <android.support.v7.widget.CardView
                     android:id="@+id/context_1_Layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -138,16 +137,29 @@
                             android:layout_width="175dp"
                             android:layout_height="100dp"
                             android:layout_alignParentTop="true"
-                            android:scaleType="fitStart"
-                            android:src="@drawable/numeric_1_box" />
+                            android:padding="8dp"
+                            android:scaleType="center"
+                            android:background="@color/colorDark_trans2"
+                            android:src="@drawable/custom_button" />
+
+                        <TextView
+                            android:layout_width="175dp"
+                            android:layout_height="100dp"
+                            android:layout_alignParentTop="true"
+                            android:gravity="center_horizontal|center_vertical"
+                            android:padding="8dp"
+                            android:textColor="@color/colorLight"
+                            android:textSize="46sp"
+                            android:typeface="sans"
+                            android:textStyle="bold"
+                            android:text="1" />
 
                         <ImageView
                             android:id="@+id/context_1_preView"
                             android:layout_width="175dp"
                             android:layout_height="100dp"
                             android:layout_alignParentTop="true"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/numeric_1_box" />
+                            android:scaleType="centerCrop" />
 
                         <ImageView
                             android:id="@+id/close_1"
@@ -166,7 +178,7 @@
                             android:layout_width="175dp"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/context_1_preView"
-                            android:background="@color/colorAccent_trans"
+                            android:background="?attr/colorAccent_trans"
                             android:ellipsize="end"
                             android:lines="1"
                             android:maxLines="3"
@@ -182,7 +194,7 @@
 
                 </android.support.v7.widget.CardView>
 
-                <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                <android.support.v7.widget.CardView
                     android:id="@+id/context_2_Layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -196,16 +208,29 @@
                             android:layout_width="175dp"
                             android:layout_height="100dp"
                             android:layout_alignParentTop="true"
-                            android:scaleType="fitStart"
-                            android:src="@drawable/numeric_2_box" />
+                            android:padding="8dp"
+                            android:scaleType="center"
+                            android:background="@color/colorDark_trans2"
+                            android:src="@drawable/custom_button" />
+
+                        <TextView
+                            android:layout_width="175dp"
+                            android:layout_height="100dp"
+                            android:layout_alignParentTop="true"
+                            android:gravity="center_horizontal|center_vertical"
+                            android:padding="8dp"
+                            android:textColor="@color/colorLight"
+                            android:textSize="46sp"
+                            android:typeface="sans"
+                            android:textStyle="bold"
+                            android:text="2" />
 
                         <ImageView
                             android:id="@+id/context_2_preView"
                             android:layout_width="175dp"
                             android:layout_height="100dp"
                             android:layout_alignParentTop="true"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/numeric_2_box" />
+                            android:scaleType="centerCrop" />
 
                         <ImageView
                             android:id="@+id/close_2"
@@ -224,7 +249,7 @@
                             android:layout_width="175dp"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/context_2_preView"
-                            android:background="@color/colorAccent_trans"
+                            android:background="?attr/colorAccent_trans"
                             android:ellipsize="end"
                             android:lines="1"
                             android:maxLines="3"
@@ -238,11 +263,9 @@
 
                     </RelativeLayout>
 
-
-
                 </android.support.v7.widget.CardView>
 
-                <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                <android.support.v7.widget.CardView
                     android:id="@+id/context_3_Layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -256,16 +279,29 @@
                             android:layout_width="175dp"
                             android:layout_height="100dp"
                             android:layout_alignParentTop="true"
-                            android:scaleType="fitStart"
-                            android:src="@drawable/numeric_3_box" />
+                            android:padding="8dp"
+                            android:scaleType="center"
+                            android:background="@color/colorDark_trans2"
+                            android:src="@drawable/custom_button" />
+
+                        <TextView
+                            android:layout_width="175dp"
+                            android:layout_height="100dp"
+                            android:layout_alignParentTop="true"
+                            android:gravity="center_horizontal|center_vertical"
+                            android:padding="8dp"
+                            android:textColor="@color/colorLight"
+                            android:textSize="46sp"
+                            android:typeface="sans"
+                            android:textStyle="bold"
+                            android:text="3" />
 
                         <ImageView
                             android:id="@+id/context_3_preView"
                             android:layout_width="175dp"
                             android:layout_height="100dp"
                             android:layout_alignParentTop="true"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/numeric_3_box" />
+                            android:scaleType="centerCrop" />
 
                         <ImageView
                             android:id="@+id/close_3"
@@ -284,7 +320,7 @@
                             android:layout_width="175dp"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/context_3_preView"
-                            android:background="@color/colorAccent_trans"
+                            android:background="?attr/colorAccent_trans"
                             android:ellipsize="end"
                             android:lines="1"
                             android:maxLines="3"
@@ -300,7 +336,7 @@
 
                 </android.support.v7.widget.CardView>
 
-                <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                <android.support.v7.widget.CardView
                     android:id="@+id/context_4_Layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -314,16 +350,29 @@
                             android:layout_width="175dp"
                             android:layout_height="100dp"
                             android:layout_alignParentTop="true"
-                            android:scaleType="fitStart"
-                            android:src="@drawable/numeric_4_box" />
+                            android:padding="8dp"
+                            android:scaleType="center"
+                            android:background="@color/colorDark_trans2"
+                            android:src="@drawable/custom_button" />
+
+                        <TextView
+                            android:layout_width="175dp"
+                            android:layout_height="100dp"
+                            android:layout_alignParentTop="true"
+                            android:gravity="center_horizontal|center_vertical"
+                            android:padding="8dp"
+                            android:textColor="@color/colorLight"
+                            android:textSize="46sp"
+                            android:typeface="sans"
+                            android:textStyle="bold"
+                            android:text="4" />
 
                         <ImageView
                             android:id="@+id/context_4_preView"
                             android:layout_width="175dp"
                             android:layout_height="100dp"
                             android:layout_alignParentTop="true"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/numeric_4_box" />
+                            android:scaleType="centerCrop" />
 
                         <ImageView
                             android:id="@+id/close_4"
@@ -342,7 +391,7 @@
                             android:layout_width="175dp"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/context_4_preView"
-                            android:background="@color/colorAccent_trans"
+                            android:background="?attr/colorAccent_trans"
                             android:ellipsize="end"
                             android:lines="1"
                             android:maxLines="3"
@@ -358,7 +407,7 @@
 
                 </android.support.v7.widget.CardView>
 
-                <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                <android.support.v7.widget.CardView
                     android:id="@+id/context_5_Layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -372,16 +421,29 @@
                             android:layout_width="175dp"
                             android:layout_height="100dp"
                             android:layout_alignParentTop="true"
-                            android:scaleType="fitStart"
-                            android:src="@drawable/numeric_5_box" />
+                            android:padding="8dp"
+                            android:scaleType="center"
+                            android:background="@color/colorDark_trans2"
+                            android:src="@drawable/custom_button" />
+
+                        <TextView
+                            android:layout_width="175dp"
+                            android:layout_height="100dp"
+                            android:layout_alignParentTop="true"
+                            android:gravity="center_horizontal|center_vertical"
+                            android:padding="8dp"
+                            android:textColor="@color/colorLight"
+                            android:textSize="46sp"
+                            android:typeface="sans"
+                            android:textStyle="bold"
+                            android:text="5" />
 
                         <ImageView
                             android:id="@+id/context_5_preView"
                             android:layout_width="175dp"
                             android:layout_height="100dp"
                             android:layout_alignParentTop="true"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/numeric_5_box" />
+                            android:scaleType="centerCrop" />
 
                         <ImageView
                             android:id="@+id/close_5"
@@ -400,7 +462,7 @@
                             android:layout_width="175dp"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/context_5_preView"
-                            android:background="@color/colorAccent_trans"
+                            android:background="?attr/colorAccent_trans"
                             android:ellipsize="end"
                             android:lines="1"
                             android:maxLines="3"

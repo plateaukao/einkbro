@@ -34,14 +34,11 @@ import android.os.Environment;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
-import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.util.Linkify;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.CookieManager;
 import android.webkit.WebView;
@@ -72,38 +69,36 @@ public class helper_main {
         final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
 
         if (android.os.Build.VERSION.SDK_INT >= 23) {
-            if (sharedPref.getBoolean ("perm_notShow", false)){
-                int hasWRITE_EXTERNAL_STORAGE = from.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
-                    if (!from.shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            int hasWRITE_EXTERNAL_STORAGE = from.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
+                if (!from.shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
 
-                        new AlertDialog.Builder(from)
-                                .setTitle(R.string.app_permissions_title)
-                                .setMessage(helper_main.textSpannable(from.getString(R.string.app_permissions)))
-                                .setNeutralButton(R.string.toast_notAgain, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.cancel();
-                                        sharedPref.edit()
-                                                .putBoolean("perm_notShow", false)
-                                                .apply();
-                                    }
-                                })
-                                .setPositiveButton(from.getString(R.string.toast_yes), new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        if (android.os.Build.VERSION.SDK_INT >= 23)
-                                            from.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                                                    REQUEST_CODE_ASK_PERMISSIONS);
-                                    }
-                                })
-                                .setNegativeButton(from.getString(R.string.toast_cancel), null)
-                                .show();
-                        return;
-                    }
-                    from.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                            REQUEST_CODE_ASK_PERMISSIONS);
+                    new AlertDialog.Builder(from)
+                            .setTitle(R.string.app_permissions_title)
+                            .setMessage(helper_main.textSpannable(from.getString(R.string.app_permissions)))
+                            .setNeutralButton(R.string.toast_notAgain, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                    sharedPref.edit()
+                                            .putBoolean("perm_notShow", false)
+                                            .apply();
+                                }
+                            })
+                            .setPositiveButton(from.getString(R.string.toast_yes), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if (android.os.Build.VERSION.SDK_INT >= 23)
+                                        from.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                                REQUEST_CODE_ASK_PERMISSIONS);
+                                }
+                            })
+                            .setNegativeButton(from.getString(R.string.toast_cancel), null)
+                            .show();
+                    return;
                 }
+                from.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        REQUEST_CODE_ASK_PERMISSIONS);
             }
         }
     }
@@ -114,37 +109,35 @@ public class helper_main {
 
         if (android.os.Build.VERSION.SDK_INT >= 23) {
 
-            if (sharedPref.getBoolean ("perm_notShow", false)){
-                int hasACCESS_FINE_LOCATION = from.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
-                if (hasACCESS_FINE_LOCATION != PackageManager.PERMISSION_GRANTED) {
-                    if (!from.shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
-                        new AlertDialog.Builder(from)
-                                .setTitle(R.string.app_permissions_title)
-                                .setMessage(helper_main.textSpannable(from.getString(R.string.app_permissions)))
-                                .setNeutralButton(R.string.toast_notAgain, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.cancel();
-                                        sharedPref.edit()
-                                                .putBoolean("perm_notShow", false)
-                                                .apply();
-                                    }
-                                })
-                                .setPositiveButton(from.getString(R.string.toast_yes), new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        if (android.os.Build.VERSION.SDK_INT >= 23)
-                                            from.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                                    REQUEST_CODE_ASK_PERMISSIONS_1);
-                                    }
-                                })
-                                .setNegativeButton(from.getString(R.string.toast_cancel), null)
-                                .show();
-                        return;
-                    }
-                    from.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                            REQUEST_CODE_ASK_PERMISSIONS_1);
+            int hasACCESS_FINE_LOCATION = from.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+            if (hasACCESS_FINE_LOCATION != PackageManager.PERMISSION_GRANTED) {
+                if (!from.shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                    new AlertDialog.Builder(from)
+                            .setTitle(R.string.app_permissions_title)
+                            .setMessage(helper_main.textSpannable(from.getString(R.string.app_permissions)))
+                            .setNeutralButton(R.string.toast_notAgain, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                    sharedPref.edit()
+                                            .putBoolean("perm_notShow", false)
+                                            .apply();
+                                }
+                            })
+                            .setPositiveButton(from.getString(R.string.toast_yes), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if (android.os.Build.VERSION.SDK_INT >= 23)
+                                        from.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                                REQUEST_CODE_ASK_PERMISSIONS_1);
+                                }
+                            })
+                            .setNegativeButton(from.getString(R.string.toast_cancel), null)
+                            .show();
+                    return;
                 }
+                from.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        REQUEST_CODE_ASK_PERMISSIONS_1);
             }
         }
     }
@@ -225,17 +218,48 @@ public class helper_main {
         }, 500);
     }
 
+    public static void setTheme (Activity activity) {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
+
+        String theme = sharedPref.getString("theme", "0");
+
+        switch (theme) {
+            case "0":
+                activity.setTheme(R.style.AppTheme);
+                break;
+            case "1":
+                activity.setTheme(R.style.AppTheme_blue);
+                break;
+            case "2":
+                activity.setTheme(R.style.AppTheme_pink);
+                break;
+            case "3":
+                activity.setTheme(R.style.AppTheme_purple);
+                break;
+            case "4":
+                activity.setTheme(R.style.AppTheme_teal);
+                break;
+            case "5":
+                activity.setTheme(R.style.AppTheme_red);
+                break;
+            case "6":
+                activity.setTheme(R.style.AppTheme_orange);
+                break;
+            case "7":
+                activity.setTheme(R.style.AppTheme_brown);
+                break;
+            case "8":
+                activity.setTheme(R.style.AppTheme_grey);
+                break;
+            case "9":
+                activity.setTheme(R.style.AppTheme_darkGrey);
+                break;
+        }
+    }
+
     public static void onStart (final Activity activity) {
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
-
-        //Toolbar toolbar = (Toolbar) activity.findViewById(R.id.toolbar);
-        //toolbar.setBackgroundColor(ContextCompat.getColor(activity, (R.color.colorAccent)));
-
-        //Window window = activity.getWindow();
-        //window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        //window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        //window.setStatusBarColor(ContextCompat.getColor(activity, (R.color.colorAccent)));
 
         if (sharedPref.getString ("fullscreen", "2").equals("1") || sharedPref.getString ("fullscreen", "2").equals("3")){
             activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
