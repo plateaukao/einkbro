@@ -41,7 +41,7 @@ public class Activity_intro extends OnboarderActivity {
         onboarderPage5.setTitleColor(R.color.colorAccent);
         onboarderPage5.setBackgroundColor(R.color.colorPrimaryDark);
 
-        // Add your pages to the lists
+        // Add your pages to the fragments
         onboarderPages.add(onboarderPage1);
         onboarderPages.add(onboarderPage2);
         onboarderPages.add(onboarderPage3);

@@ -1,4 +1,4 @@
-package de.baumann.browser.lists;
+package de.baumann.browser.fragments;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -44,7 +44,7 @@ import java.util.Locale;
 
 import de.baumann.browser.R;
 import de.baumann.browser.databases.DbAdapter_Files;
-import de.baumann.browser.helper.CustomViewPager;
+import de.baumann.browser.helper.class_CustomViewPager;
 import de.baumann.browser.helper.helper_editText;
 import de.baumann.browser.helper.helper_main;
 import de.baumann.browser.helper.helper_toolbar;
@@ -62,7 +62,7 @@ public class Fragment_Files extends Fragment {
     private SharedPreferences sharedPref;
     private TextView listBar;
     private Toolbar toolbar;
-    private CustomViewPager viewPager;
+    private class_CustomViewPager viewPager;
 
     private int top;
     private int index;
@@ -85,7 +85,7 @@ public class Fragment_Files extends Fragment {
         editText = (EditText) getActivity().findViewById(R.id.editText);
         listBar = (TextView) getActivity().findViewById(R.id.listBar);
         listView = (ListView)rootView.findViewById(R.id.list);
-        viewPager = (CustomViewPager) getActivity().findViewById(R.id.viewpager);
+        viewPager = (class_CustomViewPager) getActivity().findViewById(R.id.viewpager);
 
         //calling Notes_DbAdapter
         db = new DbAdapter_Files(getActivity());
@@ -197,7 +197,7 @@ public class Fragment_Files extends Fragment {
                     iv.setImageResource(R.drawable.file_music);
                 } else if (files_icon.matches("(.mpeg|.mp4|.webm|.qt|.3gp|.3g2|.avi|.flv|.h261|.h263|.h264|.asf|.wmv)")) {
                     iv.setImageResource(R.drawable.file_video);
-                } else if(files_icon.matches("(.gif|.bmp|.tiff|.scg|.png|.jpg|.JPG|.jpeg)")) {
+                } else if(files_icon.matches("(.gif|.bmp|.tiff|.svg|.png|.jpg|.JPG|.jpeg)")) {
                     try {
                         iv2.setVisibility(View.INVISIBLE);
                         Picasso.with(getActivity()).load(uri).resize(76, 76).centerCrop().memoryPolicy(MemoryPolicy.NO_CACHE).into(iv);

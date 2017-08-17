@@ -1,4 +1,4 @@
-package de.baumann.browser.lists;
+package de.baumann.browser.fragments;
 
 import android.app.AlertDialog;
 import android.content.ClipData;
@@ -8,7 +8,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -42,9 +41,8 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import de.baumann.browser.R;
-import de.baumann.browser.databases.DbAdapter_Bookmarks;
 import de.baumann.browser.databases.DbAdapter_ReadLater;
-import de.baumann.browser.helper.CustomViewPager;
+import de.baumann.browser.helper.class_CustomViewPager;
 import de.baumann.browser.helper.helper_browser;
 import de.baumann.browser.helper.helper_editText;
 import de.baumann.browser.helper.helper_main;
@@ -59,7 +57,7 @@ public class Fragment_ReadLater extends Fragment {
     private SharedPreferences sharedPref;
     private TextView listBar;
     private Toolbar toolbar;
-    private CustomViewPager viewPager;
+    private class_CustomViewPager viewPager;
 
     private int top;
     private int index;
@@ -80,7 +78,7 @@ public class Fragment_ReadLater extends Fragment {
         editText = (EditText) getActivity().findViewById(R.id.editText);
         listBar = (TextView) getActivity().findViewById(R.id.listBar);
         listView = (ListView)rootView.findViewById(R.id.list);
-        viewPager = (CustomViewPager) getActivity().findViewById(R.id.viewpager);
+        viewPager = (class_CustomViewPager) getActivity().findViewById(R.id.viewpager);
 
         //calling Notes_DbAdapter
         db = new DbAdapter_ReadLater(getActivity());
@@ -243,29 +241,10 @@ public class Fragment_ReadLater extends Fragment {
                                             helper_editText.editText_savePass(getActivity(), listView, readLater_title, readLater_content);
                                         }
                                         if (options[item].equals(getString(R.string.menu_save_bookmark))) {
-                                            DbAdapter_Bookmarks db = new DbAdapter_Bookmarks(getActivity());
-                                            db.open();
-                                            if(db.isExist(readLater_content)){
-                                                Snackbar.make(listView, getString(R.string.toast_newTitle), Snackbar.LENGTH_LONG).show();
-                                            }else{
-                                                db.insert(readLater_title, readLater_content, "", "", helper_main.createDate());
-                                                Snackbar.make(listView, R.string.bookmark_added, Snackbar.LENGTH_LONG).show();
-                                            }
+                                            helper_main.save_bookmark(getActivity(), readLater_title, readLater_content, listView);
                                         }
                                         if (options[item].equals(getString(R.string.menu_createShortcut))) {
-                                            Intent i = new Intent();
-                                            i.setAction(Intent.ACTION_VIEW);
-                                            i.setClassName(getActivity(), "de.baumann.browser.Activity_Main");
-                                            i.setData(Uri.parse(readLater_content));
-
-                                            Intent shortcut = new Intent();
-                                            shortcut.putExtra("android.intent.extra.shortcut.INTENT", i);
-                                            shortcut.putExtra("android.intent.extra.shortcut.NAME", "THE NAME OF SHORTCUT TO BE SHOWN");
-                                            shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, readLater_title);
-                                            shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(getActivity().getApplicationContext(), R.mipmap.ic_launcher));
-                                            shortcut.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
-                                            getActivity().sendBroadcast(shortcut);
-                                            Snackbar.make(listView, R.string.menu_createShortcut_success, Snackbar.LENGTH_SHORT).show();
+                                            helper_main.installShortcut(getActivity(), readLater_title, readLater_content, listView);
                                         }
                                     }
                                 }).show();

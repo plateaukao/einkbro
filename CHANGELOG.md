@@ -4,7 +4,6 @@
 - improved: code and UI
 - new: offer restart to apply some settings
 - new: theme support
-- new: show actual settings
 
 ### v 4.1
 - removed: offline support (use screenshot for saving)

@@ -8,10 +8,10 @@ import android.view.MotionEvent;
  * Created by hegazy on 2/13/15
  */
 
-public class CustomViewPager extends android.support.v4.view.ViewPager{
+public class class_CustomViewPager extends android.support.v4.view.ViewPager{
     private boolean enabled;
 
-    public CustomViewPager(Context context, AttributeSet attrs) {
+    public class_CustomViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.enabled = true;
     }

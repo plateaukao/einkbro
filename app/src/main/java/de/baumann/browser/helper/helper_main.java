@@ -56,6 +56,8 @@ import java.util.Locale;
 import java.util.Random;
 
 import de.baumann.browser.R;
+import de.baumann.browser.databases.DbAdapter_Bookmarks;
+import de.baumann.browser.databases.DbAdapter_ReadLater;
 
 public class helper_main {
 
@@ -63,19 +65,20 @@ public class helper_main {
     private static final int REQUEST_CODE_ASK_PERMISSIONS_1 = 1234;
     private static String pw;
     private static String protect;
+    private static SharedPreferences sharedPref;
 
-    public static void grantPermissionsStorage(final Activity from) {
+    public static void grantPermissionsStorage(final Activity activity) {
 
-        final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
 
         if (android.os.Build.VERSION.SDK_INT >= 23) {
-            int hasWRITE_EXTERNAL_STORAGE = from.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            int hasWRITE_EXTERNAL_STORAGE = activity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
             if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
-                if (!from.shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                if (!activity.shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
 
-                    new AlertDialog.Builder(from)
+                    new AlertDialog.Builder(activity)
                             .setTitle(R.string.app_permissions_title)
-                            .setMessage(helper_main.textSpannable(from.getString(R.string.app_permissions)))
+                            .setMessage(helper_main.textSpannable(activity.getString(R.string.app_permissions)))
                             .setNeutralButton(R.string.toast_notAgain, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -85,36 +88,36 @@ public class helper_main {
                                             .apply();
                                 }
                             })
-                            .setPositiveButton(from.getString(R.string.toast_yes), new DialogInterface.OnClickListener() {
+                            .setPositiveButton(activity.getString(R.string.toast_yes), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     if (android.os.Build.VERSION.SDK_INT >= 23)
-                                        from.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                        activity.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                                                 REQUEST_CODE_ASK_PERMISSIONS);
                                 }
                             })
-                            .setNegativeButton(from.getString(R.string.toast_cancel), null)
+                            .setNegativeButton(activity.getString(R.string.toast_cancel), null)
                             .show();
                     return;
                 }
-                from.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                activity.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                         REQUEST_CODE_ASK_PERMISSIONS);
             }
         }
     }
 
-    static void grantPermissionsLoc(final Activity from) {
+    static void grantPermissionsLoc(final Activity activity) {
 
-        final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
 
         if (android.os.Build.VERSION.SDK_INT >= 23) {
 
-            int hasACCESS_FINE_LOCATION = from.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+            int hasACCESS_FINE_LOCATION = activity.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
             if (hasACCESS_FINE_LOCATION != PackageManager.PERMISSION_GRANTED) {
-                if (!from.shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
-                    new AlertDialog.Builder(from)
+                if (!activity.shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                    new AlertDialog.Builder(activity)
                             .setTitle(R.string.app_permissions_title)
-                            .setMessage(helper_main.textSpannable(from.getString(R.string.app_permissions)))
+                            .setMessage(helper_main.textSpannable(activity.getString(R.string.app_permissions)))
                             .setNeutralButton(R.string.toast_notAgain, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -124,37 +127,25 @@ public class helper_main {
                                             .apply();
                                 }
                             })
-                            .setPositiveButton(from.getString(R.string.toast_yes), new DialogInterface.OnClickListener() {
+                            .setPositiveButton(activity.getString(R.string.toast_yes), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     if (android.os.Build.VERSION.SDK_INT >= 23)
-                                        from.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                        activity.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                                                 REQUEST_CODE_ASK_PERMISSIONS_1);
                                 }
                             })
-                            .setNegativeButton(from.getString(R.string.toast_cancel), null)
+                            .setNegativeButton(activity.getString(R.string.toast_cancel), null)
                             .show();
                     return;
                 }
-                from.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                activity.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                         REQUEST_CODE_ASK_PERMISSIONS_1);
             }
         }
     }
 
     public static String createDate () {
-        Date date = new Date();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd_HH:mm", Locale.getDefault());
-        return  format.format(date);
-    }
-
-    static String createDateSecond () {
-        Date date = new Date();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-        return  format.format(date);
-    }
-
-    public static String createDate_Second () {
         Date date = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss", Locale.getDefault());
         return  format.format(date);
@@ -177,16 +168,15 @@ public class helper_main {
         return s;
     }
 
-    static void switchToActivity(Activity from, Class to) {
-        Intent intent = new Intent(from, to);
+    static void switchToActivity(Activity activity, Class to) {
+        Intent intent = new Intent(activity, to);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        from.startActivity(intent);
+        activity.startActivity(intent);
     }
 
-    public static void closeApp (final Activity from, WebView webView) {
+    public static void closeApp (final Activity activity, WebView webView) {
 
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
-
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
         sharedPref.edit().putString("started", "").apply();
         sharedPref.edit().putInt("closeApp", 1).apply();
 
@@ -205,7 +195,7 @@ public class helper_main {
         }
 
         if (sharedPref.getBoolean ("history", false)){
-            from.deleteDatabase("history_DB_v01.db");
+            activity.deleteDatabase("history_DB_v01.db");
             webView.clearHistory();
         }
 
@@ -213,14 +203,14 @@ public class helper_main {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                from.finish();
+                activity.finish();
             }
         }, 500);
     }
 
     public static void setTheme (Activity activity) {
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
 
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
         String theme = sharedPref.getString("theme", "0");
 
         switch (theme) {
@@ -259,16 +249,20 @@ public class helper_main {
 
     public static void onStart (final Activity activity) {
 
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
 
         if (sharedPref.getString ("fullscreen", "2").equals("1") || sharedPref.getString ("fullscreen", "2").equals("3")){
             activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        } else {
+            activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
         }
+
         if (sharedPref.getString("orientation", "auto").equals("landscape")) {
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        }
-        if (sharedPref.getString("orientation", "auto").equals("portrait")) {
+        } else if (sharedPref.getString("orientation", "auto").equals("portrait")) {
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        } else {
+            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
         }
 
         sharedPref.edit().putString("openURL", sharedPref.getString("startURL", "https://github.com/scoute-dich/browser/")).apply();
@@ -298,9 +292,9 @@ public class helper_main {
         }
     }
 
-    public static void checkPin (final Activity from) {
+    public static void checkPin (final Activity activity) {
 
-        final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
 
         if (sharedPref.getString("protect_PW", "").length() > 0) {
             try {
@@ -308,13 +302,13 @@ public class helper_main {
                 pw = mahEncryptor.decode(sharedPref.getString("protect_PW", ""));
             } catch (Exception e) {
                 e.printStackTrace();
-                Toast.makeText(from, R.string.toast_error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, R.string.toast_error, Toast.LENGTH_SHORT).show();
             }
         }
 
         if (pw != null  && pw.length() > 0 && sharedPref.getBoolean("isOpened", false)) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(from, R.style.PinDialog);
-            final View dialogView = View.inflate(from, R.layout.dialog_password, null);
+            AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.PinDialog);
+            final View dialogView = View.inflate(activity, R.layout.dialog_password, null);
 
             final TextView text = (TextView) dialogView.findViewById(R.id.pass_userPin);
 
@@ -434,8 +428,8 @@ public class helper_main {
                 @Override
                 public void onClick(View view) {
                     Snackbar snackbar = Snackbar
-                            .make(clear, from.getString(R.string.pw_forgotten_dialog), Snackbar.LENGTH_LONG)
-                            .setAction(from.getString(R.string.toast_yes), new View.OnClickListener() {
+                            .make(clear, activity.getString(R.string.pw_forgotten_dialog), Snackbar.LENGTH_LONG)
+                            .setAction(activity.getString(R.string.toast_yes), new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
                                     try {
@@ -455,7 +449,7 @@ public class helper_main {
             builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
                 @Override
                 public void onCancel(DialogInterface dialog) {
-                    from.finishAffinity();
+                    activity.finishAffinity();
                 }
             });
 
@@ -475,15 +469,6 @@ public class helper_main {
                 }
             });
         }
-        if (sharedPref.getString ("fullscreen", "2").equals("1") || sharedPref.getString ("fullscreen", "2").equals("3")){
-            from.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        }
-        if (sharedPref.getString("orientation", "auto").equals("landscape")) {
-            from.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        }
-        if (sharedPref.getString("orientation", "auto").equals("portrait")) {
-            from.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
     }
 
     private static void enterNum (View view, String number) {
@@ -495,7 +480,7 @@ public class helper_main {
 
     public static void open (String extension, Activity activity, File pathFile, View view) {
         File file = new File(pathFile.getAbsolutePath());
-        final String fileExtension = file.getAbsolutePath().substring(file.getAbsolutePath().lastIndexOf("."));
+        String fileExtension = file.getAbsolutePath().substring(file.getAbsolutePath().lastIndexOf("."));
         String text = activity.getString(R.string.toast_extension) + ": " + fileExtension;
         switch (extension) {
             case ".gif":case ".bmp":case ".tiff":case ".svg":case ".png":case ".jpg":case ".JPG":case ".jpeg":
@@ -598,6 +583,44 @@ public class helper_main {
             activity.startActivity (intent);
         } catch (ActivityNotFoundException e) {
             Snackbar.make(view, R.string.toast_install_app, Snackbar.LENGTH_LONG).show();
+        }
+    }
+
+    public static void installShortcut (Activity activity, String title, String url, View view) {
+        Intent i = new Intent();
+        i.setAction(Intent.ACTION_VIEW);
+        i.setClassName(activity, "de.baumann.browser.Activity_Main");
+        i.setData(Uri.parse(url));
+
+        Intent shortcut = new Intent();
+        shortcut.putExtra("android.intent.extra.shortcut.INTENT", i);
+        shortcut.putExtra("android.intent.extra.shortcut.NAME", "THE NAME OF SHORTCUT TO BE SHOWN");
+        shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, title);
+        shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(activity.getApplicationContext(), R.mipmap.ic_launcher));
+        shortcut.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
+        activity.sendBroadcast(shortcut);
+        Snackbar.make(view, R.string.menu_createShortcut_success, Snackbar.LENGTH_SHORT).show();
+    }
+
+    public static void save_readLater (Activity activity, String title, String url, View view) {
+        DbAdapter_ReadLater db = new DbAdapter_ReadLater(activity);
+        db.open();
+        if(db.isExist(url)){
+            Snackbar.make(view, R.string.toast_newTitle, Snackbar.LENGTH_LONG).show();
+        }else{
+            db.insert(title, url, "", "", helper_main.createDate());
+            Snackbar.make(view, R.string.bookmark_added, Snackbar.LENGTH_LONG).show();
+        }
+    }
+
+    public static void save_bookmark (Activity activity, String title, String url, View view) {
+        DbAdapter_Bookmarks db = new DbAdapter_Bookmarks(activity);
+        db.open();
+        if(db.isExist(url)){
+            Snackbar.make(view, R.string.toast_newTitle, Snackbar.LENGTH_LONG).show();
+        }else{
+            db.insert(title, url, "", "", helper_main.createDate());
+            Snackbar.make(view, R.string.bookmark_added, Snackbar.LENGTH_LONG).show();
         }
     }
 }

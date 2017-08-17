@@ -25,7 +25,6 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.preference.PreferenceManager;
-import android.support.annotation.ColorInt;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -57,13 +56,13 @@ public class helper_toolbar {
             TypedValue typedValue = new TypedValue();
             Resources.Theme theme = activity.getTheme();
             theme.resolveAttribute(R.attr.colorAccent, typedValue, true);
-            @ColorInt int color = typedValue.data;
+            int color = typedValue.data;
             textView.setBackgroundColor(color);
         } else {
             TypedValue typedValue = new TypedValue();
             Resources.Theme theme = activity.getTheme();
             theme.resolveAttribute(R.attr.colorAccent_trans, typedValue, true);
-            @ColorInt int color = typedValue.data;
+            int color = typedValue.data;
             textView.setBackgroundColor(color);
         }
 
@@ -82,7 +81,7 @@ public class helper_toolbar {
         }
     }
 
-    public static void toolbarGestures(final Activity activity, final Toolbar toolbar, final CustomViewPager viewPager) {
+    public static void toolbarGestures(final Activity activity, final Toolbar toolbar, final class_CustomViewPager viewPager) {
 
         toolbar.setVisibility(View.VISIBLE);
         final HorizontalScrollView scrollTabs = (HorizontalScrollView) activity.findViewById(R.id.scrollTabs);
@@ -163,7 +162,7 @@ public class helper_toolbar {
     }
     
     private static void cardViewClick(final Activity activity, CardView cardView, final HorizontalScrollView horizontalScrollView,
-                                      final int newTab, final ImageView close, final CustomViewPager viewPager,
+                                      final int newTab, final ImageView close, final class_CustomViewPager viewPager,
                                       final String tab) {
 
         final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
@@ -200,7 +199,7 @@ public class helper_toolbar {
     }
 
     public static void cardViewClickMenu (final Activity activity, CardView cardView, final HorizontalScrollView horizontalScrollView,
-                                      final int newTab, final ImageView close, final CustomViewPager viewPager, final String url,
+                                          final int newTab, final ImageView close, final class_CustomViewPager viewPager, final String url,
                                           final Dialog dialog, final String tab) {
 
         final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);

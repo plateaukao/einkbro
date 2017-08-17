@@ -1,4 +1,4 @@
-package de.baumann.browser.lists;
+package de.baumann.browser.fragments;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -28,7 +28,7 @@ import com.mobapphome.mahencryptorlib.MAHEncryptor;
 
 import de.baumann.browser.R;
 import de.baumann.browser.databases.DbAdapter_Pass;
-import de.baumann.browser.helper.CustomViewPager;
+import de.baumann.browser.helper.class_CustomViewPager;
 import de.baumann.browser.helper.helper_editText;
 import de.baumann.browser.helper.helper_main;
 import de.baumann.browser.helper.helper_toolbar;
@@ -41,7 +41,7 @@ public class Fragment_Pass extends Fragment {
     private SharedPreferences sharedPref;
     private TextView listBar;
     private Toolbar toolbar;
-    private CustomViewPager viewPager;
+    private class_CustomViewPager viewPager;
 
     private int top;
     private int index;
@@ -61,7 +61,7 @@ public class Fragment_Pass extends Fragment {
         toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         listBar = (TextView) getActivity().findViewById(R.id.listBar);
         listView = (ListView)rootView.findViewById(R.id.list);
-        viewPager = (CustomViewPager) getActivity().findViewById(R.id.viewpager);
+        viewPager = (class_CustomViewPager) getActivity().findViewById(R.id.viewpager);
 
         try {
             mahEncryptor = MAHEncryptor.newInstance(sharedPref.getString("saved_key", ""));

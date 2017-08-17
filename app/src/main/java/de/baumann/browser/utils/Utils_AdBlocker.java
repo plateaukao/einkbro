@@ -25,6 +25,7 @@ SOFTWARE.
  * Created by Ozymandias on 5/3/2017.
  * Abstraction of https://github.com/AmniX/AdBlockedWebView-Android*
  */
+
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.WorkerThread;
@@ -40,6 +41,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
+
 public class Utils_AdBlocker {
     private static final String AD_HOSTS_FILE = "hosts";
     private static final Set<String> AD_HOSTS = new HashSet<>();

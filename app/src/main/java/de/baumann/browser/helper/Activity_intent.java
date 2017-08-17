@@ -30,7 +30,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
 
 import java.util.Random;
@@ -74,12 +73,10 @@ public class Activity_intent extends Activity {
                         new android.support.v4.app.NotificationCompat.Builder(Activity_intent.this)
                                 .setAutoCancel(true)
                                 .setSmallIcon(R.drawable.earth)
-                                .setColor(ContextCompat.getColor(Activity_intent.this, R.color.colorPrimary))
                                 .setGroup("Browser")
                                 .setGroupSummary(true);
 
                 Notification notification = new NotificationCompat.Builder(Activity_intent.this)
-                        .setColor(ContextCompat.getColor(Activity_intent.this, R.color.colorPrimary))
                         .setSmallIcon(R.drawable.earth)
                         .setContentTitle(getString(R.string.readLater_title) + " " + domain)
                         .setContentText(url)

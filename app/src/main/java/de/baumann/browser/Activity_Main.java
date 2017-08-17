@@ -23,23 +23,23 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.baumann.browser.helper.CustomViewPager;
+import de.baumann.browser.helper.class_CustomViewPager;
 import de.baumann.browser.helper.helper_browser;
 import de.baumann.browser.helper.helper_editText;
 import de.baumann.browser.helper.helper_main;
-import de.baumann.browser.lists.Fragment_Bookmarks;
-import de.baumann.browser.lists.Fragment_Browser;
-import de.baumann.browser.lists.Fragment_Files;
-import de.baumann.browser.lists.Fragment_History;
-import de.baumann.browser.lists.Fragment_Pass;
-import de.baumann.browser.lists.Fragment_ReadLater;
+import de.baumann.browser.fragments.Fragment_Bookmarks;
+import de.baumann.browser.fragments.Fragment_Browser;
+import de.baumann.browser.fragments.Fragment_Files;
+import de.baumann.browser.fragments.Fragment_History;
+import de.baumann.browser.fragments.Fragment_Pass;
+import de.baumann.browser.fragments.Fragment_ReadLater;
 
 public class Activity_Main extends AppCompatActivity {
 
 
     // Views
 
-    private CustomViewPager viewPager;
+    private class_CustomViewPager viewPager;
     private TextView urlBar;
     private TextView listBar;
     private EditText editText;
@@ -55,11 +55,12 @@ public class Activity_Main extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        helper_main.setTheme(Activity_Main.this);
+        Activity activity = Activity_Main.this;
+
+        helper_main.setTheme(activity);
 
         setContentView(R.layout.activity_main);
         WebView.enableSlowWholeDocumentDraw();
-        Activity activity = Activity_Main.this;
 
         PreferenceManager.setDefaultValues(activity, R.xml.user_settings, false);
         PreferenceManager.setDefaultValues(activity, R.xml.user_settings_search, false);
@@ -99,7 +100,7 @@ public class Activity_Main extends AppCompatActivity {
         urlBar = (TextView) findViewById(R.id.urlBar);
         listBar = (TextView) findViewById(R.id.listBar);
         editText = (EditText) findViewById(R.id.editText);
-        viewPager = (CustomViewPager) findViewById(R.id.viewpager);
+        viewPager = (class_CustomViewPager) findViewById(R.id.viewpager);
         viewPager.setPagingEnabled();
         viewPager.setOffscreenPageLimit(10);
 
@@ -141,7 +142,6 @@ public class Activity_Main extends AppCompatActivity {
     @Override
     public void onResume(){
         super.onResume();
-        // put your code here...
 
         final int position = viewPager.getCurrentItem();
 
@@ -160,8 +160,6 @@ public class Activity_Main extends AppCompatActivity {
                 }
             }
         }, 150);
-
-
     }
 
     protected void onNewIntent(final Intent intent) {
@@ -207,7 +205,6 @@ public class Activity_Main extends AppCompatActivity {
                     viewPager.setCurrentItem(5);
                 }
             }, 250);
-
         } else if ("history".equals(action)) {
             sharedPref.edit().putInt("appShortcut", 1).apply();
             handler.postDelayed(new Runnable() {
@@ -227,7 +224,7 @@ public class Activity_Main extends AppCompatActivity {
         }
     }
 
-    private void setupViewPager(CustomViewPager viewPager) {
+    private void setupViewPager(class_CustomViewPager viewPager) {
 
         final String startTab = sharedPref.getString("tabMain", "0");
         final int startTabInt = Integer.parseInt(startTab);

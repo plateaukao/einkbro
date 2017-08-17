@@ -84,13 +84,13 @@ public class helper_webView {
 
 
     @SuppressLint("SetJavaScriptEnabled")
-    public static void webView_Settings(final Activity from, final WebView webView) {
+    public static void webView_Settings(final Activity activity, final WebView webView) {
 
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
         String fontSizeST = sharedPref.getString("font", "100");
         int fontSize = Integer.parseInt(fontSizeST);
 
-        webView.getSettings().setAppCachePath(from.getApplicationContext().getCacheDir().getAbsolutePath());
+        webView.getSettings().setAppCachePath(activity.getApplicationContext().getCacheDir().getAbsolutePath());
         webView.getSettings().setAppCacheEnabled(true);
         webView.getSettings().setMixedContentMode(MIXED_CONTENT_COMPATIBILITY_MODE);
         webView.getSettings().setAllowFileAccess(true);
@@ -108,83 +108,83 @@ public class helper_webView {
             CookieManager cookieManager = CookieManager.getInstance();
             cookieManager.setAcceptCookie(true);
             cookieManager.setAcceptThirdPartyCookies(webView,true);
-            sharedPref.edit().putString("cookie_string", from.getString(R.string.app_yes)).apply();
+            sharedPref.edit().putString("cookie_string", activity.getString(R.string.app_yes)).apply();
         } else if (sharedPref.getString ("cookie", "2").equals("2")) {
             CookieManager cookieManager = CookieManager.getInstance();
             cookieManager.setAcceptCookie(true);
             cookieManager.setAcceptThirdPartyCookies(webView,false);
-            sharedPref.edit().putString("cookie_string", from.getString(R.string.app_yes)).apply();
+            sharedPref.edit().putString("cookie_string", activity.getString(R.string.app_yes)).apply();
         } else if (sharedPref.getString ("cookie", "2").equals("3")) {
             CookieManager cookieManager = CookieManager.getInstance();
             cookieManager.setAcceptCookie(false);
             cookieManager.setAcceptThirdPartyCookies(webView,false);
-            sharedPref.edit().putString("cookie_string", from.getString(R.string.app_no)).apply();
+            sharedPref.edit().putString("cookie_string", activity.getString(R.string.app_no)).apply();
         }
 
         if (sharedPref.getBoolean ("java", false)){
             webView.getSettings().setJavaScriptEnabled(true);
-            sharedPref.edit().putString("java_string", from.getString(R.string.app_yes)).apply();
+            sharedPref.edit().putString("java_string", activity.getString(R.string.app_yes)).apply();
         } else {
             webView.getSettings().setJavaScriptEnabled(false);
-            sharedPref.edit().putString("java_string", from.getString(R.string.app_no)).apply();
+            sharedPref.edit().putString("java_string", activity.getString(R.string.app_no)).apply();
         }
 
         if (sharedPref.getBoolean ("pictures", false)){
             webView.getSettings().setLoadsImagesAutomatically(true);
-            sharedPref.edit().putString("pictures_string", from.getString(R.string.app_yes)).apply();
+            sharedPref.edit().putString("pictures_string", activity.getString(R.string.app_yes)).apply();
         } else {
             webView.getSettings().setLoadsImagesAutomatically(false);
-            sharedPref.edit().putString("pictures_string", from.getString(R.string.app_no)).apply();
+            sharedPref.edit().putString("pictures_string", activity.getString(R.string.app_no)).apply();
         }
 
         if (sharedPref.getBoolean ("loc", false)){
             webView.getSettings().setGeolocationEnabled(true);
-            helper_main.grantPermissionsLoc(from);
-            sharedPref.edit().putString("loc_string", from.getString(R.string.app_yes)).apply();
+            helper_main.grantPermissionsLoc(activity);
+            sharedPref.edit().putString("loc_string", activity.getString(R.string.app_yes)).apply();
         } else {
             webView.getSettings().setGeolocationEnabled(false);
-            sharedPref.edit().putString("loc_string", from.getString(R.string.app_no)).apply();
+            sharedPref.edit().putString("loc_string", activity.getString(R.string.app_no)).apply();
         }
 
         if (sharedPref.getBoolean ("blockads_bo", false)){
-            sharedPref.edit().putString("blockads_string", from.getString(R.string.app_yes)).apply();
+            sharedPref.edit().putString("blockads_string", activity.getString(R.string.app_yes)).apply();
         } else {
-            sharedPref.edit().putString("blockads_string", from.getString(R.string.app_no)).apply();
+            sharedPref.edit().putString("blockads_string", activity.getString(R.string.app_no)).apply();
         }
 
         Utils_UserAgent myUserAgent= new Utils_UserAgent();
 
         if (sharedPref.getBoolean ("request_bo", false)){
-            sharedPref.edit().putString("request_string", from.getString(R.string.app_yes)).apply();
-            myUserAgent.setUserAgent(from, webView, true, webView.getUrl());
+            sharedPref.edit().putString("request_string", activity.getString(R.string.app_yes)).apply();
+            myUserAgent.setUserAgent(activity, webView, true, webView.getUrl());
         } else {
-            sharedPref.edit().putString("request_string", from.getString(R.string.app_no)).apply();
-            myUserAgent.setUserAgent(from, webView, false, webView.getUrl());
+            sharedPref.edit().putString("request_string", activity.getString(R.string.app_no)).apply();
+            myUserAgent.setUserAgent(activity, webView, false, webView.getUrl());
         }
     }
 
-    public static void webView_WebViewClient (final Activity from, final WebView webView, final TextView urlBar) {
+    public static void webView_WebViewClient (final Activity activity, final WebView webView, final TextView urlBar) {
 
-        final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
+        final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
 
         webView.setWebViewClient(new WebViewClient() {
 
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
 
-                String title = helper_webView.getTitle(from, webView);
+                String title = helper_webView.getTitle(activity, webView);
                 urlBar.setText(title);
                 sharedPref.edit().putString("openURL", "").apply();
                 sharedPref.edit().putString("webView_url", webView.getUrl()).apply();
 
-                DbAdapter_History db = new DbAdapter_History(from);
+                DbAdapter_History db = new DbAdapter_History(activity);
                 db.open();
                 db.deleteDouble(webView.getUrl());
 
-                if(db.isExist(helper_main.createDateSecond())){
+                if(db.isExist(helper_main.createDate())){
                     Log.i(TAG, "Entry exists" + webView.getUrl());
                 }else{
-                    db.insert(title, webView.getUrl(), "", "", helper_main.createDateSecond());
+                    db.insert(title, webView.getUrl(), "", "", helper_main.createDate());
                 }
             }
 
@@ -206,7 +206,7 @@ public class helper_webView {
                     ad = loadedUrls.get(url);
                 }
 
-                if (sharedPref.getString("blockads_string", "").equals(from.getString(R.string.app_yes))) {
+                if (sharedPref.getString("blockads_string", "").equals(activity.getString(R.string.app_yes))) {
                     return ad ? Utils_AdBlocker.createEmptyResource() :
                             super.shouldInterceptRequest(view, url);
                 } else {
@@ -239,19 +239,19 @@ public class helper_webView {
                 if (url.startsWith("http")) return false;//open web links as usual
                 //try to find browse activity to handle uri
                 Uri parsedUri = Uri.parse(url);
-                PackageManager packageManager = from.getPackageManager();
+                PackageManager packageManager = activity.getPackageManager();
                 Intent browseIntent = new Intent(Intent.ACTION_VIEW).setData(parsedUri);
                 if (browseIntent.resolveActivity(packageManager) != null) {
-                    from.startActivity(browseIntent);
+                    activity.startActivity(browseIntent);
                     return true;
                 }
                 //if not activity found, try to parse intent://
                 if (url.startsWith("intent:")) {
                     try {
                         Intent intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME);
-                        if (intent.resolveActivity(from.getPackageManager()) != null) {
+                        if (intent.resolveActivity(activity.getPackageManager()) != null) {
                             try {
-                                from.startActivity(intent);
+                                activity.startActivity(intent);
                             } catch (Exception e) {
                                 Snackbar.make(webView, R.string.toast_error, Snackbar.LENGTH_SHORT).show();
                             }
@@ -268,7 +268,7 @@ public class helper_webView {
                         Intent marketIntent = new Intent(Intent.ACTION_VIEW).setData(
                                 Uri.parse("market://details?id=" + intent.getPackage()));
                         if (marketIntent.resolveActivity(packageManager) != null) {
-                            from.startActivity(marketIntent);
+                            activity.startActivity(marketIntent);
                             return true;
                         }
                     } catch (URISyntaxException e) {
@@ -280,9 +280,9 @@ public class helper_webView {
         });
     }
 
-    public static void openURL (Activity from, WebView mWebView, EditText editText) {
+    public static void openURL (Activity activity, WebView mWebView, EditText editText) {
 
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
         String text = editText.getText().toString();
         String searchEngine = sharedPref.getString("searchEngine", "https://duckduckgo.com/?q=");
         String wikiLang = sharedPref.getString("wikiLang", "en");

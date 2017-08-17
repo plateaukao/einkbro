@@ -1,4 +1,4 @@
-package de.baumann.browser.lists;
+package de.baumann.browser.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -66,8 +66,7 @@ import java.io.OutputStream;
 
 import de.baumann.browser.R;
 import de.baumann.browser.databases.DbAdapter_ReadLater;
-import de.baumann.browser.helper.Activity_settings;
-import de.baumann.browser.helper.CustomViewPager;
+import de.baumann.browser.helper.class_CustomViewPager;
 import de.baumann.browser.helper.helper_browser;
 import de.baumann.browser.helper.helper_editText;
 import de.baumann.browser.helper.helper_main;
@@ -94,7 +93,7 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
     private EditText editText;
     private HorizontalScrollView scrollTabs;
     private Toolbar toolbar;
-    private CustomViewPager viewPager;
+    private class_CustomViewPager viewPager;
     private AppBarLayout appBarLayout;
 
 
@@ -154,7 +153,7 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
         imageButton_up = (ImageButton) rootView.findViewById(R.id.imageButton);
         imageButton_down = (ImageButton) rootView.findViewById(R.id.imageButton_down);
         scrollTabs  = (HorizontalScrollView) activity.findViewById(R.id.scrollTabs);
-        viewPager = (CustomViewPager) activity.findViewById(R.id.viewpager);
+        viewPager = (class_CustomViewPager) activity.findViewById(R.id.viewpager);
         appBarLayout = (AppBarLayout) activity.findViewById(R.id.appBarLayout);
         horizontalScrollView = (HorizontalScrollView) getActivity().findViewById(R.id.scrollTabs);
 
@@ -856,7 +855,7 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
 
     private void screenshot() {
 
-        sharePath = helper_webView.getDomain(activity, mWebView.getUrl()) + "_" + helper_main.createDate_Second() + ".jpg";
+        sharePath = helper_webView.getDomain(activity, mWebView.getUrl()) + "_" + helper_main.createDate() + ".jpg";
         shareFile = helper_main.newFile(sharePath);
 
         try{
@@ -1014,14 +1013,7 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
         }
 
         if (id == R.id.menu_save_readLater) {
-            DbAdapter_ReadLater db = new DbAdapter_ReadLater(activity);
-            db.open();
-            if(db.isExist(mWebView.getUrl())){
-                Snackbar.make(editText, getString(R.string.toast_newTitle), Snackbar.LENGTH_LONG).show();
-            }else{
-                db.insert(helper_webView.getTitle (activity, mWebView), mWebView.getUrl(), "", "", helper_main.createDate());
-                Snackbar.make(mWebView, R.string.bookmark_added, Snackbar.LENGTH_LONG).show();
-            }
+            helper_main.save_readLater(getActivity(), helper_webView.getTitle(activity, mWebView), mWebView.getUrl(), mWebView);
         }
 
         if (id == R.id.menu_save_pass) {
@@ -1029,19 +1021,7 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
         }
 
         if (id == R.id.menu_createShortcut) {
-            Intent i = new Intent();
-            i.setAction(Intent.ACTION_VIEW);
-            i.setClassName(activity, "de.baumann.browser.Activity_Main");
-            i.setData(Uri.parse(mWebView.getUrl()));
-
-            Intent shortcut = new Intent();
-            shortcut.putExtra("android.intent.extra.shortcut.INTENT", i);
-            shortcut.putExtra("android.intent.extra.shortcut.NAME", "THE NAME OF SHORTCUT TO BE SHOWN");
-            shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, helper_webView.getTitle (activity, mWebView));
-            shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(activity.getApplicationContext(), R.mipmap.ic_launcher));
-            shortcut.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
-            activity.sendBroadcast(shortcut);
-            Snackbar.make(mWebView, R.string.menu_createShortcut_success, Snackbar.LENGTH_SHORT).show();
+            helper_main.installShortcut(getActivity(), helper_webView.getTitle(activity, mWebView), mWebView.getUrl(), mWebView);
         }
 
         if (id == R.id.menu_share_screenshot) {
@@ -1119,7 +1099,9 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
         }
 
         if (id == R.id.action_save_bookmark) {
-            helper_editText.editText_saveBookmark(editText, activity, mWebView);
+            String inputTag = editText.getText().toString().trim();
+            helper_main.save_bookmark(activity, inputTag, mWebView.getUrl(), mWebView);
+            helper_editText.hideKeyboard(activity, editText, 0, mWebView.getTitle(), getString(R.string.app_search_hint));
             urlBar.setVisibility(View.VISIBLE);
             editText.setVisibility(View.GONE);
         }

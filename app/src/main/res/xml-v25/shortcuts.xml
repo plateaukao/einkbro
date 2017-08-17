@@ -12,7 +12,7 @@
             android:targetPackage="de.baumann.browser"
             android:targetClass="de.baumann.browser.Activity_Main" />
         <!-- If your shortcut is associated with multiple intents, include them
-             here. The last intent in the lists is what the user sees when they
+             here. The last intent in the fragments is what the user sees when they
              launch this shortcut. -->
         <categories android:name="android.shortcut.conversation" />
     </shortcut>
@@ -29,7 +29,7 @@
             android:targetPackage="de.baumann.browser"
             android:targetClass="de.baumann.browser.Activity_Main" />
         <!-- If your shortcut is associated with multiple intents, include them
-             here. The last intent in the lists is what the user sees when they
+             here. The last intent in the fragments is what the user sees when they
              launch this shortcut. -->
         <categories android:name="android.shortcut.conversation" />
     </shortcut>
@@ -46,7 +46,7 @@
             android:targetPackage="de.baumann.browser"
             android:targetClass="de.baumann.browser.Activity_Main" />
         <!-- If your shortcut is associated with multiple intents, include them
-             here. The last intent in the lists is what the user sees when they
+             here. The last intent in the fragments is what the user sees when they
              launch this shortcut. -->
         <categories android:name="android.shortcut.conversation" />
     </shortcut>
@@ -63,7 +63,7 @@
             android:targetPackage="de.baumann.browser"
             android:targetClass="de.baumann.browser.Activity_Main" />
         <!-- If your shortcut is associated with multiple intents, include them
-             here. The last intent in the lists is what the user sees when they
+             here. The last intent in the fragments is what the user sees when they
              launch this shortcut. -->
         <categories android:name="android.shortcut.conversation" />
     </shortcut>

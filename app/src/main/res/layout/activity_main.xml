@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <de.baumann.browser.helper.CustomViewPager
+    <de.baumann.browser.helper.class_CustomViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -112,7 +112,7 @@
                         android:gravity="center_horizontal|center_vertical"
                         android:padding="8dp"
                         android:textColor="@color/colorLight"
-                        android:textSize="46sp"
+                        android:textSize="60sp"
                         android:typeface="sans"
                         android:textStyle="bold"
                         android:text="1" />
@@ -183,7 +183,7 @@
                         android:gravity="center_horizontal|center_vertical"
                         android:padding="8dp"
                         android:textColor="@color/colorLight"
-                        android:textSize="46sp"
+                        android:textSize="60sp"
                         android:typeface="sans"
                         android:textStyle="bold"
                         android:text="2" />
@@ -254,7 +254,7 @@
                         android:gravity="center_horizontal|center_vertical"
                         android:padding="8dp"
                         android:textColor="@color/colorLight"
-                        android:textSize="46sp"
+                        android:textSize="60sp"
                         android:typeface="sans"
                         android:textStyle="bold"
                         android:text="3" />
@@ -325,7 +325,7 @@
                         android:gravity="center_horizontal|center_vertical"
                         android:padding="8dp"
                         android:textColor="@color/colorLight"
-                        android:textSize="46sp"
+                        android:textSize="60sp"
                         android:typeface="sans"
                         android:textStyle="bold"
                         android:text="4" />
@@ -396,7 +396,7 @@
                         android:gravity="center_horizontal|center_vertical"
                         android:padding="8dp"
                         android:textColor="@color/colorLight"
-                        android:textSize="46sp"
+                        android:textSize="60sp"
                         android:typeface="sans"
                         android:textStyle="bold"
                         android:text="5" />

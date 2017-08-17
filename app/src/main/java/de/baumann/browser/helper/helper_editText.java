@@ -29,7 +29,6 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.webkit.WebView;
 import android.widget.EditText;
 
 import com.mobapphome.mahencryptorlib.MAHEncryptor;
@@ -38,31 +37,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.baumann.browser.R;
-import de.baumann.browser.databases.DbAdapter_Bookmarks;
 import de.baumann.browser.databases.DbAdapter_Pass;
 
 public class helper_editText {
 
-    public static void editText_saveBookmark(final EditText editText, final Activity from, final WebView webView) {
+    public static void editText_savePass(final Activity activity, final View view, final String title, final String url) {
 
-        DbAdapter_Bookmarks db = new DbAdapter_Bookmarks(from);
-        db.open();
-
-        String inputTag = editText.getText().toString().trim();
-
-        if(db.isExist(webView.getUrl())){
-            Snackbar.make(editText, from.getString(R.string.toast_newTitle), Snackbar.LENGTH_LONG).show();
-        }else{
-            db.insert(inputTag, webView.getUrl(), "", "", helper_main.createDate());
-            Snackbar.make(webView, R.string.bookmark_added, Snackbar.LENGTH_LONG).show();
-        }
-        helper_editText.hideKeyboard(from, editText, 0, webView.getTitle(), from.getString(R.string.app_search_hint));
-    }
-
-    public static void editText_savePass(final Activity from, final View view, final String title, final String url) {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(from);
-        View dialogView = View.inflate(from, R.layout.dialog_login, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        View dialogView = View.inflate(activity, R.layout.dialog_login, null);
 
         final EditText pass_title = (EditText) dialogView.findViewById(R.id.pass_title);
         final EditText pass_userName = (EditText) dialogView.findViewById(R.id.pass_userName);
@@ -84,19 +66,19 @@ public class helper_editText {
 
                 try {
 
-                    final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
+                    final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
                     MAHEncryptor mahEncryptor = MAHEncryptor.newInstance(sharedPref.getString("saved_key", ""));
                     String encrypted_userName = mahEncryptor.encode(pass_userName.getText().toString().trim());
                     String encrypted_userPW = mahEncryptor.encode(pass_userPW.getText().toString().trim());
 
-                    DbAdapter_Pass db = new DbAdapter_Pass(from);
+                    DbAdapter_Pass db = new DbAdapter_Pass(activity);
                     db.open();
                     if(db.isExist(input_pass_title)){
-                        Snackbar.make(view, from.getString(R.string.toast_newTitle), Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(view, activity.getString(R.string.toast_newTitle), Snackbar.LENGTH_LONG).show();
                     }else{
                         db.insert(input_pass_title, url, encrypted_userName, encrypted_userPW, helper_main.createDate());
                         Snackbar.make(view, R.string.pass_success, Snackbar.LENGTH_LONG).show();
-                        InputMethodManager imm = (InputMethodManager) from.getSystemService(Context.INPUT_METHOD_SERVICE);
+                        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(pass_title.getWindowToken(), 0);
                     }
                 } catch (Exception e) {
@@ -114,12 +96,12 @@ public class helper_editText {
 
         AlertDialog dialog = builder.create();
         dialog.show();
-        helper_editText.showKeyboard(from, pass_title, 0, "", from.getString(R.string.pass_title));
+        helper_editText.showKeyboard(activity, pass_title, 0, "", activity.getString(R.string.pass_title));
     }
 
-    public static void editText_searchWeb (final EditText editText, final Activity from) {
+    public static void editText_searchWeb (final EditText editText, final Activity activity) {
 
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
 
         List<String> listItems = new ArrayList<>();
 
@@ -153,7 +135,7 @@ public class helper_editText {
 
         final CharSequence[] options = listItems.toArray(new CharSequence[listItems.size()]);
 
-        new AlertDialog.Builder(from)
+        new AlertDialog.Builder(activity)
                 .setTitle(R.string.action_searchChooseTitle)
                 .setItems(options, new DialogInterface.OnClickListener() {
                     @Override
@@ -190,18 +172,18 @@ public class helper_editText {
                 }).show();
     }
 
-    public static void hideKeyboard(Activity from, EditText editText, int i, String text, String hint) {
+    public static void hideKeyboard(Activity activity, EditText editText, int i, String text, String hint) {
         editText.clearFocus();
         editText.setText(text);
         editText.setHint(hint);
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
         sharedPref.edit().putInt("keyboard", i).apply();
-        from.invalidateOptionsMenu();
-        InputMethodManager imm = (InputMethodManager) from.getSystemService(Context.INPUT_METHOD_SERVICE);
+        activity.invalidateOptionsMenu();
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
     }
 
-    public static void showKeyboard(final Activity from, final EditText editText, final int i, String text, String hint) {
+    public static void showKeyboard(final Activity activity, final EditText editText, final int i, String text, String hint) {
         editText.requestFocus();
         editText.hasFocus();
         editText.setText(text);
@@ -209,10 +191,10 @@ public class helper_editText {
         editText.setSelection(editText.length());
         new Handler().postDelayed(new Runnable() {
             public void run() {
-                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(from);
+                SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
                 sharedPref.edit().putInt("keyboard", i).apply();
-                from.invalidateOptionsMenu();
-                InputMethodManager imm = (InputMethodManager) from.getSystemService(Context.INPUT_METHOD_SERVICE);
+                activity.invalidateOptionsMenu();
+                InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.showSoftInput(editText, InputMethodManager.SHOW_FORCED);
             }
         }, 200);
