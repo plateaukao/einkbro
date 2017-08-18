@@ -304,7 +304,7 @@
 
     <string name="intro3_title">Toolbar</string>
     <string name="intro3_text">Wische nach links um die Lesezeichen, nach rechts um die leseSpäter Liste zu öffnen und nach oben
-        um die App zu beenden. Klicke die Toolbar an, um die Tabs zu wechseln.</string>
+        um die App zu beenden. Klicke die Toolbar lange an, um die Tabs zu wechseln.</string>
 
     <string name="intro4_title">Einstellungen</string>
     <string name="intro4_text">Im Einstellungen Popup kannst du die Browsereinstellungen für die aktuelle Session einstellen. Um zu den
@@ -312,7 +312,7 @@
 
     <string name="intro5_title">Hilfe</string>
     <string name="intro5_text">Um noch mehr Informationen zur Bedienung von \"Browser\" zu bekommen musst du den \"Hilfedialog\"
-        im \"Über\" Bereich in den Einstellungen öffnen.</string>
+        im Menü öffnen.</string>
 
 
     // About

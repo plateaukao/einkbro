@@ -291,7 +291,7 @@
     <string name="intro2_text">\"Browser\" is organized in lists: bookmarks, readLater, passStorage and the history.</string>
 
     <string name="intro3_title">Toolbar</string>
-    <string name="intro3_text">Swipe left to open bookmarks, right to open readLater and up to close the app. Click the toolbar
+    <string name="intro3_text">Swipe left to open bookmarks, right to open readLater and up to close the app. Long click the toolbar
     to switch between the tabs.</string>
 
     <string name="intro4_title">Settings</string>
@@ -299,7 +299,7 @@
     the main settings, just click the \"Settings\" button.</string>
 
     <string name="intro5_title">Help</string>
-    <string name="intro5_text">To get more infos how to use \"Browser\" just open the \"help dialog\" in the \"about section\" in the settings.</string>
+    <string name="intro5_text">To get more infos how to use \"Browser\" just open the \"help dialog\" in the menu.</string>
 
 
     // About
