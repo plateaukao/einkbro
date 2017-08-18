@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <CheckBoxPreference
+        android:title="@string/action_clearCookies"
+        android:icon="@drawable/cookie"
+        android:summary="@string/action_clearCookies_summary"
+        android:key="clearCookies"
+        android:defaultValue="false" />
+
+    <CheckBoxPreference
+        android:title="@string/action_clearForm"
+        android:icon="@drawable/account_card_details"
+        android:summary="@string/action_clearForm_summary"
+        android:key="clearForm"
+        android:defaultValue="true" />
+
+    <CheckBoxPreference
+        android:title="@string/action_history"
+        android:icon="@drawable/history2"
+        android:summary="@string/action_history_summary"
+        android:key="history"
+        android:defaultValue="false" />
+
+    <CheckBoxPreference
+        android:title="@string/action_clearCache"
+        android:icon="@drawable/delete"
+        android:summary="@string/action_clearCache_summary"
+        android:key="clearCache"
+        android:defaultValue="true" />
+
+</PreferenceScreen>

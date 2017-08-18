@@ -23,7 +23,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.baumann.browser.helper.class_CustomViewPager;
 import de.baumann.browser.helper.helper_browser;
 import de.baumann.browser.helper.helper_editText;
 import de.baumann.browser.helper.helper_main;
@@ -33,16 +32,18 @@ import de.baumann.browser.fragments.Fragment_Files;
 import de.baumann.browser.fragments.Fragment_History;
 import de.baumann.browser.fragments.Fragment_Pass;
 import de.baumann.browser.fragments.Fragment_ReadLater;
+import de.baumann.browser.helper.helper_toolbar;
 
 public class Activity_Main extends AppCompatActivity {
 
 
     // Views
 
-    private class_CustomViewPager viewPager;
+    private ViewPager viewPager;
     private TextView urlBar;
     private TextView listBar;
     private EditText editText;
+    private Toolbar toolbar;
 
 
     // Others
@@ -55,7 +56,7 @@ public class Activity_Main extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Activity activity = Activity_Main.this;
+        final Activity activity = Activity_Main.this;
 
         helper_main.setTheme(activity);
 
@@ -64,6 +65,12 @@ public class Activity_Main extends AppCompatActivity {
 
         PreferenceManager.setDefaultValues(activity, R.xml.user_settings, false);
         PreferenceManager.setDefaultValues(activity, R.xml.user_settings_search, false);
+        PreferenceManager.setDefaultValues(activity, R.xml.user_settings_app, false);
+        PreferenceManager.setDefaultValues(activity, R.xml.user_settings_close, false);
+        PreferenceManager.setDefaultValues(activity, R.xml.user_settings_start, false);
+        PreferenceManager.setDefaultValues(activity, R.xml.user_settings_search_main, false);
+        PreferenceManager.setDefaultValues(activity, R.xml.user_settings_data, false);
+
         sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
         sharedPref.edit().putBoolean("isOpened", true).apply();
 
@@ -100,9 +107,9 @@ public class Activity_Main extends AppCompatActivity {
         urlBar = (TextView) findViewById(R.id.urlBar);
         listBar = (TextView) findViewById(R.id.listBar);
         editText = (EditText) findViewById(R.id.editText);
-        viewPager = (class_CustomViewPager) findViewById(R.id.viewpager);
-        viewPager.setPagingEnabled();
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setOffscreenPageLimit(10);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -113,16 +120,39 @@ public class Activity_Main extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
 
-                helper_editText.hideKeyboard(Activity_Main.this, editText, 0, "", getString(R.string.app_search_hint));
+                helper_editText.hideKeyboard(activity, editText, 0, "", getString(R.string.app_search_hint));
+                helper_toolbar.toolbarGestures(activity, toolbar, viewPager);
+
+                assert getSupportActionBar() != null;
+
+                if (position < 5) {
+                    getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                    urlBar.setVisibility(View.VISIBLE);
+                    listBar.setVisibility(View.GONE);
+                } else {
+                    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                    urlBar.setVisibility(View.GONE);
+                    listBar.setVisibility(View.VISIBLE);
+                }
 
                 if (position < 5) {
                     Fragment_Browser fragment = (Fragment_Browser) viewPager.getAdapter().instantiateItem(viewPager, viewPager.getCurrentItem());
                     fragment.fragmentAction();
-                    urlBar.setVisibility(View.VISIBLE);
-                    listBar.setVisibility(View.GONE);
+                } else if (position == 5) {
+                    Fragment_Bookmarks fragment = (Fragment_Bookmarks) viewPager.getAdapter().instantiateItem(viewPager, viewPager.getCurrentItem());
+                    fragment.fragmentAction();
+                } else if (position == 6) {
+                    Fragment_ReadLater fragment = (Fragment_ReadLater) viewPager.getAdapter().instantiateItem(viewPager, viewPager.getCurrentItem());
+                    fragment.fragmentAction();
+                } else if (position == 7) {
+                    Fragment_History fragment = (Fragment_History) viewPager.getAdapter().instantiateItem(viewPager, viewPager.getCurrentItem());
+                    fragment.fragmentAction();
+                } else if (position == 8) {
+                    Fragment_Pass fragment = (Fragment_Pass) viewPager.getAdapter().instantiateItem(viewPager, viewPager.getCurrentItem());
+                    fragment.fragmentAction();
                 } else {
-                    urlBar.setVisibility(View.GONE);
-                    listBar.setVisibility(View.VISIBLE);
+                    Fragment_Files fragment = (Fragment_Files) viewPager.getAdapter().instantiateItem(viewPager, viewPager.getCurrentItem());
+                    fragment.fragmentAction();
                 }
             }
 
@@ -132,10 +162,9 @@ public class Activity_Main extends AppCompatActivity {
             }
         });
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setupViewPager(viewPager);
-
+        helper_toolbar.toolbarGestures(activity, toolbar, viewPager);
         onNewIntent(getIntent());
     }
 
@@ -152,11 +181,6 @@ public class Activity_Main extends AppCompatActivity {
                 if (position < 5) {
                     Fragment_Browser fragment = (Fragment_Browser) viewPager.getAdapter().instantiateItem(viewPager, viewPager.getCurrentItem());
                     fragment.fragmentAction();
-                    urlBar.setVisibility(View.VISIBLE);
-                    listBar.setVisibility(View.GONE);
-                } else {
-                    urlBar.setVisibility(View.GONE);
-                    listBar.setVisibility(View.VISIBLE);
                 }
             }
         }, 150);
@@ -224,7 +248,7 @@ public class Activity_Main extends AppCompatActivity {
         }
     }
 
-    private void setupViewPager(class_CustomViewPager viewPager) {
+    private void setupViewPager(ViewPager viewPager) {
 
         final String startTab = sharedPref.getString("tabMain", "0");
         final int startTabInt = Integer.parseInt(startTab);

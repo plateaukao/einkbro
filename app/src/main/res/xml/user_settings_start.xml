@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:title="@string/action_cookie"
+        android:icon="@drawable/cookie"
+        android:summary="@string/action_cookie_summary"
+        android:key="cookie"
+        android:defaultValue="2"
+        android:entries="@array/listArrayCookies"
+        android:entryValues="@array/listValuesCookies" />
+
+    <CheckBoxPreference
+        android:title="@string/action_form"
+        android:icon="@drawable/account_card_details"
+        android:summary="@string/action_form_summary"
+        android:key="form"
+        android:defaultValue="false" />
+
+    <CheckBoxPreference
+        android:title="@string/action_java"
+        android:icon="@drawable/language_javascript"
+        android:summary="@string/action_java_summary"
+        android:key="java"
+        android:defaultValue="true" />
+
+    <CheckBoxPreference
+        android:title="@string/action_loc"
+        android:icon="@drawable/map_marker"
+        android:summary="@string/action_loc_summary"
+        android:key="loc"
+        android:defaultValue="false" />
+
+    <CheckBoxPreference
+        android:title="@string/action_adBlock"
+        android:icon="@drawable/block_helper"
+        android:summary="@string/action_adBlock_summary"
+        android:key="blockads_bo"
+        android:defaultValue="true" />
+
+    <CheckBoxPreference
+        android:title="@string/action_pictures"
+        android:icon="@drawable/image"
+        android:summary="@string/action_pictures_summary"
+        android:key="pictures"
+        android:defaultValue="true" />
+
+    <CheckBoxPreference
+        android:title="@string/action_desktop"
+        android:icon="@drawable/desktop_mac"
+        android:summary="@string/action_desktop_summary"
+        android:key="request_bo"
+        android:defaultValue="false" />
+
+</PreferenceScreen>

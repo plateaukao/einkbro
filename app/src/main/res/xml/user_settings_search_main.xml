@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:title="@string/action_searchEngine"
+        android:icon="@drawable/magnify2"
+        android:summary="@string/action_searchEngine_summary"
+        android:key="searchEngine"
+        android:defaultValue="@string/def_search"
+        android:entries="@array/listArraySearchEngine"
+        android:entryValues="@array/listValuesSearchEngine" />
+
+    <Preference
+        android:title="@string/action_searchChoose"
+        android:icon="@drawable/search_web"
+        android:summary="@string/action_searchChoose_summary"
+        android:key="searchChoose" />
+
+    <ListPreference
+        android:title="@string/action_wikiLang"
+        android:icon="@drawable/wikipedia"
+        android:summary="@string/action_wikiLang_summary"
+        android:key="wikiLang"
+        android:defaultValue="@string/def_wiki"
+        android:entries="@array/listArrayWikiLang"
+        android:entryValues="@array/listValuesWikiLang" />
+
+</PreferenceScreen>

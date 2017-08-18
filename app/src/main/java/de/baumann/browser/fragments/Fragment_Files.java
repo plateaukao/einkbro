@@ -8,12 +8,10 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -44,10 +42,8 @@ import java.util.Locale;
 
 import de.baumann.browser.R;
 import de.baumann.browser.databases.DbAdapter_Files;
-import de.baumann.browser.helper.class_CustomViewPager;
 import de.baumann.browser.helper.helper_editText;
 import de.baumann.browser.helper.helper_main;
-import de.baumann.browser.helper.helper_toolbar;
 
 import static android.content.ContentValues.TAG;
 import static java.lang.String.valueOf;
@@ -61,8 +57,7 @@ public class Fragment_Files extends Fragment {
     private SimpleCursorAdapter adapter;
     private SharedPreferences sharedPref;
     private TextView listBar;
-    private Toolbar toolbar;
-    private class_CustomViewPager viewPager;
+    private ViewPager viewPager;
 
     private int top;
     private int index;
@@ -75,17 +70,14 @@ public class Fragment_Files extends Fragment {
 
         setHasOptionsMenu(true);
 
-        PreferenceManager.setDefaultValues(getActivity(), R.xml.user_settings, false);
-        PreferenceManager.setDefaultValues(getActivity(), R.xml.user_settings_search, false);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         sharedPref.edit().putString("files_startFolder",
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath()).apply();
 
-        toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         editText = (EditText) getActivity().findViewById(R.id.editText);
         listBar = (TextView) getActivity().findViewById(R.id.listBar);
         listView = (ListView)rootView.findViewById(R.id.list);
-        viewPager = (class_CustomViewPager) getActivity().findViewById(R.id.viewpager);
+        viewPager = (ViewPager) getActivity().findViewById(R.id.viewpager);
 
         //calling Notes_DbAdapter
         db = new DbAdapter_Files(getActivity());
@@ -406,26 +398,9 @@ public class Fragment_Files extends Fragment {
         snackbar.show();
     }
 
-    @Override
-    public void setUserVisibleHint(final boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-
-        if (isVisibleToUser) {
-            AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
-            assert appCompatActivity.getSupportActionBar() != null;
-            appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            setTitle();
-            helper_toolbar.toolbarGestures(getActivity(), toolbar, viewPager);
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    setFilesList();
-                }
-            }, 100);
-        } else {
-            Log.i("Browser", "Browser: isVisibleToUser false");
-        }
+    public void fragmentAction () {
+        setTitle();
+        setFilesList();
     }
 
     @Override

@@ -5,13 +5,10 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,10 +25,8 @@ import com.mobapphome.mahencryptorlib.MAHEncryptor;
 
 import de.baumann.browser.R;
 import de.baumann.browser.databases.DbAdapter_Pass;
-import de.baumann.browser.helper.class_CustomViewPager;
 import de.baumann.browser.helper.helper_editText;
 import de.baumann.browser.helper.helper_main;
-import de.baumann.browser.helper.helper_toolbar;
 
 public class Fragment_Pass extends Fragment {
 
@@ -40,8 +35,7 @@ public class Fragment_Pass extends Fragment {
     private DbAdapter_Pass db;
     private SharedPreferences sharedPref;
     private TextView listBar;
-    private Toolbar toolbar;
-    private class_CustomViewPager viewPager;
+    private ViewPager viewPager;
 
     private int top;
     private int index;
@@ -54,14 +48,11 @@ public class Fragment_Pass extends Fragment {
 
         setHasOptionsMenu(true);
 
-        PreferenceManager.setDefaultValues(getActivity(), R.xml.user_settings, false);
-        PreferenceManager.setDefaultValues(getActivity(), R.xml.user_settings_search, false);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-        toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         listBar = (TextView) getActivity().findViewById(R.id.listBar);
         listView = (ListView)rootView.findViewById(R.id.list);
-        viewPager = (class_CustomViewPager) getActivity().findViewById(R.id.viewpager);
+        viewPager = (ViewPager) getActivity().findViewById(R.id.viewpager);
 
         try {
             mahEncryptor = MAHEncryptor.newInstance(sharedPref.getString("saved_key", ""));
@@ -270,26 +261,9 @@ public class Fragment_Pass extends Fragment {
         snackbar.show();
     }
 
-    @Override
-    public void setUserVisibleHint(final boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-
-        if (isVisibleToUser) {
-            AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
-            assert appCompatActivity.getSupportActionBar() != null;
-            appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            helper_toolbar.toolbarGestures(getActivity(), toolbar, viewPager);
-            listBar.setText(R.string.app_title_passStorage);
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    setFilesList();
-                }
-            }, 100);
-        } else {
-            Log.i("Browser", "Browser: isVisibleToUser false");
-        }
+    public void fragmentAction () {
+        listBar.setText(R.string.app_title_passStorage);
+        setFilesList();
     }
 
     @Override

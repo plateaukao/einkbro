@@ -169,6 +169,14 @@
     <string name="pref_5">Clear on exit</string>
     <string name="pref_6">Search</string>
 
+    <string name="pref_2_summary">Here you can configure the look and the behavior of the app.</string>
+    <string name="pref_3_summary">Here you can configure the behavior of the browser on start. Decide which content will be loaded or
+    protect your privacy. These settings are the default ones. And can until you close the app with the help of the
+    \"popup settings\".</string>
+    <string name="pref_4_summary">Mange the application data. Set a password or backup and restore your list entries.</string>
+    <string name="pref_5_summary">This also concerns your privacy. Decide which data will be deleted, when you close the browser.</string>
+    <string name="pref_6_summary">Some settings related to the search functionality of the browser.</string>
+
     <string name="action_license">About</string>
     <string name="action_license_summary">Learn more about this app (help, changelog, license, …).</string>
 

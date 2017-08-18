@@ -1,46 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:ignore="AlwaysShowAction" >
 
     <item
         android:id="@+id/action_save_bookmark"
-        android:orderInCategory="100"
         android:title="@string/menu_search"
         android:icon="@drawable/content_save"
-        app:showAsAction="always"
-        tools:ignore="AlwaysShowAction" />
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/action_search_onSite_go"
-        android:orderInCategory="100"
         android:title="@string/menu_search"
         android:icon="@drawable/magnify"
-        app:showAsAction="always"
-        tools:ignore="AlwaysShowAction" />
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/action_search_go"
-        android:orderInCategory="100"
         android:title="@string/menu_go"
         android:icon="@drawable/arrow_right"
-        app:showAsAction="always"
-        tools:ignore="AlwaysShowAction" />
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/action_search_chooseWebsite"
-        android:orderInCategory="100"
         android:title="@string/menu_search"
         android:icon="@drawable/format_list_bulleted"
-        app:showAsAction="always"
-        tools:ignore="AlwaysShowAction" />
-
-
-
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/action_save"
-        android:orderInCategory="100"
         android:title="@string/menu_save"
         app:showAsAction="never" >
         <!-- "file" submenu -->
@@ -60,31 +49,24 @@
 
     <item
         android:id="@+id/action_prev"
-        android:orderInCategory="100"
         android:title="@string/menu_prev"
         android:icon="@drawable/arrow_left"
-        app:showAsAction="always"
-        tools:ignore="AlwaysShowAction" />
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/action_next"
-        android:orderInCategory="100"
         android:title="@string/menu_next"
         android:icon="@drawable/arrow_right"
-        app:showAsAction="always"
-        tools:ignore="AlwaysShowAction" />
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/action_cancel"
-        android:orderInCategory="100"
         android:title="@string/menu_cancel"
         android:icon="@drawable/close"
-        app:showAsAction="always"
-        tools:ignore="AlwaysShowAction" />
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/action_share"
-        android:orderInCategory="100"
         android:title="@string/menu_share"
         app:showAsAction="never" >
         <!-- "file" submenu -->
@@ -100,63 +82,46 @@
 
     <item
         android:id="@+id/action_open"
-        android:orderInCategory="100"
         android:title="@string/menu_open"
         app:showAsAction="never" >
         <!-- "file" submenu -->
         <menu>
             <item
                 android:id="@+id/action_pass"
-                android:orderInCategory="100"
-                android:title="@string/menu_pass"
-                app:showAsAction="never" />
+                android:title="@string/menu_pass" />
             <item
                 android:id="@+id/action_downloads"
-                android:orderInCategory="100"
-                android:title="@string/menu_downloads"
-                app:showAsAction="never" />
+                android:title="@string/menu_downloads" />
         </menu>
     </item>
 
     <item
         android:id="@+id/action_other"
-        android:orderInCategory="100"
         android:title="@string/menu_more"
         app:showAsAction="never" >
         <!-- "file" submenu -->
         <menu>
             <item
                 android:id="@+id/action_reload"
-                android:orderInCategory="100"
-                android:title="@string/menu_reload"
-                app:showAsAction="never" />
+                android:title="@string/menu_reload" />
             <item
                 android:id="@+id/action_search_onSite"
-                android:orderInCategory="100"
-                android:title="@string/menu_searchSite"
-                app:showAsAction="never" />
+                android:title="@string/menu_searchSite" />
             <item
                 android:id="@+id/action_help"
-                android:orderInCategory="100"
-                android:title="@string/menu_Help"
-                app:showAsAction="never" />
+                android:title="@string/menu_Help" />
         </menu>
     </item>
 
     <item
         android:id="@+id/action_history"
-        android:orderInCategory="100"
         android:title="@string/menu_history"
         android:icon="@drawable/history"
-        app:showAsAction="always"
-        tools:ignore="AlwaysShowAction" />
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/action_toggle"
-        android:orderInCategory="100"
         android:title="@string/menu_toggle"
-        android:icon="@drawable/settings_light"
-        app:showAsAction="never"
-        tools:ignore="AlwaysShowAction" />
+        app:showAsAction="never" />
 
 </menu>

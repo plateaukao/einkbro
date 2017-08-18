@@ -67,6 +67,31 @@
             android:configChanges="orientation|screenSize" />
 
         <activity
+            android:name=".helper.Activity_settings_app"
+            android:launchMode="singleInstance"
+            android:configChanges="orientation|screenSize" />
+
+        <activity
+            android:name=".helper.Activity_settings_data"
+            android:launchMode="singleInstance"
+            android:configChanges="orientation|screenSize" />
+
+        <activity
+            android:name=".helper.Activity_settings_searchMain"
+            android:launchMode="singleInstance"
+            android:configChanges="orientation|screenSize" />
+
+        <activity
+            android:name=".helper.Activity_settings_close"
+            android:launchMode="singleInstance"
+            android:configChanges="orientation|screenSize" />
+
+        <activity
+            android:name=".helper.Activity_settings_start"
+            android:launchMode="singleInstance"
+            android:configChanges="orientation|screenSize" />
+
+        <activity
             android:name=".helper.Activity_settings_search"
             android:launchMode="singleInstance"
             android:configChanges="orientation|screenSize" />

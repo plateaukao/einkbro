@@ -169,6 +169,16 @@
     <string name="pref_5">Beim Verlassen löschen</string>
     <string name="pref_6">Suche</string>
 
+    <string name="pref_2_summary">Hier kannst du das Aussehen und Verhalten der Anwendung ändern.</string>
+    <string name="pref_3_summary">Hier kannst du das Verhalten des Browsers beim Start einstellen. Entscheide welche Inhalte
+        geladen werden und kümmere dich um deine Privatsphäre. Dies sind die Standardeinstellungen. Sie können in den
+        \"Popupeinstellungen\" überschrieben weden, bis die Anwendung wieder geschlossen wird.</string>
+    <string name="pref_4_summary">Verwate die Anwendungsdaten. Setze ein Passwort, sichere deine Listeneinträge oder stelle sie
+        wieder her.</string>
+    <string name="pref_5_summary">Dies betrifft ebenfalls deine Privatspähre. Entscheide welche Daten beim Schließen des Browsers
+        gelöscht werden.</string>
+    <string name="pref_6_summary">Ein paar Einstellungen, welche die Suchfunktion des Browsers betreffen.</string>
+
     <string name="action_license">Über</string>
     <string name="action_license_summary">Erfahre mehr über die Anwendung (Hilfe, Changlog, Lizenz, …).</string>
 

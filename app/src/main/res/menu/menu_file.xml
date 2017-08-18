@@ -2,14 +2,14 @@
 <menu
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:ignore="AlwaysShowAction">
 
     <item
         android:id="@+id/action_filter"
-        android:orderInCategory="100"
         android:title="@string/action_sort"
         android:icon="@drawable/magnify"
-        app:showAsAction="ifRoom" >
+        app:showAsAction="always" >
         <!-- "file" submenu -->
         <menu>
             <item android:id="@+id/filter_clear"
@@ -17,9 +17,7 @@
             <item android:id="@+id/filter_title"
                 android:title="@string/action_filter_title" />
             <item
-                android:orderInCategory="100"
-                android:title="@string/action_filter_create"
-                app:showAsAction="ifRoom" >
+                android:title="@string/action_filter_create" >
                 <!-- "file" submenu -->
                 <menu>
                     <item android:id="@+id/filter_own"
@@ -39,10 +37,8 @@
 
     <item
         android:id="@+id/action_sort"
-        android:orderInCategory="100"
         android:title="@string/action_sort"
-        android:icon="@drawable/sort_descending"
-        app:showAsAction="ifRoom" >
+        app:showAsAction="never" >
         <!-- "file" submenu -->
         <menu>
             <item android:id="@+id/sort_title"
@@ -59,14 +55,13 @@
         android:orderInCategory="100"
         android:title="@string/menu_search"
         android:icon="@drawable/content_save"
-        app:showAsAction="always"
-        tools:ignore="AlwaysShowAction" />
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/action_cancel"
         android:orderInCategory="100"
         android:title="@string/menu_cancel"
         android:icon="@drawable/close"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 
 </menu>

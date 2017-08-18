@@ -25,9 +25,8 @@ import android.provider.MediaStore;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -66,7 +65,6 @@ import java.io.OutputStream;
 
 import de.baumann.browser.R;
 import de.baumann.browser.databases.DbAdapter_ReadLater;
-import de.baumann.browser.helper.class_CustomViewPager;
 import de.baumann.browser.helper.helper_browser;
 import de.baumann.browser.helper.helper_editText;
 import de.baumann.browser.helper.helper_main;
@@ -92,8 +90,7 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
     private View mCustomView;
     private EditText editText;
     private HorizontalScrollView scrollTabs;
-    private Toolbar toolbar;
-    private class_CustomViewPager viewPager;
+    private ViewPager viewPager;
     private AppBarLayout appBarLayout;
 
 
@@ -134,15 +131,12 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
         setHasOptionsMenu(true);
         activity = getActivity();
 
-        PreferenceManager.setDefaultValues(activity, R.xml.user_settings, false);
-        PreferenceManager.setDefaultValues(activity, R.xml.user_settings_search, false);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
         sharedPref.edit().putInt("tab_" + tab_number + "_exit", 0).apply();
 
 
         // find Views
 
-        toolbar = (Toolbar) activity.findViewById(R.id.toolbar);
         mWebView = (ObservableWebView) rootView.findViewById(R.id.webView);
         customViewContainer = (FrameLayout) rootView.findViewById(R.id.customViewContainer);
         progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
@@ -153,31 +147,17 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
         imageButton_up = (ImageButton) rootView.findViewById(R.id.imageButton);
         imageButton_down = (ImageButton) rootView.findViewById(R.id.imageButton_down);
         scrollTabs  = (HorizontalScrollView) activity.findViewById(R.id.scrollTabs);
-        viewPager = (class_CustomViewPager) activity.findViewById(R.id.viewpager);
+        viewPager = (ViewPager) activity.findViewById(R.id.viewpager);
         appBarLayout = (AppBarLayout) activity.findViewById(R.id.appBarLayout);
         horizontalScrollView = (HorizontalScrollView) getActivity().findViewById(R.id.scrollTabs);
 
 
         // setupViews
 
-        helper_browser.setupViews(mWebView, editText, imageButton_up, imageButton_down, imageButton_left, imageButton_right, appBarLayout);
+        helper_browser.setupViews(activity, viewPager, mWebView, editText, imageButton_up, imageButton_down, imageButton_left,
+                imageButton_right, appBarLayout, horizontalScrollView);
         helper_webView.webView_Settings(activity, mWebView);
         helper_webView.webView_WebViewClient(activity, mWebView, urlBar);
-
-        toolbar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (viewPager.getCurrentItem() < 5) {
-                    horizontalScrollView.setVisibility(View.GONE);
-                    urlBar.setVisibility(View.GONE);
-                    editText.setVisibility(View.VISIBLE);
-                    helper_editText.showKeyboard(activity, editText, 3, sharedPref.getString("webView_url", ""), activity.getString(R.string.app_search_hint));
-                    editText.selectAll();
-                } else {
-                    Log.i(TAG, "Switched to list");
-                }
-            }
-        });
 
         mWebChromeClient = new myWebChromeClient();
         mWebView.setWebChromeClient(mWebChromeClient);
@@ -223,23 +203,6 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
     }
 
     @Override
-    public void setUserVisibleHint(final boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (isVisibleToUser) {
-                    fragmentAction();
-                } else {
-                    Log.i(TAG, "Browser: isVisibleToUser false");
-                }
-            }
-        }, 500);
-    }
-
-    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -267,7 +230,7 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
 
-        final WebView.HitTestResult result = mWebView.getHitTestResult();
+        WebView.HitTestResult result = mWebView.getHitTestResult();
         final String url = result.getExtra();
         final AlertDialog dialog;
         final View dialogView = View.inflate(activity, R.layout.dialog_context, null);
@@ -471,10 +434,6 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
     @Override
     public void onUpOrCancelMotionEvent(ScrollState scrollState) {
 
-        if (scrollTabs.getVisibility() == View.VISIBLE) {
-            scrollTabs.setVisibility(View.GONE);
-        }
-
         if (scrollState == ScrollState.UP) {
 
             imageButton_up.setVisibility(View.VISIBLE);
@@ -662,7 +621,7 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
             mCustomView = view;
             mWebView.setVisibility(View.GONE);
             customViewContainer.setVisibility(View.VISIBLE);
-            toolbar.setVisibility(View.GONE);
+            appBarLayout.setVisibility(View.GONE);
             customViewContainer.addView(view);
             customViewCallback = callback;
         }
@@ -675,7 +634,7 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
 
             mWebView.setVisibility(View.VISIBLE);
             customViewContainer.setVisibility(View.GONE);
-            toolbar.setVisibility(View.VISIBLE);
+            appBarLayout.setVisibility(View.VISIBLE);
 
             if (sharedPref.getString ("fullscreen", "2").equals("2") || sharedPref.getString ("fullscreen", "2").equals("4")){
                 activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -765,17 +724,10 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
         editText.setVisibility(View.GONE);
 
         setTitle();
+        mWebView.findAllAsync("");
         tab_number = String.valueOf(viewPager.getCurrentItem());
         sharedPref.edit().putInt("tab", viewPager.getCurrentItem()).apply();
         sharedPref.edit().putInt("keyboard", 0).apply();
-
-        if (sharedPref.getInt("appShortcut", 0) == 0) {
-            AppCompatActivity appCompatActivity = (AppCompatActivity)getActivity();
-            assert appCompatActivity.getSupportActionBar() != null;
-            appCompatActivity.getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        }
-
-        helper_toolbar.toolbarGestures(getActivity(), toolbar, viewPager);
 
         final String URL = sharedPref.getString("openURL","https://github.com/scoute-dich/browser/");
 
@@ -1071,15 +1023,12 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
         }
 
         if (id == R.id.action_search_onSite_go) {
-
             String text = editText.getText().toString();
-
-            if (text.startsWith(getString(R.string.app_search))) {
-                helper_editText.showKeyboard(activity, editText, 1, "", getString(R.string.app_search_hint_site));
-            } else {
-                mWebView.findAllAsync(text);
-                helper_editText.hideKeyboard(activity, editText, 1, getString(R.string.app_search) + " " + text, getString(R.string.app_search_hint_site));
-            }
+            helper_editText.hideKeyboard(activity, editText, 4, getString(R.string.app_search) + " " + text, getString(R.string.app_search_hint_site));
+            mWebView.findAllAsync(text);
+            editText.setVisibility(View.GONE);
+            urlBar.setVisibility(View.VISIBLE);
+            urlBar.setText(getString(R.string.app_search) + " " + text);
         }
 
         if (id == R.id.action_prev) {

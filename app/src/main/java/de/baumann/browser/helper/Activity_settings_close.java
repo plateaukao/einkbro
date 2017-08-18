@@ -19,6 +19,7 @@
 
 package de.baumann.browser.helper;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
@@ -29,8 +30,7 @@ import android.view.MenuItem;
 
 import de.baumann.browser.R;
 
-
-public class Activity_settings_search extends AppCompatActivity {
+public class Activity_settings_close extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +39,11 @@ public class Activity_settings_search extends AppCompatActivity {
         helper_main.setTheme(this);
 
         setContentView(R.layout.activity_settings);
-        helper_main.onStart(Activity_settings_search.this);
+        helper_main.onStart(Activity_settings_close.this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        setTitle(R.string.action_searchChoose);
+        setTitle(R.string.menu_settings);
 
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
@@ -59,6 +59,8 @@ public class Activity_settings_search extends AppCompatActivity {
         PreferenceManager.setDefaultValues(this, R.xml.user_settings_start, false);
         PreferenceManager.setDefaultValues(this, R.xml.user_settings_search_main, false);
         PreferenceManager.setDefaultValues(this, R.xml.user_settings_data, false);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPref.edit().putString("started", "").apply();
 
         // Display the fragment as the activity_screen_main content
         getFragmentManager().beginTransaction().replace(R.id.content_frame, new SettingsFragment()).commit();
@@ -66,11 +68,12 @@ public class Activity_settings_search extends AppCompatActivity {
 
     public static class SettingsFragment extends PreferenceFragment {
 
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
 
-            addPreferencesFromResource(R.xml.user_settings_search);
+            addPreferencesFromResource(R.xml.user_settings_close);
         }
     }
 
@@ -82,7 +85,6 @@ public class Activity_settings_search extends AppCompatActivity {
         if (id == android.R.id.home) {
             finish();
         }
-
         return super.onOptionsItemSelected(item);
     }
 }

@@ -26,14 +26,18 @@ import android.content.SharedPreferences;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.design.widget.AppBarLayout;
+import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.WebView;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -50,10 +54,13 @@ import de.baumann.browser.utils.Utils_UserAgent;
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class helper_browser {
 
-    public static void setupViews (final WebView webView,
+    public static void setupViews (final Activity activity, final ViewPager viewPager, final WebView webView,
                                    final EditText editText, final ImageButton imageButton_up,
                                    final ImageButton imageButton_down, final ImageButton imageButton_left,
-                                   final ImageButton imageButton_right, final AppBarLayout appBarLayout) {
+                                   final ImageButton imageButton_right, final AppBarLayout appBarLayout,
+                                   final HorizontalScrollView horizontalScrollView) {
+
+        final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
 
         editText.setHint(R.string.app_search_hint);
         editText.clearFocus();
@@ -73,6 +80,33 @@ public class helper_browser {
             @Override
             public void onClick(View view) {
                 webView.pageDown(true);
+            }
+        });
+
+        webView.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                horizontalScrollView.setVisibility(View.GONE);
+                return false;
+            }
+        });
+
+        Toolbar toolbar =(Toolbar) activity.findViewById(R.id.toolbar);
+        final TextView urlBar = (TextView) activity.findViewById(R.id.urlBar);
+
+        toolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (viewPager.getCurrentItem() < 5) {
+                    horizontalScrollView.setVisibility(View.GONE);
+                    urlBar.setVisibility(View.GONE);
+                    editText.setVisibility(View.VISIBLE);
+                    helper_editText.showKeyboard(activity, editText, 3, sharedPref.getString("webView_url", ""), activity.getString(R.string.app_search_hint));
+                    editText.selectAll();
+                } else {
+                    Log.i("Browser", "Switched to list");
+                }
             }
         });
     }
@@ -302,6 +336,8 @@ public class helper_browser {
             open.setVisible(false);
             search_go.setVisible(false);
             settings.setVisible(false);
+            prev.setVisible(false);
+            next.setVisible(false);
         } else if (sharedPref.getInt("keyboard", 0) == 2) {
             search_onSite_go.setVisible(false);
             search_chooseWebsite.setVisible(false);
@@ -325,6 +361,17 @@ public class helper_browser {
             prev.setVisible(false);
             next.setVisible(false);
             settings.setVisible(false);
+        } else if (sharedPref.getInt("keyboard", 0) == 4) {
+            saveBookmark.setVisible(false);
+            search_chooseWebsite.setVisible(false);
+            history.setVisible(false);
+            save.setVisible(false);
+            share.setVisible(false);
+            other.setVisible(false);
+            open.setVisible(false);
+            search_go.setVisible(false);
+            settings.setVisible(false);
+            search_onSite_go.setVisible(false);
         }
     }
 

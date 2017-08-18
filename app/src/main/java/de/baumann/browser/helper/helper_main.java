@@ -261,8 +261,10 @@ public class helper_main {
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         } else if (sharedPref.getString("orientation", "auto").equals("portrait")) {
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        } else {
+        } else if (sharedPref.getString("orientation", "auto").equals("auto")) {
             activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+        } else {
+            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER);
         }
 
         sharedPref.edit().putString("openURL", sharedPref.getString("startURL", "https://github.com/scoute-dich/browser/")).apply();

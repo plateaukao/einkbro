@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Preference
+        android:title="@string/action_protect"
+        android:icon="@drawable/key"
+        android:summary="@string/action_protect_summary"
+        android:key="protect_PW" />
+
+    <Preference
+        android:title="@string/action_backup"
+        android:icon="@drawable/backup_restore"
+        android:summary="@string/action_backup_summary"
+        android:key="backup_db" />
+
+    <Preference
+        android:title="@string/action_whiteList"
+        android:icon="@drawable/language_javascript"
+        android:summary="@string/action_whiteList_summary"
+        android:key="whiteList" />
+
+</PreferenceScreen>

@@ -2,6 +2,9 @@
 - fix: hiding keyboard after searching in lists
 - fix: history - scroll to latest entry
 - improved: code and UI
+- new: swipe to switch tabs
+- new: settings on different subpages
+- new: auto orientation (sensor/device)
 - new: offer restart to apply some settings
 - new: theme support
 

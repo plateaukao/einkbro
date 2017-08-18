@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:title="@string/action_theme"
+        android:icon="@drawable/format_color_fill"
+        android:summary="@string/action_theme_summary"
+        android:key="theme"
+        android:defaultValue="0"
+        android:entries="@array/listArrayTheme"
+        android:entryValues="@array/listValuesTheme" />
+
+    <ListPreference
+        android:title="@string/action_tabMain"
+        android:icon="@drawable/cellphone_iphone"
+        android:summary="@string/action_tabMain_summary"
+        android:key="tabMain"
+        android:defaultValue="0"
+        android:entries="@array/listArrayTabMain"
+        android:entryValues="@array/listValuesTabMain" />
+
+    <ListPreference
+        android:title="@string/action_fullscreen"
+        android:icon="@drawable/fullscreen"
+        android:summary="@string/action_fullscreen_summary"
+        android:key="fullscreen"
+        android:defaultValue="2"
+        android:entries="@array/listArrayFull"
+        android:entryValues="@array/listValuesFull" />
+
+    <ListPreference
+        android:title="@string/action_rotation"
+        android:icon="@drawable/screen_rotation"
+        android:summary="@string/action_rotation_summary"
+        android:key="orientation"
+        android:defaultValue="@string/def_rot"
+        android:entries="@array/listArrayOrientation"
+        android:entryValues="@array/listValuesOrientation" />
+
+    <ListPreference
+        android:title="@string/action_font"
+        android:icon="@drawable/format_size"
+        android:summary="@string/action_font_summary"
+        android:key="font"
+        android:defaultValue="100"
+        android:entries="@array/listArrayFont"
+        android:entryValues="@array/listValuesFont" />
+
+    <CheckBoxPreference
+        android:title="@string/action_openLink"
+        android:icon="@drawable/link_variant"
+        android:summary="@string/action_openLink_summary"
+        android:key="openLink"
+        android:defaultValue="true" />
+
+    <Preference
+        android:title="@string/action_openSettings"
+        android:icon="@drawable/settings"
+        android:summary="@string/action_openSettings_summary"
+        android:key="settings" />
+
+</PreferenceScreen>

@@ -15,6 +15,8 @@
 
     <style name="EditTextStyle" parent="AppTheme">
         <item name="colorControlActivated">@color/colorAccent</item>
+        <item name="colorControlNormal">@color/colorPrimary</item>
+        <item name="colorControlHighlight">@color/colorPrimary</item>
         <item name="android:textColorHighlight">@color/colorAccent_trans</item>
     </style>
 
@@ -34,6 +36,8 @@
 
     <style name="EditTextStyle_blue" parent="AppTheme_blue">
         <item name="colorControlActivated">@color/colorAccent_blue</item>
+        <item name="colorControlNormal">@color/colorPrimary_blue</item>
+        <item name="colorControlHighlight">@color/colorPrimary_blue</item>
         <item name="android:textColorHighlight">@color/colorAccent_trans_blue</item>
     </style>
 
@@ -53,6 +57,8 @@
 
     <style name="EditTextStyle_pink" parent="AppTheme">
         <item name="colorControlActivated">@color/colorAccent_pink</item>
+        <item name="colorControlNormal">@color/colorPrimary_pink</item>
+        <item name="colorControlHighlight">@color/colorPrimary_pink</item>
         <item name="android:textColorHighlight">@color/colorAccent_trans_pink</item>
     </style>
 
@@ -72,6 +78,8 @@
 
     <style name="EditTextStyle_purple" parent="AppTheme_blue">
         <item name="colorControlActivated">@color/colorAccent_purple</item>
+        <item name="colorControlNormal">@color/colorPrimary_purple</item>
+        <item name="colorControlHighlight">@color/colorPrimary_purple</item>
         <item name="android:textColorHighlight">@color/colorAccent_trans_purple</item>
     </style>
 
@@ -91,6 +99,8 @@
 
     <style name="EditTextStyle_teal" parent="AppTheme">
         <item name="colorControlActivated">@color/colorAccent_teal</item>
+        <item name="colorControlNormal">@color/colorPrimary_teal</item>
+        <item name="colorControlHighlight">@color/colorPrimary_teal</item>
         <item name="android:textColorHighlight">@color/colorAccent_trans_teal</item>
     </style>
 
@@ -110,6 +120,8 @@
 
     <style name="EditTextStyle_red" parent="AppTheme_blue">
         <item name="colorControlActivated">@color/colorAccent_red</item>
+        <item name="colorControlNormal">@color/colorPrimary_red</item>
+        <item name="colorControlHighlight">@color/colorPrimary_red</item>
         <item name="android:textColorHighlight">@color/colorAccent_trans_red</item>
     </style>
 
@@ -129,6 +141,8 @@
 
     <style name="EditTextStyle_orange" parent="AppTheme_blue">
         <item name="colorControlActivated">@color/colorAccent_orange</item>
+        <item name="colorControlNormal">@color/colorPrimary_orange</item>
+        <item name="colorControlHighlight">@color/colorPrimary_orange</item>
         <item name="android:textColorHighlight">@color/colorAccent_trans_orange</item>
     </style>
 
@@ -148,6 +162,8 @@
 
     <style name="EditTextStyle_brown" parent="AppTheme">
         <item name="colorControlActivated">@color/colorAccent_brown</item>
+        <item name="colorControlNormal">@color/colorPrimary_brown</item>
+        <item name="colorControlHighlight">@color/colorPrimary_brown</item>
         <item name="android:textColorHighlight">@color/colorAccent_trans_brown</item>
     </style>
 
@@ -167,6 +183,8 @@
 
     <style name="EditTextStyle_grey" parent="AppTheme_blue">
         <item name="colorControlActivated">@color/colorAccent_grey</item>
+        <item name="colorControlNormal">@color/colorPrimary_grey</item>
+        <item name="colorControlHighlight">@color/colorPrimary_grey</item>
         <item name="android:textColorHighlight">@color/colorAccent_trans_grey</item>
     </style>
 
@@ -186,6 +204,8 @@
 
     <style name="EditTextStyle_darkGrey" parent="AppTheme_blue">
         <item name="colorControlActivated">@color/colorAccent_darkGrey</item>
+        <item name="colorControlNormal">@color/colorPrimary_darkGrey</item>
+        <item name="colorControlHighlight">@color/colorPrimary_darkGrey</item>
         <item name="android:textColorHighlight">@color/colorAccent_trans_darkGrey</item>
     </style>
 

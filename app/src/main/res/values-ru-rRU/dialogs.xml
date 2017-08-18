@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    //Changelog Dialog
-
-
     //License Dialog
 
     <string name="about_title">Copyright © 2017  by Gaukler Faun</string>
@@ -50,15 +47,18 @@
     </string-array>
 
     <string-array name="listArrayOrientation">
-        <item>Автоматический поворот</item>
+        <item>Автоматический поворот (Sensor)</item>
+        <item>Автоматический поворот (Device)</item>
         <item>Портретный</item>
         <item>Альбомный</item>
     </string-array>
 
+    <!-- Do not translate! -->
     <string-array name="listValuesOrientation">
-        <item>автоматически</item>
-        <item>П</item>
-        <item>альбомный</item>
+        <item>auto</item>
+        <item>device</item>
+        <item>portrait</item>
+        <item>landscape</item>
     </string-array>
 
     <string-array name="listArrayCookies">
