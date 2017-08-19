@@ -1,4 +1,4 @@
-### v 4.2 (WIP)
+### v 4.2
 - removed: backup/restore of passStorage
 - fix: hiding keyboard after searching in lists
 - fix: history - scroll to latest entry

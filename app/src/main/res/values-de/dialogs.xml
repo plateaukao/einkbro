@@ -6,17 +6,16 @@
     <string name="changelog_text">
         &lt;b>Für mehr Informationen zur Bedienung gibt es einen Hilfedialog (Menü -> Mehr -> Hilfe).&lt;/b>&lt;br>&lt;br>
 
-        &lt;b>v 4.1&lt;/b>&lt;br>&lt;br>
-        - removed: offline support (use screenshot for saving)&lt;br>
-        - removed: unnecessary permissions&lt;br>
-        - fix: reset menu after editing file name&lt;br>
-        - fix: overwriting of files while renaming&lt;br>
-        - fix: several code improvements&lt;br>
-        - fix: delete passStorage&lt;br>
-        - improved: layout close button&lt;br>
-        - improved: bundled Notifications&lt;br>
-        - added: Google encrypted search (override AMP-links)&lt;br>
-        - added: advanced backup/restore data
+        &lt;b>v 4.2&lt;/b>&lt;br>&lt;br>
+        - removed: backup/restore of passStorage&lt;br>
+        - fix: hiding keyboard after searching in lists&lt;br>
+        - fix: history - scroll to latest entry&lt;br>
+        - improved: code and UI&lt;br>
+        - new: swipe to switch tabs&lt;br>
+        - new: settings on different subpages&lt;br>
+        - new: auto orientation (sensor/device)&lt;br>
+        - new: offer restart to apply some settings&lt;br>
+        - new: theme support
     </string>
 
 
@@ -67,11 +66,11 @@
         &lt;i>Verlauf (nur im Browser):&lt;/i> Öffnet eine Liste mit den zuletzt besuchten Internetseiten. Ein langer Klick lädt
         die aktuelle Internetseite neu.</string>
 
-    <string name="help_tabs_title">&lt;b>Tabvorschau:&lt;/b></string>
+    <string name="help_tabs_title">&lt;b>Tab (-vorschau):&lt;/b></string>
     <string name="help_tabs">
         Um einen Tab zu öffnen musst du einfach die entsprechende Vorschau anklicken. Wenn du eine Vorschau lange anklickst,
         öffnet sich im entsprechenden Tab dein Favorit. Der jeweils geöffnete Tab ist hervorgehoben. Der \"Schließenknopf\"
-        setzt de Tab zurück.</string>
+        setzt de Tab zurück. Du kannst nach rechts und links wischen um zwischen den Tabs zu wechseln.</string>
 
     <string name="help_menu_title">&lt;b>Menü:&lt;/b></string>
     <string name="help_menu">

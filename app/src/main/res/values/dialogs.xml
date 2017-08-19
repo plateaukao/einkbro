@@ -6,17 +6,16 @@
     <string name="changelog_text">
         &lt;b>For informations about the handling there is a help dialog (Menu -> More -> Help).&lt;/b>&lt;br>&lt;br>
 
-        &lt;b>v 4.1&lt;/b>&lt;br>&lt;br>
-        - removed: offline support (use screenshot for saving)&lt;br>
-        - removed: unnecessary permissions&lt;br>
-        - fix: reset menu after editing file name&lt;br>
-        - fix: overwriting of files while renaming&lt;br>
-        - fix: several code improvements&lt;br>
-        - fix: delete passStorage&lt;br>
-        - improved: layout close button&lt;br>
-        - improved: bundled Notifications&lt;br>
-        - added: Google encrypted search (override AMP-links)&lt;br>
-        - added: advanced backup/restore data
+        &lt;b>v 4.2&lt;/b>&lt;br>&lt;br>
+        - removed: backup/restore of passStorage&lt;br>
+        - fix: hiding keyboard after searching in lists&lt;br>
+        - fix: history - scroll to latest entry&lt;br>
+        - improved: code and UI&lt;br>
+        - new: swipe to switch tabs&lt;br>
+        - new: settings on different subpages&lt;br>
+        - new: auto orientation (sensor/device)&lt;br>
+        - new: offer restart to apply some settings&lt;br>
+        - new: theme support
     </string>
 
 
@@ -64,10 +63,10 @@
         &lt;i>Long click (only in the browser):&lt;/i> opens the tab preview (see below).&lt;br>&lt;br>
         &lt;i>History (only in the browser):&lt;/i> opens a list of the last visited websites. Long pressing reloads the website.</string>
 
-    <string name="help_tabs_title">&lt;b>Tab preview:&lt;/b></string>
+    <string name="help_tabs_title">&lt;b>Tab (preview):&lt;/b></string>
     <string name="help_tabs">
         To open a tab simply click on the preview. If you long press on a preview your favorite will open in this tab.
-        The opened tab is highlighted. Clicking the close button resets the tab.</string>
+        The opened tab is highlighted. Clicking the close button resets the tab. You can swipe left and right to switch the tabs.</string>
 
     <string name="help_menu_title">&lt;b>Menu:&lt;/b></string>
     <string name="help_menu">
