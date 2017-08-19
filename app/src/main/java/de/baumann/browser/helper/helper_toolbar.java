@@ -25,6 +25,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
@@ -84,8 +85,9 @@ public class helper_toolbar {
 
     public static void toolbarGestures(final Activity activity, final Toolbar toolbar, final ViewPager viewPager) {
 
-        toolbar.setVisibility(View.VISIBLE);
         final HorizontalScrollView scrollTabs = (HorizontalScrollView) activity.findViewById(R.id.scrollTabs);
+        final AppBarLayout appBarLayout = (AppBarLayout) activity.findViewById(R.id.appBarLayout);
+        appBarLayout.setVisibility(View.VISIBLE);
 
         toolbar.setOnTouchListener(new class_OnSwipeTouchListener_editText(activity) {
             public void onSwipeTop() {

@@ -75,7 +75,7 @@
     <string name="menu_more">Mehr …</string>
     <string name="menu_reload">Seite neu laden</string>
     <string name="menu_Help">Hilfe</string>
-    <string name="menu_all">… alles</string>
+    <string name="menu_all">… alles davon</string>
     <string name="toast_confirmation_title">Bestätigung</string>
     <string name="toast_confirmation_backup">Das wird deine aktuelle Sicherung ersetzen. Willst du das wirklich?</string>
     <string name="toast_confirmation_restore">Das wird deine aktuelle Datenbank ersetzen. Willst du das wirklich?</string>
@@ -191,9 +191,8 @@
 
     <string name="action_backup">Sicherung</string>
     <string name="action_backup_summary">Sichere deine Lesezeichen, die leseSpäter Liste, den passSpeicher, den Verlauf und die
-        Javascript Whitelist oder stelle sie wieder her. Eine neue Sicherung überschreibt immer die bestehende. Nachdem du den
-        passSpeicher wiederhergestellt hast, musst du den Bearbeitendialog eines gespeicherten Eintrages öffnen und ihn dann
-        (ohne etwas zu ändern) speichern, damit die Datenbank richtig benutzt werden kann.</string>
+        Javascript Whitelist oder stelle sie wieder her. Eine neue Sicherung überschreibt immer die bestehende. Da der passSpeicher
+        mit einem einmaligen Schlüssel verschlüsselt wird, funktioniert dies bei ihm nicht.</string>
 
     <string name="action_restore">Wiederherstellung</string>
 

@@ -127,7 +127,6 @@ public class Activity_settings_data extends AppCompatActivity {
                                         final CharSequence[] options = {
                                                 getString(R.string.app_title_bookmarks),
                                                 getString(R.string.app_title_readLater),
-                                                getString(R.string.app_title_passStorage),
                                                 getString(R.string.app_title_history),
                                                 getString(R.string.action_whiteList),
                                                 getString(R.string.menu_all)};
@@ -163,21 +162,6 @@ public class Activity_settings_data extends AppCompatActivity {
                                                                     .setPositiveButton(R.string.toast_yes, new DialogInterface.OnClickListener() {
                                                                         public void onClick(DialogInterface dialog, int whichButton) {
                                                                             backup_ReadLater();
-                                                                        }
-                                                                    })
-                                                                    .setNegativeButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
-                                                                        public void onClick(DialogInterface dialog, int whichButton) {
-                                                                            dialog.cancel();
-                                                                        }
-                                                                    }).show();
-                                                        }
-                                                        if (options[item].equals(getString(R.string.app_title_passStorage))) {
-                                                            new AlertDialog.Builder(getActivity())
-                                                                    .setTitle(getString(R.string.toast_confirmation_title))
-                                                                    .setMessage(getString(R.string.toast_confirmation_backup))
-                                                                    .setPositiveButton(R.string.toast_yes, new DialogInterface.OnClickListener() {
-                                                                        public void onClick(DialogInterface dialog, int whichButton) {
-                                                                            backup_passStorage();
                                                                         }
                                                                     })
                                                                     .setNegativeButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
@@ -224,7 +208,6 @@ public class Activity_settings_data extends AppCompatActivity {
                                                                         public void onClick(DialogInterface dialog, int whichButton) {
                                                                             backup_Bookmarks();
                                                                             backup_ReadLater();
-                                                                            backup_passStorage();
                                                                             backup_history();
                                                                             backup_whiteList();
                                                                         }
@@ -243,7 +226,6 @@ public class Activity_settings_data extends AppCompatActivity {
                                         final CharSequence[] options = {
                                                 getString(R.string.app_title_bookmarks),
                                                 getString(R.string.app_title_readLater),
-                                                getString(R.string.app_title_passStorage),
                                                 getString(R.string.app_title_history),
                                                 getString(R.string.action_whiteList),
                                                 getString(R.string.menu_all)};
@@ -279,21 +261,6 @@ public class Activity_settings_data extends AppCompatActivity {
                                                                     .setPositiveButton(R.string.toast_yes, new DialogInterface.OnClickListener() {
                                                                         public void onClick(DialogInterface dialog, int whichButton) {
                                                                             restore_ReadLater();
-                                                                        }
-                                                                    })
-                                                                    .setNegativeButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
-                                                                        public void onClick(DialogInterface dialog, int whichButton) {
-                                                                            dialog.cancel();
-                                                                        }
-                                                                    }).show();
-                                                        }
-                                                        if (options[item].equals(getString(R.string.app_title_passStorage))) {
-                                                            new AlertDialog.Builder(getActivity())
-                                                                    .setTitle(getString(R.string.toast_confirmation_title))
-                                                                    .setMessage(getString(R.string.toast_confirmation_restore))
-                                                                    .setPositiveButton(R.string.toast_yes, new DialogInterface.OnClickListener() {
-                                                                        public void onClick(DialogInterface dialog, int whichButton) {
-                                                                            restore_passStorage();
                                                                         }
                                                                     })
                                                                     .setNegativeButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
@@ -340,7 +307,6 @@ public class Activity_settings_data extends AppCompatActivity {
                                                                         public void onClick(DialogInterface dialog, int whichButton) {
                                                                             restore_Bookmarks();
                                                                             restore_ReadLater();
-                                                                            restore_passStorage();
                                                                             restore_history();
                                                                             restore_whiteList();
                                                                         }
@@ -508,31 +474,6 @@ public class Activity_settings_data extends AppCompatActivity {
             }
         }
 
-        private void backup_passStorage () {
-            try {
-                File sd = Environment.getExternalStorageDirectory();
-                File data = Environment.getDataDirectory();
-
-                if (sd.canWrite()) {
-                    String currentDBPath = "//data//" + "de.baumann.browser"
-                            + "//databases//" + "pass_DB_v01.db";
-                    String backupDBPath = "//Android//" + "//data//" + "//browser.backup//" + "pass_DB_v01.db";
-                    File currentDB = new File(data, currentDBPath);
-                    File backupDB = new File(sd, backupDBPath);
-
-                    FileChannel src = new FileInputStream(currentDB).getChannel();
-                    FileChannel dst = new FileOutputStream(backupDB).getChannel();
-                    dst.transferFrom(src, 0, src.size());
-                    src.close();
-                    dst.close();
-
-                    Snackbar.make(frameLayout, getString(R.string.toast_backup), Snackbar.LENGTH_LONG).show();
-                }
-            } catch (Exception e) {
-                Snackbar.make(frameLayout, getString(R.string.toast_backup_not), Snackbar.LENGTH_LONG).show();
-            }
-        }
-
         private void backup_history () {
             try {
                 File sd = Environment.getExternalStorageDirectory();
@@ -609,31 +550,6 @@ public class Activity_settings_data extends AppCompatActivity {
                     String currentDBPath = "//data//" + "de.baumann.browser"
                             + "//databases//" + "readLater_DB_v01.db";
                     String backupDBPath = "//Android//" + "//data//" + "//browser.backup//" + "readLater_DB_v01.db";
-                    File currentDB = new File(data, currentDBPath);
-                    File backupDB = new File(sd, backupDBPath);
-
-                    FileChannel src = new FileInputStream(backupDB).getChannel();
-                    FileChannel dst = new FileOutputStream(currentDB).getChannel();
-                    dst.transferFrom(src, 0, src.size());
-                    src.close();
-                    dst.close();
-
-                    Snackbar.make(frameLayout, getString(R.string.toast_restore), Snackbar.LENGTH_LONG).show();
-                }
-            } catch (Exception e) {
-                Snackbar.make(frameLayout, getString(R.string.toast_restore_not), Snackbar.LENGTH_LONG).show();
-            }
-        }
-
-        private void restore_passStorage () {
-            try {
-                File sd = Environment.getExternalStorageDirectory();
-                File data = Environment.getDataDirectory();
-
-                if (sd.canWrite()) {
-                    String currentDBPath = "//data//" + "de.baumann.browser"
-                            + "//databases//" + "pass_DB_v01.db";
-                    String backupDBPath = "//Android//" + "//data//" + "//browser.backup//" + "pass_DB_v01.db";
                     File currentDB = new File(data, currentDBPath);
                     File backupDB = new File(sd, backupDBPath);
 

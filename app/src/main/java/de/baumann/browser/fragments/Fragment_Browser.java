@@ -620,8 +620,8 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
 
             mCustomView = view;
             mWebView.setVisibility(View.GONE);
-            customViewContainer.setVisibility(View.VISIBLE);
             appBarLayout.setVisibility(View.GONE);
+            customViewContainer.setVisibility(View.VISIBLE);
             customViewContainer.addView(view);
             customViewCallback = callback;
         }
