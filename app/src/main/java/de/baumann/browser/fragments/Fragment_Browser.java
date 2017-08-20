@@ -25,7 +25,6 @@ import android.provider.MediaStore;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -65,6 +64,7 @@ import java.io.OutputStream;
 
 import de.baumann.browser.R;
 import de.baumann.browser.databases.DbAdapter_ReadLater;
+import de.baumann.browser.helper.class_CustomViewPager;
 import de.baumann.browser.helper.helper_browser;
 import de.baumann.browser.helper.helper_editText;
 import de.baumann.browser.helper.helper_main;
@@ -90,7 +90,7 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
     private View mCustomView;
     private EditText editText;
     private HorizontalScrollView scrollTabs;
-    private ViewPager viewPager;
+    private class_CustomViewPager viewPager;
     private AppBarLayout appBarLayout;
 
 
@@ -147,7 +147,7 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
         imageButton_up = (ImageButton) rootView.findViewById(R.id.imageButton);
         imageButton_down = (ImageButton) rootView.findViewById(R.id.imageButton_down);
         scrollTabs  = (HorizontalScrollView) activity.findViewById(R.id.scrollTabs);
-        viewPager = (ViewPager) activity.findViewById(R.id.viewpager);
+        viewPager = (class_CustomViewPager) activity.findViewById(R.id.viewpager);
         appBarLayout = (AppBarLayout) activity.findViewById(R.id.appBarLayout);
         horizontalScrollView = (HorizontalScrollView) getActivity().findViewById(R.id.scrollTabs);
 

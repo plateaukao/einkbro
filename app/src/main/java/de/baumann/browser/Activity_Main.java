@@ -12,7 +12,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MotionEvent;
@@ -24,6 +23,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.baumann.browser.helper.class_CustomViewPager;
 import de.baumann.browser.helper.helper_browser;
 import de.baumann.browser.helper.helper_editText;
 import de.baumann.browser.helper.helper_main;
@@ -40,7 +40,7 @@ public class Activity_Main extends AppCompatActivity {
 
     // Views
 
-    private ViewPager viewPager;
+    private class_CustomViewPager viewPager;
     private TextView urlBar;
     private TextView listBar;
     private EditText editText;
@@ -108,25 +108,19 @@ public class Activity_Main extends AppCompatActivity {
         urlBar = (TextView) findViewById(R.id.urlBar);
         listBar = (TextView) findViewById(R.id.listBar);
         editText = (EditText) findViewById(R.id.editText);
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager = (class_CustomViewPager) findViewById(R.id.viewpager);
         viewPager.setOffscreenPageLimit(10);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        viewPager.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
+        if (sharedPref.getBoolean ("swipe", false)){
+            sharedPref.edit().putString("swipe_string", activity.getString(R.string.app_yes)).apply();
+            viewPager.setPagingEnabled(true);
+        } else {
+            sharedPref.edit().putString("swipe_string", activity.getString(R.string.app_no)).apply();
+            viewPager.setPagingEnabled(false);
+        }
 
-                if (sharedPref.getBoolean ("swipe", false)){
-                    sharedPref.edit().putString("swipe_string", activity.getString(R.string.app_yes)).apply();
-                    return false;
-                } else {
-                    sharedPref.edit().putString("swipe_string", activity.getString(R.string.app_no)).apply();
-                    return true;
-                }
-            }
-        });
-
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        viewPager.addOnPageChangeListener(new class_CustomViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -263,7 +257,7 @@ public class Activity_Main extends AppCompatActivity {
         }
     }
 
-    private void setupViewPager(ViewPager viewPager) {
+    private void setupViewPager(class_CustomViewPager viewPager) {
 
         final String startTab = sharedPref.getString("tabMain", "0");
         final int startTabInt = Integer.parseInt(startTab);

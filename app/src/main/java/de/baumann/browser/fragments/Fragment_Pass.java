@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,6 +24,7 @@ import com.mobapphome.mahencryptorlib.MAHEncryptor;
 
 import de.baumann.browser.R;
 import de.baumann.browser.databases.DbAdapter_Pass;
+import de.baumann.browser.helper.class_CustomViewPager;
 import de.baumann.browser.helper.helper_editText;
 import de.baumann.browser.helper.helper_main;
 
@@ -35,7 +35,7 @@ public class Fragment_Pass extends Fragment {
     private DbAdapter_Pass db;
     private SharedPreferences sharedPref;
     private TextView listBar;
-    private ViewPager viewPager;
+    private class_CustomViewPager viewPager;
 
     private int top;
     private int index;
@@ -52,7 +52,7 @@ public class Fragment_Pass extends Fragment {
 
         listBar = (TextView) getActivity().findViewById(R.id.listBar);
         listView = (ListView)rootView.findViewById(R.id.list);
-        viewPager = (ViewPager) getActivity().findViewById(R.id.viewpager);
+        viewPager = (class_CustomViewPager) getActivity().findViewById(R.id.viewpager);
 
         try {
             mahEncryptor = MAHEncryptor.newInstance(sharedPref.getString("saved_key", ""));

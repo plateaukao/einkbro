@@ -11,7 +11,6 @@ import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -42,6 +41,7 @@ import java.util.Locale;
 
 import de.baumann.browser.R;
 import de.baumann.browser.databases.DbAdapter_Files;
+import de.baumann.browser.helper.class_CustomViewPager;
 import de.baumann.browser.helper.helper_editText;
 import de.baumann.browser.helper.helper_main;
 
@@ -57,7 +57,7 @@ public class Fragment_Files extends Fragment {
     private SimpleCursorAdapter adapter;
     private SharedPreferences sharedPref;
     private TextView listBar;
-    private ViewPager viewPager;
+    private class_CustomViewPager viewPager;
 
     private int top;
     private int index;
@@ -77,7 +77,7 @@ public class Fragment_Files extends Fragment {
         editText = (EditText) getActivity().findViewById(R.id.editText);
         listBar = (TextView) getActivity().findViewById(R.id.listBar);
         listView = (ListView)rootView.findViewById(R.id.list);
-        viewPager = (ViewPager) getActivity().findViewById(R.id.viewpager);
+        viewPager = (class_CustomViewPager) getActivity().findViewById(R.id.viewpager);
 
         //calling Notes_DbAdapter
         db = new DbAdapter_Files(getActivity());

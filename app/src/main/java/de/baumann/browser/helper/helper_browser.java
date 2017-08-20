@@ -26,7 +26,6 @@ import android.content.SharedPreferences;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.design.widget.AppBarLayout;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -54,7 +53,7 @@ import de.baumann.browser.utils.Utils_UserAgent;
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class helper_browser {
 
-    public static void setupViews (final Activity activity, final ViewPager viewPager, final WebView webView,
+    public static void setupViews (final Activity activity, final class_CustomViewPager viewPager, final WebView webView,
                                    final EditText editText, final ImageButton imageButton_up,
                                    final ImageButton imageButton_down, final ImageButton imageButton_left,
                                    final ImageButton imageButton_right, final AppBarLayout appBarLayout,
@@ -113,7 +112,7 @@ public class helper_browser {
 
 
     public static void switcher (final Activity activity, final WebView mWebView, final TextView urlBar,
-                                 final ViewPager viewPager) {
+                                 final class_CustomViewPager viewPager) {
 
         final Utils_UserAgent myUserAgent= new Utils_UserAgent();
         final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
@@ -293,20 +292,10 @@ public class helper_browser {
                                          boolean isChecked) {
                 if(isChecked){
                     sharedPref.edit().putString("swipe_string", activity.getString(R.string.app_yes)).apply();
-                    viewPager.setOnTouchListener(new View.OnTouchListener() {
-                        @Override
-                        public boolean onTouch(View v, MotionEvent event) {
-                            return false;
-                        }
-                    });
+                    viewPager.setPagingEnabled(true);
                 }else{
                     sharedPref.edit().putString("swipe_string", activity.getString(R.string.app_no)).apply();
-                    viewPager.setOnTouchListener(new View.OnTouchListener() {
-                        @Override
-                        public boolean onTouch(View v, MotionEvent event) {
-                            return true;
-                        }
-                    });
+                    viewPager.setPagingEnabled(false);
                 }
             }
         });
