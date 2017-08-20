@@ -43,7 +43,7 @@ public class Activity_settings_close extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        setTitle(R.string.menu_settings);
+        setTitle(R.string.pref_5);
 
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 

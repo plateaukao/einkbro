@@ -288,6 +288,9 @@
     <string name="action_theme">Design</string>
     <string name="action_theme_summary">Du magst kein grün? Ändere die Farbe!</string>
 
+    <string name="action_swipe">Wischen</string>
+    <string name="action_swipe_summary">Wische nach links und rechts um die Tabs zu wechseln.</string>
+
 
     // Intro
 

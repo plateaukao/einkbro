@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <CheckBoxPreference
+        android:title="@string/action_openLink"
+        android:icon="@drawable/link_variant"
+        android:summary="@string/action_openLink_summary"
+        android:key="openLink"
+        android:defaultValue="true" />
+
+    <CheckBoxPreference
+        android:title="@string/action_swipe"
+        android:icon="@drawable/gesture_swipe_right"
+        android:summary="@string/action_swipe_summary"
+        android:key="swipe"
+        android:defaultValue="true" />
+
     <ListPreference
         android:title="@string/action_theme"
         android:icon="@drawable/format_color_fill"
@@ -45,13 +59,6 @@
         android:defaultValue="100"
         android:entries="@array/listArrayFont"
         android:entryValues="@array/listValuesFont" />
-
-    <CheckBoxPreference
-        android:title="@string/action_openLink"
-        android:icon="@drawable/link_variant"
-        android:summary="@string/action_openLink_summary"
-        android:key="openLink"
-        android:defaultValue="true" />
 
     <Preference
         android:title="@string/action_openSettings"

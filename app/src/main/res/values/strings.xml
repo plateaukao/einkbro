@@ -277,6 +277,9 @@
     <string name="action_theme">Theme</string>
     <string name="action_theme_summary">Don\'t like green? Change the color!</string>
 
+    <string name="action_swipe">Swipe</string>
+    <string name="action_swipe_summary">Swipe left and right to switch tabs.</string>
+
 
     // Intro
 

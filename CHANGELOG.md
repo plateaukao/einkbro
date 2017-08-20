@@ -1,3 +1,7 @@
+### v 4.3 (WIP)
+- fix: title of setting subpages
+- new: swipe to switch tabs optional (settings/popup settings)
+
 ### v 4.2
 - removed: backup/restore of passStorage
 - fix: hiding keyboard after searching in lists

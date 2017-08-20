@@ -951,7 +951,7 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
         }
 
         if (id == R.id.action_toggle) {
-            helper_browser.switcher(activity, mWebView, urlBar);
+            helper_browser.switcher(activity, mWebView, urlBar, viewPager);
         }
 
         if (id == R.id.menu_save_screenshot) {

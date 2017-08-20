@@ -15,6 +15,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.EditText;
@@ -110,6 +111,20 @@ public class Activity_Main extends AppCompatActivity {
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setOffscreenPageLimit(10);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        viewPager.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                if (sharedPref.getBoolean ("swipe", false)){
+                    sharedPref.edit().putString("swipe_string", activity.getString(R.string.app_yes)).apply();
+                    return false;
+                } else {
+                    sharedPref.edit().putString("swipe_string", activity.getString(R.string.app_no)).apply();
+                    return true;
+                }
+            }
+        });
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

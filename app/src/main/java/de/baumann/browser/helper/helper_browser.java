@@ -112,7 +112,8 @@ public class helper_browser {
     }
 
 
-    public static void switcher (final Activity activity, final WebView mWebView, final TextView urlBar) {
+    public static void switcher (final Activity activity, final WebView mWebView, final TextView urlBar,
+                                 final ViewPager viewPager) {
 
         final Utils_UserAgent myUserAgent= new Utils_UserAgent();
         final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
@@ -131,6 +132,7 @@ public class helper_browser {
         Switch sw_cookies = (Switch) dialogView.findViewById(R.id.switch4);
         Switch sw_blockads = (Switch) dialogView.findViewById(R.id.switch5);
         Switch sw_requestDesk = (Switch) dialogView.findViewById(R.id.switch6);
+        Switch sw_swipe = (Switch) dialogView.findViewById(R.id.switch7);
         final ImageButton whiteList_js = (ImageButton) dialogView.findViewById(R.id.imageButton_js);
 
         if (whiteList.contains(domain)) {
@@ -167,6 +169,11 @@ public class helper_browser {
             sw_blockads.setChecked(true);
         } else {
             sw_blockads.setChecked(false);
+        }
+        if (sharedPref.getString("swipe_string", "True").equals(activity.getString(R.string.app_yes))){
+            sw_swipe.setChecked(true);
+        } else {
+            sw_swipe.setChecked(false);
         }
         whiteList_js.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -276,6 +283,30 @@ public class helper_browser {
                 }else{
                     sharedPref.edit().putString("request_string", activity.getString(R.string.app_no)).apply();
                     myUserAgent.setUserAgent(activity, mWebView, false, mWebView.getUrl());
+                }
+            }
+        });
+        sw_swipe.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,
+                                         boolean isChecked) {
+                if(isChecked){
+                    sharedPref.edit().putString("swipe_string", activity.getString(R.string.app_yes)).apply();
+                    viewPager.setOnTouchListener(new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+                            return false;
+                        }
+                    });
+                }else{
+                    sharedPref.edit().putString("swipe_string", activity.getString(R.string.app_no)).apply();
+                    viewPager.setOnTouchListener(new View.OnTouchListener() {
+                        @Override
+                        public boolean onTouch(View v, MotionEvent event) {
+                            return true;
+                        }
+                    });
                 }
             }
         });
