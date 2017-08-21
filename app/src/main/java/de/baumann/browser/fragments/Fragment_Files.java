@@ -138,10 +138,10 @@ public class Fragment_Files extends Fragment {
             }
 
             db.open();
-            if(db.isExist(file_Name)) {
+            if(db.isExist(helper_main.secString(file_Name))) {
                 Log.i(TAG, "Entry exists" + file_Name);
             } else {
-                db.insert(file_Name, file_Size, file_ext, file_path, file_date);
+                db.insert(helper_main.secString(file_Name), file_Size, helper_main.secString(file_ext), helper_main.secString(file_path), file_date);
             }
         }
 
@@ -512,7 +512,7 @@ public class Fragment_Files extends Fragment {
                 File dir = pathFile.getParentFile();
                 File to = new File(dir,inputTag);
 
-                if(db.isExist(inputTag)){
+                if(db.isExist(helper_main.secString(inputTag))){
                     Snackbar.make(listView, getString(R.string.toast_newTitle), Snackbar.LENGTH_LONG).show();
                 } else {
                     pathFile.renameTo(to);

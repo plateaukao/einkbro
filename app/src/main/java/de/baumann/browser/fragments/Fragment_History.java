@@ -483,7 +483,7 @@ public class Fragment_History extends Fragment {
                 String edit_creation = sharedPref.getString("edit_creation", "");
 
                 String inputTag = editText.getText().toString().trim();
-                db.update(Integer.parseInt(edit_id), inputTag, edit_content, edit_icon, edit_attachment, edit_creation);
+                db.update(Integer.parseInt(edit_id), helper_main.secString(inputTag), helper_main.secString(edit_content), edit_icon, edit_attachment, edit_creation);
                 helper_editText.hideKeyboard(getActivity(), editText, 0, getString(R.string.app_title_history), getString(R.string.app_search_hint));
                 setHistoryList();
 

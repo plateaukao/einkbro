@@ -129,6 +129,16 @@ public class Activity_settings_app extends AppCompatActivity {
             });
         }
 
+        private void addSwitchListener() {
+            Preference reset = findPreference("swipe");
+            reset.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                public boolean onPreferenceClick(Preference pref) {
+                    recreate();
+                    return true;
+                }
+            });
+        }
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -140,6 +150,7 @@ public class Activity_settings_app extends AppCompatActivity {
             addOpenSettingsListener();
             addThemeListener();addFullscreenListener();
             addOrientationListener();
+            addSwitchListener();
         }
 
         private void recreate () {

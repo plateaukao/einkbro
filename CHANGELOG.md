@@ -1,3 +1,8 @@
+### v 4.4 (WIP)
+- fix: saving entries containing an apostrophe
+- fix: option to restart app to apply swipe gesture
+- improved: behavior of tab preview
+
 ### v 4.3
 - fix: title of setting subpages
 - fix: crash when selected list at startup

@@ -147,14 +147,14 @@ public class Fragment_Bookmarks extends Fragment {
                                 Snackbar.make(listView, R.string.bookmark_setFav_not, Snackbar.LENGTH_LONG).show();
                             }else{
                                 iv_attachment.setImageResource(R.drawable.star_grey);
-                                db.update(Integer.parseInt(_id), bookmarks_title, bookmarks_content, bookmarks_icon, "true", bookmarks_creation);
+                                db.update(Integer.parseInt(_id), helper_main.secString(bookmarks_title), helper_main.secString(bookmarks_content), bookmarks_icon, "true", bookmarks_creation);
                                 setBookmarksList();
                                 sharedPref.edit().putString("startURL", bookmarks_content).apply();
                                 Snackbar.make(listView, R.string.bookmark_setFav, Snackbar.LENGTH_LONG).show();
                             }
                         } else {
                             iv_attachment.setImageResource(R.drawable.star_outline);
-                            db.update(Integer.parseInt(_id), bookmarks_title, bookmarks_content, bookmarks_icon, "", bookmarks_creation);
+                            db.update(Integer.parseInt(_id), helper_main.secString(bookmarks_title), helper_main.secString(bookmarks_content), bookmarks_icon, "", bookmarks_creation);
                             setBookmarksList();
                         }
                     }
@@ -545,7 +545,7 @@ public class Fragment_Bookmarks extends Fragment {
                 String edit_creation = sharedPref.getString("edit_creation", "");
 
                 String inputTag = editText.getText().toString().trim();
-                db.update(Integer.parseInt(edit_id), inputTag, edit_content, edit_icon, edit_attachment, edit_creation);
+                db.update(Integer.parseInt(edit_id), helper_main.secString(inputTag), helper_main.secString(edit_content), edit_icon, edit_attachment, edit_creation);
                 helper_editText.hideKeyboard(getActivity(), editText, 0, getString(R.string.app_title_bookmarks), getString(R.string.app_search_hint));
                 setBookmarksList();
 

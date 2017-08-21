@@ -184,7 +184,7 @@ public class helper_webView {
                 if(db.isExist(helper_main.createDate())){
                     Log.i(TAG, "Entry exists" + webView.getUrl());
                 }else{
-                    db.insert(title, webView.getUrl(), "", "", helper_main.createDate());
+                    db.insert(helper_main.secString(title), helper_main.secString(webView.getOriginalUrl()), "", "", helper_main.createDate());
                 }
             }
 

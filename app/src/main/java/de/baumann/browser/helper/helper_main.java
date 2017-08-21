@@ -145,6 +145,10 @@ public class helper_main {
         }
     }
 
+    public static String secString (String string) {
+        return  string.replaceAll("'", "\'\'");
+    }
+
     public static String createDate () {
         Date date = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss", Locale.getDefault());
@@ -607,10 +611,10 @@ public class helper_main {
     public static void save_readLater (Activity activity, String title, String url, View view) {
         DbAdapter_ReadLater db = new DbAdapter_ReadLater(activity);
         db.open();
-        if(db.isExist(url)){
+        if(db.isExist(helper_main.secString(url))){
             Snackbar.make(view, R.string.toast_newTitle, Snackbar.LENGTH_LONG).show();
         }else{
-            db.insert(title, url, "", "", helper_main.createDate());
+            db.insert(helper_main.secString(title), helper_main.secString(url), "", "", helper_main.createDate());
             Snackbar.make(view, R.string.bookmark_added, Snackbar.LENGTH_LONG).show();
         }
     }
@@ -618,10 +622,10 @@ public class helper_main {
     public static void save_bookmark (Activity activity, String title, String url, View view) {
         DbAdapter_Bookmarks db = new DbAdapter_Bookmarks(activity);
         db.open();
-        if(db.isExist(url)){
+        if(db.isExist(helper_main.secString(url))){
             Snackbar.make(view, R.string.toast_newTitle, Snackbar.LENGTH_LONG).show();
         }else{
-            db.insert(title, url, "", "", helper_main.createDate());
+            db.insert(helper_main.secString(title), helper_main.secString(url), "", "", helper_main.createDate());
             Snackbar.make(view, R.string.bookmark_added, Snackbar.LENGTH_LONG).show();
         }
     }

@@ -41,6 +41,7 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 
 import de.baumann.browser.R;
+import de.baumann.browser.fragments.Fragment_Browser;
 
 import static android.content.ContentValues.TAG;
 
@@ -167,6 +168,8 @@ public class helper_toolbar {
                                       final int newTab, final ImageView close, final class_CustomViewPager viewPager,
                                       final String tab) {
 
+        final int actualTab = viewPager.getCurrentItem();
+        final int clickedTab = viewPager.getCurrentItem();
         final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
 
         cardView.setOnClickListener(new View.OnClickListener() {
@@ -184,6 +187,11 @@ public class helper_toolbar {
                 sharedPref.edit().putString("openURL", sharedPref.getString("startURL", "https://github.com/scoute-dich/browser/")).apply();
                 viewPager.setCurrentItem(newTab);
                 horizontalScrollView.setVisibility(View.GONE);
+
+                if (actualTab == clickedTab) {
+                    Fragment_Browser fragment = (Fragment_Browser) viewPager.getAdapter().instantiateItem(viewPager, viewPager.getCurrentItem());
+                    fragment.fragmentAction();
+                }
                 return false;
             }
         });
@@ -191,11 +199,19 @@ public class helper_toolbar {
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 File preview = new File(activity.getFilesDir() + "/tab_" + tab + ".jpg");
                 preview.delete();
                 sharedPref.edit().putInt("tab_" + tab + "_exit", 1).apply();
                 sharedPref.edit().putString("tab_" + tab, "").apply();
                 horizontalScrollView.setVisibility(View.GONE);
+
+                if (actualTab > 0 && actualTab == clickedTab) {
+                    viewPager.setCurrentItem(actualTab - 1);
+                } else {
+                    Fragment_Browser fragment = (Fragment_Browser) viewPager.getAdapter().instantiateItem(viewPager, viewPager.getCurrentItem());
+                    fragment.fragmentAction();
+                }
             }
         });
     }

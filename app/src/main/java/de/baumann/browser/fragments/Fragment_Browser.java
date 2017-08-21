@@ -318,10 +318,10 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
                     public void onClick(View view) {
                         DbAdapter_ReadLater db = new DbAdapter_ReadLater(activity);
                         db.open();
-                        if(db.isExist(mWebView.getUrl())){
+                        if(db.isExist(helper_main.secString(mWebView.getUrl()))){
                             Snackbar.make(editText, activity.getString(R.string.toast_newTitle), Snackbar.LENGTH_LONG).show();
                         }else{
-                            db.insert(helper_webView.getDomain(activity, url), url, "", "", helper_main.createDate());
+                            db.insert(helper_main.secString(helper_webView.getDomain(activity, url)), helper_main.secString(url), "", "", helper_main.createDate());
                             Snackbar.make(mWebView, R.string.bookmark_added, Snackbar.LENGTH_LONG).show();
                         }
                         dialog.cancel();
@@ -408,10 +408,10 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
                     public void onClick(View view) {
                         DbAdapter_ReadLater db = new DbAdapter_ReadLater(activity);
                         db.open();
-                        if(db.isExist(mWebView.getUrl())){
+                        if(db.isExist(helper_main.secString(mWebView.getUrl()))){
                             Snackbar.make(editText, activity.getString(R.string.toast_newTitle), Snackbar.LENGTH_LONG).show();
                         }else{
-                            db.insert(helper_webView.getDomain(activity, url), url, "", "", helper_main.createDate());
+                            db.insert(helper_main.secString(helper_webView.getDomain(activity, url)), helper_main.secString(url), "", "", helper_main.createDate());
                             Snackbar.make(mWebView, R.string.bookmark_added, Snackbar.LENGTH_LONG).show();
                         }
                         dialog.cancel();
