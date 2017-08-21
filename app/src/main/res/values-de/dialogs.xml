@@ -6,16 +6,10 @@
     <string name="changelog_text">
         &lt;b>Für mehr Informationen zur Bedienung gibt es einen Hilfedialog (Menü -> Mehr -> Hilfe).&lt;/b>&lt;br>&lt;br>
 
-        &lt;b>v 4.2&lt;/b>&lt;br>&lt;br>
-        - removed: backup/restore of passStorage&lt;br>
-        - fix: hiding keyboard after searching in lists&lt;br>
-        - fix: history - scroll to latest entry&lt;br>
-        - improved: code and UI&lt;br>
-        - new: swipe to switch tabs&lt;br>
-        - new: settings on different subpages&lt;br>
-        - new: auto orientation (sensor/device)&lt;br>
-        - new: offer restart to apply some settings&lt;br>
-        - new: theme support
+        &lt;b>v 4.3&lt;/b>&lt;br>&lt;br>
+        - fix: title of setting subpages&lt;br>
+        - fix: crash when selected list at startup&lt;br>
+        - new: swipe to switch tabs optional (settings/popup settings)
     </string>
 
 

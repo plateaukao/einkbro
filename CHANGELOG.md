@@ -1,5 +1,6 @@
-### v 4.3 (WIP)
+### v 4.3
 - fix: title of setting subpages
+- fix: crash when selected list at startup
 - new: swipe to switch tabs optional (settings/popup settings)
 
 ### v 4.2

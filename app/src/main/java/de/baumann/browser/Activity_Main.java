@@ -192,7 +192,7 @@ public class Activity_Main extends AppCompatActivity {
                     fragment.fragmentAction();
                 }
             }
-        }, 150);
+        }, 100);
     }
 
     protected void onNewIntent(final Intent intent) {
@@ -257,7 +257,7 @@ public class Activity_Main extends AppCompatActivity {
         }
     }
 
-    private void setupViewPager(class_CustomViewPager viewPager) {
+    private void setupViewPager(final class_CustomViewPager viewPager) {
 
         final String startTab = sharedPref.getString("tabMain", "0");
         final int startTabInt = Integer.parseInt(startTab);
@@ -276,7 +276,13 @@ public class Activity_Main extends AppCompatActivity {
         adapter.addFragment(new Fragment_Files(), String.valueOf(getString(R.string.app_name)));
 
         viewPager.setAdapter(adapter);
-        viewPager.setCurrentItem(startTabInt,true);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                viewPager.setCurrentItem(startTabInt,true);
+            }
+        }, 250);
     }
 
     private class ViewPagerAdapter extends FragmentPagerAdapter {
