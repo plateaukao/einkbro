@@ -177,7 +177,7 @@ public class Fragment_Pass extends Fragment {
                                                     String encrypted_userName = mahEncryptor.encode(pass_userNameET.getText().toString().trim());
                                                     String encrypted_userPW = mahEncryptor.encode(pass_userPWET.getText().toString().trim());
 
-                                                    db.update(Integer.parseInt(_id), helper_main.secString(input_pass_title), helper_main.secString(pass_content), helper_main.secString(encrypted_userName), helper_main.secString(encrypted_userPW), helper_main.createDate());
+                                                    db.update(Integer.parseInt(_id), helper_main.secString(input_pass_title), helper_main.secString(pass_content), helper_main.secString(encrypted_userName), helper_main.secString(encrypted_userPW), helper_main.createDate_norm());
                                                     setFilesList();
                                                     Snackbar.make(listView, R.string.pass_success, Snackbar.LENGTH_SHORT).show();
 

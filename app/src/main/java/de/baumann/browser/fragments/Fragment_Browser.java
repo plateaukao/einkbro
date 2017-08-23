@@ -131,6 +131,14 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
         setHasOptionsMenu(true);
         activity = getActivity();
 
+        PreferenceManager.setDefaultValues(activity, R.xml.user_settings, false);
+        PreferenceManager.setDefaultValues(activity, R.xml.user_settings_search, false);
+        PreferenceManager.setDefaultValues(activity, R.xml.user_settings_app, false);
+        PreferenceManager.setDefaultValues(activity, R.xml.user_settings_close, false);
+        PreferenceManager.setDefaultValues(activity, R.xml.user_settings_start, false);
+        PreferenceManager.setDefaultValues(activity, R.xml.user_settings_search_main, false);
+        PreferenceManager.setDefaultValues(activity, R.xml.user_settings_data, false);
+
         sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
         sharedPref.edit().putInt("tab_" + tab_number + "_exit", 0).apply();
 
@@ -321,7 +329,7 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
                         if(db.isExist(helper_main.secString(mWebView.getUrl()))){
                             Snackbar.make(editText, activity.getString(R.string.toast_newTitle), Snackbar.LENGTH_LONG).show();
                         }else{
-                            db.insert(helper_main.secString(helper_webView.getDomain(activity, url)), helper_main.secString(url), "", "", helper_main.createDate());
+                            db.insert(helper_main.secString(helper_webView.getDomain(activity, url)), helper_main.secString(url), "", "", helper_main.createDate_norm());
                             Snackbar.make(mWebView, R.string.bookmark_added, Snackbar.LENGTH_LONG).show();
                         }
                         dialog.cancel();
@@ -411,7 +419,7 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
                         if(db.isExist(helper_main.secString(mWebView.getUrl()))){
                             Snackbar.make(editText, activity.getString(R.string.toast_newTitle), Snackbar.LENGTH_LONG).show();
                         }else{
-                            db.insert(helper_main.secString(helper_webView.getDomain(activity, url)), helper_main.secString(url), "", "", helper_main.createDate());
+                            db.insert(helper_main.secString(helper_webView.getDomain(activity, url)), helper_main.secString(url), "", "", helper_main.createDate_norm());
                             Snackbar.make(mWebView, R.string.bookmark_added, Snackbar.LENGTH_LONG).show();
                         }
                         dialog.cancel();
@@ -731,7 +739,7 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
 
         final String URL = sharedPref.getString("openURL","https://github.com/scoute-dich/browser/");
 
-        if (URL.equals(mWebView.getUrl()) || URL.equals("") && sharedPref.getInt("tab_" + tab_number  + "_exit", 0) == 0) {
+        if (URL.equals(mWebView.getUrl()) || URL.equals("") && sharedPref.getString("tab_" + tab_number, "").length() > 0) {
             Log.i(TAG, "Tab switched");
         } else if (URL.equals("settings")) {
             mWebView.reload();
@@ -782,8 +790,7 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
                     });
             snackbar.show();
             mWebView.loadUrl(URL.replace("openLogin", ""));
-        } else if (sharedPref.getInt("tab_" + tab_number  + "_exit", 0) == 1) {
-            sharedPref.edit().putInt("tab_" + tab_number + "_exit", 0).apply();
+        } else if (sharedPref.getString("tab_" + tab_number, "").isEmpty() && URL.length() == 0) {
             mWebView.loadUrl(sharedPref.getString("startURL", "https://github.com/scoute-dich/browser/"));
         } else {
             mWebView.loadUrl(URL);
@@ -793,6 +800,7 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
     private void setTitle () {
 
         String title = helper_webView.getTitle (activity, mWebView);
+        sharedPref.edit().putString("webView_url", mWebView.getUrl()).apply();
 
         if (title.isEmpty()) {
             urlBar.setText(getString(R.string.app_name));
@@ -807,7 +815,7 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
 
     private void screenshot() {
 
-        sharePath = helper_webView.getDomain(activity, mWebView.getUrl()) + "_" + helper_main.createDate() + ".jpg";
+        sharePath = helper_webView.getDomain(activity, mWebView.getUrl()) + "_" + helper_main.createDate_sec() + ".jpg";
         shareFile = helper_main.newFile(sharePath);
 
         try{
@@ -832,6 +840,18 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
         }
 
         if (bitmap != null) {
+
+            OutputStream os;
+            try {
+                os = new FileOutputStream(shareFile);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
+                os.flush();
+                os.close();
+            } catch (Exception e) {
+                Log.e(getClass().getSimpleName(), "Error writing bitmap", e);
+            }
+
+
             try {
                 OutputStream fOut;
                 fOut = new FileOutputStream(shareFile);

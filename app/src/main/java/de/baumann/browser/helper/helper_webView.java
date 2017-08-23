@@ -22,6 +22,7 @@ package de.baumann.browser.helper;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.*;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -30,7 +31,9 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.View;
 import android.webkit.CookieManager;
+import android.webkit.HttpAuthHandler;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
@@ -181,10 +184,10 @@ public class helper_webView {
                 db.open();
                 db.deleteDouble(webView.getUrl());
 
-                if(db.isExist(helper_main.createDate())){
+                if(db.isExist(helper_main.createDate_norm())){
                     Log.i(TAG, "Entry exists" + webView.getUrl());
                 }else{
-                    db.insert(helper_main.secString(title), helper_main.secString(webView.getOriginalUrl()), "", "", helper_main.createDate());
+                    db.insert(helper_main.secString(title), helper_main.secString(webView.getOriginalUrl()), "", "", helper_main.createDate_norm());
                 }
             }
 
@@ -226,6 +229,38 @@ public class helper_webView {
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 final Uri uri = request.getUrl();
                 return handleUri(uri);
+            }
+
+            @Override
+            public void onReceivedHttpAuthRequest(WebView view, final HttpAuthHandler handler, String host, String realm) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                View dialogView = View.inflate(activity, R.layout.dialog_login, null);
+
+                final EditText pass_titleET = (EditText) dialogView.findViewById(R.id.pass_title);
+                final EditText pass_userNameET = (EditText) dialogView.findViewById(R.id.pass_userName);
+                final EditText pass_userPWET = (EditText) dialogView.findViewById(R.id.pass_userPW);
+                pass_titleET.setVisibility(View.GONE);
+
+                pass_userNameET.setText("");
+                pass_userPWET.setText("");
+
+                builder.setView(dialogView);
+                builder.setTitle(R.string.pass_edit);
+                builder.setPositiveButton(R.string.toast_yes, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        handler.proceed(pass_userNameET.getText().toString(), pass_userPWET.getText().toString());
+                    }
+                });
+                builder.setNegativeButton(R.string.toast_cancel, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        dialog.cancel();
+                    }
+                });
+
+                final AlertDialog dialog = builder.create();
+                dialog.show();
             }
 
             private boolean handleUri(final Uri uri) {

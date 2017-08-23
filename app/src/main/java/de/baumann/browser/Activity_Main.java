@@ -14,7 +14,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.EditText;
@@ -63,14 +62,6 @@ public class Activity_Main extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
         WebView.enableSlowWholeDocumentDraw();
-
-        PreferenceManager.setDefaultValues(activity, R.xml.user_settings, false);
-        PreferenceManager.setDefaultValues(activity, R.xml.user_settings_search, false);
-        PreferenceManager.setDefaultValues(activity, R.xml.user_settings_app, false);
-        PreferenceManager.setDefaultValues(activity, R.xml.user_settings_close, false);
-        PreferenceManager.setDefaultValues(activity, R.xml.user_settings_start, false);
-        PreferenceManager.setDefaultValues(activity, R.xml.user_settings_search_main, false);
-        PreferenceManager.setDefaultValues(activity, R.xml.user_settings_data, false);
 
         sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
         sharedPref.edit().putBoolean("isOpened", true).apply();

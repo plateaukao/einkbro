@@ -37,6 +37,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.FileProvider;
 import android.text.Html;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.text.util.Linkify;
 import android.view.View;
 import android.view.WindowManager;
@@ -146,17 +147,27 @@ public class helper_main {
     }
 
     public static String secString (String string) {
-        return  string.replaceAll("'", "\'\'");
+        if(TextUtils.isEmpty(string)){
+            return "";
+        }else {
+            return  string.replaceAll("'", "\'\'");
+        }
     }
 
-    public static String createDate () {
+    public static String createDate_sec () {
         Date date = new Date();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss", Locale.getDefault());
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.getDefault());
+        return  format.format(date);
+    }
+
+    public static String createDate_norm () {
+        Date date = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         return  format.format(date);
     }
 
     public static File newFile (String fileName) {
-        return  new File(Environment.getExternalStorageDirectory() + "/" + Environment.DIRECTORY_DOWNLOADS + "/" + fileName);
+        return  new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/" + fileName);
     }
 
     public static SpannableString textSpannable (String text) {
@@ -614,7 +625,7 @@ public class helper_main {
         if(db.isExist(helper_main.secString(url))){
             Snackbar.make(view, R.string.toast_newTitle, Snackbar.LENGTH_LONG).show();
         }else{
-            db.insert(helper_main.secString(title), helper_main.secString(url), "", "", helper_main.createDate());
+            db.insert(helper_main.secString(title), helper_main.secString(url), "", "", helper_main.createDate_norm());
             Snackbar.make(view, R.string.bookmark_added, Snackbar.LENGTH_LONG).show();
         }
     }
@@ -625,7 +636,7 @@ public class helper_main {
         if(db.isExist(helper_main.secString(url))){
             Snackbar.make(view, R.string.toast_newTitle, Snackbar.LENGTH_LONG).show();
         }else{
-            db.insert(helper_main.secString(title), helper_main.secString(url), "", "", helper_main.createDate());
+            db.insert(helper_main.secString(title), helper_main.secString(url), "", "", helper_main.createDate_norm());
             Snackbar.make(view, R.string.bookmark_added, Snackbar.LENGTH_LONG).show();
         }
     }

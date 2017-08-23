@@ -166,7 +166,7 @@
 
     <string name="def_wiki">en</string>
     <string name="def_search">https://duckduckgo.com/?q=</string>
-    <string name="def_rot">auto</string>
+    <string name="def_rot">device</string>
 
     <string-array name="listArrayTabMain">
         <item>Browser</item>

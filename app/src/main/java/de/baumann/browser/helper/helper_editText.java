@@ -76,7 +76,7 @@ public class helper_editText {
                     if(db.isExist(helper_main.secString(input_pass_title))){
                         Snackbar.make(view, activity.getString(R.string.toast_newTitle), Snackbar.LENGTH_LONG).show();
                     }else{
-                        db.insert(helper_main.secString(input_pass_title), helper_main.secString(url), helper_main.secString(encrypted_userName), helper_main.secString(encrypted_userPW), helper_main.createDate());
+                        db.insert(helper_main.secString(input_pass_title), helper_main.secString(url), helper_main.secString(encrypted_userName), helper_main.secString(encrypted_userPW), helper_main.createDate_norm());
                         Snackbar.make(view, R.string.pass_success, Snackbar.LENGTH_LONG).show();
                         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(pass_title.getWindowToken(), 0);

@@ -202,8 +202,8 @@ public class helper_toolbar {
 
                 File preview = new File(activity.getFilesDir() + "/tab_" + tab + ".jpg");
                 preview.delete();
-                sharedPref.edit().putInt("tab_" + tab + "_exit", 1).apply();
                 sharedPref.edit().putString("tab_" + tab, "").apply();
+                sharedPref.edit().putString("openURL","").apply();
                 horizontalScrollView.setVisibility(View.GONE);
 
                 if (actualTab > 0 && actualTab == clickedTab) {
