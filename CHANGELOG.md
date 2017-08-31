@@ -1,10 +1,9 @@
-### v 4.4 (WIP)
+### v 4.4
 - fix: save screenshot
 - fix: saving entries containing an apostrophe
 - fix: option to restart app to apply swipe gesture
 - new: http basic authentication
-- improved: behavior of tab preview
-- improved: tab behavior
+- improved: behavior of tab preview/behavior
 
 ### v 4.3
 - fix: title of setting subpages

@@ -7,8 +7,8 @@ android {
         applicationId "de.baumann.browser"
         minSdkVersion 21
         targetSdkVersion 25
-        versionCode 58
-        versionName "4.3"
+        versionCode 59
+        versionName "4.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
