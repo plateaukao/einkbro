@@ -122,6 +122,7 @@
     <item
         android:id="@+id/action_toggle"
         android:title="@string/menu_toggle"
-        app:showAsAction="never" />
+        android:icon="@drawable/settings_light"
+        app:showAsAction="always" />
 
 </menu>

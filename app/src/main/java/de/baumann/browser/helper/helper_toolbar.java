@@ -206,11 +206,8 @@ public class helper_toolbar {
                 sharedPref.edit().putString("openURL","").apply();
                 horizontalScrollView.setVisibility(View.GONE);
 
-                if (actualTab > 0 && actualTab == clickedTab) {
+                if (actualTab > 0 && actualTab == newTab) {
                     viewPager.setCurrentItem(actualTab - 1);
-                } else {
-                    Fragment_Browser fragment = (Fragment_Browser) viewPager.getAdapter().instantiateItem(viewPager, viewPager.getCurrentItem());
-                    fragment.fragmentAction();
                 }
             }
         });

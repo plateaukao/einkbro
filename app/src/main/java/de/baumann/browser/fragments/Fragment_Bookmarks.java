@@ -15,12 +15,15 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.FilterQueryProvider;
@@ -311,6 +314,14 @@ public class Fragment_Bookmarks extends Fragment {
                         sharedPref.edit().putString("edit_creation", bookmarks_creation).apply();
                         editText.setVisibility(View.VISIBLE);
                         helper_editText.showKeyboard(getActivity(), editText, 2, bookmarks_title, getString(R.string.bookmark_edit_title));
+                        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                                if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                                    getActivity().findViewById(R.id.action_save_bookmark).performClick();
+                                }
+                                return false;
+                            }
+                        });
                     }
                 });
 
@@ -430,6 +441,17 @@ public class Fragment_Bookmarks extends Fragment {
         // as you specify a parent activity in AndroidManifest.xml.
 
         switch (item.getItemId()) {
+
+            case R.id.action_filter:
+                editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                        if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                            helper_editText.hideKeyboardSearch(getActivity(), editText);
+                        }
+                        return false;
+                    }
+                });
+                return true;
 
             case R.id.filter_title:
                 sharedPref.edit().putString("filter_bookmarksBY", "bookmarks_title").apply();

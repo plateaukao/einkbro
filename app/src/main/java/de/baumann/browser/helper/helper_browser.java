@@ -28,10 +28,12 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.webkit.CookieManager;
 import android.webkit.WebView;
 import android.widget.CompoundButton;
@@ -103,6 +105,15 @@ public class helper_browser {
                     editText.setVisibility(View.VISIBLE);
                     helper_editText.showKeyboard(activity, editText, 3, sharedPref.getString("webView_url", ""), activity.getString(R.string.app_search_hint));
                     editText.selectAll();
+
+                    editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                            if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                                activity.findViewById(R.id.action_search_go).performClick();
+                            }
+                            return false;
+                        }
+                    });
                 } else {
                     Log.i("Browser", "Switched to list");
                 }

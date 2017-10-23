@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -61,6 +62,8 @@ public class Activity_Main extends AppCompatActivity {
         helper_main.setTheme(activity);
 
         setContentView(R.layout.activity_main);
+        StrictMode.VmPolicy.Builder builderVM = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builderVM.build());
         WebView.enableSlowWholeDocumentDraw();
 
         sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);

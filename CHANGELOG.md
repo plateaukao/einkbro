@@ -1,3 +1,10 @@
+### v 4.5 (WIP)
+- new: keyboard go button actions
+- new: settings icon in toolbar (click for toggle/long click for main settings)
+- improved: tab behavior
+- fix: force close when sharing screenshot
+- fix: not showing website title
+
 ### v 4.4
 - fix: save screenshot
 - fix: saving entries containing an apostrophe

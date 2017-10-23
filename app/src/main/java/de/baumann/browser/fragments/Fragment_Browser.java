@@ -28,6 +28,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -35,6 +36,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.webkit.CookieManager;
 import android.webkit.DownloadListener;
 import android.webkit.GeolocationPermissions;
@@ -64,6 +66,7 @@ import java.io.OutputStream;
 
 import de.baumann.browser.R;
 import de.baumann.browser.databases.DbAdapter_ReadLater;
+import de.baumann.browser.helper.Activity_settings;
 import de.baumann.browser.helper.class_CustomViewPager;
 import de.baumann.browser.helper.helper_browser;
 import de.baumann.browser.helper.helper_editText;
@@ -497,6 +500,7 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
         public void onProgressChanged(WebView view, int progress) {
 
             sharedPref.edit().putString("tab_" + tab_number, helper_webView.getTitle(activity, mWebView)).apply();
+            urlBar.setText(helper_webView.getTitle(activity, mWebView));
             progressBar.setProgress(progress);
             progressBar.setVisibility(progress == 100 ? View.GONE : View.VISIBLE);
 
@@ -935,6 +939,22 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
                 }
             }
         });
+
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                final View v = getActivity().findViewById(R.id.action_toggle);
+                if (v != null) {
+                    v.setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+                            helper_main.switchToActivity(activity, Activity_settings.class);
+                            return true;
+                        }
+                    });
+                }
+            }
+        });
     }
 
     @Override
@@ -981,7 +1001,15 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
         if (id == R.id.menu_save_bookmark) {
             urlBar.setVisibility(View.GONE);
             editText.setVisibility(View.VISIBLE);
-            helper_editText.showKeyboard(activity, editText, 2, helper_webView.getTitle(activity, mWebView), getString(R.string.app_search_hint_bookmark));
+            helper_editText.showKeyboard(activity, editText, 2, helper_webView.getTitle(activity, mWebView), getString(R.string.app_search_hint_bookmark));editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                        activity.findViewById(R.id.action_save_bookmark).performClick();
+                    }
+                    return false;
+                }
+            });
+
         }
 
         if (id == R.id.menu_save_readLater) {
@@ -1040,6 +1068,14 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
             urlBar.setVisibility(View.GONE);
             editText.setVisibility(View.VISIBLE);
             helper_editText.showKeyboard(activity, editText, 1, "", getString(R.string.app_search_hint_site));
+            editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                        activity.findViewById(R.id.action_search_onSite_go).performClick();
+                    }
+                    return false;
+                }
+            });
         }
 
         if (id == R.id.action_search_onSite_go) {

@@ -176,7 +176,6 @@ public class helper_webView {
                 super.onPageFinished(view, url);
 
                 String title = helper_webView.getTitle(activity, webView);
-                urlBar.setText(title);
                 sharedPref.edit().putString("openURL", "").apply();
                 sharedPref.edit().putString("webView_url", webView.getUrl()).apply();
 

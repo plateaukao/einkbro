@@ -183,7 +183,7 @@ public class helper_main {
         return s;
     }
 
-    static void switchToActivity(Activity activity, Class to) {
+    public static void switchToActivity(Activity activity, Class to) {
         Intent intent = new Intent(activity, to);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         activity.startActivity(intent);

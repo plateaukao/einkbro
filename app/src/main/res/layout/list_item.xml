@@ -45,8 +45,6 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_toStartOf="@+id/att_notes"
-                android:fontFamily="sans-serif-condensed"
-                android:typeface="sans"
                 android:textStyle="bold"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:ellipsize="end"
