@@ -4,14 +4,15 @@
     //Changelog Dialog
 
     <string name="changelog_text">
-        &lt;b>有关处理的信息，有一个帮助对话框（菜单 - >更多 - >帮助）。&lt;/b>&lt;br>&lt;br>
+        &lt;b>有关处理的信息，有一个帮助对话框（菜单 ->更多 ->帮助）。&lt;/b>&lt;br>&lt;br>
 
-         &lt;br&gt; v 4.4&lt;br&gt;&lt;br&gt;&lt;br&gt;
+         &lt;b>v 4.5&lt;/b>&lt;br>&lt;br>
          - 修复：保存截图&lt;br>
-         - 修复：保存包含撇号的条目
-         - 修复：选项重新启动应用程序以应用滑动手势&lt;br>
-         - 新的：http基本认证&lt;br>
-         - 改进：选项卡预览/行为的行为&lt;br>
+         - 新：键盘去按钮动作&lt;br>
+         - 新建：工具栏中的设置图标（单击切换/长按主菜单）&lt;br>
+         - 改进：标签行为&lt;br>
+         - 修复：分享屏幕截图时强制关闭&lt;br>
+         - 修复：不显示网站标题&lt;br>
     </string>
 
 
