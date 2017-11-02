@@ -96,6 +96,13 @@ class About_content {
                 .setOnClickListener(ConvenienceBuilder.createWebViewDialogOnClickAction(c, "splinet", "https://github.com/splinet", true, false))
                 .build());
 
+        contributorCardBuilder.addItem(new MaterialAboutActionItem.Builder()
+                .text("Jumping Yang")
+                .subText(R.string.about_cont_summary_3)
+                .icon(R.drawable.github_circle)
+                .setOnClickListener(ConvenienceBuilder.createWebViewDialogOnClickAction(c, "Jumping Yang", "https://github.com/JumpingYang001", true, false))
+                .build());
+
 
         MaterialAboutCard.Builder convenienceCardBuilder = new MaterialAboutCard.Builder();
         convenienceCardBuilder.title(R.string.about_title_libs);

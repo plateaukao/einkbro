@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    //Changelog Dialog
+
+    <string name="changelog_text">
+        &lt;b>有关处理的信息，有一个帮助对话框（菜单 ->更多 ->帮助）。&lt;/b>&lt;br>&lt;br>
+
+         &lt;b>v 4.5&lt;/b>&lt;br>&lt;br>
+         - 修复：保存截图&lt;br>
+         - 新：键盘去按钮动作&lt;br>
+         - 新建：工具栏中的设置图标（单击切换/长按主菜单）&lt;br>
+         - 改进：标签行为&lt;br>
+         - 修复：分享屏幕截图时强制关闭&lt;br>
+         - 修复：不显示网站标题&lt;br>
+    </string>
+
+
+    //License Dialog
+
+    <string name="about_title">Copyright © 2017  by Gaukler Faun</string>
+    <string name="about_text">
+        有关更多信息，请访问github上的项目网站：https：//github.com/scoute-dich/Browser&lt;br>&lt;br>
+
+         此程序是免费软件：您可以重新分配和/或修改
+         它根据GNU通用公共许可证的条款发布
+         自由软件基金会，版本3的许可证，或
+         （根据您的选择）任何更高版本。
+
+         这个程序是分发的，希望它是有用的，
+         但不提供任何保证; 甚至没有隐含的保证
+         适销性或适用于特定目的。 见
+         更多细节，GNU通用公共许可证。
+
+         您应该已经收到GNU通用公共许可证的副本
+         以及这个程序。 如果没有，请参阅http://www.gnu.org/licenses。
+    </string>
+
+
+    //Help Dialog
+
+    <string name="help_lists_title">&lt;b>列表:&lt;/b></string>
+    <string name="help_lists">每个列表都有一个上下文菜单，您可以通过长按一个项目来达到。 列表可以一键清除
+         （菜单）。 您可以按标题或日期排序列表。 您也可以搜索列表中的条目。&lt;br>&lt;br>
+         &lt;i>书签：&lt;/i>一如既往 - 保存您最喜欢的网站，以便更快速的访问。 您也可以将书签设置为
+         点击星号启动。 您也可以将空页设置为起始页（菜单 - >空页）。&lt;br>&lt;br>
+         &lt;i> 稍后阅读：&lt;/i>在这里，您可以保存网站，如果您想随时阅读它们，如果他们不
+         重要的是成为书签。&lt;br&gt;&lt;br&gt;
+         &lt;i>历史记录：&lt;/i>您的浏览器历史记录。&lt;br>&lt;br>
+         &lt;i> 密码库：&lt;/i>此处可以从网站保存（加密）登录数据。 如果要删除输入退出时登录数据，必须在设置中启用“清除出口上的Cookie”。</string>
+
+    <string name="help_toolbar_title">&lt;b>工具栏:&lt;/b></string>
+    <string name="help_toolbar">
+        &lt;i>向左滑动：&lt;/i> 打开您的书签并右键打开您的稍后阅读名单。 滑动到顶部关闭应用程序。 这无处不在。&lt;br&gt;&lt;br>
+             &lt;i>点击（仅在浏览器中）：您可以输入搜索字词（见下文）或网址。 按“输入”或放大镜图标，网站将加载。&lt;br>&lt;br>
+             &lt;i>长按（仅在浏览器中）：&lt;/i> 打开选项卡预览（见下文）。&lt;br>&lt;br>
+             &lt;i>历史记录（仅在浏览器中）：&lt;/i> 打开最后访问的网站的列表。 长按重新加载网站。</string>
+
+    <string name="help_tabs_title">&lt;b>选项卡（预览）:&lt;/b></string>
+    <string name="help_tabs">
+        要打开标签，只需点击预览。 如果您长时间按预览，您的喜爱将在此选项卡中打开。打开的选项卡突出显示。 单击关闭按钮将重置该选项卡。 您可以向左和向右滑动以切换选项卡。</string>
+
+    <string name="help_menu_title">&lt;b>菜单:&lt;/b></string>
+    <string name="help_menu">
+        &lt;i>保存网站：&lt;/i>您可以将网站保存到您的书签，稍后阅读或密码库列表或保存整个网站的屏幕截图。&lt;br>&lt;br>
+        &lt;i>分享网站：&lt;/i>您可以分享网站的屏幕截图，分享链接作为文本或复制链接到剪贴板。&lt;br&gt;&lt;br&gt;
+        &lt;i>在网站上搜索：&lt;/i>搜索任何网站上的文字。&lt;br>&lt;br>
+        &lt;i>打开密码库：打开您的登录数据列表。&lt;br>&lt;br>
+        &lt;i>打开下载目录：&lt;/i>打开下载目录以显示，共享，重命名或删除文件。&lt;br>&lt;br>
+        &lt;i>设置（弹出式对话框）：&lt;/i>您可以在短时间内覆盖默认设置。这些设置
+        将在下一个应用程序开始迷失。点击红十字，您也可以将网站添加到白名单中。
+        它们将被标记为“绿色检查图标”。这些网站将始终允许使用Javascript（甚至之后）
+        重新启动应用程序）。要打开主设置屏幕，请单击弹出对话框底部的“设置”。&lt;br>
+        &lt;i>设置：&lt;/i>在设置中，您可以配置应用程序的行为，一些隐私和安全设定。在应用程序启动时，将始终加载这些设置。</string>
+
+    <string name="help_search_title">&lt;b>搜索:&lt;/b></string>
+    <string name="help_search">
+        您可以在设置中设置您的首选搜索引擎和维基百科的语言。 您可以直接搜索不同的点击放大镜图标右侧的列表符号的网站。 您还可以在设置中配置支持的站点。</string>
+
+
+    //String arrays
+
+    <string-array name="listArrayFont">
+        <item>小 (70%)</item>
+        <item>中 (100%)</item>
+        <item>大 (130%)</item>
+    </string-array>
+
+    <string-array name="listValuesFont">
+        <item>70</item>
+        <item>100</item>
+        <item>130</item>
+    </string-array>
+
+    <string-array name="listArraySearchEngine">
+        <item>Duckduckgo</item>
+        <item>Google</item>
+        <item>Google (encrypted)</item>
+        <item>MetaGer</item>
+        <item>Startpage</item>
+        <item>百度</item>
+    </string-array>
+
+    <string-array name="listValuesSearchEngine">
+        <item>https://duckduckgo.com/?q=</item>
+        <item>https://www.google.com/search?&amp;q=</item>
+        <item>https://encrypted.google.com/search?q=</item>
+        <item>https://metager.de/meta/meta.ger3?focus=web&amp;eingabe=</item>
+        <item>https://startpage.com/do/search?query=</item>
+        <item>https://www.baidu.com/s?wd=</item>
+    </string-array>
+
+    <string-array name="listArrayWikiLang">
+        <item>英语</item>
+        <item>德语</item>
+        <item>中文</item>
+    </string-array>
+
+    <string-array name="listValuesWikiLang">
+        <item>en</item>
+        <item>de</item>
+        <item>zh</item>
+    </string-array>
+
+    <string-array name="listArrayOrientation">
+        <item>自动旋转（传感器）</item>
+        <item>自动旋转（装置）</item>
+        <item>肖像</item>
+        <item>景观</item>
+    </string-array>
+
+    <string-array name="listValuesOrientation">
+        <item>auto</item>
+        <item>device</item>
+        <item>portrait</item>
+        <item>landscape</item>
+    </string-array>
+
+    <string-array name="listArrayCookies">
+        <item>接受所有的cookies</item>
+        <item>接受所有（除3方Cookie）</item>
+        <item>接受没有cookies</item>
+    </string-array>
+
+    <string-array name="listValuesCookies">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="listArrayFull">
+        <item>隐藏状态栏</item>
+        <item>隐藏工具栏</item>
+        <item>两个栏都隐藏</item>
+        <item>不隐藏</item>
+    </string-array>
+
+    <string-array name="listValuesFull">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+
+    <string name="def_wiki">en</string>
+    <string name="def_search">https://duckduckgo.com/?q=</string>
+    <string name="def_rot">device</string>
+
+    <string-array name="listArrayTabMain">
+        <item>浏览器</item>
+        <item>书签</item>
+        <item>稍后阅读</item>
+        <item>历史</item>
+    </string-array>
+
+    <string-array name="listValuesTabMain">
+        <item>0</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+    </string-array>
+
+    <string-array name="listArrayTheme">
+        <item>绿色（绿色|橙色）</item>
+        <item>蓝色（蓝色|橙色）</item>
+        <item>粉色（粉色|橙色）</item>
+        <item>紫色（紫色|橙色）</item>
+        <item>蓝绿色（蓝绿色|橙色）</item>
+        <item>红色（红色|蓝色）</item>
+        <item>橙色（橙色|蓝色）</item>
+        <item>棕色（棕色|橙色）</item>
+        <item>灰色（灰色|蓝色）</item>
+        <item>黑暗（灰色|灰色）</item>
+    </string-array>
+
+    <string-array name="listValuesTheme">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+    </string-array>
+
+</resources>
