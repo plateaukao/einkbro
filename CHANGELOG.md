@@ -1,4 +1,5 @@
 ### v 4.5
+- new: Chinese translation (Thanks: Jumping Yang)
 - new: keyboard go button actions
 - new: settings icon in toolbar (click for toggle/long click for main settings)
 - new: possibility to temporally hide navigation arrows
