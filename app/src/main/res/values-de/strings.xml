@@ -148,6 +148,7 @@
     <string name="pass_title">Titel</string>
     <string name="pass_copy">Kopiere Logindaten</string>
     <string name="pass_edit">Bearbeite Logindaten</string>
+    <string name="pass_autoFill">Automatisch ausfüllen (Logindialog)</string>
 
     <string name="filter_today">Heute</string>
     <string name="filter_yesterday">Gestern</string>
@@ -290,6 +291,8 @@
 
     <string name="action_swipe">Wischen</string>
     <string name="action_swipe_summary">Wische nach links und rechts um die Tabs zu wechseln.</string>
+
+    <string name="action_hideButtons">Verstecke kurz die Pfeile</string>
 
 
     // Intro

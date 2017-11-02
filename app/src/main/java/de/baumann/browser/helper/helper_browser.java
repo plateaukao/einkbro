@@ -122,8 +122,10 @@ public class helper_browser {
     }
 
 
-    public static void switcher (final Activity activity, final WebView mWebView, final TextView urlBar,
-                                 final class_CustomViewPager viewPager) {
+    public static void switcher (final Activity activity, final WebView mWebView,
+                                 final class_CustomViewPager viewPager,
+                                 final ImageButton imageButton_up, final ImageButton imageButton_down,
+                                 final ImageButton imageButton_left, final ImageButton imageButton_right) {
 
         final Utils_UserAgent myUserAgent= new Utils_UserAgent();
         final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
@@ -143,6 +145,7 @@ public class helper_browser {
         Switch sw_blockads = (Switch) dialogView.findViewById(R.id.switch5);
         Switch sw_requestDesk = (Switch) dialogView.findViewById(R.id.switch6);
         Switch sw_swipe = (Switch) dialogView.findViewById(R.id.switch7);
+        TextView tv_button = (TextView) dialogView.findViewById(R.id.tv_button);
         final ImageButton whiteList_js = (ImageButton) dialogView.findViewById(R.id.imageButton_js);
 
         if (whiteList.contains(domain)) {
@@ -268,16 +271,15 @@ public class helper_browser {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
-
                 if(isChecked){
                     //used commit() instead of apply because the new WVC depends on the sharedPref
                     //immediately being available, would not want to miss the change in background process
                     //lag from using apply(), feel free to use apply if you prefer though.
                     sharedPref.edit().putString("blockads_string", activity.getString(R.string.app_yes)).commit();
-                    helper_webView.webView_WebViewClient(activity, mWebView, urlBar);
+                    helper_webView.webView_WebViewClient(activity, mWebView);
                 }else{
                     sharedPref.edit().putString("blockads_string", activity.getString(R.string.app_no)).commit();
-                    helper_webView.webView_WebViewClient(activity, mWebView, urlBar);
+                    helper_webView.webView_WebViewClient(activity, mWebView);
                 }
             }
         });
@@ -310,6 +312,7 @@ public class helper_browser {
                 }
             }
         });
+
         builder.setView(dialogView);
         builder.setTitle(R.string.menu_toggle_title);
         builder.setPositiveButton(R.string.toast_yes, new DialogInterface.OnClickListener() {
@@ -326,8 +329,20 @@ public class helper_browser {
             }
         });
 
-        android.app.AlertDialog dialog = builder.create();
+        final android.app.AlertDialog dialog = builder.create();
         dialog.show();
+
+        tv_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mWebView.pageDown(true);
+                imageButton_down.setVisibility(View.GONE);
+                imageButton_up.setVisibility(View.GONE);
+                imageButton_left.setVisibility(View.GONE);
+                imageButton_right.setVisibility(View.GONE);
+                dialog.cancel();
+            }
+        });
     }
 
 

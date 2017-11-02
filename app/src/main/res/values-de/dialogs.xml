@@ -6,10 +6,15 @@
     <string name="changelog_text">
         &lt;b>Für mehr Informationen zur Bedienung gibt es einen Hilfedialog (Menü -> Mehr -> Hilfe).&lt;/b>&lt;br>&lt;br>
 
-        &lt;b>v 4.3&lt;/b>&lt;br>&lt;br>
-        - fix: title of setting subpages&lt;br>
-        - fix: crash when selected list at startup&lt;br>
-        - new: swipe to switch tabs optional (settings/popup settings)
+        &lt;b>v 4.5&lt;/b>&lt;br>&lt;br>
+        - new: keyboard go button actions&lt;br>
+        - new: settings icon in toolbar (click for toggle/long click for main settings)&lt;br>
+        - new: possibility to temporally hide navigation arrows&lt;br>
+        - new: auto fill (authentication dialog)&lt;br>
+        - improved: tab behavior&lt;br>
+        - fix: load default settings on start&lt;br>
+        - fix: force close when sharing screenshot&lt;br>
+        - fix: not showing website title
     </string>
 
 
@@ -58,7 +63,13 @@
         \"Enter\" oder die Lupe anklickst, wird die Internetseite geöffnet.&lt;br>&lt;br>
         &lt;i>Langer Klick (nur im Browser):&lt;/i> öffnet die Tabvorschau (siehe unten).&lt;br>&lt;br>
         &lt;i>Verlauf (nur im Browser):&lt;/i> Öffnet eine Liste mit den zuletzt besuchten Internetseiten. Ein langer Klick lädt
-        die aktuelle Internetseite neu.</string>
+        die aktuelle Internetseite neu.&lt;br>&lt;br>
+        &lt;i>Einstellungen (nur im Browser):&lt;/i> Hier kannst du die Standardeinstellungen kurzzeitig überschreiben. Bei
+        einem erneuten Start der App gehen diese Einstellungen verloren. Indem du auf das rote Kreuz klickst kannst du dort auch
+        Internetseiten zu einer Whitelist hinzufügen. Sie werden dann mit einem grünen Haken gekennzeichnet. Javascript ist für
+        diese Internetseiten dann immer erlaubt (auch nach einem Neustart der App).&lt;br>&lt;br>
+        &lt;i>Einstellungen (langer Klick):&lt;/i> In den Einstellungen kannst du das Verhalten der App deinen Wünschen
+        anpassen. Beim Starten der App werden immer diese Einstellungen geladen.</string>
 
     <string name="help_tabs_title">&lt;b>Tab (-vorschau):&lt;/b></string>
     <string name="help_tabs">
@@ -75,14 +86,7 @@
         &lt;i>Suche auf Seite:&lt;/i> suche nach Text auf jeder beliebigen Internetseite.&lt;br>&lt;br>
         &lt;i>Öffne passSpeicher:&lt;/i> öffne deinen Passwortspeicher.&lt;br>&lt;br>
         &lt;i>Öffne Downloadordner:&lt;/i> öffne den Downloadordner um Dateien anzuzeigen, zu teilen, umzubenennen
-        oder zu löschen.&lt;br>&lt;br>
-        &lt;i>Einstellungen (Popup Dialog):&lt;/i> Hier kannst du die Standardeinstellungen kurzzeitig überschreiben. Bei
-        einem erneuten Start der App gehen diese Einstellungen verloren. Indem du auf das rote Kreuz klickst kannst du dort auch
-        Internetseiten zu einer Whitelist hinzufügen. Sie werden dann mit einem grünen Haken gekennzeichnet. Javascript ist für
-        diese Internetseiten dann immer erlaubt (auch nach einem Neustart der App). Um zu den Einstellungen zu gelangen klicke auf
-        \"Einstellungen\" im Popup Dialog.&lt;br>&lt;br>
-        &lt;i>Einstellungen:&lt;/i> In den Einstellungen kannst du das Verhalten der App deinen Wünschen
-        anpassen. Beim Starten der App werden immer diese Einstellungen geladen.</string>
+        oder zu löschen.</string>
 
     <string name="help_search_title">&lt;b>Suche:&lt;/b></string>
     <string name="help_search">

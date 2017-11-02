@@ -1,7 +1,10 @@
-### v 4.5 (WIP)
+### v 4.5
 - new: keyboard go button actions
 - new: settings icon in toolbar (click for toggle/long click for main settings)
+- new: possibility to temporally hide navigation arrows
+- new: auto fill (authentication dialog)
 - improved: tab behavior
+- fix: load default settings on start
 - fix: force close when sharing screenshot
 - fix: not showing website title
 

@@ -136,6 +136,7 @@ public class Fragment_Pass extends Fragment {
 
                 final CharSequence[] options = {
                         getString(R.string.pass_copy),
+                        getString(R.string.pass_autoFill),
                         getString(R.string.pass_edit),
                         getString(R.string.bookmark_remove_bookmark)};
                 new AlertDialog.Builder(getActivity())
@@ -226,6 +227,29 @@ public class Fragment_Pass extends Fragment {
                                         sharedPref.edit().putString("copyPW", decrypted_userPW).apply();
                                         sharedPref.edit().putString("copyUN", decrypted_userName).apply();
                                         sharedPref.edit().putString("openURL", "copyLogin").apply();
+                                        if (sharedPref.getInt("appShortcut", 0) == 0) {
+                                            viewPager.setCurrentItem(sharedPref.getInt("tab", 0));
+                                        } else {
+                                            sharedPref.edit().putInt("appShortcut", 0).apply();
+                                            viewPager.setCurrentItem(0);
+                                        }
+
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                        Snackbar.make(listView, R.string.toast_error, Snackbar.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                                if (options[item].equals(getString(R.string.pass_autoFill))) {
+
+                                    try {
+                                        String decrypted_userName = mahEncryptor.decode(pass_icon);
+                                        String decrypted_userPW = mahEncryptor.decode(pass_attachment);
+
+                                        sharedPref.edit().putString("dialog_copyPW", decrypted_userPW).apply();
+                                        sharedPref.edit().putString("dialog_copyUN", decrypted_userName).apply();
+                                        sharedPref.edit().putString("openURL", pass_content).apply();
+
                                         if (sharedPref.getInt("appShortcut", 0) == 0) {
                                             viewPager.setCurrentItem(sharedPref.getInt("tab", 0));
                                         } else {

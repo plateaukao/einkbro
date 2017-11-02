@@ -134,14 +134,6 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
         setHasOptionsMenu(true);
         activity = getActivity();
 
-        PreferenceManager.setDefaultValues(activity, R.xml.user_settings, false);
-        PreferenceManager.setDefaultValues(activity, R.xml.user_settings_search, false);
-        PreferenceManager.setDefaultValues(activity, R.xml.user_settings_app, false);
-        PreferenceManager.setDefaultValues(activity, R.xml.user_settings_close, false);
-        PreferenceManager.setDefaultValues(activity, R.xml.user_settings_start, false);
-        PreferenceManager.setDefaultValues(activity, R.xml.user_settings_search_main, false);
-        PreferenceManager.setDefaultValues(activity, R.xml.user_settings_data, false);
-
         sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
         sharedPref.edit().putInt("tab_" + tab_number + "_exit", 0).apply();
 
@@ -168,7 +160,7 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
         helper_browser.setupViews(activity, viewPager, mWebView, editText, imageButton_up, imageButton_down, imageButton_left,
                 imageButton_right, appBarLayout, horizontalScrollView);
         helper_webView.webView_Settings(activity, mWebView);
-        helper_webView.webView_WebViewClient(activity, mWebView, urlBar);
+        helper_webView.webView_WebViewClient(activity, mWebView);
 
         mWebChromeClient = new myWebChromeClient();
         mWebView.setWebChromeClient(mWebChromeClient);
@@ -991,7 +983,7 @@ public class Fragment_Browser extends Fragment implements ObservableScrollViewCa
         }
 
         if (id == R.id.action_toggle) {
-            helper_browser.switcher(activity, mWebView, urlBar, viewPager);
+            helper_browser.switcher(activity, mWebView, viewPager, imageButton_up, imageButton_down, imageButton_left, imageButton_right);
         }
 
         if (id == R.id.menu_save_screenshot) {

@@ -148,6 +148,7 @@
     <string name="pass_title">Title</string>
     <string name="pass_copy">Copy login data</string>
     <string name="pass_edit">Edit login data</string>
+    <string name="pass_autoFill">Auto fill (authentication dialog)</string>
 
     <string name="filter_today">Today</string>
     <string name="filter_yesterday">Yesterday</string>
@@ -279,6 +280,8 @@
 
     <string name="action_swipe">Swipe</string>
     <string name="action_swipe_summary">Swipe left and right to switch tabs.</string>
+
+    <string name="action_hideButtons">Temporally hide arrows</string>
 
 
     // Intro

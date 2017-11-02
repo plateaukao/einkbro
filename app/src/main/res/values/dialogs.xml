@@ -4,14 +4,17 @@
     //Changelog Dialog
 
     <string name="changelog_text">
-        &lt;b>For informations about the handling there is a help dialog (Menu -> More -> Help).&lt;/b>&lt;br>&lt;br>
+        &lt;b>For information about the handling there is a help dialog (Menu -> More -> Help).&lt;/b>&lt;br>&lt;br>
 
-        &lt;b>v 4.4&lt;/b>&lt;br>&lt;br>
-        - fix: save screenshot&lt;br>
-        - fix: saving entries containing an apostrophe&lt;br>
-        - fix: option to restart app to apply swipe gesture&lt;br>
-        - new: http basic authentication&lt;br>
-        - improved: behavior of tab preview/behavior&lt;br>
+        &lt;b>v 4.5&lt;/b>&lt;br>&lt;br>
+        - new: keyboard go button actions&lt;br>
+        - new: settings icon in toolbar (click for toggle/long click for main settings)&lt;br>
+        - new: possibility to temporally hide navigation arrows&lt;br>
+        - new: auto fill (authentication dialog)&lt;br>
+        - improved: tab behavior&lt;br>
+        - fix: load default settings on start&lt;br>
+        - fix: force close when sharing screenshot&lt;br>
+        - fix: not showing website title
     </string>
 
 
@@ -57,7 +60,13 @@
         &lt;i>Click (only in the browser):&lt;/i> you can enter a search term (see below) or a url. By pressing \"enter\" or
         the magnifier icon, the website will load.&lt;br>&lt;br>
         &lt;i>Long click (only in the browser):&lt;/i> opens the tab preview (see below).&lt;br>&lt;br>
-        &lt;i>History (only in the browser):&lt;/i> opens a list of the last visited websites. Long pressing reloads the website.</string>
+        &lt;i>History (only in the browser):&lt;/i> opens a list of the last visited websites. Long pressing reloads the website.&lt;br>&lt;br>
+        &lt;i>Settings (only in the browser):&lt;/i> Here you can overwrite the default settings for a short time. These settings
+        will get lost at the next app start. By clicking the red cross you can also add websites to a whitelist for javascript.
+        They will be marked with a \"green check icon\". Javascript will then always be allowed for these websites (even after
+        restarting the app).&lt;br>&lt;br>
+        &lt;i>Settings:&lt;/i> In the settings you can configure the behavior of the app, some privacy and
+        security settings. At the app start these settings will always be loaded.</string>
 
     <string name="help_tabs_title">&lt;b>Tab (preview):&lt;/b></string>
     <string name="help_tabs">
@@ -72,13 +81,7 @@
         to the clipboard.&lt;br>&lt;br>
         &lt;i>Search on site:&lt;/i> search for text on any website.&lt;br>&lt;br>
         &lt;i>Open passStorage:&lt;/i> open your login data list.&lt;br>&lt;br>
-        &lt;i>Open download directory:&lt;/i> opens the download directory to show, share, rename or delete files.&lt;br>&lt;br>
-        &lt;i>Settings (popup dialog):&lt;/i> Here you can overwrite the default settings for a short time. These settings
-        will get lost at the next app start. By clicking the red cross you can also add websites to a whitelist for javascript.
-        They will be marked with a \"green check icon\". Javascript will then always be allowed for these websites (even after
-        restarting the app). To open the main settings screen, click on \"Settings\" at the bottom of the popup dialog.&lt;br>&lt;br>
-        &lt;i>Settings:&lt;/i> In the settings you can configure the behavior of the app, some privacy and
-        security settings. At the app start these settings will always be loaded.</string>
+        &lt;i>Open download directory:&lt;/i> opens the download directory to show, share, rename or delete files.</string>
 
     <string name="help_search_title">&lt;b>Search:&lt;/b></string>
     <string name="help_search">

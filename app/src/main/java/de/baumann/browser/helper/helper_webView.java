@@ -40,7 +40,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import java.net.URISyntaxException;
 import java.util.HashMap;
@@ -166,7 +165,7 @@ public class helper_webView {
         }
     }
 
-    public static void webView_WebViewClient (final Activity activity, final WebView webView, final TextView urlBar) {
+    public static void webView_WebViewClient (final Activity activity, final WebView webView) {
 
         final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
 
@@ -240,8 +239,8 @@ public class helper_webView {
                 final EditText pass_userPWET = (EditText) dialogView.findViewById(R.id.pass_userPW);
                 pass_titleET.setVisibility(View.GONE);
 
-                pass_userNameET.setText("");
-                pass_userPWET.setText("");
+                pass_userNameET.setText(sharedPref.getString("dialog_copyUN", ""));
+                pass_userPWET.setText(sharedPref.getString("dialog_copyPW", ""));
 
                 builder.setView(dialogView);
                 builder.setTitle(R.string.pass_edit);
@@ -260,6 +259,9 @@ public class helper_webView {
 
                 final AlertDialog dialog = builder.create();
                 dialog.show();
+
+                sharedPref.edit().putString("dialog_copyPW", "").apply();
+                sharedPref.edit().putString("dialog_copyUN", "").apply();
             }
 
             private boolean handleUri(final Uri uri) {

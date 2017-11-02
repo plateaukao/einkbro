@@ -264,6 +264,14 @@ public class helper_main {
 
     public static void onStart (final Activity activity) {
 
+        PreferenceManager.setDefaultValues(activity, R.xml.user_settings, false);
+        PreferenceManager.setDefaultValues(activity, R.xml.user_settings_search, false);
+        PreferenceManager.setDefaultValues(activity, R.xml.user_settings_app, false);
+        PreferenceManager.setDefaultValues(activity, R.xml.user_settings_close, false);
+        PreferenceManager.setDefaultValues(activity, R.xml.user_settings_start, false);
+        PreferenceManager.setDefaultValues(activity, R.xml.user_settings_search_main, false);
+        PreferenceManager.setDefaultValues(activity, R.xml.user_settings_data, false);
+
         sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
 
         if (sharedPref.getString ("fullscreen", "2").equals("1") || sharedPref.getString ("fullscreen", "2").equals("3")){
@@ -306,6 +314,34 @@ public class helper_main {
             }
             sharedPref.edit().putString("saved_key", sb.toString()).apply();
             sharedPref.edit().putString("saved_key_ok", "yes").apply();
+
+            //set default settings -> start
+            sharedPref.edit().putString("cookie", "2").apply();
+            sharedPref.edit().putBoolean("form", false).apply();
+            sharedPref.edit().putBoolean("java", true).apply();
+            sharedPref.edit().putBoolean("loc", false).apply();
+            sharedPref.edit().putBoolean("blockads_bo", true).apply();
+            sharedPref.edit().putBoolean("pictures", true).apply();
+            sharedPref.edit().putBoolean("request_bo", false).apply();
+
+            //set default settings -> close
+            sharedPref.edit().putBoolean("clearCookies", true).apply();
+            sharedPref.edit().putBoolean("clearForm", true).apply();
+            sharedPref.edit().putBoolean("history", false).apply();
+            sharedPref.edit().putBoolean("clearCache", false).apply();
+
+            //set default settings -> app
+            sharedPref.edit().putString("theme", "0").apply();
+            sharedPref.edit().putString("tabMain", "0").apply();
+            sharedPref.edit().putString("fullscreen", "2").apply();
+            sharedPref.edit().putString("orientation", activity.getString(R.string.def_rot)).apply();
+            sharedPref.edit().putString("font", "100").apply();
+            sharedPref.edit().putBoolean("openLink", true).apply();
+            sharedPref.edit().putBoolean("swipe", true).apply();
+
+            //set default settings -> search_main
+            sharedPref.edit().putString("searchEngine", activity.getString(R.string.def_search)).apply();
+            sharedPref.edit().putString("wikiLang", activity.getString(R.string.def_wiki)).apply();
         }
     }
 
