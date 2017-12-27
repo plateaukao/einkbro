@@ -9,6 +9,7 @@
     android:paddingTop="15dp">
 
     <android.support.design.widget.TextInputLayout
+        android:id="@+id/login_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:passwordToggleEnabled="false" >
@@ -18,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
-            android:hint="@string/pass_title"/>
+            android:hint="@string/menu_edit"/>
 
     </android.support.design.widget.TextInputLayout>
 
@@ -32,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
-            android:hint="@string/pass_userName"/>
+            android:hint="@string/dialog_sign_in_username"/>
 
     </android.support.design.widget.TextInputLayout>
 
@@ -46,7 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
-            android:hint="@string/pass_userPW"/>
+            android:hint="@string/dialog_sign_in_password"/>
 
     </android.support.design.widget.TextInputLayout>
 

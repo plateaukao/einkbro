@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <string name="changelog_title">Änderungen</string>
+    <string name="changelog_dialog">
+        &lt;i>Besuche für mehr Informationen die Projektseite auf Github: https://github.com/scoute-dich/Browser&lt;/i>&lt;br>&lt;br>
+
+        Mit diesem Update wird \"Ninja Browser\" als Basis für \"Browser\" genutzt. Der Grundgedanke bleibt der gleiche:
+        einfach aber funktionell mit einer guten Benutzeroberfläche. Der größte Vorteil dieses Schrittes ist ein besseres
+        Tabmanagement (du kannst jetzt soviele Tabs öffnen, wie du magst). Außerdem gibt es eine neue Startseite. Bitte lies den
+        neuen \"Hilfedialog\" für weitere Informationen.</string>
+
+    <string name="toolbar_title">Toolbar</string>
+    <string name="toolbar_dialog">Unten auf dem Schirm findest du die Toolbar. Du kannst entweder den angezeigten Inhalt neu laden
+        oder das Menü öffnen. WIsche die Toolbar noch oben um die \"Tabkontrolle\" zu öffnen. Um zwischen den Tabs zu wechseln,
+        kannst du nach links oder rechts wischen.</string>
+
+    <string name="tab_title">Tabkontrolle</string>
+    <string name="tab_dialog">Klicke eine Vorschau an, um den Tab auszuwählen. Klicke noch einmal, um die Tabkontrolle zu schließen.
+        Um einen Tab zu schließen, wische die Vorschau nach oben oder unten weg. Unten kannst du einen neuen Tab, das
+        Downloadverzeichnis, deine Logindaten, deine Lesezeichen oder den Browserverlauf öffnen (von links nach rechts).</string>
+
+    <string name="not_title">Benachrichtigungen</string>
+    <string name="not_dialog">Benachrichtigungen werden ebenfalls am unteren Rand des Bildschirms angezeigt. Sie können jederzeit
+        geschlossen werden, wenn du außerhalb der Benachrichtigung klickst.</string>
+
+    <string name="nav_title">Navigation</string>
+    <string name="nav_dialog">Benutze im Vollbildmodus den \"Navigationsknopf\": wische hoch/runter -> scrolle nach oben/unten;
+    wische nach links/rechts -> lade vorherige/nächste Internetseite; Klick -> öffne das Menü; langer Klick -> öffne die
+        \"Schnelleinstellungen\".</string>
+
+    <string name="settings_dialog">Es gibt noch mehr Möglichkeiten in den Einstellungen. Probiere es aus!</string>
+
+
+    <string name="license_title">Copyright © 2017  by Gaukler Faun</string>
+    <string name="license_dialog">
+        Besuche für mehr Informationen die Projektseite auf Github: https://github.com/scoute-dich/Browser&lt;br>&lt;br>
+
+        Dieses Programm ist freie Software. Sie können es unter den Bedingungen der GNU General Public License, wie von
+        der Free Software Foundation veröffentlicht, weitergeben und/oder modifizieren, entweder gemäß Version 3 der Lizenz oder
+        (nach Ihrer Option) jeder späteren Version. Die Veröffentlichung dieses Programms erfolgt in der Hoffnung, daß es Ihnen
+        von Nutzen sein wird, aber OHNE IRGENDEINE GARANTIE, sogar ohne die implizite Garantie der MARKTREIFE oder der
+        VERWENDBARKEIT FÜR EINEN BESTIMMTEN ZWECK. Details finden Sie in der GNU General Public License. Sie sollten ein
+        Exemplar der GNU General Public License zusammen mit diesem Programm erhalten haben. Falls nicht,
+        siehe http://www.gnu.org/licenses.&lt;br>&lt;br>&lt;br>
+
+        &lt;i>Die folgenden Open Source Bibliotheken oder Projekte werden in dieser Software verwendet:&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Android Sliding Up Panel&lt;/b>&lt;br>
+        Apache License Version 2.0&lt;br>
+        Umano: News Read To You&lt;br>
+        &lt;i>http://git.io/vUruG&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Android Swipe-to-Dismiss&lt;/b>&lt;br>
+        Apache License Version 2.0&lt;br>
+        Roman Nurik&lt;br>
+        &lt;i>http://git.io/vUruO&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>android-ago&lt;/b>&lt;br>
+        Apache License Version 2.0&lt;br>
+        Kiran Rao&lt;br>
+        &lt;i>http://git.io/vUrum&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>DynamicGrid&lt;/b>&lt;br>
+        Apache License Version 2.0&lt;br>
+        askerov&lt;br>
+        &lt;i>http://git.io/vTHZH&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Glide&lt;/b>&lt;br>
+        BSD, part MIT and Apache 2.0&lt;br>
+        bumptech&lt;br>
+        &lt;i>https://github.com/bumptech/glide&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Lightning Browser&lt;/b>&lt;br>
+        Mozilla Public License Version 2.0&lt;br>
+        Anthony Restaino&lt;br>
+        &lt;i>http://git.io/vUruk&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Material Design Icons&lt;/b>&lt;br>
+        SIL Open Font License, Version 1.1.&lt;br>
+        Templarian&lt;br>
+        &lt;i>https://github.com/Templarian/MaterialDesign&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Ninja&lt;/b>&lt;br>
+        Apache License Version 2.0&lt;br>
+        Matthew Lee&lt;br>
+        &lt;i>http://git.io/vUrEh&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>SimpleEncryptionLib&lt;/b>&lt;br>
+        Apache License Version 2.0&lt;br>
+        hummatli&lt;br>
+        &lt;i>https://github.com/hummatli/SimpleEncryptionLib</string>
+
+    <string name="cont_dialog">
+        &lt;i>Auf den folgenden Internetseiten bekommst du weitere Informationen über \"Browser\":&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>XDA-Thread:&lt;/b>&lt;br>
+        XDA ist eine großartige Gemeinschaft für Entwickler und Smartphoneentusiasten. Hier kannst du Fehler melden, nach neuen
+        Funktionen fragen oder dich mit anderen Nutzern austauschen.&lt;br>
+        &lt;i>https://forum.xda-developers.com/android/apps-games/app-browser-t3500091&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Github:&lt;/b>&lt;br>
+        Auf Github kannst du den Quellcode von \"Browser\" einsehen. Das ist die eher technische Lösung. Auch hier kannst du Fehler
+        melden, Vorschläge äußern oder dich aktiv an der Entwicklung oder Übersetzung beteiligen.&lt;br>
+        &lt;i>https://github.com/scoute-dich/browser&lt;/i>&lt;br>&lt;br>&lt;br>
+
+
+        &lt;i>Bis jetzt sind folgende Personen an dem Projekt beteiligt:&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Gaukler Faun&lt;/b>&lt;br>
+        Hauptentwickler und Gründer des Projekts.&lt;br>
+        &lt;i>https://github.com/scoute-dich&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>CGSLURP LLC&lt;/b>&lt;br>
+        Half AdBlock und \"Desktopseite anzeigen\" in der vorherigen Version von \"Browser\" möglich zu machen.&lt;br>
+        &lt;i>https://github.com/futrDevelopment&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>splinet&lt;/b>&lt;br>
+        Russische Übersetzung in der vorherigen Version von \"Browser\". Entschuldigung dafür Ninja Browser als neue Basis zu
+        verwenden. Vielleicht kannst du, wenn du Zeit hast noch einmal übersetzen?&lt;br>
+        &lt;i>https://github.com/splinet&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Jumping Yang&lt;/b>&lt;br>
+        Chinesische Übersetzung in der vorherigen Version von \"Browser\". Entschuldigung dafür Ninja Browser als neue Basis zu
+        verwenden. Vielleicht kannst du, wenn du Zeit hast noch einmal übersetzen?&lt;br>
+        &lt;i>https://github.com/JumpingYang001&lt;/i>
+
+    </string>
+
+</resources>

@@ -1,366 +1,248 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <resources>
-    // Application
 
+    <!-- App -->
     <string name="app_name">Browser</string>
-    <string name="app_changelog">Änderungen</string>
-    <string name="app_permissions_title">Verlangte Berechtigungen</string>
-    <string name="app_permissions">
-
-        &lt;i>Zugriff auf SD Karte:&lt;/i>&lt;br>
-        &#8226; Dateien herunterladen: um heruntergeladene Datein auf der SD-Karte speichern zu können.&lt;br>
-        &#8226; Bildschirmfoto: um Bildschirmfotos von Internetseiten auf der SD-Karte zu speichern.&lt;br>&lt;br>
-
-        &lt;i>Zugriff auf genauen Standort:&lt;/i>&lt;br>
-        Wird von manchen Internetseiten (z.B. Google Maps) benötigt um dir z.b. Wegbeschreibungen zu einem Ziel anzeigen zu
-        können.&lt;br>&lt;br>
-
-        &lt;i>Berechtigungen nachträglich erteilen:&lt;/i>&lt;br>
-        Wenn du die Berechtigungen verweigerst, kannst du sie nachträglich erteilen, indem du \"Einstellungen -> App Info\" öffnest und
-        dort den Bereich \"Berechtigungen\" auswählst.</string>
-
-    <string name="app_share_screenshot">Bildschrmfoto teilen mit:</string>
-    <string name="app_share_image">Bild teilen mit:</string>
-    <string name="app_share_link">Link teilen mit:</string>
-    <string name="app_share_file">Datei teilen mit:</string>
-    <string name="app_search_hint">URL oder Suchbegriff eingeben …</string>
-    <string name="app_search_hint_site">Suchbegriff eingeben …</string>
-    <string name="app_search_hint_bookmark">Titel eingeben …</string>
-    <string name="app_search">Gesucht nach:</string>
-    <string name="app_yes">Aktiviert</string>
-    <string name="app_no">Deaktiviert</string>
-    <string name="app_open">Ordner öffnen?</string>
-    <string name="app_location_title">Ortbestimmung</string>
-    <string name="app_location_message">"Die Internetseite möchte deine genaue Position nutzen."</string>
-    <string name="app_location_allow">Erlauben</string>
-    <string name="app_location_allow_not">Verbieten</string>
-
-    <string name="app_title_bookmarks">Lesezeichen</string>
-    <string name="app_title_readLater">leseSpäter</string>
-    <string name="app_title_passStorage">passSpeicher</string>
-    <string name="app_title_history">Verlauf</string>
-    <string name="app_title_downloads">Downloads</string>
-    <string name="app_websearch">Websuche</string>
-    <string name="app_conf">Bestätigung</string>
-    <string name="app_domain">Unbekannte domain</string>
+    <string name="app_ok">OK</string>
+    <string name="app_cancel">Abbrechen</string>
+    <string name="list_empty">Liste ist leer</string>
+    <string name="album_title_bookmarks">Lesezeichen</string>
+    <string name="album_title_history">Verlauf</string>
+    <string name="album_title_home">Startseite</string>
+    <string name="album_title_files">Dateien</string>
+    <string name="album_title_pass">Logindaten</string>
+    <string name="album_untitled">Ohne Titel</string>
+    <string name="notification_content_holder">Anlicken um die Seiten zu sehen</string>
+    <string name="search_hint">Suche</string>
 
 
-    // Menu Items
+    <!-- Menu -->
+    <string name="main_menu_new_tab">Neuer Tab (Hintergrund)</string>
+    <string name="main_menu_new_tabOpen">Neuer Tab (Vordergrund)</string>
+    <string name="main_menu_copy_link">Link kopieren</string>
+    <string name="main_menu_save">Speichern</string>
+    <string name="main_omnibox_input_hint">Suchen oder URL eingeben</string>
+    <string name="main_about_blank">about:blank</string>
 
-    <string name="menu_search">Suche</string>
-    <string name="menu_history">Öffne Verlauf</string>
-    <string name="menu_save">Seite speichern</string>
-    <string name="menu_save_screenshot">Speichere Bildschirmfoto</string>
-    <string name="menu_save_bookmark">Speichere als Lesezeichen</string>
-    <string name="menu_save_readLater">Speichere zur leseSpäter Liste</string>
-    <string name="menu_save_pass">Speichere im passSpeicher</string>
-    <string name="menu_share">Seite teilen</string>
+    <string name="menu_share">Teilen</string>
+    <string name="menu_other">Sonstiges</string>
+    <string name="menu_save">Speichern</string>
+    <string name="menu_quit">Beenden</string>
+    <string name="menu_delete">Löschen</string>
+    <string name="menu_edit">Bearbeiten</string>
+    <string name="menu_notification">Benachrichtigung</string>
+
     <string name="menu_share_screenshot">Teile Bildschirmfoto</string>
-    <string name="menu_share_link">Link als Text teilen</string>
-    <string name="menu_share_link_copy">Link in die Zwischenablage</string>
-    <string name="menu_downloads">Öffne Downloadverzeichnis</string>
-    <string name="menu_settings">Einstellungen</string>
-    <string name="menu_searchSite">Suche auf Seite</string>
-    <string name="menu_prev">Zurück</string>
-    <string name="menu_next">Vor</string>
-    <string name="menu_cancel">Abbrechen</string>
-    <string name="menu_pass">Öffne passSpeicher</string>
-    <string name="menu_toggle">Einstellungen</string>
-    <string name="menu_toggle_title">Einstellungen (Sitzung)</string>
-    <string name="menu_createShortcut">Erstelle Verknüpfung</string>
-    <string name="menu_createShortcut_success">Verknüpfung erstellt</string>
-    <string name="menu_go">Starte Suche</string>
-    <string name="menu_favorite">Leere Seite als Favorit</string>
-    <string name="menu_open">Öffnen …</string>
-    <string name="menu_more">Mehr …</string>
-    <string name="menu_reload">Seite neu laden</string>
-    <string name="menu_Help">Hilfe</string>
-    <string name="menu_all">… alles davon</string>
-    <string name="toast_confirmation_title">Bestätigung</string>
-    <string name="toast_confirmation_backup">Das wird deine aktuelle Sicherung ersetzen. Willst du das wirklich?</string>
-    <string name="toast_confirmation_restore">Das wird deine aktuelle Datenbank ersetzen. Willst du das wirklich?</string>
-
-    <string name="action_sort">Einträge sortieren</string>
-    <string name="action_sort_title">Sortiere nach Titel</string>
-    <string name="action_sort_url">Sortiere nach Datum</string>
-    <string name="action_sort_extension">Sortiere nach Erweiterung</string>
-
-    <string name="action_filter_title">Suche in Titeln</string>
-    <string name="action_filter_create">Suche nach Datum</string>
-    <string name="action_filter_url">Suche nach URL</string>
-    <string name="action_delete">Liste löschen</string>
-
-
-    // Context Menu
-
-    <string name="context_save">Linkziel speichern</string>
-    <string name="context_saveImage">Bild speichern</string>
-    <string name="context_shareImage">Bild teilen</string>
-    <string name="context_linkCopy_toast">Link erfolgreich kopiert</string>
-    <string name="context_saveImage_toast">Speichere Bild:</string>
-    <string name="context_tab">Leerer Tab</string>
-
-
-    // Snackbar
-
-    <string name="toast_yes">OK</string>
-    <string name="toast_cancel">Abbrechen</string>
-    <string name="toast_notAgain">Nicht anzeigen</string>
-    <string name="toast_download">Lade Datei herunter:</string>
-    <string name="toast_download_1">Möchtest du herunterladen:</string>
-    <string name="toast_perm">Berechtigungen erteilt?</string>
-    <string name="toast_backup">Sicherung erfolgreich.</string>
-    <string name="toast_restore">Wiederherstellung erfolgreich.</string>
-    <string name="toast_backup_not">Sicherung fehlgeschlagen.</string>
-    <string name="toast_restore_not">Wiederherstellung fehlgeschlagen.</string>
-    <string name="toast_screenshot_failed">Bildschirmfoto speichern fehlgeschlagen.</string>
-    <string name="toast_install_app">Bitte eine App installieren um die Aktion auszuführen.</string>
-    <string name="toast_wrongPW">Uuups. Falsches Passwort.</string>
-    <string name="toast_exit">Möchtest du die App verlassen?</string>
-    <string name="toast_whiteList">Whitelist gelöscht.</string>
-    <string name="toast_list">Komplette Liste löschen?</string>
-    <string name="toast_whiteList_confirm">Möchtest du die Whitelist wirklich löschen?</string>
-    <string name="toast_error">Uuups. Etwas ist schief gelaufen.</string>
-    <string name="toast_newTitle">Eintrag existiert bereits.</string>
-    <string name="toast_directory">Kann Verzeichnis nicht öffnen.</string>
-    <string name="toast_files">Keine Dateien im Verzeichnis.</string>
-    <string name="toast_extension">Kein unterstützter Dateityp</string>
-    <string name="toast_link">Link empfangen:</string>
-    <string name="toast_restart">Neustarten um Änderungen zu übernehmen?</string>
-
-
-    // Bookmarks // ReadLater // Password
-
-    <string name="bookmark_remove_confirmation">Eintrag wird entfernt. OK?</string>
-    <string name="bookmark_remove_bookmark">Eintrag entfernen</string>
-    <string name="bookmark_added">Eintrag wird hinzugefügt.</string>
-    <string name="bookmark_setFav">Erfolgreich als Favorit gespeichert.</string>
-    <string name="bookmark_setFav_not">Du kannst nur einen Favorit auswählen. Bitte aktuellen deaktivieren.</string>
-    <string name="bookmark_edit_title">Eintrag bearbeiten</string>
-
-    <string name="readLater_title">Öffne Link:</string>
-
-    <string name="pass_success">Füge zum passSpeicher hinzu.</string>
-    <string name="pass_userName">Benutzername</string>
-    <string name="pass_userPW">Passwort</string>
-    <string name="pass_copy_userName">Kopiere Benutzername</string>
-    <string name="pass_copy_userPW">Kopiere Passwort</string>
-    <string name="pass_title">Titel</string>
-    <string name="pass_copy">Kopiere Logindaten</string>
-    <string name="pass_edit">Bearbeite Logindaten</string>
-    <string name="pass_autoFill">Automatisch ausfüllen (Logindialog)</string>
-
-    <string name="filter_today">Heute</string>
-    <string name="filter_yesterday">Gestern</string>
-    <string name="filter_before">Vorgestern</string>
-    <string name="filter_month">Dieser Monat</string>
-    <string name="filter_own">Eigene Suche</string>
-    <string name="filter_clear">Suche abbrechen</string>
-    <string name="sort_title">Titel</string>
-    <string name="sort_date">Datum</string>
-    <string name="sort_extension">Erweiterung</string>
-
-
-    // Settings
-
-    <string name="pref_1">Erfahre mehr</string>
-    <string name="pref_2">App Einstellungen</string>
-    <string name="pref_3">Beim Start aktivieren</string>
-    <string name="pref_4">Daten</string>
-    <string name="pref_5">Beim Verlassen löschen</string>
-    <string name="pref_6">Suche</string>
-
-    <string name="pref_2_summary">Hier kannst du das Aussehen und Verhalten der Anwendung ändern.</string>
-    <string name="pref_3_summary">Hier kannst du das Verhalten des Browsers beim Start einstellen. Entscheide welche Inhalte
-        geladen werden und kümmere dich um deine Privatsphäre. Dies sind die Standardeinstellungen. Sie können in den
-        \"Popupeinstellungen\" überschrieben weden, bis die Anwendung wieder geschlossen wird.</string>
-    <string name="pref_4_summary">Verwate die Anwendungsdaten. Setze ein Passwort, sichere deine Listeneinträge oder stelle sie
-        wieder her.</string>
-    <string name="pref_5_summary">Dies betrifft ebenfalls deine Privatspähre. Entscheide welche Daten beim Schließen des Browsers
-        gelöscht werden.</string>
-    <string name="pref_6_summary">Ein paar Einstellungen, welche die Suchfunktion des Browsers betreffen.</string>
-
-    <string name="action_license">Über</string>
-    <string name="action_license_summary">Erfahre mehr über die Anwendung (Hilfe, Changlog, Lizenz, …).</string>
-
-    <string name="action_openSettings">App Info</string>
-    <string name="action_openSettings_summary">Öffne über die Systemeinstellungen die App Info der App. Je nach Androidversion
-        kannst du dort verschiedene Einstellungen vornehmen (Speicherplatz, Netzwerkverkehr, Berechtigungen, …).</string>
-
-    <string name="action_font">Schriftgröße</string>
-    <string name="action_font_summary">Ändere die Schriftgröße für Internetseiten.</string>
-
-    <string name="action_backup">Sicherung</string>
-    <string name="action_backup_summary">Sichere deine Lesezeichen, die leseSpäter Liste, den passSpeicher, den Verlauf und die
-        Javascript Whitelist oder stelle sie wieder her. Eine neue Sicherung überschreibt immer die bestehende. Da der passSpeicher
-        mit einem einmaligen Schlüssel verschlüsselt wird, funktioniert dies bei ihm nicht.</string>
-
-    <string name="action_restore">Wiederherstellung</string>
+    <string name="menu_share_link">Teile Link</string>
+    <string name="menu_share_clipboard">Teile zur Zwischenablage</string>
+
+    <string name="menu_save_screenshot">Speichere Bildschirmfoto</string>
+    <string name="menu_save_home">Zur Startseite hinzufügen</string>
+    <string name="menu_save_login">Speichere Logindaten</string>
+    <string name="menu_save_bookmark">Speichere als Lesezeichen</string>
+    <string name="menu_save_as">Speichere als …</string>
+
+    <string name="menu_other_searchSite">Suche auf Seite</string>
+    <string name="menu_other_help">Hilfe</string>
+
+
+    <!-- AndroidAgo -->
+    <string name="android_ago_just_now">Gerade eben</string>
+
+
+    <!-- Dialog -->
+    <string name="dialog_toggle_title">Schnelleinstellungen</string>
+    <string name="dialog_toggle_text">Bei manchen Einstellungen musst du einen neuen Tab öffnen, um Änderungen zu übernehmen.</string>
+    <string name="dialog_title_hint">Titel eigeben</string>
+    <string name="dialog_se_hint">https://www.google.com/search?q=</string>
+    <string name="dialog_ua_hint">Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36</string>
+    <string name="dialog_sign_in_username">Benutzername</string>
+    <string name="dialog_sign_in_password">Passwort</string>
+    <string name="dialog_button_custom">Eigene</string>
+    <string name="dialog_title_download">Möchtest du die Datei herunterladen?</string>
+    <string name="dialog_title_sign_in">Anmelden</string>
+    <string name="dialog_content_resubmission">Möchtest du die Daten erneut senden?</string>
+    <string name="dialog_content_ssl_error">Das Zertifikat der Seite ist nicht sicher. Trotzdem fortfahren?</string>
+
+
+    <!-- Settings -->
+    <string name="setting_label">Einstellungen</string>
+
+    <!-- Browser setting -->
+    <string name="setting_title_browser">Browser Einstellungen</string>
+    <string name="setting_title_clear_control">Browserdaten</string>
+    <string name="setting_title_start_control">Start Einstellungen</string>
+    <string name="setting_summary_clear_control">Lösche die Daten des Browsers oder entscheide, welche Daten beim Verlassen der
+        Anwendung automatisch gelöscht werden.</string>
+    <string name="setting_summary_start_control">Entscheide welche Funktionen des Browsers beim Start aktiviert sind.</string>
+
+    <string name="setting_title_search_engine">Suchmaschiene</string>
+    <string name="setting_summary_search_engine">Hier kannst du eine Suchmaschiene auswählen oder eine eigene eingeben.</string>
+    <string name="setting_summary_search_engine_google">Google</string>
+    <string name="setting_summary_search_engine_duckduckgo">DuckDuckGo</string>
+    <string name="setting_summary_search_engine_startpage">StartPage</string>
+    <string name="setting_summary_search_engine_bing">Bing</string>
+    <string name="setting_summary_search_engine_baidu">Baidu</string>
+
+    <string name="setting_title_user_agent">Benutzerumgebung</string>
+    <string name="setting_summary_user_agent">Wechsle zwischen der mobilen und der Destopversion von Internetseiten.</string>
+    <string name="setting_summary_user_agent_default">Standard</string>
+    <string name="setting_summary_user_agent_desktop">Desktop</string>
+
+    <string name="setting_title_rendering">Ansicht</string>
+    <string name="setting_summary_rendering">Wechsle zwischen Tag- und Nachtansicht.</string>
+    <string name="setting_summary_rendering_default">Standard</string>
+    <string name="setting_summary_rendering_grayscale">Schwarz-Weiß</string>
+    <string name="setting_summary_rendering_inverted">Invertiert</string>
+    <string name="setting_summary_rendering_inverted_grayscale">Schwarz-Weiß invertiert</string>
+
+
+    <!-- Browser start -->
+    <string name="setting_title_images">Bilder</string>
+    <string name="setting_summary_images">Aktiviere das automatische Laden von Bildern. Wenn du dies deaktivierst, sparst du
+        Datenvolumen und die Internetseiten laden schneller.</string>
+    <string name="setting_title_cookie">Cookies</string>
+    <string name="setting_summary_cookie">Aktiviere Cookies. Cookies sind kleine Textdateien, die auf deinem Gerät gespeichert
+        werden. Internetseiten können sie nutzen um die Benutzereinstellungen (z.B. bei Suchmaschienen) zu speichern. Cookies von
+        Dritten (sie sammeln zu Werbezwecken Nutzerdaten) sind immer deaktiviert.</string>
+
+    <string name="setting_title_javascript">JavaScript</string>
+    <string name="setting_summary_javascript">Aktiviere JavaScript. Viele Internetseiten brauchen JavaScript um richtig zu
+        funktionieren (Menüs, laden von Bildern, …). JavaScript stellt allerdings ein Sicherheitsrisiko dar und kann benutzt werden,
+        um dein Gerät anzugreifen.</string>
+    <string name="setting_title_whitelistJS">JavaScript Ausnahmen</string>
+    <string name="setting_summary_whitelistJS">Wenn du JavaScript deaktivierst, kannst du hier Ausnahmen hinzufügen, um bestimmten Seiten,
+        denen du vertraust, die Benutzung zu erlauben.</string>
+
+    <string name="setting_title_adblock">AdBlock</string>
+    <string name="setting_summary_adblock">Aktiviere AdBlock um unerwünschte Werbung zu blockieren. Internetseiten sind dann auch schneller geladen.</string>
+    <string name="setting_title_whitelist">AdBlock Ausnahmen</string>
+    <string name="setting_summary_whitelist">Erlaube diesen Seiten Werbung einzublenden. Manche Seiten funktionieren bei aktviertem AdBlocker nicht.</string>
+
+    <string name="setting_title_location">Ortungsdienst</string>
+    <string name="setting_summary_location">Erlaube Internetseiten deine genaue Position zu bestimmen. Manche Seiten (z.B. Goodle Maps
+        für die Navigation) benötigen diese Berechtigung.</string>
+
+
+    <!-- Browser clear -->
+    <string name="clear_summary">Sicherungen werden im Downloadverzeichnis gespeichert. Neue Sicherungen überschreiben immer die
+    alten. Zum Wiederherstellen muss eine Datei mit dem richtigen Namen in diesem Verzeichnis sein.</string>
+    <string name="clear_menu_done_all">Alles erledigt</string>
+    <string name="clear_title_quit">Löschen beim Verlassen der Anwendung</string>
+    <string name="clear_title_bookmarks">Lösche Lesezeichen</string>
+    <string name="clear_title_cache">Lösche Cache</string>
+    <string name="clear_title_cookie">Lösche Cookies</string>
+    <string name="clear_title_history">Lösche den Verlauf</string>
+
 
-    <string name="action_java">Javascript</string>
-    <string name="action_java_summary">Manche Funktionen von angezeigten Internetseiten benötigen Javascript.
-        Javascript stellt allerdings eine Sicherheitslücke dar.</string>
-
-    <string name="action_cookie">Cookies</string>
-    <string name="action_cookie_summary">Besuchte Internetseiten speichern Cookies auf deinem Gerät, meistens um die
-        Benutzerfreundlichkeit zu erhöhen. Die Einstellungen einer Suchmaschine werden z.B. in Cookies gespeichert. Cookies von
-        Dritten stammen nicht von der besuchten Internetseite. Oft sammeln sie Informationen über dein Surfverhalten.</string>
-
-    <string name="action_history">Verlauf löschen</string>
-    <string name="action_history_summary">Löscht deinen Browserverlauf beim Verlassen der App.</string>
-
-    <string name="action_searchEngine">Suchmaschine</string>
-    <string name="action_searchEngine_summary">Bestimme deine bevorzugte Suchmaschine.</string>
-
-    <string name="action_wikiLang">Wikipedia</string>
-    <string name="action_wikiLang_summary">Bestimme deine bevorzugte Sprache für die Suche auf Wikipedia.</string>
-
-    <string name="action_clearCache">Cache löschen</string>
-    <string name="action_clearCache_summary">Löscht den Browsercache beim Verlassen der App. Nicht aktivieren, wenn du
-        Internetseiten auch offline anzeigen lassen willst.</string>
-
-    <string name="action_clearCookies">Cookies löschen</string>
-    <string name="action_clearCookies_summary">Löscht alle Cookies beim Verlassen der App. Einstellungen von Internetseiten
-        gehen dabei verloren.</string>
-
-    <string name="action_clearForm">Lösche Formularfelder</string>
-    <string name="action_clearForm_summary">Löscht beim Verlassen der App eingegebene Formulardaten (z.B. Emailadresse, eingegebener
-        Wohnort, …).</string>
-
-    <string name="action_form">Formularfelder</string>
-    <string name="action_form_summary">Speichere in Formularfelder eingegebene Daten (z.B. Emailadresse, eingegebener
-        Wohnort, …).</string>
-
-    <string name="action_loc">Positionsbestimmung</string>
-    <string name="action_loc_summary">Erlaube Internetseiten deine genaue Position zu bestimmen.</string>
-
-    <string name="action_pictures">Bilder laden</string>
-    <string name="action_pictures_summary">Bilder von Internetseiten automatisch laden. Um Datenvolumen zu sparen und die Seite
-        schneller zu laden kannst du dies
-        deaktivieren.</string>
-
-    <string name="action_searchChoose">Internetseiten</string>
-    <string name="action_searchChoose_summary">Wähle die Internetseiten aus, welche für eine schnelle Suche zur Verfügung stehen
-        sollen.</string>
-    <string name="action_searchChooseTitle">Wähle eine Seite zum Suchen</string>
-
-    <string name="action_Duckduckgo">DuckDuckGo ist eine Suchmaschine, die keine persönlichen Informationen sammelt und dadurch
-        auch Filterblasen verhindern soll.</string>
-    <string name="action_Flickr">Flickr ist ein kommerzielles Web-Dienstleistungsportal mit Community-Elementen.</string>
-    <string name="action_Github">GitHub ist ein webbasierter Online-Dienst, der Software-Entwicklungsprojekte auf seinen Servern
-        bereitstellt.</string>
-    <string name="action_Google">Google ist eine Internet-Suchmaschine des US-amerikanischen Unternehmens Google Inc.</string>
-    <string name="action_Google_enc">Encrypted Google Suche, benutze dies um AMP-Links zu vermeiden.</string>
-    <string name="action_MetaGer">MetaGer ist eine deutsche Metasuchmaschine im Internet, die an der Universität Hannover als Dienst
-        des Regionalen Rechenzentrums für Niedersachsen seit April 1996 entwickelt wurde.</string>
-    <string name="action_Startpage">Startpage ist eine Suchmaschine, welche die eingegebenen Suchanfragen an die Google-Suchmaschine
-        weiterleitet und diese dadurch anonymisiert.</string>
-    <string name="action_Wikipedia">Wikipedia bietet freie, also kostenlose und zur Weiterverbreitung gedachte, unter lexikalischen
-        Einträgen zu findende Artikel. </string>
-    <string name="action_YouTube">YouTube ist ein Videoportal. Die Benutzer können auf dem Portal kostenlos Videoclips ansehen,
-        bewerten, kommentieren und selbst hochladen.</string>
-
-    <string name="action_protect">App Zugang</string>
-    <string name="action_protect_summary">Bestimme eine Pin um die App vor unbefugtem Zugriff zu schützen. Benutze nur Nummern.
-        Leer lassen, wenn du die App nicht schützen willst.</string>
-
-    <string name="action_rotation">Ausrichtung</string>
-    <string name="action_rotation_summary">Bestimme die Ausrichtung der App: automatich, Hoch- oder Querformat.</string>
-
-    <string name="action_whiteList">Whitelist</string>
-    <string name="action_whiteList_summary">Lösche deine Javascript Whitelist.</string>
-
-    <string name="action_fullscreen">Vollbild</string>
-    <string name="action_fullscreen_summary">Verstecke während dem Browsen die Status- und/oder die Toolbar am unteren Bildschirmrand.</string>
-
-    <string name="action_adBlock">Werbung blockieren</string>
-    <string name="action_adBlock_summary">Blockiere (nicht alle, aber die meisten) unerwünschten Anzeigen während dem Browsen.</string>
-
-    <string name="action_desktop">Desktopseite</string>
-    <string name="action_desktop_summary">Versuche von Internetseiten die Desktopseite zu laden. Dies funktioniert nur eingeschränkt.</string>
-
-    <string name="action_openLink">Links im Hintergrund öffnen</string>
-    <string name="action_openLink_summary">Wenn aktiviert werden Links im Hintergrund geöffnet und eine Benachrichtigung erscheint an
-        deiner Statusbar, von der aus du den Link später öffnen kannst. Nicht aktivieren um Links sofort zu öffnen.</string>
-
-    <string name="action_tabMain">Starttab</string>
-    <string name="action_tabMain_summary">Welcher Tab soll beim Appstart angezeigt werden?</string>
-
-    <string name="action_theme">Design</string>
-    <string name="action_theme_summary">Du magst kein grün? Ändere die Farbe!</string>
-
-    <string name="action_swipe">Wischen</string>
-    <string name="action_swipe_summary">Wische nach links und rechts um die Tabs zu wechseln.</string>
-
-    <string name="action_hideButtons">Verstecke kurz die Pfeile</string>
-
-
-    // Intro
-
-    <string name="intro_skip">Überspringen</string>
-    <string name="intro_finish">Los geht\'s!</string>
-
-    <string name="intro1_title">Browser</string>
-    <string name="intro1_text">Danke, dass du dich für \"Browser\" entschieden hast. Er ist komplett quelloffen und wird ständig
-        weiter entwickelt. Hier eine kurze Einführung …</string>
-
-    <string name="intro2_title">Die Listen</string>
-    <string name="intro2_text">\"Browser\" ist in Listen organisiert: Lesezeichen, leseSpäter, passSpeicher und der Verlauf.</string>
-
-    <string name="intro3_title">Toolbar</string>
-    <string name="intro3_text">Wische nach links um die Lesezeichen, nach rechts um die leseSpäter Liste zu öffnen und nach oben
-        um die App zu beenden. Klicke die Toolbar lange an, um die Tabs zu wechseln.</string>
-
-    <string name="intro4_title">Einstellungen</string>
-    <string name="intro4_text">Im Einstellungen Popup kannst du die Browsereinstellungen für die aktuelle Session einstellen. Um zu den
-        Haupteinstellungen zu gelangen einfach den \"Einstellungen\" Knopf drücken.</string>
-
-    <string name="intro5_title">Hilfe</string>
-    <string name="intro5_text">Um noch mehr Informationen zur Bedienung von \"Browser\" zu bekommen musst du den \"Hilfedialog\"
-        im Menü öffnen.</string>
-
-
-    // About
-
-    <string name="about_title_main">Über</string>
-    <string name="about_title_dev">Entwickler</string>
-    <string name="about_title_libs">Benutzte Open Source Bibliotheken</string>
-    <string name="about_title_cont">Beteiligte</string>
-
-    <string name="about_changelog">Änderungen</string>
-    <string name="about_changelog_summary">Öffne die Github Seite und schaue, was es Neues gibt … (braucht eine Internetverbindung)</string>
-
-    <string name="about_license">Lizenz</string>
-    <string name="about_license_summary">Die App steht unter der GPL Lizenz und ist komplett frei (wie in Freiheit). Der Quellcode kann
-        eingesehen werden.</string>
-
-    <string name="about_dev">Gaukler Faun</string>
-    <string name="about_dev_summary">Öffne mein Github Profil (braucht eine Internetverbindung).</string>
-
-    <string name="about_license_2">Gebraucht um die Toolbar während dem Scrollen zu verstecken.</string>
-    <string name="about_license_3">Gebraucht um die Einführung anzuzeigen.</string>
-    <string name="about_license_6">Gebraucht um die Logindaten des passSpeichers zu ver- und entschlüsseln.</string>
-    <string name="about_license_7">Gebraucht um den \"Über Schirm\" zu erstellen.</string>
-    <string name="about_license_8">Die Quelle von fast allen Icons.</string>
-    <string name="about_license_9">Bibliothek Anzeigen von Mediadateien für Android.</string>
-
-    <string name="about_cont_summary">Hat geholfen das Blockieren von Werbung, die fünf Tabs  und \"Desktopseite anzeigen\" zu
-        ermöglichen.</string>
-    <string name="about_cont_summary_2">Russische Übersetzung.</string>
-
-
-
-    //File chooser
-
-    <string name="choose_menu_2">Teilen</string>
-    <string name="choose_menu_3">Umbenennen</string>
-    <string name="choose_menu_4">Löschen</string>
-
-
-    // Password
-
-    <string name="pw_forgotten">Pin vergessen?</string>
-    <string name="pw_hint">Pin eingeben</string>
-    <string name="pw_forgotten_dialog">Alle persönlichen Daten löschen, um die Pin zurückzusetzen?</string>
+    <!-- App setting -->
+    <string name="setting_title_app">App Einstellungen</string>
+    <string name="setting_title_ui">Verhalten/UI</string>
+    <string name="setting_title_data">Sicherung</string>
+    <string name="setting_summary_ui">Ändere das Verhalten und die Benutzeroberfläche entsprechend deinen Wünschen.</string>
+    <string name="setting_summary_data">Sichere bestimmte Daten (Ausnahmen, Lesezeichen) oder stelle sie wieder her.</string>
+
+    <!-- App behavior -->
+    <string name="setting_title_nav_control">Navigationsknopf</string>
+    <string name="setting_title_hide">Vollbild</string>
+    <string name="setting_summary_hide">Benutze den ganzen Bildschirm, wenn du durch Internetseiten scrollst. Wenn du die
+        \"Zurücktaste\" drückst, verlässt du den Vollbildmodus.</string>
+    <string name="setting_title_omnibox_control">Toolbar Kontrolle</string>
+    <string name="setting_summary_omnibox_control">Wische auf der Toolbar nach recht/links, um die Tabs zu wechseln.</string>
+    <string name="setting_title_exit">Verlassen</string>
+    <string name="setting_summary_exit">Drücke lange auf den \"Neu laden Knopf\" (links in der Toolbar), um die Anwendung
+        sofort zu verlassen.</string>
+    <string name="setting_title_background">Links öffnen</string>
+    <string name="setting_summary_background">Zeige eine Benachrichtigung und öffne Links im Hintergrund. Wenn dies nicht aktiviert
+        ist, öffnen sich Links sofort.</string>
+    <string name="setting_title_longClick">\"Langer Klick\" Aktionen</string>
+    <string name="setting_title_toggle">Schnelleinstellungen"</string>
+    <string name="setting_summary_toggle">Drücke lange den \"Overflow Knopf\" (rechts in der Toolbar), um den \"Schnelleinstellungen
+        Dialog\" zu zeigen.</string>
+    <string name="setting_title_theme">Farbthema</string>
+    <string name="setting_summary_theme">Du magst kein Grün? Dann ändere es!</string>
+
+
+    <!-- Data -->
+    <string name="setting_title_export_bookmarks">Lesezeichen sichern</string>
+    <string name="setting_title_import_bookmarks">Lesezeichen wiederherstellen</string>
+    <string name="export_bookmarks">export_bookmarks</string>
+
+    <string name="setting_title_export_whitelist">AdBlock Ausnahmen sichern</string>
+    <string name="setting_title_import_whitelist">AdBlock Ausnahmen wiederherstellen</string>
+    <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
+
+    <string name="setting_title_export_whitelistJS">JavaScript Ausnahmen sichern</string>
+    <string name="setting_title_import_whitelistJS">JavaScript Ausnahmen wiederherstellen</string>
+    <string name="export_whitelistJS">export_whitelist_Javascript</string>
+
+
+    <!-- Others setting -->
+    <string name="setting_title_others">Sonstiges</string>
+    <string name="setting_title_license">Lizenz</string>
+    <string name="setting_summary_license">\"Browser\" ist komplett frei (wie in Freiheit) und Open Source.</string>
+    <string name="setting_title_appSettings">App Einstellungen</string>
+    <string name="setting_summary_appSettings">Öffne die Systemeinstellungen von \"Browser\". Dort kannst du, ja nch Android Version
+        verschiedene Einstellungen vornehmen oder nachträglich Berechtigungen erteilen.</string>
+    <string name="setting_title_community">Mitmachen</string>
+    <string name="setting_summary_community">Erfahre, wer alles bei diesem Projekt geholfen hat. Oder magst du selbst bei der weiteren
+        Entwicklung helfen, Vorschläge machen oder dich einfach informieren?</string>
+    <string name="setting_summary_changelog">Sehe dir eine Liste der letzten Änderungen an, um zu erfahren, was es neues gibt.</string>
+
+    <!-- Toast -->
+    <string name="toast_add_bookmark_successful">Lesezeichen erfolgreich hinzugefügt</string>
+    <string name="toast_add_to_home_successful">Erfolgreich zum Startschirm hinzugefügt</string>
+    <string name="toast_add_to_home_failed">Konnte nicht zum Startschirm hinzugefügt werden</string>
+    <string name="toast_add_whitelist_successful">Domain erfolgreich hinzugefügt</string>
+    <string name="toast_already_exist_in_home">Dieser Eintrag existiert bereits</string>
+    <string name="toast_copy_successful">Erfolgreich kopiert</string>
+    <string name="toast_delete_successful">Erfolgreich gelöscht</string>
+    <string name="toast_domain_already_exists">Domain ist bereits in der Liste</string>
+    <string name="toast_double_taps_quit">Erneut drücken, um Anwendung zu verlassen</string>
+    <string name="toast_export_successful">Gesichert als:&#160;</string>
+    <string name="toast_export_failed">Sicherung fehlgeschlagen</string>
+    <string name="toast_import_successful">Wiederhergestellt:&#160;</string>
+    <string name="toast_import_failed">Wiederherstellung fehlgeschlagen</string>
+    <string name="toast_input_empty">Du hast nichts eingegeben</string>
+    <string name="toast_invalid_domain">Ungültige Domain</string>
+    <string name="toast_load_error">URL konnte nicht geladen werden</string>
+    <string name="toast_load_in_background">Lade URL im Hintergrund</string>
+    <string name="toast_new_tab_successful">Neuer Tab geöffnet</string>
+    <string name="toast_open_file_manager_failed">Konnte Dateimanager nicht öffnen</string>
+    <string name="toast_refresh_failed">Kann Seite nicht neu laden</string>
+    <string name="toast_relayout_successful">Erfolgreich gespeichert</string>
+    <string name="toast_screenshot_successful">Bildschirmfoto erfolgreich gespeichert als:&#160;</string>
+    <string name="toast_share_failed">Kann die Seite nicht teilen</string>
+    <string name="toast_start_download">Starte Download</string>
+    <string name="toast_wait_a_minute">Bitte warte einen Moment</string>
+    <string name="toast_titleConfirm_delete">Möchtest du den Eintrag wirklich löschen?</string>
+    <string name="toast_titleConfirm_paste">In die Zwischenablage kopieren?</string>
+    <string name="toast_titleConfirm_pasteUN">Benutzername</string>
+    <string name="toast_titleConfirm_pastePW">Passswort</string>
+    <string name="toast_directory">Kann Verzeichnis nicht öffnen</string>
+    <string name="toast_noFile">Keine Datei im Verzeichnis</string>
+    <string name="toast_error">Uuups. Etwas ist schief gelaufen. :-(</string>
+    <string name="toast_newTitle">Eintrag existiert schon. Bitte wähle einen anderen Titel.</string>
+    <string name="toast_edit_successful">Successfully saved</string>
+    <string name="toast_webview_forward">Kann keine nächste Seite laden-</string>
+    <string name="toast_webview_back">Kann keine vorherige Seite laden</string>
+    <string name="toast_entry_exists">Eintrag existiert bereits.</string>
+    <string name="toast_clear">Möchtest du die Daten wirklich löschen?</string>
+    <string name="toast_permission_title">Berechtigung wird gebraucht</string>
+    <string name="toast_permission_sdCard">\"Browser\" braucht die Berechtigung \"Zugriff auf den Gerärtespeicher\". Dies ist
+        notwendig um Dateien herunterzuladen, den Dateimanager und um Bildschirmfotos zu macchen. Wenn du die Berechtigung jetzt
+        nicht erteilst, kannst du dies später in den Einstellungen machen.</string>
+    <string name="toast_permission_sdCard_sec">Bitte die Berechtigung \"Zugriff auf den Gerärtespeicher\" in den Einstellungen gewähren.</string>
+    <string name="toast_permission_loc">\"Browser\" braucht die Berechtigung \"Zugriff auf den Standort\". Dies brauchen z.B.
+        Internetseiten die einen Navigationsdienst anbieten.  Wenn du die Berechtigung jetzt nicht erteilst, kannst du dies
+        später in den Einstellungen machen.</string>
+    <string name="toast_restart">Du musst \"Browser\" neustarten, damit die Änderungen wirksam werden. Jetzt beenden?</string>
+
+
+    <!-- Whitelist -->
+    <string name="whitelist_menu_clear">Löschen</string>
+    <string name="whitelist_edit_hint">Domain</string>
+    <string name="whitelist_add">Hinzufügen</string>
 
 </resources>

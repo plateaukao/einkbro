@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fitsSystemWindows="true"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/light">
+
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            android:id="@+id/view3">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+        </android.support.design.widget.AppBarLayout>
+
+        <LinearLayout android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText android:id="@+id/whitelist_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/layout_margin_8dp"
+                android:layout_marginLeft="@dimen/layout_margin_8dp"
+                android:layout_marginRight="@dimen/layout_margin_8dp"
+                android:hint="@string/whitelist_edit_hint"
+                android:textCursorDrawable="@null"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:imeOptions="actionDone"
+                android:inputType="textMultiLine"
+                android:selectAllOnFocus="true"/>
+
+            <Button android:id="@+id/whitelist_add"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/layout_margin_8dp"
+                android:layout_marginRight="@dimen/layout_margin_8dp"
+                android:layout_marginBottom="@dimen/layout_margin_8dp"
+                android:text="@string/whitelist_add"
+                android:textAllCaps="true"/>
+
+        </LinearLayout>
+
+        <View android:layout_width="match_parent"
+            android:layout_height="@dimen/layout_height_1dp"
+            android:background="@color/grey_500"/>
+
+        <ListView android:id="@+id/whitelist"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:drawSelectorOnTop="true"/>
+
+        <TextView android:id="@+id/whitelist_empty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/layout_margin_20dp"
+            android:layout_gravity="center|top"
+            android:gravity="center"
+            android:text="@string/list_empty"
+            android:textAllCaps="false"
+            android:textColor="@color/grey_300"
+            android:textSize="@dimen/text_size_14sp"
+            android:visibility="gone"/>
+
+    </LinearLayout>
+
+
+</android.support.design.widget.CoordinatorLayout>

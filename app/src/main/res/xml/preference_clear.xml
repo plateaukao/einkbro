@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <CheckBoxPreference android:key="@string/sp_clear_quit"
+                        android:defaultValue="false"
+                        android:title="@string/clear_title_quit"/>
+
+    <CheckBoxPreference android:key="@string/sp_clear_bookmarks"
+                        android:defaultValue="false"
+                        android:title="@string/clear_title_bookmarks"/>
+
+    <CheckBoxPreference android:key="@string/sp_clear_cache"
+                        android:defaultValue="true"
+                        android:title="@string/clear_title_cache"/>
+
+    <CheckBoxPreference android:key="@string/sp_clear_cookie"
+                        android:defaultValue="false"
+                        android:title="@string/clear_title_cookie"/>
+
+    <CheckBoxPreference android:key="@string/sp_clear_history"
+                        android:defaultValue="true"
+                        android:title="@string/clear_title_history"/>
+
+</PreferenceScreen>

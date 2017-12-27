@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<de.baumann.browser.View.NinjaRelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/layout_margin_4dp" >
+
+    <org.askerov.dynamicgrid.DynamicGridView
+            android:id="@+id/home_grid"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:stretchMode="columnWidth"
+            android:numColumns="auto_fit"
+            android:scrollbars="none">
+    </org.askerov.dynamicgrid.DynamicGridView>
+
+    <TextView android:id="@+id/home_about_blank"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_alignParentBottom="true"
+              android:layout_margin="@dimen/layout_margin_8dp"
+              android:gravity="center"
+              android:text="@string/main_about_blank"
+              android:textColor="@color/grey_300"
+              android:textSize="@dimen/text_size_14sp"
+              android:visibility="gone">
+    </TextView>
+
+</de.baumann.browser.View.NinjaRelativeLayout>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <!-- General -->
+    <string name="sp_ad_block">SP_AD_BLOCK_9</string>
+    <string name="sp_cookies">SP_COOKIES_9</string>
+    <string name="sp_images">SP_IMAGES_9</string>
+    <string name="sp_javascript">SP_JAVASCRIPT_9</string>
+    <string name="sp_location">SP_LOCATION_9</string>
+    <string name="sp_omnibox_control">SP_OMNIBOX_CONTROL_9</string>
+    <string name="sp_rendering">SP_RENDERING_9</string>
+    <string name="sp_search_engine">SP_SEARCH_ENGINE_9</string>
+    <string name="sp_search_engine_custom">SP_SEARCH_ENGINE_CUSTOM_9</string>
+    <string name="sp_user_agent">SP_USER_AGENT_9</string>
+    <string name="sp_user_agent_custom">SP_USER_AGENT_CUSTOM_9</string>
+
+    <!-- Clear -->
+    <string name="sp_clear_quit">SP_CLEAR_QUIT_9</string>
+    <string name="sp_clear_bookmarks">SP_CLEAR_BOOKMARKS_9</string>
+    <string name="sp_clear_cache">SP_CLEAR_CACHE_9</string>
+    <string name="sp_clear_cookie">SP_CLEAR_COOKIE_9</string>
+    <string name="sp_clear_history">SP_CLEAR_HISTORY_9</string>
+    <string name="sp_clear_passwords">SP_CLEAR_PASSWORDS_9</string>
+
+</resources>

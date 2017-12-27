@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_newTab"
+        android:title="@string/main_menu_new_tab" />
+
+    <item
+        android:id="@+id/menu_newTab_open"
+        android:title="@string/main_menu_new_tabOpen" />
+
+    <item
+        android:id="@+id/menu_delete"
+        android:title="@string/menu_delete" />
+
+</menu>
