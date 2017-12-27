@@ -9,7 +9,9 @@
         With this update \"Ninja Browser\" is used as base for \"Browser\". The
     concept remains the old: simple but powerful with a nice looking user interface. Main advantage of this step are a better
     implementation of tabs. Now you can open as many tabs as you wish. Also you have a new startpage. Please read the new
-    \"Help dialog\" for more information.</string>
+    \"Help dialog\" for more information.&lt;br>&lt;br>
+
+    - full Oreo support</string>
 
 
     <string name="toolbar_title">Toolbar</string>
