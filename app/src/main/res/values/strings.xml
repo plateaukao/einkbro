@@ -1,352 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+
 <resources>
 
-    // Application
-
+    <!-- App -->
     <string name="app_name">Browser</string>
-    <string name="app_changelog">Changelog</string>
-    <string name="app_permissions_title">Used permissions</string>
-    <string name="app_permissions">
-
-        &lt;i>Access Storage Permission:&lt;/i>&lt;br>
-        &#8226; Downloads: save downloads on the sd-card.&lt;br>
-        &#8226; Screenshots: save screenshots of a website on the sd-card.&lt;br>&lt;br>
-
-        &lt;i>Access Fine Location:&lt;/i>&lt;br>
-        Some websites (p.e. Google Maps) need this permission to show for example to show you a route to a desired point
-        of interest.&lt;br>&lt;br>
-
-        &lt;i>Grant permissions later:&lt;/i>&lt;br>
-        If you don\'t permit this now, you can do it later. Please open then \"Settings -> App info\" and choose \"Permissions\".</string>
-
-    <string name="app_share_screenshot">Share screenshot using:</string>
-    <string name="app_share_image">Share image using:</string>
-    <string name="app_share_link">Share link using:</string>
-    <string name="app_share_file">Choose file with:</string>
-    <string name="app_search_hint">Enter url or search term …</string>
-    <string name="app_search_hint_site">Enter search term …</string>
-    <string name="app_search_hint_bookmark">Enter title …</string>
-    <string name="app_search">Searched for:</string>
-    <string name="app_yes">Enabled</string>
-    <string name="app_no">Disabled</string>
-    <string name="app_open">Open folder?</string>
-    <string name="app_location_title">Location</string>
-    <string name="app_location_message">"The website would like to use your current Location."</string>
-    <string name="app_location_allow">Allow</string>
-    <string name="app_location_allow_not">Don\'t allow</string>
-
-    <string name="app_title_bookmarks">Bookmarks</string>
-    <string name="app_title_readLater">readLater</string>
-    <string name="app_title_passStorage">passStorage</string>
-    <string name="app_title_history">History</string>
-    <string name="app_title_downloads">Downloads</string>
-    <string name="app_websearch">Web search</string>
-    <string name="app_conf">Confirmation</string>
-    <string name="app_domain">Unknown domain</string>
+    <string name="app_ok">OK</string>
+    <string name="app_cancel">Cancel</string>
+    <string name="list_empty">Current list is empty</string>
+    <string name="album_title_bookmarks">Bookmarks</string>
+    <string name="album_title_history">History</string>
+    <string name="album_title_home">Home</string>
+    <string name="album_title_files">Files</string>
+    <string name="album_title_pass">Login data</string>
+    <string name="album_untitled">Untitled</string>
+    <string name="notification_content_holder">Click to View Pages</string>
+    <string name="search_hint">Search</string>
 
 
-    // Menu Items
+    <!-- Menu -->
+    <string name="main_menu_new_tab">New tab (background)</string>
+    <string name="main_menu_new_tabOpen">New tab (foreground)</string>
+    <string name="main_menu_copy_link">Copy link</string>
+    <string name="main_menu_save">Save</string>
+    <string name="main_omnibox_input_hint">Search or type URL</string>
+    <string name="main_about_blank">about:blank</string>
 
-    <string name="menu_search">Search</string>
-    <string name="menu_history">Open history</string>
-    <string name="menu_save">Save website</string>
-    <string name="menu_save_screenshot">Save screenshot</string>
-    <string name="menu_save_bookmark">Save as bookmark</string>
-    <string name="menu_save_readLater">Save to readLater</string>
-    <string name="menu_save_pass">Save to passStorage</string>
-    <string name="menu_share">Share website</string>
+    <string name="menu_share">Share</string>
+    <string name="menu_other">Others</string>
+    <string name="menu_save">Save</string>
+    <string name="menu_quit">Quit</string>
+    <string name="menu_delete">Delete</string>
+    <string name="menu_edit">Edit</string>
+    <string name="menu_notification">Notification</string>
+
     <string name="menu_share_screenshot">Share screenshot</string>
-    <string name="menu_share_link">Share link as text</string>
-    <string name="menu_share_link_copy">Share link to Clipboard</string>
-    <string name="menu_downloads">Open download folder</string>
-    <string name="menu_settings">Settings</string>
-    <string name="menu_searchSite">Search on site</string>
-    <string name="menu_prev">Previous</string>
-    <string name="menu_next">Next</string>
-    <string name="menu_cancel">Cancel</string>
-    <string name="menu_pass">Open passStorage</string>
-    <string name="menu_toggle">Settings</string>
-    <string name="menu_toggle_title">Settings (session)</string>
-    <string name="menu_createShortcut">Create shortcut</string>
-    <string name="menu_createShortcut_success">Shortcut created</string>
-    <string name="menu_go">Start search</string>
-    <string name="menu_favorite">Blank page as favorite</string>
-    <string name="menu_open">Open …</string>
-    <string name="menu_more">More …</string>
-    <string name="menu_reload">Reload website</string>
-    <string name="menu_Help">Help</string>
-    <string name="menu_all">… all of them</string>
+    <string name="menu_share_link">Share link</string>
+    <string name="menu_share_clipboard">Share to clipboard</string>
 
-    <string name="action_sort">Sort entries</string>
-    <string name="action_sort_title">Sort by title</string>
-    <string name="action_sort_url">Sort by date</string>
-    <string name="action_sort_extension">Sort by extension</string>
+    <string name="menu_save_screenshot">Save screenshot</string>
+    <string name="menu_save_home">Save at Home</string>
+    <string name="menu_save_login">Save login data</string>
+    <string name="menu_save_bookmark">Save as bookmark</string>
+    <string name="menu_save_as">Save as …</string>
 
-    <string name="action_filter_title">Search in titles</string>
-    <string name="action_filter_create">Search in creation dates</string>
-    <string name="action_filter_url">Search in URLs</string>
-    <string name="action_delete">Delete list</string>
+    <string name="menu_other_searchSite">Search on site</string>
+    <string name="menu_other_help">Help</string>
 
 
-    // Context Menu
+    <!-- AndroidAgo -->
+    <string name="android_ago_just_now">Just now</string>
 
-    <string name="context_save">Save link destination</string>
-    <string name="context_saveImage">Save image</string>
-    <string name="context_shareImage">Share image</string>
-    <string name="context_linkCopy_toast">Link successfully copied</string>
-    <string name="context_saveImage_toast">Saving image:</string>
-    <string name="context_tab">Empty tab</string>
+
+    <!-- Dialog -->
+    <string name="dialog_toggle_title">Fast toggle</string>
+    <string name="dialog_toggle_text">For some Settings you need to open a new tab to apply.</string>
+    <string name="dialog_title_hint">Input Title</string>
+    <string name="dialog_se_hint">https://www.google.com/search?q=</string>
+    <string name="dialog_ua_hint">Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36</string>
+    <string name="dialog_sign_in_username">Username</string>
+    <string name="dialog_sign_in_password">Password</string>
+    <string name="dialog_button_custom">Custom</string>
+    <string name="dialog_title_download">Do you want to download the file?</string>
+    <string name="dialog_title_sign_in">Sign in</string>
+    <string name="dialog_content_resubmission">Would you like to resubmit your data?</string>
+    <string name="dialog_content_ssl_error">The certificate of the site is not trusted. Proceed anyway?</string>
 
 
 
-    // Snackbar
+    <!-- Settings -->
+    <string name="setting_label">Settings</string>
 
-    <string name="toast_yes">OK</string>
-    <string name="toast_cancel">Cancel</string>
-    <string name="toast_notAgain">Never show</string>
-    <string name="toast_download">Downloading file:</string>
-    <string name="toast_download_1">Do you want to download:</string>
-    <string name="toast_perm">Permissions granted?</string>
-    <string name="toast_backup">Backup successful.</string>
-    <string name="toast_restore">Restore successful.</string>
-    <string name="toast_backup_not">Backup failed.</string>
-    <string name="toast_restore_not">Restore failed.</string>
-    <string name="toast_screenshot_failed">Failed to create screenshot.</string>
-    <string name="toast_install_app">Please install an app to perform action.</string>
-    <string name="toast_wrongPW">Uuups. Wrong password.</string>
-    <string name="toast_exit">Do you want to exit?</string>
-    <string name="toast_whiteList">Whitelist deleted.</string>
-    <string name="toast_list">Delete whole list?</string>
-    <string name="toast_whiteList_confirm">Do you really want to delete the whitelist?</string>
+    <!-- Browser setting -->
+    <string name="setting_title_browser">Browser Settings</string>
+    <string name="setting_title_clear_control">Data Control</string>
+    <string name="setting_title_start_control">Start Control</string>
+    <string name="setting_summary_clear_control">Clear your browser data or decide what data will be cleared when you leave
+    the application.</string>
+    <string name="setting_summary_start_control">Decide which components of the browser will be enabled on start.</string>
+
+    <string name="setting_title_search_engine">Search Engine</string>
+    <string name="setting_summary_search_engine">Here you can choose your preferred search engine or set a custom one.</string>
+    <string name="setting_summary_search_engine_google">Google</string>
+    <string name="setting_summary_search_engine_duckduckgo">DuckDuckGo</string>
+    <string name="setting_summary_search_engine_startpage">StartPage</string>
+    <string name="setting_summary_search_engine_bing">Bing</string>
+    <string name="setting_summary_search_engine_baidu">Baidu</string>
+
+    <string name="setting_title_user_agent">User Environment</string>
+    <string name="setting_summary_user_agent">Switch between mobile and desktop version to show websites.</string>
+    <string name="setting_summary_user_agent_default">Default</string>
+    <string name="setting_summary_user_agent_desktop">Desktop</string>
+
+    <string name="setting_title_rendering">Rendering</string>
+    <string name="setting_summary_rendering">Switch between day and night mode.</string>
+    <string name="setting_summary_rendering_default">Default</string>
+    <string name="setting_summary_rendering_grayscale">Grayscale</string>
+    <string name="setting_summary_rendering_inverted">Inverted</string>
+    <string name="setting_summary_rendering_inverted_grayscale">Inverted Grayscale</string>
+
+
+    <!-- Browser start -->
+    <string name="setting_title_images">Images</string>
+    <string name="setting_summary_images">Enable Network images. Disabling could be useful to save mobile data and to load
+    websites faster.</string>
+    <string name="setting_title_cookie">Cookies</string>
+    <string name="setting_summary_cookie">Enable Cookies. Cookies are small text files, which are stored on your device. Websites
+    use them for example to store user settings (for example search settings). But they could also be used to collect personal
+        user data. Third party cookies (they collect user data for advertising) are always disabled.</string>
+
+    <string name="setting_title_javascript">JavaScript</string>
+    <string name="setting_summary_javascript">Enable JavaScript. Many websites need JavaScript for their functionality (menus,
+        loading and displaying images, …). But they are also a risk and can be used for attacks.</string>
+    <string name="setting_title_whitelistJS">JavaScript whitelist</string>
+    <string name="setting_summary_whitelistJS">If you disable JavaScript, you can use this whitelist to allow sites you
+        trust to use javascript.</string>
+
+    <string name="setting_title_adblock">AdBlock</string>
+    <string name="setting_summary_adblock">Enable AdBlock to block annoying ads. Sites also load faster when enabled.</string>
+    <string name="setting_title_whitelist">AdBlock whitelist</string>
+    <string name="setting_summary_whitelist">Allow these sites to show ads. Some sites do not work, when an adblocker is enabled.</string>
+
+    <string name="setting_title_location">Location</string>
+    <string name="setting_summary_location">Allow websites to access your location. Some websites (like Google maps for navigation)
+        need this enabled.</string>
+
+
+    <!-- Browser clear -->
+    <string name="clear_summary">All files will be exported to the download folder. Each export will overwrite the old one.
+        To restore there must be a file with the right name in the directory.</string>
+    <string name="clear_menu_done_all">Done all</string>
+    <string name="clear_title_quit">Clear when application exits</string>
+    <string name="clear_title_bookmarks">Clear Bookmarks</string>
+    <string name="clear_title_cache">Clear Cache</string>
+    <string name="clear_title_cookie">Clear Cookies</string>
+    <string name="clear_title_history">Clear History</string>
+
+
+    <!-- App setting -->
+    <string name="setting_title_app">App Settings</string>
+    <string name="setting_title_ui">Behavior/UI</string>
+    <string name="setting_title_data">Backup</string>
+    <string name="setting_summary_ui">Change the behavior and ui of the app to suit your preferences.</string>
+    <string name="setting_summary_data">Import and export several app data (whitelists, bookmarks).</string>
+
+    <!-- App behavior -->
+    <string name="setting_title_nav_control">Navigation button</string>
+    <string name="setting_title_hide">Fullscreen</string>
+    <string name="setting_summary_hide">Use the whole screen when scrolling through websites. If you press the back button you will
+    leave fullscreen mode.</string>
+    <string name="setting_title_omnibox_control">Omnibox Control</string>
+    <string name="setting_summary_omnibox_control">Swipe omnibox left/right to switch tabs</string>
+    <string name="setting_title_exit">Exit</string>
+    <string name="setting_summary_exit">Longpress the \"Reload button\" (left in the toolbar) to exit the
+        application.</string>
+    <string name="setting_title_background">Open links</string>
+    <string name="setting_summary_background">Display a notification and open links in background. If disabled links will open
+    immediately.</string>
+    <string name="setting_title_longClick">Longclick actions</string>
+    <string name="setting_title_toggle">Toggle dialog</string>
+    <string name="setting_summary_toggle">Longpress the \"Overflow button\" (right in the toolbar) to show a \"Toggle
+    dialog\" for fast changing browser settings.</string>
+    <string name="setting_title_theme">Color theme</string>
+    <string name="setting_summary_theme">You don\'t like green? Just change it!</string>
+
+
+    <!-- Data -->
+    <string name="setting_title_export_bookmarks">Export Bookmarks</string>
+    <string name="setting_title_import_bookmarks">Import Bookmarks</string>
+    <string name="export_bookmarks">export_bookmarks</string>
+
+    <string name="setting_title_export_whitelist">Export AdBlock whitelist</string>
+    <string name="setting_title_import_whitelist">Import AdBlock whitelist</string>
+    <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
+
+    <string name="setting_title_export_whitelistJS">Export JavaScript whitelist</string>
+    <string name="setting_title_import_whitelistJS">Import JavaScript whitelist</string>
+    <string name="export_whitelistJS">export_whitelist_Javascript</string>
+
+
+    <!-- Others setting -->
+    <string name="setting_title_others">Others</string>
+    <string name="setting_title_license">License</string>
+    <string name="setting_summary_license">\"Browser\" is completely free (as in freedom) and open source.</string>
+    <string name="setting_title_appSettings">App settings</string>
+    <string name="setting_summary_appSettings">Open the system app settings for \"Browser\". There you can,
+        depending on your Android version grant permissions, clear the app data and so on.</string>
+    <string name="setting_title_community">Contributing</string>
+    <string name="setting_summary_community">See who contributed something to this project. Or do you want to help with further
+        development, report an issue or just get the latest news relating to my projects?</string>
+    <string name="setting_summary_changelog">Show the latest changelog to see what\'s new.</string>
+
+    <!-- Toast -->
+    <string name="toast_add_bookmark_successful">Bookmark Successfully Added</string>
+    <string name="toast_add_to_home_successful">Successfully added to Home</string>
+    <string name="toast_add_to_home_failed">Failed to add to Home</string>
+    <string name="toast_add_whitelist_successful">Successfully added Domain</string>
+    <string name="toast_already_exist_in_home">Already exist in home</string>
+    <string name="toast_copy_successful">Successfully copied</string>
+    <string name="toast_delete_successful">Successfully deleted</string>
+    <string name="toast_domain_already_exists">Domain already exists</string>
+    <string name="toast_double_taps_quit">Press again to exit</string>
+    <string name="toast_export_successful">Exported as:&#160;</string>
+    <string name="toast_export_failed">Failed to export</string>
+    <string name="toast_import_successful">Imported count:&#160;</string>
+    <string name="toast_import_failed">Failed to import</string>
+    <string name="toast_input_empty">You haven\'t input anything</string>
+    <string name="toast_invalid_domain">Invalid domain</string>
+    <string name="toast_load_error">Can\'t load this URL</string>
+    <string name="toast_load_in_background">Loading in background</string>
+    <string name="toast_new_tab_successful">Successfully opened in a new tab</string>
+    <string name="toast_open_file_manager_failed">Failed to open File Manager</string>
+    <string name="toast_refresh_failed">Can\'t refresh this page</string>
+    <string name="toast_relayout_successful">Successfully Relayout</string>
+    <string name="toast_screenshot_successful">Saved screenshot at:&#160;</string>
+    <string name="toast_share_failed">Can\'t share this page</string>
+    <string name="toast_start_download">Starting download</string>
+    <string name="toast_wait_a_minute">Please wait for a moment</string>
+    <string name="toast_titleConfirm_delete">Do you really want to delete the entry?</string>
+    <string name="toast_titleConfirm_paste">Copy data to clipboard?</string>
+    <string name="toast_titleConfirm_pasteUN">Username</string>
+    <string name="toast_titleConfirm_pastePW">Password</string>
+    <string name="toast_directory">Can\'t open directory</string>
+    <string name="toast_noFile">Can\'t open directory</string>
     <string name="toast_error">Uuups. Something went wrong.</string>
-    <string name="toast_newTitle">Entry already exists.</string>
-    <string name="toast_directory">Can\'t open Directory.</string>
-    <string name="toast_files">No files in directory.</string>
-    <string name="toast_extension">No supported file extension</string>
-    <string name="toast_link">Link received:</string>
-    <string name="toast_confirmation_title">Confirmation</string>
-    <string name="toast_confirmation_backup">This will overwrite your current backup. Do you really want this?</string>
-    <string name="toast_confirmation_restore">This will overwrite your current database. Do you really want this?</string>
-    <string name="toast_restart">Restart app to apply changes?</string>
+    <string name="toast_newTitle">Entry already exists. Please enter new title.</string>
+    <string name="toast_edit_successful">Successfully saved</string>
+    <string name="toast_webview_forward">Can\'t load next site</string>
+    <string name="toast_webview_back">Can\'t load previous site</string>
+    <string name="toast_entry_exists">Entry exists already.</string>
+    <string name="toast_clear">Du you really want to clear?</string>
+    <string name="toast_permission_title">Permission is needed</string>
+    <string name="toast_permission_sdCard">\"Browser\" needs the permission to \"read and write on your storage\". This is needed for
+    downloading files, the build in file manager and taking screenshots. If you don\'t grant the permission yet, you can do it
+    later in the settings.</string>
+    <string name="toast_permission_sdCard_sec">Please grant the permission to \"read and write on your storage\" in the settings.</string>
+    <string name="toast_permission_loc">\"Browser\" needs the permission to \"access your location\". This is requested from some
+        websites for example when they offer some kind of navigation. If you don\'t grant the permission yet, you can do it
+    later in the settings.</string>
+    <string name="toast_restart">You must restart \"Browser\" to apply changes. Close now?</string>
 
 
-    // Bookmarks // ReadLater // Password
-
-    <string name="bookmark_remove_confirmation">List item will be removed. OK?</string>
-    <string name="bookmark_remove_bookmark">Delete entry</string>
-    <string name="bookmark_added">Adding entry.</string>
-    <string name="bookmark_setFav">Successfully set as favorite.</string>
-    <string name="bookmark_setFav_not">You can only choose one favorite. Please disable current.</string>
-    <string name="bookmark_edit_title">Edit entry</string>
-
-    <string name="readLater_title">Open link:</string>
-
-    <string name="pass_success">Adding to password list.</string>
-    <string name="pass_userName">Username</string>
-    <string name="pass_userPW">Password</string>
-    <string name="pass_copy_userName">Copy username</string>
-    <string name="pass_copy_userPW">Copy password</string>
-    <string name="pass_title">Title</string>
-    <string name="pass_copy">Copy login data</string>
-    <string name="pass_edit">Edit login data</string>
-    <string name="pass_autoFill">Auto fill (authentication dialog)</string>
-
-    <string name="filter_today">Today</string>
-    <string name="filter_yesterday">Yesterday</string>
-    <string name="filter_before">Day before yesterday</string>
-    <string name="filter_month">This month</string>
-    <string name="filter_own">Own search</string>
-    <string name="filter_clear">Cancel search</string>
-    <string name="sort_title">title</string>
-    <string name="sort_date">date</string>
-    <string name="sort_extension">extension</string>
-
-
-    // Settings
-
-    <string name="pref_1">Learn more</string>
-    <string name="pref_2">App settings</string>
-    <string name="pref_3">Enable on start</string>
-    <string name="pref_4">Data</string>
-    <string name="pref_5">Clear on exit</string>
-    <string name="pref_6">Search</string>
-
-    <string name="pref_2_summary">Here you can configure the look and the behavior of the app.</string>
-    <string name="pref_3_summary">Here you can configure the behavior of the browser on start. Decide which content will be loaded or
-    protect your privacy. These settings are the default ones. And can until you close the app with the help of the
-    \"popup settings\".</string>
-    <string name="pref_4_summary">Mange the application data. Set a password or backup and restore your list entries.</string>
-    <string name="pref_5_summary">This also concerns your privacy. Decide which data will be deleted, when you close the browser.</string>
-    <string name="pref_6_summary">Some settings related to the search functionality of the browser.</string>
-
-    <string name="action_license">About</string>
-    <string name="action_license_summary">Learn more about this app (help, changelog, license, …).</string>
-
-    <string name="action_openSettings">App info</string>
-    <string name="action_openSettings_summary">Open via the system settings the app info of the app. There you can,
-        depending on your Android version, manage several things (Storage, network traffic, permissions, …).</string>
-
-    <string name="action_font">Font size</string>
-    <string name="action_font_summary">Change font size for websites.</string>
-
-    <string name="action_backup">Backup</string>
-    <string name="action_backup_summary">Backup and restore your bookmarks, the readLater list, the passStorage, your history and
-        your javascript whitelist. A new backup overwrites the old one. Since the passStorage is encrypted with an unique key,
-        this does not work for it.</string>
-
-    <string name="action_restore">Restore</string>
-
-    <string name="action_java">Javascript</string>
-    <string name="action_java_summary">Some functions on the websites need javascript to work. But javascript is
-        known to be a security risk.</string>
-
-    <string name="action_cookie">Cookies</string>
-    <string name="action_cookie_summary">Visited websites are storing their cookies on your device, mostly to improve user
-        experience. For example settings for a search site are stored in cookies. Third party cookies are not from the visited
-        website. Mostly they collect information about your browsing behavior.</string>
-
-    <string name="action_history">Clear history on exit</string>
-    <string name="action_history_summary">Clear your browser history on exit.</string>
-
-    <string name="action_searchEngine">Search engine</string>
-    <string name="action_searchEngine_summary">Choose your preferred search engine.</string>
-
-    <string name="action_wikiLang">Wikipedia</string>
-    <string name="action_wikiLang_summary">Choose your preferred language for Wikipedia.</string>
-
-    <string name="action_clearCache">Clear cache</string>
-    <string name="action_clearCache_summary">Clear browser cache on exit. Disable, if you want to use offline functionality.</string>
-
-    <string name="action_clearCookies">Clear cookies</string>
-    <string name="action_clearCookies_summary">Clear all cookies on exit. Website settings will get lost.</string>
-
-    <string name="action_clearForm">Clear form data</string>
-    <string name="action_clearForm_summary">Clear all form data on exit. All saved form entered data (e.g. mail addresses)
-        will get lost.</string>
-
-    <string name="action_form">Form data</string>
-    <string name="action_form_summary">Save entered form data (e.g mail addresses).</string>
-
-    <string name="action_loc">Location</string>
-    <string name="action_loc_summary">Allow websites to get your fine location.</string>
-
-    <string name="action_pictures">Load pictures</string>
-    <string name="action_pictures_summary">Load pictures on websites. Disable to save data volume and load sites faster.</string>
-
-    <string name="action_searchChoose">Websites</string>
-    <string name="action_searchChoose_summary">Choose which websites are enabled for the fast search.</string>
-    <string name="action_searchChooseTitle">Choose a site to search</string>
-
-    <string name="action_Duckduckgo">DuckDuckGo (DDG) is an Internet search engine that emphasizes protecting searchers\' privacy and
-        avoiding the filter bubble of personalized search results.</string>
-    <string name="action_Flickr">Flickr is an image hosting and video hosting website and web services suite.</string>
-    <string name="action_Github">GitHub is a web-based Git repository hosting service.</string>
-    <string name="action_Google">Google Search, commonly referred to as Google Web Search or simply Google, is a web search engine
-        developed by Google.</string>
-    <string name="action_Google_enc">Encrypted Google Search, use to override AMP-link loading.</string>
-    <string name="action_MetaGer">MetaGer is a meta search engine focused on protecting users\' privacy.</string>
-    <string name="action_Startpage">Startpage is a meta search engine based in New York and the Netherlands,
-        which highlights privacy as its distinguishing feature from other internet search engines.</string>
-    <string name="action_Wikipedia">Wikipedia is a free online encyclopedia that, by default, allows its users to edit any article.</string>
-    <string name="action_YouTube">YouTube is an American video-sharing website headquartered in San Bruno, California, United States.</string>
-
-    <string name="action_protect">App protection</string>
-    <string name="action_protect_summary">Set a pin to protect app against unwanted access. Only use numbers. Let empty, if you do
-        not want to protect the app.</string>
-
-    <string name="action_rotation">Rotation</string>
-    <string name="action_rotation_summary">Set the rotation mode of the app: auto, portrait or landscape.</string>
-
-    <string name="action_whiteList">Whitelist</string>
-    <string name="action_whiteList_summary">Clear your javascript whitelist.</string>
-
-    <string name="action_fullscreen">Fullscreen</string>
-    <string name="action_fullscreen_summary">Hide the status- and/or the toolbar at the bottom while browsing.</string>
-
-    <string name="action_adBlock">Block ads</string>
-    <string name="action_adBlock_summary">Block (not all, but most) unwanted ads while browsing.</string>
-
-    <string name="action_desktop">Request desktop</string>
-    <string name="action_desktop_summary">Try to show the desktop site of websites by default. This feature is a little bit buggy.</string>
-
-    <string name="action_openLink">Open links in background</string>
-    <string name="action_openLink_summary">Checking this will open links in the background and put a notification on your
-        statusbar to open the link later. Disable to open links immediately.</string>
-
-    <string name="action_tabMain">Start tab</string>
-    <string name="action_tabMain_summary">Which tab should be displayed on app start?</string>
-
-    <string name="action_theme">Theme</string>
-    <string name="action_theme_summary">Don\'t like green? Change the color!</string>
-
-    <string name="action_swipe">Swipe</string>
-    <string name="action_swipe_summary">Swipe left and right to switch tabs.</string>
-
-    <string name="action_hideButtons">Temporally hide arrows</string>
-
-
-    // Intro
-
-    <string name="intro_skip">Skip</string>
-    <string name="intro_finish">Let\'s start.</string>
-
-    <string name="intro1_title">Browser</string>
-    <string name="intro1_text">Thank you for choosing \"Browser\". It\'s fully open source and still in development.
-        Here\'s a short intro how to use …</string>
-
-    <string name="intro2_title">The lists</string>
-    <string name="intro2_text">\"Browser\" is organized in lists: bookmarks, readLater, passStorage and the history.</string>
-
-    <string name="intro3_title">Toolbar</string>
-    <string name="intro3_text">Swipe left to open bookmarks, right to open readLater and up to close the app. Long click the toolbar
-    to switch between the tabs.</string>
-
-    <string name="intro4_title">Settings</string>
-    <string name="intro4_text">In the settings popup you can configure the behavior of \"Browser\" for the current session. To open
-    the main settings, just click the \"Settings\" button.</string>
-
-    <string name="intro5_title">Help</string>
-    <string name="intro5_text">To get more infos how to use \"Browser\" just open the \"help dialog\" in the menu.</string>
-
-
-    // About
-
-    <string name="about_title_main">About</string>
-    <string name="about_title_dev">Developer</string>
-    <string name="about_title_libs">Used open source libraries</string>
-    <string name="about_title_cont">Contributors</string>
-
-    <string name="about_changelog">Changelog</string>
-    <string name="about_changelog_summary">Open Github site and see what\'s new … (needs internet connection)</string>
-
-    <string name="about_license">License</string>
-    <string name="about_license_summary">The app is licensed under GPL and completely open source and free (as in freedom).</string>
-
-    <string name="about_dev">Gaukler Faun</string>
-    <string name="about_dev_summary">Open my profile on Github (needs internet connection).</string>
-
-    <string name="about_license_2">Used to hide the toolbar while scrolling.</string>
-    <string name="about_license_3">Used to build the intro screen.</string>
-    <string name="about_license_6">Used to en- and decrypt login data saved in the passStore.</string>
-    <string name="about_license_7">Used to create the \"About screen\".</string>
-    <string name="about_license_8">The source of nearly all icons.</string>
-    <string name="about_license_9">A powerful library to display media files for Android.</string>
-
-    <string name="about_cont_summary">Helped to implement \"adblocking\", the five tabs and \"request desktop site\".</string>
-    <string name="about_cont_summary_2">Russian translation.</string>
-    <string name="about_cont_summary_3">Chinese translation.</string>
-
-
-    //File chooser
-
-    <string name="choose_menu_2">Share</string>
-    <string name="choose_menu_3">Rename</string>
-    <string name="choose_menu_4">Delete</string>
-
-
-    // Password
-
-    <string name="pw_forgotten">Pin forgotten?</string>
-    <string name="pw_hint">Enter pin</string>
-    <string name="pw_forgotten_dialog">Delete all data to reset your app pin?</string>
+    <!-- Whitelist -->
+    <string name="whitelist_menu_clear">Clear</string>
+    <string name="whitelist_edit_hint">Domain</string>
+    <string name="whitelist_add">Add</string>
 
 </resources>

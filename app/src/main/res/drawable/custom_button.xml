@@ -4,21 +4,21 @@
 
     <item android:state_pressed="true" >
         <shape android:shape="oval">
-            <solid android:color="?attr/colorAccent"/>
+            <solid android:color="?attr/colorPrimaryDark"/>
             <size android:width="150dp" android:height="150dp"/>
         </shape>
     </item>
 
     <item android:state_focused="true" >
         <shape android:shape="oval">
-            <solid android:color="?attr/colorAccent"/>
+            <solid android:color="?attr/colorPrimaryDark"/>
             <size android:width="150dp" android:height="150dp"/>
         </shape>
     </item>
 
     <item>
         <shape android:shape="oval">
-            <solid android:color="?attr/colorAccent_trans"/>
+            <solid android:color="@color/transparent"/>
             <size android:width="150dp" android:height="150dp"/>
         </shape>
     </item>

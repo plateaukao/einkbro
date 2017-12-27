@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light">
+
+    <ImageView
+        android:contentDescription="@null"
+        android:id="@+id/icon"
+        android:layout_width="36dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        android:scaleType="centerInside"
+        android:visibility="gone"
+        app:srcCompat="@drawable/file" />
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/light">
+
+        <RelativeLayout android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/layout_margin_12dp"
+            android:layout_marginLeft="@dimen/layout_margin_16dp"
+            android:layout_marginRight="@dimen/layout_margin_16dp">
+
+            <com.github.curioustechizen.ago.RelativeTimeTextView
+                android:id="@+id/record_item_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_alignParentEnd="true"
+                android:textColor="@color/grey_500"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:maxLines="1"
+                android:ellipsize="end"/>
+
+            <TextView android:id="@+id/record_item_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@id/record_item_time"
+                android:layout_marginEnd="@dimen/layout_margin_8dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:maxLines="1"
+                android:ellipsize="end"/>
+
+        </RelativeLayout>
+
+        <TextView android:id="@+id/record_item_url"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/layout_margin_12dp"
+            android:layout_marginLeft="@dimen/layout_margin_16dp"
+            android:layout_marginRight="@dimen/layout_margin_16dp"
+            android:textColor="@color/grey_500"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:maxLines="1"
+            android:ellipsize="end"/>
+
+    </LinearLayout>
+
+</LinearLayout>

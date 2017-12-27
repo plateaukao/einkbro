@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey_900"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/dialog_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:padding="24dp"
+        android:text="@string/toolbar_title"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textStyle="bold"
+        android:textColor="@color/light" />
+
+    <ScrollView android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/dialog_text"
+                android:paddingEnd="24dp"
+                android:paddingStart="24dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/light" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/floatButton_help"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="32dp"
+                    app:backgroundTint="?attr/colorAccent"
+                    app:fabSize="mini"
+                    app:srcCompat="@drawable/icon_help" />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/floatButton_settings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="32dp"
+                    app:backgroundTint="?attr/colorAccent"
+                    app:fabSize="mini"
+                    app:srcCompat="@drawable/icon_settings_light" />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/floatButton_ok"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="32dp"
+                    app:backgroundTint="?attr/colorAccent"
+                    app:fabSize="mini"
+                    app:srcCompat="@drawable/check_white" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

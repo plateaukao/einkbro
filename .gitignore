@@ -1,6 +1,10 @@
-*.iml
-.gradle
+# Created by .ignore support plugin (hsz.mobi)
+/.gradle/
+/.idea/
+/build/
+/gradle/
+/gradlew
 /local.properties
-/.idea/workspace.xml
-/.idea/libraries
-/build
+/app/build/
+Würde app/app.iml löschen
+Würde browser.iml löschen

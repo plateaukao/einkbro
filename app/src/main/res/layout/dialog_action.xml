@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/layout_height_56dp"
+    android:minHeight="@dimen/layout_height_56dp"
+    android:orientation="vertical"
+    android:background="@color/grey_900"
+    android:layout_alignParentBottom="true"
+    tools:ignore="Overdraw">
+
+    <TextView
+        android:id="@+id/dialog_text"
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/light"
+        android:layout_gravity="center_vertical" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp">
+
+        <Button android:id="@+id/action_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:background="@color/grey_900"
+            android:textColor="?attr/colorAccent"
+            android:text="@string/app_ok"/>
+
+        <Button android:id="@+id/action_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@+id/action_ok"
+            android:background="@color/grey_900"
+            android:textColor="?attr/colorAccent"
+            android:text="@string/app_cancel"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

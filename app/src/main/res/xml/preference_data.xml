@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Preference android:summary="@string/clear_summary" />
+
+    <PreferenceCategory android:title="@string/setting_title_adblock">
+        <Preference android:title="@string/setting_title_export_whitelist" />
+        <Preference android:title="@string/setting_title_import_whitelist" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/setting_title_javascript">
+        <Preference android:title="@string/setting_title_export_whitelistJS" />
+        <Preference android:title="@string/setting_title_import_whitelistJS" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/album_title_bookmarks">
+        <Preference android:title="@string/setting_title_export_bookmarks" />
+        <Preference android:title="@string/setting_title_import_bookmarks" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

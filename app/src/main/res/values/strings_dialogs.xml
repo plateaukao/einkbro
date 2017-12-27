@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <string name="changelog_title">Changelog</string>
+    <string name="changelog_dialog">
+        &lt;i>For more information visit the project site on Github: https://github.com/scoute-dich/Browser&lt;/i>&lt;br>&lt;br>
+
+        With this update \"Ninja Browser\" is used as base for \"Browser\". The
+    concept remains the old: simple but powerful with a nice looking user interface. Main advantage of this step are a better
+    implementation of tabs. Now you can open as many tabs as you wish. Also you have a new startpage. Please read the new
+    \"Help dialog\" for more information.</string>
+
+
+    <string name="toolbar_title">Toolbar</string>
+    <string name="toolbar_dialog">At the bottom of the screen you have the toolbar. You can reload the current
+        website and open the menu. Swipe the toolbar up to open the tab control. To switch between tabs swipe left or right.</string>
+
+    <string name="tab_title">Tab control</string>
+    <string name="tab_dialog">Click the preview of a tab to select it, click again to close the tab preview. To close a tab simply
+        swipe to preview to the top or bottom. At the bottom you can open a new tab, the download folder, your login data, your
+    bookmarks or the browser history (from left to right).</string>
+
+    <string name="not_title">Notifications</string>
+    <string name="not_dialog">Notifications are displayed on the bottom of the screen. They can be dismissed by clicking anywhere
+        outside.</string>
+
+    <string name="nav_title">Navigation</string>
+    <string name="nav_dialog">Use the \"Nav Button\" in the fullscreen mode: swipe up/down -> scroll to top/bottom;
+    swipe left/right -> navigate back/forward; click -> open the menu; longclick -> open \"Fast toggle dialog\".</string>
+
+    <string name="settings_dialog">There are even more options in the settings. Try it out!</string>
+
+
+    <string name="license_title">Copyright © 2017  by Gaukler Faun</string>
+    <string name="license_dialog">
+        &lt;i>For more information visit the project site on Github: https://github.com/scoute-dich/Browser&lt;/i>&lt;br>&lt;br>
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with this program.  If not, see http://www.gnu.org/licenses.&lt;br>&lt;br>
+
+        &lt;i>Following open source libraries or projects are used within this software:&lt;/i>&lt;br>&lt;br>&lt;br>
+
+        &lt;b>Android Sliding Up Panel&lt;/b>&lt;br>
+        Apache License Version 2.0&lt;br>
+        Umano: News Read To You&lt;br>
+        &lt;i>http://git.io/vUruG&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Android Swipe-to-Dismiss&lt;/b>&lt;br>
+        Apache License Version 2.0&lt;br>
+        Roman Nurik&lt;br>
+        &lt;i>http://git.io/vUruO&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>android-ago&lt;/b>&lt;br>
+        Apache License Version 2.0&lt;br>
+        Kiran Rao&lt;br>
+        &lt;i>http://git.io/vUrum&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>DynamicGrid&lt;/b>&lt;br>
+        Apache License Version 2.0&lt;br>
+        askerov&lt;br>
+        &lt;i>http://git.io/vTHZH&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Glide&lt;/b>&lt;br>
+        BSD, part MIT and Apache 2.0&lt;br>
+        bumptech&lt;br>
+        &lt;i>https://github.com/bumptech/glide&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Lightning Browser&lt;/b>&lt;br>
+        Mozilla Public License Version 2.0&lt;br>
+        Anthony Restaino&lt;br>
+        &lt;i>http://git.io/vUruk&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Material Design Icons&lt;/b>&lt;br>
+        SIL Open Font License, Version 1.1.&lt;br>
+        Templarian&lt;br>
+        &lt;i>https://github.com/Templarian/MaterialDesign&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Ninja&lt;/b>&lt;br>
+        Apache License Version 2.0&lt;br>
+        Matthew Lee&lt;br>
+        &lt;i>http://git.io/vUrEh&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>SimpleEncryptionLib&lt;/b>&lt;br>
+        Apache License Version 2.0&lt;br>
+        hummatli&lt;br>
+        &lt;i>https://github.com/hummatli/SimpleEncryptionLib</string>
+
+    <string name="cont_dialog">
+        &lt;i>On following sites you can get more information about \"Browser\":&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>XDA-thread:&lt;/b>&lt;br>
+        XDA is a great community for developers and smartphone enthusiasts. Here you can report issues, ask for new features
+        and everything other related to \"Browser\".&lt;br>
+        &lt;i>https://forum.xda-developers.com/android/apps-games/app-browser-t3500091&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Github:&lt;/b>&lt;br>
+        On Github you can see the source code of \"Browser\". This is the more technical solution: open issues, ask for new
+        features or even help developing or translating.&lt;br>
+        &lt;i>https://github.com/scoute-dich/browser&lt;/i>&lt;br>&lt;br>&lt;br>
+
+
+        &lt;i>Following people contributed at this project:&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Gaukler Faun&lt;/b>&lt;br>
+        Main developer and initiator of this project.&lt;br>
+        &lt;i>https://github.com/scoute-dich&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>CGSLURP LLC&lt;/b>&lt;br>
+        Helped to implement AdBlock and \"request desktop site\" in the previous version of \"Browser\".&lt;br>
+        &lt;i>https://github.com/futrDevelopment&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>splinet&lt;/b>&lt;br>
+        Russian translation in the previous version of \"Browser\". Sorry for switching to Ninja Browser as base. Perhaps you
+        could translate a second time?&lt;br>
+        &lt;i>https://github.com/splinet&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Jumping Yang&lt;/b>&lt;br>
+        Chinese translation in the previous version of \"Browser\". Sorry for switching to Ninja Browser as base. Perhaps you
+        could translate a second time?&lt;br>
+        &lt;i>https://github.com/JumpingYang001&lt;/i>
+
+    </string>
+
+</resources>

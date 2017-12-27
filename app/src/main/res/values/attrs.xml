@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <resources>
 
     <attr name="colorPrimary" format="color" />
     <attr name="colorPrimaryDark" format="color" />
     <attr name="colorAccent_trans" format="color" />
 
-    <attr name="customTextViewStyle" format="reference"/>
+    <!-- AndroidAgo -->
+    <declare-styleable name="RelativeTimeTextView">
+        <attr name="relativeTimePrefix" format="string" />
+        <attr name="relativeTimeSuffix" format="string" />
+        <attr name="referenceTime" format="string" />
+    </declare-styleable>
+
 </resources>

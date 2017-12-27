@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <CheckBoxPreference android:key="sp_hideOmni"
+        android:icon="@drawable/icon_fullscreen"
+        android:defaultValue="true"
+        android:title="@string/setting_title_hide"
+        android:summary="@string/setting_summary_hide"/>
+
+    <CheckBoxPreference android:key="@string/sp_omnibox_control"
+        android:icon="@drawable/icon_swipe"
+        android:defaultValue="true"
+        android:title="@string/setting_title_omnibox_control"
+        android:summary="@string/setting_summary_omnibox_control"/>
+
+    <CheckBoxPreference android:key="sp_background"
+        android:icon="@drawable/icon_link"
+        android:defaultValue="true"
+        android:title="@string/setting_title_background"
+        android:summary="@string/setting_summary_background"/>
+
+    <ListPreference
+        android:title="@string/setting_title_theme"
+        android:icon="@drawable/icon_ui"
+        android:summary="@string/setting_summary_theme"
+        android:key="theme"
+        android:defaultValue="0"
+        android:entries="@array/listArrayTheme"
+        android:entryValues="@array/listValuesTheme" />
+
+
+    <PreferenceCategory android:title="@string/setting_title_longClick">
+
+        <CheckBoxPreference android:key="sp_toggle"
+            android:icon="@drawable/ic_action_overflow_dark"
+            android:defaultValue="false"
+            android:title="@string/setting_title_toggle"
+            android:summary="@string/setting_summary_toggle"/>
+
+        <CheckBoxPreference android:key="sp_exit"
+            android:icon="@drawable/ic_action_refresh_dark"
+            android:defaultValue="false"
+            android:title="@string/setting_title_exit"
+            android:summary="@string/setting_summary_exit"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

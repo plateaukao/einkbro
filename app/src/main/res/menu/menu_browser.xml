@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_other"
+        android:title="@string/menu_other" >
+        <!-- "file" submenu -->
+        <menu>
+            <item android:id="@+id/menu_other_search"
+                android:title="@string/menu_other_searchSite" />
+            <item android:id="@+id/menu_settings"
+                android:title="@string/setting_label" />
+            <item android:id="@+id/menu_other_help"
+                android:title="@string/menu_other_help" />
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/menu_save"
+        android:title="@string/menu_save" >
+        <!-- "file" submenu -->
+        <menu>
+            <item android:id="@+id/menu_save_screenshot"
+                android:title="@string/menu_save_screenshot" />
+            <item android:id="@+id/menu_save_bookmark"
+                android:title="@string/menu_save_bookmark" />
+            <item android:id="@+id/menu_save_home"
+                android:title="@string/menu_save_home" />
+            <item android:id="@+id/menu_save_login"
+                android:title="@string/menu_save_login" />
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/menu_share"
+        android:title="@string/menu_share" >
+        <!-- "file" submenu -->
+        <menu>
+            <item android:id="@+id/menu_share_screenshot"
+                android:title="@string/menu_share_screenshot" />
+            <item android:id="@+id/menu_share_link"
+                android:title="@string/menu_share_link" />
+            <item android:id="@+id/menu_share_clipboard"
+                android:title="@string/menu_share_clipboard" />
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/menu_quit"
+        android:title="@string/menu_quit" />
+
+</menu>

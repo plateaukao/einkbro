@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<de.baumann.browser.View.NinjaRelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/light"
+        tools:ignore="Overdraw">
+
+    <ListView android:id="@+id/record_list"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:drawSelectorOnTop="true"/>
+
+    <TextView android:id="@+id/record_list_empty"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_centerInParent="true"
+              android:gravity="center"
+              android:text="@string/list_empty"
+              android:textColor="@color/grey_300"
+              android:textSize="@dimen/text_size_14sp"
+              android:maxLines="1"
+              android:ellipsize="none"
+              android:visibility="gone"/>
+
+</de.baumann.browser.View.NinjaRelativeLayout>

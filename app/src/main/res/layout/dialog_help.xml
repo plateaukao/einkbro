@@ -1,128 +1,187 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+
+<LinearLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:paddingEnd="20dp"
-    android:paddingStart="20dp"
-    android:paddingTop="15dp">
+    android:background="@color/grey_900"
+    android:orientation="vertical"
+    tools:ignore="ContentDescription"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <TextView
+        android:id="@+id/dialog_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:ignore="ContentDescription">
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:padding="24dp"
+        android:text="@string/toolbar_title"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textStyle="bold"
+        android:textColor="@color/light" />
 
-        <TextView
-            android:id="@+id/help_lists_title"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-condensed"
-            android:textStyle="bold"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:orientation="vertical"
+            android:paddingEnd="24dp"
+            android:paddingStart="24dp">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="100dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:scaleType="centerInside"
-            app:srcCompat="@drawable/help_1" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:text="@string/toolbar_title"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold"
+                android:textColor="@color/light" />
 
-        <TextView
-            android:id="@+id/help_lists"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <ImageView
+                android:id="@+id/cardView_help_logo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:scaleType="centerInside" />
 
-        <TextView
-            android:id="@+id/help_toolbar_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:fontFamily="sans-serif-condensed"
-            android:textStyle="bold"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp"
+                android:text="@string/toolbar_dialog"
+                android:textColor="@color/light"/>
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="100dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:scaleType="centerInside"
-            app:srcCompat="@drawable/help_2" />
 
-        <TextView
-            android:id="@+id/help_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
 
-        <TextView
-            android:id="@+id/help_tabs_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:fontFamily="sans-serif-condensed"
-            android:textStyle="bold"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:text="@string/tab_title"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold"
+                android:textColor="@color/light" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="100dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:scaleType="centerInside"
-            app:srcCompat="@drawable/help_3" />
+            <ImageView
+                android:id="@+id/cardView_help_tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:scaleType="centerInside" />
 
-        <TextView
-            android:id="@+id/help_tabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp"
+                android:text="@string/tab_dialog"
+                android:textColor="@color/light"/>
 
-        <TextView
-            android:id="@+id/help_menu_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:fontFamily="sans-serif-condensed"
-            android:textStyle="bold"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="100dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:scaleType="centerInside"
-            app:srcCompat="@drawable/help_4" />
 
-        <TextView
-            android:id="@+id/help_menu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:text="@string/not_title"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold"
+                android:textColor="@color/light" />
 
-        <TextView
-            android:id="@+id/help_search_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:fontFamily="sans-serif-condensed"
-            android:textStyle="bold"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            <ImageView
+                android:id="@+id/cardView_help_not"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:scaleType="centerInside" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="100dp"
-            android:scaleType="centerInside"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            app:srcCompat="@drawable/help_5" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp"
+                android:text="@string/not_dialog"
+                android:textColor="@color/light"/>
+            
 
-        <TextView
-            android:id="@+id/help_search"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:text="@string/nav_title"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold"
+                android:textColor="@color/light" />
 
-    </LinearLayout>
+            <ImageView
+                android:id="@+id/cardView_help_nav"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:scaleType="centerInside" />
 
-</ScrollView>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp"
+                android:text="@string/nav_dialog"
+                android:textColor="@color/light"/>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:text="@string/setting_label"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold"
+                android:textColor="@color/light" />
+
+            <ImageView
+                android:id="@+id/cardView_help_set"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:scaleType="centerInside" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/settings_dialog"
+                android:textColor="@color/light"/>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/floatButton_settings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="32dp"
+                    android:layout_gravity="center_vertical|center_horizontal"
+                    app:backgroundTint="?attr/colorAccent"
+                    app:fabSize="mini"
+                    app:srcCompat="@drawable/icon_settings_light" />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/floatButton_ok"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="32dp"
+                    android:layout_gravity="center_vertical|center_horizontal"
+                    app:backgroundTint="?attr/colorAccent"
+                    app:fabSize="mini"
+                    app:srcCompat="@drawable/check_white" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <CheckBoxPreference android:key="@string/sp_images"
+        android:icon="@drawable/icon_image"
+        android:defaultValue="true"
+        android:title="@string/setting_title_images"
+        android:summary="@string/setting_summary_images"/>
+
+    <CheckBoxPreference android:key="@string/sp_cookies"
+        android:icon="@drawable/icon_cookie"
+        android:defaultValue="true"
+        android:title="@string/setting_title_cookie"
+        android:summary="@string/setting_summary_cookie"/>
+
+    <CheckBoxPreference android:key="@string/sp_location"
+        android:icon="@drawable/icon_location"
+        android:defaultValue="false"
+        android:title="@string/setting_title_location"
+        android:summary="@string/setting_summary_location"/>
+
+
+    <PreferenceCategory android:title="@string/setting_title_adblock">
+
+        <CheckBoxPreference android:key="@string/sp_ad_block"
+            android:icon="@drawable/icon_block"
+            android:defaultValue="true"
+            android:title="@string/setting_title_adblock"
+            android:summary="@string/setting_summary_adblock"/>
+
+        <Preference android:title="@string/setting_title_whitelist"
+            android:icon="@drawable/icon_list"
+            android:summary="@string/setting_summary_whitelist"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/setting_title_javascript">
+
+        <CheckBoxPreference android:key="@string/sp_javascript"
+            android:icon="@drawable/icon_java"
+            android:defaultValue="true"
+            android:title="@string/setting_title_javascript"
+            android:summary="@string/setting_summary_javascript"/>
+
+        <Preference android:title="@string/setting_title_whitelistJS"
+            android:icon="@drawable/icon_list"
+            android:summary="@string/setting_summary_whitelistJS"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
