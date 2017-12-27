@@ -9,7 +9,9 @@
         Mit diesem Update wird \"Ninja Browser\" als Basis für \"Browser\" genutzt. Der Grundgedanke bleibt der gleiche:
         einfach aber funktionell mit einer guten Benutzeroberfläche. Der größte Vorteil dieses Schrittes ist ein besseres
         Tabmanagement (du kannst jetzt soviele Tabs öffnen, wie du magst). Außerdem gibt es eine neue Startseite. Bitte lies den
-        neuen \"Hilfedialog\" für weitere Informationen.</string>
+        neuen \"Hilfedialog\" für weitere Informationen.&lt;br>&lt;br>
+
+    - volle Oreo-Unterstützung</string>
 
     <string name="toolbar_title">Toolbar</string>
     <string name="toolbar_dialog">Unten auf dem Schirm findest du die Toolbar. Du kannst entweder den angezeigten Inhalt neu laden

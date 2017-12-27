@@ -1,3 +1,14 @@
+### v 5.0
+
+With this update "Ninja Browser" is used as base for "Browser". The 
+concept remains the old: simple but powerful with a nice looking user interface. 
+Main advantage of this step are a better implementation of tabs. Now you can open 
+as many tabs as you wish. Also you have a new startpage. Please read the new "Help dialog" 
+for more information.
+    
+- full oreo support
+
+
 ### v 4.5
 - new: Chinese translation (Thanks: Jumping Yang)
 - new: keyboard go button actions

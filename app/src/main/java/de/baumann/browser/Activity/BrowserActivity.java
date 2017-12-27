@@ -19,6 +19,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.database.Cursor;
@@ -32,12 +33,12 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
+import android.support.design.BuildConfig;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.appcompat.BuildConfig;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -285,51 +286,56 @@ public class BrowserActivity extends Activity implements BrowserController {
 
         // show changelog
 
-        final String versionName = BuildConfig.VERSION_NAME;
-        String oldVersionName = sp.getString("oldVersionName", "0.0");
+        try {
+            PackageInfo pInfo = this.getPackageManager().getPackageInfo(getPackageName(), 0);
+            final String versionName = pInfo.versionName;
+            String oldVersionName = sp.getString("oldVersionName", "0.0");
 
-        if (!oldVersionName.equals(versionName)) {
+            if (!oldVersionName.equals(versionName)) {
 
-            final BottomSheetDialog dialog = new BottomSheetDialog(this);
-            View dialogView = View.inflate(this, R.layout.dialog_text, null);
+                final BottomSheetDialog dialog = new BottomSheetDialog(this);
+                View dialogView = View.inflate(this, R.layout.dialog_text, null);
 
-            TextView dialog_title = dialogView.findViewById(R.id.dialog_title);
-            dialog_title.setText(R.string.changelog_title);
+                TextView dialog_title = dialogView.findViewById(R.id.dialog_title);
+                dialog_title.setText(R.string.changelog_title);
 
-            TextView dialog_text = dialogView.findViewById(R.id.dialog_text);
-            dialog_text.setText(helper_main.textSpannable(getString(R.string.changelog_dialog)));
-            dialog_text.setMovementMethod(LinkMovementMethod.getInstance());
+                TextView dialog_text = dialogView.findViewById(R.id.dialog_text);
+                dialog_text.setText(helper_main.textSpannable(getString(R.string.changelog_dialog)));
+                dialog_text.setMovementMethod(LinkMovementMethod.getInstance());
 
-            FloatingActionButton fab = dialogView.findViewById(R.id.floatButton_ok);
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    sp.edit().putString("oldVersionName", versionName).apply();
-                    dialog.cancel();
-                }
-            });
+                FloatingActionButton fab = dialogView.findViewById(R.id.floatButton_ok);
+                fab.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        sp.edit().putString("oldVersionName", versionName).apply();
+                        dialog.cancel();
+                    }
+                });
 
-            FloatingActionButton fab_help = dialogView.findViewById(R.id.floatButton_help);
-            fab_help.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showHelpDialog();
-                    dialog.cancel();
-                }
-            });
+                FloatingActionButton fab_help = dialogView.findViewById(R.id.floatButton_help);
+                fab_help.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showHelpDialog();
+                        dialog.cancel();
+                    }
+                });
 
-            FloatingActionButton fab_settings = dialogView.findViewById(R.id.floatButton_settings);
-            fab_settings.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(BrowserActivity.this, Settings_Activity.class);
-                    startActivity(intent);
-                    dialog.cancel();
-                }
-            });
+                FloatingActionButton fab_settings = dialogView.findViewById(R.id.floatButton_settings);
+                fab_settings.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(BrowserActivity.this, Settings_Activity.class);
+                        startActivity(intent);
+                        dialog.cancel();
+                    }
+                });
 
-            dialog.setContentView(dialogView);
-            dialog.show();
+                dialog.setContentView(dialogView);
+                dialog.show();
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
