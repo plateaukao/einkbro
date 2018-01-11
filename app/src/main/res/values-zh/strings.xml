@@ -119,9 +119,8 @@
     <string name="setting_title_whitelist">AdBlock whitelist</string>
     <string name="setting_summary_whitelist">Allow these sites to show ads. Some sites do not work, when an adblocker is enabled.</string>
 
-    <string name="setting_title_location">Location</string>
-    <string name="setting_summary_location">Allow websites to access your location. Some websites (like Google maps for navigation)
-        need this enabled.</string>
+    <string name="setting_title_location">地点</string>
+    <string name="setting_summary_location">允许网站获得您的位置信息，一些网站比如谷歌地图需要此功能。</string>
 
 
     <!-- Browser clear -->
@@ -144,12 +143,12 @@
 
     <!-- App behavior -->
     <string name="setting_title_nav_control">Navigation button</string>
-    <string name="setting_title_hide">Fullscreen</string>
+    <string name="setting_title_hide">全屏</string>
     <string name="setting_summary_hide">Use the whole screen when scrolling through websites. If you press the back button you will
     leave fullscreen mode.</string>
     <string name="setting_title_omnibox_control">Omnibox Control</string>
     <string name="setting_summary_omnibox_control">Swipe omnibox left/right to switch tabs</string>
-    <string name="setting_title_exit">Exit</string>
+    <string name="setting_title_exit">退出</string>
     <string name="setting_summary_exit">Longpress the \"Reload button\" (left in the toolbar) to exit the
         application.</string>
     <string name="setting_title_background">Open links</string>
@@ -159,13 +158,13 @@
     <string name="setting_title_toggle">Toggle dialog</string>
     <string name="setting_summary_toggle">Longpress the \"Overflow button\" (right in the toolbar) to show a \"Toggle
     dialog\" for fast changing browser settings.</string>
-    <string name="setting_title_theme">Color theme</string>
-    <string name="setting_summary_theme">You don\'t like green? Just change it!</string>
+    <string name="setting_title_theme">彩色主题</string>
+    <string name="setting_summary_theme">不喜欢绿色？换一下！</string>
 
 
     <!-- Data -->
-    <string name="setting_title_export_bookmarks">Export Bookmarks</string>
-    <string name="setting_title_import_bookmarks">Import Bookmarks</string>
+    <string name="setting_title_export_bookmarks">导出书签</string>
+    <string name="setting_title_import_bookmarks">导入书签</string>
     <string name="export_bookmarks">export_bookmarks</string>
 
     <string name="setting_title_export_whitelist">Export AdBlock whitelist</string>
@@ -178,8 +177,8 @@
 
 
     <!-- Others setting -->
-    <string name="setting_title_others">Others</string>
-    <string name="setting_title_license">License</string>
+    <string name="setting_title_others">其他</string>
+    <string name="setting_title_license">许可</string>
     <string name="setting_summary_license">\"Browser\" is completely free (as in freedom) and open source.</string>
     <string name="setting_title_appSettings">App settings</string>
     <string name="setting_summary_appSettings">Open the system app settings for \"Browser\". There you can,
