@@ -4,12 +4,12 @@
 
     <!-- App -->
     <string name="app_name">浏览器</string>
-    <string name="app_ok">OK</string>
+    <string name="app_ok">确定</string>
     <string name="app_cancel">取消</string>
     <string name="list_empty">当前列表为空</string>
     <string name="album_title_bookmarks">书签</string>
     <string name="album_title_history">历史</string>
-    <string name="album_title_home">家</string>
+    <string name="album_title_home">主页</string>
     <string name="album_title_files">文件</string>
     <string name="album_title_pass">登录数据</string>
     <string name="album_untitled">未命名</string>
@@ -18,12 +18,12 @@
 
 
     <!-- Menu -->
-    <string name="main_menu_new_tab">New tab (background)</string>
-    <string name="main_menu_new_tabOpen">New tab (foreground)</string>
-    <string name="main_menu_copy_link">Copy link</string>
-    <string name="main_menu_save">Save</string>
+    <string name="main_menu_new_tab">在后台打开新标签</string>
+    <string name="main_menu_new_tabOpen">在前台打开新标签</string>
+    <string name="main_menu_copy_link">复制链接</string>
+    <string name="main_menu_save">保存</string>
     <string name="main_omnibox_input_hint">搜索或输入网址</string>
-    <string name="main_about_blank">about:blank</string>
+    <string name="main_about_blank">空白页</string>
 
     <string name="menu_share">分享</string>
     <string name="menu_other">其他</string>
@@ -37,10 +37,10 @@
     <string name="menu_share_link">分享链接</string>
     <string name="menu_share_clipboard">分享到剪切版</string>
 
-    <string name="menu_save_screenshot">Save screenshot</string>
-    <string name="menu_save_home">Save at Home</string>
+    <string name="menu_save_screenshot">保存到截图</string>
+    <string name="menu_save_home">保存到主页</string>
     <string name="menu_save_login">Save login data</string>
-    <string name="menu_save_bookmark">Save as bookmark</string>
+    <string name="menu_save_bookmark">保存到书签</string>
     <string name="menu_save_as">保存为 …</string>
 
     <string name="menu_other_searchSite">页内搜索</string>
@@ -54,12 +54,12 @@
     <!-- Dialog -->
     <string name="dialog_toggle_title">Fast toggle</string>
     <string name="dialog_toggle_text">For some Settings you need to open a new tab to apply.</string>
-    <string name="dialog_title_hint">Input Title</string>
+    <string name="dialog_title_hint">输入标题</string>
     <string name="dialog_se_hint">https://www.google.com/search?q=</string>
     <string name="dialog_ua_hint">Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36</string>
-    <string name="dialog_sign_in_username">Username</string>
-    <string name="dialog_sign_in_password">Password</string>
-    <string name="dialog_button_custom">Custom</string>
+    <string name="dialog_sign_in_username">用户名</string>
+    <string name="dialog_sign_in_password">密码</string>
+    <string name="dialog_button_custom">自定义</string>
     <string name="dialog_title_download">Do you want to download the file?</string>
     <string name="dialog_title_sign_in">Sign in</string>
     <string name="dialog_content_resubmission">Would you like to resubmit your data?</string>
@@ -79,7 +79,7 @@
     <string name="setting_summary_start_control">Decide which components of the browser will be enabled on start.</string>
 
     <string name="setting_title_search_engine">搜索引擎</string>
-    <string name="setting_summary_search_engine">Here you can choose your preferred search engine or set a custom one.</string>
+    <string name="setting_summary_search_engine">请选择你偏爱的搜索引擎或者自定义一个。</string>
     <string name="setting_summary_search_engine_google">谷歌</string>
     <string name="setting_summary_search_engine_duckduckgo">DuckDuckGo</string>
     <string name="setting_summary_search_engine_startpage">StartPage</string>
@@ -167,8 +167,8 @@
     <string name="setting_title_import_bookmarks">导入书签</string>
     <string name="export_bookmarks">export_bookmarks</string>
 
-    <string name="setting_title_export_whitelist">Export AdBlock whitelist</string>
-    <string name="setting_title_import_whitelist">Import AdBlock whitelist</string>
+    <string name="setting_title_export_whitelist">导出 AdBlock 白名单</string>
+    <string name="setting_title_import_whitelist">导入 AdBlock 白名单</string>
     <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
 
     <string name="setting_title_export_whitelistJS">Export JavaScript whitelist</string>
@@ -197,7 +197,7 @@
     <string name="toast_copy_successful">Successfully copied</string>
     <string name="toast_delete_successful">Successfully deleted</string>
     <string name="toast_domain_already_exists">Domain already exists</string>
-    <string name="toast_double_taps_quit">Press again to exit</string>
+    <string name="toast_double_taps_quit">再次点击以退出</string>
     <string name="toast_export_successful">Exported as:&#160;</string>
     <string name="toast_export_failed">Failed to export</string>
     <string name="toast_import_successful">Imported count:&#160;</string>
@@ -206,7 +206,7 @@
     <string name="toast_invalid_domain">Invalid domain</string>
     <string name="toast_load_error">Can\'t load this URL</string>
     <string name="toast_load_in_background">Loading in background</string>
-    <string name="toast_new_tab_successful">Successfully opened in a new tab</string>
+    <string name="toast_new_tab_successful">成功在新标签页打开</string>
     <string name="toast_open_file_manager_failed">Failed to open File Manager</string>
     <string name="toast_refresh_failed">Can\'t refresh this page</string>
     <string name="toast_relayout_successful">Successfully Relayout</string>
