@@ -248,7 +248,6 @@ public class BrowserActivity extends Activity implements BrowserController {
             @Override
             public void onGlobalLayout() {
                 int heightDiff = switcherPanel.getRootView().getHeight() - switcherPanel.getHeight();
-
                 if (currentAlbumController != null && currentAlbumController instanceof NinjaWebView) {
                     if (heightDiff > 100) {
                         omniboxTitle.setVisibility(View.GONE);
@@ -372,7 +371,7 @@ public class BrowserActivity extends Activity implements BrowserController {
 
         if (sp.getInt("restart_changed", 1) == 1) {
             sp.edit().putInt("restart_changed", 0).apply();
-            recreate();
+            finish();
         }
     }
 
@@ -917,7 +916,16 @@ public class BrowserActivity extends Activity implements BrowserController {
         menu_files.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addAlbum(BrowserUnit.FLAG_FILES);
+                if (android.os.Build.VERSION.SDK_INT >= 23) {
+                    int hasWRITE_EXTERNAL_STORAGE = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                    if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
+                        NinjaToast.show(BrowserActivity.this, R.string.toast_permission_sdCard_sec);
+                    } else {
+                        addAlbum(BrowserUnit.FLAG_FILES);
+                    }
+                } else {
+                    addAlbum(BrowserUnit.FLAG_FILES);
+                }
             }
         });
         ImageButton menu_pass = findViewById(R.id.open_pass);
@@ -1373,18 +1381,14 @@ public class BrowserActivity extends Activity implements BrowserController {
                         iv.setImageResource(R.drawable.file_music);
                     } else if (files_icon.matches("(.mpeg|.mp4|.webm|.qt|.3gp|.3g2|.avi|.flv|.h261|.h263|.h264|.asf|.wmv)")) {
                         try {
-                            Glide.with(BrowserActivity.this)
-                                    .load(files_attachment)
-                                    .into(iv);
+                            Glide.with(BrowserActivity.this).load(files_attachment).into(iv);
                         } catch (Exception e) {
                             Log.w("Browser", "Error load thumbnail", e);
                             iv.setImageResource(R.drawable.file_video);
                         }
                     } else if(files_icon.matches("(.gif|.bmp|.tiff|.svg|.png|.jpg|.JPG|.jpeg)")) {
                         try {
-                            Glide.with(BrowserActivity.this)
-                                    .load(files_attachment)
-                                    .into(iv);
+                            Glide.with(BrowserActivity.this).load(files_attachment).into(iv);
                         } catch (Exception e) {
                             Log.w("Browser", "Error load thumbnail", e);
                             iv.setImageResource(R.drawable.file_image);
@@ -2118,7 +2122,7 @@ public class BrowserActivity extends Activity implements BrowserController {
                             public void run() {
                                 scrollChange();
                             }
-                        }, 1000);
+                        }, 250);
                     } else if (scrollY < oldScrollY){
                         showOmnibox();
                         ninjaWebView.setOnScrollChangeListener(new NinjaWebView.OnScrollChangeListener() {
@@ -2130,7 +2134,7 @@ public class BrowserActivity extends Activity implements BrowserController {
                             public void run() {
                                 scrollChange();
                             }
-                        }, 1000);
+                        }, 250);
                     }
                 }
             });

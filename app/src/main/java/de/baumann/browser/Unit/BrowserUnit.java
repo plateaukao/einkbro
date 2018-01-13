@@ -18,6 +18,7 @@ import android.webkit.CookieManager;
 import android.webkit.URLUtil;
 import android.webkit.ValueCallback;
 import android.webkit.WebViewDatabase;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -209,13 +210,21 @@ public class BrowserUnit {
             } else {
                 DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
                 manager.enqueue(request);
-                NinjaToast.show(context, R.string.toast_start_download);
+                try {
+                    NinjaToast.show(context, R.string.toast_start_download);
+                } catch (Exception e) {
+                    Toast.makeText(context, R.string.toast_start_download, Toast.LENGTH_SHORT).show();;
+                }
             }
 
         } else {
             DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
             manager.enqueue(request);
-            NinjaToast.show(context, R.string.toast_start_download);
+            try {
+                NinjaToast.show(context, R.string.toast_start_download);
+            } catch (Exception e) {
+                Toast.makeText(context, R.string.toast_start_download, Toast.LENGTH_SHORT).show();;
+            }
         }
     }
 
