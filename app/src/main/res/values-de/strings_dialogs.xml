@@ -15,7 +15,7 @@
 
     <string name="toolbar_title">Toolbar</string>
     <string name="toolbar_dialog">Unten auf dem Schirm findest du die Toolbar. Du kannst entweder den angezeigten Inhalt neu laden
-        oder das Menü öffnen. WIsche die Toolbar noch oben um die \"Tabkontrolle\" zu öffnen. Um zwischen den Tabs zu wechseln,
+        oder das Menü öffnen. Wische die Toolbar noch oben um die \"Tabkontrolle\" zu öffnen. Um zwischen den Tabs zu wechseln,
         kannst du nach links oder rechts wischen.</string>
 
     <string name="tab_title">Tabkontrolle</string>

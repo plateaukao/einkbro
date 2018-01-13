@@ -13,7 +13,8 @@
     <string name="album_title_files">Files</string>
     <string name="album_title_pass">Login data</string>
     <string name="album_untitled">Untitled</string>
-    <string name="notification_content_holder">Click to View Pages</string>
+    <string name="notification_content_holderTitle">Opened tabs …</string>
+    <string name="notification_content_holder">… Click to View Pages</string>
     <string name="search_hint">Search</string>
 
 
