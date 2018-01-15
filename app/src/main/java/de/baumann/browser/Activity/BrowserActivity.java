@@ -33,7 +33,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
-import android.support.design.BuildConfig;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NotificationCompat;
@@ -1203,6 +1202,7 @@ public class BrowserActivity extends Activity implements BrowserController {
             final String decrypted_userName = mahEncryptor.decode(userName);
             final String decrypted_userPW = mahEncryptor.decode(passWord);
             final ClipboardManager clipboard = (ClipboardManager) BrowserActivity.this.getSystemService(Context.CLIPBOARD_SERVICE);
+            assert clipboard != null;
 
             BroadcastReceiver unCopy = new BroadcastReceiver() {
                 @Override
@@ -1235,11 +1235,12 @@ public class BrowserActivity extends Activity implements BrowserController {
             NotificationCompat.Builder builder;
 
             NotificationManager mNotificationManager = (NotificationManager) BrowserActivity.this.getSystemService(Context.NOTIFICATION_SERVICE);
+            assert mNotificationManager != null;
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 String CHANNEL_ID = "browser_not";// The id of the channel.
                 CharSequence name = BrowserActivity.this.getString(R.string.app_name);// The user-visible name of the channel.
-                int importance = NotificationManager.IMPORTANCE_MAX;
-                NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, name, importance);
+                NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, name, NotificationManager.IMPORTANCE_HIGH);
                 mNotificationManager.createNotificationChannel(mChannel);
                 builder = new NotificationCompat.Builder(BrowserActivity.this, CHANNEL_ID);
             } else {
@@ -1282,6 +1283,7 @@ public class BrowserActivity extends Activity implements BrowserController {
                     .build();
 
             NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            assert notificationManager != null;
             notificationManager.notify(0, n);
 
         } catch (Exception e) {
@@ -2344,6 +2346,7 @@ public class BrowserActivity extends Activity implements BrowserController {
                                     request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); //Notify client once download is completed!
                                     request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, text);
                                     DownloadManager dm = (DownloadManager) BrowserActivity.this.getSystemService(DOWNLOAD_SERVICE);
+                                    assert dm != null;
                                     dm.enqueue(request);
                                     hideSoftInput(editText);
                                 }
@@ -2436,12 +2439,14 @@ public class BrowserActivity extends Activity implements BrowserController {
     private void hideSoftInput(final View view) {
         view.clearFocus();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        assert imm != null;
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     private void showSoftInput(final View view) {
         view.requestFocus();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        assert imm != null;
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 
@@ -2738,6 +2743,10 @@ public class BrowserActivity extends Activity implements BrowserController {
 
                     case R.id.menu_quit:
                         finish();
+                        return true;
+
+                    case R.id.menu_closeTab:
+                        removeAlbum(currentAlbumController);
                         return true;
 
                     default:
