@@ -33,6 +33,7 @@
     <string name="menu_delete">Löschen</string>
     <string name="menu_edit">Bearbeiten</string>
     <string name="menu_notification">Benachrichtigung</string>
+    <string name="menu_closeTab">Tab schließen</string>
 
     <string name="menu_share_screenshot">Teile Bildschirmfoto</string>
     <string name="menu_share_link">Teile Link</string>
