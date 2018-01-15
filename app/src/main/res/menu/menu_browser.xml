@@ -47,6 +47,10 @@
     </item>
 
     <item
+        android:id="@+id/menu_closeTab"
+        android:title="@string/menu_closeTab" />
+
+    <item
         android:id="@+id/menu_quit"
         android:title="@string/menu_quit" />
 

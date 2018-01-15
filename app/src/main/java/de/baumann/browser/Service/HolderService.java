@@ -62,6 +62,8 @@ public class HolderService extends Service implements BrowserController {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
+        WebView.enableSlowWholeDocumentDraw();
         NinjaWebView webView = new NinjaWebView(new NinjaContextWrapper(this));
 
         webView.setBrowserController(this);

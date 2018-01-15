@@ -1,10 +1,16 @@
-# Created by .ignore support plugin (hsz.mobi)
-/.gradle/
-/.idea/
-/build/
-/gradle/
-/gradlew
-/local.properties
-/app/build/
-Würde app/app.iml löschen
-Würde browser.iml löschen
+# built application files
+# files for the dex VM
+# Java class files
+# generated files
+gen/
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Eclipse project files
+# Android Studio
+.idea/
+.gradle
+gradle
+build
+*.iml

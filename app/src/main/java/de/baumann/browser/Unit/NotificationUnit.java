@@ -56,7 +56,7 @@ public class NotificationUnit {
 
         builder.setCategory(Notification.CATEGORY_MESSAGE);
         builder.setSmallIcon(R.drawable.ic_notification_ninja);
-        builder.setContentTitle(context.getString(R.string.app_name));
+        builder.setContentTitle(context.getString(R.string.notification_content_holderTitle));
         builder.setContentText(context.getString(R.string.notification_content_holder));
         builder.setColor(color);
         builder.setAutoCancel(true);
