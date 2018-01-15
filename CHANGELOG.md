@@ -1,3 +1,12 @@
+### v 5.1 (WIP)
+- new: Chinese translation (Thanks: lishoujun)
+- new: close current tab in menu
+- improved: hide/show toolbar
+- fix: force close when clicking direct download link
+- fix: screenshot, when started via holder service
+- fix: some strings
+- fix: possible force close on Android > Nougat
+
 ### v 5.0
 
 With this update "Ninja Browser" is used as base for "Browser". The 

@@ -13,7 +13,8 @@
     <string name="album_title_files">Dateien</string>
     <string name="album_title_pass">Logindaten</string>
     <string name="album_untitled">Ohne Titel</string>
-    <string name="notification_content_holder">Anlicken um die Seiten zu sehen</string>
+    <string name="notification_content_holderTitle">Geöffnete Tabs …</string>
+    <string name="notification_content_holder">… Anlicken um die Seiten zu sehen</string>
     <string name="search_hint">Suche</string>
 
 
@@ -32,6 +33,7 @@
     <string name="menu_delete">Löschen</string>
     <string name="menu_edit">Bearbeiten</string>
     <string name="menu_notification">Benachrichtigung</string>
+    <string name="menu_closeTab">Tab schließen</string>
 
     <string name="menu_share_screenshot">Teile Bildschirmfoto</string>
     <string name="menu_share_link">Teile Link</string>
