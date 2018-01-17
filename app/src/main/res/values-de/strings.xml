@@ -92,12 +92,9 @@
     <string name="setting_summary_user_agent_default">Standard</string>
     <string name="setting_summary_user_agent_desktop">Desktop</string>
 
-    <string name="setting_title_rendering">Ansicht</string>
-    <string name="setting_summary_rendering">Wechsle zwischen Tag- und Nachtansicht.</string>
-    <string name="setting_summary_rendering_default">Standard</string>
-    <string name="setting_summary_rendering_grayscale">Schwarz-Weiß</string>
-    <string name="setting_summary_rendering_inverted">Invertiert</string>
-    <string name="setting_summary_rendering_inverted_grayscale">Schwarz-Weiß invertiert</string>
+    <string name="setting_title_inverted">Invertierte Farben</string>
+    <string name="setting_summary_inverted">Wenn aktiviert, werden Inhalte in einem invertierten schwarz/weiß-Modus
+        dargestellt. Dies ist eine Art \"Nachtmodus\".</string>
 
 
     <!-- Browser start -->
@@ -146,7 +143,6 @@
     <string name="setting_summary_data">Sichere bestimmte Daten (Ausnahmen, Lesezeichen) oder stelle sie wieder her.</string>
 
     <!-- App behavior -->
-    <string name="setting_title_nav_control">Navigationsknopf</string>
     <string name="setting_title_hide">Vollbild</string>
     <string name="setting_summary_hide">Benutze den ganzen Bildschirm, wenn du durch Internetseiten scrollst. Wenn du die
         \"Zurücktaste\" drückst, verlässt du den Vollbildmodus.</string>

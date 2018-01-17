@@ -1,5 +1,6 @@
 package de.baumann.browser.Task;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -21,6 +22,7 @@ import de.baumann.browser.Unit.ViewUnit;
 import de.baumann.browser.View.NinjaToast;
 import de.baumann.browser.View.NinjaWebView;
 
+@SuppressLint("StaticFieldLeak")
 public class ScreenshotTask extends AsyncTask<Void, Void, Boolean> {
     private final Context context;
     private final NinjaWebView webView;

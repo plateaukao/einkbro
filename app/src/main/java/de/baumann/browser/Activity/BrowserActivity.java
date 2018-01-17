@@ -24,6 +24,9 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Paint;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
@@ -203,6 +206,40 @@ public class BrowserActivity extends Activity implements BrowserController {
         filePathCallback.onReceiveValue(WebChromeClient.FileChooserParams.parseResult(resultCode, intent));
     }
 
+    private void initRendering(View view) {
+
+        if (sp.getBoolean("sp_invert", false)) {
+
+            Paint paint = new Paint();
+
+            ColorMatrix matrix = new ColorMatrix();
+            matrix.set(NEGATIVE_COLOR);
+
+            ColorMatrix gcm = new ColorMatrix();
+            gcm.setSaturation(0);
+
+            ColorMatrix concat = new ColorMatrix();
+            concat.setConcat(matrix, gcm);
+
+            ColorMatrixColorFilter filter = new ColorMatrixColorFilter(concat);
+            paint.setColorFilter(filter);
+
+            // maybe sometime LAYER_TYPE_NONE would better?
+            view.setLayerType(View.LAYER_TYPE_HARDWARE, paint);
+        } else {
+            view.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        }
+    }
+
+    private static final float[] NEGATIVE_COLOR = {
+            -1.0f, 0, 0, 0, 255, // Red
+            0, -1.0f, 0, 0, 255, // Green
+            0, 0, -1.0f, 0, 255, // Blue
+            0, 0, 0, 1.0f, 0     // Alpha
+    };
+
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -335,6 +372,8 @@ public class BrowserActivity extends Activity implements BrowserController {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
+
+        initRendering(contentFrame);
     }
 
     @Override
@@ -372,6 +411,8 @@ public class BrowserActivity extends Activity implements BrowserController {
             sp.edit().putInt("restart_changed", 0).apply();
             finish();
         }
+
+        initRendering(contentFrame);
     }
 
     private void dispatchIntent(Intent intent) {
@@ -404,6 +445,8 @@ public class BrowserActivity extends Activity implements BrowserController {
             } else {
                 addAlbum(BrowserUnit.FLAG_FILES);
             }
+        } else if (Intent.ACTION_SEND.equals(action)) {
+            pinAlbums(intent.getStringExtra(Intent.EXTRA_TEXT));
         } else {
             pinAlbums(null);
         }
@@ -526,6 +569,7 @@ public class BrowserActivity extends Activity implements BrowserController {
         CheckBox sw_image = dialogView.findViewById(R.id.switch4);
         CheckBox sw_cookie = dialogView.findViewById(R.id.switch5);
         CheckBox sw_location = dialogView.findViewById(R.id.switch6);
+        CheckBox sw_invert = dialogView.findViewById(R.id.switch7);
 
         javaHosts = new Javascript(BrowserActivity.this);
         javaHosts = getJavaHosts();
@@ -679,6 +723,27 @@ public class BrowserActivity extends Activity implements BrowserController {
                 }else{
                     sp.edit().putBoolean(getString(R.string.sp_location), false).commit();
                     IntentUnit.setSPChange(true);
+                }
+            }
+        });
+
+        if (!sp.getBoolean("sp_invert", false)) {
+            sw_invert.setChecked(false);
+        } else {
+            sw_invert.setChecked(true);
+        }
+
+        sw_invert.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @SuppressLint("ApplySharedPref")
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    sp.edit().putBoolean("sp_invert", true).commit();
+                    initRendering(contentFrame);
+                }else{
+                    sp.edit().putBoolean("sp_invert", false).commit();
+                    initRendering(contentFrame);
                 }
             }
         });
@@ -2007,9 +2072,9 @@ public class BrowserActivity extends Activity implements BrowserController {
             BrowserContainer.set(webView, index);
             currentAlbumController = webView;
             webView.activate();
-
             webView.loadUrl(url);
             updateOmnibox();
+
         } else {
             NinjaToast.show(this, getString(R.string.toast_load_error));
         }

@@ -8,9 +8,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.ColorMatrix;
-import android.graphics.ColorMatrixColorFilter;
-import android.graphics.Paint;
 import android.net.MailTo;
 import android.os.Handler;
 import android.os.Message;
@@ -66,13 +63,6 @@ public class NinjaWebView extends WebView implements AlbumController {
          */
         void onScrollChange(int scrollY, int oldScrollY);
     }
-
-    private static final float[] NEGATIVE_COLOR = {
-            -1.0f, 0, 0, 0, 255, // Red
-            0, -1.0f, 0, 0, 255, // Green
-            0, 0, -1.0f, 0, 255, // Blue
-            0, 0, 0, 1.0f, 0     // Alpha
-    };
 
     private Context context;
     private int flag = BrowserUnit.FLAG_NINJA;
@@ -217,9 +207,6 @@ public class NinjaWebView extends WebView implements AlbumController {
             webSettings.setUserAgentString(userAgentOriginal);
         }
 
-        int mode = Integer.valueOf(sp.getString(context.getString(R.string.sp_rendering), "0"));
-        initRendering(mode);
-
         webViewClient.enableAdBlock(sp.getBoolean(context.getString(R.string.sp_ad_block), true));
 
         CookieManager manager = CookieManager.getInstance();
@@ -246,47 +233,6 @@ public class NinjaWebView extends WebView implements AlbumController {
         album.setBrowserController(browserController);
     }
 
-    private void initRendering(int mode) {
-        Paint paint = new Paint();
-
-        switch (mode) {
-            case 0: { // Default
-                paint.setColorFilter(null);
-                break;
-            } case 1: { // Grayscale
-                ColorMatrix matrix = new ColorMatrix();
-                matrix.setSaturation(0);
-                ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
-                paint.setColorFilter(filter);
-                break;
-            } case 2: { // Inverted
-                ColorMatrixColorFilter filter = new ColorMatrixColorFilter(NEGATIVE_COLOR);
-                paint.setColorFilter(filter);
-                break;
-            } case 3: { // Inverted grayscale
-                ColorMatrix matrix = new ColorMatrix();
-                matrix.set(NEGATIVE_COLOR);
-
-                ColorMatrix gcm = new ColorMatrix();
-                gcm.setSaturation(0);
-
-                ColorMatrix concat = new ColorMatrix();
-                concat.setConcat(matrix, gcm);
-
-                ColorMatrixColorFilter filter = new ColorMatrixColorFilter(concat);
-                paint.setColorFilter(filter);
-
-                break;
-            } default: {
-                paint.setColorFilter(null);
-                break;
-            }
-        }
-
-        // maybe sometime LAYER_TYPE_NONE would better?
-        setLayerType(View.LAYER_TYPE_HARDWARE, paint);
-    }
-
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     public synchronized void loadUrl(String url) {
@@ -300,8 +246,8 @@ public class NinjaWebView extends WebView implements AlbumController {
             Intent intent = IntentUnit.getEmailIntent(MailTo.parse(url));
             context.startActivity(intent);
             reload();
-
             return;
+
         } else if (url.startsWith(BrowserUnit.URL_SCHEME_INTENT)) {
             Intent intent;
             try {
@@ -310,7 +256,6 @@ public class NinjaWebView extends WebView implements AlbumController {
             } catch (URISyntaxException u) {
                 Log.w("Browser", "Error parsing URL");
             }
-
             return;
         }
 

@@ -13,8 +13,8 @@
               android:layout_marginLeft="@dimen/layout_margin_20dp"
               android:layout_marginRight="@dimen/layout_margin_20dp"
               android:textSize="@dimen/text_size_18sp"
-              android:maxLines="1"
-              android:ellipsize="none">
+              android:ellipsize="none"
+              android:singleLine="true">
     </TextView>
 
 </LinearLayout>

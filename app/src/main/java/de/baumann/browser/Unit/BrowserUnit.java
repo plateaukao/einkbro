@@ -189,6 +189,7 @@ public class BrowserUnit {
     public static void copyURL(Context context, String url) {
         ClipboardManager manager = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData data = ClipData.newPlainText(null, url.trim());
+        assert manager != null;
         manager.setPrimaryClip(data);
         NinjaToast.show(context, R.string.toast_copy_successful);
     }
@@ -203,27 +204,28 @@ public class BrowserUnit {
         request.setMimeType(mimeType);
         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
 
+        DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+        assert manager != null;
+
         if (android.os.Build.VERSION.SDK_INT >= 23) {
             int hasWRITE_EXTERNAL_STORAGE = context.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
             if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
                 NinjaToast.show(context, R.string.toast_permission_sdCard_sec);
             } else {
-                DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
                 manager.enqueue(request);
                 try {
                     NinjaToast.show(context, R.string.toast_start_download);
                 } catch (Exception e) {
-                    Toast.makeText(context, R.string.toast_start_download, Toast.LENGTH_SHORT).show();;
+                    Toast.makeText(context, R.string.toast_start_download, Toast.LENGTH_SHORT).show();
                 }
             }
 
         } else {
-            DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
             manager.enqueue(request);
             try {
                 NinjaToast.show(context, R.string.toast_start_download);
             } catch (Exception e) {
-                Toast.makeText(context, R.string.toast_start_download, Toast.LENGTH_SHORT).show();;
+                Toast.makeText(context, R.string.toast_start_download, Toast.LENGTH_SHORT).show();
             }
         }
     }

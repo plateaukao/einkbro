@@ -11,7 +11,16 @@
         Tabmanagement (du kannst jetzt soviele Tabs öffnen, wie du magst). Außerdem gibt es eine neue Startseite. Bitte lies den
         neuen \"Hilfedialog\" für weitere Informationen.&lt;br>&lt;br>
 
-    - volle Oreo-Unterstützung</string>
+        - neu: Chinesische Übersetzung (Danke: lishoujun)&lt;br>
+        - neu: schließe aktuellen Tab im Menü&lt;br>
+        - neu: Text zu \"Browser\" teilen&lt;br>
+        - verbessert: Toolbar verstecken und anzeigen&lt;br>
+        - fix: Nachtmodus (jetzt in den UI Einstellungen)&lt;br>
+        - fix: Absturz wenn Downloadlinks direkt geöffnet werden&lt;br>
+        - fix: Bildschirmfoto, wenn über den \"Holderservice\" gestartet&lt;br>
+        - fix: einige Strings&lt;br>
+        - fix: Möglicher Absturz bei Android > Nougat
+    </string>
 
     <string name="toolbar_title">Toolbar</string>
     <string name="toolbar_dialog">Unten auf dem Schirm findest du die Toolbar. Du kannst entweder den angezeigten Inhalt neu laden
@@ -118,15 +127,20 @@
         Half AdBlock und \"Desktopseite anzeigen\" in der vorherigen Version von \"Browser\" möglich zu machen.&lt;br>
         &lt;i>https://github.com/futrDevelopment&lt;/i>&lt;br>&lt;br>
 
-        &lt;b>splinet&lt;/b>&lt;br>
-        Russische Übersetzung in der vorherigen Version von \"Browser\". Entschuldigung dafür Ninja Browser als neue Basis zu
-        verwenden. Vielleicht kannst du, wenn du Zeit hast noch einmal übersetzen?&lt;br>
-        &lt;i>https://github.com/splinet&lt;/i>&lt;br>&lt;br>
-
         &lt;b>Jumping Yang&lt;/b>&lt;br>
         Chinesische Übersetzung in der vorherigen Version von \"Browser\". Entschuldigung dafür Ninja Browser als neue Basis zu
         verwenden. Vielleicht kannst du, wenn du Zeit hast noch einmal übersetzen?&lt;br>
-        &lt;i>https://github.com/JumpingYang001&lt;/i>
+        &lt;i>https://github.com/JumpingYang001&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>lishoujun&lt;/b>&lt;br>
+        Chinesische Übersetzung&lt;br>
+        &lt;i>https://github.com/lishoujun&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>splinet&lt;/b>&lt;br>
+        Russische Übersetzung in der vorherigen Version von \"Browser\". Entschuldigung dafür Ninja Browser als neue Basis zu
+        verwenden. Vielleicht kannst du, wenn du Zeit hast noch einmal übersetzen?&lt;br>
+        &lt;i>https://github.com/splinet&lt;/i>
+
 
     </string>
 
