@@ -20,6 +20,12 @@
         android:title="@string/setting_title_background"
         android:summary="@string/setting_summary_background"/>
 
+    <CheckBoxPreference android:key="sp_invert"
+        android:icon="@drawable/icon_night"
+        android:defaultValue="false"
+        android:title="@string/setting_title_inverted"
+        android:summary="@string/setting_summary_inverted"/>
+
     <ListPreference
         android:title="@string/setting_title_theme"
         android:icon="@drawable/icon_ui"

@@ -42,9 +42,7 @@ public class AdBlock {
         RecordAction action = new RecordAction(context);
         action.open(false);
         whitelist.clear();
-        for (String domain : action.listDomains()) {
-            whitelist.add(domain);
-        }
+        whitelist.addAll(action.listDomains());
         action.close();
     }
 
@@ -84,7 +82,7 @@ public class AdBlock {
         return false;
     }
 
-    public boolean isAd(String url) {
+    boolean isAd(String url) {
         String domain;
         try {
             domain = getDomain(url);

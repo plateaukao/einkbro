@@ -17,7 +17,7 @@ import de.baumann.browser.Task.ImportWhitelistTaskJS;
 
 public class Fragment_settings_start extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-    @SuppressWarnings("FieldCanBeLocal")
+    @SuppressWarnings({"FieldCanBeLocal", "unused"})
     private boolean spChange = false;
 
 

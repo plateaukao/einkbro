@@ -133,6 +133,7 @@ public class JavascriptActivity extends AppCompatActivity {
     private void hideSoftInput(View view) {
         view.clearFocus();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        assert imm != null;
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }

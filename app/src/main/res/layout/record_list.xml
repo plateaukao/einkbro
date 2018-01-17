@@ -21,8 +21,8 @@
               android:text="@string/list_empty"
               android:textColor="@color/grey_300"
               android:textSize="@dimen/text_size_14sp"
-              android:maxLines="1"
               android:ellipsize="none"
-              android:visibility="gone"/>
+              android:visibility="gone"
+              android:singleLine="true" />
 
 </de.baumann.browser.View.NinjaRelativeLayout>

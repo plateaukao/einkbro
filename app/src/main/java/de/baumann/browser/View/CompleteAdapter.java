@@ -125,10 +125,10 @@ public class CompleteAdapter extends BaseAdapter implements Filterable {
         this.layoutResId = R.layout.complete_item;
         this.originalList = new ArrayList<>();
         this.resultList = new ArrayList<>();
-        dedup(recordList);
+        deDup(recordList);
     }
 
-    private void dedup(List<Record> recordList) {
+    private void deDup(List<Record> recordList) {
         for (Record record : recordList) {
             if (record.getTitle() != null
                     && !record.getTitle().isEmpty()

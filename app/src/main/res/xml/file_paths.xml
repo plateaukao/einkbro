@@ -2,5 +2,4 @@
 <paths>
     <external-path path="Android/data/de.baumann.browser/" name="files_root" />
     <external-path path="." name="external_storage_root" />
-    <root-path path="/storage/." name="ext_sd" />
 </paths>

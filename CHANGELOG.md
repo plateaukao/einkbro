@@ -1,7 +1,9 @@
 ### v 5.1 (WIP)
 - new: Chinese translation (Thanks: lishoujun)
 - new: close current tab in menu
+- new: share text to browser
 - improved: hide/show toolbar
+- fix: night mode (now in UI settings)
 - fix: force close when clicking direct download link
 - fix: screenshot, when started via holder service
 - fix: some strings

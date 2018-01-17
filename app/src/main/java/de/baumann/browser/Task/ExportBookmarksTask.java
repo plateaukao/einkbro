@@ -1,5 +1,6 @@
 package de.baumann.browser.Task;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.design.widget.BottomSheetDialog;
@@ -11,6 +12,7 @@ import de.baumann.browser.Ninja.R;
 import de.baumann.browser.Unit.BrowserUnit;
 import de.baumann.browser.View.NinjaToast;
 
+@SuppressLint("StaticFieldLeak")
 public class ExportBookmarksTask extends AsyncTask<Void, Void, Boolean> {
     private final Context context;
     private BottomSheetDialog dialog;

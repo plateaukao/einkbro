@@ -99,7 +99,8 @@ public class RelativeTimeTextView extends TextView {
          */
         if (this.mReferenceTime == -1L)
             return;
-        setText(mPrefix + getRelativeTimeDisplayString() + mSuffix);
+        String text = mPrefix + getRelativeTimeDisplayString() + mSuffix;
+        setText(text);
     }
 
     private CharSequence getRelativeTimeDisplayString() {
@@ -180,21 +181,6 @@ public class RelativeTimeTextView extends TextView {
         public void writeToParcel(Parcel dest, int flags) {
             super.writeToParcel(dest, flags);
             dest.writeLong(referenceTime);
-        }
-
-        public static final Parcelable.Creator<SavedState> CREATOR = new Parcelable.Creator<SavedState>() {
-            public SavedState createFromParcel(Parcel in) {
-                return new SavedState(in);
-            }
-
-            public SavedState[] newArray(int size) {
-                return new SavedState[size];
-            }
-        };
-
-        private SavedState(Parcel in) {
-            super(in);
-            referenceTime = in.readLong();
         }
     }
 
