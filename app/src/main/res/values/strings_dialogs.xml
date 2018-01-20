@@ -11,7 +11,16 @@
     implementation of tabs. Now you can open as many tabs as you wish. Also you have a new startpage. Please read the new
     \"Help dialog\" for more information.&lt;br>&lt;br>
 
-    - full Oreo support</string>
+        - new: Chinese translation (Thanks: lishoujun)&lt;br>
+        - new: close current tab in menu&lt;br>
+        - new: share text to browser&lt;br>
+        - improved: hide/show toolbar&lt;br>
+        - fix: night mode (now in UI settings)&lt;br>
+        - fix: force close when clicking direct download link&lt;br>
+        - fix: screenshot, when started via holder service&lt;br>
+        - fix: some strings&lt;br>
+        - fix: possible force close on Android > Nougat
+    </string>
 
 
     <string name="toolbar_title">Toolbar</string>
@@ -29,7 +38,7 @@
 
     <string name="nav_title">Navigation</string>
     <string name="nav_dialog">Use the \"Nav Button\" in the fullscreen mode: swipe up/down -> scroll to top/bottom;
-    swipe left/right -> navigate back/forward; click -> open the menu; longclick -> open \"Fast toggle dialog\".</string>
+    swipe left/right -> navigate back/forward; click -> open the menu; long click -> open \"Fast toggle dialog\".</string>
 
     <string name="settings_dialog">There are even more options in the settings. Try it out!</string>
 
@@ -122,15 +131,21 @@
         Helped to implement AdBlock and \"request desktop site\" in the previous version of \"Browser\".&lt;br>
         &lt;i>https://github.com/futrDevelopment&lt;/i>&lt;br>&lt;br>
 
-        &lt;b>splinet&lt;/b>&lt;br>
-        Russian translation in the previous version of \"Browser\". Sorry for switching to Ninja Browser as base. Perhaps you
-        could translate a second time?&lt;br>
-        &lt;i>https://github.com/splinet&lt;/i>&lt;br>&lt;br>
-
         &lt;b>Jumping Yang&lt;/b>&lt;br>
         Chinese translation in the previous version of \"Browser\". Sorry for switching to Ninja Browser as base. Perhaps you
         could translate a second time?&lt;br>
-        &lt;i>https://github.com/JumpingYang001&lt;/i>
+        &lt;i>https://github.com/JumpingYang001&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>lishoujun&lt;/b>&lt;br>
+        Chinese translation&lt;br>
+        &lt;i>https://github.com/lishoujun&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>splinet&lt;/b>&lt;br>
+        Russian translation in the previous version of \"Browser\". Sorry for switching to Ninja Browser as base. Perhaps you
+        could translate a second time?&lt;br>
+        &lt;i>https://github.com/splinet&lt;/i>
+
+
 
     </string>
 

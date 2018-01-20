@@ -30,14 +30,6 @@
             android:entries="@array/setting_entries_user_agent"
             android:entryValues="@array/setting_values_user_agent"/>
 
-        <ListPreference android:key="@string/sp_rendering"
-            android:icon="@drawable/icon_night"
-            android:defaultValue="0"
-            android:title="@string/setting_title_rendering"
-            android:summary="@string/setting_summary_rendering"
-            android:entries="@array/setting_entries_rendering"
-            android:entryValues="@array/setting_values_rendering"/>
-
     </PreferenceCategory>
 
 

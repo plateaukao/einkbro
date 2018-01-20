@@ -91,12 +91,10 @@
     <string name="setting_summary_user_agent_default">Default</string>
     <string name="setting_summary_user_agent_desktop">Desktop</string>
 
-    <string name="setting_title_rendering">Rendering</string>
-    <string name="setting_summary_rendering">Switch between day and night mode.</string>
-    <string name="setting_summary_rendering_default">Default</string>
-    <string name="setting_summary_rendering_grayscale">Grayscale</string>
-    <string name="setting_summary_rendering_inverted">Inverted</string>
-    <string name="setting_summary_rendering_inverted_grayscale">Inverted Grayscale</string>
+    <string name="setting_title_inverted">Inverted colors</string>
+    <string name="setting_summary_inverted">If checked, conted will be rendered in a inverted grey scale mode. This
+    is a kind of \"night mode\".</string>
+
 
 
     <!-- Browser start -->
@@ -142,7 +140,6 @@
     <string name="setting_summary_data">Import and export several app data (whitelists, bookmarks).</string>
 
     <!-- App behavior -->
-    <string name="setting_title_nav_control">Navigation button</string>
     <string name="setting_title_hide">全屏</string>
     <string name="setting_summary_hide">Use the whole screen when scrolling through websites. If you press the back button you will
     leave fullscreen mode.</string>

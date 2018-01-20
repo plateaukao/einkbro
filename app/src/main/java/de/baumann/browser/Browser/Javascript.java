@@ -44,9 +44,7 @@ public class Javascript {
         RecordAction action = new RecordAction(context);
         action.open(false);
         whitelistJS.clear();
-        for (String domain : action.listDomainsJS()) {
-            whitelistJS.add(domain);
-        }
+        whitelistJS.addAll(action.listDomainsJS());
         action.close();
     }
 
