@@ -13,6 +13,7 @@
     <string name="album_title_files">文件</string>
     <string name="album_title_pass">登录数据</string>
     <string name="album_untitled">未命名</string>
+    <string name="notification_content_holderTitle">打开的标签 …</string>
     <string name="notification_content_holder">点击以浏览页面</string>
     <string name="search_hint">搜索</string>
 
@@ -31,7 +32,8 @@
     <string name="menu_quit">退出</string>
     <string name="menu_delete">删除</string>
     <string name="menu_edit">编辑</string>
-    <string name="menu_notification">Notification</string>
+    <string name="menu_notification">通知</string>
+    <string name="menu_closeTab">关闭标签</string>
 
     <string name="menu_share_screenshot">分享截屏</string>
     <string name="menu_share_link">分享链接</string>
@@ -39,7 +41,7 @@
 
     <string name="menu_save_screenshot">保存到截图</string>
     <string name="menu_save_home">保存到主页</string>
-    <string name="menu_save_login">Save login data</string>
+    <string name="menu_save_login">保存登录信息</string>
     <string name="menu_save_bookmark">保存到书签</string>
     <string name="menu_save_as">保存为 …</string>
 
@@ -48,7 +50,7 @@
 
 
     <!-- AndroidAgo -->
-    <string name="android_ago_just_now">Just now</string>
+    <string name="android_ago_just_now">仅本次</string>
 
 
     <!-- Dialog -->
@@ -61,7 +63,7 @@
     <string name="dialog_sign_in_password">密码</string>
     <string name="dialog_button_custom">自定义</string>
     <string name="dialog_title_download">Do you want to download the file?</string>
-    <string name="dialog_title_sign_in">Sign in</string>
+    <string name="dialog_title_sign_in">登录</string>
     <string name="dialog_content_resubmission">Would you like to resubmit your data?</string>
     <string name="dialog_content_ssl_error">The certificate of the site is not trusted. Proceed anyway?</string>
 
@@ -86,10 +88,10 @@
     <string name="setting_summary_search_engine_bing">必应</string>
     <string name="setting_summary_search_engine_baidu">百度</string>
 
-    <string name="setting_title_user_agent">User Environment</string>
+    <string name="setting_title_user_agent">用户环境</string>
     <string name="setting_summary_user_agent">Switch between mobile and desktop version to show websites.</string>
-    <string name="setting_summary_user_agent_default">Default</string>
-    <string name="setting_summary_user_agent_desktop">Desktop</string>
+    <string name="setting_summary_user_agent_default">默认</string>
+    <string name="setting_summary_user_agent_desktop">桌面</string>
 
     <string name="setting_title_inverted">Inverted colors</string>
     <string name="setting_summary_inverted">If checked, conted will be rendered in a inverted grey scale mode. This
