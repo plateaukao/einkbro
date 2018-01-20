@@ -27,8 +27,8 @@ public class NotificationUnit {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             String CHANNEL_ID = "browser_not";// The id of the channel.
             CharSequence name = context.getString(R.string.app_name);// The user-visible name of the channel.
-            int importance = NotificationManager.IMPORTANCE_MAX;
-            NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, name, importance);
+            NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, name, NotificationManager.IMPORTANCE_HIGH);
+            assert mNotificationManager != null;
             mNotificationManager.createNotificationChannel(mChannel);
             builder = new Notification.Builder(context, CHANNEL_ID);
         } else {
