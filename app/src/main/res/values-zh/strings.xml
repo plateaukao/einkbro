@@ -13,6 +13,7 @@
     <string name="album_title_files">文件</string>
     <string name="album_title_pass">登录数据</string>
     <string name="album_untitled">未命名</string>
+    <string name="notification_content_holderTitle">打开的标签 …</string>
     <string name="notification_content_holder">点击以浏览页面</string>
     <string name="search_hint">搜索</string>
 
@@ -31,7 +32,8 @@
     <string name="menu_quit">退出</string>
     <string name="menu_delete">删除</string>
     <string name="menu_edit">编辑</string>
-    <string name="menu_notification">Notification</string>
+    <string name="menu_notification">通知</string>
+    <string name="menu_closeTab">关闭标签</string>
 
     <string name="menu_share_screenshot">分享截屏</string>
     <string name="menu_share_link">分享链接</string>
@@ -39,7 +41,7 @@
 
     <string name="menu_save_screenshot">保存到截图</string>
     <string name="menu_save_home">保存到主页</string>
-    <string name="menu_save_login">Save login data</string>
+    <string name="menu_save_login">保存登录信息</string>
     <string name="menu_save_bookmark">保存到书签</string>
     <string name="menu_save_as">保存为 …</string>
 
@@ -48,7 +50,7 @@
 
 
     <!-- AndroidAgo -->
-    <string name="android_ago_just_now">Just now</string>
+    <string name="android_ago_just_now">仅本次</string>
 
 
     <!-- Dialog -->
@@ -61,7 +63,7 @@
     <string name="dialog_sign_in_password">密码</string>
     <string name="dialog_button_custom">自定义</string>
     <string name="dialog_title_download">Do you want to download the file?</string>
-    <string name="dialog_title_sign_in">Sign in</string>
+    <string name="dialog_title_sign_in">登录</string>
     <string name="dialog_content_resubmission">Would you like to resubmit your data?</string>
     <string name="dialog_content_ssl_error">The certificate of the site is not trusted. Proceed anyway?</string>
 
@@ -86,24 +88,22 @@
     <string name="setting_summary_search_engine_bing">必应</string>
     <string name="setting_summary_search_engine_baidu">百度</string>
 
-    <string name="setting_title_user_agent">User Environment</string>
-    <string name="setting_summary_user_agent">Switch between mobile and desktop version to show websites.</string>
-    <string name="setting_summary_user_agent_default">Default</string>
-    <string name="setting_summary_user_agent_desktop">Desktop</string>
+    <string name="setting_title_user_agent">用户环境</string>
+    <string name="setting_summary_user_agent">选择用移动视图还是桌面视图来显示网页</string>
+    <string name="setting_summary_user_agent_default">默认</string>
+    <string name="setting_summary_user_agent_desktop">桌面</string>
 
-    <string name="setting_title_inverted">Inverted colors</string>
-    <string name="setting_summary_inverted">If checked, conted will be rendered in a inverted grey scale mode. This
-    is a kind of \"night mode\".</string>
-
+    <string name="setting_title_inverted">反转颜色</string>
+    <string name="setting_summary_inverted">让网站以灰度显示，可以看作“夜间模式”。</string>
 
 
     <!-- Browser start -->
     <string name="setting_title_images">图片</string>
     <string name="setting_summary_images">显示图片，不勾选此项可节省流量和快速加载。</string>
     <string name="setting_title_cookie">Cookies</string>
-    <string name="setting_summary_cookie">Enable Cookies. Cookies are small text files, which are stored on your device. Websites
-    use them for example to store user settings (for example search settings). But they could also be used to collect personal
-        user data. Third party cookies (they collect user data for advertising) are always disabled.</string>
+    <string name="setting_summary_cookie">允许 Cookies。Cookies 是存储在本地的一个小文件。
+        网站用它来记录你的使用偏好，但是也会被用作搜集私人信息。
+        处于广告等目的的第三方 cookies 总是禁止的。</string>
 
     <string name="setting_title_javascript">JavaScript</string>
     <string name="setting_summary_javascript">Enable JavaScript. Many websites need JavaScript for their functionality (menus,
@@ -112,30 +112,31 @@
     <string name="setting_summary_whitelistJS">If you disable JavaScript, you can use this whitelist to allow sites you
         trust to use javascript.</string>
 
-    <string name="setting_title_adblock">AdBlock</string>
+    <string name="setting_title_adblock">广告拦截</string>
     <string name="setting_summary_adblock">Enable AdBlock to block annoying ads. Sites also load faster when enabled.</string>
-    <string name="setting_title_whitelist">AdBlock whitelist</string>
-    <string name="setting_summary_whitelist">Allow these sites to show ads. Some sites do not work, when an adblocker is enabled.</string>
+    <string name="setting_title_whitelist">广告拦截白名单</string>
+    <string name="setting_summary_whitelist">允许这些网站显示广告，开启广告拦截时有些网站会显示异常</string>
 
-    <string name="setting_title_location">地点</string>
-    <string name="setting_summary_location">允许网站获得您的位置信息，一些网站比如谷歌地图需要此功能。</string>
+    <string name="setting_title_location">定位</string>
+    <string name="setting_summary_location">允许网站获得您的定位，
+        一些网站比如谷歌地图需要此功能开启。</string>
 
 
     <!-- Browser clear -->
     <string name="clear_summary">All files will be exported to the download folder. Each export will overwrite the old one.
         To restore there must be a file with the right name in the directory.</string>
-    <string name="clear_menu_done_all">Done all</string>
-    <string name="clear_title_quit">Clear when application exits</string>
-    <string name="clear_title_bookmarks">Clear Bookmarks</string>
-    <string name="clear_title_cache">Clear Cache</string>
-    <string name="clear_title_cookie">Clear Cookies</string>
-    <string name="clear_title_history">Clear History</string>
+    <string name="clear_menu_done_all">全部</string>
+    <string name="clear_title_quit">退出时清空</string>
+    <string name="clear_title_bookmarks">清空书签</string>
+    <string name="clear_title_cache">清空缓存</string>
+    <string name="clear_title_cookie">清空 Cookies</string>
+    <string name="clear_title_history">清空浏览历史</string>
 
 
     <!-- App setting -->
-    <string name="setting_title_app">App Settings</string>
-    <string name="setting_title_ui">Behavior/UI</string>
-    <string name="setting_title_data">Backup</string>
+    <string name="setting_title_app">应用设置</string>
+    <string name="setting_title_ui">行为/视图</string>
+    <string name="setting_title_data">备份</string>
     <string name="setting_summary_ui">Change the behavior and ui of the app to suit your preferences.</string>
     <string name="setting_summary_data">Import and export several app data (whitelists, bookmarks).</string>
 
@@ -148,10 +149,10 @@
     <string name="setting_title_exit">退出</string>
     <string name="setting_summary_exit">Longpress the \"Reload button\" (left in the toolbar) to exit the
         application.</string>
-    <string name="setting_title_background">Open links</string>
+    <string name="setting_title_background">打开链接</string>
     <string name="setting_summary_background">Display a notification and open links in background. If disabled links will open
     immediately.</string>
-    <string name="setting_title_longClick">Longclick actions</string>
+    <string name="setting_title_longClick">长按动作</string>
     <string name="setting_title_toggle">Toggle dialog</string>
     <string name="setting_summary_toggle">Longpress the \"Overflow button\" (right in the toolbar) to show a \"Toggle
     dialog\" for fast changing browser settings.</string>
@@ -168,8 +169,8 @@
     <string name="setting_title_import_whitelist">导入 AdBlock 白名单</string>
     <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
 
-    <string name="setting_title_export_whitelistJS">Export JavaScript whitelist</string>
-    <string name="setting_title_import_whitelistJS">Import JavaScript whitelist</string>
+    <string name="setting_title_export_whitelistJS">导出 JavaScript 白名单</string>
+    <string name="setting_title_import_whitelistJS">导入 JavaScript 白名单</string>
     <string name="export_whitelistJS">export_whitelist_Javascript</string>
 
 
@@ -177,10 +178,10 @@
     <string name="setting_title_others">其他</string>
     <string name="setting_title_license">许可</string>
     <string name="setting_summary_license">\"Browser\" is completely free (as in freedom) and open source.</string>
-    <string name="setting_title_appSettings">App settings</string>
+    <string name="setting_title_appSettings">应用设置</string>
     <string name="setting_summary_appSettings">Open the system app settings for \"Browser\". There you can,
         depending on your Android version grant permissions, clear the app data and so on.</string>
-    <string name="setting_title_community">Contributing</string>
+    <string name="setting_title_community">贡献者</string>
     <string name="setting_summary_community">See who contributed something to this project. Or do you want to help with further
         development, report an issue or just get the latest news relating to my projects?</string>
     <string name="setting_summary_changelog">Show the latest changelog to see what\'s new.</string>
