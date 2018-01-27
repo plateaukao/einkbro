@@ -260,6 +260,11 @@ public class BrowserActivity extends Activity implements BrowserController {
                 char c = chars[random.nextInt(chars.length)];
                 sb.append(c);
             }
+
+            if (Locale.getDefault().getLanguage().equals("zh")) {
+                sp.edit().putString(getString(R.string.sp_search_engine), "4").apply();
+            }
+
             sp.edit().putString("saved_key", sb.toString()).apply();
             sp.edit().putString("saved_key_ok", "yes").apply();
             sp.edit().putBoolean(getString(R.string.sp_location), false).apply();
