@@ -69,7 +69,7 @@ public class BrowserUnit {
     private static final String SEARCH_ENGINE_DUCKDUCKGO = "https://duckduckgo.com/?q=";
     private static final String SEARCH_ENGINE_STARTPAGE = "https://startpage.com/do/search?query=";
     private static final String SEARCH_ENGINE_BING = "http://www.bing.com/search?q=";
-    private static final String SEARCH_ENGINE_BAIDU = "http://www.baidu.com/s?wd=";
+    private static final String SEARCH_ENGINE_BAIDU = "https://www.baidu.com/s?wd=";
 
     public static final String UA_DESKTOP = "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36";
     public static final String URL_ENCODING = "UTF-8";
