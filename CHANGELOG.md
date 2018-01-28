@@ -1,5 +1,9 @@
-### v 5.1 (WIP)
-- new: Chinese translation (Thanks: lishoujun)
+### v 5.2 (WIP)
+- new: Indonesian translation (thanks: Secangkir Kopi)
+- improved: Chinese translation (thanks: lishoujun)
+
+### v 5.1
+- new: Chinese translation (thanks: lishoujun)
 - new: close current tab in menu
 - new: share text to browser
 - improved: hide/show toolbar
