@@ -76,9 +76,8 @@
     <string name="setting_title_browser">浏览器设置</string>
     <string name="setting_title_clear_control">数据设置</string>
     <string name="setting_title_start_control">启动设置</string>
-    <string name="setting_summary_clear_control">Clear your browser data or decide what data will be cleared when you leave
-    the application.</string>
-    <string name="setting_summary_start_control">Decide which components of the browser will be enabled on start.</string>
+    <string name="setting_summary_clear_control">清空数据或设置关闭时清理哪些数据。</string>
+    <string name="setting_summary_start_control">设置启动时被开启的组件。</string>
 
     <string name="setting_title_search_engine">搜索引擎</string>
     <string name="setting_summary_search_engine">请选择你偏爱的搜索引擎或者自定义一个。</string>
@@ -106,11 +105,11 @@
         处于广告等目的的第三方 cookies 总是禁止的。</string>
 
     <string name="setting_title_javascript">JavaScript</string>
-    <string name="setting_summary_javascript">Enable JavaScript. Many websites need JavaScript for their functionality (menus,
-        loading and displaying images, …). But they are also a risk and can be used for attacks.</string>
-    <string name="setting_title_whitelistJS">JavaScript whitelist</string>
-    <string name="setting_summary_whitelistJS">If you disable JavaScript, you can use this whitelist to allow sites you
-        trust to use javascript.</string>
+    <string name="setting_summary_javascript">允许使用 JavaScript。
+        很多网站需要 JavaScript 来实现各种功能，比如菜单、图片加载和显示等等。
+        但 JavaScript 也会带来风险，甚至被用来攻击。</string>
+    <string name="setting_title_whitelistJS">JavaScript 白名单</string>
+    <string name="setting_summary_whitelistJS">如果禁用 JavaScript,使用白名单放过那些你信任的网站。</string>
 
     <string name="setting_title_adblock">广告拦截</string>
     <string name="setting_summary_adblock">Enable AdBlock to block annoying ads. Sites also load faster when enabled.</string>
