@@ -62,7 +62,7 @@
     <string name="dialog_sign_in_username">用户名</string>
     <string name="dialog_sign_in_password">密码</string>
     <string name="dialog_button_custom">自定义</string>
-    <string name="dialog_title_download">Do you want to download the file?</string>
+    <string name="dialog_title_download">你想下载这个文件么？</string>
     <string name="dialog_title_sign_in">登录</string>
     <string name="dialog_content_resubmission">Would you like to resubmit your data?</string>
     <string name="dialog_content_ssl_error">The certificate of the site is not trusted. Proceed anyway?</string>
