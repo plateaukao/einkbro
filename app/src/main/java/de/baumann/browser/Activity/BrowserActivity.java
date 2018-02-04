@@ -1373,11 +1373,13 @@ public class BrowserActivity extends Activity implements BrowserController {
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath());
 
         File f = new File(path);
-        final File[] files = f.listFiles();
+        File[] files = f.listFiles();
 
         // looping through all items <item>
-        if (files.length == 0) {
+        if (files==null || files.length == 0) {
             NinjaToast.show(BrowserActivity.this, getString(R.string.toast_noFile));
+            files = (new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).
+                    getAbsolutePath())).listFiles();
         }
 
         for (File file : files) {
@@ -1500,11 +1502,15 @@ public class BrowserActivity extends Activity implements BrowserController {
                     final File pathFile = new File(files_attachment);
 
                     if(pathFile.isDirectory()) {
+                        String preFolder = sp.getString("files_startFolder",
+                                Environment.getExternalStorageDirectory().getPath());
                         try {
                             sp.edit().putString("files_startFolder", files_attachment).apply();
                             initFEList(layout);
                         } catch (Exception e) {
                             NinjaToast.show(BrowserActivity.this, getString(R.string.toast_directory));
+                            //set files_startFolder preFolder if has Exception
+                            sp.edit().putString("files_startFolder", preFolder).apply();
                         }
                     } else if(files_attachment.equals("")) {
                         try {
