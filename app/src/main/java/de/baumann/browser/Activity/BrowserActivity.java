@@ -1376,7 +1376,7 @@ public class BrowserActivity extends Activity implements BrowserController {
         File[] files = f.listFiles();
 
         // looping through all items <item>
-        if (files==null || files.length == 0) {
+        if (files == null || files.length == 0) {
             NinjaToast.show(BrowserActivity.this, getString(R.string.toast_noFile));
             files = (new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).
                     getAbsolutePath())).listFiles();
