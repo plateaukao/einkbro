@@ -62,7 +62,7 @@
     <string name="dialog_sign_in_username">用户名</string>
     <string name="dialog_sign_in_password">密码</string>
     <string name="dialog_button_custom">自定义</string>
-    <string name="dialog_title_download">Do you want to download the file?</string>
+    <string name="dialog_title_download">你想下载这个文件么？</string>
     <string name="dialog_title_sign_in">登录</string>
     <string name="dialog_content_resubmission">Would you like to resubmit your data?</string>
     <string name="dialog_content_ssl_error">The certificate of the site is not trusted. Proceed anyway?</string>
@@ -210,7 +210,7 @@
     <string name="toast_screenshot_successful">Saved screenshot at:&#160;</string>
     <string name="toast_share_failed">Can\'t share this page</string>
     <string name="toast_start_download">Starting download</string>
-    <string name="toast_wait_a_minute">Please wait for a moment</string>
+    <string name="toast_wait_a_minute">请稍候</string>
     <string name="toast_titleConfirm_delete">Do you really want to delete the entry?</string>
     <string name="toast_titleConfirm_paste">Copy data to clipboard?</string>
     <string name="toast_titleConfirm_pasteUN">Username</string>
@@ -223,8 +223,8 @@
     <string name="toast_webview_forward">Can\'t load next site</string>
     <string name="toast_webview_back">Can\'t load previous site</string>
     <string name="toast_entry_exists">Entry exists already.</string>
-    <string name="toast_clear">Du you really want to clear?</string>
-    <string name="toast_permission_title">Permission is needed</string>
+    <string name="toast_clear">你真的想清理么？</string>
+    <string name="toast_permission_title">需要授权</string>
     <string name="toast_permission_sdCard">\"Browser\" needs the permission to \"read and write on your storage\". This is needed for
     downloading files, the build in file manager and taking screenshots. If you don\'t grant the permission yet, you can do it
     later in the settings.</string>
@@ -232,7 +232,7 @@
     <string name="toast_permission_loc">\"Browser\" needs the permission to \"access your location\". This is requested from some
         websites for example when they offer some kind of navigation. If you don\'t grant the permission yet, you can do it
     later in the settings.</string>
-    <string name="toast_restart">You must restart \"Browser\" to apply changes. Close now?</string>
+    <string name="toast_restart">你需要重启浏览器来应用变更，现在关闭么？</string>
 
 
     <!-- Whitelist -->

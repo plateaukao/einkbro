@@ -226,7 +226,7 @@
     <string name="toast_webview_forward">Can\'t load next site</string>
     <string name="toast_webview_back">Can\'t load previous site</string>
     <string name="toast_entry_exists">Entry exists already.</string>
-    <string name="toast_clear">Du you really want to clear?</string>
+    <string name="toast_clear">Do you really want to clear?</string>
     <string name="toast_permission_title">Permission is needed</string>
     <string name="toast_permission_sdCard">\"Browser\" needs the permission to \"read and write on your storage\". This is needed for
     downloading files, the build in file manager and taking screenshots. If you don\'t grant the permission yet, you can do it
