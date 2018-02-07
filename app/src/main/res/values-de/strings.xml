@@ -19,6 +19,8 @@
 
 
     <!-- Menu -->
+    <string name="main_menu">Menü</string>
+    <string name="main_menu_tabPreview">Öffne Tabvorschau</string>
     <string name="main_menu_new_tab">Neuer Tab (Hintergrund)</string>
     <string name="main_menu_new_tabOpen">Neuer Tab (Vordergrund)</string>
     <string name="main_menu_copy_link">Link kopieren</string>
