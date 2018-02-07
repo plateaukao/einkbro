@@ -361,7 +361,7 @@ public class NinjaWebView extends WebView implements AlbumController {
         }
 
         try {
-            TextView omniTitle = this.getRootView().findViewById(R.id.main_omnibox_title);
+            TextView omniTitle = this.getRootView().findViewById(R.id.omnibox_title);
             omniTitle.setText(NinjaWebView.this.getTitle());
         } catch (Exception e) {
             Log.w("Browser", "Error updating");
