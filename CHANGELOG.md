@@ -1,5 +1,7 @@
 ### v 5.2 (WIP)
+- new: Baidu as default search engine for Chinese users
 - new: Indonesian translation (thanks: Secangkir Kopi)
+- improved: applying settings from fast toggle dialog
 - improved: Chinese translation (thanks: lishoujun)
 
 ### v 5.1
