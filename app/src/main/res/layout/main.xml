@@ -128,7 +128,7 @@
                 android:progressTint="?attr/colorAccent"/>
 
             <android.support.design.widget.FloatingActionButton
-                android:id="@+id/floatButton"
+                android:id="@+id/fab_imageButtonNav"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/main_content"
@@ -149,7 +149,7 @@
             android:focusable="true"
             android:focusableInTouchMode="true">
 
-            <ImageButton android:id="@+id/main_omnibox_overflow"
+            <ImageButton android:id="@+id/omnibox_overflow"
                 android:contentDescription="@null"
                 android:layout_width="42dp"
                 android:layout_height="42dp"
@@ -161,12 +161,12 @@
                 android:src="@drawable/ic_action_overflow"
                 android:background="@drawable/custom_button"/>
 
-            <ImageButton android:id="@+id/main_omnibox_refresh"
+            <ImageButton android:id="@+id/omnibox_refresh"
                 android:contentDescription="@null"
                 android:layout_width="42dp"
                 android:layout_height="42dp"
                 android:layout_centerInParent="true"
-                android:layout_toStartOf="@id/main_omnibox_overflow"
+                android:layout_toStartOf="@id/omnibox_overflow"
                 android:layout_marginTop="@dimen/layout_margin_4dp"
                 android:layout_marginBottom="@dimen/layout_margin_4dp"
                 android:src="@drawable/ic_action_history"
@@ -176,7 +176,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
-                android:layout_toStartOf="@id/main_omnibox_refresh"
+                android:layout_toStartOf="@id/omnibox_refresh"
                 android:layout_marginStart="@dimen/layout_margin_8dp"
                 android:hint="@string/main_omnibox_input_hint"
                 android:textColor="@color/light"
@@ -191,11 +191,11 @@
                 android:ellipsize="end"
                 android:background="?attr/colorPrimary"/>
 
-            <TextView android:id="@+id/main_omnibox_title"
+            <TextView android:id="@+id/omnibox_title"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
-                android:layout_toStartOf="@id/main_omnibox_refresh"
+                android:layout_toStartOf="@id/omnibox_refresh"
                 android:layout_marginStart="@dimen/layout_margin_8dp"
                 android:gravity="center_vertical"
                 android:text="@string/album_untitled"
