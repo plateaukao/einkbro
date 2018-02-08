@@ -48,7 +48,6 @@ import android.text.method.KeyListener;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -116,7 +115,6 @@ import de.baumann.browser.Unit.BrowserUnit;
 import de.baumann.browser.Unit.IntentUnit;
 import de.baumann.browser.Unit.ViewUnit;
 import de.baumann.browser.View.CompleteAdapter;
-import de.baumann.browser.View.DialogAdapter;
 import de.baumann.browser.View.FullscreenHolder;
 import de.baumann.browser.View.GridAdapter;
 import de.baumann.browser.View.GridItem;
@@ -1119,7 +1117,6 @@ public class BrowserActivity extends Activity implements BrowserController, View
             default:
                 break;
         }
-
     }
 
     // Methods
@@ -1409,7 +1406,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
         gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                showGridMenu(gridList.get(position), view);
+                showGridMenu(gridList.get(position));
                 return true;
             }
         });
@@ -1548,7 +1545,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                showListMenu(adapter, list, position, view);
+                showListMenu(adapter, list, position);
                 return true;
             }
         });
@@ -2832,105 +2829,120 @@ public class BrowserActivity extends Activity implements BrowserController, View
         }
         result = ((NinjaWebView) currentAlbumController).getHitTestResult();
 
-        final List<String> list = new ArrayList<>();
-        list.add(getString(R.string.main_menu_new_tab));
-        list.add(getString(R.string.main_menu_new_tabOpen));
-        list.add(getString(R.string.main_menu_copy_link));
-        list.add(getString(R.string.menu_save_as));
-        if (result != null && (result.getType() == WebView.HitTestResult.IMAGE_TYPE || result.getType() == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE)) {
-            list.add(getString(R.string.main_menu_save));
-        }
+        bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
+        View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_menu_link, null);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setCancelable(true);
-
-        FrameLayout layout = (FrameLayout) getLayoutInflater().inflate(R.layout.dialog_list, nullParent, false);
-        builder.setView(layout);
-
-        ListView listView = layout.findViewById(R.id.dialog_list);
-        DialogAdapter adapter = new DialogAdapter(this, list);
-        listView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-
-        final AlertDialog dialog = builder.create();
         if (url != null || (result != null && result.getExtra() != null)) {
             if (url == null) {
                 url = result.getExtra();
             }
-            dialog.show();
+            bottomSheetDialog.setContentView(dialogView);
+            bottomSheetDialog.show();
         }
 
         final String target = url;
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        TextView tv3_main_menu_new_tab = dialogView.findViewById(R.id.tv3_main_menu_new_tab);
+        tv3_main_menu_new_tab.setVisibility(View.VISIBLE);
+        tv3_main_menu_new_tab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String s = list.get(position);
-                if (s.equals(getString(R.string.main_menu_new_tab))) { // New tab
-                    addAlbum(getString(R.string.album_untitled), target, false, null);
-                    NinjaToast.show(BrowserActivity.this, getString(R.string.toast_new_tab_successful));
-                } else if (s.equals(getString(R.string.main_menu_new_tabOpen))) { // New tab open
-                    pinAlbums(target);
-                } else if (s.equals(getString(R.string.main_menu_copy_link))) { // Copy link
-                    BrowserUnit.copyURL(BrowserActivity.this, target);
-                } else if (s.equals(getString(R.string.main_menu_save))) { // Save
-                    BrowserUnit.download(BrowserActivity.this, target, target, BrowserUnit.MIME_TYPE_IMAGE);
-                } else if (s.equals(getString(R.string.menu_save_as))) { // Save as
-                    try {
-                        assert target != null;
-                        String filename = target.substring(target.lastIndexOf("/")+1);
-
-                        AlertDialog.Builder builder = new AlertDialog.Builder(BrowserActivity.this);
-                        View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_edit, null);
-
-                        final EditText editText = dialogView.findViewById(R.id.dialog_edit);
-
-                        editText.setHint(R.string.dialog_title_hint);
-                        editText.setText(filename);
-                        editText.setSelection(filename.length());
-
-                        builder.setView(dialogView);
-                        builder.setTitle(R.string.menu_edit);
-                        builder.setPositiveButton(R.string.app_ok, new DialogInterface.OnClickListener() {
-
-                            public void onClick(DialogInterface dialog, int whichButton) {
-
-                                String text = editText.getText().toString().trim();
-                                if (text.isEmpty()) {
-                                    NinjaToast.show(BrowserActivity.this, getString(R.string.toast_input_empty));
-                                } else {
-                                    Uri source = Uri.parse(target);
-                                    DownloadManager.Request request = new DownloadManager.Request(source);
-                                    request.addRequestHeader("Cookie", CookieManager.getInstance().getCookie(target));
-                                    request.allowScanningByMediaScanner();
-                                    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); //Notify client once download is completed!
-                                    request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, text);
-                                    DownloadManager dm = (DownloadManager) BrowserActivity.this.getSystemService(DOWNLOAD_SERVICE);
-                                    assert dm != null;
-                                    dm.enqueue(request);
-                                    hideSoftInput(editText);
-                                }
-                            }
-                        });
-                        builder.setNegativeButton(R.string.app_cancel, new DialogInterface.OnClickListener() {
-
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                dialog.cancel();
-                                hideSoftInput(editText);
-                            }
-                        });
-
-                        AlertDialog dialog = builder.create();
-                        dialog.show();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                dialog.hide();
-                dialog.dismiss();
+            public void onClick(View v) {
+                addAlbum(getString(R.string.album_untitled), target, false, null);
+                NinjaToast.show(BrowserActivity.this, getString(R.string.toast_new_tab_successful));
+                bottomSheetDialog.cancel();
             }
         });
+
+        TextView tv3_main_menu_new_tabOpen = dialogView.findViewById(R.id.tv3_main_menu_new_tabOpen);
+        tv3_main_menu_new_tabOpen.setVisibility(View.VISIBLE);
+        tv3_main_menu_new_tabOpen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pinAlbums(target);
+                bottomSheetDialog.cancel();
+            }
+        });
+
+        TextView tv3_main_menu_copy_link = dialogView.findViewById(R.id.tv3_main_menu_copy_link);
+        tv3_main_menu_copy_link.setVisibility(View.VISIBLE);
+        tv3_main_menu_copy_link.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BrowserUnit.copyURL(BrowserActivity.this, target);
+                bottomSheetDialog.cancel();
+            }
+        });
+
+        TextView tv3_menu_save_as = dialogView.findViewById(R.id.tv3_menu_save_as);
+        tv3_menu_save_as.setVisibility(View.VISIBLE);
+        tv3_menu_save_as.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    assert target != null;
+                    String filename = target.substring(target.lastIndexOf("/")+1);
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(BrowserActivity.this);
+                    View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_edit, null);
+
+                    final EditText editText = dialogView.findViewById(R.id.dialog_edit);
+
+                    editText.setHint(R.string.dialog_title_hint);
+                    editText.setText(filename);
+                    editText.setSelection(filename.length());
+
+                    builder.setView(dialogView);
+                    builder.setTitle(R.string.menu_edit);
+                    builder.setPositiveButton(R.string.app_ok, new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int whichButton) {
+
+                            String text = editText.getText().toString().trim();
+                            if (text.isEmpty()) {
+                                NinjaToast.show(BrowserActivity.this, getString(R.string.toast_input_empty));
+                            } else {
+                                Uri source = Uri.parse(target);
+                                DownloadManager.Request request = new DownloadManager.Request(source);
+                                request.addRequestHeader("Cookie", CookieManager.getInstance().getCookie(target));
+                                request.allowScanningByMediaScanner();
+                                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); //Notify client once download is completed!
+                                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, text);
+                                DownloadManager dm = (DownloadManager) BrowserActivity.this.getSystemService(DOWNLOAD_SERVICE);
+                                assert dm != null;
+                                dm.enqueue(request);
+                                BrowserUnit.download(BrowserActivity.this, target, text, BrowserUnit.MIME_TYPE_IMAGE);
+                                hideSoftInput(editText);
+                            }
+                        }
+                    });
+                    builder.setNegativeButton(R.string.app_cancel, new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            dialog.cancel();
+                            hideSoftInput(editText);
+                        }
+                    });
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                    bottomSheetDialog.cancel();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        if (result != null && (result.getType() == WebView.HitTestResult.IMAGE_TYPE || result.getType() == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE)) {
+            TextView tv3_main_menu_save = dialogView.findViewById(R.id.tv3_main_menu_save);
+            tv3_main_menu_save.setVisibility(View.VISIBLE);
+            tv3_main_menu_save.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    BrowserUnit.download(BrowserActivity.this, target, target, BrowserUnit.MIME_TYPE_IMAGE);
+                    bottomSheetDialog.cancel();
+                }
+            });
+        }
     }
 
     private void doubleTapsQuit() {
@@ -3087,7 +3099,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
         return true;
     }
 
-    private void showGridMenu(final GridItem gridItem, final View view) {
+    private void showGridMenu(final GridItem gridItem) {
 
         bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
         View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_menu_context, null);
@@ -3164,7 +3176,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
     }
 
 
-    private void showListMenu(final RecordAdapter recordAdapter, final List<Record> recordList, final int location, View view) {
+    private void showListMenu(final RecordAdapter recordAdapter, final List<Record> recordList, final int location) {
 
         final Record record = recordList.get(location);
 
