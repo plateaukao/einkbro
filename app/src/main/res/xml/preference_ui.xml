@@ -35,6 +35,25 @@
         android:entries="@array/listArrayTheme"
         android:entryValues="@array/listValuesTheme" />
 
+    <PreferenceCategory android:title="@string/setting_title_nav">
+
+        <CheckBoxPreference android:key="nav_show"
+            android:icon="@drawable/icon_eye_off"
+            android:defaultValue="true"
+            android:title="@string/setting_title_nav_show"
+            android:summary="@string/setting_summary_nav_show"/>
+
+        <ListPreference
+            android:title="@string/setting_title_nav_pos"
+            android:icon="@drawable/icon_arrow_expand_horizontal"
+            android:summary="@string/setting_summary_nav_pos"
+            android:key="nav_position"
+            android:defaultValue="0"
+            android:entries="@array/setting_entries_nav_pos"
+            android:entryValues="@array/setting_values_nav_pos" />
+
+    </PreferenceCategory>
+
 
     <PreferenceCategory android:title="@string/setting_title_longClick">
 

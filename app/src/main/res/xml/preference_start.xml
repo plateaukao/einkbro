@@ -15,6 +15,12 @@
         android:title="@string/setting_title_cookie"
         android:summary="@string/setting_summary_cookie"/>
 
+    <CheckBoxPreference android:key="saveHistory"
+        android:icon="@drawable/icon_history"
+        android:defaultValue="true"
+        android:title="@string/setting_title_history"
+        android:summary="@string/setting_summary_history"/>
+
     <CheckBoxPreference android:key="@string/sp_location"
         android:icon="@drawable/icon_location"
         android:defaultValue="false"

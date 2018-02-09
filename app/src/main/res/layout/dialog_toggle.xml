@@ -20,6 +20,16 @@
         android:textStyle="bold"
         android:textColor="@color/light" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:paddingEnd="24dp"
+        android:paddingStart="24dp"
+        android:paddingBottom="24dp"
+        android:text="@string/dialog_toggle_hint"
+        android:textColor="@color/light" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -125,6 +135,29 @@
                     android:layout_alignParentEnd="true"
                     android:buttonTint="@color/light"
                     android:id="@+id/switch5"
+                    android:checked="false" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp">
+
+                <TextView
+                    android:text="@string/setting_title_history"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_toStartOf="@+id/switch3"
+                    android:textColor="@color/light" />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:buttonTint="@color/light"
+                    android:id="@+id/switch3"
                     android:checked="false" />
 
             </RelativeLayout>

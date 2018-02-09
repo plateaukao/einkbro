@@ -158,6 +158,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
     private TextView tv2_menu_newTab_open;
     private TextView tv2_menu_edit;
     private TextView tv2_menu_delete;
+    private TextView tv2_menu_delete_open;
     private TextView tv2_menu_notification;
     private TextView tv2_menu_share;
 
@@ -517,6 +518,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
         }
 
         initRendering(contentFrame);
+        fab_imageButtonNav.setVisibility(View.GONE);
     }
 
     @Override
@@ -700,7 +702,6 @@ public class BrowserActivity extends Activity implements BrowserController, View
 
     @Override
     public void updateBookmarks() {
-
         RecordAction action = new RecordAction(this);
         action.open(false);
         action.close();
@@ -721,16 +722,19 @@ public class BrowserActivity extends Activity implements BrowserController, View
 
         RecordAction action = new RecordAction(BrowserActivity.this);
 
-
         String title = "";
         String url = "";
 
         if (currentAlbumController != null && currentAlbumController instanceof NinjaRelativeLayout) {
             ninjaRelativeLayout = (NinjaRelativeLayout) currentAlbumController;
         } else if (currentAlbumController != null && currentAlbumController instanceof NinjaWebView) {
-            title = ninjaWebView.getTitle().trim();
-            url = ninjaWebView.getUrl().trim();
-            ninjaWebView = (NinjaWebView) currentAlbumController;
+            try {
+                title = ninjaWebView.getTitle().trim();
+                url = ninjaWebView.getUrl().trim();
+                ninjaWebView = (NinjaWebView) currentAlbumController;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         switch (v.getId()) {
@@ -744,6 +748,9 @@ public class BrowserActivity extends Activity implements BrowserController, View
 
             case R.id.tv_closeTab:
                 removeAlbum(currentAlbumController);
+                if (currentAlbumController != null && currentAlbumController instanceof NinjaRelativeLayout) {
+                    omniboxRefresh.performClick();
+                }
                 bottomSheetDialog.cancel();
                 break;
 
@@ -873,7 +880,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 dialog.show();
                 break;
 
-
+                // Omnibox
 
             case R.id.tv_relayout:
                 final DynamicGridView gridView = ninjaRelativeLayout.findViewById(R.id.home_grid);
@@ -1071,8 +1078,10 @@ public class BrowserActivity extends Activity implements BrowserController, View
 
             // Buttons
 
-            case R.id.fab_imageButtonNav:
-                showOverflow();
+            case R.id.fab_imageButtonNav_center:
+            case R.id.fab_imageButtonNav_left:
+            case R.id.fab_imageButtonNav_right:
+                doubleTapsHide();
                 break;
 
             case R.id.omnibox_refresh:
@@ -1196,8 +1205,24 @@ public class BrowserActivity extends Activity implements BrowserController, View
         omniboxRefresh = findViewById(R.id.omnibox_refresh);
         omniboxOverflow = findViewById(R.id.omnibox_overflow);
         omniboxTitle = findViewById(R.id.omnibox_title);
-        fab_imageButtonNav = findViewById(R.id.fab_imageButtonNav);
         progressBar = findViewById(R.id.main_progress_bar);
+
+        int fab_position = Integer.parseInt(sp.getString("nav_position", "0"));
+
+        switch (fab_position) {
+            case 0:
+                fab_imageButtonNav = findViewById(R.id.fab_imageButtonNav_right);
+                break;
+            case 1:
+                fab_imageButtonNav = findViewById(R.id.fab_imageButtonNav_left);
+                break;
+            case 2:
+                fab_imageButtonNav = findViewById(R.id.fab_imageButtonNav_center);
+                break;
+            default:
+                fab_imageButtonNav = findViewById(R.id.fab_imageButtonNav_right);
+                break;
+        }
 
         fab_imageButtonNav.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -2028,6 +2053,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
         CheckBox sw_cookie = dialogView.findViewById(R.id.switch5);
         CheckBox sw_location = dialogView.findViewById(R.id.switch6);
         CheckBox sw_invert = dialogView.findViewById(R.id.switch7);
+        CheckBox sw_history = dialogView.findViewById(R.id.switch3);
 
         javaHosts = new Javascript(BrowserActivity.this);
         javaHosts = getJavaHosts();
@@ -2159,6 +2185,25 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 }else{
                     sp.edit().putBoolean(getString(R.string.sp_cookies), false).commit();
                     IntentUnit.setSPChange(false);
+                }
+            }
+        });
+
+        if (sp.getBoolean("saveHistory", true)){
+            sw_history.setChecked(true);
+        } else {
+            sw_history.setChecked(false);
+        }
+
+        sw_history.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @SuppressLint("ApplySharedPref")
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    sp.edit().putBoolean("saveHistory", true).commit();
+                }else{
+                    sp.edit().putBoolean("saveHistory", false).commit();
                 }
             }
         });
@@ -2963,6 +3008,24 @@ public class BrowserActivity extends Activity implements BrowserController, View
         }
     }
 
+    private void doubleTapsHide() {
+        final Timer timer = new Timer();
+        if (!quit) {
+            quit = true;
+            showOverflow();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    quit = false;
+                    timer.cancel();
+                }
+            }, 500);
+        } else {
+            bottomSheetDialog.cancel();
+            fab_imageButtonNav.setVisibility(View.GONE);
+        }
+    }
+
     private void hideSoftInput(final View view) {
         view.clearFocus();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -2983,7 +3046,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
     }
 
     private void showOmnibox() {
-        if (omnibox.getVisibility() == View.GONE) {
+        if (omnibox.getVisibility() == View.GONE && searchPanel.getVisibility()  == View.GONE) {
 
             int dpValue = 56; // margin in dips
             float d = getResources().getDisplayMetrics().density;
@@ -2996,7 +3059,10 @@ public class BrowserActivity extends Activity implements BrowserController, View
 
             searchPanel.setVisibility(View.GONE);
             omnibox.setVisibility(View.VISIBLE);
-            fab_imageButtonNav.setVisibility(View.GONE);
+
+            if (sp.getBoolean("nav_show", true)) {
+                fab_imageButtonNav.setVisibility(View.GONE);
+            }
 
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
             onConfigurationChanged(null);
@@ -3028,6 +3094,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
     }
 
     private void showSearchPanel() {
+        showOmnibox();
         omnibox.setVisibility(View.GONE);
         omniboxTitle.setVisibility(View.GONE);
         searchPanel.setVisibility(View.VISIBLE);
@@ -3122,6 +3189,45 @@ public class BrowserActivity extends Activity implements BrowserController, View
             public void onClick(View v) {
                 pinAlbums(gridItem.getURL());
                 bottomSheetDialog.cancel();
+            }
+        });
+
+        tv2_menu_delete_open = dialogView.findViewById(R.id.tv2_menu_delete_open);
+        tv2_menu_delete_open.setVisibility(View.VISIBLE);
+        tv2_menu_delete_open.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.cancel();
+                bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
+                View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_action, null);
+                TextView textView = dialogView.findViewById(R.id.dialog_text);
+                textView.setText(R.string.toast_titleConfirm_delete);
+                Button action_ok = dialogView.findViewById(R.id.action_ok);
+                action_ok.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        RecordAction action = new RecordAction(BrowserActivity.this);
+                        action.open(true);
+                        action.deleteGridItem(gridItem);
+                        action.close();
+                        BrowserActivity.this.deleteFile(gridItem.getFilename());
+                        initHomeGrid((NinjaRelativeLayout) currentAlbumController);
+                        bottomSheetDialog.cancel();
+                        NinjaToast.show(BrowserActivity.this, getString(R.string.toast_delete_successful));
+
+                        pinAlbums(gridItem.getURL());
+                        bottomSheetDialog.cancel();
+                    }
+                });
+                Button action_cancel = dialogView.findViewById(R.id.action_cancel);
+                action_cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        bottomSheetDialog.cancel();
+                    }
+                });
+                bottomSheetDialog.setContentView(dialogView);
+                bottomSheetDialog.show();
             }
         });
 

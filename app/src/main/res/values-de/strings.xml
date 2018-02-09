@@ -33,6 +33,7 @@
     <string name="menu_save">Speichern</string>
     <string name="menu_quit">Beenden</string>
     <string name="menu_delete">Löschen</string>
+    <string name="menu_delete_open">Löschen und öffnen</string>
     <string name="menu_edit">Bearbeiten</string>
     <string name="menu_notification">Benachrichtigung</string>
     <string name="menu_closeTab">Tab schließen</string>
@@ -57,7 +58,7 @@
 
     <!-- Dialog -->
     <string name="dialog_toggle_title">Schnelleinstellungen</string>
-    <string name="dialog_toggle_text">Bei manchen Einstellungen musst du einen neuen Tab öffnen, um Änderungen zu übernehmen.</string>
+    <string name="dialog_toggle_hint">Um die Einstellungen sofort zu übernehmen, bitte unten auf \"OK\" klicken.</string>
     <string name="dialog_title_hint">Titel eigeben</string>
     <string name="dialog_se_hint">https://www.google.com/search?q=</string>
     <string name="dialog_ua_hint">Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36</string>
@@ -125,10 +126,13 @@
     <string name="setting_summary_location">Erlaube Internetseiten deine genaue Position zu bestimmen. Manche Seiten (z.B. Goodle Maps
         für die Navigation) benötigen diese Berechtigung.</string>
 
+    <string name="setting_title_history">Verlauf</string>
+    <string name="setting_summary_history">Speichere den Verlauf der besuchten Internetseiten.</string>
+
 
     <!-- Browser clear -->
-    <string name="clear_summary">Sicherungen werden im Downloadverzeichnis gespeichert. Neue Sicherungen überschreiben immer die
-    alten. Zum Wiederherstellen muss eine Datei mit dem richtigen Namen in diesem Verzeichnis sein.</string>
+    <string name="clear_summary">Sicherungen werden im Stammverzeichnis deiner SD-Karte gespeichert. Neue Sicherungen
+        überschreiben immer die alten. Zum Wiederherstellen muss eine Datei mit dem richtigen Namen in diesem Verzeichnis sein.</string>
     <string name="clear_menu_done_all">Alles erledigt</string>
     <string name="clear_title_quit">Löschen beim Verlassen der Anwendung</string>
     <string name="clear_title_bookmarks">Lösche Lesezeichen</string>
@@ -164,6 +168,17 @@
     <string name="setting_summary_theme">Du magst kein Grün? Dann ändere es!</string>
 
 
+    <string name="setting_title_nav">Navigationsknopf</string>
+    <string name="setting_title_nav_pos">Position</string>
+    <string name="setting_summary_nav_pos">Entscheide wo der \"Navigationsknopf\" platziert wird.</string>
+    <string name="setting_summary_nav_pos_right">Rechts</string>
+    <string name="setting_summary_nav_pos_left">Links</string>
+    <string name="setting_summary_nav_pos_center">Mitte</string>
+
+    <string name="setting_title_nav_show">Verstecken</string>
+    <string name="setting_summary_nav_show">Verstecke den \"Navigationsknopf\" wenn die Toolbar angezeigt wird.</string>
+
+
     <!-- Data -->
     <string name="setting_title_export_bookmarks">Lesezeichen sichern</string>
     <string name="setting_title_import_bookmarks">Lesezeichen wiederherstellen</string>
@@ -176,6 +191,15 @@
     <string name="setting_title_export_whitelistJS">JavaScript Ausnahmen sichern</string>
     <string name="setting_title_import_whitelistJS">JavaScript Ausnahmen wiederherstellen</string>
     <string name="export_whitelistJS">export_whitelist_Javascript</string>
+
+    <string name="setting_title_export_database">Datenbank sichern</string>
+    <string name="setting_title_import_database">Datenbank wiederherstellen</string>
+    <string name="setting_summary_export_database">Sichere die gasamte Datenbank auf deine SD-Karte (Startseite, Lesezeichen, Verlauf).
+        Logindaten werden nicht gesichert.</string>
+    <string name="title_database">Datenbank</string>
+    <string name="hint_database">Die Vorschaubilder auf deiner Startseite können nicht wieder hergestellt werden. Klicke lange auf
+        einen wieder hergestellten Eintrag, und wähle dann \"Löschen und öffnen\" aus, um den Eintrag erneut mit Vorschau speichern
+        zu können.</string>
 
 
     <!-- Others setting -->
@@ -225,7 +249,7 @@
     <string name="toast_error">Uuups. Etwas ist schief gelaufen. :-(</string>
     <string name="toast_newTitle">Eintrag existiert schon. Bitte wähle einen anderen Titel.</string>
     <string name="toast_edit_successful">Successfully saved</string>
-    <string name="toast_webview_forward">Kann keine nächste Seite laden-</string>
+    <string name="toast_webview_forward">Kann keine nächste Seite laden</string>
     <string name="toast_webview_back">Kann keine vorherige Seite laden</string>
     <string name="toast_entry_exists">Eintrag existiert bereits.</string>
     <string name="toast_clear">Möchtest du die Daten wirklich löschen?</string>

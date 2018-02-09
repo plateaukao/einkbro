@@ -1,7 +1,14 @@
 ### v 5.2 (WIP)
+- new: backup complete database
+- new: double tap \"Navigation Button\" to hide
+- new: option to disable history (settings and fast toggle)
+- new: option to hide/show "Navigation Button"
+- new: change position of "Navigation Button"
 - new: moved menus in bottom dialog
 - new: Baidu as default search engine for Chinese users
 - new: Indonesian translation (thanks: Secangkir Kopi)
+- changed: backups on root of sd-card
+- updated: Help dialog (ENG, DE)
 - improved: applying settings from fast toggle dialog
 - improved: Chinese translation (thanks: lishoujun)
 

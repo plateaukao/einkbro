@@ -5,12 +5,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.TextInputLayout;
@@ -89,10 +91,14 @@ public class NinjaWebViewClient extends WebViewClient {
             ninjaWebView.update(view.getTitle(), url);
         }
 
-        RecordAction action = new RecordAction(context);
-        action.open(true);
-        action.addHistory(new Record(ninjaWebView.getTitle(), ninjaWebView.getUrl(), System.currentTimeMillis()));
-        action.close();
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+
+        if (sp.getBoolean("saveHistory", true)) {
+            RecordAction action = new RecordAction(context);
+            action.open(true);
+            action.addHistory(new Record(ninjaWebView.getTitle(), ninjaWebView.getUrl(), System.currentTimeMillis()));
+            action.close();
+        }
 
         if (ninjaWebView.isForeground()) {
             ninjaWebView.invalidate();
