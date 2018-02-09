@@ -4,6 +4,14 @@
 
     <Preference android:summary="@string/clear_summary" />
 
+    <PreferenceCategory android:title="@string/title_database">
+        <Preference
+            android:title="@string/setting_title_export_database"
+            android:summary="@string/setting_summary_export_database"/>
+        <Preference
+            android:title="@string/setting_title_import_database"/>
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/setting_title_adblock">
         <Preference android:title="@string/setting_title_export_whitelist" />
         <Preference android:title="@string/setting_title_import_whitelist" />

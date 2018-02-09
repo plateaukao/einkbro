@@ -128,11 +128,37 @@
                 android:progressTint="?attr/colorAccent"/>
 
             <android.support.design.widget.FloatingActionButton
-                android:id="@+id/fab_imageButtonNav"
+                android:id="@+id/fab_imageButtonNav_right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignBottom="@+id/main_content"
                 android:layout_alignParentEnd="true"
+                android:layout_margin="18dp"
+                android:visibility="gone"
+                app:backgroundTint="?attr/colorAccent"
+                app:fabSize="mini"
+                app:srcCompat="@drawable/ic_action_overflow"
+                tools:ignore="RelativeOverlap" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab_imageButtonNav_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/main_content"
+                android:layout_alignParentStart="true"
+                android:layout_margin="18dp"
+                android:visibility="gone"
+                app:backgroundTint="?attr/colorAccent"
+                app:fabSize="mini"
+                app:srcCompat="@drawable/ic_action_overflow"
+                tools:ignore="RelativeOverlap" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab_imageButtonNav_center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/main_content"
+                android:layout_centerInParent="true"
                 android:layout_margin="18dp"
                 android:visibility="gone"
                 app:backgroundTint="?attr/colorAccent"
@@ -186,7 +212,7 @@
                 android:selectAllOnFocus="true"
                 android:completionThreshold="1"
                 android:imeOptions="actionGo"
-                android:inputType="textNoSuggestions|textWebEditText"
+                android:inputType="textWebEditText"
                 android:maxLines="1"
                 android:ellipsize="end"
                 android:background="?attr/colorPrimary"/>
