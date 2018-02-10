@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/grey_900"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="25dp"
+            android:paddingEnd="20dp"
+            android:paddingStart="25dp" >
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv2_menu_newTab"
+                android:text="@string/main_menu_new_tab"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/light" />
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv2_menu_newTab_open"
+                android:text="@string/main_menu_new_tabOpen"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/light" />
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv2_menu_edit"
+                android:text="@string/menu_edit"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/light" />
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv2_menu_delete"
+                android:text="@string/menu_delete"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/light" />
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv2_menu_delete_open"
+                android:text="@string/menu_delete_open"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/light" />
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv2_menu_notification"
+                android:text="@string/menu_notification"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/light" />
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv2_menu_share"
+                android:text="@string/menu_share"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/light" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
+
+

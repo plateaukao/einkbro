@@ -34,12 +34,12 @@
 
     <string name="not_title">Benachrichtigungen</string>
     <string name="not_dialog">Benachrichtigungen werden ebenfalls am unteren Rand des Bildschirms angezeigt. Sie können jederzeit
-        geschlossen werden, wenn du außerhalb der Benachrichtigung klickst.</string>
+        geschlossen werden, wenn du außerhalb der Benachrichtigung klickst oder sie nach unten wischst.</string>
 
     <string name="nav_title">Navigation</string>
     <string name="nav_dialog">Benutze im Vollbildmodus den \"Navigationsknopf\": wische hoch/runter -> scrolle nach oben/unten;
     wische nach links/rechts -> lade vorherige/nächste Internetseite; Klick -> öffne das Menü; langer Klick -> öffne die
-        \"Schnelleinstellungen\".</string>
+        \"Schnelleinstellungen\"; Doppelklick -> verstecke den \"Navigationsknopf\".</string>
 
     <string name="settings_dialog">Es gibt noch mehr Möglichkeiten in den Einstellungen. Probiere es aus!</string>
 
@@ -135,6 +135,10 @@
         &lt;b>lishoujun&lt;/b>&lt;br>
         Chinesische Übersetzung&lt;br>
         &lt;i>https://github.com/lishoujun&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Secangkir Kopi&lt;/b>&lt;br>
+        Indonesische Übersetzung&lt;br>
+        &lt;i>https://github.com/Secangkir-Kopi&lt;/i>&lt;br>&lt;br>
 
         &lt;b>splinet&lt;/b>&lt;br>
         Russische Übersetzung in der vorherigen Version von \"Browser\". Entschuldigung dafür Ninja Browser als neue Basis zu

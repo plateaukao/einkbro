@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/grey_900"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="25dp"
+            android:paddingEnd="20dp"
+            android:paddingStart="25dp" >
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv3_main_menu_new_tab"
+                android:text="@string/main_menu_new_tab"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/light" />
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv3_main_menu_new_tabOpen"
+                android:text="@string/main_menu_new_tabOpen"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/light" />
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv3_main_menu_copy_link"
+                android:text="@string/main_menu_copy_link"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/light" />
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv3_menu_save_as"
+                android:text="@string/menu_save_as"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/light" />
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv3_main_menu_save"
+                android:text="@string/main_menu_save"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/light" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
+
+
