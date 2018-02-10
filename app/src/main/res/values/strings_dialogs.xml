@@ -34,11 +34,12 @@
 
     <string name="not_title">Notifications</string>
     <string name="not_dialog">Notifications are displayed on the bottom of the screen. They can be dismissed by clicking anywhere
-        outside.</string>
+        outside or swiping them down.</string>
 
     <string name="nav_title">Navigation</string>
     <string name="nav_dialog">Use the \"Nav Button\" in the fullscreen mode: swipe up/down -> scroll to top/bottom;
-    swipe left/right -> navigate back/forward; click -> open the menu; long click -> open \"Fast toggle dialog\".</string>
+    swipe left/right -> navigate back/forward; click -> open the menu; long click -> open \"Fast toggle dialog\";
+        double click -> Hide the \"Nav Button\".</string>
 
     <string name="settings_dialog">There are even more options in the settings. Try it out!</string>
 
@@ -139,6 +140,10 @@
         &lt;b>lishoujun&lt;/b>&lt;br>
         Chinese translation&lt;br>
         &lt;i>https://github.com/lishoujun&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Secangkir Kopi&lt;/b>&lt;br>
+        Indonesian translation&lt;br>
+        &lt;i>https://github.com/Secangkir-Kopi&lt;/i>&lt;br>&lt;br>
 
         &lt;b>splinet&lt;/b>&lt;br>
         Russian translation in the previous version of \"Browser\". Sorry for switching to Ninja Browser as base. Perhaps you

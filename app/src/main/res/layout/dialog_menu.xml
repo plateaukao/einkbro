@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/grey_900"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:id="@+id/dialog_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:padding="24dp"
+        android:text="@string/main_menu"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textStyle="bold"
+        android:textColor="@color/light" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingEnd="20dp"
+            android:paddingStart="25dp" >
+
+            <TextView
+                android:id="@+id/tv_new_tabOpen"
+                android:text="@string/main_menu_new_tabOpen"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/light" />
+
+            <TextView
+                android:id="@+id/tv_closeTab"
+                android:text="@string/menu_closeTab"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/light" />
+
+            <TextView
+                android:id="@+id/tv_tabPreview"
+                android:text="@string/main_menu_tabPreview"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/light" />
+
+            <TextView
+                android:id="@+id/tv_quit"
+                android:text="@string/menu_quit"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/light" />
+
+
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv_shareScreenshot"
+                android:text="@string/menu_share_screenshot"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/light" />
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv_shareLink"
+                android:text="@string/menu_share_link"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/light" />
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv_shareClipboard"
+                android:text="@string/menu_share_clipboard"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/light" />
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv_saveScreenshot"
+                android:text="@string/menu_save_screenshot"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/light" />
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv_saveBookmark"
+                android:text="@string/menu_save_bookmark"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/light" />
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv_saveStart"
+                android:text="@string/menu_save_home"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/light" />
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv_saveLogin"
+                android:text="@string/menu_save_login"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/light" />
+
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv_relayout"
+                android:text="@string/menu_edit"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/light" />
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv_searchSite"
+                android:text="@string/menu_other_searchSite"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/light" />
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv_settings"
+                android:text="@string/setting_label"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/light" />
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv_help"
+                android:text="@string/menu_other_help"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/light" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/floatButton_tab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_gravity="center_vertical|center_horizontal"
+            app:backgroundTint="?attr/colorAccent"
+            app:fabSize="mini"
+            app:srcCompat="@drawable/icon_earth_light" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/floatButton_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_gravity="center_vertical|center_horizontal"
+            app:backgroundTint="?attr/colorAccent"
+            app:fabSize="mini"
+            app:srcCompat="@drawable/icon_share" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/floatButton_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_gravity="center_vertical|center_horizontal"
+            app:backgroundTint="?attr/colorAccent"
+            app:fabSize="mini"
+            app:srcCompat="@drawable/icon_save" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/floatButton_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:layout_gravity="center_vertical|center_horizontal"
+            app:backgroundTint="?attr/colorAccent"
+            app:fabSize="mini"
+            app:srcCompat="@drawable/icon_dots_horizontal" />
+
+    </LinearLayout>
+
+</LinearLayout>
+
+

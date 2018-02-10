@@ -271,7 +271,7 @@ public class BrowserUnit {
         action.close();
 
         String filename = context.getString(R.string.export_bookmarks);
-        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), filename + SUFFIX_HTML);
+        File file = new File(Environment.getExternalStorageDirectory(), filename + SUFFIX_HTML);
 
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(file, false));
@@ -297,7 +297,7 @@ public class BrowserUnit {
         action.close();
 
         String filename = context.getString(R.string.export_whitelistAdBlock);
-        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), filename + SUFFIX_TXT);
+        File file = new File(Environment.getExternalStorageDirectory(), filename + SUFFIX_TXT);
 
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(file, false));
@@ -319,7 +319,7 @@ public class BrowserUnit {
         action.close();
 
         String filename = context.getString(R.string.export_whitelistJS);
-        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), filename + SUFFIX_TXT);
+        File file = new File(Environment.getExternalStorageDirectory(), filename + SUFFIX_TXT);
 
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(file, false));
@@ -337,7 +337,7 @@ public class BrowserUnit {
     public static int importBookmarks(Context context) {
 
         String filename = context.getString(R.string.export_bookmarks);
-        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), filename + SUFFIX_HTML);
+        File file = new File(Environment.getExternalStorageDirectory(), filename + SUFFIX_HTML);
 
         List<Record> list = new ArrayList<>();
 
@@ -390,7 +390,7 @@ public class BrowserUnit {
     public static int importWhitelist(Context context) {
 
         String filename = context.getString(R.string.export_whitelistAdBlock);
-        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), filename + SUFFIX_TXT);
+        File file = new File(Environment.getExternalStorageDirectory(), filename + SUFFIX_TXT);
 
         AdBlock adBlock = new AdBlock(context);
         int count = 0;
@@ -418,7 +418,7 @@ public class BrowserUnit {
     public static int importWhitelistJS(Context context) {
 
         String filename = context.getString(R.string.export_whitelistJS);
-        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), filename + SUFFIX_TXT);
+        File file = new File(Environment.getExternalStorageDirectory(), filename + SUFFIX_TXT);
 
         Javascript js = new Javascript(context);
         int count = 0;

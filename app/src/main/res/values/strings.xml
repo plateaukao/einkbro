@@ -19,6 +19,8 @@
 
 
     <!-- Menu -->
+    <string name="main_menu">Menu</string>
+    <string name="main_menu_tabPreview">Open tab preview</string>
     <string name="main_menu_new_tab">New tab (background)</string>
     <string name="main_menu_new_tabOpen">New tab (foreground)</string>
     <string name="main_menu_copy_link">Copy link</string>
@@ -31,6 +33,7 @@
     <string name="menu_save">Save</string>
     <string name="menu_quit">Quit</string>
     <string name="menu_delete">Delete</string>
+    <string name="menu_delete_open">Delete and open</string>
     <string name="menu_edit">Edit</string>
     <string name="menu_notification">Notification</string>
     <string name="menu_closeTab">Close tab</string>
@@ -55,7 +58,7 @@
 
     <!-- Dialog -->
     <string name="dialog_toggle_title">Fast toggle</string>
-    <string name="dialog_toggle_text">For some Settings you need to open a new tab to apply.</string>
+    <string name="dialog_toggle_hint">To apply immediately, please press the \"OK-button\" below.</string>
     <string name="dialog_title_hint">Input Title</string>
     <string name="dialog_se_hint">https://www.google.com/search?q=</string>
     <string name="dialog_ua_hint">Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36</string>
@@ -123,10 +126,13 @@
     <string name="setting_summary_location">Allow websites to access your location. Some websites (like Google maps for navigation)
         need this enabled.</string>
 
+    <string name="setting_title_history">History</string>
+    <string name="setting_summary_history">Save the history of visited websites.</string>
+
 
     <!-- Browser clear -->
-    <string name="clear_summary">All files will be exported to the download folder. Each export will overwrite the old one.
-        To restore there must be a file with the right name in the directory.</string>
+    <string name="clear_summary">All files will be exported to the root directory of your sd-card. Each export will overwrite the
+        old one. To restore there must be a file with the right name in the directory.</string>
     <string name="clear_menu_done_all">Done all</string>
     <string name="clear_title_quit">Clear when application exits</string>
     <string name="clear_title_bookmarks">Clear Bookmarks</string>
@@ -161,6 +167,16 @@
     <string name="setting_title_theme">Color theme</string>
     <string name="setting_summary_theme">You don\'t like green? Just change it!</string>
 
+    <string name="setting_title_nav">Navigation button</string>
+    <string name="setting_title_nav_pos">Position</string>
+    <string name="setting_summary_nav_pos">Decide where the \"Navigation Button\" will be placed.</string>
+    <string name="setting_summary_nav_pos_right">Right</string>
+    <string name="setting_summary_nav_pos_left">Left</string>
+    <string name="setting_summary_nav_pos_center">Center</string>
+
+    <string name="setting_title_nav_show">Hide</string>
+    <string name="setting_summary_nav_show">Hide the \"Navigation Button\" when toolbar is shown.</string>
+
 
     <!-- Data -->
     <string name="setting_title_export_bookmarks">Export Bookmarks</string>
@@ -174,6 +190,14 @@
     <string name="setting_title_export_whitelistJS">Export JavaScript whitelist</string>
     <string name="setting_title_import_whitelistJS">Import JavaScript whitelist</string>
     <string name="export_whitelistJS">export_whitelist_Javascript</string>
+
+    <string name="setting_title_export_database">Export database</string>
+    <string name="setting_title_import_database">Import database</string>
+    <string name="setting_summary_export_database">Export the whole database to your sd-card (Startpage, History, Bookmarks). Your
+    login data will not be backed up.</string>
+    <string name="title_database">Database</string>
+    <string name="hint_database">The previews of stored websites at the startpage will get lost. Long click on a restored entry and
+        the \"Delete and open\", to save that entry again with preview.</string>
 
 
     <!-- Others setting -->

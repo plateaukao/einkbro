@@ -67,4 +67,17 @@
         <item>9</item>
     </string-array>
 
+    <!-- User agent -->
+    <string-array name="setting_entries_nav_pos">
+        <item>@string/setting_summary_nav_pos_right</item>
+        <item>@string/setting_summary_nav_pos_left</item>
+        <item>@string/setting_summary_nav_pos_center</item>
+    </string-array>
+
+    <string-array name="setting_values_nav_pos">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
 </resources>
