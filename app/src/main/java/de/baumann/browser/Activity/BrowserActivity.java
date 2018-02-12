@@ -256,29 +256,13 @@ public class BrowserActivity extends Activity implements BrowserController, View
             if (ninjaWebView.canGoBack()) {
                 ninjaWebView.goBack();
             } else {
-                showOmnibox();
-                updateAlbum();
+                removeAlbum(currentAlbumController);
             }
         } else if (currentAlbumController instanceof NinjaRelativeLayout) {
-            switch (currentAlbumController.getFlag()) {
-                case BrowserUnit.FLAG_BOOKMARKS:
-                    updateAlbum();
-                    break;
-                case BrowserUnit.FLAG_HISTORY:
-                    updateAlbum();
-                    break;
-                case BrowserUnit.FLAG_FILES:
-                    doubleTapsQuit();
-                    break;
-                case BrowserUnit.FLAG_PASS:
-                    doubleTapsQuit();
-                    break;
-                case BrowserUnit.FLAG_HOME:
-                    doubleTapsQuit();
-                    break;
-                default:
-                    finish();
-                    break;
+            if (currentAlbumController.getFlag() == start_tab) {
+                doubleTapsQuit();
+            } else {
+                removeAlbum(currentAlbumController);
             }
         } else {
             finish();
@@ -306,6 +290,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
 
     private int originalOrientation;
     private int shortAnimTime = 0;
+    private int start_tab;
     private float dimen156dp;
     private float dimen144dp;
     private float dimen117dp;
@@ -374,6 +359,18 @@ public class BrowserActivity extends Activity implements BrowserController, View
         }
 
         setContentView(R.layout.main);
+
+        if (sp.getString("start_tab", "0").equals("0")) {
+            start_tab = BrowserUnit.FLAG_HOME;
+        } else if (sp.getString("start_tab", "0").equals("1")) {
+            start_tab = BrowserUnit.FLAG_FILES;
+        } else if (sp.getString("start_tab", "0").equals("2")) {
+            start_tab = BrowserUnit.FLAG_PASS;
+        } else if (sp.getString("start_tab", "0").equals("3")) {
+            start_tab = BrowserUnit.FLAG_BOOKMARKS;
+        } else {
+            start_tab = BrowserUnit.FLAG_HISTORY;
+        }
 
         contentFrame = findViewById(R.id.main_content);
         create = true;
@@ -747,9 +744,6 @@ public class BrowserActivity extends Activity implements BrowserController, View
 
             case R.id.tv_closeTab:
                 removeAlbum(currentAlbumController);
-                if (currentAlbumController != null && currentAlbumController instanceof NinjaRelativeLayout) {
-                    omniboxRefresh.performClick();
-                }
                 bottomSheetDialog.cancel();
                 break;
 
@@ -2546,7 +2540,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
         }
 
         if (BrowserContainer.size() < 1 && url == null) {
-            addAlbum(BrowserUnit.FLAG_HOME);
+            addAlbum(start_tab);
         } else if (BrowserContainer.size() >= 1 && url == null) {
             if (currentAlbumController != null) {
                 currentAlbumController.activate();
@@ -2603,24 +2597,9 @@ public class BrowserActivity extends Activity implements BrowserController, View
         if (currentAlbumController == null) {
             return;
         }
+        addAlbum(start_tab);
+        removeAlbum(currentAlbumController);
 
-        NinjaRelativeLayout layout = (NinjaRelativeLayout) getLayoutInflater().inflate(R.layout.home, nullParent, false);
-        layout.setBrowserController(this);
-        layout.setFlag(BrowserUnit.FLAG_HOME);
-        layout.setAlbumCover(ViewUnit.capture(layout, dimen144dp, dimen108dp, Bitmap.Config.RGB_565));
-        layout.setAlbumTitle(getString(R.string.album_title_home));
-        initHomeGrid(layout);
-
-        int index = switcherContainer.indexOfChild(currentAlbumController.getAlbumView());
-        currentAlbumController.deactivate();
-        switcherContainer.removeView(currentAlbumController.getAlbumView());
-        contentFrame.removeAllViews(); ///
-
-        switcherContainer.addView(layout.getAlbumView(), index, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        contentFrame.addView(layout);
-        BrowserContainer.set(layout, index);
-        currentAlbumController = layout;
-        updateOmnibox();
     }
 
     private synchronized void updateAlbum(String url) {
@@ -2661,9 +2640,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
     @Override
     public synchronized void removeAlbum(AlbumController controller) {
         if (currentAlbumController == null || BrowserContainer.size() <= 1) {
-            switcherContainer.removeView(controller.getAlbumView());
-            BrowserContainer.remove(controller);
-            addAlbum(BrowserUnit.FLAG_HOME);
+            updateAlbum();
             return;
         }
 
@@ -3100,6 +3077,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
         showSoftInput(searchBox);
     }
 
+    @SuppressWarnings("SameReturnValue")
     private boolean showOverflow() {
 
         bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
@@ -3190,7 +3168,6 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 bottomSheetDialog.cancel();
             }
         });
-
 
         tv2_menu_delete = dialogView.findViewById(R.id.tv2_menu_delete);
         tv2_menu_delete.setVisibility(View.VISIBLE);

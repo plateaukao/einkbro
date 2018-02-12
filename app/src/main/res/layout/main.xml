@@ -45,7 +45,7 @@
                 android:layout_marginEnd="@dimen/layout_margin_4dp"
                 android:background="@drawable/custom_button"
                 android:contentDescription="@null"
-                android:src="@drawable/ic_action_add" />
+                android:src="@drawable/icon_home" />
 
             <ImageButton
                 android:id="@+id/open_files"
@@ -96,8 +96,8 @@
 
 
 
-    <LinearLayout android:id="@+id/main_view"
-                  android:orientation="vertical"
+    <LinearLayout
+        android:orientation="vertical"
                   android:layout_width="match_parent"
                   android:layout_height="match_parent"
                   android:gravity="bottom"

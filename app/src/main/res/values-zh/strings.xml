@@ -55,7 +55,6 @@
 
     <!-- Dialog -->
     <string name="dialog_toggle_title">Fast toggle</string>
-    <string name="dialog_toggle_text">For some Settings you need to open a new tab to apply.</string>
     <string name="dialog_title_hint">输入标题</string>
     <string name="dialog_se_hint">https://www.google.com/search?q=</string>
     <string name="dialog_ua_hint">Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36</string>
