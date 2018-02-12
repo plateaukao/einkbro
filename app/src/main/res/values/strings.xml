@@ -191,13 +191,12 @@
     <string name="setting_title_import_whitelistJS">Import JavaScript whitelist</string>
     <string name="export_whitelistJS">export_whitelist_Javascript</string>
 
-    <string name="setting_title_export_database">Export database</string>
-    <string name="setting_title_import_database">Import database</string>
-    <string name="setting_summary_export_database">Export the whole database to your sd-card (Startpage, History, Bookmarks). Your
-    login data will not be backed up.</string>
-    <string name="title_database">Database</string>
-    <string name="hint_database">The previews of stored websites at the startpage will get lost. Long click on a restored entry and
-        the \"Delete and open\", to save that entry again with preview.</string>
+    <string name="setting_title_export_database">Export all data</string>
+    <string name="setting_title_import_database">Import all data</string>
+    <string name="setting_summary_export_database">Export the whole settings and database (Startpage, History, Bookmarks) to your
+        sd-card. Your login data will not be backed up.</string>
+    <string name="title_database">… all</string>
+    <string name="hint_database">This will delete all your current settings and data. Will you proceed?</string>
 
 
     <!-- Others setting -->

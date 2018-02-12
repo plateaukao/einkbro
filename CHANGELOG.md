@@ -1,5 +1,5 @@
 ### v 5.2 (WIP)
-- new: backup complete database
+- new: backup complete data and settings
 - new: double tap \"Navigation Button\" to hide
 - new: option to disable history (settings and fast toggle)
 - new: option to hide/show "Navigation Button"

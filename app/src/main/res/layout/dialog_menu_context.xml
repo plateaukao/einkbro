@@ -61,16 +61,6 @@
 
             <TextView
                 android:visibility="gone"
-                android:id="@+id/tv2_menu_delete_open"
-                android:text="@string/menu_delete_open"
-                android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:minHeight="46dp"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/light" />
-
-            <TextView
-                android:visibility="gone"
                 android:id="@+id/tv2_menu_notification"
                 android:text="@string/menu_notification"
                 android:layout_width="match_parent"
