@@ -158,7 +158,6 @@ public class BrowserActivity extends Activity implements BrowserController, View
     private TextView tv2_menu_newTab_open;
     private TextView tv2_menu_edit;
     private TextView tv2_menu_delete;
-    private TextView tv2_menu_delete_open;
     private TextView tv2_menu_notification;
     private TextView tv2_menu_share;
 
@@ -3192,44 +3191,6 @@ public class BrowserActivity extends Activity implements BrowserController, View
             }
         });
 
-        tv2_menu_delete_open = dialogView.findViewById(R.id.tv2_menu_delete_open);
-        tv2_menu_delete_open.setVisibility(View.VISIBLE);
-        tv2_menu_delete_open.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bottomSheetDialog.cancel();
-                bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
-                View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_action, null);
-                TextView textView = dialogView.findViewById(R.id.dialog_text);
-                textView.setText(R.string.toast_titleConfirm_delete);
-                Button action_ok = dialogView.findViewById(R.id.action_ok);
-                action_ok.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        RecordAction action = new RecordAction(BrowserActivity.this);
-                        action.open(true);
-                        action.deleteGridItem(gridItem);
-                        action.close();
-                        BrowserActivity.this.deleteFile(gridItem.getFilename());
-                        initHomeGrid((NinjaRelativeLayout) currentAlbumController);
-                        bottomSheetDialog.cancel();
-                        NinjaToast.show(BrowserActivity.this, getString(R.string.toast_delete_successful));
-
-                        pinAlbums(gridItem.getURL());
-                        bottomSheetDialog.cancel();
-                    }
-                });
-                Button action_cancel = dialogView.findViewById(R.id.action_cancel);
-                action_cancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        bottomSheetDialog.cancel();
-                    }
-                });
-                bottomSheetDialog.setContentView(dialogView);
-                bottomSheetDialog.show();
-            }
-        });
 
         tv2_menu_delete = dialogView.findViewById(R.id.tv2_menu_delete);
         tv2_menu_delete.setVisibility(View.VISIBLE);
