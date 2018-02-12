@@ -64,8 +64,8 @@
     <string name="dialog_button_custom">自定义</string>
     <string name="dialog_title_download">你想下载这个文件么？</string>
     <string name="dialog_title_sign_in">登录</string>
-    <string name="dialog_content_resubmission">Would you like to resubmit your data?</string>
-    <string name="dialog_content_ssl_error">The certificate of the site is not trusted. Proceed anyway?</string>
+    <string name="dialog_content_resubmission">你要重新提交数据么？</string>
+    <string name="dialog_content_ssl_error">网站证书不可信，仍要访问？</string>
 
 
 
@@ -211,18 +211,18 @@
     <string name="toast_share_failed">Can\'t share this page</string>
     <string name="toast_start_download">Starting download</string>
     <string name="toast_wait_a_minute">请稍候</string>
-    <string name="toast_titleConfirm_delete">Do you really want to delete the entry?</string>
-    <string name="toast_titleConfirm_paste">Copy data to clipboard?</string>
-    <string name="toast_titleConfirm_pasteUN">Username</string>
-    <string name="toast_titleConfirm_pastePW">Password</string>
-    <string name="toast_directory">Can\'t open directory</string>
-    <string name="toast_noFile">Can\'t open directory</string>
-    <string name="toast_error">Uuups. Something went wrong.</string>
-    <string name="toast_newTitle">Entry already exists. Please enter new title.</string>
-    <string name="toast_edit_successful">Successfully saved</string>
-    <string name="toast_webview_forward">Can\'t load next site</string>
-    <string name="toast_webview_back">Can\'t load previous site</string>
-    <string name="toast_entry_exists">Entry exists already.</string>
+    <string name="toast_titleConfirm_delete">你真的想删除这条记录么？</string>
+    <string name="toast_titleConfirm_paste">复制数据到粘贴板？</string>
+    <string name="toast_titleConfirm_pasteUN">用户名</string>
+    <string name="toast_titleConfirm_pastePW">密码</string>
+    <string name="toast_directory">无法打开文件夹</string>
+    <string name="toast_noFile">无法打开文件夹</string>
+    <string name="toast_error">哦，程序出错了</string>
+    <string name="toast_newTitle">已经存在了，换个名字吧</string>
+    <string name="toast_edit_successful">保存成功</string>
+    <string name="toast_webview_forward">无法加载下个网页</string>
+    <string name="toast_webview_back">无法加载前一个网页</string>
+    <string name="toast_entry_exists">已经存在</string>
     <string name="toast_clear">你真的想清理么？</string>
     <string name="toast_permission_title">需要授权</string>
     <string name="toast_permission_sdCard">\"Browser\" needs the permission to \"read and write on your storage\". This is needed for
@@ -236,8 +236,8 @@
 
 
     <!-- Whitelist -->
-    <string name="whitelist_menu_clear">Clear</string>
+    <string name="whitelist_menu_clear">清空</string>
     <string name="whitelist_edit_hint">Domain</string>
-    <string name="whitelist_add">Add</string>
+    <string name="whitelist_add">添加</string>
 
 </resources>
