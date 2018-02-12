@@ -33,7 +33,6 @@
     <string name="menu_save">Speichern</string>
     <string name="menu_quit">Beenden</string>
     <string name="menu_delete">Löschen</string>
-    <string name="menu_delete_open">Löschen und öffnen</string>
     <string name="menu_edit">Bearbeiten</string>
     <string name="menu_notification">Benachrichtigung</string>
     <string name="menu_closeTab">Tab schließen</string>
@@ -166,6 +165,8 @@
         Dialog\" zu zeigen.</string>
     <string name="setting_title_theme">Farbthema</string>
     <string name="setting_summary_theme">Du magst kein Grün? Dann ändere es!</string>
+    <string name="setting_title_tab">Starttab</string>
+    <string name="setting_summary_tab">Was soll beim Start von \"Browser\" angezeigt werden? Die Startseite, deine Lesezeichen, …</string>
 
 
     <string name="setting_title_nav">Navigationsknopf</string>

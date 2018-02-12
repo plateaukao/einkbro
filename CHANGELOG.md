@@ -1,4 +1,5 @@
 ### v 5.2 (WIP)
+- new: decide which tab to open on start
 - new: backup complete data and settings
 - new: double tap \"Navigation Button\" to hide
 - new: option to disable history (settings and fast toggle)

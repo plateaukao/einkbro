@@ -33,7 +33,6 @@
     <string name="menu_save">Save</string>
     <string name="menu_quit">Quit</string>
     <string name="menu_delete">Delete</string>
-    <string name="menu_delete_open">Delete and open</string>
     <string name="menu_edit">Edit</string>
     <string name="menu_notification">Notification</string>
     <string name="menu_closeTab">Close tab</string>
@@ -120,7 +119,7 @@
     <string name="setting_title_adblock">AdBlock</string>
     <string name="setting_summary_adblock">Enable AdBlock to block annoying ads. Sites also load faster when enabled.</string>
     <string name="setting_title_whitelist">AdBlock whitelist</string>
-    <string name="setting_summary_whitelist">Allow these sites to show ads. Some sites do not work, when an adblocker is enabled.</string>
+    <string name="setting_summary_whitelist">Allow these sites to show ads. Some sites do not work, when AdBlock is enabled.</string>
 
     <string name="setting_title_location">Location</string>
     <string name="setting_summary_location">Allow websites to access your location. Some websites (like Google maps for navigation)
@@ -176,6 +175,10 @@
 
     <string name="setting_title_nav_show">Hide</string>
     <string name="setting_summary_nav_show">Hide the \"Navigation Button\" when toolbar is shown.</string>
+
+    <string name="setting_title_tab">Start tab</string>
+    <string name="setting_summary_tab">What should be shown at the start of \"Browser\"? The Start Page, you bookmarks, …</string>
+
 
 
     <!-- Data -->

@@ -1,27 +1,25 @@
 package de.baumann.browser.Fragment;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
 import android.support.design.widget.BottomSheetDialog;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.channels.FileChannel;
 
 import de.baumann.browser.Activity.JavascriptActivity;
 import de.baumann.browser.Activity.WhitelistActivity;
@@ -33,8 +31,6 @@ import de.baumann.browser.Task.ImportBookmarksTask;
 import de.baumann.browser.Task.ImportWhitelistTask;
 import de.baumann.browser.Task.ImportWhitelistTaskJS;
 import de.baumann.browser.View.NinjaToast;
-
-import static android.os.Environment.getExternalStoragePublicDirectory;
 
 public class Fragment_settings_data extends PreferenceFragment {
 
@@ -81,13 +77,24 @@ public class Fragment_settings_data extends PreferenceFragment {
                     File sd = Environment.getExternalStorageDirectory();
                     File data = Environment.getDataDirectory();
 
-                    String currentDBPath = "//data//de.baumann.browser";
-                    String backupDBPath = "Browser";
+                    String currentDBPath = "//data//" + getActivity().getPackageName();
+                    String backupDBPath = "browser_backup";
 
                     File source = new File(data, currentDBPath);
                     File target = new File(sd, backupDBPath);
 
-                    copyDirectory(source, target);
+                    if (android.os.Build.VERSION.SDK_INT >= 23) {
+                        int hasWRITE_EXTERNAL_STORAGE = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                        if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
+                            NinjaToast.show(getActivity(), R.string.toast_permission_sdCard_sec);
+                        } else {
+                            copyDirectory(source, target);
+                            NinjaToast.show(getActivity(), getString(R.string.toast_export_successful) + "browser_backup");
+                        }
+
+                    } else {
+                        copyDirectory(source, target);
+                    }
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -111,63 +118,18 @@ public class Fragment_settings_data extends PreferenceFragment {
                             File sd = Environment.getExternalStorageDirectory();
                             File data = Environment.getDataDirectory();
 
-                            String currentDBPath = "//data//de.baumann.browser";
-                            String backupDBPath = "Browser";
+                            String currentDBPath = "//data//" + getActivity().getPackageName();
+                            String backupDBPath = "browser_backup";
 
                             File source = new File(data, currentDBPath);
                             File target = new File(sd, backupDBPath);
 
-                            copyDirectory(target, source);
-
-                            final SharedPreferences sp = getPreferenceScreen().getSharedPreferences();
-                            final BottomSheetDialog dialog = new BottomSheetDialog(getActivity());
-                            View dialogView = View.inflate(getActivity(), R.layout.dialog_action, null);
-                            TextView textView = dialogView.findViewById(R.id.dialog_text);
-                            textView.setText(R.string.toast_restart);
-                            Button action_ok = dialogView.findViewById(R.id.action_ok);
-                            action_ok.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    sp.edit().putInt("restart_changed", 1).apply();
-                                    getActivity().finish();
-                                }
-                            });
-                            Button action_cancel = dialogView.findViewById(R.id.action_cancel);
-                            action_cancel.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    dialog.cancel();
-                                }
-                            });
-                            dialog.setContentView(dialogView);
-                            dialog.show();
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-
-
-                        try {
-
-                            File sd = Environment.getExternalStorageDirectory();
-                            File data = Environment.getDataDirectory();
-
-                            if (sd.canWrite()) {
-
-                                String backupDBPath = "//data//de.baumann.browser//databases//Ninja4.db";
-                                String currentDBPath = "Browser.db";
-
-                                File currentDB = new File(sd, currentDBPath);
-                                File backupDB = new File(data, backupDBPath);
-
-                                Log.d("backupDB path", "" + backupDB.getAbsolutePath());
-
-                                if (currentDB.exists()) {
-                                    FileChannel src = new FileInputStream(currentDB).getChannel();
-                                    FileChannel dst = new FileOutputStream(backupDB).getChannel();
-                                    dst.transferFrom(src, 0, src.size());
-                                    src.close();
-                                    dst.close();
+                            if (android.os.Build.VERSION.SDK_INT >= 23) {
+                                int hasWRITE_EXTERNAL_STORAGE = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                                if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
+                                    NinjaToast.show(getActivity(), R.string.toast_permission_sdCard_sec);
+                                } else {
+                                    copyDirectory(target, source);
 
                                     final SharedPreferences sp = getPreferenceScreen().getSharedPreferences();
                                     final BottomSheetDialog dialog = new BottomSheetDialog(getActivity());
@@ -192,7 +154,34 @@ public class Fragment_settings_data extends PreferenceFragment {
                                     dialog.setContentView(dialogView);
                                     dialog.show();
                                 }
+
+                            } else {
+                                copyDirectory(target, source);
+
+                                final SharedPreferences sp = getPreferenceScreen().getSharedPreferences();
+                                final BottomSheetDialog dialog = new BottomSheetDialog(getActivity());
+                                View dialogView = View.inflate(getActivity(), R.layout.dialog_action, null);
+                                TextView textView = dialogView.findViewById(R.id.dialog_text);
+                                textView.setText(R.string.toast_restart);
+                                Button action_ok = dialogView.findViewById(R.id.action_ok);
+                                action_ok.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        sp.edit().putInt("restart_changed", 1).apply();
+                                        getActivity().finish();
+                                    }
+                                });
+                                Button action_cancel = dialogView.findViewById(R.id.action_cancel);
+                                action_cancel.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        dialog.cancel();
+                                    }
+                                });
+                                dialog.setContentView(dialogView);
+                                dialog.show();
                             }
+
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -217,7 +206,7 @@ public class Fragment_settings_data extends PreferenceFragment {
     }
 
     // If targetLocation does not exist, it will be created.
-    public void copyDirectory(File sourceLocation , File targetLocation)
+    private void copyDirectory(File sourceLocation, File targetLocation)
             throws IOException {
 
         if (sourceLocation.isDirectory()) {
@@ -226,9 +215,9 @@ public class Fragment_settings_data extends PreferenceFragment {
             }
 
             String[] children = sourceLocation.list();
-            for (int i=0; i<children.length; i++) {
-                copyDirectory(new File(sourceLocation, children[i]),
-                        new File(targetLocation, children[i]));
+            for (String aChildren : children) {
+                copyDirectory(new File(sourceLocation, aChildren),
+                        new File(targetLocation, aChildren));
             }
         } else {
 
@@ -241,7 +230,7 @@ public class Fragment_settings_data extends PreferenceFragment {
             InputStream in = new FileInputStream(sourceLocation);
             OutputStream out = new FileOutputStream(targetLocation);
 
-            // Copy the bits from instream to outstream
+            // Copy the bits from InputStream to OutputStream
             byte[] buf = new byte[1024];
             int len;
             while ((len = in.read(buf)) > 0) {
