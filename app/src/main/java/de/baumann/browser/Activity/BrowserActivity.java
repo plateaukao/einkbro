@@ -260,7 +260,11 @@ public class BrowserActivity extends Activity implements BrowserController, View
             }
         } else if (currentAlbumController instanceof NinjaRelativeLayout) {
             if (currentAlbumController.getFlag() == start_tab) {
-                doubleTapsQuit();
+                if (BrowserContainer.size() <= 1) {
+                    doubleTapsQuit();
+                } else {
+                    removeAlbum(currentAlbumController);
+                }
             } else {
                 removeAlbum(currentAlbumController);
             }
@@ -2967,21 +2971,26 @@ public class BrowserActivity extends Activity implements BrowserController, View
     }
 
     private void doubleTapsQuit() {
-        final Timer timer = new Timer();
-        if (!quit) {
-            quit = true;
-            NinjaToast.show(this, getString(R.string.toast_double_taps_quit));
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    quit = false;
-                    timer.cancel();
-                }
-            }, 2000);
-        } else {
-            timer.cancel();
-            finish();
-        }
+        bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
+        View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_action, null);
+        TextView textView = dialogView.findViewById(R.id.dialog_text);
+        textView.setText(R.string.toast_quit);
+        Button action_ok = dialogView.findViewById(R.id.action_ok);
+        action_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+        Button action_cancel = dialogView.findViewById(R.id.action_cancel);
+        action_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bottomSheetDialog.cancel();
+            }
+        });
+        bottomSheetDialog.setContentView(dialogView);
+        bottomSheetDialog.show();
     }
 
     private void doubleTapsHide() {

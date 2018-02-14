@@ -1,4 +1,4 @@
-### v 5.2 (WIP)
+### v 5.2
 - new: decide which tab to open on start
 - new: backup complete data and settings
 - new: double tap \"Navigation Button\" to hide
