@@ -8,8 +8,8 @@ android {
         applicationId "de.baumann.browser"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 69
-        versionName "5.1.1"
+        versionCode 70
+        versionName "5.2"
     }
 
     buildTypes {

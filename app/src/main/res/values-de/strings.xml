@@ -261,6 +261,7 @@
         Internetseiten die einen Navigationsdienst anbieten.  Wenn du die Berechtigung jetzt nicht erteilst, kannst du dies
         später in den Einstellungen machen.</string>
     <string name="toast_restart">Du musst \"Browser\" neustarten, damit die Änderungen wirksam werden. Jetzt beenden?</string>
+    <string name="toast_quit">Möchtest du \"Browser\" beenden?</string>
 
 
     <!-- Whitelist -->
