@@ -1,7 +1,11 @@
+### v 5.3 (WIP)
+- improved: tab opening/removing
+- improved: back handling
+
 ### v 5.2
 - new: decide which tab to open on start
 - new: backup complete data and settings
-- new: double tap \"Navigation Button\" to hide
+- new: double tap "Navigation Button" to hide
 - new: option to disable history (settings and fast toggle)
 - new: option to hide/show "Navigation Button"
 - new: change position of "Navigation Button"
