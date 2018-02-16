@@ -193,12 +193,12 @@
     <string name="setting_title_import_whitelistJS">JavaScript Ausnahmen wiederherstellen</string>
     <string name="export_whitelistJS">export_whitelist_Javascript</string>
 
-    <string name="setting_title_export_database">Komplette Sicherung</string>
-    <string name="setting_title_import_database">Komplette Wiederherstellung</string>
-    <string name="setting_summary_export_database">Sichere alle Anwendungsdaten  (Startseite, Lesezeichen, Verlauf) und
-        Einstellungen auf deine SD-Karte. Logindaten werden nicht gesichert.</string>
-    <string name="title_database">… alles</string>
-    <string name="hint_database">Dies löscht alle aktuellen Einstellungen und Daten. Willst du fortfahren?</string>
+    <string name="setting_title_export_database">Datenbank sichern</string>
+    <string name="setting_title_import_database">Datenbank wiederherstellen</string>
+    <string name="setting_summary_export_database">Sichere alle Anwendungsdaten  (Startseite + Vorschaubilder, Lesezeichen,
+        Verlauf) auf deine SD-Karte. Logindaten werden nicht gesichert.</string>
+    <string name="title_database">Datenbank</string>
+    <string name="hint_database">Dies löscht alle aktuellen Daten. Willst du fortfahren?</string>
 
 
     <!-- Others setting -->

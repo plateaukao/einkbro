@@ -742,18 +742,25 @@ public class BrowserActivity extends Activity implements BrowserController, View
             // Menu overflow
 
             case R.id.tv_new_tabOpen:
-                addAlbum(BrowserUnit.FLAG_HOME);
+                addAlbum(start_tab);
                 bottomSheetDialog.cancel();
                 break;
 
             case R.id.tv_closeTab:
                 removeAlbum(currentAlbumController);
                 bottomSheetDialog.cancel();
+                showOmnibox();
                 break;
 
             case R.id.tv_tabPreview:
-                switcherPanel.collapsed();
                 bottomSheetDialog.cancel();
+                showOmnibox();
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        switcherPanel.collapsed();
+                    }
+                }, 100);
+
                 break;
 
             case R.id.tv_quit:
@@ -2526,6 +2533,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
     }
 
     private synchronized void pinAlbums(String url) {
+        showOmnibox();
         hideSoftInput(inputBox);
         hideSearchPanel();
         switcherContainer.removeAllViews();
@@ -2603,7 +2611,6 @@ public class BrowserActivity extends Activity implements BrowserController, View
         }
         addAlbum(start_tab);
         removeAlbum(currentAlbumController);
-
     }
 
     private synchronized void updateAlbum(String url) {
@@ -2695,7 +2702,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
             ninjaWebView.setOnScrollChangeListener(new NinjaWebView.OnScrollChangeListener() {
                 @Override
                 public void onScrollChange(int scrollY, int oldScrollY) {
-                    if (scrollY > oldScrollY) {
+                    /*if (scrollY > oldScrollY) {
                         hideOmnibox();
                         ninjaWebView.setOnScrollChangeListener(new NinjaWebView.OnScrollChangeListener() {
                             @Override
@@ -2719,7 +2726,8 @@ public class BrowserActivity extends Activity implements BrowserController, View
                                 scrollChange();
                             }
                         }, 250);
-                    }
+                    }*/
+                    hideOmnibox();
                 }
             });
         }
@@ -3048,9 +3056,8 @@ public class BrowserActivity extends Activity implements BrowserController, View
             if (sp.getBoolean("nav_show", true)) {
                 fab_imageButtonNav.setVisibility(View.GONE);
             }
-
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
             onConfigurationChanged(null);
+            setCustomFullscreen(false);
         }
     }
 
@@ -3066,7 +3073,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
             searchPanel.setVisibility(View.GONE);
             fab_imageButtonNav.setVisibility(View.VISIBLE);
 
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            setCustomFullscreen(true);
         }
     }
 
