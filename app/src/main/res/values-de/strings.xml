@@ -33,7 +33,6 @@
     <string name="menu_save">Speichern</string>
     <string name="menu_quit">Beenden</string>
     <string name="menu_delete">Löschen</string>
-    <string name="menu_delete_open">Löschen und öffnen</string>
     <string name="menu_edit">Bearbeiten</string>
     <string name="menu_notification">Benachrichtigung</string>
     <string name="menu_closeTab">Tab schließen</string>
@@ -166,6 +165,8 @@
         Dialog\" zu zeigen.</string>
     <string name="setting_title_theme">Farbthema</string>
     <string name="setting_summary_theme">Du magst kein Grün? Dann ändere es!</string>
+    <string name="setting_title_tab">Starttab</string>
+    <string name="setting_summary_tab">Was soll beim Start von \"Browser\" angezeigt werden? Die Startseite, deine Lesezeichen, …</string>
 
 
     <string name="setting_title_nav">Navigationsknopf</string>
@@ -194,12 +195,10 @@
 
     <string name="setting_title_export_database">Datenbank sichern</string>
     <string name="setting_title_import_database">Datenbank wiederherstellen</string>
-    <string name="setting_summary_export_database">Sichere die gasamte Datenbank auf deine SD-Karte (Startseite, Lesezeichen, Verlauf).
-        Logindaten werden nicht gesichert.</string>
+    <string name="setting_summary_export_database">Sichere alle Anwendungsdaten  (Startseite + Vorschaubilder, Lesezeichen,
+        Verlauf) auf deine SD-Karte. Logindaten werden nicht gesichert.</string>
     <string name="title_database">Datenbank</string>
-    <string name="hint_database">Die Vorschaubilder auf deiner Startseite können nicht wieder hergestellt werden. Klicke lange auf
-        einen wieder hergestellten Eintrag, und wähle dann \"Löschen und öffnen\" aus, um den Eintrag erneut mit Vorschau speichern
-        zu können.</string>
+    <string name="hint_database">Dies löscht alle aktuellen Daten. Willst du fortfahren?</string>
 
 
     <!-- Others setting -->
@@ -262,6 +261,7 @@
         Internetseiten die einen Navigationsdienst anbieten.  Wenn du die Berechtigung jetzt nicht erteilst, kannst du dies
         später in den Einstellungen machen.</string>
     <string name="toast_restart">Du musst \"Browser\" neustarten, damit die Änderungen wirksam werden. Jetzt beenden?</string>
+    <string name="toast_quit">Möchtest du \"Browser\" beenden?</string>
 
 
     <!-- Whitelist -->

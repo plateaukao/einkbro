@@ -33,7 +33,6 @@
     <string name="menu_save">Save</string>
     <string name="menu_quit">Quit</string>
     <string name="menu_delete">Delete</string>
-    <string name="menu_delete_open">Delete and open</string>
     <string name="menu_edit">Edit</string>
     <string name="menu_notification">Notification</string>
     <string name="menu_closeTab">Close tab</string>
@@ -120,7 +119,7 @@
     <string name="setting_title_adblock">AdBlock</string>
     <string name="setting_summary_adblock">Enable AdBlock to block annoying ads. Sites also load faster when enabled.</string>
     <string name="setting_title_whitelist">AdBlock whitelist</string>
-    <string name="setting_summary_whitelist">Allow these sites to show ads. Some sites do not work, when an adblocker is enabled.</string>
+    <string name="setting_summary_whitelist">Allow these sites to show ads. Some sites do not work, when AdBlock is enabled.</string>
 
     <string name="setting_title_location">Location</string>
     <string name="setting_summary_location">Allow websites to access your location. Some websites (like Google maps for navigation)
@@ -177,6 +176,10 @@
     <string name="setting_title_nav_show">Hide</string>
     <string name="setting_summary_nav_show">Hide the \"Navigation Button\" when toolbar is shown.</string>
 
+    <string name="setting_title_tab">Start tab</string>
+    <string name="setting_summary_tab">What should be shown at the start of \"Browser\"? The Start Page, you bookmarks, …</string>
+
+
 
     <!-- Data -->
     <string name="setting_title_export_bookmarks">Export Bookmarks</string>
@@ -193,11 +196,10 @@
 
     <string name="setting_title_export_database">Export database</string>
     <string name="setting_title_import_database">Import database</string>
-    <string name="setting_summary_export_database">Export the whole database to your sd-card (Startpage, History, Bookmarks). Your
-    login data will not be backed up.</string>
+    <string name="setting_summary_export_database">Export the whole database (Startpage + previews, History, Bookmarks) to your
+        sd-card. Your login data will not be backed up.</string>
     <string name="title_database">Database</string>
-    <string name="hint_database">The previews of stored websites at the startpage will get lost. Long click on a restored entry and
-        the \"Delete and open\", to save that entry again with preview.</string>
+    <string name="hint_database">This will delete all your current settings and data. Will you proceed?</string>
 
 
     <!-- Others setting -->
@@ -260,6 +262,7 @@
         websites for example when they offer some kind of navigation. If you don\'t grant the permission yet, you can do it
     later in the settings.</string>
     <string name="toast_restart">You must restart \"Browser\" to apply changes. Close now?</string>
+    <string name="toast_quit">\DO you want to quit "Browser\"?</string>
 
 
     <!-- Whitelist -->

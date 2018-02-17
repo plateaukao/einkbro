@@ -1,26 +1,25 @@
 package de.baumann.browser.Fragment;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
 import android.support.design.widget.BottomSheetDialog;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.channels.FileChannel;
 
 import de.baumann.browser.Activity.JavascriptActivity;
 import de.baumann.browser.Activity.WhitelistActivity;
@@ -33,8 +32,6 @@ import de.baumann.browser.Task.ImportWhitelistTask;
 import de.baumann.browser.Task.ImportWhitelistTaskJS;
 import de.baumann.browser.View.NinjaToast;
 
-import static android.os.Environment.getExternalStoragePublicDirectory;
-
 public class Fragment_settings_data extends PreferenceFragment {
 
     @Override
@@ -45,6 +42,22 @@ public class Fragment_settings_data extends PreferenceFragment {
 
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
+
+        File sd = Environment.getExternalStorageDirectory();
+        File data = Environment.getDataDirectory();
+
+        String currentDBPath = "//data//" + getActivity().getPackageName() + "//files";
+        String backupDBPath = "browser_startpage//previews";
+
+        final File pv_data = new File(data, currentDBPath);
+        final File pv_sd = new File(sd, backupDBPath);
+
+        String currentDBPath2 = "//data//" + getActivity().getPackageName() + "//databases//Ninja4.db";
+        String backupDBPath2 = "browser_startpage//databases//Browser.db";
+
+        final File db_data = new File(data, currentDBPath2);
+        final File db_sd = new File(sd, backupDBPath2);
+
         switch (preference.getTitleRes()) {
             case R.string.setting_title_whitelist:
                 Intent toWhitelist = new Intent(getActivity(), WhitelistActivity.class);
@@ -77,27 +90,26 @@ public class Fragment_settings_data extends PreferenceFragment {
             case R.string.setting_title_export_database:
                 try {
 
-                    File sd = Environment.getExternalStorageDirectory();
-                    File data = Environment.getDataDirectory();
-
-                    if (sd.canWrite()) {
-                        String currentDBPath = "//data//de.baumann.browser//databases//Ninja4.db";
-                        String backupDBPath = "Browser.db";
-
-                        File currentDB = new File(data, currentDBPath);
-                        File backupDB = new File(sd, backupDBPath);
-
-                        Log.d("backupDB path", "" + backupDB.getAbsolutePath());
-
-                        if (currentDB.exists()) {
-                            FileChannel src = new FileInputStream(currentDB).getChannel();
-                            FileChannel dst = new FileOutputStream(backupDB).getChannel();
-                            dst.transferFrom(src, 0, src.size());
-                            src.close();
-                            dst.close();
-                            NinjaToast.show(getActivity(), getActivity().getString(R.string.toast_export_successful) + "Browser.db");
+                    if (android.os.Build.VERSION.SDK_INT >= 23) {
+                        int hasWRITE_EXTERNAL_STORAGE = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                        if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
+                            NinjaToast.show(getActivity(), R.string.toast_permission_sdCard_sec);
+                        } else {
+                            deleteRecursive(pv_sd);
+                            deleteRecursive(db_sd);
+                            copyDirectory(pv_data, pv_sd);
+                            copyDirectory(db_data, db_sd);
+                            NinjaToast.show(getActivity(), getString(R.string.toast_export_successful) + "browser_startpage");
                         }
+
+                    } else {
+                        deleteRecursive(pv_sd);
+                        deleteRecursive(db_sd);
+                        copyDirectory(pv_data, pv_sd);
+                        copyDirectory(db_data, db_sd);
+                        NinjaToast.show(getActivity(), getString(R.string.toast_export_successful) + "browser_startpage");
                     }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -114,27 +126,16 @@ public class Fragment_settings_data extends PreferenceFragment {
                     @Override
                     public void onClick(View view) {
                         dialog.cancel();
+
                         try {
 
-                            File sd = Environment.getExternalStorageDirectory();
-                            File data = Environment.getDataDirectory();
-
-                            if (sd.canWrite()) {
-
-                                String backupDBPath = "//data//de.baumann.browser//databases//Ninja4.db";
-                                String currentDBPath = "Browser.db";
-
-                                File currentDB = new File(sd, currentDBPath);
-                                File backupDB = new File(data, backupDBPath);
-
-                                Log.d("backupDB path", "" + backupDB.getAbsolutePath());
-
-                                if (currentDB.exists()) {
-                                    FileChannel src = new FileInputStream(currentDB).getChannel();
-                                    FileChannel dst = new FileOutputStream(backupDB).getChannel();
-                                    dst.transferFrom(src, 0, src.size());
-                                    src.close();
-                                    dst.close();
+                            if (android.os.Build.VERSION.SDK_INT >= 23) {
+                                int hasWRITE_EXTERNAL_STORAGE = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                                if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
+                                    NinjaToast.show(getActivity(), R.string.toast_permission_sdCard_sec);
+                                } else {
+                                    copyDirectory(pv_sd, pv_data);
+                                    copyDirectory(db_sd, db_data);
 
                                     final SharedPreferences sp = getPreferenceScreen().getSharedPreferences();
                                     final BottomSheetDialog dialog = new BottomSheetDialog(getActivity());
@@ -159,7 +160,35 @@ public class Fragment_settings_data extends PreferenceFragment {
                                     dialog.setContentView(dialogView);
                                     dialog.show();
                                 }
+
+                            } else {
+                                copyDirectory(pv_sd, pv_data);
+                                copyDirectory(db_sd, db_data);
+
+                                final SharedPreferences sp = getPreferenceScreen().getSharedPreferences();
+                                final BottomSheetDialog dialog = new BottomSheetDialog(getActivity());
+                                View dialogView = View.inflate(getActivity(), R.layout.dialog_action, null);
+                                TextView textView = dialogView.findViewById(R.id.dialog_text);
+                                textView.setText(R.string.toast_restart);
+                                Button action_ok = dialogView.findViewById(R.id.action_ok);
+                                action_ok.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        sp.edit().putInt("restart_changed", 1).apply();
+                                        getActivity().finish();
+                                    }
+                                });
+                                Button action_cancel = dialogView.findViewById(R.id.action_cancel);
+                                action_cancel.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        dialog.cancel();
+                                    }
+                                });
+                                dialog.setContentView(dialogView);
+                                dialog.show();
                             }
+
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -181,5 +210,49 @@ public class Fragment_settings_data extends PreferenceFragment {
                 break;
         }
         return super.onPreferenceTreeClick(preferenceScreen, preference);
+    }
+
+    void deleteRecursive(File fileOrDirectory) {
+        if (fileOrDirectory.isDirectory())
+            for (File child : fileOrDirectory.listFiles())
+                deleteRecursive(child);
+
+        fileOrDirectory.delete();
+    }
+
+    // If targetLocation does not exist, it will be created.
+    private void copyDirectory(File sourceLocation, File targetLocation)
+            throws IOException {
+
+        if (sourceLocation.isDirectory()) {
+            if (!targetLocation.exists() && !targetLocation.mkdirs()) {
+                throw new IOException("Cannot create dir " + targetLocation.getAbsolutePath());
+            }
+
+            String[] children = sourceLocation.list();
+            for (String aChildren : children) {
+                copyDirectory(new File(sourceLocation, aChildren),
+                        new File(targetLocation, aChildren));
+            }
+        } else {
+
+            // make sure the directory we plan to store the recording in exists
+            File directory = targetLocation.getParentFile();
+            if (directory != null && !directory.exists() && !directory.mkdirs()) {
+                throw new IOException("Cannot create dir " + directory.getAbsolutePath());
+            }
+
+            InputStream in = new FileInputStream(sourceLocation);
+            OutputStream out = new FileOutputStream(targetLocation);
+
+            // Copy the bits from InputStream to OutputStream
+            byte[] buf = new byte[1024];
+            int len;
+            while ((len = in.read(buf)) > 0) {
+                out.write(buf, 0, len);
+            }
+            in.close();
+            out.close();
+        }
     }
 }
