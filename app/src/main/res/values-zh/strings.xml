@@ -19,6 +19,8 @@
 
 
     <!-- Menu -->
+    <string name="main_menu">菜单</string>
+    <string name="main_menu_tabPreview">预览标签</string>
     <string name="main_menu_new_tab">在后台打开新标签</string>
     <string name="main_menu_new_tabOpen">在前台打开新标签</string>
     <string name="main_menu_copy_link">复制链接</string>
@@ -54,7 +56,7 @@
 
 
     <!-- Dialog -->
-    <string name="dialog_toggle_title">Fast toggle</string>
+    <string name="dialog_toggle_title">快速切换</string>
     <string name="dialog_title_hint">输入标题</string>
     <string name="dialog_se_hint">https://www.google.com/search?q=</string>
     <string name="dialog_ua_hint">Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36</string>
@@ -157,6 +159,19 @@
     <string name="setting_title_theme">彩色主题</string>
     <string name="setting_summary_theme">不喜欢绿色？换一下！</string>
 
+    <string name="setting_title_nav">导航键</string>
+    <string name="setting_title_nav_pos">位置</string>
+    <string name="setting_summary_nav_pos">导航键放在哪？</string>
+    <string name="setting_summary_nav_pos_right">右</string>
+    <string name="setting_summary_nav_pos_left">左</string>
+    <string name="setting_summary_nav_pos_center">中间</string>
+
+    <string name="setting_title_nav_show">隐藏</string>
+    <string name="setting_summary_nav_show">工具栏显示的时候隐藏导航键</string>
+
+    <string name="setting_title_tab">启动标签</string>
+    <string name="setting_summary_tab">浏览器启动的时候显示什么？启动页，书签…</string>
+
 
     <!-- Data -->
     <string name="setting_title_export_bookmarks">导出书签</string>
@@ -170,6 +185,13 @@
     <string name="setting_title_export_whitelistJS">导出 JavaScript 白名单</string>
     <string name="setting_title_import_whitelistJS">导入 JavaScript 白名单</string>
     <string name="export_whitelistJS">export_whitelist_Javascript</string>
+
+    <string name="setting_title_export_database">导出数据库</string>
+    <string name="setting_title_import_database">导入数据库</string>
+    <string name="setting_summary_export_database">导出所有数据(主页 + 预览, 历史, 书签)
+        到 SD 卡。你的登录数据不会被备份。</string>
+    <string name="title_database">数据库</string>
+    <string name="hint_database">你当前的设置和数据都将被删除，继续？</string>
 
 
     <!-- Others setting -->
@@ -232,6 +254,7 @@
         websites for example when they offer some kind of navigation. If you don\'t grant the permission yet, you can do it
     later in the settings.</string>
     <string name="toast_restart">你需要重启浏览器来应用变更，现在关闭么？</string>
+    <string name="toast_quit">你确定要退出浏览器么？</string>
 
 
     <!-- Whitelist -->
