@@ -4,22 +4,26 @@
 
     <string name="changelog_title">Changelog</string>
     <string name="changelog_dialog">
-        &lt;i>For more information visit the project site on Github: https://github.com/scoute-dich/Browser&lt;/i>&lt;br>&lt;br>
+        &lt;i>Project site: https://github.com/scoute-dich/Browser&lt;br>
+        Changelog: https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;/i>&lt;br>&lt;br>
 
-        With this update \"Ninja Browser\" is used as base for \"Browser\". The
-    concept remains the old: simple but powerful with a nice looking user interface. Main advantage of this step are a better
-    implementation of tabs. Now you can open as many tabs as you wish. Also you have a new startpage. Please read the new
-    \"Help dialog\" for more information.&lt;br>&lt;br>
+        &lt;b>Version: 5.2.&lt;/b>&lt;br>
+        There are a couple of changes with this update. Please read the \"Help dialog\" for more information.&lt;br>&lt;br>
 
-        - new: Chinese translation (Thanks: lishoujun)&lt;br>
-        - new: close current tab in menu&lt;br>
-        - new: share text to browser&lt;br>
-        - improved: hide/show toolbar&lt;br>
-        - fix: night mode (now in UI settings)&lt;br>
-        - fix: force close when clicking direct download link&lt;br>
-        - fix: screenshot, when started via holder service&lt;br>
-        - fix: some strings&lt;br>
-        - fix: possible force close on Android > Nougat
+        \u25AA new: decide which tab to open on start&lt;br>
+        \u25AA new: backup complete data and settings&lt;br>
+        \u25AA new: double tap \"Navigation Button\" to hide&lt;br>
+        \u25AA new: option to disable history&lt;br>
+        \u25AA new: option to hide/show \"Navigation Button\"&lt;br>
+        \u25AA new: change position of \"Navigation Button\"&lt;br>
+        \u25AA new: moved menus in bottom dialog&lt;br>
+        \u25AA new: Baidu as default search engine for Chinese users&lt;br>
+        \u25AA new: Indonesian translation (thanks: Secangkir Kopi)&lt;br>
+        \u25AA changed: backups on root of sd-card&lt;br>
+        \u25AA updated: Help dialog (ENG, DE)&lt;br>
+        \u25AA improved: applying settings from fast toggle dialog
+        \u25AA improved: Chinese translation (thanks: lishoujun)
+        \u25AA fix: possible force close on Android > Nougat
     </string>
 
 
@@ -133,8 +137,7 @@
         &lt;i>https://github.com/futrDevelopment&lt;/i>&lt;br>&lt;br>
 
         &lt;b>Jumping Yang&lt;/b>&lt;br>
-        Chinese translation in the previous version of \"Browser\". Sorry for switching to Ninja Browser as base. Perhaps you
-        could translate a second time?&lt;br>
+        Chinese translation in the previous version of \"Browser\".&lt;br>
         &lt;i>https://github.com/JumpingYang001&lt;/i>&lt;br>&lt;br>
 
         &lt;b>lishoujun&lt;/b>&lt;br>
@@ -146,8 +149,7 @@
         &lt;i>https://github.com/Secangkir-Kopi&lt;/i>&lt;br>&lt;br>
 
         &lt;b>splinet&lt;/b>&lt;br>
-        Russian translation in the previous version of \"Browser\". Sorry for switching to Ninja Browser as base. Perhaps you
-        could translate a second time?&lt;br>
+        Russian translation in the previous version of \"Browser\".&lt;br>
         &lt;i>https://github.com/splinet&lt;/i>
 
 

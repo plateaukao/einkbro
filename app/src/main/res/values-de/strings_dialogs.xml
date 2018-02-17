@@ -4,22 +4,25 @@
 
     <string name="changelog_title">Änderungen</string>
     <string name="changelog_dialog">
-        &lt;i>Besuche für mehr Informationen die Projektseite auf Github: https://github.com/scoute-dich/Browser&lt;/i>&lt;br>&lt;br>
+        &lt;i>Projektseite: https://github.com/scoute-dich/Browser&lt;br>
+        Änderungen: https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;/i>&lt;br>&lt;br>
 
-        Mit diesem Update wird \"Ninja Browser\" als Basis für \"Browser\" genutzt. Der Grundgedanke bleibt der gleiche:
-        einfach aber funktionell mit einer guten Benutzeroberfläche. Der größte Vorteil dieses Schrittes ist ein besseres
-        Tabmanagement (du kannst jetzt soviele Tabs öffnen, wie du magst). Außerdem gibt es eine neue Startseite. Bitte lies den
-        neuen \"Hilfedialog\" für weitere Informationen.&lt;br>&lt;br>
+        &lt;b>Version: 5.2.&lt;/b>&lt;br>
+        Mit diesem Update gibt es einige Änderungen. Bitte lies den \"Hilfedialog\" für weitere Informationen.&lt;br>&lt;br>
 
-        - neu: Chinesische Übersetzung (Danke: lishoujun)&lt;br>
-        - neu: schließe aktuellen Tab im Menü&lt;br>
-        - neu: Text zu \"Browser\" teilen&lt;br>
-        - verbessert: Toolbar verstecken und anzeigen&lt;br>
-        - fix: Nachtmodus (jetzt in den UI Einstellungen)&lt;br>
-        - fix: Absturz wenn Downloadlinks direkt geöffnet werden&lt;br>
-        - fix: Bildschirmfoto, wenn über den \"Holderservice\" gestartet&lt;br>
-        - fix: einige Strings&lt;br>
-        - fix: Möglicher Absturz bei Android > Nougat
+        \u25AA neu: entscheide welcher Tab beim Start geöffnet wird&lt;br>
+        \u25AA neu: Sicherung von allen Daten und Einstellungen&lt;br>
+        \u25AA neu: Doppelklick \"Navigationsknopf\": kurz ausblenden&lt;br>
+        \u25AA neu: Möglichkeit den Verlauf nicht zu speichern&lt;br>
+        \u25AA neu: Möglichkeit \"Navigationsknopf\" ein- und auszublenden&lt;br>
+        \u25AA neu: Möglichkeit die Position des \"Navigationsknopfs\" zu ändern&lt;br>
+        \u25AA neu: Menüs in Dialoge umgewandelt&lt;br>
+        \u25AA neu: Baidu als Standardsuchmaschiene für Chinesische Nutzer&lt;br>
+        \u25AA neu: Indonesische Übersetzung (Danke: Secangkir Kopi)&lt;br>
+        \u25AA geändert: Sicherungen im Stammverzeivhnis der SD-Karte&lt;br>
+        \u25AA aktualisiert: Hilfedialog (ENG, DE)&lt;br>
+        \u25AA verbessert: Schnelleinstellungen übernehmen&lt;br>
+        \u25AA verbessert: Chinesische Übersetzung (Danke: lishoujun)
     </string>
 
     <string name="toolbar_title">Toolbar</string>
@@ -128,8 +131,7 @@
         &lt;i>https://github.com/futrDevelopment&lt;/i>&lt;br>&lt;br>
 
         &lt;b>Jumping Yang&lt;/b>&lt;br>
-        Chinesische Übersetzung in der vorherigen Version von \"Browser\". Entschuldigung dafür Ninja Browser als neue Basis zu
-        verwenden. Vielleicht kannst du, wenn du Zeit hast noch einmal übersetzen?&lt;br>
+        Chinesische Übersetzung in der vorherigen Version von \"Browser\".&lt;br>
         &lt;i>https://github.com/JumpingYang001&lt;/i>&lt;br>&lt;br>
 
         &lt;b>lishoujun&lt;/b>&lt;br>
@@ -141,8 +143,7 @@
         &lt;i>https://github.com/Secangkir-Kopi&lt;/i>&lt;br>&lt;br>
 
         &lt;b>splinet&lt;/b>&lt;br>
-        Russische Übersetzung in der vorherigen Version von \"Browser\". Entschuldigung dafür Ninja Browser als neue Basis zu
-        verwenden. Vielleicht kannst du, wenn du Zeit hast noch einmal übersetzen?&lt;br>
+        Russische Übersetzung in der vorherigen Version von \"Browser\".&lt;br>
         &lt;i>https://github.com/splinet&lt;/i>
 
 

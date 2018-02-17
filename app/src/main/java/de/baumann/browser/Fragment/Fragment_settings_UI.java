@@ -39,7 +39,7 @@ public class Fragment_settings_UI extends PreferenceFragment implements SharedPr
         }
 
         if (key.equals("sp_exit") || key.equals("sp_toggle") || key.equals("sp_add") || key.equals("theme")
-                || key.equals("nav_position")  || key.equals("sp_hideOmni")) {
+                || key.equals("nav_position")  || key.equals("sp_hideOmni") || key.equals("start_tab")) {
 
             final BottomSheetDialog dialog = new BottomSheetDialog(getActivity());
             View dialogView = View.inflate(getActivity(), R.layout.dialog_action, null);
