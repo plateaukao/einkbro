@@ -137,8 +137,8 @@
     <string name="setting_title_app">应用设置</string>
     <string name="setting_title_ui">行为/视图</string>
     <string name="setting_title_data">备份</string>
-    <string name="setting_summary_ui">Change the behavior and ui of the app to suit your preferences.</string>
-    <string name="setting_summary_data">Import and export several app data (whitelists, bookmarks).</string>
+    <string name="setting_summary_ui">根据你的喜好修改app行为和ui。</string>
+    <string name="setting_summary_data">导入和导出各种数据（书签、历史、白名单）</string>
 
     <!-- App behavior -->
     <string name="setting_title_hide">全屏</string>
