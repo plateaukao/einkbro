@@ -208,7 +208,7 @@
             android:layout_gravity="center_vertical|center_horizontal"
             app:backgroundTint="?attr/colorAccent"
             app:fabSize="mini"
-            app:srcCompat="@drawable/icon_share" />
+            app:srcCompat="@drawable/icon_menu_share" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/floatButton_save"
@@ -218,7 +218,7 @@
             android:layout_gravity="center_vertical|center_horizontal"
             app:backgroundTint="?attr/colorAccent"
             app:fabSize="mini"
-            app:srcCompat="@drawable/icon_save" />
+            app:srcCompat="@drawable/icon_menu_save" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/floatButton_more"
@@ -228,7 +228,7 @@
             android:layout_gravity="center_vertical|center_horizontal"
             app:backgroundTint="?attr/colorAccent"
             app:fabSize="mini"
-            app:srcCompat="@drawable/icon_dots_horizontal" />
+            app:srcCompat="@drawable/icon_dots" />
 
     </LinearLayout>
 
