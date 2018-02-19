@@ -10,6 +10,7 @@ android {
         targetSdkVersion 27
         versionCode 70
         versionName "5.2"
+        multiDexEnabled true
     }
 
     buildTypes {

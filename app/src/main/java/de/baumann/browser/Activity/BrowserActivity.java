@@ -256,7 +256,27 @@ public class BrowserActivity extends Activity implements BrowserController, View
             if (ninjaWebView.canGoBack()) {
                 ninjaWebView.goBack();
             } else {
-                removeAlbum(currentAlbumController);
+                bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
+                View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_action, null);
+                TextView textView = dialogView.findViewById(R.id.dialog_text);
+                textView.setText(R.string.toast_close_tab);
+                Button action_ok = dialogView.findViewById(R.id.action_ok);
+                action_ok.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        removeAlbum(currentAlbumController);
+                        bottomSheetDialog.cancel();
+                    }
+                });
+                Button action_cancel = dialogView.findViewById(R.id.action_cancel);
+                action_cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        bottomSheetDialog.cancel();
+                    }
+                });
+                bottomSheetDialog.setContentView(dialogView);
+                bottomSheetDialog.show();
             }
         } else if (currentAlbumController instanceof NinjaRelativeLayout) {
             if (currentAlbumController.getFlag() == start_tab) {
@@ -474,6 +494,12 @@ public class BrowserActivity extends Activity implements BrowserController, View
         }
 
         initRendering(contentFrame);
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                searchBox.requestFocus();
+            }
+        }, 500);
+
     }
 
     @Override
@@ -747,9 +773,34 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 break;
 
             case R.id.tv_closeTab:
-                removeAlbum(currentAlbumController);
-                bottomSheetDialog.cancel();
-                showOmnibox();
+                if (currentAlbumController.getFlag() == start_tab && BrowserContainer.size() <= 1) {
+                    bottomSheetDialog.cancel();
+                    bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
+                    View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_action, null);
+                    TextView textView = dialogView.findViewById(R.id.dialog_text);
+                    textView.setText(R.string.toast_quit);
+                    Button action_ok = dialogView.findViewById(R.id.action_ok);
+                    action_ok.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            finish();
+                        }
+                    });
+                    Button action_cancel = dialogView.findViewById(R.id.action_cancel);
+                    action_cancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            bottomSheetDialog.cancel();
+                        }
+                    });
+                    bottomSheetDialog.setContentView(dialogView);
+                    bottomSheetDialog.show();
+                    return;
+                } else {
+                    removeAlbum(currentAlbumController);
+                    bottomSheetDialog.cancel();
+                    showOmnibox();
+                }
                 break;
 
             case R.id.tv_tabPreview:
@@ -1264,7 +1315,27 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 if (ninjaWebView.canGoBack()) {
                     ninjaWebView.goBack();
                 } else {
-                    NinjaToast.show(BrowserActivity.this,R.string.toast_webview_back);
+                    bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
+                    View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_action, null);
+                    TextView textView = dialogView.findViewById(R.id.dialog_text);
+                    textView.setText(R.string.toast_close_tab);
+                    Button action_ok = dialogView.findViewById(R.id.action_ok);
+                    action_ok.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            removeAlbum(currentAlbumController);
+                            bottomSheetDialog.cancel();
+                        }
+                    });
+                    Button action_cancel = dialogView.findViewById(R.id.action_cancel);
+                    action_cancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            bottomSheetDialog.cancel();
+                        }
+                    });
+                    bottomSheetDialog.setContentView(dialogView);
+                    bottomSheetDialog.show();
                 }
             }
         });
@@ -2702,31 +2773,6 @@ public class BrowserActivity extends Activity implements BrowserController, View
             ninjaWebView.setOnScrollChangeListener(new NinjaWebView.OnScrollChangeListener() {
                 @Override
                 public void onScrollChange(int scrollY, int oldScrollY) {
-                    /*if (scrollY > oldScrollY) {
-                        hideOmnibox();
-                        ninjaWebView.setOnScrollChangeListener(new NinjaWebView.OnScrollChangeListener() {
-                            @Override
-                            public void onScrollChange(int scrollY, int oldScrollY) {}
-                        });
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                scrollChange();
-                            }
-                        }, 250);
-                    } else if (scrollY < oldScrollY){
-                        showOmnibox();
-                        ninjaWebView.setOnScrollChangeListener(new NinjaWebView.OnScrollChangeListener() {
-                            @Override
-                            public void onScrollChange(int scrollY, int oldScrollY) {}
-                        });
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                scrollChange();
-                            }
-                        }, 250);
-                    }*/
                     hideOmnibox();
                 }
             });
