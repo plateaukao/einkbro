@@ -20,7 +20,7 @@
 
     <!-- Menu -->
     <string name="main_menu">Menu</string>
-    <string name="main_menu_tabPreview">Open tab preview</string>
+    <string name="main_menu_tabPreview">Open tab control</string>
     <string name="main_menu_new_tab">New tab (background)</string>
     <string name="main_menu_new_tabOpen">New tab (foreground)</string>
     <string name="main_menu_copy_link">Copy link</string>

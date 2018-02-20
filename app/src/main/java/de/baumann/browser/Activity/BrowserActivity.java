@@ -405,14 +405,14 @@ public class BrowserActivity extends Activity implements BrowserController, View
             @Override
             public void onGlobalLayout() {
                 int heightDiff = switcherPanel.getRootView().getHeight() - switcherPanel.getHeight();
-                if (currentAlbumController != null && currentAlbumController instanceof NinjaWebView) {
+                if (currentAlbumController != null) {
                     if (heightDiff > 100) {
                         omniboxTitle.setVisibility(View.GONE);
                     } else {
                         omniboxTitle.setVisibility(View.VISIBLE);
                     }
                 } else {
-                    omniboxTitle.setVisibility(View.GONE);
+                    omniboxTitle.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -521,8 +521,6 @@ public class BrowserActivity extends Activity implements BrowserController, View
             return;
         }
 
-        dispatchIntent(getIntent());
-
         if (IntentUnit.isDBChange()) {
             updateBookmarks();
             updateAutoComplete();
@@ -543,8 +541,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
             finish();
         }
 
-        initRendering(contentFrame);
-        fab_imageButtonNav.setVisibility(View.GONE);
+        dispatchIntent(getIntent());
     }
 
     @Override
@@ -797,9 +794,9 @@ public class BrowserActivity extends Activity implements BrowserController, View
                     bottomSheetDialog.show();
                     return;
                 } else {
+                    showOmnibox();
                     removeAlbum(currentAlbumController);
                     bottomSheetDialog.cancel();
-                    showOmnibox();
                 }
                 break;
 
@@ -810,7 +807,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
                     public void run() {
                         switcherPanel.collapsed();
                     }
-                }, 100);
+                }, 500);
 
                 break;
 
@@ -1220,6 +1217,8 @@ public class BrowserActivity extends Activity implements BrowserController, View
         } else {
             pinAlbums(null);
         }
+
+        getIntent().setAction("");
     }
 
     private void initRendering(View view) {
@@ -1770,6 +1769,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
                         iv.setImageResource(R.drawable.file);
                     }
                 } catch (Exception e) {
+                    initFEList(layout);
                     NinjaToast.show(BrowserActivity.this, R.string.toast_error);
                 }
 
@@ -1814,6 +1814,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
                         helper_main.open(files_icon, BrowserActivity.this, pathFile, listView);
                     }
                 } catch (Exception e) {
+                    initFEList(layout);
                     NinjaToast.show(BrowserActivity.this, R.string.toast_error);
                 }
             }
@@ -1910,6 +1911,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
                         bottomSheetDialog.show();
                     }
                 } catch (Exception e) {
+                    initFEList(layout);
                     NinjaToast.show(BrowserActivity.this, R.string.toast_error);
                 }
                 return true;
@@ -1947,6 +1949,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
                     RelativeTimeTextView tv = v.findViewById(R.id.record_item_time);
                     tv.setReferenceTime(Long.parseLong(pass_creation));
                 } catch (Exception e) {
+                    initPSList(layout);
                     NinjaToast.show(BrowserActivity.this, R.string.toast_error);
                 }
                 return v;
@@ -2367,7 +2370,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
             final ClipboardManager clipboard = (ClipboardManager) BrowserActivity.this.getSystemService(Context.CLIPBOARD_SERVICE);
             assert clipboard != null;
 
-            BroadcastReceiver unCopy = new BroadcastReceiver() {
+            final BroadcastReceiver unCopy = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
                     ClipData clip = ClipData.newPlainText("text", decrypted_userName);
@@ -2376,7 +2379,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 }
             };
 
-            BroadcastReceiver pwCopy = new BroadcastReceiver() {
+            final BroadcastReceiver pwCopy = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
                     ClipData clip = ClipData.newPlainText("text", decrypted_userPW);
@@ -2750,6 +2753,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
             updateProgress(BrowserUnit.PROGRESS_MAX);
             updateBookmarks();
             updateInputBox(null);
+            omniboxTitle.setText(currentAlbumController.getAlbumTitle());
         } else if (currentAlbumController instanceof NinjaWebView) {
             ninjaWebView = (NinjaWebView) currentAlbumController;
             String title = ninjaWebView.getTitle();
@@ -3102,8 +3106,8 @@ public class BrowserActivity extends Activity implements BrowserController, View
             if (sp.getBoolean("nav_show", true)) {
                 fab_imageButtonNav.setVisibility(View.GONE);
             }
-            onConfigurationChanged(null);
             setCustomFullscreen(false);
+            onConfigurationChanged(null);
         }
     }
 
@@ -3517,8 +3521,10 @@ public class BrowserActivity extends Activity implements BrowserController, View
             layoutParams.flags &= ~bits;
             if (customView != null) {
                 customView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+                showOmnibox();
             } else {
                 contentFrame.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+                showOmnibox();
             }
         }
         getWindow().setAttributes(layoutParams);
