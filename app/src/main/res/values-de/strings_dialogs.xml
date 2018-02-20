@@ -7,22 +7,13 @@
         &lt;i>Projektseite: https://github.com/scoute-dich/Browser&lt;br>
         Änderungen: https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;/i>&lt;br>&lt;br>
 
-        &lt;b>Version: 5.2.&lt;/b>&lt;br>
-        Mit diesem Update gibt es einige Änderungen. Bitte lies den \"Hilfedialog\" für weitere Informationen.&lt;br>&lt;br>
+        &lt;b>Version: 5.3.&lt;/b>&lt;br>
+        Mit diesem Update werden einige Fehler behoben. Bitte lies den \"Hilfedialog\" für weitere Informationen.&lt;br>&lt;br>
 
-        \u25AA neu: entscheide welcher Tab beim Start geöffnet wird&lt;br>
-        \u25AA neu: Sicherung von allen Daten und Einstellungen&lt;br>
-        \u25AA neu: Doppelklick \"Navigationsknopf\": kurz ausblenden&lt;br>
-        \u25AA neu: Möglichkeit den Verlauf nicht zu speichern&lt;br>
-        \u25AA neu: Möglichkeit \"Navigationsknopf\" ein- und auszublenden&lt;br>
-        \u25AA neu: Möglichkeit die Position des \"Navigationsknopfs\" zu ändern&lt;br>
-        \u25AA neu: Menüs in Dialoge umgewandelt&lt;br>
-        \u25AA neu: Baidu als Standardsuchmaschiene für Chinesische Nutzer&lt;br>
-        \u25AA neu: Indonesische Übersetzung (Danke: Secangkir Kopi)&lt;br>
-        \u25AA geändert: Sicherungen im Stammverzeivhnis der SD-Karte&lt;br>
-        \u25AA aktualisiert: Hilfedialog (ENG, DE)&lt;br>
-        \u25AA verbessert: Schnelleinstellungen übernehmen&lt;br>
-        \u25AA verbessert: Chinesische Übersetzung (Danke: lishoujun)
+        \u25AA verbessert: Tab öffnen/schließen&lt;br>
+        \u25AA verbessert: zurück Funktion&lt;br>
+        \u25AA verbessert: Vollbild&lt;br>
+        \u25AA weitere Verbesserungen und Fehlerbehebungen
     </string>
 
     <string name="toolbar_title">Toolbar</string>

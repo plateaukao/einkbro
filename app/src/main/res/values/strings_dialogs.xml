@@ -7,23 +7,13 @@
         &lt;i>Project site: https://github.com/scoute-dich/Browser&lt;br>
         Changelog: https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;/i>&lt;br>&lt;br>
 
-        &lt;b>Version: 5.2.&lt;/b>&lt;br>
-        There are a couple of changes with this update. Please read the \"Help dialog\" for more information.&lt;br>&lt;br>
+        &lt;b>Version: 5.3.&lt;/b>&lt;br>
+        With this update a few bugs were fixed. Please read the \"Help dialog\" for more information.&lt;br>&lt;br>
 
-        \u25AA new: decide which tab to open on start&lt;br>
-        \u25AA new: backup complete data and settings&lt;br>
-        \u25AA new: double tap \"Navigation Button\" to hide&lt;br>
-        \u25AA new: option to disable history&lt;br>
-        \u25AA new: option to hide/show \"Navigation Button\"&lt;br>
-        \u25AA new: change position of \"Navigation Button\"&lt;br>
-        \u25AA new: moved menus in bottom dialog&lt;br>
-        \u25AA new: Baidu as default search engine for Chinese users&lt;br>
-        \u25AA new: Indonesian translation (thanks: Secangkir Kopi)&lt;br>
-        \u25AA changed: backups on root of sd-card&lt;br>
-        \u25AA updated: Help dialog (ENG, DE)&lt;br>
-        \u25AA improved: applying settings from fast toggle dialog
-        \u25AA improved: Chinese translation (thanks: lishoujun)
-        \u25AA fix: possible force close on Android > Nougat
+        \u25AA improved: tab opening/removing&lt;br>
+        \u25AA improved: back handling&lt;br>
+        \u25AA improved: enter/exit fullscreen&lt;br>
+        \u25AA other improvements and bug fixes
     </string>
 
 
