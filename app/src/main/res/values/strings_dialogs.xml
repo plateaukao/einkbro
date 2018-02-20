@@ -7,13 +7,12 @@
         &lt;i>Project site: https://github.com/scoute-dich/Browser&lt;br>
         Changelog: https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;/i>&lt;br>&lt;br>
 
-        &lt;b>Version: 5.3.&lt;/b>&lt;br>
-        With this update a few bugs were fixed. Please read the \"Help dialog\" for more information.&lt;br>&lt;br>
+        &lt;b>Version: 5.3.1&lt;/b>&lt;br>
+        With this update all your saved data will get lost. This is because in future there will be support for a cookie whitelist. Then
+        You have the possibility to save for example the settings for your search engine, without enabling cookies for all websites.
+        Please read the \"Help dialog\" for more information.&lt;br>&lt;br>
 
-        \u25AA improved: tab opening/removing&lt;br>
-        \u25AA improved: back handling&lt;br>
-        \u25AA improved: enter/exit fullscreen&lt;br>
-        \u25AA other improvements and bug fixes
+        \u25AA new: initial support for cookie whitelist (fast toggle)&lt;br>
     </string>
 
 

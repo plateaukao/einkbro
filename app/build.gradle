@@ -8,8 +8,8 @@ android {
         applicationId "de.baumann.browser"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 71
-        versionName "5.3"
+        versionCode 72
+        versionName "5.3.1"
         multiDexEnabled true
     }
 

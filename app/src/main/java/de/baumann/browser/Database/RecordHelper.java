@@ -21,6 +21,7 @@ public class RecordHelper extends SQLiteOpenHelper {
         database.execSQL(RecordUnit.CREATE_HISTORY);
         database.execSQL(RecordUnit.CREATE_WHITELIST);
         database.execSQL(RecordUnit.CREATE_JAVASCRIPT);
+        database.execSQL(RecordUnit.CREATE_COOKIE);
         database.execSQL(RecordUnit.CREATE_GRID);
     }
 

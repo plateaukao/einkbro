@@ -126,7 +126,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:layout_toStartOf="@+id/switch5"
+                    android:layout_toStartOf="@+id/imageButton_cookie"
                     android:textColor="@color/light" />
 
                 <CheckBox
@@ -136,6 +136,21 @@
                     android:buttonTint="@color/light"
                     android:id="@+id/switch5"
                     android:checked="false" />
+
+                <ImageButton
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp"
+                    app:srcCompat="@drawable/ic_action_close_red"
+                    android:layout_toStartOf="@+id/switch5"
+                    android:id="@+id/imageButton_cookie"
+                    android:background="?android:selectableItemBackground"
+                    tools:ignore="ContentDescription"
+                    android:layout_centerVertical="true"
+                    android:layout_centerInParent="true"
+                    android:layout_centerHorizontal="true"
+                    android:scaleType="centerCrop" />
 
             </RelativeLayout>
 

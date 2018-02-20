@@ -102,6 +102,7 @@ import de.baumann.browser.Browser.AdBlock;
 import de.baumann.browser.Browser.AlbumController;
 import de.baumann.browser.Browser.BrowserContainer;
 import de.baumann.browser.Browser.BrowserController;
+import de.baumann.browser.Browser.Cookie;
 import de.baumann.browser.Browser.Javascript;
 import de.baumann.browser.Database.Files;
 import de.baumann.browser.Database.Pass;
@@ -206,6 +207,8 @@ public class BrowserActivity extends Activity implements BrowserController, View
     private Javascript getJavaHosts() {
         return javaHosts;
     }
+    private Cookie cookieHosts;
+    private Cookie getCookieHosts () {return cookieHosts;}
     private AdBlock adBlock;
     private AdBlock getAdBlock() {
         return adBlock;
@@ -437,6 +440,15 @@ public class BrowserActivity extends Activity implements BrowserController, View
 
         new AdBlock(this); // For AdBlock cold boot
         new Javascript(BrowserActivity.this);
+
+        try {
+            new Cookie(BrowserActivity.this);
+        } catch (Exception e) {
+            e.printStackTrace();
+            deleteDatabase("Ninja4.db");
+            recreate();
+        }
+
 
         dispatchIntent(getIntent());
 
@@ -2129,12 +2141,16 @@ public class BrowserActivity extends Activity implements BrowserController, View
         final ImageButton whiteList_ab = dialogView.findViewById(R.id.imageButton_ab);
         CheckBox sw_image = dialogView.findViewById(R.id.switch4);
         CheckBox sw_cookie = dialogView.findViewById(R.id.switch5);
+        final ImageButton whitelist_cookie = dialogView.findViewById(R.id.imageButton_cookie);
         CheckBox sw_location = dialogView.findViewById(R.id.switch6);
         CheckBox sw_invert = dialogView.findViewById(R.id.switch7);
         CheckBox sw_history = dialogView.findViewById(R.id.switch3);
 
         javaHosts = new Javascript(BrowserActivity.this);
         javaHosts = getJavaHosts();
+
+        cookieHosts = new Cookie(BrowserActivity.this);
+        cookieHosts = getCookieHosts();
 
         adBlock = new AdBlock(BrowserActivity.this);
         adBlock = getAdBlock();
@@ -2147,6 +2163,12 @@ public class BrowserActivity extends Activity implements BrowserController, View
             whiteList_js.setImageResource(R.drawable.check_green);
         } else {
             whiteList_js.setImageResource(R.drawable.ic_action_close_red);
+        }
+
+        if (cookieHosts.isWhite(url)) {
+            whitelist_cookie.setImageResource(R.drawable.check_green);
+        } else {
+            whitelist_cookie.setImageResource(R.drawable.ic_action_close_red);
         }
 
         if (sp.getBoolean(getString(R.string.sp_javascript), true)){
@@ -2164,6 +2186,19 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 } else {
                     whiteList_js.setImageResource(R.drawable.check_green);
                     javaHosts.addDomain(Uri.parse(url).getHost().replace("www.", "").trim());
+                }
+            }
+        });
+
+        whitelist_cookie.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (cookieHosts.isWhite(ninjaWebView.getUrl())) {
+                    whitelist_cookie.setImageResource(R.drawable.ic_action_close_red);
+                    cookieHosts.removeDomain(Uri.parse(url).getHost().replace("www.", "").trim());
+                } else {
+                    whitelist_cookie.setImageResource(R.drawable.check_green);
+                    cookieHosts.addDomain(Uri.parse(url).getHost().replace("www.", "").trim());
                 }
             }
         });
