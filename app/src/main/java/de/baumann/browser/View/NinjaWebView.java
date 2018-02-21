@@ -83,6 +83,7 @@ public class NinjaWebView extends WebView implements AlbumController {
     }
 
     private Javascript javaHosts;
+    private Cookie cookieHosts;
 
     private SharedPreferences sp;
     private WebSettings webSettings;
@@ -114,6 +115,7 @@ public class NinjaWebView extends WebView implements AlbumController {
 
         this.adBlock = new AdBlock(this.context);
         this.javaHosts = new Javascript(this.context);
+        this.cookieHosts = new Cookie(this.context);
         this.album = new Album(this.context, this, this.browserController);
         this.webViewClient = new NinjaWebViewClient(this);
         this.webChromeClient = new NinjaWebChromeClient(this);
@@ -191,6 +193,9 @@ public class NinjaWebView extends WebView implements AlbumController {
         webSettings.setJavaScriptEnabled(sp.getBoolean(context.getString(R.string.sp_javascript), true));
         webSettings.setJavaScriptCanOpenWindowsAutomatically(sp.getBoolean(context.getString(R.string.sp_javascript), true));
 
+        CookieManager manager = CookieManager.getInstance();
+        manager.setAcceptCookie(sp.getBoolean(context.getString(R.string.sp_cookies), true));
+
         webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
         try {
             webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
@@ -209,8 +214,8 @@ public class NinjaWebView extends WebView implements AlbumController {
 
         webViewClient.enableAdBlock(sp.getBoolean(context.getString(R.string.sp_ad_block), true));
 
-        CookieManager manager = CookieManager.getInstance();
-        manager.setAcceptCookie(sp.getBoolean(context.getString(R.string.sp_cookies), true));
+        //CookieManager manager = CookieManager.getInstance();
+        //manager.setAcceptCookie(sp.getBoolean(context.getString(R.string.sp_cookies), true));
 
         if (sp.getBoolean(context.getString(R.string.sp_location), true)) {
             if (android.os.Build.VERSION.SDK_INT >= 23) {
@@ -269,6 +274,18 @@ public class NinjaWebView extends WebView implements AlbumController {
                 webSettings = getSettings();
                 webSettings.setJavaScriptCanOpenWindowsAutomatically(false);
                 webSettings.setJavaScriptEnabled(false);
+            }
+        }
+
+        if (!sp.getBoolean(context.getString(R.string.sp_cookies), true)) {
+
+            if (cookieHosts.isWhite(url)) {
+                CookieManager manager = CookieManager.getInstance();
+                manager.getCookie(url);
+                manager.setAcceptCookie(true);
+            } else {
+                CookieManager manager = CookieManager.getInstance();
+                manager.setAcceptCookie(false);
             }
         }
 

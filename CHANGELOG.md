@@ -1,6 +1,11 @@
-### v 5.3 (WIP)
+### v 5.3.1
+- new: initial support for cookie whitelist (fast toggle)
+
+### v 5.3
 - improved: tab opening/removing
 - improved: back handling
+- improved: enter/exit fullscreen
+- other improvements and bug fixes
 
 ### v 5.2
 - new: decide which tab to open on start
