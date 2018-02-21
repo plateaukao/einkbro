@@ -133,7 +133,7 @@
 
 
     <!-- Browser clear -->
-    <string name="clear_summary">All files will be exported to the root directory of your sd-card. Each export will overwrite the
+    <string name="clear_summary">All files will be exported to the \"Documents\" directory of your sd-card. Each export will overwrite the
         old one. To restore there must be a file with the right name in the directory.</string>
     <string name="clear_menu_done_all">Done all</string>
     <string name="clear_title_quit">Clear when application exits</string>
