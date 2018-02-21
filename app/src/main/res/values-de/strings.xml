@@ -133,7 +133,7 @@
 
 
     <!-- Browser clear -->
-    <string name="clear_summary">Sicherungen werden im Stammverzeichnis deiner SD-Karte gespeichert. Neue Sicherungen
+    <string name="clear_summary">Sicherungen werden im \"Documents\" - Verzeichnis deiner SD-Karte gespeichert. Neue Sicherungen
         überschreiben immer die alten. Zum Wiederherstellen muss eine Datei mit dem richtigen Namen in diesem Verzeichnis sein.</string>
     <string name="clear_menu_done_all">Alles erledigt</string>
     <string name="clear_title_quit">Löschen beim Verlassen der Anwendung</string>
