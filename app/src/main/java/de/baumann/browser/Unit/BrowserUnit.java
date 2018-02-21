@@ -37,6 +37,7 @@ import java.util.Locale;
 import java.util.regex.Pattern;
 
 import de.baumann.browser.Browser.AdBlock;
+import de.baumann.browser.Browser.Cookie;
 import de.baumann.browser.Browser.Javascript;
 import de.baumann.browser.Database.Record;
 import de.baumann.browser.Database.RecordAction;
@@ -271,7 +272,7 @@ public class BrowserUnit {
         action.close();
 
         String filename = context.getString(R.string.export_bookmarks);
-        File file = new File(Environment.getExternalStorageDirectory(), filename + SUFFIX_HTML);
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "browser_backup//" + filename + SUFFIX_HTML);
 
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(file, false));
@@ -297,7 +298,7 @@ public class BrowserUnit {
         action.close();
 
         String filename = context.getString(R.string.export_whitelistAdBlock);
-        File file = new File(Environment.getExternalStorageDirectory(), filename + SUFFIX_TXT);
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "browser_backup//" + filename + SUFFIX_TXT);
 
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(file, false));
@@ -319,7 +320,29 @@ public class BrowserUnit {
         action.close();
 
         String filename = context.getString(R.string.export_whitelistJS);
-        File file = new File(Environment.getExternalStorageDirectory(), filename + SUFFIX_TXT);
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "browser_backup//" + filename + SUFFIX_TXT);
+
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file, false));
+            for (String domain : list) {
+                writer.write(domain);
+                writer.newLine();
+            }
+            writer.close();
+            return file.getAbsolutePath();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static String exportWhitelistCookie(Context context) {
+        RecordAction action = new RecordAction(context);
+        action.open(false);
+        List<String> list = action.listDomainsCookie();
+        action.close();
+
+        String filename = context.getString(R.string.export_whitelistCookie);
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "browser_backup//" + filename + SUFFIX_TXT);
 
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(file, false));
@@ -337,7 +360,7 @@ public class BrowserUnit {
     public static int importBookmarks(Context context) {
 
         String filename = context.getString(R.string.export_bookmarks);
-        File file = new File(Environment.getExternalStorageDirectory(), filename + SUFFIX_HTML);
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "browser_backup//" + filename + SUFFIX_HTML);
 
         List<Record> list = new ArrayList<>();
 
@@ -390,7 +413,7 @@ public class BrowserUnit {
     public static int importWhitelist(Context context) {
 
         String filename = context.getString(R.string.export_whitelistAdBlock);
-        File file = new File(Environment.getExternalStorageDirectory(), filename + SUFFIX_TXT);
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "browser_backup//" + filename + SUFFIX_TXT);
 
         AdBlock adBlock = new AdBlock(context);
         int count = 0;
@@ -418,7 +441,7 @@ public class BrowserUnit {
     public static int importWhitelistJS(Context context) {
 
         String filename = context.getString(R.string.export_whitelistJS);
-        File file = new File(Environment.getExternalStorageDirectory(), filename + SUFFIX_TXT);
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "browser_backup//" + filename + SUFFIX_TXT);
 
         Javascript js = new Javascript(context);
         int count = 0;
@@ -431,6 +454,34 @@ public class BrowserUnit {
             while ((line = reader.readLine()) != null) {
                 if (!action.checkDomainJS(line)) {
                     js.addDomain(line);
+                    count++;
+                }
+            }
+            reader.close();
+            action.close();
+        } catch (Exception e) {
+            Log.w("Browser", "Error reading file", e);
+        }
+
+        return count;
+    }
+
+    public static int importWhitelistCookie(Context context) {
+
+        String filename = context.getString(R.string.export_whitelistCookie);
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "browser_backup//" + filename + SUFFIX_TXT);
+
+        Cookie cookie = new Cookie(context);
+        int count = 0;
+
+        try {
+            RecordAction action = new RecordAction(context);
+            action.open(true);
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (!action.checkDomainCookie(line)) {
+                    cookie.addDomain(line);
                     count++;
                 }
             }

@@ -107,6 +107,9 @@
     <string name="setting_summary_cookie">Aktiviere Cookies. Cookies sind kleine Textdateien, die auf deinem Gerät gespeichert
         werden. Internetseiten können sie nutzen um die Benutzereinstellungen (z.B. bei Suchmaschienen) zu speichern. Cookies von
         Dritten (sie sammeln zu Werbezwecken Nutzerdaten) sind immer deaktiviert.</string>
+    <string name="setting_title_whitelistCookie">Cookie Ausnahmen</string>
+    <string name="setting_summary_whitelistCookie">Wenn du Cookies deaktivierst, kannst du hier Ausnahmen hinzufügen, um bestimmten Seiten,
+        denen du vertraust, das Speichern von Cookies zu erlauben.</string>
 
     <string name="setting_title_javascript">JavaScript</string>
     <string name="setting_summary_javascript">Aktiviere JavaScript. Viele Internetseiten brauchen JavaScript um richtig zu
@@ -193,9 +196,13 @@
     <string name="setting_title_import_whitelistJS">JavaScript Ausnahmen wiederherstellen</string>
     <string name="export_whitelistJS">export_whitelist_Javascript</string>
 
+    <string name="setting_title_export_whitelistCookie">Cookie Ausnahmen sichern</string>
+    <string name="setting_title_import_whitelistCookie">Cookie Ausnahmen wiederherstellen</string>
+    <string name="export_whitelistCookies">export_whitelist_Cookie</string>
+
     <string name="setting_title_export_database">Datenbank sichern</string>
     <string name="setting_title_import_database">Datenbank wiederherstellen</string>
-    <string name="setting_summary_export_database">Sichere alle Anwendungsdaten  (Startseite + Vorschaubilder, Lesezeichen,
+    <string name="setting_summary_export_database">Sichere alle Anwendungsdaten (Startseite + Vorschaubilder, Lesezeichen,
         Verlauf) auf deine SD-Karte. Logindaten werden nicht gesichert.</string>
     <string name="title_database">Datenbank</string>
     <string name="hint_database">Dies löscht alle aktuellen Daten. Willst du fortfahren?</string>

@@ -25,10 +25,12 @@ import de.baumann.browser.Activity.JavascriptActivity;
 import de.baumann.browser.Activity.WhitelistActivity;
 import de.baumann.browser.Ninja.R;
 import de.baumann.browser.Task.ExportBookmarksTask;
+import de.baumann.browser.Task.ExportWhitelistCookieTask;
 import de.baumann.browser.Task.ExportWhitelistJSTask;
 import de.baumann.browser.Task.ExportWhitelistTask;
 import de.baumann.browser.Task.ImportBookmarksTask;
 import de.baumann.browser.Task.ImportWhitelistTask;
+import de.baumann.browser.Task.ImportWhitelistTaskCookie;
 import de.baumann.browser.Task.ImportWhitelistTaskJS;
 import de.baumann.browser.View.NinjaToast;
 
@@ -43,20 +45,23 @@ public class Fragment_settings_data extends PreferenceFragment {
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
 
-        File sd = Environment.getExternalStorageDirectory();
+        File sd = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
         File data = Environment.getDataDirectory();
 
         String currentDBPath = "//data//" + getActivity().getPackageName() + "//files";
-        String backupDBPath = "browser_startpage//previews";
+        String backupDBPath = "browser_backup//previews";
 
         final File pv_data = new File(data, currentDBPath);
         final File pv_sd = new File(sd, backupDBPath);
 
         String currentDBPath2 = "//data//" + getActivity().getPackageName() + "//databases//Ninja4.db";
-        String backupDBPath2 = "browser_startpage//databases//Browser.db";
+        String backupDBPath2 = "browser_backup//databases//Browser.db";
 
         final File db_data = new File(data, currentDBPath2);
         final File db_sd = new File(sd, backupDBPath2);
+
+        File backupDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS),
+                "browser_backup//");
 
         switch (preference.getTitleRes()) {
             case R.string.setting_title_whitelist:
@@ -75,12 +80,27 @@ public class Fragment_settings_data extends PreferenceFragment {
                 break;
 
             case R.string.setting_title_export_whitelistJS:
+                if(!backupDir.exists()) {
+                    backupDir.mkdirs();
+                }
                 new ExportWhitelistJSTask(getActivity()).execute();
                 break;
             case R.string.setting_title_import_whitelistJS:
                 new ImportWhitelistTaskJS(getActivity()).execute();
                 break;
+            case R.string.setting_title_export_whitelistCookie:
+                if(!backupDir.exists()) {
+                    backupDir.mkdirs();
+                }
+                new ExportWhitelistCookieTask(getActivity()).execute();
+                break;
+            case R.string.setting_title_import_whitelistCookie:
+                new ImportWhitelistTaskCookie(getActivity()).execute();
+                break;
             case R.string.setting_title_export_bookmarks:
+                if(!backupDir.exists()) {
+                    backupDir.mkdirs();
+                }
                 new ExportBookmarksTask(getActivity()).execute();
                 break;
             case R.string.setting_title_import_bookmarks:
@@ -99,7 +119,7 @@ public class Fragment_settings_data extends PreferenceFragment {
                             deleteRecursive(db_sd);
                             copyDirectory(pv_data, pv_sd);
                             copyDirectory(db_data, db_sd);
-                            NinjaToast.show(getActivity(), getString(R.string.toast_export_successful) + "browser_startpage");
+                            NinjaToast.show(getActivity(), getString(R.string.toast_export_successful) + "browser_backup");
                         }
 
                     } else {
@@ -107,7 +127,7 @@ public class Fragment_settings_data extends PreferenceFragment {
                         deleteRecursive(db_sd);
                         copyDirectory(pv_data, pv_sd);
                         copyDirectory(db_data, db_sd);
-                        NinjaToast.show(getActivity(), getString(R.string.toast_export_successful) + "browser_startpage");
+                        NinjaToast.show(getActivity(), getString(R.string.toast_export_successful) + "browser_backup");
                     }
 
                 } catch (Exception e) {

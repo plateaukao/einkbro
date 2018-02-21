@@ -9,12 +9,6 @@
         android:title="@string/setting_title_images"
         android:summary="@string/setting_summary_images"/>
 
-    <CheckBoxPreference android:key="@string/sp_cookies"
-        android:icon="@drawable/icon_cookie"
-        android:defaultValue="true"
-        android:title="@string/setting_title_cookie"
-        android:summary="@string/setting_summary_cookie"/>
-
     <CheckBoxPreference android:key="saveHistory"
         android:icon="@drawable/icon_history"
         android:defaultValue="true"
@@ -53,6 +47,20 @@
         <Preference android:title="@string/setting_title_whitelistJS"
             android:icon="@drawable/icon_list"
             android:summary="@string/setting_summary_whitelistJS"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/setting_title_cookie">
+
+        <CheckBoxPreference android:key="@string/sp_cookies"
+            android:icon="@drawable/icon_cookie"
+            android:defaultValue="true"
+            android:title="@string/setting_title_cookie"
+            android:summary="@string/setting_summary_cookie"/>
+
+        <Preference android:title="@string/setting_title_whitelistCookie"
+            android:icon="@drawable/icon_list"
+            android:summary="@string/setting_summary_whitelistCookie"/>
 
     </PreferenceCategory>
 

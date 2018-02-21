@@ -86,7 +86,7 @@
             android:theme="@style/AppTheme"/>
 
         <activity android:name="de.baumann.browser.Activity.CookieActivity"
-            android:label="@string/setting_title_whitelistJS"
+            android:label="@string/setting_title_whitelistCookie"
             android:theme="@style/AppTheme"/>
 
         <activity android:name="de.baumann.browser.Activity.Settings_ClearActivity"
