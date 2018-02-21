@@ -108,6 +108,9 @@
     <string name="setting_summary_cookie">Enable Cookies. Cookies are small text files, which are stored on your device. Websites
     use them for example to store user settings (for example search settings). But they could also be used to collect personal
         user data. Third party cookies (they collect user data for advertising) are always disabled.</string>
+    <string name="setting_title_whitelistCookie">Cookie whitelist</string>
+    <string name="setting_summary_whitelistCookie">If you disable Cookies, you can use this whitelist to allow sites you
+        trust to use save cookies.</string>
 
     <string name="setting_title_javascript">JavaScript</string>
     <string name="setting_summary_javascript">Enable JavaScript. Many websites need JavaScript for their functionality (menus,
@@ -193,6 +196,10 @@
     <string name="setting_title_export_whitelistJS">Export JavaScript whitelist</string>
     <string name="setting_title_import_whitelistJS">Import JavaScript whitelist</string>
     <string name="export_whitelistJS">export_whitelist_Javascript</string>
+
+    <string name="setting_title_export_whitelistCookie">Export Cookie whitelist</string>
+    <string name="setting_title_import_whitelistCookie">Import Cookie whitelist</string>
+    <string name="export_whitelistCookie">export_whitelist_Cookie</string>
 
     <string name="setting_title_export_database">Export database</string>
     <string name="setting_title_import_database">Import database</string>
