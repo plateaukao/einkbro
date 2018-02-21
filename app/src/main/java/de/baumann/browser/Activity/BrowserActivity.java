@@ -102,6 +102,7 @@ import de.baumann.browser.Browser.AdBlock;
 import de.baumann.browser.Browser.AlbumController;
 import de.baumann.browser.Browser.BrowserContainer;
 import de.baumann.browser.Browser.BrowserController;
+import de.baumann.browser.Browser.Cookie;
 import de.baumann.browser.Browser.Javascript;
 import de.baumann.browser.Database.Files;
 import de.baumann.browser.Database.Pass;
@@ -206,6 +207,8 @@ public class BrowserActivity extends Activity implements BrowserController, View
     private Javascript getJavaHosts() {
         return javaHosts;
     }
+    private Cookie cookieHosts;
+    private Cookie getCookieHosts () {return cookieHosts;}
     private AdBlock adBlock;
     private AdBlock getAdBlock() {
         return adBlock;
@@ -256,7 +259,27 @@ public class BrowserActivity extends Activity implements BrowserController, View
             if (ninjaWebView.canGoBack()) {
                 ninjaWebView.goBack();
             } else {
-                removeAlbum(currentAlbumController);
+                bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
+                View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_action, null);
+                TextView textView = dialogView.findViewById(R.id.dialog_text);
+                textView.setText(R.string.toast_close_tab);
+                Button action_ok = dialogView.findViewById(R.id.action_ok);
+                action_ok.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        removeAlbum(currentAlbumController);
+                        bottomSheetDialog.cancel();
+                    }
+                });
+                Button action_cancel = dialogView.findViewById(R.id.action_cancel);
+                action_cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        bottomSheetDialog.cancel();
+                    }
+                });
+                bottomSheetDialog.setContentView(dialogView);
+                bottomSheetDialog.show();
             }
         } else if (currentAlbumController instanceof NinjaRelativeLayout) {
             if (currentAlbumController.getFlag() == start_tab) {
@@ -385,14 +408,14 @@ public class BrowserActivity extends Activity implements BrowserController, View
             @Override
             public void onGlobalLayout() {
                 int heightDiff = switcherPanel.getRootView().getHeight() - switcherPanel.getHeight();
-                if (currentAlbumController != null && currentAlbumController instanceof NinjaWebView) {
+                if (currentAlbumController != null) {
                     if (heightDiff > 100) {
                         omniboxTitle.setVisibility(View.GONE);
                     } else {
                         omniboxTitle.setVisibility(View.VISIBLE);
                     }
                 } else {
-                    omniboxTitle.setVisibility(View.GONE);
+                    omniboxTitle.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -417,6 +440,15 @@ public class BrowserActivity extends Activity implements BrowserController, View
 
         new AdBlock(this); // For AdBlock cold boot
         new Javascript(BrowserActivity.this);
+
+        try {
+            new Cookie(BrowserActivity.this);
+        } catch (Exception e) {
+            e.printStackTrace();
+            deleteDatabase("Ninja4.db");
+            recreate();
+        }
+
 
         dispatchIntent(getIntent());
 
@@ -474,6 +506,12 @@ public class BrowserActivity extends Activity implements BrowserController, View
         }
 
         initRendering(contentFrame);
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                searchBox.requestFocus();
+            }
+        }, 500);
+
     }
 
     @Override
@@ -495,8 +533,6 @@ public class BrowserActivity extends Activity implements BrowserController, View
             return;
         }
 
-        dispatchIntent(getIntent());
-
         if (IntentUnit.isDBChange()) {
             updateBookmarks();
             updateAutoComplete();
@@ -517,8 +553,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
             finish();
         }
 
-        initRendering(contentFrame);
-        fab_imageButtonNav.setVisibility(View.GONE);
+        dispatchIntent(getIntent());
     }
 
     @Override
@@ -747,9 +782,34 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 break;
 
             case R.id.tv_closeTab:
-                removeAlbum(currentAlbumController);
-                bottomSheetDialog.cancel();
-                showOmnibox();
+                if (currentAlbumController.getFlag() == start_tab && BrowserContainer.size() <= 1) {
+                    bottomSheetDialog.cancel();
+                    bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
+                    View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_action, null);
+                    TextView textView = dialogView.findViewById(R.id.dialog_text);
+                    textView.setText(R.string.toast_quit);
+                    Button action_ok = dialogView.findViewById(R.id.action_ok);
+                    action_ok.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            finish();
+                        }
+                    });
+                    Button action_cancel = dialogView.findViewById(R.id.action_cancel);
+                    action_cancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            bottomSheetDialog.cancel();
+                        }
+                    });
+                    bottomSheetDialog.setContentView(dialogView);
+                    bottomSheetDialog.show();
+                    return;
+                } else {
+                    showOmnibox();
+                    removeAlbum(currentAlbumController);
+                    bottomSheetDialog.cancel();
+                }
                 break;
 
             case R.id.tv_tabPreview:
@@ -759,7 +819,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
                     public void run() {
                         switcherPanel.collapsed();
                     }
-                }, 100);
+                }, 500);
 
                 break;
 
@@ -1169,6 +1229,8 @@ public class BrowserActivity extends Activity implements BrowserController, View
         } else {
             pinAlbums(null);
         }
+
+        getIntent().setAction("");
     }
 
     private void initRendering(View view) {
@@ -1264,7 +1326,27 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 if (ninjaWebView.canGoBack()) {
                     ninjaWebView.goBack();
                 } else {
-                    NinjaToast.show(BrowserActivity.this,R.string.toast_webview_back);
+                    bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
+                    View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_action, null);
+                    TextView textView = dialogView.findViewById(R.id.dialog_text);
+                    textView.setText(R.string.toast_close_tab);
+                    Button action_ok = dialogView.findViewById(R.id.action_ok);
+                    action_ok.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            removeAlbum(currentAlbumController);
+                            bottomSheetDialog.cancel();
+                        }
+                    });
+                    Button action_cancel = dialogView.findViewById(R.id.action_cancel);
+                    action_cancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            bottomSheetDialog.cancel();
+                        }
+                    });
+                    bottomSheetDialog.setContentView(dialogView);
+                    bottomSheetDialog.show();
                 }
             }
         });
@@ -1699,6 +1781,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
                         iv.setImageResource(R.drawable.file);
                     }
                 } catch (Exception e) {
+                    initFEList(layout);
                     NinjaToast.show(BrowserActivity.this, R.string.toast_error);
                 }
 
@@ -1743,6 +1826,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
                         helper_main.open(files_icon, BrowserActivity.this, pathFile, listView);
                     }
                 } catch (Exception e) {
+                    initFEList(layout);
                     NinjaToast.show(BrowserActivity.this, R.string.toast_error);
                 }
             }
@@ -1839,6 +1923,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
                         bottomSheetDialog.show();
                     }
                 } catch (Exception e) {
+                    initFEList(layout);
                     NinjaToast.show(BrowserActivity.this, R.string.toast_error);
                 }
                 return true;
@@ -1876,6 +1961,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
                     RelativeTimeTextView tv = v.findViewById(R.id.record_item_time);
                     tv.setReferenceTime(Long.parseLong(pass_creation));
                 } catch (Exception e) {
+                    initPSList(layout);
                     NinjaToast.show(BrowserActivity.this, R.string.toast_error);
                 }
                 return v;
@@ -2055,12 +2141,16 @@ public class BrowserActivity extends Activity implements BrowserController, View
         final ImageButton whiteList_ab = dialogView.findViewById(R.id.imageButton_ab);
         CheckBox sw_image = dialogView.findViewById(R.id.switch4);
         CheckBox sw_cookie = dialogView.findViewById(R.id.switch5);
+        final ImageButton whitelist_cookie = dialogView.findViewById(R.id.imageButton_cookie);
         CheckBox sw_location = dialogView.findViewById(R.id.switch6);
         CheckBox sw_invert = dialogView.findViewById(R.id.switch7);
         CheckBox sw_history = dialogView.findViewById(R.id.switch3);
 
         javaHosts = new Javascript(BrowserActivity.this);
         javaHosts = getJavaHosts();
+
+        cookieHosts = new Cookie(BrowserActivity.this);
+        cookieHosts = getCookieHosts();
 
         adBlock = new AdBlock(BrowserActivity.this);
         adBlock = getAdBlock();
@@ -2073,6 +2163,12 @@ public class BrowserActivity extends Activity implements BrowserController, View
             whiteList_js.setImageResource(R.drawable.check_green);
         } else {
             whiteList_js.setImageResource(R.drawable.ic_action_close_red);
+        }
+
+        if (cookieHosts.isWhite(url)) {
+            whitelist_cookie.setImageResource(R.drawable.check_green);
+        } else {
+            whitelist_cookie.setImageResource(R.drawable.ic_action_close_red);
         }
 
         if (sp.getBoolean(getString(R.string.sp_javascript), true)){
@@ -2090,6 +2186,19 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 } else {
                     whiteList_js.setImageResource(R.drawable.check_green);
                     javaHosts.addDomain(Uri.parse(url).getHost().replace("www.", "").trim());
+                }
+            }
+        });
+
+        whitelist_cookie.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (cookieHosts.isWhite(ninjaWebView.getUrl())) {
+                    whitelist_cookie.setImageResource(R.drawable.ic_action_close_red);
+                    cookieHosts.removeDomain(Uri.parse(url).getHost().replace("www.", "").trim());
+                } else {
+                    whitelist_cookie.setImageResource(R.drawable.check_green);
+                    cookieHosts.addDomain(Uri.parse(url).getHost().replace("www.", "").trim());
                 }
             }
         });
@@ -2296,7 +2405,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
             final ClipboardManager clipboard = (ClipboardManager) BrowserActivity.this.getSystemService(Context.CLIPBOARD_SERVICE);
             assert clipboard != null;
 
-            BroadcastReceiver unCopy = new BroadcastReceiver() {
+            final BroadcastReceiver unCopy = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
                     ClipData clip = ClipData.newPlainText("text", decrypted_userName);
@@ -2305,7 +2414,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 }
             };
 
-            BroadcastReceiver pwCopy = new BroadcastReceiver() {
+            final BroadcastReceiver pwCopy = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
                     ClipData clip = ClipData.newPlainText("text", decrypted_userPW);
@@ -2679,6 +2788,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
             updateProgress(BrowserUnit.PROGRESS_MAX);
             updateBookmarks();
             updateInputBox(null);
+            omniboxTitle.setText(currentAlbumController.getAlbumTitle());
         } else if (currentAlbumController instanceof NinjaWebView) {
             ninjaWebView = (NinjaWebView) currentAlbumController;
             String title = ninjaWebView.getTitle();
@@ -2702,31 +2812,6 @@ public class BrowserActivity extends Activity implements BrowserController, View
             ninjaWebView.setOnScrollChangeListener(new NinjaWebView.OnScrollChangeListener() {
                 @Override
                 public void onScrollChange(int scrollY, int oldScrollY) {
-                    /*if (scrollY > oldScrollY) {
-                        hideOmnibox();
-                        ninjaWebView.setOnScrollChangeListener(new NinjaWebView.OnScrollChangeListener() {
-                            @Override
-                            public void onScrollChange(int scrollY, int oldScrollY) {}
-                        });
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                scrollChange();
-                            }
-                        }, 250);
-                    } else if (scrollY < oldScrollY){
-                        showOmnibox();
-                        ninjaWebView.setOnScrollChangeListener(new NinjaWebView.OnScrollChangeListener() {
-                            @Override
-                            public void onScrollChange(int scrollY, int oldScrollY) {}
-                        });
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                scrollChange();
-                            }
-                        }, 250);
-                    }*/
                     hideOmnibox();
                 }
             });
@@ -3056,8 +3141,8 @@ public class BrowserActivity extends Activity implements BrowserController, View
             if (sp.getBoolean("nav_show", true)) {
                 fab_imageButtonNav.setVisibility(View.GONE);
             }
-            onConfigurationChanged(null);
             setCustomFullscreen(false);
+            onConfigurationChanged(null);
         }
     }
 
@@ -3471,8 +3556,10 @@ public class BrowserActivity extends Activity implements BrowserController, View
             layoutParams.flags &= ~bits;
             if (customView != null) {
                 customView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+                showOmnibox();
             } else {
                 contentFrame.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+                showOmnibox();
             }
         }
         getWindow().setAttributes(layoutParams);

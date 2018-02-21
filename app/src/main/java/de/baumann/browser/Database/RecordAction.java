@@ -90,6 +90,17 @@ public class RecordAction {
 
     }
 
+    public void addDomainCookie(String domain) {
+        if (domain == null || domain.trim().isEmpty()) {
+            return;
+        }
+
+        ContentValues values = new ContentValues();
+        values.put(RecordUnit.COLUMN_DOMAIN, domain.trim());
+        database.insert(RecordUnit.TABLE_COOKIE, null, values);
+
+    }
+
     public boolean addGridItem(GridItem item) {
         if (item == null
                 || item.getTitle() == null
@@ -263,6 +274,34 @@ public class RecordAction {
         return false;
     }
 
+    public boolean checkDomainCookie(String domain) {
+        if (domain == null || domain.trim().isEmpty()) {
+            return false;
+        }
+
+        Cursor cursor = database.query(
+                RecordUnit.TABLE_COOKIE,
+                new String[] {RecordUnit.COLUMN_DOMAIN},
+                RecordUnit.COLUMN_DOMAIN + "=?",
+                new String[] {domain.trim()},
+                null,
+                null,
+                null
+        );
+
+        if (cursor != null) {
+            boolean result = false;
+            if (cursor.moveToFirst()) {
+                result = true;
+            }
+            cursor.close();
+
+            return result;
+        }
+
+        return false;
+    }
+
     public boolean checkGridItem(String url) {
         if (url == null || url.trim().isEmpty()) {
             return false;
@@ -323,6 +362,14 @@ public class RecordAction {
         database.execSQL("DELETE FROM "+ RecordUnit.TABLE_JAVASCRIPT + " WHERE " + RecordUnit.COLUMN_DOMAIN + " = " + "\"" + domain.trim() + "\"");
     }
 
+    public void deleteDomainCookie(String domain) {
+        if (domain == null || domain.trim().isEmpty()) {
+            return;
+        }
+
+        database.execSQL("DELETE FROM "+ RecordUnit.TABLE_COOKIE + " WHERE " + RecordUnit.COLUMN_DOMAIN + " = " + "\"" + domain.trim() + "\"");
+    }
+
     public void deleteGridItem(GridItem item) {
         if (item == null || item.getURL() == null || item.getURL().trim().isEmpty()) {
             return;
@@ -346,6 +393,8 @@ public class RecordAction {
     public void clearDomainsJS() {
         database.execSQL("DELETE FROM " + RecordUnit.TABLE_JAVASCRIPT);
     }
+
+    public void clearDomainsCookie() {database.execSQL("DELETE FROM " + RecordUnit.TABLE_COOKIE);}
 
     public void clearGrid() {
         database.execSQL("DELETE FROM " + RecordUnit.TABLE_GRID);
@@ -464,6 +513,33 @@ public class RecordAction {
 
         Cursor cursor = database.query(
                 RecordUnit.TABLE_JAVASCRIPT,
+                new String[] {RecordUnit.COLUMN_DOMAIN},
+                null,
+                null,
+                null,
+                null,
+                RecordUnit.COLUMN_DOMAIN
+        );
+
+        if (cursor == null) {
+            return list;
+        }
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            list.add(cursor.getString(0));
+            cursor.moveToNext();
+        }
+        cursor.close();
+
+        return list;
+    }
+
+    public List<String> listDomainsCookie() {
+        List<String> list = new ArrayList<>();
+
+        Cursor cursor = database.query(
+                RecordUnit.TABLE_COOKIE,
                 new String[] {RecordUnit.COLUMN_DOMAIN},
                 null,
                 null,

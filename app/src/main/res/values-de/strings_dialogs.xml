@@ -7,22 +7,12 @@
         &lt;i>Projektseite: https://github.com/scoute-dich/Browser&lt;br>
         Änderungen: https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;/i>&lt;br>&lt;br>
 
-        &lt;b>Version: 5.2.&lt;/b>&lt;br>
-        Mit diesem Update gibt es einige Änderungen. Bitte lies den \"Hilfedialog\" für weitere Informationen.&lt;br>&lt;br>
+        &lt;b>Version: 5.3.1&lt;/b>&lt;br>
+        Mit diesem Update gehen leider alle gespeicherten Einträge verloren. Dafür wird es in Zukunft die Möglichkeit geben, Ausnahmen
+        für das Akzeptieren von Cookies zu erstellen. Du kannst dann zum Beispiel für deine Suchmaschine die Einstellungen speichern,
+        aber sonst darauf verzichten Cookies zu nutzen. Bitte lies den \"Hilfedialog\" für weitere Informationen.&lt;br>&lt;br>
 
-        \u25AA neu: entscheide welcher Tab beim Start geöffnet wird&lt;br>
-        \u25AA neu: Sicherung von allen Daten und Einstellungen&lt;br>
-        \u25AA neu: Doppelklick \"Navigationsknopf\": kurz ausblenden&lt;br>
-        \u25AA neu: Möglichkeit den Verlauf nicht zu speichern&lt;br>
-        \u25AA neu: Möglichkeit \"Navigationsknopf\" ein- und auszublenden&lt;br>
-        \u25AA neu: Möglichkeit die Position des \"Navigationsknopfs\" zu ändern&lt;br>
-        \u25AA neu: Menüs in Dialoge umgewandelt&lt;br>
-        \u25AA neu: Baidu als Standardsuchmaschiene für Chinesische Nutzer&lt;br>
-        \u25AA neu: Indonesische Übersetzung (Danke: Secangkir Kopi)&lt;br>
-        \u25AA geändert: Sicherungen im Stammverzeivhnis der SD-Karte&lt;br>
-        \u25AA aktualisiert: Hilfedialog (ENG, DE)&lt;br>
-        \u25AA verbessert: Schnelleinstellungen übernehmen&lt;br>
-        \u25AA verbessert: Chinesische Übersetzung (Danke: lishoujun)
+        \u25AA neu: erste Unterstützung für eine Cookie Whitelist (Schnelleinstellungen)&lt;br>
     </string>
 
     <string name="toolbar_title">Toolbar</string>
