@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import de.baumann.browser.Browser.Javascript;
+import de.baumann.browser.Browser.Cookie;
 import de.baumann.browser.Ninja.R;
 
 public class CookieAdapter extends ArrayAdapter<String> {
@@ -51,8 +51,8 @@ public class CookieAdapter extends ArrayAdapter<String> {
         holder.cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Javascript Javascript = new Javascript(context);
-                Javascript.removeDomain(list.get(position));
+                Cookie cookie = new Cookie(context);
+                cookie.removeDomain(list.get(position));
                 list.remove(position);
                 notifyDataSetChanged();
                 NinjaToast.show(context, R.string.toast_delete_successful);

@@ -40,7 +40,7 @@ public class CookieActivity extends AppCompatActivity {
 
         RecordAction action = new RecordAction(this);
         action.open(false);
-        list = action.listDomainsJS();
+        list = action.listDomainsCookie();
         action.close();
 
         ListView listView = findViewById(R.id.whitelist);
@@ -63,11 +63,11 @@ public class CookieActivity extends AppCompatActivity {
                 } else {
                     RecordAction action = new RecordAction(CookieActivity.this);
                     action.open(true);
-                    if (action.checkDomainJS(domain)) {
+                    if (action.checkDomainCookie(domain)) {
                         NinjaToast.show(CookieActivity.this, R.string.toast_domain_already_exists);
                     } else {
-                        Cookie adBlock = new Cookie(CookieActivity.this);
-                        adBlock.addDomain(domain.trim());
+                        Cookie cookie = new Cookie(CookieActivity.this);
+                        cookie.addDomain(domain.trim());
                         list.add(0, domain.trim());
                         adapter.notifyDataSetChanged();
                         NinjaToast.show(CookieActivity.this, R.string.toast_add_whitelist_successful);
