@@ -1,3 +1,6 @@
+### v 5.4 (WIP)
+- new: full support for cookie whitelist
+
 ### v 5.3.1
 - new: initial support for cookie whitelist (fast toggle)
 

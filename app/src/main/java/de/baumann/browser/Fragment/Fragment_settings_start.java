@@ -7,12 +7,15 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
 
+import de.baumann.browser.Activity.CookieActivity;
 import de.baumann.browser.Activity.JavascriptActivity;
 import de.baumann.browser.Activity.WhitelistActivity;
 import de.baumann.browser.Ninja.R;
+import de.baumann.browser.Task.ExportWhitelistCookieTask;
 import de.baumann.browser.Task.ExportWhitelistJSTask;
 import de.baumann.browser.Task.ExportWhitelistTask;
 import de.baumann.browser.Task.ImportWhitelistTask;
+import de.baumann.browser.Task.ImportWhitelistTaskCookie;
 import de.baumann.browser.Task.ImportWhitelistTaskJS;
 
 public class Fragment_settings_start extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -52,6 +55,10 @@ public class Fragment_settings_start extends PreferenceFragment implements Share
                 Intent toJavascript = new Intent(getActivity(), JavascriptActivity.class);
                 getActivity().startActivity(toJavascript);
                 break;
+            case R.string.setting_title_whitelistCookie:
+                Intent toCookie = new Intent(getActivity(), CookieActivity.class);
+                getActivity().startActivity(toCookie);
+                break;
             case R.string.setting_title_export_whitelist:
                 new ExportWhitelistTask(getActivity()).execute();
                 break;
@@ -64,6 +71,12 @@ public class Fragment_settings_start extends PreferenceFragment implements Share
                 break;
             case R.string.setting_title_import_whitelistJS:
                 new ImportWhitelistTaskJS(getActivity()).execute();
+                break;
+            case R.string.setting_title_export_whitelistCookie:
+                new ExportWhitelistCookieTask(getActivity()).execute();
+                break;
+            case R.string.setting_title_import_whitelistCookie:
+                new ImportWhitelistTaskCookie(getActivity()).execute();
                 break;
 
             default:
