@@ -33,4 +33,5 @@ dependencies {
     compile 'com.android.support:cardview-v7:27.0.2'
     compile 'com.github.bumptech.glide:glide:4.3.1'
     compile 'com.mobapphome.library:mah-encryptor-lib:1.0.1'
+    implementation 'com.qhutch.bottomsheetlayout:bottomsheetlayout:0.1.6'
 }

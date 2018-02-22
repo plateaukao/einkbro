@@ -27,6 +27,7 @@
     <string name="main_menu_save">Save</string>
     <string name="main_omnibox_input_hint">Search or type URL</string>
     <string name="main_about_blank">about:blank</string>
+    <string name="menu_open_with">Open link with …</string>
 
     <string name="menu_share">Share</string>
     <string name="menu_other">Others</string>
@@ -151,7 +152,7 @@
     <string name="setting_summary_data">Import and export several app data (whitelists, bookmarks).</string>
 
     <!-- App behavior -->
-    <string name="setting_title_hide">Fullscreen</string>
+    <string name="setting_title_hideToolbar">Hide toolbar</string>
     <string name="setting_summary_hide">Use the whole screen when scrolling through websites. If you press the back button you will
     leave fullscreen mode.</string>
     <string name="setting_title_omnibox_control">Omnibox Control</string>
@@ -182,6 +183,13 @@
     <string name="setting_title_tab">Start tab</string>
     <string name="setting_summary_tab">What should be shown at the start of \"Browser\"? The Start Page, you bookmarks, …</string>
 
+    <string name="setting_title_toolbar">Toolbar</string>
+    <string name="setting_hide_always">Hide always</string>
+    <string name="setting_hide_down">Only while scrolling down</string>
+    <string name="setting_hide_never">Always hide</string>
+
+    <string name="setting_hideNav_always">Hide always</string>
+    <string name="setting_hideNav_toolbar">When toolbar is showing</string>
 
 
     <!-- Data -->
@@ -230,7 +238,6 @@
     <string name="toast_copy_successful">Successfully copied</string>
     <string name="toast_delete_successful">Successfully deleted</string>
     <string name="toast_domain_already_exists">Domain already exists</string>
-    <string name="toast_double_taps_quit">Press again to exit</string>
     <string name="toast_export_successful">Exported as:&#160;</string>
     <string name="toast_export_failed">Failed to export</string>
     <string name="toast_import_successful">Imported count:&#160;</string>
@@ -257,7 +264,6 @@
     <string name="toast_newTitle">Entry already exists. Please enter new title.</string>
     <string name="toast_edit_successful">Successfully saved</string>
     <string name="toast_webview_forward">Can\'t load next site</string>
-    <string name="toast_webview_back">Can\'t load previous site</string>
     <string name="toast_entry_exists">Entry exists already.</string>
     <string name="toast_clear">Do you really want to clear?</string>
     <string name="toast_permission_title">Permission is needed</string>
