@@ -192,7 +192,8 @@ public class BrowserUnit {
         ClipData data = ClipData.newPlainText(null, url.trim());
         assert manager != null;
         manager.setPrimaryClip(data);
-        NinjaToast.show(context, R.string.toast_copy_successful);
+        String text = context.getString(R.string.toast_copy_successful) + ": " + url;
+        NinjaToast.show(context, text);
     }
 
     public static void download(final Context context, String url, String contentDisposition, String mimeType) {
