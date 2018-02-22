@@ -99,11 +99,14 @@
 
     <!-- Browser start -->
     <string name="setting_title_images">图片</string>
-    <string name="setting_summary_images">显示图片，不勾选此项可节省流量和快速加载。</string>
+    <string name="setting_summary_images">显示图片，不勾选时可节约流量，节省加载时间。</string>
     <string name="setting_title_cookie">Cookies</string>
     <string name="setting_summary_cookie">允许 Cookies。Cookies 是存储在本地的一个小文件。
         网站用它来记录你的使用偏好，但是也会被用作搜集私人信息。
         处于广告等目的的第三方 cookies 总是禁止的。</string>
+    <string name="setting_title_whitelistCookie">Cookie 白名单</string>
+    <string name="setting_summary_whitelistCookie">如果你禁用了 Cookies，
+        你可以把你信任的网站放到白名单中，让它们可以保存 cookies。</string>
 
     <string name="setting_title_javascript">JavaScript</string>
     <string name="setting_summary_javascript">允许使用 JavaScript。
@@ -123,8 +126,8 @@
 
 
     <!-- Browser clear -->
-    <string name="clear_summary">All files will be exported to the download folder. Each export will overwrite the old one.
-        To restore there must be a file with the right name in the directory.</string>
+    <string name="clear_summary">所有文件会被导出到sdcard上的“Documents”文件夹中,每次导出都会覆盖上一次导出的数据。
+    要想恢复数据，确保该文件夹下有符合约定文件名的文件。</string>
     <string name="clear_menu_done_all">全部</string>
     <string name="clear_title_quit">退出时清空</string>
     <string name="clear_title_bookmarks">清空书签</string>
@@ -186,6 +189,10 @@
     <string name="setting_title_import_whitelistJS">导入 JavaScript 白名单</string>
     <string name="export_whitelistJS">export_whitelist_Javascript</string>
 
+    <string name="setting_title_export_whitelistCookie">导出 Cookie 白名单</string>
+    <string name="setting_title_import_whitelistCookie">导入 Cookie 白名单</string>
+    <string name="export_whitelistCookie">export_whitelist_Cookie</string>
+
     <string name="setting_title_export_database">导出数据库</string>
     <string name="setting_title_import_database">导入数据库</string>
     <string name="setting_summary_export_database">导出所有数据(主页 + 预览, 历史, 书签)
@@ -197,7 +204,7 @@
     <!-- Others setting -->
     <string name="setting_title_others">其他</string>
     <string name="setting_title_license">许可</string>
-    <string name="setting_summary_license">\"Browser\" is completely free (as in freedom) and open source.</string>
+    <string name="setting_summary_license">浏览器是一个自由开源软件。</string>
     <string name="setting_title_appSettings">应用设置</string>
     <string name="setting_summary_appSettings">Open the system app settings for \"Browser\". There you can,
         depending on your Android version grant permissions, clear the app data and so on.</string>
