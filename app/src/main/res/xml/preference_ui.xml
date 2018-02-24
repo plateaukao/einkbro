@@ -2,18 +2,6 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <CheckBoxPreference android:key="sp_hideOmni"
-        android:icon="@drawable/icon_fullscreen"
-        android:defaultValue="true"
-        android:title="@string/setting_title_hide"
-        android:summary="@string/setting_summary_hide"/>
-
-    <CheckBoxPreference android:key="@string/sp_omnibox_control"
-        android:icon="@drawable/icon_swipe"
-        android:defaultValue="true"
-        android:title="@string/setting_title_omnibox_control"
-        android:summary="@string/setting_summary_omnibox_control"/>
-
     <CheckBoxPreference android:key="sp_background"
         android:icon="@drawable/icon_link"
         android:defaultValue="true"
@@ -44,13 +32,35 @@
         android:entries="@array/listArrayTheme"
         android:entryValues="@array/listValuesTheme" />
 
+    <PreferenceCategory android:title="@string/setting_title_toolbar">
+
+        <CheckBoxPreference android:key="@string/sp_omnibox_control"
+            android:icon="@drawable/icon_swipe"
+            android:defaultValue="true"
+            android:title="@string/setting_title_omnibox_control"
+            android:summary="@string/setting_summary_omnibox_control"/>
+
+        <ListPreference
+            android:title="@string/setting_title_hideToolbar"
+            android:icon="@drawable/icon_fullscreen"
+            android:summary="@string/setting_summary_hide"
+            android:key="sp_hideToolbar"
+            android:defaultValue="0"
+            android:entries="@array/setting_entries_toolbar"
+            android:entryValues="@array/setting_values_toolbar" />
+
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/setting_title_nav">
 
-        <CheckBoxPreference android:key="nav_show"
-            android:icon="@drawable/icon_eye_off"
-            android:defaultValue="true"
+        <ListPreference
             android:title="@string/setting_title_nav_show"
-            android:summary="@string/setting_summary_nav_show"/>
+            android:icon="@drawable/icon_eye_off"
+            android:summary="@string/setting_summary_nav_show"
+            android:key="sp_hideNav"
+            android:defaultValue="0"
+            android:entries="@array/setting_entries_nav"
+            android:entryValues="@array/setting_values_nav" />
 
         <ListPreference
             android:title="@string/setting_title_nav_pos"

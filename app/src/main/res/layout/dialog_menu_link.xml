@@ -42,8 +42,28 @@
 
             <TextView
                 android:visibility="gone"
+                android:id="@+id/tv3_main_menu_share_link"
+                android:text="@string/menu_share_link"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/light" />
+
+            <TextView
+                android:visibility="gone"
                 android:id="@+id/tv3_main_menu_copy_link"
                 android:text="@string/main_menu_copy_link"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/light" />
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv3_main_menu_open_link"
+                android:text="@string/menu_open_with"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
