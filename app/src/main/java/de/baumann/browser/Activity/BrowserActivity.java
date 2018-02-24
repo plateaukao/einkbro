@@ -143,6 +143,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
     private TextView tv_shareScreenshot;
     private TextView tv_shareLink;
     private TextView tv_shareClipboard;
+    private TextView tv_openWith;
 
     private TextView tv_relayout;
     private TextView tv_searchSite;
@@ -200,6 +201,10 @@ public class BrowserActivity extends Activity implements BrowserController, View
     private final ViewGroup nullParent = null;
 
     // Others
+
+    private String title;
+    private String url;
+    private int hide_toolbar;
 
     private SharedPreferences sp;
     private MAHEncryptor mahEncryptor;
@@ -511,6 +516,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 searchBox.requestFocus();
             }
         }, 500);
+        hide_toolbar = 1;
 
     }
 
@@ -757,16 +763,13 @@ public class BrowserActivity extends Activity implements BrowserController, View
 
         RecordAction action = new RecordAction(BrowserActivity.this);
 
-        String title = "";
-        String url = "";
-
         if (currentAlbumController != null && currentAlbumController instanceof NinjaRelativeLayout) {
             ninjaRelativeLayout = (NinjaRelativeLayout) currentAlbumController;
         } else if (currentAlbumController != null && currentAlbumController instanceof NinjaWebView) {
+            ninjaWebView = (NinjaWebView) currentAlbumController;
             try {
                 title = ninjaWebView.getTitle().trim();
                 url = ninjaWebView.getUrl().trim();
-                ninjaWebView = (NinjaWebView) currentAlbumController;
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -837,14 +840,22 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 if (prepareRecord()) {
                     NinjaToast.show(BrowserActivity.this, getString(R.string.toast_share_failed));
                 } else {
-                    IntentUnit.share(BrowserActivity.this, ninjaWebView.getTitle(), ninjaWebView.getUrl());
+                    IntentUnit.share(BrowserActivity.this, title, url);
                 }
                 bottomSheetDialog.cancel();
                 break;
 
             case R.id.tv_shareClipboard:
-                BrowserUnit.copyURL(BrowserActivity.this, ninjaWebView.getUrl());
+                BrowserUnit.copyURL(BrowserActivity.this, url);
                 bottomSheetDialog.cancel();
+                break;
+
+            case R.id.tv_openWith:
+                bottomSheetDialog.cancel();
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                Intent chooser = Intent.createChooser(intent, getString(R.string.menu_open_with));
+                startActivity(chooser);
                 break;
 
             case R.id.tv_saveScreenshot:
@@ -871,7 +882,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
 
             case R.id.tv_saveStart:
                 action.open(true);
-                if (action.checkGridItem(ninjaWebView.getUrl())) {
+                if (action.checkGridItem(url)) {
                     NinjaToast.show(BrowserActivity.this, getString(R.string.toast_already_exist_in_home));
                 } else {
                     Bitmap bitmap = ViewUnit.capture(ninjaWebView, dimen156dp, dimen117dp, Bitmap.Config.ARGB_8888);
@@ -923,7 +934,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
                             if (db.isExist(helper_main.secString(input_pass_title))){
                                 NinjaToast.show(BrowserActivity.this, R.string.toast_newTitle);
                             } else {
-                                db.insert(input_pass_title, ninjaWebView.getUrl(), encrypted_userName, helper_main.secString(encrypted_userPW), String.valueOf(System.currentTimeMillis()));
+                                db.insert(input_pass_title, url, encrypted_userName, helper_main.secString(encrypted_userPW), String.valueOf(System.currentTimeMillis()));
                                 NinjaToast.show(BrowserActivity.this, R.string.toast_edit_successful);
                                 hideSoftInput(pass_title);
                             }
@@ -1031,8 +1042,8 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 break;
 
             case R.id.tv_settings:
-                Intent intent = new Intent(BrowserActivity.this, Settings_Activity.class);
-                startActivity(intent);
+                Intent settings = new Intent(BrowserActivity.this, Settings_Activity.class);
+                startActivity(settings);
                 bottomSheetDialog.cancel();
                 break;
 
@@ -1051,6 +1062,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 tv_shareScreenshot.setVisibility(View.GONE);
                 tv_shareLink.setVisibility(View.GONE);
                 tv_shareClipboard.setVisibility(View.GONE);
+                tv_openWith.setVisibility(View.GONE);
 
                 tv_saveScreenshot.setVisibility(View.GONE);
                 tv_saveBookmark.setVisibility(View.GONE);
@@ -1073,6 +1085,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 tv_shareScreenshot.setVisibility(View.VISIBLE);
                 tv_shareLink.setVisibility(View.VISIBLE);
                 tv_shareClipboard.setVisibility(View.VISIBLE);
+                tv_openWith.setVisibility(View.VISIBLE);
 
                 tv_saveScreenshot.setVisibility(View.GONE);
                 tv_saveBookmark.setVisibility(View.GONE);
@@ -1095,6 +1108,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 tv_shareScreenshot.setVisibility(View.GONE);
                 tv_shareLink.setVisibility(View.GONE);
                 tv_shareClipboard.setVisibility(View.GONE);
+                tv_openWith.setVisibility(View.GONE);
 
                 tv_saveScreenshot.setVisibility(View.VISIBLE);
                 tv_saveBookmark.setVisibility(View.VISIBLE);
@@ -1117,6 +1131,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 tv_shareScreenshot.setVisibility(View.GONE);
                 tv_shareLink.setVisibility(View.GONE);
                 tv_shareClipboard.setVisibility(View.GONE);
+                tv_openWith.setVisibility(View.GONE);
 
                 tv_saveScreenshot.setVisibility(View.GONE);
                 tv_saveBookmark.setVisibility(View.GONE);
@@ -2808,11 +2823,37 @@ public class BrowserActivity extends Activity implements BrowserController, View
     }
 
     private void scrollChange () {
-        if (sp.getBoolean("sp_hideOmni", true)) {
+        if (sp.getString("sp_hideToolbar", "0").equals("0") ||
+                sp.getString("sp_hideToolbar", "0").equals("1")) {
+
+
             ninjaWebView.setOnScrollChangeListener(new NinjaWebView.OnScrollChangeListener() {
                 @Override
                 public void onScrollChange(int scrollY, int oldScrollY) {
-                    hideOmnibox();
+
+                    if (sp.getString("sp_hideToolbar", "0").equals("0")) {
+                        if (scrollY > oldScrollY && hide_toolbar == 1) {
+                            hideOmnibox();
+                            hide_toolbar = 0;
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    hide_toolbar = 1;
+                                }
+                            }, shortAnimTime);
+                        } else if (scrollY < oldScrollY && hide_toolbar == 1){
+                            showOmnibox();
+                            hide_toolbar = 0;
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    hide_toolbar = 1;
+                                }
+                            }, shortAnimTime);
+                        }
+                    } else if (sp.getString("sp_hideToolbar", "0").equals("1")) {
+                        hideOmnibox();
+                    }
                 }
             });
         }
@@ -2967,6 +3008,33 @@ public class BrowserActivity extends Activity implements BrowserController, View
             public void onClick(View v) {
                 addAlbum(getString(R.string.album_untitled), target, false, null);
                 NinjaToast.show(BrowserActivity.this, getString(R.string.toast_new_tab_successful));
+                bottomSheetDialog.cancel();
+            }
+        });
+
+        TextView tv3_main_menu_share_link = dialogView.findViewById(R.id.tv3_main_menu_share_link);
+        tv3_main_menu_share_link.setVisibility(View.VISIBLE);
+        tv3_main_menu_share_link.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (prepareRecord()) {
+                    NinjaToast.show(BrowserActivity.this, getString(R.string.toast_share_failed));
+                } else {
+                    IntentUnit.share(BrowserActivity.this, ninjaWebView.getTitle(), target);
+                }
+                bottomSheetDialog.cancel();
+            }
+        });
+
+        TextView tv3_main_menu_open_link = dialogView.findViewById(R.id.tv3_main_menu_open_link);
+        tv3_main_menu_open_link.setVisibility(View.VISIBLE);
+        tv3_main_menu_open_link.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(target));
+                Intent chooser = Intent.createChooser(intent, getString(R.string.menu_open_with));
+                startActivity(chooser);
                 bottomSheetDialog.cancel();
             }
         });
@@ -3138,9 +3206,10 @@ public class BrowserActivity extends Activity implements BrowserController, View
             searchPanel.setVisibility(View.GONE);
             omnibox.setVisibility(View.VISIBLE);
 
-            if (sp.getBoolean("nav_show", true)) {
+            if (sp.getString("sp_hideNav", "0").equals("0")) {
                 fab_imageButtonNav.setVisibility(View.GONE);
             }
+
             setCustomFullscreen(false);
             onConfigurationChanged(null);
         }
@@ -3156,7 +3225,10 @@ public class BrowserActivity extends Activity implements BrowserController, View
 
             omnibox.setVisibility(View.GONE);
             searchPanel.setVisibility(View.GONE);
-            fab_imageButtonNav.setVisibility(View.VISIBLE);
+
+            if (sp.getString("sp_hideNav", "0").equals("0") || sp.getString("sp_hideNav", "0").equals("2")) {
+                fab_imageButtonNav.setVisibility(View.VISIBLE);
+            }
 
             setCustomFullscreen(true);
         }
@@ -3219,6 +3291,8 @@ public class BrowserActivity extends Activity implements BrowserController, View
         tv_shareLink.setOnClickListener(this);
         tv_shareClipboard = dialogView.findViewById(R.id.tv_shareClipboard);
         tv_shareClipboard.setOnClickListener(this);
+        tv_openWith = dialogView.findViewById(R.id.tv_openWith);
+        tv_openWith.setOnClickListener(this);
 
         tv_saveScreenshot = dialogView.findViewById(R.id.tv_saveScreenshot);
         tv_saveScreenshot.setOnClickListener(this);

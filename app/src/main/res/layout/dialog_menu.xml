@@ -66,8 +66,6 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/light" />
 
-
-
             <TextView
                 android:visibility="gone"
                 android:id="@+id/tv_shareScreenshot"
@@ -92,6 +90,16 @@
                 android:visibility="gone"
                 android:id="@+id/tv_shareClipboard"
                 android:text="@string/menu_share_clipboard"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/light" />
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv_openWith"
+                android:text="@string/menu_open_with"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"

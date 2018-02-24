@@ -36,6 +36,7 @@
     <string name="menu_edit">Bearbeiten</string>
     <string name="menu_notification">Benachrichtigung</string>
     <string name="menu_closeTab">Tab schließen</string>
+    <string name="menu_open_with">Link öffnen mit …</string>
 
     <string name="menu_share_screenshot">Teile Bildschirmfoto</string>
     <string name="menu_share_link">Teile Link</string>
@@ -151,7 +152,7 @@
     <string name="setting_summary_data">Sichere bestimmte Daten (Ausnahmen, Lesezeichen) oder stelle sie wieder her.</string>
 
     <!-- App behavior -->
-    <string name="setting_title_hide">Vollbild</string>
+    <string name="setting_title_hideToolbar">Toolbar verstecken</string>
     <string name="setting_summary_hide">Benutze den ganzen Bildschirm, wenn du durch Internetseiten scrollst. Wenn du die
         \"Zurücktaste\" drückst, verlässt du den Vollbildmodus.</string>
     <string name="setting_title_omnibox_control">Toolbar Kontrolle</string>
@@ -170,6 +171,14 @@
     <string name="setting_summary_theme">Du magst kein Grün? Dann ändere es!</string>
     <string name="setting_title_tab">Starttab</string>
     <string name="setting_summary_tab">Was soll beim Start von \"Browser\" angezeigt werden? Die Startseite, deine Lesezeichen, …</string>
+
+    <string name="setting_title_toolbar">Toolbar</string>
+    <string name="setting_hide_always">Immer verstecken</string>
+    <string name="setting_hide_down">Nur beim runter scrollen</string>
+    <string name="setting_hide_never">Nie verstecken</string>
+
+    <string name="setting_hideNav_always">Immer verstecken</string>
+    <string name="setting_hideNav_toolbar">Wenn Toolbar sichtbar</string>
 
 
     <string name="setting_title_nav">Navigationsknopf</string>
@@ -198,7 +207,7 @@
 
     <string name="setting_title_export_whitelistCookie">Cookie Ausnahmen sichern</string>
     <string name="setting_title_import_whitelistCookie">Cookie Ausnahmen wiederherstellen</string>
-    <string name="export_whitelistCookies">export_whitelist_Cookie</string>
+    <string name="export_whitelistCookie">export_whitelist_Cookie</string>
 
     <string name="setting_title_export_database">Datenbank sichern</string>
     <string name="setting_title_import_database">Datenbank wiederherstellen</string>
@@ -229,7 +238,6 @@
     <string name="toast_copy_successful">Erfolgreich kopiert</string>
     <string name="toast_delete_successful">Erfolgreich gelöscht</string>
     <string name="toast_domain_already_exists">Domain ist bereits in der Liste</string>
-    <string name="toast_double_taps_quit">Erneut drücken, um Anwendung zu verlassen</string>
     <string name="toast_export_successful">Gesichert als:&#160;</string>
     <string name="toast_export_failed">Sicherung fehlgeschlagen</string>
     <string name="toast_import_successful">Wiederhergestellt:&#160;</string>
@@ -256,7 +264,6 @@
     <string name="toast_newTitle">Eintrag existiert schon. Bitte wähle einen anderen Titel.</string>
     <string name="toast_edit_successful">Successfully saved</string>
     <string name="toast_webview_forward">Kann keine nächste Seite laden</string>
-    <string name="toast_webview_back">Kann keine vorherige Seite laden</string>
     <string name="toast_entry_exists">Eintrag existiert bereits.</string>
     <string name="toast_clear">Möchtest du die Daten wirklich löschen?</string>
     <string name="toast_permission_title">Berechtigung wird gebraucht</string>

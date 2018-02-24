@@ -1,5 +1,8 @@
 ### v 5.4 (WIP)
 - new: full support for cookie whitelist
+- new: more options for fullscreen browsing
+- new: more options visibility Navigation Button
+- fix: toolbar does not work on start
 
 ### v 5.3.1
 - new: initial support for cookie whitelist (fast toggle)

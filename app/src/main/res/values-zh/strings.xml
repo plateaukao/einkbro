@@ -144,7 +144,6 @@
     <string name="setting_summary_data">导入和导出各种数据（书签、历史、白名单）</string>
 
     <!-- App behavior -->
-    <string name="setting_title_hide">全屏</string>
     <string name="setting_summary_hide">Use the whole screen when scrolling through websites. If you press the back button you will
     leave fullscreen mode.</string>
     <string name="setting_title_omnibox_control">Omnibox Control</string>
@@ -222,7 +221,6 @@
     <string name="toast_copy_successful">Successfully copied</string>
     <string name="toast_delete_successful">Successfully deleted</string>
     <string name="toast_domain_already_exists">Domain already exists</string>
-    <string name="toast_double_taps_quit">再次点击以退出</string>
     <string name="toast_export_successful">Exported as:&#160;</string>
     <string name="toast_export_failed">Failed to export</string>
     <string name="toast_import_successful">Imported count:&#160;</string>
@@ -239,6 +237,7 @@
     <string name="toast_share_failed">Can\'t share this page</string>
     <string name="toast_start_download">Starting download</string>
     <string name="toast_wait_a_minute">请稍候</string>
+
     <string name="toast_titleConfirm_delete">你真的想删除这条记录么？</string>
     <string name="toast_titleConfirm_paste">复制数据到粘贴板？</string>
     <string name="toast_titleConfirm_pasteUN">用户名</string>
@@ -251,6 +250,7 @@
     <string name="toast_webview_forward">无法加载下个网页</string>
     <string name="toast_webview_back">无法加载前一个网页</string>
     <string name="toast_entry_exists">已经存在</string>
+
     <string name="toast_clear">你真的想清理么？</string>
     <string name="toast_permission_title">需要授权</string>
     <string name="toast_permission_sdCard">\"Browser\" needs the permission to \"read and write on your storage\". This is needed for
