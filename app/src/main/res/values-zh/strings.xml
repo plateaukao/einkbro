@@ -19,6 +19,8 @@
 
 
     <!-- Menu -->
+    <string name="main_menu">菜单</string>
+    <string name="main_menu_tabPreview">管理标签页</string>
     <string name="main_menu_new_tab">在后台打开新标签</string>
     <string name="main_menu_new_tabOpen">在前台打开新标签</string>
     <string name="main_menu_copy_link">复制链接</string>
@@ -54,7 +56,7 @@
 
 
     <!-- Dialog -->
-    <string name="dialog_toggle_title">Fast toggle</string>
+    <string name="dialog_toggle_title">快速切换</string>
     <string name="dialog_title_hint">输入标题</string>
     <string name="dialog_se_hint">https://www.google.com/search?q=</string>
     <string name="dialog_ua_hint">Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36</string>
@@ -63,8 +65,8 @@
     <string name="dialog_button_custom">自定义</string>
     <string name="dialog_title_download">你想下载这个文件么？</string>
     <string name="dialog_title_sign_in">登录</string>
-    <string name="dialog_content_resubmission">Would you like to resubmit your data?</string>
-    <string name="dialog_content_ssl_error">The certificate of the site is not trusted. Proceed anyway?</string>
+    <string name="dialog_content_resubmission">你要重新提交数据么？</string>
+    <string name="dialog_content_ssl_error">网站证书不可信，仍要访问？</string>
 
 
 
@@ -97,11 +99,14 @@
 
     <!-- Browser start -->
     <string name="setting_title_images">图片</string>
-    <string name="setting_summary_images">显示图片，不勾选此项可节省流量和快速加载。</string>
+    <string name="setting_summary_images">显示图片，不勾选时可节约流量，节省加载时间。</string>
     <string name="setting_title_cookie">Cookies</string>
     <string name="setting_summary_cookie">允许 Cookies。Cookies 是存储在本地的一个小文件。
         网站用它来记录你的使用偏好，但是也会被用作搜集私人信息。
         处于广告等目的的第三方 cookies 总是禁止的。</string>
+    <string name="setting_title_whitelistCookie">Cookie 白名单</string>
+    <string name="setting_summary_whitelistCookie">如果你禁用了 Cookies，
+        你可以把你信任的网站放到白名单中，让它们可以保存 cookies。</string>
 
     <string name="setting_title_javascript">JavaScript</string>
     <string name="setting_summary_javascript">允许使用 JavaScript。
@@ -121,8 +126,8 @@
 
 
     <!-- Browser clear -->
-    <string name="clear_summary">All files will be exported to the download folder. Each export will overwrite the old one.
-        To restore there must be a file with the right name in the directory.</string>
+    <string name="clear_summary">所有文件会被导出到sdcard上的“Documents”文件夹中,每次导出都会覆盖上一次导出的数据。
+    要想恢复数据，确保该文件夹下有符合约定文件名的文件。</string>
     <string name="clear_menu_done_all">全部</string>
     <string name="clear_title_quit">退出时清空</string>
     <string name="clear_title_bookmarks">清空书签</string>
@@ -135,8 +140,8 @@
     <string name="setting_title_app">应用设置</string>
     <string name="setting_title_ui">行为/视图</string>
     <string name="setting_title_data">备份</string>
-    <string name="setting_summary_ui">Change the behavior and ui of the app to suit your preferences.</string>
-    <string name="setting_summary_data">Import and export several app data (whitelists, bookmarks).</string>
+    <string name="setting_summary_ui">根据你的喜好修改app行为和ui。</string>
+    <string name="setting_summary_data">导入和导出各种数据（书签、历史、白名单）</string>
 
     <!-- App behavior -->
     <string name="setting_summary_hide">Use the whole screen when scrolling through websites. If you press the back button you will
@@ -156,6 +161,19 @@
     <string name="setting_title_theme">彩色主题</string>
     <string name="setting_summary_theme">不喜欢绿色？换一下！</string>
 
+    <string name="setting_title_nav">导航键</string>
+    <string name="setting_title_nav_pos">位置</string>
+    <string name="setting_summary_nav_pos">导航键放在哪？</string>
+    <string name="setting_summary_nav_pos_right">右</string>
+    <string name="setting_summary_nav_pos_left">左</string>
+    <string name="setting_summary_nav_pos_center">中间</string>
+
+    <string name="setting_title_nav_show">隐藏</string>
+    <string name="setting_summary_nav_show">工具栏显示的时候隐藏导航键</string>
+
+    <string name="setting_title_tab">启动标签</string>
+    <string name="setting_summary_tab">浏览器启动的时候显示什么？启动页，书签…</string>
+
 
     <!-- Data -->
     <string name="setting_title_export_bookmarks">导出书签</string>
@@ -170,11 +188,22 @@
     <string name="setting_title_import_whitelistJS">导入 JavaScript 白名单</string>
     <string name="export_whitelistJS">export_whitelist_Javascript</string>
 
+    <string name="setting_title_export_whitelistCookie">导出 Cookie 白名单</string>
+    <string name="setting_title_import_whitelistCookie">导入 Cookie 白名单</string>
+    <string name="export_whitelistCookie">export_whitelist_Cookie</string>
+
+    <string name="setting_title_export_database">导出数据库</string>
+    <string name="setting_title_import_database">导入数据库</string>
+    <string name="setting_summary_export_database">导出所有数据(主页 + 预览, 历史, 书签)
+        到 SD 卡。你的登录数据不会被备份。</string>
+    <string name="title_database">数据库</string>
+    <string name="hint_database">你当前的设置和数据都将被删除，继续？</string>
+
 
     <!-- Others setting -->
     <string name="setting_title_others">其他</string>
     <string name="setting_title_license">许可</string>
-    <string name="setting_summary_license">\"Browser\" is completely free (as in freedom) and open source.</string>
+    <string name="setting_summary_license">浏览器是一个自由开源软件。</string>
     <string name="setting_title_appSettings">应用设置</string>
     <string name="setting_summary_appSettings">Open the system app settings for \"Browser\". There you can,
         depending on your Android version grant permissions, clear the app data and so on.</string>
@@ -208,17 +237,20 @@
     <string name="toast_share_failed">Can\'t share this page</string>
     <string name="toast_start_download">Starting download</string>
     <string name="toast_wait_a_minute">请稍候</string>
-    <string name="toast_titleConfirm_delete">Do you really want to delete the entry?</string>
-    <string name="toast_titleConfirm_paste">Copy data to clipboard?</string>
-    <string name="toast_titleConfirm_pasteUN">Username</string>
-    <string name="toast_titleConfirm_pastePW">Password</string>
-    <string name="toast_directory">Can\'t open directory</string>
-    <string name="toast_noFile">Can\'t open directory</string>
-    <string name="toast_error">Uuups. Something went wrong.</string>
-    <string name="toast_newTitle">Entry already exists. Please enter new title.</string>
-    <string name="toast_edit_successful">Successfully saved</string>
-    <string name="toast_webview_forward">Can\'t load next site</string>
-    <string name="toast_entry_exists">Entry exists already.</string>
+
+    <string name="toast_titleConfirm_delete">你真的想删除这条记录么？</string>
+    <string name="toast_titleConfirm_paste">复制数据到粘贴板？</string>
+    <string name="toast_titleConfirm_pasteUN">用户名</string>
+    <string name="toast_titleConfirm_pastePW">密码</string>
+    <string name="toast_directory">无法打开文件夹</string>
+    <string name="toast_noFile">无法打开文件夹</string>
+    <string name="toast_error">哦，程序出错了</string>
+    <string name="toast_newTitle">已经存在了，换个名字吧</string>
+    <string name="toast_edit_successful">保存成功</string>
+    <string name="toast_webview_forward">无法加载下个网页</string>
+    <string name="toast_webview_back">无法加载前一个网页</string>
+    <string name="toast_entry_exists">已经存在</string>
+
     <string name="toast_clear">你真的想清理么？</string>
     <string name="toast_permission_title">需要授权</string>
     <string name="toast_permission_sdCard">\"Browser\" needs the permission to \"read and write on your storage\". This is needed for
@@ -229,11 +261,13 @@
         websites for example when they offer some kind of navigation. If you don\'t grant the permission yet, you can do it
     later in the settings.</string>
     <string name="toast_restart">你需要重启浏览器来应用变更，现在关闭么？</string>
+    <string name="toast_quit">你确定要退出浏览器么？</string>
+    <string name="toast_close_tab">你确定关闭当前标签？</string>
 
 
     <!-- Whitelist -->
-    <string name="whitelist_menu_clear">Clear</string>
+    <string name="whitelist_menu_clear">清空</string>
     <string name="whitelist_edit_hint">Domain</string>
-    <string name="whitelist_add">Add</string>
+    <string name="whitelist_add">添加</string>
 
 </resources>
