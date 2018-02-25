@@ -16,9 +16,8 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="25dp"
-            android:paddingEnd="20dp"
-            android:paddingStart="25dp" >
+            android:padding="20dp"
+            android:layout_marginStart="8dp">
 
             <TextView
                 android:visibility="gone"
@@ -27,8 +26,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
+                android:gravity="center_vertical"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/light" />
+                android:textColor="@color/light"
+                android:maxLines="1"
+                android:ellipsize="end" />
 
             <TextView
                 android:visibility="gone"
@@ -37,8 +39,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
+                android:gravity="center_vertical"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/light" />
+                android:textColor="@color/light"
+                android:maxLines="1"
+                android:ellipsize="end" />
 
             <TextView
                 android:visibility="gone"
@@ -47,8 +52,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
+                android:gravity="center_vertical"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/light" />
+                android:textColor="@color/light"
+                android:maxLines="1"
+                android:ellipsize="end" />
 
             <TextView
                 android:visibility="gone"
@@ -57,8 +65,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
+                android:gravity="center_vertical"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/light" />
+                android:textColor="@color/light"
+                android:maxLines="1"
+                android:ellipsize="end" />
 
             <TextView
                 android:visibility="gone"
@@ -67,8 +78,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
+                android:gravity="center_vertical"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/light" />
+                android:textColor="@color/light"
+                android:maxLines="1"
+                android:ellipsize="end" />
 
             <TextView
                 android:visibility="gone"
@@ -77,8 +91,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
+                android:gravity="center_vertical"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/light" />
+                android:textColor="@color/light"
+                android:maxLines="1"
+                android:ellipsize="end" />
 
             <TextView
                 android:visibility="gone"
@@ -87,8 +104,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
+                android:gravity="center_vertical"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/light" />
+                android:textColor="@color/light"
+                android:maxLines="1"
+                android:ellipsize="end" />
 
         </LinearLayout>
 
