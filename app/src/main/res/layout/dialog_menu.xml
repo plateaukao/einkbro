@@ -5,19 +5,77 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="@color/grey_900"
+    android:padding="20dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:id="@+id/dialog_title"
-        android:layout_width="match_parent"
+    <RelativeLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|center_horizontal"
-        android:padding="24dp"
-        android:text="@string/main_menu"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textStyle="bold"
-        android:textColor="@color/light" />
+        android:layout_marginStart="8dp">
+
+        <ImageButton android:id="@+id/web_next"
+            android:contentDescription="@null"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_centerInParent="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/layout_margin_4dp"
+            android:layout_marginBottom="@dimen/layout_margin_4dp"
+            android:layout_gravity="center"
+            android:src="@drawable/chevron_right"
+            android:background="@drawable/custom_button_dark"/>
+
+        <ImageButton android:id="@+id/web_down"
+            android:contentDescription="@null"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_centerInParent="true"
+            android:layout_toStartOf="@id/web_next"
+            android:layout_marginTop="@dimen/layout_margin_4dp"
+            android:layout_marginBottom="@dimen/layout_margin_4dp"
+            android:src="@drawable/chevron_down"
+            android:background="@drawable/custom_button_dark"/>
+
+        <ImageButton android:id="@+id/web_top"
+            android:contentDescription="@null"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_centerInParent="true"
+            android:layout_toStartOf="@id/web_down"
+            android:layout_marginTop="@dimen/layout_margin_4dp"
+            android:layout_marginBottom="@dimen/layout_margin_4dp"
+            android:src="@drawable/chevron_up"
+            android:background="@drawable/custom_button_dark"/>
+
+        <ImageButton android:id="@+id/web_prev"
+            android:contentDescription="@null"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_centerInParent="true"
+            android:layout_toStartOf="@id/web_top"
+            android:layout_marginTop="@dimen/layout_margin_4dp"
+            android:layout_marginBottom="@dimen/layout_margin_4dp"
+            android:src="@drawable/chevron_left"
+            android:background="@drawable/custom_button_dark"/>
+
+        <TextView
+            android:id="@+id/dialog_title"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:minHeight="46dp"
+            android:gravity="center_vertical"
+            android:layout_centerVertical="true"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/main_menu"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/light"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+
 
     <ScrollView
         android:layout_width="match_parent"
@@ -27,17 +85,19 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingEnd="20dp"
-            android:paddingStart="25dp" >
+            android:layout_marginStart="8dp">
 
             <TextView
                 android:id="@+id/tv_new_tabOpen"
-                android:text="@string/main_menu_new_tabOpen"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
+                android:gravity="center_vertical"
                 android:minHeight="46dp"
+                android:text="@string/main_menu_new_tabOpen"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/light" />
+                android:textColor="@color/light"
+                android:maxLines="1"
+                android:ellipsize="end" />
 
             <TextView
                 android:id="@+id/tv_closeTab"
@@ -45,8 +105,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
+                android:gravity="center_vertical"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/light" />
+                android:textColor="@color/light"
+                android:maxLines="1"
+                android:ellipsize="end" />
 
             <TextView
                 android:id="@+id/tv_tabPreview"
@@ -54,8 +117,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
+                android:gravity="center_vertical"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/light" />
+                android:textColor="@color/light"
+                android:maxLines="1"
+                android:ellipsize="end" />
 
             <TextView
                 android:id="@+id/tv_quit"
@@ -63,8 +129,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
+                android:gravity="center_vertical"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/light" />
+                android:textColor="@color/light"
+                android:maxLines="1"
+                android:ellipsize="end" />
 
             <TextView
                 android:visibility="gone"
@@ -73,8 +142,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
+                android:gravity="center_vertical"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/light" />
+                android:textColor="@color/light"
+                android:maxLines="1"
+                android:ellipsize="end" />
 
             <TextView
                 android:visibility="gone"
@@ -83,8 +155,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
+                android:gravity="center_vertical"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/light" />
+                android:textColor="@color/light"
+                android:maxLines="1"
+                android:ellipsize="end" />
 
             <TextView
                 android:visibility="gone"
@@ -93,8 +168,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
+                android:gravity="center_vertical"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/light" />
+                android:textColor="@color/light"
+                android:maxLines="1"
+                android:ellipsize="end" />
 
             <TextView
                 android:visibility="gone"
@@ -103,8 +181,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
+                android:gravity="center_vertical"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/light" />
+                android:textColor="@color/light"
+                android:maxLines="1"
+                android:ellipsize="end" />
 
             <TextView
                 android:visibility="gone"
@@ -113,8 +194,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
+                android:gravity="center_vertical"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/light" />
+                android:textColor="@color/light"
+                android:maxLines="1"
+                android:ellipsize="end" />
 
             <TextView
                 android:visibility="gone"
@@ -123,8 +207,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
+                android:gravity="center_vertical"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/light" />
+                android:textColor="@color/light"
+                android:maxLines="1"
+                android:ellipsize="end" />
 
             <TextView
                 android:visibility="gone"
@@ -133,8 +220,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
+                android:gravity="center_vertical"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/light" />
+                android:textColor="@color/light"
+                android:maxLines="1"
+                android:ellipsize="end" />
 
             <TextView
                 android:visibility="gone"
@@ -143,9 +233,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
+                android:gravity="center_vertical"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/light" />
+                android:textColor="@color/light"
+                android:maxLines="1"
+                android:ellipsize="end" />
 
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv_placeholder"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:gravity="center_vertical"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/light"
+                android:maxLines="1"
+                android:ellipsize="end" />
 
             <TextView
                 android:visibility="gone"
@@ -154,8 +258,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
+                android:gravity="center_vertical"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/light" />
+                android:textColor="@color/light"
+                android:maxLines="1"
+                android:ellipsize="end" />
 
             <TextView
                 android:visibility="gone"
@@ -164,8 +271,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
+                android:gravity="center_vertical"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/light" />
+                android:textColor="@color/light"
+                android:maxLines="1"
+                android:ellipsize="end" />
 
             <TextView
                 android:visibility="gone"
@@ -174,8 +284,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
+                android:gravity="center_vertical"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/light" />
+                android:textColor="@color/light"
+                android:maxLines="1"
+                android:ellipsize="end" />
 
             <TextView
                 android:visibility="gone"
@@ -184,8 +297,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
+                android:gravity="center_vertical"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/light" />
+                android:textColor="@color/light"
+                android:maxLines="1"
+                android:ellipsize="end" />
 
         </LinearLayout>
 
@@ -202,7 +318,10 @@
             android:id="@+id/floatButton_tab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:layout_gravity="center_vertical|center_horizontal"
             app:backgroundTint="?attr/colorAccent"
             app:fabSize="mini"
@@ -212,7 +331,10 @@
             android:id="@+id/floatButton_share"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:layout_gravity="center_vertical|center_horizontal"
             app:backgroundTint="?attr/colorAccent"
             app:fabSize="mini"
@@ -222,7 +344,10 @@
             android:id="@+id/floatButton_save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:layout_gravity="center_vertical|center_horizontal"
             app:backgroundTint="?attr/colorAccent"
             app:fabSize="mini"
@@ -232,7 +357,10 @@
             android:id="@+id/floatButton_more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:layout_gravity="center_vertical|center_horizontal"
             app:backgroundTint="?attr/colorAccent"
             app:fabSize="mini"

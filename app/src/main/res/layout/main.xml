@@ -43,7 +43,7 @@
                 android:layout_gravity="center"
                 android:layout_marginBottom="@dimen/layout_margin_4dp"
                 android:layout_marginEnd="@dimen/layout_margin_4dp"
-                android:background="@drawable/custom_button"
+                android:background="@drawable/custom_button_dark"
                 android:contentDescription="@null"
                 android:src="@drawable/icon_home" />
 
@@ -54,7 +54,7 @@
                 android:layout_gravity="center"
                 android:layout_marginBottom="@dimen/layout_margin_4dp"
                 android:layout_marginEnd="@dimen/layout_margin_4dp"
-                android:background="@drawable/custom_button"
+                android:background="@drawable/custom_button_dark"
                 android:contentDescription="@null"
                 android:src="@drawable/icon_download" />
 
@@ -65,7 +65,7 @@
                 android:layout_gravity="center"
                 android:layout_marginBottom="@dimen/layout_margin_4dp"
                 android:layout_marginEnd="@dimen/layout_margin_4dp"
-                android:background="@drawable/custom_button"
+                android:background="@drawable/custom_button_dark"
                 android:contentDescription="@null"
                 android:src="@drawable/icon_key" />
 
@@ -76,7 +76,7 @@
                 android:layout_gravity="center"
                 android:layout_marginBottom="@dimen/layout_margin_4dp"
                 android:layout_marginEnd="@dimen/layout_margin_4dp"
-                android:background="@drawable/custom_button"
+                android:background="@drawable/custom_button_dark"
                 android:contentDescription="@null"
                 android:src="@drawable/icon_bookmark" />
 
@@ -86,7 +86,7 @@
                 android:layout_height="42dp"
                 android:layout_gravity="center"
                 android:layout_marginBottom="@dimen/layout_margin_4dp"
-                android:background="@drawable/custom_button"
+                android:background="@drawable/custom_button_dark"
                 android:contentDescription="@null"
                 android:src="@drawable/ic_action_history" />
 
@@ -183,6 +183,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_marginTop="@dimen/layout_margin_4dp"
                 android:layout_marginBottom="@dimen/layout_margin_4dp"
+                android:layout_marginEnd="@dimen/layout_margin_8dp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_action_overflow"
                 android:background="@drawable/custom_button"/>

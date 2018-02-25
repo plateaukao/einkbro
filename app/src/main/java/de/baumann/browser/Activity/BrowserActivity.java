@@ -149,12 +149,12 @@ public class BrowserActivity extends Activity implements BrowserController, View
     private TextView tv_searchSite;
     private TextView tv_settings;
     private TextView tv_help;
+    private TextView tv_placeHolder;
 
     private TextView tv_saveScreenshot;
     private TextView tv_saveBookmark;
     private TextView tv_saveStart;
     private TextView tv_saveLogin;
-
 
     private TextView tv2_menu_newTab;
     private TextView tv2_menu_newTab_open;
@@ -162,6 +162,11 @@ public class BrowserActivity extends Activity implements BrowserController, View
     private TextView tv2_menu_delete;
     private TextView tv2_menu_notification;
     private TextView tv2_menu_share;
+
+    private ImageButton web_next;
+    private ImageButton web_down;
+    private ImageButton web_top;
+    private ImageButton web_prev;
 
     private FloatingActionButton fab_tab;
     private FloatingActionButton fab_share;
@@ -779,6 +784,52 @@ public class BrowserActivity extends Activity implements BrowserController, View
 
             // Menu overflow
 
+            case R.id.web_down:
+                ninjaWebView.pageDown(true);
+                break;
+
+            case R.id.web_top:
+                ninjaWebView.pageUp(true);
+                break;
+
+            case R.id.web_prev:
+                if (ninjaWebView.canGoBack()) {
+                    ninjaWebView.goBack();
+                } else {
+                    bottomSheetDialog.cancel();
+                    bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
+                    View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_action, null);
+                    TextView textView = dialogView.findViewById(R.id.dialog_text);
+                    textView.setText(R.string.toast_close_tab);
+                    Button action_ok = dialogView.findViewById(R.id.action_ok);
+                    action_ok.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            removeAlbum(currentAlbumController);
+                            bottomSheetDialog.cancel();
+                        }
+                    });
+                    Button action_cancel = dialogView.findViewById(R.id.action_cancel);
+                    action_cancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            bottomSheetDialog.cancel();
+                        }
+                    });
+                    bottomSheetDialog.setContentView(dialogView);
+                    bottomSheetDialog.show();
+                }
+                break;
+
+            case R.id.web_next:
+                if (ninjaWebView.canGoForward()) {
+                    ninjaWebView.goForward();
+                } else {
+                    bottomSheetDialog.cancel();
+                    NinjaToast.show(BrowserActivity.this,R.string.toast_webview_forward);
+                }
+                break;
+
             case R.id.tv_new_tabOpen:
                 addAlbum(start_tab);
                 bottomSheetDialog.cancel();
@@ -859,9 +910,14 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 break;
 
             case R.id.tv_saveScreenshot:
-                sp.edit().putInt("screenshot", 0).apply();
-                new ScreenshotTask(BrowserActivity.this, ninjaWebView).execute();
-                bottomSheetDialog.cancel();
+                try {
+                    sp.edit().putInt("screenshot", 0).apply();
+                    new ScreenshotTask(BrowserActivity.this, ninjaWebView).execute();
+                    bottomSheetDialog.cancel();
+                } catch (Exception e) {
+
+                }
+
                 break;
 
             case R.id.tv_saveBookmark:
@@ -1071,6 +1127,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
 
                 tv_relayout.setVisibility(View.GONE);
                 tv_searchSite.setVisibility(View.GONE);
+                tv_placeHolder.setVisibility(View.GONE);
                 tv_settings.setVisibility(View.GONE);
                 tv_help.setVisibility(View.GONE);
                 break;
@@ -1094,6 +1151,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
 
                 tv_relayout.setVisibility(View.GONE);
                 tv_searchSite.setVisibility(View.GONE);
+                tv_placeHolder.setVisibility(View.GONE);
                 tv_settings.setVisibility(View.GONE);
                 tv_help.setVisibility(View.GONE);
                 break;
@@ -1117,6 +1175,8 @@ public class BrowserActivity extends Activity implements BrowserController, View
 
                 tv_relayout.setVisibility(View.GONE);
                 tv_searchSite.setVisibility(View.GONE);
+
+                tv_placeHolder.setVisibility(View.GONE);
                 tv_settings.setVisibility(View.GONE);
                 tv_help.setVisibility(View.GONE);
                 break;
@@ -1138,6 +1198,8 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 tv_saveStart.setVisibility(View.GONE);
                 tv_saveLogin.setVisibility(View.GONE);
 
+
+                tv_placeHolder.setVisibility(View.VISIBLE);
                 tv_settings.setVisibility(View.VISIBLE);
                 tv_help.setVisibility(View.VISIBLE);
 
@@ -3265,12 +3327,29 @@ public class BrowserActivity extends Activity implements BrowserController, View
         fab_more = dialogView.findViewById(R.id.floatButton_more);
         fab_more.setOnClickListener(this);
 
+        web_top = dialogView.findViewById(R.id.web_top);
+        web_top.setOnClickListener(this);
+        web_down = dialogView.findViewById(R.id.web_down);
+        web_down.setOnClickListener(this);
+        web_prev = dialogView.findViewById(R.id.web_prev);
+        web_prev.setOnClickListener(this);
+        web_next = dialogView.findViewById(R.id.web_next);
+        web_next.setOnClickListener(this);
+
         if (currentAlbumController != null && currentAlbumController instanceof NinjaRelativeLayout) {
             fab_share.setVisibility(View.GONE);
             fab_save.setVisibility(View.GONE);
+            web_down.setVisibility(View.GONE);
+            web_next.setVisibility(View.GONE);
+            web_prev.setVisibility(View.GONE);
+            web_top.setVisibility(View.GONE);
         } else if (currentAlbumController != null && currentAlbumController instanceof NinjaWebView) {
             fab_share.setVisibility(View.VISIBLE);
             fab_save.setVisibility(View.VISIBLE);
+            web_down.setVisibility(View.VISIBLE);
+            web_next.setVisibility(View.VISIBLE);
+            web_prev.setVisibility(View.VISIBLE);
+            web_top.setVisibility(View.VISIBLE);
         }
 
         dialogTitle = dialogView.findViewById(R.id.dialog_title);
@@ -3311,6 +3390,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
         tv_settings.setOnClickListener(this);
         tv_help = dialogView.findViewById(R.id.tv_help);
         tv_help.setOnClickListener(this);
+        tv_placeHolder = dialogView.findViewById(R.id.tv_placeholder);
 
         bottomSheetDialog.setContentView(dialogView);
         bottomSheetDialog.show();
