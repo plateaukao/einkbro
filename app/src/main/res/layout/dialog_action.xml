@@ -6,7 +6,7 @@
     android:layout_height="@dimen/layout_height_56dp"
     android:minHeight="@dimen/layout_height_56dp"
     android:orientation="vertical"
-    android:background="@color/grey_900"
+    android:background="?attr/colorPrimaryDark"
     android:layout_alignParentBottom="true"
     tools:ignore="Overdraw">
 
@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:background="@color/grey_900"
+            android:background="?attr/colorPrimaryDark"
             android:textColor="?attr/colorAccent"
             android:text="@string/app_ok"/>
 
@@ -35,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toStartOf="@+id/action_ok"
-            android:background="@color/grey_900"
+            android:background="?attr/colorPrimaryDark"
             android:textColor="?attr/colorAccent"
             android:text="@string/app_cancel"/>
 

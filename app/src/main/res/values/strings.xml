@@ -20,15 +20,15 @@
 
     <!-- Menu -->
     <string name="main_menu">Menu</string>
-    <string name="main_menu_tabPreview">Open tab control</string>
+    <string name="main_menu_tabPreview">Open tab preview</string>
     <string name="main_menu_new_tab">New tab (background)</string>
     <string name="main_menu_new_tabOpen">New tab (foreground)</string>
     <string name="main_menu_copy_link">Copy link</string>
     <string name="main_menu_save">Save</string>
     <string name="main_omnibox_input_hint">Search or type URL</string>
-    <string name="main_about_blank">about:blank</string>
     <string name="menu_open_with">Open link with …</string>
 
+    <string name="menu_tabs">Tab</string>
     <string name="menu_share">Share</string>
     <string name="menu_other">Others</string>
     <string name="menu_save">Save</string>
@@ -165,10 +165,10 @@
     immediately.</string>
     <string name="setting_title_longClick">Long click actions</string>
     <string name="setting_title_toggle">Toggle dialog</string>
-    <string name="setting_summary_toggle">Long press the \"Overflow button\" (right in the toolbar) to show a \"Toggle
+    <string name="setting_summary_toggle">Long press the \"menu button\" (right in the toolbar) to show a \"Toggle
     dialog\" for fast changing browser settings.</string>
-    <string name="setting_title_theme">Color theme</string>
-    <string name="setting_summary_theme">You don\'t like green? Just change it!</string>
+    <string name="setting_title_themeDark">Light theme</string>
+    <string name="setting_summary_themeDark">You like it a little bit brighter? Do it!</string>
 
     <string name="setting_title_nav">Navigation button</string>
     <string name="setting_title_nav_pos">Position</string>

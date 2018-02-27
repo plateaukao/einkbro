@@ -20,14 +20,14 @@
 
     <!-- Menu -->
     <string name="main_menu">Menü</string>
-    <string name="main_menu_tabPreview">Öffne Tabkontrolle</string>
+    <string name="main_menu_tabPreview">Öffne Tabvorschau</string>
     <string name="main_menu_new_tab">Neuer Tab (Hintergrund)</string>
     <string name="main_menu_new_tabOpen">Neuer Tab (Vordergrund)</string>
     <string name="main_menu_copy_link">Link kopieren</string>
     <string name="main_menu_save">Speichern</string>
     <string name="main_omnibox_input_hint">Suchen oder URL eingeben</string>
-    <string name="main_about_blank">about:blank</string>
 
+    <string name="menu_tabs">Tab</string>
     <string name="menu_share">Teilen</string>
     <string name="menu_other">Sonstiges</string>
     <string name="menu_save">Speichern</string>
@@ -165,10 +165,10 @@
         ist, öffnen sich Links sofort.</string>
     <string name="setting_title_longClick">\"Langer Klick\" Aktionen</string>
     <string name="setting_title_toggle">Schnelleinstellungen"</string>
-    <string name="setting_summary_toggle">Drücke lange den \"Overflow Knopf\" (rechts in der Toolbar), um den \"Schnelleinstellungen
+    <string name="setting_summary_toggle">Drücke lange den \"Menü Knopf\" (rechts in der Toolbar), um den \"Schnelleinstellungen
         Dialog\" zu zeigen.</string>
-    <string name="setting_title_theme">Farbthema</string>
-    <string name="setting_summary_theme">Du magst kein Grün? Dann ändere es!</string>
+    <string name="setting_title_themeDark">Helles Thema</string>
+    <string name="setting_summary_themeDark">Du magst es lieber ein bisschen heller? Dann tu es!</string>
     <string name="setting_title_tab">Starttab</string>
     <string name="setting_summary_tab">Was soll beim Start von \"Browser\" angezeigt werden? Die Startseite, deine Lesezeichen, …</string>
 

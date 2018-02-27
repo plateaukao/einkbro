@@ -2,6 +2,7 @@ package de.baumann.browser.View;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.RelativeLayout;

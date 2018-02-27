@@ -8,11 +8,11 @@
         android:title="@string/setting_title_background"
         android:summary="@string/setting_summary_background"/>
 
-    <CheckBoxPreference android:key="sp_invert"
-        android:icon="@drawable/icon_night"
+    <CheckBoxPreference android:key="sp_darkUI"
+        android:icon="@drawable/icon_ui"
         android:defaultValue="false"
-        android:title="@string/setting_title_inverted"
-        android:summary="@string/setting_summary_inverted"/>
+        android:title="@string/setting_title_themeDark"
+        android:summary="@string/setting_summary_themeDark"/>
 
     <ListPreference
         android:title="@string/setting_title_tab"
@@ -22,15 +22,6 @@
         android:defaultValue="0"
         android:entries="@array/setting_entries_tab"
         android:entryValues="@array/setting_values_tab" />
-
-    <ListPreference
-        android:title="@string/setting_title_theme"
-        android:icon="@drawable/icon_ui"
-        android:summary="@string/setting_summary_theme"
-        android:key="theme"
-        android:defaultValue="0"
-        android:entries="@array/listArrayTheme"
-        android:entryValues="@array/listValuesTheme" />
 
     <PreferenceCategory android:title="@string/setting_title_toolbar">
 
