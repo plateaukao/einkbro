@@ -4,7 +4,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@color/grey_900"
+    android:background="?attr/colorPrimaryDark"
     android:padding="20dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -26,7 +26,7 @@
             android:src="@drawable/chevron_right"
             android:background="@drawable/custom_button_dark"/>
 
-        <ImageButton android:id="@+id/web_down"
+        <ImageButton android:id="@+id/web_home"
             android:contentDescription="@null"
             android:layout_width="42dp"
             android:layout_height="42dp"
@@ -34,18 +34,7 @@
             android:layout_toStartOf="@id/web_next"
             android:layout_marginTop="@dimen/layout_margin_4dp"
             android:layout_marginBottom="@dimen/layout_margin_4dp"
-            android:src="@drawable/chevron_down"
-            android:background="@drawable/custom_button_dark"/>
-
-        <ImageButton android:id="@+id/web_top"
-            android:contentDescription="@null"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
-            android:layout_centerInParent="true"
-            android:layout_toStartOf="@id/web_down"
-            android:layout_marginTop="@dimen/layout_margin_4dp"
-            android:layout_marginBottom="@dimen/layout_margin_4dp"
-            android:src="@drawable/chevron_up"
+            android:src="@drawable/icon_earth_light"
             android:background="@drawable/custom_button_dark"/>
 
         <ImageButton android:id="@+id/web_prev"
@@ -53,7 +42,7 @@
             android:layout_width="42dp"
             android:layout_height="42dp"
             android:layout_centerInParent="true"
-            android:layout_toStartOf="@id/web_top"
+            android:layout_toStartOf="@id/web_home"
             android:layout_marginTop="@dimen/layout_margin_4dp"
             android:layout_marginBottom="@dimen/layout_margin_4dp"
             android:src="@drawable/chevron_left"
@@ -68,7 +57,7 @@
             android:layout_centerVertical="true"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="@string/main_menu"
+            android:text="@string/menu_tabs"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/light"
             android:textStyle="bold" />
@@ -325,7 +314,7 @@
             android:layout_gravity="center_vertical|center_horizontal"
             app:backgroundTint="?attr/colorAccent"
             app:fabSize="mini"
-            app:srcCompat="@drawable/icon_earth_light" />
+            app:srcCompat="@drawable/icon_tab_plus_light" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/floatButton_share"

@@ -6,7 +6,7 @@
     android:layout_height="@dimen/layout_height_56dp"
     android:minHeight="@dimen/layout_height_56dp"
     android:orientation="vertical"
-    android:background="@color/grey_900"
+    android:background="?attr/colorPrimaryDark"
     android:layout_alignParentBottom="true"
     tools:ignore="Overdraw">
 

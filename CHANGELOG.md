@@ -1,7 +1,11 @@
 ### v 5.4 (WIP)
+- new: dark and light theme
+- new: startpage with all contents
 - new: full support for cookie whitelist
 - new: more options for fullscreen browsing
 - new: more options visibility Navigation Button
+- new: night mode only while browsing
+- removed: different light themes
 - fix: toolbar does not work on start
 
 ### v 5.3.1

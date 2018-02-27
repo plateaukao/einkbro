@@ -26,7 +26,6 @@
     <string name="main_menu_copy_link">复制链接</string>
     <string name="main_menu_save">保存</string>
     <string name="main_omnibox_input_hint">搜索或输入网址</string>
-    <string name="main_about_blank">空白页</string>
 
     <string name="menu_share">分享</string>
     <string name="menu_other">其他</string>
@@ -248,7 +247,6 @@
     <string name="toast_newTitle">已经存在了，换个名字吧</string>
     <string name="toast_edit_successful">保存成功</string>
     <string name="toast_webview_forward">无法加载下个网页</string>
-    <string name="toast_webview_back">无法加载前一个网页</string>
     <string name="toast_entry_exists">已经存在</string>
 
     <string name="toast_clear">你真的想清理么？</string>

@@ -8,6 +8,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
@@ -69,6 +72,8 @@ public class NinjaWebViewClient extends WebViewClient {
     @Override
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
         super.onPageStarted(view, url, favicon);
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
 
         if (view.getTitle() == null || view.getTitle().isEmpty()) {
             ninjaWebView.update(context.getString(R.string.album_untitled), url);
