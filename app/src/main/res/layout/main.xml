@@ -213,7 +213,7 @@
                 android:selectAllOnFocus="true"
                 android:completionThreshold="1"
                 android:imeOptions="actionGo"
-                android:inputType="textWebEditText"
+                android:inputType="textUri"
                 android:maxLines="1"
                 android:ellipsize="end"
                 android:background="?attr/colorPrimary"/>
@@ -308,4 +308,3 @@
     </LinearLayout>
 
 </de.baumann.browser.View.SwitcherPanel>
-
