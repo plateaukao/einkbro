@@ -3,7 +3,7 @@
 <resources>
 
     <!-- App -->
-    <string name="app_name">Browser</string>
+    <string name="app_name">F(L)OSS Browser</string>
     <string name="app_ok">OK</string>
     <string name="app_cancel">Cancel</string>
     <string name="list_empty">Current list is empty</string>
@@ -19,7 +19,6 @@
 
 
     <!-- Menu -->
-    <string name="main_menu">Menu</string>
     <string name="main_menu_tabPreview">Open tab preview</string>
     <string name="main_menu_new_tab">New tab (background)</string>
     <string name="main_menu_new_tabOpen">New tab (foreground)</string>
@@ -157,16 +156,9 @@
     leave fullscreen mode.</string>
     <string name="setting_title_omnibox_control">Omnibox Control</string>
     <string name="setting_summary_omnibox_control">Swipe omnibox left/right to switch tabs</string>
-    <string name="setting_title_exit">Exit</string>
-    <string name="setting_summary_exit">Long press the \"Reload button\" (left in the toolbar) to exit the
-        application.</string>
     <string name="setting_title_background">Open links</string>
     <string name="setting_summary_background">Display a notification and open links in background. If disabled links will open
     immediately.</string>
-    <string name="setting_title_longClick">Long click actions</string>
-    <string name="setting_title_toggle">Toggle dialog</string>
-    <string name="setting_summary_toggle">Long press the \"menu button\" (right in the toolbar) to show a \"Toggle
-    dialog\" for fast changing browser settings.</string>
     <string name="setting_title_themeDark">Light theme</string>
     <string name="setting_summary_themeDark">You like it a little bit brighter? Do it!</string>
 
@@ -181,7 +173,7 @@
     <string name="setting_summary_nav_show">Hide the \"Navigation Button\" when toolbar is shown.</string>
 
     <string name="setting_title_tab">Start tab</string>
-    <string name="setting_summary_tab">What should be shown at the start of \"Browser\"? The Start Page, you bookmarks, …</string>
+    <string name="setting_summary_tab">What should be shown at the start of \"F(L)OSS Browser\"? The Start Page, you bookmarks, …</string>
 
     <string name="setting_title_toolbar">Toolbar</string>
     <string name="setting_hide_always">Hide always</string>
@@ -220,9 +212,9 @@
     <!-- Others setting -->
     <string name="setting_title_others">Others</string>
     <string name="setting_title_license">License</string>
-    <string name="setting_summary_license">\"Browser\" is completely free (as in freedom) and open source.</string>
+    <string name="setting_summary_license">\"F(L)OSS Browser\" is completely free (as in freedom) and open source.</string>
     <string name="setting_title_appSettings">App settings</string>
-    <string name="setting_summary_appSettings">Open the system app settings for \"Browser\". There you can,
+    <string name="setting_summary_appSettings">Open the system app settings for \"F(L)OSS Browser\". There you can,
         depending on your Android version grant permissions, clear the app data and so on.</string>
     <string name="setting_title_community">Contributing</string>
     <string name="setting_summary_community">See who contributed something to this project. Or do you want to help with further
@@ -267,15 +259,15 @@
     <string name="toast_entry_exists">Entry exists already.</string>
     <string name="toast_clear">Do you really want to clear?</string>
     <string name="toast_permission_title">Permission is needed</string>
-    <string name="toast_permission_sdCard">\"Browser\" needs the permission to \"read and write on your storage\". This is needed for
+    <string name="toast_permission_sdCard">\"F(L)OSS Browser\" needs the permission to \"read and write on your storage\". This is needed for
     downloading files, the build in file manager and taking screenshots. If you don\'t grant the permission yet, you can do it
     later in the settings.</string>
     <string name="toast_permission_sdCard_sec">Please grant the permission to \"read and write on your storage\" in the settings.</string>
-    <string name="toast_permission_loc">\"Browser\" needs the permission to \"access your location\". This is requested from some
+    <string name="toast_permission_loc">\"F(L)OSS Browser\" needs the permission to \"access your location\". This is requested from some
         websites for example when they offer some kind of navigation. If you don\'t grant the permission yet, you can do it
     later in the settings.</string>
-    <string name="toast_restart">You must restart \"Browser\" to apply changes. Close now?</string>
-    <string name="toast_quit">Do you want to quit \"Browser\"?</string>
+    <string name="toast_restart">You must restart \"F(L)OSS Browser\" to apply changes. Close now?</string>
+    <string name="toast_quit">Do you want to quit \"F(L)OSS Browser\"?</string>
     <string name="toast_close_tab">Do you want to close current tab?</string>
 
 

@@ -64,21 +64,4 @@
 
     </PreferenceCategory>
 
-
-    <PreferenceCategory android:title="@string/setting_title_longClick">
-
-        <CheckBoxPreference android:key="sp_toggle"
-            android:icon="@drawable/ic_action_overflow_dark"
-            android:defaultValue="false"
-            android:title="@string/setting_title_toggle"
-            android:summary="@string/setting_summary_toggle"/>
-
-        <CheckBoxPreference android:key="sp_exit"
-            android:icon="@drawable/ic_action_refresh_dark"
-            android:defaultValue="false"
-            android:title="@string/setting_title_exit"
-            android:summary="@string/setting_summary_exit"/>
-
-    </PreferenceCategory>
-
 </PreferenceScreen>

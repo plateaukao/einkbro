@@ -10,8 +10,6 @@
     <color name="red">#F44336</color>
     <color name="grey_500">#9E9E9E</color>
     <color name="grey_300">#E0E0E0</color>
-    <color name="grey_900">#212121</color>
-    <color name="grey_700">#616161</color>
     <color name="grey_dark">#424242</color>
     <color name="shadow_dark">#A6212121</color>
     <color name="shadow_light">#59323232</color>

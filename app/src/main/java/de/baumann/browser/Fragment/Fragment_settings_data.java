@@ -34,6 +34,7 @@ import de.baumann.browser.Task.ImportWhitelistTaskCookie;
 import de.baumann.browser.Task.ImportWhitelistTaskJS;
 import de.baumann.browser.View.NinjaToast;
 
+@SuppressWarnings("ResultOfMethodCallIgnored")
 public class Fragment_settings_data extends PreferenceFragment {
 
     @Override

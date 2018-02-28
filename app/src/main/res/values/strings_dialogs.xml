@@ -15,24 +15,39 @@
         \u25AA new: initial support for cookie whitelist (fast toggle)&lt;br>
     </string>
 
+    <string name="startpage_title">Startpage</string>
+    <string name="startpage_dialog">Here you can access all your data: saved sites on the startpage, bookmarks, history, saved
+        login data and the integrated file browser. In the settings you can decide which content will be shown at start.</string>
+
+    <string name="fastToggle_title">Fast toggle</string>
+    <string name="fastToggle_dialog">If you long press the \"menu\" or the \"Navigation button\" the \"Fast toggle dialog\"
+        will open. Here you can change some important settings without leaving the current website. You can also add websites
+        to your whitelist for AdBlocker, JavaScript or Cookies..</string>
 
     <string name="toolbar_title">Toolbar</string>
     <string name="toolbar_dialog">At the bottom of the screen you have the toolbar. You can reload the current
-        website and open the menu. Swipe the toolbar up to open the tab control. To switch between tabs swipe left or right.</string>
+        website and open the menu. Long click on the \"reload button\" to close the app and long click on \"menu\" to open
+        the \"Fast toggle menu\". Swipe the toolbar up to open the tab preview. To switch between tabs swipe left or right.</string>
 
-    <string name="tab_title">Tab control</string>
+    <string name="tab_title">Tab preview</string>
     <string name="tab_dialog">Click the preview of a tab to select it, click again to close the tab preview. To close a tab simply
-        swipe to preview to the top or bottom. At the bottom you can open a new tab, the download folder, your login data, your
-    bookmarks or the browser history (from left to right).</string>
+        swipe to preview to the top or bottom.</string>
+
+    <string name="menu_title">Menu</string>
+    <string name="menu_dialog">Here you can all functionality at one place: share or save content, handle the current tab or
+        search on websites. Just try all entries to learn what is possible. With the buttons on the top right you can switch
+        to the previous/next site in your history. Clicking the \"Circle button\" will open the Startpage in the
+        current tab. The menu can be dismissed, like all other notifications, by clicking back, clicking outside the menu
+        or simply be swiping the menu down.</string>
 
     <string name="not_title">Notifications</string>
-    <string name="not_dialog">Notifications are displayed on the bottom of the screen. They can be dismissed by clicking anywhere
-        outside or swiping them down.</string>
+    <string name="not_dialog">Notifications are displayed on the bottom of the screen. They can also be dismissed like the
+        menus.</string>
 
     <string name="nav_title">Navigation</string>
-    <string name="nav_dialog">Use the \"Nav Button\" in the fullscreen mode: swipe up/down -> scroll to top/bottom;
+    <string name="nav_dialog">Use the \"Navigation Button\": swipe up/down -> scroll to top/bottom;
     swipe left/right -> navigate back/forward; click -> open the menu; long click -> open \"Fast toggle dialog\";
-        double click -> Hide the \"Nav Button\".</string>
+        double click -> Hide the \"Navigation Button\".</string>
 
     <string name="settings_dialog">There are even more options in the settings. Try it out!</string>
 
@@ -102,15 +117,15 @@
         &lt;i>https://github.com/hummatli/SimpleEncryptionLib</string>
 
     <string name="cont_dialog">
-        &lt;i>On following sites you can get more information about \"Browser\":&lt;/i>&lt;br>&lt;br>
+        &lt;i>On following sites you can get more information about \"F(L)OSS Browser\":&lt;/i>&lt;br>&lt;br>
 
         &lt;b>XDA-thread:&lt;/b>&lt;br>
         XDA is a great community for developers and smartphone enthusiasts. Here you can report issues, ask for new features
-        and everything other related to \"Browser\".&lt;br>
+        and everything other related to \"F(L)OSS Browser\".&lt;br>
         &lt;i>https://forum.xda-developers.com/android/apps-games/app-browser-t3500091&lt;/i>&lt;br>&lt;br>
 
         &lt;b>Github:&lt;/b>&lt;br>
-        On Github you can see the source code of \"Browser\". This is the more technical solution: open issues, ask for new
+        On Github you can see the source code of \"F(L)OSS Browser\". This is the more technical solution: open issues, ask for new
         features or even help developing or translating.&lt;br>
         &lt;i>https://github.com/scoute-dich/browser&lt;/i>&lt;br>&lt;br>&lt;br>
 
@@ -122,15 +137,19 @@
         &lt;i>https://github.com/scoute-dich&lt;/i>&lt;br>&lt;br>
 
         &lt;b>CGSLURP LLC&lt;/b>&lt;br>
-        Helped to implement AdBlock and \"request desktop site\" in the previous version of \"Browser\".&lt;br>
+        Helped to implement AdBlock and \"request desktop site\" in the previous version of \"F(L)OSS Browser\".&lt;br>
         &lt;i>https://github.com/futrDevelopment&lt;/i>&lt;br>&lt;br>
 
+        &lt;b>element54&lt;/b>&lt;br>
+        Helped to solve issues with the keyboard (issue #105).&lt;br>
+        &lt;i>https://github.com/element54&lt;/i>&lt;br>&lt;br>
+
         &lt;b>Jumping Yang&lt;/b>&lt;br>
-        Chinese translation in the previous version of \"Browser\".&lt;br>
+        Chinese translation in the previous version of \"F(L)OSS Browser\".&lt;br>
         &lt;i>https://github.com/JumpingYang001&lt;/i>&lt;br>&lt;br>
 
         &lt;b>lishoujun&lt;/b>&lt;br>
-        Chinese translation&lt;br>
+        Chinese translation and bug hunting.&lt;br>
         &lt;i>https://github.com/lishoujun&lt;/i>&lt;br>&lt;br>
 
         &lt;b>Secangkir Kopi&lt;/b>&lt;br>
@@ -138,7 +157,7 @@
         &lt;i>https://github.com/Secangkir-Kopi&lt;/i>&lt;br>&lt;br>
 
         &lt;b>splinet&lt;/b>&lt;br>
-        Russian translation in the previous version of \"Browser\".&lt;br>
+        Russian translation in the previous version of \"F(L)OSS Browser\".&lt;br>
         &lt;i>https://github.com/splinet&lt;/i>
 
 

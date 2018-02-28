@@ -5,8 +5,10 @@
 - new: more options for fullscreen browsing
 - new: more options visibility Navigation Button
 - new: night mode only while browsing
+- updated: help dialog
 - removed: different light themes
 - fix: toolbar does not work on start
+- fix: keyboard issues in some cases (thanks: element54)
 
 ### v 5.3.1
 - new: initial support for cookie whitelist (fast toggle)

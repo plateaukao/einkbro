@@ -396,10 +396,12 @@ public class BrowserActivity extends Activity implements BrowserController, View
                     if (heightDiff > 100) {
                         omniboxTitle.setVisibility(View.GONE);
                     } else {
-                        omniboxTitle.setVisibility(View.VISIBLE);
+                        if (currentAlbumController instanceof NinjaWebView) {
+                            omniboxTitle.setVisibility(View.VISIBLE);
+                        } else {
+                            omniboxTitle.setVisibility(View.GONE);
+                        }
                     }
-                } else {
-                    omniboxTitle.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -1403,29 +1405,25 @@ public class BrowserActivity extends Activity implements BrowserController, View
 
         omniboxRefresh.setOnClickListener(this);
 
-        if (sp.getBoolean("sp_exit", true)) {
-            omniboxRefresh.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    finish();
-                    return false;
-                }
-            });
-        }
+        omniboxRefresh.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                finish();
+                return false;
+            }
+        });
 
         omniboxOverflow.setOnClickListener(this);
 
-        if (sp.getBoolean("sp_toggle", true)) {
-            omniboxOverflow.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    if (currentAlbumController != null && currentAlbumController instanceof NinjaWebView) {
-                        showSwitcher();
-                    }
-                    return false;
+        omniboxOverflow.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (currentAlbumController != null && currentAlbumController instanceof NinjaWebView) {
+                    showSwitcher();
                 }
-            });
-        }
+                return false;
+            }
+        });
     }
 
     private void initHomeGrid(final NinjaRelativeLayout layout) {
@@ -1502,7 +1500,6 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 open_historyView.setVisibility(View.INVISIBLE);
 
                 home_title.setText(getString(R.string.album_title_bookmarks));
-                layout.setAlbumTitle(getString(R.string.album_title_bookmarks));
                 layout.setFlag(BrowserUnit.FLAG_BOOKMARKS);
                 initBHList(layout);
             } else if (current_tab == BrowserUnit.FLAG_HISTORY) {
@@ -1513,7 +1510,6 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 open_historyView.setVisibility(View.VISIBLE);
 
                 home_title.setText(getString(R.string.album_title_history));
-                layout.setAlbumTitle(getString(R.string.album_title_history));
                 layout.setFlag(BrowserUnit.FLAG_HISTORY);
                 initBHList(layout);
             } else if (current_tab == BrowserUnit.FLAG_FILES) {
@@ -1524,7 +1520,6 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 open_historyView.setVisibility(View.INVISIBLE);
 
                 home_title.setText(getString(R.string.album_title_files));
-                layout.setAlbumTitle(getString(R.string.album_title_files));
                 layout.setFlag(BrowserUnit.FLAG_FILES);
                 initFEList(layout);
             } else if (current_tab == BrowserUnit.FLAG_PASS) {
@@ -1535,7 +1530,6 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 open_historyView.setVisibility(View.INVISIBLE);
 
                 home_title.setText(getString(R.string.album_title_pass));
-                layout.setAlbumTitle(getString(R.string.album_title_pass));
                 layout.setFlag(BrowserUnit.FLAG_PASS);
                 initPSList(layout);
             }
@@ -2553,8 +2547,6 @@ public class BrowserActivity extends Activity implements BrowserController, View
         layout.setAlbumCover(ViewUnit.capture(layout, dimen144dp, dimen108dp, Bitmap.Config.RGB_565));
         layout.setAlbumTitle(getString(R.string.app_name));
         holder = layout;
-        initHomeGrid(layout);
-        showOmnibox();
 
         final View albumView = holder.getAlbumView();
         albumView.setVisibility(View.INVISIBLE);
@@ -2579,6 +2571,9 @@ public class BrowserActivity extends Activity implements BrowserController, View
             }
         });
         albumView.startAnimation(animation);
+
+        initHomeGrid(layout);
+        showOmnibox();
     }
 
     private synchronized void addAlbum(String title, final String url, final boolean foreground, final Message resultMsg) {
@@ -2783,7 +2778,6 @@ public class BrowserActivity extends Activity implements BrowserController, View
             updateProgress(BrowserUnit.PROGRESS_MAX);
             updateBookmarks();
             updateInputBox(null);
-            omniboxTitle.setText(currentAlbumController.getAlbumTitle());
         } else if (currentAlbumController instanceof NinjaWebView) {
             ninjaWebView = (NinjaWebView) currentAlbumController;
             String title = ninjaWebView.getTitle();
@@ -2794,10 +2788,8 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 updateInputBox(null);
             } else if (ninjaWebView.getUrl() != null) {
                 updateInputBox(ninjaWebView.getUrl());
-                omniboxTitle.setText(title);
             } else {
                 updateInputBox(ninjaWebView.getOriginalUrl());
-                omniboxTitle.setText(title);
             }
         }
     }
@@ -3489,12 +3481,18 @@ public class BrowserActivity extends Activity implements BrowserController, View
         ImageView help_not = dialogView.findViewById(R.id.cardView_help_not);
         ImageView help_nav = dialogView.findViewById(R.id.cardView_help_nav);
         ImageView help_set = dialogView.findViewById(R.id.cardView_help_set);
+        ImageView help_start = dialogView.findViewById(R.id.cardView_help_startpage);
+        ImageView help_menu = dialogView.findViewById(R.id.cardView_help_menu);
+        ImageView help_fastToggle = dialogView.findViewById(R.id.cardView_help_fastToggle);
 
         help_logo.setImageResource(R.drawable.help_toolbar);
         help_tabs.setImageResource(R.drawable.help_tabs);
         help_not.setImageResource(R.drawable.help_not);
         help_nav.setImageResource(R.drawable.help_nav);
         help_set.setImageResource(R.drawable.help_settings);
+        help_start.setImageResource(R.drawable.help_start);
+        help_menu.setImageResource(R.drawable.help_menu);
+        help_fastToggle.setImageResource(R.drawable.help_toggle);
 
         TextView dialog_title = dialogView.findViewById(R.id.dialog_title);
         dialog_title.setText(getString(R.string.menu_other_help));
