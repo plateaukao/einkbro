@@ -19,7 +19,6 @@
 
 
     <!-- Menu -->
-    <string name="main_menu">菜单</string>
     <string name="main_menu_tabPreview">管理标签页</string>
     <string name="main_menu_new_tab">在后台打开新标签</string>
     <string name="main_menu_new_tabOpen">在前台打开新标签</string>
@@ -147,18 +146,9 @@
     leave fullscreen mode.</string>
     <string name="setting_title_omnibox_control">Omnibox Control</string>
     <string name="setting_summary_omnibox_control">Swipe omnibox left/right to switch tabs</string>
-    <string name="setting_title_exit">退出</string>
-    <string name="setting_summary_exit">Longpress the \"Reload button\" (left in the toolbar) to exit the
-        application.</string>
     <string name="setting_title_background">打开链接</string>
     <string name="setting_summary_background">Display a notification and open links in background. If disabled links will open
     immediately.</string>
-    <string name="setting_title_longClick">长按动作</string>
-    <string name="setting_title_toggle">Toggle dialog</string>
-    <string name="setting_summary_toggle">Longpress the \"Overflow button\" (right in the toolbar) to show a \"Toggle
-    dialog\" for fast changing browser settings.</string>
-    <string name="setting_title_theme">彩色主题</string>
-    <string name="setting_summary_theme">不喜欢绿色？换一下！</string>
 
     <string name="setting_title_nav">导航键</string>
     <string name="setting_title_nav_pos">位置</string>

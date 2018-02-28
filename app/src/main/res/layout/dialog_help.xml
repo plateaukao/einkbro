@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|center_horizontal"
-        android:padding="24dp"
+        android:padding="28dp"
         android:text="@string/toolbar_title"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textStyle="bold"
@@ -28,13 +28,39 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingEnd="24dp"
-            android:paddingStart="24dp">
+            android:paddingEnd="28dp"
+            android:paddingStart="28dp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/startpage_title"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold"
+                android:textColor="@color/light" />
+
+            <ImageView
+                android:id="@+id/cardView_help_startpage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:scaleType="fitCenter" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp"
+                android:text="@string/startpage_dialog"
+                android:textColor="@color/light"/>
+
+
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
                 android:text="@string/toolbar_title"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold"
@@ -44,7 +70,7 @@
                 android:id="@+id/cardView_help_logo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
+                android:layout_marginBottom="8dp"
                 android:scaleType="centerInside" />
 
             <TextView
@@ -59,7 +85,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
+                android:layout_marginBottom="8dp"
                 android:text="@string/tab_title"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold"
@@ -69,7 +95,7 @@
                 android:id="@+id/cardView_help_tabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
+                android:layout_marginBottom="8dp"
                 android:scaleType="centerInside" />
 
             <TextView
@@ -80,11 +106,58 @@
                 android:textColor="@color/light"/>
 
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="@string/menu_title"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold"
+                android:textColor="@color/light" />
+
+            <ImageView
+                android:id="@+id/cardView_help_menu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:scaleType="centerInside" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
+                android:layout_marginBottom="32dp"
+                android:text="@string/menu_dialog"
+                android:textColor="@color/light"/>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="@string/fastToggle_title"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold"
+                android:textColor="@color/light" />
+
+            <ImageView
+                android:id="@+id/cardView_help_fastToggle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:scaleType="centerInside" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp"
+                android:text="@string/fastToggle_dialog"
+                android:textColor="@color/light"/>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
                 android:text="@string/not_title"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold"
@@ -94,7 +167,7 @@
                 android:id="@+id/cardView_help_not"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
+                android:layout_marginBottom="8dp"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:scaleType="centerInside" />
 
@@ -109,7 +182,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
+                android:layout_marginBottom="8dp"
                 android:text="@string/nav_title"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold"
@@ -119,7 +192,7 @@
                 android:id="@+id/cardView_help_nav"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
+                android:layout_marginBottom="8dp"
                 android:scaleType="centerInside" />
 
             <TextView
@@ -133,7 +206,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
+                android:layout_marginBottom="8dp"
                 android:text="@string/setting_label"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold"
@@ -143,7 +216,7 @@
                 android:id="@+id/cardView_help_set"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
+                android:layout_marginBottom="8dp"
                 android:scaleType="centerInside" />
 
             <TextView
@@ -156,13 +229,16 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:layout_marginBottom="24dp"
+                android:layout_marginTop="24dp"
                 android:gravity="center">
 
                 <android.support.design.widget.FloatingActionButton
                     android:id="@+id/floatButton_settings"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="32dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginStart="12dp"
                     android:layout_gravity="center_vertical|center_horizontal"
                     app:backgroundTint="?attr/colorAccent"
                     app:fabSize="mini"
@@ -172,7 +248,8 @@
                     android:id="@+id/floatButton_ok"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="32dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginStart="12dp"
                     android:layout_gravity="center_vertical|center_horizontal"
                     app:backgroundTint="?attr/colorAccent"
                     app:fabSize="mini"
