@@ -97,8 +97,17 @@ public class NinjaWebViewClient extends WebViewClient {
 
         if (sp.getBoolean("saveHistory", true)) {
             RecordAction action = new RecordAction(context);
+
             action.open(true);
-            action.addHistory(new Record(ninjaWebView.getTitle(), ninjaWebView.getUrl(), System.currentTimeMillis()));
+
+            if (action.checkHistory(url)) {
+                action.deleteHistoryOld(url);
+                action.addHistory(new Record(ninjaWebView.getTitle(), ninjaWebView.getUrl(), System.currentTimeMillis()));
+            } else {
+                action.addHistory(new Record(ninjaWebView.getTitle(), ninjaWebView.getUrl(), System.currentTimeMillis()));
+            }
+
+
             action.close();
         }
 

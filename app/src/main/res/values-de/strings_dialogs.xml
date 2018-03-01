@@ -7,41 +7,50 @@
         &lt;i>Projektseite: https://github.com/scoute-dich/Browser&lt;br>
         Änderungen: https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;/i>&lt;br>&lt;br>
 
-        &lt;b>Version: 5.3.1&lt;/b>&lt;br>
-        Mit diesem Update gehen leider alle gespeicherten Einträge verloren. Dafür wird es in Zukunft die Möglichkeit geben, Ausnahmen
-        für das Akzeptieren von Cookies zu erstellen. Du kannst dann zum Beispiel für deine Suchmaschine die Einstellungen speichern,
-        aber sonst darauf verzichten Cookies zu nutzen. Bitte lies den \"Hilfedialog\" für weitere Informationen.&lt;br>&lt;br>
+        &lt;b>Version: 5.4&lt;/b>&lt;br>
+        Bitte lies den \"Hilfedialog\" für weitere Informationen.&lt;br>&lt;br>
 
-        \u25AA neu: erste Unterstützung für eine Cookie Whitelist (Schnelleinstellungen)&lt;br>
+        \u25AA neu: neuer Name "F|L|OSS Browser"&lt;br>
+        \u25AA neu: dunkles und helles Thema&lt;br>
+        \u25AA neu: Startseite mit allen Inhalten&lt;br>
+        \u25AA neu: volle Unterstützung für Cookie-Außnahmen&lt;br>
+        \u25AA neu: mehr Einstellungen für Vollbildmodus&lt;br>
+        \u25AA neu: mehr EInstellungen für den Navigationsknopf&lt;br>
+        \u25AA neu: Nachtmodus nur bei angezeigten Internetseiten&lt;br>
+        \u25AA aktualisiert: Hilfedialog&lt;br>
+        \u25AA entfernt: verschiedene Themen&lt;br>
+        \u25AA behoben: doppelte EInträge im Verlauf&lt;br>
+        \u25AA behoben: Toolbar funktioniert nicht beim Start&lt;br>
+        \u25AA behoben: Tastaturfehler inmanchen Fällen (Danke: element54)
     </string>
 
     <string name="startpage_title">Startseite</string>
-    <string name="startpage_dialog">Hier hast du einen schnellen Zugriff deine mit auf der Startseite gespeicherten Einträge,
+    <string name="startpage_dialog">Hier hast du Zugriff deine auf der Startseite gespeicherten Einträge,
         deine Lesezeichen, den Verlauf, gespeicherte Logindaten und auf den integrierten Dateimanager. In den Einstellungen kannst
         du entscheiden, welcher Inhalt immer zuerst angezeigt werden soll.</string>
 
     <string name="fastToggle_title">Schnelleinstellungen</string>
     <string name="fastToggle_dialog">Wenn du lange den \"Menü-\" oder den \"Navigationsknopf\" drückst, öffnen sich die
-        Schnelleinstellungen. Hier kannst du wichtige Einstellungen vornehmen, ohne den geöffneten Tab verlassen zu müssen.
-        Außerdem kannst du Internetseiten, denen du vertraust zu den Außnahmen für den AdBlocker, und das Benutzen von
-        Javascript oder Cookies zulassen.</string>
+        Schnelleinstellungen. Hier kannst du wichtige Einstellungen vornehmen, ohne die geöffnete INternetseite verlassen
+        zu müssen. Außerdem kannst du Internetseiten, denen du vertraust zu den Außnahmen für den AdBlocker, und das
+        Benutzen von JavaScript oder Cookies zulassen.</string>
 
     <string name="toolbar_title">Toolbar</string>
-    <string name="toolbar_dialog">Unten auf dem Schirm findest du die Toolbar. Du kannst entweder den angezeigten Inhalt neu laden
-        oder das Menü öffnen. KLicke lange auf den \"Neu laden Knopf\" um die Anwendung zu schließen oder lange auf den
-        \"Menüknopf\" um die SChnelleinstellungen zu öffnen. Wische die Toolbar noch oben um die \"Tabvorschau\" zu öffnen.
-        Um zwischen den Tabs zu wechseln, kannst du nach links oder rechts wischen.</string>
+    <string name="toolbar_dialog">Unten auf dem Schirm findest du die Toolbar. Du kannst du direkt Links oder Suchbegriffe
+        eingeben, den angezeigten Inhalt neu laden oder das Menü öffnen. KLicke lange auf den \"Menüknopf\" um die
+        Schnelleinstellungen zu öffnen. Wische die Toolbar nach oben um die \"Tabvorschau\" zu öffnen. Um zwischen den
+        Tabs zu wechseln, kannst du nach links oder rechts wischen.</string>
 
     <string name="tab_title">Tabvorschau</string>
     <string name="tab_dialog">Klicke eine Vorschau an, um den Tab auszuwählen. Klicke noch einmal, um die Tabkontrolle zu schließen.
         Um einen Tab zu schließen, wische die Vorschau nach oben oder unten weg.</string>
 
     <string name="menu_title">Menü</string>
-    <string name="menu_dialog">Hier findest du alle Funktionen an einem PLatz: teile oder speichere Inhalte, suche auf einer
-        Internetseite nach Inhalten. Probiere einfach die einzelnen Einträge aus und finde heraus, was möglich ist. Mit den
-        Knöpfen oben rechts im Menü kannst eine Seite in deinem Verlauf zurück/vor. Wenn du den Knopf mit dem Kreis anklickst,
-        öffnest du im selben Tab die Startseite. Menüs können, genauso wie alle anderen Einblendungen, geschlossen werden,
-        indem du zurück klickst, außerhalb des Menüs klickst oder das Menü einfach nach unten wischst.</string>
+    <string name="menu_dialog">Teile oder speichere Inhalte, Tabs öffnen oder schließen: probiere einfach die einzelnen Einträge aus
+        und finde heraus, was möglich ist. Mit den Knöpfen oben rechts im Menü kannst eine Seite in deinem Verlauf
+        zurück/vor. Wenn du den Knopf mit dem Kreis anklickst, öffnest du im selben Tab die Startseite. Menüs können, genauso
+        wie alle anderen Einblendungen, geschlossen werden, indem du zurück klickst, außerhalb des Menüs klickst oder das Menü
+        einfach nach unten wischst.</string>
 
     <string name="not_title">Benachrichtigungen</string>
     <string name="not_dialog">Benachrichtigungen werden ebenfalls am unteren Rand des Bildschirms angezeigt. Sie können
@@ -115,7 +124,7 @@
         &lt;i>https://github.com/hummatli/SimpleEncryptionLib</string>
 
     <string name="cont_dialog">
-        &lt;i>Auf den folgenden Internetseiten bekommst du weitere Informationen über \"F(L)OSS Browser\":&lt;/i>&lt;br>&lt;br>
+        &lt;i>Auf den folgenden Internetseiten bekommst du weitere Informationen über \"F|L|OSS Browser\":&lt;/i>&lt;br>&lt;br>
 
         &lt;b>XDA-Thread:&lt;/b>&lt;br>
         XDA ist eine großartige Gemeinschaft für Entwickler und Smartphoneentusiasten. Hier kannst du Fehler melden, nach neuen
@@ -123,7 +132,7 @@
         &lt;i>https://forum.xda-developers.com/android/apps-games/app-browser-t3500091&lt;/i>&lt;br>&lt;br>
 
         &lt;b>Github:&lt;/b>&lt;br>
-        Auf Github kannst du den Quellcode von \"F(L)OSS Browser\" einsehen. Das ist die eher technische Lösung. Auch hier kannst du Fehler
+        Auf Github kannst du den Quellcode von \"F|L|OSS Browser\" einsehen. Das ist die eher technische Lösung. Auch hier kannst du Fehler
         melden, Vorschläge äußern oder dich aktiv an der Entwicklung oder Übersetzung beteiligen.&lt;br>
         &lt;i>https://github.com/scoute-dich/browser&lt;/i>&lt;br>&lt;br>&lt;br>
 
@@ -135,7 +144,7 @@
         &lt;i>https://github.com/scoute-dich&lt;/i>&lt;br>&lt;br>
 
         &lt;b>CGSLURP LLC&lt;/b>&lt;br>
-        Half AdBlock und \"Desktopseite anzeigen\" in der vorherigen Version von \"F(L)OSS Browser\" möglich zu machen.&lt;br>
+        Half AdBlock und \"Desktopseite anzeigen\" in der vorherigen Version von \"F|L|OSS Browser\" möglich zu machen.&lt;br>
         &lt;i>https://github.com/futrDevelopment&lt;/i>&lt;br>&lt;br>
 
         &lt;b>element54&lt;/b>&lt;br>
@@ -143,7 +152,7 @@
         &lt;i>https://github.com/element54&lt;/i>&lt;br>&lt;br>
 
         &lt;b>Jumping Yang&lt;/b>&lt;br>
-        Chinesische Übersetzung in der vorherigen Version von \"F(L)OSS Browser\".&lt;br>
+        Chinesische Übersetzung in der vorherigen Version von \"F|L|OSS Browser\".&lt;br>
         &lt;i>https://github.com/JumpingYang001&lt;/i>&lt;br>&lt;br>
 
         &lt;b>lishoujun&lt;/b>&lt;br>
@@ -155,7 +164,7 @@
         &lt;i>https://github.com/Secangkir-Kopi&lt;/i>&lt;br>&lt;br>
 
         &lt;b>splinet&lt;/b>&lt;br>
-        Russische Übersetzung in der vorherigen Version von \"F(L)OSS Browser\".&lt;br>
+        Russische Übersetzung in der vorherigen Version von \"F|L|OSS Browser\".&lt;br>
         &lt;i>https://github.com/splinet&lt;/i>
 
 

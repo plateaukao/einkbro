@@ -218,6 +218,42 @@ public class RecordAction {
         return false;
     }
 
+    public void deleteHistoryOld(String domain) {
+        if (domain == null || domain.trim().isEmpty()) {
+            return;
+        }
+
+        database.execSQL("DELETE FROM "+ RecordUnit.TABLE_HISTORY + " WHERE " + RecordUnit.COLUMN_URL + " = " + "\"" + domain.trim() + "\"");
+    }
+
+    public boolean checkHistory(String url) {
+        if (url == null || url.trim().isEmpty()) {
+            return false;
+        }
+
+        Cursor cursor = database.query(
+                RecordUnit.TABLE_HISTORY,
+                new String[] {RecordUnit.COLUMN_URL},
+                RecordUnit.COLUMN_URL + "=?",
+                new String[] {url.trim()},
+                null,
+                null,
+                null
+        );
+
+        if (cursor != null) {
+            boolean result = false;
+            if (cursor.moveToFirst()) {
+                result = true;
+            }
+            cursor.close();
+
+            return result;
+        }
+
+        return false;
+    }
+
     public boolean checkDomain(String domain) {
         if (domain == null || domain.trim().isEmpty()) {
             return false;

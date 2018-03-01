@@ -7,12 +7,21 @@
         &lt;i>Project site: https://github.com/scoute-dich/Browser&lt;br>
         Changelog: https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;/i>&lt;br>&lt;br>
 
-        &lt;b>Version: 5.3.1&lt;/b>&lt;br>
-        With this update all your saved data will get lost. This is because in future there will be support for a cookie whitelist. Then
-        You have the possibility to save for example the settings for your search engine, without enabling cookies for all websites.
+        &lt;b>Version: 5.4&lt;/b>&lt;br>
         Please read the \"Help dialog\" for more information.&lt;br>&lt;br>
 
-        \u25AA new: initial support for cookie whitelist (fast toggle)&lt;br>
+        \u25AA new: new app name "F|L|OSS Browser"&lt;br>
+        \u25AA new: dark and light theme&lt;br>
+        \u25AA new: startpage with all contents&lt;br>
+        \u25AA new: full support for cookie whitelist&lt;br>
+        \u25AA new: more options for fullscreen browsing&lt;br>
+        \u25AA new: more options visibility Navigation Button&lt;br>
+        \u25AA new: night mode only while browsing&lt;br>
+        \u25AA updated: help dialog&lt;br>
+        \u25AA removed: different light themes&lt;br>
+        \u25AA fix: double entries in history&lt;br>
+        \u25AA fix: toolbar does not work on start&lt;br>
+        \u25AA fix: keyboard issues in some cases (thanks: element54)
     </string>
 
     <string name="startpage_title">Startpage</string>
@@ -25,20 +34,19 @@
         to your whitelist for AdBlocker, JavaScript or Cookies..</string>
 
     <string name="toolbar_title">Toolbar</string>
-    <string name="toolbar_dialog">At the bottom of the screen you have the toolbar. You can reload the current
-        website and open the menu. Long click on the \"reload button\" to close the app and long click on \"menu\" to open
-        the \"Fast toggle menu\". Swipe the toolbar up to open the tab preview. To switch between tabs swipe left or right.</string>
+    <string name="toolbar_dialog">At the bottom of the screen you have the toolbar. You can enter URLs or search for
+        something, reload the website and open the menu. Long click on the \"menu button\" to open the \"Fast toggle menu\".
+        Swipe the toolbar up to open the tab preview. To switch between tabs swipe left or right.</string>
 
     <string name="tab_title">Tab preview</string>
     <string name="tab_dialog">Click the preview of a tab to select it, click again to close the tab preview. To close a tab simply
         swipe to preview to the top or bottom.</string>
 
     <string name="menu_title">Menu</string>
-    <string name="menu_dialog">Here you can all functionality at one place: share or save content, handle the current tab or
-        search on websites. Just try all entries to learn what is possible. With the buttons on the top right you can switch
-        to the previous/next site in your history. Clicking the \"Circle button\" will open the Startpage in the
-        current tab. The menu can be dismissed, like all other notifications, by clicking back, clicking outside the menu
-        or simply be swiping the menu down.</string>
+    <string name="menu_dialog">Share or save content, handle the current tab: just try all entries to see what is possible.
+        With the buttons on the top right you can switch to the previous/next site in your history. Clicking the
+        \"Circle button\" will open the Startpage in the current tab. The menu can be dismissed, like all other notifications,
+        by clicking back, clicking outside the menu or simply be swiping the menu down.</string>
 
     <string name="not_title">Notifications</string>
     <string name="not_dialog">Notifications are displayed on the bottom of the screen. They can also be dismissed like the
@@ -117,15 +125,15 @@
         &lt;i>https://github.com/hummatli/SimpleEncryptionLib</string>
 
     <string name="cont_dialog">
-        &lt;i>On following sites you can get more information about \"F(L)OSS Browser\":&lt;/i>&lt;br>&lt;br>
+        &lt;i>On following sites you can get more information about \"F|L|OSS Browser\":&lt;/i>&lt;br>&lt;br>
 
         &lt;b>XDA-thread:&lt;/b>&lt;br>
         XDA is a great community for developers and smartphone enthusiasts. Here you can report issues, ask for new features
-        and everything other related to \"F(L)OSS Browser\".&lt;br>
+        and everything other related to \"F|L|OSS Browser\".&lt;br>
         &lt;i>https://forum.xda-developers.com/android/apps-games/app-browser-t3500091&lt;/i>&lt;br>&lt;br>
 
         &lt;b>Github:&lt;/b>&lt;br>
-        On Github you can see the source code of \"F(L)OSS Browser\". This is the more technical solution: open issues, ask for new
+        On Github you can see the source code of \"F|L|OSS Browser\". This is the more technical solution: open issues, ask for new
         features or even help developing or translating.&lt;br>
         &lt;i>https://github.com/scoute-dich/browser&lt;/i>&lt;br>&lt;br>&lt;br>
 
@@ -137,7 +145,7 @@
         &lt;i>https://github.com/scoute-dich&lt;/i>&lt;br>&lt;br>
 
         &lt;b>CGSLURP LLC&lt;/b>&lt;br>
-        Helped to implement AdBlock and \"request desktop site\" in the previous version of \"F(L)OSS Browser\".&lt;br>
+        Helped to implement AdBlock and \"request desktop site\" in the previous version of \"F|L|OSS Browser\".&lt;br>
         &lt;i>https://github.com/futrDevelopment&lt;/i>&lt;br>&lt;br>
 
         &lt;b>element54&lt;/b>&lt;br>
@@ -145,7 +153,7 @@
         &lt;i>https://github.com/element54&lt;/i>&lt;br>&lt;br>
 
         &lt;b>Jumping Yang&lt;/b>&lt;br>
-        Chinese translation in the previous version of \"F(L)OSS Browser\".&lt;br>
+        Chinese translation in the previous version of \"F|L|OSS Browser\".&lt;br>
         &lt;i>https://github.com/JumpingYang001&lt;/i>&lt;br>&lt;br>
 
         &lt;b>lishoujun&lt;/b>&lt;br>
@@ -157,7 +165,7 @@
         &lt;i>https://github.com/Secangkir-Kopi&lt;/i>&lt;br>&lt;br>
 
         &lt;b>splinet&lt;/b>&lt;br>
-        Russian translation in the previous version of \"F(L)OSS Browser\".&lt;br>
+        Russian translation in the previous version of \"F|L|OSS Browser\".&lt;br>
         &lt;i>https://github.com/splinet&lt;/i>
 
 
