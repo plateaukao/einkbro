@@ -178,7 +178,7 @@
     <string name="setting_title_toolbar">Toolbar</string>
     <string name="setting_hide_always">Hide always</string>
     <string name="setting_hide_down">Only while scrolling down</string>
-    <string name="setting_hide_never">Always hide</string>
+    <string name="setting_hide_never">Never hide</string>
 
     <string name="setting_hideNav_always">Hide always</string>
     <string name="setting_hideNav_toolbar">When toolbar is showing</string>
