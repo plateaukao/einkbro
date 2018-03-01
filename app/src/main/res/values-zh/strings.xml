@@ -12,7 +12,7 @@
     <string name="album_title_home">主页</string>
     <string name="album_title_files">文件</string>
     <string name="album_title_pass">登录数据</string>
-    <string name="album_untitled">未命名</string>
+    <string name="album_untitled"> </string>
     <string name="notification_content_holderTitle">打开的标签 …</string>
     <string name="notification_content_holder">点击以浏览页面</string>
     <string name="search_hint">搜索</string>

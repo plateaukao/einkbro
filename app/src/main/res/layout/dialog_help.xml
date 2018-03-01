@@ -34,7 +34,6 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
                 android:text="@string/startpage_title"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold"
@@ -44,7 +43,7 @@
                 android:id="@+id/cardView_help_startpage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_margin="16dp"
                 android:scaleType="fitCenter" />
 
             <TextView
@@ -55,12 +54,9 @@
                 android:textColor="@color/light"/>
 
 
-
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
                 android:text="@string/toolbar_title"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold"
@@ -70,7 +66,7 @@
                 android:id="@+id/cardView_help_logo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_margin="16dp"
                 android:scaleType="centerInside" />
 
             <TextView
@@ -85,7 +81,6 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
                 android:text="@string/tab_title"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold"
@@ -95,7 +90,7 @@
                 android:id="@+id/cardView_help_tabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_margin="16dp"
                 android:scaleType="centerInside" />
 
             <TextView
@@ -109,7 +104,6 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
                 android:text="@string/menu_title"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold"
@@ -119,7 +113,7 @@
                 android:id="@+id/cardView_help_menu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_margin="16dp"
                 android:scaleType="centerInside" />
 
             <TextView
@@ -133,7 +127,6 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
                 android:text="@string/fastToggle_title"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold"
@@ -143,7 +136,7 @@
                 android:id="@+id/cardView_help_fastToggle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_margin="16dp"
                 android:scaleType="centerInside" />
 
             <TextView
@@ -157,7 +150,6 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
                 android:text="@string/not_title"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold"
@@ -167,7 +159,7 @@
                 android:id="@+id/cardView_help_not"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_margin="16dp"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:scaleType="centerInside" />
 
@@ -182,7 +174,6 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
                 android:text="@string/nav_title"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold"
@@ -192,7 +183,7 @@
                 android:id="@+id/cardView_help_nav"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_margin="16dp"
                 android:scaleType="centerInside" />
 
             <TextView
@@ -206,7 +197,6 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
                 android:text="@string/setting_label"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold"
@@ -216,7 +206,7 @@
                 android:id="@+id/cardView_help_set"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_margin="16dp"
                 android:scaleType="centerInside" />
 
             <TextView

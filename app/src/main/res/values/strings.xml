@@ -3,7 +3,7 @@
 <resources>
 
     <!-- App -->
-    <string name="app_name">F(L)OSS Browser</string>
+    <string name="app_name">F|L|OSS Browser</string>
     <string name="app_ok">OK</string>
     <string name="app_cancel">Cancel</string>
     <string name="list_empty">Current list is empty</string>
@@ -12,7 +12,7 @@
     <string name="album_title_home">Home</string>
     <string name="album_title_files">Files</string>
     <string name="album_title_pass">Login data</string>
-    <string name="album_untitled">Untitled</string>
+    <string name="album_untitled"> </string>
     <string name="notification_content_holderTitle">Opened tabs …</string>
     <string name="notification_content_holder">… Click to View Pages</string>
     <string name="search_hint">Search</string>
@@ -173,7 +173,7 @@
     <string name="setting_summary_nav_show">Hide the \"Navigation Button\" when toolbar is shown.</string>
 
     <string name="setting_title_tab">Start tab</string>
-    <string name="setting_summary_tab">What should be shown at the start of \"F(L)OSS Browser\"? The Start Page, you bookmarks, …</string>
+    <string name="setting_summary_tab">What should be shown at the start of \"F|L|OSS Browser\"? The Start Page, you bookmarks, …</string>
 
     <string name="setting_title_toolbar">Toolbar</string>
     <string name="setting_hide_always">Hide always</string>
@@ -212,9 +212,9 @@
     <!-- Others setting -->
     <string name="setting_title_others">Others</string>
     <string name="setting_title_license">License</string>
-    <string name="setting_summary_license">\"F(L)OSS Browser\" is completely free (as in freedom) and open source.</string>
+    <string name="setting_summary_license">\"F|L|OSS Browser\" is completely free (as in freedom) and open source.</string>
     <string name="setting_title_appSettings">App settings</string>
-    <string name="setting_summary_appSettings">Open the system app settings for \"F(L)OSS Browser\". There you can,
+    <string name="setting_summary_appSettings">Open the system app settings for \"F|L|OSS Browser\". There you can,
         depending on your Android version grant permissions, clear the app data and so on.</string>
     <string name="setting_title_community">Contributing</string>
     <string name="setting_summary_community">See who contributed something to this project. Or do you want to help with further
@@ -259,15 +259,15 @@
     <string name="toast_entry_exists">Entry exists already.</string>
     <string name="toast_clear">Do you really want to clear?</string>
     <string name="toast_permission_title">Permission is needed</string>
-    <string name="toast_permission_sdCard">\"F(L)OSS Browser\" needs the permission to \"read and write on your storage\". This is needed for
+    <string name="toast_permission_sdCard">\"F|L|OSS Browser\" needs the permission to \"read and write on your storage\". This is needed for
     downloading files, the build in file manager and taking screenshots. If you don\'t grant the permission yet, you can do it
     later in the settings.</string>
     <string name="toast_permission_sdCard_sec">Please grant the permission to \"read and write on your storage\" in the settings.</string>
-    <string name="toast_permission_loc">\"F(L)OSS Browser\" needs the permission to \"access your location\". This is requested from some
+    <string name="toast_permission_loc">\"F|L|OSS Browser\" needs the permission to \"access your location\". This is requested from some
         websites for example when they offer some kind of navigation. If you don\'t grant the permission yet, you can do it
     later in the settings.</string>
-    <string name="toast_restart">You must restart \"F(L)OSS Browser\" to apply changes. Close now?</string>
-    <string name="toast_quit">Do you want to quit \"F(L)OSS Browser\"?</string>
+    <string name="toast_restart">You must restart \"F|L|OSS Browser\" to apply changes. Close now?</string>
+    <string name="toast_quit">Do you want to quit \"F|L|OSS Browser\"?</string>
     <string name="toast_close_tab">Do you want to close current tab?</string>
 
 
