@@ -175,6 +175,12 @@
     <string name="setting_title_tab">Start tab</string>
     <string name="setting_summary_tab">What should be shown at the start of \"F|L|OSS Browser\"? The Start Page, you bookmarks, …</string>
 
+    <string name="setting_title_confirm_exit">Confirm browser exit</string>
+    <string name="setting_summary_confirm_exit">Confirmation dialog when closing browser.</string>
+
+    <string name="setting_title_confirm_tab_close">Confirm tab close</string>
+    <string name="setting_summary_confirm_tab_close">Confirmation dialog when closing a tab.</string>
+
     <string name="setting_title_toolbar">Toolbar</string>
     <string name="setting_hide_always">Hide always</string>
     <string name="setting_hide_down">Only while scrolling down</string>
