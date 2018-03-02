@@ -2,7 +2,7 @@
 
 <LinearLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey_900"
+    android:background="?attr/colorPrimaryDark"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -38,13 +38,16 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:layout_marginBottom="24dp"
+                android:layout_marginTop="24dp"
                 android:gravity="center">
 
                 <android.support.design.widget.FloatingActionButton
                     android:id="@+id/floatButton_help"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="32dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginStart="12dp"
                     app:backgroundTint="?attr/colorAccent"
                     app:fabSize="mini"
                     app:srcCompat="@drawable/icon_help" />
@@ -53,7 +56,8 @@
                     android:id="@+id/floatButton_settings"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="32dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginStart="12dp"
                     app:backgroundTint="?attr/colorAccent"
                     app:fabSize="mini"
                     app:srcCompat="@drawable/icon_settings_light" />
@@ -62,7 +66,8 @@
                     android:id="@+id/floatButton_ok"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="32dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginStart="12dp"
                     app:backgroundTint="?attr/colorAccent"
                     app:fabSize="mini"
                     app:srcCompat="@drawable/check_white" />

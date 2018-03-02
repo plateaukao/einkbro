@@ -1,8 +1,16 @@
-### v 5.4 (WIP)
+### v 5.4
+- new: new app name "F|L|OSS Browser"
+- new: dark and light theme
+- new: startpage with all contents
 - new: full support for cookie whitelist
 - new: more options for fullscreen browsing
 - new: more options visibility Navigation Button
+- new: night mode only while browsing
+- updated: help dialog
+- removed: different light themes
+- fix: double entries in history
 - fix: toolbar does not work on start
+- fix: keyboard issues in some cases (thanks: element54)
 
 ### v 5.3.1
 - new: initial support for cookie whitelist (fast toggle)

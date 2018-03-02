@@ -137,7 +137,13 @@ public class NinjaWebView extends WebView implements AlbumController {
 
         setBackground(null);
         getRootView().setBackground(null);
-        setBackgroundColor(ContextCompat.getColor(context,R.color.light));
+
+        sp = PreferenceManager.getDefaultSharedPreferences(context);
+        if (sp.getBoolean("sp_darkUI", false)){
+            setBackgroundColor(ContextCompat.getColor(context,R.color.light));
+        } else {
+            setBackgroundColor(ContextCompat.getColor(context,R.color.colorPrimaryDark));
+        }
 
         setFocusable(true);
         setFocusableInTouchMode(true);

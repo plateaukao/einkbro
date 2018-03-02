@@ -4,7 +4,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@color/grey_900"
+    android:background="?attr/colorPrimaryDark"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
@@ -252,7 +252,7 @@
 
 
     <RelativeLayout
-        android:background="@color/grey_900"
+        android:background="?attr/colorPrimaryDark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -262,7 +262,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:background="@color/grey_900"
+            android:background="?attr/colorPrimaryDark"
             android:textColor="?attr/colorAccent"
             android:text="@string/app_ok"/>
 
@@ -270,7 +270,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toStartOf="@+id/action_ok"
-            android:background="@color/grey_900"
+            android:background="?attr/colorPrimaryDark"
             android:textColor="?attr/colorAccent"
             android:text="@string/setting_label"/>
 

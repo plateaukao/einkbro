@@ -139,7 +139,7 @@ public class SwitcherPanel extends ViewGroup {
         int windowHeight = ViewUnit.getWindowHeight(context);
         int statusBarHeight = ViewUnit.getStatusBarHeight(context);
 
-        coverHeight = windowHeight - statusBarHeight - dimen108dp - dimen16dp - dimen56dp;
+        coverHeight = windowHeight - statusBarHeight - dimen108dp - dimen16dp;
     }
 
     @Override

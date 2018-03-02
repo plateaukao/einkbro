@@ -30,7 +30,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.FileProvider;
@@ -112,59 +111,12 @@ public class helper_main {
 
     public static void setTheme (Context activity) {
 
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
-        String theme = sharedPref.getString("theme", "0");
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
 
-        switch (theme) {
-            case "0":
-                activity.setTheme(R.style.AppTheme);
-                break;
-            case "1":
-                activity.setTheme(R.style.AppTheme_blue);
-                break;
-            case "2":
-                activity.setTheme(R.style.AppTheme_pink);
-                break;
-            case "3":
-                activity.setTheme(R.style.AppTheme_purple);
-                break;
-            case "4":
-                activity.setTheme(R.style.AppTheme_teal);
-                break;
-            case "5":
-                activity.setTheme(R.style.AppTheme_red);
-                break;
-            case "6":
-                activity.setTheme(R.style.AppTheme_orange);
-                break;
-            case "7":
-                activity.setTheme(R.style.AppTheme_brown);
-                break;
-            case "8":
-                activity.setTheme(R.style.AppTheme_grey);
-                break;
-            case "9":
-                activity.setTheme(R.style.AppTheme_darkGrey);
-                break;
-        }
-    }
-
-    public static int colorAccent (Context context) {
-
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        sp.edit().putString("files_startFolder", Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath()).apply();
-
-        String theme = sp.getString("theme", "0");
-
-        switch (theme) {
-            case "5":case "6":case "8":
-                return R.color.colorAccent_grey;
-            case "7":
-                return R.color.colorAccent_brown;
-            case "9":
-                return R.color.light;
-            default:
-                return R.color.colorAccent;
+        if (sp.getBoolean("sp_darkUI", false)){
+            activity.setTheme(R.style.AppTheme);
+        } else {
+            activity.setTheme(R.style.AppTheme_dark);
         }
     }
 
