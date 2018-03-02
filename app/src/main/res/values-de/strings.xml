@@ -164,6 +164,12 @@
     <string name="setting_title_tab">Starttab</string>
     <string name="setting_summary_tab">Was soll beim Start von \"F|L|OSS Browser\" angezeigt werden? Die Startseite, deine Lesezeichen, …</string>
 
+    <string name="setting_title_confirm_exit">Bestätigung beim Verlassen</string>
+    <string name="setting_summary_confirm_exit">Bestätigungsdialog, bevor du \"F|L|OSS Browser\" beendest.</string>
+
+    <string name="setting_title_confirm_tab_close">Bestätigung Tab schließen</string>
+    <string name="setting_summary_confirm_tab_close">Bestätigungsdialog, bevor ein Tab geschlossen wird.</string>
+
     <string name="setting_title_toolbar">Toolbar</string>
     <string name="setting_hide_always">Immer verstecken</string>
     <string name="setting_hide_down">Nur beim runter scrollen</string>

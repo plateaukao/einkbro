@@ -44,9 +44,8 @@
 
     <string name="menu_title">Menu</string>
     <string name="menu_dialog">Share or save content, handle the current tab: just try all entries to see what is possible.
-        With the buttons on the top right you can switch to the previous/next site in your history. Clicking the
-        \"Circle button\" will open the Startpage in the current tab. The menu can be dismissed, like all other notifications,
-        by clicking back, clicking outside the menu or simply be swiping the menu down.</string>
+        With the buttons on the top right you can switch to the previous/next site in your history. The menu can be
+        dismissed, like all other notifications, by clicking back, clicking outside the menu or simply be swiping the menu down.</string>
 
     <string name="not_title">Notifications</string>
     <string name="not_dialog">Notifications are displayed on the bottom of the screen. They can also be dismissed like the
@@ -149,7 +148,8 @@
         &lt;i>https://github.com/futrDevelopment&lt;/i>&lt;br>&lt;br>
 
         &lt;b>element54&lt;/b>&lt;br>
-        Helped to solve issues with the keyboard (issue #105).&lt;br>
+        \u25AA fix: keyboard problems (Fehler #105).&lt;br>
+        \u25AA new: option to disable confirmation dialogs on exit&lt;br>
         &lt;i>https://github.com/element54&lt;/i>&lt;br>&lt;br>
 
         &lt;b>Jumping Yang&lt;/b>&lt;br>

@@ -77,7 +77,7 @@
                 android:visibility="gone"
                 app:backgroundTint="?attr/colorAccent"
                 app:fabSize="mini"
-                app:srcCompat="@drawable/icon_home"
+                app:srcCompat="@drawable/icon_earth_light"
                 tools:ignore="RelativeOverlap" />
 
             <android.support.design.widget.FloatingActionButton
@@ -90,7 +90,7 @@
                 android:visibility="gone"
                 app:backgroundTint="?attr/colorAccent"
                 app:fabSize="mini"
-                app:srcCompat="@drawable/icon_home"
+                app:srcCompat="@drawable/icon_earth_light"
                 tools:ignore="RelativeOverlap" />
 
             <android.support.design.widget.FloatingActionButton
@@ -103,7 +103,7 @@
                 android:visibility="gone"
                 app:backgroundTint="?attr/colorAccent"
                 app:fabSize="mini"
-                app:srcCompat="@drawable/icon_home"
+                app:srcCompat="@drawable/icon_earth_light"
                 tools:ignore="RelativeOverlap" />
 
         </RelativeLayout>

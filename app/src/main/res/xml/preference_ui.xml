@@ -25,7 +25,7 @@
 
     <CheckBoxPreference
         android:defaultValue="true"
-        android:icon="@drawable/icon_close"
+        android:icon="@drawable/icon_exit"
         android:key="sp_close_browser_confirm"
         android:title="@string/setting_title_confirm_exit"
         android:summary="@string/setting_summary_confirm_exit" />

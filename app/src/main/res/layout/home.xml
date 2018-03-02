@@ -109,7 +109,7 @@
                             android:background="@drawable/custom_button_dark"
                             android:contentDescription="@null"
                             android:foregroundGravity="center"
-                            android:src="@drawable/icon_home" />
+                            android:src="@drawable/icon_earth_light" />
 
                     </LinearLayout>
 

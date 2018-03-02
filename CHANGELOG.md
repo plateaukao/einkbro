@@ -1,4 +1,6 @@
 ### v 5.4.1
+- new: option to disable confirmation dialogs on exit (thanks: element54)
+- fix: dark background on some websites
 - fix: ok button on \"Fast toogle dialog\"
 - fix: toolbar not showing title
 - fix: back handling
