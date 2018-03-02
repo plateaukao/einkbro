@@ -4,14 +4,14 @@
 
     <item android:state_pressed="true" >
         <shape android:shape="oval">
-            <solid android:color="@color/shadow_light"/>
+            <solid android:color="@color/shadow_dark"/>
             <size android:width="150dp" android:height="150dp"/>
         </shape>
     </item>
 
     <item android:state_focused="true" >
         <shape android:shape="oval">
-            <solid android:color="@color/shadow_light"/>
+            <solid android:color="@color/shadow_dark"/>
             <size android:width="150dp" android:height="150dp"/>
         </shape>
     </item>

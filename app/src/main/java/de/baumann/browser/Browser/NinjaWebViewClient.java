@@ -70,6 +70,8 @@ public class NinjaWebViewClient extends WebViewClient {
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
         super.onPageStarted(view, url, favicon);
 
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+
         if (view.getTitle() == null || view.getTitle().isEmpty()) {
             ninjaWebView.update(context.getString(R.string.album_untitled), url);
         } else {
@@ -95,8 +97,17 @@ public class NinjaWebViewClient extends WebViewClient {
 
         if (sp.getBoolean("saveHistory", true)) {
             RecordAction action = new RecordAction(context);
+
             action.open(true);
-            action.addHistory(new Record(ninjaWebView.getTitle(), ninjaWebView.getUrl(), System.currentTimeMillis()));
+
+            if (action.checkHistory(url)) {
+                action.deleteHistoryOld(url);
+                action.addHistory(new Record(ninjaWebView.getTitle(), ninjaWebView.getUrl(), System.currentTimeMillis()));
+            } else {
+                action.addHistory(new Record(ninjaWebView.getTitle(), ninjaWebView.getUrl(), System.currentTimeMillis()));
+            }
+
+
             action.close();
         }
 

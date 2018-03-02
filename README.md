@@ -1,4 +1,6 @@
-# Browser
+# F(L)OSS Browser
+
+"F(L)OSS Browser" is fully free/libre (as in freedom) Android app. The source code is public on Github. The app also does not need any unnecessary permissions.
 
 A simple Android browser based on webview. The base is "Ninja" (https://github.com/mthli/Ninja).
 The intention is to provide a simple and light wight but powerful browser with a nice looking user interface.
@@ -17,9 +19,10 @@ The intention is to provide a simple and light wight but powerful browser with a
 
 ### Security/Data:
 
-- enable/disable cookies, javascript, location access
+- no unnecessary permissions
+- enable/disable cookies, javascript, location access, history
 - save login data in separate, encrypted database
-- whitelist for javascript and AdBlocker
+- whitelist for javascript, cookies and AdBlocker
 - toggle image loading
 - backup data
 - AdBlocker
@@ -44,3 +47,4 @@ The intention is to provide a simple and light wight but powerful browser with a
 - Websearch (from marked text context menu)
 - screenshots of the whole website
 - build in file browser (open, share, delete files)
+- open links in other apps (for example YouTube)

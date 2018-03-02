@@ -6,9 +6,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
-import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 
 import de.baumann.browser.Activity.BrowserActivity;
@@ -35,30 +33,11 @@ public class NotificationUnit {
             builder = new Notification.Builder(context);
         }
 
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-
-        String theme = sp.getString("theme", "0");
-        int color;
-
-        switch (theme) {
-            case "5":case "6":case "8":
-                color = ContextCompat.getColor(context,R.color.colorAccent_grey);
-                break;
-            case "7":
-                color = ContextCompat.getColor(context,R.color.colorAccent_brown);
-                break;
-            case "9":
-                color = ContextCompat.getColor(context,R.color.colorAccent_darkGrey);
-                break;
-            default:
-                color = ContextCompat.getColor(context,R.color.colorAccent);
-        }
-
         builder.setCategory(Notification.CATEGORY_MESSAGE);
         builder.setSmallIcon(R.drawable.ic_notification_ninja);
         builder.setContentTitle(context.getString(R.string.notification_content_holderTitle));
         builder.setContentText(context.getString(R.string.notification_content_holder));
-        builder.setColor(color);
+        builder.setColor(ContextCompat.getColor(context,R.color.colorAccent));
         builder.setAutoCancel(true);
         builder.setPriority(Notification.PRIORITY_HIGH);
         builder.setVibrate(new long[0]);

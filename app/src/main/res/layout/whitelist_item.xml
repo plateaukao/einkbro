@@ -12,7 +12,7 @@
                  android:layout_alignParentEnd="true"
                  android:layout_margin="@dimen/layout_margin_8dp"
                  android:src="@drawable/ic_action_close_red"
-                 android:background="@drawable/custom_button"/>
+                 android:background="@drawable/custom_button_light"/>
 
     <TextView android:id="@+id/whitelist_item_domain"
               android:layout_width="match_parent"

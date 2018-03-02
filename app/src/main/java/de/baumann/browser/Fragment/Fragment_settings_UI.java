@@ -38,7 +38,7 @@ public class Fragment_settings_UI extends PreferenceFragment implements SharedPr
             sp.edit().putInt("sp_buttonNav_changed", 1).apply();
         }
 
-        if (key.equals("sp_exit") || key.equals("sp_toggle") || key.equals("sp_add") || key.equals("theme")
+        if (key.equals("sp_exit") || key.equals("sp_toggle") || key.equals("sp_add") || key.equals("sp_darkUI")
                 || key.equals("nav_position")  || key.equals("sp_hideOmni") || key.equals("start_tab")) {
 
             final BottomSheetDialog dialog = new BottomSheetDialog(getActivity());

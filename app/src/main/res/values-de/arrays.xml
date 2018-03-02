@@ -11,30 +11,5 @@
 
 
     <!-- Rendering -->
-    <string-array name="listArrayTheme">
-        <item>Grün (grün|orange)</item>
-        <item>Blau (blau|orange)</item>
-        <item>Pink (pink|orange)</item>
-        <item>Lila (lila|orange)</item>
-        <item>Teal (teal|orange)</item>
-        <item>Rot (rot|blau)</item>
-        <item>Orange (orange|blau)</item>
-        <item>Braun (braun|grün)</item>
-        <item>Grau (grau|blau)</item>
-        <item>Dunkel (grau|grau)</item>
-    </string-array>
-
-    <string-array name="listValuesTheme">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
-        <item>7</item>
-        <item>8</item>
-        <item>9</item>
-    </string-array>
 
 </resources>

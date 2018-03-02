@@ -3,7 +3,7 @@
 <resources>
 
     <!-- App -->
-    <string name="app_name">Browser</string>
+    <string name="app_name">F|L|OSS Browser</string>
     <string name="app_ok">OK</string>
     <string name="app_cancel">Batalkan</string>
     <string name="list_empty">List Kosong</string>
@@ -12,7 +12,7 @@
     <string name="album_title_home">Beranda</string>
     <string name="album_title_files">File</string>
     <string name="album_title_pass">Data Masuk</string>
-    <string name="album_untitled">Tanpa Judul</string>
+    <string name="album_untitled"> </string>
     <string name="notification_content_holder">Klik untuk Lihat Halaman</string>
     <string name="search_hint">Cari</string>
 
@@ -23,7 +23,6 @@
     <string name="main_menu_copy_link">Salin Tautan</string>
     <string name="main_menu_save">Simpan</string>
     <string name="main_omnibox_input_hint">Cari atau ketik URL</string>
-    <string name="main_about_blank"> </string>
 
     <string name="menu_share">Bagi</string>
     <string name="menu_other">Lainnya</string>
@@ -139,18 +138,9 @@
     biarkan mode layar penuh.</string>
     <string name="setting_title_omnibox_control">Kontrol Omnibox</string>
     <string name="setting_summary_omnibox_control">Gesek omnibox ke kiri / kanan untuk beralih tab.</string>
-    <string name="setting_title_exit">Keluar</string>
-    <string name="setting_summary_exit">Tekan lama tombol \ "Reload \" (dibiarkan di toolbar) untuk keluar dari
-        aplikasi.</string>
     <string name="setting_title_background">Buka Tautan</string>
     <string name="setting_summary_background">Tampilkan pemberitahuan dan buka tautan di latar belakang. Jika tautan yang dinonaktifkan akan terbuka
     segera.</string>
-    <string name="setting_title_longClick">Tindakan Longclick</string>
-    <string name="setting_title_toggle">Toggle dialog</string>
-    <string name="setting_summary_toggle">Longpress \ "tombol Overflow \" (tepat di toolbar) untuk menunjukkan \ "Toggle
-    dialog \ "untuk pengaturan browser yang cepat berubah.</string>
-    <string name="setting_title_theme">Tema warna</string>
-    <string name="setting_summary_theme">Anda tidak suka tema hijau? Ubah saja!</string>
 
 
     <!-- Data -->
@@ -170,9 +160,9 @@
     <!-- Others setting -->
     <string name="setting_title_others">Lainnya</string>
     <string name="setting_title_license">Lisensi</string>
-    <string name="setting_summary_license">\"Browser\" benar-benar gratis (seperti dalam kebebasan) dan Open Source.</string>
+    <string name="setting_summary_license">\"F|L|OSS Browser\" benar-benar gratis (seperti dalam kebebasan) dan Open Source.</string>
     <string name="setting_title_appSettings">Setelan Aplikasi</string>
-    <string name="setting_summary_appSettings">Buka pengaturan sistem aplikasi untuk \ "Browser \". Di sana Anda bisa,
+    <string name="setting_summary_appSettings">Buka pengaturan sistem aplikasi untuk \"F|L|OSS Browser\". Di sana Anda bisa,
         tergantung pada izin hibah versi Android Anda, hapus data aplikasi dan sebagainya.</string>
     <string name="setting_title_community">Berkontribusi</string>
     <string name="setting_summary_community">Lihat siapa yang menyumbangkan sesuatu untuk proyek ini. Atau apakah Anda ingin membantu lebih jauh?
@@ -217,14 +207,14 @@
     <string name="toast_entry_exists">Entri sudah ada.</string>
     <string name="toast_clear">Anda benar-benar ingin menghapus?</string>
     <string name="toast_permission_title">Izin diperlukan</string>
-    <string name="toast_permission_sdCard">\"Browser\" memerlukan izin untuk \"membaca dan menulis di penyimpanan Anda\". Ini diperlukan untuk
+    <string name="toast_permission_sdCard">\"F|L|OSS Browser\" memerlukan izin untuk \"membaca dan menulis di penyimpanan Anda\". Ini diperlukan untuk
     mendownload file, membangun di file manager dan mengambil screenshot. Jika Anda belum memberikan izin, Anda dapat melakukannya
     nanti di pengaturan.</string>
     <string name="toast_permission_sdCard_sec">Mohon berikan izin untuk \"membaca dan menulis di penyimpanan Anda\" di pengaturannya.</string>
-    <string name="toast_permission_loc">\"Browser\" memerlukan izin untuk \ "mengakses lokasi Anda \"Ini diminta dari beberapa
+    <string name="toast_permission_loc">\"F|L|OSS Browser\" memerlukan izin untuk \ "mengakses lokasi Anda \"Ini diminta dari beberapa
         situs web misalnya saat mereka menawarkan beberapa jenis navigasi. Jika Anda belum memberikan izin, Anda dapat melakukannya
     nanti di pengaturan.</string>
-    <string name="toast_restart">Anda harus me-restart \ "Browser \" untuk menerapkan perubahan. Tutup sekarang?</string>
+    <string name="toast_restart">Anda harus me-restart \"F|L|OSS Browser\" untuk menerapkan perubahan. Tutup sekarang?</string>
 
 
     <!-- Whitelist -->
