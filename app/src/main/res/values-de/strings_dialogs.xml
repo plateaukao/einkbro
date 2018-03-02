@@ -48,9 +48,8 @@
     <string name="menu_title">Menü</string>
     <string name="menu_dialog">Teile oder speichere Inhalte, Tabs öffnen oder schließen: probiere einfach die einzelnen Einträge aus
         und finde heraus, was möglich ist. Mit den Knöpfen oben rechts im Menü kannst eine Seite in deinem Verlauf
-        zurück/vor. Wenn du den Knopf mit dem Kreis anklickst, öffnest du im selben Tab die Startseite. Menüs können, genauso
-        wie alle anderen Einblendungen, geschlossen werden, indem du zurück klickst, außerhalb des Menüs klickst oder das Menü
-        einfach nach unten wischst.</string>
+        zurück/vor. Menüs können, genauso wie alle anderen Einblendungen, geschlossen werden, indem du zurück klickst,
+        außerhalb des Menüs klickst oder das Menü einfach nach unten wischst.</string>
 
     <string name="not_title">Benachrichtigungen</string>
     <string name="not_dialog">Benachrichtigungen werden ebenfalls am unteren Rand des Bildschirms angezeigt. Sie können
@@ -148,7 +147,8 @@
         &lt;i>https://github.com/futrDevelopment&lt;/i>&lt;br>&lt;br>
 
         &lt;b>element54&lt;/b>&lt;br>
-        Hat geholfen Probleme mit der Tastatur zu behen (Fehler #105).&lt;br>
+        \u25AA behoben: Probleme mit der Tastatur (Fehler #105).&lt;br>
+        \u25AA neu: Option Bestätigungsdialoge beim Verlassen zu deaktivieren.&lt;br>
         &lt;i>https://github.com/element54&lt;/i>&lt;br>&lt;br>
 
         &lt;b>Jumping Yang&lt;/b>&lt;br>
