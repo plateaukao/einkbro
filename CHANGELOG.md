@@ -1,3 +1,8 @@
+### v 5.4.1
+- fix: ok button on \"Fast toogle dialog\"
+- fix: toolbar not showing title
+- fix: back handling
+
 ### v 5.4
 - new: new app name "F|L|OSS Browser"
 - new: dark and light theme
