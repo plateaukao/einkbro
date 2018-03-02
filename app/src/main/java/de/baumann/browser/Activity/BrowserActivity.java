@@ -41,7 +41,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.CardView;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -760,15 +759,14 @@ public class BrowserActivity extends Activity implements BrowserController, View
             // Menu overflow
 
             case R.id.web_home:
-                bottomSheetDialog.cancel();
-
-                if (currentAlbumController == null || BrowserContainer.size() <= 1) {
+                if (BrowserContainer.size() <= 1) {
                     removeAlbum(currentAlbumController);
+                    bottomSheetDialog.cancel();
                 } else {
                     removeAlbum(currentAlbumController);
                     addAlbum(start_tab);
+                    bottomSheetDialog.cancel();
                 }
-
                 break;
 
             case R.id.web_prev:
@@ -2403,9 +2401,8 @@ public class BrowserActivity extends Activity implements BrowserController, View
                     String url = ninjaWebView.getUrl();
                     addAlbum(getString(R.string.album_untitled), url, true, null);
                     removeAlbum(currentAlbumController);
+                    bottomSheetDialog.cancel();
                 }
-
-                bottomSheetDialog.cancel();
             }
         });
 
@@ -2723,95 +2720,32 @@ public class BrowserActivity extends Activity implements BrowserController, View
         }
     }
 
-    private void closeTabConfirmation(final AlbumController controller, final Runnable okAction) {
-        if(!sp.getBoolean("sp_close_tab_confirm", true)) {
-            okAction.run();
-        } else {
-            bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
-            View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_action, null);
-            TextView textView = dialogView.findViewById(R.id.dialog_text);
-            textView.setText(R.string.toast_close_tab);
-            Button action_ok = dialogView.findViewById(R.id.action_ok);
-            action_ok.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    okAction.run();
-                    bottomSheetDialog.cancel();
-                }
-            });
-            Button action_cancel = dialogView.findViewById(R.id.action_cancel);
-            action_cancel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (switcherPanel.getStatus() != SwitcherPanel.Status.EXPANDED) {
-                        switcherPanel.expanded();
-                    }
-                    bottomSheetDialog.cancel();
-                }
-            });
-            bottomSheetDialog.setContentView(dialogView);
-            bottomSheetDialog.show();
-        }
-    }
-
     @Override
     public synchronized void removeAlbum(final AlbumController controller) {
         if (currentAlbumController == null || BrowserContainer.size() <= 1) {
-            if (currentAlbumController instanceof NinjaWebView) {
-                closeTabConfirmation(controller, new Runnable() {
-                    @Override
-                    public void run() {
-                        switcherContainer.removeView(controller.getAlbumView());
-                        BrowserContainer.remove(controller);
-                        addAlbum(start_tab);
-                    }
-                });
+
+            if (currentAlbumController != null && currentAlbumController instanceof NinjaWebView) {
+                switcherContainer.removeView(controller.getAlbumView());
+                BrowserContainer.remove(controller);
+                addAlbum(start_tab);
             } else {
                 doubleTapsQuit();
             }
-
             return;
         }
 
         if (controller != currentAlbumController) {
-
-            if (currentAlbumController instanceof NinjaWebView) {
-                closeTabConfirmation(controller, new Runnable() {
-                    @Override
-                    public void run() {
-                        switcherContainer.removeView(controller.getAlbumView());
-                        BrowserContainer.remove(controller);
-                    }
-                });
-            } else {
-                switcherContainer.removeView(controller.getAlbumView());
-                BrowserContainer.remove(controller);
-            }
+            switcherContainer.removeView(controller.getAlbumView());
+            BrowserContainer.remove(controller);
 
         } else {
-
-            if (currentAlbumController instanceof NinjaWebView) {
-                closeTabConfirmation(controller, new Runnable() {
-                    @Override
-                    public void run() {
-                        switcherContainer.removeView(controller.getAlbumView());
-                        int index = BrowserContainer.indexOf(controller);
-                        BrowserContainer.remove(controller);
-                        if (index >= BrowserContainer.size()) {
-                            index = BrowserContainer.size() - 1;
-                        }
-                        showAlbum(BrowserContainer.get(index), false, false);
-                    }
-                });
-            } else {
-                switcherContainer.removeView(controller.getAlbumView());
-                int index = BrowserContainer.indexOf(controller);
-                BrowserContainer.remove(controller);
-                if (index >= BrowserContainer.size()) {
-                    index = BrowserContainer.size() - 1;
-                }
-                showAlbum(BrowserContainer.get(index), false, false);
+            switcherContainer.removeView(controller.getAlbumView());
+            int index = BrowserContainer.indexOf(controller);
+            BrowserContainer.remove(controller);
+            if (index >= BrowserContainer.size()) {
+                index = BrowserContainer.size() - 1;
             }
+            showAlbum(BrowserContainer.get(index), false, false);
         }
         showOmnibox();
     }
@@ -2819,6 +2753,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
     private void updateOmnibox() {
 
         initRendering(contentFrame);
+        omniboxTitle.setText(currentAlbumController.getAlbumTitle());
 
         if (currentAlbumController == null) {
             return;
@@ -3153,33 +3088,29 @@ public class BrowserActivity extends Activity implements BrowserController, View
     }
 
     private void doubleTapsQuit() {
-        if(!sp.getBoolean("sp_close_browser_confirm", true)) {
-            finish();
-        } else {
-            bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
-            View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_action, null);
-            TextView textView = dialogView.findViewById(R.id.dialog_text);
-            textView.setText(R.string.toast_quit);
-            Button action_ok = dialogView.findViewById(R.id.action_ok);
-            action_ok.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    finish();
+        bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
+        View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_action, null);
+        TextView textView = dialogView.findViewById(R.id.dialog_text);
+        textView.setText(R.string.toast_quit);
+        Button action_ok = dialogView.findViewById(R.id.action_ok);
+        action_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+        Button action_cancel = dialogView.findViewById(R.id.action_cancel);
+        action_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bottomSheetDialog.cancel();
+                if (switcherPanel.getStatus() != SwitcherPanel.Status.EXPANDED) {
+                    switcherPanel.expanded();
                 }
-            });
-            Button action_cancel = dialogView.findViewById(R.id.action_cancel);
-            action_cancel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    bottomSheetDialog.cancel();
-                    if (switcherPanel.getStatus() != SwitcherPanel.Status.EXPANDED) {
-                        switcherPanel.expanded();
-                    }
-                }
-            });
-            bottomSheetDialog.setContentView(dialogView);
-            bottomSheetDialog.show();
-        }
+            }
+        });
+        bottomSheetDialog.setContentView(dialogView);
+        bottomSheetDialog.show();
     }
 
     private void doubleTapsHide() {

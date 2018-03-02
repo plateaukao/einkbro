@@ -135,21 +135,8 @@ public class NinjaWebView extends WebView implements AlbumController {
         setWillNotCacheDrawing(false);
         setSaveEnabled(true);
 
-        setBackground(null);
-        getRootView().setBackground(null);
-
-        sp = PreferenceManager.getDefaultSharedPreferences(context);
-        if (sp.getBoolean("sp_darkUI", false)){
-            setBackgroundColor(ContextCompat.getColor(context,R.color.light));
-        } else {
-            setBackgroundColor(ContextCompat.getColor(context,R.color.colorPrimaryDark));
-        }
-
         setFocusable(true);
         setFocusableInTouchMode(true);
-        setHorizontalScrollBarEnabled(false);
-        setVerticalScrollBarEnabled(false);
-        setScrollbarFadingEnabled(true);
 
         setWebViewClient(webViewClient);
         setWebChromeClient(webChromeClient);
@@ -359,10 +346,6 @@ public class NinjaWebView extends WebView implements AlbumController {
 
         setAlbumCover(ViewUnit.capture(this, dimen144dp, dimen108dp, Bitmap.Config.RGB_565));
         if (isLoadFinish()) {
-            setHorizontalScrollBarEnabled(true);
-            setVerticalScrollBarEnabled(true);
-            setScrollbarFadingEnabled(true);
-
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
