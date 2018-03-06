@@ -46,7 +46,6 @@ import de.baumann.browser.View.NinjaToast;
 
 public class BrowserUnit {
     public static final int PROGRESS_MAX = 100;
-    public static final int PROGRESS_MIN = 0;
     private static final String SUFFIX_HTML = ".html";
     public static final String SUFFIX_PNG = ".png";
     private static final String SUFFIX_TXT = ".txt";
@@ -292,72 +291,6 @@ public class BrowserUnit {
         }
     }
 
-    public static String exportWhitelist(Context context) {
-        RecordAction action = new RecordAction(context);
-        action.open(false);
-        List<String> list = action.listDomains();
-        action.close();
-
-        String filename = context.getString(R.string.export_whitelistAdBlock);
-        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "browser_backup//" + filename + SUFFIX_TXT);
-
-        try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(file, false));
-            for (String domain : list) {
-                writer.write(domain);
-                writer.newLine();
-            }
-            writer.close();
-            return file.getAbsolutePath();
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    public static String exportWhitelistJS(Context context) {
-        RecordAction action = new RecordAction(context);
-        action.open(false);
-        List<String> list = action.listDomainsJS();
-        action.close();
-
-        String filename = context.getString(R.string.export_whitelistJS);
-        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "browser_backup//" + filename + SUFFIX_TXT);
-
-        try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(file, false));
-            for (String domain : list) {
-                writer.write(domain);
-                writer.newLine();
-            }
-            writer.close();
-            return file.getAbsolutePath();
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    public static String exportWhitelistCookie(Context context) {
-        RecordAction action = new RecordAction(context);
-        action.open(false);
-        List<String> list = action.listDomainsCookie();
-        action.close();
-
-        String filename = context.getString(R.string.export_whitelistCookie);
-        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "browser_backup//" + filename + SUFFIX_TXT);
-
-        try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(file, false));
-            for (String domain : list) {
-                writer.write(domain);
-                writer.newLine();
-            }
-            writer.close();
-            return file.getAbsolutePath();
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
     public static int importBookmarks(Context context) {
 
         String filename = context.getString(R.string.export_bookmarks);
@@ -409,6 +342,41 @@ public class BrowserUnit {
         }
 
         return list.size();
+    }
+
+    public static String exportWhitelist(Context context, int i) {
+        RecordAction action = new RecordAction(context);
+        List<String> list;
+        String filename;
+
+        action.open(false);
+
+        if (i == 0) {
+            list = action.listDomains();
+            filename = context.getString(R.string.export_whitelistAdBlock);
+        } else if (i == 1) {
+            list = action.listDomainsJS();
+            filename = context.getString(R.string.export_whitelistJS);
+        } else {
+            list = action.listDomainsCookie();
+            filename = context.getString(R.string.export_whitelistCookie);
+        }
+
+        action.close();
+
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "browser_backup//" + filename + SUFFIX_TXT);
+
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file, false));
+            for (String domain : list) {
+                writer.write(domain);
+                writer.newLine();
+            }
+            writer.close();
+            return file.getAbsolutePath();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public static int importWhitelist(Context context) {
@@ -534,7 +502,7 @@ public class BrowserUnit {
         WebViewDatabase.getInstance(context).clearHttpAuthUsernamePassword();
     }
 
-    private static boolean deleteDir(File dir) {
+    public static boolean deleteDir(File dir) {
         if (dir != null && dir.isDirectory()) {
             String[] children = dir.list();
             for (String aChildren : children) {
@@ -560,7 +528,6 @@ public class BrowserUnit {
                 return string.substring(6, string.length() - 1); // Remove href=\" and \"
             }
         }
-
         return "";
     }
 }

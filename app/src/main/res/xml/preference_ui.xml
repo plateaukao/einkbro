@@ -14,15 +14,6 @@
         android:title="@string/setting_title_themeDark"
         android:summary="@string/setting_summary_themeDark"/>
 
-    <ListPreference
-        android:title="@string/setting_title_tab"
-        android:icon="@drawable/icon_tab_plus"
-        android:summary="@string/setting_summary_tab"
-        android:key="start_tab"
-        android:defaultValue="0"
-        android:entries="@array/setting_entries_tab"
-        android:entryValues="@array/setting_values_tab" />
-
     <CheckBoxPreference
         android:defaultValue="true"
         android:icon="@drawable/icon_exit"
@@ -36,6 +27,16 @@
         android:key="sp_close_tab_confirm"
         android:title="@string/setting_title_confirm_tab_close"
         android:summary="@string/setting_summary_confirm_tab_close" />
+
+    <ListPreference
+        android:title="@string/setting_title_tab"
+        android:icon="@drawable/icon_tab_plus"
+        android:summary="@string/setting_summary_tab"
+        android:key="start_tab"
+        android:defaultValue="0"
+        android:entries="@array/setting_entries_tab"
+        android:entryValues="@array/setting_values_tab" />
+
     <PreferenceCategory android:title="@string/setting_title_toolbar">
 
         <CheckBoxPreference android:key="@string/sp_omnibox_control"

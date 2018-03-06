@@ -16,7 +16,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
-import de.baumann.browser.Fragment.ClearFragment;
+import de.baumann.browser.Fragment.Fragment_clear;
 import de.baumann.browser.Ninja.R;
 import de.baumann.browser.Unit.BrowserUnit;
 import de.baumann.browser.View.NinjaToast;
@@ -36,7 +36,7 @@ public class Settings_ClearActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        getFragmentManager().beginTransaction().replace(R.id.content_frame, new ClearFragment()).commit();
+        getFragmentManager().beginTransaction().replace(R.id.content_frame, new Fragment_clear()).commit();
     }
 
     @Override

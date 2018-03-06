@@ -14,12 +14,12 @@ import de.baumann.browser.Unit.BrowserUnit;
 import de.baumann.browser.View.NinjaToast;
 
 @SuppressLint("StaticFieldLeak")
-public class ImportWhitelistTaskJS extends AsyncTask<Void, Void, Boolean> {
+public class ImportWhitelistJSTask extends AsyncTask<Void, Void, Boolean> {
     private final Context context;
     private BottomSheetDialog dialog;
     private int count;
 
-    public ImportWhitelistTaskJS(Activity activity) {
+    public ImportWhitelistJSTask(Activity activity) {
         this.context = activity;
         this.dialog = null;
         this.count = 0;

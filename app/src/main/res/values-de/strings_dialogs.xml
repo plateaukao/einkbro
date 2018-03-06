@@ -87,11 +87,6 @@
         Roman Nurik&lt;br>
         &lt;i>http://git.io/vUruO&lt;/i>&lt;br>&lt;br>
 
-        &lt;b>android-ago&lt;/b>&lt;br>
-        Apache License Version 2.0&lt;br>
-        Kiran Rao&lt;br>
-        &lt;i>http://git.io/vUrum&lt;/i>&lt;br>&lt;br>
-
         &lt;b>DynamicGrid&lt;/b>&lt;br>
         Apache License Version 2.0&lt;br>
         askerov&lt;br>
@@ -123,7 +118,9 @@
         &lt;i>https://github.com/hummatli/SimpleEncryptionLib</string>
 
     <string name="cont_dialog">
-        &lt;i>Auf den folgenden Internetseiten bekommst du weitere Informationen über \"F|L|OSS Browser\":&lt;/i>&lt;br>&lt;br>
+        &lt;i>Zuerst möchte ich allen Nutzern danken, die auf irgendeine Weise an diesem Projekt beteiligt sind. Sie helfen
+        Fehler zu finden, übersetzen oder haben auf eine andere Art einen Beitrag geleistet. Auf den
+        folgenden Internetseiten kannst du Mitglied dieser Gemeinschaft werden:&lt;/i>&lt;br>&lt;br>
 
         &lt;b>XDA-Thread:&lt;/b>&lt;br>
         XDA ist eine großartige Gemeinschaft für Entwickler und Smartphoneentusiasten. Hier kannst du Fehler melden, nach neuen
@@ -136,7 +133,7 @@
         &lt;i>https://github.com/scoute-dich/browser&lt;/i>&lt;br>&lt;br>&lt;br>
 
 
-        &lt;i>Bis jetzt sind folgende Personen an dem Projekt beteiligt:&lt;/i>&lt;br>&lt;br>
+        &lt;i>Bis jetzt sind folgende Personen an dem Projekt beteiligt. Wenn ich jemanden vergessen habe, bitte melden:&lt;/i>&lt;br>&lt;br>
 
         &lt;b>Gaukler Faun&lt;/b>&lt;br>
         Hauptentwickler und Gründer des Projekts.&lt;br>

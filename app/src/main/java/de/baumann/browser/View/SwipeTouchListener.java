@@ -1,4 +1,4 @@
-package de.baumann.browser.Activity;
+package de.baumann.browser.View;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -9,11 +9,11 @@ import android.view.View.OnTouchListener;
 
 
 @SuppressWarnings("WeakerAccess")
-public class OnSwipeTouchListener implements OnTouchListener {
+public class SwipeTouchListener implements OnTouchListener {
 
     private final GestureDetector gestureDetector;
 
-    public OnSwipeTouchListener(Context ctx){
+    public SwipeTouchListener(Context ctx){
         gestureDetector = new GestureDetector(ctx, new GestureListener());
     }
 

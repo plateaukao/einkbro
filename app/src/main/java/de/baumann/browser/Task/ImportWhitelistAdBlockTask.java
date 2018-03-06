@@ -1,6 +1,7 @@
 package de.baumann.browser.Task;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.design.widget.BottomSheetDialog;
@@ -13,15 +14,15 @@ import de.baumann.browser.Unit.BrowserUnit;
 import de.baumann.browser.View.NinjaToast;
 
 @SuppressLint("StaticFieldLeak")
-public class ExportWhitelistTask extends AsyncTask<Void, Void, Boolean> {
+public class ImportWhitelistAdBlockTask extends AsyncTask<Void, Void, Boolean> {
     private final Context context;
     private BottomSheetDialog dialog;
-    private String path;
+    private int count;
 
-    public ExportWhitelistTask(Context context) {
-        this.context = context;
+    public ImportWhitelistAdBlockTask(Activity activity) {
+        this.context = activity;
         this.dialog = null;
-        this.path = null;
+        this.count = 0;
     }
 
     @Override
@@ -38,8 +39,8 @@ public class ExportWhitelistTask extends AsyncTask<Void, Void, Boolean> {
 
     @Override
     protected Boolean doInBackground(Void... params) {
-        path = BrowserUnit.exportWhitelist(context);
-        return !isCancelled() && path != null && !path.isEmpty();
+        count = BrowserUnit.importWhitelist(context);
+        return !isCancelled() && count >= 0;
     }
 
     @Override
@@ -48,9 +49,9 @@ public class ExportWhitelistTask extends AsyncTask<Void, Void, Boolean> {
         dialog.dismiss();
 
         if (result) {
-            NinjaToast.show(context, context.getString(R.string.toast_export_successful) + path);
+            NinjaToast.show(context, context.getString(R.string.toast_import_successful) + count);
         } else {
-            NinjaToast.show(context, R.string.toast_export_failed);
+            NinjaToast.show(context, R.string.toast_import_failed);
         }
     }
 }

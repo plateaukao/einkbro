@@ -16,29 +16,16 @@ import de.baumann.browser.Ninja.R;
 import de.baumann.browser.Unit.BrowserUnit;
 
 public class SearchEngineListPreference extends ListPreference {
-    public SearchEngineListPreference(Context context) {
-        super(context);
-    }
 
     public SearchEngineListPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
-    }
-
-    @SuppressWarnings("New API")
-    public SearchEngineListPreference(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-    }
-
-    @SuppressWarnings("New API")
-    public SearchEngineListPreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
     }
 
     @Override
     protected void onPrepareDialogBuilder(AlertDialog.Builder builder) {
         super.onPrepareDialogBuilder(builder);
 
-        builder.setNeutralButton(R.string.dialog_button_custom, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.dialog_button_custom, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 showEditDialog();

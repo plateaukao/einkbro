@@ -63,9 +63,7 @@ public class DynamicGridView extends GridView {
     private int mScrollState = OnScrollListener.SCROLL_STATE_IDLE;
 
     private boolean mIsEditMode = false;
-    private final List<ObjectAnimator> mWobbleAnimators = new LinkedList<>();
     private boolean mReorderAnimation;
-    private final boolean mWobbleInEditMode = true;
     private final boolean mIsEditModeEnabled = true;
 
     private OnScrollListener mUserScrollListener;
@@ -119,8 +117,6 @@ public class DynamicGridView extends GridView {
         if (!mIsEditModeEnabled)
             return;
         requestDisallowInterceptTouchEvent(true);
-        if (mWobbleInEditMode)
-            startWobbleAnimation();
         if (position != -1) {
             startDragAtPosition(position);
         }
@@ -130,84 +126,19 @@ public class DynamicGridView extends GridView {
     public void stopEditMode() {
         mIsEditMode = false;
         requestDisallowInterceptTouchEvent(false);
-        if (mWobbleInEditMode)
-            stopWobble(true);
     }
 
     public boolean isEditMode() {
         return mIsEditMode;
     }
 
-    private void startWobbleAnimation() {
-        for (int i = 0; i < getChildCount(); i++) {
-            View v = getChildAt(i);
-            if (v != null && Boolean.TRUE != v.getTag(R.id.dgv_wobble_tag)) {
-                if (i % 2 == 0)
-                    animateWobble(v);
-                else
-                    animateWobbleInverse(v);
-                v.setTag(R.id.dgv_wobble_tag, true);
-            }
-        }
-    }
-
-    private void stopWobble(boolean resetRotation) {
-        for (Animator wobbleAnimator : mWobbleAnimators) {
-            wobbleAnimator.cancel();
-        }
-        mWobbleAnimators.clear();
-        for (int i = 0; i < getChildCount(); i++) {
-            View v = getChildAt(i);
-            if (v != null) {
-                if (resetRotation) v.setRotation(0);
-                v.setTag(R.id.dgv_wobble_tag, false);
-            }
-        }
-    }
-
-    private void restartWobble() {
-        stopWobble(false);
-        startWobbleAnimation();
-    }
 
     public void init(Context context) {
         super.setOnScrollListener(mScrollListener);
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         mSmoothScrollAmountAtEdge = (int) (SMOOTH_SCROLL_AMOUNT_AT_EDGE * metrics.density + 0.5f);
-        mOverlapIfSwitchStraightLine = getResources().getDimensionPixelSize(R.dimen.dgv_overlap_if_switch_straight_line);
+        mOverlapIfSwitchStraightLine = getResources().getDimensionPixelSize(R.dimen.layout_margin_16dp);
     }
-
-    private void animateWobble(View v) {
-        ObjectAnimator animator = createBaseWobble(v);
-        animator.setFloatValues(-2, 2);
-        animator.start();
-        mWobbleAnimators.add(animator);
-    }
-
-    private void animateWobbleInverse(View v) {
-        ObjectAnimator animator = createBaseWobble(v);
-        animator.setFloatValues(2, -2);
-        animator.start();
-        mWobbleAnimators.add(animator);
-    }
-
-    private ObjectAnimator createBaseWobble(final View v) {
-
-        ObjectAnimator animator = new ObjectAnimator();
-        animator.setDuration(180);
-        animator.setRepeatMode(ValueAnimator.REVERSE);
-        animator.setRepeatCount(ValueAnimator.INFINITE);
-        animator.setPropertyName("rotation");
-        animator.setTarget(v);
-        animator.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                v.setLayerType(LAYER_TYPE_NONE, null);
-            }
-        });
-        return animator;
-    }
-
 
     private void reorderElements(int originalPosition, int targetPosition) {
         if (mDragListener != null)
@@ -456,13 +387,6 @@ public class DynamicGridView extends GridView {
         mMobileItemId = INVALID_ID;
         mobileView.setVisibility(View.VISIBLE);
         mHoverCell = null;
-        if (mWobbleInEditMode) {
-            if (mIsEditMode) {
-                restartWobble();
-            } else{
-                stopWobble(true);
-            }
-        }
         //ugly fix for unclear disappearing items after reorder
         for (int i = 0; i < getLastVisiblePosition() - getFirstVisiblePosition(); i++) {
             View child = getChildAt(i);
@@ -752,31 +676,8 @@ public class DynamicGridView extends GridView {
 
             mPreviousFirstVisibleItem = mCurrentFirstVisibleItem;
             mPreviousVisibleItemCount = mCurrentVisibleItemCount;
-            if (mWobbleInEditMode) {
-                updateWobbleState(visibleItemCount);
-            }
             if (mUserScrollListener != null) {
                 mUserScrollListener.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
-            }
-        }
-
-        private void updateWobbleState(int visibleItemCount) {
-            for (int i = 0; i < visibleItemCount; i++) {
-                View child = getChildAt(i);
-
-                if (child != null) {
-                    if (mMobileItemId != INVALID_ID && Boolean.TRUE != child.getTag(R.id.dgv_wobble_tag)) {
-                        if (i % 2 == 0)
-                            animateWobble(child);
-                        else
-                            animateWobbleInverse(child);
-                        child.setTag(R.id.dgv_wobble_tag, true);
-                    } else if (mMobileItemId == INVALID_ID && child.getRotation() != 0) {
-                        child.setRotation(0);
-                        child.setTag(R.id.dgv_wobble_tag, false);
-                    }
-                }
-
             }
         }
 

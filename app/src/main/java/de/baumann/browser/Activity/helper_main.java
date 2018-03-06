@@ -134,7 +134,7 @@ public class helper_main {
         return s;
     }
 
-    public static String secString (String string) {
+    static String secString (String string) {
         if(TextUtils.isEmpty(string)){
             return "";
         }else {

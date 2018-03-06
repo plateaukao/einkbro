@@ -231,6 +231,18 @@
 
             <TextView
                 android:visibility="gone"
+                android:id="@+id/tv_placeholder_2"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:gravity="center_vertical"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/light"
+                android:maxLines="1"
+                android:ellipsize="end" />
+
+            <TextView
+                android:visibility="gone"
                 android:id="@+id/tv_relayout"
                 android:text="@string/menu_edit"
                 android:layout_width="match_parent"
