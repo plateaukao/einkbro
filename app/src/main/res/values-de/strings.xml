@@ -14,7 +14,7 @@
     <string name="album_title_pass">Logindaten</string>
     <string name="album_untitled"> </string>
     <string name="notification_content_holderTitle">Geöffnete Tabs …</string>
-    <string name="notification_content_holder">… Anlicken um die Seiten zu sehen</string>
+    <string name="notification_content_holder">… Anklicken um die Seiten zu sehen</string>
     <string name="search_hint">Suche</string>
 
 
@@ -81,8 +81,8 @@
         Anwendung automatisch gelöscht werden.</string>
     <string name="setting_summary_start_control">Entscheide welche Funktionen des Browsers beim Start aktiviert sind.</string>
 
-    <string name="setting_title_search_engine">Suchmaschiene</string>
-    <string name="setting_summary_search_engine">Hier kannst du eine Suchmaschiene auswählen oder eine eigene eingeben.</string>
+    <string name="setting_title_search_engine">Suchmaschine</string>
+    <string name="setting_summary_search_engine">Hier kannst du eine Suchmaschine auswählen oder eine eigene eingeben.</string>
     <string name="setting_summary_search_engine_google">Google</string>
     <string name="setting_summary_search_engine_duckduckgo">DuckDuckGo</string>
     <string name="setting_summary_search_engine_startpage">StartPage</string>
@@ -223,7 +223,7 @@
     <string name="setting_title_license">Lizenz</string>
     <string name="setting_summary_license">\"F|L|OSS Browser\" ist komplett frei (wie in Freiheit) und Open Source.</string>
     <string name="setting_title_appSettings">App Einstellungen</string>
-    <string name="setting_summary_appSettings">Öffne die Systemeinstellungen von \"F|L|OSS Browser\". Dort kannst du, ja nch Android Version
+    <string name="setting_summary_appSettings">Öffne die Systemeinstellungen von \"F|L|OSS Browser\". Dort kannst du, je nach Android Version,
         verschiedene Einstellungen vornehmen oder nachträglich Berechtigungen erteilen.</string>
     <string name="setting_title_community">Mitmachen</string>
     <string name="setting_summary_community">Erfahre, wer alles bei diesem Projekt geholfen hat. Oder magst du selbst bei der weiteren
