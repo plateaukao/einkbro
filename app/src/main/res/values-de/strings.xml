@@ -220,7 +220,7 @@
     <string name="setting_title_license">Lizenz</string>
     <string name="setting_summary_license">\"F|L|OSS Browser\" ist komplett frei (wie in Freiheit) und Open Source.</string>
     <string name="setting_title_appSettings">App Einstellungen</string>
-    <string name="setting_summary_appSettings">Öffne die Systemeinstellungen von \"F|L|OSS Browser\". Dort kannst du, ja nch Android Version
+    <string name="setting_summary_appSettings">Öffne die Systemeinstellungen von \"F|L|OSS Browser\". Dort kannst du, je nach Android Version,
         verschiedene Einstellungen vornehmen oder nachträglich Berechtigungen erteilen.</string>
     <string name="setting_title_community">Mitmachen</string>
     <string name="setting_summary_community">Erfahre, wer alles bei diesem Projekt geholfen hat. Oder magst du selbst bei der weiteren
