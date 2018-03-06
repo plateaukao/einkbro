@@ -105,6 +105,7 @@
     <string name="setting_summary_images">Enable Network images. Disabling could be useful to save mobile data and to load
     websites faster.</string>
     <string name="setting_title_cookie">Cookies</string>
+    <string name="setting_summary_cookie_delete">If enabled, all cookies will be deleted. Also the Cookies of trusted websites.</string>
     <string name="setting_summary_cookie">Enable Cookies. Cookies are small text files, which are stored on your device. Websites
     use them for example to store user settings (for example search settings). But they could also be used to collect personal
         user data. Third party cookies (they collect user data for advertising) are always disabled.</string>
@@ -137,6 +138,7 @@
         old one. To restore there must be a file with the right name in the directory.</string>
     <string name="clear_menu_done_all">Done all</string>
     <string name="clear_title_quit">Clear when application exits</string>
+    <string name="clear_summary_quit">Every time you quit \"F|L|OSS Browser\" all above checked data will be deleted.</string>
     <string name="clear_title_bookmarks">Clear Bookmarks</string>
     <string name="clear_title_cache">Clear Cache</string>
     <string name="clear_title_cookie">Clear Cookies</string>

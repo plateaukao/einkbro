@@ -11,15 +11,15 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import de.baumann.browser.Browser.AdBlock;
+import de.baumann.browser.Browser.Cookie;
 import de.baumann.browser.Ninja.R;
 
-public class WhitelistAdapter extends ArrayAdapter<String> {
+public class Adapter_Cookie extends ArrayAdapter<String> {
     private final Context context;
     private final int layoutResId;
     private final List<String> list;
 
-    public WhitelistAdapter(Context context, List<String> list){
+    public Adapter_Cookie(Context context, List<String> list){
         super(context, R.layout.whitelist_item, list);
         this.context = context;
         this.layoutResId = R.layout.whitelist_item;
@@ -51,8 +51,8 @@ public class WhitelistAdapter extends ArrayAdapter<String> {
         holder.cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AdBlock adBlock = new AdBlock(context);
-                adBlock.removeDomain(list.get(position));
+                Cookie cookie = new Cookie(context);
+                cookie.removeDomain(list.get(position));
                 list.remove(position);
                 notifyDataSetChanged();
                 NinjaToast.show(context, R.string.toast_delete_successful);

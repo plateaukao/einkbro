@@ -104,6 +104,8 @@
     <string name="setting_summary_images">Aktiviere das automatische Laden von Bildern. Wenn du dies deaktivierst, sparst du
         Datenvolumen und die Internetseiten laden schneller.</string>
     <string name="setting_title_cookie">Cookies</string>
+    <string name="setting_summary_cookie_delete">Wenn dies aktiviert ist, werden alle Cookies gelöscht. Auch die von
+        Internetseiten, denen du das Speichern erlaubt hast.</string>
     <string name="setting_summary_cookie">Aktiviere Cookies. Cookies sind kleine Textdateien, die auf deinem Gerät gespeichert
         werden. Internetseiten können sie nutzen um die Benutzereinstellungen (z.B. bei Suchmaschienen) zu speichern. Cookies von
         Dritten (sie sammeln zu Werbezwecken Nutzerdaten) sind immer deaktiviert.</string>
@@ -137,6 +139,7 @@
         überschreiben immer die alten. Zum Wiederherstellen muss eine Datei mit dem richtigen Namen in diesem Verzeichnis sein.</string>
     <string name="clear_menu_done_all">Alles erledigt</string>
     <string name="clear_title_quit">Löschen beim Verlassen der Anwendung</string>
+    <string name="clear_summary_quit">Jedesmal wenn \"F|L|OSS Browser\" beendet wird, werden oben ausgewählte Daten gelöscht.</string>
     <string name="clear_title_bookmarks">Lösche Lesezeichen</string>
     <string name="clear_title_cache">Lösche Cache</string>
     <string name="clear_title_cookie">Lösche Cookies</string>

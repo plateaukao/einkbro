@@ -38,7 +38,7 @@ public class ExportWhitelistJSTask extends AsyncTask<Void, Void, Boolean> {
 
     @Override
     protected Boolean doInBackground(Void... params) {
-        path = BrowserUnit.exportWhitelistJS(context);
+        path = BrowserUnit.exportWhitelist(context, 1);
         return !isCancelled() && path != null && !path.isEmpty();
     }
 

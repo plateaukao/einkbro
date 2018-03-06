@@ -16,15 +16,15 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import de.baumann.browser.Browser.Cookie;
+import de.baumann.browser.Browser.AdBlock;
 import de.baumann.browser.Database.RecordAction;
 import de.baumann.browser.Ninja.R;
 import de.baumann.browser.Unit.BrowserUnit;
-import de.baumann.browser.View.CookieAdapter;
 import de.baumann.browser.View.NinjaToast;
+import de.baumann.browser.View.Adapter_AbBlock;
 
-public class CookieActivity extends AppCompatActivity {
-    private CookieAdapter adapter;
+public class Whitelist_AdBlock extends AppCompatActivity {
+    private Adapter_AbBlock adapter;
     private List<String> list;
 
     @SuppressWarnings("ConstantConditions")
@@ -40,13 +40,13 @@ public class CookieActivity extends AppCompatActivity {
 
         RecordAction action = new RecordAction(this);
         action.open(false);
-        list = action.listDomainsCookie();
+        list = action.listDomains();
         action.close();
 
         ListView listView = findViewById(R.id.whitelist);
         listView.setEmptyView(findViewById(R.id.whitelist_empty));
 
-        adapter = new CookieAdapter(this, list);
+        adapter = new Adapter_AbBlock(this, list);
         listView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
@@ -57,20 +57,20 @@ public class CookieActivity extends AppCompatActivity {
                 EditText editText = findViewById(R.id.whitelist_edit);
                 String domain = editText.getText().toString().trim();
                 if (domain.isEmpty()) {
-                    NinjaToast.show(CookieActivity.this, R.string.toast_input_empty);
+                    NinjaToast.show(Whitelist_AdBlock.this, R.string.toast_input_empty);
                 } else if (!BrowserUnit.isURL(domain)) {
-                    NinjaToast.show(CookieActivity.this, R.string.toast_invalid_domain);
+                    NinjaToast.show(Whitelist_AdBlock.this, R.string.toast_invalid_domain);
                 } else {
-                    RecordAction action = new RecordAction(CookieActivity.this);
+                    RecordAction action = new RecordAction(Whitelist_AdBlock.this);
                     action.open(true);
-                    if (action.checkDomainCookie(domain)) {
-                        NinjaToast.show(CookieActivity.this, R.string.toast_domain_already_exists);
+                    if (action.checkDomain(domain)) {
+                        NinjaToast.show(Whitelist_AdBlock.this, R.string.toast_domain_already_exists);
                     } else {
-                        Cookie cookie = new Cookie(CookieActivity.this);
-                        cookie.addDomain(domain.trim());
+                        AdBlock adBlock = new AdBlock(Whitelist_AdBlock.this);
+                        adBlock.addDomain(domain.trim());
                         list.add(0, domain.trim());
                         adapter.notifyDataSetChanged();
-                        NinjaToast.show(CookieActivity.this, R.string.toast_add_whitelist_successful);
+                        NinjaToast.show(Whitelist_AdBlock.this, R.string.toast_add_whitelist_successful);
                     }
                     action.close();
                 }
@@ -98,16 +98,16 @@ public class CookieActivity extends AppCompatActivity {
                 break;
             case R.id.whitelist_menu_clear:
 
-                final BottomSheetDialog dialog = new BottomSheetDialog(CookieActivity.this);
-                View dialogView = View.inflate(CookieActivity.this, R.layout.dialog_action, null);
+                final BottomSheetDialog dialog = new BottomSheetDialog(Whitelist_AdBlock.this);
+                View dialogView = View.inflate(Whitelist_AdBlock.this, R.layout.dialog_action, null);
                 TextView textView = dialogView.findViewById(R.id.dialog_text);
                 textView.setText(R.string.toast_clear);
                 Button action_ok = dialogView.findViewById(R.id.action_ok);
                 action_ok.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Cookie cookie = new Cookie(CookieActivity.this);
-                        cookie.clearDomains();
+                        AdBlock adBlock = new AdBlock(Whitelist_AdBlock.this);
+                        adBlock.clearDomains();
                         list.clear();
                         adapter.notifyDataSetChanged();
                         dialog.cancel();

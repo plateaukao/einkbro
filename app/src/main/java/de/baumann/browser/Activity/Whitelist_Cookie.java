@@ -16,15 +16,15 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import de.baumann.browser.Browser.Javascript;
+import de.baumann.browser.Browser.Cookie;
 import de.baumann.browser.Database.RecordAction;
 import de.baumann.browser.Ninja.R;
 import de.baumann.browser.Unit.BrowserUnit;
-import de.baumann.browser.View.JavascriptAdapter;
+import de.baumann.browser.View.Adapter_Cookie;
 import de.baumann.browser.View.NinjaToast;
 
-public class JavascriptActivity extends AppCompatActivity {
-    private JavascriptAdapter adapter;
+public class Whitelist_Cookie extends AppCompatActivity {
+    private Adapter_Cookie adapter;
     private List<String> list;
 
     @SuppressWarnings("ConstantConditions")
@@ -40,13 +40,13 @@ public class JavascriptActivity extends AppCompatActivity {
 
         RecordAction action = new RecordAction(this);
         action.open(false);
-        list = action.listDomainsJS();
+        list = action.listDomainsCookie();
         action.close();
 
         ListView listView = findViewById(R.id.whitelist);
         listView.setEmptyView(findViewById(R.id.whitelist_empty));
 
-        adapter = new JavascriptAdapter(this, list);
+        adapter = new Adapter_Cookie(this, list);
         listView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
@@ -57,20 +57,20 @@ public class JavascriptActivity extends AppCompatActivity {
                 EditText editText = findViewById(R.id.whitelist_edit);
                 String domain = editText.getText().toString().trim();
                 if (domain.isEmpty()) {
-                    NinjaToast.show(JavascriptActivity.this, R.string.toast_input_empty);
+                    NinjaToast.show(Whitelist_Cookie.this, R.string.toast_input_empty);
                 } else if (!BrowserUnit.isURL(domain)) {
-                    NinjaToast.show(JavascriptActivity.this, R.string.toast_invalid_domain);
+                    NinjaToast.show(Whitelist_Cookie.this, R.string.toast_invalid_domain);
                 } else {
-                    RecordAction action = new RecordAction(JavascriptActivity.this);
+                    RecordAction action = new RecordAction(Whitelist_Cookie.this);
                     action.open(true);
-                    if (action.checkDomainJS(domain)) {
-                        NinjaToast.show(JavascriptActivity.this, R.string.toast_domain_already_exists);
+                    if (action.checkDomainCookie(domain)) {
+                        NinjaToast.show(Whitelist_Cookie.this, R.string.toast_domain_already_exists);
                     } else {
-                        Javascript adBlock = new Javascript(JavascriptActivity.this);
-                        adBlock.addDomain(domain.trim());
+                        Cookie cookie = new Cookie(Whitelist_Cookie.this);
+                        cookie.addDomain(domain.trim());
                         list.add(0, domain.trim());
                         adapter.notifyDataSetChanged();
-                        NinjaToast.show(JavascriptActivity.this, R.string.toast_add_whitelist_successful);
+                        NinjaToast.show(Whitelist_Cookie.this, R.string.toast_add_whitelist_successful);
                     }
                     action.close();
                 }
@@ -98,16 +98,16 @@ public class JavascriptActivity extends AppCompatActivity {
                 break;
             case R.id.whitelist_menu_clear:
 
-                final BottomSheetDialog dialog = new BottomSheetDialog(JavascriptActivity.this);
-                View dialogView = View.inflate(JavascriptActivity.this, R.layout.dialog_action, null);
+                final BottomSheetDialog dialog = new BottomSheetDialog(Whitelist_Cookie.this);
+                View dialogView = View.inflate(Whitelist_Cookie.this, R.layout.dialog_action, null);
                 TextView textView = dialogView.findViewById(R.id.dialog_text);
                 textView.setText(R.string.toast_clear);
                 Button action_ok = dialogView.findViewById(R.id.action_ok);
                 action_ok.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Javascript javaScript = new Javascript(JavascriptActivity.this);
-                        javaScript.clearDomains();
+                        Cookie cookie = new Cookie(Whitelist_Cookie.this);
+                        cookie.clearDomains();
                         list.clear();
                         adapter.notifyDataSetChanged();
                         dialog.cancel();

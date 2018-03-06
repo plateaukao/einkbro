@@ -54,7 +54,7 @@
         </LinearLayout>
 
         <View android:layout_width="match_parent"
-            android:layout_height="@dimen/layout_height_1dp"
+            android:layout_height="@dimen/layout_margin_1dp"
             android:background="@color/grey_500"/>
 
         <ListView android:id="@+id/whitelist"
@@ -65,13 +65,12 @@
         <TextView android:id="@+id/whitelist_empty"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/layout_margin_20dp"
+            android:layout_margin="20dp"
             android:layout_gravity="center|top"
             android:gravity="center"
             android:text="@string/list_empty"
             android:textAllCaps="false"
             android:textColor="@color/grey_300"
-            android:textSize="@dimen/text_size_14sp"
             android:visibility="gone"/>
 
     </LinearLayout>

@@ -34,10 +34,6 @@ public class Fragment_settings_UI extends PreferenceFragment implements SharedPr
     @Override
     public void onSharedPreferenceChanged(final SharedPreferences sp, String key) {
 
-        if (key.equals("sp_buttonNav")) {
-            sp.edit().putInt("sp_buttonNav_changed", 1).apply();
-        }
-
         if (key.equals("sp_exit") || key.equals("sp_toggle") || key.equals("sp_add") || key.equals("sp_darkUI")
                 || key.equals("nav_position")  || key.equals("sp_hideOmni") || key.equals("start_tab")) {
 

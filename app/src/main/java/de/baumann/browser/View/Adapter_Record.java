@@ -7,27 +7,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import com.github.curioustechizen.ago.RelativeTimeTextView;
 import de.baumann.browser.Database.Record;
 import de.baumann.browser.Ninja.R;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
-public class RecordAdapter extends ArrayAdapter<Record> {
+public class Adapter_Record extends ArrayAdapter<Record> {
     private final Context context;
     private final int layoutResId;
     private final List<Record> list;
 
-    public RecordAdapter(Context context, List<Record> list) {
-        super(context, R.layout.record_item, list);
+    public Adapter_Record(Context context, List<Record> list) {
+        super(context, R.layout.list_item, list);
         this.context = context;
-        this.layoutResId = R.layout.record_item;
+        this.layoutResId = R.layout.list_item;
         this.list = list;
     }
 
     private static class Holder {
         TextView title;
-        RelativeTimeTextView time;
+        TextView time;
         TextView url;
     }
 
@@ -49,8 +50,8 @@ public class RecordAdapter extends ArrayAdapter<Record> {
         }
 
         Record record = list.get(position);
-        holder.title.setText(record.getTitle());
-        holder.time.setReferenceTime(record.getTime());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());holder.title.setText(record.getTitle());
+        holder.time.setText(sdf.format(record.getTime()));
         holder.url.setText(record.getURL());
 
         return view;
