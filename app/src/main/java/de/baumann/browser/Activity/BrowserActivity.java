@@ -2359,8 +2359,8 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 if (ninjaWebView != null) {
                     bottomSheetDialog.cancel();
                     String url = ninjaWebView.getUrl();
-                    addAlbum(getString(R.string.album_untitled), url, true, null);
                     removeAlbum(currentAlbumController);
+                    addAlbum(getString(R.string.album_untitled), url, true, null);
                 }
             }
         });
