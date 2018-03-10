@@ -1,3 +1,12 @@
+### v 5.5
+- new: option to disable confirmation dialogs on exit (thanks: element54)
+- improved: light theme
+- improved: startpage
+- fix: dark background on some websites
+- fix: ok button on "Fast togle dialog"
+- fix: toolbar not showing title
+- fix: back handling
+
 ### v 5.4
 - new: new app name "F|L|OSS Browser"
 - new: dark and light theme

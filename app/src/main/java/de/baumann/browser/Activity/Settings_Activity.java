@@ -11,12 +11,12 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import de.baumann.browser.Fragment.SettingFragment;
+import de.baumann.browser.Fragment.Fragment_settings;
 import de.baumann.browser.Ninja.R;
 import de.baumann.browser.Unit.IntentUnit;
 
 public class Settings_Activity extends AppCompatActivity {
-    private SettingFragment fragment;
+    private Fragment_settings fragment;
 
     @SuppressWarnings("ConstantConditions")
     @Override
@@ -29,7 +29,7 @@ public class Settings_Activity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        fragment = new SettingFragment();
+        fragment = new Fragment_settings();
         getFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
     }
 

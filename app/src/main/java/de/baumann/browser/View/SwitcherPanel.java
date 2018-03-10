@@ -133,7 +133,6 @@ public class SwitcherPanel extends ViewGroup {
         setFlingVelocity();
         setWillNotDraw(false);
 
-        float dimen56dp = getResources().getDimensionPixelSize(R.dimen.layout_height_56dp);
         float dimen108dp = getResources().getDimensionPixelSize(R.dimen.layout_height_108dp);
         float dimen16dp = getResources().getDimensionPixelOffset(R.dimen.layout_margin_16dp);
         int windowHeight = ViewUnit.getWindowHeight(context);
@@ -329,14 +328,22 @@ public class SwitcherPanel extends ViewGroup {
     }
 
     public void expanded() {
-        smoothSlideTo(1f);
-        status = Status.EXPANDED;
+        try {
+            smoothSlideTo(1f);
+            status = Status.EXPANDED;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void collapsed() {
-        switcherView.setEnabled(true);
-        smoothSlideTo(0f);
-        status = Status.COLLAPSED;
+        try {
+            switcherView.setEnabled(true);
+            smoothSlideTo(0f);
+            status = Status.COLLAPSED;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void fling(int top) {

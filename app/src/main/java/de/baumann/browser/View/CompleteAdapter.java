@@ -122,7 +122,7 @@ public class CompleteAdapter extends BaseAdapter implements Filterable {
 
     public CompleteAdapter(Context context, List<Record> recordList) {
         this.context = context;
-        this.layoutResId = R.layout.complete_item;
+        this.layoutResId = R.layout.list_item;
         this.originalList = new ArrayList<>();
         this.resultList = new ArrayList<>();
         deDup(recordList);
@@ -171,8 +171,8 @@ public class CompleteAdapter extends BaseAdapter implements Filterable {
         if (view == null) {
             view = LayoutInflater.from(context).inflate(layoutResId, null, false);
             holder = new Holder();
-            holder.titleView = view.findViewById(R.id.complete_item_title);
-            holder.urlView = view.findViewById(R.id.complete_item_url);
+            holder.titleView = view.findViewById(R.id.record_item_title);
+            holder.urlView = view.findViewById(R.id.record_item_url);
             view.setTag(holder);
         } else {
             holder = (Holder) view.getTag();

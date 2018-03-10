@@ -50,7 +50,7 @@
 
             <!-- How to not use layout_margin_48dp? -->
             <FrameLayout android:id="@+id/main_content"
-                android:layout_marginTop="@dimen/layout_height_56dp"
+                android:layout_marginTop="@dimen/layout_margin_56dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
 
@@ -77,7 +77,7 @@
                 android:visibility="gone"
                 app:backgroundTint="?attr/colorAccent"
                 app:fabSize="mini"
-                app:srcCompat="@drawable/icon_home"
+                app:srcCompat="@drawable/icon_earth_light"
                 tools:ignore="RelativeOverlap" />
 
             <android.support.design.widget.FloatingActionButton
@@ -90,7 +90,7 @@
                 android:visibility="gone"
                 app:backgroundTint="?attr/colorAccent"
                 app:fabSize="mini"
-                app:srcCompat="@drawable/icon_home"
+                app:srcCompat="@drawable/icon_earth_light"
                 tools:ignore="RelativeOverlap" />
 
             <android.support.design.widget.FloatingActionButton
@@ -103,15 +103,15 @@
                 android:visibility="gone"
                 app:backgroundTint="?attr/colorAccent"
                 app:fabSize="mini"
-                app:srcCompat="@drawable/icon_home"
+                app:srcCompat="@drawable/icon_dots"
                 tools:ignore="RelativeOverlap" />
 
         </RelativeLayout>
 
         <RelativeLayout android:id="@+id/main_omnibox"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/layout_height_56dp"
-            android:minHeight="@dimen/layout_height_56dp"
+            android:layout_height="@dimen/layout_margin_56dp"
+            android:minHeight="@dimen/layout_margin_56dp"
             android:focusable="true"
             android:focusableInTouchMode="true">
 
@@ -170,15 +170,15 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:maxLines="1"
                 android:ellipsize="end"
-                android:background="?attr/colorPrimary"
+                android:background="@color/colorPrimary"
                 android:visibility="gone"/>
 
         </RelativeLayout>
 
         <RelativeLayout android:id="@+id/main_search_panel"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/layout_height_56dp"
-            android:minHeight="@dimen/layout_height_56dp"
+            android:layout_height="@dimen/layout_margin_56dp"
+            android:minHeight="@dimen/layout_margin_56dp"
             android:visibility="gone">
 
             <ImageButton android:id="@+id/main_search_cancel"
@@ -220,8 +220,8 @@
                 android:layout_centerInParent="true"
                 android:layout_toStartOf="@id/main_search_up"
                 android:layout_marginStart="@dimen/layout_margin_16dp"
-                android:paddingStart="@dimen/padding_8dp"
-                android:paddingEnd="@dimen/padding_8dp"
+                android:paddingStart="@dimen/layout_margin_8dp"
+                android:paddingEnd="@dimen/layout_margin_8dp"
                 android:hint="@string/search_hint"
                 android:textColor="@color/light"
                 android:textColorHint="@color/grey_300"
@@ -237,12 +237,11 @@
 
         <Button android:id="@+id/main_relayout_ok"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/layout_height_56dp"
-                android:minHeight="@dimen/layout_height_56dp"
+                android:layout_height="@dimen/layout_margin_56dp"
+                android:minHeight="@dimen/layout_margin_56dp"
                 android:text="@string/app_ok"
                 android:textColor="@color/light"
-                android:textSize="@dimen/text_size_16sp"
-                android:background="?attr/colorPrimaryDark"
+                android:background="@color/colorPrimaryDark"
                 android:visibility="gone"/>
 
     </LinearLayout>

@@ -27,7 +27,7 @@ public class UserAgentListPreference extends ListPreference {
     protected void onPrepareDialogBuilder(AlertDialog.Builder builder) {
         super.onPrepareDialogBuilder(builder);
 
-        builder.setNeutralButton(R.string.dialog_button_custom, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.dialog_button_custom, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 showEditDialog();

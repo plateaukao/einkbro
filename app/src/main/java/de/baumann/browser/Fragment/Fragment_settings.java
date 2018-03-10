@@ -22,7 +22,7 @@ import de.baumann.browser.Activity.helper_main;
 import de.baumann.browser.Ninja.R;
 import de.baumann.browser.Unit.IntentUnit;
 
-public class SettingFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class Fragment_settings extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private boolean spChange = false;
     public boolean isSPChange() {

@@ -7,21 +7,16 @@
         &lt;i>Project site: https://github.com/scoute-dich/Browser&lt;br>
         Changelog: https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;/i>&lt;br>&lt;br>
 
-        &lt;b>Version: 5.4&lt;/b>&lt;br>
+        &lt;b>Version: 5.5&lt;/b>&lt;br>
         Please read the \"Help dialog\" for more information.&lt;br>&lt;br>
 
-        \u25AA new: new app name "F|L|OSS Browser"&lt;br>
-        \u25AA new: dark and light theme&lt;br>
-        \u25AA new: startpage with all contents&lt;br>
-        \u25AA new: full support for cookie whitelist&lt;br>
-        \u25AA new: more options for fullscreen browsing&lt;br>
-        \u25AA new: more options visibility Navigation Button&lt;br>
-        \u25AA new: night mode only while browsing&lt;br>
-        \u25AA updated: help dialog&lt;br>
-        \u25AA removed: different light themes&lt;br>
-        \u25AA fix: double entries in history&lt;br>
-        \u25AA fix: toolbar does not work on start&lt;br>
-        \u25AA fix: keyboard issues in some cases (thanks: element54)
+        \u25AA new: option to disable confirmation dialogs on exit (thanks: element54)&lt;br>
+        \u25AA improved: light theme&lt;br>
+        \u25AA improved: startpage&lt;br>
+        \u25AA fix: dark background on some websites&lt;br>
+        \u25AA fix: OK button on \"Fast toggle dialog\"&lt;br>
+        \u25AA fix: toolbar not showing title&lt;br>
+        \u25AA fix: back handling
     </string>
 
     <string name="startpage_title">Startpage</string>
@@ -44,9 +39,8 @@
 
     <string name="menu_title">Menu</string>
     <string name="menu_dialog">Share or save content, handle the current tab: just try all entries to see what is possible.
-        With the buttons on the top right you can switch to the previous/next site in your history. Clicking the
-        \"Circle button\" will open the Startpage in the current tab. The menu can be dismissed, like all other notifications,
-        by clicking back, clicking outside the menu or simply be swiping the menu down.</string>
+        With the buttons on the top right you can switch to the previous/next site in your history. The menu can be
+        dismissed, like all other notifications, by clicking back, clicking outside the menu or simply be swiping the menu down.</string>
 
     <string name="not_title">Notifications</string>
     <string name="not_dialog">Notifications are displayed on the bottom of the screen. They can also be dismissed like the
@@ -89,11 +83,6 @@
         Roman Nurik&lt;br>
         &lt;i>http://git.io/vUruO&lt;/i>&lt;br>&lt;br>
 
-        &lt;b>android-ago&lt;/b>&lt;br>
-        Apache License Version 2.0&lt;br>
-        Kiran Rao&lt;br>
-        &lt;i>http://git.io/vUrum&lt;/i>&lt;br>&lt;br>
-
         &lt;b>DynamicGrid&lt;/b>&lt;br>
         Apache License Version 2.0&lt;br>
         askerov&lt;br>
@@ -125,7 +114,9 @@
         &lt;i>https://github.com/hummatli/SimpleEncryptionLib</string>
 
     <string name="cont_dialog">
-        &lt;i>On following sites you can get more information about \"F|L|OSS Browser\":&lt;/i>&lt;br>&lt;br>
+        &lt;i>First I would like to thank all people who contributed in any way on this project. They submitted issues,
+        translated or helped in any other way. On following sites you can become a active member of this
+        great community:&lt;/i>&lt;br>&lt;br>
 
         &lt;b>XDA-thread:&lt;/b>&lt;br>
         XDA is a great community for developers and smartphone enthusiasts. Here you can report issues, ask for new features
@@ -138,7 +129,7 @@
         &lt;i>https://github.com/scoute-dich/browser&lt;/i>&lt;br>&lt;br>&lt;br>
 
 
-        &lt;i>Following people contributed at this project:&lt;/i>&lt;br>&lt;br>
+        &lt;i>Following people contributed at this project. If I have forgotten anybody, please contact me:&lt;/i>&lt;br>&lt;br>
 
         &lt;b>Gaukler Faun&lt;/b>&lt;br>
         Main developer and initiator of this project.&lt;br>
@@ -149,7 +140,8 @@
         &lt;i>https://github.com/futrDevelopment&lt;/i>&lt;br>&lt;br>
 
         &lt;b>element54&lt;/b>&lt;br>
-        Helped to solve issues with the keyboard (issue #105).&lt;br>
+        \u25AA fix: keyboard problems (Fehler #105).&lt;br>
+        \u25AA new: option to disable confirmation dialogs on exit&lt;br>
         &lt;i>https://github.com/element54&lt;/i>&lt;br>&lt;br>
 
         &lt;b>Jumping Yang&lt;/b>&lt;br>

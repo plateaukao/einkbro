@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/layout_margin_56dp"
+    android:minHeight="@dimen/layout_margin_56dp"
+    android:orientation="vertical"
+    android:background="@color/colorPrimaryDark"
+    android:layout_alignParentBottom="true"
+    tools:ignore="Overdraw">
+
+    <TextView
+        android:id="@+id/dialog_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:textColor="@color/light" />
+
+</LinearLayout>
