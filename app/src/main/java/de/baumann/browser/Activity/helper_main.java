@@ -43,6 +43,7 @@ import android.view.View;
 import java.io.File;
 
 import de.baumann.browser.Ninja.R;
+import de.baumann.browser.View.NinjaToast;
 
 public class helper_main {
 
@@ -142,10 +143,8 @@ public class helper_main {
         }
     }
 
-    public static void open (String extension, Activity activity, File pathFile, View view) {
-        File file = new File(pathFile.getAbsolutePath());
-        String fileExtension = file.getAbsolutePath().substring(file.getAbsolutePath().lastIndexOf("."));
-        String text = "Unknown" + ": " + fileExtension;
+    public static void open (String extension, Activity activity, File pathFile) {
+
         switch (extension) {
             case ".gif":case ".bmp":case ".tiff":case ".svg":case ".png":case ".jpg":case ".JPG":case ".jpeg":
                 helper_main.openFile(activity, pathFile, "image/*");
@@ -163,9 +162,9 @@ public class helper_main {
             case ".html":
                 helper_main.openFile(activity, pathFile, "text/html");
                 break;
-            case ".apk":
-                helper_main.openFile(activity, pathFile, "application/vnd.file_android.package-archive");
-                break;
+            //case ".apk":
+            //    helper_main.openFile(activity, pathFile, "application/vnd.file_android.package-archive");
+            //    break;
             case ".pdf":
                 helper_main.openFile(activity, pathFile, "application/pdf");
                 break;
@@ -222,8 +221,7 @@ public class helper_main {
                 break;
 
             default:
-                Snackbar snackbar = Snackbar.make(view, text, Snackbar.LENGTH_LONG);
-                snackbar.show();
+                NinjaToast.show(activity, activity.getString(R.string.toast_fileManager));
                 break;
         }
     }

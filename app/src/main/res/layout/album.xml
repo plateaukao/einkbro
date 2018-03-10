@@ -16,7 +16,7 @@
 
         <ImageView android:id="@+id/album_cover"
             android:contentDescription="@null"
-            android:layout_width="@dimen/layout_width_144dp"
+            android:layout_width="wrap_content"
             android:minWidth="@dimen/layout_width_144dp"
             android:layout_height="@dimen/layout_height_108dp"
             android:layout_gravity="center"

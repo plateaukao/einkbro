@@ -133,43 +133,49 @@ public class BrowserActivity extends Activity implements BrowserController, View
     // Menus
 
     private TextView dialogTitle;
-    private TextView tv_new_tabOpen;
-    private TextView tv_closeTab;
-    private TextView tv_tabPreview;
-    private TextView tv_quit;
 
-    private TextView tv_shareScreenshot;
-    private TextView tv_shareLink;
-    private TextView tv_shareClipboard;
-    private TextView tv_openWith;
+    private LinearLayout tv_new_tabOpen;
+    private LinearLayout tv_closeTab;
+    private LinearLayout tv_tabPreview;
+    private LinearLayout tv_quit;
 
-    private TextView tv_relayout;
-    private TextView tv_searchSite;
-    private TextView tv_settings;
-    private TextView tv_help;
-    private TextView tv_placeHolder;
-    private TextView tv_placeHolder_2;
+    private LinearLayout tv_shareScreenshot;
+    private LinearLayout tv_shareLink;
+    private LinearLayout tv_shareClipboard;
+    private LinearLayout tv_openWith;
 
-    private TextView tv_saveScreenshot;
-    private TextView tv_saveBookmark;
-    private TextView tv_saveStart;
-    private TextView tv_saveLogin;
+    private LinearLayout tv_relayout;
+    private LinearLayout tv_searchSite;
+    private LinearLayout tv_settings;
+    private LinearLayout tv_help;
+    private LinearLayout tv_placeHolder;
+    private LinearLayout tv_placeHolder_2;
 
-    private TextView tv2_menu_newTab;
-    private TextView tv2_menu_newTab_open;
-    private TextView tv2_menu_edit;
-    private TextView tv2_menu_delete;
-    private TextView tv2_menu_notification;
-    private TextView tv2_menu_share;
+    private LinearLayout tv_saveScreenshot;
+    private LinearLayout tv_saveBookmark;
+    private LinearLayout tv_saveStart;
+    private LinearLayout tv_saveLogin;
+
+    private LinearLayout tv2_menu_newTab;
+    private LinearLayout tv2_menu_newTab_open;
+    private LinearLayout tv2_menu_edit;
+    private LinearLayout tv2_menu_delete;
+    private LinearLayout tv2_menu_notification;
+    private LinearLayout tv2_menu_share;
+
+    private View floatButton_tabView;
+    private View floatButton_saveView;
+    private View floatButton_shareView;
+    private View floatButton_moreView;
 
     private ImageButton web_next;
     private ImageButton web_prev;
 
-    private FloatingActionButton fab_tab;
-    private FloatingActionButton fab_share;
-    private FloatingActionButton fab_save;
-    private FloatingActionButton fab_more;
-    private FloatingActionButton fab_imageButtonNav;
+    private ImageButton fab_tab;
+    private ImageButton fab_share;
+    private ImageButton fab_save;
+    private ImageButton fab_more;
+
 
     // Views
 
@@ -179,6 +185,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
     private ImageButton omniboxRefresh;
     private ImageButton omniboxOverflow;
 
+    private FloatingActionButton fab_imageButtonNav;
     private Button relayoutOK;
     private AutoCompleteTextView inputBox;
     private ProgressBar progressBar;
@@ -1010,6 +1017,11 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 tv_saveStart.setVisibility(View.GONE);
                 tv_saveLogin.setVisibility(View.GONE);
 
+                floatButton_tabView.setVisibility(View.VISIBLE);
+                floatButton_saveView.setVisibility(View.INVISIBLE);
+                floatButton_shareView.setVisibility(View.INVISIBLE);
+                floatButton_moreView.setVisibility(View.INVISIBLE);
+
                 tv_relayout.setVisibility(View.GONE);
                 tv_searchSite.setVisibility(View.GONE);
                 tv_placeHolder.setVisibility(View.GONE);
@@ -1034,6 +1046,11 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 tv_saveBookmark.setVisibility(View.GONE);
                 tv_saveStart.setVisibility(View.GONE);
                 tv_saveLogin.setVisibility(View.GONE);
+
+                floatButton_tabView.setVisibility(View.INVISIBLE);
+                floatButton_saveView.setVisibility(View.INVISIBLE);
+                floatButton_shareView.setVisibility(View.VISIBLE);
+                floatButton_moreView.setVisibility(View.INVISIBLE);
 
                 tv_relayout.setVisibility(View.GONE);
                 tv_searchSite.setVisibility(View.GONE);
@@ -1063,6 +1080,11 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 tv_relayout.setVisibility(View.GONE);
                 tv_searchSite.setVisibility(View.GONE);
 
+                floatButton_tabView.setVisibility(View.INVISIBLE);
+                floatButton_saveView.setVisibility(View.VISIBLE);
+                floatButton_shareView.setVisibility(View.INVISIBLE);
+                floatButton_moreView.setVisibility(View.INVISIBLE);
+
                 tv_placeHolder.setVisibility(View.GONE);
                 tv_placeHolder_2.setVisibility(View.GONE);
                 tv_settings.setVisibility(View.GONE);
@@ -1086,6 +1108,10 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 tv_saveStart.setVisibility(View.GONE);
                 tv_saveLogin.setVisibility(View.GONE);
 
+                floatButton_tabView.setVisibility(View.INVISIBLE);
+                floatButton_saveView.setVisibility(View.INVISIBLE);
+                floatButton_shareView.setVisibility(View.INVISIBLE);
+                floatButton_moreView.setVisibility(View.VISIBLE);
 
                 tv_placeHolder.setVisibility(View.VISIBLE);
                 tv_settings.setVisibility(View.VISIBLE);
@@ -1167,8 +1193,8 @@ public class BrowserActivity extends Activity implements BrowserController, View
             addAlbum(BrowserUnit.FLAG_BOOKMARKS);
         } else if ("sc_login".equals(action)) {
             addAlbum(BrowserUnit.FLAG_PASS);
-        } else if ("sc_files".equals(action)) {
-            addAlbum(BrowserUnit.FLAG_FILES);
+        } else if ("sc_startPage".equals(action)) {
+            addAlbum(BrowserUnit.FLAG_HOME);
         } else if (Intent.ACTION_SEND.equals(action)) {
             pinAlbums(intent.getStringExtra(Intent.EXTRA_TEXT));
         } else {
@@ -1811,7 +1837,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
                             NinjaToast.show(BrowserActivity.this, getString(R.string.toast_directory));
                         }
                     } else {
-                        helper_main.open(files_icon, BrowserActivity.this, pathFile, listView);
+                        helper_main.open(files_icon, BrowserActivity.this, pathFile);
                     }
                 } catch (Exception e) {
                     initFEList(layout);
@@ -2134,6 +2160,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
         CheckBox sw_location = dialogView.findViewById(R.id.switch6);
         CheckBox sw_invert = dialogView.findViewById(R.id.switch7);
         CheckBox sw_history = dialogView.findViewById(R.id.switch3);
+        CheckBox sw_desktop = dialogView.findViewById(R.id.switch8);
 
         javaHosts = new Javascript(BrowserActivity.this);
         javaHosts = getJavaHosts();
@@ -2352,6 +2379,25 @@ public class BrowserActivity extends Activity implements BrowserController, View
             }
         });
 
+        if ((sp.getString(getString(R.string.sp_user_agent), "0").equals("1"))){
+            sw_desktop.setChecked(true);
+        } else {
+            sw_desktop.setChecked(false);
+        }
+
+        sw_desktop.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @SuppressLint("ApplySharedPref")
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    sp.edit().putString(getString(R.string.sp_user_agent), "1").commit();
+                }else{
+                    sp.edit().putString(getString(R.string.sp_user_agent), "0").commit();
+                }
+            }
+        });
+
         Button but_OK = dialogView.findViewById(R.id.action_ok);
         but_OK.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -2365,12 +2411,10 @@ public class BrowserActivity extends Activity implements BrowserController, View
             }
         });
 
-        Button but_set = dialogView.findViewById(R.id.action_settings);
-        but_set.setOnClickListener(new View.OnClickListener() {
+        Button action_cancel = dialogView.findViewById(R.id.action_cancel);
+        action_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(BrowserActivity.this, Settings_Activity.class);
-                startActivity(intent);
                 bottomSheetDialog.cancel();
             }
         });
@@ -2924,7 +2968,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
 
         final String target = url;
 
-        TextView tv3_main_menu_new_tab = dialogView.findViewById(R.id.tv3_main_menu_new_tab);
+        LinearLayout tv3_main_menu_new_tab = dialogView.findViewById(R.id.tv3_main_menu_new_tab);
         tv3_main_menu_new_tab.setVisibility(View.VISIBLE);
         tv3_main_menu_new_tab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -2935,7 +2979,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
             }
         });
 
-        TextView tv3_main_menu_share_link = dialogView.findViewById(R.id.tv3_main_menu_share_link);
+        LinearLayout tv3_main_menu_share_link = dialogView.findViewById(R.id.tv3_main_menu_share_link);
         tv3_main_menu_share_link.setVisibility(View.VISIBLE);
         tv3_main_menu_share_link.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -2943,13 +2987,13 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 if (prepareRecord()) {
                     NinjaToast.show(BrowserActivity.this, getString(R.string.toast_share_failed));
                 } else {
-                    IntentUnit.share(BrowserActivity.this, ninjaWebView.getTitle(), target);
+                    IntentUnit.share(BrowserActivity.this, "", target);
                 }
                 bottomSheetDialog.cancel();
             }
         });
 
-        TextView tv3_main_menu_open_link = dialogView.findViewById(R.id.tv3_main_menu_open_link);
+        LinearLayout tv3_main_menu_open_link = dialogView.findViewById(R.id.tv3_main_menu_open_link);
         tv3_main_menu_open_link.setVisibility(View.VISIBLE);
         tv3_main_menu_open_link.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -2962,7 +3006,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
             }
         });
 
-        TextView tv3_main_menu_new_tabOpen = dialogView.findViewById(R.id.tv3_main_menu_new_tabOpen);
+        LinearLayout tv3_main_menu_new_tabOpen = dialogView.findViewById(R.id.tv3_main_menu_new_tabOpen);
         tv3_main_menu_new_tabOpen.setVisibility(View.VISIBLE);
         tv3_main_menu_new_tabOpen.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -2972,7 +3016,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
             }
         });
 
-        TextView tv3_main_menu_copy_link = dialogView.findViewById(R.id.tv3_main_menu_copy_link);
+        LinearLayout tv3_main_menu_copy_link = dialogView.findViewById(R.id.tv3_main_menu_copy_link);
         tv3_main_menu_copy_link.setVisibility(View.VISIBLE);
         tv3_main_menu_copy_link.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -2982,7 +3026,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
             }
         });
 
-        TextView tv3_menu_save_as = dialogView.findViewById(R.id.tv3_menu_save_as);
+        LinearLayout tv3_menu_save_as = dialogView.findViewById(R.id.tv3_menu_save_as);
         tv3_menu_save_as.setVisibility(View.VISIBLE);
         tv3_menu_save_as.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -3039,18 +3083,6 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 }
             }
         });
-
-        if (result != null && (result.getType() == WebView.HitTestResult.IMAGE_TYPE || result.getType() == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE)) {
-            TextView tv3_main_menu_save = dialogView.findViewById(R.id.tv3_main_menu_save);
-            tv3_main_menu_save.setVisibility(View.VISIBLE);
-            tv3_main_menu_save.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    BrowserUnit.download(BrowserActivity.this, target, target, BrowserUnit.MIME_TYPE_IMAGE);
-                    bottomSheetDialog.cancel();
-                }
-            });
-        }
     }
 
     private void doubleTapsQuit() {
@@ -3183,6 +3215,9 @@ public class BrowserActivity extends Activity implements BrowserController, View
         bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
         View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_menu, null);
 
+        LinearLayout floatButton_saveLayout = dialogView.findViewById(R.id.floatButton_saveLayout);
+        LinearLayout floatButton_shareLayout = dialogView.findViewById(R.id.floatButton_shareLayout);
+
         fab_tab = dialogView.findViewById(R.id.floatButton_tab);
         fab_tab.setOnClickListener(this);
         fab_share = dialogView.findViewById(R.id.floatButton_share);
@@ -3197,14 +3232,19 @@ public class BrowserActivity extends Activity implements BrowserController, View
         web_next = dialogView.findViewById(R.id.web_next);
         web_next.setOnClickListener(this);
 
+        floatButton_tabView = dialogView.findViewById(R.id.floatButton_tabView);
+        floatButton_saveView = dialogView.findViewById(R.id.floatButton_saveView);
+        floatButton_shareView = dialogView.findViewById(R.id.floatButton_shareView);
+        floatButton_moreView = dialogView.findViewById(R.id.floatButton_moreView);
+
         if (currentAlbumController != null && currentAlbumController instanceof NinjaRelativeLayout) {
-            fab_share.setVisibility(View.GONE);
-            fab_save.setVisibility(View.GONE);
+            floatButton_shareLayout.setVisibility(View.GONE);
+            floatButton_saveLayout.setVisibility(View.GONE);
             web_next.setVisibility(View.GONE);
             web_prev.setVisibility(View.GONE);
         } else if (currentAlbumController != null && currentAlbumController instanceof NinjaWebView) {
-            fab_share.setVisibility(View.VISIBLE);
-            fab_save.setVisibility(View.VISIBLE);
+            floatButton_shareLayout.setVisibility(View.VISIBLE);
+            floatButton_saveLayout.setVisibility(View.VISIBLE);
             web_next.setVisibility(View.VISIBLE);
             web_prev.setVisibility(View.VISIBLE);
         }

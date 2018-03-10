@@ -1,36 +1,16 @@
 <shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
 
     <shortcut
-        android:shortcutId="sc_files"
+        android:shortcutId="sc_startPage"
         android:enabled="true"
-        android:icon="@drawable/qc_files"
+        android:icon="@drawable/qc_start"
         android:shortcutShortLabel="@string/album_title_files"
-        android:shortcutLongLabel="@string/album_title_files"
-        android:shortcutDisabledMessage="@string/album_title_files">
+        android:shortcutLongLabel="@string/album_title_home"
+        android:shortcutDisabledMessage="@string/album_title_home">
         <intent
-            android:action="sc_files"
+            android:action="sc_startPage"
             android:targetPackage="de.baumann.browser"
             android:targetClass="de.baumann.browser.Activity.BrowserActivity" />
-        <!-- If your shortcut is associated with multiple intents, include them
-             here. The last intent in the fragments is what the user sees when they
-             launch this shortcut. -->
-        <categories android:name="android.shortcut.conversation" />
-    </shortcut>
-
-    <shortcut
-        android:shortcutId="sc_login"
-        android:enabled="true"
-        android:icon="@drawable/qc_pass"
-        android:shortcutShortLabel="@string/album_title_pass"
-        android:shortcutLongLabel="@string/album_title_pass"
-        android:shortcutDisabledMessage="@string/album_title_pass">
-        <intent
-            android:action="sc_login"
-            android:targetPackage="de.baumann.browser"
-            android:targetClass="de.baumann.browser.Activity.BrowserActivity" />
-        <!-- If your shortcut is associated with multiple intents, include them
-             here. The last intent in the fragments is what the user sees when they
-             launch this shortcut. -->
         <categories android:name="android.shortcut.conversation" />
     </shortcut>
 
@@ -45,9 +25,6 @@
             android:action="sc_bookmark"
             android:targetPackage="de.baumann.browser"
             android:targetClass="de.baumann.browser.Activity.BrowserActivity" />
-        <!-- If your shortcut is associated with multiple intents, include them
-             here. The last intent in the fragments is what the user sees when they
-             launch this shortcut. -->
         <categories android:name="android.shortcut.conversation" />
     </shortcut>
 
@@ -62,9 +39,20 @@
             android:action="sc_history"
             android:targetPackage="de.baumann.browser"
             android:targetClass="de.baumann.browser.Activity.BrowserActivity" />
-        <!-- If your shortcut is associated with multiple intents, include them
-             here. The last intent in the fragments is what the user sees when they
-             launch this shortcut. -->
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="sc_login"
+        android:enabled="true"
+        android:icon="@drawable/qc_pass"
+        android:shortcutShortLabel="@string/album_title_pass"
+        android:shortcutLongLabel="@string/album_title_pass"
+        android:shortcutDisabledMessage="@string/album_title_pass">
+        <intent
+            android:action="sc_login"
+            android:targetPackage="de.baumann.browser"
+            android:targetClass="de.baumann.browser.Activity.BrowserActivity" />
         <categories android:name="android.shortcut.conversation" />
     </shortcut>
 
