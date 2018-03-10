@@ -4,7 +4,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="?attr/colorPrimaryDark"
+    android:background="@color/colorPrimaryDark"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ScrollView
@@ -17,98 +17,176 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="20dp"
-            android:layout_marginStart="8dp">
+            android:layout_marginStart="8dp"
+            tools:ignore="UseCompoundDrawables">
 
-            <TextView
-                android:visibility="gone"
-                android:id="@+id/tv3_main_menu_new_tab"
-                android:text="@string/main_menu_new_tab"
-                android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:minHeight="46dp"
-                android:gravity="center_vertical"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/light"
-                android:maxLines="1"
-                android:ellipsize="end" />
-
-            <TextView
+            <LinearLayout
                 android:visibility="gone"
                 android:id="@+id/tv3_main_menu_new_tabOpen"
-                android:text="@string/main_menu_new_tabOpen"
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:minHeight="46dp"
-                android:gravity="center_vertical"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/light"
-                android:maxLines="1"
-                android:ellipsize="end" />
+                android:layout_height="wrap_content">
 
-            <TextView
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="42dp"
+                    android:gravity="center_vertical"
+                    android:layout_marginEnd="16dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/icon_tab_plus_light" />
+
+                <TextView
+                    android:text="@string/main_menu_new_tabOpen"
+                    android:layout_width="match_parent"
+                    android:layout_height="46dp"
+                    android:minHeight="46dp"
+                    android:gravity="center_vertical"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/light"
+                    android:maxLines="1"
+                    android:ellipsize="end" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/tv3_main_menu_new_tab"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="42dp"
+                    android:gravity="center_vertical"
+                    android:layout_marginEnd="16dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/icon_tab_unselected" />
+
+                <TextView
+                    android:text="@string/main_menu_new_tab"
+                    android:layout_width="match_parent"
+                    android:layout_height="46dp"
+                    android:minHeight="46dp"
+                    android:gravity="center_vertical"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/light"
+                    android:maxLines="1"
+                    android:ellipsize="end" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:visibility="gone"
                 android:id="@+id/tv3_main_menu_share_link"
-                android:text="@string/menu_share_link"
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:minHeight="46dp"
-                android:gravity="center_vertical"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/light"
-                android:maxLines="1"
-                android:ellipsize="end" />
+                android:layout_height="wrap_content">
 
-            <TextView
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="42dp"
+                    android:gravity="center_vertical"
+                    android:layout_marginEnd="16dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/icon_menu_share" />
+
+                <TextView
+                    android:text="@string/menu_share_link"
+                    android:layout_width="match_parent"
+                    android:layout_height="46dp"
+                    android:minHeight="46dp"
+                    android:gravity="center_vertical"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/light"
+                    android:maxLines="1"
+                    android:ellipsize="end" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:visibility="gone"
                 android:id="@+id/tv3_main_menu_copy_link"
-                android:text="@string/main_menu_copy_link"
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:minHeight="46dp"
-                android:gravity="center_vertical"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/light"
-                android:maxLines="1"
-                android:ellipsize="end" />
+                android:layout_height="wrap_content">
 
-            <TextView
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="42dp"
+                    android:gravity="center_vertical"
+                    android:layout_marginEnd="16dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/icon_clipboard" />
+
+                <TextView
+                    android:text="@string/main_menu_copy_link"
+                    android:layout_width="match_parent"
+                    android:layout_height="46dp"
+                    android:minHeight="46dp"
+                    android:gravity="center_vertical"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/light"
+                    android:maxLines="1"
+                    android:ellipsize="end" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:visibility="gone"
                 android:id="@+id/tv3_main_menu_open_link"
-                android:text="@string/menu_open_with"
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:minHeight="46dp"
-                android:gravity="center_vertical"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/light"
-                android:maxLines="1"
-                android:ellipsize="end" />
+                android:layout_height="wrap_content">
 
-            <TextView
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="42dp"
+                    android:gravity="center_vertical"
+                    android:layout_marginEnd="16dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/icon_exit_light" />
+
+                <TextView
+                    android:text="@string/menu_open_with"
+                    android:layout_width="match_parent"
+                    android:layout_height="46dp"
+                    android:minHeight="46dp"
+                    android:gravity="center_vertical"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/light"
+                    android:maxLines="1"
+                    android:ellipsize="end" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:visibility="gone"
                 android:id="@+id/tv3_menu_save_as"
-                android:text="@string/menu_save_as"
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:minHeight="46dp"
-                android:gravity="center_vertical"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/light"
-                android:maxLines="1"
-                android:ellipsize="end" />
+                android:layout_height="wrap_content">
 
-            <TextView
-                android:visibility="gone"
-                android:id="@+id/tv3_main_menu_save"
-                android:text="@string/main_menu_save"
-                android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:minHeight="46dp"
-                android:gravity="center_vertical"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/light"
-                android:maxLines="1"
-                android:ellipsize="end" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="42dp"
+                    android:gravity="center_vertical"
+                    android:layout_marginEnd="16dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/icon_menu_save" />
+
+                <TextView
+                    android:text="@string/menu_save_as"
+                    android:layout_width="match_parent"
+                    android:layout_height="46dp"
+                    android:minHeight="46dp"
+                    android:gravity="center_vertical"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/light"
+                    android:maxLines="1"
+                    android:ellipsize="end" />
+
+            </LinearLayout>
 
         </LinearLayout>
 

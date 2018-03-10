@@ -1,3 +1,10 @@
+### v 5.6 (WIP)
+- new: close all websites from notification
+- new: desktop mode in "Fast toggle dialog"
+- improved: link sharing
+- improved: UI
+
+
 ### v 5.5
 - new: option to disable confirmation dialogs on exit (thanks: element54)
 - improved: light theme

@@ -4,7 +4,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="?attr/colorPrimaryDark"
+    android:background="@color/colorPrimaryDark"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
@@ -39,59 +39,91 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingEnd="20dp"
-            android:paddingStart="25dp" >
+            android:paddingStart="23dp" >
 
             <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp">
+
+                <ImageView
+                    android:layout_centerVertical="true"
+                    android:id="@+id/abIcon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginEnd="16dp"
+                    android:contentDescription="@null"
+                    android:maxHeight="24dp"
+                    android:padding="3dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/icon_block_light" />
 
                 <TextView
-                    android:text="@string/setting_title_adblock"
+                    android:layout_centerVertical="true"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_toEndOf="@+id/abIcon"
                     android:layout_toStartOf="@+id/imageButton_ab"
+                    android:foregroundGravity="center_vertical"
+                    android:text="@string/setting_title_adblock"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/light" />
 
                 <CheckBox
+                    android:layout_centerVertical="true"
+                    android:id="@+id/switch2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:buttonTint="@color/light"
-                    android:id="@+id/switch2"
                     android:checked="false" />
 
                 <ImageButton
+                    android:id="@+id/imageButton_ab"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginEnd="12dp"
-                    app:srcCompat="@drawable/ic_action_close_red"
-                    android:layout_toStartOf="@+id/switch2"
-                    android:id="@+id/imageButton_ab"
-                    android:background="?android:selectableItemBackground"
-                    tools:ignore="ContentDescription"
-                    android:layout_centerVertical="true"
                     android:layout_centerInParent="true"
-                    android:layout_centerHorizontal="true"
-                    android:scaleType="centerCrop" />
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_toStartOf="@+id/switch2"
+                    android:background="?android:selectableItemBackground"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/ic_action_close_red"
+                    tools:ignore="ContentDescription" />
 
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp">
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp">
+
+                <ImageView
+                    android:layout_centerVertical="true"
+                    android:id="@+id/jsIcon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginEnd="16dp"
+                    android:contentDescription="@null"
+                    android:maxHeight="24dp"
+                    android:padding="2dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/icon_java_light" />
 
                 <TextView
+                    android:layout_centerVertical="true"
                     android:text="@string/setting_title_javascript"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/jsIcon"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:layout_toStartOf="@+id/imageButton_js"
                     android:textColor="@color/light" />
 
                 <CheckBox
+                    android:layout_centerVertical="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -117,19 +149,35 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp">
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp">
+
+                <ImageView
+                    android:layout_centerVertical="true"
+                    android:id="@+id/cookieIcon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginEnd="16dp"
+                    android:contentDescription="@null"
+                    android:maxHeight="24dp"
+                    android:padding="2dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/icon_cookie_light" />
 
                 <TextView
+                    android:layout_centerVertical="true"
                     android:text="@string/setting_title_cookie"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:layout_toStartOf="@+id/imageButton_cookie"
+                    android:layout_toEndOf="@+id/cookieIcon"
                     android:textColor="@color/light" />
 
                 <CheckBox
+                    android:layout_centerVertical="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -155,19 +203,35 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp">
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp">
+
+                <ImageView
+                    android:layout_centerVertical="true"
+                    android:id="@+id/historyIcon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginEnd="16dp"
+                    android:contentDescription="@null"
+                    android:maxHeight="24dp"
+                    android:padding="2dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_action_history" />
 
                 <TextView
+                    android:layout_centerVertical="true"
                     android:text="@string/setting_title_history"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_toEndOf="@+id/historyIcon"
                     android:layout_toStartOf="@+id/switch3"
                     android:textColor="@color/light" />
 
                 <CheckBox
+                    android:layout_centerVertical="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -178,19 +242,35 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp">
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp">
+
+                <ImageView
+                    android:layout_centerVertical="true"
+                    android:id="@+id/locationIcon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginEnd="16dp"
+                    android:contentDescription="@null"
+                    android:maxHeight="24dp"
+                    android:padding="2dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/icon_location_light" />
 
                 <TextView
+                    android:layout_centerVertical="true"
                     android:text="@string/setting_title_location"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_toEndOf="@+id/locationIcon"
                     android:layout_toStartOf="@+id/switch6"
                     android:textColor="@color/light" />
 
                 <CheckBox
+                    android:layout_centerVertical="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -200,20 +280,42 @@
 
             </RelativeLayout>
 
+            <View
+                android:layout_margin="4dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/grey_500" />
+
             <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp">
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp">
+
+                <ImageView
+                    android:layout_centerVertical="true"
+                    android:id="@+id/imagesIcon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginEnd="16dp"
+                    android:contentDescription="@null"
+                    android:maxHeight="24dp"
+                    android:padding="2dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/icon_image_light" />
 
                 <TextView
+                    android:layout_centerVertical="true"
                     android:text="@string/setting_title_images"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_toEndOf="@+id/imagesIcon"
                     android:layout_toStartOf="@+id/switch4"
                     android:textColor="@color/light" />
 
                 <CheckBox
+                    android:layout_centerVertical="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -224,24 +326,79 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp">
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp">
+
+                <ImageView
+                    android:layout_centerVertical="true"
+                    android:id="@+id/invertIcon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginEnd="16dp"
+                    android:contentDescription="@null"
+                    android:maxHeight="24dp"
+                    android:padding="2dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/icon_night_light" />
 
                 <TextView
+                    android:layout_centerVertical="true"
                     android:text="@string/setting_title_inverted"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_toEndOf="@+id/invertIcon"
                     android:layout_toStartOf="@+id/switch7"
                     android:textColor="@color/light" />
 
                 <CheckBox
+                    android:layout_centerVertical="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:buttonTint="@color/light"
                     android:id="@+id/switch7"
+                    android:checked="false" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp">
+
+                <ImageView
+                    android:layout_centerVertical="true"
+                    android:id="@+id/desktopIcon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginEnd="16dp"
+                    android:contentDescription="@null"
+                    android:maxHeight="24dp"
+                    android:padding="2dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/icon_desktop_light" />
+
+                <TextView
+                    android:layout_centerVertical="true"
+                    android:text="@string/setting_summary_user_agent_desktop"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_toEndOf="@+id/desktopIcon"
+                    android:layout_toStartOf="@+id/switch8"
+                    android:textColor="@color/light" />
+
+                <CheckBox
+                    android:id="@+id/switch8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:buttonTint="@color/light"
                     android:checked="false" />
 
             </RelativeLayout>
@@ -252,7 +409,7 @@
 
 
     <RelativeLayout
-        android:background="?attr/colorPrimaryDark"
+        android:background="@color/colorPrimaryDark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -262,17 +419,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:background="?attr/colorPrimaryDark"
-            android:textColor="?attr/colorAccent"
+            android:background="@color/colorPrimaryDark"
+            android:textColor="@color/colorAccent"
             android:text="@string/app_ok"/>
 
-        <Button android:id="@+id/action_settings"
+        <Button android:id="@+id/action_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toStartOf="@+id/action_ok"
-            android:background="?attr/colorPrimaryDark"
-            android:textColor="?attr/colorAccent"
-            android:text="@string/setting_label"/>
+            android:background="@color/colorPrimaryDark"
+            android:textColor="@color/colorAccent"
+            android:text="@string/app_cancel"/>
 
     </RelativeLayout>
 

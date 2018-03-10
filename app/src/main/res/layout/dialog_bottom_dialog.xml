@@ -12,7 +12,10 @@
 
     <TextView
         android:id="@+id/dialog_text"
-        android:padding="16dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/light"
