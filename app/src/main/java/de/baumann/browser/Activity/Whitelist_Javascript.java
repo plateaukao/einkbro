@@ -16,15 +16,15 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import de.baumann.browser.Browser.AdBlock;
+import de.baumann.browser.Browser.Javascript;
 import de.baumann.browser.Database.RecordAction;
 import de.baumann.browser.Ninja.R;
 import de.baumann.browser.Unit.BrowserUnit;
+import de.baumann.browser.View.Adapter_Javascript;
 import de.baumann.browser.View.NinjaToast;
-import de.baumann.browser.View.WhitelistAdapter;
 
-public class WhitelistActivity extends AppCompatActivity {
-    private WhitelistAdapter adapter;
+public class Whitelist_Javascript extends AppCompatActivity {
+    private Adapter_Javascript adapter;
     private List<String> list;
 
     @SuppressWarnings("ConstantConditions")
@@ -40,13 +40,13 @@ public class WhitelistActivity extends AppCompatActivity {
 
         RecordAction action = new RecordAction(this);
         action.open(false);
-        list = action.listDomains();
+        list = action.listDomainsJS();
         action.close();
 
         ListView listView = findViewById(R.id.whitelist);
         listView.setEmptyView(findViewById(R.id.whitelist_empty));
 
-        adapter = new WhitelistAdapter(this, list);
+        adapter = new Adapter_Javascript(this, list);
         listView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
@@ -57,20 +57,20 @@ public class WhitelistActivity extends AppCompatActivity {
                 EditText editText = findViewById(R.id.whitelist_edit);
                 String domain = editText.getText().toString().trim();
                 if (domain.isEmpty()) {
-                    NinjaToast.show(WhitelistActivity.this, R.string.toast_input_empty);
+                    NinjaToast.show(Whitelist_Javascript.this, R.string.toast_input_empty);
                 } else if (!BrowserUnit.isURL(domain)) {
-                    NinjaToast.show(WhitelistActivity.this, R.string.toast_invalid_domain);
+                    NinjaToast.show(Whitelist_Javascript.this, R.string.toast_invalid_domain);
                 } else {
-                    RecordAction action = new RecordAction(WhitelistActivity.this);
+                    RecordAction action = new RecordAction(Whitelist_Javascript.this);
                     action.open(true);
-                    if (action.checkDomain(domain)) {
-                        NinjaToast.show(WhitelistActivity.this, R.string.toast_domain_already_exists);
+                    if (action.checkDomainJS(domain)) {
+                        NinjaToast.show(Whitelist_Javascript.this, R.string.toast_domain_already_exists);
                     } else {
-                        AdBlock adBlock = new AdBlock(WhitelistActivity.this);
+                        Javascript adBlock = new Javascript(Whitelist_Javascript.this);
                         adBlock.addDomain(domain.trim());
                         list.add(0, domain.trim());
                         adapter.notifyDataSetChanged();
-                        NinjaToast.show(WhitelistActivity.this, R.string.toast_add_whitelist_successful);
+                        NinjaToast.show(Whitelist_Javascript.this, R.string.toast_add_whitelist_successful);
                     }
                     action.close();
                 }
@@ -98,16 +98,16 @@ public class WhitelistActivity extends AppCompatActivity {
                 break;
             case R.id.whitelist_menu_clear:
 
-                final BottomSheetDialog dialog = new BottomSheetDialog(WhitelistActivity.this);
-                View dialogView = View.inflate(WhitelistActivity.this, R.layout.dialog_action, null);
+                final BottomSheetDialog dialog = new BottomSheetDialog(Whitelist_Javascript.this);
+                View dialogView = View.inflate(Whitelist_Javascript.this, R.layout.dialog_action, null);
                 TextView textView = dialogView.findViewById(R.id.dialog_text);
                 textView.setText(R.string.toast_clear);
                 Button action_ok = dialogView.findViewById(R.id.action_ok);
                 action_ok.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        AdBlock adBlock = new AdBlock(WhitelistActivity.this);
-                        adBlock.clearDomains();
+                        Javascript javaScript = new Javascript(Whitelist_Javascript.this);
+                        javaScript.clearDomains();
                         list.clear();
                         adapter.notifyDataSetChanged();
                         dialog.cancel();

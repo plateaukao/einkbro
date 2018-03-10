@@ -14,7 +14,7 @@
     <string name="album_title_pass">Logindaten</string>
     <string name="album_untitled"> </string>
     <string name="notification_content_holderTitle">Geöffnete Tabs …</string>
-    <string name="notification_content_holder">… Anlicken um die Seiten zu sehen</string>
+    <string name="notification_content_holder">… Anklicken um die Seiten zu sehen</string>
     <string name="search_hint">Suche</string>
 
 
@@ -81,8 +81,8 @@
         Anwendung automatisch gelöscht werden.</string>
     <string name="setting_summary_start_control">Entscheide welche Funktionen des Browsers beim Start aktiviert sind.</string>
 
-    <string name="setting_title_search_engine">Suchmaschiene</string>
-    <string name="setting_summary_search_engine">Hier kannst du eine Suchmaschiene auswählen oder eine eigene eingeben.</string>
+    <string name="setting_title_search_engine">Suchmaschine</string>
+    <string name="setting_summary_search_engine">Hier kannst du eine Suchmaschine auswählen oder eine eigene eingeben.</string>
     <string name="setting_summary_search_engine_google">Google</string>
     <string name="setting_summary_search_engine_duckduckgo">DuckDuckGo</string>
     <string name="setting_summary_search_engine_startpage">StartPage</string>
@@ -104,6 +104,8 @@
     <string name="setting_summary_images">Aktiviere das automatische Laden von Bildern. Wenn du dies deaktivierst, sparst du
         Datenvolumen und die Internetseiten laden schneller.</string>
     <string name="setting_title_cookie">Cookies</string>
+    <string name="setting_summary_cookie_delete">Wenn dies aktiviert ist, werden alle Cookies gelöscht. Auch die von
+        Internetseiten, denen du das Speichern erlaubt hast.</string>
     <string name="setting_summary_cookie">Aktiviere Cookies. Cookies sind kleine Textdateien, die auf deinem Gerät gespeichert
         werden. Internetseiten können sie nutzen um die Benutzereinstellungen (z.B. bei Suchmaschienen) zu speichern. Cookies von
         Dritten (sie sammeln zu Werbezwecken Nutzerdaten) sind immer deaktiviert.</string>
@@ -137,6 +139,7 @@
         überschreiben immer die alten. Zum Wiederherstellen muss eine Datei mit dem richtigen Namen in diesem Verzeichnis sein.</string>
     <string name="clear_menu_done_all">Alles erledigt</string>
     <string name="clear_title_quit">Löschen beim Verlassen der Anwendung</string>
+    <string name="clear_summary_quit">Jedesmal wenn \"F|L|OSS Browser\" beendet wird, werden oben ausgewählte Daten gelöscht.</string>
     <string name="clear_title_bookmarks">Lösche Lesezeichen</string>
     <string name="clear_title_cache">Lösche Cache</string>
     <string name="clear_title_cookie">Lösche Cookies</string>
@@ -163,6 +166,12 @@
     <string name="setting_summary_themeDark">Du magst es lieber ein bisschen heller? Dann tu es!</string>
     <string name="setting_title_tab">Starttab</string>
     <string name="setting_summary_tab">Was soll beim Start von \"F|L|OSS Browser\" angezeigt werden? Die Startseite, deine Lesezeichen, …</string>
+
+    <string name="setting_title_confirm_exit">Bestätigung beim Verlassen</string>
+    <string name="setting_summary_confirm_exit">Bestätigungsdialog, bevor du \"F|L|OSS Browser\" beendest.</string>
+
+    <string name="setting_title_confirm_tab_close">Bestätigung Tab schließen</string>
+    <string name="setting_summary_confirm_tab_close">Bestätigungsdialog, bevor ein Tab geschlossen wird.</string>
 
     <string name="setting_title_toolbar">Toolbar</string>
     <string name="setting_hide_always">Immer verstecken</string>
@@ -214,7 +223,7 @@
     <string name="setting_title_license">Lizenz</string>
     <string name="setting_summary_license">\"F|L|OSS Browser\" ist komplett frei (wie in Freiheit) und Open Source.</string>
     <string name="setting_title_appSettings">App Einstellungen</string>
-    <string name="setting_summary_appSettings">Öffne die Systemeinstellungen von \"F|L|OSS Browser\". Dort kannst du, ja nch Android Version
+    <string name="setting_summary_appSettings">Öffne die Systemeinstellungen von \"F|L|OSS Browser\". Dort kannst du, je nach Android Version,
         verschiedene Einstellungen vornehmen oder nachträglich Berechtigungen erteilen.</string>
     <string name="setting_title_community">Mitmachen</string>
     <string name="setting_summary_community">Erfahre, wer alles bei diesem Projekt geholfen hat. Oder magst du selbst bei der weiteren

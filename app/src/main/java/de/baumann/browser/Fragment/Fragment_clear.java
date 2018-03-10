@@ -6,7 +6,7 @@ import android.preference.PreferenceFragment;
 
 import de.baumann.browser.Ninja.R;
 
-public class ClearFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class Fragment_clear extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

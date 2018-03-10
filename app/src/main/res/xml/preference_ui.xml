@@ -14,6 +14,20 @@
         android:title="@string/setting_title_themeDark"
         android:summary="@string/setting_summary_themeDark"/>
 
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:icon="@drawable/icon_exit"
+        android:key="sp_close_browser_confirm"
+        android:title="@string/setting_title_confirm_exit"
+        android:summary="@string/setting_summary_confirm_exit" />
+
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:icon="@drawable/icon_close"
+        android:key="sp_close_tab_confirm"
+        android:title="@string/setting_title_confirm_tab_close"
+        android:summary="@string/setting_summary_confirm_tab_close" />
+
     <ListPreference
         android:title="@string/setting_title_tab"
         android:icon="@drawable/icon_tab_plus"

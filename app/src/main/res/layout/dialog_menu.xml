@@ -26,23 +26,12 @@
             android:src="@drawable/chevron_right"
             android:background="@drawable/custom_button_dark"/>
 
-        <ImageButton android:id="@+id/web_home"
-            android:contentDescription="@null"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
-            android:layout_centerInParent="true"
-            android:layout_toStartOf="@id/web_next"
-            android:layout_marginTop="@dimen/layout_margin_4dp"
-            android:layout_marginBottom="@dimen/layout_margin_4dp"
-            android:src="@drawable/icon_home"
-            android:background="@drawable/custom_button_dark"/>
-
         <ImageButton android:id="@+id/web_prev"
             android:contentDescription="@null"
             android:layout_width="42dp"
             android:layout_height="42dp"
             android:layout_centerInParent="true"
-            android:layout_toStartOf="@id/web_home"
+            android:layout_toStartOf="@id/web_next"
             android:layout_marginTop="@dimen/layout_margin_4dp"
             android:layout_marginBottom="@dimen/layout_margin_4dp"
             android:src="@drawable/chevron_left"
@@ -231,6 +220,18 @@
             <TextView
                 android:visibility="gone"
                 android:id="@+id/tv_placeholder"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:gravity="center_vertical"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/light"
+                android:maxLines="1"
+                android:ellipsize="end" />
+
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv_placeholder_2"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"

@@ -6,11 +6,4 @@
     <attr name="colorPrimaryDark" format="color" />
     <attr name="colorAccent_trans" format="color" />
 
-    <!-- AndroidAgo -->
-    <declare-styleable name="RelativeTimeTextView">
-        <attr name="relativeTimePrefix" format="string" />
-        <attr name="relativeTimeSuffix" format="string" />
-        <attr name="referenceTime" format="string" />
-    </declare-styleable>
-
 </resources>

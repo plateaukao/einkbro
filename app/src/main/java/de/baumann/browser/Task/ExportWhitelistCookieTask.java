@@ -38,7 +38,7 @@ public class ExportWhitelistCookieTask extends AsyncTask<Void, Void, Boolean> {
 
     @Override
     protected Boolean doInBackground(Void... params) {
-        path = BrowserUnit.exportWhitelistCookie(context);
+        path = BrowserUnit.exportWhitelist(context, 2);
         return !isCancelled() && path != null && !path.isEmpty();
     }
 

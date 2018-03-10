@@ -24,10 +24,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center|bottom"
-            android:padding="@dimen/padding_8dp"
+            android:padding="@dimen/layout_margin_8dp"
             android:gravity="center_vertical"
             android:textColor="@color/light"
-            android:textSize="@dimen/text_size_12sp"
             android:maxLines="1"
             android:ellipsize="end"
             android:background="@color/shadow_dark"/>

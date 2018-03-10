@@ -6,7 +6,6 @@
 
     <!-- Permission -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -77,15 +76,15 @@
             android:label="@string/setting_label"
             android:theme="@style/AppTheme"/>
 
-        <activity android:name="de.baumann.browser.Activity.WhitelistActivity"
+        <activity android:name="de.baumann.browser.Activity.Whitelist_AdBlock"
             android:label="@string/setting_title_whitelist"
             android:theme="@style/AppTheme"/>
 
-        <activity android:name="de.baumann.browser.Activity.JavascriptActivity"
+        <activity android:name="de.baumann.browser.Activity.Whitelist_Javascript"
             android:label="@string/setting_title_whitelistJS"
             android:theme="@style/AppTheme"/>
 
-        <activity android:name="de.baumann.browser.Activity.CookieActivity"
+        <activity android:name="de.baumann.browser.Activity.Whitelist_Cookie"
             android:label="@string/setting_title_whitelistCookie"
             android:theme="@style/AppTheme"/>
 

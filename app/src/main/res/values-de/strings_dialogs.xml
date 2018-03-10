@@ -7,21 +7,16 @@
         &lt;i>Projektseite: https://github.com/scoute-dich/Browser&lt;br>
         Änderungen: https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;/i>&lt;br>&lt;br>
 
-        &lt;b>Version: 5.4&lt;/b>&lt;br>
+        &lt;b>Version: 5.5&lt;/b>&lt;br>
         Bitte lies den \"Hilfedialog\" für weitere Informationen.&lt;br>&lt;br>
 
-        \u25AA neu: neuer Name "F|L|OSS Browser"&lt;br>
-        \u25AA neu: dunkles und helles Thema&lt;br>
-        \u25AA neu: Startseite mit allen Inhalten&lt;br>
-        \u25AA neu: volle Unterstützung für Cookie-Außnahmen&lt;br>
-        \u25AA neu: mehr Einstellungen für Vollbildmodus&lt;br>
-        \u25AA neu: mehr EInstellungen für den Navigationsknopf&lt;br>
-        \u25AA neu: Nachtmodus nur bei angezeigten Internetseiten&lt;br>
-        \u25AA aktualisiert: Hilfedialog&lt;br>
-        \u25AA entfernt: verschiedene Themen&lt;br>
-        \u25AA behoben: doppelte EInträge im Verlauf&lt;br>
-        \u25AA behoben: Toolbar funktioniert nicht beim Start&lt;br>
-        \u25AA behoben: Tastaturfehler inmanchen Fällen (Danke: element54)
+        \u25AA neu: Option den Bestätigungsdialog beim Verlassen der App zu deaktivieren (Danke: element54)&lt;br>
+        \u25AA verbessert: helles Thema&lt;br>
+        \u25AA verbessert: Startseite&lt;br>
+        \u25AA behoben: dunkler HIntergrung auf manchen Internetseiten&lt;br>
+        \u25AA behoben: OK Knopf in den \"Schnelleinstellungen\"&lt;br>
+        \u25AA behoben: Toolbar zeigt den Titel nicht an&lt;br>
+        \u25AA behoben: Verhalten beim Zurückdrücken
     </string>
 
     <string name="startpage_title">Startseite</string>
@@ -48,9 +43,8 @@
     <string name="menu_title">Menü</string>
     <string name="menu_dialog">Teile oder speichere Inhalte, Tabs öffnen oder schließen: probiere einfach die einzelnen Einträge aus
         und finde heraus, was möglich ist. Mit den Knöpfen oben rechts im Menü kannst eine Seite in deinem Verlauf
-        zurück/vor. Wenn du den Knopf mit dem Kreis anklickst, öffnest du im selben Tab die Startseite. Menüs können, genauso
-        wie alle anderen Einblendungen, geschlossen werden, indem du zurück klickst, außerhalb des Menüs klickst oder das Menü
-        einfach nach unten wischst.</string>
+        zurück/vor. Menüs können, genauso wie alle anderen Einblendungen, geschlossen werden, indem du zurück klickst,
+        außerhalb des Menüs klickst oder das Menü einfach nach unten wischst.</string>
 
     <string name="not_title">Benachrichtigungen</string>
     <string name="not_dialog">Benachrichtigungen werden ebenfalls am unteren Rand des Bildschirms angezeigt. Sie können
@@ -88,11 +82,6 @@
         Roman Nurik&lt;br>
         &lt;i>http://git.io/vUruO&lt;/i>&lt;br>&lt;br>
 
-        &lt;b>android-ago&lt;/b>&lt;br>
-        Apache License Version 2.0&lt;br>
-        Kiran Rao&lt;br>
-        &lt;i>http://git.io/vUrum&lt;/i>&lt;br>&lt;br>
-
         &lt;b>DynamicGrid&lt;/b>&lt;br>
         Apache License Version 2.0&lt;br>
         askerov&lt;br>
@@ -124,7 +113,9 @@
         &lt;i>https://github.com/hummatli/SimpleEncryptionLib</string>
 
     <string name="cont_dialog">
-        &lt;i>Auf den folgenden Internetseiten bekommst du weitere Informationen über \"F|L|OSS Browser\":&lt;/i>&lt;br>&lt;br>
+        &lt;i>Zuerst möchte ich allen Nutzern danken, die auf irgendeine Weise an diesem Projekt beteiligt sind. Sie helfen
+        Fehler zu finden, übersetzen oder haben auf eine andere Art einen Beitrag geleistet. Auf den
+        folgenden Internetseiten kannst du Mitglied dieser Gemeinschaft werden:&lt;/i>&lt;br>&lt;br>
 
         &lt;b>XDA-Thread:&lt;/b>&lt;br>
         XDA ist eine großartige Gemeinschaft für Entwickler und Smartphoneentusiasten. Hier kannst du Fehler melden, nach neuen
@@ -137,7 +128,7 @@
         &lt;i>https://github.com/scoute-dich/browser&lt;/i>&lt;br>&lt;br>&lt;br>
 
 
-        &lt;i>Bis jetzt sind folgende Personen an dem Projekt beteiligt:&lt;/i>&lt;br>&lt;br>
+        &lt;i>Bis jetzt sind folgende Personen an dem Projekt beteiligt. Wenn ich jemanden vergessen habe, bitte melden:&lt;/i>&lt;br>&lt;br>
 
         &lt;b>Gaukler Faun&lt;/b>&lt;br>
         Hauptentwickler und Gründer des Projekts.&lt;br>
@@ -148,7 +139,8 @@
         &lt;i>https://github.com/futrDevelopment&lt;/i>&lt;br>&lt;br>
 
         &lt;b>element54&lt;/b>&lt;br>
-        Hat geholfen Probleme mit der Tastatur zu behen (Fehler #105).&lt;br>
+        \u25AA behoben: Probleme mit der Tastatur (Fehler #105).&lt;br>
+        \u25AA neu: Option Bestätigungsdialoge beim Verlassen zu deaktivieren.&lt;br>
         &lt;i>https://github.com/element54&lt;/i>&lt;br>&lt;br>
 
         &lt;b>Jumping Yang&lt;/b>&lt;br>
