@@ -23,7 +23,7 @@ public class AdBlock {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                    AssetManager manager = context.getAssets();
+                AssetManager manager = context.getAssets();
                 try {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(manager.open(FILE)));
                     String line;
