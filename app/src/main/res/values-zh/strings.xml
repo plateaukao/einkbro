@@ -271,7 +271,8 @@
     <string name="toast_restart">你需要重启浏览器来应用变更，现在关闭么？</string>
     <string name="toast_quit">你确定要退出浏览器么？</string>
     <string name="toast_close_tab">你确定关闭当前标签？</string>
-
+    <string name="toast_closeNotification">关闭所有打开的网页。</string>
+    <string name="toast_fileManager">无法打开此文件，请尝试用文件管理器打开。</string>
 
     <!-- Whitelist -->
     <string name="whitelist_menu_clear">清空</string>
