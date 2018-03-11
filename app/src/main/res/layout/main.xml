@@ -41,7 +41,7 @@
                   android:layout_width="match_parent"
                   android:layout_height="match_parent"
                   android:gravity="bottom"
-                  android:background="?attr/colorPrimary">
+                  android:background="@color/colorPrimary">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -65,7 +65,7 @@
                 android:layout_height="@dimen/layout_margin_4dp"
                 android:layout_alignBottom="@+id/main_content"
                 android:maxHeight="@dimen/layout_margin_4dp"
-                android:progressTint="?attr/colorAccent"/>
+                android:progressTint="@color/colorAccent"/>
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/fab_imageButtonNav_right"
@@ -75,9 +75,9 @@
                 android:layout_alignParentEnd="true"
                 android:layout_margin="18dp"
                 android:visibility="gone"
-                app:backgroundTint="?attr/colorAccent"
+                app:backgroundTint="@color/colorAccent"
                 app:fabSize="mini"
-                app:srcCompat="@drawable/icon_earth_light"
+                app:srcCompat="@drawable/ic_action_overflow"
                 tools:ignore="RelativeOverlap" />
 
             <android.support.design.widget.FloatingActionButton
@@ -88,9 +88,9 @@
                 android:layout_alignParentStart="true"
                 android:layout_margin="18dp"
                 android:visibility="gone"
-                app:backgroundTint="?attr/colorAccent"
+                app:backgroundTint="@color/colorAccent"
                 app:fabSize="mini"
-                app:srcCompat="@drawable/icon_earth_light"
+                app:srcCompat="@drawable/ic_action_overflow"
                 tools:ignore="RelativeOverlap" />
 
             <android.support.design.widget.FloatingActionButton
@@ -101,9 +101,9 @@
                 android:layout_centerInParent="true"
                 android:layout_margin="18dp"
                 android:visibility="gone"
-                app:backgroundTint="?attr/colorAccent"
+                app:backgroundTint="@color/colorAccent"
                 app:fabSize="mini"
-                app:srcCompat="@drawable/icon_dots"
+                app:srcCompat="@drawable/ic_action_overflow"
                 tools:ignore="RelativeOverlap" />
 
         </RelativeLayout>
@@ -156,7 +156,7 @@
                 android:inputType="textUri"
                 android:maxLines="1"
                 android:ellipsize="end"
-                android:background="?attr/colorPrimary"/>
+                android:background="@color/colorPrimary"/>
 
             <TextView android:id="@+id/omnibox_title"
                 android:layout_width="match_parent"
@@ -231,7 +231,7 @@
                 android:inputType="text"
                 android:maxLines="1"
                 android:ellipsize="end"
-                android:background="?attr/colorPrimary"/>
+                android:background="@color/colorPrimary"/>
 
         </RelativeLayout>
 

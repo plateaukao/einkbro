@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.MailTo;
 
+import de.baumann.browser.Ninja.R;
+
 public class IntentUnit {
     public static final String OPEN = "OPEN";
 
@@ -30,8 +32,8 @@ public class IntentUnit {
         Intent sharingIntent = new Intent(Intent.ACTION_SEND);
         sharingIntent.setType("text/plain");
         sharingIntent.putExtra(Intent.EXTRA_SUBJECT, title);
-        sharingIntent.putExtra(Intent.EXTRA_TEXT, title + "\n" + url);
-        context.startActivity(Intent.createChooser(sharingIntent, ("Share using:")));
+        sharingIntent.putExtra(Intent.EXTRA_TEXT, url);
+        context.startActivity(Intent.createChooser(sharingIntent, (context.getString(R.string.menu_share_link))));
     }
 
     // Activity holder

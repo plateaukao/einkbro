@@ -39,7 +39,7 @@ public class NinjaToast {
                     return null;
                 }
             };
-            View snackView = mInflater.inflate(R.layout.dialog_bottom_snackbar, null);
+            View snackView = mInflater.inflate(R.layout.dialog_bottom_dialog, null);
             TextView textView = snackView.findViewById(R.id.dialog_text);
             textView.setText(text);
             // Add the view to the Snackbar's layout

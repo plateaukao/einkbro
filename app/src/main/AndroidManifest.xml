@@ -58,7 +58,7 @@
                 <action android:name="android.intent.action.WEB_SEARCH" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.LAUNCHER"/>
-                <action android:name="sc_files" />
+                <action android:name="sc_startPage" />
                 <action android:name="sc_login" />
                 <action android:name="sc_bookmark" />
                 <action android:name="sc_history" />

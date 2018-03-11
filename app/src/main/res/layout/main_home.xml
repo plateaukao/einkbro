@@ -26,7 +26,9 @@
 
                 <org.askerov.dynamicgrid.DynamicGridView
                     android:visibility="gone"
-                    android:padding="14dp"
+                    android:paddingEnd="4dp"
+                    android:paddingStart="4dp"
+                    android:paddingTop="4dp"
                     android:id="@+id/home_grid"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
