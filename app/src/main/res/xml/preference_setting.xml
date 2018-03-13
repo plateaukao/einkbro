@@ -30,6 +30,15 @@
             android:entries="@array/setting_entries_user_agent"
             android:entryValues="@array/setting_values_user_agent"/>
 
+        <de.baumann.browser.View.UserAgentListPreference
+            android:icon="@drawable/icon_size"
+            android:key="sp_fontSize"
+            android:defaultValue="100"
+            android:title="@string/setting_title_font"
+            android:summary="@string/setting_summary_font"
+            android:entries="@array/setting_entries_font"
+            android:entryValues="@array/setting_values_font"/>
+
     </PreferenceCategory>
 
 
