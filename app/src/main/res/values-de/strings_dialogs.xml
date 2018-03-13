@@ -26,12 +26,12 @@
 
     <string name="fastToggle_title">Schnelleinstellungen</string>
     <string name="fastToggle_dialog">Wenn du lange den \"Menü-\" oder den \"Navigationsknopf\" drückst, öffnen sich die
-        Schnelleinstellungen. Hier kannst du wichtige Einstellungen vornehmen, ohne die geöffnete INternetseite verlassen
+        Schnelleinstellungen. Hier kannst du wichtige Einstellungen vornehmen, ohne die geöffnete Internetseite verlassen
         zu müssen. Außerdem kannst du Internetseiten, denen du vertraust zu den Außnahmen für den AdBlocker, und das
         Benutzen von JavaScript oder Cookies zulassen.</string>
 
     <string name="toolbar_title">Toolbar</string>
-    <string name="toolbar_dialog">Unten auf dem Schirm findest du die Toolbar. Du kannst du direkt Links oder Suchbegriffe
+    <string name="toolbar_dialog">Unten auf dem Schirm findest du die Toolbar. Du kannst hier direkt Links oder Suchbegriffe
         eingeben, den angezeigten Inhalt neu laden oder das Menü öffnen. KLicke lange auf den \"Menüknopf\" um die
         Schnelleinstellungen zu öffnen. Wische die Toolbar nach oben um die \"Tabvorschau\" zu öffnen. Um zwischen den
         Tabs zu wechseln, kannst du nach links oder rechts wischen.</string>
@@ -41,9 +41,8 @@
         Um einen Tab zu schließen, wische die Vorschau nach oben oder unten weg.</string>
 
     <string name="menu_title">Menü</string>
-    <string name="menu_dialog">Teile oder speichere Inhalte, Tabs öffnen oder schließen: probiere einfach die einzelnen Einträge aus
-        und finde heraus, was möglich ist. Mit den Knöpfen oben rechts im Menü kannst eine Seite in deinem Verlauf
-        zurück/vor. Menüs können, genauso wie alle anderen Einblendungen, geschlossen werden, indem du zurück klickst,
+    <string name="menu_dialog">Verwalte deine Tabs, teile oder speichere Inhalte oder nutze weitere Funktionen. Einfach mal
+        ausprobieren. Menüs können, genauso wie alle anderen Einblendungen, geschlossen werden, indem du zurück klickst,
         außerhalb des Menüs klickst oder das Menü einfach nach unten wischst.</string>
 
     <string name="not_title">Benachrichtigungen</string>

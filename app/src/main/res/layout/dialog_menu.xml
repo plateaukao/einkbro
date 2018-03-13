@@ -9,49 +9,59 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp">
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:minHeight="46dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
 
-        <ImageButton android:id="@+id/web_next"
-            android:contentDescription="@null"
+        <ImageButton
+            android:layout_alignParentStart="true"
+            android:id="@+id/web_prev"
             android:layout_width="42dp"
-            android:layout_height="42dp"
-            android:layout_centerInParent="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="@dimen/layout_margin_4dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical|center_horizontal"
             android:layout_marginBottom="@dimen/layout_margin_4dp"
-            android:layout_gravity="center"
-            android:src="@drawable/chevron_right"
-            android:background="@drawable/custom_button_dark"/>
-
-        <ImageButton android:id="@+id/web_prev"
+            android:layout_marginTop="@dimen/layout_margin_4dp"
+            android:background="@drawable/custom_button_dark"
             android:contentDescription="@null"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
-            android:layout_centerInParent="true"
-            android:layout_toStartOf="@id/web_next"
-            android:layout_marginTop="@dimen/layout_margin_4dp"
-            android:layout_marginBottom="@dimen/layout_margin_4dp"
-            android:src="@drawable/chevron_left"
-            android:background="@drawable/custom_button_dark"/>
+            android:src="@drawable/chevron_left" />
 
         <TextView
             android:id="@+id/dialog_title"
             android:layout_width="match_parent"
-            android:layout_height="46dp"
-            android:minHeight="46dp"
-            android:gravity="center_vertical"
-            android:layout_centerVertical="true"
+            android:layout_height="match_parent"
+            android:layout_toEndOf="@+id/web_prev"
+            android:layout_toStartOf="@+id/web_next"
             android:ellipsize="end"
+            android:gravity="center_vertical|center_horizontal"
             android:maxLines="1"
-            android:text="@string/menu_tabs"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/light"
             android:textStyle="bold" />
 
+        <ImageButton
+            android:layout_alignParentEnd="true"
+            android:id="@+id/web_next"
+            android:layout_width="42dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_marginBottom="@dimen/layout_margin_4dp"
+            android:layout_marginTop="@dimen/layout_margin_4dp"
+            android:background="@drawable/custom_button_dark"
+            android:contentDescription="@null"
+            android:src="@drawable/chevron_right" />
+
     </RelativeLayout>
 
+    <View
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey_500" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -63,6 +73,70 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             tools:ignore="UseCompoundDrawables">
+
+            <RelativeLayout
+                android:id="@+id/tv_tabPreview"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp">
+
+                <ImageView
+                    android:id="@+id/pp"
+                    android:layout_alignParentStart="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="42dp"
+                    android:gravity="center_vertical"
+                    android:layout_marginEnd="16dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/icon_preview" />
+
+                <TextView
+                    android:text="@string/main_menu_tabPreview"
+                    android:layout_width="match_parent"
+                    android:layout_height="46dp"
+                    android:layout_toStartOf="@+id/menu_tab"
+                    android:layout_toEndOf="@+id/pp"
+                    android:minHeight="46dp"
+                    android:gravity="center_vertical"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/light"
+                    android:maxLines="1"
+                    android:ellipsize="end" />
+
+                <LinearLayout
+                    android:id="@+id/menu_tab"
+                    android:layout_alignParentEnd="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:layout_marginStart="8dp"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/tab_prev"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:layout_marginBottom="@dimen/layout_margin_4dp"
+                        android:layout_marginTop="@dimen/layout_margin_4dp"
+                        android:background="@drawable/custom_button_dark"
+                        android:contentDescription="@null"
+                        android:src="@drawable/chevron_left" />
+
+                    <ImageButton
+                        android:id="@+id/tab_next"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="@dimen/layout_margin_4dp"
+                        android:layout_marginTop="@dimen/layout_margin_4dp"
+                        android:background="@drawable/custom_button_dark"
+                        android:contentDescription="@null"
+                        android:src="@drawable/chevron_right" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
 
             <LinearLayout
                 android:id="@+id/tv_new_tabOpen"
@@ -91,32 +165,7 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/tv_tabPreview"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="42dp"
-                    android:gravity="center_vertical"
-                    android:layout_marginEnd="16dp"
-                    android:contentDescription="@null"
-                    android:src="@drawable/icon_preview" />
-
-                <TextView
-                    android:text="@string/main_menu_tabPreview"
-                    android:layout_width="match_parent"
-                    android:layout_height="46dp"
-                    android:minHeight="46dp"
-                    android:gravity="center_vertical"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/light"
-                    android:maxLines="1"
-                    android:ellipsize="end" />
-
-            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/tv_closeTab"
@@ -688,6 +737,8 @@
         </LinearLayout>
 
     </LinearLayout>
+
+
 
 </LinearLayout>
 
