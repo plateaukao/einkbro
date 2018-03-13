@@ -12,7 +12,7 @@
 - improved: light theme
 - improved: startpage
 - fix: dark background on some websites
-- fix: ok button on "Fast togle dialog"
+- fix: ok button on "Fast toggle dialog"
 - fix: toolbar not showing title
 - fix: back handling
 
