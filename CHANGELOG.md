@@ -1,8 +1,10 @@
 ### v 5.6 (WIP)
+- new: increase font size
 - new: close all websites from notification
 - new: desktop mode in "Fast toggle dialog"
 - improved: link sharing
 - improved: UI
+- fix: some force closes related to permission "write on storage"
 
 
 ### v 5.5

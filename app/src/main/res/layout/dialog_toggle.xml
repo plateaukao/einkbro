@@ -87,7 +87,7 @@
                     android:layout_marginEnd="12dp"
                     android:layout_marginStart="12dp"
                     android:layout_toStartOf="@+id/switch2"
-                    android:background="?android:selectableItemBackground"
+                    android:background="@drawable/custom_button_dark"
                     android:scaleType="centerCrop"
                     app:srcCompat="@drawable/ic_action_close_red"
                     tools:ignore="ContentDescription" />
@@ -139,7 +139,7 @@
                     app:srcCompat="@drawable/ic_action_close_red"
                     android:layout_toStartOf="@+id/switch1"
                     android:id="@+id/imageButton_js"
-                    android:background="?android:selectableItemBackground"
+                    android:background="@drawable/custom_button_dark"
                     tools:ignore="ContentDescription"
                     android:layout_centerVertical="true"
                     android:layout_centerInParent="true"
@@ -193,7 +193,7 @@
                     app:srcCompat="@drawable/ic_action_close_red"
                     android:layout_toStartOf="@+id/switch5"
                     android:id="@+id/imageButton_cookie"
-                    android:background="?android:selectableItemBackground"
+                    android:background="@drawable/custom_button_dark"
                     tools:ignore="ContentDescription"
                     android:layout_centerVertical="true"
                     android:layout_centerInParent="true"
@@ -281,7 +281,7 @@
             </RelativeLayout>
 
             <View
-                android:layout_margin="4dp"
+                android:layout_margin="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/grey_500" />
@@ -403,6 +403,78 @@
 
             </RelativeLayout>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp">
+
+                <ImageView
+                    android:layout_centerVertical="true"
+                    android:id="@+id/fontIcon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginEnd="16dp"
+                    android:contentDescription="@null"
+                    android:maxHeight="24dp"
+                    android:padding="3dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/icon_size_light" />
+
+                <TextView
+                    android:layout_centerVertical="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/fontIcon"
+                    android:layout_toStartOf="@+id/font_layout"
+                    android:foregroundGravity="center_vertical"
+                    android:text="@string/setting_title_font"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/light" />
+
+                <LinearLayout
+                    android:id="@+id/font_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="46dp"
+                    android:layout_alignParentEnd="true"
+                    android:minHeight="46dp"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/font_minus"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center_vertical"
+                        android:background="@drawable/custom_button_dark"
+                        android:scaleType="centerCrop"
+                        app:srcCompat="@drawable/icon_minus"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        android:id="@+id/font_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:foregroundGravity="center_vertical"
+                        android:layout_marginEnd="12dp"
+                        android:layout_marginStart="12dp"
+                        android:textColor="@color/light" />
+
+                    <ImageButton
+                        android:id="@+id/font_plus"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="4dp"
+                        android:background="@drawable/custom_button_dark"
+                        android:scaleType="centerCrop"
+                        app:srcCompat="@drawable/icon_plus"
+                        tools:ignore="ContentDescription" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
         </LinearLayout>
 
     </ScrollView>
@@ -429,7 +501,7 @@
             android:layout_toStartOf="@+id/action_ok"
             android:background="@color/colorPrimaryDark"
             android:textColor="@color/colorAccent"
-            android:text="@string/app_cancel"/>
+            android:text="@string/app_close"/>
 
     </RelativeLayout>
 

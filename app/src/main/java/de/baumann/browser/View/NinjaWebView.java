@@ -174,7 +174,6 @@ public class NinjaWebView extends WebView implements AlbumController {
         webSettings.setLoadsImagesAutomatically(true);
 
         webSettings.setLoadWithOverviewMode(true);
-        webSettings.setTextZoom(100);
         webSettings.setUseWideViewPort(true);
     }
 
@@ -182,6 +181,7 @@ public class NinjaWebView extends WebView implements AlbumController {
         sp = PreferenceManager.getDefaultSharedPreferences(context);
         webSettings = getSettings();
 
+        webSettings.setTextZoom(Integer.parseInt(sp.getString("sp_fontSize", "100")));
         webSettings.setBlockNetworkImage(!sp.getBoolean(context.getString(R.string.sp_images), true));
         webSettings.setJavaScriptEnabled(sp.getBoolean(context.getString(R.string.sp_javascript), true));
         webSettings.setJavaScriptCanOpenWindowsAutomatically(sp.getBoolean(context.getString(R.string.sp_javascript), true));
