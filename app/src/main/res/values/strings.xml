@@ -6,6 +6,7 @@
     <string name="app_name">F|L|OSS Browser</string>
     <string name="app_ok">OK</string>
     <string name="app_cancel">Cancel</string>
+    <string name="app_close">Close</string>
     <string name="list_empty">Current list is empty</string>
     <string name="album_title_bookmarks">Bookmarks</string>
     <string name="album_title_history">History</string>
@@ -98,6 +99,9 @@
     <string name="setting_title_inverted">Inverted colors</string>
     <string name="setting_summary_inverted">If checked, content will be rendered in a inverted grey scale mode. This
     is a kind of \"night mode\".</string>
+
+    <string name="setting_title_font">Font size</string>
+    <string name="setting_summary_font">Change the font size for displaying websites.</string>
 
 
     <!-- Browser start -->

@@ -38,9 +38,9 @@
         swipe to preview to the top or bottom.</string>
 
     <string name="menu_title">Menu</string>
-    <string name="menu_dialog">Share or save content, handle the current tab: just try all entries to see what is possible.
-        With the buttons on the top right you can switch to the previous/next site in your history. The menu can be
-        dismissed, like all other notifications, by clicking back, clicking outside the menu or simply be swiping the menu down.</string>
+    <string name="menu_dialog">Manage your tabs, share or save content, handle the current tab or use some features: just try it.
+        The menu can be dismissed, like all other notifications, by clicking back, clicking outside the menu or simply be
+        swiping the menu down.</string>
 
     <string name="not_title">Notifications</string>
     <string name="not_dialog">Notifications are displayed on the bottom of the screen. They can also be dismissed like the

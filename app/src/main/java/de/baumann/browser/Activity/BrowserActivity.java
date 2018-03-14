@@ -136,7 +136,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
 
     private LinearLayout tv_new_tabOpen;
     private LinearLayout tv_closeTab;
-    private LinearLayout tv_tabPreview;
+    private RelativeLayout tv_tabPreview;
     private LinearLayout tv_quit;
 
     private LinearLayout tv_shareScreenshot;
@@ -163,6 +163,9 @@ public class BrowserActivity extends Activity implements BrowserController, View
     private LinearLayout tv2_menu_notification;
     private LinearLayout tv2_menu_share;
 
+    LinearLayout floatButton_saveLayout;
+    LinearLayout floatButton_shareLayout;
+
     private View floatButton_tabView;
     private View floatButton_saveView;
     private View floatButton_shareView;
@@ -170,6 +173,8 @@ public class BrowserActivity extends Activity implements BrowserController, View
 
     private ImageButton web_next;
     private ImageButton web_prev;
+    private ImageButton tab_next;
+    private ImageButton tab_prev;
 
     private ImageButton fab_tab;
     private ImageButton fab_share;
@@ -736,9 +741,22 @@ public class BrowserActivity extends Activity implements BrowserController, View
 
             // Menu overflow
 
+            case R.id.tab_prev:
+                AlbumController controller = nextAlbumController(false);
+                showAlbum(controller, false, true);
+                viewOverflow();
+                break;
+
+            case R.id.tab_next:
+                AlbumController controller2 = nextAlbumController(true);
+                showAlbum(controller2, false, true);
+                viewOverflow();
+                break;
+
             case R.id.web_prev:
                 if (ninjaWebView.canGoBack()) {
                     ninjaWebView.goBack();
+                    viewOverflow();
                 } else {
                     bottomSheetDialog.cancel();
                     removeAlbum(currentAlbumController);
@@ -748,6 +766,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
             case R.id.web_next:
                 if (ninjaWebView.canGoForward()) {
                     ninjaWebView.goForward();
+                    viewOverflow();
                 } else {
                     bottomSheetDialog.cancel();
                     NinjaToast.show(BrowserActivity.this,R.string.toast_webview_forward);
@@ -1001,7 +1020,6 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 break;
 
             case R.id.floatButton_tab:
-                dialogTitle.setText(getString(R.string.menu_tabs));
                 tv_new_tabOpen.setVisibility(View.VISIBLE);
                 tv_closeTab.setVisibility(View.VISIBLE);
                 tv_tabPreview.setVisibility(View.VISIBLE);
@@ -1031,7 +1049,6 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 break;
 
             case R.id.floatButton_share:
-                dialogTitle.setText(getString(R.string.menu_share));
                 tv_new_tabOpen.setVisibility(View.GONE);
                 tv_closeTab.setVisibility(View.GONE);
                 tv_tabPreview.setVisibility(View.GONE);
@@ -1061,7 +1078,6 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 break;
 
             case R.id.floatButton_save:
-                dialogTitle.setText(getString(R.string.menu_save));
                 tv_new_tabOpen.setVisibility(View.GONE);
                 tv_closeTab.setVisibility(View.GONE);
                 tv_tabPreview.setVisibility(View.GONE);
@@ -1092,7 +1108,6 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 break;
 
             case R.id.floatButton_more:
-                dialogTitle.setText(getString(R.string.menu_other));
                 tv_new_tabOpen.setVisibility(View.GONE);
                 tv_closeTab.setVisibility(View.GONE);
                 tv_tabPreview.setVisibility(View.GONE);
@@ -2398,6 +2413,45 @@ public class BrowserActivity extends Activity implements BrowserController, View
             }
         });
 
+        final TextView font_text = dialogView.findViewById(R.id.font_text);
+        font_text.setText(sp.getString("sp_fontSize", "100"));
+
+        ImageButton font_minus = dialogView.findViewById(R.id.font_minus);
+        font_minus.setImageResource(R.drawable.icon_minus);
+        font_minus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (sp.getString("sp_fontSize", "100").equals("100")) {
+                    Log.i(TAG, "Can not change font size");
+                } else if (sp.getString("sp_fontSize", "100").equals("125")) {
+                    sp.edit().putString("sp_fontSize", "100").commit();
+                } else if (sp.getString("sp_fontSize", "100").equals("150")) {
+                    sp.edit().putString("sp_fontSize", "125").commit();
+                } else if (sp.getString("sp_fontSize", "100").equals("175")) {
+                    sp.edit().putString("sp_fontSize", "150").commit();
+                }
+                font_text.setText(sp.getString("sp_fontSize", "100"));
+            }
+        });
+
+        ImageButton font_plus = dialogView.findViewById(R.id.font_plus);
+        font_plus.setImageResource(R.drawable.icon_plus);
+        font_plus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (sp.getString("sp_fontSize", "100").equals("100")) {
+                    sp.edit().putString("sp_fontSize", "125").commit();
+                } else if (sp.getString("sp_fontSize", "100").equals("125")) {
+                    sp.edit().putString("sp_fontSize", "150").commit();
+                } else if (sp.getString("sp_fontSize", "100").equals("150")) {
+                    sp.edit().putString("sp_fontSize", "175").commit();
+                } else if (sp.getString("sp_fontSize", "100").equals("175")) {
+                    Log.i(TAG, "Can not change font size");
+                }
+                font_text.setText(sp.getString("sp_fontSize", "100"));
+            }
+        });
+
         Button but_OK = dialogView.findViewById(R.id.action_ok);
         but_OK.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -3054,16 +3108,36 @@ public class BrowserActivity extends Activity implements BrowserController, View
                             if (text.isEmpty()) {
                                 NinjaToast.show(BrowserActivity.this, getString(R.string.toast_input_empty));
                             } else {
-                                Uri source = Uri.parse(target);
-                                DownloadManager.Request request = new DownloadManager.Request(source);
-                                request.addRequestHeader("Cookie", CookieManager.getInstance().getCookie(target));
-                                request.allowScanningByMediaScanner();
-                                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); //Notify client once download is completed!
-                                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, text);
-                                DownloadManager dm = (DownloadManager) BrowserActivity.this.getSystemService(DOWNLOAD_SERVICE);
-                                assert dm != null;
-                                dm.enqueue(request);
-                                hideSoftInput(editText);
+
+                                if (android.os.Build.VERSION.SDK_INT >= 23) {
+                                    int hasWRITE_EXTERNAL_STORAGE = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                                    if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
+                                        NinjaToast.show(BrowserActivity.this, R.string.toast_permission_sdCard_sec);
+                                    } else {
+                                        Uri source = Uri.parse(target);
+                                        DownloadManager.Request request = new DownloadManager.Request(source);
+                                        request.addRequestHeader("Cookie", CookieManager.getInstance().getCookie(target));
+                                        request.allowScanningByMediaScanner();
+                                        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); //Notify client once download is completed!
+                                        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, text);
+                                        DownloadManager dm = (DownloadManager) BrowserActivity.this.getSystemService(DOWNLOAD_SERVICE);
+                                        assert dm != null;
+                                        dm.enqueue(request);
+                                        hideSoftInput(editText);
+                                    }
+                                } else {
+                                    Uri source = Uri.parse(target);
+                                    DownloadManager.Request request = new DownloadManager.Request(source);
+                                    request.addRequestHeader("Cookie", CookieManager.getInstance().getCookie(target));
+                                    request.allowScanningByMediaScanner();
+                                    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); //Notify client once download is completed!
+                                    request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, text);
+                                    DownloadManager dm = (DownloadManager) BrowserActivity.this.getSystemService(DOWNLOAD_SERVICE);
+                                    assert dm != null;
+                                    dm.enqueue(request);
+                                    hideSoftInput(editText);
+                                }
+
                             }
                         }
                     });
@@ -3209,14 +3283,58 @@ public class BrowserActivity extends Activity implements BrowserController, View
         showSoftInput(searchBox);
     }
 
+    private void  viewOverflow () {
+
+        if (currentAlbumController != null && currentAlbumController instanceof NinjaRelativeLayout) {
+            floatButton_shareLayout.setVisibility(View.GONE);
+            floatButton_saveLayout.setVisibility(View.GONE);
+            web_next.setVisibility(View.GONE);
+            web_prev.setVisibility(View.GONE);
+            showOmnibox();
+            dialogTitle.setText(currentAlbumController.getAlbumTitle());
+        } else if (currentAlbumController != null && currentAlbumController instanceof NinjaWebView) {
+            floatButton_shareLayout.setVisibility(View.VISIBLE);
+            floatButton_saveLayout.setVisibility(View.VISIBLE);
+
+            if (ninjaWebView.canGoBack()) {
+                web_prev.setVisibility(View.VISIBLE);
+            } else {
+                web_prev.setVisibility(View.INVISIBLE);
+            }
+
+            if (ninjaWebView.canGoForward()) {
+                web_next.setVisibility(View.VISIBLE);
+            } else {
+                web_next.setVisibility(View.INVISIBLE);
+            }
+
+            new Handler().postDelayed(new Runnable() {
+                public void run() {
+                    if (currentAlbumController != null && currentAlbumController instanceof NinjaWebView) {
+                        dialogTitle.setText(ninjaWebView.getTitle());
+                    }
+                }
+            }, 500);
+
+        }
+
+        if (currentAlbumController == null || BrowserContainer.size() <= 1) {
+            tab_next.setVisibility(View.GONE);
+            tab_prev.setVisibility(View.GONE);
+        } else {
+            tab_next.setVisibility(View.VISIBLE);
+            tab_prev.setVisibility(View.VISIBLE);
+        }
+    }
+
     @SuppressWarnings("SameReturnValue")
     private boolean showOverflow() {
 
         bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
         View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_menu, null);
 
-        LinearLayout floatButton_saveLayout = dialogView.findViewById(R.id.floatButton_saveLayout);
-        LinearLayout floatButton_shareLayout = dialogView.findViewById(R.id.floatButton_shareLayout);
+        floatButton_saveLayout = dialogView.findViewById(R.id.floatButton_saveLayout);
+        floatButton_shareLayout = dialogView.findViewById(R.id.floatButton_shareLayout);
 
         fab_tab = dialogView.findViewById(R.id.floatButton_tab);
         fab_tab.setOnClickListener(this);
@@ -3232,25 +3350,17 @@ public class BrowserActivity extends Activity implements BrowserController, View
         web_next = dialogView.findViewById(R.id.web_next);
         web_next.setOnClickListener(this);
 
+        tab_prev = dialogView.findViewById(R.id.tab_prev);
+        tab_prev.setOnClickListener(this);
+        tab_next = dialogView.findViewById(R.id.tab_next);
+        tab_next.setOnClickListener(this);
+
         floatButton_tabView = dialogView.findViewById(R.id.floatButton_tabView);
         floatButton_saveView = dialogView.findViewById(R.id.floatButton_saveView);
         floatButton_shareView = dialogView.findViewById(R.id.floatButton_shareView);
         floatButton_moreView = dialogView.findViewById(R.id.floatButton_moreView);
 
-        if (currentAlbumController != null && currentAlbumController instanceof NinjaRelativeLayout) {
-            floatButton_shareLayout.setVisibility(View.GONE);
-            floatButton_saveLayout.setVisibility(View.GONE);
-            web_next.setVisibility(View.GONE);
-            web_prev.setVisibility(View.GONE);
-        } else if (currentAlbumController != null && currentAlbumController instanceof NinjaWebView) {
-            floatButton_shareLayout.setVisibility(View.VISIBLE);
-            floatButton_saveLayout.setVisibility(View.VISIBLE);
-            web_next.setVisibility(View.VISIBLE);
-            web_prev.setVisibility(View.VISIBLE);
-        }
-
         dialogTitle = dialogView.findViewById(R.id.dialog_title);
-        dialogTitle.setText(getString(R.string.menu_tabs));
 
         tv_new_tabOpen = dialogView.findViewById(R.id.tv_new_tabOpen);
         tv_new_tabOpen.setOnClickListener(this);
@@ -3289,6 +3399,8 @@ public class BrowserActivity extends Activity implements BrowserController, View
         tv_help.setOnClickListener(this);
         tv_placeHolder = dialogView.findViewById(R.id.tv_placeholder);
         tv_placeHolder_2 = dialogView.findViewById(R.id.tv_placeholder_2);
+
+        viewOverflow();
 
         bottomSheetDialog.setContentView(dialogView);
         bottomSheetDialog.show();

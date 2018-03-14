@@ -6,6 +6,7 @@
     <string name="app_name">F|L|OSS Browser</string>
     <string name="app_ok">OK</string>
     <string name="app_cancel">Abbrechen</string>
+    <string name="app_close">Schließen</string>
     <string name="list_empty">Liste ist leer</string>
     <string name="album_title_bookmarks">Lesezeichen</string>
     <string name="album_title_history">Verlauf</string>
@@ -98,6 +99,9 @@
     <string name="setting_summary_inverted">Wenn aktiviert, werden Inhalte in einem invertierten schwarz/weiß-Modus
         dargestellt. Dies ist eine Art \"Nachtmodus\".</string>
 
+    <string name="setting_title_font">Schriftgröße</string>
+    <string name="setting_summary_font">Ändere die Schriftgröße, mit der Internetseiten dargestellt werden.</string>
+
 
     <!-- Browser start -->
     <string name="setting_title_images">Bilder</string>
@@ -132,7 +136,6 @@
 
     <string name="setting_title_history">Verlauf</string>
     <string name="setting_summary_history">Speichere den Verlauf der besuchten Internetseiten.</string>
-
 
     <!-- Browser clear -->
     <string name="clear_summary">Sicherungen werden im \"Documents\" - Verzeichnis deiner SD-Karte gespeichert. Neue Sicherungen
