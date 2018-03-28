@@ -24,13 +24,9 @@
     <string name="main_menu_new_tab">Neuer Tab (Hintergrund)</string>
     <string name="main_menu_new_tabOpen">Neuer Tab (Vordergrund)</string>
     <string name="main_menu_copy_link">Link kopieren</string>
-    <string name="main_menu_save">Speichern</string>
     <string name="main_omnibox_input_hint">Suchen oder URL eingeben</string>
 
-    <string name="menu_tabs">Tab</string>
     <string name="menu_share">Teilen</string>
-    <string name="menu_other">Sonstiges</string>
-    <string name="menu_save">Speichern</string>
     <string name="menu_quit">Beenden</string>
     <string name="menu_delete">Löschen</string>
     <string name="menu_edit">Bearbeiten</string>
@@ -40,12 +36,11 @@
 
     <string name="menu_share_screenshot">Bildschirmfoto teilen</string>
     <string name="menu_share_link">Link teilen</string>
-    <string name="menu_share_clipboard">Teile zur Zwischenablage</string>
 
     <string name="menu_save_screenshot">Bildschirmfoto speichern</string>
-    <string name="menu_save_home">auf Startseite</string>
+    <string name="menu_save_home">Speichere auf Startseite</string>
     <string name="menu_save_login">Logindaten speichern</string>
-    <string name="menu_save_bookmark">als Lesezeichen</string>
+    <string name="menu_save_bookmark">Speichere als Lesezeichen</string>
     <string name="menu_save_as">Speichere als …</string>
 
     <string name="menu_other_searchSite">Suche auf Seite</string>
@@ -53,7 +48,6 @@
 
 
     <!-- AndroidAgo -->
-    <string name="android_ago_just_now">Gerade eben</string>
 
 
     <!-- Dialog -->

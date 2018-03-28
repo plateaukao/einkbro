@@ -3,11 +3,10 @@
 <LinearLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/colorPrimaryDark"
+    android:background="?android:attr/colorBackground"
     android:orientation="vertical"
     tools:ignore="ContentDescription"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <TextView
         android:id="@+id/dialog_title"
@@ -17,8 +16,7 @@
         android:padding="28dp"
         android:text="@string/toolbar_title"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textStyle="bold"
-        android:textColor="@color/light" />
+        android:textStyle="bold"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -36,8 +34,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/startpage_title"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="bold"
-                android:textColor="@color/light" />
+                android:textStyle="bold"/>
 
             <ImageView
                 android:id="@+id/cardView_help_startpage"
@@ -50,8 +47,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="32dp"
-                android:text="@string/startpage_dialog"
-                android:textColor="@color/light"/>
+                android:text="@string/startpage_dialog"/>
 
 
             <TextView
@@ -59,8 +55,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/toolbar_title"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="bold"
-                android:textColor="@color/light" />
+                android:textStyle="bold"/>
 
             <ImageView
                 android:id="@+id/cardView_help_logo"
@@ -73,8 +68,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="32dp"
-                android:text="@string/toolbar_dialog"
-                android:textColor="@color/light"/>
+                android:text="@string/toolbar_dialog"/>
 
 
 
@@ -83,8 +77,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/tab_title"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="bold"
-                android:textColor="@color/light" />
+                android:textStyle="bold"/>
 
             <ImageView
                 android:id="@+id/cardView_help_tabs"
@@ -97,8 +90,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="32dp"
-                android:text="@string/tab_dialog"
-                android:textColor="@color/light"/>
+                android:text="@string/tab_dialog"/>
 
 
             <TextView
@@ -106,8 +98,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/menu_title"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="bold"
-                android:textColor="@color/light" />
+                android:textStyle="bold"/>
 
             <ImageView
                 android:id="@+id/cardView_help_menu"
@@ -120,8 +111,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="32dp"
-                android:text="@string/menu_dialog"
-                android:textColor="@color/light"/>
+                android:text="@string/menu_dialog"/>
 
 
             <TextView
@@ -129,8 +119,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/fastToggle_title"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="bold"
-                android:textColor="@color/light" />
+                android:textStyle="bold"/>
 
             <ImageView
                 android:id="@+id/cardView_help_fastToggle"
@@ -143,8 +132,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="32dp"
-                android:text="@string/fastToggle_dialog"
-                android:textColor="@color/light"/>
+                android:text="@string/fastToggle_dialog"/>
 
 
             <TextView
@@ -152,8 +140,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/not_title"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="bold"
-                android:textColor="@color/light" />
+                android:textStyle="bold"/>
 
             <ImageView
                 android:id="@+id/cardView_help_not"
@@ -167,8 +154,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="32dp"
-                android:text="@string/not_dialog"
-                android:textColor="@color/light"/>
+                android:text="@string/not_dialog"/>
             
 
             <TextView
@@ -176,8 +162,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/nav_title"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="bold"
-                android:textColor="@color/light" />
+                android:textStyle="bold" />
 
             <ImageView
                 android:id="@+id/cardView_help_nav"
@@ -190,8 +175,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="32dp"
-                android:text="@string/nav_dialog"
-                android:textColor="@color/light"/>
+                android:text="@string/nav_dialog"/>
 
 
             <TextView
@@ -199,8 +183,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/setting_label"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="bold"
-                android:textColor="@color/light" />
+                android:textStyle="bold" />
 
             <ImageView
                 android:id="@+id/cardView_help_set"
@@ -212,38 +195,50 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/settings_dialog"
-                android:textColor="@color/light"/>
+                android:text="@string/settings_dialog"/>
 
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="24dp"
-                android:layout_marginTop="24dp"
+                android:orientation="vertical"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="16dp"
                 android:gravity="center">
 
-                <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/floatButton_settings"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="12dp"
-                    android:layout_marginStart="12dp"
-                    android:layout_gravity="center_vertical|center_horizontal"
-                    app:backgroundTint="?attr/colorAccent"
-                    app:fabSize="mini"
-                    app:srcCompat="@drawable/icon_settings_light" />
+                <View
+                    android:layout_marginBottom="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?android:attr/colorControlHighlight" />
 
-                <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/floatButton_ok"
+                <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="12dp"
-                    android:layout_marginStart="12dp"
-                    android:layout_gravity="center_vertical|center_horizontal"
-                    app:backgroundTint="?attr/colorAccent"
-                    app:fabSize="mini"
-                    app:srcCompat="@drawable/check_white" />
+                    android:layout_height="wrap_content">
+
+                    <ImageButton
+                        android:id="@+id/floatButton_settings"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:layout_gravity="center_vertical|center_horizontal"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginStart="4dp"
+                        android:background="?attr/actionBarItemBackground"
+                        android:contentDescription="@null"
+                        android:src="@drawable/icon_settings" />
+
+                    <ImageButton
+                        android:id="@+id/floatButton_ok"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:layout_gravity="center_vertical|center_horizontal"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginStart="4dp"
+                        android:background="?attr/actionBarItemBackground"
+                        android:contentDescription="@null"
+                        android:src="@drawable/check_white" />
+
+                </LinearLayout>
 
             </LinearLayout>
 

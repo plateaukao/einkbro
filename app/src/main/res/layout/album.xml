@@ -20,8 +20,7 @@
             android:minWidth="@dimen/layout_width_144dp"
             android:layout_height="@dimen/layout_height_108dp"
             android:layout_gravity="center"
-            android:scaleType="centerCrop"
-            android:background="@color/light"/>
+            android:scaleType="centerCrop"/>
 
         <TextView android:id="@+id/album_title"
             android:layout_width="@dimen/layout_width_144dp"
@@ -30,10 +29,10 @@
             android:layout_gravity="center|bottom"
             android:padding="@dimen/layout_margin_8dp"
             android:gravity="center_vertical"
-            android:textColor="@color/light"
             android:maxLines="1"
             android:ellipsize="end"
-            android:background="@color/shadow_dark"/>
+            android:textColor="@color/color_light"
+            android:background="@color/color_shadow"/>
 
     </android.support.v7.widget.CardView>
 
