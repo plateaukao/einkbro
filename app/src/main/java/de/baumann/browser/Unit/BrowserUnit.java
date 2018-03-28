@@ -58,7 +58,6 @@ public class BrowserUnit {
     public static final int FLAG_PASS = 0x105;
 
     public static final String MIME_TYPE_TEXT_PLAIN = "text/plain";
-    public static final String MIME_TYPE_IMAGE = "image/*";
 
     private static final String BOOKMARK_TYPE = "<DT><A HREF=\"{url}\" ADD_DATE=\"{time}\">{title}</A>";
     private static final String BOOKMARK_TITLE = "{title}";

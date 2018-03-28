@@ -16,7 +16,7 @@ public interface BrowserController {
 
     void updateProgress(int progress);
 
-    void showAlbum(AlbumController albumController, boolean expand, boolean capture);
+    void showAlbum(AlbumController albumController, boolean expand);
 
     void removeAlbum(AlbumController albumController);
 

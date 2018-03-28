@@ -7,8 +7,7 @@
     android:id="@+id/switcher_panel"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey_dark"
-    tools:ignore="Overdraw">
+    android:background="@color/colorPrimaryDark">
 
     <LinearLayout
         android:orientation="vertical"
@@ -16,8 +15,8 @@
         android:layout_height="wrap_content">
 
         <View android:layout_width="match_parent"
-            android:layout_height="@dimen/layout_margin_4dp"
-            android:background="@drawable/toolbar_drop_shadow_invert"/>
+            android:layout_height="4dp"
+            android:background="@drawable/shadow_below"/>
 
         <HorizontalScrollView
             android:id="@+id/switcher_scroller"
@@ -38,15 +37,14 @@
 
     <LinearLayout
         android:orientation="vertical"
-                  android:layout_width="match_parent"
-                  android:layout_height="match_parent"
-                  android:gravity="bottom"
-                  android:background="@color/colorPrimary">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:background="@color/colorPrimaryDark">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorPrimaryDark">
+            android:layout_height="match_parent">
 
             <!-- How to not use layout_margin_48dp? -->
             <FrameLayout android:id="@+id/main_content"
@@ -54,18 +52,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
 
-            <View android:layout_width="match_parent"
-                android:layout_height="@dimen/layout_margin_4dp"
-                android:layout_alignBottom="@+id/main_content"
-                android:background="@drawable/toolbar_drop_shadow"/>
-
-            <ProgressBar android:id="@+id/main_progress_bar"
+            <ProgressBar
                 style="?android:attr/progressBarStyleHorizontal"
+                android:id="@+id/main_progress_bar"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/layout_margin_4dp"
-                android:layout_alignBottom="@+id/main_content"
-                android:maxHeight="@dimen/layout_margin_4dp"
-                android:progressTint="@color/colorAccent"/>
+                android:layout_height="4dp"
+                android:maxHeight="4dp"
+                android:progressTint="@color/colorAccent"
+                android:layout_alignParentBottom="true"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:background="@drawable/shadow_above"
+                android:layout_alignParentBottom="true"/>
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/fab_imageButtonNav_right"
@@ -113,7 +113,8 @@
             android:layout_height="@dimen/layout_margin_56dp"
             android:minHeight="@dimen/layout_margin_56dp"
             android:focusable="true"
-            android:focusableInTouchMode="true">
+            android:focusableInTouchMode="true"
+            android:background="@color/colorPrimary">
 
             <ImageButton android:id="@+id/omnibox_overflow"
                 android:contentDescription="@null"
@@ -121,12 +122,12 @@
                 android:layout_height="42dp"
                 android:layout_centerInParent="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginTop="@dimen/layout_margin_4dp"
-                android:layout_marginBottom="@dimen/layout_margin_4dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
                 android:layout_marginEnd="@dimen/layout_margin_8dp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_action_overflow"
-                android:background="@drawable/custom_button"/>
+                android:background="?attr/actionBarItemBackground"/>
 
             <ImageButton android:id="@+id/omnibox_refresh"
                 android:contentDescription="@null"
@@ -134,10 +135,10 @@
                 android:layout_height="42dp"
                 android:layout_centerInParent="true"
                 android:layout_toStartOf="@id/omnibox_overflow"
-                android:layout_marginTop="@dimen/layout_margin_4dp"
-                android:layout_marginBottom="@dimen/layout_margin_4dp"
-                android:src="@drawable/ic_action_history"
-                android:background="@drawable/custom_button"/>
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:src="@drawable/ic_action_refresh"
+                android:background="?attr/actionBarItemBackground"/>
 
             <AutoCompleteTextView android:id="@+id/main_omnibox_input"
                 android:layout_width="match_parent"
@@ -146,8 +147,7 @@
                 android:layout_toStartOf="@id/omnibox_refresh"
                 android:layout_marginStart="@dimen/layout_margin_16dp"
                 android:hint="@string/main_omnibox_input_hint"
-                android:textColor="@color/light"
-                android:textColorHint="@color/grey_300"
+                android:textColorHint="@color/color_hint"
                 android:textCursorDrawable="@null"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:selectAllOnFocus="true"
@@ -156,6 +156,7 @@
                 android:inputType="textUri"
                 android:maxLines="1"
                 android:ellipsize="end"
+                android:textColor="@color/color_light"
                 android:background="@color/colorPrimary"/>
 
             <TextView android:id="@+id/omnibox_title"
@@ -166,10 +167,10 @@
                 android:layout_marginStart="@dimen/layout_margin_16dp"
                 android:gravity="center_vertical"
                 android:text="@string/album_untitled"
-                android:textColor="@color/light"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:maxLines="1"
                 android:ellipsize="end"
+                android:textColor="@color/color_light"
                 android:background="@color/colorPrimary"
                 android:visibility="gone"/>
 
@@ -179,7 +180,8 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/layout_margin_56dp"
             android:minHeight="@dimen/layout_margin_56dp"
-            android:visibility="gone">
+            android:visibility="gone"
+            android:background="@color/colorPrimary">
 
             <ImageButton android:id="@+id/main_search_cancel"
                 android:contentDescription="@null"
@@ -190,7 +192,7 @@
                 android:layout_marginBottom="@dimen/layout_margin_8dp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_action_close"
-                android:background="@drawable/custom_button"/>
+                android:background="?attr/actionBarItemBackground"/>
 
             <ImageButton android:id="@+id/main_search_down"
                 android:contentDescription="@null"
@@ -200,8 +202,8 @@
                 android:layout_marginTop="@dimen/layout_margin_8dp"
                 android:layout_marginBottom="@dimen/layout_margin_8dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_action_down"
-                android:background="@drawable/custom_button"/>
+                android:src="@drawable/icon_arrow_down"
+                android:background="?attr/actionBarItemBackground"/>
 
             <ImageButton android:id="@+id/main_search_up"
                 android:contentDescription="@null"
@@ -211,8 +213,8 @@
                 android:layout_marginTop="@dimen/layout_margin_8dp"
                 android:layout_marginBottom="@dimen/layout_margin_8dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_action_up"
-                android:background="@drawable/custom_button"/>
+                android:src="@drawable/icon_arrow_up"
+                android:background="?attr/actionBarItemBackground"/>
 
             <EditText android:id="@+id/main_search_box"
                 android:layout_width="match_parent"
@@ -223,15 +225,13 @@
                 android:paddingStart="@dimen/layout_margin_8dp"
                 android:paddingEnd="@dimen/layout_margin_8dp"
                 android:hint="@string/search_hint"
-                android:textColor="@color/light"
-                android:textColorHint="@color/grey_300"
-                android:textCursorDrawable="@null"
+                android:textColorHint="@color/color_hint"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:imeOptions="actionDone"
                 android:inputType="text"
                 android:maxLines="1"
                 android:ellipsize="end"
-                android:background="@color/colorPrimary"/>
+                android:textColor="@color/color_light"/>
 
         </RelativeLayout>
 
@@ -240,7 +240,6 @@
                 android:layout_height="@dimen/layout_margin_56dp"
                 android:minHeight="@dimen/layout_margin_56dp"
                 android:text="@string/app_ok"
-                android:textColor="@color/light"
                 android:background="@color/colorPrimaryDark"
                 android:visibility="gone"/>
 

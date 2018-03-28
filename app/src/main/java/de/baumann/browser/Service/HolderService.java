@@ -36,7 +36,7 @@ public class HolderService extends Service implements BrowserController {
     public void updateProgress(int progress) {}
 
     @Override
-    public void showAlbum(AlbumController albumController, boolean expand, boolean capture) {}
+    public void showAlbum(AlbumController albumController, boolean expand) {}
 
     @Override
     public void removeAlbum(AlbumController albumController) {}
@@ -49,8 +49,7 @@ public class HolderService extends Service implements BrowserController {
     public void onCreateView(WebView view, Message resultMsg) {}
 
     @Override
-    public void onShowCustomView(View view, WebChromeClient.CustomViewCallback callback) {
-    }
+    public void onShowCustomView(View view, WebChromeClient.CustomViewCallback callback) {}
 
     @Override
     public boolean onHideCustomView() {

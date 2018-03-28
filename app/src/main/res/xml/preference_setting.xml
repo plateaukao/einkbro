@@ -30,7 +30,7 @@
             android:entries="@array/setting_entries_user_agent"
             android:entryValues="@array/setting_values_user_agent"/>
 
-        <de.baumann.browser.View.UserAgentListPreference
+        <ListPreference
             android:icon="@drawable/icon_size"
             android:key="sp_fontSize"
             android:defaultValue="100"

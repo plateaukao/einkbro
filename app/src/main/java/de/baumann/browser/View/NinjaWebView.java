@@ -12,7 +12,6 @@ import android.net.MailTo;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
-import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.*;
@@ -130,7 +129,6 @@ public class NinjaWebView extends WebView implements AlbumController {
     }
 
     private synchronized void initWebView() {
-        setDrawingCacheBackgroundColor(0x00000000);
         setDrawingCacheEnabled(true);
         setWillNotCacheDrawing(false);
         setSaveEnabled(true);

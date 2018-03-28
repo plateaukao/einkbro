@@ -140,7 +140,7 @@
         &lt;i>https://github.com/futrDevelopment&lt;/i>&lt;br>&lt;br>
 
         &lt;b>element54&lt;/b>&lt;br>
-        \u25AA fix: keyboard problems (Fehler #105).&lt;br>
+        \u25AA fix: keyboard problems (issue #105).&lt;br>
         \u25AA new: option to disable confirmation dialogs on exit&lt;br>
         &lt;i>https://github.com/element54&lt;/i>&lt;br>&lt;br>
 
@@ -159,8 +159,6 @@
         &lt;b>splinet&lt;/b>&lt;br>
         Russian translation in the previous version of \"F|L|OSS Browser\".&lt;br>
         &lt;i>https://github.com/splinet&lt;/i>
-
-
 
     </string>
 

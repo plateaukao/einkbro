@@ -5,7 +5,7 @@
 
     <item android:id="@+id/clear_menu_done_all"
           android:title="@string/clear_menu_done_all"
-          android:icon="@drawable/icon_delete_light"
+          android:icon="@drawable/icon_delete"
           app:showAsAction="always">
     </item>
 

@@ -91,8 +91,4 @@ public class ViewUnit {
     public static int getWindowWidth(Context context) {
         return context.getResources().getDisplayMetrics().widthPixels;
     }
-
-    public static void setElevation(View view, float elevation) {
-        view.setElevation(elevation);
-    }
 }
