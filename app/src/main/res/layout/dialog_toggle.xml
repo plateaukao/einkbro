@@ -7,14 +7,15 @@
     android:background="?android:attr/colorBackground"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="ContentDescription">
 
     <TextView
         android:id="@+id/dialog_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|center_horizontal"
-        android:padding="24dp"
+        android:padding="16dp"
         android:text="@string/dialog_toggle_title"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textStyle="bold" />
@@ -23,9 +24,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|center_horizontal"
-        android:paddingEnd="24dp"
-        android:paddingStart="24dp"
-        android:paddingBottom="16dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
         android:text="@string/dialog_toggle_hint" />
 
     <ScrollView
@@ -36,57 +36,54 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="23dp" >
+            android:padding="8dp" >
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
-                android:layout_marginEnd="20dp"
-                android:minHeight="46dp">
+                android:minHeight="46dp"
+                android:padding="8dp">
 
                 <ImageView
-                    android:layout_centerVertical="true"
                     android:id="@+id/abIcon"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_alignParentStart="true"
                     android:layout_marginEnd="16dp"
-                    android:contentDescription="@null"
-                    android:maxHeight="24dp"
-                    android:padding="3dp"
                     android:scaleType="fitCenter"
                     android:src="@drawable/icon_block" />
 
                 <TextView
-                    android:layout_centerVertical="true"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_toEndOf="@+id/abIcon"
                     android:layout_toStartOf="@+id/imageButton_ab"
-                    android:foregroundGravity="center_vertical"
+                    android:gravity="center_vertical"
                     android:text="@string/setting_title_adblock"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 <CheckBox
                     android:layout_centerVertical="true"
-                    android:id="@+id/switch2"
+                    android:id="@+id/switch_adBlock"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
                     android:checked="false" />
 
                 <ImageButton
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
                     android:id="@+id/imageButton_ab"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_centerInParent="true"
-                    android:layout_marginEnd="12dp"
-                    android:layout_marginStart="12dp"
-                    android:layout_toStartOf="@+id/switch2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_toStartOf="@+id/switch_adBlock"
                     android:background="?attr/actionBarItemBackground"
                     android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/ic_action_close_red"
-                    tools:ignore="ContentDescription" />
+                    app:srcCompat="@drawable/ic_action_close_red" />
 
             </RelativeLayout>
 
@@ -94,52 +91,48 @@
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
-                android:layout_marginEnd="20dp">
+                android:padding="8dp">
 
                 <ImageView
-                    android:layout_centerVertical="true"
                     android:id="@+id/jsIcon"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_alignParentStart="true"
                     android:layout_marginEnd="16dp"
-                    android:contentDescription="@null"
-                    android:maxHeight="24dp"
-                    android:padding="2dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/icon_java" />
+                    android:src="@drawable/icon_java"/>
 
                 <TextView
-                    android:layout_centerVertical="true"
-                    android:text="@string/setting_title_javascript"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_toEndOf="@+id/jsIcon"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:layout_toStartOf="@+id/imageButton_js" />
+                    android:layout_toStartOf="@+id/imageButton_js"
+                    android:gravity="center_vertical"
+                    android:text="@string/setting_title_javascript"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
 
                 <CheckBox
                     android:layout_centerVertical="true"
+                    android:id="@+id/switch_js"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
-                    android:id="@+id/switch1"
                     android:checked="false" />
 
                 <ImageButton
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginEnd="12dp"
-                    app:srcCompat="@drawable/ic_action_close_red"
-                    android:layout_toStartOf="@+id/switch1"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
                     android:id="@+id/imageButton_js"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_toStartOf="@+id/switch_js"
                     android:background="?attr/actionBarItemBackground"
-                    tools:ignore="ContentDescription"
-                    android:layout_centerVertical="true"
-                    android:layout_centerInParent="true"
-                    android:layout_centerHorizontal="true"
-                    android:scaleType="centerCrop" />
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/ic_action_close_red"/>
 
             </RelativeLayout>
 
@@ -147,52 +140,49 @@
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
-                android:layout_marginEnd="20dp">
+                android:padding="8dp">
 
                 <ImageView
                     android:layout_centerVertical="true"
                     android:id="@+id/cookieIcon"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_alignParentStart="true"
                     android:layout_marginEnd="16dp"
-                    android:contentDescription="@null"
-                    android:maxHeight="24dp"
-                    android:padding="2dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/icon_cookie" />
+                    android:src="@drawable/icon_cookie"/>
 
                 <TextView
-                    android:layout_centerVertical="true"
-                    android:text="@string/setting_title_cookie"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_toEndOf="@+id/cookieIcon"
                     android:layout_toStartOf="@+id/imageButton_cookie"
-                    android:layout_toEndOf="@+id/cookieIcon" />
+                    android:gravity="center_vertical"
+                    android:text="@string/setting_title_javascript"
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
 
                 <CheckBox
                     android:layout_centerVertical="true"
+                    android:id="@+id/switch_cookie"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
-                    android:id="@+id/switch5"
-                    android:checked="false" />
+                    android:checked="false"/>
 
                 <ImageButton
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginEnd="12dp"
-                    app:srcCompat="@drawable/ic_action_close_red"
-                    android:layout_toStartOf="@+id/switch5"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
                     android:id="@+id/imageButton_cookie"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_toStartOf="@+id/switch_cookie"
                     android:background="?attr/actionBarItemBackground"
-                    tools:ignore="ContentDescription"
-                    android:layout_centerVertical="true"
-                    android:layout_centerInParent="true"
-                    android:layout_centerHorizontal="true"
-                    android:scaleType="centerCrop" />
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/ic_action_close_red"/>
 
             </RelativeLayout>
 
@@ -200,37 +190,36 @@
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
-                android:layout_marginEnd="20dp">
+                android:padding="8dp">
 
                 <ImageView
                     android:layout_centerVertical="true"
                     android:id="@+id/historyIcon"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_alignParentStart="true"
                     android:layout_marginEnd="16dp"
-                    android:contentDescription="@null"
-                    android:maxHeight="24dp"
-                    android:padding="2dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/ic_action_history" />
+                    android:src="@drawable/icon_history"/>
 
                 <TextView
-                    android:layout_centerVertical="true"
-                    android:text="@string/setting_title_history"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_toEndOf="@+id/historyIcon"
-                    android:layout_toStartOf="@+id/switch3" />
+                    android:layout_toStartOf="@+id/switch_history"
+                    android:gravity="center_vertical"
+                    android:text="@string/setting_title_history"
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
 
                 <CheckBox
                     android:layout_centerVertical="true"
+                    android:id="@+id/switch_history"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
-                    android:id="@+id/switch3"
-                    android:checked="false" />
+                    android:checked="false"/>
 
             </RelativeLayout>
 
@@ -238,44 +227,42 @@
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
-                android:layout_marginEnd="20dp">
+                android:padding="8dp">
 
                 <ImageView
                     android:layout_centerVertical="true"
                     android:id="@+id/locationIcon"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_alignParentStart="true"
                     android:layout_marginEnd="16dp"
-                    android:contentDescription="@null"
-                    android:maxHeight="24dp"
-                    android:padding="2dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/icon_location" />
+                    android:src="@drawable/icon_location"/>
 
                 <TextView
-                    android:layout_centerVertical="true"
-                    android:text="@string/setting_title_location"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_toEndOf="@+id/locationIcon"
-                    android:layout_toStartOf="@+id/switch6" />
+                    android:layout_toStartOf="@+id/switch_location"
+                    android:gravity="center_vertical"
+                    android:text="@string/setting_title_location"
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
 
                 <CheckBox
                     android:layout_centerVertical="true"
+                    android:id="@+id/switch_location"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
-                    android:id="@+id/switch6"
-                    android:checked="false" />
+                    android:checked="false"/>
 
             </RelativeLayout>
 
             <View
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="24dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?android:attr/colorControlHighlight" />
@@ -284,37 +271,36 @@
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
-                android:layout_marginEnd="20dp">
+                android:padding="8dp">
 
                 <ImageView
                     android:layout_centerVertical="true"
                     android:id="@+id/imagesIcon"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_alignParentStart="true"
                     android:layout_marginEnd="16dp"
-                    android:contentDescription="@null"
-                    android:maxHeight="24dp"
-                    android:padding="2dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/icon_image" />
+                    android:src="@drawable/icon_image"/>
 
                 <TextView
-                    android:layout_centerVertical="true"
-                    android:text="@string/setting_title_images"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_toEndOf="@+id/imagesIcon"
-                    android:layout_toStartOf="@+id/switch4" />
+                    android:layout_toStartOf="@+id/switch_images"
+                    android:gravity="center_vertical"
+                    android:text="@string/setting_title_images"
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
 
                 <CheckBox
                     android:layout_centerVertical="true"
+                    android:id="@+id/switch_images"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
-                    android:id="@+id/switch4"
-                    android:checked="false" />
+                    android:checked="false"/>
 
             </RelativeLayout>
 
@@ -322,37 +308,36 @@
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
-                android:layout_marginEnd="20dp">
+                android:padding="8dp">
 
                 <ImageView
                     android:layout_centerVertical="true"
                     android:id="@+id/invertIcon"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_alignParentStart="true"
                     android:layout_marginEnd="16dp"
-                    android:contentDescription="@null"
-                    android:maxHeight="24dp"
-                    android:padding="2dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/icon_night" />
+                    android:src="@drawable/icon_night"/>
 
                 <TextView
-                    android:layout_centerVertical="true"
-                    android:text="@string/setting_title_inverted"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_toEndOf="@+id/invertIcon"
-                    android:layout_toStartOf="@+id/switch7" />
+                    android:layout_toStartOf="@+id/switch_invert"
+                    android:gravity="center_vertical"
+                    android:text="@string/setting_title_inverted"
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
 
                 <CheckBox
                     android:layout_centerVertical="true"
+                    android:id="@+id/switch_invert"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
-                    android:id="@+id/switch7"
-                    android:checked="false" />
+                    android:checked="false"/>
 
             </RelativeLayout>
 
@@ -360,37 +345,36 @@
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
-                android:layout_marginEnd="20dp">
+                android:padding="8dp">
 
                 <ImageView
                     android:layout_centerVertical="true"
                     android:id="@+id/desktopIcon"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_alignParentStart="true"
                     android:layout_marginEnd="16dp"
-                    android:contentDescription="@null"
-                    android:maxHeight="24dp"
-                    android:padding="2dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/icon_desktop" />
+                    android:src="@drawable/icon_desktop"/>
 
                 <TextView
-                    android:layout_centerVertical="true"
-                    android:text="@string/setting_summary_user_agent_desktop"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_toEndOf="@+id/desktopIcon"
-                    android:layout_toStartOf="@+id/switch8" />
+                    android:layout_toStartOf="@+id/switch_desktop"
+                    android:gravity="center_vertical"
+                    android:text="@string/setting_summary_user_agent_desktop"
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
 
                 <CheckBox
-                    android:id="@+id/switch8"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:checked="false" />
+                    android:id="@+id/switch_desktop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:checked="false"/>
 
             </RelativeLayout>
 
@@ -398,30 +382,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
-                android:layout_marginEnd="20dp">
+                android:padding="8dp">
 
                 <ImageView
                     android:layout_centerVertical="true"
                     android:id="@+id/fontIcon"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_alignParentStart="true"
                     android:layout_marginEnd="16dp"
-                    android:contentDescription="@null"
-                    android:maxHeight="24dp"
-                    android:padding="3dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/icon_size" />
+                    android:src="@drawable/icon_size"/>
 
                 <TextView
-                    android:layout_centerVertical="true"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_toEndOf="@+id/fontIcon"
                     android:layout_toStartOf="@+id/font_layout"
-                    android:foregroundGravity="center_vertical"
+                    android:gravity="center_vertical"
                     android:text="@string/setting_title_font"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
 
                 <LinearLayout
                     android:id="@+id/font_layout"
@@ -433,43 +415,40 @@
 
                     <ImageButton
                         android:id="@+id/font_minus"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="center_vertical"
+                        android:paddingTop="6dp"
+                        android:paddingBottom="6dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
                         android:background="?attr/actionBarItemBackground"
-                        android:scaleType="centerCrop"
-                        app:srcCompat="@drawable/icon_minus"
-                        tools:ignore="ContentDescription" />
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/icon_minus"/>
 
                     <TextView
                         android:id="@+id/font_text"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:foregroundGravity="center_vertical"
-                        android:layout_marginEnd="12dp"
-                        android:layout_marginStart="12dp" />
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="8dp"/>
 
                     <ImageButton
                         android:id="@+id/font_plus"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginEnd="4dp"
+                        android:paddingTop="6dp"
+                        android:paddingBottom="6dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
                         android:background="?attr/actionBarItemBackground"
-                        android:scaleType="centerCrop"
-                        app:srcCompat="@drawable/icon_plus"
-                        tools:ignore="ContentDescription" />
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/icon_minus"/>
 
                 </LinearLayout>
 
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp">
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp">
 
                 <Button
                     android:id="@+id/action_ok"
@@ -484,8 +463,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toStartOf="@+id/action_ok"
-                    android:paddingEnd="8dp"
-                    android:paddingStart="8dp"
                     android:background="?attr/selectableItemBackground"
                     android:textColor="@color/colorAccent"
                     android:text="@string/app_close"/>

@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|center_horizontal"
-        android:padding="28dp"
+        android:padding="16dp"
         android:text="@string/toolbar_title"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textStyle="bold"/>
@@ -23,11 +23,12 @@
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingEnd="28dp"
-            android:paddingStart="28dp">
+            android:paddingBottom="16dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
 
             <TextView
                 android:layout_width="match_parent"
@@ -201,12 +202,12 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginBottom="16dp"
                 android:layout_marginTop="16dp"
                 android:gravity="center">
 
                 <View
                     android:layout_marginBottom="16dp"
+                    android:layout_marginTop="8dp"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="?android:attr/colorControlHighlight" />

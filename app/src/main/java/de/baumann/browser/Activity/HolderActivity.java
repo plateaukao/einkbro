@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -26,6 +25,7 @@ import de.baumann.browser.Unit.IntentUnit;
 import de.baumann.browser.Unit.RecordUnit;
 import de.baumann.browser.View.DialogAdapter;
 import de.baumann.browser.View.NinjaContextWrapper;
+import de.baumann.browser.View.NinjaRelativeLayout;
 
 public class HolderActivity extends Activity {
     private static final int TIMER_SCHEDULE_DEFAULT = 512;
@@ -113,14 +113,14 @@ public class HolderActivity extends Activity {
         builder.setCancelable(true);
 
         @SuppressLint("InflateParams")
-        FrameLayout linearLayout = (FrameLayout) getLayoutInflater().inflate(R.layout.dialog_list, null, false);
+        NinjaRelativeLayout linearLayout = (NinjaRelativeLayout) getLayoutInflater().inflate(R.layout.main_home, null, false);
         builder.setView(linearLayout);
 
         String[] strings = getResources().getStringArray(R.array.holder_menu);
         List<String> list = new ArrayList<>();
         list.addAll(Arrays.asList(strings));
 
-        ListView listView = linearLayout.findViewById(R.id.dialog_list);
+        ListView listView = linearLayout.findViewById(R.id.home_list);
         DialogAdapter adapter = new DialogAdapter(this, list);
         listView.setAdapter(adapter);
         adapter.notifyDataSetChanged();

@@ -2144,17 +2144,17 @@ public class BrowserActivity extends Activity implements BrowserController, View
         bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
         View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_toggle, null);
 
-        CheckBox sw_java = dialogView.findViewById(R.id.switch1);
+        CheckBox sw_java = dialogView.findViewById(R.id.switch_js);
         final ImageButton whiteList_js = dialogView.findViewById(R.id.imageButton_js);
-        CheckBox sw_adBlock = dialogView.findViewById(R.id.switch2);
+        CheckBox sw_adBlock = dialogView.findViewById(R.id.switch_adBlock);
         final ImageButton whiteList_ab = dialogView.findViewById(R.id.imageButton_ab);
-        CheckBox sw_image = dialogView.findViewById(R.id.switch4);
-        CheckBox sw_cookie = dialogView.findViewById(R.id.switch5);
+        CheckBox sw_image = dialogView.findViewById(R.id.switch_images);
+        CheckBox sw_cookie = dialogView.findViewById(R.id.switch_cookie);
         final ImageButton whitelist_cookie = dialogView.findViewById(R.id.imageButton_cookie);
-        CheckBox sw_location = dialogView.findViewById(R.id.switch6);
-        CheckBox sw_invert = dialogView.findViewById(R.id.switch7);
-        CheckBox sw_history = dialogView.findViewById(R.id.switch3);
-        CheckBox sw_desktop = dialogView.findViewById(R.id.switch8);
+        CheckBox sw_location = dialogView.findViewById(R.id.switch_location);
+        CheckBox sw_invert = dialogView.findViewById(R.id.switch_invert);
+        CheckBox sw_history = dialogView.findViewById(R.id.switch_history);
+        CheckBox sw_desktop = dialogView.findViewById(R.id.switch_desktop);
 
         javaHosts = new Javascript(BrowserActivity.this);
         javaHosts = getJavaHosts();

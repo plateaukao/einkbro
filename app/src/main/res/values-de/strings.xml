@@ -260,7 +260,7 @@
     <string name="toast_noFile">Keine Datei im Verzeichnis</string>
     <string name="toast_error">Uuups. Etwas ist schief gelaufen. :-(</string>
     <string name="toast_newTitle">Eintrag existiert schon. Bitte wähle einen anderen Titel.</string>
-    <string name="toast_edit_successful">Successfully saved</string>
+    <string name="toast_edit_successful">Erfolgreich gespeichert</string>
     <string name="toast_webview_forward">Kann keine nächste Seite laden</string>
     <string name="toast_entry_exists">Eintrag existiert bereits.</string>
     <string name="toast_clear">Möchtest du die Daten wirklich löschen?</string>

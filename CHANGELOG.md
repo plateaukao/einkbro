@@ -1,11 +1,11 @@
-### v 5.6 (WIP)
+### v 5.6
 - new: increase font size
 - new: close all websites from notification
 - new: desktop mode in "Fast toggle dialog"
 - improved: link sharing
 - improved: light theme
 - improved: UI
-- fix: some force closes related to permission "write on storage"
+- fix: some force closes
 
 ### v 5.5
 - new: option to disable confirmation dialogs on exit (thanks: element54)
