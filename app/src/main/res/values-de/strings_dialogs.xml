@@ -7,16 +7,16 @@
         &lt;i>Projektseite: https://github.com/scoute-dich/Browser&lt;br>
         Änderungen: https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;/i>&lt;br>&lt;br>
 
-        &lt;b>Version: 5.5&lt;/b>&lt;br>
+        &lt;b>Version: 5.6&lt;/b>&lt;br>
         Bitte lies den \"Hilfedialog\" für weitere Informationen.&lt;br>&lt;br>
 
-        \u25AA neu: Option den Bestätigungsdialog beim Verlassen der App zu deaktivieren (Danke: element54)&lt;br>
+        \u25AA neu: Schriftgröße einstellen&lt;br>
+        \u25AA neu: alle Internetseiten aus der Benachrichtigung schließen&lt;br>
+        \u25AA neu: Desktopseite anzeigen in den "Schnelleinstellungen"&lt;br>
+        \u25AA verbessert: Links teilen&lt;br>
         \u25AA verbessert: helles Thema&lt;br>
-        \u25AA verbessert: Startseite&lt;br>
-        \u25AA behoben: dunkler HIntergrung auf manchen Internetseiten&lt;br>
-        \u25AA behoben: OK Knopf in den \"Schnelleinstellungen\"&lt;br>
-        \u25AA behoben: Toolbar zeigt den Titel nicht an&lt;br>
-        \u25AA behoben: Verhalten beim Zurückdrücken
+        \u25AA verbessert: UI&lt;br>
+        \u25AA fix: Appabstürze
     </string>
 
     <string name="startpage_title">Startseite</string>
@@ -32,7 +32,7 @@
 
     <string name="toolbar_title">Toolbar</string>
     <string name="toolbar_dialog">Unten auf dem Schirm findest du die Toolbar. Du kannst hier direkt Links oder Suchbegriffe
-        eingeben, den angezeigten Inhalt neu laden oder das Menü öffnen. KLicke lange auf den \"Menüknopf\" um die
+        eingeben, den angezeigten Inhalt neu laden oder das Menü öffnen. Klicke lange auf den \"Menüknopf\" um die
         Schnelleinstellungen zu öffnen. Wische die Toolbar nach oben um die \"Tabvorschau\" zu öffnen. Um zwischen den
         Tabs zu wechseln, kannst du nach links oder rechts wischen.</string>
 

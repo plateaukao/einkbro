@@ -7,16 +7,16 @@
         &lt;i>Project site: https://github.com/scoute-dich/Browser&lt;br>
         Changelog: https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;/i>&lt;br>&lt;br>
 
-        &lt;b>Version: 5.5&lt;/b>&lt;br>
+        &lt;b>Version: 5.6&lt;/b>&lt;br>
         Please read the \"Help dialog\" for more information.&lt;br>&lt;br>
 
-        \u25AA new: option to disable confirmation dialogs on exit (thanks: element54)&lt;br>
+        \u25AA new: increase font size&lt;br>
+        \u25AA new: close all websites from notification&lt;br>
+        \u25AA new: desktop mode in "Fast toggle dialog"&lt;br>
+        \u25AA improved: link sharing&lt;br>
         \u25AA improved: light theme&lt;br>
-        \u25AA improved: startpage&lt;br>
-        \u25AA fix: dark background on some websites&lt;br>
-        \u25AA fix: OK button on \"Fast toggle dialog\"&lt;br>
-        \u25AA fix: toolbar not showing title&lt;br>
-        \u25AA fix: back handling
+        \u25AA improved: UI&lt;br>
+        \u25AA fix: some force closes
     </string>
 
     <string name="startpage_title">Startpage</string>

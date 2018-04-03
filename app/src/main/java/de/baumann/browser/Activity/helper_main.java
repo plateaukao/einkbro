@@ -32,6 +32,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v4.content.FileProvider;
+import android.support.v7.app.AppCompatDelegate;
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -111,6 +112,7 @@ public class helper_main {
     public static void setTheme (Context activity) {
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
         if (sp.getBoolean("sp_darkUI", false)){
             activity.setTheme(R.style.AppTheme);
