@@ -248,7 +248,6 @@
     <string name="toast_open_file_manager_failed">Konnte Dateimanager nicht öffnen</string>
     <string name="toast_refresh_failed">Kann Seite nicht neu laden</string>
     <string name="toast_relayout_successful">Erfolgreich gespeichert</string>
-    <string name="toast_screenshot_successful">Bildschirmfoto erfolgreich gespeichert als:&#160;</string>
     <string name="toast_share_failed">Kann die Seite nicht teilen</string>
     <string name="toast_start_download">Starte Download</string>
     <string name="toast_wait_a_minute">Bitte warte einen Moment</string>
@@ -277,6 +276,7 @@
     <string name="toast_close_tab">Möchtest du den aktuellen Tab schließen?</string>
     <string name="toast_closeNotification">Alle Internetseiten schließen.</string>
     <string name="toast_fileManager">Kann Datei nicht öffnen. Bitte verwende einen Dateimanager.</string>
+    <string name="toast_downloadComplete">Download vollständig. Dateimanager öffnen?</string>
 
 
     <!-- Whitelist -->

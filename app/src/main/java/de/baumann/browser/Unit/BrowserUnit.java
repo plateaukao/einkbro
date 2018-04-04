@@ -45,6 +45,7 @@ import de.baumann.browser.Ninja.R;
 import de.baumann.browser.View.NinjaToast;
 
 public class BrowserUnit {
+
     public static final int PROGRESS_MAX = 100;
     private static final String SUFFIX_HTML = ".html";
     public static final String SUFFIX_PNG = ".png";
@@ -199,6 +200,7 @@ public class BrowserUnit {
         String filename = URLUtil.guessFileName(url, contentDisposition, mimeType); // Maybe unexpected filename.
 
         request.allowScanningByMediaScanner();
+        request.setVisibleInDownloadsUi(true);
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
         request.setTitle(filename);
         request.setMimeType(mimeType);

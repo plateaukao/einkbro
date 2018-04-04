@@ -160,7 +160,7 @@
                     android:layout_toEndOf="@+id/cookieIcon"
                     android:layout_toStartOf="@+id/imageButton_cookie"
                     android:gravity="center_vertical"
-                    android:text="@string/setting_title_javascript"
+                    android:text="@string/setting_title_cookie"
                     android:textAppearance="?android:attr/textAppearanceMedium"/>
 
                 <CheckBox

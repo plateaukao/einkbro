@@ -32,6 +32,7 @@ public class NotificationUnit {
             @Override
             public void onReceive(Context context, Intent intent) {
                 Intent toHolderService = new Intent(context, HolderService.class);
+                toHolderService.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 IntentUnit.setClear(false);
                 context.stopService(toHolderService);
                 BrowserContainer.clear();
@@ -68,6 +69,7 @@ public class NotificationUnit {
         builder.addAction(action_UN);
 
         Intent toActivity = new Intent(context, BrowserActivity.class);
+        toActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PendingIntent pin = PendingIntent.getActivity(context, 0, toActivity, 0);
         builder.setContentIntent(pin);
 

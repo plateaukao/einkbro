@@ -81,6 +81,7 @@ public class HolderService extends Service implements BrowserController {
             updateNotification();
         } else {
             Intent toActivity = new Intent(HolderService.this, BrowserActivity.class);
+            toActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(toActivity);
         }
 

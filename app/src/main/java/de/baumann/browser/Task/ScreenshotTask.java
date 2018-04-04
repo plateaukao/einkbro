@@ -1,10 +1,12 @@
 package de.baumann.browser.Task;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -12,10 +14,13 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.BottomSheetDialog;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 
+import de.baumann.browser.Activity.BrowserActivity;
 import de.baumann.browser.Ninja.R;
 import de.baumann.browser.Unit.BrowserUnit;
 import de.baumann.browser.Unit.ViewUnit;
@@ -24,6 +29,7 @@ import de.baumann.browser.View.NinjaWebView;
 
 @SuppressLint("StaticFieldLeak")
 public class ScreenshotTask extends AsyncTask<Void, Void, Boolean> {
+
     private final Context context;
     private final NinjaWebView webView;
     private int windowWidth;
@@ -73,12 +79,27 @@ public class ScreenshotTask extends AsyncTask<Void, Void, Boolean> {
 
     @Override
     protected Boolean doInBackground(Void... params) {
-        try {
-            Bitmap bitmap = ViewUnit.capture(webView, windowWidth, contentHeight, Bitmap.Config.ARGB_8888);
-            path = BrowserUnit.screenshot(context, bitmap, title);
-        } catch (Exception e) {
-            path = null;
+        if (android.os.Build.VERSION.SDK_INT >= 23) {
+            int hasWRITE_EXTERNAL_STORAGE = context.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
+                NinjaToast.show(context, R.string.toast_permission_sdCard_sec);
+            } else {
+                try {
+                    Bitmap bitmap = ViewUnit.capture(webView, windowWidth, contentHeight, Bitmap.Config.ARGB_8888);
+                    path = BrowserUnit.screenshot(context, bitmap, title);
+                } catch (Exception e) {
+                    path = null;
+                }
+            }
+        } else {
+            try {
+                Bitmap bitmap = ViewUnit.capture(webView, windowWidth, contentHeight, Bitmap.Config.ARGB_8888);
+                path = BrowserUnit.screenshot(context, bitmap, title);
+            } catch (Exception e) {
+                path = null;
+            }
         }
+
         return path != null && !path.isEmpty();
     }
 
@@ -87,7 +108,6 @@ public class ScreenshotTask extends AsyncTask<Void, Void, Boolean> {
 
         if (result) {
             dialog.cancel();
-            NinjaToast.show(activity, context.getString(R.string.toast_screenshot_successful) + path);
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
 
             if (sp.getInt("screenshot",0) == 1) {
@@ -103,8 +123,29 @@ public class ScreenshotTask extends AsyncTask<Void, Void, Boolean> {
                     sharingIntent.putExtra(Intent.EXTRA_STREAM, bmpUri);
                     context.startActivity(Intent.createChooser(sharingIntent, context.getString(R.string.menu_share)));
                 }
+            } else {
+                final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(activity);
+                View dialogView = View.inflate(activity, R.layout.dialog_action, null);
+                TextView textView = dialogView.findViewById(R.id.dialog_text);
+                textView.setText(R.string.toast_downloadComplete);
+                Button action_ok = dialogView.findViewById(R.id.action_ok);
+                action_ok.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ((BrowserActivity) activity).addAlbum(BrowserUnit.FLAG_FILES);
+                        bottomSheetDialog.cancel();
+                    }
+                });
+                Button action_cancel = dialogView.findViewById(R.id.action_cancel);
+                action_cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        bottomSheetDialog.cancel();
+                    }
+                });
+                bottomSheetDialog.setContentView(dialogView);
+                bottomSheetDialog.show();
             }
-
         } else {
             NinjaToast.show(activity, context.getString(R.string.toast_error));
         }
