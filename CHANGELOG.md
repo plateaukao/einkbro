@@ -1,3 +1,8 @@
+### v 5.6.1 (WIP)
+- new: notification when download or screenshot complete
+- removed: Snackbar
+- fix: some strings (thanks: gr1sh)
+
 ### v 5.6
 - new: increase font size
 - new: close all websites from notification

@@ -218,6 +218,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
     private String title;
     private String url;
     private int hide_toolbar;
+    private BroadcastReceiver downloadReceiver;
 
     private SharedPreferences sp;
     private MAHEncryptor mahEncryptor;
@@ -500,6 +501,38 @@ public class BrowserActivity extends Activity implements BrowserController, View
             }
         }, 500);
         hide_toolbar = 1;
+
+        downloadReceiver = new BroadcastReceiver() {
+
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
+                View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_action, null);
+                TextView textView = dialogView.findViewById(R.id.dialog_text);
+                textView.setText(R.string.toast_downloadComplete);
+                Button action_ok = dialogView.findViewById(R.id.action_ok);
+                action_ok.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        addAlbum(BrowserUnit.FLAG_FILES);
+                        bottomSheetDialog.cancel();
+                    }
+                });
+                Button action_cancel = dialogView.findViewById(R.id.action_cancel);
+                action_cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        bottomSheetDialog.cancel();
+                    }
+                });
+                bottomSheetDialog.setContentView(dialogView);
+                bottomSheetDialog.show();
+            }
+        };
+
+        IntentFilter filter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
+        registerReceiver(downloadReceiver, filter);
     }
 
     @Override
@@ -1215,21 +1248,15 @@ public class BrowserActivity extends Activity implements BrowserController, View
     private void initRendering(View view) {
 
         if (currentAlbumController instanceof NinjaWebView && sp.getBoolean("sp_invert", false)) {
-
             Paint paint = new Paint();
-
             ColorMatrix matrix = new ColorMatrix();
             matrix.set(NEGATIVE_COLOR);
-
             ColorMatrix gcm = new ColorMatrix();
             gcm.setSaturation(0);
-
             ColorMatrix concat = new ColorMatrix();
             concat.setConcat(matrix, gcm);
-
             ColorMatrixColorFilter filter = new ColorMatrixColorFilter(concat);
             paint.setColorFilter(filter);
-
             // maybe sometime LAYER_TYPE_NONE would better?
             view.setLayerType(View.LAYER_TYPE_HARDWARE, paint);
         } else {
@@ -2530,7 +2557,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
         fileOrDirectory.delete();
     }
 
-    private synchronized void addAlbum(int flag) {
+    public synchronized void addAlbum(int flag) {
 
         showOmnibox();
 

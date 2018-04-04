@@ -21,9 +21,11 @@
 
     <ProgressBar
         android:id="@+id/progress"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:padding="8dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:minHeight="32dp"
+        android:paddingEnd="8dp"
+        android:paddingStart="8dp"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_gravity="center_vertical" />

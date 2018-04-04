@@ -237,7 +237,6 @@
     <string name="toast_open_file_manager_failed">Failed to open File Manager</string>
     <string name="toast_refresh_failed">Can\'t refresh this page</string>
     <string name="toast_relayout_successful">重新布局成功</string>
-    <string name="toast_screenshot_successful">Saved screenshot at:&#160;</string>
     <string name="toast_share_failed">Can\'t share this page</string>
     <string name="toast_start_download">Starting download</string>
     <string name="toast_wait_a_minute">请稍候</string>

@@ -248,7 +248,6 @@
     <string name="toast_open_file_manager_failed">Failed to open File Manager</string>
     <string name="toast_refresh_failed">Can\'t refresh this page</string>
     <string name="toast_relayout_successful">Successfully Relayout</string>
-    <string name="toast_screenshot_successful">Saved screenshot at:&#160;</string>
     <string name="toast_share_failed">Can\'t share this page</string>
     <string name="toast_start_download">Starting download</string>
     <string name="toast_wait_a_minute">Please wait for a moment</string>
@@ -277,6 +276,7 @@
     <string name="toast_close_tab">Do you want to close current tab?</string>
     <string name="toast_closeNotification">Close all opened websites.</string>
     <string name="toast_fileManager">Can not open file. Please use a file manager.</string>
+    <string name="toast_downloadComplete">Download complete. Open file manager?</string>
 
 
     <!-- Whitelist -->
