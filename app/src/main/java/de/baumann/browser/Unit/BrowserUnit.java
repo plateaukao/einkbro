@@ -45,6 +45,7 @@ import de.baumann.browser.Ninja.R;
 import de.baumann.browser.View.NinjaToast;
 
 public class BrowserUnit {
+
     public static final int PROGRESS_MAX = 100;
     private static final String SUFFIX_HTML = ".html";
     public static final String SUFFIX_PNG = ".png";
@@ -58,7 +59,6 @@ public class BrowserUnit {
     public static final int FLAG_PASS = 0x105;
 
     public static final String MIME_TYPE_TEXT_PLAIN = "text/plain";
-    public static final String MIME_TYPE_IMAGE = "image/*";
 
     private static final String BOOKMARK_TYPE = "<DT><A HREF=\"{url}\" ADD_DATE=\"{time}\">{title}</A>";
     private static final String BOOKMARK_TITLE = "{title}";
@@ -200,6 +200,7 @@ public class BrowserUnit {
         String filename = URLUtil.guessFileName(url, contentDisposition, mimeType); // Maybe unexpected filename.
 
         request.allowScanningByMediaScanner();
+        request.setVisibleInDownloadsUi(true);
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
         request.setTitle(filename);
         request.setMimeType(mimeType);

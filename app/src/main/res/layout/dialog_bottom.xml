@@ -6,19 +6,15 @@
     android:layout_height="@dimen/layout_margin_56dp"
     android:minHeight="@dimen/layout_margin_56dp"
     android:orientation="vertical"
-    android:background="@color/colorPrimaryDark"
+    android:background="?android:attr/colorBackground"
     android:layout_alignParentBottom="true"
     tools:ignore="Overdraw">
 
     <TextView
         android:id="@+id/dialog_text"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
+        android:padding="16dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/light"
+        android:layout_height="match_parent"
         android:layout_gravity="center_vertical" />
 
 </LinearLayout>

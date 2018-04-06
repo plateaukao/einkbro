@@ -36,7 +36,7 @@ public class HolderService extends Service implements BrowserController {
     public void updateProgress(int progress) {}
 
     @Override
-    public void showAlbum(AlbumController albumController, boolean expand, boolean capture) {}
+    public void showAlbum(AlbumController albumController, boolean expand) {}
 
     @Override
     public void removeAlbum(AlbumController albumController) {}
@@ -49,8 +49,7 @@ public class HolderService extends Service implements BrowserController {
     public void onCreateView(WebView view, Message resultMsg) {}
 
     @Override
-    public void onShowCustomView(View view, WebChromeClient.CustomViewCallback callback) {
-    }
+    public void onShowCustomView(View view, WebChromeClient.CustomViewCallback callback) {}
 
     @Override
     public boolean onHideCustomView() {
@@ -82,6 +81,7 @@ public class HolderService extends Service implements BrowserController {
             updateNotification();
         } else {
             Intent toActivity = new Intent(HolderService.this, BrowserActivity.class);
+            toActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(toActivity);
         }
 

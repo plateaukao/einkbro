@@ -18,9 +18,9 @@ public class DialogAdapter extends ArrayAdapter<String> {
     private final List<String> list;
 
     public DialogAdapter(Context context, List<String> list) {
-        super(context, R.layout.dialog_text_item, list);
+        super(context, R.layout.list_item, list);
         this.context = context;
-        this.layoutResId = R.layout.dialog_text_item;
+        this.layoutResId = R.layout.list_item;
         this.list = list;
     }
 
@@ -37,7 +37,7 @@ public class DialogAdapter extends ArrayAdapter<String> {
         if (view == null) {
             view = LayoutInflater.from(context).inflate(layoutResId, parent, false);
             holder = new Holder();
-            holder.textView = view.findViewById(R.id.dialog_text_item);
+            holder.textView = view.findViewById(R.id.record_item_title);
             view.setTag(holder);
         } else {
             holder = (Holder) view.getTag();

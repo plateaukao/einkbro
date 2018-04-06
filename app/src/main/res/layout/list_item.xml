@@ -35,7 +35,6 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_alignParentEnd="true"
-                android:textColor="@color/grey_500"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:maxLines="1"
                 android:ellipsize="end"/>
@@ -59,7 +58,6 @@
             android:layout_marginBottom="@dimen/layout_margin_12dp"
             android:layout_marginLeft="@dimen/layout_margin_16dp"
             android:layout_marginRight="@dimen/layout_margin_16dp"
-            android:textColor="@color/grey_500"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:maxLines="1"
             android:ellipsize="end"/>

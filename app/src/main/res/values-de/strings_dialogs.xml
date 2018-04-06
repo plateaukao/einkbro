@@ -7,20 +7,20 @@
         &lt;i>Projektseite: https://github.com/scoute-dich/Browser&lt;br>
         Änderungen: https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;/i>&lt;br>&lt;br>
 
-        &lt;b>Version: 5.5&lt;/b>&lt;br>
+        &lt;b>Version: 5.6&lt;/b>&lt;br>
         Bitte lies den \"Hilfedialog\" für weitere Informationen.&lt;br>&lt;br>
 
-        \u25AA neu: Option den Bestätigungsdialog beim Verlassen der App zu deaktivieren (Danke: element54)&lt;br>
+        \u25AA neu: Schriftgröße einstellen&lt;br>
+        \u25AA neu: alle Internetseiten aus der Benachrichtigung schließen&lt;br>
+        \u25AA neu: Desktopseite anzeigen in den "Schnelleinstellungen"&lt;br>
+        \u25AA verbessert: Links teilen&lt;br>
         \u25AA verbessert: helles Thema&lt;br>
-        \u25AA verbessert: Startseite&lt;br>
-        \u25AA behoben: dunkler HIntergrung auf manchen Internetseiten&lt;br>
-        \u25AA behoben: OK Knopf in den \"Schnelleinstellungen\"&lt;br>
-        \u25AA behoben: Toolbar zeigt den Titel nicht an&lt;br>
-        \u25AA behoben: Verhalten beim Zurückdrücken
+        \u25AA verbessert: UI&lt;br>
+        \u25AA fix: Appabstürze
     </string>
 
     <string name="startpage_title">Startseite</string>
-    <string name="startpage_dialog">Hier hast du Zugriff deine auf der Startseite gespeicherten Einträge,
+    <string name="startpage_dialog">Hier hast du Zugriff auf deine auf der Startseite gespeicherten Einträge,
         deine Lesezeichen, den Verlauf, gespeicherte Logindaten und auf den integrierten Dateimanager. In den Einstellungen kannst
         du entscheiden, welcher Inhalt immer zuerst angezeigt werden soll.</string>
 
@@ -32,7 +32,7 @@
 
     <string name="toolbar_title">Toolbar</string>
     <string name="toolbar_dialog">Unten auf dem Schirm findest du die Toolbar. Du kannst hier direkt Links oder Suchbegriffe
-        eingeben, den angezeigten Inhalt neu laden oder das Menü öffnen. KLicke lange auf den \"Menüknopf\" um die
+        eingeben, den angezeigten Inhalt neu laden oder das Menü öffnen. Klicke lange auf den \"Menüknopf\" um die
         Schnelleinstellungen zu öffnen. Wische die Toolbar nach oben um die \"Tabvorschau\" zu öffnen. Um zwischen den
         Tabs zu wechseln, kannst du nach links oder rechts wischen.</string>
 
@@ -130,11 +130,11 @@
         &lt;i>Bis jetzt sind folgende Personen an dem Projekt beteiligt. Wenn ich jemanden vergessen habe, bitte melden:&lt;/i>&lt;br>&lt;br>
 
         &lt;b>Gaukler Faun&lt;/b>&lt;br>
-        Hauptentwickler und Gründer des Projekts.&lt;br>
+        \u25AA Hauptentwickler und Gründer des Projekts.&lt;br>
         &lt;i>https://github.com/scoute-dich&lt;/i>&lt;br>&lt;br>
 
         &lt;b>CGSLURP LLC&lt;/b>&lt;br>
-        Half AdBlock und \"Desktopseite anzeigen\" in der vorherigen Version von \"F|L|OSS Browser\" möglich zu machen.&lt;br>
+        \u25AA Half AdBlock und \"Desktopseite anzeigen\" in der vorherigen Version von \"F|L|OSS Browser\" möglich zu machen.&lt;br>
         &lt;i>https://github.com/futrDevelopment&lt;/i>&lt;br>&lt;br>
 
         &lt;b>element54&lt;/b>&lt;br>
@@ -142,20 +142,25 @@
         \u25AA neu: Option Bestätigungsdialoge beim Verlassen zu deaktivieren.&lt;br>
         &lt;i>https://github.com/element54&lt;/i>&lt;br>&lt;br>
 
+        &lt;b>gr1sh&lt;/b>&lt;br>
+        \u25AA fix: Deutsche Übersetzung verbessert (Fehler #124, #131).&lt;br>
+        &lt;i>https://github.com/gr1sh&lt;/i>&lt;br>&lt;br>
+
         &lt;b>Jumping Yang&lt;/b>&lt;br>
-        Chinesische Übersetzung in der vorherigen Version von \"F|L|OSS Browser\".&lt;br>
+        \u25AA Chinesische Übersetzung in der vorherigen Version von \"F|L|OSS Browser\".&lt;br>
         &lt;i>https://github.com/JumpingYang001&lt;/i>&lt;br>&lt;br>
 
         &lt;b>lishoujun&lt;/b>&lt;br>
-        Chinesische Übersetzung und Fehlersuche.&lt;br>
+        \u25AA Chinesische Übersetzung&lt;br>
+        \u25AA Fehlersuche.&lt;br>
         &lt;i>https://github.com/lishoujun&lt;/i>&lt;br>&lt;br>
 
         &lt;b>Secangkir Kopi&lt;/b>&lt;br>
-        Indonesische Übersetzung&lt;br>
+        \u25AA Indonesische Übersetzung&lt;br>
         &lt;i>https://github.com/Secangkir-Kopi&lt;/i>&lt;br>&lt;br>
 
         &lt;b>splinet&lt;/b>&lt;br>
-        Russische Übersetzung in der vorherigen Version von \"F|L|OSS Browser\".&lt;br>
+        \u25AA Russische Übersetzung in der vorherigen Version von \"F|L|OSS Browser\".&lt;br>
         &lt;i>https://github.com/splinet&lt;/i>
 
 

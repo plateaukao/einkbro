@@ -9,9 +9,9 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
 import android.provider.Settings;
 import android.support.design.widget.BottomSheetDialog;
-import android.support.design.widget.FloatingActionButton;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import de.baumann.browser.Activity.Settings_ClearActivity;
@@ -118,7 +118,7 @@ public class Fragment_settings extends PreferenceFragment implements SharedPrefe
         dialog_text.setText(helper_main.textSpannable(text));
         dialog_text.setMovementMethod(LinkMovementMethod.getInstance());
 
-        FloatingActionButton fab = dialogView.findViewById(R.id.floatButton_ok);
+        ImageButton fab = dialogView.findViewById(R.id.floatButton_ok);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,10 +126,10 @@ public class Fragment_settings extends PreferenceFragment implements SharedPrefe
             }
         });
 
-        FloatingActionButton fab_help = dialogView.findViewById(R.id.floatButton_help);
+        ImageButton fab_help = dialogView.findViewById(R.id.floatButton_help);
         fab_help.setVisibility(View.GONE);
 
-        FloatingActionButton fab_settings = dialogView.findViewById(R.id.floatButton_settings);
+        ImageButton fab_settings = dialogView.findViewById(R.id.floatButton_settings);
         fab_settings.setVisibility(View.GONE);
 
         dialog.setContentView(dialogView);
@@ -148,7 +148,7 @@ public class Fragment_settings extends PreferenceFragment implements SharedPrefe
         dialog_text.setText(helper_main.textSpannable(getString(R.string.changelog_dialog)));
         dialog_text.setMovementMethod(LinkMovementMethod.getInstance());
 
-        FloatingActionButton fab = dialogView.findViewById(R.id.floatButton_ok);
+        ImageButton fab = dialogView.findViewById(R.id.floatButton_ok);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -156,10 +156,10 @@ public class Fragment_settings extends PreferenceFragment implements SharedPrefe
             }
         });
 
-        FloatingActionButton fab_help = dialogView.findViewById(R.id.floatButton_help);
+        ImageButton fab_help = dialogView.findViewById(R.id.floatButton_help);
         fab_help.setVisibility(View.GONE);
 
-        FloatingActionButton fab_settings = dialogView.findViewById(R.id.floatButton_settings);
+        ImageButton fab_settings = dialogView.findViewById(R.id.floatButton_settings);
         fab_settings.setVisibility(View.GONE);
 
         dialog.setContentView(dialogView);

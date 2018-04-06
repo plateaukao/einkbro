@@ -7,16 +7,16 @@
         &lt;i>Project site: https://github.com/scoute-dich/Browser&lt;br>
         Changelog: https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;/i>&lt;br>&lt;br>
 
-        &lt;b>Version: 5.5&lt;/b>&lt;br>
+        &lt;b>Version: 5.6&lt;/b>&lt;br>
         Please read the \"Help dialog\" for more information.&lt;br>&lt;br>
 
-        \u25AA new: option to disable confirmation dialogs on exit (thanks: element54)&lt;br>
+        \u25AA new: increase font size&lt;br>
+        \u25AA new: close all websites from notification&lt;br>
+        \u25AA new: desktop mode in "Fast toggle dialog"&lt;br>
+        \u25AA improved: link sharing&lt;br>
         \u25AA improved: light theme&lt;br>
-        \u25AA improved: startpage&lt;br>
-        \u25AA fix: dark background on some websites&lt;br>
-        \u25AA fix: OK button on \"Fast toggle dialog\"&lt;br>
-        \u25AA fix: toolbar not showing title&lt;br>
-        \u25AA fix: back handling
+        \u25AA improved: UI&lt;br>
+        \u25AA fix: some force closes
     </string>
 
     <string name="startpage_title">Startpage</string>
@@ -132,35 +132,38 @@
         &lt;i>Following people contributed at this project. If I have forgotten anybody, please contact me:&lt;/i>&lt;br>&lt;br>
 
         &lt;b>Gaukler Faun&lt;/b>&lt;br>
-        Main developer and initiator of this project.&lt;br>
+        \u25AA Main developer and initiator of this project.&lt;br>
         &lt;i>https://github.com/scoute-dich&lt;/i>&lt;br>&lt;br>
 
         &lt;b>CGSLURP LLC&lt;/b>&lt;br>
-        Helped to implement AdBlock and \"request desktop site\" in the previous version of \"F|L|OSS Browser\".&lt;br>
+        \u25AA Helped to implement AdBlock and \"request desktop site\" in the previous version of \"F|L|OSS Browser\".&lt;br>
         &lt;i>https://github.com/futrDevelopment&lt;/i>&lt;br>&lt;br>
 
         &lt;b>element54&lt;/b>&lt;br>
-        \u25AA fix: keyboard problems (Fehler #105).&lt;br>
+        \u25AA fix: keyboard problems (issue #105).&lt;br>
         \u25AA new: option to disable confirmation dialogs on exit&lt;br>
         &lt;i>https://github.com/element54&lt;/i>&lt;br>&lt;br>
 
+        &lt;b>gr1sh&lt;/b>&lt;br>
+        \u25AA fix: some German strings (issues #124, #131).&lt;br>
+        &lt;i>https://github.com/gr1sh&lt;/i>&lt;br>&lt;br>
+
         &lt;b>Jumping Yang&lt;/b>&lt;br>
-        Chinese translation in the previous version of \"F|L|OSS Browser\".&lt;br>
+        \u25AA Chinese translation in the previous version of \"F|L|OSS Browser\".&lt;br>
         &lt;i>https://github.com/JumpingYang001&lt;/i>&lt;br>&lt;br>
 
         &lt;b>lishoujun&lt;/b>&lt;br>
-        Chinese translation and bug hunting.&lt;br>
+        \u25AA Chinese translation&lt;br>
+        \u25AA bug hunting&lt;br>
         &lt;i>https://github.com/lishoujun&lt;/i>&lt;br>&lt;br>
 
         &lt;b>Secangkir Kopi&lt;/b>&lt;br>
-        Indonesian translation&lt;br>
+        \u25AA Indonesian translation&lt;br>
         &lt;i>https://github.com/Secangkir-Kopi&lt;/i>&lt;br>&lt;br>
 
         &lt;b>splinet&lt;/b>&lt;br>
-        Russian translation in the previous version of \"F|L|OSS Browser\".&lt;br>
+        \u25AA Russian translation in the previous version of \"F|L|OSS Browser\".&lt;br>
         &lt;i>https://github.com/splinet&lt;/i>
-
-
 
     </string>
 

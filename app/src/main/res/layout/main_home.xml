@@ -48,13 +48,14 @@
                 <View
                     android:id="@+id/home_bottomShadow"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/layout_margin_4dp"
-                    android:background="@drawable/toolbar_drop_shadow_dark"
+                    android:layout_height="4dp"
+                    android:background="@drawable/shadow_above"
                     android:layout_alignParentBottom="true"/>
 
             </RelativeLayout>
 
             <LinearLayout
+                android:elevation="2dp"
                 android:id="@+id/home_buttons"
                 android:layout_alignParentBottom="true"
                 android:layout_marginTop="@dimen/layout_margin_8dp"
@@ -80,13 +81,13 @@
                         android:layout_width="42dp"
                         android:layout_height="42dp"
                         android:layout_gravity="center"
-                        android:layout_marginBottom="@dimen/layout_margin_4dp"
+                        android:layout_marginBottom="4dp"
                         android:layout_marginEnd="2dp"
                         android:layout_marginStart="2dp"
-                        android:background="@drawable/custom_button_dark"
+                        android:background="?attr/actionBarItemBackground"
                         android:contentDescription="@null"
                         android:foregroundGravity="center"
-                        android:src="@drawable/icon_earth_light" />
+                        android:src="@drawable/icon_earth" />
 
                 </LinearLayout>
 
@@ -107,10 +108,10 @@
                         android:layout_width="42dp"
                         android:layout_height="42dp"
                         android:layout_gravity="center"
-                        android:layout_marginBottom="@dimen/layout_margin_4dp"
+                        android:layout_marginBottom="4dp"
                         android:layout_marginEnd="2dp"
                         android:layout_marginStart="2dp"
-                        android:background="@drawable/custom_button_dark"
+                        android:background="?attr/actionBarItemBackground"
                         android:contentDescription="@null"
                         android:src="@drawable/icon_bookmark" />
 
@@ -133,10 +134,10 @@
                         android:layout_width="42dp"
                         android:layout_height="42dp"
                         android:layout_gravity="center"
-                        android:layout_marginBottom="@dimen/layout_margin_4dp"
+                        android:layout_marginBottom="4dp"
                         android:layout_marginEnd="2dp"
                         android:layout_marginStart="2dp"
-                        android:background="@drawable/custom_button_dark"
+                        android:background="?attr/actionBarItemBackground"
                         android:contentDescription="@null"
                         android:src="@drawable/ic_action_history" />
 
@@ -159,10 +160,10 @@
                         android:layout_width="42dp"
                         android:layout_height="42dp"
                         android:layout_gravity="center"
-                        android:layout_marginBottom="@dimen/layout_margin_4dp"
+                        android:layout_marginBottom="4dp"
                         android:layout_marginEnd="2dp"
                         android:layout_marginStart="2dp"
-                        android:background="@drawable/custom_button_dark"
+                        android:background="?attr/actionBarItemBackground"
                         android:contentDescription="@null"
                         android:src="@drawable/icon_key" />
 
@@ -185,10 +186,10 @@
                         android:layout_width="42dp"
                         android:layout_height="42dp"
                         android:layout_gravity="center"
-                        android:layout_marginBottom="@dimen/layout_margin_4dp"
+                        android:layout_marginBottom="4dp"
                         android:layout_marginEnd="2dp"
                         android:layout_marginStart="2dp"
-                        android:background="@drawable/custom_button_dark"
+                        android:background="?attr/actionBarItemBackground"
                         android:contentDescription="@null"
                         android:src="@drawable/icon_download" />
 
@@ -199,9 +200,5 @@
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>
-
-
-
-
 
 </de.baumann.browser.View.NinjaRelativeLayout>

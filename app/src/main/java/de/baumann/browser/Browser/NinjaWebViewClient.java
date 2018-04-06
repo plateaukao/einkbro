@@ -70,8 +70,6 @@ public class NinjaWebViewClient extends WebViewClient {
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
         super.onPageStarted(view, url, favicon);
 
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-
         if (view.getTitle() == null || view.getTitle().isEmpty()) {
             ninjaWebView.update(context.getString(R.string.album_untitled), url);
         } else {

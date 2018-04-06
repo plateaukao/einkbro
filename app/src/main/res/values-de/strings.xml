@@ -24,13 +24,9 @@
     <string name="main_menu_new_tab">Neuer Tab (Hintergrund)</string>
     <string name="main_menu_new_tabOpen">Neuer Tab (Vordergrund)</string>
     <string name="main_menu_copy_link">Link kopieren</string>
-    <string name="main_menu_save">Speichern</string>
     <string name="main_omnibox_input_hint">Suchen oder URL eingeben</string>
 
-    <string name="menu_tabs">Tab</string>
     <string name="menu_share">Teilen</string>
-    <string name="menu_other">Sonstiges</string>
-    <string name="menu_save">Speichern</string>
     <string name="menu_quit">Beenden</string>
     <string name="menu_delete">Löschen</string>
     <string name="menu_edit">Bearbeiten</string>
@@ -40,12 +36,11 @@
 
     <string name="menu_share_screenshot">Bildschirmfoto teilen</string>
     <string name="menu_share_link">Link teilen</string>
-    <string name="menu_share_clipboard">Teile zur Zwischenablage</string>
 
     <string name="menu_save_screenshot">Bildschirmfoto speichern</string>
-    <string name="menu_save_home">auf Startseite</string>
+    <string name="menu_save_home">Speichere auf Startseite</string>
     <string name="menu_save_login">Logindaten speichern</string>
-    <string name="menu_save_bookmark">als Lesezeichen</string>
+    <string name="menu_save_bookmark">Speichere als Lesezeichen</string>
     <string name="menu_save_as">Speichere als …</string>
 
     <string name="menu_other_searchSite">Suche auf Seite</string>
@@ -53,7 +48,6 @@
 
 
     <!-- AndroidAgo -->
-    <string name="android_ago_just_now">Gerade eben</string>
 
 
     <!-- Dialog -->
@@ -254,7 +248,6 @@
     <string name="toast_open_file_manager_failed">Konnte Dateimanager nicht öffnen</string>
     <string name="toast_refresh_failed">Kann Seite nicht neu laden</string>
     <string name="toast_relayout_successful">Erfolgreich gespeichert</string>
-    <string name="toast_screenshot_successful">Bildschirmfoto erfolgreich gespeichert als:&#160;</string>
     <string name="toast_share_failed">Kann die Seite nicht teilen</string>
     <string name="toast_start_download">Starte Download</string>
     <string name="toast_wait_a_minute">Bitte warte einen Moment</string>
@@ -266,7 +259,7 @@
     <string name="toast_noFile">Keine Datei im Verzeichnis</string>
     <string name="toast_error">Uuups. Etwas ist schief gelaufen. :-(</string>
     <string name="toast_newTitle">Eintrag existiert schon. Bitte wähle einen anderen Titel.</string>
-    <string name="toast_edit_successful">Successfully saved</string>
+    <string name="toast_edit_successful">Erfolgreich gespeichert</string>
     <string name="toast_webview_forward">Kann keine nächste Seite laden</string>
     <string name="toast_entry_exists">Eintrag existiert bereits.</string>
     <string name="toast_clear">Möchtest du die Daten wirklich löschen?</string>
@@ -283,6 +276,7 @@
     <string name="toast_close_tab">Möchtest du den aktuellen Tab schließen?</string>
     <string name="toast_closeNotification">Alle Internetseiten schließen.</string>
     <string name="toast_fileManager">Kann Datei nicht öffnen. Bitte verwende einen Dateimanager.</string>
+    <string name="toast_downloadComplete">Download vollständig. Dateimanager öffnen?</string>
 
 
     <!-- Whitelist -->

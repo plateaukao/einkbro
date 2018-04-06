@@ -2,14 +2,6 @@
 
 <resources>
 
-    <!-- Holder -->
-    <string-array name="holder_menu">
-        <item>Foreground</item>
-        <item>Copy link</item>
-        <item>Share</item>
-    </string-array>
-
-
     <!-- Search engine -->
     <string-array name="setting_entries_search_engine">
         <item>@string/setting_summary_search_engine_google</item>
