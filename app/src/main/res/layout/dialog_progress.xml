@@ -6,28 +6,28 @@
     android:layout_height="@dimen/layout_margin_56dp"
     android:minHeight="@dimen/layout_margin_56dp"
     android:orientation="horizontal"
-    android:background="@color/colorPrimaryDark"
+    android:background="?android:attr/colorBackground"
     android:layout_alignParentBottom="true"
+    android:padding="8dp"
     tools:ignore="Overdraw">
 
     <TextView
         android:id="@+id/dialog_text"
-        android:padding="16dp"
+        android:padding="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toStartOf="@+id/progress"
-        android:textColor="@color/light"
         android:layout_gravity="center_vertical" />
 
     <ProgressBar
         android:id="@+id/progress"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:minHeight="32dp"
+        android:paddingEnd="8dp"
+        android:paddingStart="8dp"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:layout_gravity="center_vertical"
-        android:minHeight="36dp" />
+        android:layout_gravity="center_vertical" />
 
 </RelativeLayout>

@@ -21,12 +21,9 @@
     <string name="main_menu_new_tab">Tab Baru (latar belakang)</string>
     <string name="main_menu_new_tabOpen">Tab Baru (latar depan)</string>
     <string name="main_menu_copy_link">Salin Tautan</string>
-    <string name="main_menu_save">Simpan</string>
     <string name="main_omnibox_input_hint">Cari atau ketik URL</string>
 
     <string name="menu_share">Bagi</string>
-    <string name="menu_other">Lainnya</string>
-    <string name="menu_save">Simpan</string>
     <string name="menu_quit">Keluar</string>
     <string name="menu_delete">Hapus</string>
     <string name="menu_edit">Ubah</string>
@@ -34,7 +31,6 @@
 
     <string name="menu_share_screenshot">Bagikan tangkapan layar</string>
     <string name="menu_share_link">Bagikan Tautan</string>
-    <string name="menu_share_clipboard">Bagi Papan Klip</string>
 
     <string name="menu_save_screenshot">Simpan Tangkapan Layar</string>
     <string name="menu_save_home">Simpan Di Beranda</string>
@@ -47,7 +43,6 @@
 
 
     <!-- AndroidAgo -->
-    <string name="android_ago_just_now">Baru saja</string>
 
 
     <!-- Dialog -->
@@ -190,7 +185,6 @@
     <string name="toast_open_file_manager_failed">Gagal membuka File Manager</string>
     <string name="toast_refresh_failed">Tidak dapat me-refresh halaman ini</string>
     <string name="toast_relayout_successful">Berhasil melakukan relayout</string>
-    <string name="toast_screenshot_successful">Tangkapan layar tersimpan di:&#160;</string>
     <string name="toast_share_failed">Tidak dapat membagikan halaman ini</string>
     <string name="toast_start_download">Memulai unduh</string>
     <string name="toast_wait_a_minute">Mohon tunggu sebentar</string>

@@ -1,7 +1,6 @@
 package de.baumann.browser.Activity;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.app.Notification;
@@ -127,7 +126,7 @@ import de.baumann.browser.View.SwitcherPanel;
 import static android.content.ContentValues.TAG;
 import static java.lang.String.valueOf;
 
-@SuppressWarnings({"ResultOfMethodCallIgnored", "FieldCanBeLocal"})
+@SuppressWarnings({"ResultOfMethodCallIgnored", "FieldCanBeLocal", "ApplySharedPref"})
 public class BrowserActivity extends Activity implements BrowserController, View.OnClickListener {
 
     // Menus
@@ -163,8 +162,8 @@ public class BrowserActivity extends Activity implements BrowserController, View
     private LinearLayout tv2_menu_notification;
     private LinearLayout tv2_menu_share;
 
-    LinearLayout floatButton_saveLayout;
-    LinearLayout floatButton_shareLayout;
+    private LinearLayout floatButton_saveLayout;
+    private LinearLayout floatButton_shareLayout;
 
     private View floatButton_tabView;
     private View floatButton_saveView;
@@ -219,6 +218,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
     private String title;
     private String url;
     private int hide_toolbar;
+    private BroadcastReceiver downloadReceiver;
 
     private SharedPreferences sp;
     private MAHEncryptor mahEncryptor;
@@ -461,7 +461,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 dialog_text.setText(helper_main.textSpannable(getString(R.string.changelog_dialog)));
                 dialog_text.setMovementMethod(LinkMovementMethod.getInstance());
 
-                FloatingActionButton fab = dialogView.findViewById(R.id.floatButton_ok);
+                ImageButton fab = dialogView.findViewById(R.id.floatButton_ok);
                 fab.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -470,7 +470,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
                     }
                 });
 
-                FloatingActionButton fab_help = dialogView.findViewById(R.id.floatButton_help);
+                ImageButton fab_help = dialogView.findViewById(R.id.floatButton_help);
                 fab_help.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -478,7 +478,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
                     }
                 });
 
-                FloatingActionButton fab_settings = dialogView.findViewById(R.id.floatButton_settings);
+                ImageButton fab_settings = dialogView.findViewById(R.id.floatButton_settings);
                 fab_settings.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -502,6 +502,37 @@ public class BrowserActivity extends Activity implements BrowserController, View
         }, 500);
         hide_toolbar = 1;
 
+        downloadReceiver = new BroadcastReceiver() {
+
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
+                View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_action, null);
+                TextView textView = dialogView.findViewById(R.id.dialog_text);
+                textView.setText(R.string.toast_downloadComplete);
+                Button action_ok = dialogView.findViewById(R.id.action_ok);
+                action_ok.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        addAlbum(BrowserUnit.FLAG_FILES);
+                        bottomSheetDialog.cancel();
+                    }
+                });
+                Button action_cancel = dialogView.findViewById(R.id.action_cancel);
+                action_cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        bottomSheetDialog.cancel();
+                    }
+                });
+                bottomSheetDialog.setContentView(dialogView);
+                bottomSheetDialog.show();
+            }
+        };
+
+        IntentFilter filter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
+        registerReceiver(downloadReceiver, filter);
     }
 
     @Override
@@ -648,7 +679,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
     }
 
     @Override
-    public synchronized void showAlbum(AlbumController controller, final boolean expand, final boolean capture) {
+    public synchronized void showAlbum(AlbumController controller, final boolean expand) {
         if (controller == null || controller == currentAlbumController) {
             switcherPanel.expanded();
             return;
@@ -743,13 +774,13 @@ public class BrowserActivity extends Activity implements BrowserController, View
 
             case R.id.tab_prev:
                 AlbumController controller = nextAlbumController(false);
-                showAlbum(controller, false, true);
+                showAlbum(controller, false);
                 viewOverflow();
                 break;
 
             case R.id.tab_next:
                 AlbumController controller2 = nextAlbumController(true);
-                showAlbum(controller2, false, true);
+                showAlbum(controller2, false);
                 viewOverflow();
                 break;
 
@@ -935,11 +966,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 relayoutOK.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
-                        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                            relayoutOK.setTextColor(ContextCompat.getColor(BrowserActivity.this, (R.color.colorAccent)));
-                        } else if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
-                            relayoutOK.setTextColor(ContextCompat.getColor(BrowserActivity.this, (R.color.light)));
-                        }
+                        relayoutOK.setTextColor(ContextCompat.getColor(BrowserActivity.this, (R.color.colorAccent)));
                         return false;
                     }
                 });
@@ -1221,21 +1248,15 @@ public class BrowserActivity extends Activity implements BrowserController, View
     private void initRendering(View view) {
 
         if (currentAlbumController instanceof NinjaWebView && sp.getBoolean("sp_invert", false)) {
-
             Paint paint = new Paint();
-
             ColorMatrix matrix = new ColorMatrix();
             matrix.set(NEGATIVE_COLOR);
-
             ColorMatrix gcm = new ColorMatrix();
             gcm.setSaturation(0);
-
             ColorMatrix concat = new ColorMatrix();
             concat.setConcat(matrix, gcm);
-
             ColorMatrixColorFilter filter = new ColorMatrixColorFilter(concat);
             paint.setColorFilter(filter);
-
             // maybe sometime LAYER_TYPE_NONE would better?
             view.setLayerType(View.LAYER_TYPE_HARDWARE, paint);
         } else {
@@ -1343,7 +1364,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
 
                 if (canSwitch) {
                     AlbumController controller = nextAlbumController(left);
-                    showAlbum(controller, false, true);
+                    showAlbum(controller, false);
                 }
             }
         }));
@@ -1391,7 +1412,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
         if (currentAlbumController != null) {
             AlbumController holder;
             holder = layout;
-            showAlbum(holder, true, true);
+            showAlbum(holder, true);
             updateOmnibox();
         }
 
@@ -1408,21 +1429,6 @@ public class BrowserActivity extends Activity implements BrowserController, View
         ImageButton open_files = layout.findViewById(R.id.open_files);
         ImageButton open_bookmark = layout.findViewById(R.id.open_bookmark);
         ImageButton open_history = layout.findViewById(R.id.open_history);
-        View home_bottomShadow = layout.findViewById(R.id.home_bottomShadow);
-
-        if (sp.getBoolean("sp_darkUI", false)){
-            open_pass.setImageResource(R.drawable.icon_key_dark);
-            open_pass.setBackgroundResource(R.drawable.custom_button_light);
-            open_newTab.setImageResource(R.drawable.icon_earth);
-            open_newTab.setBackgroundResource(R.drawable.custom_button_light);
-            open_bookmark.setImageResource(R.drawable.icon_bookmark_dark);
-            open_bookmark.setBackgroundResource(R.drawable.custom_button_light);
-            open_history.setImageResource(R.drawable.ic_action_history_dark);
-            open_history.setBackgroundResource(R.drawable.custom_button_light);
-            open_files.setImageResource(R.drawable.icon_download_dark);
-            open_files.setBackgroundResource(R.drawable.custom_button_light);
-            home_bottomShadow.setBackgroundResource(R.drawable.toolbar_drop_shadow);
-        }
 
         if (current_tab == BrowserUnit.FLAG_HOME) {
             open_newTabView.setVisibility(View.VISIBLE);
@@ -1778,7 +1784,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
                     iv.setVisibility(View.VISIBLE);
 
                     if (files_icon.matches("")) {
-                        iv.setImageResource(R.drawable.icon_arrow_up_dark);
+                        iv.setImageResource(R.drawable.file_up);
                     } else if (files_icon.matches("(.)")) {
                         iv.setImageResource(R.drawable.file_folder);
                     } else if (files_icon.matches("(.m3u8|.mp3|.wma|.midi|.wav|.aac|.aif|.amp3|.weba|.ogg)")) {
@@ -2165,17 +2171,17 @@ public class BrowserActivity extends Activity implements BrowserController, View
         bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
         View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_toggle, null);
 
-        CheckBox sw_java = dialogView.findViewById(R.id.switch1);
+        CheckBox sw_java = dialogView.findViewById(R.id.switch_js);
         final ImageButton whiteList_js = dialogView.findViewById(R.id.imageButton_js);
-        CheckBox sw_adBlock = dialogView.findViewById(R.id.switch2);
+        CheckBox sw_adBlock = dialogView.findViewById(R.id.switch_adBlock);
         final ImageButton whiteList_ab = dialogView.findViewById(R.id.imageButton_ab);
-        CheckBox sw_image = dialogView.findViewById(R.id.switch4);
-        CheckBox sw_cookie = dialogView.findViewById(R.id.switch5);
+        CheckBox sw_image = dialogView.findViewById(R.id.switch_images);
+        CheckBox sw_cookie = dialogView.findViewById(R.id.switch_cookie);
         final ImageButton whitelist_cookie = dialogView.findViewById(R.id.imageButton_cookie);
-        CheckBox sw_location = dialogView.findViewById(R.id.switch6);
-        CheckBox sw_invert = dialogView.findViewById(R.id.switch7);
-        CheckBox sw_history = dialogView.findViewById(R.id.switch3);
-        CheckBox sw_desktop = dialogView.findViewById(R.id.switch8);
+        CheckBox sw_location = dialogView.findViewById(R.id.switch_location);
+        CheckBox sw_invert = dialogView.findViewById(R.id.switch_invert);
+        CheckBox sw_history = dialogView.findViewById(R.id.switch_history);
+        CheckBox sw_desktop = dialogView.findViewById(R.id.switch_desktop);
 
         javaHosts = new Javascript(BrowserActivity.this);
         javaHosts = getJavaHosts();
@@ -2235,8 +2241,6 @@ public class BrowserActivity extends Activity implements BrowserController, View
         });
 
         sw_java.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-            @SuppressLint("ApplySharedPref")
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
@@ -2276,8 +2280,6 @@ public class BrowserActivity extends Activity implements BrowserController, View
         });
 
         sw_adBlock.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-            @SuppressLint("ApplySharedPref")
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
@@ -2297,8 +2299,6 @@ public class BrowserActivity extends Activity implements BrowserController, View
         }
 
         sw_image.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-            @SuppressLint("ApplySharedPref")
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
@@ -2318,8 +2318,6 @@ public class BrowserActivity extends Activity implements BrowserController, View
         }
 
         sw_cookie.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-            @SuppressLint("ApplySharedPref")
             @Override
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
@@ -2340,8 +2338,6 @@ public class BrowserActivity extends Activity implements BrowserController, View
         }
 
         sw_history.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-            @SuppressLint("ApplySharedPref")
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
@@ -2359,8 +2355,6 @@ public class BrowserActivity extends Activity implements BrowserController, View
         }
 
         sw_location.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-            @SuppressLint("ApplySharedPref")
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
@@ -2380,8 +2374,6 @@ public class BrowserActivity extends Activity implements BrowserController, View
         }
 
         sw_invert.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-            @SuppressLint("ApplySharedPref")
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
@@ -2401,8 +2393,6 @@ public class BrowserActivity extends Activity implements BrowserController, View
         }
 
         sw_desktop.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-            @SuppressLint("ApplySharedPref")
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
@@ -2567,7 +2557,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
         fileOrDirectory.delete();
     }
 
-    private synchronized void addAlbum(int flag) {
+    public synchronized void addAlbum(int flag) {
 
         showOmnibox();
 
@@ -2581,7 +2571,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
         View albumView = holder.getAlbumView();
         BrowserContainer.add(holder);
         switcherContainer.addView(albumView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        showAlbum(holder, true, true);
+        showAlbum(holder, true);
         initHomeGrid(layout);
     }
 
@@ -2615,7 +2605,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
             return;
         }
 
-        showAlbum(ninjaWebView, true, false);
+        showAlbum(ninjaWebView, true);
 
         if (url != null && !url.isEmpty()) {
             ninjaWebView.loadUrl(url);
@@ -2791,7 +2781,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
                         if (index >= BrowserContainer.size()) {
                             index = BrowserContainer.size() - 1;
                         }
-                        showAlbum(BrowserContainer.get(index), false, false);
+                        showAlbum(BrowserContainer.get(index), false);
                     }
                 });
             } else {
@@ -2801,7 +2791,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 if (index >= BrowserContainer.size()) {
                     index = BrowserContainer.size() - 1;
                 }
-                showAlbum(BrowserContainer.get(index), false, false);
+                showAlbum(BrowserContainer.get(index), false);
             }
         }
         showOmnibox();
@@ -3337,23 +3327,23 @@ public class BrowserActivity extends Activity implements BrowserController, View
         floatButton_shareLayout = dialogView.findViewById(R.id.floatButton_shareLayout);
 
         fab_tab = dialogView.findViewById(R.id.floatButton_tab);
-        fab_tab.setOnClickListener(this);
+        fab_tab.setOnClickListener(BrowserActivity.this);
         fab_share = dialogView.findViewById(R.id.floatButton_share);
-        fab_share.setOnClickListener(this);
+        fab_share.setOnClickListener(BrowserActivity.this);
         fab_save = dialogView.findViewById(R.id.floatButton_save);
-        fab_save.setOnClickListener(this);
+        fab_save.setOnClickListener(BrowserActivity.this);
         fab_more = dialogView.findViewById(R.id.floatButton_more);
-        fab_more.setOnClickListener(this);
+        fab_more.setOnClickListener(BrowserActivity.this);
 
         web_prev = dialogView.findViewById(R.id.web_prev);
-        web_prev.setOnClickListener(this);
+        web_prev.setOnClickListener(BrowserActivity.this);
         web_next = dialogView.findViewById(R.id.web_next);
-        web_next.setOnClickListener(this);
+        web_next.setOnClickListener(BrowserActivity.this);
 
         tab_prev = dialogView.findViewById(R.id.tab_prev);
-        tab_prev.setOnClickListener(this);
+        tab_prev.setOnClickListener(BrowserActivity.this);
         tab_next = dialogView.findViewById(R.id.tab_next);
-        tab_next.setOnClickListener(this);
+        tab_next.setOnClickListener(BrowserActivity.this);
 
         floatButton_tabView = dialogView.findViewById(R.id.floatButton_tabView);
         floatButton_saveView = dialogView.findViewById(R.id.floatButton_saveView);
@@ -3363,40 +3353,40 @@ public class BrowserActivity extends Activity implements BrowserController, View
         dialogTitle = dialogView.findViewById(R.id.dialog_title);
 
         tv_new_tabOpen = dialogView.findViewById(R.id.tv_new_tabOpen);
-        tv_new_tabOpen.setOnClickListener(this);
+        tv_new_tabOpen.setOnClickListener(BrowserActivity.this);
         tv_closeTab = dialogView.findViewById(R.id.tv_closeTab);
-        tv_closeTab.setOnClickListener(this);
+        tv_closeTab.setOnClickListener(BrowserActivity.this);
         tv_tabPreview = dialogView.findViewById(R.id.tv_tabPreview);
-        tv_tabPreview.setOnClickListener(this);
+        tv_tabPreview.setOnClickListener(BrowserActivity.this);
         tv_quit = dialogView.findViewById(R.id.tv_quit);
-        tv_quit.setOnClickListener(this);
+        tv_quit.setOnClickListener(BrowserActivity.this);
 
         tv_shareScreenshot = dialogView.findViewById(R.id.tv_shareScreenshot);
-        tv_shareScreenshot.setOnClickListener(this);
+        tv_shareScreenshot.setOnClickListener(BrowserActivity.this);
         tv_shareLink = dialogView.findViewById(R.id.tv_shareLink);
-        tv_shareLink.setOnClickListener(this);
+        tv_shareLink.setOnClickListener(BrowserActivity.this);
         tv_shareClipboard = dialogView.findViewById(R.id.tv_shareClipboard);
-        tv_shareClipboard.setOnClickListener(this);
+        tv_shareClipboard.setOnClickListener(BrowserActivity.this);
         tv_openWith = dialogView.findViewById(R.id.tv_openWith);
-        tv_openWith.setOnClickListener(this);
+        tv_openWith.setOnClickListener(BrowserActivity.this);
 
         tv_saveScreenshot = dialogView.findViewById(R.id.tv_saveScreenshot);
-        tv_saveScreenshot.setOnClickListener(this);
+        tv_saveScreenshot.setOnClickListener(BrowserActivity.this);
         tv_saveBookmark = dialogView.findViewById(R.id.tv_saveBookmark);
-        tv_saveBookmark.setOnClickListener(this);
+        tv_saveBookmark.setOnClickListener(BrowserActivity.this);
         tv_saveStart = dialogView.findViewById(R.id.tv_saveStart);
-        tv_saveStart.setOnClickListener(this);
+        tv_saveStart.setOnClickListener(BrowserActivity.this);
         tv_saveLogin = dialogView.findViewById(R.id.tv_saveLogin);
-        tv_saveLogin.setOnClickListener(this);
+        tv_saveLogin.setOnClickListener(BrowserActivity.this);
 
         tv_relayout = dialogView.findViewById(R.id.tv_relayout);
-        tv_relayout.setOnClickListener(this);
+        tv_relayout.setOnClickListener(BrowserActivity.this);
         tv_searchSite = dialogView.findViewById(R.id.tv_searchSite);
-        tv_searchSite.setOnClickListener(this);
+        tv_searchSite.setOnClickListener(BrowserActivity.this);
         tv_settings = dialogView.findViewById(R.id.tv_settings);
-        tv_settings.setOnClickListener(this);
+        tv_settings.setOnClickListener(BrowserActivity.this);
         tv_help = dialogView.findViewById(R.id.tv_help);
-        tv_help.setOnClickListener(this);
+        tv_help.setOnClickListener(BrowserActivity.this);
         tv_placeHolder = dialogView.findViewById(R.id.tv_placeholder);
         tv_placeHolder_2 = dialogView.findViewById(R.id.tv_placeholder_2);
 
@@ -3599,7 +3589,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
         TextView dialog_title = dialogView.findViewById(R.id.dialog_title);
         dialog_title.setText(getString(R.string.menu_other_help));
 
-        FloatingActionButton fab = dialogView.findViewById(R.id.floatButton_ok);
+        ImageButton fab = dialogView.findViewById(R.id.floatButton_ok);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -3607,7 +3597,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
             }
         });
 
-        FloatingActionButton fab_settings = dialogView.findViewById(R.id.floatButton_settings);
+        ImageButton fab_settings = dialogView.findViewById(R.id.floatButton_settings);
         fab_settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

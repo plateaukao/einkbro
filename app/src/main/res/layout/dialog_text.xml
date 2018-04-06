@@ -1,76 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="?attr/colorPrimaryDark"
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:background="?android:attr/colorBackground"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="ContentDescription">
 
     <TextView
         android:id="@+id/dialog_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|center_horizontal"
-        android:padding="24dp"
+        android:padding="16dp"
         android:text="@string/toolbar_title"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textStyle="bold"
-        android:textColor="@color/light" />
+        android:textStyle="bold" />
 
-    <ScrollView android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:paddingBottom="16dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp" >
 
             <TextView
                 android:id="@+id/dialog_text"
-                android:paddingEnd="24dp"
-                android:paddingStart="24dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/light" />
+                android:layout_height="wrap_content"/>
 
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="24dp"
-                android:layout_marginTop="24dp"
+                android:orientation="vertical"
+                android:layout_marginTop="16dp"
                 android:gravity="center">
 
-                <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/floatButton_help"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="12dp"
-                    android:layout_marginStart="12dp"
-                    app:backgroundTint="?attr/colorAccent"
-                    app:fabSize="mini"
-                    app:srcCompat="@drawable/icon_help" />
+                <View
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?android:attr/colorControlHighlight" />
 
-                <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/floatButton_settings"
+                <LinearLayout
+                    android:orientation="horizontal"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="12dp"
-                    android:layout_marginStart="12dp"
-                    app:backgroundTint="?attr/colorAccent"
-                    app:fabSize="mini"
-                    app:srcCompat="@drawable/icon_settings_light" />
+                    android:layout_height="wrap_content">
 
-                <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/floatButton_ok"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="12dp"
-                    android:layout_marginStart="12dp"
-                    app:backgroundTint="?attr/colorAccent"
-                    app:fabSize="mini"
-                    app:srcCompat="@drawable/check_white" />
+                    <ImageButton
+                        android:id="@+id/floatButton_help"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:layout_gravity="center_vertical|center_horizontal"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginStart="4dp"
+                        android:background="?attr/actionBarItemBackground"
+                        android:contentDescription="@null"
+                        android:src="@drawable/icon_help" />
+
+                    <ImageButton
+                        android:id="@+id/floatButton_settings"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:layout_gravity="center_vertical|center_horizontal"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginStart="4dp"
+                        android:background="?attr/actionBarItemBackground"
+                        android:contentDescription="@null"
+                        android:src="@drawable/icon_settings" />
+
+                    <ImageButton
+                        android:id="@+id/floatButton_ok"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:layout_gravity="center_vertical|center_horizontal"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginStart="4dp"
+                        android:background="?attr/actionBarItemBackground"
+                        android:contentDescription="@null"
+                        android:src="@drawable/check_white" />
+
+                </LinearLayout>
 
             </LinearLayout>
 

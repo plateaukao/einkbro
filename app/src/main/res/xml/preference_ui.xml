@@ -69,7 +69,7 @@
 
         <ListPreference
             android:title="@string/setting_title_nav_pos"
-            android:icon="@drawable/icon_arrow_expand_horizontal"
+            android:icon="@drawable/icon_arrow_expand"
             android:summary="@string/setting_summary_nav_pos"
             android:key="nav_position"
             android:defaultValue="0"

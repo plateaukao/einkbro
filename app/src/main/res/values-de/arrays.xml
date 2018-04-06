@@ -2,13 +2,6 @@
 
 <resources>
 
-    <!-- Holder -->
-    <string-array name="holder_menu">
-        <item>Vordergrund</item>
-        <item>Link kopieren</item>
-        <item>Teilen</item>
-    </string-array>
-
     <!-- Font size -->
     <string-array name="setting_entries_font">
         <item>Normal (100%)</item>

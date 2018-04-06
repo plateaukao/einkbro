@@ -23,12 +23,9 @@
     <string name="main_menu_new_tab">在后台打开新标签</string>
     <string name="main_menu_new_tabOpen">在前台打开新标签</string>
     <string name="main_menu_copy_link">复制链接</string>
-    <string name="main_menu_save">保存</string>
     <string name="main_omnibox_input_hint">搜索或输入网址</string>
 
     <string name="menu_share">分享</string>
-    <string name="menu_other">其他</string>
-    <string name="menu_save">保存</string>
     <string name="menu_quit">退出</string>
     <string name="menu_delete">删除</string>
     <string name="menu_edit">编辑</string>
@@ -37,7 +34,6 @@
 
     <string name="menu_share_screenshot">分享截屏</string>
     <string name="menu_share_link">分享链接</string>
-    <string name="menu_share_clipboard">分享到剪切版</string>
 
     <string name="menu_save_screenshot">保存到截图</string>
     <string name="menu_save_home">保存到主页</string>
@@ -50,7 +46,6 @@
 
 
     <!-- AndroidAgo -->
-    <string name="android_ago_just_now">仅本次</string>
 
 
     <!-- Dialog -->
@@ -242,7 +237,6 @@
     <string name="toast_open_file_manager_failed">Failed to open File Manager</string>
     <string name="toast_refresh_failed">Can\'t refresh this page</string>
     <string name="toast_relayout_successful">重新布局成功</string>
-    <string name="toast_screenshot_successful">Saved screenshot at:&#160;</string>
     <string name="toast_share_failed">Can\'t share this page</string>
     <string name="toast_start_download">Starting download</string>
     <string name="toast_wait_a_minute">请稍候</string>

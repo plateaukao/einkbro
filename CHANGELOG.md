@@ -1,18 +1,23 @@
-### v 5.6 (WIP)
+### v 5.6.1 (WIP)
+- new: notification when download or screenshot complete
+- removed: Snackbar
+- fix: some strings (thanks: gr1sh)
+
+### v 5.6
 - new: increase font size
 - new: close all websites from notification
 - new: desktop mode in "Fast toggle dialog"
 - improved: link sharing
+- improved: light theme
 - improved: UI
-- fix: some force closes related to permission "write on storage"
-
+- fix: some force closes
 
 ### v 5.5
 - new: option to disable confirmation dialogs on exit (thanks: element54)
 - improved: light theme
 - improved: startpage
 - fix: dark background on some websites
-- fix: ok button on "Fast togle dialog"
+- fix: ok button on "Fast toggle dialog"
 - fix: toolbar not showing title
 - fix: back handling
 

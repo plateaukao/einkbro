@@ -53,9 +53,10 @@
 
         </LinearLayout>
 
-        <View android:layout_width="match_parent"
-            android:layout_height="@dimen/layout_margin_1dp"
-            android:background="@color/grey_500"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:background="@drawable/shadow_below"/>
 
         <ListView android:id="@+id/whitelist"
             android:layout_width="match_parent"
@@ -70,7 +71,7 @@
             android:gravity="center"
             android:text="@string/list_empty"
             android:textAllCaps="false"
-            android:textColor="@color/grey_300"
+            android:textColor="@color/color_hint"
             android:visibility="gone"/>
 
     </LinearLayout>

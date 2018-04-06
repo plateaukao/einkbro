@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import de.baumann.browser.Ninja.R;
 import de.baumann.browser.Unit.BrowserUnit;
-import de.baumann.browser.Unit.ViewUnit;
 import de.baumann.browser.View.GridItem;
 
 import org.askerov.dynamicgrid.BaseDynamicGridAdapter;
