@@ -55,7 +55,6 @@
     <string name="dialog_toggle_hint">To apply immediately, please press the \"OK-button\" below.</string>
     <string name="dialog_title_hint">Input Title</string>
     <string name="dialog_se_hint">https://www.google.com/search?q=</string>
-    <string name="dialog_ua_hint">Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36</string>
     <string name="dialog_sign_in_username">Username</string>
     <string name="dialog_sign_in_password">Password</string>
     <string name="dialog_button_custom">Custom</string>
@@ -84,11 +83,8 @@
     <string name="setting_summary_search_engine_startpage">StartPage</string>
     <string name="setting_summary_search_engine_bing">Bing</string>
     <string name="setting_summary_search_engine_baidu">Baidu</string>
-
-    <string name="setting_title_user_agent">User Environment</string>
-    <string name="setting_summary_user_agent">Switch between mobile and desktop version to show websites.</string>
-    <string name="setting_summary_user_agent_default">Default</string>
-    <string name="setting_summary_user_agent_desktop">Desktop</string>
+    <string name="setting_summary_search_engine_startpage_de">StartPage (de)</string>
+    <string name="setting_summary_search_engine_searx">Searx</string>
 
     <string name="setting_title_inverted">Inverted colors</string>
     <string name="setting_summary_inverted">If checked, content will be rendered in a inverted grey scale mode. This
@@ -96,6 +92,10 @@
 
     <string name="setting_title_font">Font size</string>
     <string name="setting_summary_font">Change the font size for displaying websites.</string>
+
+    <string name="setting_title_remote">Remote content</string>
+    <string name="setting_summary_remote">Enable remote content, which is not directly from the website you are visiting.
+        Disabling this is more secure, faster and saves data volume. But some content will not be displayed anymore.</string>
 
 
     <!-- Browser start -->
@@ -277,6 +277,8 @@
     <string name="toast_closeNotification">Close all opened websites.</string>
     <string name="toast_fileManager">Can not open file. Please use a file manager.</string>
     <string name="toast_downloadComplete">Download complete. Open file manager?</string>
+    <string name="toast_unsecured">This website uses an unsecured connection (\"http\"). Do you want to try a secure
+        on (\"http\")?</string>
 
 
     <!-- Whitelist -->

@@ -33,7 +33,6 @@ public class ClearService extends Service {
         boolean clearCache = sp.getBoolean(getString(R.string.sp_clear_cache), true);
         boolean clearCookie = sp.getBoolean(getString(R.string.sp_clear_cookie), false);
         boolean clearHistory = sp.getBoolean(getString(R.string.sp_clear_history), true);
-        boolean clearPasswords = sp.getBoolean(getString(R.string.sp_clear_passwords), false);
 
         if (clearBookmarks) {
             BrowserUnit.clearBookmarks(this);
@@ -46,9 +45,6 @@ public class ClearService extends Service {
         }
         if (clearHistory) {
             BrowserUnit.clearHistory(this);
-        }
-        if (clearPasswords) {
-            BrowserUnit.clearPasswords(this);
         }
     }
 }

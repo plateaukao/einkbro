@@ -19,16 +19,7 @@
             android:title="@string/setting_title_search_engine"
             android:summary="@string/setting_summary_search_engine"
             android:entries="@array/setting_entries_search_engine"
-            android:entryValues="@array/setting_values_search_engine"/>>
-
-        <de.baumann.browser.View.UserAgentListPreference
-            android:icon="@drawable/icon_desktop"
-            android:key="@string/sp_user_agent"
-            android:defaultValue="0"
-            android:title="@string/setting_title_user_agent"
-            android:summary="@string/setting_summary_user_agent"
-            android:entries="@array/setting_entries_user_agent"
-            android:entryValues="@array/setting_values_user_agent"/>
+            android:entryValues="@array/setting_values_search_engine"/>
 
         <ListPreference
             android:icon="@drawable/icon_size"

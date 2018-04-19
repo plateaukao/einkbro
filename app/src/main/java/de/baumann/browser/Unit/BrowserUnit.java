@@ -17,7 +17,6 @@ import android.util.Log;
 import android.webkit.CookieManager;
 import android.webkit.URLUtil;
 import android.webkit.ValueCallback;
-import android.webkit.WebViewDatabase;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -71,13 +70,15 @@ public class BrowserUnit {
     private static final String SEARCH_ENGINE_BING = "http://www.bing.com/search?q=";
     private static final String SEARCH_ENGINE_BAIDU = "https://www.baidu.com/s?wd=";
 
-    public static final String UA_DESKTOP = "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36";
+    private static final String SEARCH_ENGINE_STARTPAGE_DE = "https://startpage.com/do/search?lui=deu&language=deutsch&query=";
+    private static final String SEARCH_ENGINE_SEARX = "https://searx.me/?q=";
+
     public static final String URL_ENCODING = "UTF-8";
     private static final String URL_ABOUT_BLANK = "about:blank";
     public static final String URL_SCHEME_ABOUT = "about:";
     public static final String URL_SCHEME_MAIL_TO = "mailto:";
     private static final String URL_SCHEME_FILE = "file://";
-    private static final String URL_SCHEME_HTTP = "http://";
+    private static final String URL_SCHEME_HTTP = "https://";
     public static final String URL_SCHEME_INTENT = "intent://";
 
     private static final String URL_PREFIX_GOOGLE_PLAY = "www.google.com/url?q=";
@@ -143,23 +144,27 @@ public class BrowserUnit {
         }
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        String custom = sp.getString(context.getString(R.string.sp_search_engine_custom), SEARCH_ENGINE_GOOGLE);
+        String custom = sp.getString(context.getString(R.string.sp_search_engine_custom), SEARCH_ENGINE_STARTPAGE);
         final int i = Integer.valueOf(sp.getString(context.getString(R.string.sp_search_engine), "0"));
         switch (i) {
             case 0:
-                return SEARCH_ENGINE_GOOGLE + query;
-            case 1:
-                return SEARCH_ENGINE_DUCKDUCKGO + query;
-            case 2:
                 return SEARCH_ENGINE_STARTPAGE + query;
+            case 1:
+                return SEARCH_ENGINE_STARTPAGE_DE + query;
+            case 2:
+                return SEARCH_ENGINE_BAIDU + query;
             case 3:
                 return SEARCH_ENGINE_BING + query;
             case 4:
-                return SEARCH_ENGINE_BAIDU + query;
+                return SEARCH_ENGINE_DUCKDUCKGO + query;
             case 5:
+                return SEARCH_ENGINE_GOOGLE + query;
+            case 6:
+                return SEARCH_ENGINE_SEARX + query;
+            case 7:
                 return custom + query;
             default:
-                return SEARCH_ENGINE_GOOGLE + query;
+                return SEARCH_ENGINE_STARTPAGE + query;
         }
     }
 
@@ -497,10 +502,6 @@ public class BrowserUnit {
         action.open(true);
         action.clearHistory();
         action.close();
-    }
-
-    public static void clearPasswords(Context context) {
-        WebViewDatabase.getInstance(context).clearHttpAuthUsernamePassword();
     }
 
     public static boolean deleteDir(File dir) {

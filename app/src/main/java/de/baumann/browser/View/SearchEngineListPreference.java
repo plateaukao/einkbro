@@ -59,7 +59,7 @@ public class SearchEngineListPreference extends ListPreference {
                 } else if (!BrowserUnit.isURL(domain)) {
                     NinjaToast.show(getContext(), R.string.toast_invalid_domain);
                 } else {
-                    sp.edit().putString(getContext().getString(R.string.sp_search_engine), "5").commit();
+                    sp.edit().putString(getContext().getString(R.string.sp_search_engine), "7").commit();
                     sp.edit().putString(getContext().getString(R.string.sp_search_engine_custom), domain).commit();
 
                     hideSoftInput(editText);

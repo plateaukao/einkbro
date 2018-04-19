@@ -312,6 +312,43 @@
 
                 <ImageView
                     android:layout_centerVertical="true"
+                    android:id="@+id/remoteIcon"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginEnd="16dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/icon_remote"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_toEndOf="@+id/remoteIcon"
+                    android:layout_toStartOf="@+id/switch_remote"
+                    android:gravity="center_vertical"
+                    android:text="@string/setting_title_remote"
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+                <CheckBox
+                    android:layout_centerVertical="true"
+                    android:id="@+id/switch_remote"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:checked="false"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:padding="8dp">
+
+                <ImageView
+                    android:layout_centerVertical="true"
                     android:id="@+id/invertIcon"
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
@@ -334,43 +371,6 @@
                 <CheckBox
                     android:layout_centerVertical="true"
                     android:id="@+id/switch_invert"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentEnd="true"
-                    android:checked="false"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:minHeight="46dp"
-                android:padding="8dp">
-
-                <ImageView
-                    android:layout_centerVertical="true"
-                    android:id="@+id/desktopIcon"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginEnd="16dp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/icon_desktop"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_toEndOf="@+id/desktopIcon"
-                    android:layout_toStartOf="@+id/switch_desktop"
-                    android:gravity="center_vertical"
-                    android:text="@string/setting_summary_user_agent_desktop"
-                    android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-                <CheckBox
-                    android:layout_centerVertical="true"
-                    android:id="@+id/switch_desktop"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"

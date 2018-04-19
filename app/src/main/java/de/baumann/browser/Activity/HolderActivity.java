@@ -3,7 +3,6 @@ package de.baumann.browser.Activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -18,7 +17,6 @@ public class HolderActivity extends Activity {
 
     private Record first = null;
     private Timer timer = null;
-    private boolean background = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,7 +39,6 @@ public class HolderActivity extends Activity {
                     toService.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     RecordUnit.setHolder(first);
                     startService(toService);
-                    background = true;
                 }
                 HolderActivity.this.finish();
             }
@@ -56,13 +53,8 @@ public class HolderActivity extends Activity {
             timer.cancel();
         }
 
-        if (background) {
-            Toast.makeText(this, R.string.toast_load_in_background, Toast.LENGTH_LONG).show();
-        }
-
         first = null;
         timer = null;
-        background = false;
         super.onDestroy();
     }
 }

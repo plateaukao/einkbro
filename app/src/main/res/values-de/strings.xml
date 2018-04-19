@@ -55,7 +55,6 @@
     <string name="dialog_toggle_hint">Um die Einstellungen sofort zu übernehmen, bitte unten auf \"OK\" klicken.</string>
     <string name="dialog_title_hint">Titel eigeben</string>
     <string name="dialog_se_hint">https://www.google.com/search?q=</string>
-    <string name="dialog_ua_hint">Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36</string>
     <string name="dialog_sign_in_username">Benutzername</string>
     <string name="dialog_sign_in_password">Passwort</string>
     <string name="dialog_button_custom">Eigene</string>
@@ -83,11 +82,8 @@
     <string name="setting_summary_search_engine_startpage">StartPage</string>
     <string name="setting_summary_search_engine_bing">Bing</string>
     <string name="setting_summary_search_engine_baidu">Baidu</string>
-
-    <string name="setting_title_user_agent">Benutzerumgebung</string>
-    <string name="setting_summary_user_agent">Wechsle zwischen der mobilen und der Destopversion von Internetseiten.</string>
-    <string name="setting_summary_user_agent_default">Standard</string>
-    <string name="setting_summary_user_agent_desktop">Desktop</string>
+    <string name="setting_summary_search_engine_startpage_de">StartPage (de)</string>
+    <string name="setting_summary_search_engine_searx">Searx</string>
 
     <string name="setting_title_inverted">Invertierte Farben</string>
     <string name="setting_summary_inverted">Wenn aktiviert, werden Inhalte in einem invertierten schwarz/weiß-Modus
@@ -96,6 +92,10 @@
     <string name="setting_title_font">Schriftgröße</string>
     <string name="setting_summary_font">Ändere die Schriftgröße, mit der Internetseiten dargestellt werden.</string>
 
+    <string name="setting_title_remote">Entfernte Inhalte</string>
+    <string name="setting_summary_remote">Aktiviere das Laden entfernter Inhalte, die nicht direkt von der besuchten
+        Internetseite stammen. Wenn du dies deaktivierst ist es sicherer, schneller und spart Datenvolumen. Manche
+        Inhalte werden dann allerdings nicht mehr angezeigt.</string>
 
     <!-- Browser start -->
     <string name="setting_title_images">Bilder</string>
@@ -277,6 +277,9 @@
     <string name="toast_closeNotification">Alle Internetseiten schließen.</string>
     <string name="toast_fileManager">Kann Datei nicht öffnen. Bitte verwende einen Dateimanager.</string>
     <string name="toast_downloadComplete">Download vollständig. Dateimanager öffnen?</string>
+    <string name="toast_unsecured">Die Internetseite benutzt eine unsichere Verbindung (\"http\"). Möchtest du versuchen
+        eine gesicherte Verbindung herstellen (\"http\")?</string>
+
 
 
     <!-- Whitelist -->
