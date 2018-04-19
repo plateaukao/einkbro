@@ -11,8 +11,6 @@
     <string name="sp_omnibox_control">SP_OMNIBOX_CONTROL_9</string>
     <string name="sp_search_engine">SP_SEARCH_ENGINE_9</string>
     <string name="sp_search_engine_custom">SP_SEARCH_ENGINE_CUSTOM_9</string>
-    <string name="sp_user_agent">SP_USER_AGENT_9</string>
-    <string name="sp_user_agent_custom">SP_USER_AGENT_CUSTOM_9</string>
 
     <!-- Clear -->
     <string name="sp_clear_quit">SP_CLEAR_QUIT_9</string>

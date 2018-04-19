@@ -377,7 +377,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
             }
 
             if (Locale.getDefault().getLanguage().equals("zh")) {
-                sp.edit().putString(getString(R.string.sp_search_engine), "4").apply();
+                sp.edit().putString(getString(R.string.sp_search_engine), "2").apply();
             }
 
             sp.edit().putString("saved_key", sb.toString()).apply();
@@ -1192,8 +1192,37 @@ public class BrowserActivity extends Activity implements BrowserController, View
 
                 if (currentAlbumController instanceof NinjaWebView) {
                     ninjaWebView = (NinjaWebView) currentAlbumController;
+                    ninjaWebView.stopLoading();
                     if (ninjaWebView.isLoadFinish()) {
-                        ninjaWebView.reload();
+
+                        if (!url.startsWith("https://")) {
+                            bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
+                            View dialogView2 = View.inflate(BrowserActivity.this, R.layout.dialog_action, null);
+                            TextView textView = dialogView2.findViewById(R.id.dialog_text);
+                            textView.setText(R.string.toast_unsecured);
+                            Button action_ok = dialogView2.findViewById(R.id.action_ok);
+                            action_ok.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    bottomSheetDialog.cancel();
+                                    ninjaWebView.loadUrl(url.replace("http://", "https://"));
+                                }
+                            });
+                            Button action_cancel = dialogView2.findViewById(R.id.action_cancel);
+                            action_cancel.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    bottomSheetDialog.cancel();
+                                    ninjaWebView.reload();
+                                }
+                            });
+                            bottomSheetDialog.setContentView(dialogView2);
+                            bottomSheetDialog.show();
+                        } else {
+                            ninjaWebView.reload();
+                        }
+
+
                     } else {
                         ninjaWebView.stopLoading();
                     }
@@ -1223,9 +1252,8 @@ public class BrowserActivity extends Activity implements BrowserController, View
 
         String action = intent.getAction();
 
-        if (intent.hasExtra(IntentUnit.OPEN)) { // From HolderActivity's menu
-            pinAlbums(intent.getStringExtra(IntentUnit.OPEN));
-        } else if (intent.getAction() != null && intent.getAction().equals(Intent.ACTION_WEB_SEARCH)) { // From ActionMode and some others
+        if (intent.getAction() != null && intent.getAction().equals(Intent.ACTION_WEB_SEARCH)) {
+            // From ActionMode and some others
             pinAlbums(intent.getStringExtra(SearchManager.QUERY));
         } else if (filePathCallback != null) {
             filePathCallback = null;
@@ -1700,7 +1728,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
 
     private void initFEList(final NinjaRelativeLayout layout) {
 
-        deleteDatabase("files_DB_v01.db");
+        deleteDatabase("browser_files.db");
 
         Files db = new Files(this);
         db.open();
@@ -2176,12 +2204,12 @@ public class BrowserActivity extends Activity implements BrowserController, View
         CheckBox sw_adBlock = dialogView.findViewById(R.id.switch_adBlock);
         final ImageButton whiteList_ab = dialogView.findViewById(R.id.imageButton_ab);
         CheckBox sw_image = dialogView.findViewById(R.id.switch_images);
+        CheckBox sw_remote = dialogView.findViewById(R.id.switch_remote);
         CheckBox sw_cookie = dialogView.findViewById(R.id.switch_cookie);
         final ImageButton whitelist_cookie = dialogView.findViewById(R.id.imageButton_cookie);
         CheckBox sw_location = dialogView.findViewById(R.id.switch_location);
         CheckBox sw_invert = dialogView.findViewById(R.id.switch_invert);
         CheckBox sw_history = dialogView.findViewById(R.id.switch_history);
-        CheckBox sw_desktop = dialogView.findViewById(R.id.switch_desktop);
 
         javaHosts = new Javascript(BrowserActivity.this);
         javaHosts = getJavaHosts();
@@ -2303,10 +2331,25 @@ public class BrowserActivity extends Activity implements BrowserController, View
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
                     sp.edit().putBoolean(getString(R.string.sp_images), true).commit();
-                    IntentUnit.setSPChange(true);
                 }else{
                     sp.edit().putBoolean(getString(R.string.sp_images), false).commit();
-                    IntentUnit.setSPChange(true);
+                }
+            }
+        });
+
+        if (sp.getBoolean(("sp_remote"), true)){
+            sw_remote.setChecked(true);
+        } else {
+            sw_remote.setChecked(false);
+        }
+
+        sw_remote.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    sp.edit().putBoolean(("sp_remote"), true).commit();
+                }else{
+                    sp.edit().putBoolean(("sp_remote"), false).commit();
                 }
             }
         });
@@ -2382,23 +2425,6 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 }else{
                     sp.edit().putBoolean("sp_invert", false).commit();
                     initRendering(contentFrame);
-                }
-            }
-        });
-
-        if ((sp.getString(getString(R.string.sp_user_agent), "0").equals("1"))){
-            sw_desktop.setChecked(true);
-        } else {
-            sw_desktop.setChecked(false);
-        }
-
-        sw_desktop.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    sp.edit().putString(getString(R.string.sp_user_agent), "1").commit();
-                }else{
-                    sp.edit().putString(getString(R.string.sp_user_agent), "0").commit();
                 }
             }
         });
@@ -2889,7 +2915,16 @@ public class BrowserActivity extends Activity implements BrowserController, View
         if (running) {
             omniboxRefresh.setImageDrawable(ViewUnit.getDrawable(this, R.drawable.ic_action_close));
         } else {
-            omniboxRefresh.setImageDrawable(ViewUnit.getDrawable(this, R.drawable.ic_action_refresh));
+
+            if (currentAlbumController instanceof NinjaWebView) {
+                if (ninjaWebView.getUrl().contains("https://")) {
+                    omniboxRefresh.setImageDrawable(ViewUnit.getDrawable(this, R.drawable.ic_action_refresh));
+                } else {
+                    omniboxRefresh.setImageDrawable(ViewUnit.getDrawable(BrowserActivity.this, R.drawable.icon_secure_not));
+                }
+            } else if (currentAlbumController instanceof NinjaRelativeLayout) {
+                omniboxRefresh.setImageDrawable(ViewUnit.getDrawable(this, R.drawable.ic_action_refresh));
+            }
         }
     }
 

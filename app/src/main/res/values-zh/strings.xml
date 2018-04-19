@@ -52,7 +52,6 @@
     <string name="dialog_toggle_title">快速切换</string>
     <string name="dialog_title_hint">输入标题</string>
     <string name="dialog_se_hint">https://www.google.com/search?q=</string>
-    <string name="dialog_ua_hint">Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36</string>
     <string name="dialog_sign_in_username">用户名</string>
     <string name="dialog_sign_in_password">密码</string>
     <string name="dialog_button_custom">自定义</string>
@@ -80,11 +79,6 @@
     <string name="setting_summary_search_engine_startpage">StartPage</string>
     <string name="setting_summary_search_engine_bing">必应</string>
     <string name="setting_summary_search_engine_baidu">百度</string>
-
-    <string name="setting_title_user_agent">用户环境</string>
-    <string name="setting_summary_user_agent">选择用移动视图还是桌面视图来显示网页</string>
-    <string name="setting_summary_user_agent_default">默认</string>
-    <string name="setting_summary_user_agent_desktop">桌面</string>
 
     <string name="setting_title_inverted">反转颜色</string>
     <string name="setting_summary_inverted">让网站以灰度显示，可以看作“夜间模式”。</string>

@@ -1,7 +1,11 @@
 ### v 5.6.1 (WIP)
+- new: search engines (Startpage DE, Searx)
 - new: notification when download or screenshot complete
+- new: block remote content
 - removed: Snackbar
+- removed: request desktop site
 - fix: some strings (thanks: gr1sh)
+- fix: some urls opening search results
 
 ### v 5.6
 - new: increase font size

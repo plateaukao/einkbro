@@ -4,11 +4,13 @@
 
     <!-- Search engine -->
     <string-array name="setting_entries_search_engine">
-        <item>@string/setting_summary_search_engine_google</item>
-        <item>@string/setting_summary_search_engine_duckduckgo</item>
         <item>@string/setting_summary_search_engine_startpage</item>
-        <item>@string/setting_summary_search_engine_bing</item>
+        <item>@string/setting_summary_search_engine_startpage_de</item>
         <item>@string/setting_summary_search_engine_baidu</item>
+        <item>@string/setting_summary_search_engine_bing</item>
+        <item>@string/setting_summary_search_engine_duckduckgo</item>
+        <item>@string/setting_summary_search_engine_google</item>
+        <item>@string/setting_summary_search_engine_searx</item>
     </string-array>
 
     <string-array name="setting_values_search_engine">
@@ -17,18 +19,8 @@
         <item>2</item>
         <item>3</item>
         <item>4</item>
-    </string-array>
-
-
-    <!-- User agent -->
-    <string-array name="setting_entries_user_agent">
-        <item>@string/setting_summary_user_agent_default</item>
-        <item>@string/setting_summary_user_agent_desktop</item>
-    </string-array>
-
-    <string-array name="setting_values_user_agent">
-        <item>0</item>
-        <item>1</item>
+        <item>5</item>
+        <item>6</item>
     </string-array>
 
 

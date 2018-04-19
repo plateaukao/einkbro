@@ -12,6 +12,7 @@ import android.view.View;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.widget.Toast;
 
 import de.baumann.browser.Activity.BrowserActivity;
 import de.baumann.browser.Browser.AlbumController;
@@ -62,26 +63,27 @@ public class HolderService extends Service implements BrowserController {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        WebView.enableSlowWholeDocumentDraw();
-        NinjaWebView webView = new NinjaWebView(new NinjaContextWrapper(this));
-
-        webView.setBrowserController(this);
-        webView.setFlag(BrowserUnit.FLAG_NINJA);
-        webView.setAlbumCover(null);
-        webView.setAlbumTitle(getString(R.string.album_untitled));
-        ViewUnit.bound(this, webView);
-
-        webView.loadUrl(RecordUnit.getHolder().getURL());
-        webView.deactivate();
-
-        BrowserContainer.add(webView);
-
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         if (sp.getBoolean("sp_background", true)) {
+            WebView.enableSlowWholeDocumentDraw();
+            NinjaWebView webView = new NinjaWebView(new NinjaContextWrapper(this));
+
+            webView.setBrowserController(this);
+            webView.setFlag(BrowserUnit.FLAG_NINJA);
+            webView.setAlbumCover(null);
+            webView.setAlbumTitle(getString(R.string.album_untitled));
+            ViewUnit.bound(this, webView);
+
+            webView.loadUrl(RecordUnit.getHolder().getURL());
+            webView.deactivate();
+
+            BrowserContainer.add(webView);
             updateNotification();
         } else {
             Intent toActivity = new Intent(HolderService.this, BrowserActivity.class);
             toActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            toActivity.setAction(Intent.ACTION_SEND);
+            toActivity.putExtra(Intent.EXTRA_TEXT, RecordUnit.getHolder().getURL());
             startActivity(toActivity);
         }
 
@@ -105,5 +107,6 @@ public class HolderService extends Service implements BrowserController {
     private void updateNotification() {
         Notification notification = NotificationUnit.getHBuilder(this).build();
         startForeground(NotificationUnit.HOLDER_ID, notification);
+        Toast.makeText(this, R.string.toast_load_in_background, Toast.LENGTH_LONG).show();
     }
 }

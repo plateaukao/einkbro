@@ -12,14 +12,17 @@ import android.net.MailTo;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.support.design.widget.BottomSheetDialog;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.*;
 import android.webkit.CookieManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.TextView;
 
+import de.baumann.browser.Activity.BrowserActivity;
 import de.baumann.browser.Activity.helper_main;
 import de.baumann.browser.Browser.*;
 import de.baumann.browser.Ninja.R;
@@ -92,7 +95,7 @@ public class NinjaWebView extends WebView implements AlbumController {
         return foreground;
     }
 
-    private String userAgentOriginal;
+    private String url;
 
     private BrowserController browserController = null;
     public BrowserController getBrowserController() {
@@ -130,12 +133,6 @@ public class NinjaWebView extends WebView implements AlbumController {
 
     private synchronized void initWebView() {
         setDrawingCacheEnabled(true);
-        setWillNotCacheDrawing(false);
-        setSaveEnabled(true);
-
-        setFocusable(true);
-        setFocusableInTouchMode(true);
-
         setWebViewClient(webViewClient);
         setWebChromeClient(webChromeClient);
         setDownloadListener(downloadListener);
@@ -150,63 +147,36 @@ public class NinjaWebView extends WebView implements AlbumController {
 
     private synchronized void initWebSettings() {
         webSettings = getSettings();
-        userAgentOriginal = webSettings.getUserAgentString();
 
         webSettings.setAllowContentAccess(true);
         webSettings.setAllowFileAccess(true);
-        webSettings.setAllowFileAccessFromFileURLs(true);
-        webSettings.setAllowUniversalAccessFromFileURLs(true);
-        webSettings.setSupportMultipleWindows(false);
 
-        webSettings.setAppCacheEnabled(true);
-        webSettings.setAppCachePath(context.getCacheDir().toString());
-        webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);
         webSettings.setDatabaseEnabled(true);
         webSettings.setDomStorageEnabled(true);
-
-        webSettings.setSupportZoom(true);
-        webSettings.setBuiltInZoomControls(true);
-        webSettings.setDisplayZoomControls(false);
-
-        webSettings.setDefaultTextEncodingName(BrowserUnit.URL_ENCODING);
-        webSettings.setLoadsImagesAutomatically(true);
+        webSettings.setAppCacheEnabled(true);
 
         webSettings.setLoadWithOverviewMode(true);
         webSettings.setUseWideViewPort(true);
+
+        webSettings.setBuiltInZoomControls(true);
+        webSettings.setDisplayZoomControls(false);
+        webSettings.setSupportZoom(true);
     }
 
     public synchronized void initPreferences() {
         sp = PreferenceManager.getDefaultSharedPreferences(context);
-        webSettings = getSettings();
-
-        webSettings.setTextZoom(Integer.parseInt(sp.getString("sp_fontSize", "100")));
-        webSettings.setBlockNetworkImage(!sp.getBoolean(context.getString(R.string.sp_images), true));
-        webSettings.setJavaScriptEnabled(sp.getBoolean(context.getString(R.string.sp_javascript), true));
-        webSettings.setJavaScriptCanOpenWindowsAutomatically(sp.getBoolean(context.getString(R.string.sp_javascript), true));
-
-        CookieManager manager = CookieManager.getInstance();
-        manager.setAcceptCookie(sp.getBoolean(context.getString(R.string.sp_cookies), true));
-
-        webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
-        try {
-            webSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
-        } catch (Exception e) {
-            Log.w("Browser", "Error setting TEXT_AUTOSIZING", e);
-        }
-
-        int userAgent = Integer.valueOf(sp.getString(context.getString(R.string.sp_user_agent), "0"));
-        if (userAgent == 1) {
-            webSettings.setUserAgentString(BrowserUnit.UA_DESKTOP);
-        } else if (userAgent == 2) {
-            webSettings.setUserAgentString(sp.getString(context.getString(R.string.sp_user_agent_custom), userAgentOriginal));
-        } else {
-            webSettings.setUserAgentString(userAgentOriginal);
-        }
 
         webViewClient.enableAdBlock(sp.getBoolean(context.getString(R.string.sp_ad_block), true));
 
-        //CookieManager manager = CookieManager.getInstance();
-        //manager.setAcceptCookie(sp.getBoolean(context.getString(R.string.sp_cookies), true));
+        webSettings = getSettings();
+        webSettings.setTextZoom(Integer.parseInt(sp.getString("sp_fontSize", "100")));
+
+        webSettings.setAllowFileAccessFromFileURLs(sp.getBoolean(("sp_remote"), true));
+        webSettings.setAllowUniversalAccessFromFileURLs(sp.getBoolean(("sp_remote"), true));
+
+        webSettings.setBlockNetworkImage(!sp.getBoolean(context.getString(R.string.sp_images), true));
+        webSettings.setJavaScriptEnabled(sp.getBoolean(context.getString(R.string.sp_javascript), true));
+        webSettings.setJavaScriptCanOpenWindowsAutomatically(sp.getBoolean(context.getString(R.string.sp_javascript), true));
 
         if (sp.getBoolean(context.getString(R.string.sp_location), true)) {
             if (android.os.Build.VERSION.SDK_INT >= 23) {
@@ -221,6 +191,9 @@ public class NinjaWebView extends WebView implements AlbumController {
                 webSettings.setGeolocationEnabled(sp.getBoolean(context.getString(R.string.sp_location), true));
             }
         }
+
+        CookieManager manager = CookieManager.getInstance();
+        manager.setAcceptCookie(sp.getBoolean(context.getString(R.string.sp_cookies), true));
     }
 
     private synchronized void initAlbum() {
@@ -237,7 +210,10 @@ public class NinjaWebView extends WebView implements AlbumController {
             return;
         }
 
-        url = BrowserUnit.queryWrapper(context, url.trim());
+        if (!url.contains("://")) {
+            url = BrowserUnit.queryWrapper(context, url.trim());
+        }
+
         if (url.startsWith(BrowserUnit.URL_SCHEME_MAIL_TO)) {
             Intent intent = IntentUnit.getEmailIntent(MailTo.parse(url));
             context.startActivity(intent);

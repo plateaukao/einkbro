@@ -118,25 +118,19 @@
 
             <ImageButton android:id="@+id/omnibox_overflow"
                 android:contentDescription="@null"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:layout_marginEnd="@dimen/layout_margin_8dp"
-                android:layout_gravity="center"
+                android:padding="8dp"
                 android:src="@drawable/ic_action_overflow"
                 android:background="?attr/actionBarItemBackground"/>
 
             <ImageButton android:id="@+id/omnibox_refresh"
                 android:contentDescription="@null"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_toStartOf="@id/omnibox_overflow"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
+                android:padding="8dp"
                 android:src="@drawable/ic_action_refresh"
                 android:background="?attr/actionBarItemBackground"/>
 

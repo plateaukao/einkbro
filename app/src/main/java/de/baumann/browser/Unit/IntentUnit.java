@@ -8,7 +8,6 @@ import android.net.MailTo;
 import de.baumann.browser.Ninja.R;
 
 public class IntentUnit {
-    public static final String OPEN = "OPEN";
 
     public static final int REQUEST_FILE_21 = 0x101;
     public static final int REQUEST_CLEAR = 0x102;

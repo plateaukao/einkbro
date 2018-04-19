@@ -30,8 +30,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class Files {
 
     //define static variable
-    private static final int dbVersion =6;
-    private static final String dbName = "files_DB_v01.db";
+    private static final int dbVersion = 6;
+    private static final String dbName = "browser_files.db";
     private static final String dbTable = "files";
 
     private static class DatabaseHelper extends SQLiteOpenHelper {
