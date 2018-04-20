@@ -84,7 +84,6 @@
                     android:layout_height="match_parent"
                     android:layout_alignParentStart="true"
                     android:layout_marginEnd="16dp"
-                    
                     android:gravity="center_vertical"
                     android:src="@drawable/icon_preview" />
 
@@ -556,6 +555,35 @@
                     android:gravity="center_vertical"
                     android:maxLines="1"
                     android:text="@string/menu_other_searchSite"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/tv_delete"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:paddingEnd="8dp"
+                android:paddingStart="8dp"
+                android:background="?attr/selectableItemBackground"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="16dp"
+                    android:gravity="center_vertical"
+                    android:src="@drawable/icon_delete" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:maxLines="1"
+                    android:text="@string/menu_delete_list"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
             </LinearLayout>

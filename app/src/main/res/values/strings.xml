@@ -30,6 +30,7 @@
     <string name="menu_share">Share</string>
     <string name="menu_quit">Quit</string>
     <string name="menu_delete">Delete</string>
+    <string name="menu_delete_list">Delete list</string>
     <string name="menu_edit">Edit</string>
     <string name="menu_notification">Notification</string>
     <string name="menu_closeTab">Close tab</string>
@@ -141,6 +142,9 @@
     <string name="clear_title_cache">Clear Cache</string>
     <string name="clear_title_cookie">Clear Cookies</string>
     <string name="clear_title_history">Clear History</string>
+
+    <string name="clear_title_deleteDatabase">Delete database</string>
+    <string name="clear_summary_deleteDatabase">Delete the whole database (Startpage, bookmarks, history and all whitelists).</string>
 
 
     <!-- App setting -->
@@ -278,7 +282,7 @@
     <string name="toast_fileManager">Can not open file. Please use a file manager.</string>
     <string name="toast_downloadComplete">Download complete. Open file manager?</string>
     <string name="toast_unsecured">This website uses an unsecured connection (\"http\"). Do you want to try a secure
-        on (\"http\")?</string>
+        connection (\"https\")?</string>
 
 
     <!-- Whitelist -->

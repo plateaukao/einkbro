@@ -476,6 +476,13 @@ public class BrowserUnit {
         action.close();
     }
 
+    public static void clearHome(Context context) {
+        RecordAction action = new RecordAction(context);
+        action.open(true);
+        action.clearHome();
+        action.close();
+    }
+
     public static void clearCache(Context context) {
         try {
             File dir = context.getCacheDir();

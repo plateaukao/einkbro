@@ -1,7 +1,10 @@
 ### v 5.6.1 (WIP)
+- new: delete separate lists (Startpage, history, ...)
+- new: show unsecured connections
 - new: search engines (Startpage DE, Searx)
 - new: notification when download or screenshot complete
 - new: block remote content
+- improved Chinese translation (thanks: lishoujun)
 - removed: Snackbar
 - removed: request desktop site
 - fix: some strings (thanks: gr1sh)

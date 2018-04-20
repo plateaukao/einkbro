@@ -418,6 +418,10 @@ public class RecordAction {
         database.execSQL("DELETE FROM " + RecordUnit.TABLE_BOOKMARKS);
     }
 
+    public void clearHome() {
+        database.execSQL("DELETE FROM " + RecordUnit.TABLE_GRID);
+    }
+
     public void clearHistory() {
         database.execSQL("DELETE FROM " + RecordUnit.TABLE_HISTORY);
     }

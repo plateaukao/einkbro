@@ -25,5 +25,9 @@
         android:title="@string/clear_title_quit"
         android:summary="@string/clear_summary_quit"/>
 
+    <Preference android:key="sp_deleteDatabase"
+        android:title="@string/clear_title_deleteDatabase"
+        android:summary="@string/clear_summary_deleteDatabase"/>
+
 
 </PreferenceScreen>
