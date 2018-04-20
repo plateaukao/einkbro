@@ -149,6 +149,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
     private LinearLayout tv_help;
     private LinearLayout tv_placeHolder;
     private LinearLayout tv_placeHolder_2;
+    private LinearLayout tv_delete;
 
     private LinearLayout tv_saveScreenshot;
     private LinearLayout tv_saveBookmark;
@@ -1041,6 +1042,46 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 startActivity(settings);
                 break;
 
+            case R.id.tv_delete:
+                bottomSheetDialog.cancel();
+
+                bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
+                View dialogView3 = View.inflate(BrowserActivity.this, R.layout.dialog_action, null);
+                TextView textView = dialogView3.findViewById(R.id.dialog_text);
+                textView.setText(R.string.hint_database);
+                Button action_ok = dialogView3.findViewById(R.id.action_ok);
+                action_ok.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (currentAlbumController != null && currentAlbumController instanceof NinjaRelativeLayout) {
+                            tv_searchSite.setVisibility(View.GONE);
+
+                            if (ninjaRelativeLayout.getFlag() == BrowserUnit.FLAG_HOME) {
+                                BrowserUnit.clearHome(BrowserActivity.this);
+                            } else if (ninjaRelativeLayout.getFlag() == BrowserUnit.FLAG_BOOKMARKS) {
+                                BrowserUnit.clearBookmarks(BrowserActivity.this);
+                            } else if (ninjaRelativeLayout.getFlag() == BrowserUnit.FLAG_HISTORY) {
+                                BrowserUnit.clearHistory(BrowserActivity.this);
+                            } else if (ninjaRelativeLayout.getFlag() == BrowserUnit.FLAG_PASS) {
+                                deleteDatabase("pass_DB_v01.db");
+                            }
+                        }
+                        bottomSheetDialog.cancel();
+                        omniboxRefresh.performClick();
+                    }
+                });
+                Button action_cancel = dialogView3.findViewById(R.id.action_cancel);
+                action_cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        bottomSheetDialog.cancel();
+                    }
+                });
+                bottomSheetDialog.setContentView(dialogView3);
+                bottomSheetDialog.show();
+
+                break;
+
             case R.id.tv_help:
                 bottomSheetDialog.cancel();
                 showHelpDialog();
@@ -1072,6 +1113,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 tv_placeHolder.setVisibility(View.GONE);
                 tv_placeHolder_2.setVisibility(View.GONE);
                 tv_settings.setVisibility(View.GONE);
+                tv_delete.setVisibility(View.GONE);
                 tv_help.setVisibility(View.GONE);
                 break;
 
@@ -1101,6 +1143,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 tv_placeHolder.setVisibility(View.GONE);
                 tv_placeHolder_2.setVisibility(View.GONE);
                 tv_settings.setVisibility(View.GONE);
+                tv_delete.setVisibility(View.GONE);
                 tv_help.setVisibility(View.GONE);
                 break;
 
@@ -1131,6 +1174,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 tv_placeHolder.setVisibility(View.GONE);
                 tv_placeHolder_2.setVisibility(View.GONE);
                 tv_settings.setVisibility(View.GONE);
+                tv_delete.setVisibility(View.GONE);
                 tv_help.setVisibility(View.GONE);
                 break;
 
@@ -1155,12 +1199,14 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 floatButton_shareView.setVisibility(View.INVISIBLE);
                 floatButton_moreView.setVisibility(View.VISIBLE);
 
-                tv_placeHolder.setVisibility(View.VISIBLE);
+
                 tv_settings.setVisibility(View.VISIBLE);
                 tv_help.setVisibility(View.VISIBLE);
+                tv_delete.setVisibility(View.VISIBLE);
 
                 if (currentAlbumController != null && currentAlbumController instanceof NinjaRelativeLayout) {
                     tv_searchSite.setVisibility(View.GONE);
+
                     if (ninjaRelativeLayout.getFlag() == BrowserUnit.FLAG_HOME) {
                         tv_relayout.setVisibility(View.VISIBLE);
                         tv_placeHolder_2.setVisibility(View.GONE);
@@ -1168,10 +1214,16 @@ public class BrowserActivity extends Activity implements BrowserController, View
                         tv_relayout.setVisibility(View.GONE);
                         tv_placeHolder_2.setVisibility(View.VISIBLE);
                     }
+
+                    if (ninjaRelativeLayout.getFlag() == BrowserUnit.FLAG_FILES) {
+                        tv_placeHolder.setVisibility(View.VISIBLE);
+                        tv_delete.setVisibility(View.GONE);
+                    }
                 } else if (currentAlbumController != null && currentAlbumController instanceof NinjaWebView) {
                     tv_searchSite.setVisibility(View.VISIBLE);
                     tv_relayout.setVisibility(View.GONE);
                     tv_placeHolder_2.setVisibility(View.GONE);
+                    tv_delete.setVisibility(View.GONE);
                 }
 
                 break;
@@ -1198,18 +1250,18 @@ public class BrowserActivity extends Activity implements BrowserController, View
                         if (!url.startsWith("https://")) {
                             bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
                             View dialogView2 = View.inflate(BrowserActivity.this, R.layout.dialog_action, null);
-                            TextView textView = dialogView2.findViewById(R.id.dialog_text);
-                            textView.setText(R.string.toast_unsecured);
-                            Button action_ok = dialogView2.findViewById(R.id.action_ok);
-                            action_ok.setOnClickListener(new View.OnClickListener() {
+                            TextView textView2 = dialogView2.findViewById(R.id.dialog_text);
+                            textView2.setText(R.string.toast_unsecured);
+                            Button action_ok2 = dialogView2.findViewById(R.id.action_ok);
+                            action_ok2.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
                                     bottomSheetDialog.cancel();
                                     ninjaWebView.loadUrl(url.replace("http://", "https://"));
                                 }
                             });
-                            Button action_cancel = dialogView2.findViewById(R.id.action_cancel);
-                            action_cancel.setOnClickListener(new View.OnClickListener() {
+                            Button action_cancel2 = dialogView2.findViewById(R.id.action_cancel);
+                            action_cancel2.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
                                     bottomSheetDialog.cancel();
@@ -2915,12 +2967,15 @@ public class BrowserActivity extends Activity implements BrowserController, View
         if (running) {
             omniboxRefresh.setImageDrawable(ViewUnit.getDrawable(this, R.drawable.ic_action_close));
         } else {
-
             if (currentAlbumController instanceof NinjaWebView) {
-                if (ninjaWebView.getUrl().contains("https://")) {
+                try {
+                    if (ninjaWebView.getUrl().contains("https://")) {
+                        omniboxRefresh.setImageDrawable(ViewUnit.getDrawable(this, R.drawable.ic_action_refresh));
+                    } else {
+                        omniboxRefresh.setImageDrawable(ViewUnit.getDrawable(BrowserActivity.this, R.drawable.icon_alert));
+                    }
+                } catch (Exception e) {
                     omniboxRefresh.setImageDrawable(ViewUnit.getDrawable(this, R.drawable.ic_action_refresh));
-                } else {
-                    omniboxRefresh.setImageDrawable(ViewUnit.getDrawable(BrowserActivity.this, R.drawable.icon_secure_not));
                 }
             } else if (currentAlbumController instanceof NinjaRelativeLayout) {
                 omniboxRefresh.setImageDrawable(ViewUnit.getDrawable(this, R.drawable.ic_action_refresh));
@@ -3420,6 +3475,8 @@ public class BrowserActivity extends Activity implements BrowserController, View
         tv_searchSite.setOnClickListener(BrowserActivity.this);
         tv_settings = dialogView.findViewById(R.id.tv_settings);
         tv_settings.setOnClickListener(BrowserActivity.this);
+        tv_delete = dialogView.findViewById(R.id.tv_delete);
+        tv_delete.setOnClickListener(BrowserActivity.this);
         tv_help = dialogView.findViewById(R.id.tv_help);
         tv_help.setOnClickListener(BrowserActivity.this);
         tv_placeHolder = dialogView.findViewById(R.id.tv_placeholder);
