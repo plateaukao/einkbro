@@ -38,6 +38,9 @@ import de.baumann.browser.View.NinjaToast;
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class Fragment_settings_data extends PreferenceFragment {
 
+    private BottomSheetDialog dialog;
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +49,11 @@ public class Fragment_settings_data extends PreferenceFragment {
 
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
+
+        View dialogView;
+        TextView textView;
+        Button action_ok;
+        Button action_cancel;
 
         File sd = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
         File data = Environment.getDataDirectory();
@@ -72,69 +80,170 @@ public class Fragment_settings_data extends PreferenceFragment {
                 getActivity().startActivity(toJavascript);
                 break;
             case R.string.setting_title_export_whitelist:
-                makeBackupDir();
-                new ExportWhitelistAdBlockTask(getActivity()).execute();
+                dialog = new BottomSheetDialog(getActivity());
+                dialogView = View.inflate(getActivity(), R.layout.dialog_action, null);
+                textView = dialogView.findViewById(R.id.dialog_text);
+                textView.setText(R.string.toast_backup);
+                action_ok = dialogView.findViewById(R.id.action_ok);
+                action_ok.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.cancel();
+                        makeBackupDir();
+                        new ExportWhitelistAdBlockTask(getActivity()).execute();
+                    }
+                });
+                action_cancel = dialogView.findViewById(R.id.action_cancel);
+                action_cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.cancel();
+                    }
+                });
+                dialog.setContentView(dialogView);
+                dialog.show();
                 break;
             case R.string.setting_title_import_whitelist:
                 new ImportWhitelistAdBlockTask(getActivity()).execute();
                 break;
             case R.string.setting_title_export_whitelistJS:
-                makeBackupDir();
-                new ExportWhitelistJSTask(getActivity()).execute();
+                dialog = new BottomSheetDialog(getActivity());
+                dialogView = View.inflate(getActivity(), R.layout.dialog_action, null);
+                textView = dialogView.findViewById(R.id.dialog_text);
+                textView.setText(R.string.toast_backup);
+                action_ok = dialogView.findViewById(R.id.action_ok);
+                action_ok.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.cancel();
+                        makeBackupDir();
+                        new ExportWhitelistJSTask(getActivity()).execute();
+                    }
+                });
+                action_cancel = dialogView.findViewById(R.id.action_cancel);
+                action_cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.cancel();
+                    }
+                });
+                dialog.setContentView(dialogView);
+                dialog.show();
                 break;
             case R.string.setting_title_import_whitelistJS:
                 new ImportWhitelistJSTask(getActivity()).execute();
                 break;
             case R.string.setting_title_export_whitelistCookie:
-                makeBackupDir();
-                new ExportWhitelistCookieTask(getActivity()).execute();
+                dialog = new BottomSheetDialog(getActivity());
+                dialogView = View.inflate(getActivity(), R.layout.dialog_action, null);
+                textView = dialogView.findViewById(R.id.dialog_text);
+                textView.setText(R.string.toast_backup);
+                action_ok = dialogView.findViewById(R.id.action_ok);
+                action_ok.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.cancel();
+                        makeBackupDir();
+                        new ExportWhitelistCookieTask(getActivity()).execute();
+                    }
+                });
+                action_cancel = dialogView.findViewById(R.id.action_cancel);
+                action_cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.cancel();
+                    }
+                });
+                dialog.setContentView(dialogView);
+                dialog.show();
                 break;
             case R.string.setting_title_import_whitelistCookie:
                 new ImportWhitelistCookieTask(getActivity()).execute();
                 break;
             case R.string.setting_title_export_bookmarks:
-                makeBackupDir();
-                new ExportBookmarksTask(getActivity()).execute();
+                dialog = new BottomSheetDialog(getActivity());
+                dialogView = View.inflate(getActivity(), R.layout.dialog_action, null);
+                textView = dialogView.findViewById(R.id.dialog_text);
+                textView.setText(R.string.toast_backup);
+                action_ok = dialogView.findViewById(R.id.action_ok);
+                action_ok.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.cancel();
+                        makeBackupDir();
+                        new ExportBookmarksTask(getActivity()).execute();
+                    }
+                });
+                action_cancel = dialogView.findViewById(R.id.action_cancel);
+                action_cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.cancel();
+                    }
+                });
+                dialog.setContentView(dialogView);
+                dialog.show();
                 break;
             case R.string.setting_title_import_bookmarks:
                 new ImportBookmarksTask(getActivity()).execute();
                 break;
             case R.string.setting_title_export_database:
-                makeBackupDir();
-                try {
+                dialog = new BottomSheetDialog(getActivity());
+                dialogView = View.inflate(getActivity(), R.layout.dialog_action, null);
+                textView = dialogView.findViewById(R.id.dialog_text);
+                textView.setText(R.string.toast_backup);
+                action_ok = dialogView.findViewById(R.id.action_ok);
+                action_ok.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.cancel();
 
-                    if (android.os.Build.VERSION.SDK_INT >= 23) {
-                        int hasWRITE_EXTERNAL_STORAGE = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                        if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
-                            NinjaToast.show(getActivity(), R.string.toast_permission_sdCard_sec);
-                        } else {
-                            BrowserUnit.deleteDir(pv_sd);
-                            BrowserUnit.deleteDir(db_sd);
-                            copyDirectory(pv_data, pv_sd);
-                            copyDirectory(db_data, db_sd);
-                            NinjaToast.show(getActivity(), getString(R.string.toast_export_successful) + "browser_backup");
+                        makeBackupDir();
+                        try {
+
+                            if (android.os.Build.VERSION.SDK_INT >= 23) {
+                                int hasWRITE_EXTERNAL_STORAGE = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                                if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
+                                    NinjaToast.show(getActivity(), R.string.toast_permission_sdCard_sec);
+                                } else {
+                                    BrowserUnit.deleteDir(pv_sd);
+                                    BrowserUnit.deleteDir(db_sd);
+                                    copyDirectory(pv_data, pv_sd);
+                                    copyDirectory(db_data, db_sd);
+                                    NinjaToast.show(getActivity(), getString(R.string.toast_export_successful) + "browser_backup");
+                                }
+
+                            } else {
+                                BrowserUnit.deleteDir(pv_sd);
+                                BrowserUnit.deleteDir(db_sd);
+                                copyDirectory(pv_data, pv_sd);
+                                copyDirectory(db_data, db_sd);
+                                NinjaToast.show(getActivity(), getString(R.string.toast_export_successful) + "browser_backup");
+                            }
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-
-                    } else {
-                        BrowserUnit.deleteDir(pv_sd);
-                        BrowserUnit.deleteDir(db_sd);
-                        copyDirectory(pv_data, pv_sd);
-                        copyDirectory(db_data, db_sd);
-                        NinjaToast.show(getActivity(), getString(R.string.toast_export_successful) + "browser_backup");
                     }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                });
+                action_cancel = dialogView.findViewById(R.id.action_cancel);
+                action_cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.cancel();
+                    }
+                });
+                dialog.setContentView(dialogView);
+                dialog.show();
                 break;
 
             case R.string.setting_title_import_database:
 
-                final BottomSheetDialog dialog = new BottomSheetDialog(getActivity());
-                View dialogView = View.inflate(getActivity(), R.layout.dialog_action, null);
-                TextView textView = dialogView.findViewById(R.id.dialog_text);
+                dialog = new BottomSheetDialog(getActivity());
+                dialogView = View.inflate(getActivity(), R.layout.dialog_action, null);
+                textView = dialogView.findViewById(R.id.dialog_text);
                 textView.setText(R.string.hint_database);
-                Button action_ok = dialogView.findViewById(R.id.action_ok);
+                action_ok = dialogView.findViewById(R.id.action_ok);
                 action_ok.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -162,7 +271,7 @@ public class Fragment_settings_data extends PreferenceFragment {
                         }
                     }
                 });
-                Button action_cancel = dialogView.findViewById(R.id.action_cancel);
+                action_cancel = dialogView.findViewById(R.id.action_cancel);
                 action_cancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -182,18 +291,30 @@ public class Fragment_settings_data extends PreferenceFragment {
 
     private void makeBackupDir () {
         File backupDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "browser_backup//");
+        File noMedia = new File(backupDir, "//.nomedia");
+
         if (android.os.Build.VERSION.SDK_INT >= 23) {
             int hasWRITE_EXTERNAL_STORAGE = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
             if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
                 NinjaToast.show(getActivity(), R.string.toast_permission_sdCard_sec);
             } else {
                 if(!backupDir.exists()) {
-                    backupDir.mkdirs();
+                    try {
+                        backupDir.mkdirs();
+                        noMedia.createNewFile();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         } else {
             if(!backupDir.exists()) {
-                backupDir.mkdirs();
+                try {
+                    backupDir.mkdirs();
+                    noMedia.createNewFile();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

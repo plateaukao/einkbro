@@ -2,18 +2,21 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <CheckBoxPreference android:key="@string/sp_clear_cache"
+        android:defaultValue="false"
+        android:title="@string/clear_title_cache"/>
 
     <CheckBoxPreference android:key="@string/sp_clear_bookmarks"
-                        android:defaultValue="false"
-                        android:title="@string/clear_title_bookmarks"/>
-
-    <CheckBoxPreference android:key="@string/sp_clear_cache"
-                        android:defaultValue="true"
-                        android:title="@string/clear_title_cache"/>
+        android:defaultValue="false"
+        android:title="@string/clear_title_bookmarks"/>
 
     <CheckBoxPreference android:key="@string/sp_clear_history"
-                        android:defaultValue="true"
-                        android:title="@string/clear_title_history"/>
+        android:defaultValue="false"
+        android:title="@string/clear_title_history"/>
+
+    <CheckBoxPreference android:key="sp_clearIndexedDB"
+        android:defaultValue="false"
+        android:title="@string/clear_title_indexedDB"/>
 
     <CheckBoxPreference android:key="@string/sp_clear_cookie"
         android:defaultValue="false"

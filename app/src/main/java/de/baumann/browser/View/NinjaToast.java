@@ -2,11 +2,12 @@ package de.baumann.browser.View;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Handler;
-import android.support.design.widget.BottomSheetDialog;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
+import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import de.baumann.browser.Ninja.R;
 
@@ -21,20 +22,18 @@ public class NinjaToast {
 
         Activity activity = (Activity) context;
 
-        final BottomSheetDialog dialog = new BottomSheetDialog(activity);
+        LayoutInflater inflater = activity.getLayoutInflater();
+        View layout = inflater.inflate(R.layout.dialog_bottom, (ViewGroup) activity.findViewById(R.id.dialog_toast));
 
-        View dialogView = View.inflate(activity, R.layout.dialog_bottom, null);
-        TextView textView = dialogView.findViewById(R.id.dialog_text);
-        textView.setText(text);
-        dialog.setContentView(dialogView);
-        //noinspection ConstantConditions
-        dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-        dialog.show();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                dialog.cancel();
-            }
-        }, 2000);
+        TextView dialog_text = layout.findViewById(R.id.dialog_text);
+        dialog_text.setText(text);
+
+        Toast toast = new Toast(activity.getApplicationContext());
+        toast.setGravity(Gravity.BOTTOM|Gravity.FILL_HORIZONTAL, 0, 0);
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.setView(layout);
+        toast.show();
+
+        //Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
     }
 }

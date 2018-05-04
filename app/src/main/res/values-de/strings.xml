@@ -142,6 +142,7 @@
     <string name="clear_title_cache">Lösche Cache</string>
     <string name="clear_title_cookie">Lösche Cookies</string>
     <string name="clear_title_history">Lösche den Verlauf</string>
+    <string name="clear_title_indexedDB">Lösche \"Indizierte Datenbanken\" und \"Lokalen WebView-Speicher\"</string>
 
     <string name="clear_title_deleteDatabase">Lösche Datenbank</string>
     <string name="clear_summary_deleteDatabase">Lösche die komplette Datenbank (Startseite, Lesezeichen, Verlauf und
@@ -285,6 +286,7 @@
     <string name="toast_downloadComplete">Download vollständig. Dateimanager öffnen?</string>
     <string name="toast_unsecured">Die Internetseite benutzt eine unsichere Verbindung (\"http\"). Möchtest du versuchen
         eine gesicherte Verbindung herstellen (\"https\")?</string>
+    <string name="toast_backup">Daten sichern? Das überschreibt die alte Sicherung.</string>
 
 
 

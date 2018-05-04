@@ -12,17 +12,14 @@ import android.net.MailTo;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
-import android.support.design.widget.BottomSheetDialog;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.*;
 import android.webkit.CookieManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.widget.Button;
 import android.widget.TextView;
 
-import de.baumann.browser.Activity.BrowserActivity;
 import de.baumann.browser.Activity.helper_main;
 import de.baumann.browser.Browser.*;
 import de.baumann.browser.Ninja.R;
@@ -94,8 +91,6 @@ public class NinjaWebView extends WebView implements AlbumController {
     public boolean isForeground() {
         return foreground;
     }
-
-    private String url;
 
     private BrowserController browserController = null;
     public BrowserController getBrowserController() {
