@@ -511,6 +511,20 @@ public class BrowserUnit {
         action.close();
     }
 
+    public static void clearIndexedDB (Context context) {
+
+        File data = Environment.getDataDirectory();
+
+        String indexedDB = "//data//" + context.getPackageName() + "//app_webview//" + "//IndexedDB";
+        String localStorage = "//data//" + context.getPackageName()  + "//app_webview//" + "//Local Storage";
+
+        final File indexedDB_dir = new File(data, indexedDB);
+        final File localStorage_dir = new File(data, localStorage);
+
+        BrowserUnit.deleteDir(indexedDB_dir);
+        BrowserUnit.deleteDir(localStorage_dir);
+    }
+
     public static boolean deleteDir(File dir) {
         if (dir != null && dir.isDirectory()) {
             String[] children = dir.list();

@@ -605,6 +605,12 @@ public class BrowserActivity extends Activity implements BrowserController, View
 
     @Override
     public void onDestroy() {
+
+        boolean clearIndexedDB = sp.getBoolean(("sp_clearIndexedDB"), false);
+        if (clearIndexedDB) {
+            BrowserUnit.clearIndexedDB(this);
+        }
+
         Intent toHolderService = new Intent(this, HolderService.class);
         IntentUnit.setClear(true);
         stopService(toHolderService);
@@ -1222,7 +1228,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 } else if (currentAlbumController != null && currentAlbumController instanceof NinjaWebView) {
                     tv_searchSite.setVisibility(View.VISIBLE);
                     tv_relayout.setVisibility(View.GONE);
-                    tv_placeHolder_2.setVisibility(View.GONE);
+                    tv_placeHolder_2.setVisibility(View.VISIBLE);
                     tv_delete.setVisibility(View.GONE);
                 }
 
@@ -1511,6 +1517,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
         ImageButton open_history = layout.findViewById(R.id.open_history);
 
         if (current_tab == BrowserUnit.FLAG_HOME) {
+
             open_newTabView.setVisibility(View.VISIBLE);
             open_filesView.setVisibility(View.INVISIBLE);
             open_passView.setVisibility(View.INVISIBLE);
@@ -1573,6 +1580,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 layout.setFlag(BrowserUnit.FLAG_HISTORY);
                 initBHList(layout);
             } else if (current_tab == BrowserUnit.FLAG_FILES) {
+
                 if (android.os.Build.VERSION.SDK_INT >= 23) {
                     int hasWRITE_EXTERNAL_STORAGE = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
                     if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {

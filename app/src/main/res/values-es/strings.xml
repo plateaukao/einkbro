@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <!-- General -->
+    <string name="sp_ad_block">SP_AD_BLOCK_9</string>
+    <string name="sp_cookies">SP_COOKIES_9</string>
+    <string name="sp_images">SP_IMÁGENES_9</string>
+    <string name="sp_javascript">SP_JAVASCRIPT_9</string>
+    <string name="sp_location">SP_UBICACIÓN_9</string>
+    <string name="sp_omnibox_control">SP_OMNIBOX_CONTROL_9</string>
+
+    <!-- Clear -->
+    <string name="sp_clear_quit">SP_LIMPIA_DEJA_9</string>
+    <string name="sp_clear_bookmarks">SP_LIMPIA_MARCADORES_9</string>
+    <string name="sp_clear_cache">SP_LIMPIA_CACHE_9</string>
+    <string name="sp_clear_cookie">SP_LIMPIA_COOKIE_9</string>
+    <string name="sp_clear_history">SP_LIMPIA_HISTORIA_9</string>
+
+
+
+    <!-- App -->
+    <string name="app_name">Navegador F|L|OSS</string>
+    <string name="app_ok">Está bien</string>
+    <string name="app_cancel">Cancelar</string>
+    <string name="app_close">Cerrar</string>
+    <string name="list_empty">La lista actual está vacía</string>
+    <string name="album_title_bookmarks">Marcadores</string>
+    <string name="album_title_history">Historia</string>
+    <string name="album_title_home">Inicio</string>
+    <string name="album_title_files">Archivos</string>
+    <string name="album_title_pass">Datos de entrada</string>
+    <string name="notification_content_holderTitle">Pestañas abiertas…</string>
+    <string name="notification_content_holder">… Haga clic para ver las páginas</string>
+    <string name="search_hint">Búsqueda</string>
+
+
+    <!-- Menu -->
+    <string name="main_menu_tabPreview">Abrir vista previa de la pestaña</string>
+    <string name="main_menu_new_tab">Nueva pestaña (Fondo)</string>
+    <string name="main_menu_new_tabOpen">Nueva pestaña (primer plano)</string>
+    <string name="main_menu_copy_link">Copia enlace</string>
+    <string name="main_omnibox_input_hint">Buscar o escribir URL</string>
+    <string name="menu_open_with">Abrir enlace con …</string>
+
+    <string name="menu_share">Compartir</string>
+    <string name="menu_quit">Deja</string>
+    <string name="menu_delete">Borrar</string>
+    <string name="menu_delete_list">Borrar lista</string>
+    <string name="menu_edit">Editar</string>
+    <string name="menu_notification">Notificación</string>
+    <string name="menu_closeTab">Cerrar pestaña</string>
+
+    <string name="menu_share_screenshot">Compartir captura</string>
+    <string name="menu_share_link">Compartir enlace</string>
+
+    <string name="menu_save_screenshot">Guardar captura</string>
+    <string name="menu_save_home">Guardar en inicio</string>
+    <string name="menu_save_login">Guardar Datos de entrada</string>
+    <string name="menu_save_bookmark">Guardar como marcador</string>
+    <string name="menu_save_as">Guardar como…</string>
+
+    <string name="menu_other_searchSite">Buscar en sitio web</string>
+    <string name="menu_other_help">Ayuda</string>
+
+
+    <!-- AndroidAgo -->
+
+
+    <!-- Dialog -->
+    <string name="dialog_toggle_title">Alternar rápido</string>
+    <string name="dialog_toggle_hint">Para aplicar inmediatamente, presione por favor el \"OK-Button\" abajo</string>
+    <string name="dialog_title_hint">Título de entrada</string>
+    <string name="dialog_sign_in_username">Usuario</string>
+    <string name="dialog_sign_in_password">Contraseña</string>
+    <string name="dialog_button_custom">Personalizado</string>
+    <string name="dialog_title_download">¿desea descargar el archivo?</string>
+    <string name="dialog_title_sign_in">Iniciar sesión</string>
+    <string name="dialog_content_resubmission">¿desea reenviar sus datos?</string>
+    <string name="dialog_content_ssl_error">No se confía en el certificado del sitio web. ¿proceder de todos modos?</string>
+
+
+
+    <!-- Settings -->
+    <string name="setting_label">Configuración</string>
+
+    <!-- Browser setting -->
+    <string name="setting_title_browser">Configuración de Navegador</string>
+    <string name="setting_title_clear_control">Control de Datos</string>
+    <string name="setting_title_start_control">Iniciar control</string>
+    <string name="setting_summary_clear_control">Borre los datos de su navegador o decida qué datos se borrarán al salir de la aplicación.</string>
+    <string name="setting_summary_start_control">Decida qué componentes del explorador se habilitarán al iniciar</string>
+
+    <string name="setting_title_search_engine">Motor de búsqueda</string>
+    <string name="setting_summary_search_engine">Aquí puede elegir su motor de búsqueda preferido o establecer uno personalizado.</string>
+    <string name="setting_summary_search_engine_google">Google</string>
+    <string name="setting_summary_search_engine_duckduckgo">DuckDuckGo</string>
+    <string name="setting_summary_search_engine_startpage">Página de Inicio</string>
+    <string name="setting_summary_search_engine_bing">Bing</string>
+    <string name="setting_summary_search_engine_baidu">Baidu</string>
+    <string name="setting_summary_search_engine_startpage_de">Página de Inicio (de)</string>
+    <string name="setting_summary_search_engine_searx">Searx</string>
+
+    <string name="setting_title_inverted">Colores invertidos</string>
+    <string name="setting_summary_inverted">Si se comprueba, el contenido se renderizará en un modo de escala gris invertido. Esta es una especie de \"modo nocturno\".</string>
+
+    <string name="setting_title_font">Tamaño de fuente</string>
+    <string name="setting_summary_font">Cambiar el tamaño de la fuente para mostrar sitios Web.</string>
+
+    <string name="setting_title_remote">Contenido remoto</string>
+    <string name="setting_summary_remote">Habilite el contenido remoto, que no es directamente del sitio web que está visitando.         Deshabilitar esto es más seguro, más rápido y ahorra volumen de datos. Pero no se mostrará más contenido.</string>
+
+
+    <!-- Browser start -->
+    <string name="setting_title_images">Imágenes</string>
+    <string name="setting_summary_images">Habilitar imágenes de red. La desactivación podría ser útil para ahorrar datos móviles y para cargar sitios web más rápidamente.</string>
+    <string name="setting_title_cookie">Cookies</string>
+    <string name="setting_summary_cookie_delete">Si está activado, se borrarán todas las cookies. También las cookies de sitios web de confianza.</string>
+    <string name="setting_summary_cookie">Habilitar cookies. Las cookies son archivos de texto pequeños, que se almacenan en el dispositivo. Los sitios web los utilizan, por ejemplo, para almacenar la configuración del usuario (por ejemplo, configuración de búsqueda). Pero también se pueden utilizar para recopilar datos personales de los usuarios. Las cookies de terceros (recopilan datos de usuario para publicidad) siempre están deshabilitadas.</string>
+    <string name="setting_title_whitelistCookie">lista blanca Cookie</string>
+    <string name="setting_summary_whitelistCookie">Si deshabilita las cookies, puede utilizar esta lista blanca para permitir que los sitios en los que confíe utilice cookies guardada.</string>
+
+    <string name="setting_title_javascript">JavaScript</string>
+    <string name="setting_summary_javascript">Activar JavaScript. Muchos sitios web necesitan JavaScript para su funcionalidad (menús, carga y visualización de imágenes,…). Pero también son un riesgo y pueden ser utilizados para ataques.</string>
+    <string name="setting_title_whitelistJS">lista blanca Javascript</string>
+    <string name="setting_summary_whitelistJS">Si deshabilita JavaScript, puede utilizar esta lista blanca para permitir que los sitios en los que confía pueda utilizar JavaScript.</string>
+
+    <string name="setting_title_adblock">AdBlock</string>
+    <string name="setting_summary_adblock">Habilite Adblock para bloquear anuncios molestos. Los sitios también se cargan más rápido cuando están activados.</string>
+    <string name="setting_title_whitelist">lista blanca AdBlock</string>
+    <string name="setting_summary_whitelist">Permitir que estos sitios muestren anuncios. Algunos sitios no funcionan, cuando Adblock está habilitado.</string>
+
+    <string name="setting_title_location">Ubicación</string>
+    <string name="setting_summary_location">Permitir que los sitios web accedan a su ubicación. Algunos sitios web (como Google Maps para la navegación) necesitan esto habilitado.</string>
+
+    <string name="setting_title_history">Historia</string>
+    <string name="setting_summary_history">Guarda la historia de los sitios web visitados.</string>
+
+
+    <!-- Browser clear -->
+    <string name="clear_summary">Todos los archivos se exportarán al directorio \"Documentos\" de su tarjeta SD. Cada exportación sobrescribirá a la antigua. Para restaurar debe haber un archivo con el nombre correcto en el directorio.</string>
+    <string name="clear_menu_done_all">Todo listo</string>
+    <string name="clear_title_quit">Limpia después de salir</string>
+    <string name="clear_summary_quit">Cada vez que sales \"Navegador F|L|OSS\" todos los datos anteriores se borrarán.</string>
+    <string name="clear_title_bookmarks">Borrar marcadores</string>
+    <string name="clear_title_cache">Borrar caché</string>
+    <string name="clear_title_cookie">Clear Cookies</string>
+    <string name="clear_title_history">Limpia el historia</string>
+
+    <string name="clear_title_deleteDatabase">Borrar base de datos</string>
+    <string name="clear_summary_deleteDatabase">Elimine toda la base de datos (página de inicio, marcadores, historial y todas las listas blancas).</string>
+
+
+    <!-- App setting -->
+    <string name="setting_title_app">Configuración de la Aplicación</string>
+    <string name="setting_title_ui">Comportamiento/UI</string>
+    <string name="setting_title_data">Respaldo</string>
+    <string name="setting_summary_ui">Cambie el comportamiento y la interfaz de usuario de la aplicación para adaptarse a sus preferencias.</string>
+    <string name="setting_summary_data">Importar y exportar varios datos de App (listas blancas, marcadores).</string>
+
+    <!-- App behavior -->
+    <string name="setting_title_hideToolbar">Ocultar barra de herramientas</string>
+    <string name="setting_summary_hide">Utilice la pantalla completa al desplazarse por sitios Web. Si pulsa el botón atrás, dejará el modo de pantalla completa.</string>
+    <string name="setting_title_omnibox_control">Control Omnibox</string>
+    <string name="setting_summary_omnibox_control">Deslice Omnibox izquierda/derecha para cambiar las pestañas</string>
+    <string name="setting_title_background">Abrir enlaces</string>
+    <string name="setting_summary_background">Mostrar una notificación y abrir enlace en segundo plano. Si los enlaces deshabilitados se abren inmediatamente.</string>
+    <string name="setting_title_themeDark">Light theme</string>
+    <string name="setting_summary_themeDark">¿te gusta un poco más brillante? ¡Hazlo!</string>
+
+    <string name="setting_title_nav">Botón de navegación</string>
+    <string name="setting_title_nav_pos">Posición</string>
+    <string name="setting_summary_nav_pos">Decida dónde se colocará el \"botón de navegación\".</string>
+    <string name="setting_summary_nav_pos_right">Derecha</string>
+    <string name="setting_summary_nav_pos_left">Izquierda</string>
+    <string name="setting_summary_nav_pos_center">Centro</string>
+
+    <string name="setting_title_nav_show">Ocultar</string>
+    <string name="setting_summary_nav_show">Oculte el \"botón de navegación\" cuando se muestre la barra de herramientas.</string>
+
+    <string name="setting_title_tab">Pestañas Iniciar</string>
+    <string name="setting_summary_tab">Lo que debe mostrarse al comienzo de \"Navegador F|L|OSS \"? La página de inicio, los marcadores,…</string>
+
+    <string name="setting_title_confirm_exit">Confirmar salida del Navegador</string>
+    <string name="setting_summary_confirm_exit">Diálogo de confirmación al cerrar el navegador.</string>
+
+    <string name="setting_title_confirm_tab_close">Confirmar cierre de la Pestañas</string>
+    <string name="setting_summary_confirm_tab_close">Diálogo de confirmación al cerrar una pestaña.</string>
+
+    <string name="setting_title_toolbar">Barra de herramientas</string>
+    <string name="setting_hide_always">Ocultar siempre</string>
+    <string name="setting_hide_down">Solo mientras se desplaza hacia abajo</string>
+    <string name="setting_hide_never">Nunca oculta</string>
+
+    <string name="setting_hideNav_always">Ocultar siempre</string>
+    <string name="setting_hideNav_toolbar">Cuando la barra de herramientas muestra</string>
+
+
+    <!-- Data -->
+    <string name="setting_title_export_bookmarks">Exportar Marcadores</string>
+    <string name="setting_title_import_bookmarks">Importar marcadores</string>
+    <string name="export_bookmarks">exportar_marcadores</string>
+
+    <string name="setting_title_export_whitelist">Exportar lista blanca AdBlock</string>
+    <string name="setting_title_import_whitelist">Importar lista blanca AdBlock</string>
+    <string name="export_whitelistAdBlock">exportar_listablanca_Adblock</string>
+
+    <string name="setting_title_export_whitelistJS">Exportar lista blanca JavaScript</string>
+    <string name="setting_title_import_whitelistJS">Importar lista blanca JavaScript</string>
+    <string name="export_whitelistJS">exportar_listablanca_Javascript</string>
+
+    <string name="setting_title_export_whitelistCookie">Exportar lista blanca Cookie</string>
+    <string name="setting_title_import_whitelistCookie">Importar lista blanca Cookie</string>
+    <string name="export_whitelistCookie">exportar_listablanca_Cookie</string>
+
+    <string name="setting_title_export_database">Exportar base de datos</string>
+    <string name="setting_title_import_database">Importar base de datos</string>
+    <string name="setting_summary_export_database">Exporte toda la base de datos (página de inicio + previsualizaciones, historial, marcadores) a su tarjeta SD. Los datos de inicio de sesión no se copiarán.</string>
+    <string name="title_database">Base de datos</string>
+    <string name="hint_database">Esto borrará todas sus configuraciones y datos actuales. ¿Quiere proceder?</string>
+
+
+    <!-- Others setting -->
+    <string name="setting_title_others">Otros</string>
+    <string name="setting_title_license">Licencia</string>
+    <string name="setting_summary_license">\"Navegador F|L|OSS \"es totalmente gratuito (como en libertad) y de código abierto.</string>
+    <string name="setting_title_appSettings">Configuración de la aplicación</string>
+    <string name="setting_summary_appSettings">Abrir la configuración de la aplicación del sistema para Navegador \"F|L|OSS \". Allí puede, dependiendo de su versión de Android permisos de concesión, borrar los datos de la aplicación y así sucesivamente.</string>
+    <string name="setting_title_community">Contribuyendo</string>
+    <string name="setting_summary_community">Vea quién aportó algo a este proyecto. O quieres ayudar con el desarrollo, reportar un problema o simplemente recibir las últimas noticias relacionadas con mis proyectos?</string>
+    <string name="setting_summary_changelog">Mostrar el último cambios para ver qué hay de nuevo.</string>
+
+    <!-- Toast -->
+    <string name="toast_add_bookmark_successful">Marcador agregado con éxito</string>
+    <string name="toast_add_to_home_successful">Agregado con éxito al inicio</string>
+    <string name="toast_add_to_home_failed">No se pudo agregar a la Página principal</string>
+    <string name="toast_add_whitelist_successful">Dominio agregado con éxito</string>
+    <string name="toast_already_exist_in_home">Ya existen en el inicio</string>
+    <string name="toast_copy_successful">Copiado con éxito</string>
+    <string name="toast_delete_successful">Eliminado con éxito</string>
+    <string name="toast_domain_already_exists">El dominio ya existe</string>
+    <string name="toast_export_successful">Exportado como: </string>
+    <string name="toast_export_failed">No se pudo exportar</string>
+    <string name="toast_import_successful">Cuenta importada: </string>
+    <string name="toast_import_failed">No se pudo importar</string>
+    <string name="toast_input_empty">No has introducido nada</string>
+    <string name="toast_invalid_domain">Dominio no válido</string>
+    <string name="toast_load_error">No se puede cargar esta dirección URL</string>
+    <string name="toast_load_in_background">Cargar en el fondo</string>
+    <string name="toast_new_tab_successful">Abierto con éxito en una nueva pestaña</string>
+    <string name="toast_open_file_manager_failed">Error al abrir el administrador de archivos</string>
+    <string name="toast_refresh_failed">No se puede actualizar esta página</string>
+    <string name="toast_relayout_successful">Rediseño con éxito</string>
+    <string name="toast_share_failed">No se puede compartir esta página</string>
+    <string name="toast_start_download">Iniciando descarga</string>
+    <string name="toast_wait_a_minute">Por favor, espere un momento</string>
+    <string name="toast_titleConfirm_delete">¿realmente desea eliminar la entrada?</string>
+    <string name="toast_titleConfirm_paste">¿copiar datos en el portapapeles?</string>
+    <string name="toast_titleConfirm_pasteUN">Usuario</string>
+    <string name="toast_titleConfirm_pastePW">Contraseña</string>
+    <string name="toast_directory">No se puede abrir el directorio</string>
+    <string name="toast_noFile">No se puede abrir el directorio</string>
+    <string name="toast_error">Uuups. Algo salió mal.</string>
+    <string name="toast_newTitle">La entrada ya existe. Por favor ingrese nuevo título.</string>
+    <string name="toast_edit_successful">Guardado con éxito</string>
+    <string name="toast_webview_forward">No se puede cargar el sitio siguiente</string>
+    <string name="toast_entry_exists">La entrada ya existe.</string>
+    <string name="toast_clear">¿de verdad quieres limpia?</string>
+    <string name="toast_permission_title">Se necesita permiso</string>
+    <string name="toast_permission_sdCard">\"Navegador F|L|OSS \"necesita el permiso para\" leer y escribir en su almacenamiento de información \". Esto es necesario para descargar archivos, la compilación en el gestor de archivos y la toma de capturas de pantallas. Si aún no concedes el permiso, puedes hacerlo más tarde en la configuración.</string>
+    <string name="toast_permission_sdCard_sec">Por favor, otorgue el permiso para \"leer y escribir en su almacenamiento\" en la configuración.</string>
+    <string name="toast_permission_loc">\"Navegador F|L|OSS \"necesita el permiso para\" acceder a su ubicación \". Esto se solicita desde algunos sitios web, por ejemplo, cuando ofrecen algún tipo de navegación. Si aún no concedes el permiso, puedes hacerlo más tarde en la configuración.</string>
+    <string name="toast_restart">Debe reiniciar \"Navegador F|L|OSS \" para aplicar cambios. ¿cerrar ahora?</string>
+    <string name="toast_quit">¿desea salir de \"Navegador F|L|OSS\"?</string>
+    <string name="toast_close_tab">¿desea cerrar la pestaña actual?</string>
+    <string name="toast_closeNotification">Cerrar todos los sitios web abiertos.</string>
+    <string name="toast_fileManager">No se puede abrir el archivo. Por favor, use un gestor de archivos.</string>
+    <string name="toast_downloadComplete">Descarga completa. ¿abrir el gestor de archivos?</string>
+    <string name="toast_unsecured">Este sitio web utiliza una conexión no segura (\"http\"). ¿desea probar una conexión segura (\"https\")?</string>
+
+
+    <!-- Whitelist -->
+    <string name="whitelist_menu_clear">Limpia</string>
+    <string name="whitelist_edit_hint">Dominio</string>
+    <string name="whitelist_add">Añadir</string>
+
+</resources>
+

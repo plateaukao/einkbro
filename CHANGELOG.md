@@ -1,4 +1,7 @@
 ### v 5.6.1 (WIP)
+- new: delete indexed databases and local web storage
+- new: Spanish translation (thanks to Herman Nunez)
+- new: confirmation dialog before making backup
 - new: delete separate lists (Startpage, history, ...)
 - new: show unsecured connections
 - new: search engines (Startpage DE, Searx)
