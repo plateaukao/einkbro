@@ -3,6 +3,7 @@ package de.baumann.browser.Task;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -131,7 +132,7 @@ public class ScreenshotTask extends AsyncTask<Void, Void, Boolean> {
                 action_ok.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        ((BrowserActivity) activity).addAlbum(BrowserUnit.FLAG_FILES);
+                        activity.startActivity(new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS));
                         bottomSheetDialog.cancel();
                     }
                 });

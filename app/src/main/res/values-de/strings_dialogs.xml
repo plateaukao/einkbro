@@ -7,16 +7,23 @@
         &lt;i>Projektseite: https://github.com/scoute-dich/Browser&lt;br>
         Änderungen: https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;/i>&lt;br>&lt;br>
 
-        &lt;b>Version: 5.6&lt;/b>&lt;br>
+        &lt;b>Version: 5.7&lt;/b>&lt;br>
         Bitte lies den \"Hilfedialog\" für weitere Informationen.&lt;br>&lt;br>
 
-        \u25AA neu: Schriftgröße einstellen&lt;br>
-        \u25AA neu: alle Internetseiten aus der Benachrichtigung schließen&lt;br>
-        \u25AA neu: Desktopseite anzeigen in den "Schnelleinstellungen"&lt;br>
-        \u25AA verbessert: Links teilen&lt;br>
-        \u25AA verbessert: helles Thema&lt;br>
-        \u25AA verbessert: UI&lt;br>
-        \u25AA fix: Appabstürze
+        \u25AA new: delete indexed databases and local web storage&lt;br>
+        \u25AA new: Spanish translation (thanks to Herman Nunez)&lt;br>
+        \u25AA new: confirmation dialog before making backup&lt;br>
+        \u25AA new: delete separate lists&lt;br>
+        \u25AA new: show unsecured connections and try reloading secure&lt;br>
+        \u25AA new: search engines (Startpage DE, Searx)&lt;br>
+        \u25AA new: notification when download or screenshot complete&lt;br>
+        \u25AA ew: block remote content&lt;br>
+        \u25AA improved Chinese translation (thanks: lishoujun)&lt;br>
+        \u25AA removed: Snackbar (replaced with toasts)&lt;br>
+        \u25AA removed: request desktop site&lt;br>
+        \u25AA removed: build in file manager&lt;br>
+        \u25AA fix: some strings (thanks: gr1sh)&lt;br>
+        \u25AA fix: some urls opening search results
     </string>
 
     <string name="startpage_title">Startseite</string>
@@ -86,11 +93,6 @@
         askerov&lt;br>
         &lt;i>http://git.io/vTHZH&lt;/i>&lt;br>&lt;br>
 
-        &lt;b>Glide&lt;/b>&lt;br>
-        BSD, part MIT and Apache 2.0&lt;br>
-        bumptech&lt;br>
-        &lt;i>https://github.com/bumptech/glide&lt;/i>&lt;br>&lt;br>
-
         &lt;b>Lightning Browser&lt;/b>&lt;br>
         Mozilla Public License Version 2.0&lt;br>
         Anthony Restaino&lt;br>
@@ -122,7 +124,7 @@
         &lt;i>https://forum.xda-developers.com/android/apps-games/app-browser-t3500091&lt;/i>&lt;br>&lt;br>
 
         &lt;b>Github:&lt;/b>&lt;br>
-        Auf Github kannst du den Quellcode von \"F|L|OSS Browser\" einsehen. Das ist die eher technische Lösung. Auch hier kannst du Fehler
+        Auf Github kannst du den Quellcode von \"FOSS Browser\" einsehen. Das ist die eher technische Lösung. Auch hier kannst du Fehler
         melden, Vorschläge äußern oder dich aktiv an der Entwicklung oder Übersetzung beteiligen.&lt;br>
         &lt;i>https://github.com/scoute-dich/browser&lt;/i>&lt;br>&lt;br>&lt;br>
 
@@ -134,7 +136,7 @@
         &lt;i>https://github.com/scoute-dich&lt;/i>&lt;br>&lt;br>
 
         &lt;b>CGSLURP LLC&lt;/b>&lt;br>
-        \u25AA Half AdBlock und \"Desktopseite anzeigen\" in der vorherigen Version von \"F|L|OSS Browser\" möglich zu machen.&lt;br>
+        \u25AA Half AdBlock und \"Desktopseite anzeigen\" in der vorherigen Version von \"FOSS Browser\" möglich zu machen.&lt;br>
         &lt;i>https://github.com/futrDevelopment&lt;/i>&lt;br>&lt;br>
 
         &lt;b>element54&lt;/b>&lt;br>
@@ -147,11 +149,11 @@
         &lt;i>https://github.com/gr1sh&lt;/i>&lt;br>&lt;br>
 
         &lt;b>Herman Nunez&lt;/b>&lt;br>
-        \u25AA fix: Spanische Übersetzung.&lt;br>
+        \u25AA Spanische Übersetzung&lt;br>
         &lt;i>https://github.com/junior012&lt;/i>&lt;br>&lt;br>
 
         &lt;b>Jumping Yang&lt;/b>&lt;br>
-        \u25AA Chinesische Übersetzung in der vorherigen Version von \"F|L|OSS Browser\".&lt;br>
+        \u25AA Chinesische Übersetzung in der vorherigen Version von \"FOSS Browser\".&lt;br>
         &lt;i>https://github.com/JumpingYang001&lt;/i>&lt;br>&lt;br>
 
         &lt;b>lishoujun&lt;/b>&lt;br>
@@ -164,7 +166,7 @@
         &lt;i>https://github.com/Secangkir-Kopi&lt;/i>&lt;br>&lt;br>
 
         &lt;b>splinet&lt;/b>&lt;br>
-        \u25AA Russische Übersetzung in der vorherigen Version von \"F|L|OSS Browser\".&lt;br>
+        \u25AA Russische Übersetzung in der vorherigen Version von \"FOSS Browser\".&lt;br>
         &lt;i>https://github.com/splinet&lt;/i>
 
 

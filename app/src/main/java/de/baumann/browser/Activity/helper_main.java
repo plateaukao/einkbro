@@ -22,27 +22,18 @@ package de.baumann.browser.Activity;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Build;
 import android.preference.PreferenceManager;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatDelegate;
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.util.Linkify;
-import android.util.Log;
-
-import java.io.File;
 
 import de.baumann.browser.Ninja.R;
-import de.baumann.browser.View.NinjaToast;
 
 public class helper_main {
 
@@ -140,111 +131,6 @@ public class helper_main {
             return "";
         }else {
             return  string.replaceAll("'", "\'\'");
-        }
-    }
-
-    public static void open (String extension, Activity activity, File pathFile) {
-
-        switch (extension) {
-            case ".gif":case ".bmp":case ".tiff":case ".svg":case ".png":case ".jpg":case ".JPG":case ".jpeg":
-                helper_main.openFile(activity, pathFile, "image/*");
-                break;
-            case ".m3u8":case ".mp3":case ".wma":case ".midi":case ".wav":case ".aac":case ".aif":case ".amp3":case ".weba":
-                helper_main.openFile(activity, pathFile, "audio/*");
-                break;
-            case ".mpeg":case ".mp4":case ".ogg":case ".webm":case ".qt":case ".3gp":case ".3g2":case ".avi":case ".f4v":
-            case ".flv":case ".h261":case ".h263":case ".h264":case ".asf":case ".wmv":
-                helper_main.openFile(activity, pathFile, "video/*");
-                break;
-            case ".rtx":case ".csv":case ".txt":case ".vcs":case ".vcf":case ".css":case ".ics":case ".conf":case ".config":case ".java":
-                helper_main.openFile(activity, pathFile, "text/*");
-                break;
-            case ".html":
-                helper_main.openFile(activity, pathFile, "text/html");
-                break;
-            //case ".apk":
-            //    helper_main.openFile(activity, pathFile, "application/vnd.file_android.package-archive");
-            //    break;
-            case ".pdf":
-                helper_main.openFile(activity, pathFile, "application/pdf");
-                break;
-            case ".doc":
-                helper_main.openFile(activity, pathFile, "application/msword");
-                break;
-            case ".xls":
-                helper_main.openFile(activity, pathFile, "application/vnd.ms-excel");
-                break;
-            case ".ppt":
-                helper_main.openFile(activity, pathFile, "application/vnd.ms-powerpoint");
-                break;
-            case ".docx":
-                helper_main.openFile(activity, pathFile, "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-                break;
-            case ".pptx":
-                helper_main.openFile(activity, pathFile, "application/vnd.openxmlformats-officedocument.presentationml.presentation");
-                break;
-            case ".xlsx":
-                helper_main.openFile(activity, pathFile, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-                break;
-            case ".odt":
-                helper_main.openFile(activity, pathFile, "application/vnd.oasis.opendocument.text");
-                break;
-            case ".ods":
-                helper_main.openFile(activity, pathFile, "application/vnd.oasis.opendocument.spreadsheet");
-                break;
-            case ".odp":
-                helper_main.openFile(activity, pathFile, "application/vnd.oasis.opendocument.presentation");
-                break;
-            case ".zip":
-                helper_main.openFile(activity, pathFile, "application/zip");
-                break;
-            case ".rar":
-                helper_main.openFile(activity, pathFile, "application/x-rar-compressed");
-                break;
-            case ".epub":
-                helper_main.openFile(activity, pathFile, "application/epub+zip");
-                break;
-            case ".cbz":
-                helper_main.openFile(activity, pathFile, "application/x-cbz");
-                break;
-            case ".cbr":
-                helper_main.openFile(activity, pathFile, "application/x-cbr");
-                break;
-            case ".fb2":
-                helper_main.openFile(activity, pathFile, "application/x-fb2");
-                break;
-            case ".rtf":
-                helper_main.openFile(activity, pathFile, "application/rtf");
-                break;
-            case ".opml":
-                helper_main.openFile(activity, pathFile, "application/opml");
-                break;
-
-            default:
-                NinjaToast.show(activity, activity.getString(R.string.toast_fileManager));
-                break;
-        }
-    }
-
-    private static void openFile(Activity activity, File file, String string) {
-
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_VIEW);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            Uri contentUri = FileProvider.getUriForFile(activity, activity.getApplicationContext().getPackageName() + ".provider", file);
-            intent.setDataAndType(contentUri,string);
-
-        } else {
-            intent.setDataAndType(Uri.fromFile(file),string);
-        }
-
-        try {
-            activity.startActivity (intent);
-        } catch (ActivityNotFoundException e) {
-            Log.w("Browser", "No activity found");
         }
     }
 }

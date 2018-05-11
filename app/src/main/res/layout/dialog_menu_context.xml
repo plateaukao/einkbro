@@ -141,7 +141,6 @@
 
             <LinearLayout
                 android:visibility="gone"
-                android:id="@+id/tv2_menu_share"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"

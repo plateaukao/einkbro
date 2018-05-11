@@ -54,7 +54,6 @@ public class BrowserUnit {
     public static final int FLAG_HISTORY = 0x101;
     public static final int FLAG_HOME = 0x102;
     public static final int FLAG_NINJA = 0x103;
-    public static final int FLAG_FILES = 0x104;
     public static final int FLAG_PASS = 0x105;
 
     public static final String MIME_TYPE_TEXT_PLAIN = "text/plain";

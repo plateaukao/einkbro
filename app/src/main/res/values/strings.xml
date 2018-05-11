@@ -3,7 +3,7 @@
 <resources>
 
     <!-- App -->
-    <string name="app_name">F|L|OSS Browser</string>
+    <string name="app_name">FOSS Browser</string>
     <string name="app_ok">OK</string>
     <string name="app_cancel">Cancel</string>
     <string name="app_close">Close</string>
@@ -34,6 +34,7 @@
     <string name="menu_edit">Edit</string>
     <string name="menu_notification">Notification</string>
     <string name="menu_closeTab">Close tab</string>
+    <string name="menu_download">Open downloads</string>
 
     <string name="menu_share_screenshot">Share screenshot</string>
     <string name="menu_share_link">Share link</string>
@@ -137,7 +138,7 @@
         old one. To restore there must be a file with the right name in the directory.</string>
     <string name="clear_menu_done_all">Done all</string>
     <string name="clear_title_quit">Clear when application exits</string>
-    <string name="clear_summary_quit">Every time you quit \"F|L|OSS Browser\" all above checked data will be deleted.</string>
+    <string name="clear_summary_quit">Every time you quit \"FOSS Browser\" all above checked data will be deleted.</string>
     <string name="clear_title_bookmarks">Clear Bookmarks</string>
     <string name="clear_title_cache">Clear Cache</string>
     <string name="clear_title_cookie">Clear Cookies</string>
@@ -178,7 +179,7 @@
     <string name="setting_summary_nav_show">Hide the \"Navigation Button\" when toolbar is shown.</string>
 
     <string name="setting_title_tab">Start tab</string>
-    <string name="setting_summary_tab">What should be shown at the start of \"F|L|OSS Browser\"? The Start Page, you bookmarks, …</string>
+    <string name="setting_summary_tab">What should be shown at the start of \"FOSS Browser\"? The Start Page, you bookmarks, …</string>
 
     <string name="setting_title_confirm_exit">Confirm browser exit</string>
     <string name="setting_summary_confirm_exit">Confirmation dialog when closing browser.</string>
@@ -223,9 +224,9 @@
     <!-- Others setting -->
     <string name="setting_title_others">Others</string>
     <string name="setting_title_license">License</string>
-    <string name="setting_summary_license">\"F|L|OSS Browser\" is completely free (as in freedom) and open source.</string>
+    <string name="setting_summary_license">\"FOSS Browser\" is completely free (as in freedom) and open source.</string>
     <string name="setting_title_appSettings">App settings</string>
-    <string name="setting_summary_appSettings">Open the system app settings for \"F|L|OSS Browser\". There you can,
+    <string name="setting_summary_appSettings">Open the system app settings for \"FOSS Browser\". There you can,
         depending on your Android version grant permissions, clear the app data and so on.</string>
     <string name="setting_title_community">Contributing</string>
     <string name="setting_summary_community">See who contributed something to this project. Or do you want to help with further
@@ -260,8 +261,6 @@
     <string name="toast_titleConfirm_paste">Copy data to clipboard?</string>
     <string name="toast_titleConfirm_pasteUN">Username</string>
     <string name="toast_titleConfirm_pastePW">Password</string>
-    <string name="toast_directory">Can\'t open directory</string>
-    <string name="toast_noFile">Can\'t open directory</string>
     <string name="toast_error">Uuups. Something went wrong.</string>
     <string name="toast_newTitle">Entry already exists. Please enter new title.</string>
     <string name="toast_edit_successful">Successfully saved</string>
@@ -269,18 +268,17 @@
     <string name="toast_entry_exists">Entry exists already.</string>
     <string name="toast_clear">Do you really want to clear?</string>
     <string name="toast_permission_title">Permission is needed</string>
-    <string name="toast_permission_sdCard">\"F|L|OSS Browser\" needs the permission to \"read and write on your storage\". This is needed for
+    <string name="toast_permission_sdCard">\"FOSS Browser\" needs the permission to \"read and write on your storage\". This is needed for
     downloading files, the build in file manager and taking screenshots. If you don\'t grant the permission yet, you can do it
     later in the settings.</string>
     <string name="toast_permission_sdCard_sec">Please grant the permission to \"read and write on your storage\" in the settings.</string>
-    <string name="toast_permission_loc">\"F|L|OSS Browser\" needs the permission to \"access your location\". This is requested from some
+    <string name="toast_permission_loc">\"FOSS Browser\" needs the permission to \"access your location\". This is requested from some
         websites for example when they offer some kind of navigation. If you don\'t grant the permission yet, you can do it
     later in the settings.</string>
-    <string name="toast_restart">You must restart \"F|L|OSS Browser\" to apply changes. Close now?</string>
-    <string name="toast_quit">Do you want to quit \"F|L|OSS Browser\"?</string>
+    <string name="toast_restart">You must restart \"FOSS Browser\" to apply changes. Close now?</string>
+    <string name="toast_quit">Do you want to quit \"FOSS Browser\"?</string>
     <string name="toast_close_tab">Do you want to close current tab?</string>
     <string name="toast_closeNotification">Close all opened websites.</string>
-    <string name="toast_fileManager">Can not open file. Please use a file manager.</string>
     <string name="toast_downloadComplete">Download complete. Open file manager?</string>
     <string name="toast_unsecured">This website uses an unsecured connection (\"http\"). Do you want to try a secure
         connection (\"https\")?</string>

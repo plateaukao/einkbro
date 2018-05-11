@@ -419,33 +419,35 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/tv_saveLogin"
+                android:visibility="gone"
+                android:id="@+id/tv3_menu_save_as"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
                 android:paddingEnd="8dp"
                 android:paddingStart="8dp"
                 android:background="?attr/selectableItemBackground"
-                android:orientation="horizontal"
-                android:visibility="gone">
+                android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginEnd="16dp"
                     android:gravity="center_vertical"
-                    android:src="@drawable/icon_key" />
+                    android:src="@drawable/icon_menu_save" />
 
                 <TextView
+                    android:text="@string/menu_save_as"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:ellipsize="end"
                     android:gravity="center_vertical"
                     android:maxLines="1"
-                    android:text="@string/menu_save_login"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
             </LinearLayout>
+
+
 
             <LinearLayout
                 android:id="@+id/tv_placeholder"
@@ -560,6 +562,35 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/tv_saveLogin"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:paddingEnd="8dp"
+                android:paddingStart="8dp"
+                android:background="?attr/selectableItemBackground"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="16dp"
+                    android:gravity="center_vertical"
+                    android:src="@drawable/icon_key" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:maxLines="1"
+                    android:text="@string/menu_save_login"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/tv_delete"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
@@ -584,6 +615,35 @@
                     android:gravity="center_vertical"
                     android:maxLines="1"
                     android:text="@string/menu_delete_list"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/tv_download"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:paddingEnd="8dp"
+                android:paddingStart="8dp"
+                android:background="?attr/selectableItemBackground"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="16dp"
+                    android:gravity="center_vertical"
+                    android:src="@drawable/icon_download" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:maxLines="1"
+                    android:text="@string/menu_download"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
             </LinearLayout>
@@ -698,7 +758,8 @@
                 android:id="@+id/floatButton_shareView"
                 android:layout_width="42dp"
                 android:layout_height="2dp"
-                android:background="@color/colorAccent" />
+                android:background="@color/colorAccent"
+                tools:ignore="TooManyViews" />
 
             <ImageButton
                 android:id="@+id/floatButton_share"
@@ -771,5 +832,3 @@
     </LinearLayout>
     
 </LinearLayout>
-
-

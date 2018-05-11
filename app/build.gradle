@@ -8,8 +8,8 @@ android {
         applicationId "de.baumann.browser"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 76
-        versionName "5.6"
+        versionCode 77
+        versionName "5.7"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
     }
@@ -32,6 +32,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:27.1.1'
     compile 'com.android.support:design:27.1.1'
     compile 'com.android.support:cardview-v7:27.1.1'
-    compile 'com.github.bumptech.glide:glide:4.3.1'
     compile 'com.mobapphome.library:mah-encryptor-lib:1.0.1'
 }

@@ -1,15 +1,16 @@
-### v 5.6.1 (WIP)
+### v 5.7
 - new: delete indexed databases and local web storage
 - new: Spanish translation (thanks to Herman Nunez)
 - new: confirmation dialog before making backup
 - new: delete separate lists (Startpage, history, ...)
-- new: show unsecured connections
+- new: show unsecured connections and try reloading secure
 - new: search engines (Startpage DE, Searx)
 - new: notification when download or screenshot complete
 - new: block remote content
 - improved Chinese translation (thanks: lishoujun)
-- removed: Snackbar
+- removed: Snackbar (replaced with toasts)
 - removed: request desktop site
+- removed: build in file manager
 - fix: some strings (thanks: gr1sh)
 - fix: some urls opening search results
 
