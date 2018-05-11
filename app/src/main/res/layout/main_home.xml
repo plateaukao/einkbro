@@ -168,32 +168,6 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="42dp"
-                    android:layout_height="wrap_content">
-
-                    <View
-                        android:visibility="invisible"
-                        android:id="@+id/open_filesView"
-                        android:layout_width="42dp"
-                        android:layout_height="2dp"
-                        android:background="@color/colorAccent" />
-
-                    <ImageButton
-                        android:id="@+id/open_files"
-                        android:layout_width="42dp"
-                        android:layout_height="42dp"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="4dp"
-                        android:layout_marginEnd="2dp"
-                        android:layout_marginStart="2dp"
-                        android:background="?attr/actionBarItemBackground"
-                        android:contentDescription="@null"
-                        android:src="@drawable/icon_download" />
-
-                </LinearLayout>
-
             </LinearLayout>
 
         </RelativeLayout>

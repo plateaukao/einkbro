@@ -44,7 +44,6 @@
     <!-- Start tab -->
     <string-array name="setting_entries_tab">
         <item>@string/album_title_home</item>
-        <item>@string/album_title_files</item>
         <item>@string/album_title_pass</item>
         <item>@string/album_title_bookmarks</item>
         <item>@string/album_title_history</item>
@@ -52,7 +51,6 @@
 
     <string-array name="setting_values_tab">
         <item>0</item>
-        <item>1</item>
         <item>2</item>
         <item>3</item>
         <item>4</item>

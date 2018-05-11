@@ -120,7 +120,7 @@
     要想恢复数据，确保该文件夹下有符合约定文件名的文件。</string>
     <string name="clear_menu_done_all">全部</string>
     <string name="clear_title_quit">退出时清空</string>
-    <string name="clear_summary_quit">每次你退出 \"F|L|OSS 浏览器\" 上面勾选的都会被删除。</string>
+    <string name="clear_summary_quit">每次你退出 \"FOSS 浏览器\" 上面勾选的都会被删除。</string>
     <string name="clear_title_bookmarks">清空书签</string>
     <string name="clear_title_cache">清空缓存</string>
     <string name="clear_title_cookie">清空 Cookies</string>
@@ -239,8 +239,6 @@
     <string name="toast_titleConfirm_paste">复制数据到粘贴板？</string>
     <string name="toast_titleConfirm_pasteUN">用户名</string>
     <string name="toast_titleConfirm_pastePW">密码</string>
-    <string name="toast_directory">无法打开文件夹</string>
-    <string name="toast_noFile">无法打开文件夹</string>
     <string name="toast_error">哦，程序出错了</string>
     <string name="toast_newTitle">已经存在了，换个名字吧</string>
     <string name="toast_edit_successful">保存成功</string>
@@ -260,7 +258,6 @@
     <string name="toast_quit">你确定要退出浏览器么？</string>
     <string name="toast_close_tab">你确定关闭当前标签？</string>
     <string name="toast_closeNotification">关闭所有打开的网页。</string>
-    <string name="toast_fileManager">无法打开此文件，请尝试用文件管理器打开。</string>
     <string name="toast_downloadComplete">下载完成，是否打开文件管理器？</string>
 
     <!-- Whitelist -->

@@ -76,18 +76,14 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.VideoView;
 
-import com.bumptech.glide.Glide;
 import com.mobapphome.mahencryptorlib.MAHEncryptor;
 
 import org.askerov.dynamicgrid.DynamicGridView;
 
-import java.io.File;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
@@ -100,7 +96,6 @@ import de.baumann.browser.Browser.BrowserContainer;
 import de.baumann.browser.Browser.BrowserController;
 import de.baumann.browser.Browser.Cookie;
 import de.baumann.browser.Browser.Javascript;
-import de.baumann.browser.Database.Files;
 import de.baumann.browser.Database.Pass;
 import de.baumann.browser.Database.Record;
 import de.baumann.browser.Database.RecordAction;
@@ -124,7 +119,6 @@ import de.baumann.browser.View.SwipeToBoundListener;
 import de.baumann.browser.View.SwitcherPanel;
 
 import static android.content.ContentValues.TAG;
-import static java.lang.String.valueOf;
 
 @SuppressWarnings({"ResultOfMethodCallIgnored", "FieldCanBeLocal", "ApplySharedPref"})
 public class BrowserActivity extends Activity implements BrowserController, View.OnClickListener {
@@ -147,12 +141,14 @@ public class BrowserActivity extends Activity implements BrowserController, View
     private LinearLayout tv_searchSite;
     private LinearLayout tv_settings;
     private LinearLayout tv_help;
+    private LinearLayout tv_download;
     private LinearLayout tv_placeHolder;
     private LinearLayout tv_placeHolder_2;
     private LinearLayout tv_delete;
 
     private LinearLayout tv_saveScreenshot;
     private LinearLayout tv_saveBookmark;
+    private LinearLayout tv3_menu_save_as;
     private LinearLayout tv_saveStart;
     private LinearLayout tv_saveLogin;
 
@@ -161,7 +157,6 @@ public class BrowserActivity extends Activity implements BrowserController, View
     private LinearLayout tv2_menu_edit;
     private LinearLayout tv2_menu_delete;
     private LinearLayout tv2_menu_notification;
-    private LinearLayout tv2_menu_share;
 
     private LinearLayout floatButton_saveLayout;
     private LinearLayout floatButton_shareLayout;
@@ -232,30 +227,6 @@ public class BrowserActivity extends Activity implements BrowserController, View
     private AdBlock adBlock;
     private AdBlock getAdBlock() {
         return adBlock;
-    }
-
-    private static String getReadableFileSize(long size) {
-        final int BYTES_IN_KILOBYTES = 1024;
-        final DecimalFormat dec = new DecimalFormat("###.#");
-        final String KILOBYTES = " KB";
-        final String MEGABYTES = " MB";
-        final String GIGABYTES = " GB";
-        float fileSize = 0;
-        String suffix = KILOBYTES;
-
-        if (size > BYTES_IN_KILOBYTES) {
-            fileSize = size / BYTES_IN_KILOBYTES;
-            if (fileSize > BYTES_IN_KILOBYTES) {
-                fileSize = fileSize / BYTES_IN_KILOBYTES;
-                if (fileSize > BYTES_IN_KILOBYTES) {
-                    fileSize = fileSize / BYTES_IN_KILOBYTES;
-                    suffix = GIGABYTES;
-                } else {
-                    suffix = MEGABYTES;
-                }
-            }
-        }
-        return valueOf(dec.format(fileSize) + suffix);
     }
 
     private static final float[] NEGATIVE_COLOR = {
@@ -359,7 +330,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
         if (sp.getString("start_tab", "0").equals("0")) {
             start_tab = BrowserUnit.FLAG_HOME;
         } else if (sp.getString("start_tab", "0").equals("1")) {
-            start_tab = BrowserUnit.FLAG_FILES;
+            start_tab = BrowserUnit.FLAG_HOME;
         } else if (sp.getString("start_tab", "0").equals("2")) {
             start_tab = BrowserUnit.FLAG_PASS;
         } else if (sp.getString("start_tab", "0").equals("3")) {
@@ -516,7 +487,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 action_ok.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        addAlbum(BrowserUnit.FLAG_FILES);
+                        startActivity(new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS));
                         bottomSheetDialog.cancel();
                     }
                 });
@@ -1042,6 +1013,81 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 showSearchPanel();
                 break;
 
+            case R.id.tv3_menu_save_as:
+                bottomSheetDialog.cancel();
+                try {
+                    String filename = url.substring(url.lastIndexOf("/")+1);
+
+                    AlertDialog.Builder builder2 = new AlertDialog.Builder(BrowserActivity.this);
+                    View dialogView2 = View.inflate(BrowserActivity.this, R.layout.dialog_edit, null);
+
+                    final EditText editText = dialogView2.findViewById(R.id.dialog_edit);
+
+                    editText.setHint(R.string.dialog_title_hint);
+                    editText.setText(filename);
+                    editText.setSelection(filename.length());
+
+                    builder2.setView(dialogView2);
+                    builder2.setTitle(R.string.menu_edit);
+                    builder2.setPositiveButton(R.string.app_ok, new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int whichButton) {
+
+                            String text = editText.getText().toString().trim();
+                            if (text.isEmpty()) {
+                                NinjaToast.show(BrowserActivity.this, getString(R.string.toast_input_empty));
+                            } else {
+
+                                if (android.os.Build.VERSION.SDK_INT >= 23) {
+                                    int hasWRITE_EXTERNAL_STORAGE = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                                    if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
+                                        NinjaToast.show(BrowserActivity.this, R.string.toast_permission_sdCard_sec);
+                                    } else {
+                                        Uri source = Uri.parse(url);
+                                        DownloadManager.Request request = new DownloadManager.Request(source);
+                                        request.addRequestHeader("Cookie", CookieManager.getInstance().getCookie(url));
+                                        request.allowScanningByMediaScanner();
+                                        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); //Notify client once download is completed!
+                                        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, text);
+                                        DownloadManager dm = (DownloadManager) BrowserActivity.this.getSystemService(DOWNLOAD_SERVICE);
+                                        assert dm != null;
+                                        dm.enqueue(request);
+                                        hideSoftInput(editText);
+                                    }
+                                } else {
+                                    Uri source = Uri.parse(url);
+                                    DownloadManager.Request request = new DownloadManager.Request(source);
+                                    request.addRequestHeader("Cookie", CookieManager.getInstance().getCookie(url));
+                                    request.allowScanningByMediaScanner();
+                                    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); //Notify client once download is completed!
+                                    request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, text);
+                                    DownloadManager dm = (DownloadManager) BrowserActivity.this.getSystemService(DOWNLOAD_SERVICE);
+                                    assert dm != null;
+                                    dm.enqueue(request);
+                                    hideSoftInput(editText);
+                                }
+
+                            }
+                        }
+                    });
+                    builder2.setNegativeButton(R.string.app_cancel, new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            dialog.cancel();
+                            hideSoftInput(editText);
+                        }
+                    });
+
+                    AlertDialog dialog2 = builder2.create();
+                    dialog2.show();
+                    bottomSheetDialog.cancel();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+                break;
+
             case R.id.tv_settings:
                 bottomSheetDialog.cancel();
                 Intent settings = new Intent(BrowserActivity.this, Settings_Activity.class);
@@ -1093,6 +1139,11 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 showHelpDialog();
                 break;
 
+            case R.id.tv_download:
+                bottomSheetDialog.cancel();
+                startActivity(new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS));
+                break;
+
             case R.id.floatButton_tab:
                 tv_new_tabOpen.setVisibility(View.VISIBLE);
                 tv_closeTab.setVisibility(View.VISIBLE);
@@ -1106,6 +1157,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
 
                 tv_saveScreenshot.setVisibility(View.GONE);
                 tv_saveBookmark.setVisibility(View.GONE);
+                tv3_menu_save_as.setVisibility(View.GONE);
                 tv_saveStart.setVisibility(View.GONE);
                 tv_saveLogin.setVisibility(View.GONE);
 
@@ -1121,6 +1173,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 tv_settings.setVisibility(View.GONE);
                 tv_delete.setVisibility(View.GONE);
                 tv_help.setVisibility(View.GONE);
+                tv_download.setVisibility(View.GONE);
                 break;
 
             case R.id.floatButton_share:
@@ -1136,6 +1189,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
 
                 tv_saveScreenshot.setVisibility(View.GONE);
                 tv_saveBookmark.setVisibility(View.GONE);
+                tv3_menu_save_as.setVisibility(View.GONE);
                 tv_saveStart.setVisibility(View.GONE);
                 tv_saveLogin.setVisibility(View.GONE);
 
@@ -1151,6 +1205,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 tv_settings.setVisibility(View.GONE);
                 tv_delete.setVisibility(View.GONE);
                 tv_help.setVisibility(View.GONE);
+                tv_download.setVisibility(View.GONE);
                 break;
 
             case R.id.floatButton_save:
@@ -1166,8 +1221,9 @@ public class BrowserActivity extends Activity implements BrowserController, View
 
                 tv_saveScreenshot.setVisibility(View.VISIBLE);
                 tv_saveBookmark.setVisibility(View.VISIBLE);
+                tv3_menu_save_as.setVisibility(View.VISIBLE);
                 tv_saveStart.setVisibility(View.VISIBLE);
-                tv_saveLogin.setVisibility(View.VISIBLE);
+                tv_saveLogin.setVisibility(View.GONE);
 
                 tv_relayout.setVisibility(View.GONE);
                 tv_searchSite.setVisibility(View.GONE);
@@ -1182,6 +1238,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 tv_settings.setVisibility(View.GONE);
                 tv_delete.setVisibility(View.GONE);
                 tv_help.setVisibility(View.GONE);
+                tv_download.setVisibility(View.GONE);
                 break;
 
             case R.id.floatButton_more:
@@ -1197,21 +1254,22 @@ public class BrowserActivity extends Activity implements BrowserController, View
 
                 tv_saveScreenshot.setVisibility(View.GONE);
                 tv_saveBookmark.setVisibility(View.GONE);
+                tv3_menu_save_as.setVisibility(View.GONE);
                 tv_saveStart.setVisibility(View.GONE);
-                tv_saveLogin.setVisibility(View.GONE);
 
                 floatButton_tabView.setVisibility(View.INVISIBLE);
                 floatButton_saveView.setVisibility(View.INVISIBLE);
                 floatButton_shareView.setVisibility(View.INVISIBLE);
                 floatButton_moreView.setVisibility(View.VISIBLE);
 
-
                 tv_settings.setVisibility(View.VISIBLE);
-                tv_help.setVisibility(View.VISIBLE);
                 tv_delete.setVisibility(View.VISIBLE);
 
                 if (currentAlbumController != null && currentAlbumController instanceof NinjaRelativeLayout) {
                     tv_searchSite.setVisibility(View.GONE);
+                    tv_saveLogin.setVisibility(View.GONE);
+                    tv_help.setVisibility(View.VISIBLE);
+                    tv_download.setVisibility(View.GONE);
 
                     if (ninjaRelativeLayout.getFlag() == BrowserUnit.FLAG_HOME) {
                         tv_relayout.setVisibility(View.VISIBLE);
@@ -1220,16 +1278,14 @@ public class BrowserActivity extends Activity implements BrowserController, View
                         tv_relayout.setVisibility(View.GONE);
                         tv_placeHolder_2.setVisibility(View.VISIBLE);
                     }
-
-                    if (ninjaRelativeLayout.getFlag() == BrowserUnit.FLAG_FILES) {
-                        tv_placeHolder.setVisibility(View.VISIBLE);
-                        tv_delete.setVisibility(View.GONE);
-                    }
                 } else if (currentAlbumController != null && currentAlbumController instanceof NinjaWebView) {
                     tv_searchSite.setVisibility(View.VISIBLE);
                     tv_relayout.setVisibility(View.GONE);
-                    tv_placeHolder_2.setVisibility(View.VISIBLE);
+                    tv_placeHolder_2.setVisibility(View.GONE);
                     tv_delete.setVisibility(View.GONE);
+                    tv_saveLogin.setVisibility(View.VISIBLE);
+                    tv_help.setVisibility(View.GONE);
+                    tv_download.setVisibility(View.VISIBLE);
                 }
 
                 break;
@@ -1505,21 +1561,18 @@ public class BrowserActivity extends Activity implements BrowserController, View
         final DynamicGridView gridView = layout.findViewById(R.id.home_grid);
         final ListView home_list = layout.findViewById(R.id.home_list);
         final View open_newTabView = layout.findViewById(R.id.open_newTabView);
-        final View open_filesView = layout.findViewById(R.id.open_filesView);
         final View open_passView = layout.findViewById(R.id.open_passView);
         final View open_bookmarkView = layout.findViewById(R.id.open_bookmarkView);
         final View open_historyView = layout.findViewById(R.id.open_historyView);
 
         ImageButton open_pass = layout.findViewById(R.id.open_pass);
         ImageButton open_newTab = layout.findViewById(R.id.open_newTab);
-        ImageButton open_files = layout.findViewById(R.id.open_files);
         ImageButton open_bookmark = layout.findViewById(R.id.open_bookmark);
         ImageButton open_history = layout.findViewById(R.id.open_history);
 
         if (current_tab == BrowserUnit.FLAG_HOME) {
 
             open_newTabView.setVisibility(View.VISIBLE);
-            open_filesView.setVisibility(View.INVISIBLE);
             open_passView.setVisibility(View.INVISIBLE);
             open_bookmarkView.setVisibility(View.INVISIBLE);
             open_historyView.setVisibility(View.INVISIBLE);
@@ -1563,7 +1616,6 @@ public class BrowserActivity extends Activity implements BrowserController, View
 
             if (current_tab == BrowserUnit.FLAG_BOOKMARKS) {
                 open_newTabView.setVisibility(View.INVISIBLE);
-                open_filesView.setVisibility(View.INVISIBLE);
                 open_passView.setVisibility(View.INVISIBLE);
                 open_bookmarkView.setVisibility(View.VISIBLE);
                 open_historyView.setVisibility(View.INVISIBLE);
@@ -1572,45 +1624,14 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 initBHList(layout);
             } else if (current_tab == BrowserUnit.FLAG_HISTORY) {
                 open_newTabView.setVisibility(View.INVISIBLE);
-                open_filesView.setVisibility(View.INVISIBLE);
                 open_passView.setVisibility(View.INVISIBLE);
                 open_bookmarkView.setVisibility(View.INVISIBLE);
                 open_historyView.setVisibility(View.VISIBLE);
                 layout.setAlbumTitle(getString(R.string.album_title_history));
                 layout.setFlag(BrowserUnit.FLAG_HISTORY);
                 initBHList(layout);
-            } else if (current_tab == BrowserUnit.FLAG_FILES) {
-
-                if (android.os.Build.VERSION.SDK_INT >= 23) {
-                    int hasWRITE_EXTERNAL_STORAGE = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                    if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
-                        NinjaToast.show(BrowserActivity.this, R.string.toast_permission_sdCard_sec);
-                    } else {
-                        open_newTabView.setVisibility(View.INVISIBLE);
-                        open_filesView.setVisibility(View.VISIBLE);
-                        open_passView.setVisibility(View.INVISIBLE);
-                        open_bookmarkView.setVisibility(View.INVISIBLE);
-                        open_historyView.setVisibility(View.INVISIBLE);
-                        layout.setAlbumTitle(getString(R.string.album_title_files));
-                        layout.setFlag(BrowserUnit.FLAG_FILES);
-                        sp.edit().putString("files_startFolder", Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath()).apply();
-                        initFEList(layout);
-                    }
-                } else {
-                    open_newTabView.setVisibility(View.INVISIBLE);
-                    open_filesView.setVisibility(View.VISIBLE);
-                    open_passView.setVisibility(View.INVISIBLE);
-                    open_bookmarkView.setVisibility(View.INVISIBLE);
-                    open_historyView.setVisibility(View.INVISIBLE);
-                    layout.setAlbumTitle(getString(R.string.album_title_files));
-                    layout.setFlag(BrowserUnit.FLAG_FILES);
-                    sp.edit().putString("files_startFolder", Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath()).apply();
-                    initFEList(layout);
-                }
-
             } else if (current_tab == BrowserUnit.FLAG_PASS) {
                 open_newTabView.setVisibility(View.INVISIBLE);
-                open_filesView.setVisibility(View.INVISIBLE);
                 open_passView.setVisibility(View.VISIBLE);
                 open_bookmarkView.setVisibility(View.INVISIBLE);
                 open_historyView.setVisibility(View.INVISIBLE);
@@ -1634,15 +1655,6 @@ public class BrowserActivity extends Activity implements BrowserController, View
             public void onClick(View v) {
                 layout.setFlag(BrowserUnit.FLAG_HOME);
                 layout.setAlbumTitle(getString(R.string.album_title_home));
-                initHomeGrid(layout);
-            }
-        });
-
-        open_files.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                layout.setFlag(BrowserUnit.FLAG_FILES);
-                layout.setAlbumTitle(getString(R.string.album_title_files));
                 initHomeGrid(layout);
             }
         });
@@ -1781,274 +1793,6 @@ public class BrowserActivity extends Activity implements BrowserController, View
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 showListMenu(adapter, list, position);
-                return true;
-            }
-        });
-    }
-
-    private void initFEList(final NinjaRelativeLayout layout) {
-
-        deleteDatabase("browser_files.db");
-
-        Files db = new Files(this);
-        db.open();
-
-        String path = sp.getString("files_startFolder",
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath());
-
-        File f = new File(path);
-        File[] files = f.listFiles();
-
-        // looping through all items <item>
-        if (files == null || files.length == 0) {
-            NinjaToast.show(BrowserActivity.this, getString(R.string.toast_noFile));
-            files = (new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).
-                    getAbsolutePath())).listFiles();
-        }
-
-        for (File file : files) {
-
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-
-            String file_Name = helper_main.secString(file.getName());
-            String file_Size = getReadableFileSize(file.length());
-            String file_date = formatter.format(new Date(file.lastModified()));
-            String file_path = file.getAbsolutePath();
-
-            String file_ext;
-            if (file.isDirectory()) {
-                file_ext = ".";
-            } else {
-                try {
-                    file_ext = file.getAbsolutePath().substring(file.getAbsolutePath().lastIndexOf("."));
-                } catch (Exception e) {
-                    file_ext = file.getAbsolutePath().substring(file.getAbsolutePath().lastIndexOf("/"));
-                }
-            }
-
-            db.open();
-            if(db.isExist(file_Name)) {
-                Log.i(TAG, "Entry exists" + file_Name);
-            } else {
-                db.insert(file_Name, file_Size, file_ext, file_path, file_date);
-            }
-        }
-
-        try {
-            db.insert("...", "", "", "", "");
-        } catch (Exception e) {
-            Log.i(TAG, "Browser something went wrong");
-        }
-
-        //display data
-
-        listView = layout.findViewById(R.id.home_list);
-
-        final int layoutstyle= R.layout.list_item;
-        int[] xml_id = new int[] {
-                R.id.record_item_title,
-                R.id.record_item_url,
-                R.id.record_item_time
-        };
-        String[] column = new String[] {
-                "files_title",
-                "files_creation",
-                "files_content"
-        };
-        final Cursor row = db.fetchAllData();
-
-        SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, layoutstyle,row,column, xml_id, 0) {
-            @Override
-            public View getView (final int position, View convertView, ViewGroup parent) {
-
-                View v = super.getView(position, convertView, parent);
-
-                try {
-                    Cursor row = (Cursor) listView.getItemAtPosition(position);
-                    String files_icon = row.getString(row.getColumnIndexOrThrow("files_icon"));
-                    String files_attachment = row.getString(row.getColumnIndexOrThrow("files_attachment"));
-
-                    ImageView iv = v.findViewById(R.id.icon);
-                    iv.setVisibility(View.VISIBLE);
-
-                    if (files_icon.matches("")) {
-                        iv.setImageResource(R.drawable.file_up);
-                    } else if (files_icon.matches("(.)")) {
-                        iv.setImageResource(R.drawable.file_folder);
-                    } else if (files_icon.matches("(.m3u8|.mp3|.wma|.midi|.wav|.aac|.aif|.amp3|.weba|.ogg)")) {
-                        iv.setImageResource(R.drawable.file_music);
-                    } else if (files_icon.matches("(.mpeg|.mp4|.webm|.qt|.3gp|.3g2|.avi|.flv|.h261|.h263|.h264|.asf|.wmv)")) {
-                        try {
-                            Glide.with(BrowserActivity.this).load(files_attachment).into(iv);
-                        } catch (Exception e) {
-                            Log.w("Browser", "Error load thumbnail", e);
-                            iv.setImageResource(R.drawable.file_video);
-                        }
-                    } else if(files_icon.matches("(.gif|.bmp|.tiff|.svg|.png|.jpg|.JPG|.jpeg)")) {
-                        try {
-                            Glide.with(BrowserActivity.this).load(files_attachment).into(iv);
-                        } catch (Exception e) {
-                            Log.w("Browser", "Error load thumbnail", e);
-                            iv.setImageResource(R.drawable.file_image);
-                        }
-                    } else if (files_icon.matches("(.vcs|.vcf|.css|.ics|.conf|.config|.java|.html)")) {
-                        iv.setImageResource(R.drawable.file_xml);
-                    } else if (files_icon.matches("(.apk)")) {
-                        iv.setImageResource(R.drawable.file_android);
-                    } else if (files_icon.matches("(.pdf)")) {
-                        iv.setImageResource(R.drawable.file_pdf);
-                    } else if (files_icon.matches("(.rtf|.csv|.txt|.doc|.xls|.ppt|.docx|.pptx|.xlsx|.odt|.ods|.odp)")) {
-                        iv.setImageResource(R.drawable.file_document);
-                    } else if (files_icon.matches("(.zip|.rar)")) {
-                        iv.setImageResource(R.drawable.file_zip_box);
-                    } else {
-                        iv.setImageResource(R.drawable.file);
-                    }
-                } catch (Exception e) {
-                    initFEList(layout);
-                    NinjaToast.show(BrowserActivity.this, R.string.toast_error);
-                }
-                return v;
-            }
-        };
-
-        listView.setAdapter(adapter);
-
-        //onClick function
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterview, View view, int position, long id) {
-
-                try {
-                    Cursor row = (Cursor) listView.getItemAtPosition(position);
-                    final String files_icon = row.getString(row.getColumnIndexOrThrow("files_icon"));
-                    final String files_attachment = row.getString(row.getColumnIndexOrThrow("files_attachment"));
-                    final File pathFile = new File(files_attachment);
-
-                    if(pathFile.isDirectory()) {
-                        String preFolder = sp.getString("files_startFolder",
-                                Environment.getExternalStorageDirectory().getPath());
-                        try {
-                            sp.edit().putString("files_startFolder", files_attachment).apply();
-                            initFEList(layout);
-                        } catch (Exception e) {
-                            NinjaToast.show(BrowserActivity.this, getString(R.string.toast_directory));
-                            //set files_startFolder preFolder if has Exception
-                            sp.edit().putString("files_startFolder", preFolder).apply();
-                        }
-                    } else if(files_attachment.equals("")) {
-                        try {
-                            final File pathActual = new File(sp.getString("files_startFolder",
-                                    Environment.getExternalStorageDirectory().getPath()));
-                            sp.edit().putString("files_startFolder", pathActual.getParent()).apply();
-                            initFEList(layout);
-                        } catch (Exception e) {
-                            NinjaToast.show(BrowserActivity.this, getString(R.string.toast_directory));
-                        }
-                    } else {
-                        helper_main.open(files_icon, BrowserActivity.this, pathFile);
-                    }
-                } catch (Exception e) {
-                    initFEList(layout);
-                    NinjaToast.show(BrowserActivity.this, R.string.toast_error);
-                }
-            }
-        });
-
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-
-                try {
-                    Cursor row = (Cursor) listView.getItemAtPosition(position);
-                    final String files_title = row.getString(row.getColumnIndexOrThrow("files_title"));
-                    final String files_attachment = row.getString(row.getColumnIndexOrThrow("files_attachment"));
-                    final File pathFile = new File(files_attachment);
-
-                    if (pathFile.isDirectory()) {
-
-                        bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
-                        View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_action, null);
-                        TextView textView = dialogView.findViewById(R.id.dialog_text);
-                        textView.setText(R.string.toast_titleConfirm_delete);
-                        Button action_ok = dialogView.findViewById(R.id.action_ok);
-                        action_ok.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                sp.edit().putString("files_startFolder", pathFile.getParent()).apply();
-                                deleteRecursive(pathFile);
-                                initFEList(layout);
-                                bottomSheetDialog.cancel();
-                            }
-                        });
-                        Button action_cancel = dialogView.findViewById(R.id.action_cancel);
-                        action_cancel.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                bottomSheetDialog.cancel();
-                            }
-                        });
-                        bottomSheetDialog.setContentView(dialogView);
-                        bottomSheetDialog.show();
-
-                    } else {
-
-                        bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
-                        View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_menu_context, null);
-
-                        tv2_menu_share = dialogView.findViewById(R.id.tv2_menu_share);
-                        tv2_menu_share.setVisibility(View.VISIBLE);
-                        tv2_menu_share.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-                                sharingIntent.setType("image/png");
-                                sharingIntent.putExtra(Intent.EXTRA_SUBJECT, files_title);
-                                sharingIntent.putExtra(Intent.EXTRA_TEXT, files_title);
-                                Uri bmpUri = Uri.fromFile(pathFile);
-                                sharingIntent.putExtra(Intent.EXTRA_STREAM, bmpUri);
-                                startActivity(Intent.createChooser(sharingIntent, getString(R.string.menu_share)));
-                                bottomSheetDialog.cancel();
-                            }
-                        });
-
-                        tv2_menu_delete = dialogView.findViewById(R.id.tv2_menu_delete);
-                        tv2_menu_delete.setVisibility(View.VISIBLE);
-                        tv2_menu_delete.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                bottomSheetDialog.cancel();
-                                bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
-                                View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_action, null);
-                                TextView textView = dialogView.findViewById(R.id.dialog_text);
-                                textView.setText(R.string.toast_titleConfirm_delete);
-                                Button action_ok = dialogView.findViewById(R.id.action_ok);
-                                action_ok.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        pathFile.delete();
-                                        initFEList(layout);
-                                        bottomSheetDialog.cancel();
-                                    }
-                                });
-                                Button action_cancel = dialogView.findViewById(R.id.action_cancel);
-                                action_cancel.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        bottomSheetDialog.cancel();
-                                    }
-                                });
-                                bottomSheetDialog.setContentView(dialogView);
-                                bottomSheetDialog.show();
-                            }
-                        });
-
-                        bottomSheetDialog.setContentView(dialogView);
-                        bottomSheetDialog.show();
-                    }
-                } catch (Exception e) {
-                    initFEList(layout);
-                    NinjaToast.show(BrowserActivity.this, R.string.toast_error);
-                }
                 return true;
             }
         });
@@ -2631,18 +2375,6 @@ public class BrowserActivity extends Activity implements BrowserController, View
         }
     }
 
-
-
-    private void deleteRecursive(File fileOrDirectory) {
-
-        if (fileOrDirectory.isDirectory()) {
-            for (File child : fileOrDirectory.listFiles()) {
-                deleteRecursive(child);
-            }
-        }
-        fileOrDirectory.delete();
-    }
-
     public synchronized void addAlbum(int flag) {
 
         showOmnibox();
@@ -3168,7 +2900,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
             }
         });
 
-        LinearLayout tv3_menu_save_as = dialogView.findViewById(R.id.tv3_menu_save_as);
+        tv3_menu_save_as = dialogView.findViewById(R.id.tv3_menu_save_as);
         tv3_menu_save_as.setVisibility(View.VISIBLE);
         tv3_menu_save_as.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -3225,12 +2957,10 @@ public class BrowserActivity extends Activity implements BrowserController, View
                                     dm.enqueue(request);
                                     hideSoftInput(editText);
                                 }
-
                             }
                         }
                     });
                     builder.setNegativeButton(R.string.app_cancel, new DialogInterface.OnClickListener() {
-
                         public void onClick(DialogInterface dialog, int whichButton) {
                             dialog.cancel();
                             hideSoftInput(editText);
@@ -3243,6 +2973,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
             }
         });
     }
@@ -3472,6 +3203,8 @@ public class BrowserActivity extends Activity implements BrowserController, View
         tv_saveScreenshot.setOnClickListener(BrowserActivity.this);
         tv_saveBookmark = dialogView.findViewById(R.id.tv_saveBookmark);
         tv_saveBookmark.setOnClickListener(BrowserActivity.this);
+        tv3_menu_save_as = dialogView.findViewById(R.id.tv3_menu_save_as);
+        tv3_menu_save_as.setOnClickListener(BrowserActivity.this);
         tv_saveStart = dialogView.findViewById(R.id.tv_saveStart);
         tv_saveStart.setOnClickListener(BrowserActivity.this);
         tv_saveLogin = dialogView.findViewById(R.id.tv_saveLogin);
@@ -3487,6 +3220,8 @@ public class BrowserActivity extends Activity implements BrowserController, View
         tv_delete.setOnClickListener(BrowserActivity.this);
         tv_help = dialogView.findViewById(R.id.tv_help);
         tv_help.setOnClickListener(BrowserActivity.this);
+        tv_download = dialogView.findViewById(R.id.tv_download);
+        tv_download.setOnClickListener(BrowserActivity.this);
         tv_placeHolder = dialogView.findViewById(R.id.tv_placeholder);
         tv_placeHolder_2 = dialogView.findViewById(R.id.tv_placeholder_2);
 

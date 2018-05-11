@@ -7,16 +7,23 @@
         &lt;i>Project site: https://github.com/scoute-dich/Browser&lt;br>
         Changelog: https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;/i>&lt;br>&lt;br>
 
-        &lt;b>Version: 5.6&lt;/b>&lt;br>
+        &lt;b>Version: 5.7&lt;/b>&lt;br>
         Please read the \"Help dialog\" for more information.&lt;br>&lt;br>
 
-        \u25AA new: increase font size&lt;br>
-        \u25AA new: close all websites from notification&lt;br>
-        \u25AA new: desktop mode in "Fast toggle dialog"&lt;br>
-        \u25AA improved: link sharing&lt;br>
-        \u25AA improved: light theme&lt;br>
-        \u25AA improved: UI&lt;br>
-        \u25AA fix: some force closes
+        \u25AA new: delete indexed databases and local web storage&lt;br>
+        \u25AA new: Spanish translation (thanks to Herman Nunez)&lt;br>
+        \u25AA new: confirmation dialog before making backup&lt;br>
+        \u25AA new: delete separate lists&lt;br>
+        \u25AA new: show unsecured connections and try reloading secure&lt;br>
+        \u25AA new: search engines (Startpage DE, Searx)&lt;br>
+        \u25AA new: notification when download or screenshot complete&lt;br>
+        \u25AA ew: block remote content&lt;br>
+        \u25AA improved Chinese translation (thanks: lishoujun)&lt;br>
+        \u25AA removed: Snackbar (replaced with toasts)&lt;br>
+        \u25AA removed: request desktop site&lt;br>
+        \u25AA removed: build in file manager&lt;br>
+        \u25AA fix: some strings (thanks: gr1sh)&lt;br>
+        \u25AA fix: some urls opening search results
     </string>
 
     <string name="startpage_title">Startpage</string>
@@ -88,11 +95,6 @@
         askerov&lt;br>
         &lt;i>http://git.io/vTHZH&lt;/i>&lt;br>&lt;br>
 
-        &lt;b>Glide&lt;/b>&lt;br>
-        BSD, part MIT and Apache 2.0&lt;br>
-        bumptech&lt;br>
-        &lt;i>https://github.com/bumptech/glide&lt;/i>&lt;br>&lt;br>
-
         &lt;b>Lightning Browser&lt;/b>&lt;br>
         Mozilla Public License Version 2.0&lt;br>
         Anthony Restaino&lt;br>
@@ -120,11 +122,11 @@
 
         &lt;b>XDA-thread:&lt;/b>&lt;br>
         XDA is a great community for developers and smartphone enthusiasts. Here you can report issues, ask for new features
-        and everything other related to \"F|L|OSS Browser\".&lt;br>
+        and everything other related to \"FOSS Browser\".&lt;br>
         &lt;i>https://forum.xda-developers.com/android/apps-games/app-browser-t3500091&lt;/i>&lt;br>&lt;br>
 
         &lt;b>Github:&lt;/b>&lt;br>
-        On Github you can see the source code of \"F|L|OSS Browser\". This is the more technical solution: open issues, ask for new
+        On Github you can see the source code of \"FOSS Browser\". This is the more technical solution: open issues, ask for new
         features or even help developing or translating.&lt;br>
         &lt;i>https://github.com/scoute-dich/browser&lt;/i>&lt;br>&lt;br>&lt;br>
 
@@ -136,7 +138,7 @@
         &lt;i>https://github.com/scoute-dich&lt;/i>&lt;br>&lt;br>
 
         &lt;b>CGSLURP LLC&lt;/b>&lt;br>
-        \u25AA Helped to implement AdBlock and \"request desktop site\" in the previous version of \"F|L|OSS Browser\".&lt;br>
+        \u25AA Helped to implement AdBlock and \"request desktop site\" in the previous version of \"FOSS Browser\".&lt;br>
         &lt;i>https://github.com/futrDevelopment&lt;/i>&lt;br>&lt;br>
 
         &lt;b>element54&lt;/b>&lt;br>
@@ -149,11 +151,11 @@
         &lt;i>https://github.com/gr1sh&lt;/i>&lt;br>&lt;br>
 
         &lt;b>Herman Nunez&lt;/b>&lt;br>
-        \u25AA fix: Spanische Übersetzung.&lt;br>
+        \u25AA Spanish translation&lt;br>
         &lt;i>https://github.com/junior012&lt;/i>&lt;br>&lt;br>
 
         &lt;b>Jumping Yang&lt;/b>&lt;br>
-        \u25AA Chinese translation in the previous version of \"F|L|OSS Browser\".&lt;br>
+        \u25AA Chinese translation in the previous version of \"FOSS Browser\".&lt;br>
         &lt;i>https://github.com/JumpingYang001&lt;/i>&lt;br>&lt;br>
 
         &lt;b>lishoujun&lt;/b>&lt;br>
@@ -166,7 +168,7 @@
         &lt;i>https://github.com/Secangkir-Kopi&lt;/i>&lt;br>&lt;br>
 
         &lt;b>splinet&lt;/b>&lt;br>
-        \u25AA Russian translation in the previous version of \"F|L|OSS Browser\".&lt;br>
+        \u25AA Russian translation in the previous version of \"FOSS Browser\".&lt;br>
         &lt;i>https://github.com/splinet&lt;/i>
 
     </string>
