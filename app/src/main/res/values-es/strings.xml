@@ -145,7 +145,7 @@
     <string name="clear_summary_quit">Cada vez que sales \"Navegador FOSS\" todos los datos anteriores se borrarán.</string>
     <string name="clear_title_bookmarks">Borrar marcadores</string>
     <string name="clear_title_cache">Borrar caché</string>
-    <string name="clear_title_cookie">Clear Cookies</string>
+    <string name="clear_title_cookie">Limpia Cookies</string>
     <string name="clear_title_history">Limpia el historia</string>
     <string name="clear_title_indexedDB">Borrar \"bases de datos indicados\" y \"almacenamiento local de WebView\"</string>
 
