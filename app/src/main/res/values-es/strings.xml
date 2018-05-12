@@ -70,7 +70,7 @@
 
     <!-- Dialog -->
     <string name="dialog_toggle_title">Alternar rápido</string>
-    <string name="dialog_toggle_hint">Para aplicar inmediatamente, presione por favor el \"ESTÁ BIEN\" abajo</string>
+    <string name="dialog_toggle_hint">Para aplicar inmediatamente, presione por favor \"ESTÁ BIEN\" abajo</string>
     <string name="dialog_title_hint">Título de entrada</string>
     <string name="dialog_sign_in_username">Usuario</string>
     <string name="dialog_sign_in_password">Contraseña</string>
