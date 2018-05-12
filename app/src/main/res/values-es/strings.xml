@@ -275,7 +275,7 @@
     <string name="toast_close_tab">¿desea cerrar la pestaña actual?</string>
     <string name="toast_closeNotification">Cerrar todos los sitios web abiertos.</string>
     <string name="toast_downloadComplete">Descarga completa. ¿abrir el gestor de archivos?</string>
-    <string name="toast_unsecured">Este sitio web utiliza una conexión no segura (\"http\"). ¿desea probar una conexión segura (\"https\")?</string>
+    <string name="toast_unsecured">Este sitio web utiliza una conexión no segura (\"http\"). ¿desea continua con conexión no segura (\"https\")?</string>
 
 
     <!-- Whitelist -->
