@@ -50,6 +50,7 @@
     <string name="menu_edit">Editar</string>
     <string name="menu_notification">Notificación</string>
     <string name="menu_closeTab">Cerrar pestaña</string>
+    <string name="menu_download">Abrir descargar</string>
 
     <string name="menu_share_screenshot">Compartir captura</string>
     <string name="menu_share_link">Compartir enlace</string>
@@ -69,7 +70,7 @@
 
     <!-- Dialog -->
     <string name="dialog_toggle_title">Alternar rápido</string>
-    <string name="dialog_toggle_hint">Para aplicar inmediatamente, presione por favor el \"OK-Button\" abajo</string>
+    <string name="dialog_toggle_hint">Para aplicar inmediatamente, presione por favor el \"ESTÁ BIEN\" abajo</string>
     <string name="dialog_title_hint">Título de entrada</string>
     <string name="dialog_sign_in_username">Usuario</string>
     <string name="dialog_sign_in_password">Contraseña</string>
@@ -146,6 +147,7 @@
     <string name="clear_title_cache">Borrar caché</string>
     <string name="clear_title_cookie">Clear Cookies</string>
     <string name="clear_title_history">Limpia el historia</string>
+    <string name="clear_title_indexedDB">Borrar \"bases de datos indicados\" y \"almacenamiento local de WebView\"</string>
 
     <string name="clear_title_deleteDatabase">Borrar base de datos</string>
     <string name="clear_summary_deleteDatabase">Elimine toda la base de datos (página de inicio, marcadores, historial y todas las listas blancas).</string>
