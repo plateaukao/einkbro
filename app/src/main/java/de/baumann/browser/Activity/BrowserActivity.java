@@ -1,7 +1,6 @@
 package de.baumann.browser.Activity;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.DownloadManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -40,6 +39,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -51,7 +51,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.CookieManager;
@@ -121,7 +120,7 @@ import de.baumann.browser.View.SwitcherPanel;
 import static android.content.ContentValues.TAG;
 
 @SuppressWarnings({"ResultOfMethodCallIgnored", "FieldCanBeLocal", "ApplySharedPref"})
-public class BrowserActivity extends Activity implements BrowserController, View.OnClickListener {
+public class BrowserActivity extends AppCompatActivity implements BrowserController, View.OnClickListener {
 
     // Menus
 
@@ -213,7 +212,6 @@ public class BrowserActivity extends Activity implements BrowserController, View
 
     private String title;
     private String url;
-    private int hide_toolbar;
     private BroadcastReceiver downloadReceiver;
 
     private SharedPreferences sp;
@@ -321,8 +319,8 @@ public class BrowserActivity extends Activity implements BrowserController, View
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
 
-        helper_main.grantPermissionsStorage(this);
-        helper_main.setTheme(this);
+        HelperUnit.grantPermissionsStorage(this);
+        HelperUnit.setTheme(this);
 
         setContentView(R.layout.main);
 
@@ -430,7 +428,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 dialog_title.setText(R.string.changelog_title);
 
                 TextView dialog_text = dialogView.findViewById(R.id.dialog_text);
-                dialog_text.setText(helper_main.textSpannable(getString(R.string.changelog_dialog)));
+                dialog_text.setText(HelperUnit.textSpannable(getString(R.string.changelog_dialog)));
                 dialog_text.setMovementMethod(LinkMovementMethod.getInstance());
 
                 ImageButton fab = dialogView.findViewById(R.id.floatButton_ok);
@@ -472,7 +470,6 @@ public class BrowserActivity extends Activity implements BrowserController, View
                 searchBox.requestFocus();
             }
         }, 500);
-        hide_toolbar = 1;
 
         downloadReceiver = new BroadcastReceiver() {
 
@@ -753,19 +750,19 @@ public class BrowserActivity extends Activity implements BrowserController, View
             case R.id.tab_prev:
                 AlbumController controller = nextAlbumController(false);
                 showAlbum(controller, false);
-                viewOverflow();
+                updateOverflow();
                 break;
 
             case R.id.tab_next:
                 AlbumController controller2 = nextAlbumController(true);
                 showAlbum(controller2, false);
-                viewOverflow();
+                updateOverflow();
                 break;
 
             case R.id.web_prev:
                 if (ninjaWebView.canGoBack()) {
                     ninjaWebView.goBack();
-                    viewOverflow();
+                    updateOverflow();
                 } else {
                     bottomSheetDialog.cancel();
                     removeAlbum(currentAlbumController);
@@ -775,7 +772,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
             case R.id.web_next:
                 if (ninjaWebView.canGoForward()) {
                     ninjaWebView.goForward();
-                    viewOverflow();
+                    updateOverflow();
                 } else {
                     bottomSheetDialog.cancel();
                     NinjaToast.show(BrowserActivity.this,R.string.toast_webview_forward);
@@ -908,10 +905,10 @@ public class BrowserActivity extends Activity implements BrowserController, View
 
                             Pass db = new Pass(BrowserActivity.this);
                             db.open();
-                            if (db.isExist(helper_main.secString(input_pass_title))){
+                            if (db.isExist(HelperUnit.secString(input_pass_title))){
                                 NinjaToast.show(BrowserActivity.this, R.string.toast_newTitle);
                             } else {
-                                db.insert(input_pass_title, url, encrypted_userName, helper_main.secString(encrypted_userPW), String.valueOf(System.currentTimeMillis()));
+                                db.insert(input_pass_title, url, encrypted_userName, HelperUnit.secString(encrypted_userPW), String.valueOf(System.currentTimeMillis()));
                                 NinjaToast.show(BrowserActivity.this, R.string.toast_edit_successful);
                                 hideSoftInput(pass_title);
                             }
@@ -1929,7 +1926,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
                                         String encrypted_userName = mahEncryptor.encode(pass_userNameET.getText().toString().trim());
                                         String encrypted_userPW = mahEncryptor.encode(pass_userPWET.getText().toString().trim());
 
-                                        db.update(Integer.parseInt(_id), helper_main.secString(input_pass_title), helper_main.secString(pass_content), helper_main.secString(encrypted_userName), helper_main.secString(encrypted_userPW), String.valueOf(System.currentTimeMillis()));
+                                        db.update(Integer.parseInt(_id), HelperUnit.secString(input_pass_title), HelperUnit.secString(pass_content), HelperUnit.secString(encrypted_userName), HelperUnit.secString(encrypted_userPW), String.valueOf(System.currentTimeMillis()));
                                         initPSList(layout);
                                         hideSoftInput(pass_titleET);
                                         NinjaToast.show(BrowserActivity.this, R.string.toast_edit_successful);
@@ -2655,30 +2652,15 @@ public class BrowserActivity extends Activity implements BrowserController, View
         if (sp.getString("sp_hideToolbar", "0").equals("0") ||
                 sp.getString("sp_hideToolbar", "0").equals("1")) {
 
-
             ninjaWebView.setOnScrollChangeListener(new NinjaWebView.OnScrollChangeListener() {
                 @Override
                 public void onScrollChange(int scrollY, int oldScrollY) {
 
                     if (sp.getString("sp_hideToolbar", "0").equals("0")) {
-                        if (scrollY > oldScrollY && hide_toolbar == 1) {
+                        if (scrollY > oldScrollY) {
                             hideOmnibox();
-                            hide_toolbar = 0;
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    hide_toolbar = 1;
-                                }
-                            }, shortAnimTime);
-                        } else if (scrollY < oldScrollY && hide_toolbar == 1){
+                        } else if (scrollY < oldScrollY){
                             showOmnibox();
-                            hide_toolbar = 0;
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    hide_toolbar = 1;
-                                }
-                            }, shortAnimTime);
                         }
                     } else if (sp.getString("sp_hideToolbar", "0").equals("1")) {
                         hideOmnibox();
@@ -3061,9 +3043,6 @@ public class BrowserActivity extends Activity implements BrowserController, View
             if (sp.getString("sp_hideNav", "0").equals("0")) {
                 fab_imageButtonNav.setVisibility(View.GONE);
             }
-
-            setCustomFullscreen(false);
-            onConfigurationChanged(null);
         }
     }
 
@@ -3081,8 +3060,6 @@ public class BrowserActivity extends Activity implements BrowserController, View
             if (sp.getString("sp_hideNav", "0").equals("0") || sp.getString("sp_hideNav", "0").equals("2")) {
                 fab_imageButtonNav.setVisibility(View.VISIBLE);
             }
-
-            setCustomFullscreen(true);
         }
     }
 
@@ -3102,7 +3079,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
         showSoftInput(searchBox);
     }
 
-    private void  viewOverflow () {
+    private void  updateOverflow () {
 
         if (currentAlbumController != null && currentAlbumController instanceof NinjaRelativeLayout) {
             floatButton_shareLayout.setVisibility(View.GONE);
@@ -3225,7 +3202,7 @@ public class BrowserActivity extends Activity implements BrowserController, View
         tv_placeHolder = dialogView.findViewById(R.id.tv_placeholder);
         tv_placeHolder_2 = dialogView.findViewById(R.id.tv_placeholder_2);
 
-        viewOverflow();
+        updateOverflow();
 
         bottomSheetDialog.setContentView(dialogView);
         bottomSheetDialog.show();
@@ -3538,26 +3515,15 @@ public class BrowserActivity extends Activity implements BrowserController, View
     }
 
     private void setCustomFullscreen(boolean fullscreen) {
-        WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
-        /*
-         * Can not use View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION,
-         * so we can not hide NavigationBar :(
-         */
-        int bits = WindowManager.LayoutParams.FLAG_FULLSCREEN;
+
+        View decorView = getWindow().getDecorView();
 
         if (fullscreen) {
-            layoutParams.flags |= bits;
+            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
         } else {
-            layoutParams.flags &= ~bits;
-            if (customView != null) {
-                customView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
-                showOmnibox();
-            } else {
-                contentFrame.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
-                showOmnibox();
-            }
+            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+            showOmnibox();
         }
-        getWindow().setAttributes(layoutParams);
     }
 
     private AlbumController nextAlbumController(boolean next) {

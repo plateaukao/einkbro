@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 import java.io.File;
 
-import de.baumann.browser.Activity.BrowserActivity;
+import de.baumann.browser.Activity.HelperUnit;
 import de.baumann.browser.Ninja.R;
 import de.baumann.browser.Unit.BrowserUnit;
 import de.baumann.browser.Unit.ViewUnit;
@@ -83,6 +83,7 @@ public class ScreenshotTask extends AsyncTask<Void, Void, Boolean> {
             int hasWRITE_EXTERNAL_STORAGE = context.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
             if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
                 NinjaToast.show(context, R.string.toast_permission_sdCard_sec);
+                HelperUnit.grantPermissionsStorage(activity);
             } else {
                 try {
                     Bitmap bitmap = ViewUnit.capture(webView, windowWidth, contentHeight, Bitmap.Config.ARGB_8888);

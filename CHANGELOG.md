@@ -1,3 +1,6 @@
+### v 5.8
+- updated: Spanish translation
+
 ### v 5.7
 - new: delete indexed databases and local web storage
 - new: Spanish translation (thanks to Herman Nunez)
