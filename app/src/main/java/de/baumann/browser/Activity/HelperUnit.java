@@ -35,7 +35,7 @@ import android.text.util.Linkify;
 
 import de.baumann.browser.Ninja.R;
 
-public class helper_main {
+public class HelperUnit {
 
     private static final int REQUEST_CODE_ASK_PERMISSIONS = 123;
     private static final int REQUEST_CODE_ASK_PERMISSIONS_1 = 1234;

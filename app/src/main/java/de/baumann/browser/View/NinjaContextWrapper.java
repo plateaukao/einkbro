@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.res.Resources;
 
-import de.baumann.browser.Activity.helper_main;
+import de.baumann.browser.Activity.HelperUnit;
 
 public class NinjaContextWrapper extends ContextWrapper {
     private final Context context;
@@ -12,7 +12,7 @@ public class NinjaContextWrapper extends ContextWrapper {
     public NinjaContextWrapper(Context context) {
         super(context);
         this.context = context;
-        helper_main.setTheme(context);
+        HelperUnit.setTheme(context);
     }
 
     @Override

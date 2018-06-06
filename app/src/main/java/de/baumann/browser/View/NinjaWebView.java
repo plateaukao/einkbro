@@ -20,7 +20,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
 
-import de.baumann.browser.Activity.helper_main;
+import de.baumann.browser.Activity.HelperUnit;
 import de.baumann.browser.Browser.*;
 import de.baumann.browser.Ninja.R;
 import de.baumann.browser.Unit.BrowserUnit;
@@ -182,7 +182,7 @@ public class NinjaWebView extends WebView implements AlbumController {
                 int hasACCESS_FINE_LOCATION = context.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
                 if (hasACCESS_FINE_LOCATION != PackageManager.PERMISSION_GRANTED) {
                     Activity activity = (Activity) context;
-                    helper_main.grantPermissionsLoc(activity);
+                    HelperUnit.grantPermissionsLoc(activity);
                 } else {
                     webSettings.setGeolocationEnabled(sp.getBoolean(context.getString(R.string.sp_location), true));
                 }
