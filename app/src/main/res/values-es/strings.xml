@@ -11,7 +11,7 @@
     <string name="sp_omnibox_control">SP_OMNIBOX_CONTROL_9</string>
 
     <!-- Clear -->
-    <string name="sp_clear_quit">SP_LIMPIA_DEJA_9</string>
+    <string name="sp_clear_quit">SP_LIMPIA_SALIR_9</string>
     <string name="sp_clear_bookmarks">SP_LIMPIA_MARCADORES_9</string>
     <string name="sp_clear_cache">SP_LIMPIA_CACHE_9</string>
     <string name="sp_clear_cookie">SP_LIMPIA_COOKIE_9</string>
@@ -21,7 +21,7 @@
 
     <!-- App -->
     <string name="app_name">Navegador FOSS</string>
-    <string name="app_ok">Está bien</string>
+    <string name="app_ok">ok</string>
     <string name="app_cancel">Cancelar</string>
     <string name="app_close">Cerrar</string>
     <string name="list_empty">La lista actual está vacía</string>
@@ -44,12 +44,13 @@
     <string name="menu_open_with">Abrir enlace con …</string>
 
     <string name="menu_share">Compartir</string>
-    <string name="menu_quit">Deja</string>
+    <string name="menu_quit">Salir</string>
     <string name="menu_delete">Borrar</string>
     <string name="menu_delete_list">Borrar lista</string>
     <string name="menu_edit">Editar</string>
     <string name="menu_notification">Notificación</string>
     <string name="menu_closeTab">Cerrar pestaña</string>
+    <string name="menu_download">Abrir descargar</string>
 
     <string name="menu_share_screenshot">Compartir captura</string>
     <string name="menu_share_link">Compartir enlace</string>
@@ -69,7 +70,7 @@
 
     <!-- Dialog -->
     <string name="dialog_toggle_title">Alternar rápido</string>
-    <string name="dialog_toggle_hint">Para aplicar inmediatamente, presione por favor el \"OK-Button\" abajo</string>
+    <string name="dialog_toggle_hint">Para aplicar inmediatamente, presione por favor \"ok\" abajo</string>
     <string name="dialog_title_hint">Título de entrada</string>
     <string name="dialog_sign_in_username">Usuario</string>
     <string name="dialog_sign_in_password">Contraseña</string>
@@ -144,8 +145,9 @@
     <string name="clear_summary_quit">Cada vez que sales \"Navegador FOSS\" todos los datos anteriores se borrarán.</string>
     <string name="clear_title_bookmarks">Borrar marcadores</string>
     <string name="clear_title_cache">Borrar caché</string>
-    <string name="clear_title_cookie">Clear Cookies</string>
+    <string name="clear_title_cookie">Limpia Cookies</string>
     <string name="clear_title_history">Limpia el historia</string>
+    <string name="clear_title_indexedDB">Borrar \"bases de datos indicados\" y \"almacenamiento local de WebView\"</string>
 
     <string name="clear_title_deleteDatabase">Borrar base de datos</string>
     <string name="clear_summary_deleteDatabase">Elimine toda la base de datos (página de inicio, marcadores, historial y todas las listas blancas).</string>
@@ -273,7 +275,7 @@
     <string name="toast_close_tab">¿desea cerrar la pestaña actual?</string>
     <string name="toast_closeNotification">Cerrar todos los sitios web abiertos.</string>
     <string name="toast_downloadComplete">Descarga completa. ¿abrir el gestor de archivos?</string>
-    <string name="toast_unsecured">Este sitio web utiliza una conexión no segura (\"http\"). ¿desea probar una conexión segura (\"https\")?</string>
+    <string name="toast_unsecured">Este sitio web utiliza una conexión no segura (\"http\"). ¿desea continua con conexión no segura (\"https\")?</string>
 
 
     <!-- Whitelist -->
