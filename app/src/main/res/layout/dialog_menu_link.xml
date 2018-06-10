@@ -108,34 +108,6 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:visibility="gone"
-                android:id="@+id/tv3_main_menu_copy_link"
-                android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:minHeight="46dp"
-                android:paddingEnd="8dp"
-                android:paddingStart="8dp"
-                android:background="?attr/selectableItemBackground"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="16dp"
-                    android:gravity="center_vertical"
-                    android:src="@drawable/icon_clipboard" />
-
-                <TextView
-                    android:text="@string/main_menu_copy_link"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:ellipsize="end"
-                    android:gravity="center_vertical"
-                    android:maxLines="1"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            </LinearLayout>
 
             <LinearLayout
                 android:visibility="gone"

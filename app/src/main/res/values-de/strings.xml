@@ -44,6 +44,10 @@
     <string name="menu_save_login">Logindaten speichern</string>
     <string name="menu_save_bookmark">Speichere als Lesezeichen</string>
     <string name="menu_save_as">Speichere als …</string>
+    <string name="menu_save_pdf">PDF speichern</string>
+    <string name="menu_share_pdf">PDF teilen</string>
+    <string name="menu_share_pdfToast">Fertig. Dateimanager öffnen, um die Datei zu teilen?</string>
+
 
     <string name="menu_other_searchSite">Suche auf Seite</string>
     <string name="menu_other_help">Hilfe</string>

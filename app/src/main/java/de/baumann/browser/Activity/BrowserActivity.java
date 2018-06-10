@@ -34,6 +34,10 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
+import android.print.PrintAttributes;
+import android.print.PrintDocumentAdapter;
+import android.print.PrintJob;
+import android.print.PrintManager;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NotificationCompat;
@@ -79,6 +83,7 @@ import com.mobapphome.mahencryptorlib.MAHEncryptor;
 
 import org.askerov.dynamicgrid.DynamicGridView;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -133,7 +138,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
     private LinearLayout tv_shareScreenshot;
     private LinearLayout tv_shareLink;
-    private LinearLayout tv_shareClipboard;
+    private LinearLayout tv_menu_save_as;
     private LinearLayout tv_openWith;
 
     private LinearLayout tv_relayout;
@@ -543,6 +548,34 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             finish();
         }
 
+        if (sp.getBoolean("share", false)) {
+
+            sp.edit().putBoolean("share", false).commit();
+
+            bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
+            View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_action, null);
+            TextView textView = dialogView.findViewById(R.id.dialog_text);
+            textView.setText(R.string.menu_share_pdfToast);
+            Button action_ok = dialogView.findViewById(R.id.action_ok);
+            action_ok.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS));
+                    bottomSheetDialog.cancel();
+                }
+            });
+            Button action_cancel = dialogView.findViewById(R.id.action_cancel);
+            action_cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    bottomSheetDialog.cancel();
+                }
+            });
+            bottomSheetDialog.setContentView(dialogView);
+            bottomSheetDialog.show();
+
+        }
+
         dispatchIntent(getIntent());
     }
 
@@ -820,9 +853,9 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 }
                 break;
 
-            case R.id.tv_shareClipboard:
+            case R.id.tv_menu_save_as:
                 bottomSheetDialog.cancel();
-                BrowserUnit.copyURL(BrowserActivity.this, url);
+                printPDF(true);
                 break;
 
             case R.id.tv_openWith:
@@ -1012,77 +1045,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
             case R.id.tv3_menu_save_as:
                 bottomSheetDialog.cancel();
-                try {
-                    String filename = url.substring(url.lastIndexOf("/")+1);
-
-                    AlertDialog.Builder builder2 = new AlertDialog.Builder(BrowserActivity.this);
-                    View dialogView2 = View.inflate(BrowserActivity.this, R.layout.dialog_edit, null);
-
-                    final EditText editText = dialogView2.findViewById(R.id.dialog_edit);
-
-                    editText.setHint(R.string.dialog_title_hint);
-                    editText.setText(filename);
-                    editText.setSelection(filename.length());
-
-                    builder2.setView(dialogView2);
-                    builder2.setTitle(R.string.menu_edit);
-                    builder2.setPositiveButton(R.string.app_ok, new DialogInterface.OnClickListener() {
-
-                        public void onClick(DialogInterface dialog, int whichButton) {
-
-                            String text = editText.getText().toString().trim();
-                            if (text.isEmpty()) {
-                                NinjaToast.show(BrowserActivity.this, getString(R.string.toast_input_empty));
-                            } else {
-
-                                if (android.os.Build.VERSION.SDK_INT >= 23) {
-                                    int hasWRITE_EXTERNAL_STORAGE = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                                    if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
-                                        NinjaToast.show(BrowserActivity.this, R.string.toast_permission_sdCard_sec);
-                                    } else {
-                                        Uri source = Uri.parse(url);
-                                        DownloadManager.Request request = new DownloadManager.Request(source);
-                                        request.addRequestHeader("Cookie", CookieManager.getInstance().getCookie(url));
-                                        request.allowScanningByMediaScanner();
-                                        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); //Notify client once download is completed!
-                                        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, text);
-                                        DownloadManager dm = (DownloadManager) BrowserActivity.this.getSystemService(DOWNLOAD_SERVICE);
-                                        assert dm != null;
-                                        dm.enqueue(request);
-                                        hideSoftInput(editText);
-                                    }
-                                } else {
-                                    Uri source = Uri.parse(url);
-                                    DownloadManager.Request request = new DownloadManager.Request(source);
-                                    request.addRequestHeader("Cookie", CookieManager.getInstance().getCookie(url));
-                                    request.allowScanningByMediaScanner();
-                                    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); //Notify client once download is completed!
-                                    request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, text);
-                                    DownloadManager dm = (DownloadManager) BrowserActivity.this.getSystemService(DOWNLOAD_SERVICE);
-                                    assert dm != null;
-                                    dm.enqueue(request);
-                                    hideSoftInput(editText);
-                                }
-
-                            }
-                        }
-                    });
-                    builder2.setNegativeButton(R.string.app_cancel, new DialogInterface.OnClickListener() {
-
-                        public void onClick(DialogInterface dialog, int whichButton) {
-                            dialog.cancel();
-                            hideSoftInput(editText);
-                        }
-                    });
-
-                    AlertDialog dialog2 = builder2.create();
-                    dialog2.show();
-                    bottomSheetDialog.cancel();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-
+                printPDF(false);
                 break;
 
             case R.id.tv_settings:
@@ -1149,7 +1112,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
                 tv_shareScreenshot.setVisibility(View.GONE);
                 tv_shareLink.setVisibility(View.GONE);
-                tv_shareClipboard.setVisibility(View.GONE);
+                tv_menu_save_as.setVisibility(View.GONE);
                 tv_openWith.setVisibility(View.GONE);
 
                 tv_saveScreenshot.setVisibility(View.GONE);
@@ -1181,7 +1144,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
                 tv_shareScreenshot.setVisibility(View.VISIBLE);
                 tv_shareLink.setVisibility(View.VISIBLE);
-                tv_shareClipboard.setVisibility(View.VISIBLE);
+                tv_menu_save_as.setVisibility(View.VISIBLE);
                 tv_openWith.setVisibility(View.VISIBLE);
 
                 tv_saveScreenshot.setVisibility(View.GONE);
@@ -1213,7 +1176,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
                 tv_shareScreenshot.setVisibility(View.GONE);
                 tv_shareLink.setVisibility(View.GONE);
-                tv_shareClipboard.setVisibility(View.GONE);
+                tv_menu_save_as.setVisibility(View.GONE);
                 tv_openWith.setVisibility(View.GONE);
 
                 tv_saveScreenshot.setVisibility(View.VISIBLE);
@@ -1246,7 +1209,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
                 tv_shareScreenshot.setVisibility(View.GONE);
                 tv_shareLink.setVisibility(View.GONE);
-                tv_shareClipboard.setVisibility(View.GONE);
+                tv_menu_save_as.setVisibility(View.GONE);
                 tv_openWith.setVisibility(View.GONE);
 
                 tv_saveScreenshot.setVisibility(View.GONE);
@@ -1355,6 +1318,28 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     }
 
     // Methods
+
+    private void printPDF (boolean share) {
+
+        try {
+            PrintManager printManager = (PrintManager) this.getSystemService(Context.PRINT_SERVICE);
+
+            String url = ninjaWebView.getUrl();
+            String domain = Uri.parse(url).getHost().replace("www.", "").trim();
+            String title = domain.replace(".", "_").trim();
+
+            PrintDocumentAdapter printAdapter = ninjaWebView.createPrintDocumentAdapter(title);
+            printManager.print(title, printAdapter, new PrintAttributes.Builder().build());
+
+            if (share) {
+                sp.edit().putBoolean("share", true).commit();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void dispatchIntent(Intent intent) {
         Intent toHolderService = new Intent(this, HolderService.class);
@@ -2872,16 +2857,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             }
         });
 
-        LinearLayout tv3_main_menu_copy_link = dialogView.findViewById(R.id.tv3_main_menu_copy_link);
-        tv3_main_menu_copy_link.setVisibility(View.VISIBLE);
-        tv3_main_menu_copy_link.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                BrowserUnit.copyURL(BrowserActivity.this, target);
-                bottomSheetDialog.cancel();
-            }
-        });
-
         tv3_menu_save_as = dialogView.findViewById(R.id.tv3_menu_save_as);
         tv3_menu_save_as.setVisibility(View.VISIBLE);
         tv3_menu_save_as.setOnClickListener(new View.OnClickListener() {
@@ -3171,8 +3146,8 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         tv_shareScreenshot.setOnClickListener(BrowserActivity.this);
         tv_shareLink = dialogView.findViewById(R.id.tv_shareLink);
         tv_shareLink.setOnClickListener(BrowserActivity.this);
-        tv_shareClipboard = dialogView.findViewById(R.id.tv_shareClipboard);
-        tv_shareClipboard.setOnClickListener(BrowserActivity.this);
+        tv_menu_save_as = dialogView.findViewById(R.id.tv_menu_save_as);
+        tv_menu_save_as.setOnClickListener(BrowserActivity.this);
         tv_openWith = dialogView.findViewById(R.id.tv_openWith);
         tv_openWith.setOnClickListener(BrowserActivity.this);
 
