@@ -44,6 +44,9 @@
     <string name="menu_save_login">Save login data</string>
     <string name="menu_save_bookmark">Save as bookmark</string>
     <string name="menu_save_as">Save as …</string>
+    <string name="menu_save_pdf">Save as PDF</string>
+    <string name="menu_share_pdf">Share PDF</string>
+    <string name="menu_share_pdfToast">Complete. Open file manager to share?</string>
 
     <string name="menu_other_searchSite">Search on site</string>
     <string name="menu_other_help">Help</string>
