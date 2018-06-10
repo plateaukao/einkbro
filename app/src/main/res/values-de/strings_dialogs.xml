@@ -132,20 +132,20 @@
         &lt;i>Bis jetzt sind folgende Personen an dem Projekt beteiligt. Wenn ich jemanden vergessen habe, bitte melden:&lt;/i>&lt;br>&lt;br>
 
         &lt;b>Gaukler Faun&lt;/b>&lt;br>
-        \u25AA Hauptentwickler und Gründer des Projekts.&lt;br>
+        \u25AA Hauptentwickler und Gründer des Projekts&lt;br>
         &lt;i>https://github.com/scoute-dich&lt;/i>&lt;br>&lt;br>
 
         &lt;b>CGSLURP LLC&lt;/b>&lt;br>
-        \u25AA Half AdBlock und \"Desktopseite anzeigen\" in der vorherigen Version von \"FOSS Browser\" möglich zu machen.&lt;br>
+        \u25AA Half AdBlock und \"Desktopseite anzeigen\" in der vorherigen Version von \"FOSS Browser\" möglich zu machen&lt;br>
         &lt;i>https://github.com/futrDevelopment&lt;/i>&lt;br>&lt;br>
 
         &lt;b>element54&lt;/b>&lt;br>
-        \u25AA behoben: Probleme mit der Tastatur (Fehler #105).&lt;br>
-        \u25AA neu: Option Bestätigungsdialoge beim Verlassen zu deaktivieren.&lt;br>
+        \u25AA behoben: Probleme mit der Tastatur (Fehler #105)&lt;br>
+        \u25AA neu: Option Bestätigungsdialoge beim Verlassen zu deaktivieren&lt;br>
         &lt;i>https://github.com/element54&lt;/i>&lt;br>&lt;br>
 
         &lt;b>gr1sh&lt;/b>&lt;br>
-        \u25AA fix: Deutsche Übersetzung verbessert (Fehler #124, #131).&lt;br>
+        \u25AA fix: Deutsche Übersetzung verbessert (Fehler #124, #131)&lt;br>
         &lt;i>https://github.com/gr1sh&lt;/i>&lt;br>&lt;br>
 
         &lt;b>Herman Nunez&lt;/b>&lt;br>
@@ -153,12 +153,12 @@
         &lt;i>https://github.com/junior012&lt;/i>&lt;br>&lt;br>
 
         &lt;b>Jumping Yang&lt;/b>&lt;br>
-        \u25AA Chinesische Übersetzung in der vorherigen Version von \"FOSS Browser\".&lt;br>
+        \u25AA Chinesische Übersetzung in der vorherigen Version von \"FOSS Browser\"&lt;br>
         &lt;i>https://github.com/JumpingYang001&lt;/i>&lt;br>&lt;br>
 
         &lt;b>lishoujun&lt;/b>&lt;br>
         \u25AA Chinesische Übersetzung&lt;br>
-        \u25AA Fehlersuche.&lt;br>
+        \u25AA Fehlersuche&lt;br>
         &lt;i>https://github.com/lishoujun&lt;/i>&lt;br>&lt;br>
 
         &lt;b>Secangkir Kopi&lt;/b>&lt;br>
@@ -166,8 +166,12 @@
         &lt;i>https://github.com/Secangkir-Kopi&lt;/i>&lt;br>&lt;br>
 
         &lt;b>splinet&lt;/b>&lt;br>
-        \u25AA Russische Übersetzung in der vorherigen Version von \"FOSS Browser\".&lt;br>
-        &lt;i>https://github.com/splinet&lt;/i>
+        \u25AA Russische Übersetzung in der vorherigen Version von \"FOSS Browser\"&lt;br>
+        &lt;i>https://github.com/splinet&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>YC L&lt;/b>&lt;br>
+        \u25AA Chinese Translation&lt;br>
+        &lt;i>https://github.com/smallg0at&lt;/i>
 
 
     </string>

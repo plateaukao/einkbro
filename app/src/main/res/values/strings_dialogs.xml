@@ -134,7 +134,7 @@
         &lt;i>Following people contributed at this project. If I have forgotten anybody, please contact me:&lt;/i>&lt;br>&lt;br>
 
         &lt;b>Gaukler Faun&lt;/b>&lt;br>
-        \u25AA Main developer and initiator of this project.&lt;br>
+        \u25AA Main developer and initiator of this project&lt;br>
         &lt;i>https://github.com/scoute-dich&lt;/i>&lt;br>&lt;br>
 
         &lt;b>CGSLURP LLC&lt;/b>&lt;br>
@@ -142,12 +142,12 @@
         &lt;i>https://github.com/futrDevelopment&lt;/i>&lt;br>&lt;br>
 
         &lt;b>element54&lt;/b>&lt;br>
-        \u25AA fix: keyboard problems (issue #105).&lt;br>
+        \u25AA fix: keyboard problems (issue #105)&lt;br>
         \u25AA new: option to disable confirmation dialogs on exit&lt;br>
         &lt;i>https://github.com/element54&lt;/i>&lt;br>&lt;br>
 
         &lt;b>gr1sh&lt;/b>&lt;br>
-        \u25AA fix: some German strings (issues #124, #131).&lt;br>
+        \u25AA fix: some German strings (issues #124, #131)&lt;br>
         &lt;i>https://github.com/gr1sh&lt;/i>&lt;br>&lt;br>
 
         &lt;b>Herman Nunez&lt;/b>&lt;br>
@@ -155,7 +155,7 @@
         &lt;i>https://github.com/junior012&lt;/i>&lt;br>&lt;br>
 
         &lt;b>Jumping Yang&lt;/b>&lt;br>
-        \u25AA Chinese translation in the previous version of \"FOSS Browser\".&lt;br>
+        \u25AA Chinese translation in the previous version of \"FOSS Browser\"&lt;br>
         &lt;i>https://github.com/JumpingYang001&lt;/i>&lt;br>&lt;br>
 
         &lt;b>lishoujun&lt;/b>&lt;br>
@@ -168,8 +168,12 @@
         &lt;i>https://github.com/Secangkir-Kopi&lt;/i>&lt;br>&lt;br>
 
         &lt;b>splinet&lt;/b>&lt;br>
-        \u25AA Russian translation in the previous version of \"FOSS Browser\".&lt;br>
-        &lt;i>https://github.com/splinet&lt;/i>
+        \u25AA Russian translation in the previous version of \"FOSS Browser\"&lt;br>
+        &lt;i>https://github.com/splinet&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>YC L&lt;/b>&lt;br>
+        \u25AA Chinese Translation&lt;br>
+        &lt;i>https://github.com/smallg0at&lt;/i>
 
     </string>
 

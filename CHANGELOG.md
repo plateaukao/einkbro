@@ -1,5 +1,9 @@
-### v 5.8
-- updated: Spanish translation
+### v 5.8 (WIP)
+- new: save websites as PDF
+- fixed: scrolling issue
+- updated: UI
+- updated: Spanish translation (thanks to @Herman Nuñez)
+- updated: Chinese transation (thanks to @smallg0at)
 
 ### v 5.7
 - new: delete indexed databases and local web storage
