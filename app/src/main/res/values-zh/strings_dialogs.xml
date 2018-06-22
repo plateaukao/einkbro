@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <string name="changelog_title">更新日志</string>
+    <string name="changelog_dialog">&lt;i&gt;项目网站：https：//github.com/scoute-dich/Browser &lt;br&gt;变更日志：https：//github.com/scoute-dich/browser/blob/master/CHANGELOG.md &lt;/ i&gt; &lt; &lt;br&gt; &lt;br&gt; &lt;b&gt;版本：5.7 &lt;/ b&gt; &lt;br&gt;请阅读“帮助对话框”以获取更多信息。&lt;br&gt; &lt;br&gt; \\ u25AA新增：删除索引数据库和本地网络存储&lt;br&gt; \\ u25AA新增功能：西班牙语翻译（感谢Herman Nunez）&lt;br&gt; \\ u25AA新增：确认对话框在备份之前&lt;br&gt; \\ u25AA新增：删除单独的列表&lt;br&gt; \\ u25AA新增：显示不安全的连接并尝试重新加载安全&lt;br&gt; \\ u25AA新增：搜索引擎（Startpage DE，Searx）&lt;br&gt; \\ u25AA新增功能：通知当下载或截图完成时？\\ u25AA ew：阻止远程内容&lt;br&gt; \\ u25AA改进中文翻译（感谢：lishoujun） &gt; \\ u25AA删除：Snackbar（替换为敬酒）&lt;br&gt; \\ u25AA删除：请求桌面网站&lt;br&gt; \\ u25AA删除：建立在文件管理器&lt;br&gt; \\ u 25AA修正：某些字符串（谢谢：gr1sh）&lt;br&gt; \\ u25AA修复：某些网址打开搜索结果</string>
+
+    <string name="startpage_title">起始页</string>
+    <string name="startpage_dialog">在这里，您可以访问所有数据：首页上保存的网站，书签，历史记录，保存的登录数据和集成文件浏览器。在设置中，您可以决定在开始时显示哪些内容。</string>
+
+    <string name="fastToggle_title">快速切换</string>
+    <string name="fastToggle_dialog">如果长按“菜单”或“导航按钮”，“快速切换对话框”将打开。在这里你可以改变一些重要的设置而不用离开当前的网站。您还可以将网站添加到AdBlocker，JavaScript或Cookies的白名单中。</string>
+
+    <string name="toolbar_title">工具栏</string>
+    <string name="toolbar_dialog">在屏幕的底部是工具栏。您可以输入网址或搜索某些内容，重新加载网站并打开菜单。长按“菜单按钮”打开“快速切换菜单”。向上滑动工具栏以打开标签预览。切换标签向左或向右滑动。</string>
+
+    <string name="tab_title">标签预览</string>
+    <string name="tab_dialog">单击选项卡的预览以将其选中，再次单击以关闭选项卡预览。要关闭标签，只需滑动即可预览到顶部或底部。</string>
+
+    <string name="menu_title">菜单</string>
+    <string name="menu_dialog">管理你的标签，分享或保存内容，处理当前标签或使用一些功能：尝试一下！通过点击返回，点击菜单外部或简单地向下滑动菜单，菜单可以像所有其他通知一样被解除。</string>
+
+    <string name="not_title">通知</string>
+    <string name="not_dialog">通知显示在屏幕的底部。他们也可以像菜单一样被关闭。</string>
+
+    <string name="nav_title">导航</string>
+    <string name="nav_dialog">使用“导航按钮”：\\ 向上/向下滑动 - >滚动到顶部/底部;向左/向右滑动 - >向后/向前导航;点击 - >打开菜单;长按 - >打开“快速切换对话框”;双击 - >隐藏“导航按钮”。</string>
+
+    <string name="settings_dialog">设置中还有更多选项。试试看！</string>
+
+
+    <string name="license_title">版权 ©2017 Gaukler Faun</string>
+    <string name="license_dialog">&lt;i&gt;欲了解更多信息，请访问Github上的项目网站：https://github.com/scoute-dich/Browser &lt;/ i&gt; &lt;br&gt; &lt;br&gt;此程序是免费软件：您可以重新发布和/或修改它遵循自由软件基金会发布的GNU通用公共许可证条款，或许可证第3版，或者（可选）任何更新版本。这个程序的发布希望它会有用，但没有任何担保;甚至没有适销性或针对特定用途的适用性的暗示保证。有关更多详细信息，请参阅GNU通用公共许可证。您应该收到GNU通用公共许可证副本以及此程序。如果没有，请参阅http://www.gnu.org/licenses。&lt;br&gt; &lt;br&gt; &lt;i&gt;以下开源库或项目在本软件中使用：&lt;/ i&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;b&gt; Android滑动面板&lt;/ b&gt; &lt;br&gt; Apache许可版本2.0 &lt;br&gt; Umano：新闻读给你&lt;br&gt; &lt;i&gt; http://git.io/vUruG &lt;/ i&gt; &lt;br&gt; &lt; br&gt; &lt;b&gt; Android轻松移除&lt;/ b&gt; &lt;br&gt; Apache许可版本2.0 &lt;br&gt; Roman Nurik &lt;br&gt; &lt;i&gt; http://git.io/vUruO &lt;/ i&gt; &lt;br&gt; &lt; br&gt; &lt;b&gt; DynamicGrid &lt;/ b&gt; &lt;br&gt; Apache许可版本2.0 &lt;br&gt; askerov &lt;br&gt; &lt;i&gt; http://git.io/vTHZH &lt;/ i&gt; &lt;br&gt; &lt;br&gt; &lt;b&gt;闪电浏览器&lt;/ b&gt; &lt;br&gt; Mozilla公共许可证2.0版&lt;br&gt; Anthony Restaino &lt;br&gt; &lt;i&gt; http://git.io/vUruk &lt;/ i&gt; &lt;br&gt; &lt;br&gt; &lt;b&gt;材料设计图标&lt; / b&gt; &lt;br&gt; SIL开放字体许可版本1.1。&lt;br&gt; Templarian &lt;br&gt; &lt;i&gt; https://github.com/Templarian/MaterialDesign &lt;/ i&gt; &lt;br&gt; &lt;br&gt; &lt;b&gt;忍者&lt; / b&gt; &lt;br&gt; Apache许可版本2.0 &lt;b r&gt; Matthew Lee &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt; &gt; &lt;i&gt; https://github.com/hummatli/SimpleEncryptionLib</string>
+
+    <string name="cont_dialog">首先，我要感谢所有以任何方式为这个项目做出贡献的人。他们提交问题，翻译或以任何其他方式提供帮助。在以下网站上，您可以成为这个伟大社区的活跃成员：&lt;/ i&gt; &lt;br&gt; &lt;br&gt; &lt;b&gt; XDA-thread：&lt;/ b&gt; &lt;br&gt; XDA是开发人员和智能手机爱好者的绝佳社区。在这里，您可以报告问题，索取新功能以及与“FOSS浏览器”相关的其他所有内容。&lt;br&gt; &lt;i&gt; https://forum.xda-developers.com/android/apps-games/app-browser-t3500091 &lt; / i&gt; &lt;br&gt; &lt;br&gt; &lt;b&gt; Github：&lt;/ b&gt; &lt;br&gt;在Github上，您可以看到“FOSS Browser”的源代码。这是更具技术性的解决方案：公开问题，寻求新功能，甚至帮助开发或翻译。&lt;br&gt; &lt;i&gt; https://github.com/scoute-dich/browser &lt;/ i&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;i&gt;以下人员参与了此项目。如果我忘记了任何人，请联系我：&lt;/ i&gt; &lt;br&gt; &lt;br&gt; &lt;b&gt; Gaukler Faun &lt;/ b&gt; &lt;br&gt; \\ u25AA此项目的主要开发人员和发起人。&lt;br&gt; &lt;i&gt; https： //github.com/scoute-dich &lt;/ i&gt; &lt;br&gt; &lt;br&gt; &lt;b&gt; CGSLURP LLC &lt;/ b&gt; &lt;br&gt; \\ u25AA帮助在以前版本的“FOSS”中实施AdBlock和“请求桌面站点”浏览器“。&lt;i&gt; https://github.com/futrDevelopment &lt;/ i&gt; &lt;br&gt; &lt;b&gt; element54 &lt;/ b&gt; &lt;br&gt; &lt;br&gt; u25AA修正：键盘问题（问题＃105） 。&lt;br&gt; \\ u25AA新：退出确认对话框的选项&lt;br&gt; &lt;i&gt; https://github.com/element54 &lt;/ i&gt; &lt;br&gt; &lt;br&gt; &lt;b&gt; gr1sh &lt;/ b&gt; &gt; \\ u25AA修正：一些德语字符串（问题＃124，＃131）。&lt;br&gt; &lt;i&gt; https://github.com/gr1sh &lt;/ i&gt; &lt;br&gt; &lt;br&gt; &lt;b&gt; Herman Nunez &lt;/ b &gt; &lt;br&gt; \\ u25AA西班牙语翻译&lt;br&gt; &lt;i&gt; https://github.com/junior012 &lt;/ i&gt; &lt;br&gt; &lt;br&gt; &lt;b&gt; Jumping Yang &lt;/ b&gt; &lt;br&gt; &lt;u&gt;以前版本的“FOSS浏览器” &lt;br&gt; &lt;br&gt; &lt;i&gt; https://github.com/JumpingYang001 &lt;/ i&gt; &lt;br&gt; &lt;br&gt; &lt;b&gt; lishoujun &lt;/ b&gt; &lt;br&gt; u25AA中文翻译&lt;br&gt; \\ u25AA bug搜寻&gt; &lt;i&gt; https://github.com/lishoujun &lt;/ i&gt; &lt;br&gt; &lt;br&gt; &lt;b&gt; Secangkir Kopi &lt;/ b&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;i&gt; https：// github .com / Secangkir-Kopi &lt;/ i&gt; &lt;/ b&gt; &lt;b&gt; splinet &lt;/ b&gt; &lt;br&gt; &lt;br&gt; &lt;/ i&gt; https：/ /github.com/splinet &lt;/ i&gt;的</string>
+
+</resources>
