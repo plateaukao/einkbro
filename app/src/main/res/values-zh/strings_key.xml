@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <!-- General -->
+    <string name="sp_ad_block">广告拦截</string>
+    <string name="sp_cookies">Cookies</string>
+    <string name="sp_images">图片</string>
+    <string name="sp_javascript">Javascript</string>
+    <string name="sp_location">位置</string>
+    <string name="sp_omnibox_control">OMNIBOX控制</string>
+    <string name="sp_search_engine">搜索引擎</string>
+    <string name="sp_search_engine_custom">自定义搜索引擎</string>
+
+    <!-- Clear -->
+    <string name="sp_clear_quit">退出时清除</string>
+    <string name="sp_clear_bookmarks">清除书签</string>
+    <string name="sp_clear_cache">清除缓存</string>
+    <string name="sp_clear_cookie">清除Cookie</string>
+    <string name="sp_clear_history">清楚历史记录</string>
+
+</resources>
