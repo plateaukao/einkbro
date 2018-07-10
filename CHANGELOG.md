@@ -1,9 +1,14 @@
 ### v 5.8 (WIP)
+- new: "do not track" header
+- new: + button in tab preview
 - new: save websites as PDF
-- fixed: scrolling issue
-- updated: UI
+- new: show link in context menu
+- fix: not applying cookie whitelist when switching tabs
+- fix: scrolling issue
+- fix: screen rotation issues
+- updated: UI + dialogs
 - updated: Spanish translation (thanks to @Herman Nuñez)
-- updated: Chinese transation (thanks to @smallg0at)
+- updated: Chinese translation (thanks to @smallg0at)
 
 ### v 5.7
 - new: delete indexed databases and local web storage

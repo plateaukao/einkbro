@@ -190,15 +190,6 @@ public class BrowserUnit {
         }
     }
 
-    public static void copyURL(Context context, String url) {
-        ClipboardManager manager = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipData data = ClipData.newPlainText(null, url.trim());
-        assert manager != null;
-        manager.setPrimaryClip(data);
-        String text = context.getString(R.string.toast_copy_successful) + ": " + url;
-        NinjaToast.show(context, text);
-    }
-
     public static void download(final Context context, String url, String contentDisposition, String mimeType) {
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
         String filename = URLUtil.guessFileName(url, contentDisposition, mimeType); // Maybe unexpected filename.

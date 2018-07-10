@@ -17,7 +17,7 @@
     If not, see <http://www.gnu.org/licenses/>.
  */
 
-package de.baumann.browser.Activity;
+package de.baumann.browser.Unit;
 
 import android.Manifest;
 import android.app.Activity;
@@ -26,12 +26,17 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatDelegate;
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.util.Linkify;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import de.baumann.browser.Ninja.R;
 
@@ -126,11 +131,19 @@ public class HelperUnit {
         return s;
     }
 
-    static String secString (String string) {
+    public static String secString (String string) {
         if(TextUtils.isEmpty(string)){
             return "";
         }else {
             return  string.replaceAll("'", "\'\'");
         }
+    }
+
+    public static String fileName (String url) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.getDefault());
+        String currentTime = sdf.format(new Date());
+        String domain = Uri.parse(url).getHost().replace("www.", "").trim();
+
+        return domain.replace(".", "_").trim() + "_" + currentTime.trim();
     }
 }

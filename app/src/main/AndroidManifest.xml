@@ -17,7 +17,6 @@
                  android:allowBackup="true"
                  android:enabled="true"
                  android:largeHeap="true"
-                 android:supportsRtl="false"
                  android:fullBackupContent="@xml/backup_descriptor">
 
         <!-- Holder -->

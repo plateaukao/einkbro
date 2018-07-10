@@ -19,6 +19,7 @@ import android.widget.TextView;
 import de.baumann.browser.Fragment.Fragment_clear;
 import de.baumann.browser.Ninja.R;
 import de.baumann.browser.Unit.BrowserUnit;
+import de.baumann.browser.Unit.HelperUnit;
 import de.baumann.browser.View.NinjaToast;
 
 public class Settings_ClearActivity extends AppCompatActivity {

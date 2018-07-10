@@ -20,7 +20,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
 
-import de.baumann.browser.Activity.HelperUnit;
+import de.baumann.browser.Unit.HelperUnit;
 import de.baumann.browser.Browser.*;
 import de.baumann.browser.Ninja.R;
 import de.baumann.browser.Unit.BrowserUnit;
@@ -28,6 +28,7 @@ import de.baumann.browser.Unit.IntentUnit;
 import de.baumann.browser.Unit.ViewUnit;
 
 import java.net.URISyntaxException;
+import java.util.HashMap;
 
 public class NinjaWebView extends WebView implements AlbumController {
 
@@ -82,7 +83,13 @@ public class NinjaWebView extends WebView implements AlbumController {
     }
 
     private Javascript javaHosts;
+    public Javascript getJavaHosts() {
+        return javaHosts;
+    }
     private Cookie cookieHosts;
+    public Cookie getCookieHosts() {
+        return cookieHosts;
+    }
 
     private SharedPreferences sp;
     private WebSettings webSettings;
@@ -201,7 +208,6 @@ public class NinjaWebView extends WebView implements AlbumController {
         album.setBrowserController(browserController);
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
     @Override
     public synchronized void loadUrl(String url) {
         if (url == null || url.trim().isEmpty()) {
@@ -255,8 +261,12 @@ public class NinjaWebView extends WebView implements AlbumController {
             }
         }
 
+        HashMap<String, String> extraHeaders = new HashMap<String, String>();
+        extraHeaders.put("DNT", "1");
+
         webViewClient.updateWhite(adBlock.isWhite(url));
-        super.loadUrl(url);
+        super.loadUrl(url, extraHeaders);
+
         if (browserController != null && foreground) {
             browserController.updateBookmarks();
         }
@@ -265,6 +275,32 @@ public class NinjaWebView extends WebView implements AlbumController {
     @Override
     public void reload() {
         webViewClient.updateWhite(adBlock.isWhite(getUrl()));
+
+        if (!sp.getBoolean(context.getString(R.string.sp_javascript), true)) {
+
+            if (javaHosts.isWhite(getUrl())) {
+                webSettings = getSettings();
+                webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
+                webSettings.setJavaScriptEnabled(true);
+            } else {
+                webSettings = getSettings();
+                webSettings.setJavaScriptCanOpenWindowsAutomatically(false);
+                webSettings.setJavaScriptEnabled(false);
+            }
+        }
+
+        if (!sp.getBoolean(context.getString(R.string.sp_cookies), true)) {
+
+            if (cookieHosts.isWhite(getUrl())) {
+                CookieManager manager = CookieManager.getInstance();
+                manager.getCookie(getUrl());
+                manager.setAcceptCookie(true);
+            } else {
+                CookieManager manager = CookieManager.getInstance();
+                manager.setAcceptCookie(false);
+            }
+        }
+
         super.reload();
     }
 
