@@ -43,6 +43,9 @@
     <string name="menu_save_login">保存登录信息</string>
     <string name="menu_save_bookmark">保存到书签</string>
     <string name="menu_save_as">保存为 …</string>
+    <string name="menu_save_pdf">保存到PDF</string>
+    <string name="menu_share_pdf">分享PDF</string>
+    <string name="menu_share_pdfToast">操作完毕。你要用文件管理器分享吗？</string>
 
     <string name="menu_other_searchSite">页内搜索</string>
     <string name="menu_other_help">帮助</string>
