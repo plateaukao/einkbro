@@ -18,6 +18,7 @@ import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.TextInputLayout;
 import android.util.Log;
 import android.view.View;
+import android.webkit.CookieManager;
 import android.webkit.HttpAuthHandler;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceRequest;
@@ -30,6 +31,7 @@ import android.widget.TextView;
 
 import java.io.ByteArrayInputStream;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 
 import de.baumann.browser.Database.Record;
 import de.baumann.browser.Database.RecordAction;
@@ -44,8 +46,10 @@ import static android.content.ContentValues.TAG;
 public class NinjaWebViewClient extends WebViewClient {
     private final NinjaWebView ninjaWebView;
     private final Context context;
+    private SharedPreferences sp;
 
     private final AdBlock adBlock;
+    private final Cookie cookie;
 
     private boolean white;
     public void updateWhite(boolean white) {
@@ -61,7 +65,9 @@ public class NinjaWebViewClient extends WebViewClient {
         super();
         this.ninjaWebView = ninjaWebView;
         this.context = ninjaWebView.getContext();
+        this.sp = PreferenceManager.getDefaultSharedPreferences(context);
         this.adBlock = ninjaWebView.getAdBlock();
+        this.cookie = ninjaWebView.getCookieHosts();
         this.white = false;
         this.enable = true;
     }
@@ -90,8 +96,6 @@ public class NinjaWebViewClient extends WebViewClient {
         } else {
             ninjaWebView.update(view.getTitle(), url);
         }
-
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
 
         if (sp.getBoolean("saveHistory", true)) {
             RecordAction action = new RecordAction(context);
@@ -137,9 +141,12 @@ public class NinjaWebViewClient extends WebViewClient {
         // Based on some condition you need to determine if you are going to load the url
         // in your web view itself or in a browser.
         // You can use `host` or `scheme` or any part of the `uri` to decide.
+        // open web links as usual
 
-        if (url.startsWith("http")) return false;
-        //open web links as usual
+        if (url.startsWith("http")) {
+            return false;
+        }
+
         //try to find browse activity to handle uri
         Uri parsedUri = Uri.parse(url);
         PackageManager packageManager = context.getPackageManager();
@@ -158,7 +165,6 @@ public class NinjaWebViewClient extends WebViewClient {
                     } catch (Exception e) {
                         NinjaToast.show(context, R.string.toast_load_error);
                     }
-
                     return true;
                 }
                 //try to find fallback url
@@ -191,6 +197,19 @@ public class NinjaWebViewClient extends WebViewClient {
                     new ByteArrayInputStream("".getBytes())
             );
         }
+
+        if (!sp.getBoolean(context.getString(R.string.sp_cookies), true)) {
+
+            if (cookie.isWhite(url)) {
+                CookieManager manager = CookieManager.getInstance();
+                manager.getCookie(url);
+                manager.setAcceptCookie(true);
+            }  else {
+                CookieManager manager = CookieManager.getInstance();
+                manager.setAcceptCookie(false);
+            }
+        }
+
         return super.shouldInterceptRequest(view, url);
     }
 
@@ -202,6 +221,18 @@ public class NinjaWebViewClient extends WebViewClient {
                     BrowserUnit.URL_ENCODING,
                     new ByteArrayInputStream("".getBytes())
             );
+        }
+
+        if (!sp.getBoolean(context.getString(R.string.sp_cookies), true)) {
+
+            if (cookie.isWhite(request.getUrl().toString())) {
+                CookieManager manager = CookieManager.getInstance();
+                manager.getCookie(request.getUrl().toString());
+                manager.setAcceptCookie(true);
+            }  else {
+                CookieManager manager = CookieManager.getInstance();
+                manager.setAcceptCookie(false);
+            }
         }
 
         return super.shouldInterceptRequest(view, request);

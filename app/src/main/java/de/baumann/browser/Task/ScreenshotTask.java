@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 import java.io.File;
 
-import de.baumann.browser.Activity.HelperUnit;
+import de.baumann.browser.Unit.HelperUnit;
 import de.baumann.browser.Ninja.R;
 import de.baumann.browser.Unit.BrowserUnit;
 import de.baumann.browser.Unit.ViewUnit;
@@ -67,10 +67,7 @@ public class ScreenshotTask extends AsyncTask<Void, Void, Boolean> {
         try {
             windowWidth = ViewUnit.getWindowWidth(context);
             contentHeight = webView.getContentHeight() * ViewUnit.getDensity(context);
-
-            String url = webView.getUrl();
-            String domain = Uri.parse(url).getHost().replace("www.", "").trim();
-            title = domain.replace(".", "_").trim();
+            title = HelperUnit.fileName(webView.getUrl());
 
         } catch (Exception e) {
             NinjaToast.show(activity, context.getString(R.string.toast_error));
@@ -123,6 +120,7 @@ public class ScreenshotTask extends AsyncTask<Void, Void, Boolean> {
                     Uri bmpUri = Uri.fromFile(pathFile);
                     sharingIntent.putExtra(Intent.EXTRA_STREAM, bmpUri);
                     context.startActivity(Intent.createChooser(sharingIntent, context.getString(R.string.menu_share)));
+                    sp.edit().putBoolean("delete_screenshot", true).commit();
                 }
             } else {
                 final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(activity);

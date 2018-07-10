@@ -20,6 +20,7 @@ import de.baumann.browser.Browser.Javascript;
 import de.baumann.browser.Database.RecordAction;
 import de.baumann.browser.Ninja.R;
 import de.baumann.browser.Unit.BrowserUnit;
+import de.baumann.browser.Unit.HelperUnit;
 import de.baumann.browser.View.Adapter_Javascript;
 import de.baumann.browser.View.NinjaToast;
 

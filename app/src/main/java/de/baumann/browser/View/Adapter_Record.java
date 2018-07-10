@@ -50,7 +50,7 @@ public class Adapter_Record extends ArrayAdapter<Record> {
         }
 
         Record record = list.get(position);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());holder.title.setText(record.getTitle());
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd", Locale.getDefault());holder.title.setText(record.getTitle());
         holder.time.setText(sdf.format(record.getTime()));
         holder.url.setText(record.getURL());
 

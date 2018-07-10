@@ -20,6 +20,7 @@ import de.baumann.browser.Browser.AdBlock;
 import de.baumann.browser.Database.RecordAction;
 import de.baumann.browser.Ninja.R;
 import de.baumann.browser.Unit.BrowserUnit;
+import de.baumann.browser.Unit.HelperUnit;
 import de.baumann.browser.View.NinjaToast;
 import de.baumann.browser.View.Adapter_AbBlock;
 

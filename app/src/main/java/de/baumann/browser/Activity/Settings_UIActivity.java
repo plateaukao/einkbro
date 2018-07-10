@@ -11,6 +11,7 @@ import android.view.MenuItem;
 
 import de.baumann.browser.Fragment.Fragment_settings_UI;
 import de.baumann.browser.Ninja.R;
+import de.baumann.browser.Unit.HelperUnit;
 
 public class Settings_UIActivity extends AppCompatActivity {
     private static final String DB_CHANGE = "DB_CHANGE";

@@ -13,6 +13,7 @@ import android.view.MenuItem;
 
 import de.baumann.browser.Fragment.Fragment_settings;
 import de.baumann.browser.Ninja.R;
+import de.baumann.browser.Unit.HelperUnit;
 import de.baumann.browser.Unit.IntentUnit;
 
 public class Settings_Activity extends AppCompatActivity {

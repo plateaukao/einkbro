@@ -18,7 +18,7 @@ import de.baumann.browser.Activity.Settings_ClearActivity;
 import de.baumann.browser.Activity.Settings_DataActivity;
 import de.baumann.browser.Activity.Settings_StartActivity;
 import de.baumann.browser.Activity.Settings_UIActivity;
-import de.baumann.browser.Activity.HelperUnit;
+import de.baumann.browser.Unit.HelperUnit;
 import de.baumann.browser.Ninja.R;
 import de.baumann.browser.Unit.IntentUnit;
 

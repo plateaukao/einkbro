@@ -26,10 +26,28 @@
             android:scrollbars="none">
 
             <LinearLayout
-                android:id="@+id/switcher_container"
-                android:orientation="horizontal"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/switcher_container"
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <ImageButton android:id="@+id/switcher_plus"
+                    android:layout_marginStart="@dimen/layout_margin_8dp"
+                    android:contentDescription="@null"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="8dp"
+                    android:src="@drawable/icon_plus_light"
+                    android:background="?attr/actionBarItemBackground"/>
+
+            </LinearLayout>
+
+
 
         </HorizontalScrollView>
 
