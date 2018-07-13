@@ -1,7 +1,6 @@
 package de.baumann.browser.View;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -83,9 +82,6 @@ public class NinjaWebView extends WebView implements AlbumController {
     }
 
     private Javascript javaHosts;
-    public Javascript getJavaHosts() {
-        return javaHosts;
-    }
     private Cookie cookieHosts;
     public Cookie getCookieHosts() {
         return cookieHosts;
@@ -261,7 +257,7 @@ public class NinjaWebView extends WebView implements AlbumController {
             }
         }
 
-        HashMap<String, String> extraHeaders = new HashMap<String, String>();
+        HashMap<String, String> extraHeaders = new HashMap<>();
         extraHeaders.put("DNT", "1");
 
         webViewClient.updateWhite(adBlock.isWhite(url));

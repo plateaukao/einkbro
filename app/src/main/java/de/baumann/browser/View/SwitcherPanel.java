@@ -42,9 +42,6 @@ public class SwitcherPanel extends ViewGroup {
     public boolean isKeyBoardShowing() {
         return !keyBoardShowing;
     }
-    public void fixKeyBoardShowing(int height) {
-        keyBoardShowing = getMeasuredHeight() < height;
-    }
 
     /* mainView's status */
     public enum Status {
@@ -194,21 +191,29 @@ public class SwitcherPanel extends ViewGroup {
             }
 
             int childWidthSpec;
-            if (layoutParams.width == ViewGroup.LayoutParams.WRAP_CONTENT) {
-                childWidthSpec = MeasureSpec.makeMeasureSpec(width, MeasureSpec.AT_MOST);
-            } else if (layoutParams.width == ViewGroup.LayoutParams.MATCH_PARENT) {
-                childWidthSpec = MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY);
-            } else {
-                childWidthSpec = MeasureSpec.makeMeasureSpec(layoutParams.width, MeasureSpec.EXACTLY);
+            switch (layoutParams.width) {
+                case ViewGroup.LayoutParams.WRAP_CONTENT:
+                    childWidthSpec = MeasureSpec.makeMeasureSpec(width, MeasureSpec.AT_MOST);
+                    break;
+                case ViewGroup.LayoutParams.MATCH_PARENT:
+                    childWidthSpec = MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY);
+                    break;
+                default:
+                    childWidthSpec = MeasureSpec.makeMeasureSpec(layoutParams.width, MeasureSpec.EXACTLY);
+                    break;
             }
 
             int childHeightSpec;
-            if (layoutParams.height == ViewGroup.LayoutParams.WRAP_CONTENT) {
-                childHeightSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.AT_MOST);
-            } else if (layoutParams.height == ViewGroup.LayoutParams.MATCH_PARENT) {
-                childHeightSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
-            } else {
-                childHeightSpec = MeasureSpec.makeMeasureSpec(layoutParams.height, MeasureSpec.EXACTLY);
+            switch (layoutParams.height) {
+                case ViewGroup.LayoutParams.WRAP_CONTENT:
+                    childHeightSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.AT_MOST);
+                    break;
+                case ViewGroup.LayoutParams.MATCH_PARENT:
+                    childHeightSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
+                    break;
+                default:
+                    childHeightSpec = MeasureSpec.makeMeasureSpec(layoutParams.height, MeasureSpec.EXACTLY);
+                    break;
             }
 
             child.measure(childWidthSpec, childHeightSpec);

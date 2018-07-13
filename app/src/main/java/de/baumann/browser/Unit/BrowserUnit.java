@@ -2,8 +2,6 @@ package de.baumann.browser.Unit;
 
 import android.Manifest;
 import android.app.DownloadManager;
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -347,15 +345,19 @@ public class BrowserUnit {
 
         action.open(false);
 
-        if (i == 0) {
-            list = action.listDomains();
-            filename = context.getString(R.string.export_whitelistAdBlock);
-        } else if (i == 1) {
-            list = action.listDomainsJS();
-            filename = context.getString(R.string.export_whitelistJS);
-        } else {
-            list = action.listDomainsCookie();
-            filename = context.getString(R.string.export_whitelistCookie);
+        switch (i) {
+            case 0:
+                list = action.listDomains();
+                filename = context.getString(R.string.export_whitelistAdBlock);
+                break;
+            case 1:
+                list = action.listDomainsJS();
+                filename = context.getString(R.string.export_whitelistJS);
+                break;
+            default:
+                list = action.listDomainsCookie();
+                filename = context.getString(R.string.export_whitelistCookie);
+                break;
         }
 
         action.close();

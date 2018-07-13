@@ -10,20 +10,16 @@
         &lt;b>Version: 5.7&lt;/b>&lt;br>
         Bitte lies den \"Hilfedialog\" für weitere Informationen.&lt;br>&lt;br>
 
-        \u25AA new: delete indexed databases and local web storage&lt;br>
-        \u25AA new: Spanish translation (thanks to Herman Nunez)&lt;br>
-        \u25AA new: confirmation dialog before making backup&lt;br>
-        \u25AA new: delete separate lists&lt;br>
-        \u25AA new: show unsecured connections and try reloading secure&lt;br>
-        \u25AA new: search engines (Startpage DE, Searx)&lt;br>
-        \u25AA new: notification when download or screenshot complete&lt;br>
-        \u25AA ew: block remote content&lt;br>
-        \u25AA improved Chinese translation (thanks: lishoujun)&lt;br>
-        \u25AA removed: Snackbar (replaced with toasts)&lt;br>
-        \u25AA removed: request desktop site&lt;br>
-        \u25AA removed: build in file manager&lt;br>
-        \u25AA fix: some strings (thanks: gr1sh)&lt;br>
-        \u25AA fix: some urls opening search results
+        \u25AA neu: "do not track" header&lt;br>
+        \u25AA neu: + Schaltfläche in der Tabvorschau w&lt;br>
+        \u25AA neu: Internetseiten als PDF-Datei speichern&lt;br>
+        \u25AA neu: Ziellink wird im Kontextmenü angezeigt&lt;br>
+        \u25AA Fehler behoben: Cookie-Ausnahmen beim Tabwechsel&lt;br>
+        \u25AA Fehler behoben: flüssiges Scrollen&lt;br>
+        \u25AA Fehler behoben: Darstellung bei Bildschirmausrichtungswechsel&lt;br>
+        \u25AA verbessert: UI + Dialoge&lt;br>
+        \u25AA verbessert: Spanische Übersetzung (Dank an @Herman Nuñez)&lt;br>
+        \u25AA verbessert: Chinesische Übersetzung (Dank an @smallg0at)
     </string>
 
     <string name="startpage_title">Startseite</string>
