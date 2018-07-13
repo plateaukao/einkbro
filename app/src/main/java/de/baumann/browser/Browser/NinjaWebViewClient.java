@@ -31,7 +31,6 @@ import android.widget.TextView;
 
 import java.io.ByteArrayInputStream;
 import java.net.URISyntaxException;
-import java.util.HashMap;
 
 import de.baumann.browser.Database.Record;
 import de.baumann.browser.Database.RecordAction;
@@ -46,7 +45,7 @@ import static android.content.ContentValues.TAG;
 public class NinjaWebViewClient extends WebViewClient {
     private final NinjaWebView ninjaWebView;
     private final Context context;
-    private SharedPreferences sp;
+    private final SharedPreferences sp;
 
     private final AdBlock adBlock;
     private final Cookie cookie;

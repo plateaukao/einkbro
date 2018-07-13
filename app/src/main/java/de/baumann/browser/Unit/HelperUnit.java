@@ -20,6 +20,7 @@
 package de.baumann.browser.Unit;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -27,6 +28,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatDelegate;
 import android.text.Html;
@@ -58,9 +60,10 @@ public class HelperUnit {
                             .setPositiveButton(activity.getString(R.string.app_ok), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    if (android.os.Build.VERSION.SDK_INT >= 23)
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                                         activity.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                                                 REQUEST_CODE_ASK_PERMISSIONS);
+                                    }
                                 }
                             })
                             .setNegativeButton(activity.getString(R.string.app_cancel), new DialogInterface.OnClickListener() {
@@ -86,11 +89,11 @@ public class HelperUnit {
                             .setTitle(R.string.toast_permission_title)
                             .setMessage(R.string.toast_permission_loc)
                             .setPositiveButton(activity.getString(R.string.app_ok), new DialogInterface.OnClickListener() {
+                                @TargetApi(Build.VERSION_CODES.M)
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    if (android.os.Build.VERSION.SDK_INT >= 23)
-                                        activity.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                                REQUEST_CODE_ASK_PERMISSIONS_1);
+                                    activity.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                            REQUEST_CODE_ASK_PERMISSIONS_1);
                                 }
                             })
                             .setNegativeButton(activity.getString(R.string.app_cancel), new DialogInterface.OnClickListener() {

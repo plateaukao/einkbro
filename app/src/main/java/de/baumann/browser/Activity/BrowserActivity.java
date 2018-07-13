@@ -88,6 +88,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -330,16 +331,22 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         setContentView(R.layout.main);
 
         sp = PreferenceManager.getDefaultSharedPreferences(this);
-        if (sp.getString("start_tab", "0").equals("0")) {
-            start_tab = BrowserUnit.FLAG_HOME;
-        } else if (sp.getString("start_tab", "0").equals("1")) {
-            start_tab = BrowserUnit.FLAG_HOME;
-        } else if (sp.getString("start_tab", "0").equals("2")) {
-            start_tab = BrowserUnit.FLAG_PASS;
-        } else if (sp.getString("start_tab", "0").equals("3")) {
-            start_tab = BrowserUnit.FLAG_BOOKMARKS;
-        } else {
-            start_tab = BrowserUnit.FLAG_HISTORY;
+        switch (sp.getString("start_tab", "0")) {
+            case "0":
+                start_tab = BrowserUnit.FLAG_HOME;
+                break;
+            case "1":
+                start_tab = BrowserUnit.FLAG_HOME;
+                break;
+            case "2":
+                start_tab = BrowserUnit.FLAG_PASS;
+                break;
+            case "3":
+                start_tab = BrowserUnit.FLAG_BOOKMARKS;
+                break;
+            default:
+                start_tab = BrowserUnit.FLAG_HISTORY;
+                break;
         }
 
         if (sp.getString("saved_key_ok", "no").equals("no")) {
@@ -698,18 +705,19 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
-            return false;
-        } else if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
-            return false;
-        } else if (keyCode == KeyEvent.KEYCODE_MENU) {
-            return showOverflow();
-        } else if (keyCode == KeyEvent.KEYCODE_BACK) {
-            // When video fullscreen, first close it
-            if (fullscreenHolder != null || customView != null || videoView != null) {
-                return onHideCustomView();
-            }
-            return onKeyCodeBack();
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_VOLUME_UP:
+                return false;
+            case KeyEvent.KEYCODE_VOLUME_DOWN:
+                return false;
+            case KeyEvent.KEYCODE_MENU:
+                return showOverflow();
+            case KeyEvent.KEYCODE_BACK:
+                // When video fullscreen, first close it
+                if (fullscreenHolder != null || customView != null || videoView != null) {
+                    return onHideCustomView();
+                }
+                return onKeyCodeBack();
         }
 
         return false;
@@ -1050,13 +1058,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                         Collections.sort(gridList, new Comparator<GridItem>() {
                             @Override
                             public int compare(GridItem first, GridItem second) {
-                                if (first.getOrdinal() < second.getOrdinal()) {
-                                    return -1;
-                                } else if (first.getOrdinal() > second.getOrdinal()) {
-                                    return 1;
-                                } else {
-                                    return 0;
-                                }
+                                return Integer.compare(first.getOrdinal(), second.getOrdinal());
                             }
                         });
                     }
@@ -1095,14 +1097,19 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                         if (currentAlbumController != null && currentAlbumController instanceof NinjaRelativeLayout) {
                             tv_searchSite.setVisibility(View.GONE);
 
-                            if (ninjaRelativeLayout.getFlag() == BrowserUnit.FLAG_HOME) {
-                                BrowserUnit.clearHome(BrowserActivity.this);
-                            } else if (ninjaRelativeLayout.getFlag() == BrowserUnit.FLAG_BOOKMARKS) {
-                                BrowserUnit.clearBookmarks(BrowserActivity.this);
-                            } else if (ninjaRelativeLayout.getFlag() == BrowserUnit.FLAG_HISTORY) {
-                                BrowserUnit.clearHistory(BrowserActivity.this);
-                            } else if (ninjaRelativeLayout.getFlag() == BrowserUnit.FLAG_PASS) {
-                                deleteDatabase("pass_DB_v01.db");
+                            switch (ninjaRelativeLayout.getFlag()) {
+                                case BrowserUnit.FLAG_HOME:
+                                    BrowserUnit.clearHome(BrowserActivity.this);
+                                    break;
+                                case BrowserUnit.FLAG_BOOKMARKS:
+                                    BrowserUnit.clearBookmarks(BrowserActivity.this);
+                                    break;
+                                case BrowserUnit.FLAG_HISTORY:
+                                    BrowserUnit.clearHistory(BrowserActivity.this);
+                                    break;
+                                case BrowserUnit.FLAG_PASS:
+                                    deleteDatabase("pass_DB_v01.db");
+                                    break;
                             }
                         }
                         bottomSheetDialog.cancel();
@@ -1371,7 +1378,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
             PrintManager printManager = (PrintManager) this.getSystemService(Context.PRINT_SERVICE);
             PrintDocumentAdapter printAdapter = ninjaWebView.createPrintDocumentAdapter(title);
-            printManager.print(pdfTitle, printAdapter, new PrintAttributes.Builder().build());
+            Objects.requireNonNull(printManager).print(pdfTitle, printAdapter, new PrintAttributes.Builder().build());
 
         } catch (Exception e) {
             sp.edit().putBoolean("pdf_create", false).commit();
@@ -1632,30 +1639,34 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             gridView.setVisibility(View.GONE);
             home_list.setVisibility(View.VISIBLE);
 
-            if (current_tab == BrowserUnit.FLAG_BOOKMARKS) {
-                open_newTabView.setVisibility(View.INVISIBLE);
-                open_passView.setVisibility(View.INVISIBLE);
-                open_bookmarkView.setVisibility(View.VISIBLE);
-                open_historyView.setVisibility(View.INVISIBLE);
-                layout.setAlbumTitle(getString(R.string.album_title_bookmarks));
-                layout.setFlag(BrowserUnit.FLAG_BOOKMARKS);
-                initBHList(layout);
-            } else if (current_tab == BrowserUnit.FLAG_HISTORY) {
-                open_newTabView.setVisibility(View.INVISIBLE);
-                open_passView.setVisibility(View.INVISIBLE);
-                open_bookmarkView.setVisibility(View.INVISIBLE);
-                open_historyView.setVisibility(View.VISIBLE);
-                layout.setAlbumTitle(getString(R.string.album_title_history));
-                layout.setFlag(BrowserUnit.FLAG_HISTORY);
-                initBHList(layout);
-            } else if (current_tab == BrowserUnit.FLAG_PASS) {
-                open_newTabView.setVisibility(View.INVISIBLE);
-                open_passView.setVisibility(View.VISIBLE);
-                open_bookmarkView.setVisibility(View.INVISIBLE);
-                open_historyView.setVisibility(View.INVISIBLE);
-                layout.setAlbumTitle(getString(R.string.album_title_pass));
-                layout.setFlag(BrowserUnit.FLAG_PASS);
-                initPSList(layout);
+            switch (current_tab) {
+                case BrowserUnit.FLAG_BOOKMARKS:
+                    open_newTabView.setVisibility(View.INVISIBLE);
+                    open_passView.setVisibility(View.INVISIBLE);
+                    open_bookmarkView.setVisibility(View.VISIBLE);
+                    open_historyView.setVisibility(View.INVISIBLE);
+                    layout.setAlbumTitle(getString(R.string.album_title_bookmarks));
+                    layout.setFlag(BrowserUnit.FLAG_BOOKMARKS);
+                    initBHList(layout);
+                    break;
+                case BrowserUnit.FLAG_HISTORY:
+                    open_newTabView.setVisibility(View.INVISIBLE);
+                    open_passView.setVisibility(View.INVISIBLE);
+                    open_bookmarkView.setVisibility(View.INVISIBLE);
+                    open_historyView.setVisibility(View.VISIBLE);
+                    layout.setAlbumTitle(getString(R.string.album_title_history));
+                    layout.setFlag(BrowserUnit.FLAG_HISTORY);
+                    initBHList(layout);
+                    break;
+                case BrowserUnit.FLAG_PASS:
+                    open_newTabView.setVisibility(View.INVISIBLE);
+                    open_passView.setVisibility(View.VISIBLE);
+                    open_bookmarkView.setVisibility(View.INVISIBLE);
+                    open_historyView.setVisibility(View.INVISIBLE);
+                    layout.setAlbumTitle(getString(R.string.album_title_pass));
+                    layout.setFlag(BrowserUnit.FLAG_PASS);
+                    initPSList(layout);
+                    break;
             }
         }
 
@@ -1780,18 +1791,22 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         RecordAction action = new RecordAction(BrowserActivity.this);
         action.open(false);
         final List<Record> list;
-        if (layout.getFlag() == BrowserUnit.FLAG_BOOKMARKS) {
-            list = action.listBookmarks();
-            Collections.sort(list, new Comparator<Record>() {
-                @Override
-                public int compare(Record first, Record second) {
-                    return first.getTitle().compareToIgnoreCase(second.getTitle());
-                }
-            });
-        } else if (layout.getFlag() == BrowserUnit.FLAG_HISTORY) {
-            list = action.listHistory();
-        } else {
-            list = new ArrayList<>();
+        switch (layout.getFlag()) {
+            case BrowserUnit.FLAG_BOOKMARKS:
+                list = action.listBookmarks();
+                Collections.sort(list, new Comparator<Record>() {
+                    @Override
+                    public int compare(Record first, Record second) {
+                        return first.getTitle().compareToIgnoreCase(second.getTitle());
+                    }
+                });
+                break;
+            case BrowserUnit.FLAG_HISTORY:
+                list = action.listHistory();
+                break;
+            default:
+                list = new ArrayList<>();
+                break;
         }
         action.close();
 
@@ -2239,14 +2254,19 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         font_minus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (sp.getString("sp_fontSize", "100").equals("100")) {
-                    Log.i(TAG, "Can not change font size");
-                } else if (sp.getString("sp_fontSize", "100").equals("125")) {
-                    sp.edit().putString("sp_fontSize", "100").commit();
-                } else if (sp.getString("sp_fontSize", "100").equals("150")) {
-                    sp.edit().putString("sp_fontSize", "125").commit();
-                } else if (sp.getString("sp_fontSize", "100").equals("175")) {
-                    sp.edit().putString("sp_fontSize", "150").commit();
+                switch (sp.getString("sp_fontSize", "100")) {
+                    case "100":
+                        Log.i(TAG, "Can not change font size");
+                        break;
+                    case "125":
+                        sp.edit().putString("sp_fontSize", "100").commit();
+                        break;
+                    case "150":
+                        sp.edit().putString("sp_fontSize", "125").commit();
+                        break;
+                    case "175":
+                        sp.edit().putString("sp_fontSize", "150").commit();
+                        break;
                 }
                 font_text.setText(sp.getString("sp_fontSize", "100"));
             }
@@ -2257,14 +2277,19 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         font_plus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (sp.getString("sp_fontSize", "100").equals("100")) {
-                    sp.edit().putString("sp_fontSize", "125").commit();
-                } else if (sp.getString("sp_fontSize", "100").equals("125")) {
-                    sp.edit().putString("sp_fontSize", "150").commit();
-                } else if (sp.getString("sp_fontSize", "100").equals("150")) {
-                    sp.edit().putString("sp_fontSize", "175").commit();
-                } else if (sp.getString("sp_fontSize", "100").equals("175")) {
-                    Log.i(TAG, "Can not change font size");
+                switch (sp.getString("sp_fontSize", "100")) {
+                    case "100":
+                        sp.edit().putString("sp_fontSize", "125").commit();
+                        break;
+                    case "125":
+                        sp.edit().putString("sp_fontSize", "150").commit();
+                        break;
+                    case "150":
+                        sp.edit().putString("sp_fontSize", "175").commit();
+                        break;
+                    case "175":
+                        Log.i(TAG, "Can not change font size");
+                        break;
                 }
                 font_text.setText(sp.getString("sp_fontSize", "100"));
             }
@@ -2371,7 +2396,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         }
     }
 
-    public synchronized void addAlbum(int flag) {
+    private synchronized void addAlbum(int flag) {
 
         showOmnibox();
 

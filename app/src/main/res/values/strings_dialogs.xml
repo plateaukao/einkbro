@@ -7,23 +7,19 @@
         &lt;i>Project site: https://github.com/scoute-dich/Browser&lt;br>
         Changelog: https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;/i>&lt;br>&lt;br>
 
-        &lt;b>Version: 5.7&lt;/b>&lt;br>
+        &lt;b>Version: 5.8&lt;/b>&lt;br>
         Please read the \"Help dialog\" for more information.&lt;br>&lt;br>
 
-        \u25AA new: delete indexed databases and local web storage&lt;br>
-        \u25AA new: Spanish translation (thanks to Herman Nunez)&lt;br>
-        \u25AA new: confirmation dialog before making backup&lt;br>
-        \u25AA new: delete separate lists&lt;br>
-        \u25AA new: show unsecured connections and try reloading secure&lt;br>
-        \u25AA new: search engines (Startpage DE, Searx)&lt;br>
-        \u25AA new: notification when download or screenshot complete&lt;br>
-        \u25AA ew: block remote content&lt;br>
-        \u25AA improved Chinese translation (thanks: lishoujun)&lt;br>
-        \u25AA removed: Snackbar (replaced with toasts)&lt;br>
-        \u25AA removed: request desktop site&lt;br>
-        \u25AA removed: build in file manager&lt;br>
-        \u25AA fix: some strings (thanks: gr1sh)&lt;br>
-        \u25AA fix: some urls opening search results
+        \u25AA new: "do not track" header&lt;br>
+        \u25AA new: + button in tab preview&lt;br>
+        \u25AA new: save websites as PDF&lt;br>
+        \u25AA new: show link in context menu&lt;br>
+        \u25AA fix: not applying cookie whitelist when switching tabs&lt;br>
+        \u25AA fix: scrolling issue&lt;br>
+        \u25AA fix: screen rotation issues&lt;br>
+        \u25AA updated: UI + dialogs&lt;br>
+        \u25AA updated: Spanish translation (thanks to @Herman Nuñez)&lt;br>
+        \u25AA updated: Chinese translation (thanks to @smallg0at)
     </string>
 
     <string name="startpage_title">Startpage</string>

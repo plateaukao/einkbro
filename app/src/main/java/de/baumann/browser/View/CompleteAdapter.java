@@ -42,13 +42,7 @@ public class CompleteAdapter extends BaseAdapter implements Filterable {
             Collections.sort(resultList, new Comparator<CompleteItem>() {
                 @Override
                 public int compare(CompleteItem first, CompleteItem second) {
-                    if (first.getIndex() < second.getIndex()) {
-                        return -1;
-                    } else if (first.getIndex() > second.getIndex()) {
-                        return 1;
-                    } else {
-                        return 0;
-                    }
+                    return Integer.compare(first.getIndex(), second.getIndex());
                 }
             });
 
