@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <!-- App -->
+    <string name="app_name">FOSS Browser</string>
+    <string name="app_ok">OK</string>
+    <string name="app_cancel">Odrzuć</string>
+    <string name="app_close">Zamknij</string>
+    <string name="list_empty">Ta lista jest pusta</string>
+    <string name="album_title_bookmarks">Zakładki</string>
+    <string name="album_title_history">Historia</string>
+    <string name="album_title_home">Strona domowa</string>
+    <string name="album_title_files">Pliki</string>
+    <string name="album_title_pass">Dane logowania</string>
+    <string name="album_untitled"> </string>
+    <string name="notification_content_holderTitle">Otwarte karty…</string>
+    <string name="notification_content_holder”>Dotknij, aby zobaczyć strony</string>
+    <string name="search_hint">Wyszukaj</string>
+
+
+    <!-- Menu -->
+    <string name="main_menu_tabPreview">Otwórz przegląd kart</string>
+    <string name="main_menu_new_tab">Nowa karta w tle</string>
+    <string name="main_menu_new_tabOpen">Nowa karta piorytetowa</string>
+    <string name="main_menu_copy_link">Kopiuj link</string>
+    <string name="main_omnibox_input_hint">Wyszukaj lub wpisz adres</string>
+    <string name="menu_open_with">Otwórz link za pomocą…</string>
+
+    <string name="menu_share">Udostępnij</string>
+    <string name="menu_quit">Wyjdź</string>
+    <string name="menu_delete">Usuń</string>
+    <string name="menu_delete_list">Usuń listę</string>
+    <string name="menu_edit">Zmień</string>
+    <string name="menu_notification">Powiadomienia</string>
+    <string name="menu_closeTab">Zamknij kartę</string>
+    <string name="menu_download">Otwórz listę pobranych</string>
+
+    <string name="menu_share_screenshot">Udostępnij zrzut ekranu</string>
+    <string name="menu_share_link">Udostępnij link</string>
+
+    <string name="menu_save_screenshot">Zachowaj zrzut ekranu</string>
+    <string name="menu_save_home">Zachowaj na stronie domowej</string>
+    <string name="menu_save_login">Zachowaj dane logowania</string>
+    <string name="menu_save_bookmark">Zachowaj jako zakładkę</string>
+    <string name="menu_save_as">Zachowaj jako…</string>
+    <string name="menu_save_pdf">Zachowaj jako PDF</string>
+    <string name="menu_share_pdf">Udostępnij PDF</string>
+    <string name="menu_share_pdfToast">Ukończono. Przejść do katalogu pobierania?</string>
+
+    <string name="menu_other_searchSite">Wyszukaj na tej stronie</string>
+    <string name="menu_other_help">Pomoc</string>
+
+
+    <!-- AndroidAgo -->
+
+
+    <!-- Dialog -->
+    <string name="dialog_toggle_title">Szybkie preferencje</string>
+    <string name="dialog_toggle_hint">Wybierz przycisk OK poniżej, aby zastosować natychmiast.</string>
+    <string name="dialog_title_hint">Tytuł:</string>
+    <string name="dialog_extension_hint">Rozszerzenie (np.: \".jpg\"):</string>
+    <string name="dialog_se_hint">https://www.google.com/search?q=</string>
+    <string name="dialog_sign_in_username">Login</string>
+    <string name="dialog_sign_in_password">Hasło</string>
+    <string name="dialog_button_custom">Własne</string>
+    <string name="dialog_title_download">Rozpocząć pobieranie?</string>
+    <string name="dialog_title_sign_in">Zarejestruj</string>
+    <string name="dialog_content_resubmission">Ponowić wysyłkę danych?</string>
+    <string name="dialog_content_ssl_error">Wykryto niezaufany certyfikat. Chcesz kontynuować?</string>
+
+
+
+    <!-- Settings -->
+    <string name="setting_label">Preferencje</string>
+
+    <!-- Browser setting -->
+    <string name="setting_title_browser">Preferencje przeglądarki</string>
+    <string name="setting_title_clear_control">Kontrola danych</string>
+    <string name="setting_title_start_control">Kontrola przeglądania</string>
+    <string name="setting_summary_clear_control">Wymaż zapisane dane lub zdecyduj o automatyce wymazywania.</string>
+    <string name="setting_summary_start_control">Zdecyduj jakie elementy przeglądania będą włączone domyślnie.</string>
+
+    <string name="setting_title_search_engine">Wyszukiwarka</string>
+    <string name="setting_summary_search_engine">Zdecyduj o domyślnej wyszukiwarce internetowej lub wprowadź własną.</string>
+    <string name="setting_summary_search_engine_google">Google</string>
+    <string name="setting_summary_search_engine_duckduckgo">DuckDuckGo</string>
+    <string name="setting_summary_search_engine_startpage">StartPage</string>
+    <string name="setting_summary_search_engine_bing">Bing</string>
+    <string name="setting_summary_search_engine_baidu">Baidu</string>
+    <string name="setting_summary_search_engine_startpage_de">StartPage (de)</string>
+    <string name="setting_summary_search_engine_searx">Searx</string>
+
+    <string name="setting_title_inverted">Odwrócone kolory</string>
+    <string name="setting_summary_inverted">Ta funkcja sprawi, że zawartość stron załaduje się w odwróconej skali szarości. Forma trybu nocnego.</string>
+
+    <string name="setting_title_font">Rozmiar czcionki</string>
+    <string name="setting_summary_font">Zmień podstawowy rozmiar czcionek wyświetlanych na stronach.</string>
+
+    <string name="setting_title_remote">Zawartość zdalna</string>
+    <string name="setting_summary_remote">Pozwól na ładowanie zawartości zdalnej, która nie pochodzi bezpośrednio z odwiedzanych witryn. 
+        Wyłączenie tej opcji poprawi bezpieczeństwo, prędkość ładowania i zaoszczędzi dane, jednak niektóre elementy mogą nie wyświetlać się poprawnie.</string>
+
+
+    <!-- Browser start -->
+    <string name="setting_title_images">Grafiki</string>
+    <string name="setting_summary_images">Zezwól na ładowanie obrazków. Wyłączenie tej opcji zaoszczędzi dane i poprawi prędkość ładowania.</string>
+    <string name="setting_title_cookie">Ciasteczka</string>
+    <string name="setting_summary_cookie_delete">Wszystkie ciasteczka zostaną usunięte, także te z witryn zaufanych.</string>
+    <string name="setting_summary_cookie">Zezwól na ciasteczka, czyli małe pliki tekstowe zachowywane na twoim urządzeniu. Witryny internetowe zachowują tam twoje preferencje (tj. filtry wyszukiwania). Mogą jednak zapisywać także różne dane osobiste. Ciasteczka od podmiotów trzecich (wykorzystywane do wyświetlania reklam) są wyłączone na stałe.</string>
+    <string name="setting_title_whitelistCookie">Biała lista ciasteczek</string>
+    <string name="setting_summary_whitelistCookie">Jeśli odrzucisz ogólną zgodę na ciasteczka, możesz dodać do listy te witryny, którym ufasz i które mogą przetrzymywać twoje informacje.</string>
+
+    <string name="setting_title_javascript">JavaScript</string>
+    <string name="setting_summary_javascript">Zezwól na skrypty. Wiele witryn wykorzystuje je w ramach swojej funkcjonalności (rozwijane menu, ładowanie obrazków i elementów nawigacyjnych), jednak skrypty te podatne są na ataki.</string>
+    <string name="setting_title_whitelistJS">Biała lista JavaScript</string>
+    <string name="setting_summary_whitelistJS">Jeśli odrzucisz ogólną zgodę na skrypty, możesz dodać do listy te witryny, którym ufasz i które mogą używać skryptów java.</string>
+
+    <string name="setting_title_adblock">AdBlock</string>
+    <string name="setting_summary_adblock">Zezwól na AdBlock do blokady irytujących reklam. Poprawia on prędkość ładowania witryn.</string>
+    <string name="setting_title_whitelist">Biała lista AdBlock</string>
+    <string name="setting_summary_whitelist">Wprowadź adresy stron, które mogą wyświetlać ci reklamy.</string>
+
+    <string name="setting_title_location">Lokalizacja</string>
+    <string name="setting_summary_location">Zezwól na dostęp do lokalizacji twojego urządzenia. Niektóre witryny (np. Google Maps do nawigacji) wymagają włączenia tej funkcji.</string>
+
+    <string name="setting_title_history">Historia</string>
+    <string name="setting_summary_history">Zezwól na zapisywanie historii odwiedzanych witryn.</string>
+
+
+    <!-- Browser clear -->
+    <string name="clear_summary">Wszystkie pliki zostaną przeniesione do folderu \"Documents\" na karcie SD. Każdy eksport nadpisze poprzedni. Aby odzyskać dane, w katalogu musi istnieć plik o odpowiedniej nazwie.</string>
+    <string name="clear_menu_done_all">Wykonano</string>
+    <string name="clear_title_quit">Wymaż na zamknięciu</string>
+    <string name="clear_summary_quit">Za każdym razem, gdy zamkniesz \"FOSS Browser\" wszystkie zaznaczone powyżej dane zostaną wymazane.</string>
+    <string name="clear_title_bookmarks">Wymaż zakładki</string>
+    <string name="clear_title_cache">Wymaż dane podręczne</string>
+    <string name="clear_title_cookie">Wymaż ciasteczka</string>
+    <string name="clear_title_history">Wymaż historie</string>
+    <string name="clear_title_indexedDB">Wymaż dane \”zindeksowane \" i \”sieciowe lokalne\”</string>
+
+    <string name="clear_title_deleteDatabase">Wymaż bazę danych</string>
+    <string name="clear_summary_deleteDatabase">Wyczyść wszystkie dane (widok strony głównej, zakładki, historię i białe listy).</string>
+
+
+    <!-- App setting -->
+    <string name="setting_title_app">Preferencje aplikacji</string>
+    <string name="setting_title_ui">Zachowanie i wygląd</string>
+    <string name="setting_title_data">Kopia zapasowa</string>
+    <string name="setting_summary_ui">Dostosuj aplikację do swoich upodobań.</string>
+    <string name="setting_summary_data">Importuj lub eksportuj wybrane dane (białe listy, zakładki).</string>
+
+    <!-- App behavior -->
+    <string name="setting_title_hideToolbar">Ukryj dolny panel</string>
+    <string name="setting_summary_hide">Pokazuj witryny na całym ekranie. Dotykając przycisku wstecz wyjdziesz z trybu pełnoekranowego.</string>
+    <string name="setting_title_omnibox_control">Gesty na panelu dolnym</string>
+    <string name="setting_summary_omnibox_control">Przesuń palcem po panelu dolnym w lewo/prawo, aby przełączać otwarte karty.</string>
+    <string name="setting_title_background">Otwieranie łączy</string>
+    <string name="setting_summary_background">Wyświetlaj powiadomienie o otwarciu witryny w tle. Wyłączenie tej funkcji sprawi, iż łącza będą natychmiast otwierały okno przeglądarki.</string>
+    <string name="setting_title_themeDark">Tryb jasny</string>
+    <string name="setting_summary_themeDark">Pragniesz w życiu trochę blasku? Niech będzie!</string>
+
+    <string name="setting_title_nav">Przycisk nawigacyjny</string>
+    <string name="setting_title_nav_pos">Położenie</string>
+    <string name="setting_summary_nav_pos">Zdecyduj, gdzie znajdzie się \”Przycisk nawigacyjny\”</string>
+    <string name="setting_summary_nav_pos_right">Prawa</string>
+    <string name="setting_summary_nav_pos_left">Lewa</string>
+    <string name="setting_summary_nav_pos_center">Środek</string>
+
+    <string name="setting_title_nav_show">Ukrycie</string>
+    <string name="setting_summary_nav_show">Ukryj \”Przycisk nawigacyjny\” gdy wyświetlany jest panel dolny.</string>
+
+    <string name="setting_title_tab">Zakładka startowa</string>
+    <string name="setting_summary_tab">Wybierz element startowy \"FOSS Browser\”.</string>
+
+    <string name="setting_title_confirm_exit">Potwierdzaj zamknięcie przeglądarki</string>
+    <string name="setting_summary_confirm_exit">Wyświetlaj komunikat przy zamykaniu apki.</string>
+
+    <string name="setting_title_confirm_tab_close">Potwierdzaj zamknięcie karty</string>
+    <string name="setting_summary_confirm_tab_close">Wyświetlaj komunikat o zamykaniu karty.</string>
+
+    <string name="setting_title_toolbar">Panel narzędziowy</string>
+    <string name="setting_hide_always">Zawsze ukryty</string>
+    <string name="setting_hide_down">Ukryty przy przewijaniu w dół</string>
+    <string name="setting_hide_never">Zawsze widoczny</string>
+
+    <string name="setting_hideNav_always">Zawsze ukryty</string>
+    <string name="setting_hideNav_toolbar">Ukryty przy widoczności panelu dolnego</string>
+
+
+    <!-- Data -->
+    <string name="setting_title_export_bookmarks">Eksportuj zakładki</string>
+    <string name="setting_title_import_bookmarks">Importuj zakładki</string>
+    <string name="export_bookmarks">export_bookmarks</string>
+
+    <string name="setting_title_export_whitelist">Eksportuj białą listę AdBlock</string>
+    <string name="setting_title_import_whitelist">Importuj białą listę AdBlock</string>
+    <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
+
+    <string name="setting_title_export_whitelistJS">Eksportuj białą listę JavaScript</string>
+    <string name="setting_title_import_whitelistJS">Importuj białą listę JavaScript</string>
+    <string name="export_whitelistJS">export_whitelist_Javascript</string>
+
+    <string name="setting_title_export_whitelistCookie">Eksportuj białą listę ciasteczek</string>
+    <string name="setting_title_import_whitelistCookie">Importuj białą listę ciasteczek</string>
+    <string name="export_whitelistCookie">export_whitelist_Cookie</string>
+
+    <string name="setting_title_export_database">Eksportuj bazę danych</string>
+    <string name="setting_title_import_database">Importuj bazę danych</string>
+    <string name="setting_summary_export_database">Eksportuj całą bazę danych (Stronę startową + podglądy, historię, zakładki) na kartę SD. Twoje dane logowania nie zostaną skopiowane.</string>
+    <string name="title_database">Baza danych</string>
+    <string name="hint_database">Ta opcja wymaże twoje aktualne ustawienia i dane. Kontynuować?</string>
+
+
+    <!-- Others setting -->
+    <string name="setting_title_others">Pozostałe</string>
+    <string name="setting_title_license">Licencja</string>
+    <string name="setting_summary_license">\"FOSS Browser\" jest aplikacją darmową i w pełni wolną, o otwartym kodzie źródłowym.</string>
+    <string name="setting_title_appSettings">Ustawienia aplikacji</string>
+    <string name="setting_summary_appSettings">Otwiera systemowy panel informacji o \"FOSS Browser\". Możesz tam ustalić indywidualne uprawienia, usunąć dane itd, w zależności od wersji twojego systemu Android.</string>
+    <string name="setting_title_community">Kontrybucja</string>
+    <string name="setting_summary_community">Sprawdź, kto jest częścią tego projektu. Może chcesz wnieść coś do tej aplikacji, wysłać opinię lub poinformować o napotkanym błędzie? Tutaj znajdziesz wszystkie potrzebne informacje.</string>
+    <string name="setting_summary_changelog">Pokaż historię zmian i ostatnią listę poprawek.</string>
+
+    <!-- Toast -->
+    <string name="toast_add_bookmark_successful">Poprawnie dodano zakładkę</string>
+    <string name="toast_add_to_home_successful">Poprawnie dodano do strony domowej</string>
+    <string name="toast_add_to_home_failed">Błąd dodawania do strony domowej</string>
+    <string name="toast_add_whitelist_successful">Poprawnie dodano adres witryny</string>
+    <string name="toast_already_exist_in_home">Ta witryna już istnieje na stronie domowej</string>
+    <string name="toast_copy_successful">Kopiowanie zakończone</string>
+    <string name="toast_delete_successful">Usuwanie zakończone</string>
+    <string name="toast_domain_already_exists">Ten adres witryny już istnieje</string>
+    <string name="toast_export_successful">Wyeksportowano jako:&#160;</string>
+    <string name="toast_export_failed">Błąd przy ekporcie</string>
+    <string name="toast_import_successful">Zaimportowano:&#160;</string>
+    <string name="toast_import_failed">Błąd przy imporcie</string>
+    <string name="toast_input_empty">Nie wprowadziłeś niczego</string>
+    <string name="toast_invalid_domain">Niewłaściwy adres</string>
+    <string name="toast_load_error">Nie można załadować adresu</string>
+    <string name="toast_load_in_background">Ładowanie w tle</string>
+    <string name="toast_new_tab_successful">Załadowano w nowej karcie</string>
+    <string name="toast_open_file_manager_failed">Błąd przy otwieraniu katalogu pobierania</string>
+    <string name="toast_refresh_failed">Nie można odświeżyć</string>
+    <string name="toast_relayout_successful">Zmiana zakończona sukcesem</string>
+    <string name="toast_share_failed">Nie można udostępnić/string>
+    <string name="toast_start_download">Rozpoczynanie pobierania</string>
+    <string name="toast_wait_a_minute">Zaczekaj chwilę</string>
+    <string name="toast_titleConfirm_delete">Chcesz usunąć ten element?</string>
+    <string name="toast_titleConfirm_paste">Skopiować do schowka?</string>
+    <string name="toast_titleConfirm_pasteUN">Login</string>
+    <string name="toast_titleConfirm_pastePW">Hasło</string>
+    <string name="toast_error">Ups, coś poszło nie tak.</string>
+    <string name="toast_newTitle">Ten wpis już istnieje. Wprowadź nowy tytuł.</string>
+    <string name="toast_edit_successful">Zapisano</string>
+    <string name="toast_webview_forward">Nie można załadować kolejnej strony</string>
+    <string name="toast_entry_exists">Ten element już istnieje.</string>
+    <string name="toast_clear">Chcesz usunąć?</string>
+    <string name="toast_permission_title">Wymagane jest pozwolenie</string>
+    <string name="toast_permission_sdCard">\"FOSS Browser\" wymaga uprawnienia na \”odczytywanie i zapisywanie zawartości pamieci\”. Jest ono niezbędne do pobierania plików przez wbudowany manager plików i udostępniania zrzutów ekranu. Jeśli nie chcesz teraz udzielać uprawnienia, możesz to zrobić później w Preferencjach aplikacji.</string>
+    <string name="toast_permission_sdCard_sec">Udziel uprawnienia \”odczytywanie i zapisywanie zawartości pamięci\” w ustawieniach.</string>
+    <string name="toast_permission_loc">\"FOSS Browser\" wymaga uprawnienia \”dostęp na lokalizacji\”. Jest ono niezbędne dla poprawnego działania niektórych witryn, np. tych oferujących nawigację. Przydzielenie uprawnień możesz zmienić w każdej chwili w ustawieniach.</string>
+    <string name="toast_restart">Musisz uruchomić ponownie \"FOSS Browser\”, aby zachować te zmiany. Zamknąć teraz?</string>
+    <string name="toast_quit">Zamknąć \"FOSS Browser\"?</string>
+    <string name="toast_close_tab">Zamknąć aktualną kartę?</string>
+    <string name="toast_closeNotification">Zamknij wszystkie karty witryn.</string>
+    <string name="toast_downloadComplete">Pobieranie ukończone. Otworzyć katalog pobierania?</string>
+    <string name="toast_unsecured">Ta witryna używa nieszyfrowanego połączenia (\"http\"). Spróbować przejść na szyfrowane (\"https\")?</string>
+    <string name="toast_backup">Dokonać nowej kopii bezpieczeństwa danych? Nadpisze ona poprzednią kopię.</string>
+
+
+    <!-- Whitelist -->
+    <string name="whitelist_menu_clear">Wymaż</string>
+    <string name="whitelist_edit_hint">Adres</string>
+    <string name="whitelist_add">Dodaj</string>
+
+</resources>
