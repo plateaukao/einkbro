@@ -6,13 +6,13 @@
     <string name="app_name">浏览器</string>
     <string name="app_ok">确定</string>
     <string name="app_cancel">取消</string>
+    <string name="app_close">关闭</string>
     <string name="list_empty">当前列表为空</string>
     <string name="album_title_bookmarks">书签</string>
     <string name="album_title_history">历史</string>
     <string name="album_title_home">主页</string>
     <string name="album_title_files">文件</string>
     <string name="album_title_pass">登录数据</string>
-    <string name="album_untitled"> </string>
     <string name="notification_content_holderTitle">打开的标签 …</string>
     <string name="notification_content_holder">点击以浏览页面</string>
     <string name="search_hint">搜索</string>
@@ -24,13 +24,16 @@
     <string name="main_menu_new_tabOpen">在前台打开新标签</string>
     <string name="main_menu_copy_link">复制链接</string>
     <string name="main_omnibox_input_hint">搜索或输入网址</string>
+    <string name="menu_open_with">用其他软件打开链接</string>
 
     <string name="menu_share">分享</string>
     <string name="menu_quit">退出</string>
     <string name="menu_delete">删除</string>
+    <string name="menu_delete_list">删除列表</string>
     <string name="menu_edit">编辑</string>
     <string name="menu_notification">通知</string>
     <string name="menu_closeTab">关闭标签</string>
+    <string name="menu_download">打开下载管理</string>
 
     <string name="menu_share_screenshot">分享截屏</string>
     <string name="menu_share_link">分享链接</string>
@@ -40,6 +43,9 @@
     <string name="menu_save_login">保存登录信息</string>
     <string name="menu_save_bookmark">保存到书签</string>
     <string name="menu_save_as">保存为 …</string>
+    <string name="menu_save_pdf">保存到PDF</string>
+    <string name="menu_share_pdf">分享PDF</string>
+    <string name="menu_share_pdfToast">操作完毕。你要用文件管理器分享吗？</string>
 
     <string name="menu_other_searchSite">页内搜索</string>
     <string name="menu_other_help">帮助</string>
@@ -50,7 +56,9 @@
 
     <!-- Dialog -->
     <string name="dialog_toggle_title">快速切换</string>
+    <string name="dialog_toggle_hint">若想立刻生效，就按下下面的“确定”按钮。</string>
     <string name="dialog_title_hint">输入标题</string>
+    <string name="dialog_extension_hint">扩展名（比如 “.jpg”）</string>
     <string name="dialog_se_hint">https://www.google.com/search?q=</string>
     <string name="dialog_sign_in_username">用户名</string>
     <string name="dialog_sign_in_password">密码</string>
@@ -79,9 +87,17 @@
     <string name="setting_summary_search_engine_startpage">StartPage</string>
     <string name="setting_summary_search_engine_bing">必应</string>
     <string name="setting_summary_search_engine_baidu">百度</string>
+    <string name="setting_summary_search_engine_startpage_de">StartPage (德语)</string>
+    <string name="setting_summary_search_engine_searx">Searx</string>
 
     <string name="setting_title_inverted">反转颜色</string>
     <string name="setting_summary_inverted">让网站以灰度显示，可以看作“夜间模式”。</string>
+
+    <string name="setting_title_font">字体大小</string>
+    <string name="setting_summary_font">更改显示网站的字体大小。</string>
+
+    <string name="setting_title_remote">远程内容</string>
+    <string name="setting_summary_remote">启用远程内容，该内容不直接来自您正在访问的网站。禁用此功能会更安全，速度更快并节省数据量。但有些内容将不再显示。</string>
 
 
     <!-- Browser start -->
@@ -89,17 +105,12 @@
     <string name="setting_summary_images">显示图片，不勾选时可节约流量，节省加载时间。</string>
     <string name="setting_title_cookie">Cookies</string>
     <string name="setting_summary_cookie_delete">勾选后所有的 Cookies 都会被删除。包括你信任的网站的。</string>
-    <string name="setting_summary_cookie">允许 Cookies。Cookies 是存储在本地的一个小文件。
-        网站用它来记录你的使用偏好，但是也会被用作搜集私人信息。
-        处于广告等目的的第三方 cookies 总是禁止的。</string>
+    <string name="setting_summary_cookie">允许 Cookies。Cookies 是存储在本地的一个小文件。         网站用它来记录你的使用偏好，但是也会被用作搜集私人信息。         处于广告等目的的第三方 cookies 总是禁止的。</string>
     <string name="setting_title_whitelistCookie">Cookie 白名单</string>
-    <string name="setting_summary_whitelistCookie">如果你禁用了 Cookies，
-        你可以把你信任的网站放到白名单中，让它们可以保存 cookies。</string>
+    <string name="setting_summary_whitelistCookie">如果你禁用了 Cookies，         你可以把你信任的网站放到白名单中，让它们可以保存 cookies。</string>
 
     <string name="setting_title_javascript">JavaScript</string>
-    <string name="setting_summary_javascript">允许使用 JavaScript。
-        很多网站需要 JavaScript 来实现各种功能，比如菜单、图片加载和显示等等。
-        但 JavaScript 也会带来风险，甚至被用来攻击。</string>
+    <string name="setting_summary_javascript">允许使用 JavaScript。         很多网站需要 JavaScript 来实现各种功能，比如菜单、图片加载和显示等等。         但 JavaScript 也会带来风险，甚至被用来攻击。</string>
     <string name="setting_title_whitelistJS">JavaScript 白名单</string>
     <string name="setting_summary_whitelistJS">如果禁用 JavaScript,使用白名单放过那些你信任的网站。</string>
 
@@ -109,15 +120,14 @@
     <string name="setting_summary_whitelist">允许这些网站显示广告，开启广告拦截时有些网站会显示异常</string>
 
     <string name="setting_title_location">定位</string>
-    <string name="setting_summary_location">允许网站获得您的定位，
-        一些网站比如谷歌地图需要此功能开启。</string>
+    <string name="setting_summary_location">允许网站获得您的定位，         一些网站比如谷歌地图需要此功能开启。</string>
 
     <string name="setting_title_history">历史</string>
     <string name="setting_summary_history">保存网页浏览历史。</string>
 
+
     <!-- Browser clear -->
-    <string name="clear_summary">所有文件会被导出到 sdcard 上的“Documents”文件夹中,每次导出都会覆盖上一次导出的数据。
-    要想恢复数据，确保该文件夹下有符合约定文件名的文件。</string>
+    <string name="clear_summary">所有文件会被导出到 sdcard 上的“Documents”文件夹中,每次导出都会覆盖上一次导出的数据。     要想恢复数据，确保该文件夹下有符合约定文件名的文件。</string>
     <string name="clear_menu_done_all">全部</string>
     <string name="clear_title_quit">退出时清空</string>
     <string name="clear_summary_quit">每次你退出 \"FOSS 浏览器\" 上面勾选的都会被删除。</string>
@@ -125,6 +135,10 @@
     <string name="clear_title_cache">清空缓存</string>
     <string name="clear_title_cookie">清空 Cookies</string>
     <string name="clear_title_history">清空浏览历史</string>
+    <string name="clear_title_indexedDB">清除“索引数据库”和“本地Webview存储”</string>
+
+    <string name="clear_title_deleteDatabase">删除数据库</string>
+    <string name="clear_summary_deleteDatabase">这样会删除整个数据库（起始页、书签、历史记录、白名单都会被清除）</string>
 
 
     <!-- App setting -->
@@ -140,9 +154,7 @@
     <string name="setting_title_omnibox_control">搜索框控制</string>
     <string name="setting_summary_omnibox_control">左右滑动搜索框切换标签页</string>
     <string name="setting_title_background">打开链接</string>
-    <string name="setting_summary_background">在后台打开标签并显示一个通知
-        如果禁用链接会直接在前台打开。</string>
-
+    <string name="setting_summary_background">在后台打开标签并显示一个通知         如果禁用链接会直接在前台打开。</string>
     <string name="setting_title_themeDark">亮色主题</string>
     <string name="setting_summary_themeDark">你喜欢亮一点？好的！</string>
 
@@ -173,6 +185,7 @@
     <string name="setting_hideNav_always">Hide always</string>
     <string name="setting_hideNav_toolbar">When toolbar is showing</string>
 
+
     <!-- Data -->
     <string name="setting_title_export_bookmarks">导出书签</string>
     <string name="setting_title_import_bookmarks">导入书签</string>
@@ -192,8 +205,7 @@
 
     <string name="setting_title_export_database">导出数据库</string>
     <string name="setting_title_import_database">导入数据库</string>
-    <string name="setting_summary_export_database">导出所有数据(主页 + 预览, 历史, 书签)
-        到 SD 卡。你的登录数据不会被备份。</string>
+    <string name="setting_summary_export_database">导出所有数据(主页 + 预览, 历史, 书签)         到 SD 卡。你的登录数据不会被备份。</string>
     <string name="title_database">数据库</string>
     <string name="hint_database">你当前的设置和数据都将被删除，继续？</string>
 
@@ -203,11 +215,9 @@
     <string name="setting_title_license">许可</string>
     <string name="setting_summary_license">浏览器是一个自由开源软件。</string>
     <string name="setting_title_appSettings">应用设置</string>
-    <string name="setting_summary_appSettings">打开系统的“浏览器”设置页面。取决于你的系统版本，你可以授权、
-        清空数据等等。</string>
+    <string name="setting_summary_appSettings">打开系统的“浏览器”设置页面。取决于你的系统版本，你可以授权、         清空数据等等。</string>
     <string name="setting_title_community">贡献者</string>
-    <string name="setting_summary_community">看看大家对这个项目贡献了什么，或者你有兴趣参与后续开发
-        、反馈问题，又或者你想获取和这个项目相关的新闻？</string>
+    <string name="setting_summary_community">看看大家对这个项目贡献了什么，或者你有兴趣参与后续开发         、反馈问题，又或者你想获取和这个项目相关的新闻？</string>
     <string name="setting_summary_changelog">显示当前版本有什么新变化。</string>
 
     <!-- Toast -->
@@ -219,9 +229,9 @@
     <string name="toast_copy_successful">Successfully copied</string>
     <string name="toast_delete_successful">删除成功</string>
     <string name="toast_domain_already_exists">Domain already exists</string>
-    <string name="toast_export_successful">已经导出到:&#160;</string>
+    <string name="toast_export_successful">已经导出到: </string>
     <string name="toast_export_failed">导出失败</string>
-    <string name="toast_import_successful">Imported count:&#160;</string>
+    <string name="toast_import_successful">Imported count: </string>
     <string name="toast_import_failed">导入失败</string>
     <string name="toast_input_empty">你还没有输入任何内容</string>
     <string name="toast_invalid_domain">非法域名</string>
@@ -234,7 +244,6 @@
     <string name="toast_share_failed">无法分享此网页</string>
     <string name="toast_start_download">开始下载</string>
     <string name="toast_wait_a_minute">请稍候</string>
-
     <string name="toast_titleConfirm_delete">你真的想删除这条记录么？</string>
     <string name="toast_titleConfirm_paste">复制数据到粘贴板？</string>
     <string name="toast_titleConfirm_pasteUN">用户名</string>
@@ -244,21 +253,19 @@
     <string name="toast_edit_successful">保存成功</string>
     <string name="toast_webview_forward">无法加载下个网页</string>
     <string name="toast_entry_exists">已经存在</string>
-
     <string name="toast_clear">你真的想清理么？</string>
     <string name="toast_permission_title">需要授权</string>
-    <string name="toast_permission_sdCard">\"Browser\" needs the permission to \"read and write on your storage\". This is needed for
-    downloading files, the build in file manager and taking screenshots. If you don\'t grant the permission yet, you can do it
-    later in the settings.</string>
+    <string name="toast_permission_sdCard">\"Browser\" needs the permission to \"read and write on your storage\". This is needed for     downloading files, the build in file manager and taking screenshots. If you don\'t grant the permission yet, you can do it     later in the settings.</string>
     <string name="toast_permission_sdCard_sec">Please grant the permission to \"read and write on your storage\" in the settings.</string>
-    <string name="toast_permission_loc">\"Browser\" needs the permission to \"access your location\". This is requested from some
-        websites for example when they offer some kind of navigation. If you don\'t grant the permission yet, you can do it
-    later in the settings.</string>
+    <string name="toast_permission_loc">\"Browser\" needs the permission to \"access your location\". This is requested from some         websites for example when they offer some kind of navigation. If you don\'t grant the permission yet, you can do it     later in the settings.</string>
     <string name="toast_restart">你需要重启浏览器来应用变更，现在关闭么？</string>
     <string name="toast_quit">你确定要退出浏览器么？</string>
     <string name="toast_close_tab">你确定关闭当前标签？</string>
     <string name="toast_closeNotification">关闭所有打开的网页。</string>
     <string name="toast_downloadComplete">下载完成，是否打开文件管理器？</string>
+    <string name="toast_unsecured">本网站使用不安全的连接（“http”）。你是否想尝试安全的连接（“https”）？</string>
+    <string name="toast_backup">是否备份数据？老的备份会被覆盖！</string>
+
 
     <!-- Whitelist -->
     <string name="whitelist_menu_clear">清空</string>
