@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <!-- App -->
+    <string name="app_name">FOSS-browser</string>
+    <string name="app_ok">Oké</string>
+    <string name="app_cancel">Annuleren</string>
+    <string name="app_close">Sluiten</string>
+    <string name="list_empty">De huidige lijst is leeg</string>
+    <string name="album_title_bookmarks">Bladwijzers</string>
+    <string name="album_title_history">Geschiedenis</string>
+    <string name="album_title_home">Startpagina</string>
+    <string name="album_title_files">Bestanden</string>
+    <string name="album_title_pass">Inloggegevens</string>
+    <string name="album_untitled"> </string>
+    <string name="notification_content_holderTitle">Geopende tabbladen...</string>
+    <string name="notification_content_holder">…klik om pagina's te tonen</string>
+    <string name="search_hint">Zoeken</string>
+
+
+    <!-- Menu -->
+    <string name="main_menu_tabPreview">Tabbladvoorbeeld openen</string>
+    <string name="main_menu_new_tab">Nieuw tabblad (achtergrond)</string>
+    <string name="main_menu_new_tabOpen">Nieuw tabblad (voorgrond)</string>
+    <string name="main_menu_copy_link">Link kopiëren</string>
+    <string name="main_omnibox_input_hint">Zoek, of typ een URL</string>
+    <string name="menu_open_with">Link openen met …</string>
+
+    <string name="menu_share">Delen</string>
+    <string name="menu_quit">Afsluiten</string>
+    <string name="menu_delete">Verwijderen</string>
+    <string name="menu_delete_list">Lijst verwijderen</string>
+    <string name="menu_edit">Bewerken</string>
+    <string name="menu_notification">Melding</string>
+    <string name="menu_closeTab">Tabblad sluiten</string>
+    <string name="menu_download">Downloads openen</string>
+
+    <string name="menu_share_screenshot">Schermafbeelding delen</string>
+    <string name="menu_share_link">Link delen</string>
+
+    <string name="menu_save_screenshot">Schermafbeelding opslaan</string>
+    <string name="menu_save_home">Opslaan op beginscherm</string>
+    <string name="menu_save_login">Inloggegevens opslaan</string>
+    <string name="menu_save_bookmark">Opslaan als bladwijzer</string>
+    <string name="menu_save_as">Opslaan als…</string>
+    <string name="menu_save_pdf">Opslaan als PDF-bestand</string>
+    <string name="menu_share_pdf">PDF-bestand delen</string>
+    <string name="menu_share_pdfToast">Voltooid. Bestandsbeheerder openen om te delen?</string>
+
+    <string name="menu_other_searchSite">Zoeken op website</string>
+    <string name="menu_other_help">Hulp</string>
+
+
+    <!-- AndroidAgo -->
+
+
+    <!-- Dialog -->
+    <string name="dialog_toggle_title">Snel schakelen</string>
+    <string name="dialog_toggle_hint">Druk op \"Oké-knop\" hieronder om direct toe te passen.</string>
+    <string name="dialog_title_hint">Titel:</string>
+    <string name="dialog_extension_hint">Extensie (bijv.: \".jpg\"):</string>
+    <string name="dialog_se_hint">https://www.google.com/search?q=</string>
+    <string name="dialog_sign_in_username">Gebruikersnaam</string>
+    <string name="dialog_sign_in_password">Wachtwoord</string>
+    <string name="dialog_button_custom">Aangepast</string>
+    <string name="dialog_title_download">Wil je het bestand downloaden?</string>
+    <string name="dialog_title_sign_in">Inloggen</string>
+    <string name="dialog_content_resubmission">Wil je je gegevens opnieuw versturen?</string>
+    <string name="dialog_content_ssl_error">Het certificaat van dit website wordt niet vertrouwd. Wil je tóch doorgaan?</string>
+
+
+
+    <!-- Settings -->
+    <string name="setting_label">Instellingen</string>
+
+    <!-- Browser setting -->
+    <string name="setting_title_browser">Browser-instellingen</string>
+    <string name="setting_title_clear_control">Gegevensbeheer</string>
+    <string name="setting_title_start_control">Beheer starten</string>
+    <string name="setting_summary_clear_control">Wis je browsergegevens of bepaal welke gegevens je wilt wissen bij het afsluiten van de app.</string>
+    <string name="setting_summary_start_control">Bepaal welke browseronderdelen moeten worden ingeschakeld bij het opstarten.</string>
+
+    <string name="setting_title_search_engine">Zoekmachine</string>
+    <string name="setting_summary_search_engine">Hier kun je je voorkeurszoekmachine opgeven of een aangepaste instellen.</string>
+    <string name="setting_summary_search_engine_google">Google</string>
+    <string name="setting_summary_search_engine_duckduckgo">DuckDuckGo</string>
+    <string name="setting_summary_search_engine_startpage">StartPage</string>
+    <string name="setting_summary_search_engine_bing">Bing</string>
+    <string name="setting_summary_search_engine_baidu">Baidu</string>
+    <string name="setting_summary_search_engine_startpage_de">StartPage (de)</string>
+    <string name="setting_summary_search_engine_searx">Searx</string>
+
+    <string name="setting_title_inverted">Kleuren omkeren</string>
+    <string name="setting_summary_inverted">Als dit wordt aangevinkt, dan wordt inhoud geladen met grijswaarden. Dit
+    is een soort van \"nachtmodus\".</string>
+
+    <string name="setting_title_font">Lettertypegrootte</string>
+    <string name="setting_summary_font">Wijzig de lettertypegrootte die gebruikt wordt bij het tonen van websites.</string>
+
+    <string name="setting_title_remote">Externe inhoud</string>
+    <string name="setting_summary_remote">Schakel externe inhoud in. Dit is inhoud die niet direct afkomstig is van de website die je bezoekt.
+        Uitschakelen is veiliger, sneller en bespaart mobiele gegevens, maar sommige inhoud wordt hierdoor niet meer getoond.</string>
+
+
+    <!-- Browser start -->
+    <string name="setting_title_images">Afbeeldingen</string>
+    <string name="setting_summary_images">Schakelt netwerkafbeeldingen in. Uitschakelen kan handig zijn om mobiele gegevens te besparen en om website sneller te laden.</string>
+    <string name="setting_title_cookie">Cookies</string>
+    <string name="setting_summary_cookie_delete">Als dit wordt ingeschakeld, dan worden alle cookies verwijderd, ook de cookies van vertrouwde websites.</string>
+    <string name="setting_summary_cookie">Cookies inschakelen. Cookies zijn kleine tekstbestanden die worden opgeslagen op je apparaat. Websites
+    gebruiken die om bijv. je gebruikersinstellingen op te slaan (zoals je zoekinstellingen). Maar ze kunnen ook worden gebruikt om
+        persoonlijke gegevens te verzamelen. Cookies van derde partijen (die persoonlijke gegevens verzamelen voor reclamedoeleinden) zijn altijd uitgeschakeld.</string>
+    <string name="setting_title_whitelistCookie">Witte lijst</string>
+    <string name="setting_summary_whitelistCookie">Als je cookies uitschakelt, dan kun je deze witte lijst gebruiken om websites die je
+        vertrouwt cookies te laten opslaan.</string>
+
+    <string name="setting_title_javascript">JavaScript</string>
+    <string name="setting_summary_javascript">JavaScript inschakelen. Veel websites gebruiken JavaScript voor functionaliteit (menus',
+        het laden en tonen van afbeeldingen, …). Maar JavaScript is ook risicovol en kan worden gebruikt voor aanvallen.</string>
+    <string name="setting_title_whitelistJS">Wite lijst</string>
+    <string name="setting_summary_whitelistJS">Als je JavaScript uitschakelt, dan kun je deze witte lijst gebruiken om websites die je
+        vertrouwt JavaScript te laten gebruiken.</string>
+
+    <string name="setting_title_adblock">Advertentieblokkering</string>
+    <string name="setting_summary_adblock">Schakel advertentieblokkering in om vervelende reclame te blokkeren. Websites laden hierdoor ook sneller.</string>
+    <string name="setting_title_whitelist">Wiite lijst</string>
+    <string name="setting_summary_whitelist">Laat deze websites reclame tonen. Sommige sites werken niet als advertentieblokkering wordt ingeschakeld.</string>
+
+    <string name="setting_title_location">Locatie</string>
+    <string name="setting_summary_location">Sta websites toe om je locatie op te vragen. Sommige websites (zoals Google maps voor navigatie)
+        hebben dit nodig.</string>
+
+    <string name="setting_title_history">Geschiedenis</string>
+    <string name="setting_summary_history">Geschiedenis opslaan van bezochte websites..</string>
+
+
+    <!-- Browser clear -->
+    <string name="clear_summary">Alle bestanden worden geëxporteerd naar de map \"Documenten\" van je SD-kaart. Elke exportering overschrijft
+        de oude. Om te herstellen is een bestand met de juiste naam in de map nodig.</string>
+    <string name="clear_menu_done_all">Alles voltooid</string>
+    <string name="clear_title_quit">Wissen bij afsluiten</string>
+    <string name="clear_summary_quit">Elke keer als je \"FOSS-browser\" afsluit, dan worden alle hierboven aangevinkte gegevens gewist.</string>
+    <string name="clear_title_bookmarks">Bladwijers wissen</string>
+    <string name="clear_title_cache">Cache leegmaken</string>
+    <string name="clear_title_cookie">Cookies wissen</string>
+    <string name="clear_title_history">Geschiedenis wissen</string>
+    <string name="clear_title_indexedDB">\"Geïndexeerde databases\" en \"lokale webview-opslag\"</string>
+
+    <string name="clear_title_deleteDatabase">Database verwijderen</string>
+    <string name="clear_summary_deleteDatabase">De gehele database verwijderen (startpagina, bladwijzers, geschiedenis en alle witte lijsten).</string>
+
+
+    <!-- App setting -->
+    <string name="setting_title_app">App-instellingen</string>
+    <string name="setting_title_ui">Gedrag/Uiterlijk</string>
+    <string name="setting_title_data">Back-up</string>
+    <string name="setting_summary_ui">Wijzig het gedrag en uiterlijk van de app naar eigen inzicht.</string>
+    <string name="setting_summary_data">Importeer en exporteer app-gegevens (witte lijsten, bladwijzers).</string>
+
+    <!-- App behavior -->
+    <string name="setting_title_hideToolbar">Werkbalk verbergen</string>
+    <string name="setting_summary_hide">Gebruik, tijdens het scrollen op website, het hele scherm Als je op de terug-knop drukt,
+    dan wordt de volledige scherm-modus afgesloten.</string>
+    <string name="setting_title_omnibox_control">Omnibox-beheer</string>
+    <string name="setting_summary_omnibox_control">Veeg de omnibox naar links/rechts om te schakelen tussen tabbladen.</string>
+    <string name="setting_title_background">Links openen</string>
+    <string name="setting_summary_background">Melding tonen en links openen op de achtergrond. Als dit wordt uitgeschakeld, dan openen links
+    direct.</string>
+    <string name="setting_title_themeDark">Licht thema</string>
+    <string name="setting_summary_themeDark">Wil je wat meer licht in je leven? Doe het!</string>
+
+    <string name="setting_title_nav">Navigatieknop</string>
+    <string name="setting_title_nav_pos">Positie</string>
+    <string name="setting_summary_nav_pos">Bepaal waar de \"Navigatieknop\" geplaatst moet worden.</string>
+    <string name="setting_summary_nav_pos_right">Rechts</string>
+    <string name="setting_summary_nav_pos_left">Links</string>
+    <string name="setting_summary_nav_pos_center">Midden</string>
+
+    <string name="setting_title_nav_show">Verbergen</string>
+    <string name="setting_summary_nav_show">Verberg de \"Navigatieknop\" als de werkbalk zichtbaar is.</string>
+
+    <string name="setting_title_tab">Opstarten</string>
+    <string name="setting_summary_tab">Wat moet er worden getoond bij het opstarten van \"FOSS-browser\": de startpagina, je bladwijzers, … ?</string>
+
+    <string name="setting_title_confirm_exit">Afsluiten bevestigen</string>
+    <string name="setting_summary_confirm_exit">Bevestigingsscherm bij afsluiten van browser.</string>
+
+    <string name="setting_title_confirm_tab_close">Tabblad sluiten bevestigen</string>
+    <string name="setting_summary_confirm_tab_close">Bevestigingsscherm bij sluiten van tabblad.</string>
+
+    <string name="setting_title_toolbar">Werkbalk</string>
+    <string name="setting_hide_always">Altijd verbergen</string>
+    <string name="setting_hide_down">Alleen tijdens omlaag scrollen</string>
+    <string name="setting_hide_never">Nooit verbergen</string>
+
+    <string name="setting_hideNav_always">Altijd verbergen</string>
+    <string name="setting_hideNav_toolbar">Als werkbalk zichtbaar is</string>
+
+
+    <!-- Data -->
+    <string name="setting_title_export_bookmarks">Bladwijzers exporteren</string>
+    <string name="setting_title_import_bookmarks">Bladwijzers importeren</string>
+    <string name="export_bookmarks">export_bookmarks</string>
+
+    <string name="setting_title_export_whitelist">Advertentieblokkering - witte lijst exporteren</string>
+    <string name="setting_title_import_whitelist">Advertentieblokkering - witte lijst importeren</string>
+    <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
+
+    <string name="setting_title_export_whitelistJS">JavaScript - witte lijst exporteren</string>
+    <string name="setting_title_import_whitelistJS">JavaScript - witte lijst importeren</string>
+    <string name="export_whitelistJS">export_whitelist_Javascript</string>
+
+    <string name="setting_title_export_whitelistCookie">Cookies - witte lijst exporteren</string>
+    <string name="setting_title_import_whitelistCookie">Cookies - witte lijst importeren</string>
+    <string name="export_whitelistCookie">export_whitelist_Cookie</string>
+
+    <string name="setting_title_export_database">Database exporteren</string>
+    <string name="setting_title_import_database">Database importeren</string>
+    <string name="setting_summary_export_database">Exporteer de gehele database (startpagina + voorbeelden, geschiedenis, bladwijzers) naar je
+        SD-kaart. Je inloggegevens worden niet geback-upt.</string>
+    <string name="title_database">Database</string>
+    <string name="hint_database">Dit verwijdert al je huidige instellingen en gegevens. Wil je doorgaan?</string>
+
+
+    <!-- Others setting -->
+    <string name="setting_title_others">Overig</string>
+    <string name="setting_title_license">Licentie</string>
+    <string name="setting_summary_license">\"FOSS-browser\" is volledig vrij (als in 'vrijheid') en open source.</string>
+    <string name="setting_title_appSettings">App-instellingen</string>
+    <string name="setting_summary_appSettings">Opent de app-instellingen voor \"FOSS-browser\". Daar kun je,
+        afhankelijk van je Android-versie, machtigingen verlenen, de app-gegevens wissen, enz..</string>
+    <string name="setting_title_community">Bijdragen</string>
+    <string name="setting_summary_community">Bekijk wie er heeft bijgedragen aan het project. Of wil je helpen
+        bij de ontwikkeling, een probleem rapporteren of het laatste nieuws over mijn projecten bekijken?</string>
+    <string name="setting_summary_changelog">Nieuwste wijzigingslog bekijken.</string>
+
+    <!-- Toast -->
+    <string name="toast_add_bookmark_successful">Bladwijzer toegevoegd</string>
+    <string name="toast_add_to_home_successful">Toegevoegd aan beginscherm/string>
+    <string name="toast_add_to_home_failed">Toevoegen mislukt</string>
+    <string name="toast_add_whitelist_successful">Domein toegevoegd</string>
+    <string name="toast_already_exist_in_home">Is al aanwezig op beginscherm</string>
+    <string name="toast_copy_successful">Gekopieerd</string>
+    <string name="toast_delete_successful">Verwijderd</string>
+    <string name="toast_domain_already_exists">Domein is al aanwezig</string>
+    <string name="toast_export_successful">Geëxporteerd als:&#160;</string>
+    <string name="toast_export_failed">Exporteren mislukt</string>
+    <string name="toast_import_successful">Geïmporteerd:&#160;</string>
+    <string name="toast_import_failed">Importeren mislukt</string>
+    <string name="toast_input_empty">Je hebt niks ingevoerd</string>
+    <string name="toast_invalid_domain">Ongeldig domein</string>
+    <string name="toast_load_error">Deze URL kan niet worden geladen</string>
+    <string name="toast_load_in_background">Bezig met laden op achtergrond...</string>
+    <string name="toast_new_tab_successful">Geopend op nieuw tabblad</string>
+    <string name="toast_open_file_manager_failed">Bestandsbeheerder openen mislukt</string>
+    <string name="toast_refresh_failed">Deze pagina kan niet worden ververst</string>
+    <string name="toast_relayout_successful">Opnieuw ingedeeld</string>
+    <string name="toast_share_failed">Deze pagina kan niet worden gedeeld</string>
+    <string name="toast_start_download">Bezig met starten van download...</string>
+    <string name="toast_wait_a_minute">Even geduld...</string>
+    <string name="toast_titleConfirm_delete">Weet je zeker dat je het item wilt verwijderen?</string>
+    <string name="toast_titleConfirm_paste">Gegevens kopiëren naar klembord?</string>
+    <string name="toast_titleConfirm_pasteUN">Gebruikersnaam</string>
+    <string name="toast_titleConfirm_pastePW">Wachtwoord</string>
+    <string name="toast_error">Oeps, er is iets misgegaan.</string>
+    <string name="toast_newTitle">Het item bestaat al; voer een nieuwe titel in.</string>
+    <string name="toast_edit_successful">Opgeslagen</string>
+    <string name="toast_webview_forward">Volgende site kan niet worden geladen</string>
+    <string name="toast_entry_exists">Item bestaat al.</string>
+    <string name="toast_clear">Weet je zeker dat je wilt wissen?</string>
+    <string name="toast_permission_title">Machtiging vereist</string>
+    <string name="toast_permission_sdCard">\"FOSS-browser\" heeft de machtiging \"opslag lezen en schrijven\" nodig om bestanden te
+    downloaden en schermafbeeldingen te kunnen maken. Als je de machtiging nu niet verleent, dan kun je dit
+    op een later moment doen via de instellingen.</string>
+    <string name="toast_permission_sdCard_sec">Verleen de machtiging \"opslag lezen en schrijven\" in de instellingen.</string>
+    <string name="toast_permission_loc">\"FOSS-browser\" heeft de machtiging \"toegang tot je locatie\" nodig om sommige websites (bijv.
+        navigatiewebsites) te kunnen gebruiken. Als je de machtiging nu niet verleent, dan kun je dit
+    op een later moment doen via de instellingen.</string>
+    <string name="toast_restart">Je moet \"FOSS-browser\" herstarten om de wijzigingen toe te passen. Wil je nu afsluiten?</string>
+    <string name="toast_quit">Wil je \"FOSS-browser\" afsluiten?</string>
+    <string name="toast_close_tab">Wil je het huidige tabblad sluiten?</string>
+    <string name="toast_closeNotification">Alle geopende websites sluiten.</string>
+    <string name="toast_downloadComplete">Downloaden voltooid. Bestandsbeheerder openen?</string>
+    <string name="toast_unsecured">Deze website gebruikt een onbeveiligde verbinding (\"http\"). Wil je een beveiligde verbinding
+        (\"https\") proberen?</string>
+    <string name="toast_backup">Gegevens back-uppen? Dit overschrijft de oude back-up.</string>
+
+
+    <!-- Whitelist -->
+    <string name="whitelist_menu_clear">Wissen</string>
+    <string name="whitelist_edit_hint">Domein</string>
+    <string name="whitelist_add">Toevoegen</string>
+
+</resources>
