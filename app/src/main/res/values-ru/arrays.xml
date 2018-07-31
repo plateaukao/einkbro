@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string-array name="setting_entries_font"><item>Нормальный (100%)</item><item>Большой (125%)</item><item>Ещё больше (150%)</item><item>Самый большой (175%)</item></string-array>
+<string-array name="setting_entries_nav"><item>@string/setting_hideNav_toolbar</item><item>@string/setting_hideNav_always</item><item>@string/setting_hide_never</item></string-array>
+<string-array name="setting_entries_nav_pos"><item>@string/setting_summary_nav_pos_right</item><item>@string/setting_summary_nav_pos_left</item><item>@string/setting_summary_nav_pos_center</item></string-array>
+<string-array name="setting_entries_search_engine"><item>@string/setting_summary_search_engine_startpage</item><item>@string/setting_summary_search_engine_startpage_de</item><item>@string/setting_summary_search_engine_baidu</item><item>@string/setting_summary_search_engine_bing</item><item>@string/setting_summary_search_engine_duckduckgo</item><item>@string/setting_summary_search_engine_google</item><item>@string/setting_summary_search_engine_searx</item></string-array>
+<string-array name="setting_entries_tab"><item>@string/album_title_home</item><item>@string/album_title_pass</item><item>@string/album_title_bookmarks</item><item>@string/album_title_history</item></string-array>
+<string-array name="setting_entries_toolbar"><item>@string/setting_hide_down</item><item>@string/setting_hide_always</item><item>@string/setting_hide_never</item></string-array>
+<string-array name="setting_values_font"><item>100</item><item>125</item><item>150</item><item>175</item></string-array>
+<string-array name="setting_values_nav"><item>0</item><item>1</item><item>2</item></string-array>
+<string-array name="setting_values_nav_pos"><item>0</item><item>1</item><item>2</item></string-array>
+<string-array name="setting_values_search_engine"><item>0</item><item>1</item><item>2</item><item>3</item><item>4</item><item>5</item><item>6</item></string-array>
+<string-array name="setting_values_tab"><item>0</item><item>2</item><item>3</item><item>4</item></string-array>
+<string-array name="setting_values_toolbar"><item>0</item><item>1</item><item>2</item></string-array>
+</resources>
