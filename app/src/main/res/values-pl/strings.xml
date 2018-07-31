@@ -15,7 +15,7 @@
     <string name="album_title_pass">Dane logowania</string>
     <string name="album_untitled"> </string>
     <string name="notification_content_holderTitle">Otwarte karty…</string>
-    <string name="notification_content_holder”>Dotknij, aby zobaczyć strony</string>
+    <string name="notification_content_holder">Dotknij, aby zobaczyć strony</string>
     <string name="search_hint">Wyszukaj</string>
 
 
@@ -243,7 +243,7 @@
     <string name="toast_open_file_manager_failed">Błąd przy otwieraniu katalogu pobierania</string>
     <string name="toast_refresh_failed">Nie można odświeżyć</string>
     <string name="toast_relayout_successful">Zmiana zakończona sukcesem</string>
-    <string name="toast_share_failed">Nie można udostępnić/string>
+    <string name="toast_share_failed">Nie można udostępnić</string>
     <string name="toast_start_download">Rozpoczynanie pobierania</string>
     <string name="toast_wait_a_minute">Zaczekaj chwilę</string>
     <string name="toast_titleConfirm_delete">Chcesz usunąć ten element?</string>
