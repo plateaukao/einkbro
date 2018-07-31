@@ -1,4 +1,11 @@
-### v 5.8 (WIP)
+### v 5.9 (WIP)
+- updated: Chinese translation (thanks @YC L)
+- updated: Russian translation (thanks @Vladimir Kosolapov)
+- new: Polish translation (thanks @gh-pmjm)
+- new: Dutch translation (thanks @gHeimen Stoffels)
+- new: adaptive icon
+
+### v 5.8
 - new: "do not track" header
 - new: + button in tab preview
 - new: save websites as PDF

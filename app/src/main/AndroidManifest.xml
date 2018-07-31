@@ -12,12 +12,14 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <!-- Application -->
-    <application android:label="@string/app_name"
-                 android:icon="@mipmap/ic_launcher"
-                 android:allowBackup="true"
-                 android:enabled="true"
-                 android:largeHeap="true"
-                 android:fullBackupContent="@xml/backup_descriptor">
+    <application
+        android:label="@string/app_name"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:allowBackup="true"
+        android:enabled="true"
+        android:largeHeap="true"
+        android:fullBackupContent="@xml/backup_descriptor">
 
         <!-- Holder -->
         <activity android:name="de.baumann.browser.Activity.HolderActivity"
@@ -98,7 +100,6 @@
         <activity android:name="de.baumann.browser.Activity.Settings_DataActivity"
             android:label="@string/setting_title_data"
             android:theme="@style/AppTheme"/>
-
 
         <activity android:name="de.baumann.browser.Activity.Settings_UIActivity"
             android:label="@string/setting_title_ui"

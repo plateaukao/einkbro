@@ -14,8 +14,8 @@
     <string name="album_title_files">Bestanden</string>
     <string name="album_title_pass">Inloggegevens</string>
     <string name="album_untitled"> </string>
-    <string name="notification_content_holderTitle">Geopende tabbladen...</string>
-    <string name="notification_content_holder">…klik om pagina's te tonen</string>
+    <string name="notification_content_holderTitle">Geopende tabbladen…</string>
+    <string name="notification_content_holder">…klik om pagina\'s te tonen</string>
     <string name="search_hint">Zoeken</string>
 
 
@@ -116,7 +116,7 @@
         vertrouwt cookies te laten opslaan.</string>
 
     <string name="setting_title_javascript">JavaScript</string>
-    <string name="setting_summary_javascript">JavaScript inschakelen. Veel websites gebruiken JavaScript voor functionaliteit (menus',
+    <string name="setting_summary_javascript">JavaScript inschakelen. Veel websites gebruiken JavaScript voor functionaliteit (menus\',
         het laden en tonen van afbeeldingen, …). Maar JavaScript is ook risicovol en kan worden gebruikt voor aanvallen.</string>
     <string name="setting_title_whitelistJS">Wite lijst</string>
     <string name="setting_summary_whitelistJS">Als je JavaScript uitschakelt, dan kun je deze witte lijst gebruiken om websites die je
@@ -226,7 +226,7 @@
     <!-- Others setting -->
     <string name="setting_title_others">Overig</string>
     <string name="setting_title_license">Licentie</string>
-    <string name="setting_summary_license">\"FOSS-browser\" is volledig vrij (als in 'vrijheid') en open source.</string>
+    <string name="setting_summary_license">\"FOSS-browser\" is volledig vrij (als in \'vrijheid\') en open source.</string>
     <string name="setting_title_appSettings">App-instellingen</string>
     <string name="setting_summary_appSettings">Opent de app-instellingen voor \"FOSS-browser\". Daar kun je,
         afhankelijk van je Android-versie, machtigingen verlenen, de app-gegevens wissen, enz..</string>
@@ -237,7 +237,7 @@
 
     <!-- Toast -->
     <string name="toast_add_bookmark_successful">Bladwijzer toegevoegd</string>
-    <string name="toast_add_to_home_successful">Toegevoegd aan beginscherm/string>
+    <string name="toast_add_to_home_successful">Toegevoegd aan beginscherm</string>
     <string name="toast_add_to_home_failed">Toevoegen mislukt</string>
     <string name="toast_add_whitelist_successful">Domein toegevoegd</string>
     <string name="toast_already_exist_in_home">Is al aanwezig op beginscherm</string>
@@ -251,14 +251,14 @@
     <string name="toast_input_empty">Je hebt niks ingevoerd</string>
     <string name="toast_invalid_domain">Ongeldig domein</string>
     <string name="toast_load_error">Deze URL kan niet worden geladen</string>
-    <string name="toast_load_in_background">Bezig met laden op achtergrond...</string>
+    <string name="toast_load_in_background">Bezig met laden op achtergrond…</string>
     <string name="toast_new_tab_successful">Geopend op nieuw tabblad</string>
     <string name="toast_open_file_manager_failed">Bestandsbeheerder openen mislukt</string>
     <string name="toast_refresh_failed">Deze pagina kan niet worden ververst</string>
     <string name="toast_relayout_successful">Opnieuw ingedeeld</string>
     <string name="toast_share_failed">Deze pagina kan niet worden gedeeld</string>
-    <string name="toast_start_download">Bezig met starten van download...</string>
-    <string name="toast_wait_a_minute">Even geduld...</string>
+    <string name="toast_start_download">Bezig met starten van download…</string>
+    <string name="toast_wait_a_minute">Even geduld…</string>
     <string name="toast_titleConfirm_delete">Weet je zeker dat je het item wilt verwijderen?</string>
     <string name="toast_titleConfirm_paste">Gegevens kopiëren naar klembord?</string>
     <string name="toast_titleConfirm_pasteUN">Gebruikersnaam</string>
