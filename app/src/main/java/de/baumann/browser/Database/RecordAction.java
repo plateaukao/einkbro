@@ -21,11 +21,7 @@ public class RecordAction {
     }
 
     public void open(boolean rw) {
-        if (rw) {
-            database = helper.getWritableDatabase();
-        } else {
-            database = helper.getReadableDatabase();
-        }
+        database = rw ? helper.getWritableDatabase() : helper.getReadableDatabase();
     }
 
     public void close() {
@@ -178,10 +174,7 @@ public class RecordAction {
         );
 
         if (cursor != null) {
-            boolean result = false;
-            if (cursor.moveToFirst()) {
-                result = true;
-            }
+            boolean result = cursor.moveToFirst();
             cursor.close();
 
             return result;
@@ -206,10 +199,7 @@ public class RecordAction {
         );
 
         if (cursor != null) {
-            boolean result = false;
-            if (cursor.moveToFirst()) {
-                result = true;
-            }
+            boolean result = cursor.moveToFirst();
             cursor.close();
 
             return result;
@@ -242,10 +232,7 @@ public class RecordAction {
         );
 
         if (cursor != null) {
-            boolean result = false;
-            if (cursor.moveToFirst()) {
-                result = true;
-            }
+            boolean result = cursor.moveToFirst();
             cursor.close();
 
             return result;
@@ -270,10 +257,7 @@ public class RecordAction {
         );
 
         if (cursor != null) {
-            boolean result = false;
-            if (cursor.moveToFirst()) {
-                result = true;
-            }
+            boolean result = cursor.moveToFirst();
             cursor.close();
 
             return result;
@@ -298,10 +282,7 @@ public class RecordAction {
         );
 
         if (cursor != null) {
-            boolean result = false;
-            if (cursor.moveToFirst()) {
-                result = true;
-            }
+            boolean result = cursor.moveToFirst();
             cursor.close();
 
             return result;
@@ -326,10 +307,7 @@ public class RecordAction {
         );
 
         if (cursor != null) {
-            boolean result = false;
-            if (cursor.moveToFirst()) {
-                result = true;
-            }
+            boolean result = cursor.moveToFirst();
             cursor.close();
 
             return result;
@@ -354,10 +332,7 @@ public class RecordAction {
         );
 
         if (cursor != null) {
-            boolean result = false;
-            if (cursor.moveToFirst()) {
-                result = true;
-            }
+            boolean result = cursor.moveToFirst();
             cursor.close();
 
             return result;
