@@ -204,11 +204,7 @@ public class DynamicGridView extends GridView {
      */
     public int getPositionForID(long itemId) {
         View v = getViewForId(itemId);
-        if (v == null) {
-            return -1;
-        } else {
-            return getPositionForView(v);
-        }
+        return v == null ? -1 : getPositionForView(v);
     }
 
     public View getViewForId(long itemId) {
@@ -269,20 +265,16 @@ public class DynamicGridView extends GridView {
             case MotionEvent.ACTION_UP:
                 touchEventsEnded();
 
-                if (mHoverCell != null) {
-                    if (mDropListener != null) {
-                        mDropListener.onActionDrop();
-                    }
+                if (mHoverCell != null && mDropListener != null) {
+                    mDropListener.onActionDrop();
                 }
                 break;
 
             case MotionEvent.ACTION_CANCEL:
                 touchEventsCancelled();
 
-                if (mHoverCell != null) {
-                    if (mDropListener != null) {
-                        mDropListener.onActionDrop();
-                    }
+                if (mHoverCell != null && mDropListener != null) {
+                    mDropListener.onActionDrop();
                 }
                 break;
 
@@ -634,7 +626,6 @@ public class DynamicGridView extends GridView {
     }
 
     public interface OnDragListener {
-
         void onDragStarted(int position);
 
         void onDragPositionsChanged(int oldPosition, int newPosition);
