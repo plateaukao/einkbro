@@ -3,7 +3,7 @@
 "F(L)OSS Browser" is fully free/libre (as in freedom) Android app. The source code is public on Github. The app also does not need any unnecessary permissions.
 
 A simple Android browser based on webview. The base is "Ninja" (https://github.com/mthli/Ninja).
-The intention is to provide a simple and light wight but powerful browser with a nice looking user interface.
+The intention is to provide a simple and light weight but powerful browser with a nice looking user interface.
 
 <a href="https://f-droid.org/packages/de.baumann.browser/" target="_blank">
 <img src="https://f-droid.org/badge/get-it-on.png" alt="Get it on F-Droid" height="80"/></a>
