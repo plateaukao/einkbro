@@ -10,16 +10,11 @@
         &lt;b>Version: 5.7&lt;/b>&lt;br>
         Bitte lies den \"Hilfedialog\" für weitere Informationen.&lt;br>&lt;br>
 
-        \u25AA neu: "do not track" header&lt;br>
-        \u25AA neu: + Schaltfläche in der Tabvorschau w&lt;br>
-        \u25AA neu: Internetseiten als PDF-Datei speichern&lt;br>
-        \u25AA neu: Ziellink wird im Kontextmenü angezeigt&lt;br>
-        \u25AA Fehler behoben: Cookie-Ausnahmen beim Tabwechsel&lt;br>
-        \u25AA Fehler behoben: flüssiges Scrollen&lt;br>
-        \u25AA Fehler behoben: Darstellung bei Bildschirmausrichtungswechsel&lt;br>
-        \u25AA verbessert: UI + Dialoge&lt;br>
-        \u25AA verbessert: Spanische Übersetzung (Dank an @Herman Nuñez)&lt;br>
-        \u25AA verbessert: Chinesische Übersetzung (Dank an @smallg0at)
+        \u25AA verbessert: Chinesische Übersetzung (thanks @YC L)
+        \u25AA verbessert: Russische Übersetzung (thanks @Vladimir Kosolapov)
+        \u25AA neu: Polnische Übersetzung (thanks @gh-pmjm)
+        \u25AA neu: Niederländische Übersetzung (thanks @gHeimen Stoffels)
+        \u25AA neu: adaptives Icon
     </string>
 
     <string name="startpage_title">Startseite</string>
@@ -141,7 +136,7 @@
         &lt;i>https://github.com/element54&lt;/i>&lt;br>&lt;br>
 
         &lt;b>gh-pmjm&lt;/b>&lt;br>
-        \u25AA Polish translation&lt;br>
+        \u25AA Polnische Übersetzung&lt;br>
         &lt;i>https://github.com/gh-pmjm&lt;/i>&lt;br>&lt;br>
 
         &lt;b>gr1sh&lt;/b>&lt;br>
@@ -149,7 +144,7 @@
         &lt;i>https://github.com/gr1sh&lt;/i>&lt;br>&lt;br>
 
         &lt;b>Heimen Stoffels&lt;/b>&lt;br>
-        \u25AA Dutch translation&lt;br>
+        \u25AA Niederländische Übersetzung&lt;br>
         &lt;i>https://github.com/Vistaus&lt;/i>&lt;br>&lt;br>
 
         &lt;b>Herman Nunez&lt;/b>&lt;br>

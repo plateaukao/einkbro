@@ -1,4 +1,4 @@
-### v 5.9 (WIP)
+### v 5.9
 - updated: Chinese translation (thanks @YC L)
 - updated: Russian translation (thanks @Vladimir Kosolapov)
 - new: Polish translation (thanks @gh-pmjm)
