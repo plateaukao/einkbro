@@ -20,9 +20,9 @@
 
 
     <!-- Menu -->
-    <string name="main_menu_tabPreview">Otwórz przegląd kart</string>
+    <string name="main_menu_tabPreview">Pokaż podgląd kart</string>
     <string name="main_menu_new_tab">Nowa karta w tle</string>
-    <string name="main_menu_new_tabOpen">Nowa karta piorytetowa</string>
+    <string name="main_menu_new_tabOpen">Nowa karta priorytetowa</string>
     <string name="main_menu_copy_link">Kopiuj link</string>
     <string name="main_omnibox_input_hint">Wyszukaj lub wpisz adres</string>
     <string name="menu_open_with">Otwórz link za pomocą…</string>
@@ -31,7 +31,7 @@
     <string name="menu_quit">Wyjdź</string>
     <string name="menu_delete">Usuń</string>
     <string name="menu_delete_list">Usuń listę</string>
-    <string name="menu_edit">Zmień</string>
+    <string name="menu_edit">Dostosuj</string>
     <string name="menu_notification">Powiadomienia</string>
     <string name="menu_closeTab">Zamknij kartę</string>
     <string name="menu_download">Otwórz listę pobranych</string>
@@ -63,7 +63,7 @@
     <string name="dialog_se_hint">https://www.google.com/search?q=</string>
     <string name="dialog_sign_in_username">Login</string>
     <string name="dialog_sign_in_password">Hasło</string>
-    <string name="dialog_button_custom">Własne</string>
+    <string name="dialog_button_custom">Własna</string>
     <string name="dialog_title_download">Rozpocząć pobieranie?</string>
     <string name="dialog_title_sign_in">Zarejestruj</string>
     <string name="dialog_content_resubmission">Ponowić wysyłkę danych?</string>
@@ -155,20 +155,20 @@
     <string name="setting_summary_hide">Pokazuj witryny na całym ekranie. Dotykając przycisku wstecz wyjdziesz z trybu pełnoekranowego.</string>
     <string name="setting_title_omnibox_control">Gesty na panelu dolnym</string>
     <string name="setting_summary_omnibox_control">Przesuń palcem po panelu dolnym w lewo/prawo, aby przełączać otwarte karty.</string>
-    <string name="setting_title_background">Otwieranie łączy</string>
-    <string name="setting_summary_background">Wyświetlaj powiadomienie o otwarciu witryny w tle. Wyłączenie tej funkcji sprawi, iż łącza będą natychmiast otwierały okno przeglądarki.</string>
+    <string name="setting_title_background">Otwieranie łączy w tle</string>
+    <string name="setting_summary_background">Domyślnie FOSS wyświetla powiadomienie o otwarciu witryny w tle. Wyłączenie tej funkcji sprawi, iż łącza będą natychmiast otwierały okno przeglądarki.</string>
     <string name="setting_title_themeDark">Tryb jasny</string>
     <string name="setting_summary_themeDark">Pragniesz w życiu trochę blasku? Niech będzie!</string>
 
     <string name="setting_title_nav">Przycisk nawigacyjny</string>
     <string name="setting_title_nav_pos">Położenie</string>
-    <string name="setting_summary_nav_pos">Zdecyduj, gdzie znajdzie się \”Przycisk nawigacyjny\”</string>
-    <string name="setting_summary_nav_pos_right">Prawa</string>
-    <string name="setting_summary_nav_pos_left">Lewa</string>
-    <string name="setting_summary_nav_pos_center">Środek</string>
+    <string name="setting_summary_nav_pos">Zdecyduj o położeniu \”Przycisku nawigacyjnego\”</string>
+    <string name="setting_summary_nav_pos_right">Po prawej</string>
+    <string name="setting_summary_nav_pos_left">Po lewej</string>
+    <string name="setting_summary_nav_pos_center">Pośrodku</string>
 
-    <string name="setting_title_nav_show">Ukrycie</string>
-    <string name="setting_summary_nav_show">Ukryj \”Przycisk nawigacyjny\” gdy wyświetlany jest panel dolny.</string>
+    <string name="setting_title_nav_show">Widoczność</string>
+    <string name="setting_summary_nav_show">Zdecyduj o zachowaniu \”Przycisku nawigacyjnego\” w towarzystwie panelu dolnego.</string>
 
     <string name="setting_title_tab">Zakładka startowa</string>
     <string name="setting_summary_tab">Wybierz element startowy \"FOSS Browser\”.</string>
@@ -185,7 +185,7 @@
     <string name="setting_hide_never">Zawsze widoczny</string>
 
     <string name="setting_hideNav_always">Zawsze ukryty</string>
-    <string name="setting_hideNav_toolbar">Ukryty przy widoczności panelu dolnego</string>
+    <string name="setting_hideNav_toolbar">Ukryty w trakcie wyświetlania panelu dolnego</string>
 
 
     <!-- Data -->
