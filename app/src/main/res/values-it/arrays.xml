@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <!-- Font size -->
+    <string-array name="setting_entries_font">
+        <item>Normale (100%)</item>
+        <item>Grande (125%)</item>
+        <item>Più grande (150%)</item>
+        <item>Grandissimo (175%)</item>
+    </string-array>
+
+</resources>
