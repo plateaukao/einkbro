@@ -120,7 +120,7 @@ public class ScreenshotTask extends AsyncTask<Void, Void, Boolean> {
                     Uri bmpUri = Uri.fromFile(pathFile);
                     sharingIntent.putExtra(Intent.EXTRA_STREAM, bmpUri);
                     context.startActivity(Intent.createChooser(sharingIntent, context.getString(R.string.menu_share)));
-                    sp.edit().putBoolean("delete_screenshot", true).commit();
+                    sp.edit().putBoolean("delete_screenshot", true).apply();
                 }
             } else {
                 final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(activity);

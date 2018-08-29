@@ -20,7 +20,7 @@
 <string name="abc_font_family_menu_material">sans-serif</string>
 <string name="abc_font_family_subhead_material">sans-serif</string>
 <string name="abc_font_family_title_material">sans-serif-medium</string>
-<string name="abc_search_hint">Поиск...</string>
+<string name="abc_search_hint">Поиск…</string>
 <string name="abc_searchview_description_clear">Удалить запрос</string>
 <string name="abc_searchview_description_query">Поисковый запрос</string>
 <string name="abc_searchview_description_search">Поиск</string>
@@ -90,11 +90,11 @@
 <string name="menu_download">Открытые загрузки</string>
 <string name="menu_edit">Изменить</string>
 <string name="menu_notification">Уведомление</string>
-<string name="menu_open_with">Открыть ссылку с ...</string>
+<string name="menu_open_with">Открыть ссылку с …</string>
 <string name="menu_other_help">Помощь</string>
 <string name="menu_other_searchSite">Поиск по сайту</string>
 <string name="menu_quit">Выход</string>
-<string name="menu_save_as">Сохранить как ...</string>
+<string name="menu_save_as">Сохранить как …</string>
 <string name="menu_save_bookmark">Сохранить как закладку</string>
 <string name="menu_save_home">Сохранить на главной</string>
 <string name="menu_save_login">Сохранить данные для входа</string>
@@ -110,8 +110,8 @@
 <string name="nav_title">Навигация</string>
 <string name="not_dialog">Уведомления показаны в нижней части экрана. Они могут также быть отклонены как и меню.</string>
 <string name="not_title">Уведомления</string>
-<string name="notification_content_holder">... Нажмите, чтобы просмотреть страницы</string>
-<string name="notification_content_holderTitle">Открытые вкладки ...</string>
+<string name="notification_content_holder">… Нажмите, чтобы просмотреть страницы</string>
+<string name="notification_content_holderTitle">Открытые вкладки …</string>
 <string name="password_toggle_content_description">Переключение видимости паролей</string>
 <string name="path_password_eye">M12,4.5C7,4.5 2.73,7.61 1,12c1.73,4.39 6,7.5 11,7.5s9.27,-3.11 11,-7.5c-1.73,-4.39 -6,-7.5 -11,-7.5zM12,17c-2.76,0 -5,-2.24 -5,-5s2.24,-5 5,-5 5,2.24 5,5 -2.24,5 -5,5zM12,9c-1.66,0 -3,1.34 -3,3s1.34,3 3,3 3,-1.34 3,-3 -1.34,-3 -3,-3z</string>
 <string name="path_password_eye_mask_strike_through">M2,4.27 L19.73,22 L22.27,19.46 L4.54,1.73 L4.54,1 L23,1 L23,23 L1,23 L1,4.27 Z</string>
@@ -142,7 +142,7 @@
 <string name="setting_summary_history">Сохраните историю посещаемых веб-сайтов.</string>
 <string name="setting_summary_images">Включить отображение изображений. Отключение может быть полезно для сохранения мобильных данных и ускорения загрузки сайтов.</string>
 <string name="setting_summary_inverted">Если флажок установлен, содержимое будет отображаться в режиме инвертированной серой шкалы. Это своего рода \"ночной режим\".</string>
-<string name="setting_summary_javascript">Включить JavaScript. Многим веб-сайтам нужен JavaScript для их функциональности (меню, загрузка и отображение изображений, ...). Но они также представляют собой риск и могут быть использованы для атак.</string>
+<string name="setting_summary_javascript">Включить JavaScript. Многим веб-сайтам нужен JavaScript для их функциональности (меню, загрузка и отображение изображений, …). Но они также представляют собой риск и могут быть использованы для атак.</string>
 <string name="setting_summary_license">\"FOSS Browser\" полностью бесплатен (и свободен), а также с открытым исходным кодом.</string>
 <string name="setting_summary_location">Разрешить веб-сайтам доступ к вашему местоположению. Некоторые веб-сайты (например, карты Google) нуждаются в этом.</string>
 <string name="setting_summary_nav_pos">Определите, где будет размещена \"Кнопка навигации \".</string>
@@ -161,7 +161,7 @@
 <string name="setting_summary_search_engine_startpage">StartPage</string>
 <string name="setting_summary_search_engine_startpage_de">StartPage (de)</string>
 <string name="setting_summary_start_control">Определите, какие компоненты браузера будут включены при запуске.</string>
-<string name="setting_summary_tab">Что должно отображаться при запуске \"FOSS Browser\"? Начальная страница, закладки, ...</string>
+<string name="setting_summary_tab">Что должно отображаться при запуске \"FOSS Browser\"? Начальная страница, закладки, …</string>
 <string name="setting_summary_themeDark">Вам нравится немного ярче? Сделайте это!</string>
 <string name="setting_summary_ui">Измените поведение и интерфейс приложения в соответствии с вашими предпочтениями.</string>
 <string name="setting_summary_whitelist">Разрешить этим сайтам показывать рекламу. Некоторые сайты не работают, когда AdBlock включен.</string>
