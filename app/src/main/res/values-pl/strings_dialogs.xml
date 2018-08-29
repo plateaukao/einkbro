@@ -3,21 +3,8 @@
 <resources>
 
     <string name="changelog_title">Dziennik zmian</string>
-    <string name="changelog_dialog">
-        &lt;i>Strona projektu na GitHubie: https://github.com/scoute-dich/Browser&lt;br>
-        Dziennik zmian (en): https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;/i>&lt;br>&lt;br>
 
-        &lt;b>Wersja: 5.7&lt;/b>&lt;br>
-        Pamiętaj o sprawdzeniu sekcji \"Pomoc\", aby zapoznać się z funkcjami apki.&lt;br>&lt;br>
-
-        \u25AA poprawiono: tłumaczenie chińskie (dzięki @YC L)&lt;br>
-        \u25AA poprawiono: tłumaczenie rosyjskie (dzięki @Vladimir Kosolapov)&lt;br>
-        \u25AA dodano: język polski (dzięki @gh-pmjm)&lt;br>
-        \u25AA dodano: język duński (dzięki @gHeimen Stoffels)&lt;br>
-        \u25AA nowość: ikona adaptacyjna
-    </string>
-    
-   <string name="startpage_title">Strona domowa</string>
+    <string name="startpage_title">Strona domowa</string>
     <string name="startpage_dialog">Tu znajdziesz dostęp do wszystkich twoich danych - zapisanych stron na podglądzie domowym, zakładki, historię przeglądania, zapisane dane logowania oraz zintegrowane pliki. W Preferencjach możesz ustalić jakie elementy będą tutaj wyświetlane.</string>
 
     <string name="fastToggle_title">Szybkie preferencje</string>
@@ -39,7 +26,5 @@
     <string name="nav_dialog">Używaj gestów na kółku Przycisku nawigacyjnego według klucza: gest palcem w górę/dół -> szybkie przewijanie na górę/spód witryny; gest palcem lewa/prawa -> wstecz/naprzód; dotknięcie -> otwarcie Menu; przytrzymanie -> wywołanie Szybkich preferencji; podwójne dotknięcie -> ukrycie przycisku.</string>
 
     <string name="settings_dialog">Więcej możliwości znajdziesz w Preferencjach, sprawdź!</string>
-
-    </string>
 
 </resources>

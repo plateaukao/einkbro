@@ -43,6 +43,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -321,6 +322,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         WebView.enableSlowWholeDocumentDraw();
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
@@ -2677,7 +2679,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 public void onScrollChange(int scrollY, int oldScrollY) {
 
                     if (sp.getString("sp_hideToolbar", "0").equals("0")) {
-                        if (scrollY > oldScrollY) {
+                        if (scrollY > oldScrollY + 25) {
                             hideOmnibox();
                         } else if (scrollY < oldScrollY){
                             showOmnibox();
