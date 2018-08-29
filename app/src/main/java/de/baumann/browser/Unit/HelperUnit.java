@@ -109,8 +109,6 @@ public class HelperUnit {
     public static void setTheme (Context activity) {
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
-        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-
         if (sp.getBoolean("sp_darkUI", false)){
             activity.setTheme(R.style.AppTheme);
         } else {

@@ -1,3 +1,8 @@
+### v 6.0
+- updated: Polish translation (thanks @gh-pmjm)
+- new: Italien translation (thanks @EnricoMonese)
+- many more fixes and improvements (thanks @BO41)
+
 ### v 5.9
 - updated: Chinese translation (thanks @YC L)
 - updated: Russian translation (thanks @Vladimir Kosolapov)

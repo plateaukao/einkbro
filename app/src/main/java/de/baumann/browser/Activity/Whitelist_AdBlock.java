@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,6 +34,7 @@ public class Whitelist_AdBlock extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         HelperUnit.setTheme(this);
         setContentView(R.layout.whitelist);
         Toolbar toolbar = findViewById(R.id.toolbar);
