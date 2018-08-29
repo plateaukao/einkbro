@@ -88,6 +88,10 @@ public class BrowserUnit {
             return false;
         }
 
+        if (url.contains("ö") || url.contains("ü") || url.contains("ä")) {
+            return true;
+        }
+
         url = url.toLowerCase(Locale.getDefault());
         if (url.startsWith(URL_ABOUT_BLANK)
                 || url.startsWith(URL_SCHEME_MAIL_TO)
