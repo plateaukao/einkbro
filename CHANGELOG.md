@@ -1,6 +1,7 @@
 ### v 6.0
+- updated: adBlock host lists
 - updated: Polish translation (thanks @gh-pmjm)
-- new: Italien translation (thanks @EnricoMonese)
+- new: Italian translation (thanks @EnricoMonese)
 - many more fixes and improvements (thanks @BO41)
 
 ### v 5.9
