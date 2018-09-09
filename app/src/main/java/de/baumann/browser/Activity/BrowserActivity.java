@@ -360,7 +360,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 sb.append(c);
             }
 
-            if (Locale.getDefault().getLanguage().equals("zh")) {
+            if (Locale.getDefault().getCountry().equals("CN")) {
                 sp.edit().putString(getString(R.string.sp_search_engine), "2").apply();
             }
 
