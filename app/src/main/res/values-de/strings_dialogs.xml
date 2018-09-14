@@ -48,9 +48,13 @@
         genauso wie die Menüs jederzeit geschlossen werden.</string>
 
     <string name="nav_title">Navigation</string>
-    <string name="nav_dialog">Benutze den \"Navigationsknopf\": wische hoch/runter -> scrolle nach oben/unten;
-    wische nach links/rechts -> lade vorherige/nächste Internetseite; Klick -> öffne das Menü; langer Klick -> öffne die
-        \"Schnelleinstellungen\"; Doppelklick -> verstecke den \"Navigationsknopf\".</string>
+    <string name="nav_dialog">Benutze den \"Navigationsknopf\":
+        \n \u25AA wische hoch/runter        \u2192  scrolle nach oben/unten;
+        \n \u25AA wische links/rechts       \u2192  vorherige/nächste Seite
+        \n \u25AA Klick                     \u2192  Menü öffnen
+        \n \u25AA langer Klick              \u2192  \"Schnelleinstellungen\" öffnen
+        \n \u25AA Doppelklick               \u2192  \"Navigationsknopf\" verstecken</string>
+
 
     <string name="settings_dialog">Es gibt noch mehr Möglichkeiten in den Einstellungen. Probiere es aus!</string>
 
@@ -134,6 +138,10 @@
         \u25AA behoben: Probleme mit der Tastatur (Fehler #105)&lt;br>
         \u25AA neu: Option Bestätigungsdialoge beim Verlassen zu deaktivieren&lt;br>
         &lt;i>https://github.com/element54&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>elmru&lt;/b>&lt;br>
+        \u25AA Taiwan Trad. Chinesische Übersetzung&lt;br>
+        &lt;i>https://github.com/kogiokka&lt;/i>&lt;br>&lt;br>
 
         &lt;b>Enrico Monese&lt;/b>&lt;br>
         \u25AA Italienische Übersetzung&lt;br>

@@ -1,6 +1,7 @@
 ### v 6.0
-- updated: adBlock host lists
+- updated: adBlock hosts list
 - updated: Polish translation (thanks @gh-pmjm)
+- new: Taiwan Trad. Chinese translation (thanks @elmru)
 - new: Italian translation (thanks @EnricoMonese)
 - many more fixes and improvements (thanks @BO41)
 
