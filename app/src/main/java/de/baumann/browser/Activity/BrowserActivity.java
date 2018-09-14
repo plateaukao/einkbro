@@ -2794,8 +2794,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             }
         }
         customViewCallback = callback;
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE); // Auto landscape when video shows
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
     }
 
     @Override
@@ -2821,6 +2820,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             videoView = null;
         }
         setRequestedOrientation(originalOrientation);
+        ninjaWebView.reload();
 
         return true;
     }
@@ -3529,9 +3529,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     }
 
     private void setCustomFullscreen(boolean fullscreen) {
-
         View decorView = getWindow().getDecorView();
-
         if (fullscreen) {
             decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
         } else {
