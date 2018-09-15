@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <!-- App -->
+    <string name="app_name">FOSS Browser</string>
+    <string name="app_ok">OK</string>
+    <string name="app_cancel">Cancelar</string>
+    <string name="app_close">Fechar</string>
+    <string name="list_empty">A lista está vazia</string>
+    <string name="album_title_bookmarks">Marcadores</string>
+    <string name="album_title_history">Histórico</string>
+    <string name="album_title_home">Início</string>
+    <string name="album_title_files">Ficheiros</string>
+    <string name="album_title_pass">Credenciais</string>
+    <string name="album_untitled"> </string>
+    <string name="notification_content_holderTitle">Separadores abertos…</string>
+    <string name="notification_content_holder">…Clique para ver as páginas</string>
+    <string name="search_hint">Pesquisa</string>
+
+
+    <!-- Menu -->
+    <string name="main_menu_tabPreview">Abrir pré-visualização</string>
+    <string name="main_menu_new_tab">Novo separador (principal)</string>
+    <string name="main_menu_new_tabOpen">Novo separador (secundário)</string>
+    <string name="main_menu_copy_link">Copiar ligação</string>
+    <string name="main_omnibox_input_hint">Pesquisa ou digitar URL</string>
+    <string name="menu_open_with">Abrir ligação com…</string>
+
+    <string name="menu_share">Partilhar</string>
+    <string name="menu_quit">Sair</string>
+    <string name="menu_delete">Apagar</string>
+    <string name="menu_delete_list">Apagar lista</string>
+    <string name="menu_edit">Editar</string>
+    <string name="menu_notification">Notificação</string>
+    <string name="menu_closeTab">Fechar separador</string>
+    <string name="menu_download">Abrir descargas</string>
+
+    <string name="menu_share_screenshot">Captura de ecrã</string>
+    <string name="menu_share_link">Partilhar ligação</string>
+
+    <string name="menu_save_screenshot">Guardar captura de ecrã</string>
+    <string name="menu_save_home">Guardar em Início</string>
+    <string name="menu_save_login">Guardar credenciais</string>
+    <string name="menu_save_bookmark">Guardar como marcador</string>
+    <string name="menu_save_as">Guardar como…</string>
+    <string name="menu_save_pdf">Guardar como PDF</string>
+    <string name="menu_share_pdf">Partilhar PDF</string>
+    <string name="menu_share_pdfToast">Terminado. Abrir gestor de ficheiros e partilhar?</string>
+
+    <string name="menu_other_searchSite">Pesquisar no site</string>
+    <string name="menu_other_help">Ajuda</string>
+
+
+    <!-- AndroidAgo -->
+
+
+    <!-- Dialog -->
+    <string name="dialog_toggle_title">Comutar rapidamente</string>
+    <string name="dialog_toggle_hint">Para aplicar, prima o botão \"OK\" abaixo.</string>
+    <string name="dialog_title_hint">Título:</string>
+    <string name="dialog_extension_hint">Extensão (exemplo: \".jpg\"):</string>
+    <string name="dialog_se_hint">https://www.google.com/search?q=</string>
+    <string name="dialog_sign_in_username">Utilizador</string>
+    <string name="dialog_sign_in_password">Palavra-passe</string>
+    <string name="dialog_button_custom">Personalizado</string>
+    <string name="dialog_title_download">Deseja descarregar o ficheiro?</string>
+    <string name="dialog_title_sign_in">Iniciar sessão</string>
+    <string name="dialog_content_resubmission">Gostaria de reenviar os seus dados?</string>
+    <string name="dialog_content_ssl_error">O certificado do site não é de confiança. Continuar?</string>
+
+
+
+    <!-- Settings -->
+    <string name="setting_label">Definições</string>
+
+    <!-- Browser setting -->
+    <string name="setting_title_browser">Definições do navegador</string>
+    <string name="setting_title_clear_control">Controlo de dados</string>
+    <string name="setting_title_start_control">Controlo inicial</string>
+    <string name="setting_summary_clear_control">Limpar dados do navegador ou decidir quais os dados que serão removidos ao fechar a aplicação.</string>
+    <string name="setting_summary_start_control">Decidir quais os componentes que serão ativados ao iniciar a aplicação.</string>
+
+    <string name="setting_title_search_engine">Motor de pesquisa</string>
+    <string name="setting_summary_search_engine">Aqui pode escolher o motor de pesquisa utilizado ou definir um personalizado.</string>
+    <string name="setting_summary_search_engine_google">Google</string>
+    <string name="setting_summary_search_engine_duckduckgo">DuckDuckGo</string>
+    <string name="setting_summary_search_engine_startpage">StartPage</string>
+    <string name="setting_summary_search_engine_bing">Bing</string>
+    <string name="setting_summary_search_engine_baidu">Baidu</string>
+    <string name="setting_summary_search_engine_startpage_de">StartPage (de)</string>
+    <string name="setting_summary_search_engine_searx">Searx</string>
+
+    <string name="setting_title_inverted">Cores invertidas</string>
+    <string name="setting_summary_inverted">Se ativa, o conteúdo será processado no modo invertido da escala de cinzentos. Pode ser comparado como o \"modo noturno\".</string>
+
+    <string name="setting_title_font">Tipo de letra</string>
+    <string name="setting_summary_font">Alterar o tamanho do tipo de letra utilizado para mostrar os sites.</string>
+
+    <string name="setting_title_remote">Conteúdo remoto</string>
+    <string name="setting_summary_remote">Permitir conteúdo remoto que não esteja diretamente relacionado com o site visitado. Se desativar a opção, poderá estar mais seguro, navegar mais rapidamente e poupar dados. Contudo, o conteúdo dos sites pode não ser mostrado corretamente.</string>
+
+
+    <!-- Browser start -->
+    <string name="setting_title_images">Imagens</string>
+    <string name="setting_summary_images">Permitir imagens de rede. Se desativar esta opção, pode poupar dados móveis e carregar os sites mais rapidamente.</string>
+    <string name="setting_title_cookie">Cookies</string>
+    <string name="setting_summary_cookie_delete">Se ativa, todos os cookies serão apagados. Os cookies de sites fiáveis também serão apagados.</string>
+    <string name="setting_summary_cookie">Permitir utilização de cookies. Cookies são pequenos ficheiros de texto e são armazenados no seu dispositivo. Os sites utilizam os cookies para guardar as definições dos seus utilizadores (exemplo: pesquisas). Mas os cookies também podem ser utilizados para obter dados pessoais do utilizador. Os cookies de terceiros (recolhem dados para publicidade) estão sempre desativados.</string>
+    <string name="setting_title_whitelistCookie">Lista branca para cookies</string>
+    <string name="setting_summary_whitelistCookie">Se desativar a utilização de cookies, pode utilizar esta lista para permitir que os sites em que confia guardem cookies.</string>
+
+    <string name="setting_title_javascript">JavaScript</string>
+    <string name="setting_summary_javascript">Permitir JavaScript. Muitos sites necessitam de JavaScript para as suas funcionalidades (menus, carregamento e exibição de imagens…). Mas também podem ser considerados um risco e podem ser utilizados para ataques.</string>
+    <string name="setting_title_whitelistJS">Lista branca para JavaScript</string>
+    <string name="setting_summary_whitelistJS">Se desativar a utilização de Javascript, pode utilizar esta lista para permitir que os sites em que confia utilizem Javascript.</string>
+
+    <string name="setting_title_adblock">AdBlock</string>
+    <string name="setting_summary_adblock">Ativar AdBlock para bloquear anúncios. Os sites são carregados mais rapidamente.</string>
+    <string name="setting_title_whitelist">Lista branca para AdBlock</string>
+    <string name="setting_summary_whitelist">Permitir que o sites desta lista mostrem anúncios. Alguns sites não funcionam corretamente com esta opção ativa.</string>
+
+    <string name="setting_title_location">Localização</string>
+    <string name="setting_summary_location">Permitir que os sites acedam à sua localização. Alguns sites (exemplo: Google Maps) necessitam que esta opção esteja ativa.</string>
+
+    <string name="setting_title_history">Histórico</string>
+    <string name="setting_summary_history">Guarda o histórico dos sites visitados.</string>
+
+
+    <!-- Browser clear -->
+    <string name="clear_summary">Todos os ficheiros serão exportados para o diretório \"Documents\" do seu cartão SD. Os ficheiros existentes serão substituídos. Para os restaurar, tem que existir um ficheiro com o nome correto no diretório.</string>
+    <string name="clear_menu_done_all">Terminado</string>
+    <string name="clear_title_quit">Limpar ao fechar a aplicação</string>
+    <string name="clear_summary_quit">Sempre que sair do \"FOSS Browser\", todos os dados acima assinalados serão apagados.</string>
+    <string name="clear_title_bookmarks">Limpar marcadores</string>
+    <string name="clear_title_cache">Limpar cache</string>
+    <string name="clear_title_cookie">Limpar cookies</string>
+    <string name="clear_title_history">Limpar histórico</string>
+    <string name="clear_title_indexedDB">Limpar \"indexed databases\" e \"local webview storage\"</string>
+
+    <string name="clear_title_deleteDatabase">Remover base de dados</string>
+    <string name="clear_summary_deleteDatabase">Apaga integralmente a base de dados (página inicial, marcadores, histórico e lista branca).</string>
+
+
+    <!-- App setting -->
+    <string name="setting_title_app">Definições da aplicação</string>
+    <string name="setting_title_ui">Comportamento/Interface</string>
+    <string name="setting_title_data">Backup</string>
+    <string name="setting_summary_ui">Alterar o comportamento e a interface da aplicação ao seu gosto.</string>
+    <string name="setting_summary_data">Importar e exportar os dados da aplicação (lista branca, marcadores...).</string>
+
+    <!-- App behavior -->
+    <string name="setting_title_hideToolbar">Ocultar barra de ferramentas</string>
+    <string name="setting_summary_hide">Utilizar todo o ecrã para navegar nos sites. Se premir no botão Back, sairá do modo de ecrã completo.</string>
+    <string name="setting_title_omnibox_control">Controlo da Omnibox</string>
+    <string name="setting_summary_omnibox_control">Deslize para a direita/esquerda na omnibox para trocar de separadores.</string>
+    <string name="setting_title_background">Abrir ligações</string>
+    <string name="setting_summary_background">Mostra uma notificação e abre as ligações em segundo plano. Se desativar a opção, as ligações serão abertas imediatamente.</string>
+    <string name="setting_title_themeDark">Tema claro</string>
+    <string name="setting_summary_themeDark">Gostaria de ter mais luz? Muito bem, vamos lá!</string>
+
+    <string name="setting_title_nav">Botão de navegação</string>
+    <string name="setting_title_nav_pos">Posição</string>
+    <string name="setting_summary_nav_pos">Escolha o local para colocar o botão de navegação.</string>
+    <string name="setting_summary_nav_pos_right">Direita</string>
+    <string name="setting_summary_nav_pos_left">Esquerda</string>
+    <string name="setting_summary_nav_pos_center">Centro</string>
+
+    <string name="setting_title_nav_show">Ocultar</string>
+    <string name="setting_summary_nav_show">Ocultar botão de navegação se a barra de ferramentas for mostrada.</string>
+
+    <string name="setting_title_tab">Separador inicial</string>
+    <string name="setting_summary_tab">Escolha o que mostrar ao iniciar o \"FOSS Browser\". Página inicial, marcadores…</string>
+
+    <string name="setting_title_confirm_exit">Confirmar fecho da aplicação</string>
+    <string name="setting_summary_confirm_exit">Mostrar diálogo de confirmação para fechar o navegador.</string>
+
+    <string name="setting_title_confirm_tab_close">Confirmar fecho de separador</string>
+    <string name="setting_summary_confirm_tab_close">Mostrar diálogo de confirmação para fechar um separador.</string>
+
+    <string name="setting_title_toolbar">Barra de ferramentas</string>
+    <string name="setting_hide_always">Ocultar sempre</string>
+    <string name="setting_hide_down">Ocultar ao deslocar para baixo</string>
+    <string name="setting_hide_never">Nunca ocultar</string>
+
+    <string name="setting_hideNav_always">Ocultar sempre</string>
+    <string name="setting_hideNav_toolbar">Se a barra de ferramentas for mostrada</string>
+
+
+    <!-- Data -->
+    <string name="setting_title_export_bookmarks">Exportar marcadores</string>
+    <string name="setting_title_import_bookmarks">Importar marcadores</string>
+    <string name="export_bookmarks">export_bookmarks</string>
+
+    <string name="setting_title_export_whitelist">Exportar lista branca AdBlock</string>
+    <string name="setting_title_import_whitelist">Importar lista branca AdBlock</string>
+    <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
+
+    <string name="setting_title_export_whitelistJS">Exportar lista branca JavaScript</string>
+    <string name="setting_title_import_whitelistJS">Importar lista branca JavaScript</string>
+    <string name="export_whitelistJS">export_whitelist_Javascript</string>
+
+    <string name="setting_title_export_whitelistCookie">Exportar lista branca de cookies</string>
+    <string name="setting_title_import_whitelistCookie">Importar lista branca de cookies</string>
+    <string name="export_whitelistCookie">export_whitelist_Cookie</string>
+
+    <string name="setting_title_export_database">Exportar base de dados</string>
+    <string name="setting_title_import_database">Importar base de dados</string>
+    <string name="setting_summary_export_database">Exportar todos os dados da base de dados (página inicial, histórico e marcadores) para o cartão SD. As suas credenciais não serão exportadas.</string>
+    <string name="title_database">Base de dados</string>
+    <string name="hint_database">Está prestes a apagar todos os dados e definições atuais. Continuar?</string>
+
+
+    <!-- Others setting -->
+    <string name="setting_title_others">Outras</string>
+    <string name="setting_title_license">Licença</string>
+    <string name="setting_summary_license">\"FOSS Browser\" é um software livre e open source.</string>
+    <string name="setting_title_appSettings">Definições da aplicação</string>
+    <string name="setting_summary_appSettings">Abrir definições do sistema para o \"FOSS Browser\". Nas definições pode, consoante a versão Android instalada, limpar os dados da aplicação e efetuar outras alterações.</string>
+    <string name="setting_title_community">Contributos</string>
+    <string name="setting_summary_community">Veja quem contribuiu para este projeto. Se quiser ajudar no desenvolvimento, pode reportar os erros encontrados ou, em alternativa, consultar os meus outros projetos.</string>
+    <string name="setting_summary_changelog">Consultar o registo de alterações da aplicação.</string>
+
+    <!-- Toast -->
+    <string name="toast_add_bookmark_successful">Marcador adicionado com sucesso</string>
+    <string name="toast_add_to_home_successful">Adicionado a Início</string>
+    <string name="toast_add_to_home_failed">Erro ao adicionar a Início</string>
+    <string name="toast_add_whitelist_successful">Domínio adicionado com sucesso</string>
+    <string name="toast_already_exist_in_home">Já existe em Início</string>
+    <string name="toast_copy_successful">Copiado com sucesso</string>
+    <string name="toast_delete_successful">Apagado com sucesso</string>
+    <string name="toast_domain_already_exists">Domínio já existente</string>
+    <string name="toast_export_successful">Exportado como:&#160;</string>
+    <string name="toast_export_failed">Erro ao exportar</string>
+    <string name="toast_import_successful">Importações:&#160;</string>
+    <string name="toast_import_failed">Erro ao importar</string>
+    <string name="toast_input_empty">Nada foi digitado</string>
+    <string name="toast_invalid_domain">Domínio inválido</string>
+    <string name="toast_load_error">O URL não pode ser carregado</string>
+    <string name="toast_load_in_background">A carregar em segundo plano</string>
+    <string name="toast_new_tab_successful">Aberto com sucesso em novo separador</string>
+    <string name="toast_open_file_manager_failed">Erro ao abrir o gestor de ficheiros</string>
+    <string name="toast_refresh_failed">Não foi possível recarregar a página</string>
+    <string name="toast_relayout_successful">Recarregamento efetuado</string>
+    <string name="toast_share_failed">Não foi possível partilhar a página</string>
+    <string name="toast_start_download">Descarga iniciada</string>
+    <string name="toast_wait_a_minute">Aguarde um pouco</string>
+    <string name="toast_titleConfirm_delete">Quer mesmo apagar a entrada?</string>
+    <string name="toast_titleConfirm_paste">Copiar dados para a área de transferência?</string>
+    <string name="toast_titleConfirm_pasteUN">Utilizador</string>
+    <string name="toast_titleConfirm_pastePW">Palavra-passe</string>
+    <string name="toast_error">Algo errado aconteceu.</string>
+    <string name="toast_newTitle">A entrada já existe. Digite outro título.</string>
+    <string name="toast_edit_successful">Guardado com sucesso</string>
+    <string name="toast_webview_forward">Não foi possível carregar o site seguinte</string>
+    <string name="toast_entry_exists">A entrada já existe.</string>
+    <string name="toast_clear">Tem a certeza que deseja limpar?</string>
+    <string name="toast_permission_title">Permissão necessária</string>
+    <string name="toast_permission_sdCard">\"FOSS Browser\" necessita da permissão \"read and write on your storage\". Esta permissão é necessária para descarregar ficheiros, abrir o gestor de ficheiros e obter capturas de ecrã. Se não o quiser fazer agora, pode fazê-lo mais tarde nas definições.</string>
+    <string name="toast_permission_sdCard_sec">Tem que conceder a permissão \"read and write on your storage\" nas definições.</string>
+    <string name="toast_permission_loc">\"FOSS Browser\" necessita da permissão \"access your location\". Esta permissão é necessária por alguns sites para, por exemplo, disponibilizar algum tipo especial de navegação. Se não o quiser fazer agora, pode fazê-lo mais tarde nas definições.</string>
+    <string name="toast_restart">Tem que reiniciar \"FOSS Browser\" para aplicar as alterações. Fechar agora?</string>
+    <string name="toast_quit">Deseja sair do \"FOSS Browser\"?</string>
+    <string name="toast_close_tab">Deseja fechar o separador atual?</string>
+    <string name="toast_closeNotification">Fechar todos os sites abertos.</string>
+    <string name="toast_downloadComplete">Descarga terminada. Abrir gestor de ficheiros?</string>
+    <string name="toast_unsecured">Este site utiliza uma ligação não protegida (\"http\"). Deseja verificar se existe uma ligação segura (\"https\")?</string>
+    <string name="toast_backup">Criar backup? Irá substituir os dados do backup anterior.</string>
+
+
+    <!-- Whitelist -->
+    <string name="whitelist_menu_clear">Limpar</string>
+    <string name="whitelist_edit_hint">Domínio</string>
+    <string name="whitelist_add">Adicionar</string>
