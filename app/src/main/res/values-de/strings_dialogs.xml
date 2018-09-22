@@ -7,14 +7,16 @@
         &lt;i>Projektseite: https://github.com/scoute-dich/Browser&lt;br>
         Änderungen: https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;/i>&lt;br>&lt;br>
 
-        &lt;b>Version: 5.7&lt;/b>&lt;br>
+        &lt;b>Version: 6.0&lt;/b>&lt;br>
         Bitte lies den \"Hilfedialog\" für weitere Informationen.&lt;br>&lt;br>
 
-        \u25AA verbessert: Chinesische Übersetzung (thanks @YC L)&lt;br>
-        \u25AA verbessert: Russische Übersetzung (thanks @Vladimir Kosolapov)&lt;br>
-        \u25AA neu: Polnische Übersetzung (thanks @gh-pmjm)&lt;br>
-        \u25AA neu: Niederländische Übersetzung (thanks @gHeimen Stoffels)&lt;br>
-        \u25AA neu: adaptives Icon
+        \u25AA verbessert: adBlock Hosts-Liste aktualisiert&lt;br>
+        \u25AA verbessert: Polnische Übersetzung (thanks @gh-pmjm)&lt;br>
+        \u25AA fix: Probleme mit den Buchstaben ä, ü, ö&lt;br>
+        \u25AA neu: Taiwan Trad. Chinesische Übersetzung (thanks @elmru)&lt;br>
+        \u25AA neu: Italienische Übersetzung (thanks @EnricoMonese)&lt;br>
+        \u25AA neu: Portugisische Übersetzung (thanks @Sérgio Marques)&lt;br>
+        \u25AA viele Fehlerbehebungen und Verbesserungen (thanks @BO41)
     </string>
 
     <string name="startpage_title">Startseite</string>
@@ -175,6 +177,10 @@
         &lt;b>Secangkir Kopi&lt;/b>&lt;br>
         \u25AA Indonesische Übersetzung&lt;br>
         &lt;i>https://github.com/Secangkir-Kopi&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Sérgio Marques&lt;/b>&lt;br>
+        \u25AA Portugisische Übersetzung&lt;br>
+        &lt;i>https://github.com/smarquespt&lt;/i>&lt;br>&lt;br>
 
         &lt;b>splinet&lt;/b>&lt;br>
         \u25AA Russische Übersetzung in der vorherigen Version von \"FOSS Browser\"&lt;br>
