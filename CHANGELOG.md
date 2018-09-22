@@ -1,8 +1,10 @@
 ### v 6.0
 - updated: adBlock hosts list
 - updated: Polish translation (thanks @gh-pmjm)
+- fix: problems with characters like ä, ü, ö
 - new: Taiwan Trad. Chinese translation (thanks @elmru)
 - new: Italian translation (thanks @EnricoMonese)
+- new: Portuguese translation (thanks @Sérgio Marques)
 - many more fixes and improvements (thanks @BO41)
 
 ### v 5.9

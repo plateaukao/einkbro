@@ -272,3 +272,5 @@
     <string name="whitelist_menu_clear">Limpar</string>
     <string name="whitelist_edit_hint">Domínio</string>
     <string name="whitelist_add">Adicionar</string>
+
+</resources>

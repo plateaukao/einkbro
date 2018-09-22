@@ -7,14 +7,16 @@
         &lt;i>Project site: https://github.com/scoute-dich/Browser&lt;br>
         Changelog: https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;/i>&lt;br>&lt;br>
 
-        &lt;b>Version: 5.8&lt;/b>&lt;br>
+        &lt;b>Version: 6.0&lt;/b>&lt;br>
         Please read the \"Help dialog\" for more information.&lt;br>&lt;br>
 
-        \u25AA updated: Chinese translation (thanks @YC L)&lt;br>
-        \u25AA updated: Russian translation (thanks @Vladimir Kosolapov)&lt;br>
-        \u25AA new: Polish translation (thanks @gh-pmjm)&lt;br>
-        \u25AA new: Dutch translation (thanks @gHeimen Stoffels)&lt;br>
-        \u25AA new: adaptive icon
+        \u25AA updated: adBlock hosts list&lt;br>
+        \u25AA updated: Polish translation (thanks @gh-pmjm)&lt;br>
+        \u25AA fix: problems with characters like ä, ü, ö&lt;br>
+        \u25AA new: Taiwan Trad. Chinese translation (thanks @elmru)&lt;br>
+        \u25AA new: Italian translation (thanks @EnricoMonese)&lt;br>
+        \u25AA new: Portuguese translation (thanks @Sérgio Marques)&lt;br>
+        \u25AA many more fixes and improvements (thanks @BO41)
     </string>
 
     <string name="startpage_title">Startpage</string>
@@ -176,6 +178,10 @@
         &lt;b>Secangkir Kopi&lt;/b>&lt;br>
         \u25AA Indonesian translation&lt;br>
         &lt;i>https://github.com/Secangkir-Kopi&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Sérgio Marques&lt;/b>&lt;br>
+        \u25AA Portuguese translation&lt;br>
+        &lt;i>https://github.com/smarquespt&lt;/i>&lt;br>&lt;br>
 
         &lt;b>splinet&lt;/b>&lt;br>
         \u25AA Russian translation in the previous version of \"FOSS Browser\"&lt;br>

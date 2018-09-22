@@ -2679,7 +2679,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 public void onScrollChange(int scrollY, int oldScrollY) {
 
                     if (sp.getString("sp_hideToolbar", "0").equals("0")) {
-                        if (scrollY > oldScrollY + 25) {
+                        if (scrollY > oldScrollY) {
                             hideOmnibox();
                         } else if (scrollY < oldScrollY){
                             showOmnibox();
