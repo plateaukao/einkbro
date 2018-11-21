@@ -18,6 +18,18 @@
     <string name="notification_content_holder">… Anklicken um die Seiten zu sehen</string>
     <string name="search_hint">Suche</string>
 
+    <string name="color_red">Rot</string>
+    <string name="color_pink">Pink</string>
+    <string name="color_purple">Lila</string>
+    <string name="color_blue">Blau</string>
+    <string name="color_teal">Teal</string>
+    <string name="color_green">Grün</string>
+    <string name="color_lime">Limette</string>
+    <string name="color_yellow">Gelb</string>
+    <string name="color_orange">Orange</string>
+    <string name="color_brown">Braun</string>
+    <string name="color_grey">Grau</string>
+
 
     <!-- Menu -->
     <string name="main_menu_tabPreview">Öffne Tabvorschau</string>
@@ -35,6 +47,9 @@
     <string name="menu_closeTab">Tab schließen</string>
     <string name="menu_open_with">Link öffnen mit …</string>
     <string name="menu_download">Öffne Downloads</string>
+    <string name="menu_fav">Als Favoriten setzen</string>
+    <string name="menu_sort">Sortiere nach …</string>
+    <string name="menu_filter">Filtere nach Farbe …</string>
 
     <string name="menu_share_screenshot">Bildschirmfoto teilen</string>
     <string name="menu_share_link">Link teilen</string>
@@ -53,9 +68,6 @@
     <string name="menu_other_help">Hilfe</string>
 
 
-    <!-- AndroidAgo -->
-
-
     <!-- Dialog -->
     <string name="dialog_toggle_title">Schnelleinstellungen</string>
     <string name="dialog_toggle_hint">Um die Einstellungen sofort zu übernehmen, bitte unten auf \"OK\" klicken.</string>
@@ -70,6 +82,8 @@
     <string name="dialog_content_resubmission">Möchtest du die Daten erneut senden?</string>
     <string name="dialog_content_ssl_error">Das Zertifikat der Seite ist nicht sicher. Trotzdem fortfahren?</string>
 
+    <string name="dialog_sortName">Sortiere nach Namen</string>
+    <string name="dialog_sortIcon">Sortiere nach Icon</string>
 
     <!-- Settings -->
     <string name="setting_label">Einstellungen</string>
@@ -175,7 +189,7 @@
     <string name="setting_title_themeDark">Helles Thema</string>
     <string name="setting_summary_themeDark">Du magst es lieber ein bisschen heller? Dann tu es!</string>
     <string name="setting_title_tab">Starttab</string>
-    <string name="setting_summary_tab">Was soll beim Start von \"FOSS Browser\" angezeigt werden? Die Startseite, deine Lesezeichen, …</string>
+    <string name="setting_summary_tab">Was soll beim Start der \"Übersicht\" angezeigt werden? Die Startseite, deine Lesezeichen, …</string>
 
     <string name="setting_title_confirm_exit">Bestätigung beim Verlassen</string>
     <string name="setting_summary_confirm_exit">Bestätigungsdialog, bevor du \"FOSS Browser\" beendest.</string>
@@ -202,6 +216,20 @@
     <string name="setting_title_nav_show">Verstecken</string>
     <string name="setting_summary_nav_show">Verstecke den \"Navigationsknopf\" wenn die Toolbar angezeigt wird.</string>
 
+    <string name="setting_overView">Übersicht</string>
+    <string name="setting_overView_onStart_title">Zeige beim Appstart</string>
+    <string name="setting_overView_onStart_summary">Öffne als erstes die \"Übersicht\" bei jedem Appstart.</string>
+    <string name="setting_overView_tab_title">Tab</string>
+    <string name="setting_overView_tab_summary">Welcher Tab soll beim öffnen der \"Übersicht\" angezeigt werden?</string>
+
+    <string name="setting_gestures">Gesten</string>
+    <string name="setting_gestures_use_title">Benutze Gesten</string>
+    <string name="setting_gestures_use_summary">Benutze Gesten auf der Toolbar oder dem \"Navigationsknopf\".</string>
+    <string name="setting_gestures_action_title">Aktion</string>
+    <string name="setting_gestures_action_summary">Was soll passieren, wenn du nach rechts/links auf der Toolbar oder
+        dem \"Navigation Button\" wischst?</string>
+    <string name="setting_gestures_action_1">Vor/zurück im Browserverlauf</string>
+    <string name="setting_gestures_action_2">Zwischen geöffneten Tabs wechseln</string>
 
     <!-- Data -->
     <string name="setting_title_export_bookmarks">Lesezeichen sichern</string>
@@ -290,6 +318,12 @@
     <string name="toast_unsecured">Die Internetseite benutzt eine unsichere Verbindung (\"http\"). Möchtest du versuchen
         eine gesicherte Verbindung herstellen (\"https\")?</string>
     <string name="toast_backup">Daten sichern? Das überschreibt die alte Sicherung.</string>
+    <string name="toast_fav">Erfolgreich als Favorit gesetzt.</string>
+    <string name="toast_bookmarksOld">Mit diesem Update werden Lesezeichen und Logindaten zusammen gelegt. Bitte
+    öffne alle deine alten Lesezeichen und speichere sie neu ab. Klicke \"Abbrechen\" um deine alten Lesezeichen
+    weiterhin anzuzeigen (sie werden ganz auf der rechten Seite der Übersicht sein). Klicke \"OK\" um deine alten
+        Lesezeichen zu verbergen.</string>
+    <string name="toast_bookmarksOld_confirm">Die alten Lesezeichen für immer verstecken?</string>
 
 
 

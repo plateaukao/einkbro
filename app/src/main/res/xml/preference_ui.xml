@@ -29,30 +29,51 @@
         android:summary="@string/setting_summary_confirm_tab_close" />
 
     <ListPreference
-        android:title="@string/setting_title_tab"
-        android:icon="@drawable/icon_tab_plus"
-        android:summary="@string/setting_summary_tab"
-        android:key="start_tab"
+        android:title="@string/setting_title_hideToolbar"
+        android:icon="@drawable/icon_fullscreen"
+        android:summary="@string/setting_summary_hide"
+        android:key="sp_hideToolbar"
         android:defaultValue="0"
-        android:entries="@array/setting_entries_tab"
-        android:entryValues="@array/setting_values_tab" />
+        android:entries="@array/setting_entries_toolbar"
+        android:entryValues="@array/setting_values_toolbar" />
 
-    <PreferenceCategory android:title="@string/setting_title_toolbar">
+    <PreferenceCategory android:title="@string/setting_overView">
 
-        <CheckBoxPreference android:key="@string/sp_omnibox_control"
-            android:icon="@drawable/icon_swipe"
-            android:defaultValue="true"
-            android:title="@string/setting_title_omnibox_control"
-            android:summary="@string/setting_summary_omnibox_control"/>
+        <CheckBoxPreference
+            android:key="overView_onStart"
+            android:icon="@drawable/icon_preview"
+            android:defaultValue="false"
+            android:title="@string/setting_overView_onStart_title"
+            android:summary="@string/setting_overView_onStart_summary"/>
 
         <ListPreference
-            android:title="@string/setting_title_hideToolbar"
-            android:icon="@drawable/icon_fullscreen"
-            android:summary="@string/setting_summary_hide"
-            android:key="sp_hideToolbar"
+            android:title="@string/setting_title_tab"
+            android:icon="@drawable/icon_tab_plus"
+            android:summary="@string/setting_summary_tab"
+            android:key="start_tab"
             android:defaultValue="0"
-            android:entries="@array/setting_entries_toolbar"
-            android:entryValues="@array/setting_values_toolbar" />
+            android:entries="@array/setting_entries_tab"
+            android:entryValues="@array/setting_values_tab" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/setting_gestures">
+
+        <CheckBoxPreference
+            android:key="sp_gestures_use"
+            android:icon="@drawable/icon_swipe"
+            android:defaultValue="true"
+            android:title="@string/setting_gestures_use_title"
+            android:summary="@string/setting_gestures_use_summary"/>
+
+        <ListPreference
+            android:title="@string/setting_gestures_action_title"
+            android:icon="@drawable/icon_fullscreen"
+            android:summary="@string/setting_gestures_action_summary"
+            android:key="sp_gesture_action"
+            android:defaultValue="0"
+            android:entries="@array/setting_entries_gestures"
+            android:entryValues="@array/setting_values_gestures" />
 
     </PreferenceCategory>
 

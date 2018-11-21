@@ -3,6 +3,7 @@ package de.baumann.browser.Database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
@@ -26,24 +27,6 @@ public class RecordAction {
 
     public void close() {
         helper.close();
-    }
-
-    public void addBookmark(Record record) {
-        if (record == null
-                || record.getTitle() == null
-                || record.getTitle().trim().isEmpty()
-                || record.getURL() == null
-                || record.getURL().trim().isEmpty()
-                || record.getTime() < 0L) {
-            return;
-        }
-
-        ContentValues values = new ContentValues();
-        values.put(RecordUnit.COLUMN_TITLE, record.getTitle().trim());
-        values.put(RecordUnit.COLUMN_URL, record.getURL().trim());
-        values.put(RecordUnit.COLUMN_TIME, record.getTime());
-        database.insert(RecordUnit.TABLE_BOOKMARKS, null, values);
-
     }
 
     public void addHistory(Record record) {
@@ -119,24 +102,6 @@ public class RecordAction {
         return true;
     }
 
-    public void updateBookmark(Record record) {
-        if (record == null
-                || record.getTitle() == null
-                || record.getTitle().trim().isEmpty()
-                || record.getURL() == null
-                || record.getURL().trim().isEmpty()
-                || record.getTime() < 0) {
-            return;
-        }
-
-        ContentValues values = new ContentValues();
-        values.put(RecordUnit.COLUMN_TITLE, record.getTitle().trim());
-        values.put(RecordUnit.COLUMN_URL, record.getURL().trim());
-        values.put(RecordUnit.COLUMN_TIME, record.getTime());
-        database.update(RecordUnit.TABLE_BOOKMARKS, values, RecordUnit.COLUMN_TIME + "=?", new String[] {String.valueOf(record.getTime())});
-
-    }
-
     public void updateGridItem(GridItem item) {
         if (item == null
                 || item.getTitle() == null
@@ -168,31 +133,6 @@ public class RecordAction {
                 new String[] {RecordUnit.COLUMN_URL},
                 RecordUnit.COLUMN_URL + "=?",
                 new String[] {record.getURL().trim()},
-                null,
-                null,
-                null
-        );
-
-        if (cursor != null) {
-            boolean result = cursor.moveToFirst();
-            cursor.close();
-
-            return result;
-        }
-
-        return false;
-    }
-
-    public boolean checkBookmark(String url) {
-        if (url == null || url.trim().isEmpty()) {
-            return false;
-        }
-
-        Cursor cursor = database.query(
-                RecordUnit.TABLE_BOOKMARKS,
-                new String[] {RecordUnit.COLUMN_URL},
-                RecordUnit.COLUMN_URL + "=?",
-                new String[] {url.trim()},
                 null,
                 null,
                 null
@@ -341,14 +281,6 @@ public class RecordAction {
         return false;
     }
 
-    public void deleteBookmark(Record record) {
-        if (record == null || record.getURL() == null || record.getURL().trim().isEmpty()) {
-            return;
-        }
-
-        database.execSQL("DELETE FROM " + RecordUnit.TABLE_BOOKMARKS + " WHERE " + RecordUnit.COLUMN_URL + " = " + "\"" + record.getURL().trim() + "\"");
-    }
-
     public void deleteHistory(Record record) {
         if (record == null || record.getTime() <= 0) {
             return;
@@ -448,7 +380,7 @@ public class RecordAction {
                 null,
                 null,
                 null,
-                RecordUnit.COLUMN_TIME + " desc"
+                RecordUnit.COLUMN_TITLE
         );
 
         if (cursor == null) {

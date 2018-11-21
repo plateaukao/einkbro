@@ -112,7 +112,7 @@
 
             <LinearLayout
                 android:visibility="gone"
-                android:id="@+id/tv2_menu_notification"
+                android:id="@+id/tv2_menu_fav"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
@@ -126,10 +126,10 @@
                     android:layout_height="match_parent"
                     android:layout_marginEnd="16dp"
                     android:gravity="center_vertical"
-                    android:src="@drawable/icon_clipboard" />
+                    android:src="@drawable/star_grey" />
 
                 <TextView
-                    android:text="@string/menu_notification"
+                    android:text="@string/menu_fav"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:ellipsize="end"

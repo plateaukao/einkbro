@@ -2,6 +2,10 @@
 
 <resources>
 
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+
     <!-- App -->
     <string name="app_name">FOSS Browser</string>
     <string name="app_ok">OK</string>
@@ -17,6 +21,18 @@
     <string name="notification_content_holderTitle">Opened tabs …</string>
     <string name="notification_content_holder">… Click to View Pages</string>
     <string name="search_hint">Search</string>
+
+    <string name="color_red">Red</string>
+    <string name="color_pink">Pink</string>
+    <string name="color_purple">Purple</string>
+    <string name="color_blue">Blue</string>
+    <string name="color_teal">Teal</string>
+    <string name="color_green">Green</string>
+    <string name="color_lime">Lime</string>
+    <string name="color_yellow">Yellow</string>
+    <string name="color_orange">Orange</string>
+    <string name="color_brown">Brown</string>
+    <string name="color_grey">Grey</string>
 
 
     <!-- Menu -->
@@ -35,6 +51,9 @@
     <string name="menu_notification">Notification</string>
     <string name="menu_closeTab">Close tab</string>
     <string name="menu_download">Open downloads</string>
+    <string name="menu_fav">Set as favorite</string>
+    <string name="menu_sort">Sort by …</string>
+    <string name="menu_filter">Filter by color …</string>
 
     <string name="menu_share_screenshot">Share screenshot</string>
     <string name="menu_share_link">Share link</string>
@@ -69,7 +88,8 @@
     <string name="dialog_content_resubmission">Would you like to resubmit your data?</string>
     <string name="dialog_content_ssl_error">The certificate of the site is not trusted. Proceed anyway?</string>
 
-
+    <string name="dialog_sortName">Sort by name</string>
+    <string name="dialog_sortIcon">Sort by icon</string>
 
     <!-- Settings -->
     <string name="setting_label">Settings</string>
@@ -183,7 +203,7 @@
     <string name="setting_summary_nav_show">Hide the \"Navigation Button\" when toolbar is shown.</string>
 
     <string name="setting_title_tab">Start tab</string>
-    <string name="setting_summary_tab">What should be shown at the start of \"FOSS Browser\"? The Start Page, you bookmarks, …</string>
+    <string name="setting_summary_tab">What should be shown at the start of the \"Overview\"? The Start Page, you bookmarks, …</string>
 
     <string name="setting_title_confirm_exit">Confirm browser exit</string>
     <string name="setting_summary_confirm_exit">Confirmation dialog when closing browser.</string>
@@ -198,6 +218,21 @@
 
     <string name="setting_hideNav_always">Hide always</string>
     <string name="setting_hideNav_toolbar">When toolbar is showing</string>
+
+    <string name="setting_overView">Overview</string>
+    <string name="setting_overView_onStart_title">Show on start</string>
+    <string name="setting_overView_onStart_summary">Open the \"Overview\" on every app start.</string>
+    <string name="setting_overView_tab_title">Tab</string>
+    <string name="setting_overView_tab_summary">Which tab in the \"Overview\" should be desplayed first?</string>
+
+    <string name="setting_gestures">Gestures</string>
+    <string name="setting_gestures_use_title">Use gestures</string>
+    <string name="setting_gestures_use_summary">Use gestures on the toolbar and the \"Navigation button\".</string>
+    <string name="setting_gestures_action_title">Action</string>
+    <string name="setting_gestures_action_summary">Decide what happens when you swipe left/right on the toolbar
+        and \"Navigation Button\".</string>
+    <string name="setting_gestures_action_1">Move forward/back in browsing history</string>
+    <string name="setting_gestures_action_2">Switch between opened tabs</string>
 
 
     <!-- Data -->
@@ -287,6 +322,11 @@
     <string name="toast_unsecured">This website uses an unsecured connection (\"http\"). Do you want to try a secure
         connection (\"https\")?</string>
     <string name="toast_backup">Backup data? This will overwrite the old backup.</string>
+    <string name="toast_fav">Successfully set as favorite.</string>
+    <string name="toast_bookmarksOld">With this update your bookmarks and login data will be saved in the same
+        database. Please open your old bookmarks and save them again. Click \"Cancel\" to show your old bookmarks
+        on the right side of the overview. Click \"OK\" to hide them.</string>
+    <string name="toast_bookmarksOld_confirm">Hide old bookmarks for ever?</string>
 
 
     <!-- Whitelist -->

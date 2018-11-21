@@ -1,6 +1,7 @@
 package de.baumann.browser.View;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -64,7 +65,6 @@ public class NinjaWebView extends WebView implements AlbumController {
     }
 
     private Context context;
-    private int flag = BrowserUnit.FLAG_NINJA;
     private int dimen144dp;
     private int dimen108dp;
     private int animTime;
@@ -204,6 +204,7 @@ public class NinjaWebView extends WebView implements AlbumController {
         album.setBrowserController(browserController);
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     public synchronized void loadUrl(String url) {
         if (url == null || url.trim().isEmpty()) {
@@ -298,16 +299,6 @@ public class NinjaWebView extends WebView implements AlbumController {
         }
 
         super.reload();
-    }
-
-    @Override
-    public int getFlag() {
-        return flag;
-    }
-
-    @Override
-    public void setFlag(int flag) {
-        this.flag = flag;
     }
 
     @Override

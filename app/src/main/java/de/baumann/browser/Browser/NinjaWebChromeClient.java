@@ -15,12 +15,6 @@ public class NinjaWebChromeClient extends WebChromeClient {
     }
 
     @Override
-    public boolean onCreateWindow(WebView view, boolean isDialog, boolean isUserGesture, Message resultMsg) {
-        ninjaWebView.getBrowserController().onCreateView(view, resultMsg);
-        return isUserGesture;
-    }
-
-    @Override
     public void onProgressChanged(WebView view, int progress) {
         super.onProgressChanged(view, progress);
         ninjaWebView.update(progress);

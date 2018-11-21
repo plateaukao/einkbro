@@ -37,7 +37,7 @@ public class SearchEngineListPreference extends ListPreference {
         final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
 
         android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(getContext());
-        View dialogView = View.inflate(getContext(), R.layout.dialog_edit, null);
+        View dialogView = View.inflate(getContext(), R.layout.dialog_edit_title, null);
 
         final EditText editText = dialogView.findViewById(R.id.dialog_edit);
 

@@ -14,7 +14,7 @@
     <string name="toolbar_dialog">Nella parte inferiore dello schermo si trova la barra degli strumenti. È possibile inserire URL o cercare qualcosa, ricaricare il sito web e aprire il menu. Cliccare a lungo sul pulsante \"Menu\" per aprire il menu \"Attivazione rapida\". Far scorrere la barra degli strumenti verso l'alto per aprire le anteprime delle schede. Per spostarsi tra le schede, passare il dito verso sinistra o verso destra.</string>
 
     <string name="tab_title">Anteprima schede</string>
-    <string name="tab_dialog">Fare clic sull\'anteprima di una scheda per selezionarla, quindi fare nuovamente clic per chiuderla. Per chiudere una scheda è sufficiente scorrere il dito sull\'anteprima verso l'alto o verso il basso.</string>
+    <string name="tab_dialog">Fare clic sull\'anteprima di una scheda per selezionarla, quindi fare nuovamente clic per chiuderla. Per chiudere una scheda è sufficiente scorrere il dito sull\'anteprima verso l\'alto o verso il basso.</string>
 
     <string name="menu_title">Menu</string>
     <string name="menu_dialog">Gestisci le schede, condividi o salva contenuti, gestisci la scheda corrente o utilizza alcune funzioni: prova. Il menu può essere chiuso, come tutte le altre notifiche, facendo clic all\'indietro, facendo clic fuori dal menu o semplicemente spostando il menu verso il basso.</string>

@@ -28,6 +28,9 @@ public class HolderService extends Service implements BrowserController {
     public void updateAutoComplete() {}
 
     @Override
+    public void hideOverview() {}
+
+    @Override
     public void updateBookmarks() {}
 
     @Override
@@ -45,9 +48,6 @@ public class HolderService extends Service implements BrowserController {
 
     @Override
     public void showFileChooser(ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams) {}
-
-    @Override
-    public void onCreateView(WebView view, Message resultMsg) {}
 
     @Override
     public void onShowCustomView(View view, WebChromeClient.CustomViewCallback callback) {}
@@ -69,7 +69,6 @@ public class HolderService extends Service implements BrowserController {
             NinjaWebView webView = new NinjaWebView(new NinjaContextWrapper(this));
 
             webView.setBrowserController(this);
-            webView.setFlag(BrowserUnit.FLAG_NINJA);
             webView.setAlbumCover(null);
             webView.setAlbumTitle(getString(R.string.album_untitled));
             ViewUnit.bound(this, webView);

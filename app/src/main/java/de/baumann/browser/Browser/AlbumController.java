@@ -5,9 +5,6 @@ import android.view.View;
 
 @SuppressWarnings("unused")
 public interface AlbumController {
-    int getFlag();
-
-    void setFlag(int flag);
 
     View getAlbumView();
 

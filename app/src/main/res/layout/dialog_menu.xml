@@ -450,90 +450,6 @@
 
             </LinearLayout>
 
-
-            <LinearLayout
-                android:id="@+id/tv_placeholder"
-                android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:minHeight="46dp"
-                android:paddingEnd="8dp"
-                android:paddingStart="8dp"
-                android:background="?attr/selectableItemBackground"
-                android:orientation="horizontal"
-                android:visibility="gone">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="16dp"
-                    android:gravity="center_vertical" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:ellipsize="end"
-                    android:gravity="center_vertical"
-                    android:maxLines="1"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/tv_placeholder_2"
-                android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:minHeight="46dp"
-                android:paddingEnd="8dp"
-                android:paddingStart="8dp"
-                android:background="?attr/selectableItemBackground"
-                android:orientation="horizontal"
-                android:visibility="gone">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="16dp"
-                    android:gravity="center_vertical" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:ellipsize="end"
-                    android:gravity="center_vertical"
-                    android:maxLines="1"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/tv_relayout"
-                android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:minHeight="46dp"
-                android:paddingEnd="8dp"
-                android:paddingStart="8dp"
-                android:background="?attr/selectableItemBackground"
-                android:orientation="horizontal"
-                android:visibility="gone">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="16dp"
-                    android:gravity="center_vertical"
-                    android:src="@drawable/icon_edit" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:ellipsize="end"
-                    android:gravity="center_vertical"
-                    android:maxLines="1"
-                    android:text="@string/menu_edit"
-                    android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-            </LinearLayout>
-
             <LinearLayout
                 android:id="@+id/tv_searchSite"
                 android:layout_width="match_parent"
@@ -564,7 +480,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/tv_saveLogin"
+                android:id="@+id/tv_help"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
@@ -579,7 +495,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginEnd="16dp"
                     android:gravity="center_vertical"
-                    android:src="@drawable/icon_key" />
+                    android:src="@drawable/icon_help" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -587,39 +503,11 @@
                     android:ellipsize="end"
                     android:gravity="center_vertical"
                     android:maxLines="1"
-                    android:text="@string/menu_save_login"
+                    android:text="@string/menu_other_help"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/tv_delete"
-                android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:minHeight="46dp"
-                android:paddingEnd="8dp"
-                android:paddingStart="8dp"
-                android:background="?attr/selectableItemBackground"
-                android:orientation="horizontal"
-                android:visibility="gone">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="16dp"
-                    android:gravity="center_vertical"
-                    android:src="@drawable/icon_delete" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:ellipsize="end"
-                    android:gravity="center_vertical"
-                    android:maxLines="1"
-                    android:text="@string/menu_delete_list"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/tv_download"
@@ -675,35 +563,6 @@
                     android:gravity="center_vertical"
                     android:maxLines="1"
                     android:text="@string/setting_label"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/tv_help"
-                android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:minHeight="46dp"
-                android:paddingEnd="8dp"
-                android:paddingStart="8dp"
-                android:background="?attr/selectableItemBackground"
-                android:orientation="horizontal"
-                android:visibility="gone">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="16dp"
-                    android:gravity="center_vertical"
-                    android:src="@drawable/icon_help" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:ellipsize="end"
-                    android:gravity="center_vertical"
-                    android:maxLines="1"
-                    android:text="@string/menu_other_help"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
             </LinearLayout>
