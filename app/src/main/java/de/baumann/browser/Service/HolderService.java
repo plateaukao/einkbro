@@ -24,6 +24,7 @@ import de.baumann.browser.View.NinjaContextWrapper;
 import de.baumann.browser.View.NinjaWebView;
 
 public class HolderService extends Service implements BrowserController {
+
     @Override
     public void updateAutoComplete() {}
 

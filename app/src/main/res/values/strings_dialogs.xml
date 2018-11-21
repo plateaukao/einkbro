@@ -19,23 +19,24 @@
         \u25AA many more fixes and improvements (thanks @BO41)
     </string>
 
-    <string name="startpage_title">Startpage</string>
-    <string name="startpage_dialog">Here you can access all your data: saved sites on the startpage, bookmarks, history, saved
-        login data and the integrated file browser. In the settings you can decide which content will be shown at start.</string>
+    <string name="overview_title">Overview</string>
+    <string name="overview_dialog">Here you can access all opened tabs and your data: saved sites on the startpage, bookmarks and history.
+        In the settings you can decide which content will be shown at start.</string>
+
+    <string name="gestures_title">Gestures</string>
+    <string name="gestures_dialog">On the toolbar and the \"Navigation button\" you can use gestures:
+        \n \u25AA Swipe up/down     \u2192  scroll to top/bottom;
+        \n \u25AA Swipe left/right  \u2192  navigate back/forward;
+        \n \u25AA Tap               \u2192  open the menu;
+        \n \u25AA Long press        \u2192  open \"Fast toggle dialog\
+        \n You can configure gestures in the settings.
+
+    </string>
 
     <string name="fastToggle_title">Fast toggle</string>
     <string name="fastToggle_dialog">If you long press the \"menu\" or the \"Navigation button\" the \"Fast toggle dialog\"
         will open. Here you can change some important settings without leaving the current website. You can also add websites
         to your whitelist for AdBlocker, JavaScript or Cookies..</string>
-
-    <string name="toolbar_title">Toolbar</string>
-    <string name="toolbar_dialog">At the bottom of the screen you have the toolbar. You can enter URLs or search for
-        something, reload the website and open the menu. Long click on the \"menu button\" to open the \"Fast toggle menu\".
-        Swipe the toolbar up to open the tab preview. To switch between tabs swipe left or right.</string>
-
-    <string name="tab_title">Tab preview</string>
-    <string name="tab_dialog">Click the preview of a tab to select it, click again to close the tab preview. To close a tab simply
-        swipe to preview to the top or bottom.</string>
 
     <string name="menu_title">Menu</string>
     <string name="menu_dialog">Manage your tabs, share or save content, handle the current tab or use some features: just try it.
@@ -75,16 +76,6 @@
         along with this program.  If not, see http://www.gnu.org/licenses.&lt;br>&lt;br>
 
         &lt;i>Following open source libraries or projects are used within this software:&lt;/i>&lt;br>&lt;br>&lt;br>
-
-        &lt;b>Android Sliding Up Panel&lt;/b>&lt;br>
-        Apache License Version 2.0&lt;br>
-        Umano: News Read To You&lt;br>
-        &lt;i>http://git.io/vUruG&lt;/i>&lt;br>&lt;br>
-
-        &lt;b>Android Swipe-to-Dismiss&lt;/b>&lt;br>
-        Apache License Version 2.0&lt;br>
-        Roman Nurik&lt;br>
-        &lt;i>http://git.io/vUruO&lt;/i>&lt;br>&lt;br>
 
         &lt;b>DynamicGrid&lt;/b>&lt;br>
         Apache License Version 2.0&lt;br>
