@@ -65,6 +65,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -194,6 +195,8 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     private TextView omniboxTitle;
     private View customView;
     private VideoView videoView;
+
+    private HorizontalScrollView switcher_scroller;
 
     // Layouts
 
@@ -612,9 +615,9 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         BrowserContainer.clear();
         IntentUnit.setContext(null);
         super.onDestroy();
-        if (exit) {
-            System.exit(0); // For remove all WebView thread
-        }
+        //if (exit) {
+        //   System.exit(0); // For remove all WebView thread
+        //}
     }
 
     @Override
@@ -699,6 +702,11 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     }
 
     public void showOverview () {
+        if (currentAlbumController != null) {
+            switcher_scroller.smoothScrollTo(currentAlbumController.getAlbumView().getLeft(), 0);
+        }if (ninjaWebView != null) {
+            ninjaWebView.stopLoading();
+        }
         bottomSheetDialog_OverView.show();
     }
 
@@ -1001,16 +1009,10 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             // Buttons
 
             case R.id.fab_imageButtonNav_center:
-                doubleTapsHide();
-                break;
             case R.id.fab_imageButtonNav_left:
-                doubleTapsHide();
-                break;
             case R.id.fab_imageButtonNav_right:
-                doubleTapsHide();
+                showOverflow();
                 break;
-
-
 
             case R.id.omnibox_overview:
                 showOverview();
@@ -1387,6 +1389,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         open_menu = dialogView.findViewById(R.id.open_menu);
         switcherContainer = dialogView.findViewById(R.id.switcher_container);
         switcher_plus = dialogView.findViewById(R.id.switcher_plus);
+        switcher_scroller = dialogView.findViewById(R.id.switcher_scroller);
         switcher_plus.setOnClickListener(this);
         listView = dialogView.findViewById(R.id.home_list_2);
 
@@ -3179,24 +3182,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         }
     }
 
-    private void doubleTapsHide() {
-        final Timer timer = new Timer();
-        if (!quit) {
-            quit = true;
-            showOverflow();
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    quit = false;
-                    timer.cancel();
-                }
-            }, 500);
-        } else {
-            bottomSheetDialog.cancel();
-            showOverview();
-        }
-    }
-
     private void hideSoftInput(final EditText view) {
         view.clearFocus();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -3574,8 +3559,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
         View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_help, null);
 
-        ImageView help_logo = dialogView.findViewById(R.id.cardView_help_logo);
-        ImageView help_tabs = dialogView.findViewById(R.id.cardView_help_tabs);
         ImageView help_not = dialogView.findViewById(R.id.cardView_help_not);
         ImageView help_nav = dialogView.findViewById(R.id.cardView_help_nav);
         ImageView help_set = dialogView.findViewById(R.id.cardView_help_set);
@@ -3583,8 +3566,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         ImageView help_menu = dialogView.findViewById(R.id.cardView_help_menu);
         ImageView help_fastToggle = dialogView.findViewById(R.id.cardView_help_fastToggle);
 
-        help_logo.setImageResource(R.drawable.help_toolbar);
-        help_tabs.setImageResource(R.drawable.help_tabs);
         help_not.setImageResource(R.drawable.help_not);
         help_nav.setImageResource(R.drawable.help_nav);
         help_set.setImageResource(R.drawable.help_settings);

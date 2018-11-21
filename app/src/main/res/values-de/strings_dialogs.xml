@@ -19,10 +19,10 @@
         \u25AA viele Fehlerbehebungen und Verbesserungen (thanks @BO41)
     </string>
 
-    <string name="startpage_title">Startseite</string>
-    <string name="startpage_dialog">Hier hast du Zugriff auf deine auf der Startseite gespeicherten Einträge,
-        deine Lesezeichen, den Verlauf, gespeicherte Logindaten und auf den integrierten Dateimanager. In den Einstellungen kannst
-        du entscheiden, welcher Inhalt immer zuerst angezeigt werden soll.</string>
+    <string name="overview_title">Übersicht</string>
+    <string name="overview_dialog">Hier hast du Zugriff auf deine geöffneten Tabs und deine Daten: auf der Startseite
+        gespeicherten Einträge, deine Lesezeichen und den Verlauf. In den Einstellungen kannst du entscheiden, welcher
+        Inhalt immer zuerst angezeigt werden soll.</string>
 
     <string name="fastToggle_title">Schnelleinstellungen</string>
     <string name="fastToggle_dialog">Wenn du lange den \"Menü-\" oder den \"Navigationsknopf\" drückst, öffnen sich die
@@ -74,16 +74,6 @@
         siehe http://www.gnu.org/licenses.&lt;br>&lt;br>&lt;br>
 
         &lt;i>Die folgenden Open Source Bibliotheken oder Projekte werden in dieser Software verwendet:&lt;/i>&lt;br>&lt;br>
-
-        &lt;b>Android Sliding Up Panel&lt;/b>&lt;br>
-        Apache License Version 2.0&lt;br>
-        Umano: News Read To You&lt;br>
-        &lt;i>http://git.io/vUruG&lt;/i>&lt;br>&lt;br>
-
-        &lt;b>Android Swipe-to-Dismiss&lt;/b>&lt;br>
-        Apache License Version 2.0&lt;br>
-        Roman Nurik&lt;br>
-        &lt;i>http://git.io/vUruO&lt;/i>&lt;br>&lt;br>
 
         &lt;b>DynamicGrid&lt;/b>&lt;br>
         Apache License Version 2.0&lt;br>

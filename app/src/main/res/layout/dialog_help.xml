@@ -33,7 +33,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/startpage_title"
+                android:text="@string/overview_title"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold"/>
 
@@ -48,50 +48,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="32dp"
-                android:text="@string/startpage_dialog"/>
-
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/toolbar_title"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="bold"/>
-
-            <ImageView
-                android:id="@+id/cardView_help_logo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:scaleType="centerInside" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="32dp"
-                android:text="@string/toolbar_dialog"/>
-
-
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/tab_title"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="bold"/>
-
-            <ImageView
-                android:id="@+id/cardView_help_tabs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:scaleType="centerInside" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="32dp"
-                android:text="@string/tab_dialog"/>
+                android:text="@string/overview_dialog"/>
 
 
             <TextView
@@ -161,7 +118,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/nav_title"
+                android:text="@string/gestures_title"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold" />
 
@@ -176,7 +133,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="32dp"
-                android:text="@string/nav_dialog"/>
+                android:text="@string/gestures_dialog"/>
 
 
             <TextView

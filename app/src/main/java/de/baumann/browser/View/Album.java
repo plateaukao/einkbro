@@ -6,7 +6,7 @@ import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+
 import android.widget.TextView;
 
 import de.baumann.browser.Browser.AlbumController;
@@ -36,6 +36,7 @@ class Album {
     }
 
     private final AlbumController albumController;
+    private ImageView albumClose;
 
     private BrowserController browserController;
     public void setBrowserController(BrowserController browserController) {
@@ -52,15 +53,6 @@ class Album {
     @SuppressLint("InflateParams")
     private void initUI() {
         albumView = LayoutInflater.from(context).inflate(R.layout.album, null, false);
-        albumView.setOnTouchListener(new SwipeToDismissListener(
-                albumView,
-                new SwipeToDismissListener.DismissCallback() {
-                    @Override
-                    public void onDismiss() {
-                        browserController.removeAlbum(albumController);
-                    }
-                }
-        ));
 
         albumView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,9 +62,17 @@ class Album {
             }
         });
 
+        albumClose = albumView.findViewById(R.id.album_close);
         albumCover = albumView.findViewById(R.id.album_cover);
         albumTitle = albumView.findViewById(R.id.album_title);
         albumTitle.setText(context.getString(R.string.album_untitled));
+
+        albumClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                browserController.removeAlbum(albumController);
+            }
+        });
     }
 
     public void activate() {
