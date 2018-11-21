@@ -307,7 +307,7 @@ public class NinjaWebViewClient extends WebViewClient {
         }
 
         android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(holder);
-        View dialogView = View.inflate(holder, R.layout.dialog_login, null);
+        View dialogView = View.inflate(holder, R.layout.dialog_edit_bookmark, null);
 
         final EditText pass_userNameET = dialogView.findViewById(R.id.pass_userName);
         final EditText pass_userPWET = dialogView.findViewById(R.id.pass_userPW);

@@ -465,7 +465,7 @@
                     android:layout_toStartOf="@+id/action_ok"
                     android:background="?attr/selectableItemBackground"
                     android:textColor="@color/colorAccent"
-                    android:text="@string/app_close"/>
+                    android:text="@string/app_cancel"/>
 
             </RelativeLayout>
 

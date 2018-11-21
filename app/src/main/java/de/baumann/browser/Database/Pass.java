@@ -20,17 +20,22 @@
 package de.baumann.browser.Database;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.preference.PreferenceManager;
+
+import de.baumann.browser.Ninja.R;
 
 
 public class Pass {
 
     //define static variable
-    private static final int dbVersion =6;
+    private static final int dbVersion =7;
     private static final String dbName = "pass_DB_v01.db";
     private static final String dbTable = "pass";
 
@@ -41,7 +46,7 @@ public class Pass {
 
         @Override
         public void onCreate(SQLiteDatabase db) {
-            db.execSQL("CREATE TABLE IF NOT EXISTS "+dbTable+" (_id INTEGER PRIMARY KEY autoincrement, pass_title, pass_content, pass_icon, pass_attachment, pass_creation, UNIQUE(pass_title))");
+            db.execSQL("CREATE TABLE IF NOT EXISTS "+dbTable+" (_id INTEGER PRIMARY KEY autoincrement, pass_title, pass_content, pass_icon, pass_attachment, pass_creation, UNIQUE(pass_content))");
         }
 
         @Override
@@ -66,13 +71,13 @@ public class Pass {
     //insert data
     @SuppressWarnings("SameParameterValue")
     public void insert(String pass_title, String pass_content, String pass_icon, String pass_attachment, String pass_creation) {
-        if(!isExist(pass_title)) {
+        if(!isExist(pass_content)) {
             sqlDb.execSQL("INSERT INTO pass (pass_title, pass_content, pass_icon, pass_attachment, pass_creation) VALUES('" + pass_title + "','" + pass_content + "','" + pass_icon + "','" + pass_attachment + "','" + pass_creation + "')");
         }
     }
     //check entry already in database or not
-    public boolean isExist(String pass_title){
-        String query = "SELECT pass_title FROM pass WHERE pass_title='"+pass_title+"' LIMIT 1";
+    public boolean isExist(String pass_content){
+        String query = "SELECT pass_title FROM pass WHERE pass_content='"+pass_content+"' LIMIT 1";
         @SuppressLint("Recycle") Cursor row = sqlDb.rawQuery(query, null);
         return row.moveToFirst();
     }
@@ -89,8 +94,38 @@ public class Pass {
 
 
     //fetch data
-    public Cursor fetchAllData() {
+    public Cursor fetchAllData(Activity activity) {
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
+
         String[] columns = new String[]{"_id", "pass_title", "pass_content", "pass_icon","pass_attachment","pass_creation"};
-        return sqlDb.query(dbTable, columns, null, null, null, null, "pass_title" + " COLLATE NOCASE ASC;");
+
+        switch (sp.getString("sortDBB", "title")) {
+            case "title":
+                return sqlDb.query(dbTable, columns, null, null, null, null, "pass_title" + " COLLATE NOCASE ASC;");
+
+            case "icon": {
+                String orderBy = "pass_creation" + "," + "pass_title" + " COLLATE NOCASE ASC;";
+                return sqlDb.query(dbTable, columns, null, null, null, null, orderBy);
+            }
+        }
+
+        return null;
+    }
+
+    //fetch data by filter
+    public Cursor fetchDataByFilter(String inputText,String filterColumn) throws SQLException {
+        Cursor row;
+        String query = "SELECT * FROM "+dbTable;
+        if (inputText == null  ||  inputText.length () == 0)  {
+            row = sqlDb.rawQuery(query, null);
+        }else {
+            query = "SELECT * FROM "+dbTable+" WHERE "+filterColumn+" like '%"+inputText+"%'";
+            row = sqlDb.rawQuery(query, null);
+        }
+        if (row != null) {
+            row.moveToFirst();
+        }
+        return row;
     }
 }

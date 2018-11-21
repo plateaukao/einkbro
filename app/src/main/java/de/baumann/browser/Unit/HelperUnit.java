@@ -30,11 +30,10 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatDelegate;
 import android.text.Html;
 import android.text.SpannableString;
-import android.text.TextUtils;
 import android.text.util.Linkify;
+import android.widget.ImageView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -58,6 +57,7 @@ public class HelperUnit {
                             .setTitle(R.string.toast_permission_title)
                             .setMessage(R.string.toast_permission_sdCard)
                             .setPositiveButton(activity.getString(R.string.app_ok), new DialogInterface.OnClickListener() {
+                                @TargetApi(Build.VERSION_CODES.M)
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     activity.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
@@ -130,19 +130,48 @@ public class HelperUnit {
         return s;
     }
 
-    public static String secString (String string) {
-        if(TextUtils.isEmpty(string)){
-            return "";
-        }else {
-            return  string.replaceAll("'", "\'\'");
-        }
-    }
-
     public static String fileName (String url) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.getDefault());
         String currentTime = sdf.format(new Date());
         String domain = Uri.parse(url).getHost().replace("www.", "").trim();
 
         return domain.replace(".", "_").trim() + "_" + currentTime.trim();
+    }
+
+    public static void switchIcon (Activity activity, String string, String fieldDB, ImageView be) {
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
+
+        assert be != null;
+
+        switch (string) {
+            case "01":be.setImageResource(R.drawable.circle_red);
+                sharedPref.edit().putString(fieldDB, "01").apply();break;
+            case "02":be.setImageResource(R.drawable.circle_pink);
+                sharedPref.edit().putString(fieldDB, "02").apply();break;
+            case "03":be.setImageResource(R.drawable.circle_purple);
+                sharedPref.edit().putString(fieldDB, "03").apply();break;
+            case "04":be.setImageResource(R.drawable.circle_blue);
+                sharedPref.edit().putString(fieldDB, "04").apply();break;
+            case "05":be.setImageResource(R.drawable.circle_teal);
+                sharedPref.edit().putString(fieldDB, "05").apply();break;
+            case "06":be.setImageResource(R.drawable.circle_green);
+                sharedPref.edit().putString(fieldDB, "06").apply();break;
+            case "07":be.setImageResource(R.drawable.circle_lime);
+                sharedPref.edit().putString(fieldDB, "07").apply();break;
+            case "08":be.setImageResource(R.drawable.circle_yellow);
+                sharedPref.edit().putString(fieldDB, "08").apply();break;
+            case "09":be.setImageResource(R.drawable.circle_orange);
+                sharedPref.edit().putString(fieldDB, "09").apply();break;
+            case "10":be.setImageResource(R.drawable.circle_brown);
+                sharedPref.edit().putString(fieldDB, "10").apply();break;
+            case "11":be.setImageResource(R.drawable.circle_grey);
+                sharedPref.edit().putString(fieldDB, "11").apply();break;
+
+            default:
+                be.setImageResource(R.drawable.circle_red);
+                sharedPref.edit().putString(fieldDB, "01").apply();
+                break;
+        }
     }
 }

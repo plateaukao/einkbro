@@ -22,11 +22,11 @@ public interface BrowserController {
 
     void showFileChooser(ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams);
 
-    void onCreateView(@SuppressWarnings("UnusedParameters") WebView view, Message resultMsg);
-
     void onShowCustomView(View view, WebChromeClient.CustomViewCallback callback);
 
     boolean onHideCustomView();
 
     void onLongPress(String url);
+
+    void hideOverview ();
 }

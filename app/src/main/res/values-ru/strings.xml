@@ -1,34 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<string name="abc_action_bar_home_description">Перейти на главную</string>
-<string name="abc_action_bar_up_description">Перейти вверх</string>
-<string name="abc_action_menu_overflow_description">Больше вариантов</string>
-<string name="abc_action_mode_done">Готово</string>
-<string name="abc_activity_chooser_view_see_all">Показать все</string>
-<string name="abc_activitychooserview_choose_application">Выбрать приложение</string>
-<string name="abc_capital_off">ВЫКЛ</string>
-<string name="abc_capital_on">ВКЛ</string>
-<string name="abc_font_family_body_1_material">sans-serif</string>
-<string name="abc_font_family_body_2_material">sans-serif-medium</string>
-<string name="abc_font_family_button_material">sans-serif-medium</string>
-<string name="abc_font_family_caption_material">sans-serif</string>
-<string name="abc_font_family_display_1_material">sans-serif</string>
-<string name="abc_font_family_display_2_material">sans-serif</string>
-<string name="abc_font_family_display_3_material">sans-serif</string>
-<string name="abc_font_family_display_4_material">sans-serif-light</string>
-<string name="abc_font_family_headline_material">sans-serif</string>
-<string name="abc_font_family_menu_material">sans-serif</string>
-<string name="abc_font_family_subhead_material">sans-serif</string>
-<string name="abc_font_family_title_material">sans-serif-medium</string>
-<string name="abc_search_hint">Поиск…</string>
-<string name="abc_searchview_description_clear">Удалить запрос</string>
-<string name="abc_searchview_description_query">Поисковый запрос</string>
-<string name="abc_searchview_description_search">Поиск</string>
-<string name="abc_searchview_description_submit">Отправить запрос</string>
-<string name="abc_searchview_description_voice">Голосовой поиск</string>
-<string name="abc_shareactionprovider_share_with">Общий доступ</string>
-<string name="abc_shareactionprovider_share_with_application">Поделиться с %s</string>
-<string name="abc_toolbar_collapse_description">Свернуть</string>
 <string name="album_title_bookmarks">Закладки</string>
 <string name="album_title_files">Файлы</string>
 <string name="album_title_history">История</string>
@@ -43,7 +14,6 @@
 <string name="bottom_sheet_behavior">android.support.design.widget.BottomSheetBehavior</string>
 <string name="changelog_dialog">&lt;i>Сайт проекта: https://github.com/scoute-dich/Browser&lt;br> Список изменений: https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;/i>&lt;br>&lt;br> &lt;b>Version: 5.8&lt;/b>&lt;br> Please read the \"Help dialog\" for more information.&lt;br>&lt;br> ▪ new: do not track header&lt;br> ▪ new: + button in tab preview&lt;br> ▪ new: save websites as PDF&lt;br> ▪ new: show link in context menu&lt;br> ▪ fix: not applying cookie whitelist when switching tabs&lt;br> ▪ fix: scrolling issue&lt;br> ▪ fix: screen rotation issues&lt;br> ▪ updated: UI + dialogs&lt;br> ▪ updated: Spanish translation (thanks to @Herman Nuñez)&lt;br> ▪ updated: Chinese translation (thanks to @smallg0at)</string>
 <string name="changelog_title">Список изменений</string>
-<string name="character_counter_pattern">%1$d / %2$d</string>
 <string name="clear_menu_done_all">Всё сделано</string>
 <string name="clear_summary">Все файлы будут экспортированы в каталог \"Документы\" вашей SD-карты. Каждый экспорт будет перезаписывать старый. Для восстановления в каталоге должен быть файл с правильным именем.</string>
 <string name="clear_summary_deleteDatabase">Удалить всю базу данных (стартовую страницу, закладки, историю и все белые списки).</string>
@@ -112,13 +82,7 @@
 <string name="not_title">Уведомления</string>
 <string name="notification_content_holder">… Нажмите, чтобы просмотреть страницы</string>
 <string name="notification_content_holderTitle">Открытые вкладки …</string>
-<string name="password_toggle_content_description">Переключение видимости паролей</string>
-<string name="path_password_eye">M12,4.5C7,4.5 2.73,7.61 1,12c1.73,4.39 6,7.5 11,7.5s9.27,-3.11 11,-7.5c-1.73,-4.39 -6,-7.5 -11,-7.5zM12,17c-2.76,0 -5,-2.24 -5,-5s2.24,-5 5,-5 5,2.24 5,5 -2.24,5 -5,5zM12,9c-1.66,0 -3,1.34 -3,3s1.34,3 3,3 3,-1.34 3,-3 -1.34,-3 -3,-3z</string>
-<string name="path_password_eye_mask_strike_through">M2,4.27 L19.73,22 L22.27,19.46 L4.54,1.73 L4.54,1 L23,1 L23,23 L1,23 L1,4.27 Z</string>
-<string name="path_password_eye_mask_visible">M2,4.27 L2,4.27 L4.54,1.73 L4.54,1.73 L4.54,1 L23,1 L23,23 L1,23 L1,4.27 Z</string>
-<string name="path_password_strike_through">M3,27,4,27 L19,74,20,74</string>
 <string name="search_hint">Поиск</string>
-<string name="search_menu_title">Поиск</string>
 <string name="setting_hideNav_always">Скрывать всегда</string>
 <string name="setting_hideNav_toolbar">При отображении панели инструментов</string>
 <string name="setting_hide_always">Скрывать всегда</string>
@@ -227,7 +191,6 @@
 <string name="sp_search_engine_custom">SP_SEARCH_ENGINE_CUSTOM_9</string>
 <string name="startpage_dialog">Здесь вы можете получить доступ ко всем своим данным: сохраненным сайтам на стартовой странице, закладкам, истории, сохраненным данным входа и встроенному файловому браузеру. В настройках вы можете решить, какой контент будет показан при запуске.</string>
 <string name="startpage_title">Стартовая страница</string>
-<string name="status_bar_notification_info_overflow">999+</string>
 <string name="tab_dialog">Нажмите предпросмотр вкладки, чтобы выбрать ее, нажмите еще раз, чтобы закрыть предпросмотр вкладки. Чтобы закрыть вкладку, просто проведите по экрану вверх или вниз.</string>
 <string name="tab_title">Предпросмотр вкладки</string>
 <string name="title_database">База данных</string>

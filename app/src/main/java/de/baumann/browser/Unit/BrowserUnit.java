@@ -48,12 +48,6 @@ public class BrowserUnit {
     public static final String SUFFIX_PNG = ".png";
     private static final String SUFFIX_TXT = ".txt";
 
-    public static final int FLAG_BOOKMARKS = 0x100;
-    public static final int FLAG_HISTORY = 0x101;
-    public static final int FLAG_HOME = 0x102;
-    public static final int FLAG_NINJA = 0x103;
-    public static final int FLAG_PASS = 0x105;
-
     public static final String MIME_TYPE_TEXT_PLAIN = "text/plain";
 
     private static final String BOOKMARK_TYPE = "<DT><A HREF=\"{url}\" ADD_DATE=\"{time}\">{title}</A>";
@@ -329,7 +323,7 @@ public class BrowserUnit {
             });
 
             for (Record record : list) {
-                action.addBookmark(record);
+                //action.addBookmark(record);
             }
             action.close();
         } catch (Exception e) {

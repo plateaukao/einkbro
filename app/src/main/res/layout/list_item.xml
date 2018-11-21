@@ -12,6 +12,19 @@
         android:layout_height="0dp"
         android:visibility="invisible"/>
 
+    <ImageButton
+        android:visibility="gone"
+        android:id="@+id/ib_icon"
+        android:layout_centerInParent="true"
+        android:layout_alignParentEnd="true"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:layout_gravity="center"
+        android:background="?attr/actionBarItemBackground"
+        android:contentDescription="@null"
+        android:foregroundGravity="center"
+        android:src="@drawable/icon_earth" />
+
     <TextView
         android:id="@+id/record_item_time"
         android:layout_width="wrap_content"

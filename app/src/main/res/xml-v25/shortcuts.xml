@@ -42,20 +42,6 @@
         <categories android:name="android.shortcut.conversation" />
     </shortcut>
 
-    <shortcut
-        android:shortcutId="sc_login"
-        android:enabled="true"
-        android:icon="@drawable/qc_pass"
-        android:shortcutShortLabel="@string/album_title_pass"
-        android:shortcutLongLabel="@string/album_title_pass"
-        android:shortcutDisabledMessage="@string/album_title_pass">
-        <intent
-            android:action="sc_login"
-            android:targetPackage="de.baumann.browser"
-            android:targetClass="de.baumann.browser.Activity.BrowserActivity" />
-        <categories android:name="android.shortcut.conversation" />
-    </shortcut>
-
 </shortcuts>
         
 

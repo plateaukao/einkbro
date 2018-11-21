@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import de.baumann.browser.Browser.AlbumController;
@@ -65,6 +66,7 @@ class Album {
             @Override
             public void onClick(View v) {
                 browserController.showAlbum(albumController, false);
+                browserController.hideOverview();
             }
         });
 

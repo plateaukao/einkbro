@@ -78,8 +78,8 @@
     <string name="setting_title_browser">Impostazioni Browser</string>
     <string name="setting_title_clear_control">Dati</string>
     <string name="setting_title_start_control">Opzioni iniziali</string>
-    <string name="setting_summary_clear_control">Elimina i dati di navigazione o decidi quali dati verranno eliminati quando chiudi l'applicazione.</string>
-    <string name="setting_summary_start_control">Decidere quali componenti del browser saranno abilitati all'avvio.</string>
+    <string name="setting_summary_clear_control">Elimina i dati di navigazione o decidi quali dati verranno eliminati quando chiudi l\'applicazione.</string>
+    <string name="setting_summary_start_control">Decidere quali componenti del browser saranno abilitati all\'avvio.</string>
 
     <string name="setting_title_search_engine">Motore di ricerca</string>
     <string name="setting_summary_search_engine">Qui puoi scegliere il tuo motore di ricerca preferito o impostarne uno personalizzato.</string>
@@ -92,7 +92,7 @@
     <string name="setting_summary_search_engine_searx">Searx</string>
 
     <string name="setting_title_inverted">Colori invertiti</string>
-    <string name="setting_summary_inverted">Se l'opzione è attivata, il contenuto verrà visualizzato in scala di grigi invertita. Questa è una sorta di \"modalità notturna\".</string>
+    <string name="setting_summary_inverted">Se l\'opzione è attivata, il contenuto verrà visualizzato in scala di grigi invertita. Questa è una sorta di \"modalità notturna\".</string>
 
     <string name="setting_title_font">Dimensione testo</string>
     <string name="setting_summary_font">Modificare la dimensione dei caratteri per la visualizzazione dei siti Web.</string>
@@ -130,7 +130,7 @@
     <!-- Browser clear -->
     <string name="clear_summary">Tutti i file vengono esportati nella cartella \"Documents\" della sd-card. Ogni esportazione sovrascriverà la precedente. Per eseguire il ripristino è necessario che nella directory sia presente un file con il nome corretto.</string>
     <string name="clear_menu_done_all">Tutto</string>
-    <string name="clear_title_quit">Cancella quando si chiude l'applicazione</string>
+    <string name="clear_title_quit">Cancella quando si chiude l\'applicazione</string>
     <string name="clear_summary_quit">Ogni volta che si esce da \"FOSS Browser\" tutti i dati selezionati sopra vengono cancellati.</string>
     <string name="clear_title_bookmarks">Elimina segnalibri</string>
     <string name="clear_title_cache">Elimina Cache</string>
@@ -139,25 +139,25 @@
     <string name="clear_title_indexedDB">Elimina \"indexed database\" e \"local webview storage\"</string>
 
     <string name="clear_title_deleteDatabase">Elimina database</string>
-    <string name="clear_summary_deleteDatabase">Elimina l'intero database (pagina iniziale, segnalibri, cronologia e tutte le whitelist).</string>
+    <string name="clear_summary_deleteDatabase">Elimina l\'intero database (pagina iniziale, segnalibri, cronologia e tutte le whitelist).</string>
 
 
     <!-- App setting -->
     <string name="setting_title_app">Impostazioni App</string>
     <string name="setting_title_ui">Comportamento/UI</string>
     <string name="setting_title_data">Backup</string>
-    <string name="setting_summary_ui">Cambia il comportamento e UI dell'app in base alle tue preferenze.</string>
-    <string name="setting_summary_data">Importazione ed esportazione di vari dati dell' app (whitelist, segnalibri).</string>
+    <string name="setting_summary_ui">Cambia il comportamento e UI dell\'app in base alle tue preferenze.</string>
+    <string name="setting_summary_data">Importazione ed esportazione di vari dati dell\' app (whitelist, segnalibri).</string>
 
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">Nascondi barra degli strumenti</string>
-    <string name="setting_summary_hide">Utilizzare l'intero schermo per scorrere i siti web. Se si preme il pulsante Indietro, si esce dalla modalità a schermo intero.</string>
+    <string name="setting_summary_hide">Utilizzare l\'intero schermo per scorrere i siti web. Se si preme il pulsante Indietro, si esce dalla modalità a schermo intero.</string>
     <string name="setting_title_omnibox_control">Controlli Omnibox</string>
-    <string name="setting_summary_omnibox_control">Scorrere a sinistra/destra per passare da una scheda all'altra</string>
+    <string name="setting_summary_omnibox_control">Scorrere a sinistra/destra per passare da una scheda all\'altra</string>
     <string name="setting_title_background">Apri link</string>
     <string name="setting_summary_background">Visualizzare una notifica e aprire i collegamenti in background. Se disattivato, i collegamenti si apriranno immediatamente.</string>
     <string name="setting_title_themeDark">Tema chiaro</string>
-    <string name="setting_summary_themeDark">Preferisci un pò di luce? Ok!</string>
+    <string name="setting_summary_themeDark">Preferisci un po\' di luce? Ok!</string>
 
     <string name="setting_title_nav">Pulsante di navigazione</string>
     <string name="setting_title_nav_pos">Posizione</string>
@@ -170,9 +170,9 @@
     <string name="setting_summary_nav_show">Nascondere il \"Pulsante di navigazione\" quando è visualizzata la barra degli strumenti.</string>
 
     <string name="setting_title_tab">Scheda iniziale</string>
-    <string name="setting_summary_tab">Cosa deve essere mostrato all' apertura di \"FOSS Browser\"? Pagina iniziale, i tuoi segnalibri, …</string>
+    <string name="setting_summary_tab">Cosa deve essere mostrato all\' apertura di \"FOSS Browser\"? Pagina iniziale, i tuoi segnalibri, …</string>
 
-    <string name="setting_title_confirm_exit">Conferma l'uscita dal browser</string>
+    <string name="setting_title_confirm_exit">Conferma l\'uscita dal browser</string>
     <string name="setting_summary_confirm_exit">Finestra di conferma per la chiusura del browser.</string>
 
     <string name="setting_title_confirm_tab_close">Confermare la chiusura delle schede</string>
@@ -206,7 +206,7 @@
 
     <string name="setting_title_export_database">Esporta database</string>
     <string name="setting_title_import_database">Importa database</string>
-    <string name="setting_summary_export_database">Esporta l'intero database (Startpage + Anteprime, Cronologia, Segnalibri) nella tua sd-card. I dati di accesso non vengono salvati.</string>
+    <string name="setting_summary_export_database">Esporta l\'intero database (Startpage + Anteprime, Cronologia, Segnalibri) nella tua sd-card. I dati di accesso non vengono salvati.</string>
     <string name="title_database">Database</string>
     <string name="hint_database">In questo modo verranno eliminate tutte le impostazioni e i dati correnti. Continuare?</string>
 
@@ -216,10 +216,10 @@
     <string name="setting_title_license">Licenza</string>
     <string name="setting_summary_license">\"FOSS Browser\" è completamente gratuito (come in libertà) e open source.</string>
     <string name="setting_title_appSettings">Impostazioni App</string>
-    <string name="setting_summary_appSettings">Aprire le impostazioni dell'applicazione di sistema per \"FOSS Browser\". Qui è possibile, a seconda della versione Android di concedere le autorizzazioni, cancellare i dati delle applicazioni e così via.</string>
+    <string name="setting_summary_appSettings">Aprire le impostazioni dell\'applicazione di sistema per \"FOSS Browser\". Qui è possibile, a seconda della versione Android di concedere le autorizzazioni, cancellare i dati delle applicazioni e così via.</string>
     <string name="setting_title_community">Contribuire</string>
     <string name="setting_summary_community">Vedere chi ha contribuito a questo progetto. Oppure vuoi aiutare con ulteriori sviluppi, segnalare un problema o semplicemente ricevere le ultime notizie relative ai miei progetti?</string>
-    <string name="setting_summary_changelog">Mostra l'ultimo changelog per vedere le novità.</string>
+    <string name="setting_summary_changelog">Mostra l\'ultimo changelog per vedere le novità.</string>
 
     <!-- Toast -->
     <string name="toast_add_bookmark_successful">Segnalibro aggiunto con successo</string>
@@ -255,10 +255,10 @@
     <string name="toast_webview_forward">Non è possibile caricare il sito successivo</string>
     <string name="toast_entry_exists">La voce è già presente.</string>
     <string name="toast_clear">Vuoi davvero cancellare?</string>
-    <string name="toast_permission_title">È necessaria l'autorizzazione</string>
-    <string name="toast_permission_sdCard">\"FOSS Browser\" necessita del permesso di \"lettura e scrittura archivio\". Questo è necessario per scaricare i file, file manager e acquisizione di screenshot. Se non si è ancora concessa l'autorizzazione, è possibile farlo in un secondo momento nelle impostazioni.</string>
-    <string name="toast_permission_sdCard_sec">Si prega di concedere l'autorizzazione di \"lettura e scrittura archivio\" nelle impostazioni.</string>
-    <string name="toast_permission_loc">"FOSS Browser" necessita dell'autorizzazione per "accedere alla posizione". Ciò è richiesto da alcuni siti web, ad esempio quando offrono un qualche tipo di navigazione. Se non è ancora stata concessa l'autorizzazione, è possibile farlo in un secondo momento nelle impostazioni.</string>
+    <string name="toast_permission_title">È necessaria l\'autorizzazione</string>
+    <string name="toast_permission_sdCard">\"FOSS Browser\" necessita del permesso di \"lettura e scrittura archivio\". Questo è necessario per scaricare i file, file manager e acquisizione di screenshot. Se non si è ancora concessa l\'autorizzazione, è possibile farlo in un secondo momento nelle impostazioni.</string>
+    <string name="toast_permission_sdCard_sec">Si prega di concedere l\'autorizzazione di \"lettura e scrittura archivio\" nelle impostazioni.</string>
+    <string name="toast_permission_loc">"FOSS Browser" necessita dell\'autorizzazione per "accedere alla posizione". Ciò è richiesto da alcuni siti web, ad esempio quando offrono un qualche tipo di navigazione. Se non è ancora stata concessa l\'autorizzazione, è possibile farlo in un secondo momento nelle impostazioni.</string>
     <string name="toast_restart">Per applicare le modifiche è necessario riavviare \"FOSS Browser\". Chiudere ora?</string>
     <string name="toast_quit">Vuoi uscire da \"FOSS Browser\"?</string>
     <string name="toast_close_tab">Vuoi chiudere la scheda corrente?</string>
