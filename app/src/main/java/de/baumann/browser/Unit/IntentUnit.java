@@ -52,20 +52,4 @@ public class IntentUnit {
     public synchronized static void setClear(boolean b) {
         clear = b;
     }
-
-    private static boolean dbChange = false;
-    public static boolean isDBChange() {
-        return dbChange;
-    }
-    public static void setDBChange(boolean b) {
-        dbChange = b;
-    }
-
-    private static boolean spChange = false;
-    public static boolean isSPChange() {
-        return spChange;
-    }
-    public static void setSPChange(boolean b) {
-        spChange = b;
-    }
 }

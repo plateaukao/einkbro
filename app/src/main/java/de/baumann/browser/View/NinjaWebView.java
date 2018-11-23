@@ -269,6 +269,7 @@ public class NinjaWebView extends WebView implements AlbumController {
         }
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     public void reload() {
         webViewClient.updateWhite(adBlock.isWhite(getUrl()));

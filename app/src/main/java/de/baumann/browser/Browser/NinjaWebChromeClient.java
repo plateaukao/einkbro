@@ -1,7 +1,6 @@
 package de.baumann.browser.Browser;
 
 import android.net.Uri;
-import android.os.Message;
 import android.view.View;
 import android.webkit.*;
 import de.baumann.browser.View.NinjaWebView;

@@ -14,19 +14,14 @@
         android:title="@string/setting_title_themeDark"
         android:summary="@string/setting_summary_themeDark"/>
 
-    <CheckBoxPreference
-        android:defaultValue="true"
-        android:icon="@drawable/icon_exit"
-        android:key="sp_close_browser_confirm"
-        android:title="@string/setting_title_confirm_exit"
-        android:summary="@string/setting_summary_confirm_exit" />
-
-    <CheckBoxPreference
-        android:defaultValue="true"
-        android:icon="@drawable/icon_close"
-        android:key="sp_close_tab_confirm"
-        android:title="@string/setting_title_confirm_tab_close"
-        android:summary="@string/setting_summary_confirm_tab_close" />
+    <ListPreference
+        android:title="@string/setting_overView"
+        android:icon="@drawable/icon_preview"
+        android:summary="@string/setting_summary_tab"
+        android:key="start_tab"
+        android:defaultValue="0"
+        android:entries="@array/setting_entries_tab"
+        android:entryValues="@array/setting_values_tab" />
 
     <ListPreference
         android:title="@string/setting_title_hideToolbar"
@@ -37,23 +32,21 @@
         android:entries="@array/setting_entries_toolbar"
         android:entryValues="@array/setting_values_toolbar" />
 
-    <PreferenceCategory android:title="@string/setting_overView">
+    <PreferenceCategory android:title="@string/setting_close">
 
         <CheckBoxPreference
-            android:key="overView_onStart"
-            android:icon="@drawable/icon_preview"
-            android:defaultValue="false"
-            android:title="@string/setting_overView_onStart_title"
-            android:summary="@string/setting_overView_onStart_summary"/>
+            android:defaultValue="true"
+            android:icon="@drawable/icon_exit"
+            android:key="sp_close_browser_confirm"
+            android:title="@string/setting_title_confirm_exit"
+            android:summary="@string/setting_summary_confirm_exit" />
 
-        <ListPreference
-            android:title="@string/setting_title_tab"
-            android:icon="@drawable/icon_tab_plus"
-            android:summary="@string/setting_summary_tab"
-            android:key="start_tab"
-            android:defaultValue="0"
-            android:entries="@array/setting_entries_tab"
-            android:entryValues="@array/setting_values_tab" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:icon="@drawable/icon_close"
+            android:key="sp_close_tab_confirm"
+            android:title="@string/setting_title_confirm_tab_close"
+            android:summary="@string/setting_summary_confirm_tab_close" />
 
     </PreferenceCategory>
 

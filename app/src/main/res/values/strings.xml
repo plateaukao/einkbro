@@ -2,15 +2,11 @@
 
 <resources>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-
 
     <!-- App -->
     <string name="app_name">FOSS Browser</string>
     <string name="app_ok">OK</string>
     <string name="app_cancel">Cancel</string>
-    <string name="app_close">Close</string>
     <string name="list_empty">Current list is empty</string>
     <string name="album_title_bookmarks">Bookmarks</string>
     <string name="album_title_history">History</string>
@@ -39,7 +35,6 @@
     <string name="main_menu_tabPreview">Open tab preview</string>
     <string name="main_menu_new_tab">New tab (background)</string>
     <string name="main_menu_new_tabOpen">New tab (foreground)</string>
-    <string name="main_menu_copy_link">Copy link</string>
     <string name="main_omnibox_input_hint">Search or type URL</string>
     <string name="menu_open_with">Open link with …</string>
 
@@ -48,7 +43,6 @@
     <string name="menu_delete">Delete</string>
     <string name="menu_delete_list">Delete list</string>
     <string name="menu_edit">Edit</string>
-    <string name="menu_notification">Notification</string>
     <string name="menu_closeTab">Close tab</string>
     <string name="menu_download">Open downloads</string>
     <string name="menu_fav">Set as favorite</string>
@@ -60,7 +54,6 @@
 
     <string name="menu_save_screenshot">Save screenshot</string>
     <string name="menu_save_home">Save at Home</string>
-    <string name="menu_save_login">Save login data</string>
     <string name="menu_save_bookmark">Save as bookmark</string>
     <string name="menu_save_as">Save as …</string>
     <string name="menu_save_pdf">Save as PDF</string>
@@ -90,6 +83,10 @@
 
     <string name="dialog_sortName">Sort by name</string>
     <string name="dialog_sortIcon">Sort by icon</string>
+
+    <string name="dialog_icon_title">Choose an icon …</string>
+    <string name="dialog_icon_hint">You can also filter your bookmarks, by long pressing the bookmark icon. To reset
+        filters just press the icon once again.</string>
 
     <!-- Settings -->
     <string name="setting_label">Settings</string>
@@ -184,8 +181,6 @@
     <string name="setting_title_hideToolbar">Hide toolbar</string>
     <string name="setting_summary_hide">Use the whole screen when scrolling through websites. If you press the back button you will
     leave fullscreen mode.</string>
-    <string name="setting_title_omnibox_control">Omnibox Control</string>
-    <string name="setting_summary_omnibox_control">Swipe omnibox left/right to switch tabs</string>
     <string name="setting_title_background">Open links</string>
     <string name="setting_summary_background">Display a notification and open links in background. If disabled links will open
     immediately.</string>
@@ -211,7 +206,6 @@
     <string name="setting_title_confirm_tab_close">Confirm tab close</string>
     <string name="setting_summary_confirm_tab_close">Confirmation dialog when closing a tab.</string>
 
-    <string name="setting_title_toolbar">Toolbar</string>
     <string name="setting_hide_always">Hide always</string>
     <string name="setting_hide_down">Only while scrolling down</string>
     <string name="setting_hide_never">Never hide</string>
@@ -222,9 +216,8 @@
     <string name="setting_overView">Overview</string>
     <string name="setting_overView_onStart_title">Show on start</string>
     <string name="setting_overView_onStart_summary">Open the \"Overview\" on every app start.</string>
-    <string name="setting_overView_tab_title">Tab</string>
-    <string name="setting_overView_tab_summary">Which tab in the \"Overview\" should be desplayed first?</string>
 
+    <string name="setting_close">Close confirmation</string>
     <string name="setting_gestures">Gestures</string>
     <string name="setting_gestures_use_title">Use gestures</string>
     <string name="setting_gestures_use_summary">Use gestures on the toolbar and the \"Navigation button\".</string>
@@ -255,7 +248,7 @@
     <string name="setting_title_export_database">Export database</string>
     <string name="setting_title_import_database">Import database</string>
     <string name="setting_summary_export_database">Export the whole database (Startpage + previews, History, Bookmarks) to your
-        sd-card. Your login data will not be backed up.</string>
+        sd-card.</string>
     <string name="title_database">Database</string>
     <string name="hint_database">This will delete all your current settings and data. Will you proceed?</string>
 
@@ -273,7 +266,6 @@
     <string name="setting_summary_changelog">Show the latest changelog to see what\'s new.</string>
 
     <!-- Toast -->
-    <string name="toast_add_bookmark_successful">Bookmark Successfully Added</string>
     <string name="toast_add_to_home_successful">Successfully added to Home</string>
     <string name="toast_add_to_home_failed">Failed to add to Home</string>
     <string name="toast_add_whitelist_successful">Successfully added Domain</string>
@@ -304,7 +296,6 @@
     <string name="toast_newTitle">Entry already exists. Please enter new title.</string>
     <string name="toast_edit_successful">Successfully saved</string>
     <string name="toast_webview_forward">Can\'t load next site</string>
-    <string name="toast_entry_exists">Entry exists already.</string>
     <string name="toast_clear">Do you really want to clear?</string>
     <string name="toast_permission_title">Permission is needed</string>
     <string name="toast_permission_sdCard">\"FOSS Browser\" needs the permission to \"read and write on your storage\". This is needed for

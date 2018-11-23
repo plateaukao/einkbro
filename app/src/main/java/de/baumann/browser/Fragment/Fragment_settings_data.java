@@ -58,17 +58,21 @@ public class Fragment_settings_data extends PreferenceFragment {
         File sd = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
         File data = Environment.getDataDirectory();
 
-        String currentDBPath = "//data//" + getActivity().getPackageName() + "//files";
-        String backupDBPath = "browser_backup//previews";
+        String previewsPath_app = "//data//" + getActivity().getPackageName() + "//files";
+        String previewsPath_backup = "browser_backup//previews";
 
-        final File pv_data = new File(data, currentDBPath);
-        final File pv_sd = new File(sd, backupDBPath);
+        final File previewsFolder_app = new File(data, previewsPath_app);
+        final File previewsFolder_backup = new File(sd, previewsPath_backup);
 
-        String currentDBPath2 = "//data//" + getActivity().getPackageName() + "//databases//Ninja4.db";
-        String backupDBPath2 = "browser_backup//databases//Browser.db";
+        String databasePath_app = "//data//" + getActivity().getPackageName() + "//databases//Ninja4.db";
+        String databasePath_backup = "browser_backup//databases//browser_database.db";
+        String bookmarksPath_app = "//data//" + getActivity().getPackageName() + "//databases//pass_DB_v01.db";
+        String bookmarksPath_backup = "browser_backup//databases//browser_bookmarks.db";
 
-        final File db_data = new File(data, currentDBPath2);
-        final File db_sd = new File(sd, backupDBPath2);
+        final File databaseFile_app = new File(data, databasePath_app);
+        final File databaseFile_backup = new File(sd, databasePath_backup);
+        final File bookmarkFile_app = new File(data, bookmarksPath_app);
+        final File bookmarkFile_backup = new File(sd, bookmarksPath_backup);
 
         switch (preference.getTitleRes()) {
             case R.string.setting_title_whitelist:
@@ -206,18 +210,22 @@ public class Fragment_settings_data extends PreferenceFragment {
                                 if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
                                     NinjaToast.show(getActivity(), R.string.toast_permission_sdCard_sec);
                                 } else {
-                                    BrowserUnit.deleteDir(pv_sd);
-                                    BrowserUnit.deleteDir(db_sd);
-                                    copyDirectory(pv_data, pv_sd);
-                                    copyDirectory(db_data, db_sd);
+                                    BrowserUnit.deleteDir(previewsFolder_backup);
+                                    BrowserUnit.deleteDir(databaseFile_backup);
+                                    BrowserUnit.deleteDir(bookmarkFile_backup);
+                                    copyDirectory(previewsFolder_app, previewsFolder_backup);
+                                    copyDirectory(databaseFile_app, databaseFile_backup);
+                                    copyDirectory(bookmarkFile_app, bookmarkFile_backup);
                                     NinjaToast.show(getActivity(), getString(R.string.toast_export_successful) + "browser_backup");
                                 }
 
                             } else {
-                                BrowserUnit.deleteDir(pv_sd);
-                                BrowserUnit.deleteDir(db_sd);
-                                copyDirectory(pv_data, pv_sd);
-                                copyDirectory(db_data, db_sd);
+                                BrowserUnit.deleteDir(previewsFolder_backup);
+                                BrowserUnit.deleteDir(databaseFile_backup);
+                                BrowserUnit.deleteDir(bookmarkFile_backup);
+                                copyDirectory(previewsFolder_app, previewsFolder_backup);
+                                copyDirectory(databaseFile_app, databaseFile_backup);
+                                copyDirectory(bookmarkFile_app, bookmarkFile_backup);
                                 NinjaToast.show(getActivity(), getString(R.string.toast_export_successful) + "browser_backup");
                             }
 
@@ -255,14 +263,16 @@ public class Fragment_settings_data extends PreferenceFragment {
                                 if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
                                     NinjaToast.show(getActivity(), R.string.toast_permission_sdCard_sec);
                                 } else {
-                                    copyDirectory(pv_sd, pv_data);
-                                    copyDirectory(db_sd, db_data);
+                                    copyDirectory(previewsFolder_backup, previewsFolder_app);
+                                    copyDirectory(databaseFile_backup, databaseFile_app);
+                                    copyDirectory(bookmarkFile_backup, bookmarkFile_app);
                                     dialogRestart();
                                 }
 
                             } else {
-                                copyDirectory(pv_sd, pv_data);
-                                copyDirectory(db_sd, db_data);
+                                copyDirectory(previewsFolder_backup, previewsFolder_app);
+                                copyDirectory(databaseFile_backup, databaseFile_app);
+                                copyDirectory(bookmarkFile_backup, bookmarkFile_app);
                                 dialogRestart();
                             }
 

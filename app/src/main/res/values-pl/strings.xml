@@ -6,7 +6,6 @@
     <string name="app_name">FOSS Browser</string>
     <string name="app_ok">OK</string>
     <string name="app_cancel">Odrzuć</string>
-    <string name="app_close">Zamknij</string>
     <string name="list_empty">Ta lista jest pusta</string>
     <string name="album_title_bookmarks">Zakładki</string>
     <string name="album_title_history">Historia</string>
@@ -23,7 +22,6 @@
     <string name="main_menu_tabPreview">Pokaż podgląd kart</string>
     <string name="main_menu_new_tab">Nowa karta w tle</string>
     <string name="main_menu_new_tabOpen">Nowa karta priorytetowa</string>
-    <string name="main_menu_copy_link">Kopiuj link</string>
     <string name="main_omnibox_input_hint">Wyszukaj lub wpisz adres</string>
     <string name="menu_open_with">Otwórz link za pomocą…</string>
 
@@ -32,7 +30,6 @@
     <string name="menu_delete">Usuń</string>
     <string name="menu_delete_list">Usuń listę</string>
     <string name="menu_edit">Dostosuj</string>
-    <string name="menu_notification">Powiadomienia</string>
     <string name="menu_closeTab">Zamknij kartę</string>
     <string name="menu_download">Otwórz listę pobranych</string>
 
@@ -41,7 +38,6 @@
 
     <string name="menu_save_screenshot">Zachowaj zrzut ekranu</string>
     <string name="menu_save_home">Zachowaj na stronie domowej</string>
-    <string name="menu_save_login">Zachowaj dane logowania</string>
     <string name="menu_save_bookmark">Zachowaj jako zakładkę</string>
     <string name="menu_save_as">Zachowaj jako…</string>
     <string name="menu_save_pdf">Zachowaj jako PDF</string>
@@ -153,8 +149,6 @@
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">Ukryj dolny panel</string>
     <string name="setting_summary_hide">Pokazuj witryny na całym ekranie. Dotykając przycisku wstecz wyjdziesz z trybu pełnoekranowego.</string>
-    <string name="setting_title_omnibox_control">Gesty na panelu dolnym</string>
-    <string name="setting_summary_omnibox_control">Przesuń palcem po panelu dolnym w lewo/prawo, aby przełączać otwarte karty.</string>
     <string name="setting_title_background">Otwieranie łączy w tle</string>
     <string name="setting_summary_background">Domyślnie FOSS wyświetla powiadomienie o otwarciu witryny w tle. Wyłączenie tej funkcji sprawi, iż łącza będą natychmiast otwierały okno przeglądarki.</string>
     <string name="setting_title_themeDark">Tryb jasny</string>
@@ -179,7 +173,6 @@
     <string name="setting_title_confirm_tab_close">Potwierdzaj zamknięcie karty</string>
     <string name="setting_summary_confirm_tab_close">Wyświetlaj komunikat o zamykaniu karty.</string>
 
-    <string name="setting_title_toolbar">Panel narzędziowy</string>
     <string name="setting_hide_always">Zawsze ukryty</string>
     <string name="setting_hide_down">Ukryty przy przewijaniu w dół</string>
     <string name="setting_hide_never">Zawsze widoczny</string>
@@ -223,7 +216,6 @@
     <string name="setting_summary_changelog">Pokaż historię zmian i ostatnią listę poprawek.</string>
 
     <!-- Toast -->
-    <string name="toast_add_bookmark_successful">Poprawnie dodano zakładkę</string>
     <string name="toast_add_to_home_successful">Poprawnie dodano do strony domowej</string>
     <string name="toast_add_to_home_failed">Błąd dodawania do strony domowej</string>
     <string name="toast_add_whitelist_successful">Poprawnie dodano adres witryny</string>
@@ -254,7 +246,6 @@
     <string name="toast_newTitle">Ten wpis już istnieje. Wprowadź nowy tytuł.</string>
     <string name="toast_edit_successful">Zapisano</string>
     <string name="toast_webview_forward">Nie można załadować kolejnej strony</string>
-    <string name="toast_entry_exists">Ten element już istnieje.</string>
     <string name="toast_clear">Chcesz usunąć?</string>
     <string name="toast_permission_title">Wymagane jest pozwolenie</string>
     <string name="toast_permission_sdCard">\"FOSS Browser\" wymaga uprawnienia na \”odczytywanie i zapisywanie zawartości pamieci\”. Jest ono niezbędne do pobierania plików przez wbudowany manager plików i udostępniania zrzutów ekranu. Jeśli nie chcesz teraz udzielać uprawnienia, możesz to zrobić później w Preferencjach aplikacji.</string>

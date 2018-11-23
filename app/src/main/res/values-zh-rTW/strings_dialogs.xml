@@ -19,31 +19,14 @@
         \u25AA many more fixes and improvements (thanks @BO41)
     </string>
 
-    <string name="startpage_title">啟動頁</string>
-    <string name="startpage_dialog">這裡你能存取你所有的資料：釘選在主頁上的網站、書籤、歷史、儲存的登錄資料和整合的檔案瀏覽器。你可以在設定中決定啟動時顯示什麼內容。</string>
-
     <string name="fastToggle_title">快速切換</string>
     <string name="fastToggle_dialog">長按「選單鈕」或是「導航鈕」以開啟「快速切換對話框」，你可以在此更改一些重要設定而不用離開當前的頁面。你可以將網站加入 AdBlocker、JavaScript 或 Cookies 的白名單。</string>
-
-    <string name="toolbar_title">工具列</string>
-    <string name="toolbar_dialog">工具列位於螢幕底部。你可以輸入URL、搜尋東西、重整網頁或打開選單。長按「選單鈕」以開啟「快速切換選單」。上滑工具列開啟分頁預覽模式，右滑或左滑可切換分頁。</string>
-
-    <string name="tab_title">分頁預覽模式</string>
-    <string name="tab_dialog">點擊分頁的預覽圖選擇該分頁，再點一下可關閉分頁預覽模式。將預覽圖上滑或下滑即可關閉分頁。</string>
 
     <string name="menu_title">選單</string>
     <string name="menu_dialog">管理你的分頁、分享儲存的內容、掌管當前的分頁或使用一些特別功能：試就對了。離開選單可以透過返回鍵，點擊選單之外的區域，或簡單把它往下滑掉。</string>
 
     <string name="not_title">通知</string>
     <string name="not_dialog">通知顯示於螢幕底部。略過通知的方式跟離開選單的方式相同。</string>
-
-    <string name="nav_title">導航</string>
-    <string name="nav_dialog">使用「導航鈕」：
-        \n \u25AA 上滑/下滑 \u2192  捲動至頁面頂端/底端
-        \n \u25AA 左滑/右滑 \u2192  上一頁/下一頁
-        \n \u25AA 點擊     \u2192  開啟選單
-        \n \u25AA 長按     \u2192  開啟「快速切換對話框」
-        \n \u25AA 點擊兩下  \u2192  隱藏「導航鈕」</string>
 
     <string name="settings_dialog">設定頁面有更多選項，去試試看！</string>
 

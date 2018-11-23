@@ -6,7 +6,6 @@
     <string name="app_name">FOSS瀏覽器</string>
     <string name="app_ok">確定</string>
     <string name="app_cancel">取消</string>
-    <string name="app_close">關閉</string>
     <string name="list_empty">項目表是空的</string>
     <string name="album_title_bookmarks">書籤</string>
     <string name="album_title_history">歷史</string>
@@ -22,7 +21,6 @@
     <string name="main_menu_tabPreview">開啟分頁預覽</string>
     <string name="main_menu_new_tab">背景開啟新分頁</string>
     <string name="main_menu_new_tabOpen">前景開啟新分頁</string>
-    <string name="main_menu_copy_link">複製連結</string>
     <string name="main_omnibox_input_hint">搜尋或輸入網址</string>
     <string name="menu_open_with">以其他軟體開啟連結</string>
 
@@ -31,7 +29,6 @@
     <string name="menu_delete">刪除</string>
     <string name="menu_delete_list">清除項目表</string>
     <string name="menu_edit">編輯</string>
-    <string name="menu_notification">通知</string>
     <string name="menu_closeTab">關閉分頁</string>
     <string name="menu_download">開啟下載資料夾</string>
 
@@ -40,7 +37,6 @@
 
     <string name="menu_save_screenshot">儲存擷圖</string>
     <string name="menu_save_home">釘選至主頁</string>
-    <string name="menu_save_login">儲存登錄資料</string>
     <string name="menu_save_bookmark">加入書籤</string>
     <string name="menu_save_as">儲存為…</string>
     <string name="menu_save_pdf">儲存為PDF</string>
@@ -154,8 +150,6 @@
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">隱藏工具列</string>
     <string name="setting_summary_hide">滑動網頁時進入全螢幕，按下返回鍵將退出全螢幕模式。</string>
-    <string name="setting_title_omnibox_control">搜尋框控制</string>
-    <string name="setting_summary_omnibox_control">左右滑動搜尋框切換分頁</string>
     <string name="setting_title_background">開啟連結</string>
     <string name="setting_summary_background">在背景開啟連結並顯示通知，若停用連結將立即開啟。</string>
     <string name="setting_title_themeDark">亮色主題</string>
@@ -180,7 +174,6 @@
     <string name="setting_title_confirm_tab_close">確認關閉分頁</string>
     <string name="setting_summary_confirm_tab_close">關閉分頁時彈出確認對話框。</string>
 
-    <string name="setting_title_toolbar">工具列</string>
     <string name="setting_hide_always">總是隱藏</string>
     <string name="setting_hide_down">下滑頁面時隱藏</string>
     <string name="setting_hide_never">永不隱藏</string>
@@ -226,8 +219,7 @@
 
 
     <!-- Toast -->
-<string name="toast_add_bookmark_successful">書籤新增成功</string>
-<string name="toast_add_to_home_successful">釘選至主頁成功</string>
+    <string name="toast_add_to_home_successful">釘選至主頁成功</string>
 <string name="toast_add_to_home_failed">釘選至主頁失敗</string>
 <string name="toast_add_whitelist_successful">域名新增成功</string>
 <string name="toast_already_exist_in_home">已釘選在主頁</string>
@@ -257,8 +249,7 @@
 <string name="toast_newTitle">項目名稱已存在，請輸入新標題。</string>
 <string name="toast_edit_successful">保存成功</string>
 <string name="toast_webview_forward">無法載入下個網頁</string>
-<string name="toast_entry_exists">該項目已存在</string>
-<string name="toast_clear">你確定要清除？</string>
+    <string name="toast_clear">你確定要清除？</string>
 <string name="toast_permission_title">權限要求</string>
 <string name="toast_permission_sdCard">FOSS瀏覽器需要讀寫儲存裝置的權限。
 該權限將用於下載檔案、開啟預設檔案管理器和螢幕擷圖。若您現在不允許，可稍後於設定中開啟。</string>

@@ -29,13 +29,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.preference.PreferenceManager;
 
-import de.baumann.browser.Ninja.R;
 
-
-public class Pass {
+public class BookmarkList {
 
     //define static variable
-    private static final int dbVersion =7;
+    private static final int dbVersion = 7;
     private static final String dbName = "pass_DB_v01.db";
     private static final String dbTable = "pass";
 
@@ -60,7 +58,7 @@ public class Pass {
     private final Context c;
     private SQLiteDatabase sqlDb;
 
-    public Pass(Context context) {
+    public BookmarkList(Context context) {
         this.c = context;
     }
     public void open() throws SQLException {
@@ -94,7 +92,7 @@ public class Pass {
 
 
     //fetch data
-    public Cursor fetchAllData(Activity activity) {
+    public Cursor fetchAllData(Context activity) {
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
 

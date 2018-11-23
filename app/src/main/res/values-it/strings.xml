@@ -6,7 +6,6 @@
     <string name="app_name">FOSS Browser</string>
     <string name="app_ok">OK</string>
     <string name="app_cancel">Annulla</string>
-    <string name="app_close">Chiudi</string>
     <string name="list_empty">La lista corrente è vuota</string>
     <string name="album_title_bookmarks">Segnalibri</string>
     <string name="album_title_history">Cronologia</string>
@@ -23,7 +22,6 @@
     <string name="main_menu_tabPreview">Apri anteprima schede</string>
     <string name="main_menu_new_tab">Nuova scheda (secondo piano)</string>
     <string name="main_menu_new_tabOpen">Nuova scheda (primo piano)</string>
-    <string name="main_menu_copy_link">Copia link</string>
     <string name="main_omnibox_input_hint">Cerca o inserisci URL</string>
     <string name="menu_open_with">Apri link con …</string>
 
@@ -32,7 +30,6 @@
     <string name="menu_delete">Elimina</string>
     <string name="menu_delete_list">Elimina lista</string>
     <string name="menu_edit">Modifica</string>
-    <string name="menu_notification">Notifiche</string>
     <string name="menu_closeTab">Chiudi scheda</string>
     <string name="menu_download">Apri download</string>
 
@@ -41,7 +38,6 @@
 
     <string name="menu_save_screenshot">Salva screenshot</string>
     <string name="menu_save_home">Salva in Home</string>
-    <string name="menu_save_login">Salva dati login</string>
     <string name="menu_save_bookmark">Salva come segnalibro</string>
     <string name="menu_save_as">Salva come …</string>
     <string name="menu_save_pdf">Salva come PDF</string>
@@ -111,7 +107,7 @@
     <string name="setting_summary_whitelistCookie">Se si disattivano i cookie, è possibile utilizzare questa whitelist per consentire ai siti di cui ci si fida di utilizzare i cookie.</string>
 
     <string name="setting_title_javascript">JavaScript</string>
-    <string name="setting_summary_javascript">Abilita JavaScript. Molti siti web hanno bisogno di JavaScript per le loro funzionalità (menu, caricamento e visualizzazione di immagini, ...). Ma sono anche un rischio e possono essere utilizzati per attacchi.</string>
+    <string name="setting_summary_javascript">Abilita JavaScript. Molti siti web hanno bisogno di JavaScript per le loro funzionalità (menu, caricamento e visualizzazione di immagini, …). Ma sono anche un rischio e possono essere utilizzati per attacchi.</string>
     <string name="setting_title_whitelistJS">Whitelist javaScript</string>
     <string name="setting_summary_whitelistJS">Se si disabilita JavaScript, è possibile utilizzare questa whitelist per consentire ai siti di cui ci si fida di utilizzare javascript.</string>
 
@@ -152,8 +148,6 @@
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">Nascondi barra degli strumenti</string>
     <string name="setting_summary_hide">Utilizzare l\'intero schermo per scorrere i siti web. Se si preme il pulsante Indietro, si esce dalla modalità a schermo intero.</string>
-    <string name="setting_title_omnibox_control">Controlli Omnibox</string>
-    <string name="setting_summary_omnibox_control">Scorrere a sinistra/destra per passare da una scheda all\'altra</string>
     <string name="setting_title_background">Apri link</string>
     <string name="setting_summary_background">Visualizzare una notifica e aprire i collegamenti in background. Se disattivato, i collegamenti si apriranno immediatamente.</string>
     <string name="setting_title_themeDark">Tema chiaro</string>
@@ -178,7 +172,6 @@
     <string name="setting_title_confirm_tab_close">Confermare la chiusura delle schede</string>
     <string name="setting_summary_confirm_tab_close">Finestra di conferma per la chiusura delle schede.</string>
 
-    <string name="setting_title_toolbar">Barra degli strumenti</string>
     <string name="setting_hide_always">Nascondi sempre</string>
     <string name="setting_hide_down">Solo durante lo scorrimento verso il basso</string>
     <string name="setting_hide_never">Non nascondere mai</string>
@@ -222,7 +215,6 @@
     <string name="setting_summary_changelog">Mostra l\'ultimo changelog per vedere le novità.</string>
 
     <!-- Toast -->
-    <string name="toast_add_bookmark_successful">Segnalibro aggiunto con successo</string>
     <string name="toast_add_to_home_successful">Aggiunto con successo a Home</string>
     <string name="toast_add_to_home_failed">Impossibile aggiungere a Home</string>
     <string name="toast_add_whitelist_successful">Dominio aggiunto con successo</string>
@@ -253,7 +245,6 @@
     <string name="toast_newTitle">La voce esiste già. Per favore inserisci un nuovo titolo.</string>
     <string name="toast_edit_successful">Salvato con successo</string>
     <string name="toast_webview_forward">Non è possibile caricare il sito successivo</string>
-    <string name="toast_entry_exists">La voce è già presente.</string>
     <string name="toast_clear">Vuoi davvero cancellare?</string>
     <string name="toast_permission_title">È necessaria l\'autorizzazione</string>
     <string name="toast_permission_sdCard">\"FOSS Browser\" necessita del permesso di \"lettura e scrittura archivio\". Questo è necessario per scaricare i file, file manager e acquisizione di screenshot. Se non si è ancora concessa l\'autorizzazione, è possibile farlo in un secondo momento nelle impostazioni.</string>

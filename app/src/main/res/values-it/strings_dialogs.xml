@@ -4,31 +4,14 @@
 
     <string name="changelog_title">Changelog</string>
 
-    <string name="startpage_title">Pagina iniziale</string>
-    <string name="startpage_dialog">Qui potete accedere a tutti i vostri dati: siti salvati sulla pagina iniziale, segnalibri, cronologia, dati di accesso salvati e il browser di file integrato. Nelle impostazioni è possibile decidere quale contenuto verrà mostrato all\'avvio.</string>
-
     <string name="fastToggle_title">Attivazione rapida</string>
     <string name="fastToggle_dialog">Se si preme a lungo il \"menu\" o il \"pulsante di navigazione\", si apre la \"finestra di attivazione rapida\". Qui è possibile modificare alcune impostazioni importanti senza uscire dal sito Web corrente. È inoltre possibile aggiungere siti web alle whitelist per AdBlocker, JavaScript o Cookies …</string>
 
-    <string name="toolbar_title">Barra degli strumenti</string>
-    <string name="toolbar_dialog">Nella parte inferiore dello schermo si trova la barra degli strumenti. È possibile inserire URL o cercare qualcosa, ricaricare il sito web e aprire il menu. Cliccare a lungo sul pulsante \"Menu\" per aprire il menu \"Attivazione rapida\". Far scorrere la barra degli strumenti verso l'alto per aprire le anteprime delle schede. Per spostarsi tra le schede, passare il dito verso sinistra o verso destra.</string>
-
-    <string name="tab_title">Anteprima schede</string>
-    <string name="tab_dialog">Fare clic sull\'anteprima di una scheda per selezionarla, quindi fare nuovamente clic per chiuderla. Per chiudere una scheda è sufficiente scorrere il dito sull\'anteprima verso l\'alto o verso il basso.</string>
-
     <string name="menu_title">Menu</string>
-    <string name="menu_dialog">Gestisci le schede, condividi o salva contenuti, gestisci la scheda corrente o utilizza alcune funzioni: prova. Il menu può essere chiuso, come tutte le altre notifiche, facendo clic all\'indietro, facendo clic fuori dal menu o semplicemente spostando il menu verso il basso.</string>
+    <string name="menu_dialog">Gestisci le schede, condividi o salva contenuti, gestisci la scheda corrente o utilizza alcune funzioni: prova. Il menu può essere chiuso, come tutte le altre notifiche, facendo clic all\\'indietro, facendo clic fuori dal menu o semplicemente spostando il menu verso il basso.</string>
 
     <string name="not_title">Notifiche</string>
     <string name="not_dialog">Le notifiche vengono visualizzate nella parte inferiore dello schermo. Possono essere rimosse nella stessa maniera dei menu.</string>
-
-    <string name="nav_title">Navigazione</string>
-    <string name="nav_dialog">Utilizzare il \"Pulsante di navigazione\":
-        swipe verso l\'alto/il basso -> scorrere all\'inizio/fine;
-        swipe verso sinistra/destra -> navigare avanti/indietro;
-        tocca -> aprire il menu;
-        tocca a lungo -> aprire \"Attivazione rapida\";
-        doppio tocco -> Nascondere il \"Pulsante di navigazione\".</string>
 
     <string name="settings_dialog">Ci sono ancora più opzioni nelle impostazioni. Prova!</string>
 

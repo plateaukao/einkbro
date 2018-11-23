@@ -6,7 +6,6 @@
     <string name="app_name">FOSS-browser</string>
     <string name="app_ok">Oké</string>
     <string name="app_cancel">Annuleren</string>
-    <string name="app_close">Sluiten</string>
     <string name="list_empty">De huidige lijst is leeg</string>
     <string name="album_title_bookmarks">Bladwijzers</string>
     <string name="album_title_history">Geschiedenis</string>
@@ -23,7 +22,6 @@
     <string name="main_menu_tabPreview">Tabbladvoorbeeld openen</string>
     <string name="main_menu_new_tab">Nieuw tabblad (achtergrond)</string>
     <string name="main_menu_new_tabOpen">Nieuw tabblad (voorgrond)</string>
-    <string name="main_menu_copy_link">Link kopiëren</string>
     <string name="main_omnibox_input_hint">Zoek, of typ een URL</string>
     <string name="menu_open_with">Link openen met …</string>
 
@@ -32,7 +30,6 @@
     <string name="menu_delete">Verwijderen</string>
     <string name="menu_delete_list">Lijst verwijderen</string>
     <string name="menu_edit">Bewerken</string>
-    <string name="menu_notification">Melding</string>
     <string name="menu_closeTab">Tabblad sluiten</string>
     <string name="menu_download">Downloads openen</string>
 
@@ -41,7 +38,6 @@
 
     <string name="menu_save_screenshot">Schermafbeelding opslaan</string>
     <string name="menu_save_home">Opslaan op beginscherm</string>
-    <string name="menu_save_login">Inloggegevens opslaan</string>
     <string name="menu_save_bookmark">Opslaan als bladwijzer</string>
     <string name="menu_save_as">Opslaan als…</string>
     <string name="menu_save_pdf">Opslaan als PDF-bestand</string>
@@ -162,8 +158,6 @@
     <string name="setting_title_hideToolbar">Werkbalk verbergen</string>
     <string name="setting_summary_hide">Gebruik, tijdens het scrollen op website, het hele scherm Als je op de terug-knop drukt,
     dan wordt de volledige scherm-modus afgesloten.</string>
-    <string name="setting_title_omnibox_control">Omnibox-beheer</string>
-    <string name="setting_summary_omnibox_control">Veeg de omnibox naar links/rechts om te schakelen tussen tabbladen.</string>
     <string name="setting_title_background">Links openen</string>
     <string name="setting_summary_background">Melding tonen en links openen op de achtergrond. Als dit wordt uitgeschakeld, dan openen links
     direct.</string>
@@ -189,7 +183,6 @@
     <string name="setting_title_confirm_tab_close">Tabblad sluiten bevestigen</string>
     <string name="setting_summary_confirm_tab_close">Bevestigingsscherm bij sluiten van tabblad.</string>
 
-    <string name="setting_title_toolbar">Werkbalk</string>
     <string name="setting_hide_always">Altijd verbergen</string>
     <string name="setting_hide_down">Alleen tijdens omlaag scrollen</string>
     <string name="setting_hide_never">Nooit verbergen</string>
@@ -236,7 +229,6 @@
     <string name="setting_summary_changelog">Nieuwste wijzigingslog bekijken.</string>
 
     <!-- Toast -->
-    <string name="toast_add_bookmark_successful">Bladwijzer toegevoegd</string>
     <string name="toast_add_to_home_successful">Toegevoegd aan beginscherm</string>
     <string name="toast_add_to_home_failed">Toevoegen mislukt</string>
     <string name="toast_add_whitelist_successful">Domein toegevoegd</string>
@@ -267,7 +259,6 @@
     <string name="toast_newTitle">Het item bestaat al; voer een nieuwe titel in.</string>
     <string name="toast_edit_successful">Opgeslagen</string>
     <string name="toast_webview_forward">Volgende site kan niet worden geladen</string>
-    <string name="toast_entry_exists">Item bestaat al.</string>
     <string name="toast_clear">Weet je zeker dat je wilt wissen?</string>
     <string name="toast_permission_title">Machtiging vereist</string>
     <string name="toast_permission_sdCard">\"FOSS-browser\" heeft de machtiging \"opslag lezen en schrijven\" nodig om bestanden te

@@ -70,7 +70,7 @@
             tools:ignore="UseCompoundDrawables">
 
             <RelativeLayout
-                android:id="@+id/tv_tabPreview"
+                android:id="@+id/menu_tabPreview"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
@@ -130,7 +130,7 @@
             </RelativeLayout>
 
             <LinearLayout
-                android:id="@+id/tv_new_tabOpen"
+                android:id="@+id/menu_newTabOpen"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
@@ -159,7 +159,7 @@
 
 
             <LinearLayout
-                android:id="@+id/tv_closeTab"
+                android:id="@+id/menu_closeTab"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
@@ -187,7 +187,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/tv_quit"
+                android:id="@+id/menu_quit"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
@@ -216,7 +216,7 @@
 
 
             <LinearLayout
-                android:id="@+id/tv_shareScreenshot"
+                android:id="@+id/menu_shareScreenshot"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
@@ -246,7 +246,7 @@
 
             <LinearLayout
                 android:visibility="gone"
-                android:id="@+id/tv_menu_save_as"
+                android:id="@+id/menu_sharePDF"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
@@ -274,7 +274,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/tv_shareLink"
+                android:id="@+id/menu_shareLink"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
@@ -304,7 +304,7 @@
 
 
             <LinearLayout
-                android:id="@+id/tv_openWith"
+                android:id="@+id/menu_openWith"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
@@ -333,7 +333,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/tv_saveScreenshot"
+                android:id="@+id/menu_saveScreenshot"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
@@ -364,7 +364,7 @@
 
             <LinearLayout
                 android:visibility="gone"
-                android:id="@+id/tv3_menu_save_as"
+                android:id="@+id/contextLink_saveAs"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
@@ -393,7 +393,7 @@
 
 
             <LinearLayout
-                android:id="@+id/tv_saveStart"
+                android:id="@+id/menu_saveStart"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
@@ -422,7 +422,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/tv_saveBookmark"
+                android:id="@+id/menu_saveBookmark"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
@@ -451,7 +451,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/tv_searchSite"
+                android:id="@+id/menu_searchSite"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
@@ -480,7 +480,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/tv_help"
+                android:id="@+id/menu_help"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
@@ -510,7 +510,7 @@
 
 
             <LinearLayout
-                android:id="@+id/tv_download"
+                android:id="@+id/menu_download"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
@@ -539,7 +539,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/tv_settings"
+                android:id="@+id/menu_settings"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
@@ -607,7 +607,6 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/floatButton_shareLayout"
             android:layout_marginEnd="6dp"
             android:layout_marginStart="6dp"
             android:orientation="vertical"
@@ -636,7 +635,6 @@
 
 
         <LinearLayout
-            android:id="@+id/floatButton_saveLayout"
             android:layout_marginEnd="6dp"
             android:layout_marginStart="6dp"
             android:orientation="vertical"

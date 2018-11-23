@@ -6,7 +6,6 @@
     <string name="app_name">FOSS Browser</string>
     <string name="app_ok">OK</string>
     <string name="app_cancel">Cancelar</string>
-    <string name="app_close">Fechar</string>
     <string name="list_empty">A lista está vazia</string>
     <string name="album_title_bookmarks">Marcadores</string>
     <string name="album_title_history">Histórico</string>
@@ -23,7 +22,6 @@
     <string name="main_menu_tabPreview">Abrir pré-visualização</string>
     <string name="main_menu_new_tab">Novo separador (principal)</string>
     <string name="main_menu_new_tabOpen">Novo separador (secundário)</string>
-    <string name="main_menu_copy_link">Copiar ligação</string>
     <string name="main_omnibox_input_hint">Pesquisa ou digitar URL</string>
     <string name="menu_open_with">Abrir ligação com…</string>
 
@@ -32,7 +30,6 @@
     <string name="menu_delete">Apagar</string>
     <string name="menu_delete_list">Apagar lista</string>
     <string name="menu_edit">Editar</string>
-    <string name="menu_notification">Notificação</string>
     <string name="menu_closeTab">Fechar separador</string>
     <string name="menu_download">Abrir descargas</string>
 
@@ -41,7 +38,6 @@
 
     <string name="menu_save_screenshot">Guardar captura de ecrã</string>
     <string name="menu_save_home">Guardar em Início</string>
-    <string name="menu_save_login">Guardar credenciais</string>
     <string name="menu_save_bookmark">Guardar como marcador</string>
     <string name="menu_save_as">Guardar como…</string>
     <string name="menu_save_pdf">Guardar como PDF</string>
@@ -147,13 +143,11 @@
     <string name="setting_title_ui">Comportamento/Interface</string>
     <string name="setting_title_data">Backup</string>
     <string name="setting_summary_ui">Alterar o comportamento e a interface da aplicação ao seu gosto.</string>
-    <string name="setting_summary_data">Importar e exportar os dados da aplicação (lista branca, marcadores...).</string>
+    <string name="setting_summary_data">Importar e exportar os dados da aplicação (lista branca, marcadores…).</string>
 
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">Ocultar barra de ferramentas</string>
     <string name="setting_summary_hide">Utilizar todo o ecrã para navegar nos sites. Se premir no botão Back, sairá do modo de ecrã completo.</string>
-    <string name="setting_title_omnibox_control">Controlo da Omnibox</string>
-    <string name="setting_summary_omnibox_control">Deslize para a direita/esquerda na omnibox para trocar de separadores.</string>
     <string name="setting_title_background">Abrir ligações</string>
     <string name="setting_summary_background">Mostra uma notificação e abre as ligações em segundo plano. Se desativar a opção, as ligações serão abertas imediatamente.</string>
     <string name="setting_title_themeDark">Tema claro</string>
@@ -178,7 +172,6 @@
     <string name="setting_title_confirm_tab_close">Confirmar fecho de separador</string>
     <string name="setting_summary_confirm_tab_close">Mostrar diálogo de confirmação para fechar um separador.</string>
 
-    <string name="setting_title_toolbar">Barra de ferramentas</string>
     <string name="setting_hide_always">Ocultar sempre</string>
     <string name="setting_hide_down">Ocultar ao deslocar para baixo</string>
     <string name="setting_hide_never">Nunca ocultar</string>
@@ -222,7 +215,6 @@
     <string name="setting_summary_changelog">Consultar o registo de alterações da aplicação.</string>
 
     <!-- Toast -->
-    <string name="toast_add_bookmark_successful">Marcador adicionado com sucesso</string>
     <string name="toast_add_to_home_successful">Adicionado a Início</string>
     <string name="toast_add_to_home_failed">Erro ao adicionar a Início</string>
     <string name="toast_add_whitelist_successful">Domínio adicionado com sucesso</string>
@@ -253,7 +245,6 @@
     <string name="toast_newTitle">A entrada já existe. Digite outro título.</string>
     <string name="toast_edit_successful">Guardado com sucesso</string>
     <string name="toast_webview_forward">Não foi possível carregar o site seguinte</string>
-    <string name="toast_entry_exists">A entrada já existe.</string>
     <string name="toast_clear">Tem a certeza que deseja limpar?</string>
     <string name="toast_permission_title">Permissão necessária</string>
     <string name="toast_permission_sdCard">\"FOSS Browser\" necessita da permissão \"read and write on your storage\". Esta permissão é necessária para descarregar ficheiros, abrir o gestor de ficheiros e obter capturas de ecrã. Se não o quiser fazer agora, pode fazê-lo mais tarde nas definições.</string>

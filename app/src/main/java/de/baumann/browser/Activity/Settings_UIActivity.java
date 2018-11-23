@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import de.baumann.browser.Fragment.Fragment_settings_UI;
