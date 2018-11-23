@@ -8,8 +8,6 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.MenuItem;
 
 import de.baumann.browser.Fragment.Fragment_settings;
@@ -50,8 +48,6 @@ public class Settings_Activity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case android.R.id.home:
-                IntentUnit.setDBChange(fragment.isDBChange());
-                IntentUnit.setSPChange(fragment.isSPChange());
                 finish();
                 break;
             default:
@@ -59,18 +55,6 @@ public class Settings_Activity extends AppCompatActivity {
         }
 
         return true;
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent keyEvent) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            IntentUnit.setDBChange(fragment.isDBChange());
-            IntentUnit.setSPChange(fragment.isSPChange());
-            finish();
-            return true;
-        }
-
-        return false;
     }
 
     @Override

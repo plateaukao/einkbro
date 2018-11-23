@@ -23,7 +23,7 @@
 
             <LinearLayout
                 android:visibility="gone"
-                android:id="@+id/tv2_menu_newTab_open"
+                android:id="@+id/menu_contextList_newTabOpen"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
@@ -52,7 +52,7 @@
 
             <LinearLayout
                 android:visibility="gone"
-                android:id="@+id/tv2_menu_newTab"
+                android:id="@+id/menu_contextList_newTab"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
@@ -81,7 +81,7 @@
 
             <LinearLayout
                 android:visibility="gone"
-                android:id="@+id/tv2_menu_edit"
+                android:id="@+id/menu_contextList_edit"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
@@ -112,7 +112,7 @@
 
             <LinearLayout
                 android:visibility="gone"
-                android:id="@+id/tv2_menu_fav"
+                android:id="@+id/menu_contextList_fav"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
@@ -169,7 +169,7 @@
 
             <LinearLayout
                 android:visibility="gone"
-                android:id="@+id/tv2_menu_delete"
+                android:id="@+id/menu_contextList_delete"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"

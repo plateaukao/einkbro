@@ -39,8 +39,7 @@
             tools:ignore="UseCompoundDrawables">
 
             <LinearLayout
-                android:visibility="gone"
-                android:id="@+id/tv3_main_menu_new_tabOpen"
+                android:id="@+id/contextLink_newTabOpen"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
@@ -68,8 +67,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:visibility="gone"
-                android:id="@+id/tv3_main_menu_new_tab"
+                android:id="@+id/contextLink_newTab"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
@@ -97,8 +95,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:visibility="gone"
-                android:id="@+id/tv3_main_menu_share_link"
+                android:id="@+id/contextLink__shareLink"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
@@ -127,8 +124,7 @@
 
 
             <LinearLayout
-                android:visibility="gone"
-                android:id="@+id/tv3_main_menu_open_link"
+                android:id="@+id/contextLink_openWith"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
@@ -156,8 +152,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:visibility="gone"
-                android:id="@+id/tv3_menu_save_as"
+                android:id="@+id/contextLink_saveAs"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"

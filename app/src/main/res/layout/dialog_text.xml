@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|center_horizontal"
         android:padding="16dp"
-        android:text="@string/toolbar_title"
+        android:text="@string/overview_title"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textStyle="bold" />
 

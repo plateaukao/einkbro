@@ -8,7 +8,6 @@
     <string name="sp_images">SP_IMÁGENES_9</string>
     <string name="sp_javascript">SP_JAVASCRIPT_9</string>
     <string name="sp_location">SP_UBICACIÓN_9</string>
-    <string name="sp_omnibox_control">SP_OMNIBOX_CONTROL_9</string>
 
     <!-- Clear -->
     <string name="sp_clear_quit">SP_LIMPIA_SALIR_9</string>
@@ -23,7 +22,6 @@
     <string name="app_name">Navegador FOSS</string>
     <string name="app_ok">ok</string>
     <string name="app_cancel">Cancelar</string>
-    <string name="app_close">Cerrar</string>
     <string name="list_empty">La lista actual está vacía</string>
     <string name="album_title_bookmarks">Marcadores</string>
     <string name="album_title_history">Historia</string>
@@ -39,7 +37,6 @@
     <string name="main_menu_tabPreview">Abrir vista previa de la pestaña</string>
     <string name="main_menu_new_tab">Nueva pestaña (Fondo)</string>
     <string name="main_menu_new_tabOpen">Nueva pestaña (primer plano)</string>
-    <string name="main_menu_copy_link">Copia enlace</string>
     <string name="main_omnibox_input_hint">Buscar o escribir URL</string>
     <string name="menu_open_with">Abrir enlace con …</string>
 
@@ -48,7 +45,6 @@
     <string name="menu_delete">Borrar</string>
     <string name="menu_delete_list">Borrar lista</string>
     <string name="menu_edit">Editar</string>
-    <string name="menu_notification">Notificación</string>
     <string name="menu_closeTab">Cerrar pestaña</string>
     <string name="menu_download">Abrir descargar</string>
 
@@ -57,7 +53,6 @@
 
     <string name="menu_save_screenshot">Guardar captura</string>
     <string name="menu_save_home">Guardar en inicio</string>
-    <string name="menu_save_login">Guardar Datos de entrada</string>
     <string name="menu_save_bookmark">Guardar como marcador</string>
     <string name="menu_save_as">Guardar como…</string>
 
@@ -163,8 +158,6 @@
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">Ocultar barra de herramientas</string>
     <string name="setting_summary_hide">Utilice la pantalla completa al desplazarse por sitios Web. Si pulsa el botón atrás, dejará el modo de pantalla completa.</string>
-    <string name="setting_title_omnibox_control">Control Omnibox</string>
-    <string name="setting_summary_omnibox_control">Deslice Omnibox izquierda/derecha para cambiar las pestañas</string>
     <string name="setting_title_background">Abrir enlaces</string>
     <string name="setting_summary_background">Mostrar una notificación y abrir enlace en segundo plano. Si los enlaces deshabilitados se abren inmediatamente.</string>
     <string name="setting_title_themeDark">Light theme</string>
@@ -189,7 +182,6 @@
     <string name="setting_title_confirm_tab_close">Confirmar cierre de la Pestañas</string>
     <string name="setting_summary_confirm_tab_close">Diálogo de confirmación al cerrar una pestaña.</string>
 
-    <string name="setting_title_toolbar">Barra de herramientas</string>
     <string name="setting_hide_always">Ocultar siempre</string>
     <string name="setting_hide_down">Solo mientras se desplaza hacia abajo</string>
     <string name="setting_hide_never">Nunca oculta</string>
@@ -233,7 +225,6 @@
     <string name="setting_summary_changelog">Mostrar el último cambios para ver qué hay de nuevo.</string>
 
     <!-- Toast -->
-    <string name="toast_add_bookmark_successful">Marcador agregado con éxito</string>
     <string name="toast_add_to_home_successful">Agregado con éxito al inicio</string>
     <string name="toast_add_to_home_failed">No se pudo agregar a la Página principal</string>
     <string name="toast_add_whitelist_successful">Dominio agregado con éxito</string>
@@ -264,7 +255,6 @@
     <string name="toast_newTitle">La entrada ya existe. Por favor ingrese nuevo título.</string>
     <string name="toast_edit_successful">Guardado con éxito</string>
     <string name="toast_webview_forward">No se puede cargar el sitio siguiente</string>
-    <string name="toast_entry_exists">La entrada ya existe.</string>
     <string name="toast_clear">¿de verdad quieres limpia?</string>
     <string name="toast_permission_title">Se necesita permiso</string>
     <string name="toast_permission_sdCard">\"Navegador FOSS \"necesita el permiso para\" leer y escribir en su almacenamiento de información \". Esto es necesario para descargar archivos, la compilación en el gestor de archivos y la toma de capturas de pantallas. Si aún no concedes el permiso, puedes hacerlo más tarde en la configuración.</string>

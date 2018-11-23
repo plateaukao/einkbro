@@ -87,8 +87,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import de.baumann.browser.Browser.AdBlock;
 import de.baumann.browser.Browser.AlbumController;
@@ -96,7 +94,7 @@ import de.baumann.browser.Browser.BrowserContainer;
 import de.baumann.browser.Browser.BrowserController;
 import de.baumann.browser.Browser.Cookie;
 import de.baumann.browser.Browser.Javascript;
-import de.baumann.browser.Database.Pass;
+import de.baumann.browser.Database.BookmarkList;
 import de.baumann.browser.Database.Record;
 import de.baumann.browser.Database.RecordAction;
 import de.baumann.browser.Ninja.R;
@@ -124,33 +122,30 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
     // Menus
 
-    private TextView dialogTitle;
+    private RelativeLayout menu_tabPreview;
+    private LinearLayout menu_newTabOpen;
+    private LinearLayout menu_closeTab;
+    private LinearLayout menu_quit;
 
+    private LinearLayout menu_shareScreenshot;
+    private LinearLayout menu_shareLink;
+    private LinearLayout menu_sharePDF;
+    private LinearLayout menu_openWith;
 
-    private RelativeLayout tv_tabPreview;
-    private LinearLayout tv_new_tabOpen;
-    private LinearLayout tv_closeTab;
-    private LinearLayout tv_quit;
+    private LinearLayout menu_searchSite;
+    private LinearLayout menu_settings;
+    private LinearLayout menu_download;
+    private LinearLayout menu_saveScreenshot;
+    private LinearLayout menu_saveBookmark;
+    private LinearLayout menu_savePDF;
+    private LinearLayout menu_saveStart;
+    private LinearLayout menu_help;
 
-    private LinearLayout tv_shareScreenshot;
-    private LinearLayout tv_shareLink;
-    private LinearLayout tv_menu_save_as;
-    private LinearLayout tv_openWith;
-
-    private LinearLayout tv_searchSite;
-    private LinearLayout tv_settings;
-    private LinearLayout tv_download;
-    private LinearLayout tv_saveScreenshot;
-    private LinearLayout tv_saveBookmark;
-    private LinearLayout tv3_menu_save_as;
-    private LinearLayout tv_saveStart;
-    private LinearLayout tv_help;
-
-    private LinearLayout tv2_menu_newTab;
-    private LinearLayout tv2_menu_newTab_open;
-    private LinearLayout tv2_menu_edit;
-    private LinearLayout tv2_menu_delete;
-    private LinearLayout tv2_menu_fav;
+    private LinearLayout contextList_newTab;
+    private LinearLayout contextList_newTabOpen;
+    private LinearLayout contextList_edit;
+    private LinearLayout contextList_delete;
+    private LinearLayout contextList_fav;
 
     private View floatButton_tabView;
     private View floatButton_saveView;
@@ -193,6 +188,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     private NinjaWebView ninjaWebView;
     private ListView listView;
     private TextView omniboxTitle;
+    private TextView dialogTitle;
     private View customView;
     private VideoView videoView;
 
@@ -281,7 +277,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     private float dimen144dp;
     private float dimen117dp;
     private float dimen108dp;
-    private boolean quit = false;
 
     private WebChromeClient.CustomViewCallback customViewCallback;
     private ValueCallback<Uri[]> filePathCallback = null;
@@ -327,16 +322,13 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 char c = chars[random.nextInt(chars.length)];
                 sb.append(c);
             }
-
             if (Locale.getDefault().getCountry().equals("CN")) {
                 sp.edit().putString(getString(R.string.sp_search_engine), "2").apply();
             }
-
             sp.edit().putString("saved_key", sb.toString()).apply();
             sp.edit().putString("saved_key_ok", "yes").apply();
             sp.edit().putBoolean(getString(R.string.sp_location), false).apply();
         }
-
         sp.edit().putInt("restart_changed", 0).apply();
 
         try {
@@ -378,11 +370,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         initSwitcherView();
         initOmnibox();
         initSearchPanel();
-        initHomeGrid();
-
-        if (sp.getBoolean("overView_onStart", false)) {
-            showOverview();
-        }
+        initOverview();
 
         new AdBlock(this); // For AdBlock cold boot
         new Javascript(BrowserActivity.this);
@@ -557,13 +545,11 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                     sp.edit().putBoolean("pdf_create", false).commit();
                     sp.edit().putBoolean("pdf_share", false).commit();
                     sp.edit().putBoolean("pdf_delete", false).commit();
-
                     textView.setText(R.string.menu_share_pdfToast);
                     bottomSheetDialog.show();
                 }
 
             } else {
-
                 textView.setText(R.string.toast_downloadComplete);
                 bottomSheetDialog.show();
                 sp.edit().putBoolean("pdf_share", false).commit();
@@ -605,19 +591,14 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         IntentUnit.setClear(true);
         stopService(toHolderService);
 
-        boolean exit = true;
         if (sp.getBoolean(getString(R.string.sp_clear_quit), false)) {
             Intent toClearService = new Intent(this, ClearService.class);
             startService(toClearService);
-            exit = false;
         }
 
         BrowserContainer.clear();
         IntentUnit.setContext(null);
         super.onDestroy();
-        //if (exit) {
-        //   System.exit(0); // For remove all WebView thread
-        //}
     }
 
     @Override
@@ -701,7 +682,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         inputBox.clearFocus();
     }
 
-    public void showOverview () {
+    private void showOverview() {
         if (currentAlbumController != null) {
             switcher_scroller.smoothScrollTo(currentAlbumController.getAlbumView().getLeft(), 0);
         }if (ninjaWebView != null) {
@@ -765,38 +746,38 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 }
                 break;
 
-            case R.id.tv_new_tabOpen:
-                bottomSheetDialog.cancel();
-                pinAlbums(sp.getString("favoriteURL", "https://www.startpage.com"));
-                break;
-
+            case R.id.menu_contextList_newTabOpen:
+            case R.id.menu_newTabOpen:
             case R.id.switcher_plus:
+                if (bottomSheetDialog != null) {
+                    bottomSheetDialog.cancel();
+                }
                 hideOverview();
-                pinAlbums(sp.getString("favoriteURL", "https://www.startpage.com"));
+                addAlbum(getString(R.string.album_untitled), sp.getString("favoriteURL", "https://www.startpage.com"), true);
                 break;
 
-            case R.id.tv_closeTab:
+            case R.id.menu_closeTab:
                 bottomSheetDialog.cancel();
                 removeAlbum(currentAlbumController);
                 break;
 
-            case R.id.tv_tabPreview:
+            case R.id.menu_tabPreview:
                 bottomSheetDialog.cancel();
                 showOverview();
                 break;
 
-            case R.id.tv_quit:
+            case R.id.menu_quit:
                 bottomSheetDialog.cancel();
                 doubleTapsQuit();
                 break;
 
-            case R.id.tv_shareScreenshot:
+            case R.id.menu_shareScreenshot:
                 bottomSheetDialog.cancel();
                 sp.edit().putInt("screenshot", 1).apply();
                 new ScreenshotTask(BrowserActivity.this, ninjaWebView).execute();
                 break;
 
-            case R.id.tv_shareLink:
+            case R.id.menu_shareLink:
                 bottomSheetDialog.cancel();
                 if (prepareRecord()) {
                     NinjaToast.show(BrowserActivity.this, getString(R.string.toast_share_failed));
@@ -805,12 +786,12 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 }
                 break;
 
-            case R.id.tv_menu_save_as:
+            case R.id.menu_sharePDF:
                 bottomSheetDialog.cancel();
                 printPDF(true);
                 break;
 
-            case R.id.tv_openWith:
+            case R.id.menu_openWith:
                 bottomSheetDialog.cancel();
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(url));
@@ -818,13 +799,13 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 startActivity(chooser);
                 break;
 
-            case R.id.tv_saveScreenshot:
+            case R.id.menu_saveScreenshot:
                 bottomSheetDialog.cancel();
                 sp.edit().putInt("screenshot", 0).apply();
                 new ScreenshotTask(BrowserActivity.this, ninjaWebView).execute();
                 break;
 
-            case R.id.tv_saveBookmark:
+            case R.id.menu_saveBookmark:
                 bottomSheetDialog.cancel();
                 try {
 
@@ -832,14 +813,14 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                     String encrypted_userName = mahEncryptor.encode("");
                     String encrypted_userPW = mahEncryptor.encode("");
 
-                    Pass db = new Pass(BrowserActivity.this);
+                    BookmarkList db = new BookmarkList(BrowserActivity.this);
                     db.open();
                     if (db.isExist(url)){
                         NinjaToast.show(BrowserActivity.this, R.string.toast_newTitle);
                     } else {
                         db.insert(ninjaWebView.getTitle(), url, encrypted_userName, encrypted_userPW, "01");
                         NinjaToast.show(BrowserActivity.this, R.string.toast_edit_successful);
-                        initPSList();
+                        initBookmarkList();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -847,7 +828,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 }
                 break;
 
-            case R.id.tv_saveStart:
+            case R.id.menu_saveStart:
                 bottomSheetDialog.cancel();
                 action.open(true);
                 if (action.checkGridItem(url)) {
@@ -869,140 +850,139 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
                 // Omnibox
 
-            case R.id.tv_searchSite:
+            case R.id.menu_searchSite:
                 bottomSheetDialog.cancel();
                 hideSoftInput(inputBox);
                 showSearchPanel();
                 break;
 
-            case R.id.tv3_menu_save_as:
+            case R.id.contextLink_saveAs:
                 bottomSheetDialog.cancel();
                 printPDF(false);
                 break;
 
-            case R.id.tv_settings:
+            case R.id.menu_settings:
                 bottomSheetDialog.cancel();
                 Intent settings = new Intent(BrowserActivity.this, Settings_Activity.class);
                 startActivity(settings);
                 break;
 
-            case R.id.tv_help:
-                bottomSheetDialog.cancel();
+            case R.id.menu_help:
                 showHelpDialog();
                 break;
 
-            case R.id.tv_download:
+            case R.id.menu_download:
                 bottomSheetDialog.cancel();
                 startActivity(new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS));
                 break;
 
             case R.id.floatButton_tab:
-                tv_new_tabOpen.setVisibility(View.VISIBLE);
-                tv_closeTab.setVisibility(View.VISIBLE);
-                tv_tabPreview.setVisibility(View.VISIBLE);
-                tv_quit.setVisibility(View.VISIBLE);
+                menu_newTabOpen.setVisibility(View.VISIBLE);
+                menu_closeTab.setVisibility(View.VISIBLE);
+                menu_tabPreview.setVisibility(View.VISIBLE);
+                menu_quit.setVisibility(View.VISIBLE);
 
-                tv_shareScreenshot.setVisibility(View.GONE);
-                tv_shareLink.setVisibility(View.GONE);
-                tv_menu_save_as.setVisibility(View.GONE);
-                tv_openWith.setVisibility(View.GONE);
+                menu_shareScreenshot.setVisibility(View.GONE);
+                menu_shareLink.setVisibility(View.GONE);
+                menu_sharePDF.setVisibility(View.GONE);
+                menu_openWith.setVisibility(View.GONE);
 
-                tv_saveScreenshot.setVisibility(View.GONE);
-                tv_saveBookmark.setVisibility(View.GONE);
-                tv3_menu_save_as.setVisibility(View.GONE);
-                tv_saveStart.setVisibility(View.GONE);
+                menu_saveScreenshot.setVisibility(View.GONE);
+                menu_saveBookmark.setVisibility(View.GONE);
+                menu_savePDF.setVisibility(View.GONE);
+                menu_saveStart.setVisibility(View.GONE);
 
                 floatButton_tabView.setVisibility(View.VISIBLE);
                 floatButton_saveView.setVisibility(View.INVISIBLE);
                 floatButton_shareView.setVisibility(View.INVISIBLE);
                 floatButton_moreView.setVisibility(View.INVISIBLE);
 
-                tv_searchSite.setVisibility(View.GONE);
-                tv_help.setVisibility(View.GONE);
-                tv_settings.setVisibility(View.GONE);
-                tv_download.setVisibility(View.GONE);
+                menu_searchSite.setVisibility(View.GONE);
+                menu_help.setVisibility(View.GONE);
+                menu_settings.setVisibility(View.GONE);
+                menu_download.setVisibility(View.GONE);
                 break;
 
             case R.id.floatButton_share:
-                tv_new_tabOpen.setVisibility(View.GONE);
-                tv_closeTab.setVisibility(View.GONE);
-                tv_tabPreview.setVisibility(View.GONE);
-                tv_quit.setVisibility(View.GONE);
+                menu_newTabOpen.setVisibility(View.GONE);
+                menu_closeTab.setVisibility(View.GONE);
+                menu_tabPreview.setVisibility(View.GONE);
+                menu_quit.setVisibility(View.GONE);
 
-                tv_shareScreenshot.setVisibility(View.VISIBLE);
-                tv_shareLink.setVisibility(View.VISIBLE);
-                tv_menu_save_as.setVisibility(View.VISIBLE);
-                tv_openWith.setVisibility(View.VISIBLE);
+                menu_shareScreenshot.setVisibility(View.VISIBLE);
+                menu_shareLink.setVisibility(View.VISIBLE);
+                menu_sharePDF.setVisibility(View.VISIBLE);
+                menu_openWith.setVisibility(View.VISIBLE);
 
-                tv_saveScreenshot.setVisibility(View.GONE);
-                tv_saveBookmark.setVisibility(View.GONE);
-                tv3_menu_save_as.setVisibility(View.GONE);
-                tv_saveStart.setVisibility(View.GONE);
+                menu_saveScreenshot.setVisibility(View.GONE);
+                menu_saveBookmark.setVisibility(View.GONE);
+                menu_savePDF.setVisibility(View.GONE);
+                menu_saveStart.setVisibility(View.GONE);
 
                 floatButton_tabView.setVisibility(View.INVISIBLE);
                 floatButton_saveView.setVisibility(View.INVISIBLE);
                 floatButton_shareView.setVisibility(View.VISIBLE);
                 floatButton_moreView.setVisibility(View.INVISIBLE);
 
-                tv_searchSite.setVisibility(View.GONE);
-                tv_help.setVisibility(View.GONE);
-                tv_settings.setVisibility(View.GONE);
-                tv_download.setVisibility(View.GONE);
+                menu_searchSite.setVisibility(View.GONE);
+                menu_help.setVisibility(View.GONE);
+                menu_settings.setVisibility(View.GONE);
+                menu_download.setVisibility(View.GONE);
                 break;
 
             case R.id.floatButton_save:
-                tv_new_tabOpen.setVisibility(View.GONE);
-                tv_closeTab.setVisibility(View.GONE);
-                tv_tabPreview.setVisibility(View.GONE);
-                tv_quit.setVisibility(View.GONE);
+                menu_newTabOpen.setVisibility(View.GONE);
+                menu_closeTab.setVisibility(View.GONE);
+                menu_tabPreview.setVisibility(View.GONE);
+                menu_quit.setVisibility(View.GONE);
 
-                tv_shareScreenshot.setVisibility(View.GONE);
-                tv_shareLink.setVisibility(View.GONE);
-                tv_menu_save_as.setVisibility(View.GONE);
-                tv_openWith.setVisibility(View.GONE);
+                menu_shareScreenshot.setVisibility(View.GONE);
+                menu_shareLink.setVisibility(View.GONE);
+                menu_sharePDF.setVisibility(View.GONE);
+                menu_openWith.setVisibility(View.GONE);
 
-                tv_saveScreenshot.setVisibility(View.VISIBLE);
-                tv_saveBookmark.setVisibility(View.VISIBLE);
-                tv3_menu_save_as.setVisibility(View.VISIBLE);
-                tv_saveStart.setVisibility(View.VISIBLE);
+                menu_saveScreenshot.setVisibility(View.VISIBLE);
+                menu_saveBookmark.setVisibility(View.VISIBLE);
+                menu_savePDF.setVisibility(View.VISIBLE);
+                menu_saveStart.setVisibility(View.VISIBLE);
 
-                tv_searchSite.setVisibility(View.GONE);
-                tv_help.setVisibility(View.GONE);
+                menu_searchSite.setVisibility(View.GONE);
+                menu_help.setVisibility(View.GONE);
 
                 floatButton_tabView.setVisibility(View.INVISIBLE);
                 floatButton_saveView.setVisibility(View.VISIBLE);
                 floatButton_shareView.setVisibility(View.INVISIBLE);
                 floatButton_moreView.setVisibility(View.INVISIBLE);
 
-                tv_settings.setVisibility(View.GONE);
-                tv_download.setVisibility(View.GONE);
+                menu_settings.setVisibility(View.GONE);
+                menu_download.setVisibility(View.GONE);
                 break;
 
             case R.id.floatButton_more:
-                tv_new_tabOpen.setVisibility(View.GONE);
-                tv_closeTab.setVisibility(View.GONE);
-                tv_tabPreview.setVisibility(View.GONE);
-                tv_quit.setVisibility(View.GONE);
+                menu_newTabOpen.setVisibility(View.GONE);
+                menu_closeTab.setVisibility(View.GONE);
+                menu_tabPreview.setVisibility(View.GONE);
+                menu_quit.setVisibility(View.GONE);
 
-                tv_shareScreenshot.setVisibility(View.GONE);
-                tv_shareLink.setVisibility(View.GONE);
-                tv_menu_save_as.setVisibility(View.GONE);
-                tv_openWith.setVisibility(View.GONE);
+                menu_shareScreenshot.setVisibility(View.GONE);
+                menu_shareLink.setVisibility(View.GONE);
+                menu_sharePDF.setVisibility(View.GONE);
+                menu_openWith.setVisibility(View.GONE);
 
-                tv_saveScreenshot.setVisibility(View.GONE);
-                tv_saveBookmark.setVisibility(View.GONE);
-                tv3_menu_save_as.setVisibility(View.GONE);
-                tv_saveStart.setVisibility(View.GONE);
+                menu_saveScreenshot.setVisibility(View.GONE);
+                menu_saveBookmark.setVisibility(View.GONE);
+                menu_savePDF.setVisibility(View.GONE);
+                menu_saveStart.setVisibility(View.GONE);
 
                 floatButton_tabView.setVisibility(View.INVISIBLE);
                 floatButton_saveView.setVisibility(View.INVISIBLE);
                 floatButton_shareView.setVisibility(View.INVISIBLE);
                 floatButton_moreView.setVisibility(View.VISIBLE);
 
-                tv_settings.setVisibility(View.VISIBLE);
-                tv_searchSite.setVisibility(View.VISIBLE);
-                tv_help.setVisibility(View.VISIBLE);
-                tv_download.setVisibility(View.VISIBLE);
+                menu_settings.setVisibility(View.VISIBLE);
+                menu_searchSite.setVisibility(View.VISIBLE);
+                menu_help.setVisibility(View.VISIBLE);
+                menu_download.setVisibility(View.VISIBLE);
 
                 break;
 
@@ -1208,7 +1188,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             @Override
             public boolean onLongClick(View v) {
                 if (currentAlbumController instanceof NinjaWebView) {
-                    showSwitcher();
+                    showFastToogle();
                 }
                 return false;
             }
@@ -1370,14 +1350,14 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             @Override
             public boolean onLongClick(View v) {
                 if (currentAlbumController != null && currentAlbumController instanceof NinjaWebView) {
-                    showSwitcher();
+                    showFastToogle();
                 }
                 return false;
             }
         });
     }
 
-    private void initHomeGrid() {
+    private void initOverview() {
 
         bottomSheetDialog_OverView = new BottomSheetDialog(this);
         View dialogView = View.inflate(this, R.layout.dialog_overiew, null);
@@ -1498,7 +1478,15 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 overview_title.setText(getString(R.string.album_title_bookmarks));
                 overViewTab = getString(R.string.album_title_bookmarks);
                 sp.edit().putString("filter_passBY", "00").apply();
-                initPSList();
+                initBookmarkList();
+            }
+        });
+
+        open_bookmark.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                showFilterDialog();
+                return false;
             }
         });
 
@@ -1586,11 +1574,11 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
                 View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_menu_overview, null);
 
-                tv_settings = dialogView.findViewById(R.id.tv_settings);
-                tv_settings.setOnClickListener(BrowserActivity.this);
+                menu_settings = dialogView.findViewById(R.id.menu_settings);
+                menu_settings.setOnClickListener(BrowserActivity.this);
 
-                tv_quit = dialogView.findViewById(R.id.tv_quit);
-                tv_quit.setOnClickListener(BrowserActivity.this);
+                menu_quit = dialogView.findViewById(R.id.menu_quit);
+                menu_quit.setOnClickListener(BrowserActivity.this);
 
                 LinearLayout tv_relayout = dialogView.findViewById(R.id.tv_relayout);
                 LinearLayout bookmark_sort = dialogView.findViewById(R.id.bookmark_sort);
@@ -1613,113 +1601,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 bookmark_filter.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        bottomSheetDialog.cancel();
-
-                        bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
-                        View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_edit_icon, null);
-
-                        LinearLayout icon_01 = dialogView.findViewById(R.id.icon_01);
-                        icon_01.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                sp.edit().putString("filter_passBY", "01").apply();
-                                initPSList();
-                                bottomSheetDialog.cancel();
-                            }
-                        });
-                        LinearLayout icon_02 = dialogView.findViewById(R.id.icon_02);
-                        icon_02.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                sp.edit().putString("filter_passBY", "02").apply();
-                                initPSList();
-                                bottomSheetDialog.cancel();
-                            }
-                        });
-                        LinearLayout icon_03 = dialogView.findViewById(R.id.icon_03);
-                        icon_03.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                sp.edit().putString("filter_passBY", "03").apply();
-                                initPSList();
-                                bottomSheetDialog.cancel();
-                            }
-                        });
-                        LinearLayout icon_04 = dialogView.findViewById(R.id.icon_04);
-                        icon_04.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                sp.edit().putString("filter_passBY", "04").apply();
-                                initPSList();
-                                bottomSheetDialog.cancel();
-                            }
-                        });
-                        LinearLayout icon_05 = dialogView.findViewById(R.id.icon_05);
-                        icon_05.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                sp.edit().putString("filter_passBY", "05").apply();
-                                initPSList();
-                                bottomSheetDialog.cancel();
-                            }
-                        });
-                        LinearLayout icon_06 = dialogView.findViewById(R.id.icon_06);
-                        icon_06.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                sp.edit().putString("filter_passBY", "06").apply();
-                                initPSList();
-                                bottomSheetDialog.cancel();
-                            }
-                        });
-                        LinearLayout icon_07 = dialogView.findViewById(R.id.icon_07);
-                        icon_07.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                sp.edit().putString("filter_passBY", "07").apply();
-                                initPSList();
-                                bottomSheetDialog.cancel();
-                            }
-                        });
-                        LinearLayout icon_08 = dialogView.findViewById(R.id.icon_08);
-                        icon_08.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                sp.edit().putString("filter_passBY", "08").apply();
-                                initPSList();
-                                bottomSheetDialog.cancel();
-                            }
-                        });
-                        LinearLayout icon_09 = dialogView.findViewById(R.id.icon_09);
-                        icon_09.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                sp.edit().putString("filter_passBY", "09").apply();
-                                initPSList();
-                                bottomSheetDialog.cancel();
-                            }
-                        });
-                        LinearLayout icon_10 = dialogView.findViewById(R.id.icon_10);
-                        icon_10.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                sp.edit().putString("filter_passBY", "10").apply();
-                                initPSList();
-                                bottomSheetDialog.cancel();
-                            }
-                        });
-                        LinearLayout icon_11 = dialogView.findViewById(R.id.icon_11);
-                        icon_11.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                sp.edit().putString("filter_passBY", "11").apply();
-                                initPSList();
-                                bottomSheetDialog.cancel();
-                            }
-                        });
-
-                        bottomSheetDialog.setContentView(dialogView);
-                        bottomSheetDialog.show();
+                        showFilterDialog();
                     }
                 });
 
@@ -1734,7 +1616,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                             @Override
                             public void onClick(View v) {
                                 sp.edit().putString("sortDBB", "title").apply();
-                                initPSList();
+                                initBookmarkList();
                                 bottomSheetDialog.cancel();
                             }
                         });
@@ -1743,7 +1625,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                             @Override
                             public void onClick(View v) {
                                 sp.edit().putString("sortDBB", "icon").apply();
-                                initPSList();
+                                initBookmarkList();
                                 bottomSheetDialog.cancel();
                             }
                         });
@@ -1816,8 +1698,8 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                     }
                 });
 
-                tv_help = dialogView.findViewById(R.id.tv_help);
-                tv_help.setOnClickListener(new View.OnClickListener() {
+                menu_help = dialogView.findViewById(R.id.menu_help);
+                menu_help.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         showHelpDialog();
@@ -1971,9 +1853,9 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
 
 
-    private void initPSList() {
+    private void initBookmarkList() {
 
-        final Pass db = new Pass(this);
+        final BookmarkList db = new BookmarkList(this);
         final Cursor row;
         db.open();
 
@@ -2034,11 +1916,11 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 final String pass_creation = row.getString(row.getColumnIndexOrThrow("pass_creation"));
 
                 bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
-                View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_menu_context, null);
+                View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_menu_context_list, null);
 
-                tv2_menu_newTab = dialogView.findViewById(R.id.tv2_menu_newTab);
-                tv2_menu_newTab.setVisibility(View.VISIBLE);
-                tv2_menu_newTab.setOnClickListener(new View.OnClickListener() {
+                contextList_newTab = dialogView.findViewById(R.id.menu_contextList_newTab);
+                contextList_newTab.setVisibility(View.VISIBLE);
+                contextList_newTab.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         bottomSheetDialog.cancel();
@@ -2048,21 +1930,13 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                     }
                 });
 
-                tv2_menu_newTab_open = dialogView.findViewById(R.id.tv2_menu_newTab_open);
-                tv2_menu_newTab_open.setVisibility(View.VISIBLE);
-                tv2_menu_newTab_open.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        bottomSheetDialog.cancel();
-                        pinAlbums(pass_content);
-                        toast_login (pass_icon, pass_attachment);
-                        hideOverview();
-                    }
-                });
+                contextList_newTabOpen = dialogView.findViewById(R.id.menu_contextList_newTabOpen);
+                contextList_newTabOpen.setVisibility(View.VISIBLE);
+                contextList_newTabOpen.setOnClickListener(BrowserActivity.this);
 
-                tv2_menu_fav = dialogView.findViewById(R.id.tv2_menu_fav);
-                tv2_menu_fav.setVisibility(View.VISIBLE);
-                tv2_menu_fav.setOnClickListener(new View.OnClickListener() {
+                contextList_fav = dialogView.findViewById(R.id.menu_contextList_fav);
+                contextList_fav.setVisibility(View.VISIBLE);
+                contextList_fav.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         bottomSheetDialog.cancel();
@@ -2072,9 +1946,9 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                     }
                 });
 
-                tv2_menu_edit = dialogView.findViewById(R.id.tv2_menu_edit);
-                tv2_menu_edit.setVisibility(View.VISIBLE);
-                tv2_menu_edit.setOnClickListener(new View.OnClickListener() {
+                contextList_edit = dialogView.findViewById(R.id.menu_contextList_edit);
+                contextList_edit.setVisibility(View.VISIBLE);
+                contextList_edit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         bottomSheetDialog.cancel();
@@ -2106,7 +1980,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                         String encrypted_userPW = mahEncryptor.encode(pass_userPWET.getText().toString().trim());
 
                                         db.update(Integer.parseInt(_id), input_pass_title, pass_content, encrypted_userName, encrypted_userPW, pass_creation);
-                                        initPSList();
+                                        initBookmarkList();
                                         hideSoftInput(pass_titleET);
                                         NinjaToast.show(BrowserActivity.this, R.string.toast_edit_successful);
 
@@ -2142,7 +2016,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                         @Override
                                         public void onClick(View v) {
                                             db.update(Integer.parseInt(_id), pass_title, pass_content, pass_icon, pass_attachment, "01");
-                                            initPSList();
+                                            initBookmarkList();
                                             bottomSheetDialog.cancel();
                                         }
                                     });
@@ -2151,7 +2025,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                         @Override
                                         public void onClick(View v) {
                                             db.update(Integer.parseInt(_id), pass_title, pass_content, pass_icon, pass_attachment, "02");
-                                            initPSList();
+                                            initBookmarkList();
                                             bottomSheetDialog.cancel();
                                         }
                                     });
@@ -2160,7 +2034,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                         @Override
                                         public void onClick(View v) {
                                             db.update(Integer.parseInt(_id), pass_title, pass_content, pass_icon, pass_attachment, "03");
-                                            initPSList();
+                                            initBookmarkList();
                                             bottomSheetDialog.cancel();
                                         }
                                     });
@@ -2169,7 +2043,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                         @Override
                                         public void onClick(View v) {
                                             db.update(Integer.parseInt(_id), pass_title, pass_content, pass_icon, pass_attachment, "04");
-                                            initPSList();
+                                            initBookmarkList();
                                             bottomSheetDialog.cancel();
                                         }
                                     });
@@ -2178,7 +2052,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                         @Override
                                         public void onClick(View v) {
                                             db.update(Integer.parseInt(_id), pass_title, pass_content, pass_icon, pass_attachment, "05");
-                                            initPSList();
+                                            initBookmarkList();
                                             bottomSheetDialog.cancel();
                                         }
                                     });
@@ -2187,7 +2061,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                         @Override
                                         public void onClick(View v) {
                                             db.update(Integer.parseInt(_id), pass_title, pass_content, pass_icon, pass_attachment, "06");
-                                            initPSList();
+                                            initBookmarkList();
                                             bottomSheetDialog.cancel();
                                         }
                                     });
@@ -2196,7 +2070,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                         @Override
                                         public void onClick(View v) {
                                             db.update(Integer.parseInt(_id), pass_title, pass_content, pass_icon, pass_attachment, "07");
-                                            initPSList();
+                                            initBookmarkList();
                                             bottomSheetDialog.cancel();
                                         }
                                     });
@@ -2205,7 +2079,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                         @Override
                                         public void onClick(View v) {
                                             db.update(Integer.parseInt(_id), pass_title, pass_content, pass_icon, pass_attachment, "08");
-                                            initPSList();
+                                            initBookmarkList();
                                             bottomSheetDialog.cancel();
                                         }
                                     });
@@ -2214,7 +2088,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                         @Override
                                         public void onClick(View v) {
                                             db.update(Integer.parseInt(_id), pass_title, pass_content, pass_icon, pass_attachment, "09");
-                                            initPSList();
+                                            initBookmarkList();
                                             bottomSheetDialog.cancel();
                                         }
                                     });
@@ -2223,7 +2097,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                         @Override
                                         public void onClick(View v) {
                                             db.update(Integer.parseInt(_id), pass_title, pass_content, pass_icon, pass_attachment, "10");
-                                            initPSList();
+                                            initBookmarkList();
                                             bottomSheetDialog.cancel();
                                         }
                                     });
@@ -2232,7 +2106,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                         @Override
                                         public void onClick(View v) {
                                             db.update(Integer.parseInt(_id), pass_title, pass_content, pass_icon, pass_attachment, "11");
-                                            initPSList();
+                                            initBookmarkList();
                                             bottomSheetDialog.cancel();
                                         }
                                     });
@@ -2249,9 +2123,9 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                     }
                 });
 
-                tv2_menu_delete = dialogView.findViewById(R.id.tv2_menu_delete);
-                tv2_menu_delete.setVisibility(View.VISIBLE);
-                tv2_menu_delete.setOnClickListener(new View.OnClickListener() {
+                contextList_delete = dialogView.findViewById(R.id.menu_contextList_delete);
+                contextList_delete.setVisibility(View.VISIBLE);
+                contextList_delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         bottomSheetDialog.cancel();
@@ -2264,7 +2138,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                             @Override
                             public void onClick(View view) {
                                 db.delete(Integer.parseInt(_id));
-                                initPSList();
+                                initBookmarkList();
                                 bottomSheetDialog.cancel();
                             }
                         });
@@ -2285,10 +2159,9 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 return true;
             }
         });
-
     }
 
-    private void showSwitcher () {
+    private void showFastToogle() {
 
         bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
         View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_toggle, null);
@@ -2367,10 +2240,8 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
                     sp.edit().putBoolean(getString(R.string.sp_javascript), true).commit();
-                    IntentUnit.setSPChange(true);
                 }else{
                     sp.edit().putBoolean(getString(R.string.sp_javascript), false).commit();
-                    IntentUnit.setSPChange(true);
                 }
 
             }
@@ -2406,10 +2277,8 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
                     sp.edit().putBoolean(getString(R.string.sp_ad_block), true).commit();
-                    IntentUnit.setSPChange(true);
                 }else{
                     sp.edit().putBoolean(getString(R.string.sp_ad_block), false).commit();
-                    IntentUnit.setSPChange(true);
                 }
             }
         });
@@ -2460,10 +2329,8 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                          boolean isChecked) {
                 if(isChecked){
                     sp.edit().putBoolean(getString(R.string.sp_cookies), true).commit();
-                    IntentUnit.setSPChange(true);
                 }else{
                     sp.edit().putBoolean(getString(R.string.sp_cookies), false).commit();
-                    IntentUnit.setSPChange(false);
                 }
             }
         });
@@ -2496,10 +2363,8 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
                     sp.edit().putBoolean(getString(R.string.sp_location), true).commit();
-                    IntentUnit.setSPChange(true);
                 }else{
                     sp.edit().putBoolean(getString(R.string.sp_location), false).commit();
-                    IntentUnit.setSPChange(true);
                 }
             }
         });
@@ -3004,31 +2869,20 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
     @Override
     public void onLongPress(String url) {
+
         WebView.HitTestResult result;
-        if (!(currentAlbumController instanceof NinjaWebView)) {
-            return;
-        }
         result = ((NinjaWebView) currentAlbumController).getHitTestResult();
 
         bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
-        View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_menu_link, null);
-
-        if (url != null || (result != null && result.getExtra() != null)) {
-            if (url == null) {
-                url = result.getExtra();
-            }
-            bottomSheetDialog.setContentView(dialogView);
-            bottomSheetDialog.show();
-        }
+        View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_menu_context_link, null);
 
         final String target = url;
 
-        TextView tv_title = dialogView.findViewById(R.id.dialog_title);
-        tv_title.setText(url);
+        dialogTitle = dialogView.findViewById(R.id.dialog_title);
+        dialogTitle.setText(url);
 
-        LinearLayout tv3_main_menu_new_tab = dialogView.findViewById(R.id.tv3_main_menu_new_tab);
-        tv3_main_menu_new_tab.setVisibility(View.VISIBLE);
-        tv3_main_menu_new_tab.setOnClickListener(new View.OnClickListener() {
+        LinearLayout contextLink_newTab = dialogView.findViewById(R.id.contextLink_newTab);
+        contextLink_newTab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addAlbum(getString(R.string.album_untitled), target, false);
@@ -3037,9 +2891,8 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             }
         });
 
-        LinearLayout tv3_main_menu_share_link = dialogView.findViewById(R.id.tv3_main_menu_share_link);
-        tv3_main_menu_share_link.setVisibility(View.VISIBLE);
-        tv3_main_menu_share_link.setOnClickListener(new View.OnClickListener() {
+        LinearLayout contextLink__shareLink = dialogView.findViewById(R.id.contextLink__shareLink);
+        contextLink__shareLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (prepareRecord()) {
@@ -3051,9 +2904,8 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             }
         });
 
-        LinearLayout tv3_main_menu_open_link = dialogView.findViewById(R.id.tv3_main_menu_open_link);
-        tv3_main_menu_open_link.setVisibility(View.VISIBLE);
-        tv3_main_menu_open_link.setOnClickListener(new View.OnClickListener() {
+        LinearLayout contextLink_openWith = dialogView.findViewById(R.id.contextLink_openWith);
+        contextLink_openWith.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -3064,22 +2916,22 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             }
         });
 
-        LinearLayout tv3_main_menu_new_tabOpen = dialogView.findViewById(R.id.tv3_main_menu_new_tabOpen);
-        tv3_main_menu_new_tabOpen.setVisibility(View.VISIBLE);
-        tv3_main_menu_new_tabOpen.setOnClickListener(new View.OnClickListener() {
+        LinearLayout contextLink_newTabOpen = dialogView.findViewById(R.id.contextLink_newTabOpen);
+        contextLink_newTabOpen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pinAlbums(target);
+                addAlbum(getString(R.string.album_untitled), target, true);
                 bottomSheetDialog.cancel();
             }
         });
 
-        tv3_menu_save_as = dialogView.findViewById(R.id.tv3_menu_save_as);
-        tv3_menu_save_as.setVisibility(View.VISIBLE);
-        tv3_menu_save_as.setOnClickListener(new View.OnClickListener() {
+        LinearLayout contextLink_saveAs = dialogView.findViewById(R.id.contextLink_saveAs);
+        contextLink_saveAs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
+
+                    bottomSheetDialog.cancel();
                     assert target != null;
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(BrowserActivity.this);
@@ -3146,13 +2998,17 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                     AlertDialog dialog = builder.create();
                     dialog.show();
                     showSoftInput(editTitle);
-                    bottomSheetDialog.cancel();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
             }
         });
+
+        if (url != null || (result != null && result.getExtra() != null)) {
+            bottomSheetDialog.setContentView(dialogView);
+            bottomSheetDialog.show();
+        }
     }
 
     private void doubleTapsQuit() {
@@ -3278,7 +3134,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         }
     }
 
-    @SuppressWarnings("SameReturnValue")
     private boolean showOverflow() {
 
         bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
@@ -3310,41 +3165,41 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         dialogTitle = dialogView.findViewById(R.id.dialog_title);
 
-        tv_new_tabOpen = dialogView.findViewById(R.id.tv_new_tabOpen);
-        tv_new_tabOpen.setOnClickListener(BrowserActivity.this);
-        tv_closeTab = dialogView.findViewById(R.id.tv_closeTab);
-        tv_closeTab.setOnClickListener(BrowserActivity.this);
-        tv_tabPreview = dialogView.findViewById(R.id.tv_tabPreview);
-        tv_tabPreview.setOnClickListener(BrowserActivity.this);
-        tv_quit = dialogView.findViewById(R.id.tv_quit);
-        tv_quit.setOnClickListener(BrowserActivity.this);
+        menu_newTabOpen = dialogView.findViewById(R.id.menu_newTabOpen);
+        menu_newTabOpen.setOnClickListener(BrowserActivity.this);
+        menu_closeTab = dialogView.findViewById(R.id.menu_closeTab);
+        menu_closeTab.setOnClickListener(BrowserActivity.this);
+        menu_tabPreview = dialogView.findViewById(R.id.menu_tabPreview);
+        menu_tabPreview.setOnClickListener(BrowserActivity.this);
+        menu_quit = dialogView.findViewById(R.id.menu_quit);
+        menu_quit.setOnClickListener(BrowserActivity.this);
 
-        tv_shareScreenshot = dialogView.findViewById(R.id.tv_shareScreenshot);
-        tv_shareScreenshot.setOnClickListener(BrowserActivity.this);
-        tv_shareLink = dialogView.findViewById(R.id.tv_shareLink);
-        tv_shareLink.setOnClickListener(BrowserActivity.this);
-        tv_menu_save_as = dialogView.findViewById(R.id.tv_menu_save_as);
-        tv_menu_save_as.setOnClickListener(BrowserActivity.this);
-        tv_openWith = dialogView.findViewById(R.id.tv_openWith);
-        tv_openWith.setOnClickListener(BrowserActivity.this);
+        menu_shareScreenshot = dialogView.findViewById(R.id.menu_shareScreenshot);
+        menu_shareScreenshot.setOnClickListener(BrowserActivity.this);
+        menu_shareLink = dialogView.findViewById(R.id.menu_shareLink);
+        menu_shareLink.setOnClickListener(BrowserActivity.this);
+        menu_sharePDF = dialogView.findViewById(R.id.menu_sharePDF);
+        menu_sharePDF.setOnClickListener(BrowserActivity.this);
+        menu_openWith = dialogView.findViewById(R.id.menu_openWith);
+        menu_openWith.setOnClickListener(BrowserActivity.this);
 
-        tv_saveScreenshot = dialogView.findViewById(R.id.tv_saveScreenshot);
-        tv_saveScreenshot.setOnClickListener(BrowserActivity.this);
-        tv_saveBookmark = dialogView.findViewById(R.id.tv_saveBookmark);
-        tv_saveBookmark.setOnClickListener(BrowserActivity.this);
-        tv3_menu_save_as = dialogView.findViewById(R.id.tv3_menu_save_as);
-        tv3_menu_save_as.setOnClickListener(BrowserActivity.this);
-        tv_saveStart = dialogView.findViewById(R.id.tv_saveStart);
-        tv_saveStart.setOnClickListener(BrowserActivity.this);
+        menu_saveScreenshot = dialogView.findViewById(R.id.menu_saveScreenshot);
+        menu_saveScreenshot.setOnClickListener(BrowserActivity.this);
+        menu_saveBookmark = dialogView.findViewById(R.id.menu_saveBookmark);
+        menu_saveBookmark.setOnClickListener(BrowserActivity.this);
+        menu_savePDF = dialogView.findViewById(R.id.contextLink_saveAs);
+        menu_savePDF.setOnClickListener(BrowserActivity.this);
+        menu_saveStart = dialogView.findViewById(R.id.menu_saveStart);
+        menu_saveStart.setOnClickListener(BrowserActivity.this);
 
-        tv_searchSite = dialogView.findViewById(R.id.tv_searchSite);
-        tv_searchSite.setOnClickListener(BrowserActivity.this);
-        tv_settings = dialogView.findViewById(R.id.tv_settings);
-        tv_settings.setOnClickListener(BrowserActivity.this);
-        tv_download = dialogView.findViewById(R.id.tv_download);
-        tv_download.setOnClickListener(BrowserActivity.this);
-        tv_help = dialogView.findViewById(R.id.tv_help);
-        tv_help.setOnClickListener(BrowserActivity.this);
+        menu_searchSite = dialogView.findViewById(R.id.menu_searchSite);
+        menu_searchSite.setOnClickListener(BrowserActivity.this);
+        menu_settings = dialogView.findViewById(R.id.menu_settings);
+        menu_settings.setOnClickListener(BrowserActivity.this);
+        menu_download = dialogView.findViewById(R.id.menu_download);
+        menu_download.setOnClickListener(BrowserActivity.this);
+        menu_help = dialogView.findViewById(R.id.menu_help);
+        menu_help.setOnClickListener(BrowserActivity.this);
 
         updateOverflow();
 
@@ -3357,11 +3212,11 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     private void showGridMenu(final GridItem gridItem) {
 
         bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
-        View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_menu_context, null);
+        View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_menu_context_list, null);
 
-        tv2_menu_newTab = dialogView.findViewById(R.id.tv2_menu_newTab);
-        tv2_menu_newTab.setVisibility(View.VISIBLE);
-        tv2_menu_newTab.setOnClickListener(new View.OnClickListener() {
+        contextList_newTab = dialogView.findViewById(R.id.menu_contextList_newTab);
+        contextList_newTab.setVisibility(View.VISIBLE);
+        contextList_newTab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addAlbum(getString(R.string.album_untitled), gridItem.getURL(), false);
@@ -3370,20 +3225,13 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             }
         });
 
-        tv2_menu_newTab_open = dialogView.findViewById(R.id.tv2_menu_newTab_open);
-        tv2_menu_newTab_open.setVisibility(View.VISIBLE);
-        tv2_menu_newTab_open.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pinAlbums(gridItem.getURL());
-                bottomSheetDialog.cancel();
-                hideOverview();
-            }
-        });
+        contextList_newTabOpen = dialogView.findViewById(R.id.menu_contextList_newTabOpen);
+        contextList_newTabOpen.setVisibility(View.VISIBLE);
+        contextList_newTabOpen.setOnClickListener(BrowserActivity.this);
 
-        tv2_menu_delete = dialogView.findViewById(R.id.tv2_menu_delete);
-        tv2_menu_delete.setVisibility(View.VISIBLE);
-        tv2_menu_delete.setOnClickListener(new View.OnClickListener() {
+        contextList_delete = dialogView.findViewById(R.id.menu_contextList_delete);
+        contextList_delete.setVisibility(View.VISIBLE);
+        contextList_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 bottomSheetDialog.cancel();
@@ -3416,9 +3264,9 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             }
         });
 
-        tv2_menu_edit = dialogView.findViewById(R.id.tv2_menu_edit);
-        tv2_menu_edit.setVisibility(View.VISIBLE);
-        tv2_menu_edit.setOnClickListener(new View.OnClickListener() {
+        contextList_edit = dialogView.findViewById(R.id.menu_contextList_edit);
+        contextList_edit.setVisibility(View.VISIBLE);
+        contextList_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 bottomSheetDialog.cancel();
@@ -3473,33 +3321,19 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         final Record record = recordList.get(location);
 
         bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
-        View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_menu_context, null);
+        View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_menu_context_list, null);
 
-        tv2_menu_newTab = dialogView.findViewById(R.id.tv2_menu_newTab);
-        tv2_menu_newTab.setVisibility(View.VISIBLE);
-        tv2_menu_newTab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addAlbum(getString(R.string.album_untitled), record.getURL(), false);
-                NinjaToast.show(BrowserActivity.this, getString(R.string.toast_new_tab_successful));
-                bottomSheetDialog.cancel();
-            }
-        });
+        contextList_newTab = dialogView.findViewById(R.id.menu_contextList_newTab);
+        contextList_newTab.setVisibility(View.VISIBLE);
+        contextList_newTab.setOnClickListener(BrowserActivity.this);
 
-        tv2_menu_newTab_open = dialogView.findViewById(R.id.tv2_menu_newTab_open);
-        tv2_menu_newTab_open.setVisibility(View.VISIBLE);
-        tv2_menu_newTab_open.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pinAlbums(record.getURL());
-                bottomSheetDialog.cancel();
-                hideOverview();
-            }
-        });
+        contextList_newTabOpen = dialogView.findViewById(R.id.menu_contextList_newTabOpen);
+        contextList_newTabOpen.setVisibility(View.VISIBLE);
+        contextList_newTabOpen.setOnClickListener(BrowserActivity.this);
 
-        tv2_menu_delete = dialogView.findViewById(R.id.tv2_menu_delete);
-        tv2_menu_delete.setVisibility(View.VISIBLE);
-        tv2_menu_delete.setOnClickListener(new View.OnClickListener() {
+        contextList_delete = dialogView.findViewById(R.id.menu_contextList_delete);
+        contextList_delete.setVisibility(View.VISIBLE);
+        contextList_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 bottomSheetDialog.cancel();
@@ -3537,15 +3371,15 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             }
         });
 
-        tv2_menu_edit = dialogView.findViewById(R.id.tv2_menu_edit);
-        tv2_menu_fav = dialogView.findViewById(R.id.tv2_menu_fav);
+        contextList_edit = dialogView.findViewById(R.id.menu_contextList_edit);
+        contextList_fav = dialogView.findViewById(R.id.menu_contextList_fav);
 
         if (overViewTab.equals(getString(R.string.album_title_bookmarks))) {
-            tv2_menu_fav.setVisibility(View.VISIBLE);
-            tv2_menu_edit.setVisibility(View.VISIBLE);
+            contextList_fav.setVisibility(View.VISIBLE);
+            contextList_edit.setVisibility(View.VISIBLE);
         } else {
-            tv2_menu_fav.setVisibility(View.GONE);
-            tv2_menu_edit.setVisibility(View.GONE);
+            contextList_fav.setVisibility(View.GONE);
+            contextList_edit.setVisibility(View.GONE);
         }
 
 
@@ -3554,8 +3388,121 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         bottomSheetDialog.show();
     }
 
+    private void showFilterDialog () {
+        if (bottomSheetDialog != null) {
+            bottomSheetDialog.cancel();
+        }
+
+        bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
+        View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_edit_icon, null);
+
+        LinearLayout icon_01 = dialogView.findViewById(R.id.icon_01);
+        icon_01.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sp.edit().putString("filter_passBY", "01").apply();
+                initBookmarkList();
+                bottomSheetDialog.cancel();
+            }
+        });
+        LinearLayout icon_02 = dialogView.findViewById(R.id.icon_02);
+        icon_02.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sp.edit().putString("filter_passBY", "02").apply();
+                initBookmarkList();
+                bottomSheetDialog.cancel();
+            }
+        });
+        LinearLayout icon_03 = dialogView.findViewById(R.id.icon_03);
+        icon_03.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sp.edit().putString("filter_passBY", "03").apply();
+                initBookmarkList();
+                bottomSheetDialog.cancel();
+            }
+        });
+        LinearLayout icon_04 = dialogView.findViewById(R.id.icon_04);
+        icon_04.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sp.edit().putString("filter_passBY", "04").apply();
+                initBookmarkList();
+                bottomSheetDialog.cancel();
+            }
+        });
+        LinearLayout icon_05 = dialogView.findViewById(R.id.icon_05);
+        icon_05.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sp.edit().putString("filter_passBY", "05").apply();
+                initBookmarkList();
+                bottomSheetDialog.cancel();
+            }
+        });
+        LinearLayout icon_06 = dialogView.findViewById(R.id.icon_06);
+        icon_06.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sp.edit().putString("filter_passBY", "06").apply();
+                initBookmarkList();
+                bottomSheetDialog.cancel();
+            }
+        });
+        LinearLayout icon_07 = dialogView.findViewById(R.id.icon_07);
+        icon_07.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sp.edit().putString("filter_passBY", "07").apply();
+                initBookmarkList();
+                bottomSheetDialog.cancel();
+            }
+        });
+        LinearLayout icon_08 = dialogView.findViewById(R.id.icon_08);
+        icon_08.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sp.edit().putString("filter_passBY", "08").apply();
+                initBookmarkList();
+                bottomSheetDialog.cancel();
+            }
+        });
+        LinearLayout icon_09 = dialogView.findViewById(R.id.icon_09);
+        icon_09.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sp.edit().putString("filter_passBY", "09").apply();
+                initBookmarkList();
+                bottomSheetDialog.cancel();
+            }
+        });
+        LinearLayout icon_10 = dialogView.findViewById(R.id.icon_10);
+        icon_10.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sp.edit().putString("filter_passBY", "10").apply();
+                initBookmarkList();
+                bottomSheetDialog.cancel();
+            }
+        });
+        LinearLayout icon_11 = dialogView.findViewById(R.id.icon_11);
+        icon_11.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sp.edit().putString("filter_passBY", "11").apply();
+                initBookmarkList();
+                bottomSheetDialog.cancel();
+            }
+        });
+
+        bottomSheetDialog.setContentView(dialogView);
+        bottomSheetDialog.show();
+    }
+
     private void showHelpDialog () {
 
+        bottomSheetDialog.cancel();
         bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
         View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_help, null);
 
@@ -3568,7 +3515,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         help_not.setImageResource(R.drawable.help_not);
         help_nav.setImageResource(R.drawable.help_nav);
-        help_set.setImageResource(R.drawable.help_settings);
+        help_set.setImageResource(R.drawable.help_set);
         help_start.setImageResource(R.drawable.help_start);
         help_menu.setImageResource(R.drawable.help_menu);
         help_fastToggle.setImageResource(R.drawable.help_toggle);

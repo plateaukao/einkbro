@@ -122,7 +122,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/tv_settings"
+        android:id="@+id/menu_settings"
         android:layout_width="match_parent"
         android:layout_height="46dp"
         android:minHeight="46dp"
@@ -150,7 +150,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/tv_help"
+        android:id="@+id/menu_help"
         android:layout_width="match_parent"
         android:layout_height="46dp"
         android:minHeight="46dp"
@@ -178,7 +178,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/tv_quit"
+        android:id="@+id/menu_quit"
         android:layout_width="match_parent"
         android:layout_height="46dp"
         android:minHeight="46dp"

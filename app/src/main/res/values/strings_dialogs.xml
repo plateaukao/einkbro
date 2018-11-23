@@ -28,7 +28,7 @@
         \n \u25AA Swipe up/down     \u2192  scroll to top/bottom;
         \n \u25AA Swipe left/right  \u2192  navigate back/forward;
         \n \u25AA Tap               \u2192  open the menu;
-        \n \u25AA Long press        \u2192  open \"Fast toggle dialog\
+        \n \u25AA Long press        \u2192  open \"Fast toggle dialog\"
         \n You can configure gestures in the settings.
 
     </string>
@@ -46,14 +46,6 @@
     <string name="not_title">Notifications</string>
     <string name="not_dialog">Notifications are displayed on the bottom of the screen. They can also be dismissed like the
         menus.</string>
-
-    <string name="nav_title">Navigation</string>
-    <string name="nav_dialog">Use the \"Navigation Button\":
-        \n \u25AA Swipe up/down     \u2192  scroll to top/bottom;
-        \n \u25AA Swipe left/right  \u2192  navigate back/forward;
-        \n \u25AA Tap               \u2192  open the menu;
-        \n \u25AA Long press        \u2192  open \"Fast toggle dialog\";
-        \n \u25AA Double tap        \u2192  Hide the \"Navigation Button\"</string>
 
     <string name="settings_dialog">There are even more options in the settings. Try it out!</string>
 

@@ -36,7 +36,6 @@ class Album {
     }
 
     private final AlbumController albumController;
-    private ImageView albumClose;
 
     private BrowserController browserController;
     public void setBrowserController(BrowserController browserController) {
@@ -62,7 +61,7 @@ class Album {
             }
         });
 
-        albumClose = albumView.findViewById(R.id.album_close);
+        ImageView albumClose = albumView.findViewById(R.id.album_close);
         albumCover = albumView.findViewById(R.id.album_cover);
         albumTitle = albumView.findViewById(R.id.album_title);
         albumTitle.setText(context.getString(R.string.album_untitled));

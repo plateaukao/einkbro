@@ -6,7 +6,6 @@
     <string name="app_name">浏览器</string>
     <string name="app_ok">确定</string>
     <string name="app_cancel">取消</string>
-    <string name="app_close">关闭</string>
     <string name="list_empty">当前列表为空</string>
     <string name="album_title_bookmarks">书签</string>
     <string name="album_title_history">历史</string>
@@ -22,7 +21,6 @@
     <string name="main_menu_tabPreview">管理标签页</string>
     <string name="main_menu_new_tab">在后台打开新标签</string>
     <string name="main_menu_new_tabOpen">在前台打开新标签</string>
-    <string name="main_menu_copy_link">复制链接</string>
     <string name="main_omnibox_input_hint">搜索或输入网址</string>
     <string name="menu_open_with">用其他软件打开链接</string>
 
@@ -31,7 +29,6 @@
     <string name="menu_delete">删除</string>
     <string name="menu_delete_list">删除列表</string>
     <string name="menu_edit">编辑</string>
-    <string name="menu_notification">通知</string>
     <string name="menu_closeTab">关闭标签</string>
     <string name="menu_download">打开下载管理</string>
 
@@ -40,7 +37,6 @@
 
     <string name="menu_save_screenshot">保存到截图</string>
     <string name="menu_save_home">保存到主页</string>
-    <string name="menu_save_login">保存登录信息</string>
     <string name="menu_save_bookmark">保存到书签</string>
     <string name="menu_save_as">保存为 …</string>
     <string name="menu_save_pdf">保存到PDF</string>
@@ -151,8 +147,6 @@
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">隐藏工具栏</string>
     <string name="setting_summary_hide">滚动页面的时候进入全屏模式，按返回键退出全屏。</string>
-    <string name="setting_title_omnibox_control">搜索框控制</string>
-    <string name="setting_summary_omnibox_control">左右滑动搜索框切换标签页</string>
     <string name="setting_title_background">打开链接</string>
     <string name="setting_summary_background">在后台打开标签并显示一个通知         如果禁用链接会直接在前台打开。</string>
     <string name="setting_title_themeDark">亮色主题</string>
@@ -177,7 +171,6 @@
     <string name="setting_title_confirm_tab_close">关闭标签确认</string>
     <string name="setting_summary_confirm_tab_close">关闭标签时弹出对话框确认。</string>
 
-    <string name="setting_title_toolbar">工具条</string>
     <string name="setting_hide_always">总是隐藏</string>
     <string name="setting_hide_down">下拉页面时隐藏</string>
     <string name="setting_hide_never">不隐藏</string>
@@ -221,7 +214,6 @@
     <string name="setting_summary_changelog">显示当前版本有什么新变化。</string>
 
     <!-- Toast -->
-    <string name="toast_add_bookmark_successful">书签添加成功</string>
     <string name="toast_add_to_home_successful">添加到主页成功</string>
     <string name="toast_add_to_home_failed">添加到主页失败</string>
     <string name="toast_add_whitelist_successful">Successfully added Domain</string>
@@ -252,7 +244,6 @@
     <string name="toast_newTitle">已经存在了，换个名字吧</string>
     <string name="toast_edit_successful">保存成功</string>
     <string name="toast_webview_forward">无法加载下个网页</string>
-    <string name="toast_entry_exists">已经存在</string>
     <string name="toast_clear">你真的想清理么？</string>
     <string name="toast_permission_title">需要授权</string>
     <string name="toast_permission_sdCard">\"Browser\" needs the permission to \"read and write on your storage\". This is needed for     downloading files, the build in file manager and taking screenshots. If you don\'t grant the permission yet, you can do it     later in the settings.</string>

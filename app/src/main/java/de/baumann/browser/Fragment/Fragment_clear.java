@@ -52,6 +52,7 @@ public class Fragment_clear extends PreferenceFragment implements SharedPreferen
                     public void onClick(View view) {
                         dialog.cancel();
                         getActivity().deleteDatabase("Ninja4.db");
+                        getActivity().deleteDatabase("pass_DB_v01.db");
                         sp.edit().putInt("restart_changed", 1).apply();
                         getActivity().finish();
                     }

@@ -6,7 +6,6 @@
     <string name="app_name">FOSS Browser</string>
     <string name="app_ok">OK</string>
     <string name="app_cancel">Abbrechen</string>
-    <string name="app_close">Schließen</string>
     <string name="list_empty">Liste ist leer</string>
     <string name="album_title_bookmarks">Lesezeichen</string>
     <string name="album_title_history">Verlauf</string>
@@ -35,7 +34,6 @@
     <string name="main_menu_tabPreview">Öffne Tabvorschau</string>
     <string name="main_menu_new_tab">Neuer Tab (Hintergrund)</string>
     <string name="main_menu_new_tabOpen">Neuer Tab (Vordergrund)</string>
-    <string name="main_menu_copy_link">Link kopieren</string>
     <string name="main_omnibox_input_hint">Suchen oder URL eingeben</string>
 
     <string name="menu_share">Teilen</string>
@@ -43,7 +41,6 @@
     <string name="menu_delete">Löschen</string>
     <string name="menu_delete_list">Liste löschen</string>
     <string name="menu_edit">Bearbeiten</string>
-    <string name="menu_notification">Benachrichtigung</string>
     <string name="menu_closeTab">Tab schließen</string>
     <string name="menu_open_with">Link öffnen mit …</string>
     <string name="menu_download">Öffne Downloads</string>
@@ -56,7 +53,6 @@
 
     <string name="menu_save_screenshot">Bildschirmfoto speichern</string>
     <string name="menu_save_home">Speichere auf Startseite</string>
-    <string name="menu_save_login">Logindaten speichern</string>
     <string name="menu_save_bookmark">Speichere als Lesezeichen</string>
     <string name="menu_save_as">Speichere als …</string>
     <string name="menu_save_pdf">PDF speichern</string>
@@ -84,6 +80,10 @@
 
     <string name="dialog_sortName">Sortiere nach Namen</string>
     <string name="dialog_sortIcon">Sortiere nach Icon</string>
+
+    <string name="dialog_icon_title">Wähle ein Icon …</string>
+    <string name="dialog_icon_hint">Du kannst deine Lesezeichen auch schnell filtern, indem du lange auf das
+        Lesezeichen-Icon drückst. Um wieder alle Lesezeichen anzuzeigen, einfach das Icon noch einmal drücken.</string>
 
     <!-- Settings -->
     <string name="setting_label">Einstellungen</string>
@@ -181,8 +181,6 @@
     <string name="setting_title_hideToolbar">Toolbar verstecken</string>
     <string name="setting_summary_hide">Benutze den ganzen Bildschirm, wenn du durch Internetseiten scrollst. Wenn du die
         \"Zurücktaste\" drückst, verlässt du den Vollbildmodus.</string>
-    <string name="setting_title_omnibox_control">Toolbar Kontrolle</string>
-    <string name="setting_summary_omnibox_control">Wische auf der Toolbar nach recht/links, um die Tabs zu wechseln.</string>
     <string name="setting_title_background">Links öffnen</string>
     <string name="setting_summary_background">Zeige eine Benachrichtigung und öffne Links im Hintergrund. Wenn dies nicht aktiviert
         ist, öffnen sich Links sofort.</string>
@@ -197,7 +195,6 @@
     <string name="setting_title_confirm_tab_close">Bestätigung Tab schließen</string>
     <string name="setting_summary_confirm_tab_close">Bestätigungsdialog, bevor ein Tab geschlossen wird.</string>
 
-    <string name="setting_title_toolbar">Toolbar</string>
     <string name="setting_hide_always">Immer verstecken</string>
     <string name="setting_hide_down">Nur beim runter scrollen</string>
     <string name="setting_hide_never">Nie verstecken</string>
@@ -219,9 +216,8 @@
     <string name="setting_overView">Übersicht</string>
     <string name="setting_overView_onStart_title">Zeige beim Appstart</string>
     <string name="setting_overView_onStart_summary">Öffne als erstes die \"Übersicht\" bei jedem Appstart.</string>
-    <string name="setting_overView_tab_title">Tab</string>
-    <string name="setting_overView_tab_summary">Welcher Tab soll beim öffnen der \"Übersicht\" angezeigt werden?</string>
 
+    <string name="setting_close">Schließen Bestätigung</string>
     <string name="setting_gestures">Gesten</string>
     <string name="setting_gestures_use_title">Benutze Gesten</string>
     <string name="setting_gestures_use_summary">Benutze Gesten auf der Toolbar oder dem \"Navigationsknopf\".</string>
@@ -251,7 +247,7 @@
     <string name="setting_title_export_database">Datenbank sichern</string>
     <string name="setting_title_import_database">Datenbank wiederherstellen</string>
     <string name="setting_summary_export_database">Sichere alle Anwendungsdaten (Startseite + Vorschaubilder, Lesezeichen,
-        Verlauf) auf deine SD-Karte. Logindaten werden nicht gesichert.</string>
+        Verlauf) auf deine SD-Karte.</string>
     <string name="title_database">Datenbank</string>
     <string name="hint_database">Dies löscht alle aktuellen Daten. Willst du fortfahren?</string>
 
@@ -269,7 +265,6 @@
     <string name="setting_summary_changelog">Sehe dir eine Liste der letzten Änderungen an, um zu erfahren, was es neues gibt.</string>
 
     <!-- Toast -->
-    <string name="toast_add_bookmark_successful">Lesezeichen erfolgreich hinzugefügt</string>
     <string name="toast_add_to_home_successful">Erfolgreich zum Startschirm hinzugefügt</string>
     <string name="toast_add_to_home_failed">Konnte nicht zum Startschirm hinzugefügt werden</string>
     <string name="toast_add_whitelist_successful">Domain erfolgreich hinzugefügt</string>
@@ -300,7 +295,6 @@
     <string name="toast_newTitle">Eintrag existiert schon. Bitte wähle einen anderen Titel.</string>
     <string name="toast_edit_successful">Erfolgreich gespeichert</string>
     <string name="toast_webview_forward">Kann keine nächste Seite laden</string>
-    <string name="toast_entry_exists">Eintrag existiert bereits.</string>
     <string name="toast_clear">Möchtest du die Daten wirklich löschen?</string>
     <string name="toast_permission_title">Berechtigung wird gebraucht</string>
     <string name="toast_permission_sdCard">\"FOSS Browser\" braucht die Berechtigung \"Zugriff auf den Gerärtespeicher\". Dies ist

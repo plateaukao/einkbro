@@ -5,26 +5,14 @@
     <string name="changelog_title">Cambios</string>
 
 
-    <string name="startpage_title">Página de inicio</string>
-    <string name="startpage_dialog">Aquí puede acceder a todos sus datos: sitios guardados en el página de inicio, marcadores, historial, datos de inicio de sesión guardados y el explorador de archivos integrado. En la configuración puede decidir qué contenido se mostrará en el inicio.</string>
-
     <string name="fastToggle_title">Anternar rápida</string>
     <string name="fastToggle_dialog">Si pulsa el botón \"MENU\" o \"navegación\" se abrirá el \"diálogo de anternar rápida\". Aquí puede cambiar algunos ajustes importantes sin salir del sitio web actual. También puede Agregar sitios web a su lista blanca para AdBlocker, JavaScript o cookies..</string>
-
-    <string name="toolbar_title">Barra de herramientas</string>
-    <string name="toolbar_dialog">En la parte inferior de la pantalla tienes la barra de herramientas. Puede introducir URLs o buscar algo, volver a cargar el sitio web y abrir el menú. Haga clic en el botón \"MENU\" para abrir el menú \"anternar rápida\".         Deslice la barra de herramientas hacia arriba para abrir la vista previa de pestañas. Para cambiar entre las pestañas deslizar izquierda o derecha.</string>
-
-    <string name="tab_title">Vista previa de la pestaña</string>
-    <string name="tab_dialog">Haga clic en la vista previa de una pestaña para seleccionarla, haga clic de nuevo para cerrar la vista previa de la pestaña. Para cerrar una pestaña simplemente Deslízate para previsualizar en la parte superior o inferior.</string>
 
     <string name="menu_title">Menú</string>
     <string name="menu_dialog">Administre sus pestaña, comparta o guarde contenido, maneje la pestaña actual o utilice algunas funciones: sólo inténtelo.         El menú puede descartarse, al igual que todas las demás notificaciones, haciendo clic en atrás, haciendo clic fuera del menú o simplemente deslizando el menú hacia abajo.</string>
 
     <string name="not_title">Notificaciones</string>
     <string name="not_dialog">Las notificaciones se muestran en la parte inferior de la pantalla. También se pueden descartar como los menús.</string>
-
-    <string name="nav_title">Navegación</string>
-    <string name="nav_dialog">Deslice hacia la izquierda/derecha-> Desplácese hacia atrás/adelante; Haga clic en-> abrir el menú; clic largo-> abrir \"diálogo de alternancia rápida\";         doble clic-> ocultar el \"botón de navegación\".</string>
 
     <string name="settings_dialog">Hay aún más opciones en la configuración. ¡ Pruébalo!</string>
     <string name="license_title">Derecho de autor © 2017 por Gaukler Faun</string>

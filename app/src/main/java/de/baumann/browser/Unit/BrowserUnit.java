@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -36,6 +37,7 @@ import java.util.regex.Pattern;
 import de.baumann.browser.Browser.AdBlock;
 import de.baumann.browser.Browser.Cookie;
 import de.baumann.browser.Browser.Javascript;
+import de.baumann.browser.Database.BookmarkList;
 import de.baumann.browser.Database.Record;
 import de.baumann.browser.Database.RecordAction;
 import de.baumann.browser.Ninja.R;
@@ -255,21 +257,33 @@ public class BrowserUnit {
     }
 
     public static String exportBookmarks(Context context) {
-        RecordAction action = new RecordAction(context);
-        action.open(false);
-        List<Record> list = action.listBookmarks();
-        action.close();
+
+        final BookmarkList db = new BookmarkList(context);
+        final Cursor row;
+        db.open();
+
+        row = db.fetchAllData(context);
+
+        final String pass_title = row.getString(row.getColumnIndexOrThrow("pass_title"));
+        final String pass_content = row.getString(row.getColumnIndexOrThrow("pass_content"));
+
+        ArrayList<String> bookmarkList = new ArrayList<String>();
+        row.moveToFirst();
+        while (!row.isAfterLast()) {
+            bookmarkList.add(row.getString(row.getColumnIndexOrThrow("pass_title")));
+            bookmarkList.add(row.getString(row.getColumnIndexOrThrow("pass_content")));
+            row.moveToNext();
+        }
 
         String filename = context.getString(R.string.export_bookmarks);
         File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "browser_backup//" + filename + SUFFIX_HTML);
 
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(file, false));
-            for (Record record : list) {
+            for (int i = 0; i < bookmarkList.size(); i++) {
                 String type = BOOKMARK_TYPE;
-                type = type.replace(BOOKMARK_TITLE, record.getTitle());
-                type = type.replace(BOOKMARK_URL, record.getURL());
-                type = type.replace(BOOKMARK_TIME, String.valueOf(record.getTime()));
+                type = type.replace(BOOKMARK_TITLE, row.getString(row.getColumnIndexOrThrow("pass_title")));
+                type = type.replace(BOOKMARK_URL, row.getString(row.getColumnIndexOrThrow("pass_content")));
                 writer.write(type);
                 writer.newLine();
             }
