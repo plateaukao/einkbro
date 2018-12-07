@@ -240,7 +240,7 @@ public class NinjaWebViewClient extends WebViewClient {
     @Override
     public void onFormResubmission(WebView view, @NonNull final Message doNotResend, final Message resend) {
         Context holder = IntentUnit.getContext();
-        if (holder == null || !(holder instanceof Activity)) {
+        if (!(holder instanceof Activity)) {
             return;
         }
 
@@ -271,7 +271,7 @@ public class NinjaWebViewClient extends WebViewClient {
     @Override
     public void onReceivedSslError(WebView view, @NonNull final SslErrorHandler handler, SslError error) {
         Context holder = IntentUnit.getContext();
-        if (holder == null || !(holder instanceof Activity)) {
+        if (!(holder instanceof Activity)) {
             return;
         }
 
@@ -302,7 +302,7 @@ public class NinjaWebViewClient extends WebViewClient {
     @Override
     public void onReceivedHttpAuthRequest(WebView view, @NonNull final HttpAuthHandler handler, String host, String realm) {
         Context holder = IntentUnit.getContext();
-        if (holder == null || !(holder instanceof Activity)) {
+        if (!(holder instanceof Activity)) {
             return;
         }
 

@@ -8,7 +8,6 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="@dimen/cardview_default_radius"
         app:cardUseCompatPadding="true"
         android:background="?attr/actionBarItemBackground"
         app:elevation="0dp"  >

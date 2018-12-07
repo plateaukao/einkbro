@@ -50,7 +50,7 @@
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
                 android:layout_toStartOf="@id/omnibox_refresh"
-                android:layout_marginStart="@dimen/layout_margin_16dp"
+                android:layout_marginStart="8dp"
                 android:hint="@string/main_omnibox_input_hint"
                 android:textColorHint="@color/color_hint"
                 android:textCursorDrawable="@null"
@@ -70,7 +70,7 @@
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
                 android:layout_toStartOf="@id/omnibox_refresh"
-                android:layout_marginStart="@dimen/layout_margin_16dp"
+                android:layout_marginStart="8dp"
                 android:gravity="center_vertical"
                 android:text="@string/album_untitled"
                 android:textAppearance="?android:attr/textAppearanceMedium"
@@ -127,7 +127,7 @@
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
                 android:layout_toStartOf="@id/main_search_up"
-                android:layout_marginStart="@dimen/layout_margin_16dp"
+                android:layout_marginStart="8dp"
                 android:paddingStart="@dimen/layout_margin_8dp"
                 android:paddingEnd="@dimen/layout_margin_8dp"
                 android:hint="@string/search_hint"
@@ -137,7 +137,8 @@
                 android:inputType="text"
                 android:maxLines="1"
                 android:ellipsize="end"
-                android:textColor="@color/color_light"/>
+                android:textColor="@color/color_light"
+                android:importantForAutofill="no" />
 
         </RelativeLayout>
 

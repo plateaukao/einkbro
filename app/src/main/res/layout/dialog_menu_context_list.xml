@@ -22,7 +22,6 @@
             tools:ignore="UseCompoundDrawables">
 
             <LinearLayout
-                android:visibility="gone"
                 android:id="@+id/menu_contextList_newTabOpen"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
@@ -51,7 +50,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:visibility="gone"
                 android:id="@+id/menu_contextList_newTab"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
@@ -168,7 +166,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:visibility="gone"
                 android:id="@+id/menu_contextList_delete"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"

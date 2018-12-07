@@ -12,7 +12,7 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with the Browser webview app.
+    along with the Browser webView app.
 
     If not, see <http://www.gnu.org/licenses/>.
  */
@@ -32,12 +32,14 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.text.Html;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.text.util.Linkify;
 import android.widget.ImageView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 import de.baumann.browser.Ninja.R;
 
@@ -133,7 +135,7 @@ public class HelperUnit {
     public static String fileName (String url) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.getDefault());
         String currentTime = sdf.format(new Date());
-        String domain = Uri.parse(url).getHost().replace("www.", "").trim();
+        String domain = Objects.requireNonNull(Uri.parse(url).getHost()).replace("www.", "").trim();
 
         return domain.replace(".", "_").trim() + "_" + currentTime.trim();
     }
@@ -172,6 +174,14 @@ public class HelperUnit {
                 be.setImageResource(R.drawable.circle_red);
                 sharedPref.edit().putString(fieldDB, "01").apply();
                 break;
+        }
+    }
+
+    public static String secString (String string) {
+        if(TextUtils.isEmpty(string)){
+            return "";
+        }else {
+            return  string.replaceAll("'", "\'\'");
         }
     }
 }

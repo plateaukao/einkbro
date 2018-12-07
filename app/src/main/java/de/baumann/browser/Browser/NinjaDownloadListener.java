@@ -24,7 +24,7 @@ public class NinjaDownloadListener implements DownloadListener {
     @Override
     public void onDownloadStart(final String url, String userAgent, final String contentDisposition, final String mimeType, long contentLength) {
         final Context holder = IntentUnit.getContext();
-        if (holder == null || !(holder instanceof Activity)) {
+        if (!(holder instanceof Activity)) {
             BrowserUnit.download(context, url, contentDisposition, mimeType);
             return;
         }

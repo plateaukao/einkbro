@@ -119,32 +119,6 @@ public class RecordAction {
         values.put(RecordUnit.COLUMN_FILENAME, item.getFilename().trim());
         values.put(RecordUnit.COLUMN_ORDINAL, item.getOrdinal());
         database.update(RecordUnit.TABLE_GRID, values, RecordUnit.COLUMN_URL + "=?", new String[] {item.getURL()});
-
-    }
-
-    public boolean checkBookmark(Record record) {
-        if (record == null || record.getURL() == null || record.getURL().trim().isEmpty()) {
-            return false;
-        }
-
-        Cursor cursor = database.query(
-                RecordUnit.TABLE_BOOKMARKS,
-                new String[] {RecordUnit.COLUMN_URL},
-                RecordUnit.COLUMN_URL + "=?",
-                new String[] {record.getURL().trim()},
-                null,
-                null,
-                null
-        );
-
-        if (cursor != null) {
-            boolean result = cursor.moveToFirst();
-            cursor.close();
-
-            return result;
-        }
-
-        return false;
     }
 
     public void deleteHistoryOld(String domain) {

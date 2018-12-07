@@ -163,7 +163,6 @@
     <string name="setting_title_nav_show">Ocultar</string>
     <string name="setting_summary_nav_show">Ocultar botão de navegação se a barra de ferramentas for mostrada.</string>
 
-    <string name="setting_title_tab">Separador inicial</string>
     <string name="setting_summary_tab">Escolha o que mostrar ao iniciar o \"FOSS Browser\". Página inicial, marcadores…</string>
 
     <string name="setting_title_confirm_exit">Confirmar fecho da aplicação</string>
@@ -232,7 +231,6 @@
     <string name="toast_load_in_background">A carregar em segundo plano</string>
     <string name="toast_new_tab_successful">Aberto com sucesso em novo separador</string>
     <string name="toast_open_file_manager_failed">Erro ao abrir o gestor de ficheiros</string>
-    <string name="toast_refresh_failed">Não foi possível recarregar a página</string>
     <string name="toast_relayout_successful">Recarregamento efetuado</string>
     <string name="toast_share_failed">Não foi possível partilhar a página</string>
     <string name="toast_start_download">Descarga iniciada</string>

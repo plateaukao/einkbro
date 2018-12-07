@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout android:background="?android:attr/colorBackground"
+<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+    android:background="?android:attr/colorBackground"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:ignore="ContentDescription"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <TextView
@@ -29,7 +31,7 @@
 
     <View
         android:id="@+id/separator_2"
-        android:layout_below="@+id/switcher_scroller"
+        android:layout_below="@+id/tab_ScrollView"
         android:layout_margin="8dp"
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -37,7 +39,7 @@
 
     <HorizontalScrollView
         android:layout_below="@+id/separator"
-        android:id="@+id/switcher_scroller"
+        android:id="@+id/tab_ScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/layout_margin_8dp"
@@ -49,14 +51,13 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:id="@+id/switcher_container"
+                android:id="@+id/tab_container"
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
-            <ImageButton android:id="@+id/switcher_plus"
+            <ImageButton android:id="@+id/tab_plus"
                 android:layout_marginStart="@dimen/layout_margin_8dp"
-                android:contentDescription="@null"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:padding="8dp"
@@ -258,7 +259,7 @@
         android:layout_height="56dp"
         android:minHeight="@dimen/layout_margin_56dp"
         android:text="@string/app_ok"
-        android:background="@color/colorPrimaryDark"
+        android:background="?android:attr/colorBackground"
         android:visibility="gone"/>
 
 </RelativeLayout>
