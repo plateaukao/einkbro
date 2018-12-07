@@ -162,7 +162,6 @@
     <string name="setting_title_nav_show">隐藏</string>
     <string name="setting_summary_nav_show">工具栏显示的时候隐藏导航键</string>
 
-    <string name="setting_title_tab">启动标签</string>
     <string name="setting_summary_tab">浏览器启动的时候显示什么？启动页，书签…</string>
 
     <string name="setting_title_confirm_exit">关闭确认</string>
@@ -231,7 +230,6 @@
     <string name="toast_load_in_background">后台加载</string>
     <string name="toast_new_tab_successful">成功在新标签页打开</string>
     <string name="toast_open_file_manager_failed">打开文件管理器失败</string>
-    <string name="toast_refresh_failed">无法刷新此网页</string>
     <string name="toast_relayout_successful">重新布局成功</string>
     <string name="toast_share_failed">无法分享此网页</string>
     <string name="toast_start_download">开始下载</string>

@@ -40,7 +40,7 @@ public class HolderService extends Service implements BrowserController {
     public void updateProgress(int progress) {}
 
     @Override
-    public void showAlbum(AlbumController albumController, boolean expand) {}
+    public void showAlbum(AlbumController albumController) {}
 
     @Override
     public void removeAlbum(AlbumController albumController) {}

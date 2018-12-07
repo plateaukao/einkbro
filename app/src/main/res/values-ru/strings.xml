@@ -158,8 +158,7 @@
 <string name="setting_title_remote">Удаленный контент</string>
 <string name="setting_title_search_engine">Поисковая система</string>
 <string name="setting_title_start_control">Управление запуском</string>
-<string name="setting_title_tab">Запуск вкладки</string>
-<string name="setting_title_themeDark">Светлая тема</string>
+    <string name="setting_title_themeDark">Светлая тема</string>
     <string name="setting_title_ui">Поведение и интерфейс</string>
 <string name="setting_title_whitelist">Белый список AdBlock</string>
 <string name="setting_title_whitelistCookie">Белый список куки</string>
@@ -208,8 +207,7 @@
 <string name="toast_permission_sdCard_sec">Предоставьте разрешение на \"чтение и запись\" в настройках.</string>
 <string name="toast_permission_title">Требуется разрешение</string>
 <string name="toast_quit">Хотите выйти из \"FOSS Browser\"?</string>
-<string name="toast_refresh_failed">Не удается обновить страницу</string>
-<string name="toast_relayout_successful">Успешно перекомпоновано</string>
+    <string name="toast_relayout_successful">Успешно перекомпоновано</string>
 <string name="toast_restart">Чтобы применить изменения, необходимо перезапустить \"FOSS Browser\". Закрыть сейчас?</string>
 <string name="toast_share_failed">Не удаётся поделиться этой страницей</string>
 <string name="toast_start_download">Начало загрузки</string>

@@ -24,11 +24,9 @@ import java.io.OutputStream;
 import de.baumann.browser.Activity.Whitelist_Javascript;
 import de.baumann.browser.Activity.Whitelist_AdBlock;
 import de.baumann.browser.Ninja.R;
-import de.baumann.browser.Task.ExportBookmarksTask;
 import de.baumann.browser.Task.ExportWhitelistCookieTask;
 import de.baumann.browser.Task.ExportWhitelistJSTask;
 import de.baumann.browser.Task.ExportWhitelistAdBlockTask;
-import de.baumann.browser.Task.ImportBookmarksTask;
 import de.baumann.browser.Task.ImportWhitelistAdBlockTask;
 import de.baumann.browser.Task.ImportWhitelistCookieTask;
 import de.baumann.browser.Task.ImportWhitelistJSTask;
@@ -60,7 +58,6 @@ public class Fragment_settings_data extends PreferenceFragment {
 
         String previewsPath_app = "//data//" + getActivity().getPackageName() + "//files";
         String previewsPath_backup = "browser_backup//previews";
-
         final File previewsFolder_app = new File(data, previewsPath_app);
         final File previewsFolder_backup = new File(sd, previewsPath_backup);
 
@@ -107,8 +104,27 @@ public class Fragment_settings_data extends PreferenceFragment {
                 dialog.setContentView(dialogView);
                 dialog.show();
                 break;
-            case R.string.setting_title_import_whitelist:
-                new ImportWhitelistAdBlockTask(getActivity()).execute();
+            case R.string.setting_title_import_whitelist:dialog = new BottomSheetDialog(getActivity());
+                dialogView = View.inflate(getActivity(), R.layout.dialog_action, null);
+                textView = dialogView.findViewById(R.id.dialog_text);
+                textView.setText(R.string.hint_database);
+                action_ok = dialogView.findViewById(R.id.action_ok);
+                action_ok.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.cancel();
+                        new ImportWhitelistAdBlockTask(getActivity()).execute();
+                    }
+                });
+                action_cancel = dialogView.findViewById(R.id.action_cancel);
+                action_cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.cancel();
+                    }
+                });
+                dialog.setContentView(dialogView);
+                dialog.show();
                 break;
             case R.string.setting_title_export_whitelistJS:
                 dialog = new BottomSheetDialog(getActivity());
@@ -135,7 +151,27 @@ public class Fragment_settings_data extends PreferenceFragment {
                 dialog.show();
                 break;
             case R.string.setting_title_import_whitelistJS:
-                new ImportWhitelistJSTask(getActivity()).execute();
+                dialog = new BottomSheetDialog(getActivity());
+                dialogView = View.inflate(getActivity(), R.layout.dialog_action, null);
+                textView = dialogView.findViewById(R.id.dialog_text);
+                textView.setText(R.string.hint_database);
+                action_ok = dialogView.findViewById(R.id.action_ok);
+                action_ok.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.cancel();
+                        new ImportWhitelistJSTask(getActivity()).execute();
+                    }
+                });
+                action_cancel = dialogView.findViewById(R.id.action_cancel);
+                action_cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.cancel();
+                    }
+                });
+                dialog.setContentView(dialogView);
+                dialog.show();
                 break;
             case R.string.setting_title_export_whitelistCookie:
                 dialog = new BottomSheetDialog(getActivity());
@@ -162,7 +198,27 @@ public class Fragment_settings_data extends PreferenceFragment {
                 dialog.show();
                 break;
             case R.string.setting_title_import_whitelistCookie:
-                new ImportWhitelistCookieTask(getActivity()).execute();
+                dialog = new BottomSheetDialog(getActivity());
+                dialogView = View.inflate(getActivity(), R.layout.dialog_action, null);
+                textView = dialogView.findViewById(R.id.dialog_text);
+                textView.setText(R.string.hint_database);
+                action_ok = dialogView.findViewById(R.id.action_ok);
+                action_ok.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.cancel();
+                        new ImportWhitelistCookieTask(getActivity()).execute();
+                    }
+                });
+                action_cancel = dialogView.findViewById(R.id.action_cancel);
+                action_cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.cancel();
+                    }
+                });
+                dialog.setContentView(dialogView);
+                dialog.show();
                 break;
             case R.string.setting_title_export_bookmarks:
                 dialog = new BottomSheetDialog(getActivity());
@@ -175,7 +231,28 @@ public class Fragment_settings_data extends PreferenceFragment {
                     public void onClick(View view) {
                         dialog.cancel();
                         makeBackupDir();
-                        new ExportBookmarksTask(getActivity()).execute();
+                        try {
+                            if (android.os.Build.VERSION.SDK_INT >= 23) {
+                                int hasWRITE_EXTERNAL_STORAGE = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                                if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
+                                    NinjaToast.show(getActivity(), R.string.toast_permission_sdCard_sec);
+                                } else {
+                                    BrowserUnit.deleteDir(bookmarkFile_backup);
+                                    BrowserUnit.exportBookmarks(getActivity());
+                                    copyDirectory(bookmarkFile_app, bookmarkFile_backup);
+                                    NinjaToast.show(getActivity(), getString(R.string.toast_export_successful) + "browser_backup");
+                                }
+
+                            } else {
+                                BrowserUnit.deleteDir(bookmarkFile_backup);
+                                BrowserUnit.exportBookmarks(getActivity());
+                                copyDirectory(bookmarkFile_app, bookmarkFile_backup);
+                                NinjaToast.show(getActivity(), getString(R.string.toast_export_successful) + "browser_backup");
+                            }
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
                 action_cancel = dialogView.findViewById(R.id.action_cancel);
@@ -189,7 +266,49 @@ public class Fragment_settings_data extends PreferenceFragment {
                 dialog.show();
                 break;
             case R.string.setting_title_import_bookmarks:
-                new ImportBookmarksTask(getActivity()).execute();
+                dialog = new BottomSheetDialog(getActivity());
+                dialogView = View.inflate(getActivity(), R.layout.dialog_action, null);
+                textView = dialogView.findViewById(R.id.dialog_text);
+                textView.setText(R.string.hint_database);
+                action_ok = dialogView.findViewById(R.id.action_ok);
+                action_ok.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.cancel();
+                        try {
+                            if (android.os.Build.VERSION.SDK_INT >= 23) {
+                                int hasWRITE_EXTERNAL_STORAGE = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                                if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
+                                    NinjaToast.show(getActivity(), R.string.toast_permission_sdCard_sec);
+                                } else {
+                                    BrowserUnit.importBookmarks(getActivity());
+                                    copyDirectory(previewsFolder_backup, previewsFolder_app);
+                                    copyDirectory(databaseFile_backup, databaseFile_app);
+                                    copyDirectory(bookmarkFile_backup, bookmarkFile_app);
+                                    dialogRestart();
+                                }
+                            } else {
+                                BrowserUnit.importBookmarks(getActivity());
+                                copyDirectory(previewsFolder_backup, previewsFolder_app);
+                                copyDirectory(databaseFile_backup, databaseFile_app);
+                                copyDirectory(bookmarkFile_backup, bookmarkFile_app);
+                                dialogRestart();
+                            }
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                action_cancel = dialogView.findViewById(R.id.action_cancel);
+                action_cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.cancel();
+                    }
+                });
+                dialog.setContentView(dialogView);
+                dialog.show();
                 break;
             case R.string.setting_title_export_database:
                 dialog = new BottomSheetDialog(getActivity());
@@ -201,7 +320,6 @@ public class Fragment_settings_data extends PreferenceFragment {
                     @Override
                     public void onClick(View view) {
                         dialog.cancel();
-
                         makeBackupDir();
                         try {
 
@@ -213,6 +331,7 @@ public class Fragment_settings_data extends PreferenceFragment {
                                     BrowserUnit.deleteDir(previewsFolder_backup);
                                     BrowserUnit.deleteDir(databaseFile_backup);
                                     BrowserUnit.deleteDir(bookmarkFile_backup);
+                                    BrowserUnit.exportBookmarks(getActivity());
                                     copyDirectory(previewsFolder_app, previewsFolder_backup);
                                     copyDirectory(databaseFile_app, databaseFile_backup);
                                     copyDirectory(bookmarkFile_app, bookmarkFile_backup);
@@ -223,6 +342,7 @@ public class Fragment_settings_data extends PreferenceFragment {
                                 BrowserUnit.deleteDir(previewsFolder_backup);
                                 BrowserUnit.deleteDir(databaseFile_backup);
                                 BrowserUnit.deleteDir(bookmarkFile_backup);
+                                BrowserUnit.exportBookmarks(getActivity());
                                 copyDirectory(previewsFolder_app, previewsFolder_backup);
                                 copyDirectory(databaseFile_app, databaseFile_backup);
                                 copyDirectory(bookmarkFile_app, bookmarkFile_backup);
@@ -256,20 +376,20 @@ public class Fragment_settings_data extends PreferenceFragment {
                     @Override
                     public void onClick(View view) {
                         dialog.cancel();
-
                         try {
                             if (android.os.Build.VERSION.SDK_INT >= 23) {
                                 int hasWRITE_EXTERNAL_STORAGE = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
                                 if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
                                     NinjaToast.show(getActivity(), R.string.toast_permission_sdCard_sec);
                                 } else {
+                                    BrowserUnit.importBookmarks(getActivity());
                                     copyDirectory(previewsFolder_backup, previewsFolder_app);
                                     copyDirectory(databaseFile_backup, databaseFile_app);
                                     copyDirectory(bookmarkFile_backup, bookmarkFile_app);
                                     dialogRestart();
                                 }
-
                             } else {
+                                BrowserUnit.importBookmarks(getActivity());
                                 copyDirectory(previewsFolder_backup, previewsFolder_app);
                                 copyDirectory(databaseFile_backup, databaseFile_app);
                                 copyDirectory(bookmarkFile_backup, bookmarkFile_app);
@@ -290,7 +410,6 @@ public class Fragment_settings_data extends PreferenceFragment {
                 });
                 dialog.setContentView(dialogView);
                 dialog.show();
-
                 break;
 
             default:

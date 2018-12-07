@@ -173,7 +173,6 @@
     <string name="setting_title_nav_show">Ocultar</string>
     <string name="setting_summary_nav_show">Oculte el \"botón de navegación\" cuando se muestre la barra de herramientas.</string>
 
-    <string name="setting_title_tab">Pestañas Iniciar</string>
     <string name="setting_summary_tab">Lo que debe mostrarse al comienzo de \"Navegador FOSS \"? La página de inicio, los marcadores,…</string>
 
     <string name="setting_title_confirm_exit">Confirmar salida del Navegador</string>
@@ -242,7 +241,6 @@
     <string name="toast_load_in_background">Cargar en el fondo</string>
     <string name="toast_new_tab_successful">Abierto con éxito en una nueva pestaña</string>
     <string name="toast_open_file_manager_failed">Error al abrir el administrador de archivos</string>
-    <string name="toast_refresh_failed">No se puede actualizar esta página</string>
     <string name="toast_relayout_successful">Rediseño con éxito</string>
     <string name="toast_share_failed">No se puede compartir esta página</string>
     <string name="toast_start_download">Iniciando descarga</string>

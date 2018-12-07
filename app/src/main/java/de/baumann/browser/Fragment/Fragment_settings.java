@@ -1,7 +1,6 @@
 package de.baumann.browser.Fragment;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -22,40 +21,13 @@ import de.baumann.browser.Unit.HelperUnit;
 import de.baumann.browser.Ninja.R;
 import de.baumann.browser.Unit.IntentUnit;
 
-public class Fragment_settings extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class Fragment_settings extends PreferenceFragment {
 
-    private boolean spChange = false;
-    public boolean isSPChange() {
-        return spChange;
-    }
-
-    private boolean dbChange = false;
-    public boolean isDBChange() {
-        return dbChange;
-    }
-    public void setDBChange(boolean dbChange) {
-        this.dbChange = dbChange;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preference_setting);
-    }
-
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        SharedPreferences sp = getPreferenceScreen().getSharedPreferences();
-        sp.registerOnSharedPreferenceChangeListener(this);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
     }
 
     @Override
@@ -99,11 +71,6 @@ public class Fragment_settings extends PreferenceFragment implements SharedPrefe
                 break;
         }
         return super.onPreferenceTreeClick(preferenceScreen, preference);
-    }
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sp, String key) {
-        spChange = true;
     }
 
     private void showLicenseDialog(String title, String text) {

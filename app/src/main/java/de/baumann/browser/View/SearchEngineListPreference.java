@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import java.util.Objects;
+
 import de.baumann.browser.Ninja.R;
 import de.baumann.browser.Unit.BrowserUnit;
 
@@ -44,7 +46,7 @@ public class SearchEngineListPreference extends ListPreference {
         editText.setHint(R.string.dialog_se_hint);
         String custom = sp.getString(getContext().getString(R.string.sp_search_engine_custom), "");
         editText.setText(custom);
-        editText.setSelection(custom.length());
+        editText.setSelection(Objects.requireNonNull(custom).length());
 
         builder.setView(dialogView);
         builder.setTitle(R.string.menu_edit);

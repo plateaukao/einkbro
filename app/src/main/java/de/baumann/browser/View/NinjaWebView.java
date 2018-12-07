@@ -29,6 +29,7 @@ import de.baumann.browser.Unit.ViewUnit;
 
 import java.net.URISyntaxException;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class NinjaWebView extends WebView implements AlbumController {
 
@@ -130,7 +131,6 @@ public class NinjaWebView extends WebView implements AlbumController {
     }
 
     private synchronized void initWebView() {
-        setDrawingCacheEnabled(true);
         setWebViewClient(webViewClient);
         setWebChromeClient(webChromeClient);
         setDownloadListener(downloadListener);
@@ -167,7 +167,7 @@ public class NinjaWebView extends WebView implements AlbumController {
         webViewClient.enableAdBlock(sp.getBoolean(context.getString(R.string.sp_ad_block), true));
 
         webSettings = getSettings();
-        webSettings.setTextZoom(Integer.parseInt(sp.getString("sp_fontSize", "100")));
+        webSettings.setTextZoom(Integer.parseInt(Objects.requireNonNull(sp.getString("sp_fontSize", "100"))));
 
         webSettings.setAllowFileAccessFromFileURLs(sp.getBoolean(("sp_remote"), true));
         webSettings.setAllowUniversalAccessFromFileURLs(sp.getBoolean(("sp_remote"), true));
@@ -378,7 +378,6 @@ public class NinjaWebView extends WebView implements AlbumController {
         clearHistory();
         setVisibility(GONE);
         removeAllViews();
-        destroyDrawingCache();
         super.destroy();
     }
 

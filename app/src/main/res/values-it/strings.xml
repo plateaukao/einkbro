@@ -163,7 +163,6 @@
     <string name="setting_title_nav_show">Nascondi</string>
     <string name="setting_summary_nav_show">Nascondere il \"Pulsante di navigazione\" quando è visualizzata la barra degli strumenti.</string>
 
-    <string name="setting_title_tab">Scheda iniziale</string>
     <string name="setting_summary_tab">Cosa deve essere mostrato all\' apertura di \"FOSS Browser\"? Pagina iniziale, i tuoi segnalibri, …</string>
 
     <string name="setting_title_confirm_exit">Conferma l\'uscita dal browser</string>
@@ -232,7 +231,6 @@
     <string name="toast_load_in_background">Caricamento in background</string>
     <string name="toast_new_tab_successful">Aperto con successo in una nuova scheda</string>
     <string name="toast_open_file_manager_failed">Impossibile aprire File Manager</string>
-    <string name="toast_refresh_failed">Impossibile aggiornare questa pagina</string>
     <string name="toast_relayout_successful">Riordinamento completato</string>
     <string name="toast_share_failed">Impossibile condividere questa pagina</string>
     <string name="toast_start_download">Avvio del download</string>

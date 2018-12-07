@@ -161,7 +161,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     private ImageButton fab_share;
     private ImageButton fab_save;
     private ImageButton fab_more;
-    private ImageButton switcher_plus;
+    private ImageButton tab_plus;
 
 
     // Views
@@ -192,7 +192,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     private View customView;
     private VideoView videoView;
 
-    private HorizontalScrollView switcher_scroller;
+    private HorizontalScrollView tab_ScrollView;
 
     // Layouts
 
@@ -200,7 +200,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     private RelativeLayout omnibox;
     private RelativeLayout searchPanel;
     private FrameLayout contentFrame;
-    private LinearLayout switcherContainer;
+    private LinearLayout tab_container;
     private FrameLayout fullscreenHolder;
 
 
@@ -231,6 +231,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             0, 0, 0, 1.0f, 0     // Alpha
     };
 
+    @SuppressWarnings("SameReturnValue")
     private boolean onKeyCodeBack() {
         hideSoftInput(inputBox);
         hideOverview();
@@ -255,7 +256,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     }
 
     private boolean prepareRecord() {
-        if (currentAlbumController == null || !(currentAlbumController instanceof NinjaWebView)) {
+        if (!(currentAlbumController instanceof NinjaWebView)) {
             return true;
         }
 
@@ -314,7 +315,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         sp = PreferenceManager.getDefaultSharedPreferences(this);
 
-        if (sp.getString("saved_key_ok", "no").equals("no")) {
+        if (Objects.requireNonNull(sp.getString("saved_key_ok", "no")).equals("no")) {
             char[] chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!§$%&/()=?;:_-.,+#*<>".toCharArray();
             StringBuilder sb = new StringBuilder();
             Random random = new Random();
@@ -332,7 +333,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         sp.edit().putInt("restart_changed", 0).apply();
 
         try {
-            mahEncryptor = MAHEncryptor.newInstance(sp.getString("saved_key", ""));
+            mahEncryptor = MAHEncryptor.newInstance(Objects.requireNonNull(sp.getString("saved_key", "")));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -367,7 +368,8 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         dimen117dp = getResources().getDimensionPixelSize(R.dimen.layout_height_117dp);
         dimen108dp = getResources().getDimensionPixelSize(R.dimen.layout_height_108dp);
 
-        initSwitcherView();
+        ninjaWebView = (NinjaWebView) currentAlbumController;
+
         initOmnibox();
         initSearchPanel();
         initOverview();
@@ -392,7 +394,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             final String versionName = pInfo.versionName;
             String oldVersionName = sp.getString("oldVersionName", "0.0");
 
-            if (!oldVersionName.equals(versionName)) {
+            if (!Objects.requireNonNull(oldVersionName).equals(versionName)) {
 
                 bottomSheetDialog = new BottomSheetDialog(this);
                 View dialogView = View.inflate(this, R.layout.dialog_text, null);
@@ -409,7 +411,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                     @Override
                     public void onClick(View v) {
                         sp.edit().putString("oldVersionName", versionName).apply();
-                        bottomSheetDialog.cancel();
+                        hideBottomSheetDialog ();
                     }
                 });
 
@@ -427,7 +429,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                     public void onClick(View v) {
                         Intent intent = new Intent(BrowserActivity.this, Settings_Activity.class);
                         startActivity(intent);
-                        bottomSheetDialog.cancel();
+                        hideBottomSheetDialog ();
                     }
                 });
 
@@ -458,14 +460,14 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                     @Override
                     public void onClick(View view) {
                         startActivity(new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS));
-                        bottomSheetDialog.cancel();
+                        hideBottomSheetDialog ();
                     }
                 });
                 Button action_cancel = dialogView.findViewById(R.id.action_cancel);
                 action_cancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        bottomSheetDialog.cancel();
+                        hideBottomSheetDialog ();
                     }
                 });
                 bottomSheetDialog.setContentView(dialogView);
@@ -511,14 +513,14 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 @Override
                 public void onClick(View view) {
                     startActivity(new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS));
-                    bottomSheetDialog.cancel();
+                    hideBottomSheetDialog ();
                 }
             });
             Button action_cancel = dialogView.findViewById(R.id.action_cancel);
             action_cancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    bottomSheetDialog.cancel();
+                    hideBottomSheetDialog ();
                 }
             });
             bottomSheetDialog.setContentView(dialogView);
@@ -622,7 +624,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     }
 
     @Override
-    public synchronized void showAlbum(AlbumController controller, final boolean expand) {
+    public synchronized void showAlbum(AlbumController controller) {
 
 
         if (currentAlbumController != null) {
@@ -684,23 +686,30 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
     private void showOverview() {
         if (currentAlbumController != null) {
-            switcher_scroller.smoothScrollTo(currentAlbumController.getAlbumView().getLeft(), 0);
-        }if (ninjaWebView != null) {
-            ninjaWebView.stopLoading();
+            tab_ScrollView.smoothScrollTo(currentAlbumController.getAlbumView().getLeft(), 0);
         }
         bottomSheetDialog_OverView.show();
     }
 
     public void hideOverview () {
-        bottomSheetDialog_OverView.cancel();
+        if (bottomSheetDialog_OverView != null) {
+            bottomSheetDialog_OverView.cancel();
+        }
     }
+
+    private void hideBottomSheetDialog() {
+        if (bottomSheetDialog != null) {
+            bottomSheetDialog.cancel();
+        }
+    }
+
 
     @Override
     public void onClick(View v) {
 
         RecordAction action = new RecordAction(BrowserActivity.this);
 
-        if (currentAlbumController != null && currentAlbumController instanceof NinjaWebView) {
+        if (currentAlbumController instanceof NinjaWebView) {
             ninjaWebView = (NinjaWebView) currentAlbumController;
             try {
                 title = ninjaWebView.getTitle().trim();
@@ -716,13 +725,13 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
             case R.id.tab_prev:
                 AlbumController controller = nextAlbumController(false);
-                showAlbum(controller, false);
+                showAlbum(controller);
                 updateOverflow();
                 break;
 
             case R.id.tab_next:
                 AlbumController controller2 = nextAlbumController(true);
-                showAlbum(controller2, false);
+                showAlbum(controller2);
                 updateOverflow();
                 break;
 
@@ -731,7 +740,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                     ninjaWebView.goBack();
                     updateOverflow();
                 } else {
-                    bottomSheetDialog.cancel();
+                    hideBottomSheetDialog ();
                     removeAlbum(currentAlbumController);
                 }
                 break;
@@ -741,44 +750,46 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                     ninjaWebView.goForward();
                     updateOverflow();
                 } else {
-                    bottomSheetDialog.cancel();
+                    hideBottomSheetDialog ();
                     NinjaToast.show(BrowserActivity.this,R.string.toast_webview_forward);
                 }
                 break;
 
-            case R.id.menu_contextList_newTabOpen:
+            case R.id.tab_plus:
+                hideBottomSheetDialog();
+                hideOverview();
+                addAlbum(getString(R.string.album_untitled), sp.getString("favoriteURL", "https://www.startpage.com"), true);
+                break;
+
             case R.id.menu_newTabOpen:
-            case R.id.switcher_plus:
-                if (bottomSheetDialog != null) {
-                    bottomSheetDialog.cancel();
-                }
+                hideBottomSheetDialog();
                 hideOverview();
                 addAlbum(getString(R.string.album_untitled), sp.getString("favoriteURL", "https://www.startpage.com"), true);
                 break;
 
             case R.id.menu_closeTab:
-                bottomSheetDialog.cancel();
+                hideBottomSheetDialog ();
                 removeAlbum(currentAlbumController);
                 break;
 
             case R.id.menu_tabPreview:
-                bottomSheetDialog.cancel();
+                hideBottomSheetDialog ();
                 showOverview();
                 break;
 
             case R.id.menu_quit:
-                bottomSheetDialog.cancel();
+                hideBottomSheetDialog ();
                 doubleTapsQuit();
                 break;
 
             case R.id.menu_shareScreenshot:
-                bottomSheetDialog.cancel();
+                hideBottomSheetDialog ();
                 sp.edit().putInt("screenshot", 1).apply();
                 new ScreenshotTask(BrowserActivity.this, ninjaWebView).execute();
                 break;
 
             case R.id.menu_shareLink:
-                bottomSheetDialog.cancel();
+                hideBottomSheetDialog ();
                 if (prepareRecord()) {
                     NinjaToast.show(BrowserActivity.this, getString(R.string.toast_share_failed));
                 } else {
@@ -787,12 +798,12 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 break;
 
             case R.id.menu_sharePDF:
-                bottomSheetDialog.cancel();
+                hideBottomSheetDialog ();
                 printPDF(true);
                 break;
 
             case R.id.menu_openWith:
-                bottomSheetDialog.cancel();
+                hideBottomSheetDialog ();
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(url));
                 Intent chooser = Intent.createChooser(intent, getString(R.string.menu_open_with));
@@ -800,16 +811,16 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 break;
 
             case R.id.menu_saveScreenshot:
-                bottomSheetDialog.cancel();
+                hideBottomSheetDialog ();
                 sp.edit().putInt("screenshot", 0).apply();
                 new ScreenshotTask(BrowserActivity.this, ninjaWebView).execute();
                 break;
 
             case R.id.menu_saveBookmark:
-                bottomSheetDialog.cancel();
+                hideBottomSheetDialog ();
                 try {
 
-                    MAHEncryptor mahEncryptor = MAHEncryptor.newInstance(sp.getString("saved_key", ""));
+                    MAHEncryptor mahEncryptor = MAHEncryptor.newInstance(Objects.requireNonNull(sp.getString("saved_key", "")));
                     String encrypted_userName = mahEncryptor.encode("");
                     String encrypted_userPW = mahEncryptor.encode("");
 
@@ -818,7 +829,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                     if (db.isExist(url)){
                         NinjaToast.show(BrowserActivity.this, R.string.toast_newTitle);
                     } else {
-                        db.insert(ninjaWebView.getTitle(), url, encrypted_userName, encrypted_userPW, "01");
+                        db.insert(HelperUnit.secString(ninjaWebView.getTitle()), url, encrypted_userName, encrypted_userPW, "01");
                         NinjaToast.show(BrowserActivity.this, R.string.toast_edit_successful);
                         initBookmarkList();
                     }
@@ -829,7 +840,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 break;
 
             case R.id.menu_saveStart:
-                bottomSheetDialog.cancel();
+                hideBottomSheetDialog ();
                 action.open(true);
                 if (action.checkGridItem(url)) {
                     NinjaToast.show(BrowserActivity.this, getString(R.string.toast_already_exist_in_home));
@@ -851,18 +862,18 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 // Omnibox
 
             case R.id.menu_searchSite:
-                bottomSheetDialog.cancel();
+                hideBottomSheetDialog ();
                 hideSoftInput(inputBox);
                 showSearchPanel();
                 break;
 
             case R.id.contextLink_saveAs:
-                bottomSheetDialog.cancel();
+                hideBottomSheetDialog ();
                 printPDF(false);
                 break;
 
             case R.id.menu_settings:
-                bottomSheetDialog.cancel();
+                hideBottomSheetDialog ();
                 Intent settings = new Intent(BrowserActivity.this, Settings_Activity.class);
                 startActivity(settings);
                 break;
@@ -872,7 +883,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 break;
 
             case R.id.menu_download:
-                bottomSheetDialog.cancel();
+                hideBottomSheetDialog ();
                 startActivity(new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS));
                 break;
 
@@ -999,49 +1010,35 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 break;
 
             case R.id.omnibox_refresh:
-                if (currentAlbumController == null) {
-                    NinjaToast.show(BrowserActivity.this, getString(R.string.toast_refresh_failed));
-                    return;
-                }
-
-                if (currentAlbumController instanceof NinjaWebView) {
-                    ninjaWebView = (NinjaWebView) currentAlbumController;
-                    ninjaWebView.stopLoading();
-                    if (ninjaWebView.isLoadFinish()) {
-
-                        if (!url.startsWith("https://")) {
-                            bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
-                            View dialogView2 = View.inflate(BrowserActivity.this, R.layout.dialog_action, null);
-                            TextView textView2 = dialogView2.findViewById(R.id.dialog_text);
-                            textView2.setText(R.string.toast_unsecured);
-                            Button action_ok2 = dialogView2.findViewById(R.id.action_ok);
-                            action_ok2.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    bottomSheetDialog.cancel();
-                                    ninjaWebView.loadUrl(url.replace("http://", "https://"));
-                                }
-                            });
-                            Button action_cancel2 = dialogView2.findViewById(R.id.action_cancel);
-                            action_cancel2.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    bottomSheetDialog.cancel();
-                                    ninjaWebView.reload();
-                                }
-                            });
-                            bottomSheetDialog.setContentView(dialogView2);
-                            bottomSheetDialog.show();
-                        } else {
-                            ninjaWebView.reload();
-                        }
-
-
+                if (ninjaWebView.isLoadFinish()) {
+                    if (!url.startsWith("https://")) {
+                        bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
+                        View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_action, null);
+                        TextView textView = dialogView.findViewById(R.id.dialog_text);
+                        textView.setText(R.string.toast_unsecured);
+                        Button action_ok = dialogView.findViewById(R.id.action_ok);
+                        action_ok.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                hideBottomSheetDialog ();
+                                ninjaWebView.loadUrl(url.replace("http://", "https://"));
+                            }
+                        });
+                        Button action_cancel = dialogView.findViewById(R.id.action_cancel);
+                        action_cancel.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                hideBottomSheetDialog ();
+                                ninjaWebView.reload();
+                            }
+                        });
+                        bottomSheetDialog.setContentView(dialogView);
+                        bottomSheetDialog.show();
                     } else {
-                        ninjaWebView.stopLoading();
+                        ninjaWebView.reload();
                     }
                 } else {
-                    NinjaToast.show(BrowserActivity.this, getString(R.string.toast_refresh_failed));
+                    ninjaWebView.stopLoading();
                 }
                 break;
 
@@ -1151,10 +1148,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         }
     }
 
-    private void initSwitcherView() {
-        ninjaWebView = (NinjaWebView) currentAlbumController;
-    }
-
     @SuppressLint("ClickableViewAccessibility")
     private void initOmnibox() {
 
@@ -1167,7 +1160,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         progressBar = findViewById(R.id.main_progress_bar);
 
 
-        int fab_position = Integer.parseInt(sp.getString("nav_position", "0"));
+        int fab_position = Integer.parseInt(Objects.requireNonNull(sp.getString("nav_position", "0")));
 
         switch (fab_position) {
             case 0:
@@ -1188,7 +1181,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             @Override
             public boolean onLongClick(View v) {
                 if (currentAlbumController instanceof NinjaWebView) {
-                    showFastToogle();
+                    showFastToggle();
                 }
                 return false;
             }
@@ -1211,7 +1204,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
                 public void onSwipeRight() {
                     ninjaWebView = (NinjaWebView) currentAlbumController;
-                    switch (sp.getString("sp_gesture_action", "0")) {
+                    switch (Objects.requireNonNull(sp.getString("sp_gesture_action", "0"))) {
                         case "0":
                             if (ninjaWebView.canGoForward()) {
                                 ninjaWebView.goForward();
@@ -1221,7 +1214,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                             break;
                         case "1":
                             AlbumController controller = nextAlbumController(true);
-                            showAlbum(controller, false);
+                            showAlbum(controller);
                             break;
                         default:
                             if (ninjaWebView.canGoForward()) {
@@ -1235,7 +1228,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
                 public void onSwipeLeft() {
                     ninjaWebView = (NinjaWebView) currentAlbumController;
-                    switch (sp.getString("sp_gesture_action", "0")) {
+                    switch (Objects.requireNonNull(sp.getString("sp_gesture_action", "0"))) {
                         case "0":
                             if (ninjaWebView.canGoBack()) {
                                 ninjaWebView.goBack();
@@ -1245,7 +1238,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                             break;
                         case "1":
                             AlbumController controller = nextAlbumController(true);
-                            showAlbum(controller, false);
+                            showAlbum(controller);
                             break;
                         default:
                             if (ninjaWebView.canGoBack()) {
@@ -1272,7 +1265,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
                 public void onSwipeRight() {
                     ninjaWebView = (NinjaWebView) currentAlbumController;
-                    switch (sp.getString("sp_gesture_action", "0")) {
+                    switch (Objects.requireNonNull(sp.getString("sp_gesture_action", "0"))) {
                         case "0":
                             if (ninjaWebView.canGoForward()) {
                                 ninjaWebView.goForward();
@@ -1282,7 +1275,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                             break;
                         case "1":
                             AlbumController controller = nextAlbumController(true);
-                            showAlbum(controller, false);
+                            showAlbum(controller);
                             break;
                         default:
                             if (ninjaWebView.canGoForward()) {
@@ -1296,7 +1289,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
                 public void onSwipeLeft() {
                     ninjaWebView = (NinjaWebView) currentAlbumController;
-                    switch (sp.getString("sp_gesture_action", "0")) {
+                    switch (Objects.requireNonNull(sp.getString("sp_gesture_action", "0"))) {
                         case "0":
                             if (ninjaWebView.canGoBack()) {
                                 ninjaWebView.goBack();
@@ -1306,7 +1299,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                             break;
                         case "1":
                             AlbumController controller = nextAlbumController(true);
-                            showAlbum(controller, false);
+                            showAlbum(controller);
                             break;
                         default:
                             if (ninjaWebView.canGoBack()) {
@@ -1349,8 +1342,8 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         omniboxOverflow.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if (currentAlbumController != null && currentAlbumController instanceof NinjaWebView) {
-                    showFastToogle();
+                if (currentAlbumController instanceof NinjaWebView) {
+                    showFastToggle();
                 }
                 return false;
             }
@@ -1367,10 +1360,10 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         open_bookmark = dialogView.findViewById(R.id.open_bookmark_2);
         open_history = dialogView.findViewById(R.id.open_history_2);
         open_menu = dialogView.findViewById(R.id.open_menu);
-        switcherContainer = dialogView.findViewById(R.id.switcher_container);
-        switcher_plus = dialogView.findViewById(R.id.switcher_plus);
-        switcher_scroller = dialogView.findViewById(R.id.switcher_scroller);
-        switcher_plus.setOnClickListener(this);
+        tab_container = dialogView.findViewById(R.id.tab_container);
+        tab_plus = dialogView.findViewById(R.id.tab_plus);
+        tab_ScrollView = dialogView.findViewById(R.id.tab_ScrollView);
+        tab_plus.setOnClickListener(this);
         listView = dialogView.findViewById(R.id.home_list_2);
 
         final Button relayoutOK = dialogView.findViewById(R.id.relayout_ok);
@@ -1402,13 +1395,13 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                         @Override
                         public void onClick(View view) {
                             sp.edit().putBoolean("bookmarks_old", false).apply();
-                            bottomSheetDialog.cancel();
+                            hideBottomSheetDialog ();
                         }
                     });
                     action_cancel.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            bottomSheetDialog.cancel();
+                            hideBottomSheetDialog ();
                         }
                     });
                 }
@@ -1416,7 +1409,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             action_cancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    bottomSheetDialog.cancel();
+                    hideBottomSheetDialog ();
                 }
             });
             bottomSheetDialog.setContentView(dialogView2);
@@ -1424,8 +1417,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         } else {
             bookmarks_old.setVisibility(View.GONE);
         }
-
-
 
         open_newTab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1485,6 +1476,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         open_bookmark.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
+                open_bookmark.performClick();
                 showFilterDialog();
                 return false;
             }
@@ -1608,7 +1600,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 bookmark_sort.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        bottomSheetDialog.cancel();
+                        hideBottomSheetDialog ();
                         bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
                         View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_bookmark_sort, null);
                         LinearLayout dialog_sortName = dialogView.findViewById(R.id.dialog_sortName);
@@ -1617,7 +1609,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                             public void onClick(View v) {
                                 sp.edit().putString("sortDBB", "title").apply();
                                 initBookmarkList();
-                                bottomSheetDialog.cancel();
+                                hideBottomSheetDialog ();
                             }
                         });
                         LinearLayout dialog_sortIcon = dialogView.findViewById(R.id.dialog_sortIcon);
@@ -1626,7 +1618,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                             public void onClick(View v) {
                                 sp.edit().putString("sortDBB", "icon").apply();
                                 initBookmarkList();
-                                bottomSheetDialog.cancel();
+                                hideBottomSheetDialog ();
                             }
                         });
                         bottomSheetDialog.setContentView(dialogView);
@@ -1638,7 +1630,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                     @Override
                     public void onClick(View v) {
 
-                        bottomSheetDialog.cancel();
+                        hideBottomSheetDialog ();
                         omnibox.setVisibility(View.GONE);
                         appBar.setVisibility(View.GONE);
                         omniboxTitle.setVisibility(View.GONE);
@@ -1710,7 +1702,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 tv_delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        bottomSheetDialog.cancel();
+                        hideBottomSheetDialog ();
                         bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
                         View dialogView3 = View.inflate(BrowserActivity.this, R.layout.dialog_action, null);
                         TextView textView = dialogView3.findViewById(R.id.dialog_text);
@@ -1724,16 +1716,16 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                     BrowserUnit.clearHome(BrowserActivity.this);
                                     open_newTab.performClick();
                                 } else if (overViewTab.equals(getString(R.string.album_title_bookmarks))) {
-                                    BrowserUnit.clearBookmarks(BrowserActivity.this);
+                                    File data = Environment.getDataDirectory();
+                                    String bookmarksPath_app = "//data//" + getPackageName() + "//databases//pass_DB_v01.db";
+                                    final File bookmarkFile_app = new File(data, bookmarksPath_app);
+                                    BrowserUnit.deleteDir(bookmarkFile_app);
                                     open_bookmark.performClick();
                                 } else if (overViewTab.equals(getString(R.string.album_title_history))) {
                                     BrowserUnit.clearHistory(BrowserActivity.this);
                                     open_history.performClick();
-                                } else if (overViewTab.equals(getString(R.string.album_title_pass))) {
-                                    deleteDatabase("pass_DB_v01.db");
-                                    open_pass.performClick();
                                 }
-                                bottomSheetDialog.cancel();
+                                hideBottomSheetDialog ();
                                 omniboxRefresh.performClick();
                             }
                         });
@@ -1741,7 +1733,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                         action_cancel.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                bottomSheetDialog.cancel();
+                                hideBottomSheetDialog ();
                             }
                         });
                         bottomSheetDialog.setContentView(dialogView3);
@@ -1756,7 +1748,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         bottomSheetDialog_OverView.setContentView(dialogView);
 
-        switch (sp.getString("start_tab", "0")) {
+        switch (Objects.requireNonNull(sp.getString("start_tab", "0"))) {
             case "0":
                 open_newTab.performClick();
                 break;
@@ -1790,7 +1782,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (currentAlbumController != null && currentAlbumController instanceof NinjaWebView) {
+                if (currentAlbumController != null) {
                     ((NinjaWebView) currentAlbumController).findAllAsync(s.toString());
                 }
             }
@@ -1859,7 +1851,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         final Cursor row;
         db.open();
 
-        final int layoutstyle = R.layout.list_item_bookmark;
+        final int layoutStyle = R.layout.list_item_bookmark;
         int[] xml_id = new int[] {
                 R.id.record_item_title
         };
@@ -1869,13 +1861,13 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         String search = sp.getString("filter_passBY", "00");
 
-        if (search.equals("00")) {
+        if (Objects.requireNonNull(search).equals("00")) {
             row = db.fetchAllData(BrowserActivity.this);
         } else {
             row = db.fetchDataByFilter(search, "pass_creation");
         }
 
-        SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, layoutstyle, row, column, xml_id, 0) {
+        SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, layoutStyle, row, column, xml_id, 0) {
             @Override
             public View getView(final int position, View convertView, ViewGroup parent) {
 
@@ -1894,7 +1886,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterview, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 final String pass_content = row.getString(row.getColumnIndexOrThrow("pass_content"));
                 final String pass_icon = row.getString(row.getColumnIndexOrThrow("pass_icon"));
                 final String pass_attachment = row.getString(row.getColumnIndexOrThrow("pass_attachment"));
@@ -1923,23 +1915,31 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 contextList_newTab.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        bottomSheetDialog.cancel();
                         addAlbum(getString(R.string.album_untitled), pass_content, false);
                         NinjaToast.show(BrowserActivity.this, getString(R.string.toast_new_tab_successful));
                         toast_login (pass_icon, pass_attachment);
+                        hideBottomSheetDialog ();
                     }
                 });
 
                 contextList_newTabOpen = dialogView.findViewById(R.id.menu_contextList_newTabOpen);
                 contextList_newTabOpen.setVisibility(View.VISIBLE);
-                contextList_newTabOpen.setOnClickListener(BrowserActivity.this);
+                contextList_newTabOpen.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        addAlbum(getString(R.string.album_untitled), pass_content, true);
+                        toast_login (pass_icon, pass_attachment);
+                        hideBottomSheetDialog ();
+                        hideOverview();
+                    }
+                });
 
                 contextList_fav = dialogView.findViewById(R.id.menu_contextList_fav);
                 contextList_fav.setVisibility(View.VISIBLE);
                 contextList_fav.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        bottomSheetDialog.cancel();
+                        hideBottomSheetDialog ();
                         sp.edit().putString("favoriteURL", pass_content).apply();
                         NinjaToast.show(BrowserActivity.this, R.string.toast_fav);
 
@@ -1951,7 +1951,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 contextList_edit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        bottomSheetDialog.cancel();
+                        hideBottomSheetDialog ();
                         try {
 
                             bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
@@ -1979,7 +1979,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                         String encrypted_userName = mahEncryptor.encode(pass_userNameET.getText().toString().trim());
                                         String encrypted_userPW = mahEncryptor.encode(pass_userPWET.getText().toString().trim());
 
-                                        db.update(Integer.parseInt(_id), input_pass_title, pass_content, encrypted_userName, encrypted_userPW, pass_creation);
+                                        db.update(Integer.parseInt(_id), HelperUnit.secString(input_pass_title), pass_content,  HelperUnit.secString(encrypted_userName), HelperUnit.secString(encrypted_userPW), pass_creation);
                                         initBookmarkList();
                                         hideSoftInput(pass_titleET);
                                         NinjaToast.show(BrowserActivity.this, R.string.toast_edit_successful);
@@ -1988,7 +1988,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                         e.printStackTrace();
                                         NinjaToast.show(BrowserActivity.this, R.string.toast_error);
                                     }
-                                    bottomSheetDialog.cancel();
+                                    hideBottomSheetDialog ();
                                 }
                             });
                             Button action_cancel = dialogView.findViewById(R.id.action_cancel);
@@ -1996,7 +1996,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                 @Override
                                 public void onClick(View view) {
                                     hideSoftInput(pass_titleET);
-                                    bottomSheetDialog.cancel();
+                                    hideBottomSheetDialog ();
                                 }
                             });
                             HelperUnit.switchIcon(BrowserActivity.this, pass_creation, "pass_creation", ib_icon);
@@ -2006,8 +2006,22 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                             ib_icon.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
+                                    try {
+                                        String input_pass_title = pass_titleET.getText().toString().trim();
+                                        String encrypted_userName = mahEncryptor.encode(pass_userNameET.getText().toString().trim());
+                                        String encrypted_userPW = mahEncryptor.encode(pass_userPWET.getText().toString().trim());
 
-                                    bottomSheetDialog.cancel();
+                                        db.update(Integer.parseInt(_id), HelperUnit.secString(input_pass_title), pass_content,  HelperUnit.secString(encrypted_userName), HelperUnit.secString(encrypted_userPW), pass_creation);
+                                        initBookmarkList();
+                                        hideSoftInput(pass_titleET);
+                                        NinjaToast.show(BrowserActivity.this, R.string.toast_edit_successful);
+
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                        NinjaToast.show(BrowserActivity.this, R.string.toast_error);
+                                    }
+                                    hideBottomSheetDialog ();
+
                                     bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
                                     View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_edit_icon, null);
 
@@ -2017,7 +2031,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                         public void onClick(View v) {
                                             db.update(Integer.parseInt(_id), pass_title, pass_content, pass_icon, pass_attachment, "01");
                                             initBookmarkList();
-                                            bottomSheetDialog.cancel();
+                                            hideBottomSheetDialog ();
                                         }
                                     });
                                     LinearLayout icon_02 = dialogView.findViewById(R.id.icon_02);
@@ -2026,7 +2040,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                         public void onClick(View v) {
                                             db.update(Integer.parseInt(_id), pass_title, pass_content, pass_icon, pass_attachment, "02");
                                             initBookmarkList();
-                                            bottomSheetDialog.cancel();
+                                            hideBottomSheetDialog ();
                                         }
                                     });
                                     LinearLayout icon_03 = dialogView.findViewById(R.id.icon_03);
@@ -2035,7 +2049,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                         public void onClick(View v) {
                                             db.update(Integer.parseInt(_id), pass_title, pass_content, pass_icon, pass_attachment, "03");
                                             initBookmarkList();
-                                            bottomSheetDialog.cancel();
+                                            hideBottomSheetDialog ();
                                         }
                                     });
                                     LinearLayout icon_04 = dialogView.findViewById(R.id.icon_04);
@@ -2044,7 +2058,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                         public void onClick(View v) {
                                             db.update(Integer.parseInt(_id), pass_title, pass_content, pass_icon, pass_attachment, "04");
                                             initBookmarkList();
-                                            bottomSheetDialog.cancel();
+                                            hideBottomSheetDialog ();
                                         }
                                     });
                                     LinearLayout icon_05 = dialogView.findViewById(R.id.icon_05);
@@ -2053,7 +2067,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                         public void onClick(View v) {
                                             db.update(Integer.parseInt(_id), pass_title, pass_content, pass_icon, pass_attachment, "05");
                                             initBookmarkList();
-                                            bottomSheetDialog.cancel();
+                                            hideBottomSheetDialog ();
                                         }
                                     });
                                     LinearLayout icon_06 = dialogView.findViewById(R.id.icon_06);
@@ -2062,7 +2076,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                         public void onClick(View v) {
                                             db.update(Integer.parseInt(_id), pass_title, pass_content, pass_icon, pass_attachment, "06");
                                             initBookmarkList();
-                                            bottomSheetDialog.cancel();
+                                            hideBottomSheetDialog ();
                                         }
                                     });
                                     LinearLayout icon_07 = dialogView.findViewById(R.id.icon_07);
@@ -2071,7 +2085,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                         public void onClick(View v) {
                                             db.update(Integer.parseInt(_id), pass_title, pass_content, pass_icon, pass_attachment, "07");
                                             initBookmarkList();
-                                            bottomSheetDialog.cancel();
+                                            hideBottomSheetDialog ();
                                         }
                                     });
                                     LinearLayout icon_08 = dialogView.findViewById(R.id.icon_08);
@@ -2080,7 +2094,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                         public void onClick(View v) {
                                             db.update(Integer.parseInt(_id), pass_title, pass_content, pass_icon, pass_attachment, "08");
                                             initBookmarkList();
-                                            bottomSheetDialog.cancel();
+                                            hideBottomSheetDialog ();
                                         }
                                     });
                                     LinearLayout icon_09 = dialogView.findViewById(R.id.icon_09);
@@ -2089,7 +2103,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                         public void onClick(View v) {
                                             db.update(Integer.parseInt(_id), pass_title, pass_content, pass_icon, pass_attachment, "09");
                                             initBookmarkList();
-                                            bottomSheetDialog.cancel();
+                                            hideBottomSheetDialog ();
                                         }
                                     });
                                     LinearLayout icon_10 = dialogView.findViewById(R.id.icon_10);
@@ -2098,7 +2112,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                         public void onClick(View v) {
                                             db.update(Integer.parseInt(_id), pass_title, pass_content, pass_icon, pass_attachment, "10");
                                             initBookmarkList();
-                                            bottomSheetDialog.cancel();
+                                            hideBottomSheetDialog ();
                                         }
                                     });
                                     LinearLayout icon_11 = dialogView.findViewById(R.id.icon_11);
@@ -2107,7 +2121,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                         public void onClick(View v) {
                                             db.update(Integer.parseInt(_id), pass_title, pass_content, pass_icon, pass_attachment, "11");
                                             initBookmarkList();
-                                            bottomSheetDialog.cancel();
+                                            hideBottomSheetDialog ();
                                         }
                                     });
 
@@ -2128,7 +2142,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 contextList_delete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        bottomSheetDialog.cancel();
+                        hideBottomSheetDialog ();
                         bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
                         View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_action, null);
                         TextView textView = dialogView.findViewById(R.id.dialog_text);
@@ -2139,14 +2153,14 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                             public void onClick(View view) {
                                 db.delete(Integer.parseInt(_id));
                                 initBookmarkList();
-                                bottomSheetDialog.cancel();
+                                hideBottomSheetDialog ();
                             }
                         });
                         Button action_cancel = dialogView.findViewById(R.id.action_cancel);
                         action_cancel.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                bottomSheetDialog.cancel();
+                                hideBottomSheetDialog ();
                             }
                         });
                         bottomSheetDialog.setContentView(dialogView);
@@ -2161,7 +2175,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         });
     }
 
-    private void showFastToogle() {
+    private void showFastToggle() {
 
         bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
         View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_toggle, null);
@@ -2214,10 +2228,10 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             public void onClick(View view) {
                 if (javaHosts.isWhite(ninjaWebView.getUrl())) {
                     whiteList_js.setImageResource(R.drawable.ic_action_close_red);
-                    javaHosts.removeDomain(Uri.parse(url).getHost().replace("www.", "").trim());
+                    javaHosts.removeDomain(Objects.requireNonNull(Uri.parse(url).getHost()).replace("www.", "").trim());
                 } else {
                     whiteList_js.setImageResource(R.drawable.check_green);
-                    javaHosts.addDomain(Uri.parse(url).getHost().replace("www.", "").trim());
+                    javaHosts.addDomain(Objects.requireNonNull(Uri.parse(url).getHost()).replace("www.", "").trim());
                 }
             }
         });
@@ -2227,10 +2241,10 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             public void onClick(View view) {
                 if (cookieHosts.isWhite(ninjaWebView.getUrl())) {
                     whitelist_cookie.setImageResource(R.drawable.ic_action_close_red);
-                    cookieHosts.removeDomain(Uri.parse(url).getHost().replace("www.", "").trim());
+                    cookieHosts.removeDomain(Objects.requireNonNull(Uri.parse(url).getHost()).replace("www.", "").trim());
                 } else {
                     whitelist_cookie.setImageResource(R.drawable.check_green);
-                    cookieHosts.addDomain(Uri.parse(url).getHost().replace("www.", "").trim());
+                    cookieHosts.addDomain(Objects.requireNonNull(Uri.parse(url).getHost()).replace("www.", "").trim());
                 }
             }
         });
@@ -2264,10 +2278,10 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             public void onClick(View view) {
                 if (adBlock.isWhite(ninjaWebView.getUrl())) {
                     whiteList_ab.setImageResource(R.drawable.ic_action_close_red);
-                    adBlock.removeDomain(Uri.parse(url).getHost().replace("www.", "").trim());
+                    adBlock.removeDomain(Objects.requireNonNull(Uri.parse(url).getHost()).replace("www.", "").trim());
                 } else {
                     whiteList_ab.setImageResource(R.drawable.check_green);
-                    adBlock.addDomain(Uri.parse(url).getHost().replace("www.", "").trim());
+                    adBlock.addDomain(Objects.requireNonNull(Uri.parse(url).getHost()).replace("www.", "").trim());
                 }
             }
         });
@@ -2396,7 +2410,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         font_minus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                switch (sp.getString("sp_fontSize", "100")) {
+                switch (Objects.requireNonNull(sp.getString("sp_fontSize", "100"))) {
                     case "100":
                         Log.i(TAG, "Can not change font size");
                         break;
@@ -2419,7 +2433,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         font_plus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                switch (sp.getString("sp_fontSize", "100")) {
+                switch (Objects.requireNonNull(sp.getString("sp_fontSize", "100"))) {
                     case "100":
                         sp.edit().putString("sp_fontSize", "125").commit();
                         break;
@@ -2442,7 +2456,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             @Override
             public void onClick(View view) {
                 if (ninjaWebView != null) {
-                    bottomSheetDialog.cancel();
+                    hideBottomSheetDialog ();
                     ninjaWebView.initPreferences();
                     ninjaWebView.reload();
                 }
@@ -2453,7 +2467,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         action_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                bottomSheetDialog.cancel();
+                hideBottomSheetDialog ();
             }
         });
 
@@ -2559,10 +2573,10 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         if (currentAlbumController != null) {
             int index = BrowserContainer.indexOf(currentAlbumController) + 1;
             BrowserContainer.add(ninjaWebView, index);
-            switcherContainer.addView(albumView, index, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT));
+            tab_container.addView(albumView, index, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT));
         } else {
             BrowserContainer.add(ninjaWebView);
-            switcherContainer.addView(albumView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            tab_container.addView(albumView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         }
 
         if (!foreground) {
@@ -2572,7 +2586,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             return;
         }
 
-        showAlbum(ninjaWebView, true);
+        showAlbum(ninjaWebView);
 
         if (url != null && !url.isEmpty()) {
             ninjaWebView.loadUrl(url);
@@ -2584,7 +2598,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         showOmnibox();
         hideSoftInput(inputBox);
         hideSearchPanel();
-        switcherContainer.removeAllViews();
+        tab_container.removeAllViews();
 
         ninjaWebView = new NinjaWebView(this);
 
@@ -2592,7 +2606,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             if (controller instanceof NinjaWebView) {
                 ((NinjaWebView) controller).setBrowserController(this);
             }
-            switcherContainer.addView(controller.getAlbumView(), LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            tab_container.addView(controller.getAlbumView(), LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
             controller.getAlbumView().setVisibility(View.VISIBLE);
             controller.deactivate();
         }
@@ -2620,7 +2634,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
             BrowserContainer.add(ninjaWebView);
             final View albumView = ninjaWebView.getAlbumView();
-            switcherContainer.addView(albumView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            tab_container.addView(albumView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             contentFrame.removeAllViews();
             contentFrame.addView(ninjaWebView);
 
@@ -2660,14 +2674,14 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 @Override
                 public void onClick(View view) {
                     okAction.run();
-                    bottomSheetDialog.cancel();
+                    hideBottomSheetDialog ();
                 }
             });
             Button action_cancel = dialogView.findViewById(R.id.action_cancel);
             action_cancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    bottomSheetDialog.cancel();
+                    hideBottomSheetDialog ();
                 }
             });
             bottomSheetDialog.setContentView(dialogView);
@@ -2684,17 +2698,16 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             closeTabConfirmation( new Runnable() {
                 @Override
                 public void run() {
-                    switcherContainer.removeView(controller.getAlbumView());
+                    tab_container.removeView(controller.getAlbumView());
                     int index = BrowserContainer.indexOf(controller);
                     BrowserContainer.remove(controller);
                     if (index >= BrowserContainer.size()) {
                         index = BrowserContainer.size() - 1;
                     }
-                    showAlbum(BrowserContainer.get(index), false);
+                    showAlbum(BrowserContainer.get(index));
                 }
             });
         }
-        showOmnibox();
     }
 
     private void updateOmnibox() {
@@ -2729,20 +2742,20 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     }
 
     private void scrollChange () {
-        if (sp.getString("sp_hideToolbar", "0").equals("0") ||
-                sp.getString("sp_hideToolbar", "0").equals("1")) {
+        if (Objects.requireNonNull(sp.getString("sp_hideToolbar", "0")).equals("0") ||
+                Objects.requireNonNull(sp.getString("sp_hideToolbar", "0")).equals("1")) {
 
             ninjaWebView.setOnScrollChangeListener(new NinjaWebView.OnScrollChangeListener() {
                 @Override
                 public void onScrollChange(int scrollY, int oldScrollY) {
 
-                    if (sp.getString("sp_hideToolbar", "0").equals("0")) {
+                    if (Objects.requireNonNull(sp.getString("sp_hideToolbar", "0")).equals("0")) {
                         if (scrollY > oldScrollY) {
                             hideOmnibox();
-                        } else if (scrollY < oldScrollY){
+                        } else if (scrollY < oldScrollY - 56){
                             showOmnibox();
                         }
-                    } else if (sp.getString("sp_hideToolbar", "0").equals("1")) {
+                    } else if (Objects.requireNonNull(sp.getString("sp_hideToolbar", "0")).equals("1")) {
                         hideOmnibox();
                     }
                 }
@@ -2846,9 +2859,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         }
 
         FrameLayout decorView = (FrameLayout) getWindow().getDecorView();
-        if (decorView != null) {
-            decorView.removeView(fullscreenHolder);
-        }
+        decorView.removeView(fullscreenHolder);
 
         customView.setKeepScreenOn(false);
         ((View) currentAlbumController).setVisibility(View.VISIBLE);
@@ -2870,97 +2881,108 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     @Override
     public void onLongPress(String url) {
 
-        WebView.HitTestResult result;
-        result = ((NinjaWebView) currentAlbumController).getHitTestResult();
+        WebView.HitTestResult result = ninjaWebView.getHitTestResult();
 
-        bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
-        View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_menu_context_link, null);
+        if (result != null && url != null &&
+                (result.getType() != WebView.HitTestResult.PHONE_TYPE)) {
 
-        final String target = url;
+            bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
+            View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_menu_context_link, null);
 
-        dialogTitle = dialogView.findViewById(R.id.dialog_title);
-        dialogTitle.setText(url);
+            final String target = url;
+            dialogTitle = dialogView.findViewById(R.id.dialog_title);
+            dialogTitle.setText(url);
 
-        LinearLayout contextLink_newTab = dialogView.findViewById(R.id.contextLink_newTab);
-        contextLink_newTab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addAlbum(getString(R.string.album_untitled), target, false);
-                NinjaToast.show(BrowserActivity.this, getString(R.string.toast_new_tab_successful));
-                bottomSheetDialog.cancel();
-            }
-        });
-
-        LinearLayout contextLink__shareLink = dialogView.findViewById(R.id.contextLink__shareLink);
-        contextLink__shareLink.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (prepareRecord()) {
-                    NinjaToast.show(BrowserActivity.this, getString(R.string.toast_share_failed));
-                } else {
-                    IntentUnit.share(BrowserActivity.this, "", target);
+            LinearLayout contextLink_newTab = dialogView.findViewById(R.id.contextLink_newTab);
+            contextLink_newTab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addAlbum(getString(R.string.album_untitled), target, false);
+                    NinjaToast.show(BrowserActivity.this, getString(R.string.toast_new_tab_successful));
+                    hideBottomSheetDialog ();
                 }
-                bottomSheetDialog.cancel();
-            }
-        });
+            });
 
-        LinearLayout contextLink_openWith = dialogView.findViewById(R.id.contextLink_openWith);
-        contextLink_openWith.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(target));
-                Intent chooser = Intent.createChooser(intent, getString(R.string.menu_open_with));
-                startActivity(chooser);
-                bottomSheetDialog.cancel();
-            }
-        });
+            LinearLayout contextLink__shareLink = dialogView.findViewById(R.id.contextLink__shareLink);
+            contextLink__shareLink.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (prepareRecord()) {
+                        NinjaToast.show(BrowserActivity.this, getString(R.string.toast_share_failed));
+                    } else {
+                        IntentUnit.share(BrowserActivity.this, "", target);
+                    }
+                    hideBottomSheetDialog ();
+                }
+            });
 
-        LinearLayout contextLink_newTabOpen = dialogView.findViewById(R.id.contextLink_newTabOpen);
-        contextLink_newTabOpen.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addAlbum(getString(R.string.album_untitled), target, true);
-                bottomSheetDialog.cancel();
-            }
-        });
+            LinearLayout contextLink_openWith = dialogView.findViewById(R.id.contextLink_openWith);
+            contextLink_openWith.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse(target));
+                    Intent chooser = Intent.createChooser(intent, getString(R.string.menu_open_with));
+                    startActivity(chooser);
+                    hideBottomSheetDialog ();
+                }
+            });
 
-        LinearLayout contextLink_saveAs = dialogView.findViewById(R.id.contextLink_saveAs);
-        contextLink_saveAs.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
+            LinearLayout contextLink_newTabOpen = dialogView.findViewById(R.id.contextLink_newTabOpen);
+            contextLink_newTabOpen.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addAlbum(getString(R.string.album_untitled), target, true);
+                    hideBottomSheetDialog ();
+                }
+            });
 
-                    bottomSheetDialog.cancel();
-                    assert target != null;
+            LinearLayout contextLink_saveAs = dialogView.findViewById(R.id.contextLink_saveAs);
+            contextLink_saveAs.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        hideBottomSheetDialog ();
 
-                    AlertDialog.Builder builder = new AlertDialog.Builder(BrowserActivity.this);
-                    View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_edit_extension, null);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(BrowserActivity.this);
+                        View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_edit_extension, null);
 
-                    final EditText editTitle = dialogView.findViewById(R.id.dialog_edit);
-                    final EditText editExtension = dialogView.findViewById(R.id.dialog_edit_extension);
+                        final EditText editTitle = dialogView.findViewById(R.id.dialog_edit);
+                        final EditText editExtension = dialogView.findViewById(R.id.dialog_edit_extension);
 
-                    editTitle.setHint(R.string.dialog_title_hint);
-                    editTitle.setText(HelperUnit.fileName(ninjaWebView.getUrl()));
+                        editTitle.setHint(R.string.dialog_title_hint);
+                        editTitle.setText(HelperUnit.fileName(ninjaWebView.getUrl()));
 
-                    builder.setView(dialogView);
-                    builder.setTitle(R.string.menu_edit);
-                    builder.setPositiveButton(R.string.app_ok, new DialogInterface.OnClickListener() {
+                        builder.setView(dialogView);
+                        builder.setTitle(R.string.menu_edit);
+                        builder.setPositiveButton(R.string.app_ok, new DialogInterface.OnClickListener() {
 
-                        public void onClick(DialogInterface dialog, int whichButton) {
+                            public void onClick(DialogInterface dialog, int whichButton) {
 
-                            String title = editTitle.getText().toString().trim();
-                            String extension = editExtension.getText().toString().trim();
-                            String  filename = title + extension;
+                                String title = editTitle.getText().toString().trim();
+                                String extension = editExtension.getText().toString().trim();
+                                String filename = title + extension;
 
-                            if (title.isEmpty() || extension.isEmpty() || !extension.startsWith(".")) {
-                                NinjaToast.show(BrowserActivity.this, getString(R.string.toast_input_empty));
-                            } else {
+                                if (title.isEmpty() || extension.isEmpty() || !extension.startsWith(".")) {
+                                    NinjaToast.show(BrowserActivity.this, getString(R.string.toast_input_empty));
+                                } else {
 
-                                if (android.os.Build.VERSION.SDK_INT >= 23) {
-                                    int hasWRITE_EXTERNAL_STORAGE = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                                    if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
-                                        NinjaToast.show(BrowserActivity.this, R.string.toast_permission_sdCard_sec);
+                                    if (android.os.Build.VERSION.SDK_INT >= 23) {
+                                        int hasWRITE_EXTERNAL_STORAGE = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                                        if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
+                                            NinjaToast.show(BrowserActivity.this, R.string.toast_permission_sdCard_sec);
+                                        } else {
+                                            Uri source = Uri.parse(target);
+                                            DownloadManager.Request request = new DownloadManager.Request(source);
+                                            request.addRequestHeader("Cookie", CookieManager.getInstance().getCookie(target));
+                                            request.allowScanningByMediaScanner();
+                                            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); //Notify client once download is completed!
+                                            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
+                                            DownloadManager dm = (DownloadManager) BrowserActivity.this.getSystemService(DOWNLOAD_SERVICE);
+                                            assert dm != null;
+                                            dm.enqueue(request);
+                                            hideSoftInput(editTitle);
+                                        }
                                     } else {
                                         Uri source = Uri.parse(target);
                                         DownloadManager.Request request = new DownloadManager.Request(source);
@@ -2973,39 +2995,25 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                         dm.enqueue(request);
                                         hideSoftInput(editTitle);
                                     }
-                                } else {
-                                    Uri source = Uri.parse(target);
-                                    DownloadManager.Request request = new DownloadManager.Request(source);
-                                    request.addRequestHeader("Cookie", CookieManager.getInstance().getCookie(target));
-                                    request.allowScanningByMediaScanner();
-                                    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); //Notify client once download is completed!
-                                    request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
-                                    DownloadManager dm = (DownloadManager) BrowserActivity.this.getSystemService(DOWNLOAD_SERVICE);
-                                    assert dm != null;
-                                    dm.enqueue(request);
-                                    hideSoftInput(editTitle);
                                 }
                             }
-                        }
-                    });
-                    builder.setNegativeButton(R.string.app_cancel, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int whichButton) {
-                            dialog.cancel();
-                            hideSoftInput(editTitle);
-                        }
-                    });
+                        });
+                        builder.setNegativeButton(R.string.app_cancel, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                dialog.cancel();
+                                hideSoftInput(editTitle);
+                            }
+                        });
 
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-                    showSoftInput(editTitle);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+                        showSoftInput(editTitle);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
                 }
-
-            }
-        });
-
-        if (url != null || (result != null && result.getExtra() != null)) {
+            });
             bottomSheetDialog.setContentView(dialogView);
             bottomSheetDialog.show();
         }
@@ -3030,7 +3038,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             action_cancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    bottomSheetDialog.cancel();
+                    hideBottomSheetDialog ();
                 }
             });
             bottomSheetDialog.setContentView(dialogView);
@@ -3057,6 +3065,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         }, 250);
     }
 
+    @SuppressLint("RestrictedApi")
     private void showOmnibox() {
         if (omnibox.getVisibility() == View.GONE && searchPanel.getVisibility()  == View.GONE) {
 
@@ -3064,12 +3073,13 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             omnibox.setVisibility(View.VISIBLE);
             appBar.setVisibility(View.VISIBLE);
 
-            if (sp.getString("sp_hideNav", "0").equals("0")) {
+            if (Objects.requireNonNull(sp.getString("sp_hideNav", "0")).equals("0")) {
                 fab_imageButtonNav.setVisibility(View.GONE);
             }
         }
     }
 
+    @SuppressLint("RestrictedApi")
     private void hideOmnibox() {
         if (omnibox.getVisibility() == View.VISIBLE) {
 
@@ -3077,7 +3087,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             searchPanel.setVisibility(View.GONE);
             appBar.setVisibility(View.GONE);
 
-            if (sp.getString("sp_hideNav", "0").equals("0") || sp.getString("sp_hideNav", "0").equals("2")) {
+            if (Objects.requireNonNull(sp.getString("sp_hideNav", "0")).equals("0") || Objects.requireNonNull(sp.getString("sp_hideNav", "0")).equals("2")) {
                 fab_imageButtonNav.setVisibility(View.VISIBLE);
             }
         }
@@ -3117,12 +3127,9 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
             new Handler().postDelayed(new Runnable() {
                 public void run() {
-                    if (currentAlbumController != null && currentAlbumController instanceof NinjaWebView) {
-                        dialogTitle.setText(ninjaWebView.getTitle());
-                    }
+                    dialogTitle.setText(ninjaWebView.getTitle());
                 }
             }, 500);
-
         }
 
         if (currentAlbumController == null || BrowserContainer.size() <= 1) {
@@ -3134,6 +3141,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         }
     }
 
+    @SuppressWarnings("SameReturnValue")
     private boolean showOverflow() {
 
         bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
@@ -3205,7 +3213,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         bottomSheetDialog.setContentView(dialogView);
         bottomSheetDialog.show();
-
         return true;
     }
 
@@ -3221,20 +3228,27 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             public void onClick(View v) {
                 addAlbum(getString(R.string.album_untitled), gridItem.getURL(), false);
                 NinjaToast.show(BrowserActivity.this, getString(R.string.toast_new_tab_successful));
-                bottomSheetDialog.cancel();
+                hideBottomSheetDialog ();
             }
         });
 
         contextList_newTabOpen = dialogView.findViewById(R.id.menu_contextList_newTabOpen);
         contextList_newTabOpen.setVisibility(View.VISIBLE);
-        contextList_newTabOpen.setOnClickListener(BrowserActivity.this);
+        contextList_newTabOpen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addAlbum(getString(R.string.album_untitled), gridItem.getURL(), true);
+                hideBottomSheetDialog ();
+                hideOverview();
+            }
+        });
 
         contextList_delete = dialogView.findViewById(R.id.menu_contextList_delete);
         contextList_delete.setVisibility(View.VISIBLE);
         contextList_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bottomSheetDialog.cancel();
+                hideBottomSheetDialog ();
                 bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
                 View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_action, null);
                 TextView textView = dialogView.findViewById(R.id.dialog_text);
@@ -3249,14 +3263,14 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                         action.close();
                         BrowserActivity.this.deleteFile(gridItem.getFilename());
                         open_newTab.performClick();
-                        bottomSheetDialog.cancel();
+                        hideBottomSheetDialog ();
                     }
                 });
                 Button action_cancel = dialogView.findViewById(R.id.action_cancel);
                 action_cancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        bottomSheetDialog.cancel();
+                        hideBottomSheetDialog ();
                     }
                 });
                 bottomSheetDialog.setContentView(dialogView);
@@ -3269,7 +3283,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         contextList_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bottomSheetDialog.cancel();
+                hideBottomSheetDialog ();
 
                 bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
                 View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_edit_title, null);
@@ -3295,7 +3309,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                             hideSoftInput(editText);
                             open_newTab.performClick();
                         }
-                        bottomSheetDialog.cancel();
+                        hideBottomSheetDialog ();
                     }
                 });
                 Button action_cancel = dialogView.findViewById(R.id.action_cancel);
@@ -3303,7 +3317,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                     @Override
                     public void onClick(View view) {
                         hideSoftInput(editText);
-                        bottomSheetDialog.cancel();
+                        hideBottomSheetDialog ();
                     }
                 });
                 bottomSheetDialog.setContentView(dialogView);
@@ -3324,19 +3338,30 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_menu_context_list, null);
 
         contextList_newTab = dialogView.findViewById(R.id.menu_contextList_newTab);
-        contextList_newTab.setVisibility(View.VISIBLE);
-        contextList_newTab.setOnClickListener(BrowserActivity.this);
+        contextList_newTab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addAlbum(getString(R.string.album_untitled), record.getURL(), false);
+                NinjaToast.show(BrowserActivity.this, getString(R.string.toast_new_tab_successful));
+                hideBottomSheetDialog ();
+            }
+        });
 
         contextList_newTabOpen = dialogView.findViewById(R.id.menu_contextList_newTabOpen);
-        contextList_newTabOpen.setVisibility(View.VISIBLE);
-        contextList_newTabOpen.setOnClickListener(BrowserActivity.this);
+        contextList_newTabOpen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addAlbum(getString(R.string.album_untitled), record.getURL(), true);
+                hideBottomSheetDialog ();
+                hideOverview();
+            }
+        });
 
         contextList_delete = dialogView.findViewById(R.id.menu_contextList_delete);
-        contextList_delete.setVisibility(View.VISIBLE);
         contextList_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bottomSheetDialog.cancel();
+                hideBottomSheetDialog ();
                 bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
                 View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_action, null);
                 TextView textView = dialogView.findViewById(R.id.dialog_text);
@@ -3347,15 +3372,13 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                     public void onClick(View view) {
                         RecordAction action = new RecordAction(BrowserActivity.this);
                         action.open(true);
-
                         action.deleteHistory(record);
-
                         action.close();
                         recordList.remove(location);
                         adapterRecord.notifyDataSetChanged();
                         updateBookmarks();
                         updateAutoComplete();
-                        bottomSheetDialog.cancel();
+                        hideBottomSheetDialog ();
                         NinjaToast.show(BrowserActivity.this, getString(R.string.toast_delete_successful));
                     }
                 });
@@ -3363,7 +3386,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 action_cancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        bottomSheetDialog.cancel();
+                        hideBottomSheetDialog ();
                     }
                 });
                 bottomSheetDialog.setContentView(dialogView);
@@ -3389,9 +3412,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     }
 
     private void showFilterDialog () {
-        if (bottomSheetDialog != null) {
-            bottomSheetDialog.cancel();
-        }
+        hideBottomSheetDialog();
 
         bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
         View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_edit_icon, null);
@@ -3402,7 +3423,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             public void onClick(View v) {
                 sp.edit().putString("filter_passBY", "01").apply();
                 initBookmarkList();
-                bottomSheetDialog.cancel();
+                hideBottomSheetDialog ();
             }
         });
         LinearLayout icon_02 = dialogView.findViewById(R.id.icon_02);
@@ -3411,7 +3432,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             public void onClick(View v) {
                 sp.edit().putString("filter_passBY", "02").apply();
                 initBookmarkList();
-                bottomSheetDialog.cancel();
+                hideBottomSheetDialog ();
             }
         });
         LinearLayout icon_03 = dialogView.findViewById(R.id.icon_03);
@@ -3420,7 +3441,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             public void onClick(View v) {
                 sp.edit().putString("filter_passBY", "03").apply();
                 initBookmarkList();
-                bottomSheetDialog.cancel();
+                hideBottomSheetDialog ();
             }
         });
         LinearLayout icon_04 = dialogView.findViewById(R.id.icon_04);
@@ -3429,7 +3450,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             public void onClick(View v) {
                 sp.edit().putString("filter_passBY", "04").apply();
                 initBookmarkList();
-                bottomSheetDialog.cancel();
+                hideBottomSheetDialog ();
             }
         });
         LinearLayout icon_05 = dialogView.findViewById(R.id.icon_05);
@@ -3438,7 +3459,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             public void onClick(View v) {
                 sp.edit().putString("filter_passBY", "05").apply();
                 initBookmarkList();
-                bottomSheetDialog.cancel();
+                hideBottomSheetDialog ();
             }
         });
         LinearLayout icon_06 = dialogView.findViewById(R.id.icon_06);
@@ -3447,7 +3468,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             public void onClick(View v) {
                 sp.edit().putString("filter_passBY", "06").apply();
                 initBookmarkList();
-                bottomSheetDialog.cancel();
+                hideBottomSheetDialog ();
             }
         });
         LinearLayout icon_07 = dialogView.findViewById(R.id.icon_07);
@@ -3456,7 +3477,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             public void onClick(View v) {
                 sp.edit().putString("filter_passBY", "07").apply();
                 initBookmarkList();
-                bottomSheetDialog.cancel();
+                hideBottomSheetDialog ();
             }
         });
         LinearLayout icon_08 = dialogView.findViewById(R.id.icon_08);
@@ -3465,7 +3486,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             public void onClick(View v) {
                 sp.edit().putString("filter_passBY", "08").apply();
                 initBookmarkList();
-                bottomSheetDialog.cancel();
+                hideBottomSheetDialog ();
             }
         });
         LinearLayout icon_09 = dialogView.findViewById(R.id.icon_09);
@@ -3474,7 +3495,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             public void onClick(View v) {
                 sp.edit().putString("filter_passBY", "09").apply();
                 initBookmarkList();
-                bottomSheetDialog.cancel();
+                hideBottomSheetDialog ();
             }
         });
         LinearLayout icon_10 = dialogView.findViewById(R.id.icon_10);
@@ -3483,7 +3504,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             public void onClick(View v) {
                 sp.edit().putString("filter_passBY", "10").apply();
                 initBookmarkList();
-                bottomSheetDialog.cancel();
+                hideBottomSheetDialog ();
             }
         });
         LinearLayout icon_11 = dialogView.findViewById(R.id.icon_11);
@@ -3492,7 +3513,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             public void onClick(View v) {
                 sp.edit().putString("filter_passBY", "11").apply();
                 initBookmarkList();
-                bottomSheetDialog.cancel();
+                hideBottomSheetDialog ();
             }
         });
 
@@ -3502,7 +3523,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
     private void showHelpDialog () {
 
-        bottomSheetDialog.cancel();
+        hideBottomSheetDialog ();
         bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
         View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_help, null);
 
@@ -3527,7 +3548,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bottomSheetDialog.cancel();
+                hideBottomSheetDialog ();
             }
         });
 
@@ -3537,7 +3558,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             public void onClick(View v) {
                 Intent intent = new Intent(BrowserActivity.this, Settings_Activity.class);
                 startActivity(intent);
-                bottomSheetDialog.cancel();
+                hideBottomSheetDialog ();
             }
         });
 

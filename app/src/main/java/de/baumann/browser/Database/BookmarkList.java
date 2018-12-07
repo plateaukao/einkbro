@@ -20,7 +20,6 @@
 package de.baumann.browser.Database;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -28,6 +27,8 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.preference.PreferenceManager;
+
+import java.util.Objects;
 
 
 public class BookmarkList {
@@ -98,7 +99,7 @@ public class BookmarkList {
 
         String[] columns = new String[]{"_id", "pass_title", "pass_content", "pass_icon","pass_attachment","pass_creation"};
 
-        switch (sp.getString("sortDBB", "title")) {
+        switch (Objects.requireNonNull(sp.getString("sortDBB", "title"))) {
             case "title":
                 return sqlDb.query(dbTable, columns, null, null, null, null, "pass_title" + " COLLATE NOCASE ASC;");
 

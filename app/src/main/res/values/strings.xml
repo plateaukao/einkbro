@@ -197,7 +197,6 @@
     <string name="setting_title_nav_show">Hide</string>
     <string name="setting_summary_nav_show">Hide the \"Navigation Button\" when toolbar is shown.</string>
 
-    <string name="setting_title_tab">Start tab</string>
     <string name="setting_summary_tab">What should be shown at the start of the \"Overview\"? The Start Page, you bookmarks, …</string>
 
     <string name="setting_title_confirm_exit">Confirm browser exit</string>
@@ -214,8 +213,6 @@
     <string name="setting_hideNav_toolbar">When toolbar is showing</string>
 
     <string name="setting_overView">Overview</string>
-    <string name="setting_overView_onStart_title">Show on start</string>
-    <string name="setting_overView_onStart_summary">Open the \"Overview\" on every app start.</string>
 
     <string name="setting_close">Close confirmation</string>
     <string name="setting_gestures">Gestures</string>
@@ -283,7 +280,6 @@
     <string name="toast_load_in_background">Loading in background</string>
     <string name="toast_new_tab_successful">Successfully opened in a new tab</string>
     <string name="toast_open_file_manager_failed">Failed to open File Manager</string>
-    <string name="toast_refresh_failed">Can\'t refresh this page</string>
     <string name="toast_relayout_successful">Successfully Relayout</string>
     <string name="toast_share_failed">Can\'t share this page</string>
     <string name="toast_start_download">Starting download</string>

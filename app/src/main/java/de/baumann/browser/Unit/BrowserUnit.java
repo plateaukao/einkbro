@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -27,18 +26,14 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 import de.baumann.browser.Browser.AdBlock;
 import de.baumann.browser.Browser.Cookie;
 import de.baumann.browser.Browser.Javascript;
-import de.baumann.browser.Database.BookmarkList;
-import de.baumann.browser.Database.Record;
 import de.baumann.browser.Database.RecordAction;
 import de.baumann.browser.Ninja.R;
 import de.baumann.browser.View.NinjaToast;
@@ -49,13 +44,7 @@ public class BrowserUnit {
     private static final String SUFFIX_HTML = ".html";
     public static final String SUFFIX_PNG = ".png";
     private static final String SUFFIX_TXT = ".txt";
-
     public static final String MIME_TYPE_TEXT_PLAIN = "text/plain";
-
-    private static final String BOOKMARK_TYPE = "<DT><A HREF=\"{url}\" ADD_DATE=\"{time}\">{title}</A>";
-    private static final String BOOKMARK_TITLE = "{title}";
-    private static final String BOOKMARK_URL = "{url}";
-    private static final String BOOKMARK_TIME = "{time}";
 
     private static final String SEARCH_ENGINE_GOOGLE = "https://www.google.com/search?q=";
     private static final String SEARCH_ENGINE_DUCKDUCKGO = "https://duckduckgo.com/?q=";
@@ -139,7 +128,7 @@ public class BrowserUnit {
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         String custom = sp.getString(context.getString(R.string.sp_search_engine_custom), SEARCH_ENGINE_STARTPAGE);
-        final int i = Integer.valueOf(sp.getString(context.getString(R.string.sp_search_engine), "0"));
+        final int i = Integer.valueOf(Objects.requireNonNull(sp.getString(context.getString(R.string.sp_search_engine), "0")));
         switch (i) {
             case 0:
                 return SEARCH_ENGINE_STARTPAGE + query;
@@ -256,95 +245,43 @@ public class BrowserUnit {
         }
     }
 
-    public static String exportBookmarks(Context context) {
-
-        final BookmarkList db = new BookmarkList(context);
-        final Cursor row;
-        db.open();
-
-        row = db.fetchAllData(context);
-
-        final String pass_title = row.getString(row.getColumnIndexOrThrow("pass_title"));
-        final String pass_content = row.getString(row.getColumnIndexOrThrow("pass_content"));
-
-        ArrayList<String> bookmarkList = new ArrayList<String>();
-        row.moveToFirst();
-        while (!row.isAfterLast()) {
-            bookmarkList.add(row.getString(row.getColumnIndexOrThrow("pass_title")));
-            bookmarkList.add(row.getString(row.getColumnIndexOrThrow("pass_content")));
-            row.moveToNext();
-        }
+    public static void exportBookmarks(Context context) {
 
         String filename = context.getString(R.string.export_bookmarks);
-        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "browser_backup//" + filename + SUFFIX_HTML);
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "browser_backup//" + filename + SUFFIX_TXT);
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        String savedKey = Objects.requireNonNull(sp.getString("saved_key", "no"));
 
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(file, false));
-            for (int i = 0; i < bookmarkList.size(); i++) {
-                String type = BOOKMARK_TYPE;
-                type = type.replace(BOOKMARK_TITLE, row.getString(row.getColumnIndexOrThrow("pass_title")));
-                type = type.replace(BOOKMARK_URL, row.getString(row.getColumnIndexOrThrow("pass_content")));
-                writer.write(type);
-                writer.newLine();
-            }
+            writer.write(savedKey);
             writer.close();
-            return file.getAbsolutePath();
         } catch (Exception e) {
-            return null;
+            Log.w("Browser", "Error adding record", e);
+
         }
     }
 
-    public static int importBookmarks(Context context) {
+    public static void importBookmarks(Context context) {
 
         String filename = context.getString(R.string.export_bookmarks);
-        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "browser_backup//" + filename + SUFFIX_HTML);
-
-        List<Record> list = new ArrayList<>();
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "browser_backup//" + filename + SUFFIX_TXT);
 
         try {
-            RecordAction action = new RecordAction(context);
-            action.open(true);
-
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String line;
             while ((line = reader.readLine()) != null) {
                 line = line.trim();
-                if (!((line.startsWith("<dt><a ") && line.endsWith("</a>")) || (line.startsWith("<DT><A ") && line.endsWith("</A>")))) {
-                    continue;
-                }
 
-                String title = getBookmarkTitle(line);
-                String url = getBookmarkURL(line);
-                if (title.trim().isEmpty() || url.trim().isEmpty()) {
-                    continue;
-                }
-
-                Record record = new Record();
-                record.setTitle(title);
-                record.setURL(url);
-                record.setTime(System.currentTimeMillis());
-                if (!action.checkBookmark(record)) {
-                    list.add(record);
-                }
+                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+                sp.edit().putString("saved_key", line).apply();
             }
             reader.close();
 
-            Collections.sort(list, new Comparator<Record>() {
-                @Override
-                public int compare(Record first, Record second) {
-                    return first.getTitle().compareTo(second.getTitle());
-                }
-            });
-
-            for (Record record : list) {
-                //action.addBookmark(record);
-            }
-            action.close();
         } catch (Exception e) {
             Log.w("Browser", "Error adding record", e);
         }
-
-        return list.size();
     }
 
     public static String exportWhitelist(Context context, int i) {
@@ -538,20 +475,5 @@ public class BrowserUnit {
         }
 
         return dir != null && dir.delete();
-    }
-
-    private static String getBookmarkTitle(String line) {
-        line = line.substring(0, line.length() - 4); // Remove last </a>
-        int index = line.lastIndexOf(">");
-        return line.substring(index + 1, line.length());
-    }
-
-    private static String getBookmarkURL(String line) {
-        for (String string : line.split(" +")) {
-            if (string.startsWith("href=\"") || string.startsWith("HREF=\"")) {
-                return string.substring(6, string.length() - 1); // Remove href=\" and \"
-            }
-        }
-        return "";
     }
 }
