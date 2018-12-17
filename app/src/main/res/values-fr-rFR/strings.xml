@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+
+    <!-- App -->
+    <string name="album_title_bookmarks">Marques-pages</string>
+    <string name="album_title_history">Historique</string>
+    <string name="album_title_home">Acceuil</string>
+    <string name="album_title_files">Fichiers</string>
+
+    <string name="color_red">Rouge</string>
+    <string name="color_pink">Rose</string>
+    <string name="color_blue">Bleu</string>
+    <string name="color_green">Vert</string>
+    <string name="color_yellow">Jaune</string>
+    <string name="color_orange">Orange</string>
+    <string name="color_brown">Marron</string>
+    <string name="color_grey">Gris</string>
+
+
+    <!-- Menu -->
+
+
+
+
+
+
+    <!-- AndroidAgo -->
+
+
+    <!-- Dialog -->
+    <string name="dialog_title_hint">Titre :</string>
+    <string name="dialog_extension_hint">Extension (par exemple: \".jpg\"):</string>
+    <string name="dialog_sign_in_username">Nom d\'utilisateur</string>
+    <string name="dialog_sign_in_password">Mot de passe</string>
+    <string name="dialog_button_custom">Personnaliser</string>
+
+    <string name="dialog_sortName">Trier par nom</string>
+
+
+    <!-- Settings -->
+
+    <!-- Browser setting -->
+
+
+
+
+
+
+    <!-- Browser start -->
+
+
+
+
+
+
+    <!-- Browser clear -->
+    <string name="clear_title_quit">Effacer quand vous quitter l\'application</string>
+    <string name="clear_title_bookmarks">Supprimer les marques-pages</string>
+    <string name="clear_title_cache">Vider le cache</string>
+    <string name="clear_title_cookie">Effacer les cookies</string>
+    <string name="clear_title_history">Effacer l\'historique</string>
+
+    <string name="clear_title_deleteDatabase">Supprimer la base de donnée</string>
+
+
+    <!-- App setting -->
+
+    <!-- App behavior -->
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Data -->
+
+
+
+
+
+
+    <!-- Others setting -->
+
+    <!-- Toast -->
+
+
+    <!-- Whitelist -->
+
+</resources>
