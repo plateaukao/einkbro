@@ -5,6 +5,7 @@
 - new: Code of conduct site (thanks @HarryHeights)
 - new: Privacy declaration (thanks @HarryHeights)
 - updated: help dialog
+- updated: french translation (thanks @Hellohat)
 - removed: loginData (use bookmarks instead)
 - fix: upload files
 - fix: not clearing indexed databases on exit
