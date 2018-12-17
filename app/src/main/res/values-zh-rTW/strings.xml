@@ -165,6 +165,7 @@
     <string name="setting_title_nav_show">隱藏</string>
     <string name="setting_summary_nav_show">當工具列顯示時隱藏導航鍵</string>
 
+    <string name="setting_title_tab">起始畫面</string>
     <string name="setting_summary_tab">瀏覽器開啟後啟動頁該顯示什麼？主頁、書籤或瀏覽歷史…</string>
 
     <string name="setting_title_confirm_exit">確認退出瀏覽器</string>
@@ -235,7 +236,8 @@
 <string name="toast_load_in_background">於背景載入</string>
 <string name="toast_new_tab_successful">成功於新分頁開啟</string>
 <string name="toast_open_file_manager_failed">無法開啟檔案管理器</string>
-    <string name="toast_relayout_successful">重新佈局成功</string>
+<string name="toast_refresh_failed">無法刷新此頁</string>
+<string name="toast_relayout_successful">重新佈局成功</string>
 <string name="toast_share_failed">無法分享此網頁</string>
 <string name="toast_start_download">開始下載</string>
 <string name="toast_wait_a_minute">請稍候</string>

@@ -119,6 +119,7 @@ public class RecordAction {
         values.put(RecordUnit.COLUMN_FILENAME, item.getFilename().trim());
         values.put(RecordUnit.COLUMN_ORDINAL, item.getOrdinal());
         database.update(RecordUnit.TABLE_GRID, values, RecordUnit.COLUMN_URL + "=?", new String[] {item.getURL()});
+
     }
 
     public void deleteHistoryOld(String domain) {

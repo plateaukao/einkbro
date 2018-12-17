@@ -1,3 +1,16 @@
+### v 6.1
+- new: overview instead of startPage
+- new: order and filter bookmarks
+- new: open favorite website on start
+- new: Code of conduct site (thanks @HarryHeights)
+- new: Privacy declaration (thanks @HarryHeights)
+- updated: help dialog
+- removed: loginData (use bookmarks instead)
+- fix: upload files
+- fix: not clearing indexed databases on exit
+- many more fixes and improvements
+
+
 ### v 6.0
 - updated: adBlock hosts list
 - updated: Polish translation (thanks @gh-pmjm)

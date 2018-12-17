@@ -27,9 +27,4 @@
         <Preference android:title="@string/setting_title_import_whitelistCookie" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/album_title_bookmarks">
-        <Preference android:title="@string/setting_title_export_bookmarks" />
-        <Preference android:title="@string/setting_title_import_bookmarks" />
-    </PreferenceCategory>
-
 </PreferenceScreen>

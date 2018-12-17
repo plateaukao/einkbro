@@ -6,10 +6,6 @@
         android:defaultValue="false"
         android:title="@string/clear_title_cache"/>
 
-    <CheckBoxPreference android:key="@string/sp_clear_bookmarks"
-        android:defaultValue="false"
-        android:title="@string/clear_title_bookmarks"/>
-
     <CheckBoxPreference android:key="@string/sp_clear_history"
         android:defaultValue="false"
         android:title="@string/clear_title_history"/>

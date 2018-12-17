@@ -41,8 +41,7 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:imeOptions="actionDone"
                 android:inputType="textMultiLine"
-                android:selectAllOnFocus="true"
-                android:importantForAutofill="no" />
+                android:selectAllOnFocus="true"/>
 
             <Button android:id="@+id/whitelist_add"
                 android:layout_width="match_parent"

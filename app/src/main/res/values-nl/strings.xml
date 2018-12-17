@@ -174,6 +174,7 @@
     <string name="setting_title_nav_show">Verbergen</string>
     <string name="setting_summary_nav_show">Verberg de \"Navigatieknop\" als de werkbalk zichtbaar is.</string>
 
+    <string name="setting_title_tab">Opstarten</string>
     <string name="setting_summary_tab">Wat moet er worden getoond bij het opstarten van \"FOSS-browser\": de startpagina, je bladwijzers, … ?</string>
 
     <string name="setting_title_confirm_exit">Afsluiten bevestigen</string>
@@ -245,6 +246,7 @@
     <string name="toast_load_in_background">Bezig met laden op achtergrond…</string>
     <string name="toast_new_tab_successful">Geopend op nieuw tabblad</string>
     <string name="toast_open_file_manager_failed">Bestandsbeheerder openen mislukt</string>
+    <string name="toast_refresh_failed">Deze pagina kan niet worden ververst</string>
     <string name="toast_relayout_successful">Opnieuw ingedeeld</string>
     <string name="toast_share_failed">Deze pagina kan niet worden gedeeld</string>
     <string name="toast_start_download">Bezig met starten van download…</string>

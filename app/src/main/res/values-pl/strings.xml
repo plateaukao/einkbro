@@ -164,6 +164,7 @@
     <string name="setting_title_nav_show">Widoczność</string>
     <string name="setting_summary_nav_show">Zdecyduj o zachowaniu \”Przycisku nawigacyjnego\” w towarzystwie panelu dolnego.</string>
 
+    <string name="setting_title_tab">Zakładka startowa</string>
     <string name="setting_summary_tab">Wybierz element startowy \"FOSS Browser\”.</string>
 
     <string name="setting_title_confirm_exit">Potwierdzaj zamknięcie przeglądarki</string>
@@ -232,6 +233,7 @@
     <string name="toast_load_in_background">Ładowanie w tle</string>
     <string name="toast_new_tab_successful">Załadowano w nowej karcie</string>
     <string name="toast_open_file_manager_failed">Błąd przy otwieraniu katalogu pobierania</string>
+    <string name="toast_refresh_failed">Nie można odświeżyć</string>
     <string name="toast_relayout_successful">Zmiana zakończona sukcesem</string>
     <string name="toast_share_failed">Nie można udostępnić</string>
     <string name="toast_start_download">Rozpoczynanie pobierania</string>

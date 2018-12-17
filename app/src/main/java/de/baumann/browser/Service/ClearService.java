@@ -29,14 +29,11 @@ public class ClearService extends Service {
 
     private void clear() {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean clearBookmarks = sp.getBoolean(getString(R.string.sp_clear_bookmarks), false);
         boolean clearCache = sp.getBoolean(getString(R.string.sp_clear_cache), false);
         boolean clearCookie = sp.getBoolean(getString(R.string.sp_clear_cookie), false);
         boolean clearHistory = sp.getBoolean(getString(R.string.sp_clear_history), false);
+        boolean clearIndexedDB = sp.getBoolean(("sp_clearIndexedDB"), false);
 
-        if (clearBookmarks) {
-            BrowserUnit.clearBookmarks(this);
-        }
         if (clearCache) {
             BrowserUnit.clearCache(this);
         }
@@ -45,6 +42,9 @@ public class ClearService extends Service {
         }
         if (clearHistory) {
             BrowserUnit.clearHistory(this);
+        }
+        if (clearIndexedDB) {
+            BrowserUnit.clearIndexedDB(this);
         }
     }
 }
