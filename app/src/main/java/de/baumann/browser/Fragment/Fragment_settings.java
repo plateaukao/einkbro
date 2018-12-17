@@ -23,7 +23,6 @@ import de.baumann.browser.Unit.IntentUnit;
 
 public class Fragment_settings extends PreferenceFragment {
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

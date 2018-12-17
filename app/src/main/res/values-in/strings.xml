@@ -171,6 +171,7 @@
     <string name="toast_load_in_background">Memuat di latar belakang</string>
     <string name="toast_new_tab_successful">Berhasil membuka tab baru</string>
     <string name="toast_open_file_manager_failed">Gagal membuka File Manager</string>
+    <string name="toast_refresh_failed">Tidak dapat me-refresh halaman ini</string>
     <string name="toast_relayout_successful">Berhasil melakukan relayout</string>
     <string name="toast_share_failed">Tidak dapat membagikan halaman ini</string>
     <string name="toast_start_download">Memulai unduh</string>

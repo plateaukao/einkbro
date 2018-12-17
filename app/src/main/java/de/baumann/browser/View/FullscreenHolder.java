@@ -1,5 +1,6 @@
 package de.baumann.browser.View;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.view.MotionEvent;
@@ -11,6 +12,7 @@ public class FullscreenHolder extends FrameLayout {
         this.setBackgroundColor(ContextCompat.getColor(context,(android.R.color.black)));
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         return true;

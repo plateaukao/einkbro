@@ -41,9 +41,9 @@ import de.baumann.browser.View.NinjaToast;
 public class BrowserUnit {
 
     public static final int PROGRESS_MAX = 100;
-    private static final String SUFFIX_HTML = ".html";
     public static final String SUFFIX_PNG = ".png";
     private static final String SUFFIX_TXT = ".txt";
+
     public static final String MIME_TYPE_TEXT_PLAIN = "text/plain";
 
     private static final String SEARCH_ENGINE_GOOGLE = "https://www.google.com/search?q=";
@@ -407,13 +407,6 @@ public class BrowserUnit {
         return count;
     }
 
-    public static void clearBookmarks(Context context) {
-        RecordAction action = new RecordAction(context);
-        action.open(true);
-        action.clearBookmarks();
-        action.close();
-    }
-
     public static void clearHome(Context context) {
         RecordAction action = new RecordAction(context);
         action.open(true);
@@ -473,7 +466,6 @@ public class BrowserUnit {
                 }
             }
         }
-
         return dir != null && dir.delete();
     }
 }

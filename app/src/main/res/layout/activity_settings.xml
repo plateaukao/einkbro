@@ -28,8 +28,7 @@
             android:id="@+id/content_frame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/view3"
-            android:background="?android:attr/colorBackground" />
+            android:layout_below="@+id/view3" />
 
     </RelativeLayout>
 

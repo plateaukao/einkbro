@@ -1,7 +1,5 @@
 package de.baumann.browser.Activity;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -13,10 +11,8 @@ import android.view.MenuItem;
 import de.baumann.browser.Fragment.Fragment_settings;
 import de.baumann.browser.Ninja.R;
 import de.baumann.browser.Unit.HelperUnit;
-import de.baumann.browser.Unit.IntentUnit;
 
 public class Settings_Activity extends AppCompatActivity {
-    private Fragment_settings fragment;
 
     @SuppressWarnings("ConstantConditions")
     @Override
@@ -30,7 +26,7 @@ public class Settings_Activity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        fragment = new Fragment_settings();
+        Fragment_settings fragment = new Fragment_settings();
         getFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();
     }
 
@@ -55,14 +51,5 @@ public class Settings_Activity extends AppCompatActivity {
         }
 
         return true;
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == IntentUnit.REQUEST_CLEAR) {
-            if (resultCode == Activity.RESULT_OK && data != null && data.hasExtra(Settings_ClearActivity.DB_CHANGE)) {
-                fragment.setDBChange(data.getBooleanExtra(Settings_ClearActivity.DB_CHANGE, false));
-            }
-        }
     }
 }

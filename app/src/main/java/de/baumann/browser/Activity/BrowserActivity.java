@@ -2,6 +2,7 @@ package de.baumann.browser.Activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.DownloadManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -37,6 +38,7 @@ import android.preference.PreferenceManager;
 import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintManager;
+import android.provider.MediaStore;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NotificationCompat;
@@ -81,8 +83,11 @@ import com.mobapphome.mahencryptorlib.MAHEncryptor;
 import org.askerov.dynamicgrid.DynamicGridView;
 
 import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -152,8 +157,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     private View floatButton_shareView;
     private View floatButton_moreView;
 
-    private ImageButton web_next;
-    private ImageButton web_prev;
     private ImageButton tab_next;
     private ImageButton tab_prev;
 
@@ -174,7 +177,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     private ImageButton omniboxOverview;
 
     private ImageButton open_pass;
-    private ImageButton open_newTab;
+    private ImageButton open_startPage;
     private ImageButton open_bookmark;
     private ImageButton open_history;
     private ImageButton open_menu;
@@ -282,6 +285,12 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     private WebChromeClient.CustomViewCallback customViewCallback;
     private ValueCallback<Uri[]> filePathCallback = null;
     private AlbumController currentAlbumController = null;
+
+
+    private static final int INPUT_FILE_REQUEST_CODE = 1;
+
+    private ValueCallback<Uri[]> mFilePathCallback;
+    private String mCameraPhotoPath;
 
     // Classes
 
@@ -480,8 +489,32 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        filePathCallback.onReceiveValue(WebChromeClient.FileChooserParams.parseResult(resultCode, intent));
+    public void onActivityResult (int requestCode, int resultCode, Intent data) {
+        if(requestCode != INPUT_FILE_REQUEST_CODE || mFilePathCallback == null) {
+            super.onActivityResult(requestCode, resultCode, data);
+            return;
+        }
+
+        Uri[] results = null;
+
+        // Check that the response is a good one
+        if(resultCode == Activity.RESULT_OK) {
+            if(data == null) {
+                // If there is not data, then we may have taken a photo
+                if(mCameraPhotoPath != null) {
+                    results = new Uri[]{Uri.parse(mCameraPhotoPath)};
+                }
+            } else {
+                String dataString = data.getDataString();
+                if (dataString != null) {
+                    results = new Uri[]{Uri.parse(dataString)};
+                }
+            }
+        }
+
+        mFilePathCallback.onReceiveValue(results);
+        mFilePathCallback = null;
+        return;
     }
 
     @Override
@@ -733,26 +766,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 AlbumController controller2 = nextAlbumController(true);
                 showAlbum(controller2);
                 updateOverflow();
-                break;
-
-            case R.id.web_prev:
-                if (ninjaWebView.canGoBack()) {
-                    ninjaWebView.goBack();
-                    updateOverflow();
-                } else {
-                    hideBottomSheetDialog ();
-                    removeAlbum(currentAlbumController);
-                }
-                break;
-
-            case R.id.web_next:
-                if (ninjaWebView.canGoForward()) {
-                    ninjaWebView.goForward();
-                    updateOverflow();
-                } else {
-                    hideBottomSheetDialog ();
-                    NinjaToast.show(BrowserActivity.this,R.string.toast_webview_forward);
-                }
                 break;
 
             case R.id.tab_plus:
@@ -1011,6 +1024,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
             case R.id.omnibox_refresh:
                 if (ninjaWebView.isLoadFinish()) {
+
                     if (!url.startsWith("https://")) {
                         bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
                         View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_action, null);
@@ -1024,8 +1038,8 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                 ninjaWebView.loadUrl(url.replace("http://", "https://"));
                             }
                         });
-                        Button action_cancel = dialogView.findViewById(R.id.action_cancel);
-                        action_cancel.setOnClickListener(new View.OnClickListener() {
+                        Button action_cancel2 = dialogView.findViewById(R.id.action_cancel);
+                        action_cancel2.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 hideBottomSheetDialog ();
@@ -1117,7 +1131,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             showOverview();
             new Handler().postDelayed(new Runnable() {
                 public void run() {
-                    open_newTab.performClick();
+                    open_startPage.performClick();
                 }
             }, 250);
 
@@ -1356,7 +1370,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         View dialogView = View.inflate(this, R.layout.dialog_overiew, null);
 
         open_pass = dialogView.findViewById(R.id.open_pass_2);
-        open_newTab = dialogView.findViewById(R.id.open_newTab_2);
+        open_startPage = dialogView.findViewById(R.id.open_newTab_2);
         open_bookmark = dialogView.findViewById(R.id.open_bookmark_2);
         open_history = dialogView.findViewById(R.id.open_history_2);
         open_menu = dialogView.findViewById(R.id.open_menu);
@@ -1368,7 +1382,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         final Button relayoutOK = dialogView.findViewById(R.id.relayout_ok);
         final DynamicGridView gridView = dialogView.findViewById(R.id.home_grid_2);
-        final View open_startPage = dialogView.findViewById(R.id.open_newTabView);
+        final View open_startPageView = dialogView.findViewById(R.id.open_newTabView);
         final View open_passView = dialogView.findViewById(R.id.open_passView);
         final View open_bookmarkView = dialogView.findViewById(R.id.open_bookmarkView);
         final View open_historyView = dialogView.findViewById(R.id.open_historyView);
@@ -1418,12 +1432,12 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             bookmarks_old.setVisibility(View.GONE);
         }
 
-        open_newTab.setOnClickListener(new View.OnClickListener() {
+        open_startPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 gridView.setVisibility(View.VISIBLE);
                 listView.setVisibility(View.GONE);
-                open_startPage.setVisibility(View.VISIBLE);
+                open_startPageView.setVisibility(View.VISIBLE);
                 open_passView.setVisibility(View.INVISIBLE);
                 open_bookmarkView.setVisibility(View.INVISIBLE);
                 open_historyView.setVisibility(View.INVISIBLE);
@@ -1462,7 +1476,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             public void onClick(View v) {
                 gridView.setVisibility(View.GONE);
                 listView.setVisibility(View.VISIBLE);
-                open_startPage.setVisibility(View.INVISIBLE);
+                open_startPageView.setVisibility(View.INVISIBLE);
                 open_passView.setVisibility(View.INVISIBLE);
                 open_bookmarkView.setVisibility(View.VISIBLE);
                 open_historyView.setVisibility(View.INVISIBLE);
@@ -1487,7 +1501,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             public void onClick(View v) {
                 gridView.setVisibility(View.GONE);
                 listView.setVisibility(View.VISIBLE);
-                open_startPage.setVisibility(View.INVISIBLE);
+                open_startPageView.setVisibility(View.INVISIBLE);
                 open_passView.setVisibility(View.INVISIBLE);
                 open_bookmarkView.setVisibility(View.INVISIBLE);
                 open_historyView.setVisibility(View.VISIBLE);
@@ -1526,7 +1540,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             public void onClick(View v) {
                 gridView.setVisibility(View.GONE);
                 listView.setVisibility(View.VISIBLE);
-                open_startPage.setVisibility(View.INVISIBLE);
+                open_startPageView.setVisibility(View.INVISIBLE);
                 open_passView.setVisibility(View.VISIBLE);
                 open_bookmarkView.setVisibility(View.INVISIBLE);
                 open_historyView.setVisibility(View.INVISIBLE);
@@ -1714,7 +1728,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
                                 if (overViewTab.equals(getString(R.string.album_title_home))) {
                                     BrowserUnit.clearHome(BrowserActivity.this);
-                                    open_newTab.performClick();
+                                    open_startPage.performClick();
                                 } else if (overViewTab.equals(getString(R.string.album_title_bookmarks))) {
                                     File data = Environment.getDataDirectory();
                                     String bookmarksPath_app = "//data//" + getPackageName() + "//databases//pass_DB_v01.db";
@@ -1748,9 +1762,37 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         bottomSheetDialog_OverView.setContentView(dialogView);
 
+        ImageButton overview_prev = dialogView.findViewById(R.id.overview_prev);
+        overview_prev.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (overViewTab.equals(getString(R.string.album_title_home))) {
+                    open_history.performClick();
+                } else if (overViewTab.equals(getString(R.string.album_title_bookmarks))) {
+                    open_startPage.performClick();
+                } else if (overViewTab.equals(getString(R.string.album_title_history))) {
+                    open_bookmark.performClick();
+                }
+            }
+        });
+
+        ImageButton overview_next = dialogView.findViewById(R.id.overview_next);
+        overview_next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (overViewTab.equals(getString(R.string.album_title_home))) {
+                    open_bookmark.performClick();
+                } else if (overViewTab.equals(getString(R.string.album_title_bookmarks))) {
+                    open_history.performClick();
+                } else if (overViewTab.equals(getString(R.string.album_title_history))) {
+                    open_startPage.performClick();
+                }
+            }
+        });
+
         switch (Objects.requireNonNull(sp.getString("start_tab", "0"))) {
             case "0":
-                open_newTab.performClick();
+                open_startPage.performClick();
                 break;
             case "3":
                 open_bookmark.performClick();
@@ -1759,7 +1801,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 open_history.performClick();
                 break;
             default:
-                open_newTab.performClick();
+                open_startPage.performClick();
                 break;
         }
     }
@@ -2799,13 +2841,64 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
     @Override
     public void showFileChooser(ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams) {
-        this.filePathCallback = filePathCallback;
-        try {
-            Intent intent = fileChooserParams.createIntent();
-            startActivityForResult(intent, IntentUnit.REQUEST_FILE_21);
-        } catch (Exception e) {
-            NinjaToast.show(this, getString(R.string.toast_open_file_manager_failed));
+
+        if(mFilePathCallback != null) {
+            mFilePathCallback.onReceiveValue(null);
         }
+        mFilePathCallback = filePathCallback;
+
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+                takePictureIntent.putExtra("PhotoPath", mCameraPhotoPath);
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+                Log.e(TAG, "Unable to create Image File", ex);
+            }
+
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                mCameraPhotoPath = "file:" + photoFile.getAbsolutePath();
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
+                        Uri.fromFile(photoFile));
+            } else {
+                takePictureIntent = null;
+            }
+        }
+
+        Intent contentSelectionIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        contentSelectionIntent.addCategory(Intent.CATEGORY_OPENABLE);
+        contentSelectionIntent.setType("image/*");
+
+        Intent[] intentArray;
+        if(takePictureIntent != null) {
+            intentArray = new Intent[]{takePictureIntent};
+        } else {
+            intentArray = new Intent[0];
+        }
+
+        Intent chooserIntent = new Intent(Intent.ACTION_CHOOSER);
+        chooserIntent.putExtra(Intent.EXTRA_INTENT, contentSelectionIntent);
+        chooserIntent.putExtra(Intent.EXTRA_TITLE, "Image Chooser");
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, intentArray);
+
+        startActivityForResult(chooserIntent, INPUT_FILE_REQUEST_CODE);
+    }
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES);
+        return File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
     }
 
     @Override
@@ -2879,17 +2972,12 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     }
 
     @Override
-    public void onLongPress(String url) {
+    public void onLongPress(final String url) {
 
-        WebView.HitTestResult result = ninjaWebView.getHitTestResult();
-
-        if (result != null && url != null &&
-                (result.getType() != WebView.HitTestResult.PHONE_TYPE)) {
+        if (url != null) {
 
             bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
             View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_menu_context_link, null);
-
-            final String target = url;
             dialogTitle = dialogView.findViewById(R.id.dialog_title);
             dialogTitle.setText(url);
 
@@ -2897,7 +2985,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             contextLink_newTab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    addAlbum(getString(R.string.album_untitled), target, false);
+                    addAlbum(getString(R.string.album_untitled), url, false);
                     NinjaToast.show(BrowserActivity.this, getString(R.string.toast_new_tab_successful));
                     hideBottomSheetDialog ();
                 }
@@ -2910,7 +2998,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                     if (prepareRecord()) {
                         NinjaToast.show(BrowserActivity.this, getString(R.string.toast_share_failed));
                     } else {
-                        IntentUnit.share(BrowserActivity.this, "", target);
+                        IntentUnit.share(BrowserActivity.this, "", url);
                     }
                     hideBottomSheetDialog ();
                 }
@@ -2921,7 +3009,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setData(Uri.parse(target));
+                    intent.setData(Uri.parse(url));
                     Intent chooser = Intent.createChooser(intent, getString(R.string.menu_open_with));
                     startActivity(chooser);
                     hideBottomSheetDialog ();
@@ -2932,7 +3020,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             contextLink_newTabOpen.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    addAlbum(getString(R.string.album_untitled), target, true);
+                    addAlbum(getString(R.string.album_untitled), url, true);
                     hideBottomSheetDialog ();
                 }
             });
@@ -2961,7 +3049,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
                                 String title = editTitle.getText().toString().trim();
                                 String extension = editExtension.getText().toString().trim();
-                                String filename = title + extension;
+                                String  filename = title + extension;
 
                                 if (title.isEmpty() || extension.isEmpty() || !extension.startsWith(".")) {
                                     NinjaToast.show(BrowserActivity.this, getString(R.string.toast_input_empty));
@@ -2972,9 +3060,9 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                         if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
                                             NinjaToast.show(BrowserActivity.this, R.string.toast_permission_sdCard_sec);
                                         } else {
-                                            Uri source = Uri.parse(target);
+                                            Uri source = Uri.parse(url);
                                             DownloadManager.Request request = new DownloadManager.Request(source);
-                                            request.addRequestHeader("Cookie", CookieManager.getInstance().getCookie(target));
+                                            request.addRequestHeader("Cookie", CookieManager.getInstance().getCookie(url));
                                             request.allowScanningByMediaScanner();
                                             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); //Notify client once download is completed!
                                             request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
@@ -2984,9 +3072,9 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                             hideSoftInput(editTitle);
                                         }
                                     } else {
-                                        Uri source = Uri.parse(target);
+                                        Uri source = Uri.parse(url);
                                         DownloadManager.Request request = new DownloadManager.Request(source);
-                                        request.addRequestHeader("Cookie", CookieManager.getInstance().getCookie(target));
+                                        request.addRequestHeader("Cookie", CookieManager.getInstance().getCookie(url));
                                         request.allowScanningByMediaScanner();
                                         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); //Notify client once download is completed!
                                         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
@@ -3111,26 +3199,11 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
     private void  updateOverflow () {
 
-        if (currentAlbumController != null) {
-
-            if (ninjaWebView.canGoBack()) {
-                web_prev.setVisibility(View.VISIBLE);
-            } else {
-                web_prev.setVisibility(View.INVISIBLE);
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                dialogTitle.setText(ninjaWebView.getTitle());
             }
-
-            if (ninjaWebView.canGoForward()) {
-                web_next.setVisibility(View.VISIBLE);
-            } else {
-                web_next.setVisibility(View.INVISIBLE);
-            }
-
-            new Handler().postDelayed(new Runnable() {
-                public void run() {
-                    dialogTitle.setText(ninjaWebView.getTitle());
-                }
-            }, 500);
-        }
+        }, 500);
 
         if (currentAlbumController == null || BrowserContainer.size() <= 1) {
             tab_next.setVisibility(View.GONE);
@@ -3155,11 +3228,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         fab_save.setOnClickListener(BrowserActivity.this);
         fab_more = dialogView.findViewById(R.id.floatButton_more);
         fab_more.setOnClickListener(BrowserActivity.this);
-
-        web_prev = dialogView.findViewById(R.id.web_prev);
-        web_prev.setOnClickListener(BrowserActivity.this);
-        web_next = dialogView.findViewById(R.id.web_next);
-        web_next.setOnClickListener(BrowserActivity.this);
 
         tab_prev = dialogView.findViewById(R.id.tab_prev);
         tab_prev.setOnClickListener(BrowserActivity.this);
@@ -3262,7 +3330,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                         action.deleteGridItem(gridItem);
                         action.close();
                         BrowserActivity.this.deleteFile(gridItem.getFilename());
-                        open_newTab.performClick();
+                        open_startPage.performClick();
                         hideBottomSheetDialog ();
                     }
                 });
@@ -3307,7 +3375,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                             action.updateGridItem(gridItem);
                             action.close();
                             hideSoftInput(editText);
-                            open_newTab.performClick();
+                            open_startPage.performClick();
                         }
                         hideBottomSheetDialog ();
                     }

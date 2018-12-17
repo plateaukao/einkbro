@@ -186,6 +186,7 @@
         ist, öffnen sich Links sofort.</string>
     <string name="setting_title_themeDark">Helles Thema</string>
     <string name="setting_summary_themeDark">Du magst es lieber ein bisschen heller? Dann tu es!</string>
+    <string name="setting_title_tab">Starttab</string>
     <string name="setting_summary_tab">Was soll beim Start der \"Übersicht\" angezeigt werden? Die Startseite, deine Lesezeichen, …</string>
 
     <string name="setting_title_confirm_exit">Bestätigung beim Verlassen</string>
@@ -213,6 +214,8 @@
     <string name="setting_summary_nav_show">Verstecke den \"Navigationsknopf\" wenn die Toolbar angezeigt wird.</string>
 
     <string name="setting_overView">Übersicht</string>
+    <string name="setting_overView_onStart_title">Zeige beim Appstart</string>
+    <string name="setting_overView_onStart_summary">Öffne als erstes die \"Übersicht\" bei jedem Appstart.</string>
 
     <string name="setting_close">Schließen Bestätigung</string>
     <string name="setting_gestures">Gesten</string>
@@ -279,6 +282,7 @@
     <string name="toast_load_in_background">Lade URL im Hintergrund</string>
     <string name="toast_new_tab_successful">Neuer Tab geöffnet</string>
     <string name="toast_open_file_manager_failed">Konnte Dateimanager nicht öffnen</string>
+    <string name="toast_refresh_failed">Kann Seite nicht neu laden</string>
     <string name="toast_relayout_successful">Erfolgreich gespeichert</string>
     <string name="toast_share_failed">Kann die Seite nicht teilen</string>
     <string name="toast_start_download">Starte Download</string>
