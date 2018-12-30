@@ -4,19 +4,28 @@
 
     <string name="changelog_title">更新日誌</string>
     <string name="changelog_dialog">
-        &lt;i>專案頁面：https://github.com/scoute-dich/Browser&lt;br>
-        更新日誌：https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;/i>&lt;br>&lt;br>
+        &lt;i>Project site: https://github.com/scoute-dich/Browser&lt;br>
+        Changelog: https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;/i>&lt;br>&lt;br>
 
-        &lt;b>版本：6.0&lt;/b>&lt;br>
-        請參閱說明取得更多資訊&lt;br>&lt;br>
+        &lt;b>Version: 6.1&lt;/b>&lt;br>
+        With this update your bookmarks and login data will be saved in the same
+        database. Please open your old bookmarks and save them again. Please read the \"Help dialog\" for
+        more information.&lt;br>&lt;br>
 
+        \u25AA new: overview instead of startPage&lt;br>
+        \u25AA new: order and filter bookmarks&lt;br>
+        \u25AA new: edit url of bookmark&lt;br>
+        \u25AA new: open favorite website on start&lt;br>
+        \u25AA new: Code of conduct site on project site (thanks @HarryHeights)&lt;br>
+        \u25AA new: Privacy declaration project site (thanks @HarryHeights)&lt;br>
         \u25AA updated: adBlock hosts list&lt;br>
-        \u25AA updated: Polish translation (thanks @gh-pmjm)&lt;br>
-        \u25AA fix: problems with characters like ä, ü, ö&lt;br>
-        \u25AA new: Taiwan Trad. Chinese translation (thanks @elmru)&lt;br>
-        \u25AA new: Italian translation (thanks @EnricoMonese)&lt;br>
-        \u25AA new: Portuguese translation (thanks @Sérgio Marques)&lt;br>
-        \u25AA many more fixes and improvements (thanks @BO41)
+        \u25AA updated: help dialog&lt;br>
+        \u25AA updated: French translation (thanks @Hellohat)&lt;br>
+        \u25AA updated: Portuguese translation (thanks @smarquespt)&lt;br>
+        \u25AA removed: loginData (use bookmarks instead)&lt;br>
+        \u25AA fix: upload files&lt;br>
+        \u25AA fix: not clearing indexed databases on exit&lt;br>
+        \u25AA many more fixes and improvements
     </string>
 
     <string name="fastToggle_title">快速切換</string>
