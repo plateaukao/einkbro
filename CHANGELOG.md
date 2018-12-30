@@ -14,7 +14,6 @@
 - fix: not clearing indexed databases on exit
 - many more fixes and improvements
 
-
 ### v 6.0
 - updated: adBlock hosts list
 - updated: Polish translation (thanks @gh-pmjm)
