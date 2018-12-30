@@ -18,8 +18,6 @@
 # Kicelo, Dominik Schuermann
 #
 
- localhost
-::1  localhost
 
 # [General]
 lb.usemaxserver.de
