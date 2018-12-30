@@ -1,11 +1,14 @@
 ### v 6.1
 - new: overview instead of startPage
 - new: order and filter bookmarks
+- new: edit url of bookmark
 - new: open favorite website on start
 - new: Code of conduct site (thanks @HarryHeights)
 - new: Privacy declaration (thanks @HarryHeights)
+- updated: adBlock hosts list
 - updated: help dialog
-- updated: french translation (thanks @Hellohat)
+- updated: French translation (thanks @Hellohat)
+- updated: Portuguese translation (thanks @smarquespt)
 - removed: loginData (use bookmarks instead)
 - fix: upload files
 - fix: not clearing indexed databases on exit

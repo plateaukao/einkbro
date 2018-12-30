@@ -4,19 +4,27 @@
 
     <string name="changelog_title">Änderungen</string>
     <string name="changelog_dialog">
-        &lt;i>Projektseite: https://github.com/scoute-dich/Browser&lt;br>
+       &lt;i>Projekseite: https://github.com/scoute-dich/Browser&lt;br>
         Änderungen: https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;/i>&lt;br>&lt;br>
 
-        &lt;b>Version: 6.0&lt;/b>&lt;br>
-        Bitte lies den \"Hilfedialog\" für weitere Informationen.&lt;br>&lt;br>
+        &lt;b>Version: 6.1&lt;/b>&lt;br>
+        Mit diesem Update werden deine Lesezeichen und deine Logindaten in einer Datenbank gespeichert. Bitte öffne
+        deine alten Lesezeichen und speichere sie erneut. Lies für mehr Informationen bitte die Hilfe durch.&lt;br>&lt;br>
 
-        \u25AA verbessert: adBlock Hosts-Liste aktualisiert&lt;br>
-        \u25AA verbessert: Polnische Übersetzung (thanks @gh-pmjm)&lt;br>
-        \u25AA fix: Probleme mit den Buchstaben ä, ü, ö&lt;br>
-        \u25AA neu: Taiwan Trad. Chinesische Übersetzung (thanks @elmru)&lt;br>
-        \u25AA neu: Italienische Übersetzung (thanks @EnricoMonese)&lt;br>
-        \u25AA neu: Portugisische Übersetzung (thanks @Sérgio Marques)&lt;br>
-        \u25AA viele Fehlerbehebungen und Verbesserungen (thanks @BO41)
+        \u25AA neu: Übersicht anstelle der Startseite&lt;br>
+        \u25AA neu: ordnen und sortieren von Lesezeichen&lt;br>
+        \u25AA neu: Lesezeichen URL bearbeiten&lt;br>
+        \u25AA neu: Lieblingsseite beim Start öffnen&lt;br>
+        \u25AA neu: Code of conduct Seite auf der Projektseite (thanks @HarryHeights)&lt;br>
+        \u25AA neu: Datenschutzerklärung auf der Projektseite (thanks @HarryHeights)&lt;br>
+        \u25AA aktualisiert: adBlock-Hosts Liste&lt;br>
+        \u25AA aktualisiert: Hilfedialog&lt;br>
+        \u25AA aktualisiert: Französische Übersetzung (danke @Hellohat)&lt;br>
+        \u25AA aktualisiert: Portugisische Übersezung (danke @smarquespt)&lt;br>
+        \u25AA entfernt: loginData (benutze statt dessen die Lesezeichen)&lt;br>
+        \u25AA Fehlerbehebung: Dateien hochladen&lt;br>
+        \u25AA Fehlerbehebung: indizierte Datenbanken werden nicht gelöscht&lt;br>
+        \u25AA viele kleine Korrekturen und Fehlerbehebungen
     </string>
 
     <string name="overview_title">Übersicht</string>

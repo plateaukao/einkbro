@@ -2003,6 +2003,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                             final EditText pass_titleET = dialogView.findViewById(R.id.pass_title);
                             final EditText pass_userNameET = dialogView.findViewById(R.id.pass_userName);
                             final EditText pass_userPWET = dialogView.findViewById(R.id.pass_userPW);
+                            final EditText pass_URLET = dialogView.findViewById(R.id.pass_url);
                             final ImageView ib_icon = dialogView.findViewById(R.id.ib_icon);
 
                             final String decrypted_userName = mahEncryptor.decode(pass_icon);
@@ -2011,6 +2012,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                             pass_titleET.setText(pass_title);
                             pass_userNameET.setText(decrypted_userName);
                             pass_userPWET.setText(decrypted_userPW);
+                            pass_URLET.setText(pass_content);
 
                             Button action_ok = dialogView.findViewById(R.id.action_ok);
                             action_ok.setOnClickListener(new View.OnClickListener() {
@@ -2018,10 +2020,12 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                 public void onClick(View view) {
                                     try {
                                         String input_pass_title = pass_titleET.getText().toString().trim();
+                                        String input_pass_url = pass_URLET.getText().toString().trim();
+
                                         String encrypted_userName = mahEncryptor.encode(pass_userNameET.getText().toString().trim());
                                         String encrypted_userPW = mahEncryptor.encode(pass_userPWET.getText().toString().trim());
 
-                                        db.update(Integer.parseInt(_id), HelperUnit.secString(input_pass_title), pass_content,  HelperUnit.secString(encrypted_userName), HelperUnit.secString(encrypted_userPW), pass_creation);
+                                        db.update(Integer.parseInt(_id), HelperUnit.secString(input_pass_title), HelperUnit.secString(input_pass_url),  HelperUnit.secString(encrypted_userName), HelperUnit.secString(encrypted_userPW), pass_creation);
                                         initBookmarkList();
                                         hideSoftInput(pass_titleET);
                                         NinjaToast.show(BrowserActivity.this, R.string.toast_edit_successful);
@@ -2049,126 +2053,128 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                 @Override
                                 public void onClick(View v) {
                                     try {
-                                        String input_pass_title = pass_titleET.getText().toString().trim();
-                                        String encrypted_userName = mahEncryptor.encode(pass_userNameET.getText().toString().trim());
-                                        String encrypted_userPW = mahEncryptor.encode(pass_userPWET.getText().toString().trim());
+                                        final String input_pass_title = pass_titleET.getText().toString().trim();
+                                        final String input_pass_url = pass_URLET.getText().toString().trim();
+                                        final String encrypted_userName = mahEncryptor.encode(pass_userNameET.getText().toString().trim());
+                                        final String encrypted_userPW = mahEncryptor.encode(pass_userPWET.getText().toString().trim());
 
-                                        db.update(Integer.parseInt(_id), HelperUnit.secString(input_pass_title), pass_content,  HelperUnit.secString(encrypted_userName), HelperUnit.secString(encrypted_userPW), pass_creation);
-                                        initBookmarkList();
+                                        hideBottomSheetDialog ();
                                         hideSoftInput(pass_titleET);
+
+                                        bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
+                                        View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_edit_icon, null);
+
+                                        LinearLayout icon_01 = dialogView.findViewById(R.id.icon_01);
+                                        icon_01.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                db.update(Integer.parseInt(_id), HelperUnit.secString(input_pass_title), HelperUnit.secString(input_pass_url),  HelperUnit.secString(encrypted_userName), HelperUnit.secString(encrypted_userPW), "01");
+                                                initBookmarkList();
+                                                hideBottomSheetDialog ();
+                                            }
+                                        });
+                                        LinearLayout icon_02 = dialogView.findViewById(R.id.icon_02);
+                                        icon_02.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                db.update(Integer.parseInt(_id), HelperUnit.secString(input_pass_title), HelperUnit.secString(input_pass_url),  HelperUnit.secString(encrypted_userName), HelperUnit.secString(encrypted_userPW), "02");
+                                                initBookmarkList();
+                                                hideBottomSheetDialog ();
+                                            }
+                                        });
+                                        LinearLayout icon_03 = dialogView.findViewById(R.id.icon_03);
+                                        icon_03.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                db.update(Integer.parseInt(_id), HelperUnit.secString(input_pass_title), HelperUnit.secString(input_pass_url),  HelperUnit.secString(encrypted_userName), HelperUnit.secString(encrypted_userPW), "03");
+                                                initBookmarkList();
+                                                hideBottomSheetDialog ();
+                                            }
+                                        });
+                                        LinearLayout icon_04 = dialogView.findViewById(R.id.icon_04);
+                                        icon_04.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                db.update(Integer.parseInt(_id), HelperUnit.secString(input_pass_title), HelperUnit.secString(input_pass_url),  HelperUnit.secString(encrypted_userName), HelperUnit.secString(encrypted_userPW), "04");
+                                                initBookmarkList();
+                                                hideBottomSheetDialog ();
+                                            }
+                                        });
+                                        LinearLayout icon_05 = dialogView.findViewById(R.id.icon_05);
+                                        icon_05.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                db.update(Integer.parseInt(_id), HelperUnit.secString(input_pass_title), HelperUnit.secString(input_pass_url),  HelperUnit.secString(encrypted_userName), HelperUnit.secString(encrypted_userPW), "05");
+                                                initBookmarkList();
+                                                hideBottomSheetDialog ();
+                                            }
+                                        });
+                                        LinearLayout icon_06 = dialogView.findViewById(R.id.icon_06);
+                                        icon_06.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                db.update(Integer.parseInt(_id), HelperUnit.secString(input_pass_title), HelperUnit.secString(input_pass_url),  HelperUnit.secString(encrypted_userName), HelperUnit.secString(encrypted_userPW), "06");
+                                                initBookmarkList();
+                                                hideBottomSheetDialog ();
+                                            }
+                                        });
+                                        LinearLayout icon_07 = dialogView.findViewById(R.id.icon_07);
+                                        icon_07.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                db.update(Integer.parseInt(_id), HelperUnit.secString(input_pass_title), HelperUnit.secString(input_pass_url),  HelperUnit.secString(encrypted_userName), HelperUnit.secString(encrypted_userPW), "07");
+                                                initBookmarkList();
+                                                hideBottomSheetDialog ();
+                                            }
+                                        });
+                                        LinearLayout icon_08 = dialogView.findViewById(R.id.icon_08);
+                                        icon_08.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                db.update(Integer.parseInt(_id), HelperUnit.secString(input_pass_title), HelperUnit.secString(input_pass_url),  HelperUnit.secString(encrypted_userName), HelperUnit.secString(encrypted_userPW), "08");
+                                                initBookmarkList();
+                                                hideBottomSheetDialog ();
+                                            }
+                                        });
+                                        LinearLayout icon_09 = dialogView.findViewById(R.id.icon_09);
+                                        icon_09.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                db.update(Integer.parseInt(_id), HelperUnit.secString(input_pass_title), HelperUnit.secString(input_pass_url),  HelperUnit.secString(encrypted_userName), HelperUnit.secString(encrypted_userPW), "09");
+                                                initBookmarkList();
+                                                hideBottomSheetDialog ();
+                                            }
+                                        });
+                                        LinearLayout icon_10 = dialogView.findViewById(R.id.icon_10);
+                                        icon_10.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                db.update(Integer.parseInt(_id), HelperUnit.secString(input_pass_title), HelperUnit.secString(input_pass_url),  HelperUnit.secString(encrypted_userName), HelperUnit.secString(encrypted_userPW), "10");
+                                                initBookmarkList();
+                                                hideBottomSheetDialog ();
+                                            }
+                                        });
+                                        LinearLayout icon_11 = dialogView.findViewById(R.id.icon_11);
+                                        icon_11.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                db.update(Integer.parseInt(_id), HelperUnit.secString(input_pass_title), HelperUnit.secString(input_pass_url),  HelperUnit.secString(encrypted_userName), HelperUnit.secString(encrypted_userPW), "11");
+                                                initBookmarkList();
+                                                hideBottomSheetDialog ();
+                                            }
+                                        });
+
+                                        bottomSheetDialog.setContentView(dialogView);
+                                        bottomSheetDialog.show();
+
+
                                         NinjaToast.show(BrowserActivity.this, R.string.toast_edit_successful);
 
                                     } catch (Exception e) {
                                         e.printStackTrace();
+                                        hideBottomSheetDialog ();
                                         NinjaToast.show(BrowserActivity.this, R.string.toast_error);
                                     }
-                                    hideBottomSheetDialog ();
-
-                                    bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
-                                    View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_edit_icon, null);
-
-                                    LinearLayout icon_01 = dialogView.findViewById(R.id.icon_01);
-                                    icon_01.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            db.update(Integer.parseInt(_id), pass_title, pass_content, pass_icon, pass_attachment, "01");
-                                            initBookmarkList();
-                                            hideBottomSheetDialog ();
-                                        }
-                                    });
-                                    LinearLayout icon_02 = dialogView.findViewById(R.id.icon_02);
-                                    icon_02.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            db.update(Integer.parseInt(_id), pass_title, pass_content, pass_icon, pass_attachment, "02");
-                                            initBookmarkList();
-                                            hideBottomSheetDialog ();
-                                        }
-                                    });
-                                    LinearLayout icon_03 = dialogView.findViewById(R.id.icon_03);
-                                    icon_03.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            db.update(Integer.parseInt(_id), pass_title, pass_content, pass_icon, pass_attachment, "03");
-                                            initBookmarkList();
-                                            hideBottomSheetDialog ();
-                                        }
-                                    });
-                                    LinearLayout icon_04 = dialogView.findViewById(R.id.icon_04);
-                                    icon_04.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            db.update(Integer.parseInt(_id), pass_title, pass_content, pass_icon, pass_attachment, "04");
-                                            initBookmarkList();
-                                            hideBottomSheetDialog ();
-                                        }
-                                    });
-                                    LinearLayout icon_05 = dialogView.findViewById(R.id.icon_05);
-                                    icon_05.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            db.update(Integer.parseInt(_id), pass_title, pass_content, pass_icon, pass_attachment, "05");
-                                            initBookmarkList();
-                                            hideBottomSheetDialog ();
-                                        }
-                                    });
-                                    LinearLayout icon_06 = dialogView.findViewById(R.id.icon_06);
-                                    icon_06.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            db.update(Integer.parseInt(_id), pass_title, pass_content, pass_icon, pass_attachment, "06");
-                                            initBookmarkList();
-                                            hideBottomSheetDialog ();
-                                        }
-                                    });
-                                    LinearLayout icon_07 = dialogView.findViewById(R.id.icon_07);
-                                    icon_07.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            db.update(Integer.parseInt(_id), pass_title, pass_content, pass_icon, pass_attachment, "07");
-                                            initBookmarkList();
-                                            hideBottomSheetDialog ();
-                                        }
-                                    });
-                                    LinearLayout icon_08 = dialogView.findViewById(R.id.icon_08);
-                                    icon_08.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            db.update(Integer.parseInt(_id), pass_title, pass_content, pass_icon, pass_attachment, "08");
-                                            initBookmarkList();
-                                            hideBottomSheetDialog ();
-                                        }
-                                    });
-                                    LinearLayout icon_09 = dialogView.findViewById(R.id.icon_09);
-                                    icon_09.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            db.update(Integer.parseInt(_id), pass_title, pass_content, pass_icon, pass_attachment, "09");
-                                            initBookmarkList();
-                                            hideBottomSheetDialog ();
-                                        }
-                                    });
-                                    LinearLayout icon_10 = dialogView.findViewById(R.id.icon_10);
-                                    icon_10.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            db.update(Integer.parseInt(_id), pass_title, pass_content, pass_icon, pass_attachment, "10");
-                                            initBookmarkList();
-                                            hideBottomSheetDialog ();
-                                        }
-                                    });
-                                    LinearLayout icon_11 = dialogView.findViewById(R.id.icon_11);
-                                    icon_11.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            db.update(Integer.parseInt(_id), pass_title, pass_content, pass_icon, pass_attachment, "11");
-                                            initBookmarkList();
-                                            hideBottomSheetDialog ();
-                                        }
-                                    });
-
-                                    bottomSheetDialog.setContentView(dialogView);
-                                    bottomSheetDialog.show();
                                 }
                             });
 
@@ -2794,7 +2800,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                     if (Objects.requireNonNull(sp.getString("sp_hideToolbar", "0")).equals("0")) {
                         if (scrollY > oldScrollY) {
                             hideOmnibox();
-                        } else if (scrollY < oldScrollY - 56){
+                        } else if (scrollY < oldScrollY - 60){
                             showOmnibox();
                         }
                     } else if (Objects.requireNonNull(sp.getString("sp_hideToolbar", "0")).equals("1")) {

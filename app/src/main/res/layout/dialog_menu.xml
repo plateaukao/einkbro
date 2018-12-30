@@ -13,8 +13,8 @@
     <TextView
         android:id="@+id/dialog_title"
         android:layout_width="match_parent"
-        android:layout_height="46dp"
-        android:minHeight="46dp"
+        android:layout_height="match_parent"
+        android:padding="8dp"
         android:ellipsize="end"
         android:gravity="center_vertical|center_horizontal"
         android:maxLines="1"
