@@ -17,7 +17,6 @@
 # Contributions by:
 # Kicelo, Dominik Schuermann
 
-
 # [General]
 lb.usemaxserver.de
 tracking.klickthru.com
