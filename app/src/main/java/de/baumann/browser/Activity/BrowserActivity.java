@@ -2800,7 +2800,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                     if (Objects.requireNonNull(sp.getString("sp_hideToolbar", "0")).equals("0")) {
                         if (scrollY > oldScrollY) {
                             hideOmnibox();
-                        } else if (scrollY < oldScrollY - 60){
+                        } else if (scrollY < oldScrollY){
                             showOmnibox();
                         }
                     } else if (Objects.requireNonNull(sp.getString("sp_hideToolbar", "0")).equals("1")) {
