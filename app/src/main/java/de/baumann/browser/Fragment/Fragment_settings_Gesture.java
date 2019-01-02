@@ -10,12 +10,12 @@ import android.widget.TextView;
 
 import de.baumann.browser.Ninja.R;
 
-public class Fragment_settings_UI extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class Fragment_settings_Gesture extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.preference_ui);
+        addPreferencesFromResource(R.xml.preference_gesture);
     }
 
     @Override
@@ -34,8 +34,7 @@ public class Fragment_settings_UI extends PreferenceFragment implements SharedPr
     @Override
     public void onSharedPreferenceChanged(final SharedPreferences sp, String key) {
 
-        if (key.equals("sp_exit") || key.equals("sp_toggle") || key.equals("sp_add") || key.equals("sp_darkUI")
-                || key.equals("nav_position")  || key.equals("sp_hideOmni") || key.equals("start_tab")) {
+        if (key.equals("sp_gestures_use") || key.equals("sp_gesture_action")) {
 
             final BottomSheetDialog dialog = new BottomSheetDialog(getActivity());
             View dialogView = View.inflate(getActivity(), R.layout.dialog_action, null);

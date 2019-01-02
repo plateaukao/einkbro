@@ -178,6 +178,7 @@
     <string name="setting_summary_ui">Change the behavior and ui of the app to suit your preferences.</string>
     <string name="setting_summary_data">Import and export several app data (whitelists, bookmarks).</string>
 
+
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">Hide toolbar</string>
     <string name="setting_summary_hide">Use the whole screen when scrolling through websites. If you press the back button you will
@@ -228,6 +229,19 @@
     <string name="setting_gestures_action_1">Move forward/back in browsing history</string>
     <string name="setting_gestures_action_2">Switch between opened tabs</string>
 
+    <!-- gestures -->
+    <string name="setting_title_toolbar">Toolbar</string>
+    <string name="setting_gesture_up">Swipe up</string>
+    <string name="setting_gesture_down">Swipe down</string>
+    <string name="setting_gesture_left">Swipe left</string>
+    <string name="setting_gesture_right">Swipe right</string>
+    <string name="setting_gesture_01">Nothing</string>
+    <string name="setting_gesture_02">Forward in history</string>
+    <string name="setting_gesture_03">Back in history</string>
+    <string name="setting_gesture_04">Switch to left tab</string>
+    <string name="setting_gesture_05">Switch to right tab</string>
+    <string name="setting_gesture_06">Show overview</string>
+    <string name="setting_gesture_07">Open new tab</string>
 
     <!-- Data -->
     <string name="setting_title_export_bookmarks">Export Bookmarks</string>

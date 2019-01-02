@@ -41,13 +41,23 @@
 
     <!-- Gestures -->
     <string-array name="setting_entries_gestures">
-        <item>@string/setting_gestures_action_1</item>
-        <item>@string/setting_gestures_action_2</item>
+        <item>@string/setting_gesture_01</item>
+        <item>@string/setting_gesture_02</item>
+        <item>@string/setting_gesture_03</item>
+        <item>@string/setting_gesture_04</item>
+        <item>@string/setting_gesture_05</item>
+        <item>@string/setting_gesture_06</item>
+        <item>@string/setting_gesture_07</item>
     </string-array>
 
     <string-array name="setting_values_gestures">
-        <item>0</item>
         <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
     </string-array>
 
     <!-- Start tab -->

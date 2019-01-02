@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <CheckBoxPreference
+        android:key="sp_gestures_use"
+        android:defaultValue="true"
+        android:title="@string/setting_gestures_use_title"
+        android:summary="@string/setting_gestures_use_summary"/>
+
+    <PreferenceCategory android:title="@string/setting_title_nav">
+
+        <ListPreference
+            android:icon="@drawable/icon_arrow_up_gest"
+            android:title="@string/setting_gesture_up"
+            android:key="setting_gesture_nav_up"
+            android:defaultValue="1"
+            android:entries="@array/setting_entries_gestures"
+            android:entryValues="@array/setting_values_gestures" />
+
+        <ListPreference
+            android:icon="@drawable/icon_arrow_down_gest"
+            android:title="@string/setting_gesture_down"
+            android:key="setting_gesture_nav_down"
+            android:defaultValue="1"
+            android:entries="@array/setting_entries_gestures"
+            android:entryValues="@array/setting_values_gestures" />
+
+        <ListPreference
+            android:icon="@drawable/icon_arrow_left_gest"
+            android:title="@string/setting_gesture_left"
+            android:key="setting_gesture_nav_left"
+            android:defaultValue="1"
+            android:entries="@array/setting_entries_gestures"
+            android:entryValues="@array/setting_values_gestures" />
+
+        <ListPreference
+            android:icon="@drawable/icon_arrow_right_gest"
+            android:title="@string/setting_gesture_right"
+            android:key="setting_gesture_nav_right"
+            android:defaultValue="1"
+            android:entries="@array/setting_entries_gestures"
+            android:entryValues="@array/setting_values_gestures" />
+
+    </PreferenceCategory>
+
+
+    <PreferenceCategory android:title="@string/setting_title_toolbar">
+
+        <ListPreference
+            android:icon="@drawable/icon_arrow_up_gest"
+            android:title="@string/setting_gesture_up"
+            android:key="setting_gesture_tb_up"
+            android:defaultValue="1"
+            android:entries="@array/setting_entries_gestures"
+            android:entryValues="@array/setting_values_gestures" />
+
+        <ListPreference
+            android:icon="@drawable/icon_arrow_down_gest"
+            android:title="@string/setting_gesture_down"
+            android:key="setting_gesture_tb_down"
+            android:defaultValue="1"
+            android:entries="@array/setting_entries_gestures"
+            android:entryValues="@array/setting_values_gestures" />
+
+        <ListPreference
+            android:icon="@drawable/icon_arrow_left_gest"
+            android:title="@string/setting_gesture_left"
+            android:key="setting_gesture_tb_left"
+            android:defaultValue="1"
+            android:entries="@array/setting_entries_gestures"
+            android:entryValues="@array/setting_values_gestures" />
+
+        <ListPreference
+            android:icon="@drawable/icon_arrow_right_gest"
+            android:title="@string/setting_gesture_right"
+            android:key="setting_gesture_tb_right"
+            android:defaultValue="1"
+            android:entries="@array/setting_entries_gestures"
+            android:entryValues="@array/setting_values_gestures" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
