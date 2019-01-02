@@ -32,43 +32,6 @@
         android:entries="@array/setting_entries_toolbar"
         android:entryValues="@array/setting_values_toolbar" />
 
-    <PreferenceCategory android:title="@string/setting_close">
-
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:icon="@drawable/icon_exit"
-            android:key="sp_close_browser_confirm"
-            android:title="@string/setting_title_confirm_exit"
-            android:summary="@string/setting_summary_confirm_exit" />
-
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:icon="@drawable/icon_close"
-            android:key="sp_close_tab_confirm"
-            android:title="@string/setting_title_confirm_tab_close"
-            android:summary="@string/setting_summary_confirm_tab_close" />
-
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="@string/setting_gestures">
-
-        <CheckBoxPreference
-            android:key="sp_gestures_use"
-            android:icon="@drawable/gesture_tap"
-            android:defaultValue="true"
-            android:title="@string/setting_gestures_use_title"
-            android:summary="@string/setting_gestures_use_summary"/>
-
-        <ListPreference
-            android:title="@string/setting_gestures_action_title"
-            android:icon="@drawable/icon_swipe"
-            android:summary="@string/setting_gestures_action_summary"
-            android:key="sp_gesture_action"
-            android:defaultValue="0"
-            android:entries="@array/setting_entries_gestures"
-            android:entryValues="@array/setting_values_gestures" />
-
-    </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/setting_title_nav">
 
@@ -89,6 +52,25 @@
             android:defaultValue="0"
             android:entries="@array/setting_entries_nav_pos"
             android:entryValues="@array/setting_values_nav_pos" />
+
+    </PreferenceCategory>
+
+
+    <PreferenceCategory android:title="@string/setting_close">
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:icon="@drawable/icon_exit"
+            android:key="sp_close_browser_confirm"
+            android:title="@string/setting_title_confirm_exit"
+            android:summary="@string/setting_summary_confirm_exit" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:icon="@drawable/icon_close"
+            android:key="sp_close_tab_confirm"
+            android:title="@string/setting_title_confirm_tab_close"
+            android:summary="@string/setting_summary_confirm_tab_close" />
 
     </PreferenceCategory>
 

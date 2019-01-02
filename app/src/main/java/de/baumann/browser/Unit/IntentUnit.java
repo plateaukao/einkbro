@@ -9,11 +9,6 @@ import de.baumann.browser.Ninja.R;
 
 public class IntentUnit {
 
-    public static final int REQUEST_FILE_21 = 0x101;
-    public static final int REQUEST_CLEAR = 0x102;
-    public static final int REQUEST_START = 0x103;
-    public static final int REQUEST_DATA = 0x104;
-    public static final int REQUEST_UI = 0x105;
     private static final String INTENT_TYPE_MESSAGE_RFC822 = "message/rfc822";
 
     public static Intent getEmailIntent(MailTo mailTo) {

@@ -1,3 +1,6 @@
+### v 6.2
+- fix: light settings theme
+
 ### v 6.1
 - new: overview instead of startPage
 - new: order and filter bookmarks

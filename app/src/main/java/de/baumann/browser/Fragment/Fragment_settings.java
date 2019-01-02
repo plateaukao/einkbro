@@ -15,11 +15,11 @@ import android.widget.TextView;
 
 import de.baumann.browser.Activity.Settings_ClearActivity;
 import de.baumann.browser.Activity.Settings_DataActivity;
+import de.baumann.browser.Activity.Settings_GestureActivity;
 import de.baumann.browser.Activity.Settings_StartActivity;
 import de.baumann.browser.Activity.Settings_UIActivity;
 import de.baumann.browser.Unit.HelperUnit;
 import de.baumann.browser.Ninja.R;
-import de.baumann.browser.Unit.IntentUnit;
 
 public class Fragment_settings extends PreferenceFragment {
 
@@ -35,19 +35,23 @@ public class Fragment_settings extends PreferenceFragment {
 
             case R.string.setting_title_data:
                 Intent dataControl = new Intent(getActivity(), Settings_DataActivity.class);
-                getActivity().startActivityForResult(dataControl, IntentUnit.REQUEST_DATA);
+                getActivity().startActivity(dataControl);
                 break;
             case R.string.setting_title_ui:
                 Intent uiControl = new Intent(getActivity(), Settings_UIActivity.class);
-                getActivity().startActivityForResult(uiControl, IntentUnit.REQUEST_UI);
+                getActivity().startActivity(uiControl);
+                break;
+            case R.string.setting_gestures:
+                Intent gestureControl = new Intent(getActivity(), Settings_GestureActivity.class);
+                getActivity().startActivity(gestureControl);
                 break;
             case R.string.setting_title_start_control:
                 Intent startControl = new Intent(getActivity(), Settings_StartActivity.class);
-                getActivity().startActivityForResult(startControl, IntentUnit.REQUEST_START);
+                getActivity().startActivity(startControl);
                 break;
             case R.string.setting_title_clear_control:
                 Intent clearControl = new Intent(getActivity(), Settings_ClearActivity.class);
-                getActivity().startActivityForResult(clearControl, IntentUnit.REQUEST_CLEAR);
+                getActivity().startActivity(clearControl);
                 break;
             case R.string.setting_title_license:
                 showLicenseDialog(getString(R.string.license_title), getString(R.string.license_dialog));
