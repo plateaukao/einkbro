@@ -39,7 +39,7 @@ public class NinjaWebChromeClient extends WebChromeClient {
 
     @Override
     public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams) {
-        ninjaWebView.getBrowserController().showFileChooser(filePathCallback, fileChooserParams);
+        ninjaWebView.getBrowserController().showFileChooser(filePathCallback);
         return true;
     }
 

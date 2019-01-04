@@ -1,6 +1,7 @@
 package org.askerov.dynamicgrid;
 
 import android.animation.*;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -221,6 +222,7 @@ public class DynamicGridView extends GridView {
         return null;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction() & MotionEvent.ACTION_MASK) {
@@ -358,7 +360,7 @@ public class DynamicGridView extends GridView {
             mIsMobileScrolling = false;
             mActivePointerId = INVALID_ID;
 
-            // If the autoscroller has not completed scrolling, we need to wait for it to
+            // If the autoScroller has not completed scrolling, we need to wait for it to
             // finish in order to determine the final location of where the hover cell
             // should be animated to.
             if (mScrollState != OnScrollListener.SCROLL_STATE_IDLE) {

@@ -11,7 +11,6 @@
     <string name="album_title_history">历史</string>
     <string name="album_title_home">主页</string>
     <string name="album_title_files">文件</string>
-    <string name="album_title_pass">登录数据</string>
     <string name="notification_content_holderTitle">打开的标签 …</string>
     <string name="notification_content_holder">点击以浏览页面</string>
     <string name="search_hint">搜索</string>
@@ -127,7 +126,6 @@
     <string name="clear_menu_done_all">全部</string>
     <string name="clear_title_quit">退出时清空</string>
     <string name="clear_summary_quit">每次你退出 \"FOSS 浏览器\" 上面勾选的都会被删除。</string>
-    <string name="clear_title_bookmarks">清空书签</string>
     <string name="clear_title_cache">清空缓存</string>
     <string name="clear_title_cookie">清空 Cookies</string>
     <string name="clear_title_history">清空浏览历史</string>
@@ -162,7 +160,6 @@
     <string name="setting_title_nav_show">隐藏</string>
     <string name="setting_summary_nav_show">工具栏显示的时候隐藏导航键</string>
 
-    <string name="setting_title_tab">启动标签</string>
     <string name="setting_summary_tab">浏览器启动的时候显示什么？启动页，书签…</string>
 
     <string name="setting_title_confirm_exit">关闭确认</string>
@@ -180,8 +177,6 @@
 
 
     <!-- Data -->
-    <string name="setting_title_export_bookmarks">导出书签</string>
-    <string name="setting_title_import_bookmarks">导入书签</string>
     <string name="export_bookmarks">export_bookmarks</string>
 
     <string name="setting_title_export_whitelist">导出 AdBlock 白名单</string>
@@ -230,8 +225,6 @@
     <string name="toast_load_error">无法载入此URL</string>
     <string name="toast_load_in_background">后台加载</string>
     <string name="toast_new_tab_successful">成功在新标签页打开</string>
-    <string name="toast_open_file_manager_failed">打开文件管理器失败</string>
-    <string name="toast_refresh_failed">无法刷新此网页</string>
     <string name="toast_relayout_successful">重新布局成功</string>
     <string name="toast_share_failed">无法分享此网页</string>
     <string name="toast_start_download">开始下载</string>

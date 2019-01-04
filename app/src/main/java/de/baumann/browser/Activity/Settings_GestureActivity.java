@@ -10,7 +10,6 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 
 import de.baumann.browser.Fragment.Fragment_settings_Gesture;
-import de.baumann.browser.Fragment.Fragment_settings_UI;
 import de.baumann.browser.Ninja.R;
 import de.baumann.browser.Unit.HelperUnit;
 

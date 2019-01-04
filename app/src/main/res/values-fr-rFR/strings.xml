@@ -57,7 +57,6 @@
 
     <!-- Browser clear -->
     <string name="clear_title_quit">Effacer quand vous quitter l\'application</string>
-    <string name="clear_title_bookmarks">Supprimer les marques-pages</string>
     <string name="clear_title_cache">Vider le cache</string>
     <string name="clear_title_cookie">Effacer les cookies</string>
     <string name="clear_title_history">Effacer l\'historique</string>

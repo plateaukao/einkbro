@@ -11,7 +11,6 @@
 
     <!-- Clear -->
     <string name="sp_clear_quit">SP_LIMPIA_SALIR_9</string>
-    <string name="sp_clear_bookmarks">SP_LIMPIA_MARCADORES_9</string>
     <string name="sp_clear_cache">SP_LIMPIA_CACHE_9</string>
     <string name="sp_clear_cookie">SP_LIMPIA_COOKIE_9</string>
     <string name="sp_clear_history">SP_LIMPIA_HISTORIA_9</string>
@@ -27,7 +26,6 @@
     <string name="album_title_history">Historia</string>
     <string name="album_title_home">Inicio</string>
     <string name="album_title_files">Archivos</string>
-    <string name="album_title_pass">Datos de entrada</string>
     <string name="notification_content_holderTitle">Pestañas abiertas…</string>
     <string name="notification_content_holder">… Haga clic para ver las páginas</string>
     <string name="search_hint">Búsqueda</string>
@@ -138,7 +136,6 @@
     <string name="clear_menu_done_all">Todo listo</string>
     <string name="clear_title_quit">Limpia después de salir</string>
     <string name="clear_summary_quit">Cada vez que sales \"Navegador FOSS\" todos los datos anteriores se borrarán.</string>
-    <string name="clear_title_bookmarks">Borrar marcadores</string>
     <string name="clear_title_cache">Borrar caché</string>
     <string name="clear_title_cookie">Limpia Cookies</string>
     <string name="clear_title_history">Limpia el historia</string>
@@ -173,7 +170,6 @@
     <string name="setting_title_nav_show">Ocultar</string>
     <string name="setting_summary_nav_show">Oculte el \"botón de navegación\" cuando se muestre la barra de herramientas.</string>
 
-    <string name="setting_title_tab">Pestañas Iniciar</string>
     <string name="setting_summary_tab">Lo que debe mostrarse al comienzo de \"Navegador FOSS \"? La página de inicio, los marcadores,…</string>
 
     <string name="setting_title_confirm_exit">Confirmar salida del Navegador</string>
@@ -191,8 +187,6 @@
 
 
     <!-- Data -->
-    <string name="setting_title_export_bookmarks">Exportar Marcadores</string>
-    <string name="setting_title_import_bookmarks">Importar marcadores</string>
     <string name="export_bookmarks">exportar_marcadores</string>
 
     <string name="setting_title_export_whitelist">Exportar lista blanca AdBlock</string>
@@ -241,8 +235,6 @@
     <string name="toast_load_error">No se puede cargar esta dirección URL</string>
     <string name="toast_load_in_background">Cargar en el fondo</string>
     <string name="toast_new_tab_successful">Abierto con éxito en una nueva pestaña</string>
-    <string name="toast_open_file_manager_failed">Error al abrir el administrador de archivos</string>
-    <string name="toast_refresh_failed">No se puede actualizar esta página</string>
     <string name="toast_relayout_successful">Rediseño con éxito</string>
     <string name="toast_share_failed">No se puede compartir esta página</string>
     <string name="toast_start_download">Iniciando descarga</string>

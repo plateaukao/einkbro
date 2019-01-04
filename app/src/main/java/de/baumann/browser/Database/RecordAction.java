@@ -295,10 +295,6 @@ public class RecordAction {
         database.execSQL("DELETE FROM " + RecordUnit.TABLE_GRID + " WHERE " + RecordUnit.COLUMN_URL + " = " + "\"" + item.getURL().trim() + "\"");
     }
 
-    public void clearBookmarks() {
-        database.execSQL("DELETE FROM " + RecordUnit.TABLE_BOOKMARKS);
-    }
-
     public void clearHome() {
         database.execSQL("DELETE FROM " + RecordUnit.TABLE_GRID);
     }

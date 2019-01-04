@@ -11,7 +11,6 @@
     <string name="album_title_history">Historia</string>
     <string name="album_title_home">Strona domowa</string>
     <string name="album_title_files">Pliki</string>
-    <string name="album_title_pass">Dane logowania</string>
     <string name="album_untitled"> </string>
     <string name="notification_content_holderTitle">Otwarte karty…</string>
     <string name="notification_content_holder">Dotknij, aby zobaczyć strony</string>
@@ -129,7 +128,6 @@
     <string name="clear_menu_done_all">Wykonano</string>
     <string name="clear_title_quit">Wymaż na zamknięciu</string>
     <string name="clear_summary_quit">Za każdym razem, gdy zamkniesz \"FOSS Browser\" wszystkie zaznaczone powyżej dane zostaną wymazane.</string>
-    <string name="clear_title_bookmarks">Wymaż zakładki</string>
     <string name="clear_title_cache">Wymaż dane podręczne</string>
     <string name="clear_title_cookie">Wymaż ciasteczka</string>
     <string name="clear_title_history">Wymaż historie</string>
@@ -164,7 +162,6 @@
     <string name="setting_title_nav_show">Widoczność</string>
     <string name="setting_summary_nav_show">Zdecyduj o zachowaniu \”Przycisku nawigacyjnego\” w towarzystwie panelu dolnego.</string>
 
-    <string name="setting_title_tab">Zakładka startowa</string>
     <string name="setting_summary_tab">Wybierz element startowy \"FOSS Browser\”.</string>
 
     <string name="setting_title_confirm_exit">Potwierdzaj zamknięcie przeglądarki</string>
@@ -182,8 +179,6 @@
 
 
     <!-- Data -->
-    <string name="setting_title_export_bookmarks">Eksportuj zakładki</string>
-    <string name="setting_title_import_bookmarks">Importuj zakładki</string>
     <string name="export_bookmarks">export_bookmarks</string>
 
     <string name="setting_title_export_whitelist">Eksportuj białą listę AdBlock</string>
@@ -232,8 +227,6 @@
     <string name="toast_load_error">Nie można załadować adresu</string>
     <string name="toast_load_in_background">Ładowanie w tle</string>
     <string name="toast_new_tab_successful">Załadowano w nowej karcie</string>
-    <string name="toast_open_file_manager_failed">Błąd przy otwieraniu katalogu pobierania</string>
-    <string name="toast_refresh_failed">Nie można odświeżyć</string>
     <string name="toast_relayout_successful">Zmiana zakończona sukcesem</string>
     <string name="toast_share_failed">Nie można udostępnić</string>
     <string name="toast_start_download">Rozpoczynanie pobierania</string>
