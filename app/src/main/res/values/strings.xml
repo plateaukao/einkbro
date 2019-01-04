@@ -12,7 +12,6 @@
     <string name="album_title_history">History</string>
     <string name="album_title_home">Home</string>
     <string name="album_title_files">Files</string>
-    <string name="album_title_pass">Login data</string>
     <string name="album_untitled"> </string>
     <string name="notification_content_holderTitle">Opened tabs …</string>
     <string name="notification_content_holder">… Click to View Pages</string>
@@ -62,10 +61,6 @@
 
     <string name="menu_other_searchSite">Search on site</string>
     <string name="menu_other_help">Help</string>
-
-
-    <!-- AndroidAgo -->
-
 
     <!-- Dialog -->
     <string name="dialog_toggle_title">Fast toggle</string>
@@ -161,7 +156,6 @@
     <string name="clear_menu_done_all">Done all</string>
     <string name="clear_title_quit">Clear when application exits</string>
     <string name="clear_summary_quit">Every time you quit \"FOSS Browser\" all above checked data will be deleted.</string>
-    <string name="clear_title_bookmarks">Clear Bookmarks</string>
     <string name="clear_title_cache">Clear Cache</string>
     <string name="clear_title_cookie">Clear Cookies</string>
     <string name="clear_title_history">Clear History</string>
@@ -199,7 +193,6 @@
     <string name="setting_title_nav_show">Hide</string>
     <string name="setting_summary_nav_show">Hide the \"Navigation Button\" when toolbar is shown.</string>
 
-    <string name="setting_title_tab">Start tab</string>
     <string name="setting_summary_tab">What should be shown at the start of the \"Overview\"? The Start Page, you bookmarks, …</string>
 
     <string name="setting_title_confirm_exit">Confirm browser exit</string>
@@ -223,11 +216,7 @@
     <string name="setting_gestures">Gestures</string>
     <string name="setting_gestures_use_title">Use gestures</string>
     <string name="setting_gestures_use_summary">Use gestures on the toolbar and the \"Navigation button\".</string>
-    <string name="setting_gestures_action_title">Action</string>
-    <string name="setting_gestures_action_summary">Decide what happens when you swipe left/right on the toolbar
-        and \"Navigation Button\".</string>
-    <string name="setting_gestures_action_1">Move forward/back in browsing history</string>
-    <string name="setting_gestures_action_2">Switch between opened tabs</string>
+
 
     <!-- gestures -->
     <string name="setting_title_toolbar">Toolbar</string>
@@ -238,14 +227,15 @@
     <string name="setting_gesture_01">Nothing</string>
     <string name="setting_gesture_02">Forward in history</string>
     <string name="setting_gesture_03">Back in history</string>
-    <string name="setting_gesture_04">Switch to left tab</string>
-    <string name="setting_gesture_05">Switch to right tab</string>
-    <string name="setting_gesture_06">Show overview</string>
-    <string name="setting_gesture_07">Open new tab</string>
+    <string name="setting_gesture_04">Scroll to top</string>
+    <string name="setting_gesture_05">Scroll to bottom</string>
+    <string name="setting_gesture_06">Switch to left tab</string>
+    <string name="setting_gesture_07">Switch to right tab</string>
+    <string name="setting_gesture_08">Show overview</string>
+    <string name="setting_gesture_09">Open new tab</string>
+    <string name="setting_gesture_10">Close tab</string>
 
     <!-- Data -->
-    <string name="setting_title_export_bookmarks">Export Bookmarks</string>
-    <string name="setting_title_import_bookmarks">Import Bookmarks</string>
     <string name="export_bookmarks">export_bookmarks</string>
 
     <string name="setting_title_export_whitelist">Export AdBlock whitelist</string>
@@ -297,8 +287,6 @@
     <string name="toast_load_error">Can\'t load this URL</string>
     <string name="toast_load_in_background">Loading in background</string>
     <string name="toast_new_tab_successful">Successfully opened in a new tab</string>
-    <string name="toast_open_file_manager_failed">Failed to open File Manager</string>
-    <string name="toast_refresh_failed">Can\'t refresh this page</string>
     <string name="toast_relayout_successful">Successfully Relayout</string>
     <string name="toast_share_failed">Can\'t share this page</string>
     <string name="toast_start_download">Starting download</string>
@@ -329,10 +317,6 @@
         connection (\"https\")?</string>
     <string name="toast_backup">Backup data? This will overwrite the old backup.</string>
     <string name="toast_fav">Successfully set as favorite.</string>
-    <string name="toast_bookmarksOld">With this update your bookmarks and login data will be saved in the same
-        database. Please open your old bookmarks and save them again. Click \"Cancel\" to show your old bookmarks
-        on the right side of the overview. Click \"OK\" to hide them.</string>
-    <string name="toast_bookmarksOld_confirm">Hide old bookmarks for ever?</string>
 
 
     <!-- Whitelist -->

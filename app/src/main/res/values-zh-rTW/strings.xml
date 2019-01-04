@@ -11,7 +11,6 @@
     <string name="album_title_history">歷史</string>
     <string name="album_title_home">主頁</string>
     <string name="album_title_files">檔案</string>
-    <string name="album_title_pass">登錄資料</string>
     <string name="notification_content_holderTitle">已開啟的分頁…</string>
     <string name="notification_content_holder">點擊以瀏覽頁面</string>
     <string name="search_hint">搜尋</string>
@@ -130,7 +129,6 @@
     <string name="clear_menu_done_all">全部完成</string>
     <string name="clear_title_quit">退出後清除</string>
     <string name="clear_summary_quit">以上勾選的資料將在每次退出FOSS瀏覽器時刪除。</string>
-    <string name="clear_title_bookmarks">清除書籤</string>
     <string name="clear_title_cache">清除快取</string>
     <string name="clear_title_cookie">清除 Cookies</string>
     <string name="clear_title_history">清除瀏覽歷史</string>
@@ -165,7 +163,6 @@
     <string name="setting_title_nav_show">隱藏</string>
     <string name="setting_summary_nav_show">當工具列顯示時隱藏導航鍵</string>
 
-    <string name="setting_title_tab">起始畫面</string>
     <string name="setting_summary_tab">瀏覽器開啟後啟動頁該顯示什麼？主頁、書籤或瀏覽歷史…</string>
 
     <string name="setting_title_confirm_exit">確認退出瀏覽器</string>
@@ -183,8 +180,6 @@
 
 
     <!-- Data -->
-    <string name="setting_title_export_bookmarks">匯出書籤</string>
-    <string name="setting_title_import_bookmarks">匯入書籤</string>
     <string name="export_bookmarks">export_bookmarks</string>
 
     <string name="setting_title_export_whitelist">匯出 AdBlock 白名單</string>
@@ -235,9 +230,7 @@
 <string name="toast_load_error">無法載入此URL</string>
 <string name="toast_load_in_background">於背景載入</string>
 <string name="toast_new_tab_successful">成功於新分頁開啟</string>
-<string name="toast_open_file_manager_failed">無法開啟檔案管理器</string>
-<string name="toast_refresh_failed">無法刷新此頁</string>
-<string name="toast_relayout_successful">重新佈局成功</string>
+    <string name="toast_relayout_successful">重新佈局成功</string>
 <string name="toast_share_failed">無法分享此網頁</string>
 <string name="toast_start_download">開始下載</string>
 <string name="toast_wait_a_minute">請稍候</string>

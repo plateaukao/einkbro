@@ -25,6 +25,7 @@
             android:gravity="center_vertical|center_horizontal"
             android:layout_marginBottom="4dp"
             android:layout_marginTop="4dp"
+            android:layout_marginStart="16dp"
             android:background="?attr/actionBarItemBackground"
             android:src="@drawable/icon_arrow_left"/>
 
@@ -48,6 +49,7 @@
             android:gravity="center_vertical|center_horizontal"
             android:layout_marginBottom="4dp"
             android:layout_marginTop="4dp"
+            android:layout_marginEnd="16dp"
             android:background="?attr/actionBarItemBackground"
             android:src="@drawable/icon_arrow_right" />
 
@@ -93,7 +95,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:padding="8dp"
-                android:src="@drawable/icon_plus_light"
+                android:src="@drawable/icon_plus"
                 android:background="?attr/actionBarItemBackground"/>
 
         </LinearLayout>
@@ -101,7 +103,6 @@
     </HorizontalScrollView>
 
     <RelativeLayout
-        android:id="@+id/overView_content"
         android:layout_below="@+id/separator_2"
         android:layout_above="@+id/home_buttons"
         android:layout_width="wrap_content"
@@ -229,33 +230,6 @@
                 android:layout_marginStart="2dp"
                 android:background="?attr/actionBarItemBackground"
                 android:src="@drawable/ic_action_history" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/bookmarks_old"
-            android:layout_marginEnd="6dp"
-            android:layout_marginStart="6dp"
-            android:orientation="vertical"
-            android:layout_width="42dp"
-            android:layout_height="wrap_content">
-
-            <View
-                android:id="@+id/open_passView"
-                android:layout_width="42dp"
-                android:layout_height="2dp"
-                android:background="@color/colorAccent"
-                android:visibility="visible" />
-
-            <ImageButton
-                android:id="@+id/open_pass_2"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:layout_gravity="center_vertical|center_horizontal"
-                android:layout_marginEnd="2dp"
-                android:layout_marginStart="2dp"
-                android:background="?attr/actionBarItemBackground"
-                android:src="@drawable/icon_key" />
 
         </LinearLayout>
 

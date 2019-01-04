@@ -11,7 +11,6 @@
     <string name="album_title_history">Histórico</string>
     <string name="album_title_home">Início</string>
     <string name="album_title_files">Ficheiros</string>
-    <string name="album_title_pass">Credenciais</string>
     <string name="album_untitled"> </string>
     <string name="notification_content_holderTitle">Separadores abertos…</string>
     <string name="notification_content_holder">…Clique para ver as páginas</string>
@@ -157,7 +156,6 @@
     <string name="clear_menu_done_all">Terminado</string>
     <string name="clear_title_quit">Limpar ao fechar a aplicação</string>
     <string name="clear_summary_quit">Sempre que sair do \"FOSS Browser\", todos os dados acima assinalados serão apagados.</string>
-    <string name="clear_title_bookmarks">Limpar marcadores</string>
     <string name="clear_title_cache">Limpar cache</string>
     <string name="clear_title_cookie">Limpar cookies</string>
     <string name="clear_title_history">Limpar histórico</string>
@@ -194,7 +192,6 @@
     <string name="setting_title_nav_show">Ocultar</string>
     <string name="setting_summary_nav_show">Ocultar botão de navegação se a barra de ferramentas for mostrada.</string>
 
-    <string name="setting_title_tab">Separador inicial</string>
     <string name="setting_summary_tab">Escolha o que mostrar ao iniciar o \"FOSS Browser\". Página inicial, marcadores…</string>
 
     <string name="setting_title_confirm_exit">Confirmar fecho da aplicação</string>
@@ -218,16 +215,9 @@
     <string name="setting_gestures">Gestos</string>
     <string name="setting_gestures_use_title">Utilizar gestos</string>
     <string name="setting_gestures_use_summary">Utilizar gestos na barra de ferramentas e no \"Botão de navegação\".</string>
-    <string name="setting_gestures_action_title">Ação</string>
-    <string name="setting_gestures_action_summary">Decidir o que acontece ao deslizar para a esquerda/direita na barra de ferramentas e 
-        no \"Botão de navegação\".</string>
-    <string name="setting_gestures_action_1">Avançar/recuar no histórico de navegação</string>
-    <string name="setting_gestures_action_2">Alternar entre separadores abertos</string>
 
 
     <!-- Data -->
-    <string name="setting_title_export_bookmarks">Exportar marcadores</string>
-    <string name="setting_title_import_bookmarks">Importar marcadores</string>
     <string name="export_bookmarks">export_bookmarks</string>
 
     <string name="setting_title_export_whitelist">Exportar lista branca AdBlock</string>
@@ -279,8 +269,6 @@
     <string name="toast_load_error">O URL não pode ser carregado</string>
     <string name="toast_load_in_background">A carregar em segundo plano</string>
     <string name="toast_new_tab_successful">Aberto com sucesso em novo separador</string>
-    <string name="toast_open_file_manager_failed">Erro ao abrir o gestor de ficheiros</string>
-    <string name="toast_refresh_failed">Não foi possível recarregar a página</string>
     <string name="toast_relayout_successful">Recarregamento efetuado</string>
     <string name="toast_share_failed">Não foi possível partilhar a página</string>
     <string name="toast_start_download">Descarga iniciada</string>
@@ -311,10 +299,6 @@
 	Deseja verificar se existe uma ligação segura (\"https\")?</string>
     <string name="toast_backup">Criar backup? Irá substituir os dados do backup anterior.</string>
 	<string name="toast_fav">Definido como favorito.</string>
-    <string name="toast_bookmarksOld">Com esta atualização, os seus marcadores e as suas credenciais serão guardados na 
-        mesma base de dados. Abra os seus marcadores antigos e guarde-os novamente. Clique \"Cancelar\" para mostrar os marcadores antigos
-        na margem esquerda da \"Visão geral\". Clique \"OK\" para os ocultar.</string>
-    <string name="toast_bookmarksOld_confirm">Ocultar marcadores antigos para sempre?</string>
 
 
     <!-- Whitelist -->

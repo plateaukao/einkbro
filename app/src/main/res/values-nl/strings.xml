@@ -11,7 +11,6 @@
     <string name="album_title_history">Geschiedenis</string>
     <string name="album_title_home">Startpagina</string>
     <string name="album_title_files">Bestanden</string>
-    <string name="album_title_pass">Inloggegevens</string>
     <string name="album_untitled"> </string>
     <string name="notification_content_holderTitle">Geopende tabbladen…</string>
     <string name="notification_content_holder">…klik om pagina\'s te tonen</string>
@@ -137,7 +136,6 @@
     <string name="clear_menu_done_all">Alles voltooid</string>
     <string name="clear_title_quit">Wissen bij afsluiten</string>
     <string name="clear_summary_quit">Elke keer als je \"FOSS-browser\" afsluit, dan worden alle hierboven aangevinkte gegevens gewist.</string>
-    <string name="clear_title_bookmarks">Bladwijers wissen</string>
     <string name="clear_title_cache">Cache leegmaken</string>
     <string name="clear_title_cookie">Cookies wissen</string>
     <string name="clear_title_history">Geschiedenis wissen</string>
@@ -174,7 +172,6 @@
     <string name="setting_title_nav_show">Verbergen</string>
     <string name="setting_summary_nav_show">Verberg de \"Navigatieknop\" als de werkbalk zichtbaar is.</string>
 
-    <string name="setting_title_tab">Opstarten</string>
     <string name="setting_summary_tab">Wat moet er worden getoond bij het opstarten van \"FOSS-browser\": de startpagina, je bladwijzers, … ?</string>
 
     <string name="setting_title_confirm_exit">Afsluiten bevestigen</string>
@@ -192,8 +189,6 @@
 
 
     <!-- Data -->
-    <string name="setting_title_export_bookmarks">Bladwijzers exporteren</string>
-    <string name="setting_title_import_bookmarks">Bladwijzers importeren</string>
     <string name="export_bookmarks">export_bookmarks</string>
 
     <string name="setting_title_export_whitelist">Advertentieblokkering - witte lijst exporteren</string>
@@ -245,8 +240,6 @@
     <string name="toast_load_error">Deze URL kan niet worden geladen</string>
     <string name="toast_load_in_background">Bezig met laden op achtergrond…</string>
     <string name="toast_new_tab_successful">Geopend op nieuw tabblad</string>
-    <string name="toast_open_file_manager_failed">Bestandsbeheerder openen mislukt</string>
-    <string name="toast_refresh_failed">Deze pagina kan niet worden ververst</string>
     <string name="toast_relayout_successful">Opnieuw ingedeeld</string>
     <string name="toast_share_failed">Deze pagina kan niet worden gedeeld</string>
     <string name="toast_start_download">Bezig met starten van download…</string>

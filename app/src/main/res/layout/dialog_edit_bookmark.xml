@@ -35,7 +35,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
-                android:hint="@string/dialog_title_hint"/>
+                android:hint="@string/dialog_title_hint"
+                android:importantForAutofill="no" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -45,7 +46,6 @@
     </LinearLayout>
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/login_url"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:passwordToggleEnabled="false" >
@@ -55,7 +55,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
-            android:hint="@string/dialog_url_hint"/>
+            android:hint="@string/dialog_url_hint"
+            android:importantForAutofill="no" />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -71,7 +72,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
-            android:hint="@string/dialog_sign_in_username"/>
+            android:hint="@string/dialog_sign_in_username"
+            android:importantForAutofill="no" />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -85,7 +87,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
-            android:hint="@string/dialog_sign_in_password"/>
+            android:hint="@string/dialog_sign_in_password"
+            android:importantForAutofill="no" />
 
     </android.support.design.widget.TextInputLayout>
 

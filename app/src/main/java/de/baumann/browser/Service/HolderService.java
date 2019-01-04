@@ -47,7 +47,7 @@ public class HolderService extends Service implements BrowserController {
 
 
     @Override
-    public void showFileChooser(ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams) {}
+    public void showFileChooser(ValueCallback<Uri[]> filePathCallback) {}
 
     @Override
     public void onShowCustomView(View view, WebChromeClient.CustomViewCallback callback) {}

@@ -11,7 +11,6 @@
     <string name="album_title_history">Cronologia</string>
     <string name="album_title_home">Home</string>
     <string name="album_title_files">File</string>
-    <string name="album_title_pass">Dati Login</string>
     <string name="album_untitled"> </string>
     <string name="notification_content_holderTitle">Schede aperte …</string>
     <string name="notification_content_holder">… Tocca per vedere le pagine</string>
@@ -128,7 +127,6 @@
     <string name="clear_menu_done_all">Tutto</string>
     <string name="clear_title_quit">Cancella quando si chiude l\'applicazione</string>
     <string name="clear_summary_quit">Ogni volta che si esce da \"FOSS Browser\" tutti i dati selezionati sopra vengono cancellati.</string>
-    <string name="clear_title_bookmarks">Elimina segnalibri</string>
     <string name="clear_title_cache">Elimina Cache</string>
     <string name="clear_title_cookie">Elimina Cookies</string>
     <string name="clear_title_history">Elimina Cronologia</string>
@@ -163,7 +161,6 @@
     <string name="setting_title_nav_show">Nascondi</string>
     <string name="setting_summary_nav_show">Nascondere il \"Pulsante di navigazione\" quando è visualizzata la barra degli strumenti.</string>
 
-    <string name="setting_title_tab">Scheda iniziale</string>
     <string name="setting_summary_tab">Cosa deve essere mostrato all\' apertura di \"FOSS Browser\"? Pagina iniziale, i tuoi segnalibri, …</string>
 
     <string name="setting_title_confirm_exit">Conferma l\'uscita dal browser</string>
@@ -181,8 +178,6 @@
 
 
     <!-- Data -->
-    <string name="setting_title_export_bookmarks">Esporta Segnalibri</string>
-    <string name="setting_title_import_bookmarks">Importa Segnalibri</string>
     <string name="export_bookmarks">export_bookmarks</string>
 
     <string name="setting_title_export_whitelist">Esporta whitelist AdBlock</string>
@@ -231,8 +226,6 @@
     <string name="toast_load_error">Non è possibile caricare questo URL</string>
     <string name="toast_load_in_background">Caricamento in background</string>
     <string name="toast_new_tab_successful">Aperto con successo in una nuova scheda</string>
-    <string name="toast_open_file_manager_failed">Impossibile aprire File Manager</string>
-    <string name="toast_refresh_failed">Impossibile aggiornare questa pagina</string>
     <string name="toast_relayout_successful">Riordinamento completato</string>
     <string name="toast_share_failed">Impossibile condividere questa pagina</string>
     <string name="toast_start_download">Avvio del download</string>

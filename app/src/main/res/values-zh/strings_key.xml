@@ -13,7 +13,6 @@
 
     <!-- Clear -->
     <string name="sp_clear_quit">退出时清除</string>
-    <string name="sp_clear_bookmarks">清除书签</string>
     <string name="sp_clear_cache">清除缓存</string>
     <string name="sp_clear_cookie">清除Cookie</string>
     <string name="sp_clear_history">清楚历史记录</string>

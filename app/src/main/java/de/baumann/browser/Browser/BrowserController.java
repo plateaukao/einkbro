@@ -18,7 +18,7 @@ public interface BrowserController {
 
     void removeAlbum(AlbumController albumController);
 
-    void showFileChooser(ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams);
+    void showFileChooser(ValueCallback<Uri[]> filePathCallback);
 
     void onShowCustomView(View view, WebChromeClient.CustomViewCallback callback);
 

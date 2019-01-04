@@ -1,4 +1,6 @@
-### v 6.2
+### v 6.2 (WIP)
+- new: advanced gesture settings
+- new: show overview on start
 - fix: light settings theme
 
 ### v 6.1

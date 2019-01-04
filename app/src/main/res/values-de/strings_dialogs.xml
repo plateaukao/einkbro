@@ -53,7 +53,7 @@
         \n \u25AA Nach links/rchts wischen  \u2192  zurück/vor im Browserverlauf;
         \n \u25AA Klicken               \u2192  Menü öffnen;
         \n \u25AA Lange drücken        \u2192  öffne die \"Schnelleinstellungen\"
-        \n You can configure gestures in the settings.
+        \n In den Einstellungen kannst du dies ändern.
     </string>
 
     <string name="settings_dialog">Es gibt noch mehr Möglichkeiten in den Einstellungen. Probiere es aus!</string>

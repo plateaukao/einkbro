@@ -11,7 +11,6 @@
     <string name="album_title_history">Verlauf</string>
     <string name="album_title_home">Startseite</string>
     <string name="album_title_files">Dateien</string>
-    <string name="album_title_pass">Logindaten</string>
     <string name="album_untitled"> </string>
     <string name="notification_content_holderTitle">Geöffnete Tabs …</string>
     <string name="notification_content_holder">… Anklicken um die Seiten zu sehen</string>
@@ -159,7 +158,6 @@
     <string name="clear_menu_done_all">Alles erledigt</string>
     <string name="clear_title_quit">Löschen beim Verlassen der Anwendung</string>
     <string name="clear_summary_quit">Jedesmal wenn \"FOSS Browser\" beendet wird, werden oben ausgewählte Daten gelöscht.</string>
-    <string name="clear_title_bookmarks">Lösche Lesezeichen</string>
     <string name="clear_title_cache">Lösche Cache</string>
     <string name="clear_title_cookie">Lösche Cookies</string>
     <string name="clear_title_history">Lösche den Verlauf</string>
@@ -187,7 +185,6 @@
         ist, öffnen sich Links sofort.</string>
     <string name="setting_title_themeDark">Helles Thema</string>
     <string name="setting_summary_themeDark">Du magst es lieber ein bisschen heller? Dann tu es!</string>
-    <string name="setting_title_tab">Starttab</string>
     <string name="setting_summary_tab">Was soll beim Start der \"Übersicht\" angezeigt werden? Die Startseite, deine Lesezeichen, …</string>
 
     <string name="setting_title_confirm_exit">Bestätigung beim Verlassen</string>
@@ -222,15 +219,25 @@
     <string name="setting_gestures">Gesten</string>
     <string name="setting_gestures_use_title">Benutze Gesten</string>
     <string name="setting_gestures_use_summary">Benutze Gesten auf der Toolbar oder dem \"Navigationsknopf\".</string>
-    <string name="setting_gestures_action_title">Aktion</string>
-    <string name="setting_gestures_action_summary">Was soll passieren, wenn du nach rechts/links auf der Toolbar oder
-        dem \"Navigation Button\" wischst?</string>
-    <string name="setting_gestures_action_1">Vor/zurück im Browserverlauf</string>
-    <string name="setting_gestures_action_2">Zwischen geöffneten Tabs wechseln</string>
+
+    <!-- gestures -->
+    <string name="setting_title_toolbar">Toolbar</string>
+    <string name="setting_gesture_up">Nach oben wischen</string>
+    <string name="setting_gesture_down">Nach unten wischen</string>
+    <string name="setting_gesture_left">Nach links wischen</string>
+    <string name="setting_gesture_right">Nach rechts wischen</string>
+    <string name="setting_gesture_01">Nichts</string>
+    <string name="setting_gesture_02">Vorwärts im Verlauf</string>
+    <string name="setting_gesture_03">Zurück im Verlauf</string>
+    <string name="setting_gesture_04">Nach oben scrollen</string>
+    <string name="setting_gesture_05">Nach unten scrollen</string>
+    <string name="setting_gesture_06">Zum Tab links wechsel</string>
+    <string name="setting_gesture_07">Zum Tab rechts wechseln</string>
+    <string name="setting_gesture_08">Übersicht zeigen</string>
+    <string name="setting_gesture_09">Neuen Tab öffnen</string>
+    <string name="setting_gesture_10">Tab schließen</string>
 
     <!-- Data -->
-    <string name="setting_title_export_bookmarks">Lesezeichen sichern</string>
-    <string name="setting_title_import_bookmarks">Lesezeichen wiederherstellen</string>
     <string name="export_bookmarks">export_bookmarks</string>
 
     <string name="setting_title_export_whitelist">AdBlock Ausnahmen sichern</string>
@@ -282,8 +289,6 @@
     <string name="toast_load_error">URL konnte nicht geladen werden</string>
     <string name="toast_load_in_background">Lade URL im Hintergrund</string>
     <string name="toast_new_tab_successful">Neuer Tab geöffnet</string>
-    <string name="toast_open_file_manager_failed">Konnte Dateimanager nicht öffnen</string>
-    <string name="toast_refresh_failed">Kann Seite nicht neu laden</string>
     <string name="toast_relayout_successful">Erfolgreich gespeichert</string>
     <string name="toast_share_failed">Kann die Seite nicht teilen</string>
     <string name="toast_start_download">Starte Download</string>
@@ -291,7 +296,7 @@
     <string name="toast_titleConfirm_delete">Möchtest du den Eintrag wirklich löschen?</string>
     <string name="toast_titleConfirm_paste">In die Zwischenablage kopieren?</string>
     <string name="toast_titleConfirm_pasteUN">Benutzername</string>
-    <string name="toast_titleConfirm_pastePW">Passswort</string>
+    <string name="toast_titleConfirm_pastePW">Passwort</string>
     <string name="toast_error">Uuups. Etwas ist schief gelaufen. :-(</string>
     <string name="toast_newTitle">Eintrag existiert schon. Bitte wähle einen anderen Titel.</string>
     <string name="toast_edit_successful">Erfolgreich gespeichert</string>
@@ -314,12 +319,6 @@
         eine gesicherte Verbindung herstellen (\"https\")?</string>
     <string name="toast_backup">Daten sichern? Das überschreibt die alte Sicherung.</string>
     <string name="toast_fav">Erfolgreich als Favorit gesetzt.</string>
-    <string name="toast_bookmarksOld">Mit diesem Update werden Lesezeichen und Logindaten zusammen gelegt. Bitte
-    öffne alle deine alten Lesezeichen und speichere sie neu ab. Klicke \"Abbrechen\" um deine alten Lesezeichen
-    weiterhin anzuzeigen (sie werden ganz auf der rechten Seite der Übersicht sein). Klicke \"OK\" um deine alten
-        Lesezeichen zu verbergen.</string>
-    <string name="toast_bookmarksOld_confirm">Die alten Lesezeichen für immer verstecken?</string>
-
 
 
     <!-- Whitelist -->

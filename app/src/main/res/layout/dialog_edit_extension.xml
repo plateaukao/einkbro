@@ -18,7 +18,8 @@
             android:layout_height="wrap_content"
             android:imeOptions="actionDone"
             android:inputType="text"
-            android:hint="@string/dialog_title_hint"/>
+            android:hint="@string/dialog_title_hint"
+            android:importantForAutofill="no" />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -33,7 +34,8 @@
             android:layout_height="wrap_content"
             android:imeOptions="actionDone"
             android:inputType="text"
-            android:hint="@string/dialog_extension_hint"/>
+            android:hint="@string/dialog_extension_hint"
+            android:importantForAutofill="no" />
 
     </android.support.design.widget.TextInputLayout>
 

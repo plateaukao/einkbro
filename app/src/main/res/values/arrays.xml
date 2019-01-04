@@ -48,16 +48,22 @@
         <item>@string/setting_gesture_05</item>
         <item>@string/setting_gesture_06</item>
         <item>@string/setting_gesture_07</item>
+        <item>@string/setting_gesture_08</item>
+        <item>@string/setting_gesture_09</item>
+        <item>@string/setting_gesture_10</item>
     </string-array>
 
     <string-array name="setting_values_gestures">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
-        <item>7</item>
+        <item>01</item>
+        <item>02</item>
+        <item>03</item>
+        <item>04</item>
+        <item>05</item>
+        <item>06</item>
+        <item>07</item>
+        <item>08</item>
+        <item>09</item>
+        <item>10</item>
     </string-array>
 
     <!-- Start tab -->

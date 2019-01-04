@@ -11,7 +11,6 @@
     <string name="album_title_history">Riwayat</string>
     <string name="album_title_home">Beranda</string>
     <string name="album_title_files">File</string>
-    <string name="album_title_pass">Data Masuk</string>
     <string name="album_untitled"> </string>
     <string name="notification_content_holder">Klik untuk Lihat Halaman</string>
     <string name="search_hint">Cari</string>
@@ -106,7 +105,6 @@
         Untuk mengembalikannya pasti ada file dengan nama yang tepat di dalam direktori.</string>
     <string name="clear_menu_done_all">Selesai Semua</string>
     <string name="clear_title_quit">Hapus saat aplikasi keluar</string>
-    <string name="clear_title_bookmarks">Hapus Penanda</string>
     <string name="clear_title_cache">Hapus Cache</string>
     <string name="clear_title_cookie">Hapus Cookies</string>
     <string name="clear_title_history">Hapus Riwayat</string>
@@ -128,8 +126,6 @@
 
 
     <!-- Data -->
-    <string name="setting_title_export_bookmarks">Export Penanda</string>
-    <string name="setting_title_import_bookmarks">Impor Penanda</string>
     <string name="export_bookmarks">export_bookmarks</string>
 
     <string name="setting_title_export_whitelist">Isi putih daftar putih AppBlock</string>
@@ -170,8 +166,6 @@
     <string name="toast_load_error">Tidak dapat memuat URL ini</string>
     <string name="toast_load_in_background">Memuat di latar belakang</string>
     <string name="toast_new_tab_successful">Berhasil membuka tab baru</string>
-    <string name="toast_open_file_manager_failed">Gagal membuka File Manager</string>
-    <string name="toast_refresh_failed">Tidak dapat me-refresh halaman ini</string>
     <string name="toast_relayout_successful">Berhasil melakukan relayout</string>
     <string name="toast_share_failed">Tidak dapat membagikan halaman ini</string>
     <string name="toast_start_download">Memulai unduh</string>

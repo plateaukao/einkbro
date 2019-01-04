@@ -137,7 +137,8 @@
                 android:inputType="text"
                 android:maxLines="1"
                 android:ellipsize="end"
-                android:textColor="@color/color_light"/>
+                android:textColor="@color/color_light"
+                android:importantForAutofill="no" />
 
         </RelativeLayout>
 

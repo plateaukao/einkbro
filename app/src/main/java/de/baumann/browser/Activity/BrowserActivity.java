@@ -176,7 +176,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     private ImageButton omniboxOverflow;
     private ImageButton omniboxOverview;
 
-    private ImageButton open_pass;
     private ImageButton open_startPage;
     private ImageButton open_bookmark;
     private ImageButton open_history;
@@ -317,12 +316,12 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
 
+        sp = PreferenceManager.getDefaultSharedPreferences(this);
+
         HelperUnit.grantPermissionsStorage(this);
         HelperUnit.setTheme(this);
 
         setContentView(R.layout.activity_main);
-
-        sp = PreferenceManager.getDefaultSharedPreferences(this);
 
         if (Objects.requireNonNull(sp.getString("saved_key_ok", "no")).equals("no")) {
             char[] chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!§$%&/()=?;:_-.,+#*<>".toCharArray();
@@ -337,6 +336,17 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             }
             sp.edit().putString("saved_key", sb.toString()).apply();
             sp.edit().putString("saved_key_ok", "yes").apply();
+
+            sp.edit().putString("setting_gesture_tb_up", "08").apply();
+            sp.edit().putString("setting_gesture_tb_down", "01").apply();
+            sp.edit().putString("setting_gesture_tb_left", "07").apply();
+            sp.edit().putString("setting_gesture_tb_right", "06").apply();
+
+            sp.edit().putString("setting_gesture_nav_up", "04").apply();
+            sp.edit().putString("setting_gesture_nav_down", "05").apply();
+            sp.edit().putString("setting_gesture_nav_left", "03").apply();
+            sp.edit().putString("setting_gesture_nav_right", "02").apply();
+
             sp.edit().putBoolean(getString(R.string.sp_location), false).apply();
         }
         sp.edit().putInt("restart_changed", 0).apply();
@@ -382,6 +392,10 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         initOmnibox();
         initSearchPanel();
         initOverview();
+
+        if (sp.getBoolean("start_tabStart", true)){
+            showOverview();
+        }
 
         new AdBlock(this); // For AdBlock cold boot
         new Javascript(BrowserActivity.this);
@@ -488,6 +502,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         registerReceiver(downloadReceiver, filter);
     }
 
+    @SuppressWarnings("UnnecessaryReturnStatement")
     @Override
     public void onActivityResult (int requestCode, int resultCode, Intent data) {
         if(requestCode != INPUT_FILE_REQUEST_CODE || mFilePathCallback == null) {
@@ -658,7 +673,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
     @Override
     public synchronized void showAlbum(AlbumController controller) {
-
 
         if (currentAlbumController != null) {
             currentAlbumController.deactivate();
@@ -1012,12 +1026,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
             // Buttons
 
-            case R.id.fab_imageButtonNav_center:
-            case R.id.fab_imageButtonNav_left:
-            case R.id.fab_imageButtonNav_right:
-                showOverflow();
-                break;
-
             case R.id.omnibox_overview:
                 showOverview();
                 break;
@@ -1054,10 +1062,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 } else {
                     ninjaWebView.stopLoading();
                 }
-                break;
-
-            case R.id.omnibox_overflow:
-                showOverflow();
                 break;
 
             default:
@@ -1201,128 +1205,42 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             }
         });
 
-        fab_imageButtonNav.setOnClickListener(this);
+        omniboxOverflow.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (currentAlbumController instanceof NinjaWebView) {
+                    showFastToggle();
+                }
+                return false;
+            }
+        });
 
         if (sp.getBoolean("sp_gestures_use", true)) {
             fab_imageButtonNav.setOnTouchListener(new SwipeTouchListener(BrowserActivity.this) {
-
-                public void onSwipeTop() {
-                    ninjaWebView = (NinjaWebView) currentAlbumController;
-                    ninjaWebView.pageUp(true);
-                }
-
-                public void onSwipeBottom() {
-                    ninjaWebView = (NinjaWebView) currentAlbumController;
-                    ninjaWebView.pageDown(true);
-                }
-
-                public void onSwipeRight() {
-                    ninjaWebView = (NinjaWebView) currentAlbumController;
-                    switch (Objects.requireNonNull(sp.getString("sp_gesture_action", "0"))) {
-                        case "0":
-                            if (ninjaWebView.canGoForward()) {
-                                ninjaWebView.goForward();
-                            } else {
-                                NinjaToast.show(BrowserActivity.this,R.string.toast_webview_forward);
-                            }
-                            break;
-                        case "1":
-                            AlbumController controller = nextAlbumController(true);
-                            showAlbum(controller);
-                            break;
-                        default:
-                            if (ninjaWebView.canGoForward()) {
-                                ninjaWebView.goForward();
-                            } else {
-                                NinjaToast.show(BrowserActivity.this,R.string.toast_webview_forward);
-                            }
-                            break;
-                    }
-                }
-
-                public void onSwipeLeft() {
-                    ninjaWebView = (NinjaWebView) currentAlbumController;
-                    switch (Objects.requireNonNull(sp.getString("sp_gesture_action", "0"))) {
-                        case "0":
-                            if (ninjaWebView.canGoBack()) {
-                                ninjaWebView.goBack();
-                            } else {
-                                removeAlbum(currentAlbumController);
-                            }
-                            break;
-                        case "1":
-                            AlbumController controller = nextAlbumController(true);
-                            showAlbum(controller);
-                            break;
-                        default:
-                            if (ninjaWebView.canGoBack()) {
-                                ninjaWebView.goBack();
-                            } else {
-                                removeAlbum(currentAlbumController);
-                            }
-                            break;
-                    }
-                }
+                public void onSwipeTop() { performGesture("setting_gesture_nav_up"); }
+                public void onSwipeBottom() { performGesture("setting_gesture_nav_down"); }
+                public void onSwipeRight() { performGesture("setting_gesture_nav_right"); }
+                public void onSwipeLeft() { performGesture("setting_gesture_nav_left"); }
             });
 
             inputBox.setOnTouchListener(new SwipeTouchListener(BrowserActivity.this) {
+                public void onSwipeTop() { performGesture("setting_gesture_tb_up"); }
+                public void onSwipeBottom() { performGesture("setting_gesture_tb_down"); }
+                public void onSwipeRight() { performGesture("setting_gesture_tb_right"); }
+                public void onSwipeLeft() { performGesture("setting_gesture_tb_left"); }
+            });
 
-                public void onSwipeTop() {
-                    ninjaWebView = (NinjaWebView) currentAlbumController;
-                    ninjaWebView.pageUp(true);
+            fab_imageButtonNav.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showOverflow();
                 }
+            });
 
-                public void onSwipeBottom() {
-                    ninjaWebView = (NinjaWebView) currentAlbumController;
-                    ninjaWebView.pageDown(true);
-                }
-
-                public void onSwipeRight() {
-                    ninjaWebView = (NinjaWebView) currentAlbumController;
-                    switch (Objects.requireNonNull(sp.getString("sp_gesture_action", "0"))) {
-                        case "0":
-                            if (ninjaWebView.canGoForward()) {
-                                ninjaWebView.goForward();
-                            } else {
-                                NinjaToast.show(BrowserActivity.this,R.string.toast_webview_forward);
-                            }
-                            break;
-                        case "1":
-                            AlbumController controller = nextAlbumController(true);
-                            showAlbum(controller);
-                            break;
-                        default:
-                            if (ninjaWebView.canGoForward()) {
-                                ninjaWebView.goForward();
-                            } else {
-                                NinjaToast.show(BrowserActivity.this,R.string.toast_webview_forward);
-                            }
-                            break;
-                    }
-                }
-
-                public void onSwipeLeft() {
-                    ninjaWebView = (NinjaWebView) currentAlbumController;
-                    switch (Objects.requireNonNull(sp.getString("sp_gesture_action", "0"))) {
-                        case "0":
-                            if (ninjaWebView.canGoBack()) {
-                                ninjaWebView.goBack();
-                            } else {
-                                removeAlbum(currentAlbumController);
-                            }
-                            break;
-                        case "1":
-                            AlbumController controller = nextAlbumController(true);
-                            showAlbum(controller);
-                            break;
-                        default:
-                            if (ninjaWebView.canGoBack()) {
-                                ninjaWebView.goBack();
-                            } else {
-                                removeAlbum(currentAlbumController);
-                            }
-                            break;
-                    }
+            omniboxOverflow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showOverflow();
                 }
             });
         }
@@ -1350,18 +1268,55 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         updateAutoComplete();
 
         omniboxRefresh.setOnClickListener(this);
-        omniboxOverflow.setOnClickListener(this);
         omniboxOverview.setOnClickListener(this);
+    }
 
-        omniboxOverflow.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                if (currentAlbumController instanceof NinjaWebView) {
-                    showFastToggle();
+    private void performGesture (String gesture) {
+        String fab_position = Objects.requireNonNull(sp.getString(gesture, "0"));
+        ninjaWebView = (NinjaWebView) currentAlbumController;
+
+        switch (fab_position) {
+            case "01":
+
+                break;
+            case "02":
+                if (ninjaWebView.canGoForward()) {
+                    ninjaWebView.goForward();
+                } else {
+                    NinjaToast.show(BrowserActivity.this,R.string.toast_webview_forward);
                 }
-                return false;
-            }
-        });
+                break;
+            case "03":
+                if (ninjaWebView.canGoBack()) {
+                    ninjaWebView.goBack();
+                } else {
+                    removeAlbum(currentAlbumController);
+                }
+                break;
+            case "04":
+                ninjaWebView.pageUp(true);
+                break;
+            case "05":
+                ninjaWebView.pageDown(true);
+                break;
+            case "06":
+                AlbumController controller = nextAlbumController(false);
+                showAlbum(controller);
+                break;
+            case "07":
+                AlbumController controller2 = nextAlbumController(true);
+                showAlbum(controller2);
+                break;
+            case "08":
+                showOverview();
+                break;
+            case "09":
+                addAlbum(getString(R.string.album_untitled), sp.getString("favoriteURL", "https://www.startpage.com"), true);
+                break;
+            case "10":
+                removeAlbum(currentAlbumController);
+                break;
+        }
     }
 
     private void initOverview() {
@@ -1369,7 +1324,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         bottomSheetDialog_OverView = new BottomSheetDialog(this);
         View dialogView = View.inflate(this, R.layout.dialog_overiew, null);
 
-        open_pass = dialogView.findViewById(R.id.open_pass_2);
         open_startPage = dialogView.findViewById(R.id.open_newTab_2);
         open_bookmark = dialogView.findViewById(R.id.open_bookmark_2);
         open_history = dialogView.findViewById(R.id.open_history_2);
@@ -1383,54 +1337,15 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         final Button relayoutOK = dialogView.findViewById(R.id.relayout_ok);
         final DynamicGridView gridView = dialogView.findViewById(R.id.home_grid_2);
         final View open_startPageView = dialogView.findViewById(R.id.open_newTabView);
-        final View open_passView = dialogView.findViewById(R.id.open_passView);
         final View open_bookmarkView = dialogView.findViewById(R.id.open_bookmarkView);
         final View open_historyView = dialogView.findViewById(R.id.open_historyView);
         final TextView overview_title = dialogView.findViewById(R.id.overview_title);
-        final LinearLayout bookmarks_old = dialogView.findViewById(R.id.bookmarks_old);
+
+        final ImageButton overview_prev = dialogView.findViewById(R.id.overview_prev);
+        final ImageButton overview_next = dialogView.findViewById(R.id.overview_next);
 
         gridView.setVisibility(View.GONE);
         listView.setVisibility(View.GONE);
-
-        if (sp.getBoolean("bookmarks_old", true)) {
-            bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
-            View dialogView2 = View.inflate(BrowserActivity.this, R.layout.dialog_action, null);
-            final TextView textView = dialogView2.findViewById(R.id.dialog_text);
-            textView.setText(R.string.toast_bookmarksOld);
-            final Button action_ok = dialogView2.findViewById(R.id.action_ok);
-            final Button action_cancel = dialogView2.findViewById(R.id.action_cancel);
-
-            action_ok.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    bookmarks_old.setVisibility(View.GONE);
-                    textView.setText(R.string.toast_bookmarksOld_confirm);
-                    action_ok.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            sp.edit().putBoolean("bookmarks_old", false).apply();
-                            hideBottomSheetDialog ();
-                        }
-                    });
-                    action_cancel.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            hideBottomSheetDialog ();
-                        }
-                    });
-                }
-            });
-            action_cancel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    hideBottomSheetDialog ();
-                }
-            });
-            bottomSheetDialog.setContentView(dialogView2);
-            bottomSheetDialog.show();
-        } else {
-            bookmarks_old.setVisibility(View.GONE);
-        }
 
         open_startPage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1438,10 +1353,11 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 gridView.setVisibility(View.VISIBLE);
                 listView.setVisibility(View.GONE);
                 open_startPageView.setVisibility(View.VISIBLE);
-                open_passView.setVisibility(View.INVISIBLE);
                 open_bookmarkView.setVisibility(View.INVISIBLE);
                 open_historyView.setVisibility(View.INVISIBLE);
                 overview_title.setText(getString(R.string.album_title_home));
+                overview_next.setImageResource(R.drawable.icon_bookmark);
+                overview_prev.setImageResource(R.drawable.icon_history);
                 overViewTab = getString(R.string.album_title_home);
 
                 RecordAction action = new RecordAction(BrowserActivity.this);
@@ -1477,10 +1393,11 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 gridView.setVisibility(View.GONE);
                 listView.setVisibility(View.VISIBLE);
                 open_startPageView.setVisibility(View.INVISIBLE);
-                open_passView.setVisibility(View.INVISIBLE);
                 open_bookmarkView.setVisibility(View.VISIBLE);
                 open_historyView.setVisibility(View.INVISIBLE);
                 overview_title.setText(getString(R.string.album_title_bookmarks));
+                overview_next.setImageResource(R.drawable.icon_history);
+                overview_prev.setImageResource(R.drawable.icon_earth);
                 overViewTab = getString(R.string.album_title_bookmarks);
                 sp.edit().putString("filter_passBY", "00").apply();
                 initBookmarkList();
@@ -1502,55 +1419,17 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 gridView.setVisibility(View.GONE);
                 listView.setVisibility(View.VISIBLE);
                 open_startPageView.setVisibility(View.INVISIBLE);
-                open_passView.setVisibility(View.INVISIBLE);
                 open_bookmarkView.setVisibility(View.INVISIBLE);
                 open_historyView.setVisibility(View.VISIBLE);
                 overview_title.setText(getString(R.string.album_title_history));
+                overview_next.setImageResource(R.drawable.icon_earth);
+                overview_prev.setImageResource(R.drawable.icon_bookmark);
                 overViewTab = getString(R.string.album_title_history);
 
                 RecordAction action = new RecordAction(BrowserActivity.this);
                 action.open(false);
                 final List<Record> list;
                 list = action.listHistory();
-                action.close();
-
-                final Adapter_Record adapter = new Adapter_Record(BrowserActivity.this, list);
-                listView.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        updateAlbum(list.get(position).getURL());
-                        hideOverview();
-                    }
-                });
-
-                listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                    @Override
-                    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                        showListMenu(adapter, list, position);
-                        return true;
-                    }
-                });
-            }
-        });
-
-        open_pass.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                gridView.setVisibility(View.GONE);
-                listView.setVisibility(View.VISIBLE);
-                open_startPageView.setVisibility(View.INVISIBLE);
-                open_passView.setVisibility(View.VISIBLE);
-                open_bookmarkView.setVisibility(View.INVISIBLE);
-                open_historyView.setVisibility(View.INVISIBLE);
-                overview_title.setText(getString(R.string.album_title_pass));
-                overViewTab = getString(R.string.album_title_pass);
-
-                RecordAction action = new RecordAction(BrowserActivity.this);
-                action.open(false);
-                final List<Record> list;
-                list = action.listBookmarks();
                 action.close();
 
                 final Adapter_Record adapter = new Adapter_Record(BrowserActivity.this, list);
@@ -1762,7 +1641,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         bottomSheetDialog_OverView.setContentView(dialogView);
 
-        ImageButton overview_prev = dialogView.findViewById(R.id.overview_prev);
         overview_prev.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1776,7 +1654,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             }
         });
 
-        ImageButton overview_next = dialogView.findViewById(R.id.overview_next);
         overview_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -2790,6 +2667,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     }
 
     private void scrollChange () {
+
         if (Objects.requireNonNull(sp.getString("sp_hideToolbar", "0")).equals("0") ||
                 Objects.requireNonNull(sp.getString("sp_hideToolbar", "0")).equals("1")) {
 
@@ -2846,7 +2724,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
 
     @Override
-    public void showFileChooser(ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams) {
+    public void showFileChooser(ValueCallback<Uri[]> filePathCallback) {
 
         if(mFilePathCallback != null) {
             mFilePathCallback.onReceiveValue(null);
@@ -3224,6 +3102,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     private boolean showOverflow() {
 
         bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
+
         View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_menu, null);
 
         fab_tab = dialogView.findViewById(R.id.floatButton_tab);
