@@ -2,14 +2,6 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <ListPreference
-        android:title="@string/setting_title_hideToolbar"
-        android:icon="@drawable/icon_fullscreen"
-        android:summary="@string/setting_summary_hide"
-        android:key="sp_hideToolbar"
-        android:defaultValue="0"
-        android:entries="@array/setting_entries_toolbar"
-        android:entryValues="@array/setting_values_toolbar" />
 
     <CheckBoxPreference android:key="sp_background"
         android:icon="@drawable/icon_link"
@@ -22,6 +14,24 @@
         android:defaultValue="false"
         android:title="@string/setting_title_themeDark"
         android:summary="@string/setting_summary_themeDark"/>
+
+    <ListPreference
+        android:title="@string/setting_title_hideToolbar"
+        android:icon="@drawable/icon_fullscreen"
+        android:summary="@string/setting_summary_hide"
+        android:key="sp_hideToolbar"
+        android:defaultValue="0"
+        android:entries="@array/setting_entries_toolbar"
+        android:entryValues="@array/setting_values_toolbar" />
+
+    <ListPreference
+        android:icon="@drawable/icon_size"
+        android:key="sp_fontSize"
+        android:defaultValue="100"
+        android:title="@string/setting_title_font"
+        android:summary="@string/setting_summary_font"
+        android:entries="@array/setting_entries_font"
+        android:entryValues="@array/setting_values_font"/>
 
     <PreferenceCategory android:title="@string/setting_overView">
 

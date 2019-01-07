@@ -1215,6 +1215,20 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             }
         });
 
+        fab_imageButtonNav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showOverflow();
+            }
+        });
+
+        omniboxOverflow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showOverflow();
+            }
+        });
+
         if (sp.getBoolean("sp_gestures_use", true)) {
             fab_imageButtonNav.setOnTouchListener(new SwipeTouchListener(BrowserActivity.this) {
                 public void onSwipeTop() { performGesture("setting_gesture_nav_up"); }
@@ -1228,20 +1242,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 public void onSwipeBottom() { performGesture("setting_gesture_tb_down"); }
                 public void onSwipeRight() { performGesture("setting_gesture_tb_right"); }
                 public void onSwipeLeft() { performGesture("setting_gesture_tb_left"); }
-            });
-
-            fab_imageButtonNav.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showOverflow();
-                }
-            });
-
-            omniboxOverflow.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showOverflow();
-                }
             });
         }
 
