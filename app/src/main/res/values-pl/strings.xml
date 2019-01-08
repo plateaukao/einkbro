@@ -9,20 +9,33 @@
     <string name="list_empty">Ta lista jest pusta</string>
     <string name="album_title_bookmarks">Zakładki</string>
     <string name="album_title_history">Historia</string>
-    <string name="album_title_home">Strona domowa</string>
+    <string name="album_title_home">Witryny</string>
     <string name="album_title_files">Pliki</string>
     <string name="album_untitled"> </string>
-    <string name="notification_content_holderTitle">Otwarte karty…</string>
+    <string name="notification_content_holderTitle">Otwarte karty</string>
     <string name="notification_content_holder">Dotknij, aby zobaczyć strony</string>
     <string name="search_hint">Wyszukaj</string>
 
+    <string name="color_red">Czerwień</string>
+    <string name="color_pink">Róż</string>
+    <string name="color_purple">Fiolet</string>
+    <string name="color_blue">Błękit</string>
+    <string name="color_teal">Turkus</string>
+    <string name="color_green">Zieleń</string>
+    <string name="color_lime">Limonka</string>
+    <string name="color_yellow">Żółć</string>
+    <string name="color_orange">Pomarańcz</string>
+    <string name="color_brown">Brąz</string>
+    <string name="color_grey">Szarość</string>
 
+    
+    
     <!-- Menu -->
-    <string name="main_menu_tabPreview">Pokaż podgląd kart</string>
+    <string name="main_menu_tabPreview">Wysuń podgląd kart</string>
     <string name="main_menu_new_tab">Nowa karta w tle</string>
     <string name="main_menu_new_tabOpen">Nowa karta priorytetowa</string>
     <string name="main_omnibox_input_hint">Wyszukaj lub wpisz adres</string>
-    <string name="menu_open_with">Otwórz link za pomocą…</string>
+    <string name="menu_open_with">Otwórz link zewnętrznie</string>
 
     <string name="menu_share">Udostępnij</string>
     <string name="menu_quit">Wyjdź</string>
@@ -30,13 +43,16 @@
     <string name="menu_delete_list">Usuń listę</string>
     <string name="menu_edit">Dostosuj</string>
     <string name="menu_closeTab">Zamknij kartę</string>
-    <string name="menu_download">Otwórz listę pobranych</string>
+    <string name="menu_download">Pobrane</string>
+    <string name="menu_fav">Ustaw jako ulubioną</string>
+    <string name="menu_sort">Sortuj zakładki</string>
+    <string name="menu_filter">Filtruj kolorem</string>
 
     <string name="menu_share_screenshot">Udostępnij zrzut ekranu</string>
     <string name="menu_share_link">Udostępnij link</string>
 
     <string name="menu_save_screenshot">Zachowaj zrzut ekranu</string>
-    <string name="menu_save_home">Zachowaj na stronie domowej</string>
+    <string name="menu_save_home">Zachowaj jako ważną witrynę</string>
     <string name="menu_save_bookmark">Zachowaj jako zakładkę</string>
     <string name="menu_save_as">Zachowaj jako…</string>
     <string name="menu_save_pdf">Zachowaj jako PDF</string>
@@ -45,10 +61,6 @@
 
     <string name="menu_other_searchSite">Wyszukaj na tej stronie</string>
     <string name="menu_other_help">Pomoc</string>
-
-
-    <!-- AndroidAgo -->
-
 
     <!-- Dialog -->
     <string name="dialog_toggle_title">Szybkie preferencje</string>
@@ -63,6 +75,12 @@
     <string name="dialog_title_sign_in">Zarejestruj</string>
     <string name="dialog_content_resubmission">Ponowić wysyłkę danych?</string>
     <string name="dialog_content_ssl_error">Wykryto niezaufany certyfikat. Chcesz kontynuować?</string>
+    
+    <string name="dialog_sortName">Sortowanie po nazwie</string>
+    <string name="dialog_sortIcon">Sortowanie po ikonie</string>
+
+    <string name="dialog_icon_title">Wybierz kolor</string>
+    <string name="dialog_icon_hint">Możesz szybko filtrować zakładki względem koloru przytrzymując dolną ikonkę listy zakładek. Aby odwołać filtr pacnij raz jeszcze na tę ikonkę.</string>
 
 
 
@@ -162,7 +180,7 @@
     <string name="setting_title_nav_show">Widoczność</string>
     <string name="setting_summary_nav_show">Zdecyduj o zachowaniu \”Przycisku nawigacyjnego\” w towarzystwie panelu dolnego.</string>
 
-    <string name="setting_summary_tab">Wybierz element startowy \"FOSS Browser\”.</string>
+    <string name="setting_summary_tab">Wybierz element startowy na Wszechglądzie.</string>
 
     <string name="setting_title_confirm_exit">Potwierdzaj zamknięcie przeglądarki</string>
     <string name="setting_summary_confirm_exit">Wyświetlaj komunikat przy zamykaniu apki.</string>
@@ -176,6 +194,35 @@
 
     <string name="setting_hideNav_always">Zawsze ukryty</string>
     <string name="setting_hideNav_toolbar">Ukryty w trakcie wyświetlania panelu dolnego</string>
+    
+    <string name="setting_summary_tab">Co powinno wyświetlać się domyślnie po wysunięciu Wszechglądu? Kolekcja ważnych witryn, zakładki, historia?</string>
+
+    <string name="setting_overView">Wszechgląd</string>
+    <string name="setting_overView_onStart_title">Wysuwaj na starcie</string>
+    <string name="setting_overView_onStart_summary">Pokazuj panel \"Wszechglądu\" przy każdym uruchomieniu apki.</string>
+
+    <string name="setting_close">Potwierdzenie zamknięcia</string>
+    <string name="setting_gestures">Gesty</string>
+    <string name="setting_gestures_use_title">Używaj gestów</string>
+    <string name="setting_gestures_use_summary">Korzystaj z gestów na pasku narzędziowym oraz przycisku nawigacyjnym.</string>
+
+
+    <!-- gestures -->
+    <string name="setting_title_toolbar">Pasek narzędziowy</string>
+    <string name="setting_gesture_up">Pociagniecie w górę</string>
+    <string name="setting_gesture_down">Pociągnięcie w doł</string>
+    <string name="setting_gesture_left">Przesunięcie w lewo</string>
+    <string name="setting_gesture_right">Przesunięcie w prawo</string>
+    <string name="setting_gesture_01">Brak akcji</string>
+    <string name="setting_gesture_02">Strona naprzód</string>
+    <string name="setting_gesture_03">Strona wstecz</string>
+    <string name="setting_gesture_04">Przenieś na górę witryny</string>
+    <string name="setting_gesture_05">Przenieś do dół witryny</string>
+    <string name="setting_gesture_06">Przenieś do karty po lewej</string>
+    <string name="setting_gesture_07">Przenieś do karty do prawej</string>
+    <string name="setting_gesture_08">Pokaż Wszechgląd</string>
+    <string name="setting_gesture_09">Otwórz nową kartę</string>
+    <string name="setting_gesture_10">Zamknij aktywną kartę</string>
 
 
     <!-- Data -->
@@ -211,10 +258,10 @@
     <string name="setting_summary_changelog">Pokaż historię zmian i ostatnią listę poprawek.</string>
 
     <!-- Toast -->
-    <string name="toast_add_to_home_successful">Poprawnie dodano do strony domowej</string>
-    <string name="toast_add_to_home_failed">Błąd dodawania do strony domowej</string>
+    <string name="toast_add_to_home_successful">Poprawnie dodano do ważnych witryn</string>
+    <string name="toast_add_to_home_failed">Błąd dodawania do ważnych witryn</string>
     <string name="toast_add_whitelist_successful">Poprawnie dodano adres witryny</string>
-    <string name="toast_already_exist_in_home">Ta witryna już istnieje na stronie domowej</string>
+    <string name="toast_already_exist_in_home">Ta strona już istnieje w ważnych witrynach</string>
     <string name="toast_copy_successful">Kopiowanie zakończone</string>
     <string name="toast_delete_successful">Usuwanie zakończone</string>
     <string name="toast_domain_already_exists">Ten adres witryny już istnieje</string>
@@ -251,6 +298,8 @@
     <string name="toast_downloadComplete">Pobieranie ukończone. Otworzyć katalog pobierania?</string>
     <string name="toast_unsecured">Ta witryna używa nieszyfrowanego połączenia (\"http\"). Spróbować przejść na szyfrowane (\"https\")?</string>
     <string name="toast_backup">Dokonać nowej kopii bezpieczeństwa danych? Nadpisze ona poprzednią kopię.</string>
+    <string name="toast_fav">Ustawiono jako ulubioną na start.</string>
+
 
 
     <!-- Whitelist -->
