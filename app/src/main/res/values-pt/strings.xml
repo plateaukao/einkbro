@@ -62,9 +62,6 @@
     <string name="menu_other_help">Ajuda</string>
 
 
-    <!-- AndroidAgo -->
-
-
     <!-- Dialog -->
     <string name="dialog_toggle_title">Comutar rapidamente</string>
     <string name="dialog_toggle_hint">Para aplicar, prima o botão \"OK\".</string>
@@ -216,6 +213,23 @@
     <string name="setting_gestures_use_title">Utilizar gestos</string>
     <string name="setting_gestures_use_summary">Utilizar gestos na barra de ferramentas e no \"Botão de navegação\".</string>
 
+    
+	<!-- gestures -->
+    <string name="setting_title_toolbar">Barra de ferramentas</string>
+    <string name="setting_gesture_up">Deslize para cima</string>
+    <string name="setting_gesture_down">Deslize para baixo</string>
+    <string name="setting_gesture_left">Deslize para a esquerda</string>
+    <string name="setting_gesture_right">Deslize para a direita</string>
+    <string name="setting_gesture_01">Nada fazer</string>
+    <string name="setting_gesture_02">Avançar no histórico</string>
+    <string name="setting_gesture_03">Recuar no histórico</string>
+    <string name="setting_gesture_04">Deslocar para o topo</string>
+    <string name="setting_gesture_05">Deslocar para a base</string>
+    <string name="setting_gesture_06">Ir para o separador à esquerda</string>
+    <string name="setting_gesture_07">Ir para o separador à direita</string>
+    <string name="setting_gesture_08">Mostrar visão geral</string>
+    <string name="setting_gesture_09">Abrir novo separador</string>
+    <string name="setting_gesture_10">Fechar separador</string>
 
     <!-- Data -->
     <string name="export_bookmarks">export_bookmarks</string>
