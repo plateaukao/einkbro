@@ -204,6 +204,15 @@ public class NinjaWebView extends WebView implements AlbumController {
         album.setBrowserController(browserController);
     }
 
+    public synchronized HashMap<String, String> getRequestHeaders () {
+        HashMap<String, String> requestHeaders = new HashMap<>();
+        requestHeaders.put("DNT", "1");
+        if (sp.getBoolean(context.getString(R.string.sp_savedata), false)){
+            requestHeaders.put("Save-Data", "on");
+        }
+        return requestHeaders;
+    }
+
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     public synchronized void loadUrl(String url) {
@@ -258,11 +267,8 @@ public class NinjaWebView extends WebView implements AlbumController {
             }
         }
 
-        HashMap<String, String> extraHeaders = new HashMap<>();
-        extraHeaders.put("DNT", "1");
-
         webViewClient.updateWhite(adBlock.isWhite(url));
-        super.loadUrl(url, extraHeaders);
+        super.loadUrl(url, getRequestHeaders());
 
         if (browserController != null && foreground) {
             browserController.updateBookmarks();

@@ -143,7 +143,8 @@ public class NinjaWebViewClient extends WebViewClient {
         // open web links as usual
 
         if (url.startsWith("http")) {
-            return false;
+            webView.loadUrl(url, ninjaWebView.getRequestHeaders());
+            return true;
         }
 
         //try to find browse activity to handle uri
