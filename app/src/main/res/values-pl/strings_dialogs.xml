@@ -3,7 +3,20 @@
 <resources>
 
     <string name="changelog_title">Dziennik zmian</string>
+    
+   <string name="overview_title">Wszechgląd</string>
+    <string name="overview_dialog">Na panelu Wszechglądu możesz podejrzeć wszystkie otwarte karty oraz zapisane dane - twoje ważne witryny, zakładki i historię.
+        W Preferencach możesz ustalić, który z tych trzech elementów będzie widoczny po uruchomieniu apki.</string>
 
+    <string name="gestures_title">Gesty</string>
+    <string name="gestures_dialog">Na pasku narzędziowym oraz przycisku nawigacyjnym możesz używać gestów:
+        \n \u25AA Pociągniecie w górę/dół     \u2192  przesuń widok w górę/dół;
+        \n \u25AA Pociągnięcie w lewo/prawo  \u2192  wstecz/następna strona;
+        \n \u25AA Pacnięcie               \u2192  otwarcie menu;
+        \n \u25AA Przytrzymanie        \u2192  otwarcie szybkiego menu.
+        \n W Preferencjach możesz przypisać inne akcje do wybranych gestów.
+
+    </string>
     <string name="fastToggle_title">Szybkie preferencje</string>
     <string name="fastToggle_dialog">Jeśli przytrzymasz dłużej przycisk menu lub przycisk nawigacyjny (trzykropek) pojawi się wybór preferencji do zastosowania na aktualnej witrynie. Możesz z jego poziomu dodawać także strony do białych list Adblockera, Javascript lub zapisywania ciasteczek.</string>
 
@@ -11,7 +24,7 @@
     <string name="menu_dialog">Zarządzaj otwartymi kartami, udostępniaj witryny lub zachowuj ich zawartość za pomocą menu kontekstowego. Menu to, tak jak każde inne, możesz odwołać przyciskiem Wstecz, dotykając obszaru poza Menu lub wykonać gest palcem w dół.</string>
 
     <string name="not_title">Powiadomienia</string>
-    <string name="not_dialog">Różne powiadomienia dotyczące zawartości stron lub działań w aplikacji będą pojawiały się na dole ekranu. Można je odwoływać w ten sam sposób co Menu.</string>
+    <string name="not_dialog">Różne powiadomienia dotyczące zawartości stron lub działań w aplikacji będą pojawiały się na dole ekranu.</string>
 
     <string name="settings_dialog">Więcej możliwości znajdziesz w Preferencjach, sprawdź!</string>
 
