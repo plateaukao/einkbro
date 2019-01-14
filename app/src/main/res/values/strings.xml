@@ -44,9 +44,10 @@
     <string name="menu_edit">Edit</string>
     <string name="menu_closeTab">Close tab</string>
     <string name="menu_download">Open downloads</string>
-    <string name="menu_fav">Set as favorite</string>
+    <string name="menu_fav">Set as start site</string>
     <string name="menu_sort">Sort by …</string>
     <string name="menu_filter">Filter by color …</string>
+    <string name="menu_blank">Blank start site</string>
 
     <string name="menu_share_screenshot">Share screenshot</string>
     <string name="menu_share_link">Share link</string>
@@ -117,7 +118,7 @@
         Disabling this is more secure, faster and saves data volume. But some content will not be displayed anymore.</string>
 
     <string name="setting_title_save_data">Request \'Save Data\'</string>
-    <string name="setting_summary_save_data">Tell websites that you would prefer to save data.</string>
+    <string name="setting_summary_save_data">Tell websites that you would prefer to save data. Supported websites will load faster.</string>
 
 
     <!-- Browser start -->
@@ -319,7 +320,7 @@
     <string name="toast_unsecured">This website uses an unsecured connection (\"http\"). Do you want to try a secure
         connection (\"https\")?</string>
     <string name="toast_backup">Backup data? This will overwrite the old backup.</string>
-    <string name="toast_fav">Successfully set as favorite.</string>
+    <string name="toast_fav">Successfully set as start site.</string>
 
 
     <!-- Whitelist -->

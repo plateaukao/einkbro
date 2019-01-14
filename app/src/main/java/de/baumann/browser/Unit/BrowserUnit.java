@@ -178,6 +178,10 @@ public class BrowserUnit {
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
         String filename = URLUtil.guessFileName(url, contentDisposition, mimeType); // Maybe unexpected filename.
 
+        CookieManager cookieManager = CookieManager.getInstance();
+        String cookie = cookieManager.getCookie(url);
+
+        request.addRequestHeader("Cookie", cookie);
         request.allowScanningByMediaScanner();
         request.setVisibleInDownloadsUi(true);
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);

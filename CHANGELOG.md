@@ -1,4 +1,12 @@
-### v 6.2 (WIP)
+### v 6.3 (WIP)
+- new: Add Cookies support for download function
+- new: option to enable Save-Data header (thanks @SkewedZeppelin)
+- new: set blank start site
+- updated: Help dialog
+- updated: Polish translation (thanks @gh-pmjm)
+- updated: Portuguese translation (thanks @smarquespt)
+
+### v 6.2
 - new: advanced gesture settings
 - new: show overview on start
 - fix: light settings theme
