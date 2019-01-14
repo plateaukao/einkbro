@@ -9,7 +9,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <TextView
-        android:id="@+id/dialog_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|center_horizontal"
@@ -38,7 +37,7 @@
                 android:textStyle="bold"/>
 
             <ImageView
-                android:id="@+id/cardView_help_startpage"
+                android:src="@drawable/help_start"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
@@ -50,6 +49,25 @@
                 android:layout_marginBottom="32dp"
                 android:text="@string/overview_dialog"/>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/startSite_title"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold"/>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:src="@drawable/help_startsite"
+                android:scaleType="fitCenter" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp"
+                android:text="@string/startSite_dialog"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -59,7 +77,7 @@
                 android:textStyle="bold"/>
 
             <ImageView
-                android:id="@+id/cardView_help_menu"
+                android:src="@drawable/help_menu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
@@ -80,7 +98,7 @@
                 android:textStyle="bold"/>
 
             <ImageView
-                android:id="@+id/cardView_help_fastToggle"
+                android:src="@drawable/help_toggle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
@@ -101,7 +119,7 @@
                 android:textStyle="bold"/>
 
             <ImageView
-                android:id="@+id/cardView_help_not"
+                android:src="@drawable/help_not"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
@@ -123,7 +141,7 @@
                 android:textStyle="bold" />
 
             <ImageView
-                android:id="@+id/cardView_help_nav"
+                android:src="@drawable/help_nav"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
@@ -144,7 +162,7 @@
                 android:textStyle="bold" />
 
             <ImageView
-                android:id="@+id/cardView_help_set"
+                android:src="@drawable/help_set"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"

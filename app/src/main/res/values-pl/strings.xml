@@ -180,8 +180,6 @@
     <string name="setting_title_nav_show">Widoczność</string>
     <string name="setting_summary_nav_show">Zdecyduj o zachowaniu \”Przycisku nawigacyjnego\” w towarzystwie panelu dolnego.</string>
 
-    <string name="setting_summary_tab">Wybierz element startowy na Wszechglądzie.</string>
-
     <string name="setting_title_confirm_exit">Potwierdzaj zamknięcie przeglądarki</string>
     <string name="setting_summary_confirm_exit">Wyświetlaj komunikat przy zamykaniu apki.</string>
 

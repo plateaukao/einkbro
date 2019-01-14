@@ -785,13 +785,13 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             case R.id.tab_plus:
                 hideBottomSheetDialog();
                 hideOverview();
-                addAlbum(getString(R.string.album_untitled), sp.getString("favoriteURL", "https://www.startpage.com"), true);
+                addAlbum(getString(R.string.album_untitled), sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"), true);
                 break;
 
             case R.id.menu_newTabOpen:
                 hideBottomSheetDialog();
                 hideOverview();
-                addAlbum(getString(R.string.album_untitled), sp.getString("favoriteURL", "https://www.startpage.com"), true);
+                addAlbum(getString(R.string.album_untitled), sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"), true);
                 break;
 
             case R.id.menu_closeTab:
@@ -1114,7 +1114,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         } else if (filePathCallback != null) {
             filePathCallback = null;
         } else if ("sc_history".equals(action)) {
-            pinAlbums(sp.getString("favoriteURL", "https://www.startpage.com"));
+            pinAlbums(sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"));
             showOverview();
             new Handler().postDelayed(new Runnable() {
                 public void run() {
@@ -1122,7 +1122,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 }
             }, 250);
         } else if ("sc_bookmark".equals(action)) {
-            pinAlbums(sp.getString("favoriteURL", "https://www.startpage.com"));
+            pinAlbums(sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"));
             showOverview();
             new Handler().postDelayed(new Runnable() {
                 public void run() {
@@ -1131,7 +1131,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             }, 250);
 
         } else if ("sc_startPage".equals(action)) {
-            pinAlbums(sp.getString("favoriteURL", "https://www.startpage.com"));
+            pinAlbums(sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"));
             showOverview();
             new Handler().postDelayed(new Runnable() {
                 public void run() {
@@ -1311,7 +1311,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 showOverview();
                 break;
             case "09":
-                addAlbum(getString(R.string.album_untitled), sp.getString("favoriteURL", "https://www.startpage.com"), true);
+                addAlbum(getString(R.string.album_untitled), sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"), true);
                 break;
             case "10":
                 removeAlbum(currentAlbumController);
@@ -1468,6 +1468,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 LinearLayout tv_relayout = dialogView.findViewById(R.id.tv_relayout);
                 LinearLayout bookmark_sort = dialogView.findViewById(R.id.bookmark_sort);
                 LinearLayout bookmark_filter = dialogView.findViewById(R.id.bookmark_filter);
+                LinearLayout bookmark_blank = dialogView.findViewById(R.id.bookmark_blank);
 
                 if (overViewTab.equals(getString(R.string.album_title_home))) {
                     tv_relayout.setVisibility(View.VISIBLE);
@@ -1478,15 +1479,26 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 if (overViewTab.equals(getString(R.string.album_title_bookmarks))) {
                     bookmark_filter.setVisibility(View.VISIBLE);
                     bookmark_sort.setVisibility(View.VISIBLE);
+                    bookmark_blank.setVisibility(View.VISIBLE);
                 } else {
                     bookmark_filter.setVisibility(View.GONE);
                     bookmark_sort.setVisibility(View.GONE);
+                    bookmark_blank.setVisibility(View.GONE);
                 }
 
                 bookmark_filter.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         showFilterDialog();
+                    }
+                });
+
+                bookmark_blank.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        hideBottomSheetDialog();
+                        sp.edit().putString("favoriteURL", "about:blank").apply();
+                        NinjaToast.show(BrowserActivity.this, R.string.toast_fav);
                     }
                 });
 
@@ -2537,7 +2549,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         }
 
         if (BrowserContainer.size() < 1 && url == null) {
-            addAlbum("", sp.getString("favoriteURL", "https://www.startpage.com"), true);
+            addAlbum("", sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"), true);
         } else if (BrowserContainer.size() >= 1 && url == null) {
             if (currentAlbumController != null) {
                 currentAlbumController.activate();
@@ -3479,23 +3491,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         hideBottomSheetDialog ();
         bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
         View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_help, null);
-
-        ImageView help_not = dialogView.findViewById(R.id.cardView_help_not);
-        ImageView help_nav = dialogView.findViewById(R.id.cardView_help_nav);
-        ImageView help_set = dialogView.findViewById(R.id.cardView_help_set);
-        ImageView help_start = dialogView.findViewById(R.id.cardView_help_startpage);
-        ImageView help_menu = dialogView.findViewById(R.id.cardView_help_menu);
-        ImageView help_fastToggle = dialogView.findViewById(R.id.cardView_help_fastToggle);
-
-        help_not.setImageResource(R.drawable.help_not);
-        help_nav.setImageResource(R.drawable.help_nav);
-        help_set.setImageResource(R.drawable.help_set);
-        help_start.setImageResource(R.drawable.help_start);
-        help_menu.setImageResource(R.drawable.help_menu);
-        help_fastToggle.setImageResource(R.drawable.help_toggle);
-
-        TextView dialog_title = dialogView.findViewById(R.id.dialog_title);
-        dialog_title.setText(getString(R.string.menu_other_help));
 
         ImageButton fab = dialogView.findViewById(R.id.floatButton_ok);
         fab.setOnClickListener(new View.OnClickListener() {

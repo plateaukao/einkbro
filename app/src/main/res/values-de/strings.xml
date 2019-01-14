@@ -43,9 +43,10 @@
     <string name="menu_closeTab">Tab schließen</string>
     <string name="menu_open_with">Link öffnen mit …</string>
     <string name="menu_download">Öffne Downloads</string>
-    <string name="menu_fav">Als Favoriten setzen</string>
+    <string name="menu_fav">Als Startseite setzen</string>
     <string name="menu_sort">Sortiere nach …</string>
     <string name="menu_filter">Filtere nach Farbe …</string>
+    <string name="menu_blank">Leere Startseite</string>
 
     <string name="menu_share_screenshot">Bildschirmfoto teilen</string>
     <string name="menu_share_link">Link teilen</string>
@@ -151,6 +152,11 @@
 
     <string name="setting_title_history">Verlauf</string>
     <string name="setting_summary_history">Speichere den Verlauf der besuchten Internetseiten.</string>
+
+    <string name="setting_title_save_data">Fordere \'Daten sparen\'</string>
+    <string name="setting_summary_save_data">Fordere von Internetseiten an, dass du Datenvolumen sparen willst. Unterstütze
+        Internetseiten werden dann schneller geladen.</string>
+
 
     <!-- Browser clear -->
     <string name="clear_summary">Sicherungen werden im \"Documents\" - Verzeichnis deiner SD-Karte gespeichert. Neue Sicherungen
@@ -318,7 +324,7 @@
     <string name="toast_unsecured">Die Internetseite benutzt eine unsichere Verbindung (\"http\"). Möchtest du versuchen
         eine gesicherte Verbindung herstellen (\"https\")?</string>
     <string name="toast_backup">Daten sichern? Das überschreibt die alte Sicherung.</string>
-    <string name="toast_fav">Erfolgreich als Favorit gesetzt.</string>
+    <string name="toast_fav">Erfolgreich als Startseite gesetzt.</string>
 
 
     <!-- Whitelist -->

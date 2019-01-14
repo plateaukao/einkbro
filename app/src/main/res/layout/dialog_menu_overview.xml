@@ -66,6 +66,34 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/bookmark_blank"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:minHeight="46dp"
+        android:paddingEnd="8dp"
+        android:paddingStart="8dp"
+        android:background="?attr/selectableItemBackground"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="16dp"
+            android:gravity="center_vertical"
+            android:src="@drawable/star_grey" />
+
+        <TextView
+            android:text="@string/menu_blank"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/tv_relayout"
         android:layout_width="match_parent"
         android:layout_height="46dp"

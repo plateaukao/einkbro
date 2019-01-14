@@ -18,6 +18,12 @@
         gespeicherten Einträge, deine Lesezeichen und den Verlauf. In den Einstellungen kannst du entscheiden, welcher
         Inhalt immer zuerst angezeigt werden soll.</string>
 
+    <string name="startSite_title">Startseite</string>
+    <string name="startSite_dialog">Du kannst jedes Lesezeichen als Startseite setzen, indem du es lange drückst. Diese Seite
+        öffnet sich dann immer, wenn die App startet, oder ein neuer Tab geöffnet wird. Über das Menü in der Lesezeichenliste
+        kannst du auch eine leere Startseite bestimmen.</string>
+
+
     <string name="fastToggle_title">Schnelleinstellungen</string>
     <string name="fastToggle_dialog">Wenn du lange den \"Menü-\" oder den \"Navigationsknopf\" drückst, öffnen sich die
         Schnelleinstellungen. Hier kannst du wichtige Einstellungen vornehmen, ohne die geöffnete Internetseite verlassen

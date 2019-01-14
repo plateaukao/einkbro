@@ -17,6 +17,10 @@
     <string name="overview_dialog">Here you can access all opened tabs and your data: saved sites on the startpage, bookmarks and history.
         In the settings you can decide which content will be shown at start.</string>
 
+    <string name="startSite_title">Start site</string>
+    <string name="startSite_dialog">Long press any saved bookmark to set it as start site. This site will always load on start
+        or when you open a new tab. You can also set an blank start page via the bookmark menu.</string>
+
     <string name="gestures_title">Gestures</string>
     <string name="gestures_dialog">On the toolbar and the \"Navigation button\" you can use gestures:
         \n \u25AA Swipe up/down     \u2192  scroll to top/bottom;
@@ -171,6 +175,10 @@
         &lt;b>splinet&lt;/b>&lt;br>
         \u25AA Russian translation in the previous version of \"FOSS Browser\"&lt;br>
         &lt;i>https://github.com/splinet&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>SkewedZeppelin&lt;/b>&lt;br>
+        \u25AA Add option to enable Save-Data header&lt;br>
+        &lt;i>https://github.com/SkewedZeppelin&lt;/i>&lt;br>&lt;br>
 
         &lt;b>Vladimir Kosolapov&lt;/b>&lt;br>
         \u25AA Russian translation&lt;br>
