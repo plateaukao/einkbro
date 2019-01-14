@@ -23,7 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:padding="8dp"
-                android:src="@drawable/action_preview"
+                android:src="@drawable/action_overview"
                 android:background="?attr/actionBarItemBackground"/>
 
             <ImageButton android:id="@+id/omnibox_overflow"
