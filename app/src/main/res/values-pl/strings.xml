@@ -103,6 +103,7 @@
     <string name="setting_summary_search_engine_baidu">Baidu</string>
     <string name="setting_summary_search_engine_startpage_de">StartPage (de)</string>
     <string name="setting_summary_search_engine_searx">Searx</string>
+    <string name="setting_summary_search_engine_qwant">Qwant</string>
 
     <string name="setting_title_inverted">Odwrócone kolory</string>
     <string name="setting_summary_inverted">Ta funkcja sprawi, że zawartość stron załaduje się w odwróconej skali szarości. Forma trybu nocnego.</string>

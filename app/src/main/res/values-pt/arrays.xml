@@ -11,6 +11,7 @@
         <item>@string/setting_summary_search_engine_duckduckgo</item>
         <item>@string/setting_summary_search_engine_google</item>
         <item>@string/setting_summary_search_engine_searx</item>
+        <item>@string/setting_summary_search_engine_qwant</item>
     </string-array>
 
     <string-array name="setting_values_search_engine">
@@ -21,6 +22,7 @@
         <item>4</item>
         <item>5</item>
         <item>6</item>
+        <item>7</item>
     </string-array>
 
 

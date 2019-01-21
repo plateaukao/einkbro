@@ -72,7 +72,7 @@
     <string name="setting_summary_search_engine_startpage">StartPage</string>
     <string name="setting_summary_search_engine_bing">Bing</string>
     <string name="setting_summary_search_engine_baidu">Baidu</string>
-
+    <string name="setting_summary_search_engine_qwant">Qwant</string>
 
     <!-- Browser start -->
     <string name="setting_title_images">Gambar</string>

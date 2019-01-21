@@ -113,6 +113,7 @@
 <string name="setting_summary_search_engine_searx">Searx</string>
 <string name="setting_summary_search_engine_startpage">StartPage</string>
 <string name="setting_summary_search_engine_startpage_de">StartPage (de)</string>
+<string name="setting_summary_search_engine_qwant">Qwant</string>
 <string name="setting_summary_start_control">Определите, какие компоненты браузера будут включены при запуске.</string>
 <string name="setting_summary_tab">Что должно отображаться при запуске \"FOSS Browser\"? Начальная страница, закладки, …</string>
 <string name="setting_summary_themeDark">Вам нравится немного ярче? Сделайте это!</string>
