@@ -85,6 +85,7 @@
     <string name="setting_summary_search_engine_baidu">Baidu</string>
     <string name="setting_summary_search_engine_startpage_de">StartPage (de)</string>
     <string name="setting_summary_search_engine_searx">Searx</string>
+    <string name="setting_summary_search_engine_qwant">Qwant</string>
 
     <string name="setting_title_inverted">Colori invertiti</string>
     <string name="setting_summary_inverted">Se l\'opzione è attivata, il contenuto verrà visualizzato in scala di grigi invertita. Questa è una sorta di \"modalità notturna\".</string>
