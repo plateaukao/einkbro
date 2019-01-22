@@ -94,6 +94,7 @@
     <string name="setting_summary_search_engine_baidu">Baidu</string>
     <string name="setting_summary_search_engine_startpage_de">Página de Inicio (de)</string>
     <string name="setting_summary_search_engine_searx">Searx</string>
+    <string name="setting_summary_search_engine_qwant">Qwant</string>
 
     <string name="setting_title_inverted">Colores invertidos</string>
     <string name="setting_summary_inverted">Si se comprueba, el contenido se renderizará en un modo de escala gris invertido. Esta es una especie de \"modo nocturno\".</string>

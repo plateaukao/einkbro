@@ -102,6 +102,7 @@
     <string name="setting_summary_search_engine_baidu">Baidu</string>
     <string name="setting_summary_search_engine_startpage_de">StartPage (de)</string>
     <string name="setting_summary_search_engine_searx">Searx</string>
+    <string name="setting_summary_search_engine_qwant">Qwant</string>
 
     <string name="setting_title_inverted">Cores invertidas</string>
     <string name="setting_summary_inverted">Se ativa, o conteúdo será processado no modo invertido da escala de cinzentos.

@@ -84,6 +84,7 @@
     <string name="setting_summary_search_engine_baidu">百度</string>
     <string name="setting_summary_search_engine_startpage_de">StartPage (德语)</string>
     <string name="setting_summary_search_engine_searx">Searx</string>
+    <string name="setting_summary_search_engine_qwant">Qwant</string>
 
     <string name="setting_title_inverted">反转颜色</string>
     <string name="setting_summary_inverted">让网站以灰度显示，可以看作“夜间模式”。</string>
