@@ -60,6 +60,7 @@ import android.webkit.CookieManager;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -195,6 +196,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     private VideoView videoView;
 
     private HorizontalScrollView tab_ScrollView;
+    private ImageButton tab_toggle;
 
     // Layouts
 
@@ -801,6 +803,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
             case R.id.menu_tabPreview:
                 hideBottomSheetDialog ();
+                showTabPreview();
                 showOverview();
                 break;
 
@@ -1319,6 +1322,16 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         }
     }
 
+    private void hideTabPreview () {
+        tab_ScrollView.setVisibility(View.GONE);
+        tab_toggle.setVisibility(View.VISIBLE);
+    }
+
+    private void showTabPreview () {
+        tab_ScrollView.setVisibility(View.VISIBLE);
+        tab_toggle.setVisibility(View.GONE);
+    }
+
     private void initOverview() {
 
         bottomSheetDialog_OverView = new BottomSheetDialog(this);
@@ -1331,6 +1344,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         tab_container = dialogView.findViewById(R.id.tab_container);
         tab_plus = dialogView.findViewById(R.id.tab_plus);
         tab_ScrollView = dialogView.findViewById(R.id.tab_ScrollView);
+        tab_toggle = dialogView.findViewById(R.id.tab_toggle);
         tab_plus.setOnClickListener(this);
         listView = dialogView.findViewById(R.id.home_list_2);
 
@@ -1346,6 +1360,33 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         gridView.setVisibility(View.GONE);
         listView.setVisibility(View.GONE);
+
+        tab_toggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showTabPreview();
+            }
+        });
+
+        listView.setOnScrollListener(new AbsListView.OnScrollListener(){
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                // TODO Auto-generated method stub
+            }
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                // TODO Auto-generated method stub
+                hideTabPreview();
+            }
+        });
+
+        gridView.setOnScrollListener(new AbsListView.OnScrollListener(){
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                // TODO Auto-generated method stub
+            }
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                // TODO Auto-generated method stub
+                hideTabPreview();
+            }
+        });
 
         open_startPage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1407,7 +1448,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         open_bookmark.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                open_bookmark.performClick();
                 showFilterDialog();
                 return false;
             }

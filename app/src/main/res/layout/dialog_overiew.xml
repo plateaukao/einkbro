@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:ignore="ContentDescription"
+    android:animateLayoutChanges="true"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <RelativeLayout
@@ -55,28 +56,54 @@
 
     </RelativeLayout>
 
-    <View
-        android:id="@+id/separator"
-        android:layout_below="@+id/overview_titleLayout"
-        android:layout_margin="8dp"
+    <RelativeLayout
+        android:id="@+id/tab_hide"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="?android:attr/colorButtonNormal" />
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tab_ScrollView">
 
-    <View
-        android:id="@+id/separator_2"
-        android:layout_below="@+id/tab_ScrollView"
-        android:layout_margin="8dp"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="?android:attr/colorButtonNormal" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_toStartOf="@+id/tab_toggle"
+            android:background="?android:attr/colorButtonNormal" />
+
+        <ImageButton
+            android:visibility="gone"
+            android:layout_centerInParent="true"
+            android:id="@+id/tab_toggle"
+            android:layout_width="42dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|center_horizontal"
+            android:background="?attr/actionBarItemBackground"
+            android:src="@drawable/icon_arrow_down_gest" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_toEndOf="@+id/tab_toggle"
+            android:background="?android:attr/colorButtonNormal" />
+
+    </RelativeLayout>
 
     <HorizontalScrollView
-        android:layout_below="@+id/separator"
+        android:layout_below="@+id/overview_titleLayout"
         android:id="@+id/tab_ScrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/layout_margin_8dp"
+        android:paddingStart="@dimen/layout_margin_8dp"
+        android:paddingEnd="@dimen/layout_margin_8dp"
+        android:paddingTop="4dp"
         android:scrollbars="none">
 
         <LinearLayout
@@ -103,7 +130,7 @@
     </HorizontalScrollView>
 
     <RelativeLayout
-        android:layout_below="@+id/separator_2"
+        android:layout_below="@+id/tab_hide"
         android:layout_above="@+id/home_buttons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
@@ -115,6 +142,7 @@
             android:background="@drawable/shadow_below"/>
 
         <org.askerov.dynamicgrid.DynamicGridView
+            android:fastScrollEnabled="true"
             android:visibility="gone"
             android:paddingEnd="4dp"
             android:paddingStart="4dp"
@@ -128,6 +156,7 @@
         </org.askerov.dynamicgrid.DynamicGridView>
 
         <ListView
+            android:fastScrollEnabled="true"
             android:divider="@null"
             android:dividerHeight="0dp"
             android:visibility="gone"

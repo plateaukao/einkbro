@@ -2,10 +2,13 @@
 - new: Add Cookies support for download function
 - new: option to enable Save-Data header (thanks @SkewedZeppelin)
 - new: set blank start site
+- new: fast scroll on long lists
+- new: show/hide tab preview
+- new: animations when showing/hiding views
+- new: Qwant search engine (thanks @Tobiplayer3)
 - updated: Help dialog
 - updated: Polish translation (thanks @gh-pmjm)
 - updated: Portuguese translation (thanks @smarquespt)
-
 
 ### v 6.2
 - new: advanced gesture settings
