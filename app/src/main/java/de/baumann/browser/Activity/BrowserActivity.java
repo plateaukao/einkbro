@@ -2977,6 +2977,11 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                         editTitle.setHint(R.string.dialog_title_hint);
                         editTitle.setText(HelperUnit.fileName(ninjaWebView.getUrl()));
 
+                        String extension = url.substring(url.lastIndexOf("."));
+                        if(extension.length() <= 8) {
+                            editExtension.setText(extension);
+                        }
+
                         builder.setView(dialogView);
                         builder.setTitle(R.string.menu_edit);
                         builder.setPositiveButton(R.string.app_ok, new DialogInterface.OnClickListener() {
