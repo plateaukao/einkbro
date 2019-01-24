@@ -2669,7 +2669,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     public synchronized void removeAlbum(final AlbumController controller) {
 
         if (BrowserContainer.size() <= 1) {
-            if(!sp.getBoolean("sp_reopenLastTab", true)) {
+            if(!sp.getBoolean("sp_reopenLastTab", false)) {
                 doubleTapsQuit();
             }else{
                 updateAlbum(sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"));
@@ -3063,7 +3063,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     }
 
     private void doubleTapsQuit() {
-        if (!sp.getBoolean("sp_close_browser_confirm", false)) {
+        if (!sp.getBoolean("sp_close_browser_confirm", true)) {
             finish();
         } else {
             bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
