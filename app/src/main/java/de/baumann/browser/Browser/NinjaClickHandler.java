@@ -15,6 +15,6 @@ public class NinjaClickHandler extends Handler {
     @Override
     public void handleMessage(Message message) {
         super.handleMessage(message);
-        webView.getBrowserController().onLongPress(message.getData().getString("src"));
+        webView.getBrowserController().onLongPress(message.getData().getString("url"));
     }
 }
