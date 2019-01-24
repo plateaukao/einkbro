@@ -57,6 +57,7 @@ import android.view.ViewTreeObserver;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.CookieManager;
+import android.webkit.URLUtil;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -2905,111 +2906,97 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         return true;
     }
 
-    @Override
-    public void onLongPress(final String url) {
+    private void showLongPressMenu (final String url) {
+        bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
+        View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_menu_context_link, null);
+        dialogTitle = dialogView.findViewById(R.id.dialog_title);
+        dialogTitle.setText(url);
 
-        if (url != null) {
+        LinearLayout contextLink_newTab = dialogView.findViewById(R.id.contextLink_newTab);
+        contextLink_newTab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addAlbum(getString(R.string.album_untitled), url, false);
+                NinjaToast.show(BrowserActivity.this, getString(R.string.toast_new_tab_successful));
+                hideBottomSheetDialog ();
+            }
+        });
 
-            bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
-            View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_menu_context_link, null);
-            dialogTitle = dialogView.findViewById(R.id.dialog_title);
-            dialogTitle.setText(url);
-
-            LinearLayout contextLink_newTab = dialogView.findViewById(R.id.contextLink_newTab);
-            contextLink_newTab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    addAlbum(getString(R.string.album_untitled), url, false);
-                    NinjaToast.show(BrowserActivity.this, getString(R.string.toast_new_tab_successful));
-                    hideBottomSheetDialog ();
+        LinearLayout contextLink__shareLink = dialogView.findViewById(R.id.contextLink__shareLink);
+        contextLink__shareLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (prepareRecord()) {
+                    NinjaToast.show(BrowserActivity.this, getString(R.string.toast_share_failed));
+                } else {
+                    IntentUnit.share(BrowserActivity.this, "", url);
                 }
-            });
+                hideBottomSheetDialog ();
+            }
+        });
 
-            LinearLayout contextLink__shareLink = dialogView.findViewById(R.id.contextLink__shareLink);
-            contextLink__shareLink.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (prepareRecord()) {
-                        NinjaToast.show(BrowserActivity.this, getString(R.string.toast_share_failed));
-                    } else {
-                        IntentUnit.share(BrowserActivity.this, "", url);
+        LinearLayout contextLink_openWith = dialogView.findViewById(R.id.contextLink_openWith);
+        contextLink_openWith.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                Intent chooser = Intent.createChooser(intent, getString(R.string.menu_open_with));
+                startActivity(chooser);
+                hideBottomSheetDialog ();
+            }
+        });
+
+        LinearLayout contextLink_newTabOpen = dialogView.findViewById(R.id.contextLink_newTabOpen);
+        contextLink_newTabOpen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addAlbum(getString(R.string.album_untitled), url, true);
+                hideBottomSheetDialog ();
+            }
+        });
+
+        LinearLayout contextLink_saveAs = dialogView.findViewById(R.id.contextLink_saveAs);
+        contextLink_saveAs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    hideBottomSheetDialog ();
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(BrowserActivity.this);
+                    View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_edit_extension, null);
+
+                    final EditText editTitle = dialogView.findViewById(R.id.dialog_edit);
+                    final EditText editExtension = dialogView.findViewById(R.id.dialog_edit_extension);
+
+                    String filename = URLUtil.guessFileName(url, null, null);
+
+                    editTitle.setHint(R.string.dialog_title_hint);
+                    editTitle.setText(HelperUnit.fileName(ninjaWebView.getUrl()));
+
+                    String extension = filename.substring(filename.lastIndexOf("."));
+                    if(extension.length() <= 8) {
+                        editExtension.setText(extension);
                     }
-                    hideBottomSheetDialog ();
-                }
-            });
 
-            LinearLayout contextLink_openWith = dialogView.findViewById(R.id.contextLink_openWith);
-            contextLink_openWith.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setData(Uri.parse(url));
-                    Intent chooser = Intent.createChooser(intent, getString(R.string.menu_open_with));
-                    startActivity(chooser);
-                    hideBottomSheetDialog ();
-                }
-            });
+                    builder.setView(dialogView);
+                    builder.setTitle(R.string.menu_edit);
+                    builder.setPositiveButton(R.string.app_ok, new DialogInterface.OnClickListener() {
 
-            LinearLayout contextLink_newTabOpen = dialogView.findViewById(R.id.contextLink_newTabOpen);
-            contextLink_newTabOpen.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    addAlbum(getString(R.string.album_untitled), url, true);
-                    hideBottomSheetDialog ();
-                }
-            });
+                        public void onClick(DialogInterface dialog, int whichButton) {
 
-            LinearLayout contextLink_saveAs = dialogView.findViewById(R.id.contextLink_saveAs);
-            contextLink_saveAs.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    try {
-                        hideBottomSheetDialog ();
+                            String title = editTitle.getText().toString().trim();
+                            String extension = editExtension.getText().toString().trim();
+                            String  filename = title + extension;
 
-                        AlertDialog.Builder builder = new AlertDialog.Builder(BrowserActivity.this);
-                        View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_edit_extension, null);
+                            if (title.isEmpty() || extension.isEmpty() || !extension.startsWith(".")) {
+                                NinjaToast.show(BrowserActivity.this, getString(R.string.toast_input_empty));
+                            } else {
 
-                        final EditText editTitle = dialogView.findViewById(R.id.dialog_edit);
-                        final EditText editExtension = dialogView.findViewById(R.id.dialog_edit_extension);
-
-                        editTitle.setHint(R.string.dialog_title_hint);
-                        editTitle.setText(HelperUnit.fileName(ninjaWebView.getUrl()));
-
-                        String extension = url.substring(url.lastIndexOf("."));
-                        if(extension.length() <= 8) {
-                            editExtension.setText(extension);
-                        }
-
-                        builder.setView(dialogView);
-                        builder.setTitle(R.string.menu_edit);
-                        builder.setPositiveButton(R.string.app_ok, new DialogInterface.OnClickListener() {
-
-                            public void onClick(DialogInterface dialog, int whichButton) {
-
-                                String title = editTitle.getText().toString().trim();
-                                String extension = editExtension.getText().toString().trim();
-                                String  filename = title + extension;
-
-                                if (title.isEmpty() || extension.isEmpty() || !extension.startsWith(".")) {
-                                    NinjaToast.show(BrowserActivity.this, getString(R.string.toast_input_empty));
-                                } else {
-
-                                    if (android.os.Build.VERSION.SDK_INT >= 23) {
-                                        int hasWRITE_EXTERNAL_STORAGE = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                                        if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
-                                            NinjaToast.show(BrowserActivity.this, R.string.toast_permission_sdCard_sec);
-                                        } else {
-                                            Uri source = Uri.parse(url);
-                                            DownloadManager.Request request = new DownloadManager.Request(source);
-                                            request.addRequestHeader("Cookie", CookieManager.getInstance().getCookie(url));
-                                            request.allowScanningByMediaScanner();
-                                            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); //Notify client once download is completed!
-                                            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
-                                            DownloadManager dm = (DownloadManager) BrowserActivity.this.getSystemService(DOWNLOAD_SERVICE);
-                                            assert dm != null;
-                                            dm.enqueue(request);
-                                            hideSoftInput(editTitle);
-                                        }
+                                if (android.os.Build.VERSION.SDK_INT >= 23) {
+                                    int hasWRITE_EXTERNAL_STORAGE = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                                    if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
+                                        NinjaToast.show(BrowserActivity.this, R.string.toast_permission_sdCard_sec);
                                     } else {
                                         Uri source = Uri.parse(url);
                                         DownloadManager.Request request = new DownloadManager.Request(source);
@@ -3022,27 +3009,51 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                         dm.enqueue(request);
                                         hideSoftInput(editTitle);
                                     }
+                                } else {
+                                    Uri source = Uri.parse(url);
+                                    DownloadManager.Request request = new DownloadManager.Request(source);
+                                    request.addRequestHeader("Cookie", CookieManager.getInstance().getCookie(url));
+                                    request.allowScanningByMediaScanner();
+                                    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); //Notify client once download is completed!
+                                    request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
+                                    DownloadManager dm = (DownloadManager) BrowserActivity.this.getSystemService(DOWNLOAD_SERVICE);
+                                    assert dm != null;
+                                    dm.enqueue(request);
+                                    hideSoftInput(editTitle);
                                 }
                             }
-                        });
-                        builder.setNegativeButton(R.string.app_cancel, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                dialog.cancel();
-                                hideSoftInput(editTitle);
-                            }
-                        });
+                        }
+                    });
+                    builder.setNegativeButton(R.string.app_cancel, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            dialog.cancel();
+                            hideSoftInput(editTitle);
+                        }
+                    });
 
-                        AlertDialog dialog = builder.create();
-                        dialog.show();
-                        showSoftInput(editTitle);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                    showSoftInput(editTitle);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            });
-            bottomSheetDialog.setContentView(dialogView);
-            bottomSheetDialog.show();
+
+            }
+        });
+        bottomSheetDialog.setContentView(dialogView);
+        bottomSheetDialog.show();
+    }
+
+    @Override
+    public void onLongPress(final String url) {
+
+        if (url == null) {
+            WebView.HitTestResult result = ninjaWebView.getHitTestResult();
+            showLongPressMenu(result.getExtra());
+        }
+
+        if (url != null) {
+            showLongPressMenu(url);
         }
     }
 
