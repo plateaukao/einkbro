@@ -1,18 +1,17 @@
 package de.baumann.browser.View;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.preference.ListPreference;
 import android.preference.PreferenceManager;
+import android.support.design.widget.BottomSheetDialog;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
-
-import java.util.Objects;
 
 import de.baumann.browser.Ninja.R;
 import de.baumann.browser.Unit.BrowserUnit;
@@ -38,23 +37,20 @@ public class SearchEngineListPreference extends ListPreference {
     private void showEditDialog() {
         final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
 
-        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(getContext());
+        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext());
         View dialogView = View.inflate(getContext(), R.layout.dialog_edit_title, null);
 
         final EditText editText = dialogView.findViewById(R.id.dialog_edit);
-
-        editText.setHint(R.string.dialog_se_hint);
         String custom = sp.getString(getContext().getString(R.string.sp_search_engine_custom), "");
+
+        editText.setHint(R.string.dialog_title_hint);
         editText.setText(custom);
-        editText.setSelection(Objects.requireNonNull(custom).length());
 
-        builder.setView(dialogView);
-        builder.setTitle(R.string.menu_edit);
-        builder.setPositiveButton(R.string.app_ok, new DialogInterface.OnClickListener() {
-
-            @SuppressLint("ApplySharedPref")
-            public void onClick(DialogInterface dialog, int whichButton) {
-
+        Button action_ok = dialogView.findViewById(R.id.action_ok);
+        action_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String text = editText.getText().toString().trim();
                 String domain = editText.getText().toString().trim();
                 if (domain.isEmpty()) {
                     NinjaToast.show(getContext(), R.string.toast_input_empty);
@@ -63,24 +59,22 @@ public class SearchEngineListPreference extends ListPreference {
                 } else {
                     sp.edit().putString(getContext().getString(R.string.sp_search_engine), "8").commit();
                     sp.edit().putString(getContext().getString(R.string.sp_search_engine_custom), domain).commit();
-
                     hideSoftInput(editText);
-                    dialog.cancel();
+                    bottomSheetDialog.cancel();
                 }
+
             }
         });
-        builder.setNegativeButton(R.string.app_cancel, new DialogInterface.OnClickListener() {
-
-            public void onClick(DialogInterface dialog, int whichButton) {
-                dialog.cancel();
+        Button action_cancel = dialogView.findViewById(R.id.action_cancel);
+        action_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 hideSoftInput(editText);
+                bottomSheetDialog.cancel();
             }
         });
-
-        android.support.v7.app.AlertDialog dialog = builder.create();
-        dialog.show();
-
-        showSoftInput(editText);
+        bottomSheetDialog.setContentView(dialogView);
+        bottomSheetDialog.show();
     }
 
     private void hideSoftInput(View view) {

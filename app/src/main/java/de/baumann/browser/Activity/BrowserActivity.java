@@ -362,19 +362,14 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         contentFrame = findViewById(R.id.main_content);
         appBar = findViewById(R.id.appBar);
 
-        appBar.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        final RelativeLayout rootView = findViewById(R.id.rootView);
+
+        rootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
+                int heightDiff = rootView.getRootView().getHeight() - rootView.getHeight();
 
-                Rect r = new Rect();
-                appBar.getWindowVisibleDisplayFrame(r);
-                int screenHeight = appBar.getRootView().getHeight();
-
-                // r.bottom is the position above soft keypad or device button.
-                // if keypad is shown, the r.bottom is smaller than that before.
-                int keypadHeight = screenHeight - r.bottom;
-
-                if (keypadHeight > screenHeight * 0.15) {
+                if (heightDiff > 100) {
                     omniboxTitle.setVisibility(View.GONE);
                 } else {
                     omniboxTitle.setVisibility(View.VISIBLE);
@@ -1197,6 +1192,9 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 fab_imageButtonNav = findViewById(R.id.fab_imageButtonNav_right);
                 break;
         }
+
+        //fab_imageButtonNav.setY(-550);
+        //fab_imageButtonNav.setX(50);
 
         fab_imageButtonNav.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
