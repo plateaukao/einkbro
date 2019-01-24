@@ -3063,7 +3063,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     }
 
     private void doubleTapsQuit() {
-        if (!sp.getBoolean("sp_close_browser_confirm", true)) {
+        if (!sp.getBoolean("sp_close_browser_confirm", false)) {
             finish();
         } else {
             bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
