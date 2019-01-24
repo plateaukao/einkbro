@@ -33,6 +33,12 @@
         android:entries="@array/setting_entries_font"
         android:entryValues="@array/setting_values_font"/>
 
+    <CheckBoxPreference android:key="sp_reopenLastTab"
+        android:icon="@drawable/icon_exit"
+        android:defaultValue="true"
+        android:title="@string/setting_title_reopenLastTab"
+        android:summary="@string/setting_summary_reopenLastTab"/>
+
     <PreferenceCategory android:title="@string/setting_overView">
 
         <CheckBoxPreference android:key="start_tabStart"
