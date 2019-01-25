@@ -3046,14 +3046,13 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
     @Override
     public void onLongPress(final String url) {
-
-        if (url == null) {
-            WebView.HitTestResult result = ninjaWebView.getHitTestResult();
-            showLongPressMenu(result.getExtra());
-        }
-
+        WebView.HitTestResult result = ninjaWebView.getHitTestResult();
         if (url != null) {
             showLongPressMenu(url);
+        } else if (result.getType() == WebView.HitTestResult.IMAGE_TYPE ||
+                result.getType() == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE ||
+                result.getType() == WebView.HitTestResult.SRC_ANCHOR_TYPE) {
+            showLongPressMenu(result.getExtra());
         }
     }
 

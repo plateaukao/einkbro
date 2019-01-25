@@ -6,6 +6,8 @@
 - new: show/hide tab preview
 - new: animations when showing/hiding views
 - new: Qwant search engine (thanks @Tobiplayer3)
+- new: option to open new tab instead of exiting app
+- updated: long press menu on websites
 - updated: Help dialog
 - updated: Polish translation (thanks @gh-pmjm)
 - updated: Portuguese translation (thanks @smarquespt)
