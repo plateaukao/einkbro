@@ -2669,7 +2669,12 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     public synchronized void removeAlbum(final AlbumController controller) {
 
         if (BrowserContainer.size() <= 1) {
-            doubleTapsQuit();
+            if(!sp.getBoolean("sp_reopenLastTab", false)) {
+                doubleTapsQuit();
+            }else{
+                updateAlbum(sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"));
+                hideOverview();
+            }
         } else {
             closeTabConfirmation( new Runnable() {
                 @Override

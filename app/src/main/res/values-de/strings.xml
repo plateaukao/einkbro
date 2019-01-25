@@ -227,6 +227,9 @@
     <string name="setting_gestures_use_title">Benutze Gesten</string>
     <string name="setting_gestures_use_summary">Benutze Gesten auf der Toolbar oder dem \"Navigationsknopf\".</string>
 
+    <string name="setting_title_reopenLastTab">Öffne letzten Tab neu</string>
+    <string name="setting_summary_reopenLastTab">Öffne einen neuen Tab, wenn der letzte geschlossen wird, anstatt den Browser zu schließen.</string>
+
     <!-- gestures -->
     <string name="setting_title_toolbar">Toolbar</string>
     <string name="setting_gesture_up">Nach oben wischen</string>
