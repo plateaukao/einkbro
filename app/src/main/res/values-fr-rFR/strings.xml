@@ -19,16 +19,6 @@
     <string name="color_grey">Gris</string>
 
 
-    <!-- Menu -->
-
-
-
-
-
-
-    <!-- AndroidAgo -->
-
-
     <!-- Dialog -->
     <string name="dialog_title_hint">Titre :</string>
     <string name="dialog_extension_hint">Extension (par exemple: \".jpg\"):</string>
@@ -38,23 +28,6 @@
 
     <string name="dialog_sortName">Trier par nom</string>
 
-
-    <!-- Settings -->
-
-    <!-- Browser setting -->
-
-
-
-
-
-
-    <!-- Browser start -->
-
-
-
-
-
-
     <!-- Browser clear -->
     <string name="clear_title_quit">Effacer quand vous quitter l\'application</string>
     <string name="clear_title_cache">Vider le cache</string>
@@ -62,34 +35,5 @@
     <string name="clear_title_history">Effacer l\'historique</string>
 
     <string name="clear_title_deleteDatabase">Supprimer la base de donnée</string>
-
-
-    <!-- App setting -->
-
-    <!-- App behavior -->
-
-
-
-
-
-
-
-
-
-
-
-    <!-- Data -->
-
-
-
-
-
-
-    <!-- Others setting -->
-
-    <!-- Toast -->
-
-
-    <!-- Whitelist -->
 
 </resources>
