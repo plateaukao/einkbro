@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string-array name="setting_entries_font"><item>Нормальний (100%)</item><item>Великий (125%)</item><item>Більший (150%)</item><item>Найбільший (175%)</item></string-array>
+<string-array name="setting_entries_nav"><item>@string/setting_hideNav_toolbar</item><item>@string/setting_hideNav_always</item><item>@string/setting_hide_never</item></string-array>
+<string-array name="setting_entries_nav_pos"><item>@string/setting_summary_nav_pos_right</item><item>@string/setting_summary_nav_pos_left</item><item>@string/setting_summary_nav_pos_center</item></string-array>
+<string-array name="setting_entries_toolbar"><item>@string/setting_hide_down</item><item>@string/setting_hide_always</item><item>@string/setting_hide_never</item></string-array>
+<string-array name="setting_values_font"><item>100</item><item>125</item><item>150</item><item>175</item></string-array>
+<string-array name="setting_values_nav"><item>0</item><item>1</item><item>2</item></string-array>
+<string-array name="setting_values_nav_pos"><item>0</item><item>1</item><item>2</item></string-array>
+<string-array name="setting_values_toolbar"><item>0</item><item>1</item><item>2</item></string-array>
+</resources>

@@ -7,10 +7,12 @@
 - new: animations when showing/hiding views
 - new: Qwant search engine (thanks @Tobiplayer3)
 - new: option to open new tab instead of exiting app
+- new: Ukrainian translation (thanks @Roman Babiy)
 - updated: long press menu on websites
 - updated: Help dialog
 - updated: Polish translation (thanks @gh-pmjm)
 - updated: Portuguese translation (thanks @smarquespt)
+- fix: adressbar not showing, when using physical keyboard
 
 ### v 6.2
 - new: advanced gesture settings

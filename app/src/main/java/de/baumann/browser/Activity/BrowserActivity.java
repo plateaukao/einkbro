@@ -243,28 +243,17 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         if (omnibox.getVisibility() == View.GONE) {
             showOmnibox();
-        } else if (currentAlbumController == null) {
-            finish();
-        } else if (currentAlbumController instanceof NinjaWebView) {
-            ninjaWebView = (NinjaWebView) currentAlbumController;
+        } else {
             if (ninjaWebView.canGoBack()) {
                 ninjaWebView.goBack();
-            } else if (BrowserContainer.size() <= 1) {
-                doubleTapsQuit();
             } else {
                 removeAlbum(currentAlbumController);
             }
-        } else {
-            finish();
         }
         return true;
     }
 
     private boolean prepareRecord() {
-        if (!(currentAlbumController instanceof NinjaWebView)) {
-            return true;
-        }
-
         NinjaWebView webView = (NinjaWebView) currentAlbumController;
         String title = webView.getTitle();
         String url = webView.getUrl();
@@ -320,6 +309,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         StrictMode.setVmPolicy(builder.build());
 
         sp = PreferenceManager.getDefaultSharedPreferences(this);
+        sp.edit().putInt("restart_changed", 0).apply();
 
         HelperUnit.grantPermissionsStorage(this);
         HelperUnit.setTheme(this);
@@ -352,7 +342,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
             sp.edit().putBoolean(getString(R.string.sp_location), false).apply();
         }
-        sp.edit().putInt("restart_changed", 0).apply();
 
         try {
             mahEncryptor = MAHEncryptor.newInstance(Objects.requireNonNull(sp.getString("saved_key", "")));
@@ -369,7 +358,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             @Override
             public void onGlobalLayout() {
                 int heightDiff = rootView.getRootView().getHeight() - rootView.getHeight();
-
                 if (heightDiff > 100) {
                     omniboxTitle.setVisibility(View.GONE);
                 } else {
@@ -397,14 +385,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         new AdBlock(this); // For AdBlock cold boot
         new Javascript(BrowserActivity.this);
-
-        try {
-            new Cookie(BrowserActivity.this);
-        } catch (Exception e) {
-            e.printStackTrace();
-            deleteDatabase("Ninja4.db");
-            recreate();
-        }
+        new Cookie(BrowserActivity.this);
 
         dispatchIntent(getIntent());
 
@@ -461,12 +442,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             e.printStackTrace();
         }
 
-        new Handler().postDelayed(new Runnable() {
-            public void run() {
-                searchBox.requestFocus();
-            }
-        }, 500);
-
         downloadReceiver = new BroadcastReceiver() {
 
             @Override
@@ -507,9 +482,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             super.onActivityResult(requestCode, resultCode, data);
             return;
         }
-
         Uri[] results = null;
-
         // Check that the response is a good one
         if(resultCode == Activity.RESULT_OK) {
             if(data == null) {
@@ -524,7 +497,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 }
             }
         }
-
         mFilePathCallback.onReceiveValue(results);
         mFilePathCallback = null;
         return;
@@ -665,7 +637,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 }
                 return onKeyCodeBack();
         }
-
         return false;
     }
 
@@ -730,10 +701,12 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     }
 
     private void showOverview() {
-        if (currentAlbumController != null) {
-            tab_ScrollView.smoothScrollTo(currentAlbumController.getAlbumView().getLeft(), 0);
-        }
         bottomSheetDialog_OverView.show();
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                tab_ScrollView.smoothScrollTo(currentAlbumController.getAlbumView().getLeft(), 0);
+            }
+        }, 250);
     }
 
     public void hideOverview () {
@@ -748,20 +721,17 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         }
     }
 
-
     @Override
     public void onClick(View v) {
 
         RecordAction action = new RecordAction(BrowserActivity.this);
+        ninjaWebView = (NinjaWebView) currentAlbumController;
 
-        if (currentAlbumController instanceof NinjaWebView) {
-            ninjaWebView = (NinjaWebView) currentAlbumController;
-            try {
-                title = ninjaWebView.getTitle().trim();
-                url = ninjaWebView.getUrl().trim();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        try {
+            title = ninjaWebView.getTitle().trim();
+            url = ninjaWebView.getUrl().trim();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         switch (v.getId()) {
@@ -1148,7 +1118,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
     private void initRendering(View view) {
 
-        if (currentAlbumController instanceof NinjaWebView && sp.getBoolean("sp_invert", false)) {
+        if (sp.getBoolean("sp_invert", false)) {
             Paint paint = new Paint();
             ColorMatrix matrix = new ColorMatrix();
             matrix.set(NEGATIVE_COLOR);
@@ -1200,9 +1170,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         fab_imageButtonNav.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if (currentAlbumController instanceof NinjaWebView) {
-                    showFastToggle();
-                }
+                showFastToggle();
                 return false;
             }
         });
@@ -1210,9 +1178,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         omniboxOverflow.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if (currentAlbumController instanceof NinjaWebView) {
-                    showFastToggle();
-                }
+                showFastToggle();
                 return false;
             }
         });
@@ -1250,10 +1216,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         inputBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (currentAlbumController == null) { // || !(actionId == EditorInfo.IME_ACTION_DONE)
-                    return false;
-                }
-
                 String query = inputBox.getText().toString().trim();
                 if (query.isEmpty()) {
                     NinjaToast.show(BrowserActivity.this, getString(R.string.toast_input_empty));
@@ -1263,6 +1225,17 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 updateAlbum(query);
                 hideSoftInput(inputBox);
                 return false;
+            }
+        });
+
+        inputBox.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (hasFocus) {
+                    omniboxTitle.setVisibility(View.GONE);
+                } else {
+                    omniboxTitle.setVisibility(View.VISIBLE);
+                }
             }
         });
 
@@ -1328,6 +1301,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
     private void showTabPreview () {
         tab_ScrollView.setVisibility(View.VISIBLE);
+        tab_ScrollView.smoothScrollTo(currentAlbumController.getAlbumView().getLeft(), 0);
         tab_toggle.setVisibility(View.GONE);
     }
 
@@ -1743,13 +1717,9 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         searchBox.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
             @Override
             public void afterTextChanged(Editable s) {
                 if (currentAlbumController != null) {
@@ -1764,7 +1734,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 if (actionId != EditorInfo.IME_ACTION_DONE) {
                     return false;
                 }
-
                 if (searchBox.getText().toString().isEmpty()) {
                     NinjaToast.show(BrowserActivity.this, getString(R.string.toast_input_empty));
                     return true;
@@ -1781,11 +1750,8 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                     NinjaToast.show(BrowserActivity.this, getString(R.string.toast_input_empty));
                     return;
                 }
-
                 hideSoftInput(searchBox);
-                if (currentAlbumController instanceof NinjaWebView) {
-                    ((NinjaWebView) currentAlbumController).findNext(false);
-                }
+                ((NinjaWebView) currentAlbumController).findNext(false);
             }
         });
 
@@ -1797,11 +1763,8 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                     NinjaToast.show(BrowserActivity.this, getString(R.string.toast_input_empty));
                     return;
                 }
-
                 hideSoftInput(searchBox);
-                if (currentAlbumController instanceof NinjaWebView) {
-                    ((NinjaWebView) currentAlbumController).findNext(true);
-                }
+                ((NinjaWebView) currentAlbumController).findNext(true);
             }
         });
 
@@ -2525,11 +2488,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             if (decrypted_userName.length() > 0 || decrypted_userPW.length() > 0 ) {
                 notificationManager.notify(0, n);
             }
-
-
-
-
-
         } catch (Exception e) {
             e.printStackTrace();
             NinjaToast.show(BrowserActivity.this, R.string.toast_error);
@@ -2614,9 +2572,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             contentFrame.removeAllViews();
             contentFrame.addView(ninjaWebView);
 
-            if (currentAlbumController != null) {
-                currentAlbumController.deactivate();
-            }
             currentAlbumController = ninjaWebView;
             currentAlbumController.activate();
 
@@ -2625,16 +2580,8 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     }
 
     private synchronized void updateAlbum(String url) {
-        if (currentAlbumController == null) {
-            return;
-        }
-
-        if (currentAlbumController instanceof NinjaWebView) {
-            ((NinjaWebView) currentAlbumController).loadUrl(url);
-            updateOmnibox();
-        } else {
-            NinjaToast.show(this, getString(R.string.toast_load_error));
-        }
+        ((NinjaWebView) currentAlbumController).loadUrl(url);
+        updateOmnibox();
     }
 
     private void closeTabConfirmation(final Runnable okAction) {
@@ -2696,23 +2643,18 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         initRendering(contentFrame);
         omniboxTitle.setText(currentAlbumController.getAlbumTitle());
 
-        if (currentAlbumController == null) {
-            return;
+        ninjaWebView = (NinjaWebView) currentAlbumController;
+        updateProgress(ninjaWebView.getProgress());
+        updateBookmarks();
+        scrollChange();
+        if (ninjaWebView.getUrl() == null && ninjaWebView.getOriginalUrl() == null) {
+            updateInputBox(null);
+        } else if (ninjaWebView.getUrl() != null) {
+            updateInputBox(ninjaWebView.getUrl());
+        } else {
+            updateInputBox(ninjaWebView.getOriginalUrl());
         }
 
-        if (currentAlbumController instanceof NinjaWebView) {
-            ninjaWebView = (NinjaWebView) currentAlbumController;
-            updateProgress(ninjaWebView.getProgress());
-            updateBookmarks();
-            scrollChange();
-            if (ninjaWebView.getUrl() == null && ninjaWebView.getOriginalUrl() == null) {
-                updateInputBox(null);
-            } else if (ninjaWebView.getUrl() != null) {
-                updateInputBox(ninjaWebView.getUrl());
-            } else {
-                updateInputBox(ninjaWebView.getOriginalUrl());
-            }
-        }
         contentFrame.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -2764,16 +2706,14 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         if (running) {
             omniboxRefresh.setImageDrawable(ViewUnit.getDrawable(this, R.drawable.ic_action_close));
         } else {
-            if (currentAlbumController instanceof NinjaWebView) {
-                try {
-                    if (ninjaWebView.getUrl().contains("https://")) {
-                        omniboxRefresh.setImageDrawable(ViewUnit.getDrawable(this, R.drawable.ic_action_refresh));
-                    } else {
-                        omniboxRefresh.setImageDrawable(ViewUnit.getDrawable(BrowserActivity.this, R.drawable.icon_alert));
-                    }
-                } catch (Exception e) {
+            try {
+                if (ninjaWebView.getUrl().contains("https://")) {
                     omniboxRefresh.setImageDrawable(ViewUnit.getDrawable(this, R.drawable.ic_action_refresh));
+                } else {
+                    omniboxRefresh.setImageDrawable(ViewUnit.getDrawable(BrowserActivity.this, R.drawable.icon_alert));
                 }
+            } catch (Exception e) {
+                omniboxRefresh.setImageDrawable(ViewUnit.getDrawable(this, R.drawable.ic_action_refresh));
             }
         }
     }
@@ -3159,7 +3099,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             }
         }, 500);
 
-        if (currentAlbumController == null || BrowserContainer.size() <= 1) {
+        if (BrowserContainer.size() <= 1) {
             tab_next.setVisibility(View.GONE);
             tab_prev.setVisibility(View.GONE);
         } else {
@@ -3585,7 +3525,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         if (BrowserContainer.size() <= 1) {
             return currentAlbumController;
         }
-
         List<AlbumController> list = BrowserContainer.list();
         int index = list.indexOf(currentAlbumController);
         if (next) {
@@ -3599,7 +3538,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 index = list.size() - 1;
             }
         }
-
         return list.get(index);
     }
 }
