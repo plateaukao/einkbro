@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <string name="changelog_title">Değişilik günlüğü</string>
+    <string name="changelog_dialog">
+        &lt;i>Proje sitesi: https://github.com/scoute-dich/Browser&lt;br>
+        Değişiklik günlüğü: https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Sürüm: 6.2&lt;/b>&lt;br>
+        \u25AA yenilik: gelişmiş hareket ayarları&lt;br>
+        \u25AA yenilik: başlangıçta genel bakışı göster&lt;br>
+        \u25AA düzeltme: açık tema ayarları
+    </string>
+
+    <string name="overview_title">Genel bakış</string>
+    <string name="overview_dialog">Buradan tüm açılan sekmelere ve verilerinize erişebilirsiniz: başlangıç sayfasındaki kayıtlı siteler, yer imleri ve geçmiş.
+        Ayarlardan başlangıçta hangi içeriğin gösterileceğine karar verebilirsiniz.</string>
+
+    <string name="startSite_title">Başlangıç sitesi</string>
+    <string name="startSite_dialog">Başlangıç sitesi olarak ayarlamak için kaydedilen yer imine uzun basın. Bu site her zaman başlangıçta
+    	veya yeni bir sekme açtığınızda yüklenecektir. Ayrıca yer imi menüsü üzerinden boş bir başlangıç sayfası ayarlayabilirsiniz.</string>
+
+    <string name="gestures_title">Hareketler</string>
+    <string name="gestures_dialog">Araç çubuğunda ve \"Gezinme düğmesi\"nde hareketleri kullanabilirsiniz:
+        \n \u25AA Yukarı/aşağı kaydır     \u2192  yukarı/aşağı kaydır;
+        \n \u25AA Sola/sağa kaydır        \u2192  geri/ileri git;
+        \n \u25AA Dokunma                 \u2192  menüyü aç;
+        \n \u25AA Uzun basın              \u2192  \"Hızlı geçiş iletişim kutusu\"nu aç
+        \n Hareketleri ayarlardan yapılandırabilirsiniz.
+
+    </string>
+
+    <string name="fastToggle_title">Hızlı geçiş</string>
+    <string name="fastToggle_dialog">\"Menü\" veya \"Gezinme düğmesi\" tuşuna uzunca basarsanız \"Hızlı geçiş iletişim kutusu\" 
+	açılacaktır. Buradan geçerli web sitesinden çıkmadan bazı önemli ayarları değiştirebilirsiniz. Reklam Engelleyici, JavaScript veya
+	Çerezler için beyaz listenize web siteleri de ekleyebilirsiniz.</string>
+
+    <string name="menu_title">Menü</string>
+    <string name="menu_dialog">Sekmelerinizi yönetin, içeriği paylaşın veya kaydedin, geçerli sekmeyi kullanın veya bazı özellikleri kullanın: Hemen deneyin.
+        Diğer tüm bildirimler gibi, menüye geri tıklayarak, menü dışına tıklayarak veya
+		yalnızca menü aşağı kaydırılarak kapatılabilir.</string>
+
+    <string name="not_title">Bildirimler</string>
+    <string name="not_dialog">Bildirimler, ekranın altında görüntülenir. Ayrıca menüler gibi kapatılabilirler.</string>
+
+    <string name="settings_dialog">Ayarlarda daha da fazla seçenek var. Deneyin!</string>
+
+
+    <string name="license_title">Copyright © 2019  Gaukler Faun tarafından</string>
+    <string name="license_dialog">
+        &lt;i>Daha fazla bilgi için Github üzerindeki proje sitesini ziyaret edin: https://github.com/scoute-dich/Browser&lt;/i>&lt;br>&lt;br>
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with this program.  If not, see http://www.gnu.org/licenses.&lt;br>&lt;br>
+
+        &lt;i>Aşağıdaki açık kaynak kodlu kütüphaneler veya projeler bu yazılım içerisinde kullanılmaktadır:&lt;/i>&lt;br>&lt;br>&lt;br>
+
+        &lt;b>DynamicGrid&lt;/b>&lt;br>
+        Apache Lisans Sürümü 2.0&lt;br>
+        askerov&lt;br>
+        &lt;i>http://git.io/vTHZH&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Lightning Browser&lt;/b>&lt;br>
+        Mozilla Genel Lisans Sürümü 2.0&lt;br>
+        Anthony Restaino&lt;br>
+        &lt;i>http://git.io/vUruk&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Materyal Tasarım Simgeleri&lt;/b>&lt;br>
+        SIL Açık Yazı Tipi Lisansı, Sürüm 1.1.&lt;br>
+        Templarian&lt;br>
+        &lt;i>https://github.com/Templarian/MaterialDesign&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Ninja&lt;/b>&lt;br>
+        Apache Lisans Sürümü 2.0&lt;br>
+        Matthew Lee&lt;br>
+        &lt;i>http://git.io/vUrEh&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>SimpleEncryptionLib&lt;/b>&lt;br>
+        Apache Lisans Sürümü 2.0&lt;br>
+        hummatli&lt;br>
+        &lt;i>https://github.com/hummatli/SimpleEncryptionLib</string>
+
+    <string name="cont_dialog">
+        &lt;i>Öncelikle bu projeye herhangi bir şekilde katkıda bulunan herkese teşekkür etmek istiyorum. Onlar; sorunları gönderdiler, tercüme yaptılar
+        ya da başka bir şekilde yardım ettiler. Aşağıdaki sitelerden bu harika topluluğun 
+		aktif bir üyesi olabilirsiniz:&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>XDA-thread:&lt;/b>&lt;br>
+        XDA, geliştiriciler ve akıllı telefon meraklıları için harika bir topluluktur. Buradan sorunları bildirebilir,
+		yeni özellikler ve \"FOSS Tarayıcısı\" ile ilgili her şeyi isteyebilirsiniz.&lt;br>
+        &lt;i>https://forum.xda-developers.com/android/apps-games/app-browser-t3500091&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Github:&lt;/b>&lt;br>
+        Github üzerinden \"FOSS Browser\" kaynak kodunu görebilirsiniz. Bu daha teknik bir çözümdür: sorunları biildirin, yeni özellikler isteyin,
+		hatta geliştirilmesine veya çevrilmesine yardımcı olun.&lt;br>
+        &lt;i>https://github.com/scoute-dich/browser&lt;/i>&lt;br>&lt;br>&lt;br>
+
+
+        &lt;i>Bu insanlar, bu projeye katkıda bulundu. Herhangi birini unuttuysam, lütfen benimle iletişime geçin:&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Gaukler Faun&lt;/b>&lt;br>
+        \u25AA Bu projenin ana geliştiricisi ve başlatıcısı&lt;br>
+        &lt;i>https://github.com/scoute-dich&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>CGSLURP LLC&lt;/b>&lt;br>
+        \u25AA Reklam Engelleme uygulamasına ve \"FOSS Tarayıcı\"sının önceki sürümünde \"masaüstü sitesi istemeye\" yardım etti&lt;br>
+        &lt;i>https://github.com/futrDevelopment&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>element54&lt;/b>&lt;br>
+        \u25AA düzeltme: klavye sorunları (issue #105)&lt;br>
+        \u25AA yenilik: Çıkışta onaylama iletişim kutusunu devre dışı bırakma seçeneği&lt;br>
+        &lt;i>https://github.com/element54&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>elmru&lt;/b>&lt;br>
+        \u25AA Tayvan Geleneksel Çince Çeviri&lt;br>
+        &lt;i>https://github.com/kogiokka&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Enrico Monese&lt;/b>&lt;br>
+        \u25AA İtalyanca Çeviri&lt;br>
+        &lt;i>https://github.com/EnricoMonese&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>gh-pmjm&lt;/b>&lt;br>
+        \u25AA Lehçe Çeviri&lt;br>
+        &lt;i>https://github.com/gh-pmjm&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>gr1sh&lt;/b>&lt;br>
+        \u25AA düzeltme: bazı Almanca dizeler (issues #124, #131)&lt;br>
+        &lt;i>https://github.com/gr1sh&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Harry Heights&lt;/b>&lt;br>
+        \u25AA FOSS Tarayıcısının Belgeleri&lt;br>
+        &lt;i>https://github.com/HarryHeights&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Heimen Stoffels&lt;/b>&lt;br>
+        \u25AA Hollandaca Çeviri&lt;br>
+        &lt;i>https://github.com/Vistaus&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Hellohat&lt;/b>&lt;br>
+        \u25AA Fransızca Çeviri&lt;br>
+        &lt;i>https://github.com/Hellohat&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Herman Nunez&lt;/b>&lt;br>
+        \u25AA İspanyolca Çeviri&lt;br>
+        &lt;i>https://github.com/junior012&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Jumping Yang&lt;/b>&lt;br>
+        \u25AA \"FOSS Tarayıcı\"sının önceki sürümünde Çince Çeviri&lt;br>
+        &lt;i>https://github.com/JumpingYang001&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>lishoujun&lt;/b>&lt;br>
+        \u25AA Çince Çeviri&lt;br>
+        \u25AA hata avı&lt;br>
+        &lt;i>https://github.com/lishoujun&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Secangkir Kopi&lt;/b>&lt;br>
+        \u25AA Endonezyaca Çeviri&lt;br>
+        &lt;i>https://github.com/Secangkir-Kopi&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Sérgio Marques&lt;/b>&lt;br>
+        \u25AA Portekizce Çeviri&lt;br>
+        &lt;i>https://github.com/smarquespt&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>splinet&lt;/b>&lt;br>
+        \u25AA \"FOSS Tarayıcı\"sının önceki sürümünde Rusça Çeviri&lt;br>
+        &lt;i>https://github.com/splinet&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>SkewedZeppelin&lt;/b>&lt;br>
+        \u25AA Veri Tasarrufu başlığını etkinleştirmek için seçenek ekledi&lt;br>
+        &lt;i>https://github.com/SkewedZeppelin&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Tobiplayer3&lt;/b>&lt;br>
+        \u25AA Qwant arama motorunu ekledi&lt;br>
+        \u25AA Uygulamadan çıkmak yerine yeni sekme açma seçeneği&lt;br>
+        &lt;i>https://github.com/Tobiplayer3&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Vladimir Kosolapov&lt;/b>&lt;br>
+        \u25AA Rusça Çeviri&lt;br>
+        &lt;i>https://github.com/0x264f&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>YC L&lt;/b>&lt;br>
+        \u25AA Çince Çeviri&lt;br>
+        &lt;i>https://github.com/smallg0at&lt;/i>
+		
+		&lt;b>Ali Demirtaş&lt;/b>&lt;br>
+        \u25AA Türkçe Çeviri&lt;br>
+        &lt;i>https://github.com/ali-demirtas&lt;/i>&lt;br>&lt;br>
+        
+    </string>
+
+</resources>
