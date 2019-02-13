@@ -2,14 +2,14 @@
 
 <resources>
 
-    <string name="changelog_title">Değişilik günlüğü</string>
+    <string name="changelog_title">Değişiklik günlüğü</string>
     <string name="changelog_dialog">
         &lt;i>Proje sitesi: https://github.com/scoute-dich/Browser&lt;br>
         Değişiklik günlüğü: https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;/i>&lt;br>&lt;br>
 
         &lt;b>Sürüm: 6.2&lt;/b>&lt;br>
         \u25AA yenilik: gelişmiş hareket ayarları&lt;br>
-        \u25AA yenilik: başlangıçta genel bakışı göster&lt;br>
+        \u25AA yenilik: başlangıçta genel bakışı gösterme&lt;br>
         \u25AA düzeltme: açık tema ayarları
     </string>
 
@@ -102,7 +102,7 @@
         &lt;i>https://forum.xda-developers.com/android/apps-games/app-browser-t3500091&lt;/i>&lt;br>&lt;br>
 
         &lt;b>Github:&lt;/b>&lt;br>
-        Github üzerinden \"FOSS Browser\" kaynak kodunu görebilirsiniz. Bu daha teknik bir çözümdür: sorunları biildirin, yeni özellikler isteyin,
+        Github üzerinden \"FOSS Browser\" kaynak kodunu görebilirsiniz. Bu daha teknik bir çözümdür: sorunları bildirin, yeni özellikler isteyin,
 		hatta geliştirilmesine veya çevrilmesine yardımcı olun.&lt;br>
         &lt;i>https://github.com/scoute-dich/browser&lt;/i>&lt;br>&lt;br>&lt;br>
 
@@ -190,11 +190,11 @@
 
         &lt;b>YC L&lt;/b>&lt;br>
         \u25AA Çince Çeviri&lt;br>
-        &lt;i>https://github.com/smallg0at&lt;/i>
+        &lt;i>https://github.com/smallg0at&lt;/i>&lt;br>&lt;br>
 		
-		&lt;b>Ali Demirtaş&lt;/b>&lt;br>
+	&lt;b>Ali Demirtaş&lt;/b>&lt;br>
         \u25AA Türkçe Çeviri&lt;br>
-        &lt;i>https://github.com/ali-demirtas&lt;/i>&lt;br>&lt;br>
+        &lt;i>https://github.com/ali-demirtas&lt;/i>
         
     </string>
 
