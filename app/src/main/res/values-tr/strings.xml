@@ -35,7 +35,7 @@
     <string name="main_menu_new_tab">Yeni sekme (arka plan)</string>
     <string name="main_menu_new_tabOpen">Yeni sekme (ön plan)</string>
     <string name="main_omnibox_input_hint">Arayın veya URL girin</string>
-    <string name="menu_open_with">Bağlantıyı aç …</string>
+    <string name="menu_open_with">Bağlantıyı aç…</string>
 
     <string name="menu_share">Paylaş</string>
     <string name="menu_quit">Çık</string>
@@ -46,7 +46,7 @@
     <string name="menu_download">İndirmeleri aç</string>
     <string name="menu_fav">Başlangıç sitesi olarak ayarla</string>
     <string name="menu_sort">Sırala …</string>
-    <string name="menu_filter">Renge göre filtrele …</string>
+    <string name="menu_filter">Renge göre filtrele…</string>
     <string name="menu_blank">Boş başlangıç sitesi</string>
 
     <string name="menu_share_screenshot">Ekran görüntüsünü paylaş</string>
@@ -55,7 +55,7 @@
     <string name="menu_save_screenshot">Ekran görüntüsünü kaydet</string>
     <string name="menu_save_home">Başlangıca kaydet</string>
     <string name="menu_save_bookmark">Yer imi olarak kaydet</string>
-    <string name="menu_save_as">Kaydet …</string>
+    <string name="menu_save_as">Kaydet…</string>
     <string name="menu_save_pdf">PDF olarak kaydet</string>
     <string name="menu_share_pdf">PDF paylaş</string>
     <string name="menu_share_pdfToast">Tamamlandı. Paylaşmak için dosya yöneticisi açılsın mı?</string>
@@ -65,7 +65,7 @@
 
     <!-- Dialog -->
     <string name="dialog_toggle_title">Hızlı geçiş</string>
-    <string name="dialog_toggle_hint">Hemen uygulamak için lütfen aşağıdaki \"OK\" düğmesine basın.</string>
+    <string name="dialog_toggle_hint">Hemen uygulamak için lütfen aşağıdaki \"TAMAM\" düğmesine basın.</string>
     <string name="dialog_title_hint">Başlık:</string>
     <string name="dialog_url_hint">URL:</string>
     <string name="dialog_extension_hint">Uzantı (örneğin: \".jpg\"):</string>
@@ -136,10 +136,10 @@
 	güvendiğiniz sitelere izin vermek için kullanabilirsiniz.</string>
 
     <string name="setting_title_javascript">JavaScript</string>
-    <string name="setting_summary_javascript">JavaScript etkinleştirin. Birçok web sitesinin işlevselliği için Javascript'e ihtiyacı vardır 
+    <string name="setting_summary_javascript">JavaScript\'i etkinleştirin. Birçok web sitesinin işlevselliği için Javascript\'e ihtiyacı vardır 
 	(menüler, resimler yükleme ve görüntüleme, ...). Ancak bunlar aynı zamanda bir risktir ve saldırılar için kullanılabilir.</string>
     <string name="setting_title_whitelistJS">JavaScript beyaz listesi</string>
-    <string name="setting_summary_whitelistJS">JavaScript'i devre dışı bırakırsanız, bu beyaz listeyi, güvendiğiniz sitelerin JavaScript kullanmasına 
+    <string name="setting_summary_whitelistJS">JavaScript\'i devre dışı bırakırsanız, bu beyaz listeyi, güvendiğiniz sitelerin JavaScript kullanmasına 
 	izin vermek için kullanabilirsiniz.</string>
 
     <string name="setting_title_adblock">Reklam Engelleyici</string>
@@ -160,7 +160,7 @@
 	üzerine yazacaktır. Geri yüklemek için dizinde doğru ada sahip bir dosya olmalıdır.</string>
     <string name="clear_menu_done_all">Hepsi bitti</string>
     <string name="clear_title_quit">Uygulamadan çıkışta temizle</string>
-    <string name="clear_summary_quit">\"FOSS Tarayıcı\"dan her çıkışta  yukarıdaki tüm kontrol edilen veriler silinecektir.</string>
+    <string name="clear_summary_quit">\"FOSS Tarayıcısı\"ndan her çıkışta  yukarıdaki tüm kontrol edilen veriler silinecektir.</string>
     <string name="clear_title_cache">Önbelleği Temizle</string>
     <string name="clear_title_cookie">Çerezleri Temizle</string>
     <string name="clear_title_history">Geçmişi Temizle</string>
@@ -270,7 +270,7 @@
     <string name="setting_title_license">Lisans</string>
     <string name="setting_summary_license">\"FOSS Tarayıcı\" tamamen ücretsizdir (özgürlük gibi) ve açık kaynaklıdır.</string>
     <string name="setting_title_appSettings">Uygulama ayarları</string>
-    <string name="setting_summary_appSettings">\"FOSS Tarauıcı\" için sistem uygulama ayarlarını açın. Burada Android
+    <string name="setting_summary_appSettings">\"FOSS Tarayıcı\" için sistem uygulama ayarlarını açın. Burada Android
 	sürümü izin verme izninize bağlı olarak, uygulama verilerini temizleyebilirsiniz.</string>
     <string name="setting_title_community">Katkıda Bulunanlar</string>
     <string name="setting_summary_community">Bu proje için bir şey emeği geçenlere bakın. Ya da daha fazla geliştirme
@@ -314,7 +314,7 @@
     <string name="toast_permission_loc">\"FOSS Tarayıcı\" \"konumunuza erişim\" iznine ihtiyaç duyar. Bu, bazı web sitelerinden,
 	örneğin bir çeşit navigasyon sunduklarında istenir. Henüz izin vermediyseniz, daha sonra ayarlardan yapabilirsiniz.</string>
     <string name="toast_restart">Değişiklikleri uygulamak için \"FOSS Tarayıcı\"sını yeniden başlatmanız gerekir. Şimdi kapatılsın mı?</string>
-    <string name="toast_quit">\"FOSS Browser\"sından çıkmak istiyor musunuz?</string>
+    <string name="toast_quit">\"FOSS Tarayıcı\"sından çıkmak istiyor musunuz?</string>
     <string name="toast_close_tab">Geçerli sekmeyi kapatmak istiyor musunuz?</string>
     <string name="toast_closeNotification">Tüm açılan web sitelerini kapatın.</string>
     <string name="toast_downloadComplete">İndirme tamamlandı. Dosya yöneticisi açılsın mı?</string>
