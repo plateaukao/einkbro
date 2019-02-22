@@ -19,17 +19,21 @@
     <!-- Menu -->
     <string name="main_menu_tabPreview">開啟分頁預覽</string>
     <string name="main_menu_new_tab">背景開啟新分頁</string>
-    <string name="main_menu_new_tabOpen">前景開啟新分頁</string>
+    <string name="main_menu_new_tabOpen">開啟新分頁</string>
     <string name="main_omnibox_input_hint">搜尋或輸入網址</string>
     <string name="menu_open_with">以其他軟體開啟連結</string>
 
     <string name="menu_share">分享</string>
     <string name="menu_quit">退出</string>
     <string name="menu_delete">刪除</string>
-    <string name="menu_delete_list">清除項目表</string>
+    <string name="menu_delete_list">清除所列項目</string>
     <string name="menu_edit">編輯</string>
     <string name="menu_closeTab">關閉分頁</string>
     <string name="menu_download">開啟下載資料夾</string>
+    <string name="menu_fav">設為起始頁</string>
+    <string name="menu_sort">排序方式</string>
+    <string name="menu_filter">以顏色篩選</string>
+    <string name="menu_blank">空白起始頁</string>
 
     <string name="menu_share_screenshot">分享擷圖</string>
     <string name="menu_share_link">分享連結</string>
@@ -49,7 +53,7 @@
     <!-- AndroidAgo -->
 
 
-<!-- Dialog -->
+    <!-- Dialog -->
     <string name="dialog_toggle_title">快速切換</string>
     <string name="dialog_toggle_hint">若欲立即生效，請點擊最下方的確定按鈕。</string>
     <string name="dialog_title_hint">標題：</string>
@@ -95,8 +99,11 @@
     <string name="setting_summary_remote">啟用遠端內容，該內容並非直接來自當前造訪的網站。
         停用本功能會更安全、更快速並節省資料量。但有些內容將無法顯示。</string>
 
+    <string name="setting_title_save_data">請求「儲存資料」</string>
+    <string name="setting_summary_save_data">告訴網站你希望儲存資料。支援的網站可加快載入速度。</string>
 
-<!-- Browser start -->
+
+    <!-- Browser start -->
     <string name="setting_title_images">圖片</string>
     <string name="setting_summary_images">顯示網路圖片。停用可節省資料量並加快網頁載入。</string>
     <string name="setting_title_cookie">Cookies</string>
@@ -154,17 +161,17 @@
     <string name="setting_title_themeDark">亮色主題</string>
     <string name="setting_summary_themeDark">你喜歡亮一點？選我！</string>
 
-    <string name="setting_title_nav">導航鍵</string>
+    <string name="setting_title_nav">導航鈕</string>
     <string name="setting_title_nav_pos">位置</string>
-    <string name="setting_summary_nav_pos">決定導航鍵懸浮位置</string>
+    <string name="setting_summary_nav_pos">決定導航鈕懸浮位置</string>
     <string name="setting_summary_nav_pos_right">右</string>
     <string name="setting_summary_nav_pos_left">左</string>
     <string name="setting_summary_nav_pos_center">中央</string>
 
     <string name="setting_title_nav_show">隱藏</string>
-    <string name="setting_summary_nav_show">當工具列顯示時隱藏導航鍵</string>
+    <string name="setting_summary_nav_show">當工具列顯示時隱藏導航鈕</string>
 
-    <string name="setting_summary_tab">瀏覽器開啟後啟動頁該顯示什麼？主頁、書籤或瀏覽歷史…</string>
+    <string name="setting_summary_tab">瀏覽器開啟後頁該顯示什麼？主頁、書籤或瀏覽歷史…</string>
 
     <string name="setting_title_confirm_exit">確認退出瀏覽器</string>
     <string name="setting_summary_confirm_exit">關閉瀏覽器時彈出確認對話框。</string>
@@ -179,6 +186,17 @@
     <string name="setting_hideNav_always">總是隱藏</string>
     <string name="setting_hideNav_toolbar">當工具列顯示時隱藏</string>
 
+    <string name="setting_overView">概覽</string>
+    <string name="setting_overView_onStart_title">開啟時顯示</string>
+    <string name="setting_overView_onStart_summary">每次開啟App時展示分頁概覽</string>
+
+    <string name="setting_close">關閉確認</string>
+    <string name="setting_gestures">手勢</string>
+    <string name="setting_gestures_use_title">使用手勢</string>
+    <string name="setting_gestures_use_summary">在工具列和導航鈕使用手勢</string>
+
+    <string name="setting_title_reopenLastTab">重生新分頁</string>
+    <string name="setting_summary_reopenLastTab">當最後一個分頁關閉後開啟新分頁，而不是退出應用。</string>
 
     <!-- Data -->
     <string name="export_bookmarks">export_bookmarks</string>
@@ -216,51 +234,84 @@
 
     <!-- Toast -->
     <string name="toast_add_to_home_successful">釘選至主頁成功</string>
-<string name="toast_add_to_home_failed">釘選至主頁失敗</string>
-<string name="toast_add_whitelist_successful">域名新增成功</string>
-<string name="toast_already_exist_in_home">已釘選在主頁</string>
-<string name="toast_copy_successful">複製成功</string>
-<string name="toast_delete_successful">刪除成功</string>
-<string name="toast_domain_already_exists">域名已存在</string>
-<string name="toast_export_successful">已匯出至：&#160;</string>
-<string name="toast_export_failed">匯出失敗</string>
-<string name="toast_import_successful">匯入統計： </string>
-<string name="toast_import_failed">匯入失敗</string>
-<string name="toast_input_empty">你尚未輸入任何內容</string>
-<string name="toast_invalid_domain">無效域名</string>
-<string name="toast_load_error">無法載入此URL</string>
-<string name="toast_load_in_background">於背景載入</string>
-<string name="toast_new_tab_successful">成功於新分頁開啟</string>
+    <string name="toast_add_to_home_failed">釘選至主頁失敗</string>
+    <string name="toast_add_whitelist_successful">域名新增成功</string>
+    <string name="toast_already_exist_in_home">已釘選在主頁</string>
+    <string name="toast_copy_successful">複製成功</string>
+    <string name="toast_delete_successful">刪除成功</string>
+    <string name="toast_domain_already_exists">域名已存在</string>
+    <string name="toast_export_successful">已匯出至：&#160;</string>
+    <string name="toast_export_failed">匯出失敗</string>
+    <string name="toast_import_successful">匯入統計： </string>
+    <string name="toast_import_failed">匯入失敗</string>
+    <string name="toast_input_empty">你尚未輸入任何內容</string>
+    <string name="toast_invalid_domain">無效域名</string>
+    <string name="toast_load_error">無法載入此URL</string>
+    <string name="toast_load_in_background">於背景載入</string>
+    <string name="toast_new_tab_successful">成功於新分頁開啟</string>
     <string name="toast_relayout_successful">重新佈局成功</string>
-<string name="toast_share_failed">無法分享此網頁</string>
-<string name="toast_start_download">開始下載</string>
-<string name="toast_wait_a_minute">請稍候</string>
-<string name="toast_titleConfirm_delete">確認刪除該項目？</string>
-<string name="toast_titleConfirm_paste">複製資料至剪貼板？</string>
-<string name="toast_titleConfirm_pasteUN">帳號名稱</string>
-<string name="toast_titleConfirm_pastePW">密碼</string>
-<string name="toast_error">呃，程式出錯了。</string>
-<string name="toast_newTitle">項目名稱已存在，請輸入新標題。</string>
-<string name="toast_edit_successful">保存成功</string>
-<string name="toast_webview_forward">無法載入下個網頁</string>
+    <string name="toast_share_failed">無法分享此網頁</string>
+    <string name="toast_start_download">開始下載</string>
+    <string name="toast_wait_a_minute">請稍候</string>
+    <string name="toast_titleConfirm_delete">確認刪除該項目？</string>
+    <string name="toast_titleConfirm_paste">複製資料至剪貼板？</string>
+    <string name="toast_titleConfirm_pasteUN">帳號名稱</string>
+    <string name="toast_titleConfirm_pastePW">密碼</string>
+    <string name="toast_error">呃，程式出錯了。</string>
+    <string name="toast_newTitle">項目名稱已存在，請輸入新標題。</string>
+    <string name="toast_edit_successful">保存成功</string>
+    <string name="toast_webview_forward">無法載入下個網頁</string>
     <string name="toast_clear">你確定要清除？</string>
-<string name="toast_permission_title">權限要求</string>
-<string name="toast_permission_sdCard">FOSS瀏覽器需要讀寫儲存裝置的權限。
+    <string name="toast_permission_title">權限要求</string>
+    <string name="toast_permission_sdCard">FOSS瀏覽器需要讀寫儲存裝置的權限。
 該權限將用於下載檔案、開啟預設檔案管理器和螢幕擷圖。若您現在不允許，可稍後於設定中開啟。</string>
-<string name="toast_permission_sdCard_sec">請在應用程式設定中開啟讀寫儲存裝置的權限。</string>
-<string name="toast_permission_loc">FOSS瀏覽器需要獲取使用者位置的權限。部分網站會要求此權限用於例如導航功能。若您現在不允許，可稍後於設定中開啟。</string>
-<string name="toast_restart">你必需重啟FOSS瀏覽器以應用變更，現在關閉？</string>
-<string name="toast_quit">是否退出FOSS瀏覽器？</string>
-<string name="toast_close_tab">是否關閉當前分頁？</string>
-<string name="toast_closeNotification">關閉所有開啟的網頁。</string>
-<string name="toast_downloadComplete">下載完成。是否開啟檔案管理器？</string>
-<string name="toast_unsecured">此網站使用不安全的連線（http），是否嘗試使用安全連線（https）？</string>
-<string name="toast_backup">是否備份資料？舊的資料將被覆蓋！</string>
+    <string name="toast_permission_sdCard_sec">請在應用程式設定中開啟讀寫儲存裝置的權限。</string>
+    <string name="toast_permission_loc">FOSS瀏覽器需要獲取使用者位置的權限。部分網站會要求此權限用於例如導航功能。若您現在不允許，可稍後於設定中開啟。</string>
+    <string name="toast_restart">你必需重啟FOSS瀏覽器以應用變更，現在關閉？</string>
+    <string name="toast_quit">是否退出FOSS瀏覽器？</string>
+    <string name="toast_close_tab">是否關閉當前分頁？</string>
+    <string name="toast_closeNotification">關閉所有開啟的網頁。</string>
+    <string name="toast_downloadComplete">下載完成。是否開啟檔案管理器？</string>
+    <string name="toast_unsecured">此網站使用不安全的連線（http），是否嘗試使用安全連線（https）？</string>
+    <string name="toast_backup">是否備份資料？舊的資料將被覆蓋！</string>
+    <string name="toast_fav">成功設為起始頁</string>
 
+    <!-- Whitelist -->
+    <string name="whitelist_menu_clear">清除</string>
+    <string name="whitelist_edit_hint">域名</string>
+    <string name="whitelist_add">新增</string>
+    <string name="color_grey">灰</string>
+    <string name="color_red">紅</string>
+    <string name="color_pink">粉紅</string>
+    <string name="color_purple">紫</string>
+    <string name="color_blue">藍</string>
+    <string name="color_teal">藍綠</string>
+    <string name="color_green">綠</string>
+    <string name="color_lime">萊姆</string>
+    <string name="color_yellow">黃</string>
+    <string name="color_orange">橘</string>
+    <string name="color_brown">褐</string>
+    <string name="dialog_url_hint">網址：</string>
+    <string name="dialog_sortName">以名稱排序</string>
+    <string name="dialog_sortIcon">以圖示排序</string>
+    <string name="dialog_icon_title">選擇圖示</string>
+    <string name="dialog_icon_hint">可透過長按書籤的圖示篩選書籤，再按一次圖示結束篩選。</string>
 
-<!-- Whitelist -->
-<string name="whitelist_menu_clear">清除</string>
-<string name="whitelist_edit_hint">域名</string>
-<string name="whitelist_add">新增</string>
+    <!-- gestures -->
+    <string name="setting_title_toolbar">工具列</string>
+    <string name="setting_gesture_up">上滑</string>
+    <string name="setting_gesture_down">下滑</string>
+    <string name="setting_gesture_left">左滑</string>
+    <string name="setting_gesture_right">右滑</string>
+    <string name="setting_gesture_01">無</string>
+    <string name="setting_gesture_02">下一頁</string>
+    <string name="setting_gesture_03">上一頁</string>
+    <string name="setting_gesture_04">捲動至頂</string>
+    <string name="setting_gesture_05">捲動至底</string>
+    <string name="setting_gesture_06">切換至左方分頁</string>
+    <string name="setting_gesture_07">切換至右方分頁</string>
+    <string name="setting_gesture_08">顯示概覽</string>
+    <string name="setting_gesture_09">開啟新分頁</string>
+    <string name="setting_gesture_10">關閉分頁</string>
 
 </resources>
