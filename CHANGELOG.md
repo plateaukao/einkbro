@@ -8,9 +8,12 @@
 - new: Qwant search engine (thanks @Tobiplayer3)
 - new: option to open new tab instead of exiting app
 - new: Ukrainian translation (thanks @Roman Babiy)
+- new: Turkish translation (thanks @ali-demirtas)
 - updated: long press menu on websites
 - updated: Help dialog
 - updated: Polish translation (thanks @gh-pmjm)
+- updated: Dutch translation (thanks @Vistaus)
+- updated: Taiwan Trad. Chinese translation (thanks @elmru)
 - updated: Portuguese translation (thanks @smarquespt)
 - updated: Overview dialog
 - fix: adress bar not showing, when using physical keyboard
