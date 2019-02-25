@@ -11,36 +11,36 @@
         android:id="@+id/appBar"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:layout_height="56dp">
+        android:layout_height="56dp"
+        android:minHeight="@dimen/layout_margin_56dp">
 
         <RelativeLayout android:id="@+id/main_omnibox"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:minHeight="@dimen/layout_margin_56dp"
-            android:background="@color/colorPrimary">
+            android:background="?android:attr/colorBackground">
 
             <ImageButton android:id="@+id/omnibox_overview"
+                android:layout_centerInParent="true"
                 android:layout_alignParentStart="true"
-                android:contentDescription="@null"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:padding="8dp"
                 android:src="@drawable/action_overview"
                 android:background="?attr/actionBarItemBackground"/>
 
             <ImageButton android:id="@+id/omnibox_overflow"
-                android:contentDescription="@null"
+                android:layout_centerInParent="true"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:padding="8dp"
                 android:src="@drawable/ic_action_overflow"
                 android:background="?attr/actionBarItemBackground"/>
 
             <ImageButton android:id="@+id/omnibox_refresh"
-                android:contentDescription="@null"
+                android:layout_centerInParent="true"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_toStartOf="@id/omnibox_overflow"
                 android:padding="8dp"
                 android:src="@drawable/ic_action_refresh"
@@ -64,23 +64,23 @@
                 android:maxLines="1"
                 android:ellipsize="end"
                 android:textColor="@color/color_light"
-                android:background="@color/colorPrimary"/>
+                android:background="?android:attr/colorBackground"/>
 
-            <TextView android:id="@+id/omnibox_title"
-                android:layout_toEndOf="@+id/omnibox_overview"
+            <TextView
+                android:id="@+id/omnibox_title"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:layout_toStartOf="@id/omnibox_refresh"
                 android:layout_marginStart="8dp"
-                android:gravity="center_vertical"
+                android:layout_toStartOf="@id/omnibox_refresh"
+                android:layout_toEndOf="@+id/omnibox_overview"
+                android:background="?android:attr/colorBackground"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:text="@string/album_untitled"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:textColor="@color/color_light"
-                android:background="@color/colorPrimary"
-                android:visibility="gone"/>
+                android:textStyle="bold"
+                android:textColor="@color/color_light" />
 
         </RelativeLayout>
 
@@ -89,7 +89,7 @@
             android:layout_height="match_parent"
             android:minHeight="@dimen/layout_margin_56dp"
             android:visibility="gone"
-            android:background="@color/colorPrimary">
+            android:background="?android:attr/colorBackground">
 
             <ImageButton android:id="@+id/main_search_cancel"
                 android:contentDescription="@null"

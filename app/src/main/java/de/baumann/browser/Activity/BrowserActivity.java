@@ -21,12 +21,13 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
@@ -46,6 +47,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
+import android.support.v7.graphics.Palette;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
@@ -61,6 +63,7 @@ import android.webkit.URLUtil;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
@@ -236,23 +239,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             0, 0, 0, 1.0f, 0     // Alpha
     };
 
-    @SuppressWarnings("SameReturnValue")
-    private boolean onKeyCodeBack() {
-        hideSoftInput(inputBox);
-        hideOverview();
-
-        if (omnibox.getVisibility() == View.GONE) {
-            showOmnibox();
-        } else {
-            if (ninjaWebView.canGoBack()) {
-                ninjaWebView.goBack();
-            } else {
-                removeAlbum(currentAlbumController);
-            }
-        }
-        return true;
-    }
-
     private boolean prepareRecord() {
         NinjaWebView webView = (NinjaWebView) currentAlbumController;
         String title = webView.getTitle();
@@ -268,6 +254,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
     private int originalOrientation;
     private int shortAnimTime = 0;
+    private int webViewAccentColor;
     private float dimen156dp;
     private float dimen144dp;
     private float dimen117dp;
@@ -624,18 +611,26 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
-            case KeyEvent.KEYCODE_VOLUME_UP:
-                return false;
-            case KeyEvent.KEYCODE_VOLUME_DOWN:
-                return false;
+            
             case KeyEvent.KEYCODE_MENU:
                 return showOverflow();
             case KeyEvent.KEYCODE_BACK:
-                // When video fullscreen, first close it
+
+                hideSoftInput(inputBox);
+                hideOverview();
+
                 if (fullscreenHolder != null || customView != null || videoView != null) {
                     return onHideCustomView();
+                } else if (omnibox.getVisibility() == View.GONE) {
+                    showOmnibox();
+                } else {
+                    if (ninjaWebView.canGoBack()) {
+                        ninjaWebView.goBack();
+                    } else {
+                        removeAlbum(currentAlbumController);
+                    }
                 }
-                return onKeyCodeBack();
+                return true;
         }
         return false;
     }
@@ -1328,8 +1323,9 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         final View open_historyView = dialogView.findViewById(R.id.open_historyView);
         final TextView overview_title = dialogView.findViewById(R.id.overview_title);
 
-        final ImageButton overview_prev = dialogView.findViewById(R.id.overview_prev);
-        final ImageButton overview_next = dialogView.findViewById(R.id.overview_next);
+        final ImageButton overview_titleIcons_start = dialogView.findViewById(R.id.overview_titleIcons_start);
+        final ImageButton overview_titleIcons_bookmarks = dialogView.findViewById(R.id.overview_titleIcons_bookmarks);
+        final ImageButton overview_titleIcons_history = dialogView.findViewById(R.id.overview_titleIcons_history);
 
         gridView.setVisibility(View.GONE);
         listView.setVisibility(View.GONE);
@@ -1370,8 +1366,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 open_bookmarkView.setVisibility(View.INVISIBLE);
                 open_historyView.setVisibility(View.INVISIBLE);
                 overview_title.setText(getString(R.string.album_title_home));
-                overview_next.setImageResource(R.drawable.icon_bookmark);
-                overview_prev.setImageResource(R.drawable.icon_history);
                 overViewTab = getString(R.string.album_title_home);
 
                 RecordAction action = new RecordAction(BrowserActivity.this);
@@ -1410,8 +1404,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 open_bookmarkView.setVisibility(View.VISIBLE);
                 open_historyView.setVisibility(View.INVISIBLE);
                 overview_title.setText(getString(R.string.album_title_bookmarks));
-                overview_next.setImageResource(R.drawable.icon_history);
-                overview_prev.setImageResource(R.drawable.icon_earth);
                 overViewTab = getString(R.string.album_title_bookmarks);
                 sp.edit().putString("filter_passBY", "00").apply();
                 initBookmarkList();
@@ -1435,8 +1427,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 open_bookmarkView.setVisibility(View.INVISIBLE);
                 open_historyView.setVisibility(View.VISIBLE);
                 overview_title.setText(getString(R.string.album_title_history));
-                overview_next.setImageResource(R.drawable.icon_earth);
-                overview_prev.setImageResource(R.drawable.icon_bookmark);
                 overViewTab = getString(R.string.album_title_history);
 
                 RecordAction action = new RecordAction(BrowserActivity.this);
@@ -1666,29 +1656,24 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         bottomSheetDialog_OverView.setContentView(dialogView);
 
-        overview_prev.setOnClickListener(new View.OnClickListener() {
+        overview_titleIcons_start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (overViewTab.equals(getString(R.string.album_title_home))) {
-                    open_history.performClick();
-                } else if (overViewTab.equals(getString(R.string.album_title_bookmarks))) {
-                    open_startPage.performClick();
-                } else if (overViewTab.equals(getString(R.string.album_title_history))) {
-                    open_bookmark.performClick();
-                }
+                open_startPage.performClick();
             }
         });
 
-        overview_next.setOnClickListener(new View.OnClickListener() {
+        overview_titleIcons_bookmarks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (overViewTab.equals(getString(R.string.album_title_home))) {
-                    open_bookmark.performClick();
-                } else if (overViewTab.equals(getString(R.string.album_title_bookmarks))) {
-                    open_history.performClick();
-                } else if (overViewTab.equals(getString(R.string.album_title_history))) {
-                    open_startPage.performClick();
-                }
+                open_bookmark.performClick();
+            }
+        });
+
+        overview_titleIcons_history.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                open_history.performClick();
             }
         });
 
@@ -2687,6 +2672,25 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         }
     }
 
+    public static boolean isBrightColor(int color) {
+        if (android.R.color.transparent == color)
+            return true;
+
+        boolean rtnValue = false;
+
+        int[] rgb = { Color.red(color), Color.green(color), Color.blue(color) };
+
+        int brightness = (int) Math.sqrt(rgb[0] * rgb[0] * .241 + rgb[1]
+                * rgb[1] * .691 + rgb[2] * rgb[2] * .068);
+
+        // color is light
+        if (brightness >= 200) {
+            rtnValue = true;
+        }
+
+        return rtnValue;
+    }
+
     @Override
     public synchronized void updateProgress(int progress) {
 
@@ -2699,6 +2703,51 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         } else {
             updateRefresh(false);
             progressBar.setVisibility(View.GONE);
+
+            new Handler().postDelayed(new Runnable() {
+                public void run() {
+                    int width = ninjaWebView.getWidth();
+                    int height = 56;
+
+                    if (width > 0) {
+
+                        final Bitmap icon = ViewUnit.capture(ninjaWebView, width, height, Bitmap.Config.ARGB_8888);
+
+                        // Asynchronous
+                        Palette.from(icon).generate(new Palette.PaletteAsyncListener() {
+                            public void onGenerated(Palette p) {
+                                // Use generated instance
+                                final Palette.Swatch vibrant = p.getDominantSwatch();
+                                final Palette.Swatch vibrant2 = p.getMutedSwatch();
+                                
+                                if (vibrant != null && !isBrightColor(vibrant.getRgb())) {
+                                    getWindow().setStatusBarColor(vibrant.getRgb());
+                                    omnibox.setBackgroundColor(vibrant.getRgb());
+                                    omniboxTitle.setBackgroundColor(vibrant.getRgb());
+                                    inputBox.setBackgroundColor(vibrant.getRgb());
+                                } else {
+                                    getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
+                                    omnibox.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                                    omniboxTitle.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                                    inputBox.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                                }
+
+                                if (vibrant2 != null) {
+                                    fab_imageButtonNav.setBackgroundTintList(ColorStateList.valueOf(vibrant2.getRgb()));
+                                } else {
+                                    fab_imageButtonNav.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+                                }
+                            }
+                        });
+                    } else {
+                        getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
+                        omnibox.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                        omniboxTitle.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                        inputBox.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                        fab_imageButtonNav.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
+                    }
+                }
+            }, 250);
         }
     }
 
@@ -3093,11 +3142,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
     private void  updateOverflow () {
 
-        new Handler().postDelayed(new Runnable() {
-            public void run() {
-                dialogTitle.setText(ninjaWebView.getTitle());
-            }
-        }, 500);
+        dialogTitle.setText(ninjaWebView.getTitle());
 
         if (BrowserContainer.size() <= 1) {
             tab_next.setVisibility(View.GONE);
