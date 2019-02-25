@@ -2,6 +2,7 @@ package de.baumann.browser.View;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.MailTo;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
@@ -135,6 +137,7 @@ public class NinjaWebView extends WebView implements AlbumController {
         setWebChromeClient(webChromeClient);
         setDownloadListener(downloadListener);
         setOnTouchListener(new OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 gestureDetector.onTouchEvent(motionEvent);
@@ -143,6 +146,7 @@ public class NinjaWebView extends WebView implements AlbumController {
         });
     }
 
+    @TargetApi(Build.VERSION_CODES.O)
     private synchronized void initWebSettings() {
         webSettings = getSettings();
 
@@ -159,6 +163,7 @@ public class NinjaWebView extends WebView implements AlbumController {
         webSettings.setBuiltInZoomControls(true);
         webSettings.setDisplayZoomControls(false);
         webSettings.setSupportZoom(true);
+        webSettings.setSafeBrowsingEnabled(true);
     }
 
     public synchronized void initPreferences() {

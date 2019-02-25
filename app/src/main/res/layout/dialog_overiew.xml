@@ -9,107 +9,20 @@
     android:animateLayoutChanges="true"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <RelativeLayout
-        android:id="@+id/overview_titleLayout"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:minHeight="56dp"
-        android:layout_marginTop="8dp"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
-
-        <ImageButton
-            android:layout_alignParentStart="true"
-            android:id="@+id/overview_prev"
-            android:layout_width="42dp"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical|center_horizontal"
-            android:layout_marginBottom="4dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginStart="16dp"
-            android:background="?attr/actionBarItemBackground"
-            android:src="@drawable/icon_arrow_left"/>
-
-        <TextView
-            android:id="@+id/overview_title"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_toEndOf="@+id/overview_prev"
-            android:layout_toStartOf="@+id/overview_next"
-            android:ellipsize="end"
-            android:gravity="center_vertical|center_horizontal"
-            android:maxLines="1"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textStyle="bold" />
-
-        <ImageButton
-            android:layout_alignParentEnd="true"
-            android:id="@+id/overview_next"
-            android:layout_width="42dp"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical|center_horizontal"
-            android:layout_marginBottom="4dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="16dp"
-            android:background="?attr/actionBarItemBackground"
-            android:src="@drawable/icon_arrow_right" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/tab_hide"
+    <LinearLayout
+        android:id="@+id/top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tab_ScrollView">
+        android:orientation="vertical">
 
-        <View
+        <HorizontalScrollView
+            android:id="@+id/tab_ScrollView"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:layout_toStartOf="@+id/tab_toggle"
-            android:background="?android:attr/colorButtonNormal" />
-
-        <ImageButton
-            android:visibility="gone"
-            android:layout_centerInParent="true"
-            android:id="@+id/tab_toggle"
-            android:layout_width="42dp"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical|center_horizontal"
-            android:background="?attr/actionBarItemBackground"
-            android:src="@drawable/icon_arrow_down_gest" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:layout_toEndOf="@+id/tab_toggle"
-            android:background="?android:attr/colorButtonNormal" />
-
-    </RelativeLayout>
-
-    <HorizontalScrollView
-        android:layout_below="@+id/overview_titleLayout"
-        android:id="@+id/tab_ScrollView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="@dimen/layout_margin_8dp"
-        android:paddingEnd="@dimen/layout_margin_8dp"
-        android:paddingTop="4dp"
-        android:scrollbars="none">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:paddingTop="16dp"
+            android:scrollbars="none">
 
             <LinearLayout
                 android:id="@+id/tab_container"
@@ -117,20 +30,95 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
-            <ImageButton android:id="@+id/tab_plus"
-                android:layout_marginStart="@dimen/layout_margin_8dp"
+        </HorizontalScrollView>
+        
+        <RelativeLayout
+            android:id="@+id/overview_titleLayout"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:minHeight="56dp">
+
+            <TextView
+                android:id="@+id/overview_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@+id/overview_titleIcons"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="4dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/overview_titleIcons"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:padding="8dp"
-                android:src="@drawable/icon_plus"
-                android:background="?attr/actionBarItemBackground"/>
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerInParent="true"
+                android:orientation="horizontal">
 
-        </LinearLayout>
+                <ImageButton
+                    android:id="@+id/tab_toggle"
+                    android:layout_width="42dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical|center_horizontal"
+                    android:layout_marginEnd="2dp"
+                    android:layout_marginStart="2dp"
+                    android:background="?attr/actionBarItemBackground"
+                    android:src="@drawable/icon_overview"
+                    android:visibility="gone"/>
 
-    </HorizontalScrollView>
+                <ImageButton
+                    android:id="@+id/tab_plus"
+                    android:layout_width="42dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical|center_horizontal"
+                    android:layout_marginEnd="2dp"
+                    android:layout_marginStart="2dp"
+                    android:background="?attr/actionBarItemBackground"
+                    android:src="@drawable/icon_plus" />
+
+                <ImageButton
+                    android:id="@+id/overview_titleIcons_start"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:layout_gravity="center_vertical|center_horizontal"
+                    android:layout_marginEnd="2dp"
+                    android:layout_marginStart="2dp"
+                    android:background="?attr/actionBarItemBackground"
+                    android:src="@drawable/icon_earth" />
+
+                <ImageButton
+                    android:id="@+id/overview_titleIcons_bookmarks"
+                    android:layout_width="42dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical|center_horizontal"
+                    android:layout_marginEnd="2dp"
+                    android:layout_marginStart="2dp"
+                    android:background="?attr/actionBarItemBackground"
+                    android:src="@drawable/icon_bookmark" />
+
+                <ImageButton
+                    android:id="@+id/overview_titleIcons_history"
+                    android:layout_width="42dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical|center_horizontal"
+                    android:layout_marginEnd="2dp"
+                    android:layout_marginStart="2dp"
+                    android:background="?attr/actionBarItemBackground"
+                    android:src="@drawable/ic_action_history" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
 
     <RelativeLayout
-        android:layout_below="@+id/tab_hide"
+        android:layout_below="@+id/top"
         android:layout_above="@+id/home_buttons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
