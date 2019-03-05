@@ -17,6 +17,7 @@
             android:selectAllOnFocus="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:includeFontPadding="false"
             android:imeOptions="actionDone"
             android:inputType="text"
             android:hint="@string/dialog_title_hint"
@@ -34,6 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
+            android:includeFontPadding="false"
             android:background="?attr/selectableItemBackground"
             android:textColor="@color/colorAccent"
             android:text="@string/app_ok"/>
@@ -41,6 +43,7 @@
         <Button android:id="@+id/action_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:includeFontPadding="false"
             android:layout_toStartOf="@+id/action_ok"
             android:background="?attr/selectableItemBackground"
             android:textColor="@color/colorAccent"

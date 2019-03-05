@@ -2,7 +2,11 @@ package de.baumann.browser.View;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -49,6 +53,7 @@ class Album {
         initUI();
     }
 
+
     @SuppressLint("InflateParams")
     private void initUI() {
         albumView = LayoutInflater.from(context).inflate(R.layout.album, null, false);
@@ -76,6 +81,13 @@ class Album {
 
     public void activate() {
         albumView.setBackgroundResource(R.drawable.album_shape_accent);
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        int color = sp.getInt("vibrantColor", 0);
+
+        Drawable shape = context.getDrawable(R.drawable.album_shape_accent);
+        shape.setTint(color);
+        shape.setTintMode(PorterDuff.Mode.SRC_OVER);
     }
 
     public void deactivate() {

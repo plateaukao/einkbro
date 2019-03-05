@@ -28,6 +28,11 @@ import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
+import android.graphics.Point;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
@@ -52,6 +57,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,7 +69,6 @@ import android.webkit.URLUtil;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
@@ -212,6 +217,14 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     private FrameLayout fullscreenHolder;
 
 
+    private View open_startPageView;
+    private View open_bookmarkView;
+    private View open_historyView;
+
+    private View overview_titleIcons_startView;
+    private View overview_titleIcons_bookmarksView;
+    private View overview_titleIcons_historyView;
+
     // Others
 
     private String title;
@@ -253,8 +266,9 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     }
 
     private int originalOrientation;
-    private int shortAnimTime = 0;
-    private int webViewAccentColor;
+    private int shortAnimTime;
+    private int vibrantDarkColor;
+    private int vibrantColor;
     private float dimen156dp;
     private float dimen144dp;
     private float dimen117dp;
@@ -297,6 +311,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         sp = PreferenceManager.getDefaultSharedPreferences(this);
         sp.edit().putInt("restart_changed", 0).apply();
+        sp.edit().putInt("vibrantColor", getResources().getColor(R.color.colorAccent)).commit();
 
         HelperUnit.grantPermissionsStorage(this);
         HelperUnit.setTheme(this);
@@ -359,6 +374,10 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         dimen144dp = getResources().getDimensionPixelSize(R.dimen.layout_width_144dp);
         dimen117dp = getResources().getDimensionPixelSize(R.dimen.layout_height_117dp);
         dimen108dp = getResources().getDimensionPixelSize(R.dimen.layout_height_108dp);
+
+        // Load default colors
+        vibrantColor = ContextCompat.getColor(BrowserActivity.this, R.color.colorAccent);
+        vibrantDarkColor = ContextCompat.getColor(BrowserActivity.this, R.color.colorPrimaryDark);
 
         ninjaWebView = (NinjaWebView) currentAlbumController;
 
@@ -635,6 +654,48 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         return false;
     }
 
+    private void setColor () {
+
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+
+        int width = size.x;
+        int height = size.y;
+        final Bitmap icon = ViewUnit.capture(ninjaWebView, width, 112, Bitmap.Config.ARGB_8888);
+
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                Palette.from(icon).generate(new Palette.PaletteAsyncListener() {
+                    public void onGenerated(Palette p) {
+                        final Palette.Swatch vibrantDark = p.getDarkVibrantSwatch();
+                        final Palette.Swatch vibrant = p.getVibrantSwatch();
+
+                        if(vibrant != null){
+                            vibrantColor = vibrant.getRgb();
+                        } else {
+                            vibrantColor = ContextCompat.getColor(BrowserActivity.this, R.color.colorAccent);
+                        }
+
+                        if(vibrantDark != null  && !isBrightColor(vibrantDark.getRgb())){
+                            vibrantDarkColor = vibrantDark.getRgb();
+                        } else {
+                            vibrantDarkColor = ContextCompat.getColor(BrowserActivity.this, R.color.colorPrimaryDark);
+                        }
+
+                        sp.edit().putInt("vibrantColor", vibrantColor).commit();
+
+                        getWindow().setStatusBarColor(vibrantDarkColor);
+                        omnibox.setBackgroundColor(vibrantDarkColor);
+                        omniboxTitle.setBackgroundColor(vibrantDarkColor);
+                        inputBox.setBackgroundColor(vibrantDarkColor);
+                        fab_imageButtonNav.setBackgroundTintList(ColorStateList.valueOf(vibrantColor));
+                    }
+                });
+            }
+        }, shortAnimTime);
+    }
+
     @Override
     public synchronized void showAlbum(AlbumController controller) {
 
@@ -652,6 +713,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         currentAlbumController = controller;
         currentAlbumController.activate();
         updateOmnibox();
+        setColor();
     }
 
     @Override
@@ -696,12 +758,30 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     }
 
     private void showOverview() {
+
+        if (currentAlbumController != null) {
+            currentAlbumController.deactivate();
+            currentAlbumController.activate();
+        }
+
+        if (currentAlbumController != null) {
+            currentAlbumController.deactivate();
+            currentAlbumController.activate();
+        }
+
+        open_startPageView.setBackgroundColor(vibrantColor);
+        open_historyView.setBackgroundColor(vibrantColor);
+        open_bookmarkView.setBackgroundColor(vibrantColor);
+        overview_titleIcons_startView.setBackgroundColor(vibrantColor);
+        overview_titleIcons_bookmarksView.setBackgroundColor(vibrantColor);
+        overview_titleIcons_historyView.setBackgroundColor(vibrantColor);
+
         bottomSheetDialog_OverView.show();
         new Handler().postDelayed(new Runnable() {
             public void run() {
                 tab_ScrollView.smoothScrollTo(currentAlbumController.getAlbumView().getLeft(), 0);
             }
-        }, 250);
+        }, shortAnimTime);
     }
 
     public void hideOverview () {
@@ -1084,7 +1164,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 public void run() {
                     open_history.performClick();
                 }
-            }, 250);
+            }, shortAnimTime);
         } else if ("sc_bookmark".equals(action)) {
             pinAlbums(sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"));
             showOverview();
@@ -1092,7 +1172,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 public void run() {
                     open_bookmark.performClick();
                 }
-            }, 250);
+            }, shortAnimTime);
 
         } else if ("sc_startPage".equals(action)) {
             pinAlbums(sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"));
@@ -1101,7 +1181,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 public void run() {
                     open_startPage.performClick();
                 }
-            }, 250);
+            }, shortAnimTime);
 
         } else if (Intent.ACTION_SEND.equals(action)) {
             pinAlbums(intent.getStringExtra(Intent.EXTRA_TEXT));
@@ -1223,17 +1303,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             }
         });
 
-        inputBox.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean hasFocus) {
-                if (hasFocus) {
-                    omniboxTitle.setVisibility(View.GONE);
-                } else {
-                    omniboxTitle.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-
         updateBookmarks();
         updateAutoComplete();
 
@@ -1316,11 +1385,16 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         tab_plus.setOnClickListener(this);
         listView = dialogView.findViewById(R.id.home_list_2);
 
+        open_startPageView = dialogView.findViewById(R.id.open_newTabView);
+        open_bookmarkView = dialogView.findViewById(R.id.open_bookmarkView);
+        open_historyView = dialogView.findViewById(R.id.open_historyView);
+
+        overview_titleIcons_startView = dialogView.findViewById(R.id.overview_titleIcons_startView);
+        overview_titleIcons_bookmarksView = dialogView.findViewById(R.id.overview_titleIcons_bookmarksView);
+        overview_titleIcons_historyView = dialogView.findViewById(R.id.overview_titleIcons_historyView);
+
         final Button relayoutOK = dialogView.findViewById(R.id.relayout_ok);
         final DynamicGridView gridView = dialogView.findViewById(R.id.home_grid_2);
-        final View open_startPageView = dialogView.findViewById(R.id.open_newTabView);
-        final View open_bookmarkView = dialogView.findViewById(R.id.open_bookmarkView);
-        final View open_historyView = dialogView.findViewById(R.id.open_historyView);
         final TextView overview_title = dialogView.findViewById(R.id.overview_title);
 
         final ImageButton overview_titleIcons_start = dialogView.findViewById(R.id.overview_titleIcons_start);
@@ -1365,6 +1439,9 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 open_startPageView.setVisibility(View.VISIBLE);
                 open_bookmarkView.setVisibility(View.INVISIBLE);
                 open_historyView.setVisibility(View.INVISIBLE);
+                overview_titleIcons_startView.setVisibility(View.VISIBLE);
+                overview_titleIcons_bookmarksView.setVisibility(View.INVISIBLE);
+                overview_titleIcons_historyView.setVisibility(View.INVISIBLE);
                 overview_title.setText(getString(R.string.album_title_home));
                 overViewTab = getString(R.string.album_title_home);
 
@@ -1403,6 +1480,9 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 open_startPageView.setVisibility(View.INVISIBLE);
                 open_bookmarkView.setVisibility(View.VISIBLE);
                 open_historyView.setVisibility(View.INVISIBLE);
+                overview_titleIcons_startView.setVisibility(View.INVISIBLE);
+                overview_titleIcons_bookmarksView.setVisibility(View.VISIBLE);
+                overview_titleIcons_historyView.setVisibility(View.INVISIBLE);
                 overview_title.setText(getString(R.string.album_title_bookmarks));
                 overViewTab = getString(R.string.album_title_bookmarks);
                 sp.edit().putString("filter_passBY", "00").apply();
@@ -1426,6 +1506,9 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 open_startPageView.setVisibility(View.INVISIBLE);
                 open_bookmarkView.setVisibility(View.INVISIBLE);
                 open_historyView.setVisibility(View.VISIBLE);
+                overview_titleIcons_startView.setVisibility(View.INVISIBLE);
+                overview_titleIcons_bookmarksView.setVisibility(View.INVISIBLE);
+                overview_titleIcons_historyView.setVisibility(View.VISIBLE);
                 overview_title.setText(getString(R.string.album_title_history));
                 overViewTab = getString(R.string.album_title_history);
 
@@ -1667,6 +1750,14 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             @Override
             public void onClick(View v) {
                 open_bookmark.performClick();
+            }
+        });
+
+        overview_titleIcons_bookmarks.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                showFilterDialog();
+                return false;
             }
         });
 
@@ -1940,6 +2031,37 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                         bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
                                         View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_edit_icon, null);
 
+                                        String icon_01_string = sp.getString("icon_01", getResources().getString(R.string.color_red));
+                                        TextView icon_01_tv = dialogView.findViewById(R.id.icon_01_tv);
+                                        icon_01_tv.setText(icon_01_string);
+                                        String icon_02_string = sp.getString("icon_02", getResources().getString(R.string.color_pink));
+                                        TextView icon_02_tv = dialogView.findViewById(R.id.icon_02_tv);
+                                        icon_02_tv.setText(icon_02_string);
+                                        String icon_03_string = sp.getString("icon_03", getResources().getString(R.string.color_purple));
+                                        TextView icon_03_tv = dialogView.findViewById(R.id.icon_03_tv);
+                                        icon_03_tv.setText(icon_03_string);
+                                        String icon_04_string = sp.getString("icon_04", getResources().getString(R.string.color_blue));
+                                        TextView icon_04_tv = dialogView.findViewById(R.id.icon_04_tv);
+                                        icon_04_tv.setText(icon_04_string);
+                                        String icon_05_string = sp.getString("icon_05", getResources().getString(R.string.color_teal));
+                                        TextView icon_05_tv = dialogView.findViewById(R.id.icon_05_tv);
+                                        icon_05_tv.setText(icon_05_string);
+                                        String icon_06_string = sp.getString("icon_06", getResources().getString(R.string.color_green));
+                                        TextView icon_06_tv = dialogView.findViewById(R.id.icon_06_tv);
+                                        icon_06_tv.setText(icon_06_string);
+                                        String icon_07_string = sp.getString("icon_07", getResources().getString(R.string.color_lime));
+                                        TextView icon_07_tv = dialogView.findViewById(R.id.icon_07_tv);
+                                        icon_07_tv.setText(icon_07_string);
+                                        String icon_08_string = sp.getString("icon_08", getResources().getString(R.string.color_yellow));
+                                        TextView icon_08_tv = dialogView.findViewById(R.id.icon_08_tv);
+                                        icon_08_tv.setText(icon_08_string);
+                                        String icon_09_string = sp.getString("icon_09", getResources().getString(R.string.color_orange));
+                                        TextView icon_09_tv = dialogView.findViewById(R.id.icon_09_tv);
+                                        icon_09_tv.setText(icon_09_string);
+                                        String icon_10_string = sp.getString("icon_10", getResources().getString(R.string.color_brown));
+                                        TextView icon_10_tv = dialogView.findViewById(R.id.icon_10_tv);
+                                        icon_10_tv.setText(icon_10_string);
+
                                         LinearLayout icon_01 = dialogView.findViewById(R.id.icon_01);
                                         icon_01.setOnClickListener(new View.OnClickListener() {
                                             @Override
@@ -2030,15 +2152,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                                 hideBottomSheetDialog ();
                                             }
                                         });
-                                        LinearLayout icon_11 = dialogView.findViewById(R.id.icon_11);
-                                        icon_11.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                db.update(Integer.parseInt(_id), HelperUnit.secString(input_pass_title), HelperUnit.secString(input_pass_url),  HelperUnit.secString(encrypted_userName), HelperUnit.secString(encrypted_userPW), "11");
-                                                initBookmarkList();
-                                                hideBottomSheetDialog ();
-                                            }
-                                        });
 
                                         bottomSheetDialog.setContentView(dialogView);
                                         bottomSheetDialog.show();
@@ -2108,26 +2221,36 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         final ImageButton whiteList_js = dialogView.findViewById(R.id.imageButton_js);
         CheckBox sw_adBlock = dialogView.findViewById(R.id.switch_adBlock);
         final ImageButton whiteList_ab = dialogView.findViewById(R.id.imageButton_ab);
-        CheckBox sw_image = dialogView.findViewById(R.id.switch_images);
-        CheckBox sw_remote = dialogView.findViewById(R.id.switch_remote);
         CheckBox sw_cookie = dialogView.findViewById(R.id.switch_cookie);
         final ImageButton whitelist_cookie = dialogView.findViewById(R.id.imageButton_cookie);
-        CheckBox sw_location = dialogView.findViewById(R.id.switch_location);
-        CheckBox sw_invert = dialogView.findViewById(R.id.switch_invert);
-        CheckBox sw_history = dialogView.findViewById(R.id.switch_history);
 
         javaHosts = new Javascript(BrowserActivity.this);
         javaHosts = getJavaHosts();
-
         cookieHosts = new Cookie(BrowserActivity.this);
         cookieHosts = getCookieHosts();
-
         adBlock = new AdBlock(BrowserActivity.this);
         adBlock = getAdBlock();
-
         ninjaWebView = (NinjaWebView) currentAlbumController;
 
         final String url = ninjaWebView.getUrl();
+
+        if (sp.getBoolean(getString(R.string.sp_javascript), true)){
+            sw_java.setChecked(true);
+        } else {
+            sw_java.setChecked(false);
+        }
+
+        if (sp.getBoolean(getString(R.string.sp_ad_block), true)){
+            sw_adBlock.setChecked(true);
+        } else {
+            sw_adBlock.setChecked(false);
+        }
+
+        if (sp.getBoolean(getString(R.string.sp_cookies), true)){
+            sw_cookie.setChecked(true);
+        } else {
+            sw_cookie.setChecked(false);
+        }
 
         if (javaHosts.isWhite(url)) {
             whiteList_js.setImageResource(R.drawable.check_green);
@@ -2141,10 +2264,10 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             whitelist_cookie.setImageResource(R.drawable.ic_action_close_red);
         }
 
-        if (sp.getBoolean(getString(R.string.sp_javascript), true)){
-            sw_java.setChecked(true);
+        if (adBlock.isWhite(url)) {
+            whiteList_ab.setImageResource(R.drawable.check_green);
         } else {
-            sw_java.setChecked(false);
+            whiteList_ab.setImageResource(R.drawable.ic_action_close_red);
         }
 
         whiteList_js.setOnClickListener(new View.OnClickListener() {
@@ -2173,29 +2296,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             }
         });
 
-        sw_java.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    sp.edit().putBoolean(getString(R.string.sp_javascript), true).commit();
-                }else{
-                    sp.edit().putBoolean(getString(R.string.sp_javascript), false).commit();
-                }
-
-            }
-        });
-
-        if (adBlock.isWhite(url)) {
-            whiteList_ab.setImageResource(R.drawable.check_green);
-        } else {
-            whiteList_ab.setImageResource(R.drawable.ic_action_close_red);
-        }
-
-        if (sp.getBoolean(getString(R.string.sp_ad_block), true)){
-            sw_adBlock.setChecked(true);
-        } else {
-            sw_adBlock.setChecked(false);
-        }
 
         whiteList_ab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -2210,6 +2310,18 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             }
         });
 
+        sw_java.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    sp.edit().putBoolean(getString(R.string.sp_javascript), true).commit();
+                }else{
+                    sp.edit().putBoolean(getString(R.string.sp_javascript), false).commit();
+                }
+
+            }
+        });
+
         sw_adBlock.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -2220,46 +2332,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 }
             }
         });
-
-        if (sp.getBoolean(getString(R.string.sp_images), true)){
-            sw_image.setChecked(true);
-        } else {
-            sw_image.setChecked(false);
-        }
-
-        sw_image.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    sp.edit().putBoolean(getString(R.string.sp_images), true).commit();
-                }else{
-                    sp.edit().putBoolean(getString(R.string.sp_images), false).commit();
-                }
-            }
-        });
-
-        if (sp.getBoolean(("sp_remote"), true)){
-            sw_remote.setChecked(true);
-        } else {
-            sw_remote.setChecked(false);
-        }
-
-        sw_remote.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    sp.edit().putBoolean(("sp_remote"), true).commit();
-                }else{
-                    sp.edit().putBoolean(("sp_remote"), false).commit();
-                }
-            }
-        });
-
-        if (sp.getBoolean(getString(R.string.sp_cookies), true)){
-            sw_cookie.setChecked(true);
-        } else {
-            sw_cookie.setChecked(false);
-        }
 
         sw_cookie.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -2273,105 +2345,125 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             }
         });
 
-        if (sp.getBoolean("saveHistory", true)){
-            sw_history.setChecked(true);
+        final ImageButton toggle_history = dialogView.findViewById(R.id.toggle_history);
+        final View toggle_historyView = dialogView.findViewById(R.id.toggle_historyView);
+
+        final ImageButton toggle_location = dialogView.findViewById(R.id.toggle_location);
+        final View toggle_locationView = dialogView.findViewById(R.id.toggle_locationView);
+
+        final ImageButton toggle_images = dialogView.findViewById(R.id.toggle_images);
+        final View toggle_imagesView = dialogView.findViewById(R.id.toggle_imagesView);
+
+        final ImageButton toggle_remote = dialogView.findViewById(R.id.toggle_remote);
+        final View toggle_remoteView = dialogView.findViewById(R.id.toggle_remoteView);
+
+        final ImageButton toggle_invert = dialogView.findViewById(R.id.toggle_invert);
+        final View toggle_invertView = dialogView.findViewById(R.id.toggle_invertView);
+
+        final ImageButton toggle_font = dialogView.findViewById(R.id.toggle_font);
+
+        toggle_font.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.cancel();
+                Intent intent = new Intent(BrowserActivity.this, Settings_Activity.class);
+                startActivity(intent);
+            }
+        });
+
+        if (sp.getBoolean("saveHistory", false)) {
+            toggle_historyView.setVisibility(View.VISIBLE);
         } else {
-            sw_history.setChecked(false);
+            toggle_historyView.setVisibility(View.INVISIBLE);
         }
 
-        sw_history.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        toggle_history.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    sp.edit().putBoolean("saveHistory", true).commit();
-                }else{
+            public void onClick(View v) {
+                if (sp.getBoolean("saveHistory", false)) {
+                    toggle_historyView.setVisibility(View.INVISIBLE);
                     sp.edit().putBoolean("saveHistory", false).commit();
+                } else {
+                    toggle_historyView.setVisibility(View.VISIBLE);
+                    sp.edit().putBoolean("saveHistory", true).commit();
                 }
             }
         });
 
-        if (!sp.getBoolean(getString(R.string.sp_location), true)) {
-            sw_location.setChecked(false);
+        if (sp.getBoolean(getString(R.string.sp_location), false)) {
+            toggle_locationView.setVisibility(View.VISIBLE);
         } else {
-            sw_location.setChecked(true);
+            toggle_locationView.setVisibility(View.INVISIBLE);
         }
 
-        sw_location.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        toggle_location.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    sp.edit().putBoolean(getString(R.string.sp_location), true).commit();
-                }else{
+            public void onClick(View v) {
+                if (sp.getBoolean(getString(R.string.sp_location), false)) {
+                    toggle_locationView.setVisibility(View.INVISIBLE);
                     sp.edit().putBoolean(getString(R.string.sp_location), false).commit();
+                } else {
+                    toggle_locationView.setVisibility(View.VISIBLE);
+                    sp.edit().putBoolean(getString(R.string.sp_location), true).commit();
                 }
             }
         });
 
-        if (!sp.getBoolean("sp_invert", false)) {
-            sw_invert.setChecked(false);
+        if (sp.getBoolean(getString(R.string.sp_images), true)) {
+            toggle_imagesView.setVisibility(View.VISIBLE);
         } else {
-            sw_invert.setChecked(true);
+            toggle_imagesView.setVisibility(View.INVISIBLE);
         }
 
-        sw_invert.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        toggle_images.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    sp.edit().putBoolean("sp_invert", true).commit();
-                    initRendering(contentFrame);
-                }else{
+            public void onClick(View v) {
+                if (sp.getBoolean(getString(R.string.sp_images), true)) {
+                    toggle_imagesView.setVisibility(View.INVISIBLE);
+                    sp.edit().putBoolean(getString(R.string.sp_images), false).commit();
+                } else {
+                    toggle_imagesView.setVisibility(View.VISIBLE);
+                    sp.edit().putBoolean(getString(R.string.sp_images), true).commit();
+                }
+            }
+        });
+
+        if (sp.getBoolean("sp_remote", true)) {
+            toggle_remoteView.setVisibility(View.VISIBLE);
+        } else {
+            toggle_remoteView.setVisibility(View.INVISIBLE);
+        }
+
+        toggle_remote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (sp.getBoolean("sp_remote", true)) {
+                    toggle_remoteView.setVisibility(View.INVISIBLE);
+                    sp.edit().putBoolean("sp_remote", false).commit();
+                } else {
+                    toggle_remoteView.setVisibility(View.VISIBLE);
+                    sp.edit().putBoolean("sp_remote", true).commit();
+                }
+            }
+        });
+
+        if (sp.getBoolean("sp_invert", false)) {
+            toggle_invertView.setVisibility(View.VISIBLE);
+        } else {
+            toggle_invertView.setVisibility(View.INVISIBLE);
+        }
+
+        toggle_invert.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (sp.getBoolean("sp_invert", false)) {
+                    toggle_invertView.setVisibility(View.INVISIBLE);
                     sp.edit().putBoolean("sp_invert", false).commit();
-                    initRendering(contentFrame);
+                } else {
+                    toggle_invertView.setVisibility(View.VISIBLE);
+                    sp.edit().putBoolean("sp_invert", true).commit();
                 }
-            }
-        });
-
-        final TextView font_text = dialogView.findViewById(R.id.font_text);
-        font_text.setText(sp.getString("sp_fontSize", "100"));
-
-        ImageButton font_minus = dialogView.findViewById(R.id.font_minus);
-        font_minus.setImageResource(R.drawable.icon_minus);
-        font_minus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switch (Objects.requireNonNull(sp.getString("sp_fontSize", "100"))) {
-                    case "100":
-                        Log.i(TAG, "Can not change font size");
-                        break;
-                    case "125":
-                        sp.edit().putString("sp_fontSize", "100").commit();
-                        break;
-                    case "150":
-                        sp.edit().putString("sp_fontSize", "125").commit();
-                        break;
-                    case "175":
-                        sp.edit().putString("sp_fontSize", "150").commit();
-                        break;
-                }
-                font_text.setText(sp.getString("sp_fontSize", "100"));
-            }
-        });
-
-        ImageButton font_plus = dialogView.findViewById(R.id.font_plus);
-        font_plus.setImageResource(R.drawable.icon_plus);
-        font_plus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switch (Objects.requireNonNull(sp.getString("sp_fontSize", "100"))) {
-                    case "100":
-                        sp.edit().putString("sp_fontSize", "125").commit();
-                        break;
-                    case "125":
-                        sp.edit().putString("sp_fontSize", "150").commit();
-                        break;
-                    case "150":
-                        sp.edit().putString("sp_fontSize", "175").commit();
-                        break;
-                    case "175":
-                        Log.i(TAG, "Can not change font size");
-                        break;
-                }
-                font_text.setText(sp.getString("sp_fontSize", "100"));
+                initRendering(contentFrame);
             }
         });
 
@@ -2627,7 +2719,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         initRendering(contentFrame);
         omniboxTitle.setText(currentAlbumController.getAlbumTitle());
-
         ninjaWebView = (NinjaWebView) currentAlbumController;
         updateProgress(ninjaWebView.getProgress());
         updateBookmarks();
@@ -2640,13 +2731,12 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             updateInputBox(ninjaWebView.getOriginalUrl());
         }
 
-        contentFrame.postDelayed(new Runnable() {
+        new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 currentAlbumController.setAlbumCover(ViewUnit.capture(((View) currentAlbumController), dimen144dp, dimen108dp, Bitmap.Config.RGB_565));
             }
         }, shortAnimTime);
-
     }
 
     private void scrollChange () {
@@ -2672,7 +2762,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         }
     }
 
-    public static boolean isBrightColor(int color) {
+    private static boolean isBrightColor(int color) {
         if (android.R.color.transparent == color)
             return true;
 
@@ -2695,59 +2785,16 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     public synchronized void updateProgress(int progress) {
 
         progressBar.setProgress(progress);
-
         updateBookmarks();
+        setColor();
+
         if (progress < BrowserUnit.PROGRESS_MAX) {
             updateRefresh(true);
             progressBar.setVisibility(View.VISIBLE);
         } else {
             updateRefresh(false);
             progressBar.setVisibility(View.GONE);
-
-            new Handler().postDelayed(new Runnable() {
-                public void run() {
-                    int width = ninjaWebView.getWidth();
-                    int height = 56;
-
-                    if (width > 0) {
-
-                        final Bitmap icon = ViewUnit.capture(ninjaWebView, width, height, Bitmap.Config.ARGB_8888);
-
-                        // Asynchronous
-                        Palette.from(icon).generate(new Palette.PaletteAsyncListener() {
-                            public void onGenerated(Palette p) {
-                                // Use generated instance
-                                final Palette.Swatch vibrant = p.getDominantSwatch();
-                                final Palette.Swatch vibrant2 = p.getMutedSwatch();
-                                
-                                if (vibrant != null && !isBrightColor(vibrant.getRgb())) {
-                                    getWindow().setStatusBarColor(vibrant.getRgb());
-                                    omnibox.setBackgroundColor(vibrant.getRgb());
-                                    omniboxTitle.setBackgroundColor(vibrant.getRgb());
-                                    inputBox.setBackgroundColor(vibrant.getRgb());
-                                } else {
-                                    getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
-                                    omnibox.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                                    omniboxTitle.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                                    inputBox.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                                }
-
-                                if (vibrant2 != null) {
-                                    fab_imageButtonNav.setBackgroundTintList(ColorStateList.valueOf(vibrant2.getRgb()));
-                                } else {
-                                    fab_imageButtonNav.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
-                                }
-                            }
-                        });
-                    } else {
-                        getWindow().setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
-                        omnibox.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                        omniboxTitle.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                        inputBox.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                        fab_imageButtonNav.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
-                    }
-                }
-            }, 250);
+            setColor();
         }
     }
 
@@ -3093,7 +3140,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 assert imm != null;
                 imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
             }
-        }, 250);
+        }, shortAnimTime);
     }
 
     @SuppressLint("RestrictedApi")
@@ -3218,6 +3265,11 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         menu_help.setOnClickListener(BrowserActivity.this);
 
         updateOverflow();
+
+        floatButton_tabView.setBackgroundColor(vibrantColor);
+        floatButton_saveView.setBackgroundColor(vibrantColor);
+        floatButton_shareView.setBackgroundColor(vibrantColor);
+        floatButton_moreView.setBackgroundColor(vibrantColor);
 
         bottomSheetDialog.setContentView(dialogView);
         bottomSheetDialog.show();
@@ -3413,8 +3465,42 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             contextList_edit.setVisibility(View.GONE);
         }
 
+        bottomSheetDialog.setContentView(dialogView);
+        bottomSheetDialog.show();
+    }
 
+    private void editFilterNames (String icon_string, final String icon_sp) {
+        hideBottomSheetDialog ();
+        bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
+        View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_edit_title, null);
 
+        final EditText editText = dialogView.findViewById(R.id.dialog_edit);
+
+        editText.setHint(R.string.dialog_title_hint);
+        editText.setText(icon_string);
+
+        Button action_ok = dialogView.findViewById(R.id.action_ok);
+        action_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String text = editText.getText().toString().trim();
+                if (text.isEmpty()) {
+                    NinjaToast.show(BrowserActivity.this, getString(R.string.toast_input_empty));
+                } else {
+                    sp.edit().putString(icon_sp, text).apply();
+                    hideBottomSheetDialog ();
+                    showFilterDialog();
+                }
+            }
+        });
+        Button action_cancel = dialogView.findViewById(R.id.action_cancel);
+        action_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                hideSoftInput(editText);
+                hideBottomSheetDialog ();
+            }
+        });
         bottomSheetDialog.setContentView(dialogView);
         bottomSheetDialog.show();
     }
@@ -3424,6 +3510,46 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
         View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_edit_icon, null);
+
+        String icon_01_string = sp.getString("icon_01", getResources().getString(R.string.color_red));
+        TextView icon_01_tv = dialogView.findViewById(R.id.icon_01_tv);
+        icon_01_tv.setText(icon_01_string);
+
+        String icon_02_string = sp.getString("icon_02", getResources().getString(R.string.color_pink));
+        TextView icon_02_tv = dialogView.findViewById(R.id.icon_02_tv);
+        icon_02_tv.setText(icon_02_string);
+
+        String icon_03_string = sp.getString("icon_03", getResources().getString(R.string.color_purple));
+        TextView icon_03_tv = dialogView.findViewById(R.id.icon_03_tv);
+        icon_03_tv.setText(icon_03_string);
+
+        String icon_04_string = sp.getString("icon_04", getResources().getString(R.string.color_blue));
+        TextView icon_04_tv = dialogView.findViewById(R.id.icon_04_tv);
+        icon_04_tv.setText(icon_04_string);
+
+        String icon_05_string = sp.getString("icon_05", getResources().getString(R.string.color_teal));
+        TextView icon_05_tv = dialogView.findViewById(R.id.icon_05_tv);
+        icon_05_tv.setText(icon_05_string);
+
+        String icon_06_string = sp.getString("icon_06", getResources().getString(R.string.color_green));
+        TextView icon_06_tv = dialogView.findViewById(R.id.icon_06_tv);
+        icon_06_tv.setText(icon_06_string);
+
+        String icon_07_string = sp.getString("icon_07", getResources().getString(R.string.color_lime));
+        TextView icon_07_tv = dialogView.findViewById(R.id.icon_07_tv);
+        icon_07_tv.setText(icon_07_string);
+
+        String icon_08_string = sp.getString("icon_08", getResources().getString(R.string.color_yellow));
+        TextView icon_08_tv = dialogView.findViewById(R.id.icon_08_tv);
+        icon_08_tv.setText(icon_08_string);
+
+        String icon_09_string = sp.getString("icon_09", getResources().getString(R.string.color_orange));
+        TextView icon_09_tv = dialogView.findViewById(R.id.icon_09_tv);
+        icon_09_tv.setText(icon_09_string);
+
+        String icon_10_string = sp.getString("icon_10", getResources().getString(R.string.color_brown));
+        TextView icon_10_tv = dialogView.findViewById(R.id.icon_10_tv);
+        icon_10_tv.setText(icon_10_string);
 
         LinearLayout icon_01 = dialogView.findViewById(R.id.icon_01);
         icon_01.setOnClickListener(new View.OnClickListener() {
@@ -3515,13 +3641,74 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 hideBottomSheetDialog ();
             }
         });
-        LinearLayout icon_11 = dialogView.findViewById(R.id.icon_11);
-        icon_11.setOnClickListener(new View.OnClickListener() {
+        icon_01.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public void onClick(View v) {
-                sp.edit().putString("filter_passBY", "11").apply();
-                initBookmarkList();
-                hideBottomSheetDialog ();
+            public boolean onLongClick(View v) {
+                editFilterNames(sp.getString("icon_01", getResources().getString(R.string.color_red)), "icon_01");
+                return false;
+            }
+        });
+        icon_02.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                editFilterNames(sp.getString("icon_02", getResources().getString(R.string.color_pink)), "icon_02");
+                return false;
+            }
+        });
+        icon_03.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                editFilterNames(sp.getString("icon_03", getResources().getString(R.string.color_purple)), "icon_03");
+                return false;
+            }
+        });
+        icon_04.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                editFilterNames(sp.getString("icon_04", getResources().getString(R.string.color_blue)), "icon_04");
+                return false;
+            }
+        });
+        icon_05.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                editFilterNames(sp.getString("icon_05", getResources().getString(R.string.color_teal)), "icon_05");
+                return false;
+            }
+        });
+        icon_06.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                editFilterNames(sp.getString("icon_06", getResources().getString(R.string.color_green)), "icon_06");
+                return false;
+            }
+        });
+        icon_07.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                editFilterNames(sp.getString("icon_07", getResources().getString(R.string.color_lime)), "icon_07");
+                return false;
+            }
+        });
+        icon_08.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                editFilterNames(sp.getString("icon_08", getResources().getString(R.string.color_yellow)), "icon_08");
+                return false;
+            }
+        });
+        icon_09.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                editFilterNames(sp.getString("icon_09", getResources().getString(R.string.color_orange)), "icon_09");
+                return false;
+            }
+        });
+        icon_10.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                editFilterNames(sp.getString("icon_10", getResources().getString(R.string.color_brown)), "icon_10");
+                return false;
             }
         });
 

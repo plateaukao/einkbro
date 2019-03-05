@@ -42,6 +42,7 @@
                     android:text="@string/main_menu_new_tabOpen"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:includeFontPadding="false"
                     android:ellipsize="end"
                     android:gravity="center_vertical"
                     android:maxLines="1"
@@ -70,6 +71,7 @@
                     android:text="@string/main_menu_new_tab"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:includeFontPadding="false"
                     android:ellipsize="end"
                     android:gravity="center_vertical"
                     android:maxLines="1"
@@ -99,14 +101,13 @@
                     android:text="@string/menu_edit"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:includeFontPadding="false"
                     android:ellipsize="end"
                     android:gravity="center_vertical"
                     android:maxLines="1"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
             </LinearLayout>
-
-
 
             <LinearLayout
                 android:visibility="gone"
@@ -130,6 +131,7 @@
                     android:text="@string/menu_fav"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:includeFontPadding="false"
                     android:ellipsize="end"
                     android:gravity="center_vertical"
                     android:maxLines="1"
@@ -158,6 +160,7 @@
                     android:text="@string/menu_share"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:includeFontPadding="false"
                     android:ellipsize="end"
                     android:gravity="center_vertical"
                     android:maxLines="1"
@@ -186,6 +189,7 @@
                     android:text="@string/menu_delete"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:includeFontPadding="false"
                     android:ellipsize="end"
                     android:gravity="center_vertical"
                     android:maxLines="1"
