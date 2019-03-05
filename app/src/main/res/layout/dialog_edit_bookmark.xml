@@ -34,14 +34,12 @@
                 android:id="@+id/pass_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:includeFontPadding="false"
                 android:inputType="text"
                 android:hint="@string/dialog_title_hint"
                 android:importantForAutofill="no" />
 
         </android.support.design.widget.TextInputLayout>
-
-
-
 
     </LinearLayout>
 
@@ -54,13 +52,12 @@
             android:id="@+id/pass_url"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text"
+            android:includeFontPadding="false"
+            android:inputType="textUri"
             android:hint="@string/dialog_url_hint"
             android:importantForAutofill="no" />
 
     </android.support.design.widget.TextInputLayout>
-
-
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
@@ -71,6 +68,7 @@
             android:id="@+id/pass_userName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:includeFontPadding="false"
             android:inputType="text"
             android:hint="@string/dialog_sign_in_username"
             android:importantForAutofill="no" />
@@ -86,13 +84,12 @@
             android:id="@+id/pass_userPW"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:includeFontPadding="false"
             android:inputType="textPassword"
             android:hint="@string/dialog_sign_in_password"
             android:importantForAutofill="no" />
 
     </android.support.design.widget.TextInputLayout>
-
-
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -104,6 +101,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
+            android:includeFontPadding="false"
             android:background="?attr/selectableItemBackground"
             android:textColor="@color/colorAccent"
             android:text="@string/app_ok"/>
@@ -112,6 +110,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toStartOf="@+id/action_ok"
+            android:includeFontPadding="false"
             android:background="?attr/selectableItemBackground"
             android:textColor="@color/colorAccent"
             android:text="@string/app_cancel"/>

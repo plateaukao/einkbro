@@ -45,7 +45,7 @@
     <string name="menu_download">Öffne Downloads</string>
     <string name="menu_fav">Als Startseite setzen</string>
     <string name="menu_sort">Sortiere nach …</string>
-    <string name="menu_filter">Filtere nach Farbe …</string>
+    <string name="menu_filter">Filter …</string>
     <string name="menu_blank">Leere Startseite</string>
 
     <string name="menu_share_screenshot">Bildschirmfoto teilen</string>
@@ -82,9 +82,10 @@
     <string name="dialog_sortName">Sortiere nach Namen</string>
     <string name="dialog_sortIcon">Sortiere nach Icon</string>
 
-    <string name="dialog_icon_title">Wähle ein Icon …</string>
-    <string name="dialog_icon_hint">Du kannst deine Lesezeichen auch schnell filtern, indem du lange auf das
-        Lesezeichen-Icon drückst. Um wieder alle Lesezeichen anzuzeigen, einfach das Icon noch einmal drücken.</string>
+    <string name="dialog_icon_title">Wähle einen Filter …</string>
+    <string name="dialog_icon_hint">Du kannst deine Lesezeichen filtern, indem du lange auf das
+        Lesezeichen-Icon in der Übersicht drückst. Um den Filter zurück zu setzen, einfach das Icon noch einmal drücken. Um
+        den Filternamen zu bearbeiten, lange drücken.</string>
 
     <!-- Settings -->
     <string name="setting_label">Einstellungen</string>

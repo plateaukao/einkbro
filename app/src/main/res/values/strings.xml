@@ -46,7 +46,7 @@
     <string name="menu_download">Open downloads</string>
     <string name="menu_fav">Set as start site</string>
     <string name="menu_sort">Sort by …</string>
-    <string name="menu_filter">Filter by color …</string>
+    <string name="menu_filter">Filter by …</string>
     <string name="menu_blank">Blank start site</string>
 
     <string name="menu_share_screenshot">Share screenshot</string>
@@ -81,9 +81,9 @@
     <string name="dialog_sortName">Sort by name</string>
     <string name="dialog_sortIcon">Sort by icon</string>
 
-    <string name="dialog_icon_title">Choose an icon …</string>
-    <string name="dialog_icon_hint">You can also filter your bookmarks, by long pressing the bookmark icon. To reset
-        filters just press the icon once again.</string>
+    <string name="dialog_icon_title">Choose a filter …</string>
+    <string name="dialog_icon_hint">You can filter your bookmarks, by long pressing the bookmark icon in the overview. To reset the
+        filter just press the icon once again. Long press a filter to edit his name.</string>
 
     <!-- Settings -->
     <string name="setting_label">Settings</string>

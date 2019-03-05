@@ -186,264 +186,180 @@
 
             </RelativeLayout>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:minHeight="46dp"
-                android:padding="8dp">
-
-                <ImageView
-                    android:layout_centerVertical="true"
-                    android:id="@+id/historyIcon"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginEnd="16dp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/icon_history"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_toEndOf="@+id/historyIcon"
-                    android:layout_toStartOf="@+id/switch_history"
-                    android:gravity="center_vertical"
-                    android:text="@string/setting_title_history"
-                    android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-                <CheckBox
-                    android:layout_centerVertical="true"
-                    android:id="@+id/switch_history"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentEnd="true"
-                    android:checked="false"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:minHeight="46dp"
-                android:padding="8dp">
-
-                <ImageView
-                    android:layout_centerVertical="true"
-                    android:id="@+id/locationIcon"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginEnd="16dp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/icon_location"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_toEndOf="@+id/locationIcon"
-                    android:layout_toStartOf="@+id/switch_location"
-                    android:gravity="center_vertical"
-                    android:text="@string/setting_title_location"
-                    android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-                <CheckBox
-                    android:layout_centerVertical="true"
-                    android:id="@+id/switch_location"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentEnd="true"
-                    android:checked="false"/>
-
-            </RelativeLayout>
-
             <View
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
+                android:layout_margin="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="?android:attr/colorControlHighlight" />
+                android:background="?android:attr/colorButtonNormal" />
 
-            <RelativeLayout
+            <HorizontalScrollView
                 android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:minHeight="46dp"
+                android:layout_height="match_parent"
                 android:padding="8dp">
-
-                <ImageView
-                    android:layout_centerVertical="true"
-                    android:id="@+id/imagesIcon"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginEnd="16dp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/icon_image"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_toEndOf="@+id/imagesIcon"
-                    android:layout_toStartOf="@+id/switch_images"
-                    android:gravity="center_vertical"
-                    android:text="@string/setting_title_images"
-                    android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-                <CheckBox
-                    android:layout_centerVertical="true"
-                    android:id="@+id/switch_images"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentEnd="true"
-                    android:checked="false"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:minHeight="46dp"
-                android:padding="8dp">
-
-                <ImageView
-                    android:layout_centerVertical="true"
-                    android:id="@+id/remoteIcon"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginEnd="16dp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/icon_remote"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_toEndOf="@+id/remoteIcon"
-                    android:layout_toStartOf="@+id/switch_remote"
-                    android:gravity="center_vertical"
-                    android:text="@string/setting_title_remote"
-                    android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-                <CheckBox
-                    android:layout_centerVertical="true"
-                    android:id="@+id/switch_remote"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentEnd="true"
-                    android:checked="false"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:minHeight="46dp"
-                android:padding="8dp">
-
-                <ImageView
-                    android:layout_centerVertical="true"
-                    android:id="@+id/invertIcon"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginEnd="16dp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/icon_night"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_toEndOf="@+id/invertIcon"
-                    android:layout_toStartOf="@+id/switch_invert"
-                    android:gravity="center_vertical"
-                    android:text="@string/setting_title_inverted"
-                    android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-                <CheckBox
-                    android:layout_centerVertical="true"
-                    android:id="@+id/switch_invert"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentEnd="true"
-                    android:checked="false"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:minHeight="46dp"
-                android:padding="8dp">
-
-                <ImageView
-                    android:layout_centerVertical="true"
-                    android:id="@+id/fontIcon"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginEnd="16dp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/icon_size"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_toEndOf="@+id/fontIcon"
-                    android:layout_toStartOf="@+id/font_layout"
-                    android:gravity="center_vertical"
-                    android:text="@string/setting_title_font"
-                    android:textAppearance="?android:attr/textAppearanceMedium"/>
 
                 <LinearLayout
-                    android:id="@+id/font_layout"
                     android:layout_width="wrap_content"
-                    android:layout_height="46dp"
-                    android:layout_alignParentEnd="true"
-                    android:minHeight="46dp"
-                    android:orientation="horizontal">
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center_horizontal">
 
-                    <ImageButton
-                        android:id="@+id/font_minus"
-                        android:paddingTop="6dp"
-                        android:paddingBottom="6dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:background="?attr/actionBarItemBackground"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/icon_minus"/>
+                    <LinearLayout
+                        android:layout_width="42dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:layout_marginEnd="6dp"
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/font_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginStart="8dp"/>
+                        <View
+                            android:id="@+id/toggle_historyView"
+                            android:layout_width="42dp"
+                            android:layout_height="2dp"
+                            android:background="@color/colorAccent" />
 
-                    <ImageButton
-                        android:id="@+id/font_plus"
-                        android:paddingTop="6dp"
-                        android:paddingBottom="6dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:background="?attr/actionBarItemBackground"
-                        android:scaleType="fitCenter"
-                        android:src="@drawable/icon_minus"/>
+                        <ImageButton
+                            android:id="@+id/toggle_history"
+                            android:layout_width="42dp"
+                            android:layout_height="42dp"
+                            android:layout_gravity="center_vertical|center_horizontal"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginEnd="2dp"
+                            android:background="?attr/actionBarItemBackground"
+                            android:src="@drawable/icon_history" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="42dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:layout_marginEnd="6dp"
+                        android:orientation="vertical">
+
+                        <View
+                            android:id="@+id/toggle_locationView"
+                            android:layout_width="42dp"
+                            android:layout_height="2dp"
+                            android:background="@color/colorAccent" />
+
+                        <ImageButton
+                            android:id="@+id/toggle_location"
+                            android:layout_width="42dp"
+                            android:layout_height="42dp"
+                            android:layout_gravity="center_vertical|center_horizontal"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginEnd="2dp"
+                            android:background="?attr/actionBarItemBackground"
+                            android:src="@drawable/icon_location" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="42dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:layout_marginEnd="6dp"
+                        android:orientation="vertical">
+
+                        <View
+                            android:id="@+id/toggle_imagesView"
+                            android:layout_width="42dp"
+                            android:layout_height="2dp"
+                            android:background="@color/colorAccent" />
+
+                        <ImageButton
+                            android:id="@+id/toggle_images"
+                            android:layout_width="42dp"
+                            android:layout_height="42dp"
+                            android:layout_gravity="center_vertical|center_horizontal"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginEnd="2dp"
+                            android:background="?attr/actionBarItemBackground"
+                            android:src="@drawable/icon_image" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="42dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:layout_marginEnd="6dp"
+                        android:orientation="vertical">
+
+                        <View
+                            android:id="@+id/toggle_remoteView"
+                            android:layout_width="42dp"
+                            android:layout_height="2dp"
+                            android:background="@color/colorAccent" />
+
+                        <ImageButton
+                            android:id="@+id/toggle_remote"
+                            android:layout_width="42dp"
+                            android:layout_height="42dp"
+                            android:layout_gravity="center_vertical|center_horizontal"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginEnd="2dp"
+                            android:background="?attr/actionBarItemBackground"
+                            android:src="@drawable/icon_remote" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="42dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:layout_marginEnd="6dp"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <View
+                            android:id="@+id/toggle_invertView"
+                            android:layout_width="42dp"
+                            android:layout_height="2dp"
+                            android:background="@color/colorAccent" />
+
+                        <ImageButton
+                            android:id="@+id/toggle_invert"
+                            android:layout_width="42dp"
+                            android:layout_height="42dp"
+                            android:layout_gravity="center_vertical|center_horizontal"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginEnd="2dp"
+                            android:background="?attr/actionBarItemBackground"
+                            android:src="@drawable/icon_night" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="42dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:layout_marginEnd="6dp"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <View
+                            android:id="@+id/toggle_fontView"
+                            android:layout_width="42dp"
+                            android:layout_height="2dp"
+                            android:background="@color/colorAccent"
+                            android:visibility="invisible" />
+
+                        <ImageButton
+                            android:id="@+id/toggle_font"
+                            android:layout_width="42dp"
+                            android:layout_height="42dp"
+                            android:layout_gravity="center_vertical|center_horizontal"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginEnd="2dp"
+                            android:background="?attr/actionBarItemBackground"
+                            android:src="@drawable/icon_settings" />
+
+                    </LinearLayout>
+
 
                 </LinearLayout>
 
-            </RelativeLayout>
+            </HorizontalScrollView>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -455,6 +371,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
+                    android:includeFontPadding="false"
                     android:background="?attr/selectableItemBackground"
                     android:textColor="@color/colorAccent"
                     android:text="@string/app_ok"/>
@@ -463,6 +380,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toStartOf="@+id/action_ok"
+                    android:includeFontPadding="false"
                     android:background="?attr/selectableItemBackground"
                     android:textColor="@color/colorAccent"
                     android:text="@string/app_cancel"/>

@@ -15,6 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|center_horizontal"
+        android:includeFontPadding="false"
         android:padding="16dp"
         android:text="@string/dialog_icon_title"
         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -25,303 +26,298 @@
         android:layout_height="wrap_content">
 
         <LinearLayout
-            android:orientation="vertical"
+            android:baselineAligned="false"
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|center_horizontal"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:text="@string/dialog_icon_hint" />
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:gravity="center">
 
-            <LinearLayout android:id="@+id/icon_01"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/layout_margin_12dp"
-                android:background="?attr/selectableItemBackground"
-                android:orientation="horizontal"
-                xmlns:android="http://schemas.android.com/apk/res/android">
+                <LinearLayout android:id="@+id/icon_01"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/layout_margin_12dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:orientation="horizontal"
+                    xmlns:android="http://schemas.android.com/apk/res/android">
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:contentDescription="@null"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/circle_red" />
-                <TextView
-                    android:text="@string/color_red"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:layout_marginStart="8dp"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:maxLines="1"
-                    android:ellipsize="end"/>
-            </LinearLayout>
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:contentDescription="@null"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/circle_red" />
+                    <TextView android:id="@+id/icon_01_tv"
+                        android:text="@string/color_red"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:includeFontPadding="false"
+                        android:gravity="center_vertical"
+                        android:layout_marginStart="8dp"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:maxLines="1"
+                        android:ellipsize="end"/>
+                </LinearLayout>
 
-            <LinearLayout android:id="@+id/icon_02"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/layout_margin_12dp"
-                android:background="?attr/selectableItemBackground"
-                android:orientation="horizontal"
-                xmlns:android="http://schemas.android.com/apk/res/android">
+                <LinearLayout android:id="@+id/icon_02"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/layout_margin_12dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:orientation="horizontal"
+                    xmlns:android="http://schemas.android.com/apk/res/android">
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:contentDescription="@null"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/circle_pink" />
-                <TextView
-                    android:text="@string/color_pink"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:layout_marginStart="8dp"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:maxLines="1"
-                    android:ellipsize="end"/>
-            </LinearLayout>
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:contentDescription="@null"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/circle_pink" />
+                    <TextView android:id="@+id/icon_02_tv"
+                        android:text="@string/color_pink"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:includeFontPadding="false"
+                        android:gravity="center_vertical"
+                        android:layout_marginStart="8dp"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:maxLines="1"
+                        android:ellipsize="end"/>
+                </LinearLayout>
 
-            <LinearLayout android:id="@+id/icon_03"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/layout_margin_12dp"
-                android:background="?attr/selectableItemBackground"
-                android:orientation="horizontal"
-                xmlns:android="http://schemas.android.com/apk/res/android">
+                <LinearLayout android:id="@+id/icon_03"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/layout_margin_12dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:orientation="horizontal"
+                    xmlns:android="http://schemas.android.com/apk/res/android">
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:contentDescription="@null"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/circle_purple" />
-                <TextView
-                    android:text="@string/color_purple"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:layout_marginStart="8dp"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:maxLines="1"
-                    android:ellipsize="end"/>
-            </LinearLayout>
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:contentDescription="@null"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/circle_purple" />
+                    <TextView android:id="@+id/icon_03_tv"
+                        android:text="@string/color_purple"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:includeFontPadding="false"
+                        android:gravity="center_vertical"
+                        android:layout_marginStart="8dp"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:maxLines="1"
+                        android:ellipsize="end"/>
+                </LinearLayout>
 
-            <LinearLayout android:id="@+id/icon_04"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/layout_margin_12dp"
-                android:background="?attr/selectableItemBackground"
-                android:orientation="horizontal"
-                xmlns:android="http://schemas.android.com/apk/res/android">
+                <LinearLayout android:id="@+id/icon_04"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/layout_margin_12dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:orientation="horizontal"
+                    xmlns:android="http://schemas.android.com/apk/res/android">
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:contentDescription="@null"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/circle_blue" />
-                <TextView
-                    android:text="@string/color_blue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:layout_marginStart="8dp"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:maxLines="1"
-                    android:ellipsize="end"/>
-            </LinearLayout>
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:contentDescription="@null"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/circle_blue" />
+                    <TextView android:id="@+id/icon_04_tv"
+                        android:text="@string/color_blue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:includeFontPadding="false"
+                        android:gravity="center_vertical"
+                        android:layout_marginStart="8dp"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:maxLines="1"
+                        android:ellipsize="end"/>
+                </LinearLayout>
 
-            <LinearLayout android:id="@+id/icon_05"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/layout_margin_12dp"
-                android:background="?attr/selectableItemBackground"
-                android:orientation="horizontal"
-                xmlns:android="http://schemas.android.com/apk/res/android">
+                <LinearLayout android:id="@+id/icon_05"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/layout_margin_12dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:orientation="horizontal"
+                    xmlns:android="http://schemas.android.com/apk/res/android">
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:contentDescription="@null"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/circle_teal" />
-                <TextView
-                    android:text="@string/color_teal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:layout_marginStart="8dp"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:maxLines="1"
-                    android:ellipsize="end"/>
-            </LinearLayout>
-
-            <LinearLayout android:id="@+id/icon_06"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/layout_margin_12dp"
-                android:background="?attr/selectableItemBackground"
-                android:orientation="horizontal"
-                xmlns:android="http://schemas.android.com/apk/res/android">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:contentDescription="@null"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/circle_green" />
-                <TextView
-                    android:text="@string/color_green"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:layout_marginStart="8dp"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:maxLines="1"
-                    android:ellipsize="end"/>
-            </LinearLayout>
-
-            <LinearLayout android:id="@+id/icon_07"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/layout_margin_12dp"
-                android:background="?attr/selectableItemBackground"
-                android:orientation="horizontal"
-                xmlns:android="http://schemas.android.com/apk/res/android">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:contentDescription="@null"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/circle_lime" />
-                <TextView
-                    android:text="@string/color_lime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:layout_marginStart="8dp"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:maxLines="1"
-                    android:ellipsize="end"/>
-            </LinearLayout>
-
-            <LinearLayout android:id="@+id/icon_08"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/layout_margin_12dp"
-                android:background="?attr/selectableItemBackground"
-                android:orientation="horizontal"
-                xmlns:android="http://schemas.android.com/apk/res/android">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:contentDescription="@null"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/circle_yellow" />
-                <TextView
-                    android:text="@string/color_yellow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:layout_marginStart="8dp"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:maxLines="1"
-                    android:ellipsize="end"/>
-            </LinearLayout>
-
-            <LinearLayout android:id="@+id/icon_09"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/layout_margin_12dp"
-                android:background="?attr/selectableItemBackground"
-                android:orientation="horizontal"
-                xmlns:android="http://schemas.android.com/apk/res/android">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:contentDescription="@null"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/circle_orange" />
-                <TextView
-                    android:text="@string/color_orange"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:layout_marginStart="8dp"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:maxLines="1"
-                    android:ellipsize="end"/>
-            </LinearLayout>
-
-            <LinearLayout android:id="@+id/icon_10"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/layout_margin_12dp"
-                android:background="?attr/selectableItemBackground"
-                android:orientation="horizontal"
-                xmlns:android="http://schemas.android.com/apk/res/android">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:contentDescription="@null"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/circle_brown" />
-                <TextView
-                    android:text="@string/color_brown"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:layout_marginStart="8dp"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:maxLines="1"
-                    android:ellipsize="end"/>
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:contentDescription="@null"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/circle_teal" />
+                    <TextView android:id="@+id/icon_05_tv"
+                        android:text="@string/color_teal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:includeFontPadding="false"
+                        android:gravity="center_vertical"
+                        android:layout_marginStart="8dp"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:maxLines="1"
+                        android:ellipsize="end"/>
+                </LinearLayout>
 
             </LinearLayout>
 
-            <LinearLayout android:id="@+id/icon_11"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/layout_margin_12dp"
-                android:background="?attr/selectableItemBackground"
-                android:orientation="horizontal"
-                xmlns:android="http://schemas.android.com/apk/res/android">
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:gravity="center">
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:contentDescription="@null"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/circle_grey" />
-                <TextView
-                    android:text="@string/color_grey"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:layout_marginStart="8dp"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:maxLines="1"
-                    android:ellipsize="end"/>
+                <LinearLayout android:id="@+id/icon_06"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/layout_margin_12dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:orientation="horizontal"
+                    xmlns:android="http://schemas.android.com/apk/res/android">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:contentDescription="@null"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/circle_green" />
+                    <TextView android:id="@+id/icon_06_tv"
+                        android:text="@string/color_green"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:includeFontPadding="false"
+                        android:gravity="center_vertical"
+                        android:layout_marginStart="8dp"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:maxLines="1"
+                        android:ellipsize="end"/>
+                </LinearLayout>
+
+                <LinearLayout android:id="@+id/icon_07"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/layout_margin_12dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:orientation="horizontal"
+                    xmlns:android="http://schemas.android.com/apk/res/android">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:contentDescription="@null"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/circle_lime" />
+                    <TextView android:id="@+id/icon_07_tv"
+                        android:text="@string/color_lime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:includeFontPadding="false"
+                        android:gravity="center_vertical"
+                        android:layout_marginStart="8dp"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:maxLines="1"
+                        android:ellipsize="end"/>
+                </LinearLayout>
+
+                <LinearLayout android:id="@+id/icon_08"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/layout_margin_12dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:orientation="horizontal"
+                    xmlns:android="http://schemas.android.com/apk/res/android">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:contentDescription="@null"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/circle_yellow" />
+                    <TextView android:id="@+id/icon_08_tv"
+                        android:text="@string/color_yellow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:includeFontPadding="false"
+                        android:gravity="center_vertical"
+                        android:layout_marginStart="8dp"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:maxLines="1"
+                        android:ellipsize="end"/>
+                </LinearLayout>
+
+                <LinearLayout android:id="@+id/icon_09"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/layout_margin_12dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:orientation="horizontal"
+                    xmlns:android="http://schemas.android.com/apk/res/android">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:contentDescription="@null"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/circle_orange" />
+                    <TextView android:id="@+id/icon_09_tv"
+                        android:text="@string/color_orange"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:includeFontPadding="false"
+                        android:gravity="center_vertical"
+                        android:layout_marginStart="8dp"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:maxLines="1"
+                        android:ellipsize="end"/>
+                </LinearLayout>
+
+                <LinearLayout android:id="@+id/icon_10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/layout_margin_12dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:orientation="horizontal"
+                    xmlns:android="http://schemas.android.com/apk/res/android">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:contentDescription="@null"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/circle_brown" />
+                    <TextView android:id="@+id/icon_10_tv"
+                        android:text="@string/color_brown"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:includeFontPadding="false"
+                        android:gravity="center_vertical"
+                        android:layout_marginStart="8dp"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:maxLines="1"
+                        android:ellipsize="end"/>
+
+                </LinearLayout>
+                
             </LinearLayout>
 
         </LinearLayout>

@@ -46,6 +46,7 @@
                 android:layout_centerInParent="true"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="4dp"
+                android:includeFontPadding="false"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:textAppearance="?android:attr/textAppearanceMedium"
@@ -80,35 +81,83 @@
                     android:background="?attr/actionBarItemBackground"
                     android:src="@drawable/icon_plus" />
 
-                <ImageButton
-                    android:id="@+id/overview_titleIcons_start"
+                <LinearLayout
+                    android:layout_marginEnd="6dp"
+                    android:layout_marginStart="6dp"
+                    android:orientation="vertical"
                     android:layout_width="42dp"
-                    android:layout_height="42dp"
-                    android:layout_gravity="center_vertical|center_horizontal"
-                    android:layout_marginEnd="2dp"
-                    android:layout_marginStart="2dp"
-                    android:background="?attr/actionBarItemBackground"
-                    android:src="@drawable/icon_earth" />
+                    android:layout_height="wrap_content">
 
-                <ImageButton
-                    android:id="@+id/overview_titleIcons_bookmarks"
-                    android:layout_width="42dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_vertical|center_horizontal"
-                    android:layout_marginEnd="2dp"
-                    android:layout_marginStart="2dp"
-                    android:background="?attr/actionBarItemBackground"
-                    android:src="@drawable/icon_bookmark" />
+                    <View
+                        android:id="@+id/overview_titleIcons_startView"
+                        android:layout_width="42dp"
+                        android:layout_height="2dp"
+                        android:background="@color/colorAccent"
+                        android:visibility="visible"/>
 
-                <ImageButton
-                    android:id="@+id/overview_titleIcons_history"
+                    <ImageButton
+                        android:id="@+id/overview_titleIcons_start"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:layout_gravity="center_vertical|center_horizontal"
+                        android:layout_marginEnd="2dp"
+                        android:layout_marginStart="2dp"
+                        android:background="?attr/actionBarItemBackground"
+                        android:src="@drawable/icon_earth" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginEnd="6dp"
+                    android:layout_marginStart="6dp"
+                    android:orientation="vertical"
                     android:layout_width="42dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_vertical|center_horizontal"
-                    android:layout_marginEnd="2dp"
-                    android:layout_marginStart="2dp"
-                    android:background="?attr/actionBarItemBackground"
-                    android:src="@drawable/ic_action_history" />
+                    android:layout_height="wrap_content">
+
+                    <View
+                        android:id="@+id/overview_titleIcons_bookmarksView"
+                        android:layout_width="42dp"
+                        android:layout_height="2dp"
+                        android:background="@color/colorAccent"
+                        android:visibility="visible"/>
+
+                    <ImageButton
+                        android:id="@+id/overview_titleIcons_bookmarks"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:layout_gravity="center_vertical|center_horizontal"
+                        android:layout_marginEnd="2dp"
+                        android:layout_marginStart="2dp"
+                        android:background="?attr/actionBarItemBackground"
+                        android:src="@drawable/icon_bookmark" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginEnd="6dp"
+                    android:layout_marginStart="6dp"
+                    android:orientation="vertical"
+                    android:layout_width="42dp"
+                    android:layout_height="wrap_content">
+
+                    <View
+                        android:id="@+id/overview_titleIcons_historyView"
+                        android:layout_width="42dp"
+                        android:layout_height="2dp"
+                        android:background="@color/colorAccent"
+                        android:visibility="visible"/>
+
+                    <ImageButton
+                        android:id="@+id/overview_titleIcons_history"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:layout_gravity="center_vertical|center_horizontal"
+                        android:layout_marginEnd="2dp"
+                        android:layout_marginStart="2dp"
+                        android:background="?attr/actionBarItemBackground"
+                        android:src="@drawable/ic_action_history" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -165,7 +214,6 @@
     <LinearLayout
         android:layout_alignParentBottom="true"
         android:id="@+id/home_buttons"
-        android:layout_marginBottom="12dp"
         android:layout_width="fill_parent"
         android:layout_height="56dp"
         android:minHeight="56dp"

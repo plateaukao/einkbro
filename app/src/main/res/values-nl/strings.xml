@@ -112,7 +112,7 @@
         vertrouwt cookies te laten opslaan.</string>
 
     <string name="setting_title_javascript">JavaScript</string>
-    <string name="setting_summary_javascript">JavaScript inschakelen. Veel websites gebruiken JavaScript voor functionaliteit (menu\'s',
+    <string name="setting_summary_javascript">JavaScript inschakelen. Veel websites gebruiken JavaScript voor functionaliteit (menu\'s\',
         het laden en tonen van afbeeldingen, etc.). Maar JavaScript is ook risicovol en kan worden gebruikt voor aanvallen.</string>
     <string name="setting_title_whitelistJS">Wite lijst</string>
     <string name="setting_summary_whitelistJS">Als je JavaScript uitschakelt, dan kun je deze witte lijst gebruiken om websites die je

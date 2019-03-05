@@ -9,6 +9,7 @@
 - new: option to open new tab instead of exiting app
 - new: Ukrainian translation (thanks @Roman Babiy)
 - new: Turkish translation (thanks @ali-demirtas)
+- fix: UI and minor issues
 - updated: long press menu on websites
 - updated: Help dialog
 - updated: Polish translation (thanks @gh-pmjm)
@@ -16,7 +17,7 @@
 - updated: Taiwan Trad. Chinese translation (thanks @elmru)
 - updated: Portuguese translation (thanks @smarquespt)
 - updated: Overview dialog
-- fix: adress bar not showing, when using physical keyboard
+- updated: FastToggle dialog
 
 ### v 6.2
 - new: advanced gesture settings
