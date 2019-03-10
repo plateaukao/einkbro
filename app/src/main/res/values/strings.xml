@@ -66,6 +66,7 @@
     <!-- Dialog -->
     <string name="dialog_toggle_title">Fast toggle</string>
     <string name="dialog_toggle_hint">To apply immediately, please press the \"OK-button\" below.</string>
+    <string name="dialog_toggle_reload">Reload</string>
     <string name="dialog_title_hint">Title:</string>
     <string name="dialog_url_hint">Url:</string>
     <string name="dialog_extension_hint">Extension (for example: \".jpg\"):</string>

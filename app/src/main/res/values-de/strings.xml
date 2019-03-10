@@ -67,6 +67,7 @@
     <!-- Dialog -->
     <string name="dialog_toggle_title">Schnelleinstellungen</string>
     <string name="dialog_toggle_hint">Um die Einstellungen sofort zu übernehmen, bitte unten auf \"OK\" klicken.</string>
+    <string name="dialog_toggle_reload">Neu laden</string>
     <string name="dialog_title_hint">Titel:</string>
     <string name="dialog_url_hint">Url:</string>
     <string name="dialog_extension_hint">Endung (z.B.: \".jpg\"):</string>

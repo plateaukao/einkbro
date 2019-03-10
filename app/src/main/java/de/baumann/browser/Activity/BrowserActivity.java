@@ -759,6 +759,8 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
     private void showOverview() {
 
+        showTabPreview();
+
         if (currentAlbumController != null) {
             currentAlbumController.deactivate();
             currentAlbumController.activate();
@@ -1364,9 +1366,11 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     }
 
     private void showTabPreview () {
-        tab_ScrollView.setVisibility(View.VISIBLE);
-        tab_ScrollView.smoothScrollTo(currentAlbumController.getAlbumView().getLeft(), 0);
-        tab_toggle.setVisibility(View.GONE);
+        if (tab_ScrollView != null && currentAlbumController != null) {
+            tab_ScrollView.setVisibility(View.VISIBLE);
+            tab_ScrollView.smoothScrollTo(currentAlbumController.getAlbumView().getLeft(), 0);
+            tab_toggle.setVisibility(View.GONE);
+        }
     }
 
     private void initOverview() {
@@ -1493,6 +1497,9 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         open_bookmark.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
+                if (!overViewTab.equals(getString(R.string.album_title_bookmarks))) {
+                    open_bookmark.performClick();
+                }
                 showFilterDialog();
                 return false;
             }
@@ -1756,6 +1763,9 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         overview_titleIcons_bookmarks.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
+                if (!overViewTab.equals(getString(R.string.album_title_bookmarks))) {
+                open_bookmark.performClick();
+                }
                 showFilterDialog();
                 return false;
             }

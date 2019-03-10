@@ -15,18 +15,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|center_horizontal"
+        android:includeFontPadding="false"
         android:padding="16dp"
         android:text="@string/dialog_toggle_title"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textStyle="bold" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|center_horizontal"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:text="@string/dialog_toggle_hint" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -60,6 +53,7 @@
                     android:layout_height="match_parent"
                     android:layout_toEndOf="@+id/abIcon"
                     android:layout_toStartOf="@+id/imageButton_ab"
+                    android:includeFontPadding="false"
                     android:gravity="center_vertical"
                     android:text="@string/setting_title_adblock"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -109,6 +103,7 @@
                     android:layout_height="match_parent"
                     android:layout_toEndOf="@+id/jsIcon"
                     android:layout_toStartOf="@+id/imageButton_js"
+                    android:includeFontPadding="false"
                     android:gravity="center_vertical"
                     android:text="@string/setting_title_javascript"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -159,6 +154,7 @@
                     android:layout_height="match_parent"
                     android:layout_toEndOf="@+id/cookieIcon"
                     android:layout_toStartOf="@+id/imageButton_cookie"
+                    android:includeFontPadding="false"
                     android:gravity="center_vertical"
                     android:text="@string/setting_title_cookie"
                     android:textAppearance="?android:attr/textAppearanceMedium"/>
@@ -374,7 +370,7 @@
                     android:includeFontPadding="false"
                     android:background="?attr/selectableItemBackground"
                     android:textColor="@color/colorAccent"
-                    android:text="@string/app_ok"/>
+                    android:text="@string/dialog_toggle_reload"/>
 
                 <Button android:id="@+id/action_cancel"
                     android:layout_width="wrap_content"
@@ -383,7 +379,7 @@
                     android:includeFontPadding="false"
                     android:background="?attr/selectableItemBackground"
                     android:textColor="@color/colorAccent"
-                    android:text="@string/app_cancel"/>
+                    android:text="@string/app_ok"/>
 
             </RelativeLayout>
 
