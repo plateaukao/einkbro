@@ -388,8 +388,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         new Javascript(BrowserActivity.this);
         new Cookie(BrowserActivity.this);
 
-        dispatchIntent(getIntent());
-
         // show changelog
 
         try {
@@ -474,6 +472,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         IntentFilter filter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
         registerReceiver(downloadReceiver, filter);
+        dispatchIntent(getIntent());
     }
 
     @SuppressWarnings("UnnecessaryReturnStatement")
@@ -657,7 +656,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         int width = size.x;
         int height = size.y;
-        final Bitmap icon = ViewUnit.capture(ninjaWebView, width, height, Bitmap.Config.ARGB_8888);
+        final Bitmap icon = ViewUnit.capture(ninjaWebView, width, 116, Bitmap.Config.ARGB_8888);
 
         new Handler().postDelayed(new Runnable() {
             public void run() {
@@ -1155,7 +1154,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         } else if (filePathCallback != null) {
             filePathCallback = null;
         } else if ("sc_history".equals(action)) {
-            pinAlbums(sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"));
             showOverview();
             new Handler().postDelayed(new Runnable() {
                 public void run() {
@@ -1163,7 +1161,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 }
             }, shortAnimTime);
         } else if ("sc_bookmark".equals(action)) {
-            pinAlbums(sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"));
             showOverview();
             new Handler().postDelayed(new Runnable() {
                 public void run() {
@@ -1172,7 +1169,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             }, shortAnimTime);
 
         } else if ("sc_startPage".equals(action)) {
-            pinAlbums(sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"));
             showOverview();
             new Handler().postDelayed(new Runnable() {
                 public void run() {
@@ -2633,8 +2629,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             contentFrame.removeAllViews();
             contentFrame.addView((View) currentAlbumController);
             currentAlbumController.activate();
-
-            updateOmnibox();
         } else { // When url != null
             ninjaWebView.setBrowserController(this);
             ninjaWebView.setAlbumTitle(getString(R.string.album_untitled));
@@ -2649,9 +2643,14 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
             currentAlbumController = ninjaWebView;
             currentAlbumController.activate();
-
-            updateOmnibox();
         }
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                showAlbum(currentAlbumController);
+            }
+        }, shortAnimTime);
     }
 
     private synchronized void updateAlbum(String url) {
