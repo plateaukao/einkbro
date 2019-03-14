@@ -51,10 +51,8 @@
 
     <!-- Dialog -->
     <string name="dialog_toggle_title">快速切换</string>
-    <string name="dialog_toggle_hint">若想立刻生效，就按下下面的“确定”按钮。</string>
     <string name="dialog_title_hint">输入标题</string>
     <string name="dialog_extension_hint">扩展名（比如 “.jpg”）</string>
-    <string name="dialog_se_hint">https://www.google.com/search?q=</string>
     <string name="dialog_sign_in_username">用户名</string>
     <string name="dialog_sign_in_password">密码</string>
     <string name="dialog_button_custom">自定义</string>
@@ -226,7 +224,6 @@
     <string name="toast_load_error">无法载入此URL</string>
     <string name="toast_load_in_background">后台加载</string>
     <string name="toast_new_tab_successful">成功在新标签页打开</string>
-    <string name="toast_relayout_successful">重新布局成功</string>
     <string name="toast_share_failed">无法分享此网页</string>
     <string name="toast_start_download">开始下载</string>
     <string name="toast_wait_a_minute">请稍候</string>

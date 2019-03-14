@@ -21,6 +21,7 @@ import android.webkit.CookieManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import de.baumann.browser.Unit.HelperUnit;
 import de.baumann.browser.Browser.*;
@@ -372,13 +373,6 @@ public class NinjaWebView extends WebView implements AlbumController {
         if (foreground) {
             browserController.updateBookmarks();
             browserController.updateInputBox(url);
-        }
-
-        try {
-            TextView omniTitle = this.getRootView().findViewById(R.id.omnibox_title);
-            omniTitle.setText(NinjaWebView.this.getTitle());
-        } catch (Exception e) {
-            Log.w("Browser", "Error updating");
         }
     }
 

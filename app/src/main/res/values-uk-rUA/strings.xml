@@ -24,7 +24,6 @@
     <string name="color_blue">Синій</string>
     <string name="color_brown">Коричневий</string>
     <string name="color_green">Зелений</string>
-    <string name="color_grey">Сірий</string>
     <string name="color_lime">Лайм</string>
     <string name="color_orange">Помаранчевий</string>
     <string name="color_pink">Рожевий</string>
@@ -39,7 +38,6 @@
     <string name="dialog_extension_hint">Розширення (наприклад: \".jpg\"):</string>
     <string name="dialog_icon_hint">Ви також можете фільтрувати закладки, довге натискання на значок закладки. Для скидання фільтрів просто натисніть на іконку ще раз.</string>
     <string name="dialog_icon_title">Вибрати значок …</string>
-    <string name="dialog_se_hint">https://www.google.com/search?q=</string>
     <string name="dialog_sign_in_password">Пароль</string>
     <string name="dialog_sign_in_username">"Ім'я користувача"</string>
     <string name="dialog_sortIcon">Сортувати за значками</string>
@@ -47,7 +45,6 @@
     <string name="dialog_title_download">Хочете завантажити файл?</string>
     <string name="dialog_title_hint">Заголовок:</string>
     <string name="dialog_title_sign_in">Увійти</string>
-    <string name="dialog_toggle_hint">Для негайного застосування натисніть кнопку \"ОК\" нижче.</string>
     <string name="dialog_toggle_title">Швидке перемикання</string>
     <string name="dialog_url_hint">Url:</string>
     <string name="export_bookmarks">export_bookmarks</string>
@@ -253,7 +250,6 @@
     <string name="toast_permission_sdCard_sec">Надайте дозвіл на \"читання та запис\" в Налаштуваннях.</string>
     <string name="toast_permission_title">Потрібен дозвіл</string>
     <string name="toast_quit">Хочете вийти з \"FOSS Browser\"?</string>
-    <string name="toast_relayout_successful">Успішно перекомпоновано</string>
     <string name="toast_restart">Щоб застосувати зміни, необхідно перезапустити \"FOSS Browser\". Закрити зараз?</string>
     <string name="toast_share_failed">Не вдається поділитися цією сторінкою</string>
     <string name="toast_start_download">Початок завантаження</string>

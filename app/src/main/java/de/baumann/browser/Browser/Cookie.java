@@ -1,5 +1,6 @@
 package de.baumann.browser.Browser;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.util.Log;
@@ -19,6 +20,7 @@ public class Cookie {
     private static final String FILE = "cookieHosts.txt";
     private static final Set<String> hostsCookie = new HashSet<>();
     private static final List<String> whitelistCookie = new ArrayList<>();
+    @SuppressLint("ConstantLocale")
     private static final Locale locale = Locale.getDefault();
 
     private static void loadHosts(final Context context) {

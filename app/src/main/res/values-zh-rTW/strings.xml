@@ -55,10 +55,8 @@
 
     <!-- Dialog -->
     <string name="dialog_toggle_title">快速切換</string>
-    <string name="dialog_toggle_hint">若欲立即生效，請點擊最下方的確定按鈕。</string>
     <string name="dialog_title_hint">標題：</string>
     <string name="dialog_extension_hint">副檔名（例如：.jpg）</string>
-    <string name="dialog_se_hint">https://www.google.com/search?q=</string>
     <string name="dialog_sign_in_username">用戶名</string>
     <string name="dialog_sign_in_password">密碼</string>
     <string name="dialog_button_custom">自訂</string>
@@ -249,7 +247,6 @@
     <string name="toast_load_error">無法載入此URL</string>
     <string name="toast_load_in_background">於背景載入</string>
     <string name="toast_new_tab_successful">成功於新分頁開啟</string>
-    <string name="toast_relayout_successful">重新佈局成功</string>
     <string name="toast_share_failed">無法分享此網頁</string>
     <string name="toast_start_download">開始下載</string>
     <string name="toast_wait_a_minute">請稍候</string>
@@ -280,7 +277,6 @@
     <string name="whitelist_menu_clear">清除</string>
     <string name="whitelist_edit_hint">域名</string>
     <string name="whitelist_add">新增</string>
-    <string name="color_grey">灰</string>
     <string name="color_red">紅</string>
     <string name="color_pink">粉紅</string>
     <string name="color_purple">紫</string>

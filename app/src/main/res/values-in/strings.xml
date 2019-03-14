@@ -44,7 +44,6 @@
     <!-- Dialog -->
     <string name="dialog_toggle_title">Cepat Matikan</string>
     <string name="dialog_title_hint">Masukkan Judul</string>
-    <string name="dialog_se_hint">https://www.google.com/search?q=</string>
     <string name="dialog_sign_in_username">Nama Pengguna</string>
     <string name="dialog_sign_in_password">Kata Sandi</string>
     <string name="dialog_button_custom">Kustomisasi</string>
@@ -166,7 +165,6 @@
     <string name="toast_load_error">Tidak dapat memuat URL ini</string>
     <string name="toast_load_in_background">Memuat di latar belakang</string>
     <string name="toast_new_tab_successful">Berhasil membuka tab baru</string>
-    <string name="toast_relayout_successful">Berhasil melakukan relayout</string>
     <string name="toast_share_failed">Tidak dapat membagikan halaman ini</string>
     <string name="toast_start_download">Memulai unduh</string>
     <string name="toast_wait_a_minute">Mohon tunggu sebentar</string>

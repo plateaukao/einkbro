@@ -1,5 +1,6 @@
 package de.baumann.browser.Browser;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.util.Log;
@@ -19,6 +20,7 @@ public class Javascript {
     private static final String FILE = "javaHosts.txt";
     private static final Set<String> hostsJS = new HashSet<>();
     private static final List<String> whitelistJS = new ArrayList<>();
+    @SuppressLint("ConstantLocale")
     private static final Locale locale = Locale.getDefault();
 
     private static void loadHosts(final Context context) {

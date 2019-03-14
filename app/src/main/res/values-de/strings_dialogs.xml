@@ -7,10 +7,26 @@
        &lt;i>Projekseite: https://github.com/scoute-dich/Browser&lt;br>
         Änderungen: https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;/i>&lt;br>&lt;br>
 
-        &lt;b>Version: 6.2&lt;/b>&lt;br>
-        \u25AA new: advanced gesture settings&lt;br>
-        \u25AA new: show overview on start&lt;br>
-        \u25AA fix: light settings theme
+        &lt;b>Version: 6.3&lt;/b>&lt;br>
+        \u25AA new: Download: Cookieunterstützung&lt;br>
+        \u25AA new: Datenvolumen sparen (optional) (thanks @SkewedZeppelin)&lt;br>
+        \u25AA new: leere Startseite&lt;br>
+        \u25AA new: schnelles scrollen inlangen Listen&lt;br>
+        \u25AA new: zeige/verstecke Tabvorschau&lt;br>
+        \u25AA new: Animationen&lt;br>
+        \u25AA new: Qwant Suchmaschine (thanks @Tobiplayer3)&lt;br>
+        \u25AA new: öffne neuen Tab, statt Anwendung zu schließen (optional)&lt;br>
+        \u25AA new: Ukrainische Übersetzung (thanks @Roman Babiy)&lt;br>
+        \u25AA new: Türkische Übersetzung (thanks @ali-demirtas)&lt;br>
+        \u25AA fix: UI und kleinere Fehler&lt;br>
+        \u25AA updated: Kontextmenü für Internetseiten&lt;br>
+        \u25AA updated: Hilfe Dialog&lt;br>
+        \u25AA updated: Polnische Übersetzung (thanks @gh-pmjm)&lt;br>
+        \u25AA updated: Niederländische Übersetzung (thanks @Vistaus)&lt;br>
+        \u25AA updated: Taiwan Trad. Chinese Übersetzung (thanks @elmru)&lt;br>
+        \u25AA updated: Portuguese Übersetzung (thanks @smarquespt)&lt;br>
+        \u25AA updated: Übersicht&lt;br>
+        \u25AA updated: Schnelleinstellungen
     </string>
 
     <string name="overview_title">Übersicht</string>

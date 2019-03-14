@@ -63,7 +63,6 @@
 
     <!-- Dialog -->
     <string name="dialog_toggle_title">Alternar rápido</string>
-    <string name="dialog_toggle_hint">Para aplicar inmediatamente, presione por favor \"ok\" abajo</string>
     <string name="dialog_title_hint">Título de entrada</string>
     <string name="dialog_sign_in_username">Usuario</string>
     <string name="dialog_sign_in_password">Contraseña</string>
@@ -236,7 +235,6 @@
     <string name="toast_load_error">No se puede cargar esta dirección URL</string>
     <string name="toast_load_in_background">Cargar en el fondo</string>
     <string name="toast_new_tab_successful">Abierto con éxito en una nueva pestaña</string>
-    <string name="toast_relayout_successful">Rediseño con éxito</string>
     <string name="toast_share_failed">No se puede compartir esta página</string>
     <string name="toast_start_download">Iniciando descarga</string>
     <string name="toast_wait_a_minute">Por favor, espere un momento</string>

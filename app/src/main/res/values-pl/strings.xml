@@ -26,10 +26,8 @@
     <string name="color_yellow">Żółć</string>
     <string name="color_orange">Pomarańcz</string>
     <string name="color_brown">Brąz</string>
-    <string name="color_grey">Szarość</string>
 
-    
-    
+
     <!-- Menu -->
     <string name="main_menu_tabPreview">Wysuń podgląd kart</string>
     <string name="main_menu_new_tab">Nowa karta w tle</string>
@@ -64,10 +62,8 @@
 
     <!-- Dialog -->
     <string name="dialog_toggle_title">Szybkie preferencje</string>
-    <string name="dialog_toggle_hint">Wybierz przycisk OK poniżej, aby zastosować natychmiast.</string>
     <string name="dialog_title_hint">Tytuł:</string>
     <string name="dialog_extension_hint">Rozszerzenie (np.: \".jpg\"):</string>
-    <string name="dialog_se_hint">https://www.google.com/search?q=</string>
     <string name="dialog_sign_in_username">Login</string>
     <string name="dialog_sign_in_password">Hasło</string>
     <string name="dialog_button_custom">Własna</string>
@@ -273,7 +269,6 @@
     <string name="toast_load_error">Nie można załadować adresu</string>
     <string name="toast_load_in_background">Ładowanie w tle</string>
     <string name="toast_new_tab_successful">Załadowano w nowej karcie</string>
-    <string name="toast_relayout_successful">Zmiana zakończona sukcesem</string>
     <string name="toast_share_failed">Nie można udostępnić</string>
     <string name="toast_start_download">Rozpoczynanie pobierania</string>
     <string name="toast_wait_a_minute">Zaczekaj chwilę</string>
