@@ -1,5 +1,6 @@
 package de.baumann.browser.View;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -48,6 +49,7 @@ public class SearchEngineListPreference extends ListPreference {
 
         Button action_ok = dialogView.findViewById(R.id.action_ok);
         action_ok.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ApplySharedPref")
             @Override
             public void onClick(View view) {
                 String text = editText.getText().toString().trim();
@@ -82,12 +84,5 @@ public class SearchEngineListPreference extends ListPreference {
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         assert imm != null;
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-    }
-
-    private void showSoftInput(View view) {
-        view.requestFocus();
-        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        assert imm != null;
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 }

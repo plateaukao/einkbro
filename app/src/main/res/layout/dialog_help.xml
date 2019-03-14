@@ -14,8 +14,8 @@
         android:layout_gravity="center_vertical|center_horizontal"
         android:padding="16dp"
         android:text="@string/menu_other_help"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textStyle="bold"/>
+        android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+        android:textColor="?android:attr/textColorSecondary"/>
 
     <ScrollView
         android:layout_width="match_parent"

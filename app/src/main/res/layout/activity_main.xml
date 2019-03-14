@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rootView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:animateLayoutChanges="true"
-    tools:ignore="ContentDescription">
+    tools:ignore="ContentDescription"
+    tools:targetApi="o">
 
     <RelativeLayout
         android:id="@+id/appBar"
@@ -80,8 +82,7 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="@string/album_untitled"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="bold"
+                android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
                 android:textColor="@color/color_light" />
 
         </RelativeLayout>
@@ -143,7 +144,8 @@
                 android:maxLines="1"
                 android:ellipsize="end"
                 android:textColor="@color/color_light"
-                android:importantForAutofill="no" />
+                android:importantForAutofill="no"
+                tools:targetApi="o" />
 
         </RelativeLayout>
 

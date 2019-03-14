@@ -12,13 +12,6 @@ public class BrowserContainer {
         return list.get(index);
     }
 
-    public synchronized static void set(AlbumController controller, int index) {
-        if (list.get(index) instanceof NinjaWebView) {
-            ((NinjaWebView) list.get(index)).destroy();
-        }
-        list.set(index, controller);
-    }
-
     public synchronized static void add(AlbumController controller) {
         list.add(controller);
     }

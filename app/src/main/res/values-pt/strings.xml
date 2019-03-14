@@ -26,7 +26,6 @@
     <string name="color_yellow">Amarelo</string>
     <string name="color_orange">Cor de laranja</string>
     <string name="color_brown">Castanho</string>
-    <string name="color_grey">Cinzento</string>
 
 
     <!-- Menu -->
@@ -64,10 +63,8 @@
 
     <!-- Dialog -->
     <string name="dialog_toggle_title">Comutar rapidamente</string>
-    <string name="dialog_toggle_hint">Para aplicar, prima o botão \"OK\".</string>
     <string name="dialog_title_hint">Título:</string>
     <string name="dialog_extension_hint">Extensão (exemplo: \".jpg\"):</string>
-    <string name="dialog_se_hint">https://www.google.com/search?q=</string>
     <string name="dialog_sign_in_username">Utilizador</string>
     <string name="dialog_sign_in_password">Palavra-passe</string>
     <string name="dialog_button_custom">Personalizado</string>
@@ -284,7 +281,6 @@
     <string name="toast_load_error">O URL não pode ser carregado</string>
     <string name="toast_load_in_background">A carregar em segundo plano</string>
     <string name="toast_new_tab_successful">Aberto com sucesso em novo separador</string>
-    <string name="toast_relayout_successful">Recarregamento efetuado</string>
     <string name="toast_share_failed">Não foi possível partilhar a página</string>
     <string name="toast_start_download">Descarga iniciada</string>
     <string name="toast_wait_a_minute">Aguarde um pouco</string>

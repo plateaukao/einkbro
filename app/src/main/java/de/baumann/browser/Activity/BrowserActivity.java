@@ -29,10 +29,6 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
 import android.graphics.Point;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
@@ -53,6 +49,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.graphics.Palette;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
@@ -94,10 +91,8 @@ import org.askerov.dynamicgrid.DynamicGridView;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -662,7 +657,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         int width = size.x;
         int height = size.y;
-        final Bitmap icon = ViewUnit.capture(ninjaWebView, width, 112, Bitmap.Config.ARGB_8888);
+        final Bitmap icon = ViewUnit.capture(ninjaWebView, width, height, Bitmap.Config.ARGB_8888);
 
         new Handler().postDelayed(new Runnable() {
             public void run() {
@@ -1649,7 +1644,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                 }
                                 action.close();
                                 gridView.stopEditMode();
-                                NinjaToast.show(BrowserActivity.this, getString(R.string.toast_relayout_successful));
                             }
                         });
 
@@ -2005,8 +1999,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                         db.update(Integer.parseInt(_id), HelperUnit.secString(input_pass_title), HelperUnit.secString(input_pass_url),  HelperUnit.secString(encrypted_userName), HelperUnit.secString(encrypted_userPW), pass_creation);
                                         initBookmarkList();
                                         hideSoftInput(pass_titleET);
-                                        NinjaToast.show(BrowserActivity.this, R.string.toast_edit_successful);
-
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                         NinjaToast.show(BrowserActivity.this, R.string.toast_error);
@@ -2165,10 +2157,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
                                         bottomSheetDialog.setContentView(dialogView);
                                         bottomSheetDialog.show();
-
-
-                                        NinjaToast.show(BrowserActivity.this, R.string.toast_edit_successful);
-
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                         hideBottomSheetDialog ();
@@ -2798,6 +2786,12 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         updateBookmarks();
         setColor();
 
+        try {
+            omniboxTitle.setText(ninjaWebView.getTitle());
+        } catch (Exception e) {
+            Log.w("Browser", "Error updating");
+        }
+
         if (progress < BrowserUnit.PROGRESS_MAX) {
             updateRefresh(true);
             progressBar.setVisibility(View.VISIBLE);
@@ -2876,12 +2870,10 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
     private File createImageFile() throws IOException {
         // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES);
         return File.createTempFile(
-                imageFileName,  /* prefix */
+                "JPEG_FOSSBrowser_temp",  /* prefix */
                 ".jpg",         /* suffix */
                 storageDir      /* directory */
         );
@@ -3449,7 +3441,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                         updateBookmarks();
                         updateAutoComplete();
                         hideBottomSheetDialog ();
-                        NinjaToast.show(BrowserActivity.this, getString(R.string.toast_delete_successful));
                     }
                 });
                 Button action_cancel = dialogView.findViewById(R.id.action_cancel);

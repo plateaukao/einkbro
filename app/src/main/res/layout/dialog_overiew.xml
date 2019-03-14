@@ -33,7 +33,6 @@
         </HorizontalScrollView>
         
         <RelativeLayout
-            android:id="@+id/overview_titleLayout"
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:minHeight="56dp">
@@ -49,8 +48,8 @@
                 android:includeFontPadding="false"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="bold" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+                android:textColor="?android:attr/textColorSecondary" />
 
             <LinearLayout
                 android:id="@+id/overview_titleIcons"

@@ -27,7 +27,6 @@
     <string name="color_yellow">Sarı</string>
     <string name="color_orange">Turuncu</string>
     <string name="color_brown">Kahverengi</string>
-    <string name="color_grey">Gri</string>
 
 
     <!-- Menu -->
@@ -65,11 +64,9 @@
 
     <!-- Dialog -->
     <string name="dialog_toggle_title">Hızlı geçiş</string>
-    <string name="dialog_toggle_hint">Hemen uygulamak için lütfen aşağıdaki \"TAMAM\" düğmesine basın.</string>
     <string name="dialog_title_hint">Başlık:</string>
     <string name="dialog_url_hint">URL:</string>
     <string name="dialog_extension_hint">Uzantı (örneğin: \".jpg\"):</string>
-    <string name="dialog_se_hint">https://www.google.com/search?q=</string>
     <string name="dialog_sign_in_username">Kullancı adı</string>
     <string name="dialog_sign_in_password">Parola</string>
     <string name="dialog_button_custom">Özel</string>
@@ -137,7 +134,7 @@
 
     <string name="setting_title_javascript">JavaScript</string>
     <string name="setting_summary_javascript">JavaScript\'i etkinleştirin. Birçok web sitesinin işlevselliği için Javascript\'e ihtiyacı vardır 
-	(menüler, resimler yükleme ve görüntüleme, ...). Ancak bunlar aynı zamanda bir risktir ve saldırılar için kullanılabilir.</string>
+	(menüler, resimler yükleme ve görüntüleme, …). Ancak bunlar aynı zamanda bir risktir ve saldırılar için kullanılabilir.</string>
     <string name="setting_title_whitelistJS">JavaScript beyaz listesi</string>
     <string name="setting_summary_whitelistJS">JavaScript\'i devre dışı bırakırsanız, bu beyaz listeyi, güvendiğiniz sitelerin JavaScript kullanmasına 
 	izin vermek için kullanabilirsiniz.</string>
@@ -294,7 +291,6 @@
     <string name="toast_load_error">Bu URL yüklenemiyor</string>
     <string name="toast_load_in_background">Arka planda yükleniyor</string>
     <string name="toast_new_tab_successful">Yeni bir sekmede başarıyla açıldı</string>
-    <string name="toast_relayout_successful">Başarıyla yeniden düzenlendi</string>
     <string name="toast_share_failed">Bu sayfa paylaşılamıyor</string>
     <string name="toast_start_download">İndirmeye başla</string>
     <string name="toast_wait_a_minute">Lütfen biraz bekleyin</string>

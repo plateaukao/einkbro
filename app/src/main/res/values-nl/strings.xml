@@ -52,10 +52,8 @@
 
     <!-- Dialog -->
     <string name="dialog_toggle_title">Snel schakelen</string>
-    <string name="dialog_toggle_hint">Druk op de \"Oké-knop\" hieronder om direct toe te passen.</string>
     <string name="dialog_title_hint">Titel:</string>
     <string name="dialog_extension_hint">Extensie (bijv.: \".jpg\"):</string>
-    <string name="dialog_se_hint">https://www.google.com/search?q=</string>
     <string name="dialog_sign_in_username">Gebruikersnaam</string>
     <string name="dialog_sign_in_password">Wachtwoord</string>
     <string name="dialog_button_custom">Aangepast</string>
@@ -241,7 +239,6 @@
     <string name="toast_load_error">Deze URL kan niet worden geladen</string>
     <string name="toast_load_in_background">Bezig met laden op achtergrond…</string>
     <string name="toast_new_tab_successful">Geopend op nieuw tabblad</string>
-    <string name="toast_relayout_successful">Opnieuw ingedeeld</string>
     <string name="toast_share_failed">Deze pagina kan niet worden gedeeld</string>
     <string name="toast_start_download">Bezig met starten van download…</string>
     <string name="toast_wait_a_minute">Even geduld…</string>

@@ -18,8 +18,8 @@
         android:includeFontPadding="false"
         android:padding="16dp"
         android:text="@string/dialog_toggle_title"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textStyle="bold" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+        android:textColor="?android:attr/textColorSecondary" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -334,7 +334,6 @@
                         android:orientation="vertical">
 
                         <View
-                            android:id="@+id/toggle_fontView"
                             android:layout_width="42dp"
                             android:layout_height="2dp"
                             android:background="@color/colorAccent"

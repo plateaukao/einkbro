@@ -7,10 +7,26 @@
         &lt;i>Proje sitesi: https://github.com/scoute-dich/Browser&lt;br>
         Değişiklik günlüğü: https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;/i>&lt;br>&lt;br>
 
-        &lt;b>Sürüm: 6.2&lt;/b>&lt;br>
-        \u25AA yenilik: gelişmiş hareket ayarları&lt;br>
-        \u25AA yenilik: başlangıçta genel bakışı gösterme&lt;br>
-        \u25AA düzeltme: açık tema ayarları
+        &lt;b>Version: 6.3&lt;/b>&lt;br>
+        \u25AA new: Add Cookies support for download function&lt;br>
+        \u25AA new: option to enable Save-Data header (thanks @SkewedZeppelin)&lt;br>
+        \u25AA new: set blank start site&lt;br>
+        \u25AA new: fast scroll on long lists&lt;br>
+        \u25AA new: show/hide tab preview&lt;br>
+        \u25AA new: animations when showing/hiding views&lt;br>
+        \u25AA new: Qwant search engine (thanks @Tobiplayer3)&lt;br>
+        \u25AA new: option to open new tab instead of exiting app&lt;br>
+        \u25AA new: Ukrainian translation (thanks @Roman Babiy)&lt;br>
+        \u25AA new: Turkish translation (thanks @ali-demirtas)&lt;br>
+        \u25AA fix: UI and minor issues&lt;br>
+        \u25AA updated: long press menu on websites&lt;br>
+        \u25AA updated: Help dialog&lt;br>
+        \u25AA updated: Polish translation (thanks @gh-pmjm)&lt;br>
+        \u25AA updated: Dutch translation (thanks @Vistaus)&lt;br>
+        \u25AA updated: Taiwan Trad. Chinese translation (thanks @elmru)&lt;br>
+        \u25AA updated: Portuguese translation (thanks @smarquespt)&lt;br>
+        \u25AA updated: Overview dialog&lt;br>
+        \u25AA updated: FastToggle dialog
     </string>
 
     <string name="overview_title">Genel bakış</string>

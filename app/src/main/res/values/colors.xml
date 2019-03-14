@@ -5,7 +5,6 @@
     <color name="colorPrimary">#303030</color>
     <color name="colorPrimaryDark">#303030</color>
     <color name="colorAccent">#90b324</color>
-    <color name="colorIcon">#424242</color>
 
     <color name="color_transparent">@android:color/transparent</color>
     <color name="color_light">#fafafa</color>
