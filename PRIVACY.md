@@ -6,11 +6,11 @@ This is the developer's policy with respect to data collection, use of data coll
 
 FOSS Browser software requires certain functionalities and permissions to be enabled to ensure smooth operation when it's services are utilized, however, none of these technicalities explicitly allow or give the developer access to your personal or private information.
 
-For the software to function efficiently the following permissions are required to be enabled.
+For the software to function efficiently the following permissions are required:
 
-- location
-- storage
-- internet access
+- location (disabled by default))
+- storage (to download files and make screenshots)
+- internet access (Yeah, it's internet browser)
 
 These permissions can be disabled if you don't require the service they provide. <hr>
 
@@ -22,7 +22,7 @@ FOSS browser has the capabilities of collecting your location details to access 
 
 #### Usage Data
 
-Usage data is collected when you use FOSS browser to access the internet. Data and information collected when using this software is used for efficient and improved utilization of the software. <hr>
+FOSS Browser doesn't collect any data. FOSS Browser isn't responsible for any data collected by opened websites. 
     
 ## Security Of Data
 
@@ -46,7 +46,6 @@ FOSS browser is an open source browser developed for the Android operating syste
 
 Some features of FOSS browser include;
 
-- full oreo support
 - search on site
 - open links in the background
 - Web search (from marked text context menu)
