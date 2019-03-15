@@ -164,7 +164,10 @@ public class NinjaWebView extends WebView implements AlbumController {
         webSettings.setBuiltInZoomControls(true);
         webSettings.setDisplayZoomControls(false);
         webSettings.setSupportZoom(true);
-        webSettings.setSafeBrowsingEnabled(true);
+
+        if (android.os.Build.VERSION.SDK_INT >= 26) {
+            webSettings.setSafeBrowsingEnabled(true);
+        }
     }
 
     public synchronized void initPreferences() {

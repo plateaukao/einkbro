@@ -8,7 +8,7 @@
     android:paddingEnd="20dp"
     android:paddingStart="20dp"
     android:paddingTop="15dp"
-    tools:targetApi="o">
+    tools:ignore="Autofill">
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
@@ -22,8 +22,7 @@
             android:includeFontPadding="false"
             android:imeOptions="actionDone"
             android:inputType="text"
-            android:hint="@string/dialog_title_hint"
-            android:importantForAutofill="no" />
+            android:hint="@string/dialog_title_hint" />
 
     </android.support.design.widget.TextInputLayout>
 
