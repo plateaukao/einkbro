@@ -60,10 +60,11 @@
     <string name="menu_other_searchSite">Pesquisar no site</string>
     <string name="menu_other_help">Ajuda</string>
 
-
     <!-- Dialog -->
     <string name="dialog_toggle_title">Comutar rapidamente</string>
+	<string name="dialog_toggle_reload">Recarregar</string>
     <string name="dialog_title_hint">Título:</string>
+	<string name="dialog_url_hint">Url:</string>
     <string name="dialog_extension_hint">Extensão (exemplo: \".jpg\"):</string>
     <string name="dialog_sign_in_username">Utilizador</string>
     <string name="dialog_sign_in_password">Palavra-passe</string>
@@ -76,10 +77,9 @@
     <string name="dialog_sortName">Ordenar por nome</string>
     <string name="dialog_sortIcon">Ordenar por ícone</string>
 
-    <string name="dialog_icon_title">Escolher um ícone…</string>
+    <string name="dialog_icon_title">Escolher um filtro...</string>
     <string name="dialog_icon_hint">Também pode filtrar os marcadores com um toque longo no ícone Marcadores. 
-	Para repor os filtros toque novamente no ícone.</string>
-
+	Para repor os filtros, toque novamente no ícone. Toque longo no filtro para editar o nome.</string>
     <!-- Settings -->
     <string name="setting_label">Definições</string>
 
@@ -87,7 +87,8 @@
     <string name="setting_title_browser">Definições do navegador</string>
     <string name="setting_title_clear_control">Controlo de dados</string>
     <string name="setting_title_start_control">Controlo de arranque</string>
-    <string name="setting_summary_clear_control">Limpar dados do navegador ou decidir os dados que serão removidos ao fechar a aplicação.</string>
+    <string name="setting_summary_clear_control">Limpar dados do navegador ou decidir os dados que serão removidos
+ ao fechar a aplicação.</string>
     <string name="setting_summary_start_control">Decidir os componentes que serão ativados ao iniciar a aplicação.</string>
 
     <string name="setting_title_search_engine">Motor de pesquisa</string>
@@ -111,11 +112,14 @@
     <string name="setting_title_remote">Conteúdo remoto</string>
     <string name="setting_summary_remote">Permitir conteúdo remoto que não esteja diretamente relacionado com o site visitado. 
 	Se desativar a opção, poderá estar mais seguro, navegar mais rapidamente e poupar dados. Contudo, o conteúdo dos sites pode não ser mostrado corretamente.</string>
+	<string name="setting_title_save_data">Pedir para guardar dados</string>
+    <string name="setting_summary_save_data">Informar os sites de que deseja guardar os seus dados. O sites serão carregados mais rapidamente.</string>
 
 
     <!-- Browser start -->
     <string name="setting_title_images">Imagens</string>
-    <string name="setting_summary_images">Permitir imagens de rede. Se desativar esta opção, pode poupar dados móveis e carregar os sites mais rapidamente.</string>
+    <string name="setting_summary_images">Permitir imagens de rede. Se desativar esta opção, pode poupar dados móveis
+ e carregar os sites mais rapidamente.</string>
     <string name="setting_title_cookie">Cookies</string>
     <string name="setting_summary_cookie_delete">Se ativa, todos os cookies serão apagados. Os cookies de sites fiáveis também serão apagados.</string>
     <string name="setting_summary_cookie">Permitir utilização de cookies. Cookies são pequenos ficheiros de texto e são armazenados no seu dispositivo.
@@ -211,7 +215,9 @@
     <string name="setting_gestures_use_title">Utilizar gestos</string>
     <string name="setting_gestures_use_summary">Utilizar gestos na barra de ferramentas e no \"Botão de navegação\".</string>
 
-    
+    <string name="setting_title_reopenLastTab">Reabrir separador</string>
+    <string name="setting_summary_reopenLastTab">Ao fechar o último separador, reabrir um novo em vez de sair da aplicação.</string>
+
 	<!-- gestures -->
     <string name="setting_title_toolbar">Barra de ferramentas</string>
     <string name="setting_gesture_up">Deslize para cima</string>
