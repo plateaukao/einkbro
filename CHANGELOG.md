@@ -1,4 +1,11 @@
-### v 6.3 (WIP)
+### v 6.4
+- new: FAQ site (thanks @HarryHeights)
+- new: long click on tab preview to close
+- updated: Portuguese translation (thanks @smarquespt)
+- updated: adblock domain list
+- fix: can't go back in history when reopening the app
+
+### v 6.3
 - new: Add Cookies support for download function
 - new: option to enable Save-Data header (thanks @SkewedZeppelin)
 - new: set blank start site
