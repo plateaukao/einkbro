@@ -1384,7 +1384,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         listView = dialogView.findViewById(R.id.home_list_2);
 
         // allow scrolling in listView without closing the bottomSheetDialog
-        listView.setOnTouchListener(new ListView.OnTouchListener() {
+        /*listView.setOnTouchListener(new ListView.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 int action = event.getAction();
@@ -1404,7 +1404,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 v.onTouchEvent(event);
                 return true;
             }
-        });
+        });*/
 
         open_startPageView = dialogView.findViewById(R.id.open_newTabView);
         open_bookmarkView = dialogView.findViewById(R.id.open_bookmarkView);
