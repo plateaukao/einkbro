@@ -56,6 +56,7 @@ import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -1381,6 +1382,29 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         tab_toggle = dialogView.findViewById(R.id.tab_toggle);
         tab_plus.setOnClickListener(this);
         listView = dialogView.findViewById(R.id.home_list_2);
+
+        // allow scrolling in listView without closing the bottomSheetDialog
+        listView.setOnTouchListener(new ListView.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = event.getAction();
+                switch (action) {
+                    case MotionEvent.ACTION_DOWN:
+                        // Disallow NestedScrollView to intercept touch events.
+                        v.getParent().requestDisallowInterceptTouchEvent(true);
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        // Allow NestedScrollView to intercept touch events.
+                        v.getParent().requestDisallowInterceptTouchEvent(false);
+                        break;
+                }
+
+                // Handle ListView touch events.
+                v.onTouchEvent(event);
+                return true;
+            }
+        });
 
         open_startPageView = dialogView.findViewById(R.id.open_newTabView);
         open_bookmarkView = dialogView.findViewById(R.id.open_bookmarkView);
