@@ -1,3 +1,30 @@
+# Yahoo!
+ads.yahoo
+ybp.yahoo
+yap.yahoo
+y.atwola
+adserver.yahoo
+
+# Appledaily uses a third party
+scupio.com
+doublemax.net
+logly.co.jp
+tenmax.io
+
+# Google
+doubleclick.net
+googlesyndication.com
+googletagservices.com
+googleadservices.com
+
+# Ettoday
+ad.ettoday.net
+
+# Is the two groups
+ad.ettoday.net
+cd1.ettoday.net
+
+
 # AdAway default blocklist
 # Blocking mobile ad providers and some analytics providers
 # 

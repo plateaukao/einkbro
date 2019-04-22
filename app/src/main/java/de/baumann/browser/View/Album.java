@@ -66,6 +66,14 @@ class Album {
             }
         });
 
+        albumView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                browserController.removeAlbum(albumController);
+                return true;
+            }
+        });
+
         ImageView albumClose = albumView.findViewById(R.id.album_close);
         albumCover = albumView.findViewById(R.id.album_cover);
         albumTitle = albumView.findViewById(R.id.album_title);

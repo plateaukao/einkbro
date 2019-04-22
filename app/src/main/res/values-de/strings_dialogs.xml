@@ -30,9 +30,9 @@
     </string>
 
     <string name="overview_title">Übersicht</string>
-    <string name="overview_dialog">Hier hast du Zugriff auf deine geöffneten Tabs und deine Daten: auf der Startseite
-        gespeicherten Einträge, deine Lesezeichen und den Verlauf. In den Einstellungen kannst du entscheiden, welcher
-        Inhalt immer zuerst angezeigt werden soll.</string>
+    <string name="overview_dialog">Hier hast du Zugriff auf deine geöffneten Tabs (drücke lange auf eine Vorschau, um den Tab zu
+        schließen) und deine Daten: auf der Startseite gespeicherten Einträge, deine Lesezeichen und den Verlauf. In den
+        Einstellungen kannst du entscheiden, welcher Inhalt immer zuerst angezeigt werden soll.</string>
 
     <string name="startSite_title">Startseite</string>
     <string name="startSite_dialog">Du kannst jedes Lesezeichen als Startseite setzen, indem du es lange drückst. Diese Seite

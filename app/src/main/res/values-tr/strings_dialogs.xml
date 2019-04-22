@@ -31,7 +31,7 @@
 
     <string name="overview_title">Genel bakış</string>
     <string name="overview_dialog">Buradan tüm açılan sekmelere ve verilerinize erişebilirsiniz: başlangıç sayfasındaki kayıtlı siteler, yer imleri ve geçmiş.
-        Ayarlardan başlangıçta hangi içeriğin gösterileceğine karar verebilirsiniz.</string>
+        Ayarlardan başlangıçta hangi içeriğin gösterileceğine karar verebilirsiniz (long press a tab preview to close it).</string>
 
     <string name="startSite_title">Başlangıç sitesi</string>
     <string name="startSite_dialog">Başlangıç sitesi olarak ayarlamak için kaydedilen yer imine uzun basın. Bu site her zaman başlangıçta

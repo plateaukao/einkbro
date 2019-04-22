@@ -1072,7 +1072,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 break;
 
             case R.id.omnibox_refresh:
-                if (ninjaWebView.isLoadFinish()) {
+                if (url != null && ninjaWebView.isLoadFinish()) {
 
                     if (!url.startsWith("https://")) {
                         bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
@@ -1100,8 +1100,12 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                     } else {
                         ninjaWebView.reload();
                     }
+                } else if (url == null ){
+                    String text = getString(R.string.toast_load_error) + ": " + url;
+                    NinjaToast.show(BrowserActivity.this, text);
                 } else {
                     ninjaWebView.stopLoading();
+
                 }
                 break;
 
@@ -1168,7 +1172,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                     open_bookmark.performClick();
                 }
             }, shortAnimTime);
-
         } else if ("sc_startPage".equals(action)) {
             showOverview();
             new Handler().postDelayed(new Runnable() {
@@ -1176,7 +1179,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                     open_startPage.performClick();
                 }
             }, shortAnimTime);
-
         } else if (Intent.ACTION_SEND.equals(action)) {
             pinAlbums(intent.getStringExtra(Intent.EXTRA_TEXT));
         } else {
@@ -2642,7 +2644,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         if (BrowserContainer.size() < 1 && url == null) {
             addAlbum("", sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"), true);
-        } else if (BrowserContainer.size() >= 1 && url == null) {
+        /*} else if (BrowserContainer.size() >= 1 && url == null) {
             if (currentAlbumController != null) {
                 currentAlbumController.activate();
                 return;
@@ -2653,7 +2655,10 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             contentFrame.removeAllViews();
             contentFrame.addView((View) currentAlbumController);
             currentAlbumController.activate();
-        } else { // When url != null
+
+            String text = getString(R.string.toast_load_error) + ": " + url;
+            NinjaToast.show(BrowserActivity.this, text);*/
+        } else if (url != null) { // When url != null
             ninjaWebView.setBrowserController(this);
             ninjaWebView.setAlbumTitle(getString(R.string.album_untitled));
             ViewUnit.bound(this, ninjaWebView);
