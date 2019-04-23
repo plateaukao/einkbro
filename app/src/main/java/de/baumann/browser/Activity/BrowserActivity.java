@@ -41,6 +41,7 @@ import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintManager;
 import android.provider.MediaStore;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NotificationCompat;
@@ -53,6 +54,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
@@ -201,6 +203,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     private VideoView videoView;
 
     private HorizontalScrollView tab_ScrollView;
+    private LinearLayout overview_top;
     private ImageButton tab_toggle;
 
     // Layouts
@@ -350,20 +353,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         contentFrame = findViewById(R.id.main_content);
         appBar = findViewById(R.id.appBar);
 
-        final RelativeLayout rootView = findViewById(R.id.rootView);
-
-        rootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                int heightDiff = rootView.getRootView().getHeight() - rootView.getHeight();
-                if (heightDiff > 100) {
-                    omniboxTitle.setVisibility(View.GONE);
-                } else {
-                    omniboxTitle.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-
         shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
         dimen156dp = getResources().getDimensionPixelSize(R.dimen.layout_width_156dp);
@@ -380,6 +369,8 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         initOmnibox();
         initSearchPanel();
         initOverview();
+
+
 
         if (sp.getBoolean("start_tabStart", true)){
             showOverview();
@@ -754,8 +745,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
     private void showOverview() {
 
-        showTabPreview();
-
         if (currentAlbumController != null) {
             currentAlbumController.deactivate();
             currentAlbumController.activate();
@@ -841,7 +830,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
             case R.id.menu_tabPreview:
                 hideBottomSheetDialog ();
-                showTabPreview();
                 showOverview();
                 break;
 
@@ -1299,6 +1287,18 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             }
         });
 
+        inputBox.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+
+                if (inputBox.hasFocus()) {
+                    omniboxTitle.setVisibility(View.GONE);
+                } else {
+                    omniboxTitle.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
         updateBookmarks();
         updateAutoComplete();
 
@@ -1354,19 +1354,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         }
     }
 
-    private void hideTabPreview () {
-        tab_ScrollView.setVisibility(View.GONE);
-        tab_toggle.setVisibility(View.VISIBLE);
-    }
-
-    private void showTabPreview () {
-        if (tab_ScrollView != null && currentAlbumController != null) {
-            tab_ScrollView.setVisibility(View.VISIBLE);
-            tab_ScrollView.smoothScrollTo(currentAlbumController.getAlbumView().getLeft(), 0);
-            tab_toggle.setVisibility(View.GONE);
-        }
-    }
-
     private void initOverview() {
 
         bottomSheetDialog_OverView = new BottomSheetDialog(this);
@@ -1379,32 +1366,10 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         tab_container = dialogView.findViewById(R.id.tab_container);
         tab_plus = dialogView.findViewById(R.id.tab_plus);
         tab_ScrollView = dialogView.findViewById(R.id.tab_ScrollView);
+        overview_top = dialogView.findViewById(R.id.overview_top);
         tab_toggle = dialogView.findViewById(R.id.tab_toggle);
         tab_plus.setOnClickListener(this);
         listView = dialogView.findViewById(R.id.home_list_2);
-
-        // allow scrolling in listView without closing the bottomSheetDialog
-        /*listView.setOnTouchListener(new ListView.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                int action = event.getAction();
-                switch (action) {
-                    case MotionEvent.ACTION_DOWN:
-                        // Disallow NestedScrollView to intercept touch events.
-                        v.getParent().requestDisallowInterceptTouchEvent(true);
-                        break;
-
-                    case MotionEvent.ACTION_UP:
-                        // Allow NestedScrollView to intercept touch events.
-                        v.getParent().requestDisallowInterceptTouchEvent(false);
-                        break;
-                }
-
-                // Handle ListView touch events.
-                v.onTouchEvent(event);
-                return true;
-            }
-        });*/
 
         open_startPageView = dialogView.findViewById(R.id.open_newTabView);
         open_bookmarkView = dialogView.findViewById(R.id.open_bookmarkView);
@@ -1425,141 +1390,42 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         gridView.setVisibility(View.GONE);
         listView.setVisibility(View.GONE);
 
-        tab_toggle.setOnClickListener(new View.OnClickListener() {
+        // allow scrolling in listView without closing the bottomSheetDialog
+        listView.setOnTouchListener(new ListView.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                showTabPreview();
-            }
-        });
-
-        listView.setOnScrollListener(new AbsListView.OnScrollListener(){
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                // TODO Auto-generated method stub
-            }
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-                // TODO Auto-generated method stub
-                hideTabPreview();
-            }
-        });
-
-        gridView.setOnScrollListener(new AbsListView.OnScrollListener(){
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                // TODO Auto-generated method stub
-            }
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-                // TODO Auto-generated method stub
-                hideTabPreview();
-            }
-        });
-
-        open_startPage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                gridView.setVisibility(View.VISIBLE);
-                listView.setVisibility(View.GONE);
-                open_startPageView.setVisibility(View.VISIBLE);
-                open_bookmarkView.setVisibility(View.INVISIBLE);
-                open_historyView.setVisibility(View.INVISIBLE);
-                overview_titleIcons_startView.setVisibility(View.VISIBLE);
-                overview_titleIcons_bookmarksView.setVisibility(View.INVISIBLE);
-                overview_titleIcons_historyView.setVisibility(View.INVISIBLE);
-                overview_title.setText(getString(R.string.album_title_home));
-                overViewTab = getString(R.string.album_title_home);
-
-                RecordAction action = new RecordAction(BrowserActivity.this);
-                action.open(false);
-                final List<GridItem> gridList = action.listGrid();
-                action.close();
-
-                GridAdapter gridAdapter = new de.baumann.browser.View.GridAdapter(BrowserActivity.this, gridList, 2);
-                gridView.setAdapter(gridAdapter);
-                gridAdapter.notifyDataSetChanged();
-
-                gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        updateAlbum(gridList.get(position).getURL());
-                        hideOverview();
-                    }
-                });
-
-                gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                    @Override
-                    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                        showGridMenu(gridList.get(position));
-                        return true;
-                    }
-                });
-            }
-        });
-
-        open_bookmark.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                gridView.setVisibility(View.GONE);
-                listView.setVisibility(View.VISIBLE);
-                open_startPageView.setVisibility(View.INVISIBLE);
-                open_bookmarkView.setVisibility(View.VISIBLE);
-                open_historyView.setVisibility(View.INVISIBLE);
-                overview_titleIcons_startView.setVisibility(View.INVISIBLE);
-                overview_titleIcons_bookmarksView.setVisibility(View.VISIBLE);
-                overview_titleIcons_historyView.setVisibility(View.INVISIBLE);
-                overview_title.setText(getString(R.string.album_title_bookmarks));
-                overViewTab = getString(R.string.album_title_bookmarks);
-                sp.edit().putString("filter_passBY", "00").apply();
-                initBookmarkList();
-            }
-        });
-
-        open_bookmark.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                if (!overViewTab.equals(getString(R.string.album_title_bookmarks))) {
-                    open_bookmark.performClick();
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = event.getAction();
+                switch (action) {
+                    case MotionEvent.ACTION_DOWN:
+                        // Disallow NestedScrollView to intercept touch events.
+                        if (listView.canScrollVertically(-1)) {
+                            v.getParent().requestDisallowInterceptTouchEvent(true);
+                        }
+                        break;
                 }
-                showFilterDialog();
-                return false;
+
+                // Handle ListView touch events.
+                v.onTouchEvent(event);
+                return true;
             }
         });
 
-        open_history.setOnClickListener(new View.OnClickListener() {
+        gridView.setOnTouchListener(new ListView.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                gridView.setVisibility(View.GONE);
-                listView.setVisibility(View.VISIBLE);
-                open_startPageView.setVisibility(View.INVISIBLE);
-                open_bookmarkView.setVisibility(View.INVISIBLE);
-                open_historyView.setVisibility(View.VISIBLE);
-                overview_titleIcons_startView.setVisibility(View.INVISIBLE);
-                overview_titleIcons_bookmarksView.setVisibility(View.INVISIBLE);
-                overview_titleIcons_historyView.setVisibility(View.VISIBLE);
-                overview_title.setText(getString(R.string.album_title_history));
-                overViewTab = getString(R.string.album_title_history);
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = event.getAction();
+                switch (action) {
+                    case MotionEvent.ACTION_DOWN:
+                        // Disallow NestedScrollView to intercept touch events.
+                        if (gridView.canScrollVertically(-1)) {
+                            v.getParent().requestDisallowInterceptTouchEvent(true);
+                        }
+                        break;
+                }
 
-                RecordAction action = new RecordAction(BrowserActivity.this);
-                action.open(false);
-                final List<Record> list;
-                list = action.listHistory();
-                action.close();
-
-                final Adapter_Record adapter = new Adapter_Record(BrowserActivity.this, list);
-                listView.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        updateAlbum(list.get(position).getURL());
-                        hideOverview();
-                    }
-                });
-
-                listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                    @Override
-                    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                        showListMenu(adapter, list, position);
-                        return true;
-                    }
-                });
+                // Handle ListView touch events.
+                v.onTouchEvent(event);
+                return true;
             }
         });
 
@@ -1762,6 +1628,141 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         bottomSheetDialog_OverView.setContentView(dialogView);
 
+
+        final BottomSheetBehavior mBehavior = BottomSheetBehavior.from((View) dialogView.getParent());
+        int zz = Math.round(184 * this.getResources().getDisplayMetrics().density);
+        mBehavior.setPeekHeight(zz);
+
+        mBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(View bottomSheet, int newState) {
+                if (newState == BottomSheetBehavior.STATE_EXPANDED){
+                    overview_top.setVisibility(View.GONE);
+                } else {
+                    overview_top.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onSlide(View bottomSheet, float slideOffset) {
+
+            }
+        });
+
+        open_startPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                gridView.setVisibility(View.VISIBLE);
+                listView.setVisibility(View.GONE);
+                open_startPageView.setVisibility(View.VISIBLE);
+                open_bookmarkView.setVisibility(View.INVISIBLE);
+                open_historyView.setVisibility(View.INVISIBLE);
+                overview_titleIcons_startView.setVisibility(View.VISIBLE);
+                overview_titleIcons_bookmarksView.setVisibility(View.INVISIBLE);
+                overview_titleIcons_historyView.setVisibility(View.INVISIBLE);
+                overview_title.setText(getString(R.string.album_title_home));
+                overViewTab = getString(R.string.album_title_home);
+
+                RecordAction action = new RecordAction(BrowserActivity.this);
+                action.open(false);
+                final List<GridItem> gridList = action.listGrid();
+                action.close();
+
+                GridAdapter gridAdapter = new de.baumann.browser.View.GridAdapter(BrowserActivity.this, gridList, 2);
+                gridView.setAdapter(gridAdapter);
+                gridAdapter.notifyDataSetChanged();
+
+                gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        updateAlbum(gridList.get(position).getURL());
+                        hideOverview();
+                    }
+                });
+
+                gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                    @Override
+                    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                        showGridMenu(gridList.get(position));
+                        return true;
+                    }
+                });
+            }
+        });
+
+        open_bookmark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                gridView.setVisibility(View.GONE);
+                listView.setVisibility(View.VISIBLE);
+                open_startPageView.setVisibility(View.INVISIBLE);
+                open_bookmarkView.setVisibility(View.VISIBLE);
+                open_historyView.setVisibility(View.INVISIBLE);
+                overview_titleIcons_startView.setVisibility(View.INVISIBLE);
+                overview_titleIcons_bookmarksView.setVisibility(View.VISIBLE);
+                overview_titleIcons_historyView.setVisibility(View.INVISIBLE);
+                overview_title.setText(getString(R.string.album_title_bookmarks));
+                overViewTab = getString(R.string.album_title_bookmarks);
+                sp.edit().putString("filter_passBY", "00").apply();
+                initBookmarkList();
+            }
+        });
+
+        open_bookmark.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (!overViewTab.equals(getString(R.string.album_title_bookmarks))) {
+                    open_bookmark.performClick();
+                }
+                showFilterDialog();
+                return false;
+            }
+        });
+
+        open_history.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                gridView.setVisibility(View.GONE);
+                listView.setVisibility(View.VISIBLE);
+                open_startPageView.setVisibility(View.INVISIBLE);
+                open_bookmarkView.setVisibility(View.INVISIBLE);
+                open_historyView.setVisibility(View.VISIBLE);
+                overview_titleIcons_startView.setVisibility(View.INVISIBLE);
+                overview_titleIcons_bookmarksView.setVisibility(View.INVISIBLE);
+                overview_titleIcons_historyView.setVisibility(View.VISIBLE);
+                overview_title.setText(getString(R.string.album_title_history));
+                overViewTab = getString(R.string.album_title_history);
+
+                RecordAction action = new RecordAction(BrowserActivity.this);
+                action.open(false);
+                final List<Record> list;
+                list = action.listHistory();
+                action.close();
+
+                final Adapter_Record adapter = new Adapter_Record(BrowserActivity.this, list);
+                listView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        updateAlbum(list.get(position).getURL());
+                        hideOverview();
+                    }
+                });
+
+                listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                    @Override
+                    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                        showListMenu(adapter, list, position);
+                        return true;
+                    }
+                });
+            }
+        });
+
         overview_titleIcons_start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1795,16 +1796,21 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         });
 
         switch (Objects.requireNonNull(sp.getString("start_tab", "0"))) {
+
             case "0":
+                overview_top.setVisibility(View.GONE);
                 open_startPage.performClick();
                 break;
             case "3":
+                overview_top.setVisibility(View.GONE);
                 open_bookmark.performClick();
                 break;
             case "4":
+                overview_top.setVisibility(View.GONE);
                 open_history.performClick();
                 break;
             default:
+                overview_top.setVisibility(View.GONE);
                 open_startPage.performClick();
                 break;
         }
@@ -2644,11 +2650,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         if (BrowserContainer.size() < 1 && url == null) {
             addAlbum("", sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"), true);
-        /*} else if (BrowserContainer.size() >= 1 && url == null) {
-            if (currentAlbumController != null) {
-                currentAlbumController.activate();
-                return;
-            }
+        } else if (BrowserContainer.size() >= 1 && url == null) {
 
             int index = BrowserContainer.size() - 1;
             currentAlbumController = BrowserContainer.get(index);
@@ -2656,8 +2658,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             contentFrame.addView((View) currentAlbumController);
             currentAlbumController.activate();
 
-            String text = getString(R.string.toast_load_error) + ": " + url;
-            NinjaToast.show(BrowserActivity.this, text);*/
         } else if (url != null) { // When url != null
             ninjaWebView.setBrowserController(this);
             ninjaWebView.setAlbumTitle(getString(R.string.album_untitled));

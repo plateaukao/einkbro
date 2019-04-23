@@ -157,7 +157,7 @@ public class DynamicGridView extends GridView {
 
     /**
      * Creates the hover cell with the appropriate bitmap and of appropriate
-     * size. The hover cell's BitmapDrawable is drawn on top of the bitmap every
+     * size. The hover cell's BitmapDrawable is drawn on overview_top of the bitmap every
      * single time an invalidate call is made.
      */
     private BitmapDrawable getAndAddHoverView(View v) {
@@ -641,7 +641,7 @@ public class DynamicGridView extends GridView {
 
     /**
      * This scroll listener is added to the gridview in order to handle cell swapping
-     * when the cell is either at the top or bottom edge of the gridview. If the hover
+     * when the cell is either at the overview_top or bottom edge of the gridview. If the hover
      * cell is at either edge of the gridview, the gridview will begin scrolling. As
      * scrolling takes place, the gridview continuously checks if new cells became visible
      * and determines whether they are potential candidates for a cell swap.
@@ -704,7 +704,7 @@ public class DynamicGridView extends GridView {
 
         /**
          * Determines if the gridview scrolled up enough to reveal a new cell at the
-         * top of the list. If so, then the appropriate parameters are updated.
+         * overview_top of the list. If so, then the appropriate parameters are updated.
          */
         private void checkAndHandleFirstVisibleCellChange() {
             if (mCurrentFirstVisibleItem != mPreviousFirstVisibleItem) {
