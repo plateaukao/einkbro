@@ -10,7 +10,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
-        android:id="@+id/top"
+        android:id="@+id/overview_top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -166,7 +166,7 @@
 
 
     <RelativeLayout
-        android:layout_below="@+id/top"
+        android:layout_below="@+id/overview_top"
         android:layout_above="@+id/home_buttons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
