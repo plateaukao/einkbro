@@ -43,7 +43,6 @@ public class RecordAction {
         values.put(RecordUnit.COLUMN_URL, record.getURL().trim());
         values.put(RecordUnit.COLUMN_TIME, record.getTime());
         database.insert(RecordUnit.TABLE_HISTORY, null, values);
-
     }
 
     public void addDomain(String domain) {
@@ -336,37 +335,6 @@ public class RecordAction {
         return item;
     }
 
-    public List<Record> listBookmarks() {
-        List<Record> list = new ArrayList<>();
-
-        Cursor cursor = database.query(
-                RecordUnit.TABLE_BOOKMARKS,
-                new String[] {
-                        RecordUnit.COLUMN_TITLE,
-                        RecordUnit.COLUMN_URL,
-                        RecordUnit.COLUMN_TIME
-                },
-                null,
-                null,
-                null,
-                null,
-                RecordUnit.COLUMN_TITLE
-        );
-
-        if (cursor == null) {
-            return list;
-        }
-
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            list.add(getRecord(cursor));
-            cursor.moveToNext();
-        }
-        cursor.close();
-
-        return list;
-    }
-
     public List<Record> listHistory() {
         List<Record> list = new ArrayList<>();
 
@@ -381,7 +349,7 @@ public class RecordAction {
                 null,
                 null,
                 null,
-                RecordUnit.COLUMN_TIME + " desc"
+                RecordUnit.COLUMN_TIME + " asc"
         );
 
         if (cursor == null) {

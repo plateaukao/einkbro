@@ -21,6 +21,8 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ShortcutInfo;
+import android.content.pm.ShortcutManager;
 import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -29,18 +31,21 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.drawable.Icon;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintManager;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.FloatingActionButton;
@@ -50,18 +55,15 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.graphics.Palette;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.CookieManager;
@@ -69,7 +71,6 @@ import android.webkit.URLUtil;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -204,7 +205,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
     private HorizontalScrollView tab_ScrollView;
     private LinearLayout overview_top;
-    private ImageButton tab_toggle;
 
     // Layouts
 
@@ -230,6 +230,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     private String url;
     private String overViewTab;
     private BroadcastReceiver downloadReceiver;
+    private BottomSheetBehavior mBehavior;
 
     private SharedPreferences sp;
     private MAHEncryptor mahEncryptor;
@@ -370,12 +371,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         initSearchPanel();
         initOverview();
 
-
-
-        if (sp.getBoolean("start_tabStart", true)){
-            showOverview();
-        }
-
         new AdBlock(this); // For AdBlock cold boot
         new Javascript(BrowserActivity.this);
         new Cookie(BrowserActivity.this);
@@ -465,6 +460,16 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         IntentFilter filter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
         registerReceiver(downloadReceiver, filter);
         dispatchIntent(getIntent());
+
+        if (sp.getBoolean("start_tabStart", false)){
+            showOverview();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                }
+            }, shortAnimTime);
+        }
     }
 
     @SuppressWarnings("UnnecessaryReturnStatement")
@@ -648,7 +653,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         int width = size.x;
         int height = size.y;
-        final Bitmap icon = ViewUnit.capture(ninjaWebView, width, 116, Bitmap.Config.ARGB_8888);
+        final Bitmap icon = ViewUnit.capture(ninjaWebView, width, height, Bitmap.Config.ARGB_8888);
 
         new Handler().postDelayed(new Runnable() {
             public void run() {
@@ -663,7 +668,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                             vibrantColor = ContextCompat.getColor(BrowserActivity.this, R.color.colorAccent);
                         }
 
-                        if(vibrantDark != null  && !isBrightColor(vibrantDark.getRgb())){
+                        if(vibrantDark != null  && isDarkColor(vibrantDark.getRgb())){
                             vibrantDarkColor = vibrantDark.getRgb();
                         } else {
                             vibrantDarkColor = ContextCompat.getColor(BrowserActivity.this, R.color.colorPrimaryDark);
@@ -706,8 +711,8 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     public void updateAutoComplete() {
         RecordAction action = new RecordAction(this);
         action.open(false);
-        List<Record> list = action.listBookmarks();
-        list.addAll(action.listHistory());
+        List<Record> list = action.listHistory();
+        //list.addAll(action.listHistory());
         action.close();
 
         CompleteAdapter adapter = new CompleteAdapter(this, list);
@@ -745,6 +750,9 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
     private void showOverview() {
 
+        overview_top.setVisibility(View.VISIBLE);
+        mBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+
         if (currentAlbumController != null) {
             currentAlbumController.deactivate();
             currentAlbumController.activate();
@@ -773,6 +781,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     public void hideOverview () {
         if (bottomSheetDialog_OverView != null) {
             bottomSheetDialog_OverView.cancel();
+            mBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         }
     }
 
@@ -1354,6 +1363,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void initOverview() {
 
         bottomSheetDialog_OverView = new BottomSheetDialog(this);
@@ -1367,7 +1377,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         tab_plus = dialogView.findViewById(R.id.tab_plus);
         tab_ScrollView = dialogView.findViewById(R.id.tab_ScrollView);
         overview_top = dialogView.findViewById(R.id.overview_top);
-        tab_toggle = dialogView.findViewById(R.id.tab_toggle);
         tab_plus.setOnClickListener(this);
         listView = dialogView.findViewById(R.id.home_list_2);
 
@@ -1392,6 +1401,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         // allow scrolling in listView without closing the bottomSheetDialog
         listView.setOnTouchListener(new ListView.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 int action = event.getAction();
@@ -1411,6 +1421,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         });
 
         gridView.setOnTouchListener(new ListView.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 int action = event.getAction();
@@ -1429,17 +1440,12 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             }
         });
 
+
         open_menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
                 View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_menu_overview, null);
-
-                menu_settings = dialogView.findViewById(R.id.menu_settings);
-                menu_settings.setOnClickListener(BrowserActivity.this);
-
-                menu_quit = dialogView.findViewById(R.id.menu_quit);
-                menu_quit.setOnClickListener(BrowserActivity.this);
 
                 LinearLayout tv_relayout = dialogView.findViewById(R.id.tv_relayout);
                 LinearLayout bookmark_sort = dialogView.findViewById(R.id.bookmark_sort);
@@ -1570,14 +1576,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                     }
                 });
 
-                menu_help = dialogView.findViewById(R.id.menu_help);
-                menu_help.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        showHelpDialog();
-                    }
-                });
-
                 LinearLayout tv_delete = dialogView.findViewById(R.id.tv_delete);
                 tv_delete.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -1628,14 +1626,13 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         bottomSheetDialog_OverView.setContentView(dialogView);
 
-
-        final BottomSheetBehavior mBehavior = BottomSheetBehavior.from((View) dialogView.getParent());
+        mBehavior = BottomSheetBehavior.from((View) dialogView.getParent());
         int zz = Math.round(184 * this.getResources().getDisplayMetrics().density);
         mBehavior.setPeekHeight(zz);
 
         mBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
-            public void onStateChanged(View bottomSheet, int newState) {
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 if (newState == BottomSheetBehavior.STATE_EXPANDED){
                     overview_top.setVisibility(View.GONE);
                 } else {
@@ -1644,7 +1641,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             }
 
             @Override
-            public void onSlide(View bottomSheet, float slideOffset) {
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
 
             }
         });
@@ -1713,9 +1710,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         open_bookmark.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if (!overViewTab.equals(getString(R.string.album_title_bookmarks))) {
-                    open_bookmark.performClick();
-                }
+
                 showFilterDialog();
                 return false;
             }
@@ -1983,6 +1978,35 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                         hideBottomSheetDialog ();
                         sp.edit().putString("favoriteURL", pass_content).apply();
                         NinjaToast.show(BrowserActivity.this, R.string.toast_fav);
+
+                        Intent i = new Intent();
+                        i.setAction(Intent.ACTION_VIEW);
+                        i.setData(Uri.parse(pass_content));
+
+                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) { // code for adding shortcut on pre oreo device
+
+                            Intent installer = new Intent();
+                            installer.putExtra("android.intent.extra.shortcut.INTENT", i);
+                            installer.putExtra("android.intent.extra.shortcut.NAME", pass_title);
+                            installer.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(getApplicationContext(), R.mipmap.ic_launcher));
+                            installer.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
+                            sendBroadcast(installer);
+                        } else {
+                            ShortcutManager shortcutManager = BrowserActivity.this.getSystemService(ShortcutManager.class);
+                            assert shortcutManager != null;
+                            if (shortcutManager.isRequestPinShortcutSupported()) {
+                                ShortcutInfo pinShortcutInfo =
+                                        new ShortcutInfo.Builder(BrowserActivity.this, pass_content)
+                                                .setShortLabel(pass_title)
+                                                .setLongLabel(pass_title)
+                                                .setIcon(Icon.createWithResource(BrowserActivity.this, R.drawable.check_green))
+                                                .setIntent(new Intent(Intent.ACTION_VIEW, Uri.parse(pass_content)))
+                                                .build();
+                                shortcutManager.requestPinShortcut(pinShortcutInfo, null);
+                            } else {
+                                System.out.println("failed_to_add");
+                            }
+                        }
 
                     }
                 });
@@ -2788,9 +2812,9 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         }
     }
 
-    private static boolean isBrightColor(int color) {
+    private static boolean isDarkColor(int color) {
         if (android.R.color.transparent == color)
-            return true;
+            return false;
 
         boolean rtnValue = false;
 
@@ -2804,7 +2828,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             rtnValue = true;
         }
 
-        return rtnValue;
+        return !rtnValue;
     }
 
     @Override
@@ -3537,6 +3561,8 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     private void showFilterDialog () {
         hideBottomSheetDialog();
 
+        open_bookmark.performClick();
+
         bottomSheetDialog = new BottomSheetDialog(BrowserActivity.this);
         View dialogView = View.inflate(BrowserActivity.this, R.layout.dialog_edit_icon, null);
 
@@ -3776,7 +3802,13 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     private void setCustomFullscreen(boolean fullscreen) {
         View decorView = getWindow().getDecorView();
         if (fullscreen) {
-            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
+            decorView.setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
+                            | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
+                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         } else {
             decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
         }

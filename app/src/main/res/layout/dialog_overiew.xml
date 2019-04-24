@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:ignore="ContentDescription"
-    android:animateLayoutChanges="true"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
@@ -58,17 +57,6 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerInParent="true"
                 android:orientation="horizontal">
-
-                <ImageButton
-                    android:id="@+id/tab_toggle"
-                    android:layout_width="42dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_vertical|center_horizontal"
-                    android:layout_marginEnd="2dp"
-                    android:layout_marginStart="2dp"
-                    android:background="?attr/actionBarItemBackground"
-                    android:src="@drawable/icon_overview"
-                    android:visibility="gone"/>
 
                 <ImageButton
                     android:id="@+id/tab_plus"
@@ -178,11 +166,10 @@
             android:background="@drawable/shadow_below"/>
 
         <org.askerov.dynamicgrid.DynamicGridView
+            android:stackFromBottom="true"
             android:fastScrollEnabled="true"
             android:visibility="gone"
-            android:paddingEnd="4dp"
-            android:paddingStart="4dp"
-            android:paddingTop="4dp"
+            android:padding="4dp"
             android:id="@+id/home_grid_2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -192,6 +179,7 @@
         </org.askerov.dynamicgrid.DynamicGridView>
 
         <ListView
+            android:stackFromBottom="true"
             android:fastScrollEnabled="true"
             android:divider="@null"
             android:dividerHeight="0dp"

@@ -7,7 +7,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.pm.ShortcutInfo;
+import android.content.pm.ShortcutManager;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Icon;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
@@ -31,6 +34,7 @@ import android.widget.TextView;
 
 import java.io.ByteArrayInputStream;
 import java.net.URISyntaxException;
+import java.util.Arrays;
 
 import de.baumann.browser.Database.Record;
 import de.baumann.browser.Database.RecordAction;
@@ -98,7 +102,6 @@ public class NinjaWebViewClient extends WebViewClient {
 
         if (sp.getBoolean("saveHistory", true)) {
             RecordAction action = new RecordAction(context);
-
             action.open(true);
 
             if (action.checkHistory(url)) {
@@ -107,7 +110,6 @@ public class NinjaWebViewClient extends WebViewClient {
             } else {
                 action.addHistory(new Record(ninjaWebView.getTitle(), ninjaWebView.getUrl(), System.currentTimeMillis()));
             }
-
 
             action.close();
         }
