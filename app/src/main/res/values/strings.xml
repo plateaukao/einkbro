@@ -44,6 +44,7 @@
     <string name="menu_closeTab">Close tab</string>
     <string name="menu_download">Open downloads</string>
     <string name="menu_fav">Set as start site</string>
+    <string name="menu_sc">Shortcut on home screen</string>
     <string name="menu_sort">Sort by …</string>
     <string name="menu_filter">Filter by …</string>
     <string name="menu_blank">Blank start site</string>
