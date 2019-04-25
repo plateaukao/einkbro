@@ -43,6 +43,7 @@
     <string name="menu_open_with">Link öffnen mit …</string>
     <string name="menu_download">Öffne Downloads</string>
     <string name="menu_fav">Als Startseite setzen</string>
+    <string name="menu_sc">Verknüpfung auf Startschirm</string>
     <string name="menu_sort">Sortiere nach …</string>
     <string name="menu_filter">Filter …</string>
     <string name="menu_blank">Leere Startseite</string>

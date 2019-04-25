@@ -160,6 +160,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     private LinearLayout contextList_edit;
     private LinearLayout contextList_delete;
     private LinearLayout contextList_fav;
+    private LinearLayout contextList_sc;
 
     private View floatButton_tabView;
     private View floatButton_saveView;
@@ -1978,36 +1979,16 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                         hideBottomSheetDialog ();
                         sp.edit().putString("favoriteURL", pass_content).apply();
                         NinjaToast.show(BrowserActivity.this, R.string.toast_fav);
+                    }
+                });
 
-                        Intent i = new Intent();
-                        i.setAction(Intent.ACTION_VIEW);
-                        i.setData(Uri.parse(pass_content));
-
-                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) { // code for adding shortcut on pre oreo device
-
-                            Intent installer = new Intent();
-                            installer.putExtra("android.intent.extra.shortcut.INTENT", i);
-                            installer.putExtra("android.intent.extra.shortcut.NAME", pass_title);
-                            installer.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(getApplicationContext(), R.mipmap.ic_launcher));
-                            installer.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
-                            sendBroadcast(installer);
-                        } else {
-                            ShortcutManager shortcutManager = BrowserActivity.this.getSystemService(ShortcutManager.class);
-                            assert shortcutManager != null;
-                            if (shortcutManager.isRequestPinShortcutSupported()) {
-                                ShortcutInfo pinShortcutInfo =
-                                        new ShortcutInfo.Builder(BrowserActivity.this, pass_content)
-                                                .setShortLabel(pass_title)
-                                                .setLongLabel(pass_title)
-                                                .setIcon(Icon.createWithResource(BrowserActivity.this, R.drawable.check_green))
-                                                .setIntent(new Intent(Intent.ACTION_VIEW, Uri.parse(pass_content)))
-                                                .build();
-                                shortcutManager.requestPinShortcut(pinShortcutInfo, null);
-                            } else {
-                                System.out.println("failed_to_add");
-                            }
-                        }
-
+                contextList_sc = dialogView.findViewById(R.id.menu_contextList_sc);
+                contextList_sc.setVisibility(View.VISIBLE);
+                contextList_sc.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        hideBottomSheetDialog ();
+                        HelperUnit.createShortcut(BrowserActivity.this, pass_title, pass_content);
                     }
                 });
 
@@ -3509,12 +3490,15 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         contextList_edit = dialogView.findViewById(R.id.menu_contextList_edit);
         contextList_fav = dialogView.findViewById(R.id.menu_contextList_fav);
+        contextList_sc = dialogView.findViewById(R.id.menu_contextList_sc);
 
         if (overViewTab.equals(getString(R.string.album_title_bookmarks))) {
             contextList_fav.setVisibility(View.VISIBLE);
+            contextList_sc.setVisibility(View.VISIBLE);
             contextList_edit.setVisibility(View.VISIBLE);
         } else {
             contextList_fav.setVisibility(View.GONE);
+            contextList_sc.setVisibility(View.GONE);
             contextList_edit.setVisibility(View.GONE);
         }
 

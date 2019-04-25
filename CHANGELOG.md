@@ -1,10 +1,11 @@
-### v 6.4
+### v 6.4 (WIP)
 - new: FAQ site (thanks @HarryHeights)
 - new: long click on tab preview to close
 - new: add shortcuts to home screen (long click bookmark)
 - updated: Portuguese translation (thanks @smarquespt)
 - updated: adblock domain list
 - improved: Overview
+- fix: input box not showing on some devices
 - fix: hide navigation bar in fullscreen mode
 - fix: can't go back in history when reopening the app
 

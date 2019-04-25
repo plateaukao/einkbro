@@ -25,8 +25,12 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.pm.ShortcutInfo;
+import android.content.pm.ShortcutManager;
+import android.graphics.drawable.Icon;
 import android.net.Uri;
 import android.os.Build;
 import android.preference.PreferenceManager;
@@ -41,20 +45,20 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
+import de.baumann.browser.Activity.BrowserActivity;
 import de.baumann.browser.Ninja.R;
 
 public class HelperUnit {
 
     private static final int REQUEST_CODE_ASK_PERMISSIONS = 123;
     private static final int REQUEST_CODE_ASK_PERMISSIONS_1 = 1234;
+    private static SharedPreferences sp;
 
     public static void grantPermissionsStorage(final Activity activity) {
-
         if (android.os.Build.VERSION.SDK_INT >= 23) {
             int hasWRITE_EXTERNAL_STORAGE = activity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
             if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
                 if (!activity.shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-
                     new AlertDialog.Builder(activity)
                             .setTitle(R.string.toast_permission_title)
                             .setMessage(R.string.toast_permission_sdCard)
@@ -79,9 +83,7 @@ public class HelperUnit {
     }
 
     public static void grantPermissionsLoc(final Activity activity) {
-
         if (android.os.Build.VERSION.SDK_INT >= 23) {
-
             int hasACCESS_FINE_LOCATION = activity.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
             if (hasACCESS_FINE_LOCATION != PackageManager.PERMISSION_GRANTED) {
                 if (!activity.shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
@@ -109,9 +111,7 @@ public class HelperUnit {
     }
 
     public static void setTheme (Context activity) {
-
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(activity);
-
+        sp = PreferenceManager.getDefaultSharedPreferences(activity);
         if (sp.getBoolean("sp_darkUI", false)){
             activity.setTheme(R.style.AppTheme);
         } else {
@@ -119,63 +119,73 @@ public class HelperUnit {
         }
     }
 
-    public static SpannableString textSpannable (String text) {
-        SpannableString s;
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            s = new SpannableString(Html.fromHtml(text,Html.FROM_HTML_MODE_LEGACY));
+    public static void createShortcut (Context context, String title, String url) {
+        Intent i = new Intent();
+        i.setAction(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) { // code for adding shortcut on pre oreo device
+            Intent installer = new Intent();
+            installer.putExtra("android.intent.extra.shortcut.INTENT", i);
+            installer.putExtra("android.intent.extra.shortcut.NAME", title);
+            installer.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(context.getApplicationContext(), R.drawable.ic_notification_ninja));
+            installer.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
+            context.sendBroadcast(installer);
         } else {
-            //noinspection deprecation
-            s = new SpannableString(Html.fromHtml(text));
+            ShortcutManager shortcutManager = context.getSystemService(ShortcutManager.class);
+            assert shortcutManager != null;
+            if (shortcutManager.isRequestPinShortcutSupported()) {
+                ShortcutInfo pinShortcutInfo =
+                        new ShortcutInfo.Builder(context, url)
+                                .setShortLabel(title)
+                                .setLongLabel(title)
+                                .setIcon(Icon.createWithResource(context, R.drawable.ic_notification_ninja))
+                                .setIntent(new Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+                                .build();
+                shortcutManager.requestPinShortcut(pinShortcutInfo, null);
+            } else {
+                System.out.println("failed_to_add");
+            }
         }
+    }
 
-        Linkify.addLinks(s, Linkify.WEB_URLS);
-        return s;
+    public static void switchIcon (Activity activity, String string, String fieldDB, ImageView be) {
+        sp = PreferenceManager.getDefaultSharedPreferences(activity);
+        assert be != null;
+        switch (string) {
+            case "01":be.setImageResource(R.drawable.circle_red);
+                sp.edit().putString(fieldDB, "01").apply();break;
+            case "02":be.setImageResource(R.drawable.circle_pink);
+                sp.edit().putString(fieldDB, "02").apply();break;
+            case "03":be.setImageResource(R.drawable.circle_purple);
+                sp.edit().putString(fieldDB, "03").apply();break;
+            case "04":be.setImageResource(R.drawable.circle_blue);
+                sp.edit().putString(fieldDB, "04").apply();break;
+            case "05":be.setImageResource(R.drawable.circle_teal);
+                sp.edit().putString(fieldDB, "05").apply();break;
+            case "06":be.setImageResource(R.drawable.circle_green);
+                sp.edit().putString(fieldDB, "06").apply();break;
+            case "07":be.setImageResource(R.drawable.circle_lime);
+                sp.edit().putString(fieldDB, "07").apply();break;
+            case "08":be.setImageResource(R.drawable.circle_yellow);
+                sp.edit().putString(fieldDB, "08").apply();break;
+            case "09":be.setImageResource(R.drawable.circle_orange);
+                sp.edit().putString(fieldDB, "09").apply();break;
+            case "10":be.setImageResource(R.drawable.circle_brown);
+                sp.edit().putString(fieldDB, "10").apply();break;
+            case "11":be.setImageResource(R.drawable.circle_grey);
+                sp.edit().putString(fieldDB, "11").apply();break;
+            default:
+                be.setImageResource(R.drawable.circle_red);
+                sp.edit().putString(fieldDB, "01").apply();
+                break;
+        }
     }
 
     public static String fileName (String url) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.getDefault());
         String currentTime = sdf.format(new Date());
         String domain = Objects.requireNonNull(Uri.parse(url).getHost()).replace("www.", "").trim();
-
         return domain.replace(".", "_").trim() + "_" + currentTime.trim();
-    }
-
-    public static void switchIcon (Activity activity, String string, String fieldDB, ImageView be) {
-
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
-
-        assert be != null;
-
-        switch (string) {
-            case "01":be.setImageResource(R.drawable.circle_red);
-                sharedPref.edit().putString(fieldDB, "01").apply();break;
-            case "02":be.setImageResource(R.drawable.circle_pink);
-                sharedPref.edit().putString(fieldDB, "02").apply();break;
-            case "03":be.setImageResource(R.drawable.circle_purple);
-                sharedPref.edit().putString(fieldDB, "03").apply();break;
-            case "04":be.setImageResource(R.drawable.circle_blue);
-                sharedPref.edit().putString(fieldDB, "04").apply();break;
-            case "05":be.setImageResource(R.drawable.circle_teal);
-                sharedPref.edit().putString(fieldDB, "05").apply();break;
-            case "06":be.setImageResource(R.drawable.circle_green);
-                sharedPref.edit().putString(fieldDB, "06").apply();break;
-            case "07":be.setImageResource(R.drawable.circle_lime);
-                sharedPref.edit().putString(fieldDB, "07").apply();break;
-            case "08":be.setImageResource(R.drawable.circle_yellow);
-                sharedPref.edit().putString(fieldDB, "08").apply();break;
-            case "09":be.setImageResource(R.drawable.circle_orange);
-                sharedPref.edit().putString(fieldDB, "09").apply();break;
-            case "10":be.setImageResource(R.drawable.circle_brown);
-                sharedPref.edit().putString(fieldDB, "10").apply();break;
-            case "11":be.setImageResource(R.drawable.circle_grey);
-                sharedPref.edit().putString(fieldDB, "11").apply();break;
-
-            default:
-                be.setImageResource(R.drawable.circle_red);
-                sharedPref.edit().putString(fieldDB, "01").apply();
-                break;
-        }
     }
 
     public static String secString (String string) {
@@ -184,5 +194,17 @@ public class HelperUnit {
         }else {
             return  string.replaceAll("'", "\'\'");
         }
+    }
+
+    public static SpannableString textSpannable (String text) {
+        SpannableString s;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            s = new SpannableString(Html.fromHtml(text,Html.FROM_HTML_MODE_LEGACY));
+        } else {
+            //noinspection deprecation
+            s = new SpannableString(Html.fromHtml(text));
+        }
+        Linkify.addLinks(s, Linkify.WEB_URLS);
+        return s;
     }
 }
