@@ -38,6 +38,7 @@ import android.text.Html;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.util.Linkify;
+import android.webkit.WebView;
 import android.widget.ImageView;
 
 import java.text.SimpleDateFormat;
@@ -127,7 +128,7 @@ public class HelperUnit {
             Intent installer = new Intent();
             installer.putExtra("android.intent.extra.shortcut.INTENT", i);
             installer.putExtra("android.intent.extra.shortcut.NAME", title);
-            installer.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(context.getApplicationContext(), R.drawable.ic_notification_ninja));
+            installer.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(context.getApplicationContext(), R.drawable.qc_bookmarks));
             installer.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
             context.sendBroadcast(installer);
         } else {
@@ -138,7 +139,7 @@ public class HelperUnit {
                         new ShortcutInfo.Builder(context, url)
                                 .setShortLabel(title)
                                 .setLongLabel(title)
-                                .setIcon(Icon.createWithResource(context, R.drawable.ic_notification_ninja))
+                                .setIcon(Icon.createWithResource(context, R.drawable.qc_bookmarks))
                                 .setIntent(new Intent(Intent.ACTION_VIEW, Uri.parse(url)))
                                 .build();
                 shortcutManager.requestPinShortcut(pinShortcutInfo, null);
@@ -146,6 +147,26 @@ public class HelperUnit {
                 System.out.println("failed_to_add");
             }
         }
+    }
+
+    public static void setDesktopMode(WebView webView, boolean enabled) {
+        String newUserAgent = webView.getSettings().getUserAgentString();
+        if (enabled) {
+            try {
+                String ua = webView.getSettings().getUserAgentString();
+                String androidOSString = webView.getSettings().getUserAgentString().substring(ua.indexOf("("), ua.indexOf(")") + 1);
+                newUserAgent = webView.getSettings().getUserAgentString().replace(androidOSString, "(X11; Linux x86_64)");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            newUserAgent = null;
+        }
+
+        webView.getSettings().setUserAgentString(newUserAgent);
+        webView.getSettings().setUseWideViewPort(enabled);
+        webView.getSettings().setLoadWithOverviewMode(enabled);
+        webView.reload();
     }
 
     public static void switchIcon (Activity activity, String string, String fieldDB, ImageView be) {

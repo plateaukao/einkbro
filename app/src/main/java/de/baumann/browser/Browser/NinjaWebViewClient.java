@@ -1,5 +1,6 @@
 package de.baumann.browser.Browser;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
@@ -35,6 +36,7 @@ import android.widget.TextView;
 import java.io.ByteArrayInputStream;
 import java.net.URISyntaxException;
 import java.util.Arrays;
+import java.util.Collections;
 
 import de.baumann.browser.Database.Record;
 import de.baumann.browser.Database.RecordAction;
@@ -86,6 +88,7 @@ public class NinjaWebViewClient extends WebViewClient {
         }
     }
 
+    @SuppressLint("ApplySharedPref")
     @Override
     public void onPageFinished(WebView view, String url) {
         super.onPageFinished(view, url);
@@ -100,18 +103,73 @@ public class NinjaWebViewClient extends WebViewClient {
             ninjaWebView.update(view.getTitle(), url);
         }
 
+        ShortcutManager shortcutManager = null;
+        String title = ninjaWebView.getTitle();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+            shortcutManager = context.getSystemService(ShortcutManager.class);
+        }
+
         if (sp.getBoolean("saveHistory", true)) {
             RecordAction action = new RecordAction(context);
             action.open(true);
 
             if (action.checkHistory(url)) {
                 action.deleteHistoryOld(url);
-                action.addHistory(new Record(ninjaWebView.getTitle(), ninjaWebView.getUrl(), System.currentTimeMillis()));
+                action.addHistory(new Record(ninjaWebView.getTitle(), url, System.currentTimeMillis()));
             } else {
-                action.addHistory(new Record(ninjaWebView.getTitle(), ninjaWebView.getUrl(), System.currentTimeMillis()));
+                action.addHistory(new Record(ninjaWebView.getTitle(), url, System.currentTimeMillis()));
             }
-
             action.close();
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1  && !title.isEmpty() && !url.isEmpty()) {
+                try {
+                    if (sp.getInt("shortcut_number", 0) == 0) {
+                        ShortcutInfo shortcut = new ShortcutInfo.Builder(context, "0")
+                                .setShortLabel(title)
+                                .setLongLabel(title)
+                                .setIcon(Icon.createWithResource(context, R.drawable.qc_history))
+                                .setIntent(new Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+                                .build();
+                        shortcutManager.addDynamicShortcuts(Collections.singletonList(shortcut));
+                        sp.edit().putInt("shortcut_number", 1).commit();
+                    } else {
+                        ShortcutInfo shortcut = new ShortcutInfo.Builder(context, "1")
+                                .setShortLabel(title)
+                                .setLongLabel(title)
+                                .setIcon(Icon.createWithResource(context, R.drawable.qc_history))
+                                .setIntent(new Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+                                .build();
+                        shortcutManager.addDynamicShortcuts(Collections.singletonList(shortcut));
+                        sp.edit().putInt("shortcut_number", 0).commit();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    if (sp.getInt("shortcut_number", 0) == 0) {
+                        ShortcutInfo shortcut = new ShortcutInfo.Builder(context, "0")
+                                .setShortLabel(title)
+                                .setLongLabel(title)
+                                .setIcon(Icon.createWithResource(context, R.drawable.qc_history))
+                                .setIntent(new Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+                                .build();
+                        shortcutManager.updateShortcuts(Collections.singletonList(shortcut));
+                        sp.edit().putInt("shortcut_number", 1).commit();
+                    } else {
+                        ShortcutInfo shortcut = new ShortcutInfo.Builder(context, "1")
+                                .setShortLabel(title)
+                                .setLongLabel(title)
+                                .setIcon(Icon.createWithResource(context, R.drawable.qc_history))
+                                .setIntent(new Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+                                .build();
+                        shortcutManager.updateShortcuts(Collections.singletonList(shortcut));
+                        sp.edit().putInt("shortcut_number", 0).commit();
+                    }
+                }
+            }
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+                shortcutManager.removeAllDynamicShortcuts();
+            }
         }
 
         if (ninjaWebView.isForeground()) {

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="de.baumann.browser.Ninja">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="de.baumann.browser.Ninja">
 
 
     <!-- Permission -->
@@ -21,8 +22,10 @@
         android:allowBackup="true"
         android:enabled="true"
         android:largeHeap="true"
+        android:hardwareAccelerated="true"
         android:usesCleartextTraffic="true"
-        android:fullBackupContent="@xml/backup_descriptor">
+        android:fullBackupContent="@xml/backup_descriptor"
+        tools:targetApi="m">
 
         <!-- Holder -->
         <activity android:name="de.baumann.browser.Activity.HolderActivity"
