@@ -222,6 +222,14 @@
     <string name="setting_overView_onStart_title">Zeige beim Appstart</string>
     <string name="setting_overView_onStart_summary">Öffne als erstes die \"Übersicht\" bei jedem Appstart.</string>
 
+    <string name="setting_overView_hide_title">Verstecke Tabvorschau</string>
+    <string name="setting_overView_hide_summary">In der komplett ausgeklappten Übersicht wird die Tabvorschau versteckt. Du hast dann
+        mehr Platz für deine Lesezeichen.</string>
+
+    <string name="setting_overView_place_title">Nur Tabvorschau</string>
+    <string name="setting_overView_place_summary">Um die Tabs einfacher wechseln zu können, wird beim ersten öffnen der
+        Übersicht nur die Tabvorschau angezeigt.</string>
+
     <string name="setting_close">Schließen Bestätigung</string>
     <string name="setting_gestures">Gesten</string>
     <string name="setting_gestures_use_title">Benutze Gesten</string>

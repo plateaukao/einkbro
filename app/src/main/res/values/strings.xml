@@ -216,6 +216,14 @@
     <string name="setting_overView_onStart_title">Show on start</string>
     <string name="setting_overView_onStart_summary">Open the \"Overview\" on every app start.</string>
 
+
+    <string name="setting_overView_hide_title">Hide tab previews</string>
+    <string name="setting_overView_hide_summary">In expanded overview the tab preview will hide. Then you have more place for your
+    bookmarks.</string>
+
+    <string name="setting_overView_place_title">Only tab preview</string>
+    <string name="setting_overView_place_summary">Only show the tab preview when extending overview to switch tabs more comfortable.</string>
+
     <string name="setting_close">Close confirmation</string>
     <string name="setting_gestures">Gestures</string>
     <string name="setting_gestures_use_title">Use gestures</string>

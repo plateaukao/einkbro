@@ -21,8 +21,6 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.ShortcutInfo;
-import android.content.pm.ShortcutManager;
 import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -31,14 +29,12 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
 import android.graphics.Point;
-import android.graphics.drawable.Icon;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.os.Parcelable;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.print.PrintAttributes;
@@ -363,8 +359,8 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         dimen108dp = getResources().getDimensionPixelSize(R.dimen.layout_height_108dp);
 
         // Load default colors
-        vibrantColor = ContextCompat.getColor(BrowserActivity.this, R.color.colorAccent);
-        vibrantDarkColor = ContextCompat.getColor(BrowserActivity.this, R.color.colorPrimaryDark);
+        vibrantColor = ContextCompat.getColor(this, R.color.colorAccent);
+        vibrantDarkColor = ContextCompat.getColor(this, R.color.colorPrimaryDark);
 
         ninjaWebView = (NinjaWebView) currentAlbumController;
 
@@ -373,13 +369,13 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         initOverview();
 
         new AdBlock(this); // For AdBlock cold boot
-        new Javascript(BrowserActivity.this);
-        new Cookie(BrowserActivity.this);
+        new Javascript(this);
+        new Cookie(this);
 
         // show changelog
 
         try {
-            PackageInfo pInfo = this.getPackageManager().getPackageInfo(getPackageName(), 0);
+            PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
             final String versionName = pInfo.versionName;
             String oldVersionName = sp.getString("oldVersionName", "0.0");
 
@@ -653,8 +649,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         display.getSize(size);
 
         int width = size.x;
-        int height = size.y;
-        final Bitmap icon = ViewUnit.capture(ninjaWebView, width, height, Bitmap.Config.ARGB_8888);
+        final Bitmap icon = ViewUnit.capture(ninjaWebView, width, 112, Bitmap.Config.ARGB_8888);
 
         new Handler().postDelayed(new Runnable() {
             public void run() {
@@ -1628,8 +1623,8 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         bottomSheetDialog_OverView.setContentView(dialogView);
 
         mBehavior = BottomSheetBehavior.from((View) dialogView.getParent());
-        int zz = Math.round(184 * this.getResources().getDisplayMetrics().density);
-        mBehavior.setPeekHeight(zz);
+        int peekHeigh = Math.round(184 * getResources().getDisplayMetrics().density);
+        mBehavior.setPeekHeight(peekHeigh);
 
         mBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
@@ -2779,8 +2774,12 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 @Override
                 public void onScrollChange(int scrollY, int oldScrollY) {
 
+                    int height = (int) Math.floor(ninjaWebView.getContentHeight() * ninjaWebView.getScale());
+                    int webViewHeight = ninjaWebView.getHeight();
+                    int cutoff = height - webViewHeight - 112 * Math.round(getResources().getDisplayMetrics().density); // Don't be too strict on the cutoff point
+
                     if (Objects.requireNonNull(sp.getString("sp_hideToolbar", "0")).equals("0")) {
-                        if (scrollY > oldScrollY) {
+                        if (scrollY > oldScrollY && cutoff >= scrollY) {
                             hideOmnibox();
                         } else if (scrollY < oldScrollY){
                             showOmnibox();
@@ -3182,13 +3181,18 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     private void showOmnibox() {
         if (omnibox.getVisibility() == View.GONE && searchPanel.getVisibility()  == View.GONE) {
 
-            searchPanel.setVisibility(View.GONE);
-            omnibox.setVisibility(View.VISIBLE);
-            appBar.setVisibility(View.VISIBLE);
-
             if (Objects.requireNonNull(sp.getString("sp_hideNav", "0")).equals("0")) {
                 fab_imageButtonNav.setVisibility(View.GONE);
             }
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    searchPanel.setVisibility(View.GONE);
+                    omnibox.setVisibility(View.VISIBLE);
+                    appBar.setVisibility(View.VISIBLE);
+                }
+            }, getResources().getInteger(android.R.integer.config_longAnimTime));
         }
     }
 
@@ -3201,7 +3205,12 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             appBar.setVisibility(View.GONE);
 
             if (Objects.requireNonNull(sp.getString("sp_hideNav", "0")).equals("0") || Objects.requireNonNull(sp.getString("sp_hideNav", "0")).equals("2")) {
-                fab_imageButtonNav.setVisibility(View.VISIBLE);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        fab_imageButtonNav.setVisibility(View.VISIBLE);
+                    }
+                }, getResources().getInteger(android.R.integer.config_longAnimTime));
             }
         }
     }
