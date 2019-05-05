@@ -3,7 +3,6 @@ package de.baumann.browser.Unit;
 import de.baumann.browser.Database.Record;
 
 public class RecordUnit {
-    public static final String TABLE_BOOKMARKS = "BOOKMARKS";
     public static final String TABLE_HISTORY = "HISTORY";
     public static final String TABLE_WHITELIST = "WHITELIST";
     public static final String TABLE_JAVASCRIPT = "JAVASCRIPT";
@@ -19,14 +18,6 @@ public class RecordUnit {
 
     public static final String CREATE_HISTORY = "CREATE TABLE "
             + TABLE_HISTORY
-            + " ("
-            + " " + COLUMN_TITLE + " text,"
-            + " " + COLUMN_URL + " text,"
-            + " " + COLUMN_TIME + " integer"
-            + ")";
-
-    public static final String CREATE_BOOKMARKS = "CREATE TABLE "
-            + TABLE_BOOKMARKS
             + " ("
             + " " + COLUMN_TITLE + " text,"
             + " " + COLUMN_URL + " text,"

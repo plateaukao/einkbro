@@ -2,27 +2,17 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-
     <CheckBoxPreference android:key="sp_background"
         android:icon="@drawable/icon_link"
         android:defaultValue="true"
         android:title="@string/setting_title_background"
         android:summary="@string/setting_summary_background"/>
 
-    <CheckBoxPreference android:key="sp_darkUI"
-        android:icon="@drawable/icon_ui"
+    <CheckBoxPreference android:key="sp_reopenLastTab"
+        android:icon="@drawable/icon_tab_plus"
         android:defaultValue="false"
-        android:title="@string/setting_title_themeDark"
-        android:summary="@string/setting_summary_themeDark"/>
-
-    <ListPreference
-        android:title="@string/setting_title_hideToolbar"
-        android:icon="@drawable/icon_fullscreen"
-        android:summary="@string/setting_summary_hide"
-        android:key="sp_hideToolbar"
-        android:defaultValue="0"
-        android:entries="@array/setting_entries_toolbar"
-        android:entryValues="@array/setting_values_toolbar" />
+        android:title="@string/setting_title_reopenLastTab"
+        android:summary="@string/setting_summary_reopenLastTab"/>
 
     <ListPreference
         android:icon="@drawable/icon_size"
@@ -33,13 +23,54 @@
         android:entries="@array/setting_entries_font"
         android:entryValues="@array/setting_values_font"/>
 
-    <CheckBoxPreference android:key="sp_reopenLastTab"
-        android:icon="@drawable/icon_tab_plus"
-        android:defaultValue="false"
-        android:title="@string/setting_title_reopenLastTab"
-        android:summary="@string/setting_summary_reopenLastTab"/>
+    <PreferenceCategory android:title="@string/setting_title_theme">
+
+        <CheckBoxPreference android:key="sp_themeColor"
+            android:icon="@drawable/icon_changecolor"
+            android:defaultValue="true"
+            android:title="@string/setting_title_themeColor"
+            android:summary="@string/setting_summary_themeColor"/>
+
+        <CheckBoxPreference android:key="sp_darkUI"
+            android:icon="@drawable/icon_ui"
+            android:defaultValue="false"
+            android:title="@string/setting_title_themeDark"
+            android:summary="@string/setting_summary_themeDark"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/setting_title_toolbar">
+
+        <CheckBoxPreference android:key="sp_toolbarShow"
+            android:icon="@drawable/icon_show"
+            android:defaultValue="true"
+            android:title="@string/setting_title_toolbarShow"
+            android:summary="@string/setting_summary_toolbarShow"/>
+
+        <ListPreference
+            android:title="@string/setting_title_hideToolbar"
+            android:icon="@drawable/icon_fullscreen"
+            android:summary="@string/setting_summary_hide"
+            android:key="sp_hideToolbar"
+            android:defaultValue="0"
+            android:entries="@array/setting_entries_toolbar"
+            android:entryValues="@array/setting_values_toolbar" />
+
+    </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/setting_overView">
+
+        <CheckBoxPreference android:key="overView_hide"
+            android:icon="@drawable/view_headline"
+            android:defaultValue="true"
+            android:title="@string/setting_overView_hide_title"
+            android:summary="@string/setting_overView_hide_summary"/>
+
+        <CheckBoxPreference android:key="overView_place"
+            android:icon="@drawable/view_array"
+            android:defaultValue="false"
+            android:title="@string/setting_overView_place_title"
+            android:summary="@string/setting_overView_place_summary"/>
 
         <CheckBoxPreference android:key="start_tabStart"
             android:icon="@drawable/icon_restart"

@@ -20,8 +20,6 @@ import android.view.*;
 import android.webkit.CookieManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.widget.TextView;
-import android.widget.Toolbar;
 
 import de.baumann.browser.Unit.HelperUnit;
 import de.baumann.browser.Browser.*;

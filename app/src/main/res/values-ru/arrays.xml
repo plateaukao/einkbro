@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-<string-array name="setting_entries_font">
-    <item>Нормальный (100%)</item>
-    <item>Большой (125%)</item>
-    <item>Ещё больше (150%)</item>
-    <item>Самый большой (175%)</item>
-</string-array>
-</resources>

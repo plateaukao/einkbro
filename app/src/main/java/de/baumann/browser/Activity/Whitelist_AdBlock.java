@@ -35,7 +35,7 @@ public class Whitelist_AdBlock extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-        HelperUnit.setTheme(this);
+        HelperUnit.applyTheme(this);
         setContentView(R.layout.whitelist);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

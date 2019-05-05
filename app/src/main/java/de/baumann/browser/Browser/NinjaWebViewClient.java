@@ -35,7 +35,6 @@ import android.widget.TextView;
 
 import java.io.ByteArrayInputStream;
 import java.net.URISyntaxException;
-import java.util.Arrays;
 import java.util.Collections;
 
 import de.baumann.browser.Database.Record;

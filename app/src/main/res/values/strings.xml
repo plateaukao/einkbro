@@ -187,6 +187,13 @@
     <string name="setting_title_themeDark">Light theme</string>
     <string name="setting_summary_themeDark">You like it a little bit brighter? Do it!</string>
 
+    <string name="setting_title_themeColor">Color UI</string>
+    <string name="setting_summary_themeColor">Tint some elements from the UI to match the website colors.</string>
+    <string name="setting_title_theme">Theme</string>
+
+    <string name="setting_summary_toolbarShow">Pressing back will make the toolbar visible, before going back in history.</string>
+    <string name="setting_title_toolbarShow">First toolbar</string>
+
     <string name="setting_title_nav">Navigation button</string>
     <string name="setting_title_nav_pos">Position</string>
     <string name="setting_summary_nav_pos">Decide where the \"Navigation Button\" will be placed.</string>
@@ -215,7 +222,6 @@
     <string name="setting_overView">Overview</string>
     <string name="setting_overView_onStart_title">Show on start</string>
     <string name="setting_overView_onStart_summary">Open the \"Overview\" on every app start.</string>
-
 
     <string name="setting_overView_hide_title">Hide tab previews</string>
     <string name="setting_overView_hide_summary">In expanded overview the tab preview will hide. Then you have more place for your
