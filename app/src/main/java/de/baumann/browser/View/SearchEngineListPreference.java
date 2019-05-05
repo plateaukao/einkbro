@@ -52,7 +52,6 @@ public class SearchEngineListPreference extends ListPreference {
             @SuppressLint("ApplySharedPref")
             @Override
             public void onClick(View view) {
-                String text = editText.getText().toString().trim();
                 String domain = editText.getText().toString().trim();
                 if (domain.isEmpty()) {
                     NinjaToast.show(getContext(), R.string.toast_input_empty);

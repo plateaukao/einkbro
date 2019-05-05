@@ -13,6 +13,8 @@ import android.widget.ImageView;
 
 import android.widget.TextView;
 
+import java.util.Objects;
+
 import de.baumann.browser.Browser.AlbumController;
 import de.baumann.browser.Browser.BrowserController;
 import de.baumann.browser.Ninja.R;
@@ -94,7 +96,7 @@ class Album {
         int color = sp.getInt("vibrantColor", 0);
 
         Drawable shape = context.getDrawable(R.drawable.album_shape_accent);
-        shape.setTint(color);
+        Objects.requireNonNull(shape).setTint(color);
         shape.setTintMode(PorterDuff.Mode.SRC_OVER);
     }
 

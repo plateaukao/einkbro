@@ -77,7 +77,7 @@
     <string name="dialog_sortName">Ordenar por nome</string>
     <string name="dialog_sortIcon">Ordenar por ícone</string>
 
-    <string name="dialog_icon_title">Escolher um filtro...</string>
+    <string name="dialog_icon_title">Escolher um filtro…</string>
     <string name="dialog_icon_hint">Também pode filtrar os marcadores com um toque longo no ícone Marcadores. 
 	Para repor os filtros, toque novamente no ícone. Toque longo no filtro para editar o nome.</string>
     <!-- Settings -->

@@ -238,6 +238,15 @@
     <string name="setting_title_reopenLastTab">Öffne letzten Tab neu</string>
     <string name="setting_summary_reopenLastTab">Öffne einen neuen Tab, wenn der letzte geschlossen wird, anstatt den Browser zu schließen.</string>
 
+
+    <string name="setting_title_themeColor">Passe Farben an</string>
+    <string name="setting_summary_themeColor">Färbe einige Stellen der Benutzeroberfläche, passend zur besuchten
+    Internetseite.</string>
+    <string name="setting_title_theme">Thema</string>
+
+    <string name="setting_summary_toolbarShow">Die Zurücktaste zeigt immer zuerst die Toolbar, bevor es im Browserverlauf zurückgeht.</string>
+    <string name="setting_title_toolbarShow">Zuerst die Toolbar</string>
+
     <!-- gestures -->
     <string name="setting_title_toolbar">Toolbar</string>
     <string name="setting_gesture_up">Nach oben wischen</string>

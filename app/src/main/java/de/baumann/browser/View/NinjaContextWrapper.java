@@ -12,7 +12,7 @@ public class NinjaContextWrapper extends ContextWrapper {
     public NinjaContextWrapper(Context context) {
         super(context);
         this.context = context;
-        HelperUnit.setTheme(context);
+        HelperUnit.applyTheme(context);
     }
 
     @Override

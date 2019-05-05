@@ -48,12 +48,15 @@ import java.util.Objects;
 
 import de.baumann.browser.Activity.BrowserActivity;
 import de.baumann.browser.Ninja.R;
+import de.baumann.browser.View.NinjaToast;
 
 public class HelperUnit {
 
     private static final int REQUEST_CODE_ASK_PERMISSIONS = 123;
     private static final int REQUEST_CODE_ASK_PERMISSIONS_1 = 1234;
     private static SharedPreferences sp;
+
+    public static Context context;
 
     public static void grantPermissionsStorage(final Activity activity) {
         if (android.os.Build.VERSION.SDK_INT >= 23) {
@@ -111,13 +114,19 @@ public class HelperUnit {
         }
     }
 
-    public static void setTheme (Context activity) {
-        sp = PreferenceManager.getDefaultSharedPreferences(activity);
+    public static void applyTheme(Context context) {
+        sp = PreferenceManager.getDefaultSharedPreferences(context);
         if (sp.getBoolean("sp_darkUI", false)){
-            activity.setTheme(R.style.AppTheme);
+            context.setTheme(R.style.AppTheme);
         } else {
-            activity.setTheme(R.style.AppTheme_dark);
+            context.setTheme(R.style.AppTheme_dark);
         }
+    }
+
+    public static void setFavorite (Context context, String url) {
+        sp = PreferenceManager.getDefaultSharedPreferences(context);
+        sp.edit().putString("favoriteURL", url).apply();
+        NinjaToast.show(context, R.string.toast_fav);
     }
 
     public static void createShortcut (Context context, String title, String url) {
@@ -147,26 +156,6 @@ public class HelperUnit {
                 System.out.println("failed_to_add");
             }
         }
-    }
-
-    public static void setDesktopMode(WebView webView, boolean enabled) {
-        String newUserAgent = webView.getSettings().getUserAgentString();
-        if (enabled) {
-            try {
-                String ua = webView.getSettings().getUserAgentString();
-                String androidOSString = webView.getSettings().getUserAgentString().substring(ua.indexOf("("), ua.indexOf(")") + 1);
-                newUserAgent = webView.getSettings().getUserAgentString().replace(androidOSString, "(X11; Linux x86_64)");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            newUserAgent = null;
-        }
-
-        webView.getSettings().setUserAgentString(newUserAgent);
-        webView.getSettings().setUseWideViewPort(enabled);
-        webView.getSettings().setLoadWithOverviewMode(enabled);
-        webView.reload();
     }
 
     public static void switchIcon (Activity activity, String string, String fieldDB, ImageView be) {

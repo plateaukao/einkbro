@@ -23,7 +23,7 @@ public class Settings_UIActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-        HelperUnit.setTheme(this);
+        HelperUnit.applyTheme(this);
         setContentView(R.layout.activity_settings);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

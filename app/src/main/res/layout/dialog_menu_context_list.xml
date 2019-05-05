@@ -110,7 +110,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:visibility="gone"
                 android:id="@+id/menu_contextList_fav"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
@@ -140,7 +139,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:visibility="gone"
                 android:id="@+id/menu_contextList_sc"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
