@@ -32,6 +32,11 @@
             android:summary="@string/setting_summary_ui"/>
 
         <Preference
+            android:icon="@drawable/filter_variant"
+            android:title="@string/setting_filter"
+            android:summary="@string/setting_filter_summary"/>
+
+        <Preference
             android:icon="@drawable/gesture_tap"
             android:title="@string/setting_gestures"
             android:summary="@string/setting_gestures_use_summary"/>

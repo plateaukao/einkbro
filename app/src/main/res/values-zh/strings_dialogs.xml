@@ -5,17 +5,6 @@
     <string name="changelog_title">更新日志</string>
     <string name="changelog_dialog">&lt;i&gt;项目网站：https：//github.com/scoute-dich/Browser &lt;br&gt;变更日志：https：//github.com/scoute-dich/browser/blob/master/CHANGELOG.md &lt;/ i&gt; &lt; &lt;br&gt; &lt;br&gt; &lt;b&gt;版本：5.7 &lt;/ b&gt; &lt;br&gt;请阅读“帮助对话框”以获取更多信息。&lt;br&gt; &lt;br&gt; \\ u25AA新增：删除索引数据库和本地网络存储&lt;br&gt; \\ u25AA新增功能：西班牙语翻译（感谢Herman Nunez）&lt;br&gt; \\ u25AA新增：确认对话框在备份之前&lt;br&gt; \\ u25AA新增：删除单独的列表&lt;br&gt; \\ u25AA新增：显示不安全的连接并尝试重新加载安全&lt;br&gt; \\ u25AA新增：搜索引擎（Startpage DE，Searx）&lt;br&gt; \\ u25AA新增功能：通知当下载或截图完成时？\\ u25AA ew：阻止远程内容&lt;br&gt; \\ u25AA改进中文翻译（感谢：lishoujun） &gt; \\ u25AA删除：Snackbar（替换为敬酒）&lt;br&gt; \\ u25AA删除：请求桌面网站&lt;br&gt; \\ u25AA删除：建立在文件管理器&lt;br&gt; \\ u 25AA修正：某些字符串（谢谢：gr1sh）&lt;br&gt; \\ u25AA修复：某些网址打开搜索结果</string>
 
-    <string name="fastToggle_title">快速切换</string>
-    <string name="fastToggle_dialog">如果长按“菜单”或“导航按钮”，“快速切换对话框”将打开。在这里你可以改变一些重要的设置而不用离开当前的网站。您还可以将网站添加到AdBlocker，JavaScript或Cookies的白名单中。</string>
-
-    <string name="menu_title">菜单</string>
-    <string name="menu_dialog">管理你的标签，分享或保存内容，处理当前标签或使用一些功能：尝试一下！通过点击返回，点击菜单外部或简单地向下滑动菜单，菜单可以像所有其他通知一样被解除。</string>
-
-    <string name="not_title">通知</string>
-    <string name="not_dialog">通知显示在屏幕的底部。他们也可以像菜单一样被关闭。</string>
-
-    <string name="settings_dialog">设置中还有更多选项。试试看！</string>
-
 
     <string name="license_title">版权 ©2017 Gaukler Faun</string>
     <string name="license_dialog">&lt;i&gt;欲了解更多信息，请访问Github上的项目网站：https://github.com/scoute-dich/Browser &lt;/ i&gt; &lt;br&gt; &lt;br&gt;此程序是免费软件：您可以重新发布和/或修改它遵循自由软件基金会发布的GNU通用公共许可证条款，或许可证第3版，或者（可选）任何更新版本。这个程序的发布希望它会有用，但没有任何担保;甚至没有适销性或针对特定用途的适用性的暗示保证。有关更多详细信息，请参阅GNU通用公共许可证。您应该收到GNU通用公共许可证副本以及此程序。如果没有，请参阅http://www.gnu.org/licenses。&lt;br&gt; &lt;br&gt; &lt;i&gt;以下开源库或项目在本软件中使用：&lt;/ i&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;b&gt; Android滑动面板&lt;/ b&gt; &lt;br&gt; Apache许可版本2.0 &lt;br&gt; Umano：新闻读给你&lt;br&gt; &lt;i&gt; http://git.io/vUruG &lt;/ i&gt; &lt;br&gt; &lt; br&gt; &lt;b&gt; Android轻松移除&lt;/ b&gt; &lt;br&gt; Apache许可版本2.0 &lt;br&gt; Roman Nurik &lt;br&gt; &lt;i&gt; http://git.io/vUruO &lt;/ i&gt; &lt;br&gt; &lt; br&gt; &lt;b&gt; DynamicGrid &lt;/ b&gt; &lt;br&gt; Apache许可版本2.0 &lt;br&gt; askerov &lt;br&gt; &lt;i&gt; http://git.io/vTHZH &lt;/ i&gt; &lt;br&gt; &lt;br&gt; &lt;b&gt;闪电浏览器&lt;/ b&gt; &lt;br&gt; Mozilla公共许可证2.0版&lt;br&gt; Anthony Restaino &lt;br&gt; &lt;i&gt; http://git.io/vUruk &lt;/ i&gt; &lt;br&gt; &lt;br&gt; &lt;b&gt;材料设计图标&lt; / b&gt; &lt;br&gt; SIL开放字体许可版本1.1。&lt;br&gt; Templarian &lt;br&gt; &lt;i&gt; https://github.com/Templarian/MaterialDesign &lt;/ i&gt; &lt;br&gt; &lt;br&gt; &lt;b&gt;忍者&lt; / b&gt; &lt;br&gt; Apache许可版本2.0 &lt;b r&gt; Matthew Lee &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt;br&gt; &lt; &gt; &lt;i&gt; https://github.com/hummatli/SimpleEncryptionLib</string>

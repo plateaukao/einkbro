@@ -16,7 +16,7 @@
         <RelativeLayout android:id="@+id/main_omnibox"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="?android:attr/colorBackground">
+            android:background="@color/colorPrimary">
 
             <ImageButton android:id="@+id/omnibox_overview"
                 android:layout_centerInParent="true"
@@ -64,7 +64,7 @@
                 android:maxLines="1"
                 android:ellipsize="end"
                 android:textColor="@color/color_light"
-                android:background="?android:attr/colorBackground"/>
+                android:background="@color/colorPrimary"/>
 
             <TextView
                 android:id="@+id/omnibox_title"
@@ -74,22 +74,22 @@
                 android:layout_marginStart="8dp"
                 android:layout_toStartOf="@id/omnibox_refresh"
                 android:layout_toEndOf="@+id/omnibox_overview"
-                android:background="?android:attr/colorBackground"
                 android:includeFontPadding="false"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="@string/album_untitled"
                 android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-                android:textColor="@color/color_light" />
+                android:textColor="@color/color_light"
+                android:background="@color/colorPrimary" />
 
         </RelativeLayout>
 
         <RelativeLayout android:id="@+id/main_search_panel"
+            android:background="@color/colorPrimary"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:minHeight="@dimen/layout_margin_56dp"
-            android:visibility="gone"
-            android:background="?android:attr/colorBackground">
+            android:visibility="gone">
 
             <ImageButton android:id="@+id/main_search_cancel"
                 android:contentDescription="@null"

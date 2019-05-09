@@ -4,17 +4,6 @@
 
     <string name="changelog_title">Changelog</string>
 
-    <string name="fastToggle_title">Attivazione rapida</string>
-    <string name="fastToggle_dialog">Se si preme a lungo il \"menu\" o il \"pulsante di navigazione\", si apre la \"finestra di attivazione rapida\". Qui è possibile modificare alcune impostazioni importanti senza uscire dal sito Web corrente. È inoltre possibile aggiungere siti web alle whitelist per AdBlocker, JavaScript o Cookies …</string>
-
-    <string name="menu_title">Menu</string>
-    <string name="menu_dialog">Gestisci le schede, condividi o salva contenuti, gestisci la scheda corrente o utilizza alcune funzioni: prova. Il menu può essere chiuso, come tutte le altre notifiche, facendo clic all\'indietro, facendo clic fuori dal menu o semplicemente spostando il menu verso il basso.</string>
-
-    <string name="not_title">Notifiche</string>
-    <string name="not_dialog">Le notifiche vengono visualizzate nella parte inferiore dello schermo. Possono essere rimosse nella stessa maniera dei menu.</string>
-
-    <string name="settings_dialog">Ci sono ancora più opzioni nelle impostazioni. Prova!</string>
-
     <string name="cont_dialog">
         &lt;i>Prima di tutto vorrei ringraziare tutte le persone che hanno contribuito in qualche modo a questo progetto. Hanno segnalato problemi, tradotto o aiutato in qualsiasi altro modo. Sui seguenti siti puoi diventare membro attivo di questa grande comunità:&lt;/i>&lt;br>&lt;br>
 

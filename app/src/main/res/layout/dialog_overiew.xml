@@ -146,7 +146,7 @@
             android:layout_height="4dp"
             android:background="@drawable/shadow_below"/>
 
-        <org.askerov.dynamicgrid.DynamicGridView
+        <GridView
             android:stackFromBottom="true"
             android:fastScrollEnabled="true"
             android:visibility="gone"
@@ -157,7 +157,7 @@
             android:gravity="center"
             android:stretchMode="columnWidth"
             android:numColumns="auto_fit">
-        </org.askerov.dynamicgrid.DynamicGridView>
+        </GridView>
 
         <ListView
             android:stackFromBottom="true"
@@ -292,14 +292,5 @@
         </LinearLayout>
 
     </LinearLayout>
-
-    <Button android:id="@+id/relayout_ok"
-        android:layout_alignParentBottom="true"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:minHeight="@dimen/layout_margin_56dp"
-        android:text="@string/app_ok"
-        android:background="?android:attr/colorBackground"
-        android:visibility="gone"/>
 
 </RelativeLayout>

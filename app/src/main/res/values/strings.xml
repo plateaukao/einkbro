@@ -27,6 +27,7 @@
     <string name="color_yellow">Yellow</string>
     <string name="color_orange">Orange</string>
     <string name="color_brown">Brown</string>
+    <string name="color_grey">Grey</string>
 
 
     <!-- Menu -->
@@ -79,10 +80,7 @@
 
     <string name="dialog_sortName">Sort by name</string>
     <string name="dialog_sortIcon">Sort by icon</string>
-
-    <string name="dialog_icon_title">Choose a filter …</string>
-    <string name="dialog_icon_hint">You can filter your bookmarks, by long pressing the bookmark icon in the overview. To reset the
-        filter just press the icon once again. Long press a filter to edit his name.</string>
+    <string name="dialog_sortDate">Sort by date</string>
 
     <!-- Settings -->
     <string name="setting_label">Settings</string>
@@ -176,6 +174,9 @@
     <string name="setting_summary_ui">Change the behavior and ui of the app to suit your preferences.</string>
     <string name="setting_summary_data">Import and export several app data (whitelists, bookmarks).</string>
 
+    <string name="setting_filter">Bookmark filter</string>
+    <string name="setting_filter_summary">To show the filter dialog long press on the bookmark icon in the overview. Decide which
+        filters you will use.</string>
 
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">Hide toolbar</string>
@@ -189,7 +190,8 @@
 
     <string name="setting_title_themeColor">Color UI</string>
     <string name="setting_summary_themeColor">Tint some elements from the UI to match the website colors.</string>
-    <string name="setting_title_theme">Theme</string>
+    <string name="setting_title_theme">UI</string>
+    <string name="setting_title_behavior">Behavior</string>
 
     <string name="setting_summary_toolbarShow">Pressing back will make the toolbar visible, before going back in history.</string>
     <string name="setting_title_toolbarShow">First toolbar</string>
@@ -230,7 +232,6 @@
     <string name="setting_overView_place_title">Only tab preview</string>
     <string name="setting_overView_place_summary">Only show the tab preview when extending overview to switch tabs more comfortable.</string>
 
-    <string name="setting_close">Close confirmation</string>
     <string name="setting_gestures">Gestures</string>
     <string name="setting_gestures_use_title">Use gestures</string>
     <string name="setting_gestures_use_summary">Use gestures on the toolbar and the \"Navigation button\".</string>

@@ -26,6 +26,7 @@
     <string name="color_yellow">Gelb</string>
     <string name="color_orange">Orange</string>
     <string name="color_brown">Braun</string>
+    <string name="color_grey">Grau</string>
 
 
     <!-- Menu -->
@@ -80,11 +81,7 @@
 
     <string name="dialog_sortName">Sortiere nach Namen</string>
     <string name="dialog_sortIcon">Sortiere nach Icon</string>
-
-    <string name="dialog_icon_title">Wähle einen Filter …</string>
-    <string name="dialog_icon_hint">Du kannst deine Lesezeichen filtern, indem du lange auf das
-        Lesezeichen-Icon in der Übersicht drückst. Um den Filter zurück zu setzen, einfach das Icon noch einmal drücken. Um
-        den Filternamen zu bearbeiten, lange drücken.</string>
+    <string name="dialog_sortDate">Sortiere nach Datum</string>
 
     <!-- Settings -->
     <string name="setting_label">Einstellungen</string>
@@ -183,6 +180,10 @@
     <string name="setting_summary_ui">Ändere das Verhalten und die Benutzeroberfläche entsprechend deinen Wünschen.</string>
     <string name="setting_summary_data">Sichere bestimmte Daten (Ausnahmen, Lesezeichen) oder stelle sie wieder her.</string>
 
+    <string name="setting_filter">Lesezeichen Filter</string>
+    <string name="setting_filter_summary">Um den Filterdialog anzuzeigen bitte lange auf das Lesezeichenicon in der Übersicht
+        drücken. Entscheide welche Filter du nutzen willst.</string>
+
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">Toolbar verstecken</string>
     <string name="setting_summary_hide">Benutze den ganzen Bildschirm, wenn du durch Internetseiten scrollst. Wenn du die
@@ -230,7 +231,6 @@
     <string name="setting_overView_place_summary">Um die Tabs einfacher wechseln zu können, wird beim ersten öffnen der
         Übersicht nur die Tabvorschau angezeigt.</string>
 
-    <string name="setting_close">Schließen Bestätigung</string>
     <string name="setting_gestures">Gesten</string>
     <string name="setting_gestures_use_title">Benutze Gesten</string>
     <string name="setting_gestures_use_summary">Benutze Gesten auf der Toolbar oder dem \"Navigationsknopf\".</string>
@@ -242,7 +242,8 @@
     <string name="setting_title_themeColor">Passe Farben an</string>
     <string name="setting_summary_themeColor">Färbe einige Stellen der Benutzeroberfläche, passend zur besuchten
     Internetseite.</string>
-    <string name="setting_title_theme">Thema</string>
+    <string name="setting_title_theme">UI</string>
+    <string name="setting_title_behavior">Verhalten</string>
 
     <string name="setting_summary_toolbarShow">Die Zurücktaste zeigt immer zuerst die Toolbar, bevor es im Browserverlauf zurückgeht.</string>
     <string name="setting_title_toolbarShow">Zuerst die Toolbar</string>

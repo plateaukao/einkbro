@@ -78,10 +78,6 @@
     <string name="dialog_sortName">İsme göre sırala</string>
     <string name="dialog_sortIcon">Simgeye göre sırala</string>
 
-    <string name="dialog_icon_title">Bir simge seçin …</string>
-    <string name="dialog_icon_hint">Yer imi simgesine uzun basarak yer imlerinizi de filtreleyebilirsiniz. 
-	Filtreleri sıfırlamak için simgeye bir kez daha basın.</string>
-
     <!-- Settings -->
     <string name="setting_label">Ayarlar</string>
 
@@ -214,7 +210,6 @@
     <string name="setting_overView_onStart_title">Başlangıçta göster</string>
     <string name="setting_overView_onStart_summary">Her uygulama başlangıcında \"Genel Bakış\" açılır.</string>
 
-    <string name="setting_close">Onaylamayı kapat</string>
     <string name="setting_gestures">Hareketler</string>
     <string name="setting_gestures_use_title">Hareketleri kullan</string>
     <string name="setting_gestures_use_summary">Araç çubuğunda ve \"Gezinme düğmesi\" üzerinde hareketleri kullanın.</string>

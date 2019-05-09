@@ -188,7 +188,6 @@
     <string name="setting_overView_onStart_title">開啟時顯示</string>
     <string name="setting_overView_onStart_summary">每次開啟App時展示分頁概覽</string>
 
-    <string name="setting_close">關閉確認</string>
     <string name="setting_gestures">手勢</string>
     <string name="setting_gestures_use_title">使用手勢</string>
     <string name="setting_gestures_use_summary">在工具列和導航鈕使用手勢</string>
@@ -290,8 +289,6 @@
     <string name="dialog_url_hint">網址：</string>
     <string name="dialog_sortName">以名稱排序</string>
     <string name="dialog_sortIcon">以圖示排序</string>
-    <string name="dialog_icon_title">選擇圖示</string>
-    <string name="dialog_icon_hint">可透過長按書籤的圖示篩選書籤，再按一次圖示結束篩選。</string>
 
     <!-- gestures -->
     <string name="setting_title_toolbar">工具列</string>

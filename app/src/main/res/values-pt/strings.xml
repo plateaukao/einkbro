@@ -77,9 +77,6 @@
     <string name="dialog_sortName">Ordenar por nome</string>
     <string name="dialog_sortIcon">Ordenar por ícone</string>
 
-    <string name="dialog_icon_title">Escolher um filtro…</string>
-    <string name="dialog_icon_hint">Também pode filtrar os marcadores com um toque longo no ícone Marcadores. 
-	Para repor os filtros, toque novamente no ícone. Toque longo no filtro para editar o nome.</string>
     <!-- Settings -->
     <string name="setting_label">Definições</string>
 
@@ -210,7 +207,6 @@
     <string name="setting_overView_onStart_title">Mostrar ao iniciar</string>
     <string name="setting_overView_onStart_summary">Abre a \"Visão geral\" ao iniciar a aplicação.</string>
 
-    <string name="setting_close">Confirmação para fechar</string>
     <string name="setting_gestures">Gestos</string>
     <string name="setting_gestures_use_title">Utilizar gestos</string>
     <string name="setting_gestures_use_summary">Utilizar gestos na barra de ferramentas e no \"Botão de navegação\".</string>

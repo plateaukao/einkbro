@@ -74,6 +74,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.GridView;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -87,12 +88,9 @@ import android.widget.VideoView;
 
 import com.mobapphome.mahencryptorlib.MAHEncryptor;
 
-import org.askerov.dynamicgrid.DynamicGridView;
-
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -118,8 +116,10 @@ import de.baumann.browser.Unit.ViewUnit;
 import de.baumann.browser.View.CompleteAdapter;
 import de.baumann.browser.View.FullscreenHolder;
 import de.baumann.browser.View.GridAdapter;
+import de.baumann.browser.View.GridAdapter_filter;
 import de.baumann.browser.View.GridItem;
 
+import de.baumann.browser.View.GridItem_filter;
 import de.baumann.browser.View.NinjaToast;
 import de.baumann.browser.View.NinjaWebView;
 import de.baumann.browser.View.Adapter_Record;
@@ -132,7 +132,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
     // Menus
 
-    private RelativeLayout menu_tabPreview;
+    private LinearLayout menu_tabPreview;
     private LinearLayout menu_newTabOpen;
     private LinearLayout menu_closeTab;
     private LinearLayout menu_quit;
@@ -151,20 +151,10 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     private LinearLayout menu_saveStart;
     private LinearLayout menu_help;
 
-    private LinearLayout contextList_newTab;
-    private LinearLayout contextList_newTabOpen;
-    private LinearLayout contextList_edit;
-    private LinearLayout contextList_delete;
-    private LinearLayout contextList_fav;
-    private LinearLayout contextList_sc;
-
     private View floatButton_tabView;
     private View floatButton_saveView;
     private View floatButton_shareView;
     private View floatButton_moreView;
-
-    private ImageButton tab_next;
-    private ImageButton tab_prev;
 
     private ImageButton fab_tab;
     private ImageButton fab_share;
@@ -245,6 +235,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     private AdBlock getAdBlock() {
         return adBlock;
     }
+    private GridAdapter gridAdapter;
 
     private static final float[] NEGATIVE_COLOR = {
             -1.0f, 0, 0, 0, 255, // Red
@@ -411,7 +402,8 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 fab_help.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        showHelpDialog();
+                        hideBottomSheetDialog();
+                        HelperUnit.show_dialogHelp(context);
                     }
                 });
 
@@ -675,7 +667,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                             if(vibrantDark != null  && isDarkColor(vibrantDark.getRgb())){
                                 vibrantDarkColor = vibrantDark.getRgb();
                             } else {
-                                vibrantDarkColor = ContextCompat.getColor(context, R.color.colorPrimaryDark);
+                                vibrantDarkColor = ContextCompat.getColor(context, R.color.colorPrimary);
                             }
 
                             sp.edit().putInt("vibrantColor", vibrantColor).commit();
@@ -813,18 +805,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
             // Menu overflow
 
-            case R.id.tab_prev:
-                AlbumController controller = nextAlbumController(false);
-                showAlbum(controller);
-                updateOverflow();
-                break;
-
-            case R.id.tab_next:
-                AlbumController controller2 = nextAlbumController(true);
-                showAlbum(controller2);
-                updateOverflow();
-                break;
-
             case R.id.tab_plus:
                 hideBottomSheetDialog();
                 hideOverview();
@@ -917,7 +897,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 } else {
                     Bitmap bitmap = ViewUnit.capture(ninjaWebView, dimen156dp, dimen117dp, Bitmap.Config.ARGB_8888);
                     String filename = System.currentTimeMillis() + BrowserUnit.SUFFIX_PNG;
-                    int ordinal = action.listGrid().size();
+                    int ordinal = action.listGrid(context).size();
                     GridItem itemAlbum = new GridItem(title, url, filename, ordinal);
 
                     if (BrowserUnit.bitmap2File(context, bitmap, filename) && action.addGridItem(itemAlbum)) {
@@ -949,7 +929,8 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 break;
 
             case R.id.menu_help:
-                showHelpDialog();
+                hideBottomSheetDialog();
+                HelperUnit.show_dialogHelp(context);
                 break;
 
             case R.id.menu_download:
@@ -1243,7 +1224,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         fab_imageButtonNav.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                showFastToggle();
+                show_dialogFastToggle();
                 return false;
             }
         });
@@ -1251,7 +1232,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         omniboxOverflow.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                showFastToggle();
+                show_dialogFastToggle();
                 return false;
             }
         });
@@ -1394,8 +1375,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         overview_titleIcons_bookmarksView = dialogView.findViewById(R.id.overview_titleIcons_bookmarksView);
         overview_titleIcons_historyView = dialogView.findViewById(R.id.overview_titleIcons_historyView);
 
-        final Button relayoutOK = dialogView.findViewById(R.id.relayout_ok);
-        final DynamicGridView gridView = dialogView.findViewById(R.id.home_grid_2);
+        final GridView gridView = dialogView.findViewById(R.id.home_grid_2);
 
         final ImageButton overview_titleIcons_start = dialogView.findViewById(R.id.overview_titleIcons_start);
         final ImageButton overview_titleIcons_bookmarks = dialogView.findViewById(R.id.overview_titleIcons_bookmarks);
@@ -1450,31 +1430,25 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 bottomSheetDialog = new BottomSheetDialog(context);
                 View dialogView = View.inflate(context, R.layout.dialog_menu_overview, null);
 
-                LinearLayout tv_relayout = dialogView.findViewById(R.id.tv_relayout);
                 LinearLayout bookmark_sort = dialogView.findViewById(R.id.bookmark_sort);
                 LinearLayout bookmark_filter = dialogView.findViewById(R.id.bookmark_filter);
                 LinearLayout bookmark_blank = dialogView.findViewById(R.id.bookmark_blank);
 
-                if (overViewTab.equals(getString(R.string.album_title_home))) {
-                    tv_relayout.setVisibility(View.VISIBLE);
-                } else {
-                    tv_relayout.setVisibility(View.GONE);
-                }
-
                 if (overViewTab.equals(getString(R.string.album_title_bookmarks))) {
                     bookmark_filter.setVisibility(View.VISIBLE);
                     bookmark_sort.setVisibility(View.VISIBLE);
-                    bookmark_blank.setVisibility(View.VISIBLE);
-                } else {
+                } else if (overViewTab.equals(getString(R.string.album_title_home))){
+                    bookmark_filter.setVisibility(View.GONE);
+                    bookmark_sort.setVisibility(View.VISIBLE);
+                } else if (overViewTab.equals(getString(R.string.album_title_history))){
                     bookmark_filter.setVisibility(View.GONE);
                     bookmark_sort.setVisibility(View.GONE);
-                    bookmark_blank.setVisibility(View.GONE);
                 }
 
                 bookmark_filter.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        showFilterDialog();
+                        show_dialogFilter();
                     }
                 });
 
@@ -1493,88 +1467,46 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                         bottomSheetDialog = new BottomSheetDialog(context);
                         View dialogView = View.inflate(context, R.layout.dialog_bookmark_sort, null);
                         LinearLayout dialog_sortName = dialogView.findViewById(R.id.dialog_sortName);
+                        TextView bookmark_sort_tv = dialogView.findViewById(R.id.bookmark_sort_tv);
+
+                        if (overViewTab.equals(getString(R.string.album_title_bookmarks))) {
+                            bookmark_sort_tv.setText(getResources().getString(R.string.dialog_sortIcon));
+                        } else if (overViewTab.equals(getString(R.string.album_title_home))){
+                            bookmark_sort_tv.setText(getResources().getString(R.string.dialog_sortDate));
+                        }
+
                         dialog_sortName.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                sp.edit().putString("sortDBB", "title").apply();
-                                initBookmarkList();
-                                hideBottomSheetDialog ();
+                                if (overViewTab.equals(getString(R.string.album_title_bookmarks))) {
+                                    sp.edit().putString("sortDBB", "title").apply();
+                                    initBookmarkList();
+                                    hideBottomSheetDialog ();
+                                } else if (overViewTab.equals(getString(R.string.album_title_home))){
+                                    sp.edit().putString("sort_startSite", "title").apply();
+                                    open_startPage.performClick();
+                                    hideBottomSheetDialog ();
+                                }
                             }
                         });
                         LinearLayout dialog_sortIcon = dialogView.findViewById(R.id.dialog_sortIcon);
                         dialog_sortIcon.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                sp.edit().putString("sortDBB", "icon").apply();
-                                initBookmarkList();
-                                hideBottomSheetDialog ();
+                                if (overViewTab.equals(getString(R.string.album_title_bookmarks))) {
+                                    sp.edit().putString("sortDBB", "icon").apply();
+                                    initBookmarkList();
+                                    hideBottomSheetDialog ();
+                                } else if (overViewTab.equals(getString(R.string.album_title_home))){
+                                    sp.edit().putString("sort_startSite", "ordinal").apply();
+                                    open_startPage.performClick();
+                                    hideBottomSheetDialog ();
+                                }
+
                             }
                         });
                         bottomSheetDialog.setContentView(dialogView);
                         bottomSheetDialog.show();
-                    }
-                });
-
-                tv_relayout.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        hideBottomSheetDialog ();
-                        omnibox.setVisibility(View.GONE);
-                        appBar.setVisibility(View.GONE);
-                        omniboxTitle.setVisibility(View.GONE);
-                        relayoutOK.setVisibility(View.VISIBLE);
-
-                        final List<GridItem> gridList = ((GridAdapter) gridView.getAdapter()).getList();
-
-                        relayoutOK.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                relayoutOK.setVisibility(View.GONE);
-
-                                RecordAction action = new RecordAction(context);
-                                action.open(true);
-                                action.clearGrid();
-                                for (GridItem item : gridList) {
-                                    action.addGridItem(item);
-                                }
-                                action.close();
-                                gridView.stopEditMode();
-                            }
-                        });
-
-                        gridView.setOnDragListener(new DynamicGridView.OnDragListener() {
-                            private GridItem dragItem;
-
-                            @Override
-                            public void onDragStarted(int position) {
-                                dragItem = gridList.get(position);
-                            }
-
-                            @Override
-                            public void onDragPositionsChanged(int oldPosition, int newPosition) {
-                                if (oldPosition < newPosition) {
-                                    for (int i = newPosition; i > oldPosition; i--) {
-                                        GridItem item = gridList.get(i);
-                                        item.setOrdinal(i - 1);
-                                    }
-                                } else if (oldPosition > newPosition) {
-                                    for (int i = newPosition; i < oldPosition; i++) {
-                                        GridItem item = gridList.get(i);
-                                        item.setOrdinal(i + 1);
-                                    }
-                                }
-                                dragItem.setOrdinal(newPosition);
-
-                                Collections.sort(gridList, new Comparator<GridItem>() {
-                                    @Override
-                                    public int compare(GridItem first, GridItem second) {
-                                        return Integer.compare(first.getOrdinal(), second.getOrdinal());
-                                    }
-                                });
-                            }
-                        });
-                        gridView.startEditMode();
                     }
                 });
 
@@ -1606,7 +1538,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                     open_history.performClick();
                                 }
                                 hideBottomSheetDialog ();
-                                omniboxRefresh.performClick();
                             }
                         });
                         Button action_cancel = dialogView3.findViewById(R.id.action_cancel);
@@ -1678,10 +1609,10 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
                 RecordAction action = new RecordAction(context);
                 action.open(false);
-                final List<GridItem> gridList = action.listGrid();
+                final List<GridItem> gridList = action.listGrid(context);
                 action.close();
 
-                GridAdapter gridAdapter = new de.baumann.browser.View.GridAdapter(context, gridList, 2);
+                gridAdapter = new de.baumann.browser.View.GridAdapter(context, gridList);
                 gridView.setAdapter(gridAdapter);
                 gridAdapter.notifyDataSetChanged();
 
@@ -1696,7 +1627,9 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 gridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                     @Override
                     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                        showGridMenu(gridList.get(position));
+                        show_contextMenu_list(gridList.get(position).getTitle(), gridList.get(position).getURL(),
+                                null, null, 0,
+                                null, null, null , null, gridList.get(position));
                         return true;
                     }
                 });
@@ -1724,7 +1657,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         open_bookmark.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                showFilterDialog();
+                show_dialogFilter();
                 return false;
             }
         });
@@ -1763,7 +1696,8 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                     @Override
                     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                        showListMenu(adapter, list, position);
+                        show_contextMenu_list(list.get(position).getTitle(), list.get(position).getURL(), adapter, list, position,
+                                null, null, null , null, null);
                         return true;
                     }
                 });
@@ -1790,7 +1724,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 if (!overViewTab.equals(getString(R.string.album_title_bookmarks))) {
                 open_bookmark.performClick();
                 }
-                showFilterDialog();
+                show_dialogFilter();
                 return false;
             }
         });
@@ -1915,7 +1849,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             row = db.fetchDataByFilter(search, "pass_creation");
         }
 
-        SimpleCursorAdapter adapter = new SimpleCursorAdapter(context, layoutStyle, row, column, xml_id, 0) {
+        final SimpleCursorAdapter adapter = new SimpleCursorAdapter(context, layoutStyle, row, column, xml_id, 0) {
             @Override
             public View getView(final int position, View convertView, ViewGroup parent) {
 
@@ -1955,303 +1889,14 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 final String pass_attachment = row.getString(row.getColumnIndexOrThrow("pass_attachment"));
                 final String pass_creation = row.getString(row.getColumnIndexOrThrow("pass_creation"));
 
-                bottomSheetDialog = new BottomSheetDialog(context);
-                View dialogView = View.inflate(context, R.layout.dialog_menu_context_list, null);
-
-                contextList_newTab = dialogView.findViewById(R.id.menu_contextList_newTab);
-                contextList_newTab.setVisibility(View.VISIBLE);
-                contextList_newTab.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        addAlbum(getString(R.string.album_untitled), pass_content, false);
-                        NinjaToast.show(context, getString(R.string.toast_new_tab_successful));
-                        toast_login (pass_icon, pass_attachment);
-                        hideBottomSheetDialog ();
-                    }
-                });
-
-                contextList_newTabOpen = dialogView.findViewById(R.id.menu_contextList_newTabOpen);
-                contextList_newTabOpen.setVisibility(View.VISIBLE);
-                contextList_newTabOpen.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        addAlbum(getString(R.string.album_untitled), pass_content, true);
-                        toast_login (pass_icon, pass_attachment);
-                        hideBottomSheetDialog ();
-                        hideOverview();
-                    }
-                });
-
-                contextList_fav = dialogView.findViewById(R.id.menu_contextList_fav);
-                contextList_fav.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        hideBottomSheetDialog ();
-                        HelperUnit.setFavorite(context, pass_content);
-                    }
-                });
-
-                contextList_sc = dialogView.findViewById(R.id.menu_contextList_sc);
-                contextList_sc.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        hideBottomSheetDialog ();
-                        HelperUnit.createShortcut(context, pass_title, pass_content);
-                    }
-                });
-
-                contextList_edit = dialogView.findViewById(R.id.menu_contextList_edit);
-                contextList_edit.setVisibility(View.VISIBLE);
-                contextList_edit.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        hideBottomSheetDialog ();
-                        try {
-
-                            bottomSheetDialog = new BottomSheetDialog(context);
-
-                            View dialogView = View.inflate(context, R.layout.dialog_edit_bookmark, null);
-
-                            final EditText pass_titleET = dialogView.findViewById(R.id.pass_title);
-                            final EditText pass_userNameET = dialogView.findViewById(R.id.pass_userName);
-                            final EditText pass_userPWET = dialogView.findViewById(R.id.pass_userPW);
-                            final EditText pass_URLET = dialogView.findViewById(R.id.pass_url);
-                            final ImageView ib_icon = dialogView.findViewById(R.id.ib_icon);
-
-                            final String decrypted_userName = mahEncryptor.decode(pass_icon);
-                            final String decrypted_userPW = mahEncryptor.decode(pass_attachment);
-
-                            pass_titleET.setText(pass_title);
-                            pass_userNameET.setText(decrypted_userName);
-                            pass_userPWET.setText(decrypted_userPW);
-                            pass_URLET.setText(pass_content);
-
-                            Button action_ok = dialogView.findViewById(R.id.action_ok);
-                            action_ok.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    try {
-                                        String input_pass_title = pass_titleET.getText().toString().trim();
-                                        String input_pass_url = pass_URLET.getText().toString().trim();
-
-                                        String encrypted_userName = mahEncryptor.encode(pass_userNameET.getText().toString().trim());
-                                        String encrypted_userPW = mahEncryptor.encode(pass_userPWET.getText().toString().trim());
-
-                                        db.update(Integer.parseInt(_id), HelperUnit.secString(input_pass_title), HelperUnit.secString(input_pass_url),  HelperUnit.secString(encrypted_userName), HelperUnit.secString(encrypted_userPW), pass_creation);
-                                        initBookmarkList();
-                                        hideSoftInput(pass_titleET);
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                        NinjaToast.show(context, R.string.toast_error);
-                                    }
-                                    hideBottomSheetDialog ();
-                                }
-                            });
-                            Button action_cancel = dialogView.findViewById(R.id.action_cancel);
-                            action_cancel.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    hideSoftInput(pass_titleET);
-                                    hideBottomSheetDialog ();
-                                }
-                            });
-                            HelperUnit.switchIcon(activity, pass_creation, "pass_creation", ib_icon);
-                            bottomSheetDialog.setContentView(dialogView);
-                            bottomSheetDialog.show();
-
-                            ib_icon.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    try {
-                                        final String input_pass_title = pass_titleET.getText().toString().trim();
-                                        final String input_pass_url = pass_URLET.getText().toString().trim();
-                                        final String encrypted_userName = mahEncryptor.encode(pass_userNameET.getText().toString().trim());
-                                        final String encrypted_userPW = mahEncryptor.encode(pass_userPWET.getText().toString().trim());
-
-                                        hideBottomSheetDialog ();
-                                        hideSoftInput(pass_titleET);
-
-                                        bottomSheetDialog = new BottomSheetDialog(context);
-                                        View dialogView = View.inflate(context, R.layout.dialog_edit_icon, null);
-
-                                        String icon_01_string = sp.getString("icon_01", getResources().getString(R.string.color_red));
-                                        TextView icon_01_tv = dialogView.findViewById(R.id.icon_01_tv);
-                                        icon_01_tv.setText(icon_01_string);
-                                        String icon_02_string = sp.getString("icon_02", getResources().getString(R.string.color_pink));
-                                        TextView icon_02_tv = dialogView.findViewById(R.id.icon_02_tv);
-                                        icon_02_tv.setText(icon_02_string);
-                                        String icon_03_string = sp.getString("icon_03", getResources().getString(R.string.color_purple));
-                                        TextView icon_03_tv = dialogView.findViewById(R.id.icon_03_tv);
-                                        icon_03_tv.setText(icon_03_string);
-                                        String icon_04_string = sp.getString("icon_04", getResources().getString(R.string.color_blue));
-                                        TextView icon_04_tv = dialogView.findViewById(R.id.icon_04_tv);
-                                        icon_04_tv.setText(icon_04_string);
-                                        String icon_05_string = sp.getString("icon_05", getResources().getString(R.string.color_teal));
-                                        TextView icon_05_tv = dialogView.findViewById(R.id.icon_05_tv);
-                                        icon_05_tv.setText(icon_05_string);
-                                        String icon_06_string = sp.getString("icon_06", getResources().getString(R.string.color_green));
-                                        TextView icon_06_tv = dialogView.findViewById(R.id.icon_06_tv);
-                                        icon_06_tv.setText(icon_06_string);
-                                        String icon_07_string = sp.getString("icon_07", getResources().getString(R.string.color_lime));
-                                        TextView icon_07_tv = dialogView.findViewById(R.id.icon_07_tv);
-                                        icon_07_tv.setText(icon_07_string);
-                                        String icon_08_string = sp.getString("icon_08", getResources().getString(R.string.color_yellow));
-                                        TextView icon_08_tv = dialogView.findViewById(R.id.icon_08_tv);
-                                        icon_08_tv.setText(icon_08_string);
-                                        String icon_09_string = sp.getString("icon_09", getResources().getString(R.string.color_orange));
-                                        TextView icon_09_tv = dialogView.findViewById(R.id.icon_09_tv);
-                                        icon_09_tv.setText(icon_09_string);
-                                        String icon_10_string = sp.getString("icon_10", getResources().getString(R.string.color_brown));
-                                        TextView icon_10_tv = dialogView.findViewById(R.id.icon_10_tv);
-                                        icon_10_tv.setText(icon_10_string);
-
-                                        LinearLayout icon_01 = dialogView.findViewById(R.id.icon_01);
-                                        icon_01.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                db.update(Integer.parseInt(_id), HelperUnit.secString(input_pass_title), HelperUnit.secString(input_pass_url),  HelperUnit.secString(encrypted_userName), HelperUnit.secString(encrypted_userPW), "01");
-                                                initBookmarkList();
-                                                hideBottomSheetDialog ();
-                                            }
-                                        });
-                                        LinearLayout icon_02 = dialogView.findViewById(R.id.icon_02);
-                                        icon_02.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                db.update(Integer.parseInt(_id), HelperUnit.secString(input_pass_title), HelperUnit.secString(input_pass_url),  HelperUnit.secString(encrypted_userName), HelperUnit.secString(encrypted_userPW), "02");
-                                                initBookmarkList();
-                                                hideBottomSheetDialog ();
-                                            }
-                                        });
-                                        LinearLayout icon_03 = dialogView.findViewById(R.id.icon_03);
-                                        icon_03.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                db.update(Integer.parseInt(_id), HelperUnit.secString(input_pass_title), HelperUnit.secString(input_pass_url),  HelperUnit.secString(encrypted_userName), HelperUnit.secString(encrypted_userPW), "03");
-                                                initBookmarkList();
-                                                hideBottomSheetDialog ();
-                                            }
-                                        });
-                                        LinearLayout icon_04 = dialogView.findViewById(R.id.icon_04);
-                                        icon_04.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                db.update(Integer.parseInt(_id), HelperUnit.secString(input_pass_title), HelperUnit.secString(input_pass_url),  HelperUnit.secString(encrypted_userName), HelperUnit.secString(encrypted_userPW), "04");
-                                                initBookmarkList();
-                                                hideBottomSheetDialog ();
-                                            }
-                                        });
-                                        LinearLayout icon_05 = dialogView.findViewById(R.id.icon_05);
-                                        icon_05.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                db.update(Integer.parseInt(_id), HelperUnit.secString(input_pass_title), HelperUnit.secString(input_pass_url),  HelperUnit.secString(encrypted_userName), HelperUnit.secString(encrypted_userPW), "05");
-                                                initBookmarkList();
-                                                hideBottomSheetDialog ();
-                                            }
-                                        });
-                                        LinearLayout icon_06 = dialogView.findViewById(R.id.icon_06);
-                                        icon_06.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                db.update(Integer.parseInt(_id), HelperUnit.secString(input_pass_title), HelperUnit.secString(input_pass_url),  HelperUnit.secString(encrypted_userName), HelperUnit.secString(encrypted_userPW), "06");
-                                                initBookmarkList();
-                                                hideBottomSheetDialog ();
-                                            }
-                                        });
-                                        LinearLayout icon_07 = dialogView.findViewById(R.id.icon_07);
-                                        icon_07.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                db.update(Integer.parseInt(_id), HelperUnit.secString(input_pass_title), HelperUnit.secString(input_pass_url),  HelperUnit.secString(encrypted_userName), HelperUnit.secString(encrypted_userPW), "07");
-                                                initBookmarkList();
-                                                hideBottomSheetDialog ();
-                                            }
-                                        });
-                                        LinearLayout icon_08 = dialogView.findViewById(R.id.icon_08);
-                                        icon_08.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                db.update(Integer.parseInt(_id), HelperUnit.secString(input_pass_title), HelperUnit.secString(input_pass_url),  HelperUnit.secString(encrypted_userName), HelperUnit.secString(encrypted_userPW), "08");
-                                                initBookmarkList();
-                                                hideBottomSheetDialog ();
-                                            }
-                                        });
-                                        LinearLayout icon_09 = dialogView.findViewById(R.id.icon_09);
-                                        icon_09.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                db.update(Integer.parseInt(_id), HelperUnit.secString(input_pass_title), HelperUnit.secString(input_pass_url),  HelperUnit.secString(encrypted_userName), HelperUnit.secString(encrypted_userPW), "09");
-                                                initBookmarkList();
-                                                hideBottomSheetDialog ();
-                                            }
-                                        });
-                                        LinearLayout icon_10 = dialogView.findViewById(R.id.icon_10);
-                                        icon_10.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                db.update(Integer.parseInt(_id), HelperUnit.secString(input_pass_title), HelperUnit.secString(input_pass_url),  HelperUnit.secString(encrypted_userName), HelperUnit.secString(encrypted_userPW), "10");
-                                                initBookmarkList();
-                                                hideBottomSheetDialog ();
-                                            }
-                                        });
-
-                                        bottomSheetDialog.setContentView(dialogView);
-                                        bottomSheetDialog.show();
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                        hideBottomSheetDialog ();
-                                        NinjaToast.show(context, R.string.toast_error);
-                                    }
-                                }
-                            });
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            NinjaToast.show(context, R.string.toast_error);
-                        }
-                    }
-                });
-
-                contextList_delete = dialogView.findViewById(R.id.menu_contextList_delete);
-                contextList_delete.setVisibility(View.VISIBLE);
-                contextList_delete.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        hideBottomSheetDialog ();
-                        bottomSheetDialog = new BottomSheetDialog(context);
-                        View dialogView = View.inflate(context, R.layout.dialog_action, null);
-                        TextView textView = dialogView.findViewById(R.id.dialog_text);
-                        textView.setText(R.string.toast_titleConfirm_delete);
-                        Button action_ok = dialogView.findViewById(R.id.action_ok);
-                        action_ok.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                db.delete(Integer.parseInt(_id));
-                                initBookmarkList();
-                                hideBottomSheetDialog ();
-                            }
-                        });
-                        Button action_cancel = dialogView.findViewById(R.id.action_cancel);
-                        action_cancel.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                hideBottomSheetDialog ();
-                            }
-                        });
-                        bottomSheetDialog.setContentView(dialogView);
-                        bottomSheetDialog.show();
-                    }
-                });
-
-                bottomSheetDialog.setContentView(dialogView);
-                bottomSheetDialog.show();
+                show_contextMenu_list(pass_title, pass_content, null, null, 0,
+                        pass_icon, pass_attachment, _id , pass_creation, null);
                 return true;
             }
         });
     }
 
-    private void showFastToggle() {
+    private void show_dialogFastToggle() {
 
         bottomSheetDialog = new BottomSheetDialog(context);
         View dialogView = View.inflate(context, R.layout.dialog_toggle, null);
@@ -2993,7 +2638,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         return true;
     }
 
-    private void showLongPressMenu (final String url) {
+    private void show_contextMenu_link(final String url) {
         bottomSheetDialog = new BottomSheetDialog(context);
         View dialogView = View.inflate(context, R.layout.dialog_menu_context_link, null);
         dialogTitle = dialogView.findViewById(R.id.dialog_title);
@@ -3120,7 +2765,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
                     AlertDialog dialog = builder.create();
                     dialog.show();
-                    showSoftInput(editTitle);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -3135,11 +2779,11 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     public void onLongPress(final String url) {
         WebView.HitTestResult result = ninjaWebView.getHitTestResult();
         if (url != null) {
-            showLongPressMenu(url);
+            show_contextMenu_link(url);
         } else if (result.getType() == WebView.HitTestResult.IMAGE_TYPE ||
                 result.getType() == WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE ||
                 result.getType() == WebView.HitTestResult.SRC_ANCHOR_TYPE) {
-            showLongPressMenu(result.getExtra());
+            show_contextMenu_link(result.getExtra());
         }
     }
 
@@ -3175,18 +2819,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         assert imm != null;
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-    }
-
-    private void showSoftInput(final EditText view) {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                view.requestFocus();
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                assert imm != null;
-                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-            }
-        }, shortAnimTime);
     }
 
     @SuppressLint("RestrictedApi")
@@ -3240,20 +2872,10 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         omnibox.setVisibility(View.GONE);
         omniboxTitle.setVisibility(View.GONE);
         searchPanel.setVisibility(View.VISIBLE);
-        showSoftInput(searchBox);
     }
 
-    private void  updateOverflow () {
-
+    private void updateOverflow () {
         dialogTitle.setText(ninjaWebView.getTitle());
-
-        if (BrowserContainer.size() <= 1) {
-            tab_next.setVisibility(View.GONE);
-            tab_prev.setVisibility(View.GONE);
-        } else {
-            tab_next.setVisibility(View.VISIBLE);
-            tab_prev.setVisibility(View.VISIBLE);
-        }
     }
 
     @SuppressWarnings("SameReturnValue")
@@ -3271,11 +2893,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         fab_save.setOnClickListener(BrowserActivity.this);
         fab_more = dialogView.findViewById(R.id.floatButton_more);
         fab_more.setOnClickListener(BrowserActivity.this);
-
-        tab_prev = dialogView.findViewById(R.id.tab_prev);
-        tab_prev.setOnClickListener(BrowserActivity.this);
-        tab_next = dialogView.findViewById(R.id.tab_next);
-        tab_next.setOnClickListener(BrowserActivity.this);
 
         floatButton_tabView = dialogView.findViewById(R.id.floatButton_tabView);
         floatButton_saveView = dialogView.findViewById(R.id.floatButton_saveView);
@@ -3332,225 +2949,316 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         return true;
     }
 
-    private void showGridMenu(final GridItem gridItem) {
+    private void show_contextMenu_list (final String title, final String url,
+                                       final Adapter_Record adapterRecord, final List<Record> recordList, final int location,
+                                       final String usernName, final String userPW, final String _id, final String pass_creation,
+                                       final GridItem gridItem) {
+
 
         bottomSheetDialog = new BottomSheetDialog(context);
         View dialogView = View.inflate(context, R.layout.dialog_menu_context_list, null);
 
-        contextList_newTab = dialogView.findViewById(R.id.menu_contextList_newTab);
-        contextList_newTab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addAlbum(getString(R.string.album_untitled), gridItem.getURL(), false);
-                NinjaToast.show(context, getString(R.string.toast_new_tab_successful));
-                hideBottomSheetDialog ();
-            }
-        });
+        final BookmarkList db = new BookmarkList(context);
+        db.open();
 
-        contextList_newTabOpen = dialogView.findViewById(R.id.menu_contextList_newTabOpen);
-        contextList_newTabOpen.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addAlbum(getString(R.string.album_untitled), gridItem.getURL(), true);
-                hideBottomSheetDialog ();
-                hideOverview();
-            }
-        });
-
-        contextList_fav = dialogView.findViewById(R.id.menu_contextList_fav);
-        contextList_fav.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hideBottomSheetDialog ();
-                HelperUnit.setFavorite(context, gridItem.getURL());
-            }
-        });
-
-        contextList_sc = dialogView.findViewById(R.id.menu_contextList_sc);
-        contextList_sc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hideBottomSheetDialog ();
-                HelperUnit.createShortcut(context, gridItem.getTitle(), gridItem.getURL());
-            }
-        });
-
-        contextList_delete = dialogView.findViewById(R.id.menu_contextList_delete);
-        contextList_delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hideBottomSheetDialog ();
-                bottomSheetDialog = new BottomSheetDialog(context);
-                View dialogView = View.inflate(context, R.layout.dialog_action, null);
-                TextView textView = dialogView.findViewById(R.id.dialog_text);
-                textView.setText(R.string.toast_titleConfirm_delete);
-                Button action_ok = dialogView.findViewById(R.id.action_ok);
-                action_ok.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        RecordAction action = new RecordAction(context);
-                        action.open(true);
-                        action.deleteGridItem(gridItem);
-                        action.close();
-                        deleteFile(gridItem.getFilename());
-                        open_startPage.performClick();
-                        hideBottomSheetDialog ();
-                    }
-                });
-                Button action_cancel = dialogView.findViewById(R.id.action_cancel);
-                action_cancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        hideBottomSheetDialog ();
-                    }
-                });
-                bottomSheetDialog.setContentView(dialogView);
-                bottomSheetDialog.show();
-            }
-        });
-
-        contextList_edit = dialogView.findViewById(R.id.menu_contextList_edit);
-        contextList_edit.setVisibility(View.VISIBLE);
-        contextList_edit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hideBottomSheetDialog ();
-
-                bottomSheetDialog = new BottomSheetDialog(context);
-                View dialogView = View.inflate(context, R.layout.dialog_edit_title, null);
-
-                final EditText editText = dialogView.findViewById(R.id.dialog_edit);
-
-                editText.setHint(R.string.dialog_title_hint);
-                editText.setText(gridItem.getTitle());
-
-                Button action_ok = dialogView.findViewById(R.id.action_ok);
-                action_ok.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        String text = editText.getText().toString().trim();
-                        if (text.isEmpty()) {
-                            NinjaToast.show(context, getString(R.string.toast_input_empty));
-                        } else {
-                            RecordAction action = new RecordAction(context);
-                            action.open(true);
-                            gridItem.setTitle(text);
-                            action.updateGridItem(gridItem);
-                            action.close();
-                            hideSoftInput(editText);
-                            open_startPage.performClick();
-                        }
-                        hideBottomSheetDialog ();
-                    }
-                });
-                Button action_cancel = dialogView.findViewById(R.id.action_cancel);
-                action_cancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        hideSoftInput(editText);
-                        hideBottomSheetDialog ();
-                    }
-                });
-                bottomSheetDialog.setContentView(dialogView);
-                bottomSheetDialog.show();
-            }
-        });
-
-        bottomSheetDialog.setContentView(dialogView);
-        bottomSheetDialog.show();
-    }
-
-
-    private void showListMenu(final Adapter_Record adapterRecord, final List<Record> recordList, final int location) {
-
-        final Record record = recordList.get(location);
-
-        bottomSheetDialog = new BottomSheetDialog(context);
-        View dialogView = View.inflate(context, R.layout.dialog_menu_context_list, null);
-
-        contextList_fav = dialogView.findViewById(R.id.menu_contextList_fav);
-        contextList_fav.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hideBottomSheetDialog ();
-                HelperUnit.setFavorite(context, record.getURL());
-            }
-        });
-
-        contextList_sc = dialogView.findViewById(R.id.menu_contextList_sc);
-        contextList_sc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hideBottomSheetDialog ();
-                HelperUnit.createShortcut(context, record.getTitle(), record.getURL());
-            }
-        });
-
-        contextList_newTab = dialogView.findViewById(R.id.menu_contextList_newTab);
-        contextList_newTab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addAlbum(getString(R.string.album_untitled), record.getURL(), false);
-                NinjaToast.show(context, getString(R.string.toast_new_tab_successful));
-                hideBottomSheetDialog ();
-            }
-        });
-
-        contextList_newTabOpen = dialogView.findViewById(R.id.menu_contextList_newTabOpen);
-        contextList_newTabOpen.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addAlbum(getString(R.string.album_untitled), record.getURL(), true);
-                hideBottomSheetDialog ();
-                hideOverview();
-            }
-        });
-
-        contextList_delete = dialogView.findViewById(R.id.menu_contextList_delete);
-        contextList_delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hideBottomSheetDialog ();
-                bottomSheetDialog = new BottomSheetDialog(context);
-                View dialogView = View.inflate(context, R.layout.dialog_action, null);
-                TextView textView = dialogView.findViewById(R.id.dialog_text);
-                textView.setText(R.string.toast_titleConfirm_delete);
-                Button action_ok = dialogView.findViewById(R.id.action_ok);
-                action_ok.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        RecordAction action = new RecordAction(context);
-                        action.open(true);
-                        action.deleteHistory(record);
-                        action.close();
-                        recordList.remove(location);
-                        adapterRecord.notifyDataSetChanged();
-                        updateBookmarks();
-                        updateAutoComplete();
-                        hideBottomSheetDialog ();
-                    }
-                });
-                Button action_cancel = dialogView.findViewById(R.id.action_cancel);
-                action_cancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        hideBottomSheetDialog ();
-                    }
-                });
-                bottomSheetDialog.setContentView(dialogView);
-                bottomSheetDialog.show();
-            }
-        });
-
-        contextList_edit = dialogView.findViewById(R.id.menu_contextList_edit);
-        contextList_fav = dialogView.findViewById(R.id.menu_contextList_fav);
-        contextList_sc = dialogView.findViewById(R.id.menu_contextList_sc);
+        LinearLayout contextList_edit = dialogView.findViewById(R.id.menu_contextList_edit);
+        LinearLayout contextList_fav = dialogView.findViewById(R.id.menu_contextList_fav);
+        LinearLayout contextList_sc = dialogView.findViewById(R.id.menu_contextList_sc);
+        LinearLayout contextList_newTab = dialogView.findViewById(R.id.menu_contextList_newTab);
+        LinearLayout contextList_newTabOpen = dialogView.findViewById(R.id.menu_contextList_newTabOpen);
+        LinearLayout contextList_delete = dialogView.findViewById(R.id.menu_contextList_delete);
 
         if (overViewTab.equals(getString(R.string.album_title_history))) {
             contextList_edit.setVisibility(View.GONE);
         } else {
             contextList_edit.setVisibility(View.VISIBLE);
         }
+
+        contextList_fav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideBottomSheetDialog ();
+                HelperUnit.setFavorite(context, url);
+            }
+        });
+
+        contextList_sc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideBottomSheetDialog ();
+                HelperUnit.createShortcut(context, title, url);
+            }
+        });
+
+        contextList_newTab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addAlbum(getString(R.string.album_untitled), url, false);
+                NinjaToast.show(context, getString(R.string.toast_new_tab_successful));
+                hideBottomSheetDialog ();
+            }
+        });
+
+        contextList_newTabOpen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addAlbum(getString(R.string.album_untitled), url, true);
+                hideBottomSheetDialog ();
+                hideOverview();
+            }
+        });
+
+        contextList_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideBottomSheetDialog ();
+                bottomSheetDialog = new BottomSheetDialog(context);
+                View dialogView = View.inflate(context, R.layout.dialog_action, null);
+                TextView textView = dialogView.findViewById(R.id.dialog_text);
+                textView.setText(R.string.toast_titleConfirm_delete);
+                Button action_ok = dialogView.findViewById(R.id.action_ok);
+                action_ok.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (overViewTab.equals(getString(R.string.album_title_home))) {
+                            RecordAction action = new RecordAction(context);
+                            action.open(true);
+                            action.deleteGridItem(gridItem);
+                            action.close();
+                            deleteFile(gridItem.getFilename());
+                            open_startPage.performClick();
+                            hideBottomSheetDialog ();
+                        } else if (overViewTab.equals(getString(R.string.album_title_bookmarks))){
+                            db.delete(Integer.parseInt(_id));
+                            initBookmarkList();
+                            hideBottomSheetDialog ();
+                        } else if (overViewTab.equals(getString(R.string.album_title_history))){
+                            Record record = recordList.get(location);
+                            RecordAction action = new RecordAction(context);
+                            action.open(true);
+                            action.deleteHistory(record);
+                            action.close();
+                            recordList.remove(location);
+                            adapterRecord.notifyDataSetChanged();
+                            updateBookmarks();
+                            updateAutoComplete();
+                            hideBottomSheetDialog ();
+                        }
+
+                    }
+                });
+                Button action_cancel = dialogView.findViewById(R.id.action_cancel);
+                action_cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        hideBottomSheetDialog ();
+                    }
+                });
+                bottomSheetDialog.setContentView(dialogView);
+                bottomSheetDialog.show();
+            }
+        });
+
+        contextList_edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideBottomSheetDialog ();
+
+                if (overViewTab.equals(getString(R.string.album_title_home))) {
+                    bottomSheetDialog = new BottomSheetDialog(context);
+                    View dialogView = View.inflate(context, R.layout.dialog_edit_title, null);
+
+                    final EditText editText = dialogView.findViewById(R.id.dialog_edit);
+
+                    editText.setHint(R.string.dialog_title_hint);
+                    editText.setText(title);
+
+                    Button action_ok = dialogView.findViewById(R.id.action_ok);
+                    action_ok.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            String text = editText.getText().toString().trim();
+                            if (text.isEmpty()) {
+                                NinjaToast.show(context, getString(R.string.toast_input_empty));
+                            } else {
+                                RecordAction action = new RecordAction(context);
+                                action.open(true);
+                                gridItem.setTitle(text);
+                                action.updateGridItem(gridItem);
+                                action.close();
+                                hideSoftInput(editText);
+                                open_startPage.performClick();
+                            }
+                            hideBottomSheetDialog ();
+                        }
+                    });
+                    Button action_cancel = dialogView.findViewById(R.id.action_cancel);
+                    action_cancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            hideSoftInput(editText);
+                            hideBottomSheetDialog ();
+                        }
+                    });
+                    bottomSheetDialog.setContentView(dialogView);
+                    bottomSheetDialog.show();
+                } else if (overViewTab.equals(getString(R.string.album_title_bookmarks))){
+                    try {
+
+                        bottomSheetDialog = new BottomSheetDialog(context);
+
+                        View dialogView = View.inflate(context, R.layout.dialog_edit_bookmark, null);
+
+                        final EditText pass_titleET = dialogView.findViewById(R.id.pass_title);
+                        final EditText pass_userNameET = dialogView.findViewById(R.id.pass_userName);
+                        final EditText pass_userPWET = dialogView.findViewById(R.id.pass_userPW);
+                        final EditText pass_URLET = dialogView.findViewById(R.id.pass_url);
+                        final ImageView ib_icon = dialogView.findViewById(R.id.ib_icon);
+
+                        final String decrypted_userName = mahEncryptor.decode(usernName);
+                        final String decrypted_userPW = mahEncryptor.decode(userPW);
+
+                        pass_titleET.setText(title);
+                        pass_userNameET.setText(decrypted_userName);
+                        pass_userPWET.setText(decrypted_userPW);
+                        pass_URLET.setText(url);
+
+                        Button action_ok = dialogView.findViewById(R.id.action_ok);
+                        action_ok.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                try {
+                                    String input_pass_title = pass_titleET.getText().toString().trim();
+                                    String input_pass_url = pass_URLET.getText().toString().trim();
+
+                                    String encrypted_userName = mahEncryptor.encode(pass_userNameET.getText().toString().trim());
+                                    String encrypted_userPW = mahEncryptor.encode(pass_userPWET.getText().toString().trim());
+
+                                    db.update(Integer.parseInt(_id), HelperUnit.secString(input_pass_title), HelperUnit.secString(input_pass_url),  HelperUnit.secString(encrypted_userName), HelperUnit.secString(encrypted_userPW), pass_creation);
+                                    initBookmarkList();
+                                    hideSoftInput(pass_titleET);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    NinjaToast.show(context, R.string.toast_error);
+                                }
+                                hideBottomSheetDialog ();
+                            }
+                        });
+                        Button action_cancel = dialogView.findViewById(R.id.action_cancel);
+                        action_cancel.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                hideSoftInput(pass_titleET);
+                                hideBottomSheetDialog ();
+                            }
+                        });
+                        HelperUnit.switchIcon(activity, pass_creation, "pass_creation", ib_icon);
+                        bottomSheetDialog.setContentView(dialogView);
+                        bottomSheetDialog.show();
+
+                        ib_icon.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                try {
+                                    final String input_pass_title = pass_titleET.getText().toString().trim();
+                                    final String input_pass_url = pass_URLET.getText().toString().trim();
+                                    final String encrypted_userName = mahEncryptor.encode(pass_userNameET.getText().toString().trim());
+                                    final String encrypted_userPW = mahEncryptor.encode(pass_userPWET.getText().toString().trim());
+
+                                    hideBottomSheetDialog ();
+                                    hideSoftInput(pass_titleET);
+
+                                    bottomSheetDialog = new BottomSheetDialog(context);
+                                    View dialogView = View.inflate(context, R.layout.dialog_edit_icon, null);
+
+                                    GridView grid = dialogView.findViewById(R.id.grid_filter);
+                                    GridItem_filter itemAlbum_01 = new GridItem_filter(sp.getString("icon_01", getResources().getString(R.string.color_red)), "icon_01", getResources().getDrawable(R.drawable.circle_red), "01");
+                                    GridItem_filter itemAlbum_02 = new GridItem_filter(sp.getString("icon_02", getResources().getString(R.string.color_pink)), "icon_02", getResources().getDrawable(R.drawable.circle_pink), "02");
+                                    GridItem_filter itemAlbum_03 = new GridItem_filter(sp.getString("icon_03", getResources().getString(R.string.color_purple)), "icon_03", getResources().getDrawable(R.drawable.circle_purple), "03");
+                                    GridItem_filter itemAlbum_04 = new GridItem_filter(sp.getString("icon_04", getResources().getString(R.string.color_blue)), "icon_04", getResources().getDrawable(R.drawable.circle_blue), "04");
+                                    GridItem_filter itemAlbum_05 = new GridItem_filter(sp.getString("icon_05", getResources().getString(R.string.color_teal)), "icon_05", getResources().getDrawable(R.drawable.circle_teal), "05");
+                                    GridItem_filter itemAlbum_06 = new GridItem_filter(sp.getString("icon_06", getResources().getString(R.string.color_green)), "icon_06", getResources().getDrawable(R.drawable.circle_green), "06");
+                                    GridItem_filter itemAlbum_07 = new GridItem_filter(sp.getString("icon_07", getResources().getString(R.string.color_lime)), "icon_07", getResources().getDrawable(R.drawable.circle_lime), "07");
+                                    GridItem_filter itemAlbum_08 = new GridItem_filter(sp.getString("icon_08", getResources().getString(R.string.color_yellow)), "icon_08", getResources().getDrawable(R.drawable.circle_yellow), "08");
+                                    GridItem_filter itemAlbum_09 = new GridItem_filter(sp.getString("icon_09", getResources().getString(R.string.color_orange)), "icon_09", getResources().getDrawable(R.drawable.circle_orange), "09");
+                                    GridItem_filter itemAlbum_10 = new GridItem_filter(sp.getString("icon_10", getResources().getString(R.string.color_brown)), "icon_10", getResources().getDrawable(R.drawable.circle_brown), "10");
+                                    GridItem_filter itemAlbum_11 = new GridItem_filter(sp.getString("icon_11", getResources().getString(R.string.color_grey)), "icon_11", getResources().getDrawable(R.drawable.circle_grey), "11");
+
+                                    final List<GridItem_filter> gridList = new LinkedList<>();
+                                    if (sp.getBoolean("filter_01", true)){
+                                        gridList.add(gridList.size(), itemAlbum_01);
+                                    }
+                                    if (sp.getBoolean("filter_02", true)){
+                                        gridList.add(gridList.size(), itemAlbum_02);
+                                    }
+                                    if (sp.getBoolean("filter_03", true)){
+                                        gridList.add(gridList.size(), itemAlbum_03);
+                                    }
+                                    if (sp.getBoolean("filter_04", true)){
+                                        gridList.add(gridList.size(), itemAlbum_04);
+                                    }
+                                    if (sp.getBoolean("filter_05", true)){
+                                        gridList.add(gridList.size(), itemAlbum_05);
+                                    }
+                                    if (sp.getBoolean("filter_06", true)){
+                                        gridList.add(gridList.size(), itemAlbum_06);
+                                    }
+                                    if (sp.getBoolean("filter_07", true)){
+                                        gridList.add(gridList.size(), itemAlbum_07);
+                                    }
+                                    if (sp.getBoolean("filter_08", true)){
+                                        gridList.add(gridList.size(), itemAlbum_08);
+                                    }
+                                    if (sp.getBoolean("filter_09", true)){
+                                        gridList.add(gridList.size(), itemAlbum_09);
+                                    }
+                                    if (sp.getBoolean("filter_10", true)){
+                                        gridList.add(gridList.size(), itemAlbum_10);
+                                    }
+                                    if (sp.getBoolean("filter_11", true)){
+                                        gridList.add(gridList.size(), itemAlbum_11);
+                                    }
+                                    GridAdapter_filter gridAdapter = new de.baumann.browser.View.GridAdapter_filter(context, gridList);
+                                    grid.setAdapter(gridAdapter);
+                                    gridAdapter.notifyDataSetChanged();
+
+                                    grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                        @Override
+                                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                            db.update(Integer.parseInt(_id), HelperUnit.secString(input_pass_title), HelperUnit.secString(input_pass_url),  HelperUnit.secString(encrypted_userName), HelperUnit.secString(encrypted_userPW), gridList.get(position).getOrdinal());
+                                            initBookmarkList();
+                                            hideBottomSheetDialog ();
+                                        }
+                                    });
+
+                                    grid.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                                        @Override
+                                        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                                            editFilterNames(gridList.get(position).getTitle(), gridList.get(position).getURL());
+                                            return true;
+                                        }
+                                    });
+
+                                    bottomSheetDialog.setContentView(dialogView);
+                                    bottomSheetDialog.show();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    hideBottomSheetDialog ();
+                                    NinjaToast.show(context, R.string.toast_error);
+                                }
+                            }
+                        });
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        NinjaToast.show(context, R.string.toast_error);
+                    }
+                }
+
+
+            }
+        });
 
         bottomSheetDialog.setContentView(dialogView);
         bottomSheetDialog.show();
@@ -3576,7 +3284,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 } else {
                     sp.edit().putString(icon_sp, text).apply();
                     hideBottomSheetDialog ();
-                    showFilterDialog();
+                    show_dialogFilter();
                 }
             }
         });
@@ -3592,7 +3300,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         bottomSheetDialog.show();
     }
 
-    private void showFilterDialog () {
+    private void show_dialogFilter() {
         hideBottomSheetDialog();
 
         open_bookmark.performClick();
@@ -3600,232 +3308,72 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         bottomSheetDialog = new BottomSheetDialog(context);
         View dialogView = View.inflate(context, R.layout.dialog_edit_icon, null);
 
-        String icon_01_string = sp.getString("icon_01", getResources().getString(R.string.color_red));
-        TextView icon_01_tv = dialogView.findViewById(R.id.icon_01_tv);
-        icon_01_tv.setText(icon_01_string);
+        GridView grid = dialogView.findViewById(R.id.grid_filter);
+        GridItem_filter itemAlbum_01 = new GridItem_filter(sp.getString("icon_01", getResources().getString(R.string.color_red)), "icon_01", getResources().getDrawable(R.drawable.circle_red), "01");
+        GridItem_filter itemAlbum_02 = new GridItem_filter(sp.getString("icon_02", getResources().getString(R.string.color_pink)), "icon_02", getResources().getDrawable(R.drawable.circle_pink), "02");
+        GridItem_filter itemAlbum_03 = new GridItem_filter(sp.getString("icon_03", getResources().getString(R.string.color_purple)), "icon_03", getResources().getDrawable(R.drawable.circle_purple), "03");
+        GridItem_filter itemAlbum_04 = new GridItem_filter(sp.getString("icon_04", getResources().getString(R.string.color_blue)), "icon_04", getResources().getDrawable(R.drawable.circle_blue), "04");
+        GridItem_filter itemAlbum_05 = new GridItem_filter(sp.getString("icon_05", getResources().getString(R.string.color_teal)), "icon_05", getResources().getDrawable(R.drawable.circle_teal), "05");
+        GridItem_filter itemAlbum_06 = new GridItem_filter(sp.getString("icon_06", getResources().getString(R.string.color_green)), "icon_06", getResources().getDrawable(R.drawable.circle_green), "06");
+        GridItem_filter itemAlbum_07 = new GridItem_filter(sp.getString("icon_07", getResources().getString(R.string.color_lime)), "icon_07", getResources().getDrawable(R.drawable.circle_lime), "07");
+        GridItem_filter itemAlbum_08 = new GridItem_filter(sp.getString("icon_08", getResources().getString(R.string.color_yellow)), "icon_08", getResources().getDrawable(R.drawable.circle_yellow), "08");
+        GridItem_filter itemAlbum_09 = new GridItem_filter(sp.getString("icon_09", getResources().getString(R.string.color_orange)), "icon_09", getResources().getDrawable(R.drawable.circle_orange), "09");
+        GridItem_filter itemAlbum_10 = new GridItem_filter(sp.getString("icon_10", getResources().getString(R.string.color_brown)), "icon_10", getResources().getDrawable(R.drawable.circle_brown), "10");
+        GridItem_filter itemAlbum_11 = new GridItem_filter(sp.getString("icon_11", getResources().getString(R.string.color_grey)), "icon_11", getResources().getDrawable(R.drawable.circle_grey), "11");
 
-        String icon_02_string = sp.getString("icon_02", getResources().getString(R.string.color_pink));
-        TextView icon_02_tv = dialogView.findViewById(R.id.icon_02_tv);
-        icon_02_tv.setText(icon_02_string);
+        final List<GridItem_filter> gridList = new LinkedList<>();
+        if (sp.getBoolean("filter_01", true)){
+            gridList.add(gridList.size(), itemAlbum_01);
+        }
+        if (sp.getBoolean("filter_02", true)){
+            gridList.add(gridList.size(), itemAlbum_02);
+        }
+        if (sp.getBoolean("filter_03", true)){
+            gridList.add(gridList.size(), itemAlbum_03);
+        }
+        if (sp.getBoolean("filter_04", true)){
+            gridList.add(gridList.size(), itemAlbum_04);
+        }
+        if (sp.getBoolean("filter_05", true)){
+            gridList.add(gridList.size(), itemAlbum_05);
+        }
+        if (sp.getBoolean("filter_06", true)){
+            gridList.add(gridList.size(), itemAlbum_06);
+        }
+        if (sp.getBoolean("filter_07", true)){
+            gridList.add(gridList.size(), itemAlbum_07);
+        }
+        if (sp.getBoolean("filter_08", true)){
+            gridList.add(gridList.size(), itemAlbum_08);
+        }
+        if (sp.getBoolean("filter_09", true)){
+            gridList.add(gridList.size(), itemAlbum_09);
+        }
+        if (sp.getBoolean("filter_10", true)){
+            gridList.add(gridList.size(), itemAlbum_10);
+        }
+        if (sp.getBoolean("filter_11", true)){
+            gridList.add(gridList.size(), itemAlbum_11);
+        }
 
-        String icon_03_string = sp.getString("icon_03", getResources().getString(R.string.color_purple));
-        TextView icon_03_tv = dialogView.findViewById(R.id.icon_03_tv);
-        icon_03_tv.setText(icon_03_string);
+        GridAdapter_filter gridAdapter = new de.baumann.browser.View.GridAdapter_filter(context, gridList);
+        grid.setAdapter(gridAdapter);
+        gridAdapter.notifyDataSetChanged();
 
-        String icon_04_string = sp.getString("icon_04", getResources().getString(R.string.color_blue));
-        TextView icon_04_tv = dialogView.findViewById(R.id.icon_04_tv);
-        icon_04_tv.setText(icon_04_string);
-
-        String icon_05_string = sp.getString("icon_05", getResources().getString(R.string.color_teal));
-        TextView icon_05_tv = dialogView.findViewById(R.id.icon_05_tv);
-        icon_05_tv.setText(icon_05_string);
-
-        String icon_06_string = sp.getString("icon_06", getResources().getString(R.string.color_green));
-        TextView icon_06_tv = dialogView.findViewById(R.id.icon_06_tv);
-        icon_06_tv.setText(icon_06_string);
-
-        String icon_07_string = sp.getString("icon_07", getResources().getString(R.string.color_lime));
-        TextView icon_07_tv = dialogView.findViewById(R.id.icon_07_tv);
-        icon_07_tv.setText(icon_07_string);
-
-        String icon_08_string = sp.getString("icon_08", getResources().getString(R.string.color_yellow));
-        TextView icon_08_tv = dialogView.findViewById(R.id.icon_08_tv);
-        icon_08_tv.setText(icon_08_string);
-
-        String icon_09_string = sp.getString("icon_09", getResources().getString(R.string.color_orange));
-        TextView icon_09_tv = dialogView.findViewById(R.id.icon_09_tv);
-        icon_09_tv.setText(icon_09_string);
-
-        String icon_10_string = sp.getString("icon_10", getResources().getString(R.string.color_brown));
-        TextView icon_10_tv = dialogView.findViewById(R.id.icon_10_tv);
-        icon_10_tv.setText(icon_10_string);
-
-        LinearLayout icon_01 = dialogView.findViewById(R.id.icon_01);
-        icon_01.setOnClickListener(new View.OnClickListener() {
+        grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
-                sp.edit().putString("filter_passBY", "01").apply();
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                sp.edit().putString("filter_passBY", gridList.get(position).getOrdinal()).apply();
                 initBookmarkList();
                 hideBottomSheetDialog ();
             }
         });
-        LinearLayout icon_02 = dialogView.findViewById(R.id.icon_02);
-        icon_02.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sp.edit().putString("filter_passBY", "02").apply();
-                initBookmarkList();
-                hideBottomSheetDialog ();
-            }
-        });
-        LinearLayout icon_03 = dialogView.findViewById(R.id.icon_03);
-        icon_03.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sp.edit().putString("filter_passBY", "03").apply();
-                initBookmarkList();
-                hideBottomSheetDialog ();
-            }
-        });
-        LinearLayout icon_04 = dialogView.findViewById(R.id.icon_04);
-        icon_04.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sp.edit().putString("filter_passBY", "04").apply();
-                initBookmarkList();
-                hideBottomSheetDialog ();
-            }
-        });
-        LinearLayout icon_05 = dialogView.findViewById(R.id.icon_05);
-        icon_05.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sp.edit().putString("filter_passBY", "05").apply();
-                initBookmarkList();
-                hideBottomSheetDialog ();
-            }
-        });
-        LinearLayout icon_06 = dialogView.findViewById(R.id.icon_06);
-        icon_06.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sp.edit().putString("filter_passBY", "06").apply();
-                initBookmarkList();
-                hideBottomSheetDialog ();
-            }
-        });
-        LinearLayout icon_07 = dialogView.findViewById(R.id.icon_07);
-        icon_07.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sp.edit().putString("filter_passBY", "07").apply();
-                initBookmarkList();
-                hideBottomSheetDialog ();
-            }
-        });
-        LinearLayout icon_08 = dialogView.findViewById(R.id.icon_08);
-        icon_08.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sp.edit().putString("filter_passBY", "08").apply();
-                initBookmarkList();
-                hideBottomSheetDialog ();
-            }
-        });
-        LinearLayout icon_09 = dialogView.findViewById(R.id.icon_09);
-        icon_09.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sp.edit().putString("filter_passBY", "09").apply();
-                initBookmarkList();
-                hideBottomSheetDialog ();
-            }
-        });
-        LinearLayout icon_10 = dialogView.findViewById(R.id.icon_10);
-        icon_10.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sp.edit().putString("filter_passBY", "10").apply();
-                initBookmarkList();
-                hideBottomSheetDialog ();
-            }
-        });
-        icon_01.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                editFilterNames(sp.getString("icon_01", getResources().getString(R.string.color_red)), "icon_01");
-                return false;
-            }
-        });
-        icon_02.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                editFilterNames(sp.getString("icon_02", getResources().getString(R.string.color_pink)), "icon_02");
-                return false;
-            }
-        });
-        icon_03.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                editFilterNames(sp.getString("icon_03", getResources().getString(R.string.color_purple)), "icon_03");
-                return false;
-            }
-        });
-        icon_04.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                editFilterNames(sp.getString("icon_04", getResources().getString(R.string.color_blue)), "icon_04");
-                return false;
-            }
-        });
-        icon_05.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                editFilterNames(sp.getString("icon_05", getResources().getString(R.string.color_teal)), "icon_05");
-                return false;
-            }
-        });
-        icon_06.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                editFilterNames(sp.getString("icon_06", getResources().getString(R.string.color_green)), "icon_06");
-                return false;
-            }
-        });
-        icon_07.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                editFilterNames(sp.getString("icon_07", getResources().getString(R.string.color_lime)), "icon_07");
-                return false;
-            }
-        });
-        icon_08.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                editFilterNames(sp.getString("icon_08", getResources().getString(R.string.color_yellow)), "icon_08");
-                return false;
-            }
-        });
-        icon_09.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                editFilterNames(sp.getString("icon_09", getResources().getString(R.string.color_orange)), "icon_09");
-                return false;
-            }
-        });
-        icon_10.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                editFilterNames(sp.getString("icon_10", getResources().getString(R.string.color_brown)), "icon_10");
-                return false;
-            }
-        });
 
-        bottomSheetDialog.setContentView(dialogView);
-        bottomSheetDialog.show();
-    }
-
-    private void showHelpDialog () {
-
-        hideBottomSheetDialog ();
-        bottomSheetDialog = new BottomSheetDialog(context);
-        View dialogView = View.inflate(context, R.layout.dialog_help, null);
-
-        ImageButton fab = dialogView.findViewById(R.id.floatButton_ok);
-        fab.setOnClickListener(new View.OnClickListener() {
+        grid.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public void onClick(View v) {
-                hideBottomSheetDialog ();
-            }
-        });
-
-        ImageButton fab_settings = dialogView.findViewById(R.id.floatButton_settings);
-        fab_settings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, Settings_Activity.class);
-                startActivity(intent);
-                hideBottomSheetDialog ();
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                editFilterNames(gridList.get(position).getTitle(), gridList.get(position).getURL());
+                return true;
             }
         });
 

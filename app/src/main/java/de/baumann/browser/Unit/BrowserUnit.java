@@ -6,9 +6,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.pm.ShortcutManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -447,6 +449,11 @@ public class BrowserUnit {
         action.open(true);
         action.clearHistory();
         action.close();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+            ShortcutManager shortcutManager = context.getSystemService(ShortcutManager.class);
+            shortcutManager.removeAllDynamicShortcuts();
+        }
     }
 
     public static void clearIndexedDB (Context context) {

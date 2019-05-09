@@ -2,6 +2,66 @@
 
 <resources>
 
+    <!-- Dialog help -->
+
+    <string name="dialogHelp_tipTitle">Tipps</string>
+    <string name="dialogHelp_tipText">
+        &lt;b>Startseite&lt;/b>&lt;br>
+        Du kannst festlegen, welche Internetseite beim Start von \"FOSS Browser\" geladen wird: Du kannst jeden Eintrag
+        aus der Übersicht (Startseite, Lesezeichen, Verlauf) durch langes Drücken auswählen. Über das Menü in der Übersicht
+        kannst du außerdem eine leere Startseite festlegen.&lt;br>&lt;br>
+
+        &lt;b>Menüs und Dialoge&lt;/b>&lt;br>
+        Alle Menüs und Dialoge öffnen sich am unteren Bildschirmrand. Bei größeren  Dialogen öffnet sich dabei zuerst nur
+        der obere Teil. Wenn du diesen nach oben ziehst, wird der untere Teil sichtbar.&lt;br>
+        Sie lassen sich durch die Zurücktaste, durch nach unten Wischen oder einen Klick außerhalb schließen.&lt;br>&lt;br>
+
+        &lt;b>Langes drücken&lt;/b>&lt;br>
+        Wenn du das Menü-Icon oder den \"Navigationskopf\" lange drückst, öffnen sich die \"Schnelleinstellungen\". Wenn
+        du das Lesezeichen-Icon lange drückst, öffnet sich der Filterdialog.
+    </string>
+
+    <string name="dialogHelp_overviewTitle">Übersicht</string>
+    <string name="dialogHelp_overviewText">
+        Die \"Übersicht\" besteht aus zwei Teilen (Tabvorschau und persönliche Inhalte). Sie verfügt über ein eigenes Menü und
+        du kannst sie in den Einstellungen an deine Wünsche angepassen.&lt;br>&lt;br>
+
+        &lt;b>Tabvorschau&lt;/b>&lt;br>
+        Sie befindet sich in der \"Übersicht\" oben. Wenn du zu einem geöffneten Tab wechseln willst, klicke die Vorschau an.
+        Du kannst einen Tab schließen, indem du die Vorschau lange drückst. Wenn du die \"Tabvorschau\" nach oben ziehst,
+        öffnen sich deine persönlichen Inhalte.&lt;br>&lt;br>
+
+        &lt;b>Persönliche Inhalte&lt;/b>&lt;br>
+        Hier gibt es drei Inhalte, welche angezeigt werden können: die Startseite, deine Lesezeichen und dein Browserverlauf.
+        Wenn du einen Eintrag lange drückst, öffnet sich ein Menü mit weiteren Möglichkeiten.
+    </string>
+
+    <string name="dialogHelp_gesturesTitle">Gesten</string>
+    <string name="dialogHelp_gesturesText">
+        Auf der Toolbar und dem \"Navigationsknopf\" kannst du Gesten benutzen:&lt;br>&lt;br>
+
+        &lt;b>Toolbar&lt;/b>&lt;br>
+        \u25AA Nach oben/unten wischen     \u2192  Übersicht zeigen/nichts&lt;br>
+        \u25AA Nach links/rechts wischen  \u2192  Tabs wechseln&lt;br>&lt;br>
+
+        &lt;b>Navigationsknopf&lt;/b>&lt;br>
+        \u25AA Nach oben/unten wischen     \u2192  nach oben/unten scrollen&lt;br>
+        \u25AA Nach links/rchts wischen  \u2192  zurück/vor im Browserverlauf&lt;br>&lt;br>
+
+        In den Einstellungen kannst du sie anpassen.
+    </string>
+
+    <string name="dialogHelp_filterTitle">Filter</string>
+    <string name="dialogHelp_filterText">
+        Du kannst deinen Lesezeichen eine Farbe als Filter zuordnen. So kannst du viele Lesezeichen in Gruppen ordnen.
+        Den Filterdialog kannst du öffnen, indem du lange auf das Lesezeichen-Icon drückst. Wenn du lange auf einen
+        Eintrag drückst, kannst du ihm einen anderen Namen geben. In den Einstellungen kannst du außerdem einzelne
+        Einträge deaktivieren.
+    </string>
+
+
+    <!-- Dialog changelog -->
+
     <string name="changelog_title">Änderungen</string>
     <string name="changelog_dialog">
        &lt;i>Projekseite: https://github.com/scoute-dich/Browser&lt;br>
@@ -29,43 +89,8 @@
         \u25AA updated: Schnelleinstellungen
     </string>
 
-    <string name="overview_title">Übersicht</string>
-    <string name="overview_dialog">Hier hast du Zugriff auf deine geöffneten Tabs (drücke lange auf eine Vorschau, um den Tab zu
-        schließen) und deine Daten: auf der Startseite gespeicherten Einträge, deine Lesezeichen und den Verlauf. In den
-        Einstellungen kannst du entscheiden, welcher Inhalt immer zuerst angezeigt werden soll.</string>
 
-    <string name="startSite_title">Startseite</string>
-    <string name="startSite_dialog">Du kannst jedes Lesezeichen als Startseite setzen, indem du es lange drückst. Diese Seite
-        öffnet sich dann immer, wenn die App startet, oder ein neuer Tab geöffnet wird. Über das Menü in der Lesezeichenliste
-        kannst du auch eine leere Startseite bestimmen.</string>
-
-
-    <string name="fastToggle_title">Schnelleinstellungen</string>
-    <string name="fastToggle_dialog">Wenn du lange den \"Menü-\" oder den \"Navigationsknopf\" drückst, öffnen sich die
-        Schnelleinstellungen. Hier kannst du wichtige Einstellungen vornehmen, ohne die geöffnete Internetseite verlassen
-        zu müssen. Außerdem kannst du Internetseiten, denen du vertraust zu den Außnahmen für den AdBlocker, und das
-        Benutzen von JavaScript oder Cookies zulassen.</string>
-
-    <string name="menu_title">Menü</string>
-    <string name="menu_dialog">Verwalte deine Tabs, teile oder speichere Inhalte oder nutze weitere Funktionen. Einfach mal
-        ausprobieren. Menüs können, genauso wie alle anderen Einblendungen, geschlossen werden, indem du zurück klickst,
-        außerhalb des Menüs klickst oder das Menü einfach nach unten wischst.</string>
-
-    <string name="not_title">Benachrichtigungen</string>
-    <string name="not_dialog">Benachrichtigungen werden ebenfalls am unteren Rand des Bildschirms angezeigt. Sie können
-        genauso wie die Menüs jederzeit geschlossen werden.</string>
-
-    <string name="gestures_title">Gesten</string>
-    <string name="gestures_dialog">Auf der Toolbar und dem \"Navigationsknopf\" kannst du Wischegesten benutzen:
-        \n \u25AA Nach oben/unten wischen     \u2192  nach oben/unten scrollen;
-        \n \u25AA Nach links/rchts wischen  \u2192  zurück/vor im Browserverlauf;
-        \n \u25AA Klicken               \u2192  Menü öffnen;
-        \n \u25AA Lange drücken        \u2192  öffne die \"Schnelleinstellungen\"
-        \n In den Einstellungen kannst du dies ändern.
-    </string>
-
-    <string name="settings_dialog">Es gibt noch mehr Möglichkeiten in den Einstellungen. Probiere es aus!</string>
-
+    <!-- Dialog License -->
 
     <string name="license_title">Copyright © 2017  by Gaukler Faun</string>
     <string name="license_dialog">
@@ -80,16 +105,6 @@
         siehe http://www.gnu.org/licenses.&lt;br>&lt;br>&lt;br>
 
         &lt;i>Die folgenden Open Source Bibliotheken oder Projekte werden in dieser Software verwendet:&lt;/i>&lt;br>&lt;br>
-
-        &lt;b>DynamicGrid&lt;/b>&lt;br>
-        Apache License Version 2.0&lt;br>
-        askerov&lt;br>
-        &lt;i>http://git.io/vTHZH&lt;/i>&lt;br>&lt;br>
-
-        &lt;b>Lightning Browser&lt;/b>&lt;br>
-        Mozilla Public License Version 2.0&lt;br>
-        Anthony Restaino&lt;br>
-        &lt;i>http://git.io/vUruk&lt;/i>&lt;br>&lt;br>
 
         &lt;b>Material Design Icons&lt;/b>&lt;br>
         SIL Open Font License, Version 1.1.&lt;br>

@@ -79,10 +79,6 @@
     <string name="dialog_sortName">Trier par nom</string>
     <string name="dialog_sortIcon">Trier par icône</string>
 
-    <string name="dialog_icon_title">Choisir un filtre …</string>
-    <string name="dialog_icon_hint">Vous pouvez filtrer vos signets, en appuyant longuement sur l\'icône du signet dans l\'aperçu. Pour le réinitialiser
-        il suffit d\'appuyer à nouveau sur l\'icône. Appuyez longuement sur un filtre pour modifier son nom.</string>
-
     <!-- Settings -->
     <string name="setting_label">Réglages</string>
 
@@ -214,7 +210,6 @@
     <string name="setting_overView_onStart_title">Montrer au démarrage</string>
     <string name="setting_overView_onStart_summary">Ouvrir \"vue d\'ensemble\" à chaque démarrage de l\'application.</string>
 
-    <string name="setting_close">Fermer la confirmation</string>
     <string name="setting_gestures">Gestes</string>
     <string name="setting_gestures_use_title">Utiliser des gestes</string>
     <string name="setting_gestures_use_summary">Utilisez des gestes dans barre d’outils et le \"Bouton de navigation\".</string>

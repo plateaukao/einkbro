@@ -2,26 +2,36 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <CheckBoxPreference android:key="sp_background"
-        android:icon="@drawable/icon_link"
-        android:defaultValue="true"
-        android:title="@string/setting_title_background"
-        android:summary="@string/setting_summary_background"/>
 
-    <CheckBoxPreference android:key="sp_reopenLastTab"
-        android:icon="@drawable/icon_tab_plus"
-        android:defaultValue="false"
-        android:title="@string/setting_title_reopenLastTab"
-        android:summary="@string/setting_summary_reopenLastTab"/>
+    <PreferenceCategory android:title="@string/setting_title_behavior">
 
-    <ListPreference
-        android:icon="@drawable/icon_size"
-        android:key="sp_fontSize"
-        android:defaultValue="100"
-        android:title="@string/setting_title_font"
-        android:summary="@string/setting_summary_font"
-        android:entries="@array/setting_entries_font"
-        android:entryValues="@array/setting_values_font"/>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:icon="@drawable/icon_exit"
+            android:key="sp_close_browser_confirm"
+            android:title="@string/setting_title_confirm_exit"
+            android:summary="@string/setting_summary_confirm_exit" />
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:icon="@drawable/icon_close"
+            android:key="sp_close_tab_confirm"
+            android:title="@string/setting_title_confirm_tab_close"
+            android:summary="@string/setting_summary_confirm_tab_close" />
+
+        <CheckBoxPreference android:key="sp_background"
+            android:icon="@drawable/icon_link"
+            android:defaultValue="true"
+            android:title="@string/setting_title_background"
+            android:summary="@string/setting_summary_background"/>
+
+        <CheckBoxPreference android:key="sp_reopenLastTab"
+            android:icon="@drawable/icon_tab_plus"
+            android:defaultValue="false"
+            android:title="@string/setting_title_reopenLastTab"
+            android:summary="@string/setting_summary_reopenLastTab"/>
+
+    </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/setting_title_theme">
 
@@ -36,6 +46,15 @@
             android:defaultValue="false"
             android:title="@string/setting_title_themeDark"
             android:summary="@string/setting_summary_themeDark"/>
+
+        <ListPreference
+            android:icon="@drawable/icon_size"
+            android:key="sp_fontSize"
+            android:defaultValue="100"
+            android:title="@string/setting_title_font"
+            android:summary="@string/setting_summary_font"
+            android:entries="@array/setting_entries_font"
+            android:entryValues="@array/setting_values_font"/>
 
     </PreferenceCategory>
 
@@ -109,25 +128,6 @@
             android:defaultValue="0"
             android:entries="@array/setting_entries_nav_pos"
             android:entryValues="@array/setting_values_nav_pos" />
-
-    </PreferenceCategory>
-
-
-    <PreferenceCategory android:title="@string/setting_close">
-
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:icon="@drawable/icon_exit"
-            android:key="sp_close_browser_confirm"
-            android:title="@string/setting_title_confirm_exit"
-            android:summary="@string/setting_summary_confirm_exit" />
-
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:icon="@drawable/icon_close"
-            android:key="sp_close_tab_confirm"
-            android:title="@string/setting_title_confirm_tab_close"
-            android:summary="@string/setting_summary_confirm_tab_close" />
 
     </PreferenceCategory>
 

@@ -34,19 +34,21 @@ import android.graphics.drawable.Icon;
 import android.net.Uri;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.support.design.widget.BottomSheetDialog;
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.util.Linkify;
-import android.webkit.WebView;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
-import de.baumann.browser.Activity.BrowserActivity;
 import de.baumann.browser.Ninja.R;
 import de.baumann.browser.View.NinjaToast;
 
@@ -56,7 +58,7 @@ public class HelperUnit {
     private static final int REQUEST_CODE_ASK_PERMISSIONS_1 = 1234;
     private static SharedPreferences sp;
 
-    public static Context context;
+    public Context context;
 
     public static void grantPermissionsStorage(final Activity activity) {
         if (android.os.Build.VERSION.SDK_INT >= 23) {
@@ -156,6 +158,68 @@ public class HelperUnit {
                 System.out.println("failed_to_add");
             }
         }
+    }
+
+    public static void show_dialogHelp(final Context context) {
+
+        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context);
+        View dialogView = View.inflate(context, R.layout.dialog_help, null);
+
+        ImageButton dialogHelp_tip = dialogView.findViewById(R.id.dialogHelp_tip);
+        ImageButton dialogHelp_overview = dialogView.findViewById(R.id.dialogHelp_overview);
+        ImageButton dialogHelp_gestures = dialogView.findViewById(R.id.dialogHelp_gestures);
+        ImageButton dialogHelp_filter = dialogView.findViewById(R.id.dialogHelp_filter);
+
+        final ImageView dialogHelp_iv = dialogView.findViewById(R.id.dialogHelp_iv);
+        final TextView dialogHelp_tv_title = dialogView.findViewById(R.id.dialogHelp_title);
+        final TextView dialogHelp_tv_text = dialogView.findViewById(R.id.dialogHelp_tv);
+
+        dialogHelp_iv.setImageDrawable(context.getResources().getDrawable(R.drawable.help_startsite));
+        dialogHelp_tv_title.setText(HelperUnit.textSpannable(context.getResources().getString(R.string.dialogHelp_tipTitle)));
+        dialogHelp_tv_text.setText(HelperUnit.textSpannable(context.getResources().getString(R.string.dialogHelp_tipText)));
+        dialogHelp_iv.setVisibility(View.GONE);
+
+        dialogHelp_tip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogHelp_iv.setVisibility(View.GONE);
+                dialogHelp_iv.setImageDrawable(context.getResources().getDrawable(R.drawable.help_startsite));
+                dialogHelp_tv_title.setText(HelperUnit.textSpannable(context.getResources().getString(R.string.dialogHelp_tipTitle)));
+                dialogHelp_tv_text.setText(HelperUnit.textSpannable(context.getResources().getString(R.string.dialogHelp_tipText)));
+            }
+        });
+
+        dialogHelp_overview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogHelp_iv.setVisibility(View.VISIBLE);
+                dialogHelp_iv.setImageDrawable(context.getResources().getDrawable(R.drawable.help_start));
+                dialogHelp_tv_title.setText(HelperUnit.textSpannable(context.getResources().getString(R.string.dialogHelp_overviewTitle)));
+                dialogHelp_tv_text.setText(HelperUnit.textSpannable(context.getResources().getString(R.string.dialogHelp_overviewText)));
+            }
+        });
+
+        dialogHelp_gestures.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogHelp_iv.setVisibility(View.GONE);
+                dialogHelp_tv_title.setText(HelperUnit.textSpannable(context.getResources().getString(R.string.dialogHelp_gesturesTitle)));
+                dialogHelp_tv_text.setText(HelperUnit.textSpannable(context.getResources().getString(R.string.dialogHelp_gesturesText)));
+            }
+        });
+        dialogHelp_filter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogHelp_iv.setVisibility(View.VISIBLE);
+                dialogHelp_iv.setImageDrawable(context.getResources().getDrawable(R.drawable.help_filter));
+                dialogHelp_tv_title.setText(HelperUnit.textSpannable(context.getResources().getString(R.string.dialogHelp_filterTitle)));
+                dialogHelp_tv_text.setText(HelperUnit.textSpannable(context.getResources().getString(R.string.dialogHelp_filterText)));
+            }
+        });
+
+
+        bottomSheetDialog.setContentView(dialogView);
+        bottomSheetDialog.show();
     }
 
     public static void switchIcon (Activity activity, String string, String fieldDB, ImageView be) {

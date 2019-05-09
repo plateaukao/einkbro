@@ -75,10 +75,6 @@
     <string name="dialog_sortName">Sortowanie po nazwie</string>
     <string name="dialog_sortIcon">Sortowanie po ikonie</string>
 
-    <string name="dialog_icon_title">Wybierz kolor</string>
-    <string name="dialog_icon_hint">Możesz szybko filtrować zakładki względem koloru przytrzymując dolną ikonkę listy zakładek. Aby odwołać filtr pacnij raz jeszcze na tę ikonkę.</string>
-
-
 
     <!-- Settings -->
     <string name="setting_label">Preferencje</string>
@@ -196,7 +192,6 @@
     <string name="setting_overView_onStart_title">Wysuwaj na starcie</string>
     <string name="setting_overView_onStart_summary">Pokazuj panel \"Wszechglądu\" przy każdym uruchomieniu apki.</string>
 
-    <string name="setting_close">Potwierdzenie zamknięcia</string>
     <string name="setting_gestures">Gesty</string>
     <string name="setting_gestures_use_title">Używaj gestów</string>
     <string name="setting_gestures_use_summary">Korzystaj z gestów na pasku narzędziowym oraz przycisku nawigacyjnym.</string>
