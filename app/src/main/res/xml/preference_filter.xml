@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <CheckBoxPreference
+        android:key="filter_01"
+        android:defaultValue="true"
+        android:icon="@drawable/circle_red_big"
+        android:title="@string/color_red"/>
+    <CheckBoxPreference
+        android:key="filter_02"
+        android:defaultValue="true"
+        android:icon="@drawable/circle_pink_big"
+        android:title="@string/color_pink"/>
+    <CheckBoxPreference
+        android:key="filter_03"
+        android:defaultValue="true"
+        android:icon="@drawable/circle_purple_big"
+        android:title="@string/color_purple"/>
+    <CheckBoxPreference
+        android:key="filter_04"
+        android:defaultValue="true"
+        android:icon="@drawable/circle_blue_big"
+        android:title="@string/color_blue"/>
+    <CheckBoxPreference
+        android:key="filter_05"
+        android:defaultValue="true"
+        android:icon="@drawable/circle_teal_big"
+        android:title="@string/color_teal"/>
+    <CheckBoxPreference
+        android:key="filter_06"
+        android:defaultValue="true"
+        android:icon="@drawable/circle_green_big"
+        android:title="@string/color_red"/>
+    <CheckBoxPreference
+        android:key="filter_07"
+        android:defaultValue="true"
+        android:icon="@drawable/circle_lime_big"
+        android:title="@string/color_lime"/>
+    <CheckBoxPreference
+        android:key="filter_08"
+        android:defaultValue="true"
+        android:icon="@drawable/circle_yellow_big"
+        android:title="@string/color_yellow"/>
+    <CheckBoxPreference
+        android:key="filter_09"
+        android:defaultValue="true"
+        android:icon="@drawable/circle_orange_big"
+        android:title="@string/color_orange"/>
+    <CheckBoxPreference
+        android:key="filter_10"
+        android:defaultValue="true"
+        android:icon="@drawable/circle_brown_big"
+        android:title="@string/color_brown"/>
+    <CheckBoxPreference
+        android:key="filter_11"
+        android:defaultValue="true"
+        android:icon="@drawable/circle_grey_big"
+        android:title="@string/color_grey"/>
+
+</PreferenceScreen>

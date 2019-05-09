@@ -13,8 +13,11 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import de.baumann.browser.Activity.BrowserActivity;
+import de.baumann.browser.Activity.Settings_Activity;
 import de.baumann.browser.Activity.Settings_ClearActivity;
 import de.baumann.browser.Activity.Settings_DataActivity;
+import de.baumann.browser.Activity.Settings_FilterActivity;
 import de.baumann.browser.Activity.Settings_GestureActivity;
 import de.baumann.browser.Activity.Settings_StartActivity;
 import de.baumann.browser.Activity.Settings_UIActivity;
@@ -33,6 +36,10 @@ public class Fragment_settings extends PreferenceFragment {
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
         switch (preference.getTitleRes()) {
 
+            case R.string.setting_filter:
+                Intent filter = new Intent(getActivity(), Settings_FilterActivity.class);
+                getActivity().startActivity(filter);
+                break;
             case R.string.setting_title_data:
                 Intent dataControl = new Intent(getActivity(), Settings_DataActivity.class);
                 getActivity().startActivity(dataControl);
@@ -127,7 +134,13 @@ public class Fragment_settings extends PreferenceFragment {
         });
 
         ImageButton fab_help = dialogView.findViewById(R.id.floatButton_help);
-        fab_help.setVisibility(View.GONE);
+        fab_help.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+                HelperUnit.show_dialogHelp(getActivity());
+            }
+        });
 
         ImageButton fab_settings = dialogView.findViewById(R.id.floatButton_settings);
         fab_settings.setVisibility(View.GONE);

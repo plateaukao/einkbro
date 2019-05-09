@@ -36,8 +36,6 @@
     <string name="dialog_content_resubmission">Хочете повторно відправити свої дані?</string>
     <string name="dialog_content_ssl_error">Сертифікат сайту не є довіреним. Все одно продовжити?</string>
     <string name="dialog_extension_hint">Розширення (наприклад: \".jpg\"):</string>
-    <string name="dialog_icon_hint">Ви також можете фільтрувати закладки, довге натискання на значок закладки. Для скидання фільтрів просто натисніть на іконку ще раз.</string>
-    <string name="dialog_icon_title">Вибрати значок …</string>
     <string name="dialog_sign_in_password">Пароль</string>
     <string name="dialog_sign_in_username">"Ім'я користувача"</string>
     <string name="dialog_sortIcon">Сортувати за значками</string>
@@ -51,15 +49,6 @@
     <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
     <string name="export_whitelistCookie">export_whitelist_Cookie</string>
     <string name="export_whitelistJS">export_whitelist_Javascript</string>
-    <string name="fastToggle_dialog">Якщо ви довго натискаєте \"Меню\" або \"Навігаційну кнопку\", відкриється \"діалогове вікно швидкого перемикання\". Тут ви можете змінити деякі важливі налаштування, не виходячи з поточного сайту. Ви також можете додати веб-сайти в білий список для AdBlocker, JavaScript або Cookies.</string>
-    <string name="fastToggle_title">Швидке перемикання</string>
-    <string name="gestures_dialog">"На \"Панелі інструментів\" і кнопці навігації можна використовувати жести:
-  ▪ Проведіть пальцем вгору / вниз > Прокрутіть угору / вниз;
-  ▪ Проведіть вліво / вправо > Перейдіть назад / вперед;
-  ▪ Натисніть > Відкрити меню;
-  ▪ Довге натискання > Відкрити \"Швидке перемикання\".
-  Ви можете налаштувати жести в налаштуваннях."</string>
-    <string name="gestures_title">Жести</string>
     <string name="hint_database">Це призведе до видалення всіх поточних налаштувань і даних. Продовжити?</string>
     <string name="license_dialog">&lt;i>Для отримання додаткової інформації відвідайте сайт проекту на Github: https://github.com/scoute-dich/Browser&lt;/i>&lt;br>&lt;br> This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program. If not, see http://www.gnu.org/licenses.&lt;br>&lt;br> &lt;i>Following open source libraries or projects are used within this software:&lt;/i>&lt;br>&lt;br>&lt;br> &lt;b>Android Sliding Up Panel&lt;/b>&lt;br> Apache License Version 2.0&lt;br> Umano: News Read To You&lt;br> &lt;i>http://git.io/vUruG&lt;/i>&lt;br>&lt;br> &lt;b>Android Swipe-to-Dismiss&lt;/b>&lt;br> Apache License Version 2.0&lt;br> Roman Nurik&lt;br> &lt;i>http://git.io/vUruO&lt;/i>&lt;br>&lt;br> &lt;b>DynamicGrid&lt;/b>&lt;br> Apache License Version 2.0&lt;br> askerov&lt;br> &lt;i>http://git.io/vTHZH&lt;/i>&lt;br>&lt;br> &lt;b>Lightning Browser&lt;/b>&lt;br> Mozilla Public License Version 2.0&lt;br> Anthony Restaino&lt;br> &lt;i>http://git.io/vUruk&lt;/i>&lt;br>&lt;br> &lt;b>Material Design Icons&lt;/b>&lt;br> SIL Open Font License, Version 1.1.&lt;br> Templarian&lt;br> &lt;i>https://github.com/Templarian/MaterialDesign&lt;/i>&lt;br>&lt;br> &lt;b>Ninja&lt;/b>&lt;br> Apache License Version 2.0&lt;br> Matthew Lee&lt;br> &lt;i>http://git.io/vUrEh&lt;/i>&lt;br>&lt;br> &lt;b>SimpleEncryptionLib&lt;/b>&lt;br> Apache License Version 2.0&lt;br> hummatli&lt;br> &lt;i>https://github.com/hummatli/SimpleEncryptionLib</string>
     <string name="license_title">Copyright © 2017 by Gaukler Faun</string>
@@ -71,7 +60,6 @@
     <string name="menu_closeTab">Закрити вкладку</string>
     <string name="menu_delete">Видалити</string>
     <string name="menu_delete_list">Очистити дані</string>
-    <string name="menu_dialog">Керуйте своїми вкладками, діліться або зберігайте контент, обробляйте поточну вкладку або використовуйте деякі функції: просто спробуйте. Меню можна відхилити, як і всі інші повідомлення, натиснувши назад, натиснувши поза меню або просто провести меню вниз.</string>
     <string name="menu_download">Відкрити завантаження</string>
     <string name="menu_edit">Змінити</string>
     <string name="menu_fav">Встановити улюбленим</string>
@@ -91,15 +79,9 @@
     <string name="menu_share_pdfToast">Завершений. Відкрити файловий менеджер для спільного використання?</string>
     <string name="menu_share_screenshot">Поділитися скріншотом</string>
     <string name="menu_sort">Сортувати за…</string>
-    <string name="menu_title">Меню</string>
-    <string name="not_dialog">Повідомлення показані в нижній частині екрана. Вони можуть також бути відхилені як і меню.</string>
-    <string name="not_title">Повідомлення</string>
     <string name="notification_content_holder">… Натисніть, щоб переглянути сторінки</string>
     <string name="notification_content_holderTitle">Відкрити вкладки …</string>
-    <string name="overview_dialog">Тут ви можете отримати доступ до всіх відкритих вкладок і ваших даних: збережені сайти на стартовій сторінці, закладки та історію. У налаштуваннях ви можете визначити, який вміст буде показано під час запуску.</string>
-    <string name="overview_title">Вигляд</string>
     <string name="search_hint">Пошук</string>
-    <string name="setting_close">Підтвердити закриття</string>
     <string name="setting_gesture_01">Нічого</string>
     <string name="setting_gesture_02">Вперед в історію</string>
     <string name="setting_gesture_03">Назад в історію</string>
@@ -207,7 +189,6 @@
     <string name="setting_title_whitelist">Білий список AdBlock</string>
     <string name="setting_title_whitelistCookie">Білий список куки</string>
     <string name="setting_title_whitelistJS">Білий список JavaScript</string>
-    <string name="settings_dialog">У налаштуваннях є ще більше параметрів. Спробуйте!</string>
     <string name="sp_ad_block">SP_AD_BLOCK_9</string>
     <string name="sp_clear_cache">SP_CLEAR_CACHE_9</string>
     <string name="sp_clear_cookie">SP_CLEAR_COOKIE_9</string>

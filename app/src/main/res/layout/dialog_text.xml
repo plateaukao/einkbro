@@ -16,7 +16,7 @@
         android:layout_gravity="center_vertical|center_horizontal"
         android:includeFontPadding="false"
         android:padding="16dp"
-        android:text="@string/overview_title"
+        android:text="@string/app_name"
         android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
         android:textColor="?android:attr/textColorSecondary" />
 

@@ -2,12 +2,15 @@ package de.baumann.browser.Database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.preference.PreferenceManager;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 import de.baumann.browser.Unit.RecordUnit;
 import de.baumann.browser.View.GridItem;
@@ -312,10 +315,6 @@ public class RecordAction {
 
     public void clearDomainsCookie() {database.execSQL("DELETE FROM " + RecordUnit.TABLE_COOKIE);}
 
-    public void clearGrid() {
-        database.execSQL("DELETE FROM " + RecordUnit.TABLE_GRID);
-    }
-
     private Record getRecord(Cursor cursor) {
         Record record = new Record();
         record.setTitle(cursor.getString(0));
@@ -447,35 +446,66 @@ public class RecordAction {
         return list;
     }
 
-    public List<GridItem> listGrid() {
+    public List<GridItem> listGrid(Context context) {
+
         List<GridItem> list = new LinkedList<>();
+        List<GridItem> list2 = new LinkedList<>();
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
 
-        Cursor cursor = database.query(
-                RecordUnit.TABLE_GRID,
-                new String[] {
-                        RecordUnit.COLUMN_TITLE,
-                        RecordUnit.COLUMN_URL,
-                        RecordUnit.COLUMN_FILENAME,
+        switch (Objects.requireNonNull(sp.getString("sort_startSite", "ordinal"))) {
+            case "ordinal":
+                Cursor cursor = database.query(
+                        RecordUnit.TABLE_GRID,
+                        new String[] {
+                                RecordUnit.COLUMN_TITLE,
+                                RecordUnit.COLUMN_URL,
+                                RecordUnit.COLUMN_FILENAME,
+                                RecordUnit.COLUMN_ORDINAL
+                        },
+                        null,
+                        null,
+                        null,
+                        null,
                         RecordUnit.COLUMN_ORDINAL
-                },
-                null,
-                null,
-                null,
-                null,
-                RecordUnit.COLUMN_ORDINAL
-        );
+                );
+                if (cursor == null) {
+                    return list;
+                }
+                cursor.moveToFirst();
+                while (!cursor.isAfterLast()) {
+                    list.add(getGridItem(cursor));
+                    cursor.moveToNext();
+                }
+                cursor.close();
+                return list;
 
-        if (cursor == null) {
-            return list;
+            case "title": {
+                Cursor cursor2 = database.query(
+                        RecordUnit.TABLE_GRID,
+                        new String[] {
+                                RecordUnit.COLUMN_TITLE,
+                                RecordUnit.COLUMN_URL,
+                                RecordUnit.COLUMN_FILENAME,
+                                RecordUnit.COLUMN_ORDINAL
+                        },
+                        null,
+                        null,
+                        null,
+                        null,
+                        RecordUnit.COLUMN_TITLE
+                );
+                if (cursor2 == null) {
+                    return list2;
+                }
+                cursor2.moveToFirst();
+                while (!cursor2.isAfterLast()) {
+                    list2.add(getGridItem(cursor2));
+                    cursor2.moveToNext();
+                }
+                cursor2.close();
+                return list2;
+            }
         }
-
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            list.add(getGridItem(cursor));
-            cursor.moveToNext();
-        }
-        cursor.close();
-
-        return list;
+        return null;
     }
 }

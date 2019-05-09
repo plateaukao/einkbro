@@ -8,25 +8,24 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import de.baumann.browser.Ninja.R;
-import de.baumann.browser.Unit.BrowserUnit;
-
 import java.util.List;
 
-public class GridAdapter extends BaseAdapter {
+import de.baumann.browser.Ninja.R;
+
+public class GridAdapter_filter extends BaseAdapter {
     private static class Holder {
         TextView title;
-        ImageView cover;
+        ImageView icon;
     }
 
-    private final List<GridItem> list;
-    public List<GridItem> getList() {
+    private final List<GridItem_filter> list;
+    public List<GridItem_filter> getList() {
         return list;
     }
 
     private final Context context;
 
-    public GridAdapter(Context context, List<GridItem> list) {
+    public GridAdapter_filter(Context context, List<GridItem_filter> list) {
         this.context = context;
         this.list = list;
     }
@@ -37,23 +36,21 @@ public class GridAdapter extends BaseAdapter {
         View view = convertView;
 
         if (view == null) {
-            view = LayoutInflater.from(context).inflate(R.layout.grid_item, parent, false);
+            view = LayoutInflater.from(context).inflate(R.layout.grid_item_filter, parent, false);
             holder = new Holder();
-            holder.title = view.findViewById(R.id.grid_item_title);
-            holder.cover = view.findViewById(R.id.grid_item_cover);
+            holder.title = view.findViewById(R.id.icon_01_tv);
+            holder.icon = view.findViewById(R.id.icon_01_iv);
             view.setTag(holder);
         } else {
             holder = (Holder) view.getTag();
         }
 
-        GridItem item = list.get(position);
+        GridItem_filter item = list.get(position);
         holder.title.setText(item.getTitle());
-        holder.cover.setImageBitmap(BrowserUnit.file2Bitmap(context, item.getFilename()));
+        holder.icon.setImageDrawable(item.getIcon());
 
         return view;
     }
-
-
 
     @Override
     public int getCount() {

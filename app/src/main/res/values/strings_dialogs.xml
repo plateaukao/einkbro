@@ -2,6 +2,64 @@
 
 <resources>
 
+    <!-- Dialog help -->
+
+    <string name="dialogHelp_tipTitle">Tips</string>
+    <string name="dialogHelp_tipText">
+        &lt;b>Start site&lt;/b>&lt;br>
+        You can decide which site loads when \"FOSS Browser\" starts: By long pressing an entry in the
+        overview (Startsite, Bookmarks, History) you can choose it. Over the menu of the overview you can also set
+        a blank start site.&lt;br>&lt;br>
+
+        &lt;b>Menus and dialogs&lt;/b>&lt;br>
+        All menus and dialogs are opened at the bottom of the screen. If the dialog is large you will first see only
+        the upper part. If you swipe it up, the rest will get visible.&lt;br>
+        You can close them by pressing the back button, swiping them down or by clicking outside&lt;br>&lt;br>
+
+        &lt;b>Long press&lt;/b>&lt;br>
+        If you long press the menu icon or the \"Navigation button\", the \"Fast toggle dialog\" will show. If you long
+        press the \"Bookmark icon\", the \"Filter dialog\" will show.
+    </string>
+
+    <string name="dialogHelp_overviewTitle">Overview</string>
+    <string name="dialogHelp_overviewText">
+        There are two parts in the \"Overview\" (tab preview and personal data). There is an extra menu. In the settings
+        you can change the behavior of the \"Overview\".&lt;br>&lt;br>
+
+        &lt;b>Tab preview&lt;/b>&lt;br>
+        It is the upper part of the \"Overview\". To change tabs just click the preview. To close a tab long press the
+        preview. If you swipe the tab preview up, your personal content will open.&lt;br>&lt;br>
+
+        &lt;b>Personal content&lt;/b>&lt;br>
+        There are three parts: the Startsite, your Bookmarks and your History. If you long click an entry
+        a menu with more options will appear.
+    </string>
+
+    <string name="dialogHelp_gesturesTitle">Gestures</string>
+    <string name="dialogHelp_gesturesText">
+        On the toolbar and the \"Navigation button\" you can use gestures:&lt;br>&lt;br>
+
+        &lt;b>Toolbar&lt;/b>&lt;br>
+        \u25AA swipe up/down     \u2192  show Overview/nothing&lt;br>
+        \u25AA swipe left/right  \u2192  change tabs&lt;br>&lt;br>
+
+        &lt;b>Navigation button&lt;/b>&lt;br>
+        \u25AA swipe up/down     \u2192  scroll up/down&lt;br>
+        \u25AA swipe left/right  \u2192  previous/next in history&lt;br>&lt;br>
+
+        You can change this in the settings.
+    </string>
+
+    <string name="dialogHelp_filterTitle">Filter</string>
+    <string name="dialogHelp_filterText">
+        You can tag your bookmarks with colors. In this way you can group your bookmarks. You can open the filter dialog by
+        long pressing the bookmark icon. If you long press on an entry, you can edit its name. In the settings you can
+        disable unused entries.
+    </string>
+
+
+    <!-- Dialog changelog -->
+
     <string name="changelog_title">Changelog</string>
     <string name="changelog_dialog">
         &lt;i>Project site: https://github.com/scoute-dich/Browser&lt;br>
@@ -29,40 +87,9 @@
         \u25AA updated: FastToggle dialog
     </string>
 
-    <string name="overview_title">Overview</string>
-    <string name="overview_dialog">Here you can access all opened tabs (long press a tab preview to close it) and your data: saved sites on the startpage, bookmarks and history.
-        In the settings you can decide which content will be shown at start.</string>
 
-    <string name="startSite_title">Start site</string>
-    <string name="startSite_dialog">Long press any saved bookmark to set it as start site. This site will always load on start
-        or when you open a new tab. You can also set an blank start page via the bookmark menu.</string>
 
-    <string name="gestures_title">Gestures</string>
-    <string name="gestures_dialog">On the toolbar and the \"Navigation button\" you can use gestures:
-        \n \u25AA Swipe up/down     \u2192  scroll to top/bottom;
-        \n \u25AA Swipe left/right  \u2192  navigate back/forward;
-        \n \u25AA Tap               \u2192  open the menu;
-        \n \u25AA Long press        \u2192  open \"Fast toggle dialog\"
-        \n You can configure gestures in the settings.
-
-    </string>
-
-    <string name="fastToggle_title">Fast toggle</string>
-    <string name="fastToggle_dialog">If you long press the \"menu\" or the \"Navigation button\" the \"Fast toggle dialog\"
-        will open. Here you can change some important settings without leaving the current website. You can also add websites
-        to your whitelist for AdBlocker, JavaScript or Cookies..</string>
-
-    <string name="menu_title">Menu</string>
-    <string name="menu_dialog">Manage your tabs, share or save content, handle the current tab or use some features: just try it.
-        The menu can be dismissed, like all other notifications, by clicking back, clicking outside the menu or simply be
-        swiping the menu down.</string>
-
-    <string name="not_title">Notifications</string>
-    <string name="not_dialog">Notifications are displayed on the bottom of the screen. They can also be dismissed like the
-        menus.</string>
-
-    <string name="settings_dialog">There are even more options in the settings. Try it out!</string>
-
+    <!-- License changelog -->
 
     <string name="license_title">Copyright © 2017  by Gaukler Faun</string>
     <string name="license_dialog">
@@ -82,16 +109,6 @@
         along with this program.  If not, see http://www.gnu.org/licenses.&lt;br>&lt;br>
 
         &lt;i>Following open source libraries or projects are used within this software:&lt;/i>&lt;br>&lt;br>&lt;br>
-
-        &lt;b>DynamicGrid&lt;/b>&lt;br>
-        Apache License Version 2.0&lt;br>
-        askerov&lt;br>
-        &lt;i>http://git.io/vTHZH&lt;/i>&lt;br>&lt;br>
-
-        &lt;b>Lightning Browser&lt;/b>&lt;br>
-        Mozilla Public License Version 2.0&lt;br>
-        Anthony Restaino&lt;br>
-        &lt;i>http://git.io/vUruk&lt;/i>&lt;br>&lt;br>
 
         &lt;b>Material Design Icons&lt;/b>&lt;br>
         SIL Open Font License, Version 1.1.&lt;br>
@@ -205,7 +222,7 @@
         &lt;i>https://github.com/SkewedZeppelin&lt;/i>&lt;br>&lt;br>
 
         &lt;b>Tobiplayer3&lt;/b>&lt;br>
-        \u25AA added Qwant serach engine&lt;br>
+        \u25AA added Qwant search engine&lt;br>
         \u25AA option to open new tab instead of exiting app&lt;br>
         &lt;i>https://github.com/Tobiplayer3&lt;/i>&lt;br>&lt;br>
 

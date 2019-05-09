@@ -4,29 +4,6 @@
 
     <string name="changelog_title">更新日誌</string>
 
-    <string name="overview_title">分頁概覽</string>
-    <string name="overview_dialog">存取所有開啟的分頁和儲存的資料：釘選的網站、書籤和瀏覽歷史。你可以在設定中決定哪些內容會在開啟時顯示。</string>
-
-    <string name="startSite_title">起始頁</string>
-    <string name="startSite_dialog">長按任一書籤把它設為瀏覽器或新分頁開啟時的起始頁。你也可以透過書籤選單將起始頁設為空白頁。</string>
-
-    <string name="gestures_title">手勢</string>
-    <string name="gestures_dialog">"在工具列和導航鈕使用手勢：
-▪ 上滑／下滑 → 捲動至頂／底
-▪ 左滑／右滑 → 上一頁／下一頁 \n▪ 點擊 → 開啟選單
-▪ 長按 → 開啟快速切換對話框
-你可以在設定中自訂手勢的功能。"</string>
-
-    <string name="fastToggle_title">快速切換</string>
-    <string name="fastToggle_dialog">長按「選單鈕」或是「導航鈕」以開啟「快速切換對話框」，可以在此更改一些重要設定而不用離開當前的頁面。你可以將網站加入 AdBlocker、JavaScript 或 Cookies 的白名單。</string>
-
-    <string name="menu_title">選單</string>
-    <string name="menu_dialog">管理你的分頁、分享儲存的內容、掌管當前的分頁或使用一些特別功能：試就知道了！離開選單可以透過返回鍵，點擊選單之外的區域，或簡單把它往下滑掉。</string>
-
-    <string name="not_title">通知</string>
-    <string name="not_dialog">通知顯示於螢幕底部。略過通知的方式跟離開選單的方式相同。</string>
-
-    <string name="settings_dialog">設定頁面還有更多，去試試看！</string>
 
     <string name="license_title">版權 © 2017  by Gaukler Faun</string>
     <string name="license_dialog">
@@ -35,16 +12,6 @@
         本應用程式是自由軟體：你可以修改/重新發行本應用程式，惟應遵守自由軟體基金會所發佈的GNU通用公共授權條款第三版（即GPLv3），或是在其之後的任何版本（由你選擇）。本程式發行的目的是希望它會有用，但並不提供任何保證；亦無暗示任何適合銷售和適用特定目的的保證。更多詳情請參閱GNU通用公共授權條款。您應該會收到本程式所附帶的一份GNU通用公共授權條款。若沒有，請見 http://www.gnu.org/licenses。.&lt;br>&lt;br>
 
         &lt;i>下列為本應用程式使用的開源程式庫或專案：&lt;/i>&lt;br>&lt;br>&lt;br>
-
-        &lt;b>DynamicGrid&lt;/b>&lt;br>
-        Apache License Version 2.0&lt;br>
-        askerov&lt;br>
-        &lt;i>http://git.io/vTHZH&lt;/i>&lt;br>&lt;br>
-
-        &lt;b>Lightning Browser&lt;/b>&lt;br>
-        Mozilla Public License Version 2.0&lt;br>
-        Anthony Restaino&lt;br>
-        &lt;i>http://git.io/vUruk&lt;/i>&lt;br>&lt;br>
 
         &lt;b>Material Design Icons&lt;/b>&lt;br>
         SIL Open Font License, Version 1.1.&lt;br>

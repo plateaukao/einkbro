@@ -35,9 +35,7 @@
 <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
 <string name="export_whitelistCookie">export_whitelist_Cookie</string>
 <string name="export_whitelistJS">export_whitelist_Javascript</string>
-<string name="fastToggle_dialog">Если вы длительно нажимаете \"меню\" или \"Кнопку навигации\", откроется \" быстрый диалог переключения\". Здесь вы можете изменить некоторые важные настройки, не покидая текущий сайт. Вы также можете добавить веб-сайты в белый список для AdBlocker, JavaScript или Cookies..</string>
-<string name="fastToggle_title">Быстрое переключение</string>
-<string name="hint_database">Это приведет к удалению всех текущих настроек и данных. Продолжить?</string>
+    <string name="hint_database">Это приведет к удалению всех текущих настроек и данных. Продолжить?</string>
 <string name="license_dialog">&lt;i>For more information visit the project site on Github: https://github.com/scoute-dich/Browser&lt;/i>&lt;br>&lt;br> This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program. If not, see http://www.gnu.org/licenses.&lt;br>&lt;br> &lt;i>Following open source libraries or projects are used within this software:&lt;/i>&lt;br>&lt;br>&lt;br> &lt;b>Android Sliding Up Panel&lt;/b>&lt;br> Apache License Version 2.0&lt;br> Umano: News Read To You&lt;br> &lt;i>http://git.io/vUruG&lt;/i>&lt;br>&lt;br> &lt;b>Android Swipe-to-Dismiss&lt;/b>&lt;br> Apache License Version 2.0&lt;br> Roman Nurik&lt;br> &lt;i>http://git.io/vUruO&lt;/i>&lt;br>&lt;br> &lt;b>DynamicGrid&lt;/b>&lt;br> Apache License Version 2.0&lt;br> askerov&lt;br> &lt;i>http://git.io/vTHZH&lt;/i>&lt;br>&lt;br> &lt;b>Lightning Browser&lt;/b>&lt;br> Mozilla Public License Version 2.0&lt;br> Anthony Restaino&lt;br> &lt;i>http://git.io/vUruk&lt;/i>&lt;br>&lt;br> &lt;b>Material Design Icons&lt;/b>&lt;br> SIL Open Font License, Version 1.1.&lt;br> Templarian&lt;br> &lt;i>https://github.com/Templarian/MaterialDesign&lt;/i>&lt;br>&lt;br> &lt;b>Ninja&lt;/b>&lt;br> Apache License Version 2.0&lt;br> Matthew Lee&lt;br> &lt;i>http://git.io/vUrEh&lt;/i>&lt;br>&lt;br> &lt;b>SimpleEncryptionLib&lt;/b>&lt;br> Apache License Version 2.0&lt;br> hummatli&lt;br> &lt;i>https://github.com/hummatli/SimpleEncryptionLib</string>
 <string name="license_title">Copyright © 2017 by Gaukler Faun</string>
 <string name="list_empty">Текущий список пуст</string>
@@ -48,8 +46,7 @@
 <string name="menu_closeTab">Закрыть вкладку</string>
 <string name="menu_delete">Удалить</string>
 <string name="menu_delete_list">Очистить данные</string>
-<string name="menu_dialog">Управляйте своими вкладками, делитесь или сохраняйте контент, обрабатывайте текущую вкладку или используйте некоторые функции: просто попробуйте. Меню можно отклонить, как и все другие уведомления, нажав назад, нажав вне меню или просто провести меню вниз.</string>
-<string name="menu_download">Открытые загрузки</string>
+    <string name="menu_download">Открытые загрузки</string>
 <string name="menu_edit">Изменить</string>
     <string name="menu_open_with">Открыть ссылку с …</string>
 <string name="menu_other_help">Помощь</string>
@@ -65,10 +62,7 @@
 <string name="menu_share_pdf">Поделиться PDF</string>
 <string name="menu_share_pdfToast">Завершено. Открыть файловый менеджер для совместного использования?</string>
 <string name="menu_share_screenshot">Поделиться скриншотом</string>
-<string name="menu_title">Меню</string>
-    <string name="not_dialog">Уведомления показаны в нижней части экрана. Они могут также быть отклонены как и меню.</string>
-<string name="not_title">Уведомления</string>
-<string name="notification_content_holder">… Нажмите, чтобы просмотреть страницы</string>
+    <string name="notification_content_holder">… Нажмите, чтобы просмотреть страницы</string>
 <string name="notification_content_holderTitle">Открытые вкладки …</string>
 <string name="search_hint">Поиск</string>
 <string name="setting_hideNav_always">Скрывать всегда</string>
@@ -158,8 +152,7 @@
 <string name="setting_title_whitelist">Белый список AdBlock</string>
 <string name="setting_title_whitelistCookie">Белый список куки</string>
 <string name="setting_title_whitelistJS">Белый список JavaScript</string>
-<string name="settings_dialog">В настройках есть еще больше параметров. Попробуйте!</string>
-<string name="sp_ad_block">SP_AD_BLOCK_9</string>
+    <string name="sp_ad_block">SP_AD_BLOCK_9</string>
     <string name="sp_clear_cache">SP_CLEAR_CACHE_9</string>
 <string name="sp_clear_cookie">SP_CLEAR_COOKIE_9</string>
 <string name="sp_clear_history">SP_CLEAR_HISTORY_9</string>

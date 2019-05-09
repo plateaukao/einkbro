@@ -29,39 +29,6 @@
         \u25AA mis à jour: Bascule rapide
     </string>
 
-    <string name="overview_title">Vue d\'ensemble</string>
-    <string name="overview_dialog">Ici, vous pouvez accéder à tous les onglets ouverts (appuyez longuement sur un aperçu pour le fermer) et à vos données: sites enregistrés sur la page de démarrage, les signets et l’historique.
-        Dans les paramètres, vous pouvez décider quel contenu sera affiché au début.</string>
-
-    <string name="startSite_title">Site de départ</string>
-    <string name="startSite_dialog">Appuyez longuement sur n’importe quel signet enregistré pour le définir comme site de démarrage. Ce site sera toujours chargé au démarrage
-        ou lorsque vous ouvrez un nouvel onglet. Vous pouvez également définir une page de démarrage vierge via le menu des signets.</string>
-
-    <string name="gestures_title">Gestes</string>
-    <string name="gestures_dialog">Sur la barre d’outils et le \"Bouton de navigation\" vous pouvez utiliser des gestes:
-        \n \u25AA Glisser vers le haut/bas     \u2192  défiler vers le haut/bas;
-        \n \u25AA Balayez vers la gauche/droite  \u2192  naviguer en arrière/en avant;
-        \n \u25AA Tap               \u2192  ouvrir le menu;
-        \n \u25AA Appui long        \u2192  ouvrir \"Fast toggle dialog\"
-        \n Vous pouvez configurer les gestes dans les paramètres.
-
-    </string>
-
-    <string name="fastToggle_title">Bascule rapide</string>
-    <string name="fastToggle_dialog">Si vous appuyez longuement sur la touche \"menu\" ou le \"Bouton de navigation\" la \"fenêtre Bascule rapide\"
-        s’ouvrira. Ici, vous pouvez modifier certains paramètres importants sans quitter le site Web actuel. Vous pouvez également ajouter des sites Web
-        à votre liste blanche pour AdBlocker, JavaScript ou cookies..</string>
-
-    <string name="menu_title">Menu</string>
-    <string name="menu_dialog">Gérez vos onglets, partagez ou sauvegardez du contenu, gérez l’onglet actuel ou utilisez certaines fonctionnalités: il suffit de l’essayer.
-        Le menu peut être fermé, comme toutes les autres notifications, en cliquant en arrière, en cliquant en dehors du menu ou tout simplement
-        glisser le menu vers le bas.</string>
-
-    <string name="not_title">Notifications</string>
-    <string name="not_dialog">Les notifications sont affichées au bas de l\'écran. Ils peuvent aussi être rejetés comme le
-        menus.</string>
-
-    <string name="settings_dialog">Il y a encore plus d\'options dans les réglages. Essayez-le !</string>
 
 
     <string name="license_title">Copyright © 2017  by Gaukler Faun</string>
@@ -82,16 +49,6 @@
         avec ce programme.  Si ce n\'est pas le cas, voir http://www.gnu.org/licenses.&lt;br>&lt;br>
 
         &lt;i>Les bibliothèques ou projets open source suivants sont utilisés dans ce logiciel:&lt;/i>&lt;br>&lt;br>&lt;br>
-
-        &lt;b>DynamicGrid&lt;/b>&lt;br>
-        Apache License Version 2.0&lt;br>
-        askerov&lt;br>
-        &lt;i>http://git.io/vTHZH&lt;/i>&lt;br>&lt;br>
-
-        &lt;b>Lightning Browser&lt;/b>&lt;br>
-        Mozilla Public License Version 2.0&lt;br>
-        Anthony Restaino&lt;br>
-        &lt;i>http://git.io/vUruk&lt;/i>&lt;br>&lt;br>
 
         &lt;b>Material Design Icons&lt;/b>&lt;br>
         SIL Open Font License, Version 1.1.&lt;br>
