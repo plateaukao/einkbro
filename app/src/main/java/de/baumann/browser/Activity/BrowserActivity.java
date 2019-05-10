@@ -2540,7 +2540,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         Intent contentSelectionIntent = new Intent(Intent.ACTION_GET_CONTENT);
         contentSelectionIntent.addCategory(Intent.CATEGORY_OPENABLE);
-        contentSelectionIntent.setType("image/*");
+        contentSelectionIntent.setType("*/*");
 
         Intent[] intentArray;
         if(takePictureIntent != null) {
@@ -2836,7 +2836,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                     omnibox.setVisibility(View.VISIBLE);
                     appBar.setVisibility(View.VISIBLE);
                 }
-            }, getResources().getInteger(android.R.integer.config_longAnimTime));
+            }, shortAnimTime);
         }
     }
 
@@ -2854,7 +2854,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                     public void run() {
                         fab_imageButtonNav.setVisibility(View.VISIBLE);
                     }
-                }, getResources().getInteger(android.R.integer.config_longAnimTime));
+                }, shortAnimTime);
             }
         }
     }

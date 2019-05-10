@@ -353,4 +353,233 @@
     <string name="whitelist_edit_hint">Domain</string>
     <string name="whitelist_add">Hinzufügen</string>
 
+
+
+
+    <!-- Dialog help -->
+
+    <string name="dialogHelp_tipTitle">Tipps</string>
+    <string name="dialogHelp_tipText">
+        &lt;b>Startseite&lt;/b>&lt;br>
+        Du kannst festlegen, welche Internetseite beim Start von \"FOSS Browser\" geladen wird: Du kannst jeden Eintrag
+        aus der Übersicht (Startseite, Lesezeichen, Verlauf) durch langes Drücken auswählen. Über das Menü in der Übersicht
+        kannst du außerdem eine leere Startseite festlegen.&lt;br>&lt;br>
+
+        &lt;b>Menüs und Dialoge&lt;/b>&lt;br>
+        Alle Menüs und Dialoge öffnen sich am unteren Bildschirmrand. Bei größeren  Dialogen öffnet sich dabei zuerst nur
+        der obere Teil. Wenn du diesen nach oben ziehst, wird der untere Teil sichtbar.&lt;br>
+        Sie lassen sich durch die Zurücktaste, durch nach unten Wischen oder einen Klick außerhalb schließen.&lt;br>&lt;br>
+
+        &lt;b>Langes drücken&lt;/b>&lt;br>
+        Wenn du das Menü-Icon oder den \"Navigationskopf\" lange drückst, öffnen sich die \"Schnelleinstellungen\". Wenn
+        du das Lesezeichen-Icon lange drückst, öffnet sich der Filterdialog.
+    </string>
+
+    <string name="dialogHelp_overviewTitle">Übersicht</string>
+    <string name="dialogHelp_overviewText">
+        Die \"Übersicht\" besteht aus zwei Teilen (Tabvorschau und persönliche Inhalte). Sie verfügt über ein eigenes Menü und
+        du kannst sie in den Einstellungen an deine Wünsche angepassen.&lt;br>&lt;br>
+
+        &lt;b>Tabvorschau&lt;/b>&lt;br>
+        Sie befindet sich in der \"Übersicht\" oben. Wenn du zu einem geöffneten Tab wechseln willst, klicke die Vorschau an.
+        Du kannst einen Tab schließen, indem du die Vorschau lange drückst. Wenn du die \"Tabvorschau\" nach oben ziehst,
+        öffnen sich deine persönlichen Inhalte.&lt;br>&lt;br>
+
+        &lt;b>Persönliche Inhalte&lt;/b>&lt;br>
+        Hier gibt es drei Inhalte, welche angezeigt werden können: die Startseite, deine Lesezeichen und dein Browserverlauf.
+        Wenn du einen Eintrag lange drückst, öffnet sich ein Menü mit weiteren Möglichkeiten.
+    </string>
+
+    <string name="dialogHelp_gesturesTitle">Gesten</string>
+    <string name="dialogHelp_gesturesText">
+        Auf der Toolbar und dem \"Navigationsknopf\" kannst du Gesten benutzen:&lt;br>&lt;br>
+
+        &lt;b>Toolbar&lt;/b>&lt;br>
+        \u25AA Nach oben/unten wischen     \u2192  Übersicht zeigen/nichts&lt;br>
+        \u25AA Nach links/rechts wischen  \u2192  Tabs wechseln&lt;br>&lt;br>
+
+        &lt;b>Navigationsknopf&lt;/b>&lt;br>
+        \u25AA Nach oben/unten wischen     \u2192  nach oben/unten scrollen&lt;br>
+        \u25AA Nach links/rchts wischen  \u2192  zurück/vor im Browserverlauf&lt;br>&lt;br>
+
+        In den Einstellungen kannst du sie anpassen.
+    </string>
+
+    <string name="dialogHelp_filterTitle">Filter</string>
+    <string name="dialogHelp_filterText">
+        Du kannst deinen Lesezeichen eine Farbe als Filter zuordnen. So kannst du viele Lesezeichen in Gruppen ordnen.
+        Den Filterdialog kannst du öffnen, indem du lange auf das Lesezeichen-Icon drückst. Wenn du lange auf einen
+        Eintrag drückst, kannst du ihm einen anderen Namen geben. In den Einstellungen kannst du außerdem einzelne
+        Einträge deaktivieren.
+    </string>
+
+
+    <!-- Dialog changelog -->
+
+    <string name="changelog_title">Änderungen</string>
+    <string name="changelog_dialog">
+       &lt;i>Projekseite: https://github.com/scoute-dich/Browser&lt;br>
+        Änderungen: https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Version: 6.3&lt;/b>&lt;br>
+        \u25AA new: Download: Cookieunterstützung&lt;br>
+        \u25AA new: Datenvolumen sparen (optional) (thanks @SkewedZeppelin)&lt;br>
+        \u25AA new: leere Startseite&lt;br>
+        \u25AA new: schnelles scrollen inlangen Listen&lt;br>
+        \u25AA new: zeige/verstecke Tabvorschau&lt;br>
+        \u25AA new: Animationen&lt;br>
+        \u25AA new: Qwant Suchmaschine (thanks @Tobiplayer3)&lt;br>
+        \u25AA new: öffne neuen Tab, statt Anwendung zu schließen (optional)&lt;br>
+        \u25AA new: Ukrainische Übersetzung (thanks @Roman Babiy)&lt;br>
+        \u25AA new: Türkische Übersetzung (thanks @ali-demirtas)&lt;br>
+        \u25AA fix: UI und kleinere Fehler&lt;br>
+        \u25AA updated: Kontextmenü für Internetseiten&lt;br>
+        \u25AA updated: Hilfe Dialog&lt;br>
+        \u25AA updated: Polnische Übersetzung (thanks @gh-pmjm)&lt;br>
+        \u25AA updated: Niederländische Übersetzung (thanks @Vistaus)&lt;br>
+        \u25AA updated: Taiwan Trad. Chinese Übersetzung (thanks @elmru)&lt;br>
+        \u25AA updated: Portuguese Übersetzung (thanks @smarquespt)&lt;br>
+        \u25AA updated: Übersicht&lt;br>
+        \u25AA updated: Schnelleinstellungen
+    </string>
+
+
+    <!-- Dialog License -->
+
+    <string name="license_title">Copyright © 2017  by Gaukler Faun</string>
+    <string name="license_dialog">
+        Besuche für mehr Informationen die Projektseite auf Github: https://github.com/scoute-dich/Browser&lt;br>&lt;br>
+
+        Dieses Programm ist freie Software. Sie können es unter den Bedingungen der GNU General Public License, wie von
+        der Free Software Foundation veröffentlicht, weitergeben und/oder modifizieren, entweder gemäß Version 3 der Lizenz oder
+        (nach Ihrer Option) jeder späteren Version. Die Veröffentlichung dieses Programms erfolgt in der Hoffnung, daß es Ihnen
+        von Nutzen sein wird, aber OHNE IRGENDEINE GARANTIE, sogar ohne die implizite Garantie der MARKTREIFE oder der
+        VERWENDBARKEIT FÜR EINEN BESTIMMTEN ZWECK. Details finden Sie in der GNU General Public License. Sie sollten ein
+        Exemplar der GNU General Public License zusammen mit diesem Programm erhalten haben. Falls nicht,
+        siehe http://www.gnu.org/licenses.&lt;br>&lt;br>&lt;br>
+
+        &lt;i>Die folgenden Open Source Bibliotheken oder Projekte werden in dieser Software verwendet:&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Material Design Icons&lt;/b>&lt;br>
+        SIL Open Font License, Version 1.1.&lt;br>
+        Templarian&lt;br>
+        &lt;i>https://github.com/Templarian/MaterialDesign&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Ninja&lt;/b>&lt;br>
+        Apache License Version 2.0&lt;br>
+        Matthew Lee&lt;br>
+        &lt;i>http://git.io/vUrEh&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>SimpleEncryptionLib&lt;/b>&lt;br>
+        Apache License Version 2.0&lt;br>
+        hummatli&lt;br>
+        &lt;i>https://github.com/hummatli/SimpleEncryptionLib</string>
+
+    <string name="cont_dialog">
+        &lt;i>Zuerst möchte ich allen Nutzern danken, die auf irgendeine Weise an diesem Projekt beteiligt sind. Sie helfen
+        Fehler zu finden, übersetzen oder haben auf eine andere Art einen Beitrag geleistet. Auf den
+        folgenden Internetseiten kannst du Mitglied dieser Gemeinschaft werden:&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>XDA-Thread:&lt;/b>&lt;br>
+        XDA ist eine großartige Gemeinschaft für Entwickler und Smartphoneentusiasten. Hier kannst du Fehler melden, nach neuen
+        Funktionen fragen oder dich mit anderen Nutzern austauschen.&lt;br>
+        &lt;i>https://forum.xda-developers.com/android/apps-games/app-browser-t3500091&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Github:&lt;/b>&lt;br>
+        Auf Github kannst du den Quellcode von \"FOSS Browser\" einsehen. Das ist die eher technische Lösung. Auch hier kannst du Fehler
+        melden, Vorschläge äußern oder dich aktiv an der Entwicklung oder Übersetzung beteiligen.&lt;br>
+        &lt;i>https://github.com/scoute-dich/browser&lt;/i>&lt;br>&lt;br>&lt;br>
+
+
+        &lt;i>Bis jetzt sind folgende Personen an dem Projekt beteiligt. Wenn ich jemanden vergessen habe, bitte melden:&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Gaukler Faun&lt;/b>&lt;br>
+        \u25AA Hauptentwickler und Gründer des Projekts&lt;br>
+        &lt;i>https://github.com/scoute-dich&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Ali Demirtas&lt;/b>&lt;br>
+        \u25AA Turkish Translation&lt;br>
+        &lt;i>https://github.com/ali-demirtas&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>CGSLURP LLC&lt;/b>&lt;br>
+        \u25AA Half AdBlock und \"Desktopseite anzeigen\" in der vorherigen Version von \"FOSS Browser\" möglich zu machen&lt;br>
+        &lt;i>https://github.com/futrDevelopment&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>element54&lt;/b>&lt;br>
+        \u25AA behoben: Probleme mit der Tastatur (Fehler #105)&lt;br>
+        \u25AA neu: Option Bestätigungsdialoge beim Verlassen zu deaktivieren&lt;br>
+        &lt;i>https://github.com/element54&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>elmru&lt;/b>&lt;br>
+        \u25AA Taiwan Trad. Chinesische Übersetzung&lt;br>
+        &lt;i>https://github.com/kogiokka&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Enrico Monese&lt;/b>&lt;br>
+        \u25AA Italienische Übersetzung&lt;br>
+        &lt;i>https://github.com/EnricoMonese&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Francois&lt;/b>&lt;br>
+        \u25AA Französische Übersetzung&lt;br>
+        &lt;i>https://github.com/franco27&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>gh-pmjm&lt;/b>&lt;br>
+        \u25AA Polnische Übersetzung&lt;br>
+        &lt;i>https://github.com/gh-pmjm&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>gr1sh&lt;/b>&lt;br>
+        \u25AA fix: Deutsche Übersetzung verbessert (Fehler #124, #131)&lt;br>
+        &lt;i>https://github.com/gr1sh&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Harry Heights&lt;/b>&lt;br>
+        \u25AA Dokumentation von FOSS Browser&lt;br>
+        &lt;i>https://github.com/HarryHeights&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Heimen Stoffels&lt;/b>&lt;br>
+        \u25AA Niederländische Übersetzung&lt;br>
+        &lt;i>https://github.com/Vistaus&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Hellohat&lt;/b>&lt;br>
+        \u25AA Französische Übersetzung&lt;br>
+        &lt;i>https://github.com/Hellohat&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Herman Nunez&lt;/b>&lt;br>
+        \u25AA Spanische Übersetzung&lt;br>
+        &lt;i>https://github.com/junior012&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Jumping Yang&lt;/b>&lt;br>
+        \u25AA Chinesische Übersetzung in der vorherigen Version von \"FOSS Browser\"&lt;br>
+        &lt;i>https://github.com/JumpingYang001&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>lishoujun&lt;/b>&lt;br>
+        \u25AA Chinesische Übersetzung&lt;br>
+        \u25AA Fehlersuche&lt;br>
+        &lt;i>https://github.com/lishoujun&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Secangkir Kopi&lt;/b>&lt;br>
+        \u25AA Indonesische Übersetzung&lt;br>
+        &lt;i>https://github.com/Secangkir-Kopi&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Sérgio Marques&lt;/b>&lt;br>
+        \u25AA Portugisische Übersetzung&lt;br>
+        &lt;i>https://github.com/smarquespt&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>splinet&lt;/b>&lt;br>
+        \u25AA Russische Übersetzung in der vorherigen Version von \"FOSS Browser\"&lt;br>
+        &lt;i>https://github.com/splinet&lt;/i>&lt;br>&lt;br>
+
+         &lt;b>Tobiplayer3&lt;/b>&lt;br>
+        \u25AA Qwant Schmaschine hinzugefügt&lt;br>
+        \u25AA Möglichkeit neuen Tab zu öffnen statt \"FOSS Browser\" beenden&lt;br>
+        &lt;i>https://github.com/Tobiplayer3&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Vladimir Kosolapov&lt;/b>&lt;br>
+        \u25AA Russische Übersetzung&lt;br>
+        &lt;i>https://github.com/0x264f&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>YC L&lt;/b>&lt;br>
+        \u25AA Chinesische Übersetzung&lt;br>
+        &lt;i>https://github.com/smallg0at&lt;/i>
+
+    </string>
+
 </resources>
