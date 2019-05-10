@@ -3,11 +3,13 @@
 - new: long click on tab preview to close
 - new: add shortcuts to home screen (long press overview entry)
 - new: dynamic shortcuts: two last opened websites
+- updated: help dialog
 - updated: Portuguese translation (thanks @smarquespt)
 - updated: French translation (thanks @franco27)
 - updated: adblock domain list
 - improved: Overview
 - improved: rendering speed
+- fix: file upload
 - fix: input box not showing on some devices
 - fix: hide navigation bar in fullscreen mode
 - fix: can't go back in history in some cases

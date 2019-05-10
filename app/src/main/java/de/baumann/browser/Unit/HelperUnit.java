@@ -174,7 +174,6 @@ public class HelperUnit {
         final TextView dialogHelp_tv_title = dialogView.findViewById(R.id.dialogHelp_title);
         final TextView dialogHelp_tv_text = dialogView.findViewById(R.id.dialogHelp_tv);
 
-        dialogHelp_iv.setImageDrawable(context.getResources().getDrawable(R.drawable.help_startsite));
         dialogHelp_tv_title.setText(HelperUnit.textSpannable(context.getResources().getString(R.string.dialogHelp_tipTitle)));
         dialogHelp_tv_text.setText(HelperUnit.textSpannable(context.getResources().getString(R.string.dialogHelp_tipText)));
         dialogHelp_iv.setVisibility(View.GONE);
@@ -183,7 +182,6 @@ public class HelperUnit {
             @Override
             public void onClick(View v) {
                 dialogHelp_iv.setVisibility(View.GONE);
-                dialogHelp_iv.setImageDrawable(context.getResources().getDrawable(R.drawable.help_startsite));
                 dialogHelp_tv_title.setText(HelperUnit.textSpannable(context.getResources().getString(R.string.dialogHelp_tipTitle)));
                 dialogHelp_tv_text.setText(HelperUnit.textSpannable(context.getResources().getString(R.string.dialogHelp_tipText)));
             }

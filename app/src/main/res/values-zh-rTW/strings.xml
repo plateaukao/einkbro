@@ -307,4 +307,135 @@
     <string name="setting_gesture_09">開啟新分頁</string>
     <string name="setting_gesture_10">關閉分頁</string>
 
+
+
+    <string name="changelog_title">更新日誌</string>
+
+
+    <string name="license_title">版權 © 2017  by Gaukler Faun</string>
+    <string name="license_dialog">
+        &lt;i>想瞭解更多訊息，請造訪Github上的專案頁面：https://github.com/scoute-dich/Browser&lt;/i>&lt;br>&lt;br>
+
+        本應用程式是自由軟體：你可以修改/重新發行本應用程式，惟應遵守自由軟體基金會所發佈的GNU通用公共授權條款第三版（即GPLv3），或是在其之後的任何版本（由你選擇）。本程式發行的目的是希望它會有用，但並不提供任何保證；亦無暗示任何適合銷售和適用特定目的的保證。更多詳情請參閱GNU通用公共授權條款。您應該會收到本程式所附帶的一份GNU通用公共授權條款。若沒有，請見 http://www.gnu.org/licenses。.&lt;br>&lt;br>
+
+        &lt;i>下列為本應用程式使用的開源程式庫或專案：&lt;/i>&lt;br>&lt;br>&lt;br>
+
+        &lt;b>Material Design Icons&lt;/b>&lt;br>
+        SIL Open Font License, Version 1.1.&lt;br>
+        Templarian&lt;br>
+        &lt;i>https://github.com/Templarian/MaterialDesign&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Ninja&lt;/b>&lt;br>
+        Apache License Version 2.0&lt;br>
+        Matthew Lee&lt;br>
+        &lt;i>http://git.io/vUrEh&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>SimpleEncryptionLib&lt;/b>&lt;br>
+        Apache License Version 2.0&lt;br>
+        hummatli&lt;br>
+        &lt;i>https://github.com/hummatli/SimpleEncryptionLib</string>
+
+    <string name="cont_dialog">
+        &lt;i>首先我想感謝所有以任何方式貢獻本專案的人，他們提交問題、翻譯或以其他方式協助。你可以在下列網站成為這大家庭中活躍的一員：&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>XDA 討論串：&lt;/b>&lt;br>
+        XDA是由開發者和智慧手機愛好者組成的龐大社群。在這裡你可以回報問題、建議新功能，以及討論其他有關FOSS瀏覽器的事。&lt;br>
+        &lt;i>https://forum.xda-developers.com/android/apps-games/app-browser-t3500091&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Github：&lt;/b>&lt;br>
+        你可以在 Github 上查看FOSS瀏覽器的原始碼。這裡是比較嚴謹的方法：開新的問題串、建議新功能甚至幫忙開發或翻譯。&lt;br>
+        &lt;i>https://github.com/scoute-dich/browser&lt;/i>&lt;br>&lt;br>&lt;br>
+
+
+        &lt;i>下列是此專案的貢獻者。若我有疏漏任何人，請聯繫我：&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Gaukler Faun&lt;/b>&lt;br>
+        \u25AA 本專案的主要開發者和創始人&lt;br>
+        &lt;i>https://github.com/scoute-dich&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Ali Demirtas&lt;/b>&lt;br>
+        \u25AA Turkish Translation&lt;br>
+        &lt;i>https://github.com/ali-demirtas&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>CGSLURP LLC&lt;/b>&lt;br>
+        \u25AA 協助實現 AdBlock 和 FOSS瀏覽器先前版本的「要求桌面版網站」功能。&lt;br>
+        &lt;i>https://github.com/futrDevelopment&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>element54&lt;/b>&lt;br>
+        \u25AA 修復： 鍵盤問題 (issue #105)&lt;br>
+        \u25AA 新增： 退出時確認對話框的停用選項&lt;br>
+        &lt;i>https://github.com/element54&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>elmru&lt;/b>&lt;br>
+        \u25AA Taiwan Trad. Chinese Translation&lt;br>
+        &lt;i>https://github.com/kogiokka&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Enrico Monese&lt;/b>&lt;br>
+        \u25AA 義大利語翻譯&lt;br>
+        &lt;i>https://github.com/EnricoMonese&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Francois&lt;/b>&lt;br>
+        \u25AA French Translation&lt;br>
+        &lt;i>https://github.com/franco27&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>gh-pmjm&lt;/b>&lt;br>
+        \u25AA 波蘭語翻譯&lt;br>
+        &lt;i>https://github.com/gh-pmjm&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>gr1sh&lt;/b>&lt;br>
+        \u25AA 修復：部分德語字串 (issues #124, #131)&lt;br>
+        &lt;i>https://github.com/gr1sh&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Harry Heights&lt;/b>&lt;br>
+        \u25AA Documentation of FOSS Browser&lt;br>
+        &lt;i>https://github.com/HarryHeights&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Heimen Stoffels&lt;/b>&lt;br>
+        \u25AA 荷蘭語翻譯&lt;br>
+        &lt;i>https://github.com/Vistaus&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Hellohat&lt;/b>&lt;br>
+        \u25AA French translation&lt;br>
+        &lt;i>https://github.com/Hellohat&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Herman Nunez&lt;/b>&lt;br>
+        \u25AA 西班牙語翻譯&lt;br>
+        &lt;i>https://github.com/junior012&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Jumping Yang&lt;/b>&lt;br>
+        \u25AA FOSS瀏覽器先前版本的簡體中文翻譯&lt;br>
+        &lt;i>https://github.com/JumpingYang001&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>lishoujun&lt;/b>&lt;br>
+        \u25AA 簡體中文翻譯&lt;br>
+        \u25AA 獵殺臭蟲&lt;br>
+        &lt;i>https://github.com/lishoujun&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Secangkir Kopi&lt;/b>&lt;br>
+        \u25AA 印尼語翻譯&lt;br>
+        &lt;i>https://github.com/Secangkir-Kopi&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Sérgio Marques&lt;/b>&lt;br>
+        \u25AA Portuguese translation&lt;br>
+        &lt;i>https://github.com/smarquespt&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>splinet&lt;/b>&lt;br>
+        \u25AA FOSS瀏覽器先前版本的俄羅斯語翻譯&lt;br>
+        &lt;i>https://github.com/splinet&lt;/i>&lt;br>&lt;br>
+
+         &lt;b>Tobiplayer3&lt;/b>&lt;br>
+        \u25AA added Qwant serach engine&lt;br>
+        \u25AA option to open new tab instead of exiting app&lt;br>
+        &lt;i>https://github.com/Tobiplayer3&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Vladimir Kosolapov&lt;/b>&lt;br>
+        \u25AA 俄羅斯語翻譯&lt;br>
+        &lt;i>https://github.com/0x264f&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>YC L&lt;/b>&lt;br>
+        \u25AA 簡體中文翻譯&lt;br>
+        &lt;i>https://github.com/smallg0at&lt;/i>
+
+    </string>
+
 </resources>

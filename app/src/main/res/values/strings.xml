@@ -344,4 +344,240 @@
     <string name="whitelist_edit_hint">Domain</string>
     <string name="whitelist_add">Add</string>
 
+
+
+    <!-- Dialog help -->
+
+    <string name="dialogHelp_tipTitle">Tips</string>
+    <string name="dialogHelp_tipText">
+        &lt;b>Start site&lt;/b>&lt;br>
+        You can decide which site loads when \"FOSS Browser\" starts: By long pressing an entry in the
+        overview (Startsite, Bookmarks, History) you can choose it. Over the menu of the overview you can also set
+        a blank start site.&lt;br>&lt;br>
+
+        &lt;b>Menus and dialogs&lt;/b>&lt;br>
+        All menus and dialogs are opened at the bottom of the screen. If the dialog is large you will first see only
+        the upper part. If you swipe it up, the rest will get visible.&lt;br>
+        You can close them by pressing the back button, swiping them down or by clicking outside&lt;br>&lt;br>
+
+        &lt;b>Long press&lt;/b>&lt;br>
+        If you long press the menu icon or the \"Navigation button\", the \"Fast toggle dialog\" will show. If you long
+        press the \"Bookmark icon\", the \"Filter dialog\" will show.
+    </string>
+
+    <string name="dialogHelp_overviewTitle">Overview</string>
+    <string name="dialogHelp_overviewText">
+        There are two parts in the \"Overview\" (tab preview and personal data). There is an extra menu. In the settings
+        you can change the behavior of the \"Overview\".&lt;br>&lt;br>
+
+        &lt;b>Tab preview&lt;/b>&lt;br>
+        It is the upper part of the \"Overview\". To change tabs just click the preview. To close a tab long press the
+        preview. If you swipe the tab preview up, your personal content will open.&lt;br>&lt;br>
+
+        &lt;b>Personal content&lt;/b>&lt;br>
+        There are three parts: the Startsite, your Bookmarks and your History. If you long click an entry
+        a menu with more options will appear.
+    </string>
+
+    <string name="dialogHelp_gesturesTitle">Gestures</string>
+    <string name="dialogHelp_gesturesText">
+        On the toolbar and the \"Navigation button\" you can use gestures:&lt;br>&lt;br>
+
+        &lt;b>Toolbar&lt;/b>&lt;br>
+        \u25AA swipe up/down     \u2192  show Overview/nothing&lt;br>
+        \u25AA swipe left/right  \u2192  change tabs&lt;br>&lt;br>
+
+        &lt;b>Navigation button&lt;/b>&lt;br>
+        \u25AA swipe up/down     \u2192  scroll up/down&lt;br>
+        \u25AA swipe left/right  \u2192  previous/next in history&lt;br>&lt;br>
+
+        You can change this in the settings.
+    </string>
+
+    <string name="dialogHelp_filterTitle">Filter</string>
+    <string name="dialogHelp_filterText">
+        You can tag your bookmarks with colors. In this way you can group your bookmarks. You can open the filter dialog by
+        long pressing the bookmark icon. If you long press on an entry, you can edit its name. In the settings you can
+        disable unused entries.
+    </string>
+
+
+    <!-- Dialog changelog -->
+
+    <string name="changelog_title">Changelog</string>
+    <string name="changelog_dialog">
+        &lt;i>Project site: https://github.com/scoute-dich/Browser&lt;br>
+        Changelog: https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Version: 6.3&lt;/b>&lt;br>
+        \u25AA new: Add Cookies support for download function&lt;br>
+        \u25AA new: option to enable Save-Data header (thanks @SkewedZeppelin)&lt;br>
+        \u25AA new: set blank start site&lt;br>
+        \u25AA new: fast scroll on long lists&lt;br>
+        \u25AA new: show/hide tab preview&lt;br>
+        \u25AA new: animations when showing/hiding views&lt;br>
+        \u25AA new: Qwant search engine (thanks @Tobiplayer3)&lt;br>
+        \u25AA new: option to open new tab instead of exiting app&lt;br>
+        \u25AA new: Ukrainian translation (thanks @Roman Babiy)&lt;br>
+        \u25AA new: Turkish translation (thanks @ali-demirtas)&lt;br>
+        \u25AA fix: UI and minor issues&lt;br>
+        \u25AA updated: long press menu on websites&lt;br>
+        \u25AA updated: Help dialog&lt;br>
+        \u25AA updated: Polish translation (thanks @gh-pmjm)&lt;br>
+        \u25AA updated: Dutch translation (thanks @Vistaus)&lt;br>
+        \u25AA updated: Taiwan Trad. Chinese translation (thanks @elmru)&lt;br>
+        \u25AA updated: Portuguese translation (thanks @smarquespt)&lt;br>
+        \u25AA updated: Overview dialog&lt;br>
+        \u25AA updated: FastToggle dialog
+    </string>
+
+
+
+    <!-- License changelog -->
+
+    <string name="license_title">Copyright © 2017  by Gaukler Faun</string>
+    <string name="license_dialog">
+        &lt;i>For more information visit the project site on Github: https://github.com/scoute-dich/Browser&lt;/i>&lt;br>&lt;br>
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with this program.  If not, see http://www.gnu.org/licenses.&lt;br>&lt;br>
+
+        &lt;i>Following open source libraries or projects are used within this software:&lt;/i>&lt;br>&lt;br>&lt;br>
+
+        &lt;b>Material Design Icons&lt;/b>&lt;br>
+        SIL Open Font License, Version 1.1.&lt;br>
+        Templarian&lt;br>
+        &lt;i>https://github.com/Templarian/MaterialDesign&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Ninja&lt;/b>&lt;br>
+        Apache License Version 2.0&lt;br>
+        Matthew Lee&lt;br>
+        &lt;i>http://git.io/vUrEh&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>SimpleEncryptionLib&lt;/b>&lt;br>
+        Apache License Version 2.0&lt;br>
+        hummatli&lt;br>
+        &lt;i>https://github.com/hummatli/SimpleEncryptionLib</string>
+
+    <string name="cont_dialog">
+        &lt;i>First I would like to thank all people who contributed in any way on this project. They submitted issues,
+        translated or helped in any other way. On following sites you can become a active member of this
+        great community:&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>XDA-thread:&lt;/b>&lt;br>
+        XDA is a great community for developers and smartphone enthusiasts. Here you can report issues, ask for new features
+        and everything other related to \"FOSS Browser\".&lt;br>
+        &lt;i>https://forum.xda-developers.com/android/apps-games/app-browser-t3500091&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Github:&lt;/b>&lt;br>
+        On Github you can see the source code of \"FOSS Browser\". This is the more technical solution: open issues, ask for new
+        features or even help developing or translating.&lt;br>
+        &lt;i>https://github.com/scoute-dich/browser&lt;/i>&lt;br>&lt;br>&lt;br>
+
+
+        &lt;i>Following people contributed at this project. If I have forgotten anybody, please contact me:&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Gaukler Faun&lt;/b>&lt;br>
+        \u25AA Main developer and initiator of this project&lt;br>
+        &lt;i>https://github.com/scoute-dich&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Ali Demirtas&lt;/b>&lt;br>
+        \u25AA Turkish Translation&lt;br>
+        &lt;i>https://github.com/ali-demirtas&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>CGSLURP LLC&lt;/b>&lt;br>
+        \u25AA Helped to implement AdBlock and \"request desktop site\" in the previous version of \"FOSS Browser\".&lt;br>
+        &lt;i>https://github.com/futrDevelopment&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>element54&lt;/b>&lt;br>
+        \u25AA fix: keyboard problems (issue #105)&lt;br>
+        \u25AA new: option to disable confirmation dialogs on exit&lt;br>
+        &lt;i>https://github.com/element54&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>elmru&lt;/b>&lt;br>
+        \u25AA Taiwan Trad. Chinese Translation&lt;br>
+        &lt;i>https://github.com/kogiokka&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Enrico Monese&lt;/b>&lt;br>
+        \u25AA Italian Translation&lt;br>
+        &lt;i>https://github.com/EnricoMonese&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Francois&lt;/b>&lt;br>
+        \u25AA French Translation&lt;br>
+        &lt;i>https://github.com/franco27&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>gh-pmjm&lt;/b>&lt;br>
+        \u25AA Polish translation&lt;br>
+        &lt;i>https://github.com/gh-pmjm&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>gr1sh&lt;/b>&lt;br>
+        \u25AA fix: some German strings (issues #124, #131)&lt;br>
+        &lt;i>https://github.com/gr1sh&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Harry Heights&lt;/b>&lt;br>
+        \u25AA Documentation of FOSS Browser&lt;br>
+        &lt;i>https://github.com/HarryHeights&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Heimen Stoffels&lt;/b>&lt;br>
+        \u25AA Dutch translation&lt;br>
+        &lt;i>https://github.com/Vistaus&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Hellohat&lt;/b>&lt;br>
+        \u25AA French translation&lt;br>
+        &lt;i>https://github.com/Hellohat&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Herman Nunez&lt;/b>&lt;br>
+        \u25AA Spanish translation&lt;br>
+        &lt;i>https://github.com/junior012&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Jumping Yang&lt;/b>&lt;br>
+        \u25AA Chinese translation in the previous version of \"FOSS Browser\"&lt;br>
+        &lt;i>https://github.com/JumpingYang001&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>lishoujun&lt;/b>&lt;br>
+        \u25AA Chinese translation&lt;br>
+        \u25AA bug hunting&lt;br>
+        &lt;i>https://github.com/lishoujun&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Secangkir Kopi&lt;/b>&lt;br>
+        \u25AA Indonesian translation&lt;br>
+        &lt;i>https://github.com/Secangkir-Kopi&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Sérgio Marques&lt;/b>&lt;br>
+        \u25AA Portuguese translation&lt;br>
+        &lt;i>https://github.com/smarquespt&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>splinet&lt;/b>&lt;br>
+        \u25AA Russian translation in the previous version of \"FOSS Browser\"&lt;br>
+        &lt;i>https://github.com/splinet&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>SkewedZeppelin&lt;/b>&lt;br>
+        \u25AA Add option to enable Save-Data header&lt;br>
+        &lt;i>https://github.com/SkewedZeppelin&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Tobiplayer3&lt;/b>&lt;br>
+        \u25AA added Qwant search engine&lt;br>
+        \u25AA option to open new tab instead of exiting app&lt;br>
+        &lt;i>https://github.com/Tobiplayer3&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>Vladimir Kosolapov&lt;/b>&lt;br>
+        \u25AA Russian translation&lt;br>
+        &lt;i>https://github.com/0x264f&lt;/i>&lt;br>&lt;br>
+
+        &lt;b>YC L&lt;/b>&lt;br>
+        \u25AA Chinese Translation&lt;br>
+        &lt;i>https://github.com/smallg0at&lt;/i>
+
+    </string>
+
 </resources>
