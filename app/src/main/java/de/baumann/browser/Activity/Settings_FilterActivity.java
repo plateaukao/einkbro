@@ -6,13 +6,14 @@ import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import java.util.Objects;
+
 import de.baumann.browser.Fragment.Fragment_settings_Filter;
 import de.baumann.browser.Ninja.R;
 import de.baumann.browser.Unit.HelperUnit;
 
 public class Settings_FilterActivity extends AppCompatActivity {
 
-    @SuppressWarnings("ConstantConditions")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,7 +23,7 @@ public class Settings_FilterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getFragmentManager().beginTransaction().replace(R.id.content_frame, new Fragment_settings_Filter()).commit();
     }
 

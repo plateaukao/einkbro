@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.Objects;
 
 import de.baumann.browser.Browser.Cookie;
 import de.baumann.browser.Database.RecordAction;
@@ -29,7 +30,6 @@ public class Whitelist_Cookie extends AppCompatActivity {
     private Adapter_Cookie adapter;
     private List<String> list;
 
-    @SuppressWarnings("ConstantConditions")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +38,7 @@ public class Whitelist_Cookie extends AppCompatActivity {
         HelperUnit.applyTheme(this);
         setContentView(R.layout.whitelist);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         RecordAction action = new RecordAction(this);

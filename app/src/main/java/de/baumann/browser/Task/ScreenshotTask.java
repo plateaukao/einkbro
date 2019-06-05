@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.io.File;
+import java.util.Objects;
 
 import de.baumann.browser.Unit.HelperUnit;
 import de.baumann.browser.Ninja.R;
@@ -60,8 +61,7 @@ public class ScreenshotTask extends AsyncTask<Void, Void, Boolean> {
         TextView textView = dialogView.findViewById(R.id.dialog_text);
         textView.setText(context.getString(R.string.toast_wait_a_minute));
         dialog.setContentView(dialogView);
-        //noinspection ConstantConditions
-        dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+        Objects.requireNonNull(dialog.getWindow()).clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         dialog.show();
 
         try {

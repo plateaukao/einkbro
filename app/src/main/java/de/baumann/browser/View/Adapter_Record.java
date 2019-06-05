@@ -29,7 +29,6 @@ public class Adapter_Record extends ArrayAdapter<Record> {
     private static class Holder {
         TextView title;
         TextView time;
-        TextView url;
     }
 
     @NonNull
@@ -43,7 +42,6 @@ public class Adapter_Record extends ArrayAdapter<Record> {
             holder = new Holder();
             holder.title = view.findViewById(R.id.record_item_title);
             holder.time = view.findViewById(R.id.record_item_time);
-            holder.url = view.findViewById(R.id.record_item_url);
             view.setTag(holder);
         } else {
             holder = (Holder) view.getTag();
@@ -52,7 +50,6 @@ public class Adapter_Record extends ArrayAdapter<Record> {
         Record record = list.get(position);
         SimpleDateFormat sdf = new SimpleDateFormat("MMM dd", Locale.getDefault());holder.title.setText(record.getTitle());
         holder.time.setText(sdf.format(record.getTime()));
-        holder.url.setText(record.getURL());
 
         return view;
     }
