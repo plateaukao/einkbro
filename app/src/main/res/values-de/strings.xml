@@ -418,29 +418,15 @@
 
     <string name="changelog_title">Änderungen</string>
     <string name="changelog_dialog">
-       &lt;i>Projekseite: https://github.com/scoute-dich/Browser&lt;br>
-        Änderungen: https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;/i>&lt;br>&lt;br>
+        &lt;b>Auf den folgenden Internetseiten findest du alle Informationen zu \"FOSS Browser\".
+        Bitte lies auch den Hilfedialog in der Anwendung.&lt;/b>&lt;br>&lt;br>
 
-        &lt;b>Version: 6.3&lt;/b>&lt;br>
-        \u25AA new: Download: Cookieunterstützung&lt;br>
-        \u25AA new: Datenvolumen sparen (optional) (thanks @SkewedZeppelin)&lt;br>
-        \u25AA new: leere Startseite&lt;br>
-        \u25AA new: schnelles scrollen inlangen Listen&lt;br>
-        \u25AA new: zeige/verstecke Tabvorschau&lt;br>
-        \u25AA new: Animationen&lt;br>
-        \u25AA new: Qwant Suchmaschine (thanks @Tobiplayer3)&lt;br>
-        \u25AA new: öffne neuen Tab, statt Anwendung zu schließen (optional)&lt;br>
-        \u25AA new: Ukrainische Übersetzung (thanks @Roman Babiy)&lt;br>
-        \u25AA new: Türkische Übersetzung (thanks @ali-demirtas)&lt;br>
-        \u25AA fix: UI und kleinere Fehler&lt;br>
-        \u25AA updated: Kontextmenü für Internetseiten&lt;br>
-        \u25AA updated: Hilfe Dialog&lt;br>
-        \u25AA updated: Polnische Übersetzung (thanks @gh-pmjm)&lt;br>
-        \u25AA updated: Niederländische Übersetzung (thanks @Vistaus)&lt;br>
-        \u25AA updated: Taiwan Trad. Chinese Übersetzung (thanks @elmru)&lt;br>
-        \u25AA updated: Portuguese Übersetzung (thanks @smarquespt)&lt;br>
-        \u25AA updated: Übersicht&lt;br>
-        \u25AA updated: Schnelleinstellungen
+        \u25AA &lt;i>Projektseite:&lt;/i> https://github.com/scoute-dich/Browser&lt;br>
+        \u25AA &lt;i>Änderungen:&lt;/i> https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;br>
+        \u25AA &lt;i>FAQ:&lt;/i> https://github.com/scoute-dich/browser/blob/master/FAQs.md&lt;br>
+        \u25AA &lt;i>Lizenz:&lt;/i> https://github.com/scoute-dich/browser/blob/master/LICENSE.md&lt;br>
+        \u25AA &lt;i>Datenschutz:&lt;/i> https://github.com/scoute-dich/browser/blob/master/PRIVACY.md
+
     </string>
 
 

@@ -13,8 +13,6 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import de.baumann.browser.Activity.BrowserActivity;
-import de.baumann.browser.Activity.Settings_Activity;
 import de.baumann.browser.Activity.Settings_ClearActivity;
 import de.baumann.browser.Activity.Settings_DataActivity;
 import de.baumann.browser.Activity.Settings_FilterActivity;

@@ -2,21 +2,6 @@
 
 <resources>
 
-    <!-- General -->
-    <string name="sp_ad_block">SP_AD_BLOCK_9</string>
-    <string name="sp_cookies">SP_COOKIES_9</string>
-    <string name="sp_images">SP_IMÁGENES_9</string>
-    <string name="sp_javascript">SP_JAVASCRIPT_9</string>
-    <string name="sp_location">SP_UBICACIÓN_9</string>
-
-    <!-- Clear -->
-    <string name="sp_clear_quit">SP_LIMPIA_SALIR_9</string>
-    <string name="sp_clear_cache">SP_LIMPIA_CACHE_9</string>
-    <string name="sp_clear_cookie">SP_LIMPIA_COOKIE_9</string>
-    <string name="sp_clear_history">SP_LIMPIA_HISTORIA_9</string>
-
-
-
     <!-- App -->
     <string name="app_name">Navegador FOSS</string>
     <string name="app_ok">ok</string>

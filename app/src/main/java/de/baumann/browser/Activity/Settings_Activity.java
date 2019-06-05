@@ -8,13 +8,14 @@ import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import java.util.Objects;
+
 import de.baumann.browser.Fragment.Fragment_settings;
 import de.baumann.browser.Ninja.R;
 import de.baumann.browser.Unit.HelperUnit;
 
 public class Settings_Activity extends AppCompatActivity {
 
-    @SuppressWarnings("ConstantConditions")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,7 +25,7 @@ public class Settings_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         Fragment_settings fragment = new Fragment_settings();
         getFragmentManager().beginTransaction().replace(R.id.content_frame, fragment).commit();

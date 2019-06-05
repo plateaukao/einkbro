@@ -1,4 +1,4 @@
-### v 6.4 (WIP)
+### v 6.4
 - new: FAQ site (thanks @HarryHeights)
 - new: long click on tab preview to close
 - new: add shortcuts to home screen (long press overview entry)

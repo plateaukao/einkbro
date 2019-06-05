@@ -1,6 +1,5 @@
 package de.baumann.browser.Browser;
 
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
@@ -10,7 +9,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ShortcutInfo;
 import android.content.pm.ShortcutManager;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Icon;
 import android.net.Uri;
 import android.net.http.SslError;
@@ -77,30 +75,8 @@ public class NinjaWebViewClient extends WebViewClient {
     }
 
     @Override
-    public void onPageStarted(WebView view, String url, Bitmap favicon) {
-        super.onPageStarted(view, url, favicon);
-
-        if (view.getTitle() == null || view.getTitle().isEmpty()) {
-            ninjaWebView.update(context.getString(R.string.album_untitled), url);
-        } else {
-            ninjaWebView.update(view.getTitle(), url);
-        }
-    }
-
-    @SuppressLint("ApplySharedPref")
-    @Override
     public void onPageFinished(WebView view, String url) {
         super.onPageFinished(view, url);
-
-        if (!ninjaWebView.getSettings().getLoadsImagesAutomatically()) {
-            ninjaWebView.getSettings().setLoadsImagesAutomatically(true);
-        }
-
-        if (view.getTitle() == null || view.getTitle().isEmpty()) {
-            ninjaWebView.update(context.getString(R.string.album_untitled), url);
-        } else {
-            ninjaWebView.update(view.getTitle(), url);
-        }
 
         ShortcutManager shortcutManager = null;
         String title = ninjaWebView.getTitle();
@@ -131,7 +107,7 @@ public class NinjaWebViewClient extends WebViewClient {
                                 .setIntent(new Intent(Intent.ACTION_VIEW, Uri.parse(url)))
                                 .build();
                         shortcutManager.addDynamicShortcuts(Collections.singletonList(shortcut));
-                        sp.edit().putInt("shortcut_number", 1).commit();
+                        sp.edit().putInt("shortcut_number", 1).apply();
                     } else {
                         ShortcutInfo shortcut = new ShortcutInfo.Builder(context, "1")
                                 .setShortLabel(title)
@@ -140,29 +116,10 @@ public class NinjaWebViewClient extends WebViewClient {
                                 .setIntent(new Intent(Intent.ACTION_VIEW, Uri.parse(url)))
                                 .build();
                         shortcutManager.addDynamicShortcuts(Collections.singletonList(shortcut));
-                        sp.edit().putInt("shortcut_number", 0).commit();
+                        sp.edit().putInt("shortcut_number", 0).apply();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    if (sp.getInt("shortcut_number", 0) == 0) {
-                        ShortcutInfo shortcut = new ShortcutInfo.Builder(context, "0")
-                                .setShortLabel(title)
-                                .setLongLabel(title)
-                                .setIcon(Icon.createWithResource(context, R.drawable.qc_history))
-                                .setIntent(new Intent(Intent.ACTION_VIEW, Uri.parse(url)))
-                                .build();
-                        shortcutManager.updateShortcuts(Collections.singletonList(shortcut));
-                        sp.edit().putInt("shortcut_number", 1).commit();
-                    } else {
-                        ShortcutInfo shortcut = new ShortcutInfo.Builder(context, "1")
-                                .setShortLabel(title)
-                                .setLongLabel(title)
-                                .setIcon(Icon.createWithResource(context, R.drawable.qc_history))
-                                .setIntent(new Intent(Intent.ACTION_VIEW, Uri.parse(url)))
-                                .build();
-                        shortcutManager.updateShortcuts(Collections.singletonList(shortcut));
-                        sp.edit().putInt("shortcut_number", 0).commit();
-                    }
                 }
             }
         } else {

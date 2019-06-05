@@ -325,29 +325,15 @@
 
     <string name="changelog_title">Changelog</string>
     <string name="changelog_dialog">
-        &lt;i>Project site: https://github.com/scoute-dich/Browser&lt;br>
-        Changelog: https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;/i>&lt;br>&lt;br>
+        &lt;b>On the following sites you have access to all important information about \"FOSS Browser\".
+        Please read also the help dialog within the app.&lt;/b>&lt;br>&lt;br>
 
-        &lt;b>Version: 6.3&lt;/b>&lt;br>
-        \u25AA new: Ajout support des cookies pour la fonction de téléchargement&lt;br>
-        \u25AA new: activer l\'option Enregistrer l\'en-tête des données (merci @SkewedZeppelin)&lt;br>
-        \u25AA new: définir une page vierge&lt;br>
-        \u25AA new: défilement rapide sur les longues listes&lt;br>
-        \u25AA new: afficher/masquer l’aperçu de l’onglet&lt;br>
-        \u25AA new: animations lors de l\'affichage /masquage des vues&lt;br>
-        \u25AA new: Moteur de recherche QWANT (merci @Tobiplayer3)&lt;br>
-        \u25AA new: possibilité d\'ouvrir un nouvel onglet au lieu de quitter l\'application&lt;br>
-        \u25AA new: Ukrainian traduction (merci @Roman Babiy)&lt;br>
-        \u25AA new: Turkish traduction (merci @ali-demirtas)&lt;br>
-        \u25AA correctif: interface utilisateur et problèmes mineurs&lt;br>
-        \u25AA mis à jour: menu longue pression sur les sites web&lt;br>
-        \u25AA mis à jour: Dialogue d\'aide&lt;br>
-        \u25AA mis à jour: Polish traduction (merci @gh-pmjm)&lt;br>
-        \u25AA mis à jour: Dutch traduction (merci @Vistaus)&lt;br>
-        \u25AA mis à jour: Taiwan Trad. Chinese traduction (merci @elmru)&lt;br>
-        \u25AA mis à jour: Portuguese traduction (merci @smarquespt)&lt;br>
-        \u25AA mis à jour: Boîte de dialogue Vue d\'ensemble&lt;br>
-        \u25AA mis à jour: Bascule rapide
+        \u25AA &lt;i>Project site:&lt;/i> https://github.com/scoute-dich/Browser&lt;br>
+        \u25AA &lt;i>Changelog:&lt;/i> https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;br>
+        \u25AA &lt;i>FAQ:&lt;/i> https://github.com/scoute-dich/browser/blob/master/FAQs.md&lt;br>
+        \u25AA &lt;i>License:&lt;/i> https://github.com/scoute-dich/browser/blob/master/LICENSE.md&lt;br>
+        \u25AA &lt;i>Privacy:&lt;/i> https://github.com/scoute-dich/browser/blob/master/PRIVACY.md
+
     </string>
 
 

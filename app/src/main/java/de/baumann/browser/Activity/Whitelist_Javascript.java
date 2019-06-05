@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.List;
+import java.util.Objects;
 
 import de.baumann.browser.Browser.Javascript;
 import de.baumann.browser.Database.RecordAction;
@@ -29,7 +30,6 @@ public class Whitelist_Javascript extends AppCompatActivity {
     private Adapter_Javascript adapter;
     private List<String> list;
 
-    @SuppressWarnings("ConstantConditions")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +39,7 @@ public class Whitelist_Javascript extends AppCompatActivity {
         setContentView(R.layout.whitelist);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         RecordAction action = new RecordAction(this);
         action.open(false);
