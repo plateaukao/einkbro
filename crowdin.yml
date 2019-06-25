@@ -2,4 +2,4 @@ files:
   - source: /app/src/main/res/values/strings.xml
     ignore:
       - /app/src/main/res/values-*/strings.xml
-    translation: '%original_path%'
+    translation: /app/src/main/res/values-%two_letters_code%/strings.xml
