@@ -78,7 +78,8 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="@string/album_untitled"
-                android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textStyle="bold"
                 android:textColor="@color/color_light"
                 android:background="@color/colorPrimary" />
 

@@ -10,17 +10,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="ContentDescription">
 
-    <TextView
-        android:id="@+id/dialog_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|center_horizontal"
-        android:includeFontPadding="false"
-        android:padding="16dp"
-        android:text="@string/dialog_toggle_title"
-        android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-        android:textColor="?android:attr/textColorSecondary" />
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

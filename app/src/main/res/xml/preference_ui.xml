@@ -87,7 +87,7 @@
 
         <CheckBoxPreference android:key="overView_place"
             android:icon="@drawable/view_array"
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:title="@string/setting_overView_place_title"
             android:summary="@string/setting_overView_place_summary"/>
 

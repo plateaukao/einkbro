@@ -9,6 +9,7 @@ import android.os.Environment;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
 import android.view.View;
 import android.widget.Button;
@@ -31,6 +32,7 @@ import de.baumann.browser.Task.ImportWhitelistAdBlockTask;
 import de.baumann.browser.Task.ImportWhitelistCookieTask;
 import de.baumann.browser.Task.ImportWhitelistJSTask;
 import de.baumann.browser.Unit.BrowserUnit;
+import de.baumann.browser.Unit.HelperUnit;
 import de.baumann.browser.View.NinjaToast;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
@@ -103,6 +105,7 @@ public class Fragment_settings_data extends PreferenceFragment {
                 });
                 dialog.setContentView(dialogView);
                 dialog.show();
+                HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
                 break;
             case R.string.setting_title_import_whitelist:dialog = new BottomSheetDialog(getActivity());
                 dialogView = View.inflate(getActivity(), R.layout.dialog_action, null);
@@ -125,6 +128,7 @@ public class Fragment_settings_data extends PreferenceFragment {
                 });
                 dialog.setContentView(dialogView);
                 dialog.show();
+                HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
                 break;
             case R.string.setting_title_export_whitelistJS:
                 dialog = new BottomSheetDialog(getActivity());
@@ -149,6 +153,7 @@ public class Fragment_settings_data extends PreferenceFragment {
                 });
                 dialog.setContentView(dialogView);
                 dialog.show();
+                HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
                 break;
             case R.string.setting_title_import_whitelistJS:
                 dialog = new BottomSheetDialog(getActivity());
@@ -172,6 +177,7 @@ public class Fragment_settings_data extends PreferenceFragment {
                 });
                 dialog.setContentView(dialogView);
                 dialog.show();
+                HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
                 break;
             case R.string.setting_title_export_whitelistCookie:
                 dialog = new BottomSheetDialog(getActivity());
@@ -196,6 +202,7 @@ public class Fragment_settings_data extends PreferenceFragment {
                 });
                 dialog.setContentView(dialogView);
                 dialog.show();
+                HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
                 break;
             case R.string.setting_title_import_whitelistCookie:
                 dialog = new BottomSheetDialog(getActivity());
@@ -219,6 +226,7 @@ public class Fragment_settings_data extends PreferenceFragment {
                 });
                 dialog.setContentView(dialogView);
                 dialog.show();
+                HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
                 break;
             case R.string.setting_title_export_database:
                 dialog = new BottomSheetDialog(getActivity());
@@ -273,6 +281,7 @@ public class Fragment_settings_data extends PreferenceFragment {
                 });
                 dialog.setContentView(dialogView);
                 dialog.show();
+                HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
                 break;
 
             case R.string.setting_title_import_database:
@@ -320,6 +329,7 @@ public class Fragment_settings_data extends PreferenceFragment {
                 });
                 dialog.setContentView(dialogView);
                 dialog.show();
+                HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
                 break;
 
             default:
@@ -381,6 +391,7 @@ public class Fragment_settings_data extends PreferenceFragment {
         });
         dialog.setContentView(dialogView);
         dialog.show();
+        HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
     }
 
     // If targetLocation does not exist, it will be created.

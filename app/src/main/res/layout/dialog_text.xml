@@ -17,7 +17,8 @@
         android:includeFontPadding="false"
         android:padding="16dp"
         android:text="@string/app_name"
-        android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="bold"
         android:textColor="?android:attr/textColorSecondary" />
 
     <ScrollView

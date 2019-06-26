@@ -30,15 +30,21 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ShortcutInfo;
 import android.content.pm.ShortcutManager;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Icon;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -131,6 +137,34 @@ public class HelperUnit {
         NinjaToast.show(context, R.string.toast_fav);
     }
 
+    public static void setBottomSheetBehavior (final BottomSheetDialog dialog, final View view, int beh) {
+        BottomSheetBehavior mBehavior = BottomSheetBehavior.from((View) view.getParent());
+        mBehavior.setState(beh);
+
+        mBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+
+                try {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            dialog.cancel();
+                        }
+                    }, 250);
+                } catch (Exception e) {
+                    Log.w("Browser", "Error cancel dialog");
+                }
+
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+
+            }
+        });
+    }
+
     public static void createShortcut (Context context, String title, String url) {
         Intent i = new Intent();
         i.setAction(Intent.ACTION_VIEW);
@@ -215,9 +249,45 @@ public class HelperUnit {
             }
         });
 
-
         bottomSheetDialog.setContentView(dialogView);
         bottomSheetDialog.show();
+        HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
+    }
+
+    public static void show_dialogChangelog (final Context context) {
+        final BottomSheetDialog dialog = new BottomSheetDialog(context);
+        View dialogView = View.inflate(context, R.layout.dialog_text, null);
+
+        TextView dialog_title = dialogView.findViewById(R.id.dialog_title);
+        dialog_title.setText(R.string.changelog_title);
+
+        TextView dialog_text = dialogView.findViewById(R.id.dialog_text);
+        dialog_text.setText(HelperUnit.textSpannable(context.getString(R.string.changelog_dialog)));
+        dialog_text.setMovementMethod(LinkMovementMethod.getInstance());
+
+        ImageButton fab = dialogView.findViewById(R.id.floatButton_ok);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+            }
+        });
+
+        ImageButton fab_help = dialogView.findViewById(R.id.floatButton_help);
+        fab_help.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+                HelperUnit.show_dialogHelp(context);
+            }
+        });
+
+        ImageButton fab_settings = dialogView.findViewById(R.id.floatButton_settings);
+        fab_settings.setVisibility(View.GONE);
+
+        dialog.setContentView(dialogView);
+        dialog.show();
+        HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
     }
 
     public static void switchIcon (Activity activity, String string, String fieldDB, ImageView be) {
