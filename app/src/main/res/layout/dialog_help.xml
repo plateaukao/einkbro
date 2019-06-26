@@ -18,7 +18,8 @@
         android:layout_gravity="center_vertical|center_horizontal"
         android:layout_marginBottom="@dimen/layout_margin_16dp"
         android:text="@string/dialogHelp_tipTitle"
-        android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="bold"
         android:textColor="?android:attr/textColorSecondary"/>
 
     <ScrollView

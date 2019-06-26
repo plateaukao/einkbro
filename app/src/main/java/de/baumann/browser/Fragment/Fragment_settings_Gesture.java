@@ -3,12 +3,14 @@ package de.baumann.browser.Fragment;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import de.baumann.browser.Ninja.R;
+import de.baumann.browser.Unit.HelperUnit;
 
 public class Fragment_settings_Gesture extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -57,6 +59,7 @@ public class Fragment_settings_Gesture extends PreferenceFragment implements Sha
             });
             dialog.setContentView(dialogView);
             dialog.show();
+            HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
         }
     }
 }

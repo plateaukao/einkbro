@@ -7,6 +7,7 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceScreen;
 import android.provider.Settings;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
@@ -65,7 +66,7 @@ public class Fragment_settings extends PreferenceFragment {
                 showLicenseDialog(getString(R.string.setting_title_community), getString(R.string.cont_dialog));
                 break;
             case R.string.changelog_title:
-                showChangelogDialog();
+                HelperUnit.show_dialogChangelog(getActivity());
                 break;
             case R.string.setting_title_appSettings:
                 Intent intent = new Intent();
@@ -109,41 +110,6 @@ public class Fragment_settings extends PreferenceFragment {
 
         dialog.setContentView(dialogView);
         dialog.show();
-    }
-
-    private void showChangelogDialog() {
-
-        final BottomSheetDialog dialog = new BottomSheetDialog(getActivity());
-        View dialogView = View.inflate(getActivity(), R.layout.dialog_text, null);
-
-        TextView dialog_title = dialogView.findViewById(R.id.dialog_title);
-        dialog_title.setText(R.string.changelog_title);
-
-        TextView dialog_text = dialogView.findViewById(R.id.dialog_text);
-        dialog_text.setText(HelperUnit.textSpannable(getString(R.string.changelog_dialog)));
-        dialog_text.setMovementMethod(LinkMovementMethod.getInstance());
-
-        ImageButton fab = dialogView.findViewById(R.id.floatButton_ok);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.cancel();
-            }
-        });
-
-        ImageButton fab_help = dialogView.findViewById(R.id.floatButton_help);
-        fab_help.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.cancel();
-                HelperUnit.show_dialogHelp(getActivity());
-            }
-        });
-
-        ImageButton fab_settings = dialogView.findViewById(R.id.floatButton_settings);
-        fab_settings.setVisibility(View.GONE);
-
-        dialog.setContentView(dialogView);
-        dialog.show();
+        HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
     }
 }

@@ -1,6 +1,11 @@
 package de.baumann.browser.View;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,15 +14,19 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import de.baumann.browser.Database.Record;
 import de.baumann.browser.Ninja.R;
+import de.baumann.browser.Unit.BrowserUnit;
+
 
 public class CompleteAdapter extends BaseAdapter implements Filterable {
     private class CompleteFilter extends Filter {
@@ -42,7 +51,13 @@ public class CompleteAdapter extends BaseAdapter implements Filterable {
             Collections.sort(resultList, new Comparator<CompleteItem>() {
                 @Override
                 public int compare(CompleteItem first, CompleteItem second) {
-                    return Integer.compare(first.getIndex(), second.getIndex());
+                    if (first.getIndex() < second.getIndex()) {
+                        return -1;
+                    } else if (first.getIndex() > second.getIndex()) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
                 }
             });
 
@@ -60,25 +75,29 @@ public class CompleteAdapter extends BaseAdapter implements Filterable {
     }
 
     private class CompleteItem {
-        private final String title;
-        String getTitle() {
+        private String title;
+
+        protected String getTitle() {
             return title;
         }
 
-        private final String url;
-        String getURL() {
+        private String url;
+
+        protected String getURL() {
             return url;
         }
 
         private int index = Integer.MAX_VALUE;
-        int getIndex() {
+
+        protected int getIndex() {
             return index;
         }
-        void setIndex(int index) {
+
+        protected void setIndex(int index) {
             this.index = index;
         }
 
-        CompleteItem(String title, String url) {
+        private CompleteItem(String title, String url) {
             this.title = title;
             this.url = url;
         }
@@ -104,25 +123,25 @@ public class CompleteAdapter extends BaseAdapter implements Filterable {
     }
 
     private static class Holder {
-        TextView titleView;
-        TextView urlView;
+        private TextView titleView;
+        private TextView urlView;
     }
 
-    private final Context context;
-    private final int layoutResId;
-    private final List<CompleteItem> originalList;
-    private final List<CompleteItem> resultList;
-    private final CompleteFilter filter = new CompleteFilter();
+    private Context context;
+    private int layoutResId;
+    private List<CompleteItem> originalList;
+    private List<CompleteItem> resultList;
+    private CompleteFilter filter = new CompleteFilter();
 
-    public CompleteAdapter(Context context, List<Record> recordList) {
+    public CompleteAdapter(Context context, int layoutResId, List<Record> recordList) {
         this.context = context;
-        this.layoutResId = R.layout.list_item;
+        this.layoutResId = layoutResId;
         this.originalList = new ArrayList<>();
         this.resultList = new ArrayList<>();
-        deDup(recordList);
+        dedup(recordList);
     }
 
-    private void deDup(List<Record> recordList) {
+    private void dedup(List<Record> recordList) {
         for (Record record : recordList) {
             if (record.getTitle() != null
                     && !record.getTitle().isEmpty()
@@ -165,20 +184,16 @@ public class CompleteAdapter extends BaseAdapter implements Filterable {
         if (view == null) {
             view = LayoutInflater.from(context).inflate(layoutResId, null, false);
             holder = new Holder();
-            holder.titleView = view.findViewById(R.id.record_item_title);
-            holder.urlView = view.findViewById(R.id.record_item_url);
+            holder.titleView = view.findViewById(R.id.complete_item_title);
+            holder.urlView = view.findViewById(R.id.complete_item_url);
             view.setTag(holder);
         } else {
             holder = (Holder) view.getTag();
         }
 
         CompleteItem item = resultList.get(position);
-        holder.titleView.setText(item.getTitle());
-        if (item.getURL() != null) {
-            holder.urlView.setText(item.getURL());
-        } else {
-            holder.urlView.setText(item.getURL());
-        }
+        holder.titleView.setText(item.title);
+        holder.urlView.setText(item.url);
 
         return view;
     }

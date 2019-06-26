@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
 import android.view.View;
 import android.view.WindowManager;
@@ -63,6 +64,7 @@ public class ScreenshotTask extends AsyncTask<Void, Void, Boolean> {
         dialog.setContentView(dialogView);
         Objects.requireNonNull(dialog.getWindow()).clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
         dialog.show();
+        HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
 
         try {
             windowWidth = ViewUnit.getWindowWidth(context);
@@ -144,6 +146,7 @@ public class ScreenshotTask extends AsyncTask<Void, Void, Boolean> {
                 });
                 bottomSheetDialog.setContentView(dialogView);
                 bottomSheetDialog.show();
+                HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
             }
         } else {
             NinjaToast.show(activity, context.getString(R.string.toast_error));

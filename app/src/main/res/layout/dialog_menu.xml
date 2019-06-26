@@ -19,7 +19,8 @@
         android:ellipsize="end"
         android:gravity="center_vertical|center_horizontal"
         android:maxLines="1"
-        android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="bold"
         android:textColor="?android:attr/textColorSecondary" />
 
     <View

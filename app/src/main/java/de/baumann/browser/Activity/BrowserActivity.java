@@ -53,7 +53,6 @@ import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.graphics.Palette;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
@@ -89,7 +88,6 @@ import android.widget.VideoView;
 import com.mobapphome.mahencryptorlib.MAHEncryptor;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -162,7 +160,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     private ImageButton fab_more;
     private ImageButton tab_plus;
 
-
     // Views
 
     private ImageButton searchUp;
@@ -203,7 +200,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     private LinearLayout tab_container;
     private FrameLayout fullscreenHolder;
 
-
     private View open_startPageView;
     private View open_bookmarkView;
     private View open_historyView;
@@ -237,13 +233,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     }
     private GridAdapter gridAdapter;
 
-    private static final float[] NEGATIVE_COLOR = {
-            -1.0f, 0, 0, 0, 255, // Red
-            0, -1.0f, 0, 0, 255, // Green
-            0, 0, -1.0f, 0, 255, // Blue
-            0, 0, 0, 1.0f, 0     // Alpha
-    };
-
     private boolean prepareRecord() {
         NinjaWebView webView = (NinjaWebView) currentAlbumController;
         String title = webView.getTitle();
@@ -261,15 +250,22 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     private int shortAnimTime;
     private int vibrantDarkColor;
     private int vibrantColor;
+
     private float dimen156dp;
     private float dimen144dp;
     private float dimen117dp;
     private float dimen108dp;
 
+    private static final float[] NEGATIVE_COLOR = {
+            -1.0f, 0, 0, 0, 255, // Red
+            0, -1.0f, 0, 0, 255, // Green
+            0, 0, -1.0f, 0, 255, // Blue
+            0, 0, 0, 1.0f, 0     // Alpha
+    };
+
     private WebChromeClient.CustomViewCallback customViewCallback;
     private ValueCallback<Uri[]> filePathCallback = null;
     private AlbumController currentAlbumController = null;
-
 
     private static final int INPUT_FILE_REQUEST_CODE = 1;
 
@@ -283,7 +279,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         public boolean onError(MediaPlayer mp, int what, int extra) {
             return false;
         }
-
         @Override
         public void onCompletion(MediaPlayer mp) {
             onHideCustomView();
@@ -376,49 +371,8 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
             final String versionName = pInfo.versionName;
             String oldVersionName = sp.getString("oldVersionName", "0.0");
-
             if (!Objects.requireNonNull(oldVersionName).equals(versionName)) {
-
-                bottomSheetDialog = new BottomSheetDialog(context);
-                View dialogView = View.inflate(context, R.layout.dialog_text, null);
-
-                TextView dialog_title = dialogView.findViewById(R.id.dialog_title);
-                dialog_title.setText(R.string.changelog_title);
-
-                TextView dialog_text = dialogView.findViewById(R.id.dialog_text);
-                dialog_text.setText(HelperUnit.textSpannable(getString(R.string.changelog_dialog)));
-                dialog_text.setMovementMethod(LinkMovementMethod.getInstance());
-
-                ImageButton fab = dialogView.findViewById(R.id.floatButton_ok);
-                fab.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        sp.edit().putString("oldVersionName", versionName).apply();
-                        hideBottomSheetDialog ();
-                    }
-                });
-
-                ImageButton fab_help = dialogView.findViewById(R.id.floatButton_help);
-                fab_help.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        hideBottomSheetDialog();
-                        HelperUnit.show_dialogHelp(context);
-                    }
-                });
-
-                ImageButton fab_settings = dialogView.findViewById(R.id.floatButton_settings);
-                fab_settings.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(BrowserActivity.this, Settings_Activity.class);
-                        startActivity(intent);
-                        hideBottomSheetDialog ();
-                    }
-                });
-
-                bottomSheetDialog.setContentView(dialogView);
-                bottomSheetDialog.show();
+                HelperUnit.show_dialogChangelog(activity);
             }
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
@@ -428,7 +382,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
             @Override
             public void onReceive(Context context, Intent intent) {
-
                 bottomSheetDialog = new BottomSheetDialog(context);
                 View dialogView = View.inflate(context, R.layout.dialog_action, null);
                 TextView textView = dialogView.findViewById(R.id.dialog_text);
@@ -450,6 +403,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 });
                 bottomSheetDialog.setContentView(dialogView);
                 bottomSheetDialog.show();
+                HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
             }
         };
 
@@ -468,7 +422,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         }
     }
 
-    @SuppressWarnings("UnnecessaryReturnStatement")
     @Override
     public void onActivityResult (int requestCode, int resultCode, Intent data) {
         if(requestCode != INPUT_FILE_REQUEST_CODE || mFilePathCallback == null) {
@@ -492,7 +445,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         }
         mFilePathCallback.onReceiveValue(results);
         mFilePathCallback = null;
-        return;
     }
 
     @Override
@@ -560,11 +512,13 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                     sp.edit().putBoolean("pdf_delete", false).commit();
                     textView.setText(R.string.menu_share_pdfToast);
                     bottomSheetDialog.show();
+                    HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
                 }
 
             } else {
                 textView.setText(R.string.toast_downloadComplete);
                 bottomSheetDialog.show();
+                HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
                 sp.edit().putBoolean("pdf_share", false).commit();
                 sp.edit().putBoolean("pdf_create", false).commit();
                 sp.edit().putBoolean("pdf_delete", false).commit();
@@ -573,7 +527,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         if (sp.getBoolean("delete_screenshot", false)) {
             File pathFile = new File(sp.getString("screenshot_path", ""));
-
             if (pathFile.exists()) {
                 pathFile.delete();
                 sp.edit().putBoolean("delete_screenshot", false).commit();
@@ -587,14 +540,12 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         IntentUnit.setClear(false);
         stopService(toHolderService);
         inputBox.clearFocus();
-
         IntentUnit.setContext(context);
         super.onPause();
     }
 
     @Override
     public void onDestroy() {
-
         boolean clearIndexedDB = sp.getBoolean(("sp_clearIndexedDB"), false);
         if (clearIndexedDB) {
             BrowserUnit.clearIndexedDB(context);
@@ -609,6 +560,10 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             startService(toClearService);
         }
 
+        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        File myDir = new File(storageDir + "/FOSS_Browser_temp");
+        BrowserUnit.deleteDir(myDir);
+
         BrowserContainer.clear();
         IntentUnit.setContext(null);
         super.onDestroy();
@@ -621,10 +576,8 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             case KeyEvent.KEYCODE_MENU:
                 return showOverflow();
             case KeyEvent.KEYCODE_BACK:
-
                 hideSoftInput(inputBox);
                 hideOverview();
-
                 if (fullscreenHolder != null || customView != null || videoView != null) {
                     return onHideCustomView();
                 } else if (omnibox.getVisibility() == View.GONE && sp.getBoolean("sp_toolbarShow", true)) {
@@ -705,22 +658,23 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
     @Override
     public void updateAutoComplete() {
-        RecordAction action = new RecordAction(context);
-        action.open(false);
 
+        RecordAction action = new RecordAction(this);
+        action.open(false);
         List<Record> list = action.listHistory();
+        list.addAll(action.listHistory());
         action.close();
 
-        CompleteAdapter adapter = new CompleteAdapter(context, list);
+        CompleteAdapter adapter = new CompleteAdapter(this, R.layout.complete_item, list);
         inputBox.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-        inputBox.setDropDownWidth(ViewUnit.getWindowWidth(context));
-        inputBox.setDropDownHorizontalOffset(16);
+        inputBox.setThreshold(1);
+        inputBox.setDropDownVerticalOffset(-16);
+        inputBox.setDropDownWidth(ViewUnit.getWindowWidth(this));
         inputBox.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String url = ((TextView) view.findViewById(R.id.record_item_url)).getText().toString();
-                inputBox.setText(url);
+                String url = ((TextView) view.findViewById(R.id.complete_item_url)).getText().toString();
                 updateAlbum(url);
                 hideSoftInput(inputBox);
             }
@@ -736,12 +690,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
     @Override
     public void updateInputBox(String query) {
-        if (query != null) {
-            inputBox.setText(query);
-        } else {
-            inputBox.setText(null);
-        }
-        inputBox.clearFocus();
     }
 
     private void showOverview() {
@@ -1079,6 +1027,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                         });
                         bottomSheetDialog.setContentView(dialogView);
                         bottomSheetDialog.show();
+                        HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
                     } else {
                         ninjaWebView.reload();
                     }
@@ -1170,7 +1119,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     }
 
     private void initRendering(View view) {
-
         if (sp.getBoolean("sp_invert", false)) {
             Paint paint = new Paint();
             ColorMatrix matrix = new ColorMatrix();
@@ -1281,11 +1229,15 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         inputBox.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-
                 if (inputBox.hasFocus()) {
+                    ninjaWebView.stopLoading();
                     omniboxTitle.setVisibility(View.GONE);
+                    inputBox.setText(ninjaWebView.getUrl());
+                    inputBox.setSelection(0,inputBox.getText().toString().length());
                 } else {
                     omniboxTitle.setVisibility(View.VISIBLE);
+                    omniboxTitle.setText(ninjaWebView.getTitle());
+                    hideSoftInput(inputBox);
                 }
             }
         });
@@ -1503,6 +1455,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                         });
                         bottomSheetDialog.setContentView(dialogView);
                         bottomSheetDialog.show();
+                        HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
                     }
                 });
 
@@ -1545,11 +1498,13 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                         });
                         bottomSheetDialog.setContentView(dialogView3);
                         bottomSheetDialog.show();
+                        HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView3, BottomSheetBehavior.STATE_EXPANDED);
                     }
                 });
 
                 bottomSheetDialog.setContentView(dialogView);
                 bottomSheetDialog.show();
+                HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
             }
         });
 
@@ -2169,6 +2124,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         bottomSheetDialog.setContentView(dialogView);
         bottomSheetDialog.show();
+        HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
     }
 
     private void toast_login (String userName, String passWord) {
@@ -2364,6 +2320,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             });
             bottomSheetDialog.setContentView(dialogView);
             bottomSheetDialog.show();
+            HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
         }
     }
 
@@ -2460,7 +2417,9 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         if (ninjaWebView == currentAlbumController) {
             try {
-                omniboxTitle.setText(ninjaWebView.getTitle());
+                if (omniboxTitle.getVisibility() == View.VISIBLE) {
+                    omniboxTitle.setText(ninjaWebView.getTitle());
+                }
             } catch (Exception e) {
                 Log.w("Browser", "Error updating");
             }
@@ -2472,14 +2431,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         } else {
             updateRefresh(false);
             progressBar.setVisibility(View.GONE);
-
-            if (ninjaWebView.getUrl() == null && ninjaWebView.getOriginalUrl() == null) {
-                updateInputBox(null);
-            } else if (ninjaWebView.getUrl() != null) {
-                updateInputBox(ninjaWebView.getUrl());
-            } else {
-                updateInputBox(ninjaWebView.getOriginalUrl());
-            }
 
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -2522,7 +2473,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             try {
                 photoFile = createImageFile();
                 takePictureIntent.putExtra("PhotoPath", mCameraPhotoPath);
-            } catch (IOException ex) {
+            } catch (Exception ex) {
                 // Error occurred while creating the File
                 Log.e(TAG, "Unable to create Image File", ex);
             }
@@ -2556,15 +2507,13 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         startActivityForResult(chooserIntent, INPUT_FILE_REQUEST_CODE);
     }
 
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        File storageDir = Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES);
-        return File.createTempFile(
-                "JPEG_FOSSBrowser_temp",  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
+    private File createImageFile() {
+        String time = Objects.toString(System.currentTimeMillis(), null);
+        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        File tempDir = new File(storageDir + "/FOSS_Browser_temp");
+        tempDir.mkdirs();
+        String fname = time + ".jpg";
+        return new File(tempDir, fname);
     }
 
     @Override
@@ -2772,6 +2721,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         });
         bottomSheetDialog.setContentView(dialogView);
         bottomSheetDialog.show();
+        HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
     }
 
     @Override
@@ -2810,6 +2760,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             });
             bottomSheetDialog.setContentView(dialogView);
             bottomSheetDialog.show();
+            HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
         }
     }
 
@@ -2945,6 +2896,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         bottomSheetDialog.setContentView(dialogView);
         bottomSheetDialog.show();
+        HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
         return true;
     }
 
@@ -3055,6 +3007,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 });
                 bottomSheetDialog.setContentView(dialogView);
                 bottomSheetDialog.show();
+                HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
             }
         });
 
@@ -3101,6 +3054,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                     });
                     bottomSheetDialog.setContentView(dialogView);
                     bottomSheetDialog.show();
+                    HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
                 } else if (overViewTab.equals(getString(R.string.album_title_bookmarks))){
                     try {
 
@@ -3154,6 +3108,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                         HelperUnit.switchIcon(activity, pass_creation, "pass_creation", ib_icon);
                         bottomSheetDialog.setContentView(dialogView);
                         bottomSheetDialog.show();
+                        HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
 
                         ib_icon.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -3241,6 +3196,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
                                     bottomSheetDialog.setContentView(dialogView);
                                     bottomSheetDialog.show();
+                                    HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                     hideBottomSheetDialog ();
@@ -3259,6 +3215,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         bottomSheetDialog.setContentView(dialogView);
         bottomSheetDialog.show();
+        HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
     }
 
     private void editFilterNames (String icon_string, final String icon_sp) {
@@ -3295,6 +3252,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         });
         bottomSheetDialog.setContentView(dialogView);
         bottomSheetDialog.show();
+        HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
     }
 
     private void show_dialogFilter() {
@@ -3376,6 +3334,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         bottomSheetDialog.setContentView(dialogView);
         bottomSheetDialog.show();
+        HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
     }
 
     private void setCustomFullscreen(boolean fullscreen) {

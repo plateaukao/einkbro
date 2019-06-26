@@ -1,3 +1,6 @@
+### v 6.5 (WIP)
+- new: open dialogs always expanded
+
 ### v 6.4
 - new: FAQ site (thanks @HarryHeights)
 - new: long click on tab preview to close
