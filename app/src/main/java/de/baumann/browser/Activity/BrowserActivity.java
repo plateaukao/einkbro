@@ -1112,6 +1112,8 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             }, shortAnimTime);
         } else if (Intent.ACTION_SEND.equals(action)) {
             pinAlbums(intent.getStringExtra(Intent.EXTRA_TEXT));
+        } else if ("".equals(action)) {
+            Log.i(TAG, "resumed FOSS Browser");
         } else {
             pinAlbums(null);
         }
