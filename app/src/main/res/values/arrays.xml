@@ -106,14 +106,20 @@
 
     <!-- Font size -->
     <string-array name="setting_entries_font">
+        <item>75 %</item>
+        <item>90 %</item>
         <item>100 %</item>
+        <item>110 %</item>
         <item>125 %</item>
         <item>150 %</item>
         <item>175 %</item>
     </string-array>
 
     <string-array name="setting_values_font">
+        <item>75</item>
+        <item>90</item>
         <item>100</item>
+        <item>110</item>
         <item>125</item>
         <item>150</item>
         <item>175</item>
