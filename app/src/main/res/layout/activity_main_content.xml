@@ -5,12 +5,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:animateLayoutChanges="true"
     tools:showIn="@layout/activity_main">
 
     <FrameLayout android:id="@+id/main_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"/>
 
     <ProgressBar
         style="?android:attr/progressBarStyleHorizontal"
@@ -48,6 +47,7 @@
         android:layout_alignParentStart="true"
         android:layout_margin="18dp"
         android:visibility="gone"
+        app:backgroundTint="@color/colorAccent"
         app:fabSize="mini"
         app:srcCompat="@drawable/ic_action_overflow"
         tools:ignore="RelativeOverlap" />

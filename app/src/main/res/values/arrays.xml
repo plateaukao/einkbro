@@ -12,6 +12,7 @@
         <item>@string/setting_summary_search_engine_google</item>
         <item>@string/setting_summary_search_engine_searx</item>
         <item>@string/setting_summary_search_engine_qwant</item>
+        <item>@string/setting_summary_search_engine_ecosia</item>
     </string-array>
 
     <string-array name="setting_values_search_engine">
@@ -23,6 +24,7 @@
         <item>5</item>
         <item>6</item>
         <item>7</item>
+        <item>9</item>
     </string-array>
 
     <!-- User agent -->

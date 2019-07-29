@@ -27,6 +27,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ShortcutInfo;
 import android.content.pm.ShortcutManager;
@@ -46,6 +47,7 @@ import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -255,6 +257,8 @@ public class HelperUnit {
     }
 
     public static void show_dialogChangelog (final Context context) {
+
+        sp = PreferenceManager.getDefaultSharedPreferences(context);
         final BottomSheetDialog dialog = new BottomSheetDialog(context);
         View dialogView = View.inflate(context, R.layout.dialog_text, null);
 
@@ -270,6 +274,16 @@ public class HelperUnit {
             @Override
             public void onClick(View v) {
                 dialog.cancel();
+                try {
+                    PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+                    final String versionName = pInfo.versionName;
+                    String oldVersionName = sp.getString("oldVersionName", "0.0");
+                    if (!Objects.requireNonNull(oldVersionName).equals(versionName)) {
+                        sp.edit().putString("oldVersionName", versionName).apply();
+                    }
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
