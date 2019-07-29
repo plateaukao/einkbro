@@ -54,6 +54,7 @@ public class BrowserUnit {
     private static final String SEARCH_ENGINE_BING = "http://www.bing.com/search?q=";
     private static final String SEARCH_ENGINE_BAIDU = "https://www.baidu.com/s?wd=";
     private static final String SEARCH_ENGINE_QWANT = "https://www.qwant.com/?q=";
+    private static final String SEARCH_ENGINE_ECOSIA = "https://www.ecosia.org/search?q=";
 
     private static final String SEARCH_ENGINE_STARTPAGE_DE = "https://startpage.com/do/search?lui=deu&language=deutsch&query=";
     private static final String SEARCH_ENGINE_SEARX = "https://searx.me/?q=";
@@ -149,6 +150,8 @@ public class BrowserUnit {
                 return SEARCH_ENGINE_SEARX + query;
             case 7:
                 return SEARCH_ENGINE_QWANT + query;
+            case 9:
+                return SEARCH_ENGINE_ECOSIA + query;
             case 8:
                 return custom + query;
             default:

@@ -1,5 +1,9 @@
 ### v 6.5 (WIP)
+- new: ECOSIA search engine
 - new: open dialogs always expanded
+- fix: exclude notifications from recent apps
+- fix: some popup dialogs not opening
+- fix: hide nav button
 
 ### v 6.4
 - new: FAQ site (thanks @HarryHeights)

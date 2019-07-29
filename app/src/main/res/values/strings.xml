@@ -103,6 +103,7 @@
     <string name="setting_summary_search_engine_startpage_de">StartPage (de)</string>
     <string name="setting_summary_search_engine_searx">Searx</string>
     <string name="setting_summary_search_engine_qwant">Qwant</string>
+    <string name="setting_summary_search_engine_ecosia">Ecosia</string>
 
     <string name="setting_title_inverted">Inverted colors</string>
     <string name="setting_summary_inverted">If checked, content will be rendered in a inverted grey scale mode. This

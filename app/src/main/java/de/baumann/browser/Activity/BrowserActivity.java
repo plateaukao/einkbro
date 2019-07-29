@@ -196,6 +196,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     private RelativeLayout appBar;
     private RelativeLayout omnibox;
     private RelativeLayout searchPanel;
+    private RelativeLayout activity_main;
     private FrameLayout contentFrame;
     private LinearLayout tab_container;
     private FrameLayout fullscreenHolder;
@@ -653,6 +654,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         currentAlbumController = controller;
         currentAlbumController.activate();
+        activity_main.setBackgroundColor(getResources().getColor(R.color.color_light));
         updateOmnibox();
     }
 
@@ -1090,6 +1092,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         } else if (filePathCallback != null) {
             filePathCallback = null;
         } else if ("sc_history".equals(action)) {
+            pinAlbums(null);
             showOverview();
             new Handler().postDelayed(new Runnable() {
                 public void run() {
@@ -1097,6 +1100,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 }
             }, shortAnimTime);
         } else if ("sc_bookmark".equals(action)) {
+            pinAlbums(null);
             showOverview();
             new Handler().postDelayed(new Runnable() {
                 public void run() {
@@ -1104,6 +1108,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 }
             }, shortAnimTime);
         } else if ("sc_startPage".equals(action)) {
+            pinAlbums(null);
             showOverview();
             new Handler().postDelayed(new Runnable() {
                 public void run() {
@@ -1148,7 +1153,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         omniboxOverflow = findViewById(R.id.omnibox_overflow);
         omniboxTitle = findViewById(R.id.omnibox_title);
         progressBar = findViewById(R.id.main_progress_bar);
-
+        activity_main = findViewById(R.id.activity_main);
 
         int fab_position = Integer.parseInt(Objects.requireNonNull(sp.getString("nav_position", "0")));
 
@@ -2514,8 +2519,8 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
         File tempDir = new File(storageDir + "/FOSS_Browser_temp");
         tempDir.mkdirs();
-        String fname = time + ".jpg";
-        return new File(tempDir, fname);
+        String extension = time + ".jpg";
+        return new File(tempDir, extension);
     }
 
     @Override
@@ -2777,37 +2782,50 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     private void showOmnibox() {
         if (omnibox.getVisibility() == View.GONE && searchPanel.getVisibility()  == View.GONE) {
 
-            if (Objects.requireNonNull(sp.getString("sp_hideNav", "0")).equals("0")) {
-                fab_imageButtonNav.setVisibility(View.GONE);
+            String showNavButton = Objects.requireNonNull(sp.getString("sp_hideNav", "0"));
+
+            switch (showNavButton) {
+                case "0":
+                    fab_imageButtonNav.setVisibility(View.GONE);
+                    break;
+                case "1":
+                    fab_imageButtonNav.setVisibility(View.GONE);
+                    break;
+                default:
+                    fab_imageButtonNav.setVisibility(View.VISIBLE);
+                    break;
             }
 
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    searchPanel.setVisibility(View.GONE);
-                    omnibox.setVisibility(View.VISIBLE);
-                    appBar.setVisibility(View.VISIBLE);
-                }
-            }, shortAnimTime);
+            if (omnibox.getVisibility() == View.GONE) {
+                searchPanel.setVisibility(View.GONE);
+                omnibox.setVisibility(View.VISIBLE);
+                appBar.setVisibility(View.VISIBLE);
+            }
         }
     }
 
     @SuppressLint("RestrictedApi")
     private void hideOmnibox() {
-        if (omnibox.getVisibility() == View.VISIBLE) {
 
+        String showNavButton = Objects.requireNonNull(sp.getString("sp_hideNav", "0"));
+
+        switch (showNavButton) {
+            case "0":
+                fab_imageButtonNav.setVisibility(View.VISIBLE);
+                break;
+            case "1":
+                fab_imageButtonNav.setVisibility(View.GONE);
+                break;
+            default:
+                fab_imageButtonNav.setVisibility(View.VISIBLE);
+                break;
+        }
+
+        if (omnibox.getVisibility() == View.VISIBLE) {
+            activity_main.setBackgroundColor(vibrantDarkColor);
             omnibox.setVisibility(View.GONE);
             searchPanel.setVisibility(View.GONE);
             appBar.setVisibility(View.GONE);
-
-            if (Objects.requireNonNull(sp.getString("sp_hideNav", "0")).equals("0") || Objects.requireNonNull(sp.getString("sp_hideNav", "0")).equals("2")) {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        fab_imageButtonNav.setVisibility(View.VISIBLE);
-                    }
-                }, shortAnimTime);
-            }
         }
     }
 
@@ -2904,7 +2922,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
     private void show_contextMenu_list (final String title, final String url,
                                        final Adapter_Record adapterRecord, final List<Record> recordList, final int location,
-                                       final String usernName, final String userPW, final String _id, final String pass_creation,
+                                       final String userName, final String userPW, final String _id, final String pass_creation,
                                        final GridItem gridItem) {
 
 
@@ -3070,7 +3088,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                         final EditText pass_URLET = dialogView.findViewById(R.id.pass_url);
                         final ImageView ib_icon = dialogView.findViewById(R.id.ib_icon);
 
-                        final String decrypted_userName = mahEncryptor.decode(usernName);
+                        final String decrypted_userName = mahEncryptor.decode(userName);
                         final String decrypted_userPW = mahEncryptor.decode(userPW);
 
                         pass_titleET.setText(title);

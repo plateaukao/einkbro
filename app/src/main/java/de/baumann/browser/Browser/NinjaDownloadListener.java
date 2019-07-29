@@ -2,6 +2,7 @@ package de.baumann.browser.Browser;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
 import android.view.View;
 import android.webkit.DownloadListener;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import de.baumann.browser.Ninja.R;
 import de.baumann.browser.Unit.BrowserUnit;
+import de.baumann.browser.Unit.HelperUnit;
 import de.baumann.browser.Unit.IntentUnit;
 
 public class NinjaDownloadListener implements DownloadListener {
@@ -51,5 +53,6 @@ public class NinjaDownloadListener implements DownloadListener {
         });
         dialog.setContentView(dialogView);
         dialog.show();
+        HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
     }
 }

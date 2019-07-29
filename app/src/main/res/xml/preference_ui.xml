@@ -5,6 +5,12 @@
 
     <PreferenceCategory android:title="@string/setting_title_behavior">
 
+        <CheckBoxPreference android:key="sp_background"
+            android:icon="@drawable/icon_link"
+            android:defaultValue="true"
+            android:title="@string/setting_title_background"
+            android:summary="@string/setting_summary_background"/>
+
         <CheckBoxPreference
             android:defaultValue="true"
             android:icon="@drawable/icon_exit"
@@ -13,17 +19,11 @@
             android:summary="@string/setting_summary_confirm_exit" />
 
         <CheckBoxPreference
-            android:defaultValue="true"
+            android:defaultValue="false"
             android:icon="@drawable/icon_close"
             android:key="sp_close_tab_confirm"
             android:title="@string/setting_title_confirm_tab_close"
             android:summary="@string/setting_summary_confirm_tab_close" />
-
-        <CheckBoxPreference android:key="sp_background"
-            android:icon="@drawable/icon_link"
-            android:defaultValue="true"
-            android:title="@string/setting_title_background"
-            android:summary="@string/setting_summary_background"/>
 
         <CheckBoxPreference android:key="sp_reopenLastTab"
             android:icon="@drawable/icon_tab_plus"
@@ -62,7 +62,7 @@
 
         <CheckBoxPreference android:key="sp_toolbarShow"
             android:icon="@drawable/icon_show"
-            android:defaultValue="true"
+            android:defaultValue="false"
             android:title="@string/setting_title_toolbarShow"
             android:summary="@string/setting_summary_toolbarShow"/>
 
