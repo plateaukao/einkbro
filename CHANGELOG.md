@@ -1,4 +1,5 @@
-### v 6.5 (WIP)
+### v 6.5
+- new: more font sizes (thanks @pbui)
 - new: ECOSIA search engine
 - new: open dialogs always expanded
 - fix: exclude notifications from recent apps
