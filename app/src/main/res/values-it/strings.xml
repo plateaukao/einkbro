@@ -51,7 +51,6 @@
 
 
     <!-- Dialog -->
-    <string name="dialog_toggle_title">Fast toggle</string>
     <string name="dialog_title_hint">Titolo:</string>
     <string name="dialog_extension_hint">Estensione (per esempio: \".jpg\"):</string>
     <string name="dialog_sign_in_username">Username</string>
@@ -237,9 +236,7 @@
     <string name="toast_edit_successful">Salvato con successo</string>
     <string name="toast_webview_forward">Non è possibile caricare il sito successivo</string>
     <string name="toast_clear">Vuoi davvero cancellare?</string>
-    <string name="toast_permission_title">È necessaria l\'autorizzazione</string>
     <string name="toast_permission_sdCard">\"FOSS Browser\" necessita del permesso di \"lettura e scrittura archivio\". Questo è necessario per scaricare i file, file manager e acquisizione di screenshot. Se non si è ancora concessa l\'autorizzazione, è possibile farlo in un secondo momento nelle impostazioni.</string>
-    <string name="toast_permission_sdCard_sec">Si prega di concedere l\'autorizzazione di \"lettura e scrittura archivio\" nelle impostazioni.</string>
     <string name="toast_permission_loc">"FOSS Browser" necessita dell\'autorizzazione per "accedere alla posizione". Ciò è richiesto da alcuni siti web, ad esempio quando offrono un qualche tipo di navigazione. Se non è ancora stata concessa l\'autorizzazione, è possibile farlo in un secondo momento nelle impostazioni.</string>
     <string name="toast_restart">Per applicare le modifiche è necessario riavviare \"FOSS Browser\". Chiudere ora?</string>
     <string name="toast_quit">Vuoi uscire da \"FOSS Browser\"?</string>

@@ -34,9 +34,6 @@ public class HolderService extends Service implements BrowserController {
     public void updateBookmarks() {}
 
     @Override
-    public void updateInputBox(String query) {}
-
-    @Override
     public void updateProgress(int progress) {}
 
     @Override

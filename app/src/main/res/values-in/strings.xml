@@ -42,7 +42,6 @@
 
 
     <!-- Dialog -->
-    <string name="dialog_toggle_title">Cepat Matikan</string>
     <string name="dialog_title_hint">Masukkan Judul</string>
     <string name="dialog_sign_in_username">Nama Pengguna</string>
     <string name="dialog_sign_in_password">Kata Sandi</string>
@@ -177,11 +176,9 @@
     <string name="toast_edit_successful">Berhasil Disimpan</string>
     <string name="toast_webview_forward">Tidak bisa memuat situs berikutnya</string>
     <string name="toast_clear">Anda benar-benar ingin menghapus?</string>
-    <string name="toast_permission_title">Izin diperlukan</string>
     <string name="toast_permission_sdCard">\"FOSS Browser\" memerlukan izin untuk \"membaca dan menulis di penyimpanan Anda\". Ini diperlukan untuk
     mendownload file, membangun di file manager dan mengambil screenshot. Jika Anda belum memberikan izin, Anda dapat melakukannya
     nanti di pengaturan.</string>
-    <string name="toast_permission_sdCard_sec">Mohon berikan izin untuk \"membaca dan menulis di penyimpanan Anda\" di pengaturannya.</string>
     <string name="toast_permission_loc">\"FOSS Browser\" memerlukan izin untuk \ "mengakses lokasi Anda \"Ini diminta dari beberapa
         situs web misalnya saat mereka menawarkan beberapa jenis navigasi. Jika Anda belum memberikan izin, Anda dapat melakukannya
     nanti di pengaturan.</string>

@@ -1,3 +1,12 @@
+### v 6.6
+- fix: storage permission problems
+- fix: location permission problems
+- fix: lint issues
+- fix: sort startsite by time
+- fix: favorite site not loading on start
+- fix: inputs not loading
+- new: add to startsite from link context menu
+
 ### v 6.5
 - new: more font sizes (thanks @pbui)
 - new: ECOSIA search engine

@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/activity_main"
-    android:background="@color/color_light"
     xmlns:tools="http://schemas.android.com/tools"
     android:animateLayoutChanges="true"
     tools:ignore="ContentDescription">

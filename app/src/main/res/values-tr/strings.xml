@@ -63,7 +63,6 @@
     <string name="menu_other_help">Yardım</string>
 
     <!-- Dialog -->
-    <string name="dialog_toggle_title">Hızlı geçiş</string>
     <string name="dialog_title_hint">Başlık:</string>
     <string name="dialog_url_hint">URL:</string>
     <string name="dialog_extension_hint">Uzantı (örneğin: \".jpg\"):</string>
@@ -298,10 +297,8 @@
     <string name="toast_edit_successful">Başarıyla kaydedildi</string>
     <string name="toast_webview_forward">Bir sonraki site yüklenemiyor</string>
     <string name="toast_clear">Gerçekten temizlemek istiyor musunuz?</string>
-    <string name="toast_permission_title">İzin gerekli</string>
     <string name="toast_permission_sdCard">\"FOSS Tarayıcı\" \"depolama alanınızı okuma ve yazma\" iznine ihtiyaç duyar. Bu, dosyaları
 	indirmek, dosya yöneticisi oluşturmak ve ekran görüntüleri almak için gereklidir. Henüz izin vermediyseniz, daha sonra ayarlardan yapabilirsiniz.</string>
-    <string name="toast_permission_sdCard_sec">Lütfen ayarlardan \"depolama alanınızı okuma ve yazma\" izni verin.</string>
     <string name="toast_permission_loc">\"FOSS Tarayıcı\" \"konumunuza erişim\" iznine ihtiyaç duyar. Bu, bazı web sitelerinden,
 	örneğin bir çeşit navigasyon sunduklarında istenir. Henüz izin vermediyseniz, daha sonra ayarlardan yapabilirsiniz.</string>
     <string name="toast_restart">Değişiklikleri uygulamak için \"FOSS Tarayıcı\"sını yeniden başlatmanız gerekir. Şimdi kapatılsın mı?</string>

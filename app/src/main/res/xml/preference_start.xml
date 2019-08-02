@@ -9,15 +9,9 @@
         android:title="@string/setting_title_images"
         android:summary="@string/setting_summary_images"/>
 
-    <CheckBoxPreference android:key="sp_remote"
-        android:icon="@drawable/icon_remote"
-        android:defaultValue="true"
-        android:title="@string/setting_title_remote"
-        android:summary="@string/setting_summary_remote"/>
-
     <CheckBoxPreference android:key="@string/sp_savedata"
         android:icon="@drawable/ic_save_data"
-        android:defaultValue="false"
+        android:defaultValue="true"
         android:title="@string/setting_title_save_data"
         android:summary="@string/setting_summary_save_data"/>
 
@@ -26,6 +20,12 @@
         android:defaultValue="true"
         android:title="@string/setting_title_history"
         android:summary="@string/setting_summary_history"/>
+
+    <CheckBoxPreference android:key="sp_remote"
+        android:icon="@drawable/icon_remote"
+        android:defaultValue="false"
+        android:title="@string/setting_title_remote"
+        android:summary="@string/setting_summary_remote"/>
 
     <CheckBoxPreference android:key="@string/sp_location"
         android:icon="@drawable/icon_location"

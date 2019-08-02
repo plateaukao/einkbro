@@ -30,8 +30,7 @@
 <string name="dialog_title_download">Хотите загрузить файл?</string>
 <string name="dialog_title_hint">Заголовок:</string>
 <string name="dialog_title_sign_in">Войти</string>
-    <string name="dialog_toggle_title">Быстрое переключение</string>
-<string name="export_bookmarks">export_bookmarks</string>
+    <string name="export_bookmarks">export_bookmarks</string>
 <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
 <string name="export_whitelistCookie">export_whitelist_Cookie</string>
 <string name="export_whitelistJS">export_whitelist_Javascript</string>
@@ -190,9 +189,7 @@
 <string name="toast_new_tab_successful">Успешно открыто в новой вкладке</string>
     <string name="toast_permission_loc">"\"FOSS Browser\" нуждается в разрешении получения \"доступа к вашему местоположению\". Это необходимо для некоторых веб-сайтов, например, когда они предлагают какую-то навигацию. Если вы еще не предоставили разрешение, можете сделать это позже в настройках. "</string>
 <string name="toast_permission_sdCard">"\"FOSS Browser\" нуждается в разрешении на \"чтение и запись\". Это необходимо для загрузки файлов, сборки в файловый менеджер и снятия скриншотов. Если вы еще не предоставили разрешение, можете сделайте это позже в настройках. "</string>
-<string name="toast_permission_sdCard_sec">Предоставьте разрешение на \"чтение и запись\" в настройках.</string>
-<string name="toast_permission_title">Требуется разрешение</string>
-<string name="toast_quit">Хотите выйти из \"FOSS Browser\"?</string>
+    <string name="toast_quit">Хотите выйти из \"FOSS Browser\"?</string>
     <string name="toast_restart">Чтобы применить изменения, необходимо перезапустить \"FOSS Browser\". Закрыть сейчас?</string>
 <string name="toast_share_failed">Не удаётся поделиться этой страницей</string>
 <string name="toast_start_download">Начало загрузки</string>

@@ -61,7 +61,6 @@
     <string name="menu_other_help">Pomoc</string>
 
     <!-- Dialog -->
-    <string name="dialog_toggle_title">Szybkie preferencje</string>
     <string name="dialog_title_hint">Tytuł:</string>
     <string name="dialog_extension_hint">Rozszerzenie (np.: \".jpg\"):</string>
     <string name="dialog_sign_in_username">Login</string>
@@ -276,9 +275,7 @@
     <string name="toast_edit_successful">Zapisano</string>
     <string name="toast_webview_forward">Nie można załadować kolejnej strony</string>
     <string name="toast_clear">Chcesz usunąć?</string>
-    <string name="toast_permission_title">Wymagane jest pozwolenie</string>
     <string name="toast_permission_sdCard">\"FOSS Browser\" wymaga uprawnienia na \”odczytywanie i zapisywanie zawartości pamieci\”. Jest ono niezbędne do pobierania plików przez wbudowany manager plików i udostępniania zrzutów ekranu. Jeśli nie chcesz teraz udzielać uprawnienia, możesz to zrobić później w Preferencjach aplikacji.</string>
-    <string name="toast_permission_sdCard_sec">Udziel uprawnienia \”odczytywanie i zapisywanie zawartości pamięci\” w ustawieniach.</string>
     <string name="toast_permission_loc">\"FOSS Browser\" wymaga uprawnienia \”dostęp na lokalizacji\”. Jest ono niezbędne dla poprawnego działania niektórych witryn, np. tych oferujących nawigację. Przydzielenie uprawnień możesz zmienić w każdej chwili w ustawieniach.</string>
     <string name="toast_restart">Musisz uruchomić ponownie \"FOSS Browser\”, aby zachować te zmiany. Zamknąć teraz?</string>
     <string name="toast_quit">Zamknąć \"FOSS Browser\"?</string>

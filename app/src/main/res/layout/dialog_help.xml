@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
+<RelativeLayout
     android:layout_width="match_parent"
     android:padding="16dp"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="?android:attr/colorBackground"
-    android:orientation="vertical"
     tools:ignore="ContentDescription"
     android:animateLayoutChanges="true"
     xmlns:android="http://schemas.android.com/apk/res/android">
@@ -24,7 +23,9 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dialogHelp_title"
+        android:layout_above="@+id/dialogHelp_buttons">
 
         <LinearLayout
             android:orientation="vertical"
@@ -43,79 +44,81 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/layout_margin_16dp"
-                android:layout_marginBottom="@dimen/layout_margin_16dp"
+                android:layout_marginBottom="16dp"
                 android:text="@string/dialogHelp_tipText"/>
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center">
-
-                <View
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/colorControlHighlight" />
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <ImageButton
-                        android:id="@+id/dialogHelp_tip"
-                        android:layout_width="42dp"
-                        android:layout_height="42dp"
-                        android:layout_gravity="center_vertical|center_horizontal"
-                        android:layout_marginEnd="4dp"
-                        android:layout_marginStart="4dp"
-                        android:background="?attr/actionBarItemBackground"
-                        android:contentDescription="@null"
-                        android:src="@drawable/icon_help" />
-
-                    <ImageButton
-                        android:id="@+id/dialogHelp_overview"
-                        android:layout_width="42dp"
-                        android:layout_height="42dp"
-                        android:layout_gravity="center_vertical|center_horizontal"
-                        android:layout_marginEnd="4dp"
-                        android:layout_marginStart="4dp"
-                        android:background="?attr/actionBarItemBackground"
-                        android:contentDescription="@null"
-                        android:src="@drawable/icon_preview" />
-
-                    <ImageButton
-                        android:id="@+id/dialogHelp_gestures"
-                        android:layout_width="42dp"
-                        android:layout_height="42dp"
-                        android:layout_gravity="center_vertical|center_horizontal"
-                        android:layout_marginEnd="4dp"
-                        android:layout_marginStart="4dp"
-                        android:background="?attr/actionBarItemBackground"
-                        android:contentDescription="@null"
-                        android:src="@drawable/gesture_tap" />
-
-                    <ImageButton
-                        android:id="@+id/dialogHelp_filter"
-                        android:layout_width="42dp"
-                        android:layout_height="42dp"
-                        android:layout_gravity="center_vertical|center_horizontal"
-                        android:layout_marginEnd="4dp"
-                        android:layout_marginStart="4dp"
-                        android:background="?attr/actionBarItemBackground"
-                        android:contentDescription="@null"
-                        android:src="@drawable/filter_variant" />
-
-                </LinearLayout>
-
-            </LinearLayout>
 
         </LinearLayout>
 
     </ScrollView>
 
+    <LinearLayout
+        android:id="@+id/dialogHelp_buttons"
+        android:layout_alignParentBottom="true"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <View
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/colorControlHighlight" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/dialogHelp_tip"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:layout_marginEnd="4dp"
+                android:layout_marginStart="4dp"
+                android:background="?attr/actionBarItemBackground"
+                android:contentDescription="@null"
+                android:src="@drawable/icon_help" />
+
+            <ImageButton
+                android:id="@+id/dialogHelp_overview"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:layout_marginEnd="4dp"
+                android:layout_marginStart="4dp"
+                android:background="?attr/actionBarItemBackground"
+                android:contentDescription="@null"
+                android:src="@drawable/icon_preview" />
+
+            <ImageButton
+                android:id="@+id/dialogHelp_gestures"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:layout_marginEnd="4dp"
+                android:layout_marginStart="4dp"
+                android:background="?attr/actionBarItemBackground"
+                android:contentDescription="@null"
+                android:src="@drawable/gesture_tap" />
+
+            <ImageButton
+                android:id="@+id/dialogHelp_filter"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:layout_marginEnd="4dp"
+                android:layout_marginStart="4dp"
+                android:background="?attr/actionBarItemBackground"
+                android:contentDescription="@null"
+                android:src="@drawable/filter_variant" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 
-</LinearLayout>
+
+</RelativeLayout>

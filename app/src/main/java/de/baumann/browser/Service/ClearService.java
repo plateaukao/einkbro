@@ -3,11 +3,8 @@ package de.baumann.browser.Service;
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Environment;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
-
-import java.io.File;
 
 import de.baumann.browser.Ninja.R;
 import de.baumann.browser.Unit.BrowserUnit;

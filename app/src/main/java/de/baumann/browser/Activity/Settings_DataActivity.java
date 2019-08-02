@@ -13,8 +13,6 @@ import de.baumann.browser.Ninja.R;
 import de.baumann.browser.Unit.HelperUnit;
 
 public class Settings_DataActivity extends AppCompatActivity {
-    private static final String DB_CHANGE = "DB_CHANGE";
-    private final boolean dbChange = false;
 
     @SuppressWarnings("ConstantConditions")
     @Override

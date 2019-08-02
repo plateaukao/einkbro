@@ -1,11 +1,15 @@
 package de.baumann.browser.Browser;
 
+import android.app.Activity;
 import android.net.Uri;
 import android.view.View;
 import android.webkit.*;
+
+import de.baumann.browser.Unit.HelperUnit;
 import de.baumann.browser.View.NinjaWebView;
 
 public class NinjaWebChromeClient extends WebChromeClient {
+
     private final NinjaWebView ninjaWebView;
 
     public NinjaWebChromeClient(NinjaWebView ninjaWebView) {
@@ -32,11 +36,6 @@ public class NinjaWebChromeClient extends WebChromeClient {
     }
 
     @Override
-    public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
-        return super.onJsAlert(view, url, message, result);
-    }
-
-    @Override
     public void onHideCustomView() {
         ninjaWebView.getBrowserController().onHideCustomView();
         super.onHideCustomView();
@@ -50,6 +49,8 @@ public class NinjaWebChromeClient extends WebChromeClient {
 
     @Override
     public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
+        Activity activity =  (Activity) ninjaWebView.getContext();
+        HelperUnit.grantPermissionsLoc(activity);
         callback.invoke(origin, true, false);
         super.onGeolocationPermissionsShowPrompt(origin, callback);
     }

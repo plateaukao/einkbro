@@ -66,7 +66,6 @@
 
 
     <!-- Dialog -->
-    <string name="dialog_toggle_title">Schnelleinstellungen</string>
     <string name="dialog_toggle_reload">Neu laden</string>
     <string name="dialog_title_hint">Titel:</string>
     <string name="dialog_url_hint">Url:</string>
@@ -329,14 +328,10 @@
     <string name="toast_edit_successful">Erfolgreich gespeichert</string>
     <string name="toast_webview_forward">Kann keine nächste Seite laden</string>
     <string name="toast_clear">Möchtest du die Daten wirklich löschen?</string>
-    <string name="toast_permission_title">Berechtigung wird gebraucht</string>
-    <string name="toast_permission_sdCard">\"FOSS Browser\" braucht die Berechtigung \"Zugriff auf den Gerärtespeicher\". Dies ist
-        notwendig um Dateien herunterzuladen, den Dateimanager und um Bildschirmfotos zu macchen. Wenn du die Berechtigung jetzt
-        nicht erteilst, kannst du dies später in den Einstellungen machen.</string>
-    <string name="toast_permission_sdCard_sec">Bitte die Berechtigung \"Zugriff auf den Gerärtespeicher\" in den Einstellungen gewähren.</string>
-    <string name="toast_permission_loc">\"FOSS Browser\" braucht die Berechtigung \"Zugriff auf den Standort\". Dies brauchen z.B.
-        Internetseiten die einen Navigationsdienst anbieten.  Wenn du die Berechtigung jetzt nicht erteilst, kannst du dies
-        später in den Einstellungen machen.</string>
+    <string name="toast_permission_sdCard">\"FOSS Browser\" braucht die Berechtigung \"Zugriff auf den Gerätespeicher\". Dies ist
+        notwendig um Dateien herunterzuladen, Bildschirmfotos zu machen und deine Einstellungen zu sichern.</string>
+    <string name="toast_permission_loc">\"FOSS Browser\" braucht die Berechtigung \"Zugriff auf den Standort\". Dies fordern z.B.
+        Internetseiten die einen Navigationsdienst anbieten an.</string>
     <string name="toast_restart">Du musst \"FOSS Browser\" neustarten, damit die Änderungen wirksam werden. Jetzt beenden?</string>
     <string name="toast_quit">Möchtest du \"FOSS Browser\" beenden?</string>
     <string name="toast_close_tab">Möchtest du den aktuellen Tab schließen?</string>

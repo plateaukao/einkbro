@@ -20,23 +20,20 @@
 package de.baumann.browser.Unit;
 
 import android.Manifest;
-import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ShortcutInfo;
 import android.content.pm.ShortcutManager;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Icon;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
@@ -66,60 +63,81 @@ public class HelperUnit {
     private static final int REQUEST_CODE_ASK_PERMISSIONS_1 = 1234;
     private static SharedPreferences sp;
 
-    public Context context;
-
     public static void grantPermissionsStorage(final Activity activity) {
         if (android.os.Build.VERSION.SDK_INT >= 23) {
             int hasWRITE_EXTERNAL_STORAGE = activity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
             if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
                 if (!activity.shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    new AlertDialog.Builder(activity)
-                            .setTitle(R.string.toast_permission_title)
-                            .setMessage(R.string.toast_permission_sdCard)
-                            .setPositiveButton(activity.getString(R.string.app_ok), new DialogInterface.OnClickListener() {
-                                @TargetApi(Build.VERSION_CODES.M)
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    activity.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                                            REQUEST_CODE_ASK_PERMISSIONS);
-                                }
-                            })
-                            .setNegativeButton(activity.getString(R.string.app_cancel), new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.cancel();
-                                }
-                            })
-                            .show();
+                    final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(activity);
+                    View dialogView = View.inflate(activity, R.layout.dialog_action, null);
+                    TextView textView = dialogView.findViewById(R.id.dialog_text);
+                    textView.setText(R.string.toast_permission_sdCard);
+                    Button action_ok = dialogView.findViewById(R.id.action_ok);
+                    action_ok.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            activity.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                    REQUEST_CODE_ASK_PERMISSIONS);
+                            bottomSheetDialog.cancel();
+                        }
+                    });
+                    Button action_cancel = dialogView.findViewById(R.id.action_cancel);
+                    action_cancel.setText(R.string.setting_label);
+                    action_cancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent();
+                            intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                            Uri uri = Uri.fromParts("package", activity.getPackageName(), null);
+                            intent.setData(uri);
+                            activity.startActivity(intent);
+                            bottomSheetDialog.cancel();
+                        }
+                    });
+                    bottomSheetDialog.setContentView(dialogView);
+                    bottomSheetDialog.show();
+                    HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
                 }
             }
         }
     }
 
     public static void grantPermissionsLoc(final Activity activity) {
+
         if (android.os.Build.VERSION.SDK_INT >= 23) {
+
             int hasACCESS_FINE_LOCATION = activity.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
             if (hasACCESS_FINE_LOCATION != PackageManager.PERMISSION_GRANTED) {
-                if (!activity.shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
-                    new AlertDialog.Builder(activity)
-                            .setTitle(R.string.toast_permission_title)
-                            .setMessage(R.string.toast_permission_loc)
-                            .setPositiveButton(activity.getString(R.string.app_ok), new DialogInterface.OnClickListener() {
-                                @TargetApi(Build.VERSION_CODES.M)
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    activity.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                            REQUEST_CODE_ASK_PERMISSIONS_1);
-                                }
-                            })
-                            .setNegativeButton(activity.getString(R.string.app_cancel), new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.cancel();
-                                }
-                            })
-                            .show();
-                }
+
+                final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(activity);
+                View dialogView = View.inflate(activity, R.layout.dialog_action, null);
+                TextView textView = dialogView.findViewById(R.id.dialog_text);
+                textView.setText(R.string.toast_permission_loc);
+                Button action_ok = dialogView.findViewById(R.id.action_ok);
+                action_ok.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        activity.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                REQUEST_CODE_ASK_PERMISSIONS_1);
+                        bottomSheetDialog.cancel();
+                    }
+                });
+                Button action_cancel = dialogView.findViewById(R.id.action_cancel);
+                action_cancel.setText(R.string.setting_label);
+                action_cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent();
+                        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        Uri uri = Uri.fromParts("package", activity.getPackageName(), null);
+                        intent.setData(uri);
+                        activity.startActivity(intent);
+                        bottomSheetDialog.cancel();
+                    }
+                });
+                bottomSheetDialog.setContentView(dialogView);
+                bottomSheetDialog.show();
+                HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
             }
         }
     }

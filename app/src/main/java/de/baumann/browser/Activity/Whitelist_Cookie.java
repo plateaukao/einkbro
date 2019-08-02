@@ -38,8 +38,8 @@ public class Whitelist_Cookie extends AppCompatActivity {
         HelperUnit.applyTheme(this);
         setContentView(R.layout.whitelist);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         RecordAction action = new RecordAction(this);
         action.open(false);

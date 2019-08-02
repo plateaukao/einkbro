@@ -29,6 +29,7 @@ import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
@@ -304,9 +305,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         sp.edit().putInt("restart_changed", 0).apply();
         sp.edit().putInt("vibrantColor", getResources().getColor(R.color.colorAccent)).commit();
 
-        HelperUnit.grantPermissionsStorage(activity);
         HelperUnit.applyTheme(context);
-
         setContentView(R.layout.activity_main);
 
         if (Objects.requireNonNull(sp.getString("saved_key_ok", "no")).equals("no")) {
@@ -577,7 +576,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             case KeyEvent.KEYCODE_MENU:
                 return showOverflow();
             case KeyEvent.KEYCODE_BACK:
-                hideSoftInput(inputBox);
+                hideKeyboard(activity);
                 hideOverview();
                 if (fullscreenHolder != null || customView != null || videoView != null) {
                     return onHideCustomView();
@@ -655,7 +654,10 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         currentAlbumController = controller;
         currentAlbumController.activate();
         activity_main.setBackgroundColor(getResources().getColor(R.color.color_light));
-        updateOmnibox();
+        if (ninjaWebView == currentAlbumController) {
+            omniboxTitle.setText(currentAlbumController.getAlbumTitle());
+            setColor();
+        }
     }
 
     @Override
@@ -678,7 +680,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String url = ((TextView) view.findViewById(R.id.complete_item_url)).getText().toString();
                 updateAlbum(url);
-                hideSoftInput(inputBox);
+                hideKeyboard(activity);
             }
         });
     }
@@ -688,10 +690,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         RecordAction action = new RecordAction(context);
         action.open(false);
         action.close();
-    }
-
-    @Override
-    public void updateInputBox(String query) {
     }
 
     private void showOverview() {
@@ -782,9 +780,20 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 break;
 
             case R.id.menu_shareScreenshot:
-                hideBottomSheetDialog ();
-                sp.edit().putInt("screenshot", 1).apply();
-                new ScreenshotTask(context, ninjaWebView).execute();
+                if (android.os.Build.VERSION.SDK_INT >= 23) {
+                    int hasWRITE_EXTERNAL_STORAGE = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                    if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
+                        HelperUnit.grantPermissionsStorage(activity);
+                    } else {
+                        hideBottomSheetDialog ();
+                        sp.edit().putInt("screenshot", 1).apply();
+                        new ScreenshotTask(context, ninjaWebView).execute();
+                    }
+                } else {
+                    hideBottomSheetDialog ();
+                    sp.edit().putInt("screenshot", 1).apply();
+                    new ScreenshotTask(context, ninjaWebView).execute();
+                }
                 break;
 
             case R.id.menu_shareLink:
@@ -810,9 +819,20 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 break;
 
             case R.id.menu_saveScreenshot:
-                hideBottomSheetDialog ();
-                sp.edit().putInt("screenshot", 0).apply();
-                new ScreenshotTask(context, ninjaWebView).execute();
+                if (android.os.Build.VERSION.SDK_INT >= 23) {
+                    int hasWRITE_EXTERNAL_STORAGE = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                    if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
+                        HelperUnit.grantPermissionsStorage(activity);
+                    } else {
+                        hideBottomSheetDialog ();
+                        sp.edit().putInt("screenshot", 0).apply();
+                        new ScreenshotTask(context, ninjaWebView).execute();
+                    }
+                } else {
+                    hideBottomSheetDialog ();
+                    sp.edit().putInt("screenshot", 0).apply();
+                    new ScreenshotTask(context, ninjaWebView).execute();
+                }
                 break;
 
             case R.id.menu_saveBookmark:
@@ -846,7 +866,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 } else {
                     Bitmap bitmap = ViewUnit.capture(ninjaWebView, dimen156dp, dimen117dp, Bitmap.Config.ARGB_8888);
                     String filename = System.currentTimeMillis() + BrowserUnit.SUFFIX_PNG;
-                    int ordinal = action.listGrid(context).size();
+                    int ordinal = (int) System.currentTimeMillis();
                     GridItem itemAlbum = new GridItem(title, url, filename, ordinal);
 
                     if (BrowserUnit.bitmap2File(context, bitmap, filename) && action.addGridItem(itemAlbum)) {
@@ -862,7 +882,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
             case R.id.menu_searchSite:
                 hideBottomSheetDialog ();
-                hideSoftInput(inputBox);
+                hideKeyboard(activity);
                 showSearchPanel();
                 break;
 
@@ -1226,9 +1246,9 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                     NinjaToast.show(context, getString(R.string.toast_input_empty));
                     return true;
                 }
-
                 updateAlbum(query);
-                hideSoftInput(inputBox);
+                hideKeyboard(activity);
+                showOmnibox();
                 return false;
             }
         });
@@ -1244,7 +1264,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 } else {
                     omniboxTitle.setVisibility(View.VISIBLE);
                     omniboxTitle.setText(ninjaWebView.getTitle());
-                    hideSoftInput(inputBox);
+                    hideKeyboard(activity);
                 }
             }
         });
@@ -1757,7 +1777,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                     NinjaToast.show(context, getString(R.string.toast_input_empty));
                     return;
                 }
-                hideSoftInput(searchBox);
+                hideKeyboard(activity);
                 ((NinjaWebView) currentAlbumController).findNext(false);
             }
         });
@@ -1770,7 +1790,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                     NinjaToast.show(context, getString(R.string.toast_input_empty));
                     return;
                 }
-                hideSoftInput(searchBox);
+                hideKeyboard(activity);
                 ((NinjaWebView) currentAlbumController).findNext(true);
             }
         });
@@ -2250,7 +2270,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     private synchronized void pinAlbums(String url) {
 
         showOmnibox();
-        hideSoftInput(inputBox);
         hideSearchPanel();
         tab_container.removeAllViews();
 
@@ -2265,6 +2284,14 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         if (BrowserContainer.size() < 1 && url == null) {
             addAlbum("", sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"), true);
+            if (android.os.Build.VERSION.SDK_INT < 28) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        omniboxRefresh.performClick();
+                    }
+                }, 500);
+            }
         } else if (BrowserContainer.size() >= 1 && url == null) {
 
             int index = BrowserContainer.size() - 1;
@@ -2299,7 +2326,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
     private synchronized void updateAlbum(String url) {
         ((NinjaWebView) currentAlbumController).loadUrl(url);
-        updateOmnibox();
     }
 
     private void closeTabConfirmation(final Runnable okAction) {
@@ -2357,17 +2383,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         }
     }
 
-    private void updateOmnibox() {
-
-        if (ninjaWebView == currentAlbumController) {
-            omniboxTitle.setText(currentAlbumController.getAlbumTitle());
-            setColor();
-        }
-
-        ninjaWebView = (NinjaWebView) currentAlbumController;
-        updateProgress(ninjaWebView.getProgress());
-    }
-
     private void scrollChange () {
 
         if (Objects.requireNonNull(sp.getString("sp_hideToolbar", "0")).equals("0") ||
@@ -2417,16 +2432,11 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     public synchronized void updateProgress(int progress) {
 
         progressBar.setProgress(progress);
-        updateBookmarks();
         setColor();
-        scrollChange();
-        initRendering(contentFrame);
 
         if (ninjaWebView == currentAlbumController) {
             try {
-                if (omniboxTitle.getVisibility() == View.VISIBLE) {
-                    omniboxTitle.setText(ninjaWebView.getTitle());
-                }
+                omniboxTitle.setText(ninjaWebView.getTitle());
             } catch (Exception e) {
                 Log.w("Browser", "Error updating");
             }
@@ -2438,6 +2448,9 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         } else {
             updateRefresh(false);
             progressBar.setVisibility(View.GONE);
+            scrollChange();
+            initRendering(contentFrame);
+            updateBookmarks();
 
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -2643,10 +2656,47 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             }
         });
 
+        LinearLayout contextMenu_saveStart = dialogView.findViewById(R.id.contextMenu_saveStart);
+        contextMenu_saveStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideBottomSheetDialog ();
+                RecordAction action = new RecordAction(context);
+                action.open(true);
+                if (action.checkGridItem(url)) {
+                    NinjaToast.show(context, getString(R.string.toast_already_exist_in_home));
+                } else {
+                    Bitmap bitmap = ViewUnit.createImage(3, 3, vibrantColor);
+                    String filename = System.currentTimeMillis() + BrowserUnit.SUFFIX_PNG;
+
+                    int ordinal = (int) System.currentTimeMillis();
+                    GridItem itemAlbum = new GridItem(Objects.requireNonNull(Uri.parse(url).getHost()).replace("www.", "").trim(),
+                            url, filename, ordinal);
+
+                    if (BrowserUnit.bitmap2File(context, bitmap, filename) && action.addGridItem(itemAlbum)) {
+                        NinjaToast.show(context, getString(R.string.toast_add_to_home_successful));
+                    } else {
+                        NinjaToast.show(context, getString(R.string.toast_add_to_home_failed));
+                    }
+                }
+                action.close();
+            }
+        });
+
+        LinearLayout contextLink_sc = dialogView.findViewById(R.id.contextLink_sc);
+        contextLink_sc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideBottomSheetDialog ();
+                HelperUnit.createShortcut(context, Objects.requireNonNull(Uri.parse(url).getHost()).replace("www.", "").trim(), url);
+            }
+        });
+
         LinearLayout contextLink_saveAs = dialogView.findViewById(R.id.contextLink_saveAs);
         contextLink_saveAs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 try {
                     hideBottomSheetDialog ();
 
@@ -2683,7 +2733,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                 if (android.os.Build.VERSION.SDK_INT >= 23) {
                                     int hasWRITE_EXTERNAL_STORAGE = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
                                     if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
-                                        NinjaToast.show(context, R.string.toast_permission_sdCard_sec);
+                                        HelperUnit.grantPermissionsStorage(activity);
                                     } else {
                                         Uri source = Uri.parse(url);
                                         DownloadManager.Request request = new DownloadManager.Request(source);
@@ -2694,7 +2744,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                         DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
                                         assert dm != null;
                                         dm.enqueue(request);
-                                        hideSoftInput(editTitle);
+                                        hideKeyboard(activity);
                                     }
                                 } else {
                                     Uri source = Uri.parse(url);
@@ -2706,7 +2756,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                     DownloadManager dm = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
                                     assert dm != null;
                                     dm.enqueue(request);
-                                    hideSoftInput(editTitle);
+                                    hideKeyboard(activity);
                                 }
                             }
                         }
@@ -2714,7 +2764,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                     builder.setNegativeButton(R.string.app_cancel, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
                             dialog.cancel();
-                            hideSoftInput(editTitle);
+                            hideKeyboard(activity);
                         }
                     });
 
@@ -2771,10 +2821,14 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         }
     }
 
-    private void hideSoftInput(final EditText view) {
-        view.clearFocus();
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        assert imm != null;
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = activity.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(activity);
+        }
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
@@ -2799,6 +2853,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             if (omnibox.getVisibility() == View.GONE) {
                 searchPanel.setVisibility(View.GONE);
                 omnibox.setVisibility(View.VISIBLE);
+                omniboxTitle.setVisibility(View.VISIBLE);
                 appBar.setVisibility(View.VISIBLE);
             }
         }
@@ -2830,7 +2885,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     }
 
     private void hideSearchPanel() {
-        hideSoftInput(searchBox);
+        hideKeyboard(activity);
         omniboxTitle.setVisibility(View.VISIBLE);
         searchBox.setText("");
         searchPanel.setVisibility(View.GONE);
@@ -2842,10 +2897,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         omnibox.setVisibility(View.GONE);
         omniboxTitle.setVisibility(View.GONE);
         searchPanel.setVisibility(View.VISIBLE);
-    }
-
-    private void updateOverflow () {
-        dialogTitle.setText(ninjaWebView.getTitle());
     }
 
     @SuppressWarnings("SameReturnValue")
@@ -2870,6 +2921,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         floatButton_moreView = dialogView.findViewById(R.id.floatButton_moreView);
 
         dialogTitle = dialogView.findViewById(R.id.dialog_title);
+        dialogTitle.setText(ninjaWebView.getTitle());
 
         menu_newTabOpen = dialogView.findViewById(R.id.menu_newTabOpen);
         menu_newTabOpen.setOnClickListener(BrowserActivity.this);
@@ -2907,8 +2959,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         menu_help = dialogView.findViewById(R.id.menu_help);
         menu_help.setOnClickListener(BrowserActivity.this);
 
-        updateOverflow();
-
         floatButton_tabView.setBackgroundColor(vibrantColor);
         floatButton_saveView.setBackgroundColor(vibrantColor);
         floatButton_shareView.setBackgroundColor(vibrantColor);
@@ -2934,7 +2984,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         LinearLayout contextList_edit = dialogView.findViewById(R.id.menu_contextList_edit);
         LinearLayout contextList_fav = dialogView.findViewById(R.id.menu_contextList_fav);
-        LinearLayout contextList_sc = dialogView.findViewById(R.id.menu_contextList_sc);
+        LinearLayout contextList_sc = dialogView.findViewById(R.id.menu_contextLink_sc);
         LinearLayout contextList_newTab = dialogView.findViewById(R.id.menu_contextList_newTab);
         LinearLayout contextList_newTabOpen = dialogView.findViewById(R.id.menu_contextList_newTabOpen);
         LinearLayout contextList_delete = dialogView.findViewById(R.id.menu_contextList_delete);
@@ -3058,7 +3108,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                 gridItem.setTitle(text);
                                 action.updateGridItem(gridItem);
                                 action.close();
-                                hideSoftInput(editText);
+                                hideKeyboard(activity);
                                 open_startPage.performClick();
                             }
                             hideBottomSheetDialog ();
@@ -3068,7 +3118,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                     action_cancel.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            hideSoftInput(editText);
+                            hideKeyboard(activity);
                             hideBottomSheetDialog ();
                         }
                     });
@@ -3109,7 +3159,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
                                     db.update(Integer.parseInt(_id), HelperUnit.secString(input_pass_title), HelperUnit.secString(input_pass_url),  HelperUnit.secString(encrypted_userName), HelperUnit.secString(encrypted_userPW), pass_creation);
                                     initBookmarkList();
-                                    hideSoftInput(pass_titleET);
+                                    hideKeyboard(activity);
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                     NinjaToast.show(context, R.string.toast_error);
@@ -3121,7 +3171,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                         action_cancel.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                hideSoftInput(pass_titleET);
+                                hideKeyboard(activity);
                                 hideBottomSheetDialog ();
                             }
                         });
@@ -3141,7 +3191,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                     final String encrypted_userPW = mahEncryptor.encode(pass_userPWET.getText().toString().trim());
 
                                     hideBottomSheetDialog ();
-                                    hideSoftInput(pass_titleET);
+                                    hideKeyboard(activity);
 
                                     bottomSheetDialog = new BottomSheetDialog(context);
                                     View dialogView = View.inflate(context, R.layout.dialog_edit_icon, null);
@@ -3266,7 +3316,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         action_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                hideSoftInput(editText);
+                hideKeyboard(activity);
                 hideBottomSheetDialog ();
             }
         });

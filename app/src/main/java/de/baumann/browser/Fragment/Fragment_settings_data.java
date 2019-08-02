@@ -91,9 +91,21 @@ public class Fragment_settings_data extends PreferenceFragment {
                 action_ok.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        dialog.cancel();
-                        makeBackupDir();
-                        new ExportWhitelistAdBlockTask(getActivity()).execute();
+                        if (android.os.Build.VERSION.SDK_INT >= 23) {
+                            int hasWRITE_EXTERNAL_STORAGE = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                            if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
+                                HelperUnit.grantPermissionsStorage(getActivity());
+                                dialog.cancel();
+                            } else {
+                                dialog.cancel();
+                                makeBackupDir();
+                                new ExportWhitelistAdBlockTask(getActivity()).execute();
+                            }
+                        } else {
+                            dialog.cancel();
+                            makeBackupDir();
+                            new ExportWhitelistAdBlockTask(getActivity()).execute();
+                        }
                     }
                 });
                 action_cancel = dialogView.findViewById(R.id.action_cancel);
@@ -115,8 +127,19 @@ public class Fragment_settings_data extends PreferenceFragment {
                 action_ok.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        dialog.cancel();
-                        new ImportWhitelistAdBlockTask(getActivity()).execute();
+                        if (android.os.Build.VERSION.SDK_INT >= 23) {
+                            int hasWRITE_EXTERNAL_STORAGE = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                            if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
+                                HelperUnit.grantPermissionsStorage(getActivity());
+                                dialog.cancel();
+                            } else {
+                                dialog.cancel();
+                                new ImportWhitelistAdBlockTask(getActivity()).execute();
+                            }
+                        } else {
+                            dialog.cancel();
+                            new ImportWhitelistAdBlockTask(getActivity()).execute();
+                        }
                     }
                 });
                 action_cancel = dialogView.findViewById(R.id.action_cancel);
@@ -139,9 +162,21 @@ public class Fragment_settings_data extends PreferenceFragment {
                 action_ok.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        dialog.cancel();
-                        makeBackupDir();
-                        new ExportWhitelistJSTask(getActivity()).execute();
+                        if (android.os.Build.VERSION.SDK_INT >= 23) {
+                            int hasWRITE_EXTERNAL_STORAGE = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                            if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
+                                HelperUnit.grantPermissionsStorage(getActivity());
+                                dialog.cancel();
+                            } else {
+                                dialog.cancel();
+                                makeBackupDir();
+                                new ExportWhitelistJSTask(getActivity()).execute();
+                            }
+                        } else {
+                            dialog.cancel();
+                            makeBackupDir();
+                            new ExportWhitelistJSTask(getActivity()).execute();
+                        }
                     }
                 });
                 action_cancel = dialogView.findViewById(R.id.action_cancel);
@@ -164,8 +199,19 @@ public class Fragment_settings_data extends PreferenceFragment {
                 action_ok.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        dialog.cancel();
-                        new ImportWhitelistJSTask(getActivity()).execute();
+                        if (android.os.Build.VERSION.SDK_INT >= 23) {
+                            int hasWRITE_EXTERNAL_STORAGE = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                            if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
+                                HelperUnit.grantPermissionsStorage(getActivity());
+                                dialog.cancel();
+                            } else {
+                                dialog.cancel();
+                                new ImportWhitelistJSTask(getActivity()).execute();
+                            }
+                        } else {
+                            dialog.cancel();
+                            new ImportWhitelistJSTask(getActivity()).execute();
+                        }
                     }
                 });
                 action_cancel = dialogView.findViewById(R.id.action_cancel);
@@ -188,9 +234,21 @@ public class Fragment_settings_data extends PreferenceFragment {
                 action_ok.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        dialog.cancel();
-                        makeBackupDir();
-                        new ExportWhitelistCookieTask(getActivity()).execute();
+                        if (android.os.Build.VERSION.SDK_INT >= 23) {
+                            int hasWRITE_EXTERNAL_STORAGE = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                            if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
+                                HelperUnit.grantPermissionsStorage(getActivity());
+                                dialog.cancel();
+                            } else {
+                                dialog.cancel();
+                                makeBackupDir();
+                                new ExportWhitelistCookieTask(getActivity()).execute();
+                            }
+                        } else {
+                            dialog.cancel();
+                            makeBackupDir();
+                            new ExportWhitelistCookieTask(getActivity()).execute();
+                        }
                     }
                 });
                 action_cancel = dialogView.findViewById(R.id.action_cancel);
@@ -213,8 +271,19 @@ public class Fragment_settings_data extends PreferenceFragment {
                 action_ok.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        dialog.cancel();
-                        new ImportWhitelistCookieTask(getActivity()).execute();
+                        if (android.os.Build.VERSION.SDK_INT >= 23) {
+                            int hasWRITE_EXTERNAL_STORAGE = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                            if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
+                                HelperUnit.grantPermissionsStorage(getActivity());
+                                dialog.cancel();
+                            } else {
+                                dialog.cancel();
+                                new ImportWhitelistCookieTask(getActivity()).execute();
+                            }
+                        } else {
+                            dialog.cancel();
+                            new ImportWhitelistCookieTask(getActivity()).execute();
+                        }
                     }
                 });
                 action_cancel = dialogView.findViewById(R.id.action_cancel);
@@ -238,14 +307,14 @@ public class Fragment_settings_data extends PreferenceFragment {
                     @Override
                     public void onClick(View view) {
                         dialog.cancel();
-                        makeBackupDir();
                         try {
-
                             if (android.os.Build.VERSION.SDK_INT >= 23) {
                                 int hasWRITE_EXTERNAL_STORAGE = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
                                 if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
-                                    NinjaToast.show(getActivity(), R.string.toast_permission_sdCard_sec);
+                                    HelperUnit.grantPermissionsStorage(getActivity());
+                                    dialog.cancel();
                                 } else {
+                                    makeBackupDir();
                                     BrowserUnit.deleteDir(previewsFolder_backup);
                                     BrowserUnit.deleteDir(databaseFile_backup);
                                     BrowserUnit.deleteDir(bookmarkFile_backup);
@@ -255,8 +324,8 @@ public class Fragment_settings_data extends PreferenceFragment {
                                     copyDirectory(bookmarkFile_app, bookmarkFile_backup);
                                     NinjaToast.show(getActivity(), getString(R.string.toast_export_successful) + "browser_backup");
                                 }
-
                             } else {
+                                makeBackupDir();
                                 BrowserUnit.deleteDir(previewsFolder_backup);
                                 BrowserUnit.deleteDir(databaseFile_backup);
                                 BrowserUnit.deleteDir(bookmarkFile_backup);
@@ -266,7 +335,6 @@ public class Fragment_settings_data extends PreferenceFragment {
                                 copyDirectory(bookmarkFile_app, bookmarkFile_backup);
                                 NinjaToast.show(getActivity(), getString(R.string.toast_export_successful) + "browser_backup");
                             }
-
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -299,7 +367,8 @@ public class Fragment_settings_data extends PreferenceFragment {
                             if (android.os.Build.VERSION.SDK_INT >= 23) {
                                 int hasWRITE_EXTERNAL_STORAGE = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
                                 if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
-                                    NinjaToast.show(getActivity(), R.string.toast_permission_sdCard_sec);
+                                    HelperUnit.grantPermissionsStorage(getActivity());
+                                    dialog.cancel();
                                 } else {
                                     BrowserUnit.importBookmarks(getActivity());
                                     copyDirectory(previewsFolder_backup, previewsFolder_app);
@@ -341,11 +410,10 @@ public class Fragment_settings_data extends PreferenceFragment {
     private void makeBackupDir () {
         File backupDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "browser_backup//");
         File noMedia = new File(backupDir, "//.nomedia");
-
         if (android.os.Build.VERSION.SDK_INT >= 23) {
             int hasWRITE_EXTERNAL_STORAGE = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
             if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
-                NinjaToast.show(getActivity(), R.string.toast_permission_sdCard_sec);
+                HelperUnit.grantPermissionsStorage(getActivity());
             } else {
                 if(!backupDir.exists()) {
                     try {

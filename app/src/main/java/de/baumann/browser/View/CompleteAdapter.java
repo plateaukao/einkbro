@@ -1,11 +1,6 @@
 package de.baumann.browser.View;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.text.Html;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,18 +9,15 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
-import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 
 import de.baumann.browser.Database.Record;
 import de.baumann.browser.Ninja.R;
-import de.baumann.browser.Unit.BrowserUnit;
 
 
 public class CompleteAdapter extends BaseAdapter implements Filterable {
@@ -51,13 +43,7 @@ public class CompleteAdapter extends BaseAdapter implements Filterable {
             Collections.sort(resultList, new Comparator<CompleteItem>() {
                 @Override
                 public int compare(CompleteItem first, CompleteItem second) {
-                    if (first.getIndex() < second.getIndex()) {
-                        return -1;
-                    } else if (first.getIndex() > second.getIndex()) {
-                        return 1;
-                    } else {
-                        return 0;
-                    }
+                    return Integer.compare(first.getIndex(), second.getIndex());
                 }
             });
 
@@ -75,25 +61,25 @@ public class CompleteAdapter extends BaseAdapter implements Filterable {
     }
 
     private class CompleteItem {
-        private String title;
+        private final String title;
 
-        protected String getTitle() {
+        String getTitle() {
             return title;
         }
 
-        private String url;
+        private final String url;
 
-        protected String getURL() {
+        String getURL() {
             return url;
         }
 
         private int index = Integer.MAX_VALUE;
 
-        protected int getIndex() {
+        int getIndex() {
             return index;
         }
 
-        protected void setIndex(int index) {
+        void setIndex(int index) {
             this.index = index;
         }
 
@@ -127,11 +113,11 @@ public class CompleteAdapter extends BaseAdapter implements Filterable {
         private TextView urlView;
     }
 
-    private Context context;
-    private int layoutResId;
-    private List<CompleteItem> originalList;
-    private List<CompleteItem> resultList;
-    private CompleteFilter filter = new CompleteFilter();
+    private final Context context;
+    private final int layoutResId;
+    private final List<CompleteItem> originalList;
+    private final List<CompleteItem> resultList;
+    private final CompleteFilter filter = new CompleteFilter();
 
     public CompleteAdapter(Context context, int layoutResId, List<Record> recordList) {
         this.context = context;
