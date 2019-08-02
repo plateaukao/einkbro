@@ -654,10 +654,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         currentAlbumController = controller;
         currentAlbumController.activate();
         activity_main.setBackgroundColor(getResources().getColor(R.color.color_light));
-        if (ninjaWebView == currentAlbumController) {
-            omniboxTitle.setText(currentAlbumController.getAlbumTitle());
-            setColor();
-        }
+        updateOmnibox();
     }
 
     @Override
@@ -2326,6 +2323,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
     private synchronized void updateAlbum(String url) {
         ((NinjaWebView) currentAlbumController).loadUrl(url);
+        updateOmnibox();
     }
 
     private void closeTabConfirmation(final Runnable okAction) {
@@ -2380,6 +2378,16 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                     showAlbum(BrowserContainer.get(index));
                 }
             });
+        }
+    }
+
+    private void updateOmnibox() {
+        if (ninjaWebView == currentAlbumController) {
+            omniboxTitle.setText(currentAlbumController.getAlbumTitle());
+            setColor();
+        } else {
+            ninjaWebView = (NinjaWebView) currentAlbumController;
+            updateProgress(ninjaWebView.getProgress());
         }
     }
 
