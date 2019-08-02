@@ -1,13 +1,10 @@
 package de.baumann.browser.View;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.MailTo;
 import android.os.Build;
@@ -21,7 +18,6 @@ import android.webkit.CookieManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
-import de.baumann.browser.Unit.HelperUnit;
 import de.baumann.browser.Browser.*;
 import de.baumann.browser.Ninja.R;
 import de.baumann.browser.Unit.BrowserUnit;
@@ -148,20 +144,9 @@ public class NinjaWebView extends WebView implements AlbumController {
     @TargetApi(Build.VERSION_CODES.O)
     private synchronized void initWebSettings() {
         webSettings = getSettings();
-
-        //webSettings.setAllowContentAccess(true);
-        //webSettings.setAllowFileAccess(true);
-
-        //webSettings.setDatabaseEnabled(true);
-        //webSettings.setDomStorageEnabled(true);
-
-        //webSettings.setLoadWithOverviewMode(true);
-        //webSettings.setUseWideViewPort(true);
-
         webSettings.setBuiltInZoomControls(true);
         webSettings.setDisplayZoomControls(false);
         webSettings.setSupportZoom(true);
-
         if (android.os.Build.VERSION.SDK_INT >= 26) {
             webSettings.setSafeBrowsingEnabled(true);
         }
@@ -174,31 +159,12 @@ public class NinjaWebView extends WebView implements AlbumController {
 
         webSettings = getSettings();
         webSettings.setTextZoom(Integer.parseInt(Objects.requireNonNull(sp.getString("sp_fontSize", "100"))));
-
-        webSettings.setAllowFileAccessFromFileURLs(sp.getBoolean(("sp_remote"), true));
-        webSettings.setAllowUniversalAccessFromFileURLs(sp.getBoolean(("sp_remote"), true));
-
+        webSettings.setAllowFileAccessFromFileURLs(sp.getBoolean(("sp_remote"), false));
+        webSettings.setAllowUniversalAccessFromFileURLs(sp.getBoolean(("sp_remote"), false));
         webSettings.setBlockNetworkImage(!sp.getBoolean(context.getString(R.string.sp_images), true));
         webSettings.setJavaScriptEnabled(sp.getBoolean(context.getString(R.string.sp_javascript), true));
         webSettings.setJavaScriptCanOpenWindowsAutomatically(sp.getBoolean(context.getString(R.string.sp_javascript), true));
-
-        if (sp.getBoolean(("sp_remote"), true)) {
-            webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE);
-        }
-
-        if (sp.getBoolean(context.getString(R.string.sp_location), true)) {
-            if (android.os.Build.VERSION.SDK_INT >= 23) {
-                int hasACCESS_FINE_LOCATION = context.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
-                if (hasACCESS_FINE_LOCATION != PackageManager.PERMISSION_GRANTED) {
-                    Activity activity = (Activity) context;
-                    HelperUnit.grantPermissionsLoc(activity);
-                } else {
-                    webSettings.setGeolocationEnabled(sp.getBoolean(context.getString(R.string.sp_location), true));
-                }
-            } else {
-                webSettings.setGeolocationEnabled(sp.getBoolean(context.getString(R.string.sp_location), true));
-            }
-        }
+        webSettings.setGeolocationEnabled(sp.getBoolean(context.getString(R.string.sp_location), false));
 
         CookieManager manager = CookieManager.getInstance();
         manager.setAcceptCookie(sp.getBoolean(context.getString(R.string.sp_cookies), true));
@@ -373,7 +339,6 @@ public class NinjaWebView extends WebView implements AlbumController {
         album.setAlbumTitle(title);
         if (foreground) {
             browserController.updateBookmarks();
-            browserController.updateInputBox(url);
         }
     }
 

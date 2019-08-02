@@ -61,8 +61,7 @@
     <string name="menu_other_help">Ajuda</string>
 
     <!-- Dialog -->
-    <string name="dialog_toggle_title">Comutar rapidamente</string>
-	<string name="dialog_toggle_reload">Recarregar</string>
+    <string name="dialog_toggle_reload">Recarregar</string>
     <string name="dialog_title_hint">Título:</string>
 	<string name="dialog_url_hint">Url:</string>
     <string name="dialog_extension_hint">Extensão (exemplo: \".jpg\"):</string>
@@ -295,12 +294,10 @@
     <string name="toast_edit_successful">Guardado com sucesso</string>
     <string name="toast_webview_forward">Não foi possível carregar o site seguinte</string>
     <string name="toast_clear">Tem a certeza de que deseja limpar?</string>
-    <string name="toast_permission_title">Permissão necessária</string>
-    <string name="toast_permission_sdCard">\"FOSS Browser\" necessita da permissão \"read and write on your storage\". 
+    <string name="toast_permission_sdCard">\"FOSS Browser\" necessita da permissão \"read and write on your storage\".
 	Esta permissão é necessária para descarregar ficheiros, abrir o gestor de ficheiros e obter capturas de ecrã. 
 	Se não o quiser fazer agora, pode fazê-lo mais tarde nas definições.</string>
-    <string name="toast_permission_sdCard_sec">Tem que conceder a permissão \"read and write on your storage\" nas definições.</string>
-    <string name="toast_permission_loc">\"FOSS Browser\" necessita da permissão \"access your location\". 
+    <string name="toast_permission_loc">\"FOSS Browser\" necessita da permissão \"access your location\".
 	Esta permissão é necessária por alguns sites para, por exemplo, disponibilizar algum tipo especial de navegação. 
 	Se não o quiser fazer agora, pode fazê-lo mais tarde nas definições.</string>
     <string name="toast_restart">Tem que reiniciar \"FOSS Browser\" para aplicar as alterações. Fechar agora?</string>

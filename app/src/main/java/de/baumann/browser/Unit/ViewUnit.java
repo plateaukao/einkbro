@@ -21,10 +21,17 @@ public class ViewUnit {
         view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
     }
 
+    public static Bitmap createImage(int width, int height, int color) {
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        Paint paint = new Paint();
+        paint.setColor(color);
+        paint.setAlpha(50);
+        canvas.drawRect(0F, 0F, (float) width, (float) height, paint);
+        return bitmap;
+    }
+
     public static Bitmap capture(View view, float width, float height, Bitmap.Config config) {
-        if (!view.isDrawingCacheEnabled()) {
-            view.setDrawingCacheEnabled(true);
-        }
 
         view.setLayerType(View.LAYER_TYPE_HARDWARE, null);
 

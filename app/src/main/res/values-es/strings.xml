@@ -47,7 +47,6 @@
 
 
     <!-- Dialog -->
-    <string name="dialog_toggle_title">Alternar rápido</string>
     <string name="dialog_title_hint">Título de entrada</string>
     <string name="dialog_sign_in_username">Usuario</string>
     <string name="dialog_sign_in_password">Contraseña</string>
@@ -232,9 +231,7 @@
     <string name="toast_edit_successful">Guardado con éxito</string>
     <string name="toast_webview_forward">No se puede cargar el sitio siguiente</string>
     <string name="toast_clear">¿de verdad quieres limpia?</string>
-    <string name="toast_permission_title">Se necesita permiso</string>
     <string name="toast_permission_sdCard">\"Navegador FOSS \"necesita el permiso para\" leer y escribir en su almacenamiento de información \". Esto es necesario para descargar archivos, la compilación en el gestor de archivos y la toma de capturas de pantallas. Si aún no concedes el permiso, puedes hacerlo más tarde en la configuración.</string>
-    <string name="toast_permission_sdCard_sec">Por favor, otorgue el permiso para \"leer y escribir en su almacenamiento\" en la configuración.</string>
     <string name="toast_permission_loc">\"Navegador FOSS \"necesita el permiso para\" acceder a su ubicación \". Esto se solicita desde algunos sitios web, por ejemplo, cuando ofrecen algún tipo de navegación. Si aún no concedes el permiso, puedes hacerlo más tarde en la configuración.</string>
     <string name="toast_restart">Debe reiniciar \"Navegador FOSS \" para aplicar cambios. ¿cerrar ahora?</string>
     <string name="toast_quit">¿desea salir de \"Navegador FOSS\"?</string>

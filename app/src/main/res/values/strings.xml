@@ -65,7 +65,6 @@
     <string name="menu_other_help">Help</string>
 
     <!-- Dialog -->
-    <string name="dialog_toggle_title">Fast toggle</string>
     <string name="dialog_toggle_reload">Reload</string>
     <string name="dialog_title_hint">Title:</string>
     <string name="dialog_url_hint">Url:</string>
@@ -321,14 +320,10 @@
     <string name="toast_edit_successful">Successfully saved</string>
     <string name="toast_webview_forward">Can\'t load next site</string>
     <string name="toast_clear">Do you really want to clear?</string>
-    <string name="toast_permission_title">Permission is needed</string>
-    <string name="toast_permission_sdCard">\"FOSS Browser\" needs the permission to \"read and write on your storage\". This is needed for
-    downloading files, the build in file manager and taking screenshots. If you don\'t grant the permission yet, you can do it
-    later in the settings.</string>
-    <string name="toast_permission_sdCard_sec">Please grant the permission to \"read and write on your storage\" in the settings.</string>
+    <string name="toast_permission_sdCard">\"FOSS Browser\" needs the permission to \"read and write on your storage\". This
+        is needed to download files, taking screenshots and making backups of your data.</string>
     <string name="toast_permission_loc">\"FOSS Browser\" needs the permission to \"access your location\". This is requested from some
-        websites for example when they offer some kind of navigation. If you don\'t grant the permission yet, you can do it
-    later in the settings.</string>
+        websites for example when they offer some kind of navigation.</string>
     <string name="toast_restart">You must restart \"FOSS Browser\" to apply changes. Close now?</string>
     <string name="toast_quit">Do you want to quit \"FOSS Browser\"?</string>
     <string name="toast_close_tab">Do you want to close current tab?</string>

@@ -1,6 +1,7 @@
 package de.baumann.browser.Unit;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
@@ -203,7 +204,8 @@ public class BrowserUnit {
         if (android.os.Build.VERSION.SDK_INT >= 23) {
             int hasWRITE_EXTERNAL_STORAGE = context.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
             if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
-                NinjaToast.show(context, R.string.toast_permission_sdCard_sec);
+                Activity activity = (Activity) context;
+                HelperUnit.grantPermissionsStorage(activity);
             } else {
                 manager.enqueue(request);
                 try {

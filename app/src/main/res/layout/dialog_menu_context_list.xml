@@ -109,7 +109,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/menu_contextList_sc"
+                android:id="@+id/menu_contextLink_sc"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"

@@ -63,7 +63,6 @@
     <string name="menu_other_help">Aide</string>
 
     <!-- Dialog -->
-    <string name="dialog_toggle_title">Bascule rapide</string>
     <string name="dialog_toggle_reload">Recharger</string>
     <string name="dialog_title_hint">Titre:</string>
     <string name="dialog_url_hint">Url:</string>
@@ -298,11 +297,9 @@
     <string name="toast_edit_successful">Enregistré avec succès</string>
     <string name="toast_webview_forward">Impossible de charger le site</string>
     <string name="toast_clear">Voulez-vous vraiment effacer?</string>
-    <string name="toast_permission_title">L\'autorisation est nécessaire</string>
     <string name="toast_permission_sdCard">\"FOSS Browser\" a besoin de la permission pour \"lire et écrire sur votre stockage\". Nécessaire pour
     le téléchargement des fichiers, le gestionnaire de fichiers intégré et la captures d\'écran. Si vous n\'accordez pas encore la permission, vous pouvez le faire
     plus tard dans les réglages.</string>
-    <string name="toast_permission_sdCard_sec">Veuillez accorder la permission à \"lire et écrire sur votre stockage\" dans les paramètres.</string>
     <string name="toast_permission_loc">\"FOSS Browser\" a besoin de la permission pour \"accéder à votre emplacement\". Ceci est demandé à certains
         sites Web par exemple quand ils offrent une sorte de navigation. Si vous n\'accordez pas encore la permission, vous pouvez le faire.
     plus tard dans les paramètres.</string>

@@ -10,8 +10,6 @@ public interface BrowserController {
 
     void updateBookmarks();
 
-    void updateInputBox(String query);
-
     void updateProgress(int progress);
 
     void showAlbum(AlbumController albumController);

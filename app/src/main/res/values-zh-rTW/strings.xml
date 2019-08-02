@@ -54,7 +54,6 @@
 
 
     <!-- Dialog -->
-    <string name="dialog_toggle_title">快速切換</string>
     <string name="dialog_title_hint">標題：</string>
     <string name="dialog_extension_hint">副檔名（例如：.jpg）</string>
     <string name="dialog_sign_in_username">用戶名</string>
@@ -258,10 +257,8 @@
     <string name="toast_edit_successful">保存成功</string>
     <string name="toast_webview_forward">無法載入下個網頁</string>
     <string name="toast_clear">你確定要清除？</string>
-    <string name="toast_permission_title">權限要求</string>
     <string name="toast_permission_sdCard">FOSS瀏覽器需要讀寫儲存裝置的權限。
 該權限將用於下載檔案、開啟預設檔案管理器和螢幕擷圖。若您現在不允許，可稍後於設定中開啟。</string>
-    <string name="toast_permission_sdCard_sec">請在應用程式設定中開啟讀寫儲存裝置的權限。</string>
     <string name="toast_permission_loc">FOSS瀏覽器需要獲取使用者位置的權限。部分網站會要求此權限用於例如導航功能。若您現在不允許，可稍後於設定中開啟。</string>
     <string name="toast_restart">你必需重啟FOSS瀏覽器以應用變更，現在關閉？</string>
     <string name="toast_quit">是否退出FOSS瀏覽器？</string>

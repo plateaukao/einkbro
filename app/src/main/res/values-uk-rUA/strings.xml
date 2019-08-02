@@ -43,7 +43,6 @@
     <string name="dialog_title_download">Хочете завантажити файл?</string>
     <string name="dialog_title_hint">Заголовок:</string>
     <string name="dialog_title_sign_in">Увійти</string>
-    <string name="dialog_toggle_title">Швидке перемикання</string>
     <string name="dialog_url_hint">Url:</string>
     <string name="export_bookmarks">export_bookmarks</string>
     <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
@@ -228,8 +227,6 @@
     <string name="toast_new_tab_successful">Успішно відкрито в новій вкладці</string>
     <string name="toast_permission_loc">"\"FOSS Browser\" потребує дозволу отримання \"доступу до вашого місця розташування\". Це необхідно для деяких веб-сайтів, наприклад, коли вони пропонують якусь навігацію. Якщо ви ще не надали дозвіл, можете зробити це пізніше в налаштуваннях. "</string>
     <string name="toast_permission_sdCard">"\"FOSS Browser\" потребує дозволу на \"читання і запис\". Це необхідно для завантаження файлів, збірки в файловий менеджер і зняття скріншотів. Якщо ви ще не надали дозвіл, можете зробити це пізніше в налаштуваннях. "</string>
-    <string name="toast_permission_sdCard_sec">Надайте дозвіл на \"читання та запис\" в Налаштуваннях.</string>
-    <string name="toast_permission_title">Потрібен дозвіл</string>
     <string name="toast_quit">Хочете вийти з \"FOSS Browser\"?</string>
     <string name="toast_restart">Щоб застосувати зміни, необхідно перезапустити \"FOSS Browser\". Закрити зараз?</string>
     <string name="toast_share_failed">Не вдається поділитися цією сторінкою</string>

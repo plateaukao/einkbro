@@ -81,7 +81,6 @@ public class ScreenshotTask extends AsyncTask<Void, Void, Boolean> {
         if (android.os.Build.VERSION.SDK_INT >= 23) {
             int hasWRITE_EXTERNAL_STORAGE = context.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
             if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
-                NinjaToast.show(context, R.string.toast_permission_sdCard_sec);
                 HelperUnit.grantPermissionsStorage(activity);
             } else {
                 try {

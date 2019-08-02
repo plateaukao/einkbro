@@ -51,7 +51,6 @@
 
 
     <!-- Dialog -->
-    <string name="dialog_toggle_title">Snel schakelen</string>
     <string name="dialog_title_hint">Titel:</string>
     <string name="dialog_extension_hint">Extensie (bijv.: \".jpg\"):</string>
     <string name="dialog_sign_in_username">Gebruikersnaam</string>
@@ -251,11 +250,9 @@
     <string name="toast_edit_successful">Opgeslagen</string>
     <string name="toast_webview_forward">Volgende site kan niet worden geladen</string>
     <string name="toast_clear">Weet je zeker dat je wilt wissen?</string>
-    <string name="toast_permission_title">Machtiging vereist</string>
     <string name="toast_permission_sdCard">\"FOSS-browser\" heeft de machtiging \"opslag lezen en schrijven\" nodig om bestanden te
     downloaden en schermafdrukken te kunnen maken. Als je de machtiging nu niet verleent, dan kun je dit
     later nog doen via de instellingen.</string>
-    <string name="toast_permission_sdCard_sec">Verleen de machtiging \"opslag lezen en schrijven\" in de instellingen.</string>
     <string name="toast_permission_loc">\"FOSS-browser\" heeft de machtiging \"toegang tot je locatie\" nodig om sommige websites (bijv.
         navigatiewebsites) te kunnen gebruiken. Als je de machtiging nu niet verleent, dan kun je dit
     later nog doen via de instellingen.</string>
