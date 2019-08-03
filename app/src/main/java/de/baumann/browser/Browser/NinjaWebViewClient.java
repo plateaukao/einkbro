@@ -3,7 +3,6 @@ package de.baumann.browser.Browser;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -16,6 +15,7 @@ import android.os.Build;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.TextInputLayout;
 import android.util.Log;
@@ -39,6 +39,7 @@ import de.baumann.browser.Database.Record;
 import de.baumann.browser.Database.RecordAction;
 import de.baumann.browser.Ninja.R;
 import de.baumann.browser.Unit.BrowserUnit;
+import de.baumann.browser.Unit.HelperUnit;
 import de.baumann.browser.Unit.IntentUnit;
 import de.baumann.browser.View.NinjaToast;
 import de.baumann.browser.View.NinjaWebView;
@@ -315,6 +316,7 @@ public class NinjaWebViewClient extends WebViewClient {
         });
         dialog.setContentView(dialogView);
         dialog.show();
+        HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
     }
 
     @Override
@@ -324,34 +326,36 @@ public class NinjaWebViewClient extends WebViewClient {
             return;
         }
 
-        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(holder);
+        final BottomSheetDialog dialog = new BottomSheetDialog(holder);
         View dialogView = View.inflate(holder, R.layout.dialog_edit_bookmark, null);
+
 
         final EditText pass_userNameET = dialogView.findViewById(R.id.pass_userName);
         final EditText pass_userPWET = dialogView.findViewById(R.id.pass_userPW);
+
         TextInputLayout login_title = dialogView.findViewById(R.id.login_title);
         login_title.setVisibility(View.GONE);
 
-        builder.setView(dialogView);
-        builder.setTitle(R.string.dialog_title_sign_in);
-        builder.setPositiveButton(R.string.app_ok, new DialogInterface.OnClickListener() {
-
-            public void onClick(DialogInterface dialog, int whichButton) {
+        Button action_ok = dialogView.findViewById(R.id.action_ok);
+        action_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 String user = pass_userNameET.getText().toString().trim();
                 String pass = pass_userPWET.getText().toString().trim();
                 handler.proceed(user, pass);
                 dialog.cancel();
             }
         });
-        builder.setNegativeButton(R.string.app_cancel, new DialogInterface.OnClickListener() {
-
-            public void onClick(DialogInterface dialog, int whichButton) {
+        Button action_cancel = dialogView.findViewById(R.id.action_cancel);
+        action_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 handler.cancel();
                 dialog.cancel();
             }
         });
-
-        android.support.v7.app.AlertDialog dialog = builder.create();
+        dialog.setContentView(dialogView);
         dialog.show();
+        HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
     }
 }

@@ -2438,34 +2438,20 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
     @Override
     public synchronized void updateProgress(int progress) {
-
         progressBar.setProgress(progress);
+        updateOmnibox();
         setColor();
-
-        if (ninjaWebView == currentAlbumController) {
-            try {
-                omniboxTitle.setText(ninjaWebView.getTitle());
-            } catch (Exception e) {
-                Log.w("Browser", "Error updating");
-            }
-        }
+        scrollChange();
+        initRendering(contentFrame);
 
         if (progress < BrowserUnit.PROGRESS_MAX) {
             updateRefresh(true);
             progressBar.setVisibility(View.VISIBLE);
         } else {
+            updateBookmarks();
             updateRefresh(false);
             progressBar.setVisibility(View.GONE);
-            scrollChange();
-            initRendering(contentFrame);
-            updateBookmarks();
-
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    currentAlbumController.setAlbumCover(ViewUnit.capture(((View) currentAlbumController), dimen144dp, dimen108dp, Bitmap.Config.RGB_565));
-                }
-            }, shortAnimTime);
+            currentAlbumController.setAlbumCover(ViewUnit.capture(((View) currentAlbumController), dimen144dp, dimen108dp, Bitmap.Config.RGB_565));
         }
     }
 
