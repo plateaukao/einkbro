@@ -1,3 +1,5 @@
 files:
   - source: '*/values/strings.xml'
-    translation: /app/src/main/res/values-%two_letters_code%/strings.xml
+    ignore:
+      - '*/values-*/strings.xml'
+    translation: '%language%_%original_file_name%'
