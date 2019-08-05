@@ -1,3 +1,3 @@
 files:
-  - source: '*/values*/strings.xml'
-    translation: '%language%_%original_file_name%'
+  - source: '*/values/strings.xml'
+    translation: '%original_path%/strings.xml'
