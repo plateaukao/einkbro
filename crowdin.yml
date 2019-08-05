@@ -1,0 +1,3 @@
+files:
+  - source: '*/values*/strings.xml'
+    translation: '%language%_%original_file_name%'
