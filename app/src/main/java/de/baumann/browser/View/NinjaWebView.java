@@ -172,7 +172,7 @@ public class NinjaWebView extends WebView implements AlbumController {
 
     private synchronized void initAlbum() {
         album.setAlbumCover(null);
-        album.setAlbumTitle(context.getString(R.string.album_untitled));
+        album.setAlbumTitle(context.getString(R.string.app_name));
         album.setBrowserController(browserController);
     }
 

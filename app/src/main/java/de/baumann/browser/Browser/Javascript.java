@@ -63,7 +63,7 @@ public class Javascript {
 
     public boolean isWhite(String url) {
         for (String domain : whitelistJS) {
-            if (url.contains(domain)) {
+            if (url != null && url.contains(domain)) {
                 return true;
             }
         }

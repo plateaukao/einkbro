@@ -78,7 +78,7 @@
                 android:includeFontPadding="false"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="@string/album_untitled"
+                android:text="@string/app_name"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textStyle="bold"
                 android:textColor="@color/color_light"

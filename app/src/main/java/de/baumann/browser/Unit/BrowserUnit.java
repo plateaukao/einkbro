@@ -133,7 +133,7 @@ public class BrowserUnit {
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         String custom = sp.getString(context.getString(R.string.sp_search_engine_custom), SEARCH_ENGINE_STARTPAGE);
-        final int i = Integer.valueOf(Objects.requireNonNull(sp.getString(context.getString(R.string.sp_search_engine), "0")));
+        final int i = Integer.valueOf(Objects.requireNonNull(sp.getString(context.getString(R.string.sp_search_engine), "9")));
         switch (i) {
             case 0:
                 return SEARCH_ENGINE_STARTPAGE + query;
@@ -156,7 +156,7 @@ public class BrowserUnit {
             case 8:
                 return custom + query;
             default:
-                return SEARCH_ENGINE_STARTPAGE + query;
+                return SEARCH_ENGINE_ECOSIA + query;
         }
     }
 
