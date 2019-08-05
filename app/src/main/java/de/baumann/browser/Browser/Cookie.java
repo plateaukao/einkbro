@@ -63,7 +63,7 @@ public class Cookie {
 
     public boolean isWhite(String url) {
         for (String domain : whitelistCookie) {
-            if (url.contains(domain)) {
+            if (url != null && url.contains(domain)) {
                 return true;
             }
         }

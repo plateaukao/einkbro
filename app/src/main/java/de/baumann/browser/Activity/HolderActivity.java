@@ -27,7 +27,7 @@ public class HolderActivity extends Activity {
         }
 
         first = new Record();
-        first.setTitle(getString(R.string.album_untitled));
+        first.setTitle(getString(R.string.app_name));
         first.setURL(getIntent().getData().toString());
         first.setTime(System.currentTimeMillis());
 

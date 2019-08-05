@@ -77,7 +77,7 @@ public class AdBlock {
 
     public boolean isWhite(String url) {
         for (String domain : whitelist) {
-            if (url.contains(domain)) {
+            if (url != null && url.contains(domain)) {
                 return true;
             }
         }

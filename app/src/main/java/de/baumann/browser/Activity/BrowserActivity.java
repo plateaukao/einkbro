@@ -752,13 +752,13 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             case R.id.tab_plus:
                 hideBottomSheetDialog();
                 hideOverview();
-                addAlbum(getString(R.string.album_untitled), sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"), true);
+                addAlbum(getString(R.string.app_name), sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"), true);
                 break;
 
             case R.id.menu_newTabOpen:
                 hideBottomSheetDialog();
                 hideOverview();
-                addAlbum(getString(R.string.album_untitled), sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"), true);
+                addAlbum(getString(R.string.app_name), sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"), true);
                 break;
 
             case R.id.menu_closeTab:
@@ -1313,7 +1313,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 showOverview();
                 break;
             case "09":
-                addAlbum(getString(R.string.album_untitled), sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"), true);
+                addAlbum(getString(R.string.app_name), sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"), true);
                 break;
             case "10":
                 removeAlbum(currentAlbumController);
@@ -2299,7 +2299,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         } else if (url != null) { // When url != null
             ninjaWebView.setBrowserController(this);
-            ninjaWebView.setAlbumTitle(getString(R.string.album_untitled));
+            ninjaWebView.setAlbumTitle(getString(R.string.app_name));
             ViewUnit.bound(context, ninjaWebView);
             ninjaWebView.loadUrl(url);
 
@@ -2610,7 +2610,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         contextLink_newTab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addAlbum(getString(R.string.album_untitled), url, false);
+                addAlbum(getString(R.string.app_name), url, false);
                 NinjaToast.show(context, getString(R.string.toast_new_tab_successful));
                 hideBottomSheetDialog ();
             }
@@ -2645,7 +2645,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         contextLink_newTabOpen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addAlbum(getString(R.string.album_untitled), url, true);
+                addAlbum(getString(R.string.app_name), url, true);
                 hideBottomSheetDialog ();
             }
         });
@@ -3008,7 +3008,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         contextList_newTab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addAlbum(getString(R.string.album_untitled), url, false);
+                addAlbum(getString(R.string.app_name), url, false);
                 NinjaToast.show(context, getString(R.string.toast_new_tab_successful));
                 hideBottomSheetDialog ();
             }
@@ -3017,7 +3017,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         contextList_newTabOpen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addAlbum(getString(R.string.album_untitled), url, true);
+                addAlbum(getString(R.string.app_name), url, true);
                 hideBottomSheetDialog ();
                 hideOverview();
             }
