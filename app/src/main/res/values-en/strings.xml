@@ -333,6 +333,7 @@
     </string>
     <!-- Dialog changelog -->
     <string name="changelog_title">Changelog</string>
+
     <string name="changelog_dialog">
 
         Your language isn\'t supported yet? You want to translate FOSS Browser? Or make improvements to existing translations?
@@ -384,6 +385,12 @@
     <string name="cont_dialog">        &lt;i&gt;First I would like to thank all people who contributed in any way on this project. They submitted issues,
         translated or helped in any other way. On following sites you can become a active member of this
         great community:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
+
+        &lt;b&gt;Crowdin:&lt;/b&gt;&lt;br&gt;
+        Crowdin is an online plattform to translate applications in other languages. A big thanks to all translators. You can
+        also help.&lt;br&gt;
+        &lt;i&gt;https://crowdin.com/project/foss-browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;
+
 
         &lt;b&gt;XDA-thread:&lt;/b&gt;&lt;br&gt;
         XDA is a great community for developers and smartphone enthusiasts. Here you can report issues, ask for new features
