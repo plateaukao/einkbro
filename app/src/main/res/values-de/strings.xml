@@ -342,8 +342,13 @@
     </string>
     <!-- Dialog changelog -->
     <string name="changelog_title">Änderungen</string>
-    <string name="changelog_dialog">        Your language isn\'t supported yet? You want to translate FOSS Browser? Or make improvements to existing translations?
-        Feel free to join us on Crowdin: https://crowdin.com/project/foss-browser.&lt;br&gt;&lt;br&gt;
+  
+    <string name="changelog_dialog">
+        Deine Sprache wird nicht unterstützt? Du möchtest FOSS Browser übersetzen? Oder eine bestehende Übersetzung verbessern?
+        Hilf uns auf Crowdin: https://crowdin.com/project/foss-browser.&lt;br&gt;&lt;br&gt;
+
+        &lt;b&gt;Auf den folgenden Internetseiten findest du alle Informationen zu \"FOSS Browser\".
+        Bitte lies auch den Hilfedialog in der Anwendung.&lt;/b&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;On the following sites you have access to all important information about \"FOSS Browser\".
         Please read also the help dialog within the app.&lt;/b&gt;&lt;br&gt;&lt;br&gt;
@@ -357,7 +362,7 @@
     </string>
     <!-- License changelog -->
     <string name="license_title">Copyright © 2017  by Gaukler Faun</string>
-    <string name="license_dialog">        Besuche für mehr Informationen die Projektseite auf Github: https://github.com/scoute-dich/Browser&lt;br&gt;&lt;br&gt;
+    <string name="license_dialog">Besuche für mehr Informationen die Projektseite auf Github: https://github.com/scoute-dich/Browser&lt;br&gt;&lt;br&gt;
 
         Dieses Programm ist freie Software. Sie können es unter den Bedingungen der GNU General Public License, wie von
         der Free Software Foundation veröffentlicht, weitergeben und/oder modifizieren, entweder gemäß Version 3 der Lizenz oder
@@ -383,19 +388,19 @@
         Apache License Version 2.0&lt;br&gt;
         hummatli&lt;br&gt;
         &lt;i&gt;https://github.com/hummatli/SimpleEncryptionLib</string>
-    <string name="cont_dialog">        &lt;i&gt;First I would like to thank all people who contributed in any way on this project. They submitted issues,
-        translated or helped in any other way. On following sites you can become a active member of this
-        great community:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
+  
+    <string name="cont_dialog">&lt;i&gt;Zuerst möchte ich allen Nutzern danken, die auf irgendeine Weise an diesem Projekt beteiligt sind. Sie helfen
+        Fehler zu finden, übersetzen oder haben auf eine andere Art einen Beitrag geleistet. Auf den
+        folgenden Internetseiten kannst du Mitglied dieser Gemeinschaft werden:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Crowdin:&lt;/b&gt;&lt;br&gt;
-        Crowdin is an online plattform to translate applications in other languages. A big thanks to all translators. You can
-        also help.&lt;br&gt;
+        Crowdin ist eine Onlineplattform um Anwendungen in andere Sprachen zu Übersetzen. Mein Dank gilt allen Übersetzern. Hilf auch du.&lt;br&gt;
         &lt;i&gt;https://crowdin.com/project/foss-browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
 
-        &lt;b&gt;XDA-thread:&lt;/b&gt;&lt;br&gt;
-        XDA is a great community for developers and smartphone enthusiasts. Here you can report issues, ask for new features
-        and everything other related to \"FOSS Browser\".&lt;br&gt;
+        &lt;b&gt;XDA-Thread:&lt;/b&gt;&lt;br&gt;
+        XDA ist eine großartige Gemeinschaft für Entwickler und Smartphoneentusiasten. Hier kannst du Fehler melden, nach neuen
+        Funktionen fragen oder dich mit anderen Nutzern austauschen.&lt;br&gt;
         &lt;i&gt;https://forum.xda-developers.com/android/apps-games/app-browser-t3500091&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Github:&lt;/b&gt;&lt;br&gt;
