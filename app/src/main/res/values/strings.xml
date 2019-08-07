@@ -39,16 +39,17 @@
 
     <string name="menu_share">Share</string>
     <string name="menu_quit">Quit</string>
+    <string name="menu_openFav">Open Favorite</string>
     <string name="menu_delete">Delete</string>
     <string name="menu_delete_list">Delete list</string>
     <string name="menu_edit">Edit</string>
     <string name="menu_closeTab">Close tab</string>
     <string name="menu_download">Open downloads</string>
-    <string name="menu_fav">Set as start site</string>
+    <string name="menu_fav">Save as favorite</string>
     <string name="menu_sc">Shortcut on home screen</string>
     <string name="menu_sort">Sort by …</string>
     <string name="menu_filter">Filter by …</string>
-    <string name="menu_blank">Blank start site</string>
+    <string name="menu_blank">Blank favorite</string>
 
     <string name="menu_share_screenshot">Share screenshot</string>
     <string name="menu_share_link">Share link</string>
@@ -60,6 +61,7 @@
     <string name="menu_save_pdf">Save as PDF</string>
     <string name="menu_share_pdf">Share PDF</string>
     <string name="menu_share_pdfToast">Complete. Open file manager to share?</string>
+    <string name="menu_shareClipboard">Copy to clipboard</string>
 
     <string name="menu_other_searchSite">Search on site</string>
     <string name="menu_other_help">Help</string>
@@ -332,7 +334,7 @@
     <string name="toast_unsecured">This website uses an unsecured connection (\"http\"). Do you want to try a secure
         connection (\"https\")?</string>
     <string name="toast_backup">Backup data? This will overwrite the old backup.</string>
-    <string name="toast_fav">Successfully set as start site.</string>
+    <string name="toast_fav">Successfully set as favorite.</string>
 
 
     <!-- Whitelist -->
@@ -346,10 +348,10 @@
 
     <string name="dialogHelp_tipTitle">Tips</string>
     <string name="dialogHelp_tipText">
-        &lt;b>Start site&lt;/b>&lt;br>
+        &lt;b>Favorite&lt;/b>&lt;br>
         You can decide which site loads when \"FOSS Browser\" starts: By long pressing an entry in the
         overview (Startsite, Bookmarks, History) you can choose it. Over the menu of the overview you can also set
-        a blank start site.&lt;br>&lt;br>
+        a blank favorite.&lt;br>&lt;br>
 
         &lt;b>Menus and dialogs&lt;/b>&lt;br>
         All menus and dialogs are opened at the bottom of the screen. If the dialog is large you will first see only

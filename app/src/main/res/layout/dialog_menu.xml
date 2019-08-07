@@ -97,6 +97,35 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/menu_openFav"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:paddingEnd="8dp"
+                android:paddingStart="8dp"
+                android:background="?attr/selectableItemBackground"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="16dp"
+                    android:gravity="center_vertical"
+                    android:src="@drawable/star_grey" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:includeFontPadding="false"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:maxLines="1"
+                    android:text="@string/menu_openFav"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            </LinearLayout>
+
 
             <LinearLayout
                 android:id="@+id/menu_closeTab"
@@ -243,6 +272,36 @@
                     android:gravity="center_vertical"
                     android:maxLines="1"
                     android:text="@string/menu_share_link"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/menu_shareCLipboard"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:paddingEnd="8dp"
+                android:paddingStart="8dp"
+                android:background="?attr/selectableItemBackground"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="16dp"
+                    android:gravity="center_vertical"
+                    android:src="@drawable/clipboard_outline" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:includeFontPadding="false"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:maxLines="1"
+                    android:text="@string/menu_shareClipboard"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
             </LinearLayout>
@@ -401,6 +460,36 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/menu_sc"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:paddingEnd="8dp"
+                android:paddingStart="8dp"
+                android:background="?attr/selectableItemBackground"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="16dp"
+                    android:gravity="center_vertical"
+                    android:src="@drawable/link_plus" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:includeFontPadding="false"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:maxLines="1"
+                    android:text="@string/menu_sc"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/menu_searchSite"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
@@ -426,6 +515,36 @@
                     android:gravity="center_vertical"
                     android:maxLines="1"
                     android:text="@string/menu_other_searchSite"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/menu_fav"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:paddingEnd="8dp"
+                android:paddingStart="8dp"
+                android:background="?attr/selectableItemBackground"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="16dp"
+                    android:gravity="center_vertical"
+                    android:src="@drawable/star_grey" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:includeFontPadding="false"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:maxLines="1"
+                    android:text="@string/menu_fav"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
             </LinearLayout>
