@@ -19,6 +19,10 @@ There are several reasons to create a new issue. As always, make sure you search
 issues before opening a new one.
 There's a good chance that whatever reason you might be opening an issue for might already have been opened or closed by another user.
 
+## Missing language support?
+
+Your language isn't supported yet? You want to translate FOSS Browser? Or make improvements to existing translations? Feel free to use [crowdin](https://crowdin.com/project/foss-browser).
+
 ## New ideas, enhancements and feature requests
 
 Great! The developer loves new ideas and welcome opportunities for improvement.

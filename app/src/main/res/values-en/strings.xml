@@ -333,7 +333,10 @@
     </string>
     <!-- Dialog changelog -->
     <string name="changelog_title">Changelog</string>
-    <string name="changelog_dialog">        Your language isn\'t supported yet? You want to translate FOSS Browser? Or make improvements to existing translations?
+
+    <string name="changelog_dialog">
+
+        Your language isn\'t supported yet? You want to translate FOSS Browser? Or make improvements to existing translations?
         Feel free to join us on Crowdin: https://crowdin.com/project/foss-browser.&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;On the following sites you have access to all important information about \"FOSS Browser\".
