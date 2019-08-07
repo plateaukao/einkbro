@@ -38,7 +38,8 @@
     <string name="menu_edit">Bearbeiten</string>
     <string name="menu_closeTab">Tab schließen</string>
     <string name="menu_download">Öffne Downloads</string>
-    <string name="menu_fav">Als Startseite setzen</string>
+    <string name="menu_fav">Als Favorit speichern</string>
+    <string name="menu_openFav">Favorit öffnen</string>
     <string name="menu_sc">Verknüpfung auf Startschirm</string>
     <string name="menu_sort">Sortiere nach …</string>
     <string name="menu_filter">Filter …</string>
@@ -52,6 +53,7 @@
     <string name="menu_save_pdf">PDF speichern</string>
     <string name="menu_share_pdf">PDF teilen</string>
     <string name="menu_share_pdfToast">Fertig. Dateimanager öffnen, um die Datei zu teilen?</string>
+    <string name="menu_shareClipboard">Kopiere in Zwischenablage</string>
     <string name="menu_other_searchSite">Suche auf Seite</string>
     <string name="menu_other_help">Hilfe</string>
     <!-- Dialog -->
@@ -285,14 +287,14 @@
     <string name="toast_unsecured">Die Internetseite benutzt eine unsichere Verbindung (\"http\"). Möchtest du versuchen
         eine gesicherte Verbindung herstellen (\"https\")?</string>
     <string name="toast_backup">Daten sichern? Das überschreibt die alte Sicherung.</string>
-    <string name="toast_fav">Erfolgreich als Startseite gesetzt.</string>
+    <string name="toast_fav">Erfolgreich als Favorit gespeichert.</string>
     <!-- Whitelist -->
     <string name="whitelist_menu_clear">Löschen</string>
     <string name="whitelist_edit_hint">Domain</string>
     <string name="whitelist_add">Hinzufügen</string>
     <!-- Dialog help -->
     <string name="dialogHelp_tipTitle">Tipps</string>
-    <string name="dialogHelp_tipText">        &lt;b&gt;Startseite&lt;/b&gt;&lt;br&gt;
+    <string name="dialogHelp_tipText">        &lt;b&gt;Favorit&lt;/b&gt;&lt;br&gt;
         Du kannst festlegen, welche Internetseite beim Start von \"FOSS Browser\" geladen wird: Du kannst jeden Eintrag
         aus der Übersicht (Startseite, Lesezeichen, Verlauf) durch langes Drücken auswählen. Über das Menü in der Übersicht
         kannst du außerdem eine leere Startseite festlegen.&lt;br&gt;&lt;br&gt;

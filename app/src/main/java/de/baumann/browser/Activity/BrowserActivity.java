@@ -150,6 +150,11 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     private LinearLayout menu_saveStart;
     private LinearLayout menu_help;
 
+    private LinearLayout menu_fav;
+    private LinearLayout menu_sc;
+    private LinearLayout menu_openFav;
+    private LinearLayout menu_shareCLipboard;
+
     private View floatButton_tabView;
     private View floatButton_saveView;
     private View floatButton_shareView;
@@ -160,6 +165,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     private ImageButton fab_save;
     private ImageButton fab_more;
     private ImageButton tab_plus;
+    private ImageButton tab_plus_bottom;
 
     // Views
 
@@ -754,6 +760,11 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 hideOverview();
                 addAlbum(getString(R.string.app_name), sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"), true);
                 break;
+            case R.id.tab_plus_bottom:
+                hideBottomSheetDialog();
+                hideOverview();
+                addAlbum(getString(R.string.app_name), sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"), true);
+                break;
 
             case R.id.menu_newTabOpen:
                 hideBottomSheetDialog();
@@ -929,6 +940,12 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 menu_help.setVisibility(View.GONE);
                 menu_settings.setVisibility(View.GONE);
                 menu_download.setVisibility(View.GONE);
+
+                menu_fav.setVisibility(View.GONE);
+                menu_sc.setVisibility(View.GONE);
+                menu_openFav.setVisibility(View.VISIBLE);
+                menu_shareCLipboard.setVisibility(View.GONE);
+
                 break;
 
             case R.id.floatButton_share:
@@ -956,6 +973,11 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 menu_help.setVisibility(View.GONE);
                 menu_settings.setVisibility(View.GONE);
                 menu_download.setVisibility(View.GONE);
+
+                menu_fav.setVisibility(View.GONE);
+                menu_sc.setVisibility(View.GONE);
+                menu_openFav.setVisibility(View.GONE);
+                menu_shareCLipboard.setVisibility(View.VISIBLE);
                 break;
 
             case R.id.floatButton_save:
@@ -984,6 +1006,11 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
                 menu_settings.setVisibility(View.GONE);
                 menu_download.setVisibility(View.GONE);
+
+                menu_fav.setVisibility(View.GONE);
+                menu_sc.setVisibility(View.VISIBLE);
+                menu_openFav.setVisibility(View.GONE);
+                menu_shareCLipboard.setVisibility(View.GONE);
                 break;
 
             case R.id.floatButton_more:
@@ -1011,6 +1038,11 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 menu_searchSite.setVisibility(View.VISIBLE);
                 menu_help.setVisibility(View.VISIBLE);
                 menu_download.setVisibility(View.VISIBLE);
+
+                menu_fav.setVisibility(View.VISIBLE);
+                menu_sc.setVisibility(View.GONE);
+                menu_openFav.setVisibility(View.GONE);
+                menu_shareCLipboard.setVisibility(View.GONE);
 
                 break;
 
@@ -1333,10 +1365,12 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         open_menu = dialogView.findViewById(R.id.open_menu);
         tab_container = dialogView.findViewById(R.id.tab_container);
         tab_plus = dialogView.findViewById(R.id.tab_plus);
+        tab_plus.setOnClickListener(this);
+        tab_plus_bottom = dialogView.findViewById(R.id.tab_plus_bottom);
+        tab_plus_bottom.setOnClickListener(this);
         tab_ScrollView = dialogView.findViewById(R.id.tab_ScrollView);
         overview_top = dialogView.findViewById(R.id.overview_top);
         overview_topButtons = dialogView.findViewById(R.id.overview_topButtons);
-        tab_plus.setOnClickListener(this);
         listView = dialogView.findViewById(R.id.home_list_2);
 
         open_startPageView = dialogView.findViewById(R.id.open_newTabView);
@@ -2952,6 +2986,42 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         menu_download.setOnClickListener(BrowserActivity.this);
         menu_help = dialogView.findViewById(R.id.menu_help);
         menu_help.setOnClickListener(BrowserActivity.this);
+
+        menu_shareCLipboard = dialogView.findViewById(R.id.menu_shareCLipboard);
+        menu_shareCLipboard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideBottomSheetDialog ();
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("text", url);
+                clipboard.setPrimaryClip(clip);
+                NinjaToast.show(context, R.string.toast_copy_successful);
+            }
+        });
+        menu_openFav = dialogView.findViewById(R.id.menu_openFav);
+        menu_openFav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideBottomSheetDialog ();
+                updateAlbum(sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"));
+            }
+        });
+        menu_sc = dialogView.findViewById(R.id.menu_sc);
+        menu_sc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideBottomSheetDialog ();
+                HelperUnit.createShortcut(context, ninjaWebView.getTitle(), ninjaWebView.getUrl());
+            }
+        });
+        menu_fav = dialogView.findViewById(R.id.menu_fav);
+        menu_fav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideBottomSheetDialog ();
+                HelperUnit.setFavorite(context, url);
+            }
+        });
 
         floatButton_tabView.setBackgroundColor(vibrantColor);
         floatButton_saveView.setBackgroundColor(vibrantColor);
