@@ -314,7 +314,10 @@
     </string>
     <!-- Dialog changelog -->
     <string name="changelog_title">Changelog</string>
-    <string name="changelog_dialog">        &lt;b&gt;On the following sites you have access to all important information about \"FOSS Browser\".
+    <string name="changelog_dialog">        Your language isn\'t supported yet? You want to translate FOSS Browser? Or make improvements to existing translations?
+        Feel free to join us on Crowdin: https://crowdin.com/project/foss-browser.&lt;br&gt;&lt;br&gt;
+
+        &lt;b&gt;On the following sites you have access to all important information about \"FOSS Browser\".
         Please read also the help dialog within the app.&lt;/b&gt;&lt;br&gt;&lt;br&gt;
 
         \u25AA &lt;i&gt;Project site:&lt;/i&gt; https://github.com/scoute-dich/Browser&lt;br&gt;
@@ -357,34 +360,44 @@
         Apache License Version 2.0&lt;br&gt;
         hummatli&lt;br&gt;
         &lt;i&gt;https://github.com/hummatli/SimpleEncryptionLib</string>
-    <string name="cont_dialog">        &lt;i&gt;Prima di tutto vorrei ringraziare tutte le persone che hanno contribuito in qualche modo a questo progetto. Hanno segnalato problemi, tradotto o aiutato in qualsiasi altro modo. Sui seguenti siti puoi diventare membro attivo di questa grande comunità:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
+    <string name="cont_dialog">        &lt;i&gt;First I would like to thank all people who contributed in any way on this project. They submitted issues,
+        translated or helped in any other way. On following sites you can become a active member of this
+        great community:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
+
+        &lt;b&gt;Crowdin:&lt;/b&gt;&lt;br&gt;
+        Crowdin is an online plattform to translate applications in other languages. A big thanks to all translators. You can
+        also help.&lt;br&gt;
+        &lt;i&gt;https://crowdin.com/project/foss-browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;
+
 
         &lt;b&gt;XDA-thread:&lt;/b&gt;&lt;br&gt;
-        XDA è una grande comunità per sviluppatori e appassionati di smartphone. Qui puoi segnalare problemi, richiedere nuove funzionalità e tutto ciò che è legato a \"FOSS Browser\".&lt;br&gt;
+        XDA is a great community for developers and smartphone enthusiasts. Here you can report issues, ask for new features
+        and everything other related to \"FOSS Browser\".&lt;br&gt;
         &lt;i&gt;https://forum.xda-developers.com/android/apps-games/app-browser-t3500091&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Github:&lt;/b&gt;&lt;br&gt;
-        Su Github è possibile vedere il codice sorgente di \"FOSS Browser\". Questa è la soluzione più tecnica: problemi in sospeso, richieste di nuove funzionalità o anche aiuto per lo sviluppo o la traduzione.&lt;br&gt;
+        On Github you can see the source code of \"FOSS Browser\". This is the more technical solution: open issues, ask for new
+        features or even help developing or translating.&lt;br&gt;
         &lt;i&gt;https://github.com/scoute-dich/browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
 
 
-        &lt;i&gt;Seguono le persone che hanno contribuito a questo progetto. Se ho dimenticato qualcuno, vi prego di contattarmi:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
+        &lt;i&gt;Following people contributed at this project. If I have forgotten anybody, please contact me:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Gaukler Faun&lt;/b&gt;&lt;br&gt;
-        \u25AA Sviluppatore e iniziatore principale di questo progetto&lt;br&gt;
+        \u25AA Main developer and initiator of this project&lt;br&gt;
         &lt;i&gt;https://github.com/scoute-dich&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;CGSLURP LLC&lt;/b&gt;&lt;br&gt;
-        \u25AA Aiutato ad implementare AdBlock e \"Richiedi sito desktop\" nella versione precedente di \"FOSS Browser\".&lt;br&gt;
-        &lt;i&gt;https://github.com/futrDevelopment&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Ali Demirtas&lt;/b&gt;&lt;br&gt;
         \u25AA Turkish Translation&lt;br&gt;
         &lt;i&gt;https://github.com/ali-demirtas&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
+        &lt;b&gt;CGSLURP LLC&lt;/b&gt;&lt;br&gt;
+        \u25AA Helped to implement AdBlock and \"request desktop site\" in the previous version of \"FOSS Browser\".&lt;br&gt;
+        &lt;i&gt;https://github.com/futrDevelopment&lt;/i&gt;&lt;br&gt;&lt;br&gt;
+
         &lt;b&gt;element54&lt;/b&gt;&lt;br&gt;
         \u25AA fix: keyboard problems (issue #105)&lt;br&gt;
-        \u25AA nuovo: opzione per disattivare le finestre di dialogo di conferma all\'uscita&lt;br&gt;
+        \u25AA new: option to disable confirmation dialogs on exit&lt;br&gt;
         &lt;i&gt;https://github.com/element54&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;elmru&lt;/b&gt;&lt;br&gt;
@@ -400,7 +413,7 @@
         &lt;i&gt;https://github.com/franco27&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;gh-pmjm&lt;/b&gt;&lt;br&gt;
-        \u25AA Traduzione Polacco&lt;br&gt;
+        \u25AA Polish translation&lt;br&gt;
         &lt;i&gt;https://github.com/gh-pmjm&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;gr1sh&lt;/b&gt;&lt;br&gt;
@@ -412,7 +425,7 @@
         &lt;i&gt;https://github.com/HarryHeights&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Heimen Stoffels&lt;/b&gt;&lt;br&gt;
-        \u25AA Traduzione Olandese&lt;br&gt;
+        \u25AA Dutch translation&lt;br&gt;
         &lt;i&gt;https://github.com/Vistaus&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Hellohat&lt;/b&gt;&lt;br&gt;
@@ -420,15 +433,15 @@
         &lt;i&gt;https://github.com/Hellohat&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Herman Nunez&lt;/b&gt;&lt;br&gt;
-        \u25AA Traduzione Spagnolo&lt;br&gt;
+        \u25AA Spanish translation&lt;br&gt;
         &lt;i&gt;https://github.com/junior012&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Jumping Yang&lt;/b&gt;&lt;br&gt;
-        \u25AA Traduzione Cinese nella versione precedente di \"FOSS Browser\"&lt;br&gt;
+        \u25AA Chinese translation in the previous version of \"FOSS Browser\"&lt;br&gt;
         &lt;i&gt;https://github.com/JumpingYang001&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;lishoujun&lt;/b&gt;&lt;br&gt;
-        \u25AA Traduzione Cinese&lt;br&gt;
+        \u25AA Chinese translation&lt;br&gt;
         \u25AA bug hunting&lt;br&gt;
         &lt;i&gt;https://github.com/lishoujun&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
@@ -437,7 +450,7 @@
         &lt;i&gt;https://github.com/pbui&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Secangkir Kopi&lt;/b&gt;&lt;br&gt;
-        \u25AA Traduzione Indonesiano&lt;br&gt;
+        \u25AA Indonesian translation&lt;br&gt;
         &lt;i&gt;https://github.com/Secangkir-Kopi&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Sérgio Marques&lt;/b&gt;&lt;br&gt;
@@ -445,20 +458,25 @@
         &lt;i&gt;https://github.com/smarquespt&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;splinet&lt;/b&gt;&lt;br&gt;
-        \u25AA Traduzione Russo nella versione precedente di \"FOSS Browser\"&lt;br&gt;
+        \u25AA Russian translation in the previous version of \"FOSS Browser\"&lt;br&gt;
         &lt;i&gt;https://github.com/splinet&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
+        &lt;b&gt;SkewedZeppelin&lt;/b&gt;&lt;br&gt;
+        \u25AA Add option to enable Save-Data header&lt;br&gt;
+        &lt;i&gt;https://github.com/SkewedZeppelin&lt;/i&gt;&lt;br&gt;&lt;br&gt;
+
         &lt;b&gt;Tobiplayer3&lt;/b&gt;&lt;br&gt;
-        \u25AA added Qwant serach engine&lt;br&gt;
+        \u25AA added Qwant search engine&lt;br&gt;
+        \u25AA option to open new tab instead of exiting app&lt;br&gt;
         &lt;i&gt;https://github.com/Tobiplayer3&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Vladimir Kosolapov&lt;/b&gt;&lt;br&gt;
-        \u25AA Traduzione Russo&lt;br&gt;
+        \u25AA Russian translation&lt;br&gt;
         &lt;i&gt;https://github.com/0x264f&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;YC L&lt;/b&gt;&lt;br&gt;
-        \u25AA Traduzione Cinese&lt;br&gt;
-        &lt;i&gt;https://github.com/smallg0at&lt;/i&gt;&lt;br&gt;&lt;br&gt;
+        \u25AA Chinese Translation&lt;br&gt;
+        &lt;i&gt;https://github.com/smallg0at&lt;/i&gt;
 
     </string>
 </resources>
