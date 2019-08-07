@@ -404,6 +404,10 @@
 
     <string name="changelog_title">Changelog</string>
     <string name="changelog_dialog">
+
+        Your language isn\'t supported yet? You want to translate FOSS Browser? Or make improvements to existing translations?
+        Feel free to join us on Crowdin: https://crowdin.com/project/foss-browser.&lt;br&gt;&lt;br&gt;
+
         &lt;b>On the following sites you have access to all important information about \"FOSS Browser\".
         Please read also the help dialog within the app.&lt;/b>&lt;br>&lt;br>
 
@@ -456,6 +460,12 @@
         &lt;i>First I would like to thank all people who contributed in any way on this project. They submitted issues,
         translated or helped in any other way. On following sites you can become a active member of this
         great community:&lt;/i>&lt;br>&lt;br>
+
+        &lt;b&gt;Crowdin:&lt;/b&gt;&lt;br&gt;
+        Crowdin is an online plattform to translate applications in other languages. A big thanks to all translators. You can
+        also help.&lt;br&gt;
+        &lt;i&gt;https://crowdin.com/project/foss-browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;
+
 
         &lt;b>XDA-thread:&lt;/b>&lt;br>
         XDA is a great community for developers and smartphone enthusiasts. Here you can report issues, ask for new features

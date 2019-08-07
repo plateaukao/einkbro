@@ -19,7 +19,7 @@ browser with a nice looking user interface.
 
 
 ### Links:
-- Download [Releases](https://github.com/scoute-dich/browser/releases)
+- [Releases](https://github.com/scoute-dich/browser/releases)
 - [Changelog](https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md)
 - [Privacy](https://github.com/scoute-dich/browser/blob/master/PRIVACY.md)
 - [License](https://github.com/scoute-dich/browser/blob/master/LICENSE.md)
