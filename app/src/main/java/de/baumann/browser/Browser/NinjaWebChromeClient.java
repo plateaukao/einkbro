@@ -24,6 +24,12 @@ public class NinjaWebChromeClient extends WebChromeClient {
     }
 
     @Override
+    public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
+        //Required functionality here
+        return super.onJsAlert(view, url, message, result);
+    }
+
+    @Override
     public void onReceivedTitle(WebView view, String title) {
         super.onReceivedTitle(view, title);
         ninjaWebView.update(title, view.getUrl());
