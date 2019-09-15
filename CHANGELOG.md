@@ -1,4 +1,4 @@
-### v 6.7 (WIP)
+### v 6.7
 - new: backup and restore settings
 - fix: saving on startsite
 - fix: toolbar not showing title
