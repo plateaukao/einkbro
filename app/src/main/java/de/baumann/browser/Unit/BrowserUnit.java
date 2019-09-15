@@ -259,45 +259,6 @@ public class BrowserUnit {
         }
     }
 
-    public static void exportBookmarks(Context context) {
-
-        String filename = context.getString(R.string.export_bookmarks);
-        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "browser_backup//" + filename + SUFFIX_TXT);
-
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        String savedKey = Objects.requireNonNull(sp.getString("saved_key", "no"));
-
-        try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(file, false));
-            writer.write(savedKey);
-            writer.close();
-        } catch (Exception e) {
-            Log.w("Browser", "Error adding record", e);
-
-        }
-    }
-
-    public static void importBookmarks(Context context) {
-
-        String filename = context.getString(R.string.export_bookmarks);
-        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "browser_backup//" + filename + SUFFIX_TXT);
-
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(file));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                line = line.trim();
-
-                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-                sp.edit().putString("saved_key", line).apply();
-            }
-            reader.close();
-
-        } catch (Exception e) {
-            Log.w("Browser", "Error adding record", e);
-        }
-    }
-
     public static String exportWhitelist(Context context, int i) {
         RecordAction action = new RecordAction(context);
         List<String> list;

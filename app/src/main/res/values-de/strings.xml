@@ -330,7 +330,7 @@
 
         &lt;b&gt;Navigationsknopf&lt;/b&gt;&lt;br&gt;
         \u25AA Nach oben/unten wischen     \u2192  nach oben/unten scrollen&lt;br&gt;
-        \u25AA Nach links/rchts wischen  \u2192  zurück/vor im Browserverlauf&lt;br&gt;&lt;br&gt;
+        \u25AA Nach links/rechts wischen  \u2192  zurück/vor im Browserverlauf&lt;br&gt;&lt;br&gt;
 
         In den Einstellungen kannst du sie anpassen.
     </string>
@@ -349,9 +349,6 @@
 
         &lt;b&gt;Auf den folgenden Internetseiten findest du alle Informationen zu \"FOSS Browser\".
         Bitte lies auch den Hilfedialog in der Anwendung.&lt;/b&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;On the following sites you have access to all important information about \"FOSS Browser\".
-        Please read also the help dialog within the app.&lt;/b&gt;&lt;br&gt;&lt;br&gt;
 
         \u25AA &lt;i&gt;Project site:&lt;/i&gt; https://github.com/scoute-dich/Browser&lt;br&gt;
         \u25AA &lt;i&gt;Changelog:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;br&gt;

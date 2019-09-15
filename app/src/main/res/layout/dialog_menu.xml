@@ -640,127 +640,128 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:orientation="horizontal"
+                android:layout_marginTop="12dp"
+                android:gravity="center">
+
+                <LinearLayout
+                    android:layout_marginEnd="6dp"
+                    android:layout_marginStart="6dp"
+                    android:orientation="vertical"
+                    android:layout_width="42dp"
+                    android:layout_height="wrap_content">
+
+                    <View
+                        android:visibility="visible"
+                        android:id="@+id/floatButton_tabView"
+                        android:layout_width="42dp"
+                        android:layout_height="2dp"
+                        android:background="@color/colorAccent" />
+
+                    <ImageButton
+                        android:id="@+id/floatButton_tab"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:layout_gravity="center_vertical|center_horizontal"
+                        android:layout_marginEnd="2dp"
+                        android:layout_marginStart="2dp"
+                        android:background="?attr/actionBarItemBackground"
+                        android:src="@drawable/icon_tab_plus" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginEnd="6dp"
+                    android:layout_marginStart="6dp"
+                    android:orientation="vertical"
+                    android:layout_width="42dp"
+                    android:layout_height="wrap_content">
+
+                    <View
+                        android:visibility="invisible"
+                        android:id="@+id/floatButton_shareView"
+                        android:layout_width="42dp"
+                        android:layout_height="2dp"
+                        android:background="@color/colorAccent"
+                        tools:ignore="TooManyViews" />
+
+                    <ImageButton
+                        android:id="@+id/floatButton_share"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:layout_gravity="center_vertical|center_horizontal"
+                        android:layout_marginEnd="2dp"
+                        android:layout_marginStart="2dp"
+                        android:background="?attr/actionBarItemBackground"
+                        android:src="@drawable/icon_menu_share" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_marginEnd="6dp"
+                    android:layout_marginStart="6dp"
+                    android:orientation="vertical"
+                    android:layout_width="42dp"
+                    android:layout_height="wrap_content">
+
+                    <View
+                        android:visibility="invisible"
+                        android:id="@+id/floatButton_saveView"
+                        android:layout_width="42dp"
+                        android:layout_height="2dp"
+                        android:background="@color/colorAccent" />
+
+                    <ImageButton
+                        android:id="@+id/floatButton_save"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:layout_gravity="center_vertical|center_horizontal"
+                        android:layout_marginEnd="2dp"
+                        android:layout_marginStart="2dp"
+                        android:background="?attr/actionBarItemBackground"
+                        android:src="@drawable/icon_menu_save" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_marginEnd="6dp"
+                    android:layout_marginStart="6dp"
+                    android:orientation="vertical"
+                    android:layout_width="42dp"
+                    android:layout_height="wrap_content">
+
+                    <View
+                        android:visibility="invisible"
+                        android:id="@+id/floatButton_moreView"
+                        android:layout_width="42dp"
+                        android:layout_height="2dp"
+                        android:background="@color/colorAccent"
+                        tools:ignore="TooManyViews" />
+
+                    <ImageButton
+                        android:id="@+id/floatButton_more"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:layout_gravity="center_vertical|center_horizontal"
+                        android:layout_marginEnd="2dp"
+                        android:layout_marginStart="2dp"
+                        android:background="?attr/actionBarItemBackground"
+                        android:src="@drawable/icon_dots" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
         </LinearLayout>
 
     </ScrollView>
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="46dp"
-        android:minHeight="46dp"
-        android:orientation="horizontal"
-        android:layout_marginTop="12dp"
-        android:gravity="center">
 
-        <LinearLayout
-            android:layout_marginEnd="6dp"
-            android:layout_marginStart="6dp"
-            android:orientation="vertical"
-            android:layout_width="42dp"
-            android:layout_height="wrap_content">
-
-            <View
-                android:visibility="visible"
-                android:id="@+id/floatButton_tabView"
-                android:layout_width="42dp"
-                android:layout_height="2dp"
-                android:background="@color/colorAccent" />
-
-            <ImageButton
-                android:id="@+id/floatButton_tab"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:layout_gravity="center_vertical|center_horizontal"
-                android:layout_marginEnd="2dp"
-                android:layout_marginStart="2dp"
-                android:background="?attr/actionBarItemBackground"
-                android:src="@drawable/icon_tab_plus" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_marginEnd="6dp"
-            android:layout_marginStart="6dp"
-            android:orientation="vertical"
-            android:layout_width="42dp"
-            android:layout_height="wrap_content">
-
-            <View
-                android:visibility="invisible"
-                android:id="@+id/floatButton_shareView"
-                android:layout_width="42dp"
-                android:layout_height="2dp"
-                android:background="@color/colorAccent"
-                tools:ignore="TooManyViews" />
-
-            <ImageButton
-                android:id="@+id/floatButton_share"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:layout_gravity="center_vertical|center_horizontal"
-                android:layout_marginEnd="2dp"
-                android:layout_marginStart="2dp"
-                android:background="?attr/actionBarItemBackground"
-                android:src="@drawable/icon_menu_share" />
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_marginEnd="6dp"
-            android:layout_marginStart="6dp"
-            android:orientation="vertical"
-            android:layout_width="42dp"
-            android:layout_height="wrap_content">
-
-            <View
-                android:visibility="invisible"
-                android:id="@+id/floatButton_saveView"
-                android:layout_width="42dp"
-                android:layout_height="2dp"
-                android:background="@color/colorAccent" />
-
-            <ImageButton
-                android:id="@+id/floatButton_save"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:layout_gravity="center_vertical|center_horizontal"
-                android:layout_marginEnd="2dp"
-                android:layout_marginStart="2dp"
-                android:background="?attr/actionBarItemBackground"
-                android:src="@drawable/icon_menu_save" />
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_marginEnd="6dp"
-            android:layout_marginStart="6dp"
-            android:orientation="vertical"
-            android:layout_width="42dp"
-            android:layout_height="wrap_content">
-
-            <View
-                android:visibility="invisible"
-                android:id="@+id/floatButton_moreView"
-                android:layout_width="42dp"
-                android:layout_height="2dp"
-                android:background="@color/colorAccent"
-                tools:ignore="TooManyViews" />
-
-            <ImageButton
-                android:id="@+id/floatButton_more"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:layout_gravity="center_vertical|center_horizontal"
-                android:layout_marginEnd="2dp"
-                android:layout_marginStart="2dp"
-                android:background="?attr/actionBarItemBackground"
-                android:src="@drawable/icon_dots" />
-
-        </LinearLayout>
-
-    </LinearLayout>
     
 </LinearLayout>

@@ -3,6 +3,7 @@ package de.baumann.browser.Activity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.DownloadManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -22,6 +23,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -60,6 +62,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.CookieManager;
@@ -84,6 +87,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.mobapphome.mahencryptorlib.MAHEncryptor;
@@ -466,11 +470,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         IntentUnit.setContext(context);
         dispatchIntent(getIntent());
 
-        if (sp.getInt("restart_changed", 1) == 1) {
-            sp.edit().putInt("restart_changed", 0).apply();
-            finish();
-        }
-
         if (sp.getBoolean("pdf_create", false)) {
 
             bottomSheetDialog = new BottomSheetDialog(context);
@@ -610,36 +609,32 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             int width = size.x;
             final Bitmap icon = ViewUnit.capture(ninjaWebView, width, 112, Bitmap.Config.ARGB_8888);
 
-            new Handler().postDelayed(new Runnable() {
-                public void run() {
-                    Palette.from(icon).generate(new Palette.PaletteAsyncListener() {
-                        public void onGenerated(Palette p) {
-                            final Palette.Swatch vibrantDark = p.getDarkVibrantSwatch();
-                            final Palette.Swatch vibrant = p.getVibrantSwatch();
+            Palette.from(icon).generate(new Palette.PaletteAsyncListener() {
+                public void onGenerated(Palette p) {
+                    final Palette.Swatch vibrantDark = p.getDarkVibrantSwatch();
+                    final Palette.Swatch vibrant = p.getVibrantSwatch();
 
-                            if(vibrant != null){
-                                vibrantColor = vibrant.getRgb();
-                            } else {
-                                vibrantColor = ContextCompat.getColor(context, R.color.colorAccent);
-                            }
+                    if(vibrant != null){
+                        vibrantColor = vibrant.getRgb();
+                    } else {
+                        vibrantColor = ContextCompat.getColor(context, R.color.colorAccent);
+                    }
 
-                            if(vibrantDark != null  && isDarkColor(vibrantDark.getRgb())){
-                                vibrantDarkColor = vibrantDark.getRgb();
-                            } else {
-                                vibrantDarkColor = ContextCompat.getColor(context, R.color.colorPrimary);
-                            }
+                    if(vibrantDark != null  && isDarkColor(vibrantDark.getRgb())){
+                        vibrantDarkColor = vibrantDark.getRgb();
+                    } else {
+                        vibrantDarkColor = ContextCompat.getColor(context, R.color.colorPrimary);
+                    }
 
-                            sp.edit().putInt("vibrantColor", vibrantColor).commit();
+                    sp.edit().putInt("vibrantColor", vibrantColor).commit();
 
-                            getWindow().setStatusBarColor(vibrantDarkColor);
-                            omnibox.setBackgroundColor(vibrantDarkColor);
-                            omniboxTitle.setBackgroundColor(vibrantDarkColor);
-                            inputBox.setBackgroundColor(vibrantDarkColor);
-                            fab_imageButtonNav.setBackgroundTintList(ColorStateList.valueOf(vibrantColor));
-                        }
-                    });
+                    getWindow().setStatusBarColor(vibrantDarkColor);
+                    omnibox.setBackgroundColor(vibrantDarkColor);
+                    omniboxTitle.setBackgroundColor(vibrantDarkColor);
+                    inputBox.setBackgroundColor(vibrantDarkColor);
+                    fab_imageButtonNav.setBackgroundTintList(ColorStateList.valueOf(vibrantColor));
                 }
-            }, shortAnimTime);
+            });
         }
     }
 
@@ -659,7 +654,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         currentAlbumController = controller;
         currentAlbumController.activate();
-        activity_main.setBackgroundColor(getResources().getColor(R.color.color_light));
         updateOmnibox();
     }
 
@@ -872,10 +866,15 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 if (action.checkGridItem(url)) {
                     NinjaToast.show(context, getString(R.string.toast_already_exist_in_home));
                 } else {
+
+                    int counter = sp.getInt("counter", 0);
+                    counter = counter + 1;
+                    sp.edit().putInt("counter", counter).commit();
+
                     Bitmap bitmap = ViewUnit.capture(ninjaWebView, dimen156dp, dimen117dp, Bitmap.Config.ARGB_8888);
-                    String filename = System.currentTimeMillis() + BrowserUnit.SUFFIX_PNG;
-                    int ordinal = (int) System.currentTimeMillis();
-                    GridItem itemAlbum = new GridItem(title, url, filename, ordinal);
+                    String filename = counter + BrowserUnit.SUFFIX_PNG;
+
+                    GridItem itemAlbum = new GridItem(title, url, filename, counter);
 
                     if (BrowserUnit.bitmap2File(context, bitmap, filename) && action.addGridItem(itemAlbum)) {
                         NinjaToast.show(context, getString(R.string.toast_add_to_home_successful));
@@ -1202,7 +1201,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         omniboxOverflow = findViewById(R.id.omnibox_overflow);
         omniboxTitle = findViewById(R.id.omnibox_title);
         progressBar = findViewById(R.id.main_progress_bar);
-        activity_main = findViewById(R.id.activity_main);
 
         int fab_position = Integer.parseInt(Objects.requireNonNull(sp.getString("nav_position", "0")));
 
@@ -1569,12 +1567,8 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         bottomSheetDialog_OverView.setContentView(dialogView);
 
         mBehavior = BottomSheetBehavior.from((View) dialogView.getParent());
-
-        if (sp.getBoolean("overView_place", false)){
-            int peekHeight = Math.round(200 * getResources().getDisplayMetrics().density);
-            mBehavior.setPeekHeight(peekHeight);
-        }
-
+        int peekHeight = Math.round(200 * getResources().getDisplayMetrics().density);
+        mBehavior.setPeekHeight(peekHeight);
         mBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
@@ -1582,13 +1576,13 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 if (newState == BottomSheetBehavior.STATE_HIDDEN){
                     hideOverview();
                 } else if (newState == BottomSheetBehavior.STATE_EXPANDED){
-                    if (sp.getBoolean("overView_hide", true)){
+                    if (sp.getBoolean("overView_hide", false)){
                         overview_top.setVisibility(View.GONE);
                     } else {
                         overview_topButtons.setVisibility(View.GONE);
                     }
                 } else {
-                    if (sp.getBoolean("overView_hide", true)){
+                    if (sp.getBoolean("overView_hide", false)){
                         overview_top.setVisibility(View.VISIBLE);
                     } else {
                         overview_topButtons.setVisibility(View.VISIBLE);
@@ -2361,7 +2355,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     }
 
     private void closeTabConfirmation(final Runnable okAction) {
-        if(!sp.getBoolean("sp_close_tab_confirm", true)) {
+        if(!sp.getBoolean("sp_close_tab_confirm", false)) {
             okAction.run();
         } else {
             bottomSheetDialog = new BottomSheetDialog(context);
@@ -2456,27 +2450,24 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             return false;
 
         boolean rtnValue = false;
-
         int[] rgb = { Color.red(color), Color.green(color), Color.blue(color) };
-
-        int brightness = (int) Math.sqrt(rgb[0] * rgb[0] * .241 + rgb[1]
-                * rgb[1] * .691 + rgb[2] * rgb[2] * .068);
-
+        int brightness = (int) Math.sqrt(rgb[0] * rgb[0] * .241 + rgb[1] * rgb[1] * .691 + rgb[2] * rgb[2] * .068);
         // color is light
         if (brightness >= 200) {
             rtnValue = true;
         }
-
         return !rtnValue;
     }
 
     @Override
     public synchronized void updateProgress(int progress) {
         progressBar.setProgress(progress);
+
         updateOmnibox();
         setColor();
         scrollChange();
         initRendering(contentFrame);
+        ninjaWebView.requestFocus();
 
         if (progress < BrowserUnit.PROGRESS_MAX) {
             updateRefresh(true);
@@ -2694,12 +2685,16 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 if (action.checkGridItem(url)) {
                     NinjaToast.show(context, getString(R.string.toast_already_exist_in_home));
                 } else {
-                    Bitmap bitmap = ViewUnit.createImage(3, 3, vibrantColor);
-                    String filename = System.currentTimeMillis() + BrowserUnit.SUFFIX_PNG;
 
-                    int ordinal = (int) System.currentTimeMillis();
+                    int counter = sp.getInt("counter", 0);
+                    counter = counter + 1;
+                    sp.edit().putInt("counter", counter).commit();
+
+                    Bitmap bitmap = ViewUnit.createImage(3, 3, vibrantColor);
+                    String filename = counter + BrowserUnit.SUFFIX_PNG;
+
                     GridItem itemAlbum = new GridItem(Objects.requireNonNull(Uri.parse(url).getHost()).replace("www.", "").trim(),
-                            url, filename, ordinal);
+                            url, filename, counter);
 
                     if (BrowserUnit.bitmap2File(context, bitmap, filename) && action.addGridItem(itemAlbum)) {
                         NinjaToast.show(context, getString(R.string.toast_add_to_home_successful));
@@ -2862,7 +2857,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
     @SuppressLint("RestrictedApi")
     private void showOmnibox() {
-        if (omnibox.getVisibility() == View.GONE && searchPanel.getVisibility()  == View.GONE) {
+        if (omnibox.getVisibility() == View.GONE && searchPanel.getVisibility() == View.GONE) {
 
             String showNavButton = Objects.requireNonNull(sp.getString("sp_hideNav", "0"));
 
@@ -2905,7 +2900,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         }
 
         if (omnibox.getVisibility() == View.VISIBLE) {
-            activity_main.setBackgroundColor(vibrantDarkColor);
             omnibox.setVisibility(View.GONE);
             searchPanel.setVisibility(View.GONE);
             appBar.setVisibility(View.GONE);

@@ -35,13 +35,15 @@
 
     <PreferenceCategory android:title="@string/setting_title_theme">
 
-        <CheckBoxPreference android:key="sp_themeColor"
+        <CheckBoxPreference
+            android:key="sp_themeColor"
             android:icon="@drawable/icon_changecolor"
             android:defaultValue="true"
             android:title="@string/setting_title_themeColor"
             android:summary="@string/setting_summary_themeColor"/>
 
-        <CheckBoxPreference android:key="sp_darkUI"
+        <CheckBoxPreference
+            android:key="sp_lightUI"
             android:icon="@drawable/icon_ui"
             android:defaultValue="false"
             android:title="@string/setting_title_themeDark"
@@ -81,15 +83,9 @@
 
         <CheckBoxPreference android:key="overView_hide"
             android:icon="@drawable/view_headline"
-            android:defaultValue="true"
+            android:defaultValue="false"
             android:title="@string/setting_overView_hide_title"
             android:summary="@string/setting_overView_hide_summary"/>
-
-        <CheckBoxPreference android:key="overView_place"
-            android:icon="@drawable/view_array"
-            android:defaultValue="true"
-            android:title="@string/setting_overView_place_title"
-            android:summary="@string/setting_overView_place_summary"/>
 
         <CheckBoxPreference android:key="start_tabStart"
             android:icon="@drawable/icon_restart"
