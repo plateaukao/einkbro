@@ -144,7 +144,7 @@ public class HelperUnit {
 
     public static void applyTheme(Context context) {
         sp = PreferenceManager.getDefaultSharedPreferences(context);
-        if (sp.getBoolean("sp_darkUI", false)){
+        if (sp.getBoolean("sp_lightUI", false)){
             context.setTheme(R.style.AppTheme);
         } else {
             context.setTheme(R.style.AppTheme_dark);

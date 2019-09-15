@@ -1,6 +1,8 @@
 package de.baumann.browser.Fragment;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -8,12 +10,19 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,6 +30,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.channels.FileChannel;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import de.baumann.browser.Activity.Whitelist_Javascript;
 import de.baumann.browser.Activity.Whitelist_AdBlock;
@@ -47,6 +61,86 @@ public class Fragment_settings_data extends PreferenceFragment {
         addPreferencesFromResource(R.xml.preference_data);
     }
 
+    private static void backupUserPrefs(Context context) {
+
+        final File prefsFile = new File(context.getFilesDir(), "../shared_prefs/" + context.getPackageName() + "_preferences.xml");
+        final File backupFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS),
+                "browser_backup/preferenceBackup.xml");
+
+        try {
+            FileChannel src = new FileInputStream(prefsFile).getChannel();
+            FileChannel dst = new FileOutputStream(backupFile).getChannel();
+            dst.transferFrom(src, 0, src.size());
+            src.close();
+            dst.close();
+            NinjaToast.show(context, "Backed up user prefs to " + backupFile.getAbsolutePath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @SuppressLint("ApplySharedPref")
+    private static void restoreUserPrefs(Context context) {
+        final File backupFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS),
+                "browser_backup/preferenceBackup.xml");
+        String error;
+
+        try {
+
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+
+            InputStream inputStream = new FileInputStream(backupFile);
+
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+
+            Document doc = docBuilder.parse(inputStream);
+            Element root = doc.getDocumentElement();
+
+            Node child = root.getFirstChild();
+            while (child != null) {
+                if (child.getNodeType() == Node.ELEMENT_NODE) {
+
+                    Element element = (Element) child;
+
+                    String type = element.getNodeName();
+                    String name = element.getAttribute("name");
+
+                    // In my app, all prefs seem to get serialized as either "string" or
+                    // "boolean" - this will need expanding if yours uses any other types!
+                    if (type.equals("string")) {
+                        String value = element.getTextContent();
+                        editor.putString(name, value);
+                    } else if (type.equals("boolean")) {
+                        String value = element.getAttribute("value");
+                        editor.putBoolean(name, value.equals("true"));
+                    }
+                }
+
+                child = child.getNextSibling();
+
+            }
+
+            editor.commit();
+            NinjaToast.show(context, "Restored user prefs from " + backupFile.getAbsolutePath());
+
+            return;
+
+        } catch (IOException | SAXException | ParserConfigurationException e) {
+            error = e.getMessage();
+            e.printStackTrace();
+        }
+
+        Toast toast = Toast.makeText(context, "Failed to restore user prefs from " + backupFile.getAbsolutePath() + " - " + error, Toast.LENGTH_SHORT);
+        toast.show();
+
+    }
+
+
+
+
     @Override
     public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
 
@@ -58,20 +152,11 @@ public class Fragment_settings_data extends PreferenceFragment {
         File sd = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS);
         File data = Environment.getDataDirectory();
 
-        String previewsPath_app = "//data//" + getActivity().getPackageName() + "//files";
-        String previewsPath_backup = "browser_backup//previews";
+        String previewsPath_app = "//data//" + getActivity().getPackageName() + "//";
+        String previewsPath_backup = "browser_backup//data//";
         final File previewsFolder_app = new File(data, previewsPath_app);
         final File previewsFolder_backup = new File(sd, previewsPath_backup);
 
-        String databasePath_app = "//data//" + getActivity().getPackageName() + "//databases//Ninja4.db";
-        String databasePath_backup = "browser_backup//databases//browser_database.db";
-        String bookmarksPath_app = "//data//" + getActivity().getPackageName() + "//databases//pass_DB_v01.db";
-        String bookmarksPath_backup = "browser_backup//databases//browser_bookmarks.db";
-
-        final File databaseFile_app = new File(data, databasePath_app);
-        final File databaseFile_backup = new File(sd, databasePath_backup);
-        final File bookmarkFile_app = new File(data, bookmarksPath_app);
-        final File bookmarkFile_backup = new File(sd, bookmarksPath_backup);
 
         switch (preference.getTitleRes()) {
             case R.string.setting_title_whitelist:
@@ -316,23 +401,15 @@ public class Fragment_settings_data extends PreferenceFragment {
                                 } else {
                                     makeBackupDir();
                                     BrowserUnit.deleteDir(previewsFolder_backup);
-                                    BrowserUnit.deleteDir(databaseFile_backup);
-                                    BrowserUnit.deleteDir(bookmarkFile_backup);
-                                    BrowserUnit.exportBookmarks(getActivity());
                                     copyDirectory(previewsFolder_app, previewsFolder_backup);
-                                    copyDirectory(databaseFile_app, databaseFile_backup);
-                                    copyDirectory(bookmarkFile_app, bookmarkFile_backup);
+                                    backupUserPrefs(getActivity());
                                     NinjaToast.show(getActivity(), getString(R.string.toast_export_successful) + "browser_backup");
                                 }
                             } else {
                                 makeBackupDir();
                                 BrowserUnit.deleteDir(previewsFolder_backup);
-                                BrowserUnit.deleteDir(databaseFile_backup);
-                                BrowserUnit.deleteDir(bookmarkFile_backup);
-                                BrowserUnit.exportBookmarks(getActivity());
                                 copyDirectory(previewsFolder_app, previewsFolder_backup);
-                                copyDirectory(databaseFile_app, databaseFile_backup);
-                                copyDirectory(bookmarkFile_app, bookmarkFile_backup);
+                                backupUserPrefs(getActivity());
                                 NinjaToast.show(getActivity(), getString(R.string.toast_export_successful) + "browser_backup");
                             }
                         } catch (Exception e) {
@@ -370,17 +447,15 @@ public class Fragment_settings_data extends PreferenceFragment {
                                     HelperUnit.grantPermissionsStorage(getActivity());
                                     dialog.cancel();
                                 } else {
-                                    BrowserUnit.importBookmarks(getActivity());
+                                    BrowserUnit.deleteDir(previewsFolder_app);
                                     copyDirectory(previewsFolder_backup, previewsFolder_app);
-                                    copyDirectory(databaseFile_backup, databaseFile_app);
-                                    copyDirectory(bookmarkFile_backup, bookmarkFile_app);
+                                    restoreUserPrefs(getActivity());
                                     dialogRestart();
                                 }
                             } else {
-                                BrowserUnit.importBookmarks(getActivity());
+                                BrowserUnit.deleteDir(previewsFolder_app);
                                 copyDirectory(previewsFolder_backup, previewsFolder_app);
-                                copyDirectory(databaseFile_backup, databaseFile_app);
-                                copyDirectory(bookmarkFile_backup, bookmarkFile_app);
+                                restoreUserPrefs(getActivity());
                                 dialogRestart();
                             }
 
@@ -437,29 +512,8 @@ public class Fragment_settings_data extends PreferenceFragment {
     }
 
     private void dialogRestart () {
-        final SharedPreferences sp = getPreferenceScreen().getSharedPreferences();
-        final BottomSheetDialog dialog = new BottomSheetDialog(getActivity());
-        View dialogView = View.inflate(getActivity(), R.layout.dialog_action, null);
-        TextView textView = dialogView.findViewById(R.id.dialog_text);
-        textView.setText(R.string.toast_restart);
-        Button action_ok = dialogView.findViewById(R.id.action_ok);
-        action_ok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sp.edit().putInt("restart_changed", 1).apply();
-                getActivity().finish();
-            }
-        });
-        Button action_cancel = dialogView.findViewById(R.id.action_cancel);
-        action_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.cancel();
-            }
-        });
-        dialog.setContentView(dialogView);
-        dialog.show();
-        HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
+        SharedPreferences sp = getPreferenceScreen().getSharedPreferences();
+        sp.edit().putInt("restart_changed", 1).apply();
     }
 
     // If targetLocation does not exist, it will be created.

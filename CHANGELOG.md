@@ -1,3 +1,9 @@
+### v 6.7 (WIP)
+- new: backup and restore settings
+- fix: saving on startsite
+- fix: toolbar not showing title
+- fix: making backups
+
 ### v 6.6
 - fix: storage permission problems
 - fix: location permission problems
