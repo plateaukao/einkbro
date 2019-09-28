@@ -7,12 +7,12 @@
     <string name="app_cancel">Anulează</string>
     <string name="list_empty">Actuala listă este lipsită de conținut</string>
     <string name="album_title_bookmarks">Marcaje</string>
-    <string name="album_title_history">History</string>
-    <string name="album_title_home">Home</string>
-    <string name="album_title_files">Files</string>
+    <string name="album_title_history">Istoric</string>
+    <string name="album_title_home">Pagină de pornire</string>
+    <string name="album_title_files">Fişiere</string>
     <string name="album_untitled"></string>
-    <string name="notification_content_holderTitle">Opened tabs …</string>
-    <string name="notification_content_holder">… Click to View Pages</string>
+    <string name="notification_content_holderTitle">Ferestre deschise…</string>
+    <string name="notification_content_holder">Navighează către Vizualizează Paginile</string>
     <string name="search_hint">Search</string>
     <string name="color_red">Red</string>
     <string name="color_pink">Pink</string>
