@@ -185,10 +185,10 @@
     <string name="setting_overView">Genel Bakış</string>
     <string name="setting_overView_onStart_title">Başlangıçta göster</string>
     <string name="setting_overView_onStart_summary">Her uygulama başlangıcında \"Genel Bakış\" açılır.</string>
-    <string name="setting_overView_hide_title">Hide tab previews</string>
-    <string name="setting_overView_hide_summary">In expanded overview the tab preview will hide. Then you have more place for your
-    bookmarks.</string>
-    <string name="setting_overView_place_title">Only tab preview</string>
+    <string name="setting_overView_hide_title">Sekme önizlemelerini gizle</string>
+    <string name="setting_overView_hide_summary">Genişletilmiş bakışta, sekme önizlemesi gizlenir.  O zaman yer imleriniz için daha fazla
+    yeriniz olur.</string>
+    <string name="setting_overView_place_title">Yalnızca sekme önizlemesi</string>
     <string name="setting_overView_place_summary">Only show the tab preview when extending overview to switch tabs more comfortable.</string>
     <string name="setting_gestures">Hareketler</string>
     <string name="setting_gestures_use_title">Hareketleri kullan</string>
