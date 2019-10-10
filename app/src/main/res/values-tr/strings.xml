@@ -189,7 +189,7 @@
     <string name="setting_overView_hide_summary">Genişletilmiş bakışta, sekme önizlemesi gizlenir.  O zaman yer imleriniz için daha fazla
     yeriniz olur.</string>
     <string name="setting_overView_place_title">Yalnızca sekme önizlemesi</string>
-    <string name="setting_overView_place_summary">Only show the tab preview when extending overview to switch tabs more comfortable.</string>
+    <string name="setting_overView_place_summary">Sekmeleri daha rahat değiştirmek için genel bakışı genişletirken yalnızca sekme önizlemesini göster.</string>
     <string name="setting_gestures">Hareketler</string>
     <string name="setting_gestures_use_title">Hareketleri kullan</string>
     <string name="setting_gestures_use_summary">Araç çubuğunda ve \"Gezinme düğmesi\" üzerinde hareketleri kullanın.</string>
@@ -286,7 +286,7 @@
     <string name="whitelist_edit_hint">Etki alanı</string>
     <string name="whitelist_add">Ekle</string>
     <!-- Dialog help -->
-    <string name="dialogHelp_tipTitle">Tips</string>
+    <string name="dialogHelp_tipTitle">İpuçları</string>
     <string name="dialogHelp_tipText">        &lt;b&gt;Start site&lt;/b&gt;&lt;br&gt;
         You can decide which site loads when \"FOSS Browser\" starts: By long pressing an entry in the
         overview (Startsite, Bookmarks, History) you can choose it. Over the menu of the overview you can also set
@@ -326,24 +326,24 @@
 
         You can change this in the settings.
     </string>
-    <string name="dialogHelp_filterTitle">Filter</string>
+    <string name="dialogHelp_filterTitle">Süzgeç</string>
     <string name="dialogHelp_filterText">        You can tag your bookmarks with colors. In this way you can group your bookmarks. You can open the filter dialog by
         long pressing the bookmark icon. If you long press on an entry, you can edit its name. In the settings you can
         disable unused entries.
     </string>
     <!-- Dialog changelog -->
     <string name="changelog_title">Değişiklik günlüğü</string>
-    <string name="changelog_dialog">        Your language isn\'t supported yet? You want to translate FOSS Browser? Or make improvements to existing translations?
-        Feel free to join us on Crowdin: https://crowdin.com/project/foss-browser.&lt;br&gt;&lt;br&gt;
+    <string name="changelog_dialog">        Diliniz henüz desteklenmiyor mu?  FOSS Tarayıcısını çevirmek ister misiniz?  Veya mevcut çevirilerde geliştirmeler mi yapmak istiyorsunuz?
+        Crowdin\'de bize katılmaktan çekinmeyin: https://crowdin.com/project/foss-browser.&lt;br&gt;&lt;br&gt;
 
-        &lt;b&gt;On the following sites you have access to all important information about \"FOSS Browser\".
-        Please read also the help dialog within the app.&lt;/b&gt;&lt;br&gt;&lt;br&gt;
+        &lt;b&gt;Aşağıdaki sitelerde \"FOSS Tarayıcısı\" ile ilgili tüm önemli bilgilere erişebilirsiniz.
+        Lütfen uygulama içindeki yardım iletişim kutusunu da okuyun.&lt;/b&gt;&lt;br&gt;&lt;br&gt;
 
-        \u25AA &lt;i&gt;Project site:&lt;/i&gt; https://github.com/scoute-dich/Browser&lt;br&gt;
-        \u25AA &lt;i&gt;Changelog:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;br&gt;
-        \u25AA &lt;i&gt;FAQ:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/FAQs.md&lt;br&gt;
-        \u25AA &lt;i&gt;License:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/LICENSE.md&lt;br&gt;
-        \u25AA &lt;i&gt;Privacy:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/PRIVACY.md
+        \u25AA &lt;i&gt;Proje sitesi:&lt;/i&gt; https://github.com/scoute-dich/Browser&lt;br&gt;
+        \u25AA &lt;i&gt;Değişiklikler:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;br&gt;
+        \u25AA &lt;i&gt;SSS:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/FAQs.md&lt;br&gt;
+        \u25AA &lt;i&gt;Lisans:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/LICENSE.md&lt;br&gt;
+        \u25AA &lt;i&gt;Gizlilik:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/PRIVACY.md
 
     </string>
     <!-- License changelog -->
