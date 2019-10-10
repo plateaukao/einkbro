@@ -24,7 +24,7 @@
     <string name="color_yellow">Sarı</string>
     <string name="color_orange">Turuncu</string>
     <string name="color_brown">Kahverengi</string>
-    <string name="color_grey">Grey</string>
+    <string name="color_grey">Gri</string>
     <!-- Menu -->
     <string name="main_menu_tabPreview">Sekme önizlemesini aç</string>
     <string name="main_menu_new_tab">Yeni sekme (arka plan)</string>
@@ -33,14 +33,14 @@
     <string name="menu_open_with">Bağlantıyı aç…</string>
     <string name="menu_share">Paylaş</string>
     <string name="menu_quit">Çık</string>
-    <string name="menu_openFav">Open Favorite</string>
+    <string name="menu_openFav">Sık Kullanılanı Aç</string>
     <string name="menu_delete">Sil</string>
     <string name="menu_delete_list">Listeyi sil</string>
     <string name="menu_edit">Düzenle</string>
     <string name="menu_closeTab">Sekmeyi kapat</string>
     <string name="menu_download">İndirmeleri aç</string>
     <string name="menu_fav">Başlangıç sitesi olarak ayarla</string>
-    <string name="menu_sc">Shortcut on home screen</string>
+    <string name="menu_sc">Ana ekranda kısayol</string>
     <string name="menu_sort">Sırala …</string>
     <string name="menu_filter">Renge göre filtrele…</string>
     <string name="menu_blank">Boş başlangıç sitesi</string>
@@ -53,11 +53,11 @@
     <string name="menu_save_pdf">PDF olarak kaydet</string>
     <string name="menu_share_pdf">PDF paylaş</string>
     <string name="menu_share_pdfToast">Tamamlandı. Paylaşmak için dosya yöneticisi açılsın mı?</string>
-    <string name="menu_shareClipboard">Copy to clipboard</string>
+    <string name="menu_shareClipboard">Panoya kopyala</string>
     <string name="menu_other_searchSite">Sitede ara</string>
     <string name="menu_other_help">Yardım</string>
     <!-- Dialog -->
-    <string name="dialog_toggle_reload">Reload</string>
+    <string name="dialog_toggle_reload">Yeniden yükle</string>
     <string name="dialog_title_hint">Başlık:</string>
     <string name="dialog_url_hint">URL:</string>
     <string name="dialog_extension_hint">Uzantı (örneğin: \".jpg\"):</string>
@@ -70,7 +70,7 @@
     <string name="dialog_content_ssl_error">Sitenin sertifikası güvenilir değil. Yine de devam edilsin mi?</string>
     <string name="dialog_sortName">İsme göre sırala</string>
     <string name="dialog_sortIcon">Simgeye göre sırala</string>
-    <string name="dialog_sortDate">Sort by date</string>
+    <string name="dialog_sortDate">Tarihe göre sırala</string>
     <!-- Settings -->
     <string name="setting_label">Ayarlar</string>
     <!-- Browser setting -->
@@ -146,9 +146,9 @@
     <string name="setting_title_data">Yedekleme</string>
     <string name="setting_summary_ui">Tercihlerinize uygun olarak uygulamanın davranışını ve arayüzünü değiştirin.</string>
     <string name="setting_summary_data">Birkaç uygulama verisini (beyaz listeler, yer imleri) içe ve dışa aktarın.</string>
-    <string name="setting_filter">Bookmark filter</string>
-    <string name="setting_filter_summary">To show the filter dialog long press on the bookmark icon in the overview. Decide which
-        filters you will use.</string>
+    <string name="setting_filter">Yer imi süzgeci</string>
+    <string name="setting_filter_summary">Süzgeç iletişim kutusunu göstermek için genel bakıştaki yer imi simgesine uzun basın.  Hangi süzgeçleri kullanacağınıza 
+          karar verin.</string>
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">Araç çubuğunu gizle</string>
     <string name="setting_summary_hide">Web siteleri arasında gezinirken tüm ekranı kullanın. Eğer Geri düğmesine basarsanız
@@ -158,12 +158,12 @@
 	bağlantılar hemen açılacaktır.</string>
     <string name="setting_title_themeDark">Açık tema</string>
     <string name="setting_summary_themeDark">Biraz daha parlak mı seviyorsunuz? Yapın!</string>
-    <string name="setting_title_themeColor">Color UI</string>
-    <string name="setting_summary_themeColor">Tint some elements from the UI to match the website colors.</string>
-    <string name="setting_title_theme">UI</string>
-    <string name="setting_title_behavior">Behavior</string>
-    <string name="setting_summary_toolbarShow">Pressing back will make the toolbar visible, before going back in history.</string>
-    <string name="setting_title_toolbarShow">First toolbar</string>
+    <string name="setting_title_themeColor">Arayüz rengi</string>
+    <string name="setting_summary_themeColor">Kullanıcı arayüzündeki bazı öğeleri web sitesi renkleriyle eşleştirmek için renklendirin.</string>
+    <string name="setting_title_theme">Arayüz</string>
+    <string name="setting_title_behavior">Davranış</string>
+    <string name="setting_summary_toolbarShow">Geri basmak, geçmişe geri dönmeden önce araç çubuğunu görünür kılar.</string>
+    <string name="setting_title_toolbarShow">İlk araç çubuğu</string>
     <string name="setting_title_nav">Gezinme düğmesi</string>
     <string name="setting_title_nav_pos">Konum</string>
     <string name="setting_summary_nav_pos">\"Gezinti düğmesi\"nin nereye yerleştirileceğine karar verin.</string>
