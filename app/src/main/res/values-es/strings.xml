@@ -263,25 +263,22 @@ Para restaurar debe existir un archivo correctamente nombrado en el mismo direct
     <string name="toast_backup">Backup data? This will overwrite the old backup.</string>
     <string name="toast_fav">Agregado como sitio de inicio.</string>
     <!-- Whitelist -->
-    <string name="whitelist_menu_clear">Limpia</string>
+    <string name="whitelist_menu_clear">Limpiar</string>
     <string name="whitelist_edit_hint">Dominio</string>
     <string name="whitelist_add">Añadir</string>
     <!-- Dialog help -->
     <string name="dialogHelp_tipTitle">Tips</string>
-    <string name="dialogHelp_tipText">        &lt;b&gt;Start site&lt;/b&gt;&lt;br&gt;
-        You can decide which site loads when \"FOSS Browser\" starts: By long pressing an entry in the
-        overview (Startsite, Bookmarks, History) you can choose it. Over the menu of the overview you can also set
-        a blank start site.&lt;br&gt;&lt;br&gt;
+    <string name="dialogHelp_tipText">&lt;b&gt;Página de inicio&lt;/b&gt;&lt;br&gt;
+Puede elegir cuál sitio web se muestra cuando \"Navegador FOSS\" se inicia.
+Manteniendo presionada una entrada en la vista general (marcadores, historial) puede establecerla. También se puede establecer una página en blanco.&lt;br&gt;&lt;br&gt;
 
-        &lt;b&gt;Menus and dialogs&lt;/b&gt;&lt;br&gt;
-        All menus and dialogs are opened at the bottom of the screen. If the dialog is large you will first see only
-        the upper part. If you swipe it up, the rest will get visible.&lt;br&gt;
-        You can close them by pressing the back button, swiping them down or by clicking outside&lt;br&gt;&lt;br&gt;
+&lt;b&gt;Menús y diálogos&lt;/b&gt;&lt;br&gt;
+Todos los menús y diálogos se abren en la parte inferior de la pantalla. Si el diálogo es demasiado largo, solo se verá el principio, pudiendo arrastrar el texto para leer todo.&lt;br&gt;
+Puede cerrarlos presionando \"volver\", arrastrándolos o tocando por fuera.&lt;br&gt;&lt;br&gt;
 
-        &lt;b&gt;Long press&lt;/b&gt;&lt;br&gt;
-        If you long press the menu icon or the \"Navigation button\", the \"Fast toggle dialog\" will show. If you long
-        press the \"Bookmark icon\", the \"Filter dialog\" will show.
-    </string>
+&lt;b&gt;Pulsación larga&lt;/b&gt;&lt;br&gt;
+Si mantiene presionado el icono de menú o el \"botón de navegación\", se mostrará el diálogo de cambiado rápido.
+Si mantiene presionado el icono de marcadores, se mostrará el diálogo de filtros.</string>
     <string name="dialogHelp_overviewTitle">Overview</string>
     <string name="dialogHelp_overviewText">        There are two parts in the \"Overview\" (tab preview and personal data). There is an extra menu. In the settings
         you can change the behavior of the \"Overview\".&lt;br&gt;&lt;br&gt;
