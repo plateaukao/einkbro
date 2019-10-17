@@ -27,29 +27,29 @@
     <string name="color_grey">Gris</string>
     <!-- Menu -->
     <string name="main_menu_tabPreview">Abrir vista previa de la pestaña</string>
-    <string name="main_menu_new_tab">Nueva pestaña (Fondo)</string>
+    <string name="main_menu_new_tab">Nueva pestaña (de fondo)</string>
     <string name="main_menu_new_tabOpen">Nueva pestaña (primer plano)</string>
     <string name="main_omnibox_input_hint">Buscar o escribir URL</string>
     <string name="menu_open_with">Abrir enlace con …</string>
     <string name="menu_share">Compartir</string>
     <string name="menu_quit">Salir</string>
-    <string name="menu_openFav">Abrir favorito</string>
+    <string name="menu_openFav">Abrir favoritos</string>
     <string name="menu_delete">Borrar</string>
     <string name="menu_delete_list">Borrar lista</string>
     <string name="menu_edit">Editar</string>
     <string name="menu_closeTab">Cerrar pestaña</string>
-    <string name="menu_download">Abrir descargar</string>
-    <string name="menu_fav">Set as start site</string>
+    <string name="menu_download">Abrir descargas</string>
+    <string name="menu_fav">Guardar como página de inicio</string>
     <string name="menu_sc">Agregar a la pantalla principal</string>
     <string name="menu_sort">Ordenar por …</string>
     <string name="menu_filter">Filtrar por …</string>
-    <string name="menu_blank">Blank start site</string>
+    <string name="menu_blank">Borrar página de inicio</string>
     <string name="menu_share_screenshot">Compartir captura</string>
     <string name="menu_share_link">Compartir enlace</string>
     <string name="menu_save_screenshot">Guardar captura</string>
     <string name="menu_save_home">Guardar en inicio</string>
     <string name="menu_save_bookmark">Guardar como marcador</string>
-    <string name="menu_save_as">Guardar como…</string>
+    <string name="menu_save_as">Guardar como …</string>
     <string name="menu_save_pdf">Guardar como PDF</string>
     <string name="menu_share_pdf">Compartir PDF</string>
     <string name="menu_share_pdfToast">Completado. ¿Abrir en gestor de archivos?</string>
@@ -59,8 +59,8 @@
     <!-- Dialog -->
     <string name="dialog_toggle_reload">Recargar</string>
     <string name="dialog_title_hint">Título de entrada</string>
-    <string name="dialog_url_hint">Url:</string>
-    <string name="dialog_extension_hint">Extension (for example: \".jpg\"):</string>
+    <string name="dialog_url_hint">URL:</string>
+    <string name="dialog_extension_hint">Extensión (por ejemplo: \".jpg\"):</string>
     <string name="dialog_sign_in_username">Usuario</string>
     <string name="dialog_sign_in_password">Contraseña</string>
     <string name="dialog_button_custom">Personalizado</string>
@@ -68,9 +68,9 @@
     <string name="dialog_title_sign_in">Iniciar sesión</string>
     <string name="dialog_content_resubmission">¿desea reenviar sus datos?</string>
     <string name="dialog_content_ssl_error">No se confía en el certificado del sitio web. ¿proceder de todos modos?</string>
-    <string name="dialog_sortName">Sort by name</string>
-    <string name="dialog_sortIcon">Sort by icon</string>
-    <string name="dialog_sortDate">Sort by date</string>
+    <string name="dialog_sortName">Ordenar por nombre</string>
+    <string name="dialog_sortIcon">Ordenar por icono</string>
+    <string name="dialog_sortDate">Ordenar por fecha</string>
     <!-- Settings -->
     <string name="setting_label">Configuración</string>
     <!-- Browser setting -->
@@ -96,8 +96,8 @@
     <string name="setting_summary_font">Cambiar el tamaño de la fuente para mostrar sitios Web.</string>
     <string name="setting_title_remote">Contenido remoto</string>
     <string name="setting_summary_remote">Habilite el contenido remoto, que no es directamente del sitio web que está visitando.         Deshabilitar esto es más seguro, más rápido y ahorra volumen de datos. Pero no se mostrará más contenido.</string>
-    <string name="setting_title_save_data">Request \'Save Data\'</string>
-    <string name="setting_summary_save_data">Tell websites that you would prefer to save data. Supported websites will load faster.</string>
+    <string name="setting_title_save_data">Solicitar \"reducir datos\"</string>
+    <string name="setting_summary_save_data">Establecer que prefiere reducir el consumo de datos. Los sitios web soportados se cargarán más rápido.</string>
     <!-- Browser start -->
     <string name="setting_title_images">Imágenes</string>
     <string name="setting_summary_images">Habilitar imágenes de red. La desactivación podría ser útil para ahorrar datos móviles y para cargar sitios web más rápidamente.</string>
@@ -110,7 +110,7 @@
     <string name="setting_summary_javascript">Activar JavaScript. Muchos sitios web necesitan JavaScript para su funcionalidad (menús, carga y visualización de imágenes,…). Pero también son un riesgo y pueden ser utilizados para ataques.</string>
     <string name="setting_title_whitelistJS">lista blanca Javascript</string>
     <string name="setting_summary_whitelistJS">Si deshabilita JavaScript, puede utilizar esta lista blanca para permitir que los sitios en los que confía pueda utilizar JavaScript.</string>
-    <string name="setting_title_adblock">AdBlock</string>
+    <string name="setting_title_adblock">Bloqueador de anuncios</string>
     <string name="setting_summary_adblock">Habilite Adblock para bloquear anuncios molestos. Los sitios también se cargan más rápido cuando están activados.</string>
     <string name="setting_title_whitelist">lista blanca AdBlock</string>
     <string name="setting_summary_whitelist">Permitir que estos sitios muestren anuncios. Algunos sitios no funcionan, cuando Adblock está habilitado.</string>
@@ -135,22 +135,21 @@
     <string name="setting_title_data">Respaldo</string>
     <string name="setting_summary_ui">Cambie el comportamiento y la interfaz de usuario de la aplicación para adaptarse a sus preferencias.</string>
     <string name="setting_summary_data">Importar y exportar varios datos de App (listas blancas, marcadores).</string>
-    <string name="setting_filter">Bookmark filter</string>
-    <string name="setting_filter_summary">To show the filter dialog long press on the bookmark icon in the overview. Decide which
-        filters you will use.</string>
+    <string name="setting_filter">Filtro de marcadores</string>
+    <string name="setting_filter_summary">Para mostrar el diálogo realiza una pulsación larga en el icono de marcadores en la vista general. Decida qué filtros usará.</string>
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">Ocultar barra de herramientas</string>
     <string name="setting_summary_hide">Utilice la pantalla completa al desplazarse por sitios Web. Si pulsa el botón atrás, dejará el modo de pantalla completa.</string>
     <string name="setting_title_background">Abrir enlaces</string>
     <string name="setting_summary_background">Mostrar una notificación y abrir enlace en segundo plano. Si los enlaces deshabilitados se abren inmediatamente.</string>
-    <string name="setting_title_themeDark">Light theme</string>
+    <string name="setting_title_themeDark">Tema claro</string>
     <string name="setting_summary_themeDark">¿te gusta un poco más brillante? ¡Hazlo!</string>
-    <string name="setting_title_themeColor">Color UI</string>
-    <string name="setting_summary_themeColor">Tint some elements from the UI to match the website colors.</string>
-    <string name="setting_title_theme">UI</string>
-    <string name="setting_title_behavior">Behavior</string>
-    <string name="setting_summary_toolbarShow">Pressing back will make the toolbar visible, before going back in history.</string>
-    <string name="setting_title_toolbarShow">First toolbar</string>
+    <string name="setting_title_themeColor">Interfaz de usuario coloreada</string>
+    <string name="setting_summary_themeColor">Colorea algunos elementos de la interfaz de usuario para que coincidan con los colores del sitio web.</string>
+    <string name="setting_title_theme">Interfaz de usuario</string>
+    <string name="setting_title_behavior">Comportamiento</string>
+    <string name="setting_summary_toolbarShow">Presionar \"volver\" hará visible la barra de herramientas, antes de retroceder en el historial.</string>
+    <string name="setting_title_toolbarShow">Primero la barra de herramientas</string>
     <string name="setting_title_nav">Botón de navegación</string>
     <string name="setting_title_nav_pos">Posición</string>
     <string name="setting_summary_nav_pos">Decida dónde se colocará el \"botón de navegación\".</string>
@@ -169,10 +168,10 @@
     <string name="setting_hide_never">Nunca oculta</string>
     <string name="setting_hideNav_always">Ocultar siempre</string>
     <string name="setting_hideNav_toolbar">Cuando la barra de herramientas muestra</string>
-    <string name="setting_overView">Overview</string>
-    <string name="setting_overView_onStart_title">Show on start</string>
-    <string name="setting_overView_onStart_summary">Open the \"Overview\" on every app start.</string>
-    <string name="setting_overView_hide_title">Hide tab previews</string>
+    <string name="setting_overView">Vista general</string>
+    <string name="setting_overView_onStart_title">Mostrar al inicio</string>
+    <string name="setting_overView_onStart_summary">Abrir la vista general en cada inicio de la aplicación.</string>
+    <string name="setting_overView_hide_title">Ocultar vista previa de las pestañas</string>
     <string name="setting_overView_hide_summary">In expanded overview the tab preview will hide. Then you have more place for your
     bookmarks.</string>
     <string name="setting_overView_place_title">Only tab preview</string>
