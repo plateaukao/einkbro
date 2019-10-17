@@ -64,21 +64,21 @@
     <string name="dialog_sign_in_username">Usuario</string>
     <string name="dialog_sign_in_password">Contraseña</string>
     <string name="dialog_button_custom">Personalizado</string>
-    <string name="dialog_title_download">¿desea descargar el archivo?</string>
+    <string name="dialog_title_download">¿Desea descargar el archivo?</string>
     <string name="dialog_title_sign_in">Iniciar sesión</string>
-    <string name="dialog_content_resubmission">¿desea reenviar sus datos?</string>
-    <string name="dialog_content_ssl_error">No se confía en el certificado del sitio web. ¿proceder de todos modos?</string>
+    <string name="dialog_content_resubmission">¿Desea reenviar sus datos?</string>
+    <string name="dialog_content_ssl_error">El certificado del sitio no es seguro. ¿Continuar de todos modos?</string>
     <string name="dialog_sortName">Ordenar por nombre</string>
     <string name="dialog_sortIcon">Ordenar por icono</string>
     <string name="dialog_sortDate">Ordenar por fecha</string>
     <!-- Settings -->
     <string name="setting_label">Configuración</string>
     <!-- Browser setting -->
-    <string name="setting_title_browser">Configuración de Navegador</string>
-    <string name="setting_title_clear_control">Control de Datos</string>
-    <string name="setting_title_start_control">Iniciar control</string>
-    <string name="setting_summary_clear_control">Borre los datos de su navegador o decida qué datos se borrarán al salir de la aplicación.</string>
-    <string name="setting_summary_start_control">Decida qué componentes del explorador se habilitarán al iniciar</string>
+    <string name="setting_title_browser">Configuración del navegador</string>
+    <string name="setting_title_clear_control">Control de datos</string>
+    <string name="setting_title_start_control">Control del inicio</string>
+    <string name="setting_summary_clear_control">Borre los datos de navegación o decida qué datos se borrarán al salir de la aplicación.</string>
+    <string name="setting_summary_start_control">Decida qué componentes del navegador se habilitarán al inicio.</string>
     <string name="setting_title_search_engine">Motor de búsqueda</string>
     <string name="setting_summary_search_engine">Aquí puede elegir su motor de búsqueda preferido o establecer uno personalizado.</string>
     <string name="setting_summary_search_engine_google">Google</string>
@@ -86,14 +86,14 @@
     <string name="setting_summary_search_engine_startpage">Página de Inicio</string>
     <string name="setting_summary_search_engine_bing">Bing</string>
     <string name="setting_summary_search_engine_baidu">Baidu</string>
-    <string name="setting_summary_search_engine_startpage_de">Página de Inicio (de)</string>
+    <string name="setting_summary_search_engine_startpage_de">StartPage (de)</string>
     <string name="setting_summary_search_engine_searx">Searx</string>
     <string name="setting_summary_search_engine_qwant">Qwant</string>
     <string name="setting_summary_search_engine_ecosia">Ecosia</string>
     <string name="setting_title_inverted">Colores invertidos</string>
-    <string name="setting_summary_inverted">Si se comprueba, el contenido se renderizará en un modo de escala gris invertido. Esta es una especie de \"modo nocturno\".</string>
+    <string name="setting_summary_inverted">De activarlo, el contenido se mostrará en un modo de escala gris invertido. Es una especie de \"modo nocturno\".</string>
     <string name="setting_title_font">Tamaño de fuente</string>
-    <string name="setting_summary_font">Cambiar el tamaño de la fuente para mostrar sitios Web.</string>
+    <string name="setting_summary_font">Ajustar el tamaño del texto en sitios web.</string>
     <string name="setting_title_remote">Contenido remoto</string>
     <string name="setting_summary_remote">Habilite el contenido remoto, que no es directamente del sitio web que está visitando.         Deshabilitar esto es más seguro, más rápido y ahorra volumen de datos. Pero no se mostrará más contenido.</string>
     <string name="setting_title_save_data">Solicitar \"reducir datos\"</string>
