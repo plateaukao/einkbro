@@ -14,10 +14,10 @@
     <string name="notification_content_holderTitle">Pestañas abiertas…</string>
     <string name="notification_content_holder">… Haga clic para ver las páginas</string>
     <string name="search_hint">Búsqueda</string>
-    <string name="color_red">Red</string>
-    <string name="color_pink">Pink</string>
-    <string name="color_purple">Purple</string>
-    <string name="color_blue">Blue</string>
+    <string name="color_red">Rojo</string>
+    <string name="color_pink">Rosado</string>
+    <string name="color_purple">Púrpura</string>
+    <string name="color_blue">Azul</string>
     <string name="color_teal">Teal</string>
     <string name="color_green">Green</string>
     <string name="color_lime">Lime</string>
