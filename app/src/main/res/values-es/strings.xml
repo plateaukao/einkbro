@@ -41,8 +41,8 @@
     <string name="menu_download">Abrir descargar</string>
     <string name="menu_fav">Set as start site</string>
     <string name="menu_sc">Agregar a la pantalla principal</string>
-    <string name="menu_sort">Sort by …</string>
-    <string name="menu_filter">Filter by …</string>
+    <string name="menu_sort">Ordenar por …</string>
+    <string name="menu_filter">Filtrar por …</string>
     <string name="menu_blank">Blank start site</string>
     <string name="menu_share_screenshot">Compartir captura</string>
     <string name="menu_share_link">Compartir enlace</string>
@@ -50,14 +50,14 @@
     <string name="menu_save_home">Guardar en inicio</string>
     <string name="menu_save_bookmark">Guardar como marcador</string>
     <string name="menu_save_as">Guardar como…</string>
-    <string name="menu_save_pdf">Save as PDF</string>
-    <string name="menu_share_pdf">Share PDF</string>
-    <string name="menu_share_pdfToast">Complete. Open file manager to share?</string>
-    <string name="menu_shareClipboard">Copy to clipboard</string>
+    <string name="menu_save_pdf">Guardar como PDF</string>
+    <string name="menu_share_pdf">Compartir PDF</string>
+    <string name="menu_share_pdfToast">Completado. ¿Abrir en gestor de archivos?</string>
+    <string name="menu_shareClipboard">Copiar al portapapeles</string>
     <string name="menu_other_searchSite">Buscar en sitio web</string>
     <string name="menu_other_help">Ayuda</string>
     <!-- Dialog -->
-    <string name="dialog_toggle_reload">Reload</string>
+    <string name="dialog_toggle_reload">Recargar</string>
     <string name="dialog_title_hint">Título de entrada</string>
     <string name="dialog_url_hint">Url:</string>
     <string name="dialog_extension_hint">Extension (for example: \".jpg\"):</string>
