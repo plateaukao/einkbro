@@ -174,28 +174,28 @@ Para restaurar debe existir un archivo correctamente nombrado en el mismo direct
     <string name="setting_overView_onStart_summary">Abrir la vista general en cada inicio de la aplicación.</string>
     <string name="setting_overView_hide_title">Ocultar vista previa de las pestañas</string>
     <string name="setting_overView_hide_summary">En la vista general ampliada, se ocultará la previsualización de pestañas. Lo cual genera más espacio para sus marcadores.</string>
-    <string name="setting_overView_place_title">Only tab preview</string>
-    <string name="setting_overView_place_summary">Only show the tab preview when extending overview to switch tabs more comfortable.</string>
-    <string name="setting_gestures">Gestures</string>
-    <string name="setting_gestures_use_title">Use gestures</string>
-    <string name="setting_gestures_use_summary">Use gestures on the toolbar and the \"Navigation button\".</string>
-    <string name="setting_title_reopenLastTab">Reopen last tab</string>
-    <string name="setting_summary_reopenLastTab">Reopen a new tab when the last tab is closed instead of exiting the browser.</string>
+    <string name="setting_overView_place_title">Sólo vista previa de pestañas</string>
+    <string name="setting_overView_place_summary">Mostrar solo la previsualización de las pestañas cuando se extiende la vista general, para manejarlas más cómodamente.</string>
+    <string name="setting_gestures">Gestos</string>
+    <string name="setting_gestures_use_title">Usar gestos</string>
+    <string name="setting_gestures_use_summary">Usar gestos en la barra de herramientas y en el \"botón de navegación\".</string>
+    <string name="setting_title_reopenLastTab">Reabrir última pestaña</string>
+    <string name="setting_summary_reopenLastTab">Abrir una nueva pestaña cuando se cierre la última, en lugar de salir del navegador.</string>
     <!-- gestures -->
-    <string name="setting_title_toolbar">Toolbar</string>
-    <string name="setting_gesture_up">Swipe up</string>
-    <string name="setting_gesture_down">Swipe down</string>
-    <string name="setting_gesture_left">Swipe left</string>
-    <string name="setting_gesture_right">Swipe right</string>
-    <string name="setting_gesture_01">Nothing</string>
-    <string name="setting_gesture_02">Forward in history</string>
-    <string name="setting_gesture_03">Back in history</string>
-    <string name="setting_gesture_04">Scroll to top</string>
-    <string name="setting_gesture_05">Scroll to bottom</string>
-    <string name="setting_gesture_06">Switch to left tab</string>
-    <string name="setting_gesture_07">Switch to right tab</string>
-    <string name="setting_gesture_08">Show overview</string>
-    <string name="setting_gesture_09">Open new tab</string>
+    <string name="setting_title_toolbar">Barra de herramientas</string>
+    <string name="setting_gesture_up">Deslizar hacia arriba</string>
+    <string name="setting_gesture_down">Deslizar hacia abajo</string>
+    <string name="setting_gesture_left">Deslizar a la izquierda</string>
+    <string name="setting_gesture_right">Deslizar a la derecha</string>
+    <string name="setting_gesture_01">No hacer nada</string>
+    <string name="setting_gesture_02">Avanzar en el historial</string>
+    <string name="setting_gesture_03">Retroceder en el historial</string>
+    <string name="setting_gesture_04">Desplazarse hacia arriba</string>
+    <string name="setting_gesture_05">Desplazarse hacia abajo</string>
+    <string name="setting_gesture_06">Cambiar a pestaña a la izquierda</string>
+    <string name="setting_gesture_07">Cambiar a pestaña a la derecha</string>
+    <string name="setting_gesture_08">Mostrar vista general</string>
+    <string name="setting_gesture_09">Abrir nueva pestaña</string>
     <string name="setting_gesture_10">Cerrar pestaña</string>
     <!-- Data -->
     <string name="export_bookmarks">exportar_marcadores</string>
@@ -259,14 +259,14 @@ Para restaurar debe existir un archivo correctamente nombrado en el mismo direct
     <string name="toast_closeNotification">Cerrar todos los sitios web abiertos.</string>
     <string name="toast_downloadComplete">Descarga completa. ¿Abrir el gestor de archivos?</string>
     <string name="toast_unsecured">Este sitio web utiliza una conexión no segura (\"http\"). ¿Desea intentar una conexión segura (\"https\")?</string>
-    <string name="toast_backup">Backup data? This will overwrite the old backup.</string>
+    <string name="toast_backup">¿Respaldar datos? Esto sobrescribirá el respaldo anterior.</string>
     <string name="toast_fav">Agregado como sitio de inicio.</string>
     <!-- Whitelist -->
     <string name="whitelist_menu_clear">Limpiar</string>
     <string name="whitelist_edit_hint">Dominio</string>
     <string name="whitelist_add">Añadir</string>
     <!-- Dialog help -->
-    <string name="dialogHelp_tipTitle">Tips</string>
+    <string name="dialogHelp_tipTitle">Sugerencias</string>
     <string name="dialogHelp_tipText">&lt;b&gt;Página de inicio&lt;/b&gt;&lt;br&gt;
 Puede elegir cuál sitio web se muestra cuando \"Navegador FOSS\" se inicia.
 Manteniendo presionada una entrada en la vista general (marcadores, historial) puede establecerla. También se puede establecer una página en blanco.&lt;br&gt;&lt;br&gt;
@@ -278,7 +278,7 @@ Puede cerrarlos presionando \"volver\", arrastrándolos o tocando por fuera.&lt;
 &lt;b&gt;Pulsación larga&lt;/b&gt;&lt;br&gt;
 Si mantiene presionado el icono de menú o el \"botón de navegación\", se mostrará el diálogo de cambiado rápido.
 Si mantiene presionado el icono de marcadores, se mostrará el diálogo de filtros.</string>
-    <string name="dialogHelp_overviewTitle">Overview</string>
+    <string name="dialogHelp_overviewTitle">Vista general</string>
     <string name="dialogHelp_overviewText">        There are two parts in the \"Overview\" (tab preview and personal data). There is an extra menu. In the settings
         you can change the behavior of the \"Overview\".&lt;br&gt;&lt;br&gt;
 
@@ -290,7 +290,7 @@ Si mantiene presionado el icono de marcadores, se mostrará el diálogo de filtr
         There are three parts: the Startsite, your Bookmarks and your History. If you long click an entry
         a menu with more options will appear.
     </string>
-    <string name="dialogHelp_gesturesTitle">Gestures</string>
+    <string name="dialogHelp_gesturesTitle">Gestos</string>
     <string name="dialogHelp_gesturesText">        On the toolbar and the \"Navigation button\" you can use gestures:&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Toolbar&lt;/b&gt;&lt;br&gt;
@@ -303,13 +303,13 @@ Si mantiene presionado el icono de marcadores, se mostrará el diálogo de filtr
 
         You can change this in the settings.
     </string>
-    <string name="dialogHelp_filterTitle">Filter</string>
+    <string name="dialogHelp_filterTitle">Filtros</string>
     <string name="dialogHelp_filterText">        You can tag your bookmarks with colors. In this way you can group your bookmarks. You can open the filter dialog by
         long pressing the bookmark icon. If you long press on an entry, you can edit its name. In the settings you can
         disable unused entries.
     </string>
     <!-- Dialog changelog -->
-    <string name="changelog_title">Changelog</string>
+    <string name="changelog_title">Listado de cambios</string>
     <string name="changelog_dialog">        Your language isn\'t supported yet? You want to translate FOSS Browser? Or make improvements to existing translations?
         Feel free to join us on Crowdin: https://crowdin.com/project/foss-browser.&lt;br&gt;&lt;br&gt;
 
