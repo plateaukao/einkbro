@@ -26,7 +26,7 @@
     <string name="color_brown">Marrón</string>
     <string name="color_grey">Gris</string>
     <!-- Menu -->
-    <string name="main_menu_tabPreview">Abrir vista previa de la pestaña</string>
+    <string name="main_menu_tabPreview">Abrir previsualización de pestañas</string>
     <string name="main_menu_new_tab">Nueva pestaña (de fondo)</string>
     <string name="main_menu_new_tabOpen">Nueva pestaña (primer plano)</string>
     <string name="main_omnibox_input_hint">Buscar o escribir URL</string>
@@ -172,9 +172,9 @@ Para restaurar debe existir un archivo correctamente nombrado en el mismo direct
     <string name="setting_overView">Vista general</string>
     <string name="setting_overView_onStart_title">Mostrar al inicio</string>
     <string name="setting_overView_onStart_summary">Abrir la vista general en cada inicio de la aplicación.</string>
-    <string name="setting_overView_hide_title">Ocultar vista previa de las pestañas</string>
+    <string name="setting_overView_hide_title">Ocultar previsualización de pestañas</string>
     <string name="setting_overView_hide_summary">En la vista general ampliada, se ocultará la previsualización de pestañas. Lo cual genera más espacio para sus marcadores.</string>
-    <string name="setting_overView_place_title">Sólo vista previa de pestañas</string>
+    <string name="setting_overView_place_title">Sólo previsualización de pestañas</string>
     <string name="setting_overView_place_summary">Mostrar solo la previsualización de las pestañas cuando se extiende la vista general, para manejarlas más cómodamente.</string>
     <string name="setting_gestures">Gestos</string>
     <string name="setting_gestures_use_title">Usar gestos</string>
@@ -279,17 +279,13 @@ Puede cerrarlos presionando \"volver\", arrastrándolos o tocando por fuera.&lt;
 Si mantiene presionado el icono de menú o el \"botón de navegación\", se mostrará el diálogo de cambiado rápido.
 Si mantiene presionado el icono de marcadores, se mostrará el diálogo de filtros.</string>
     <string name="dialogHelp_overviewTitle">Vista general</string>
-    <string name="dialogHelp_overviewText">        There are two parts in the \"Overview\" (tab preview and personal data). There is an extra menu. In the settings
-        you can change the behavior of the \"Overview\".&lt;br&gt;&lt;br&gt;
+    <string name="dialogHelp_overviewText">Hay dos partes en la vista general - Previsualización de pestañas y contenido personal. En la configuración puede cambiar el comportamiento de la vista general.&lt;br&gt;&lt;br&gt;
 
-        &lt;b&gt;Tab preview&lt;/b&gt;&lt;br&gt;
-        It is the upper part of the \"Overview\". To change tabs just click the preview. To close a tab long press the
-        preview. If you swipe the tab preview up, your personal content will open.&lt;br&gt;&lt;br&gt;
+&lt;b&gt;Previsualización de pestañas&lt;/b&gt;&lt;br&gt;
+Es la parte superior de la vista general. Para cambiar pestañas, solo presione sobre la previsualización. Para cerrarla, mantenga pulsada la pestaña. Si se desplaza hacia arriba, se mostrará su contenido personal.&lt;br&gt;&lt;br&gt;
 
-        &lt;b&gt;Personal content&lt;/b&gt;&lt;br&gt;
-        There are three parts: the Startsite, your Bookmarks and your History. If you long click an entry
-        a menu with more options will appear.
-    </string>
+&lt;b&gt;Contenido personal&lt;/b&gt;&lt;br&gt;
+Tiene tres partes: la página de inicio, sus marcadores y el historial. Si mantiene presionado sobre una de estas entradas, aparecerá un menú con más opciones.</string>
     <string name="dialogHelp_gesturesTitle">Gestos</string>
     <string name="dialogHelp_gesturesText">        On the toolbar and the \"Navigation button\" you can use gestures:&lt;br&gt;&lt;br&gt;
 
