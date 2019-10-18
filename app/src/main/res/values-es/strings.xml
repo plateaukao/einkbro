@@ -173,8 +173,7 @@ Para restaurar debe existir un archivo correctamente nombrado en el mismo direct
     <string name="setting_overView_onStart_title">Mostrar al inicio</string>
     <string name="setting_overView_onStart_summary">Abrir la vista general en cada inicio de la aplicación.</string>
     <string name="setting_overView_hide_title">Ocultar vista previa de las pestañas</string>
-    <string name="setting_overView_hide_summary">In expanded overview the tab preview will hide. Then you have more place for your
-    bookmarks.</string>
+    <string name="setting_overView_hide_summary">En la vista general ampliada, se ocultará la previsualización de pestañas. Lo cual genera más espacio para sus marcadores.</string>
     <string name="setting_overView_place_title">Only tab preview</string>
     <string name="setting_overView_place_summary">Only show the tab preview when extending overview to switch tabs more comfortable.</string>
     <string name="setting_gestures">Gestures</string>
