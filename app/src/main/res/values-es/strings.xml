@@ -268,8 +268,8 @@ Para restaurar debe existir un archivo correctamente nombrado en el mismo direct
     <!-- Dialog help -->
     <string name="dialogHelp_tipTitle">Sugerencias</string>
     <string name="dialogHelp_tipText">&lt;b&gt;Página de inicio&lt;/b&gt;&lt;br&gt;
-Puede elegir cuál sitio web se muestra cuando \"Navegador FOSS\" se inicia.
-Manteniendo presionada una entrada en la vista general (marcadores, historial) puede establecerla. También se puede establecer una página en blanco.&lt;br&gt;&lt;br&gt;
+Puede elegir cuál sitio web se muestra al inicio de \"Navegador FOSS\".
+Manteniendo presionada una entrada en la vista general (marcadores, historial) puede establecerla como página de inicio. También se puede establecer una página en blanco.&lt;br&gt;&lt;br&gt;
 
 &lt;b&gt;Menús y diálogos&lt;/b&gt;&lt;br&gt;
 Todos los menús y diálogos se abren en la parte inferior de la pantalla. Si el diálogo es demasiado largo, solo se verá el principio, pudiendo arrastrar el texto para leer todo.&lt;br&gt;
@@ -287,23 +287,21 @@ Es la parte superior de la vista general. Para cambiar pestañas, solo presione 
 &lt;b&gt;Contenido personal&lt;/b&gt;&lt;br&gt;
 Tiene tres partes: la página de inicio, sus marcadores y el historial. Si mantiene presionado sobre una de estas entradas, aparecerá un menú con más opciones.</string>
     <string name="dialogHelp_gesturesTitle">Gestos</string>
-    <string name="dialogHelp_gesturesText">        On the toolbar and the \"Navigation button\" you can use gestures:&lt;br&gt;&lt;br&gt;
+    <string name="dialogHelp_gesturesText">Puede usar gestos en la barra de herramientas o en el \"botón de navegación\" (por defecto):&lt;br&gt;&lt;br&gt;
 
-        &lt;b&gt;Toolbar&lt;/b&gt;&lt;br&gt;
-        \u25AA swipe up/down     \u2192  show Overview/nothing&lt;br&gt;
-        \u25AA swipe left/right  \u2192  change tabs&lt;br&gt;&lt;br&gt;
+&lt;b&gt;Barra de herramientas&lt;/b&gt;&lt;br&gt;
+\u25AA Deslizarse hacia arriba/abajo  \u2192  mostrar vista general/no hacer nada&lt;br&gt;
+\u25AA Deslizarse a la izqui./derecha  \u2192 cambiar pestañas&lt;br&gt;&lt;br&gt;
 
-        &lt;b&gt;Navigation button&lt;/b&gt;&lt;br&gt;
-        \u25AA swipe up/down     \u2192  scroll up/down&lt;br&gt;
-        \u25AA swipe left/right  \u2192  previous/next in history&lt;br&gt;&lt;br&gt;
+&lt;b&gt;Botón de navegación&lt;/b&gt;&lt;br&gt;
+\u25AA Deslizarse hacia arriba/abajo  \u2192  desplazarse arriba/abajo&lt;br&gt;
+\u25AA Deslizarse a la izqui./derecha  \u2192  historial anterior/siguiente&lt;br&gt;&lt;br&gt;
 
-        You can change this in the settings.
+En la configuración puede cambiar las acciones a realizar.
     </string>
     <string name="dialogHelp_filterTitle">Filtros</string>
-    <string name="dialogHelp_filterText">        You can tag your bookmarks with colors. In this way you can group your bookmarks. You can open the filter dialog by
-        long pressing the bookmark icon. If you long press on an entry, you can edit its name. In the settings you can
-        disable unused entries.
-    </string>
+    <string name="dialogHelp_filterText">Puede destacar sus marcadores con colores. Y de esta forma agruparlos para filtrarlos por color. El diálogo de filtros puede ser abierto con una pulsación larga sobre el botón de marcadores.
+Si mantiene presionado sobre una entrada, se abrirá un menú donde puede entre otras cosas renombrar o borrar el marcador.</string>
     <!-- Dialog changelog -->
     <string name="changelog_title">Listado de cambios</string>
     <string name="changelog_dialog">        Your language isn\'t supported yet? You want to translate FOSS Browser? Or make improvements to existing translations?
