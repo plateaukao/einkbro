@@ -10,7 +10,7 @@
     android:paddingTop="15dp"
     tools:ignore="Autofill">
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
@@ -24,7 +24,7 @@
             android:inputType="text"
             android:hint="@string/dialog_title_hint" />
 
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -38,7 +38,7 @@
             android:layout_alignParentEnd="true"
             android:includeFontPadding="false"
             android:background="?attr/selectableItemBackground"
-            android:textColor="@color/colorAccent"
+            android:textColor="?android:attr/colorAccent"
             android:text="@string/app_ok"/>
 
         <Button android:id="@+id/action_cancel"
@@ -47,7 +47,7 @@
             android:includeFontPadding="false"
             android:layout_toStartOf="@+id/action_ok"
             android:background="?attr/selectableItemBackground"
-            android:textColor="@color/colorAccent"
+            android:textColor="?android:attr/colorAccent"
             android:text="@string/app_cancel"/>
 
     </RelativeLayout>

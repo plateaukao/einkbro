@@ -18,18 +18,18 @@
 
         <ImageView
             android:id="@+id/ib_icon"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_gravity="center"
-            android:background="?attr/actionBarItemBackground"
+            android:layout_width="8dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
             android:contentDescription="@null"
-            android:src="@drawable/circle_red" />
+            android:scaleType="fitCenter"
+            android:src="@drawable/circle_red_big" />
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/login_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="16dp"
             app:passwordToggleEnabled="false" >
 
             <EditText
@@ -40,11 +40,11 @@
                 android:inputType="text"
                 android:hint="@string/dialog_title_hint" />
 
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:passwordToggleEnabled="false" >
@@ -57,9 +57,9 @@
             android:inputType="textUri"
             android:hint="@string/dialog_url_hint" />
 
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:passwordToggleEnabled="false" >
@@ -72,9 +72,9 @@
             android:inputType="text"
             android:hint="@string/dialog_sign_in_username" />
 
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:passwordToggleEnabled="true" >
@@ -87,7 +87,7 @@
             android:inputType="textPassword"
             android:hint="@string/dialog_sign_in_password" />
 
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -101,7 +101,7 @@
             android:layout_alignParentEnd="true"
             android:includeFontPadding="false"
             android:background="?attr/selectableItemBackground"
-            android:textColor="@color/colorAccent"
+            android:textColor="?android:attr/colorAccent"
             android:text="@string/app_ok"/>
 
         <Button android:id="@+id/action_cancel"
@@ -110,7 +110,7 @@
             android:layout_toStartOf="@+id/action_ok"
             android:includeFontPadding="false"
             android:background="?attr/selectableItemBackground"
-            android:textColor="@color/colorAccent"
+            android:textColor="?attr/colorAccent"
             android:text="@string/app_cancel"/>
 
     </RelativeLayout>

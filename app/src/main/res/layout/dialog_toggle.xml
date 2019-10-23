@@ -1,373 +1,394 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+<LinearLayout
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="8dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
     android:background="?android:attr/colorBackground"
-    tools:ignore="ContentDescription"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    tools:ignore="ContentDescription" >
 
-    <LinearLayout
-        android:orientation="vertical"
+    <TextView
+        android:id="@+id/dialog_title"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:includeFontPadding="false"
+        android:padding="8dp"
+        android:ellipsize="end"
+        android:gravity="center_vertical|center_horizontal"
+        android:maxLines="1"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="bold"
+        android:textColor="?android:attr/textColorSecondary" />
+
+    <View
+        android:layout_margin="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/colorButtonNormal" />
+
+    <ScrollView android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp" >
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:background="?android:attr/colorBackground">
 
-        <RelativeLayout
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="46dp"
-            android:minHeight="46dp"
-            android:padding="8dp">
+            android:layout_height="wrap_content" >
 
-            <ImageView
-                android:id="@+id/abIcon"
-                android:paddingTop="6dp"
-                android:paddingBottom="6dp"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:padding="8dp">
+
+                <ImageView
+                    android:id="@+id/abIcon"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginEnd="16dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/icon_block" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_toEndOf="@+id/abIcon"
+                    android:layout_toStartOf="@+id/imageButton_ab"
+                    android:includeFontPadding="false"
+                    android:gravity="center_vertical"
+                    android:text="@string/setting_title_adblock"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <CheckBox
+                    android:layout_centerVertical="true"
+                    android:id="@+id/switch_adBlock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:checked="false" />
+
+                <ImageButton
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:id="@+id/imageButton_ab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_toStartOf="@+id/switch_adBlock"
+                    android:background="?attr/actionBarItemBackground"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/ic_action_close_red" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:padding="8dp">
+
+                <ImageView
+                    android:id="@+id/jsIcon"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginEnd="16dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/icon_java"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_toEndOf="@+id/jsIcon"
+                    android:layout_toStartOf="@+id/imageButton_js"
+                    android:includeFontPadding="false"
+                    android:gravity="center_vertical"
+                    android:text="@string/setting_title_javascript"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                <CheckBox
+                    android:layout_centerVertical="true"
+                    android:id="@+id/switch_js"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:checked="false" />
+
+                <ImageButton
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:id="@+id/imageButton_js"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_toStartOf="@+id/switch_js"
+                    android:background="?attr/actionBarItemBackground"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/ic_action_close_red"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:padding="8dp"
+                android:layout_marginBottom="8dp">
+
+                <ImageView
+                    android:layout_centerVertical="true"
+                    android:id="@+id/cookieIcon"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginEnd="16dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/icon_cookie"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_toEndOf="@+id/cookieIcon"
+                    android:layout_toStartOf="@+id/imageButton_cookie"
+                    android:includeFontPadding="false"
+                    android:gravity="center_vertical"
+                    android:text="@string/setting_title_cookie"
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+                <CheckBox
+                    android:layout_centerVertical="true"
+                    android:id="@+id/switch_cookie"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:checked="false"/>
+
+                <ImageButton
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:id="@+id/imageButton_cookie"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_toStartOf="@+id/switch_cookie"
+                    android:background="?attr/actionBarItemBackground"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/ic_action_close_red"/>
+
+            </RelativeLayout>
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_alignParentStart="true"
-                android:layout_marginEnd="16dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/icon_block" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_toEndOf="@+id/abIcon"
-                android:layout_toStartOf="@+id/imageButton_ab"
-                android:includeFontPadding="false"
-                android:gravity="center_vertical"
-                android:text="@string/setting_title_adblock"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <CheckBox
-                android:layout_centerVertical="true"
-                android:id="@+id/switch_adBlock"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentEnd="true"
-                android:checked="false" />
-
-            <ImageButton
-                android:paddingTop="6dp"
-                android:paddingBottom="6dp"
-                android:id="@+id/imageButton_ab"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_toStartOf="@+id/switch_adBlock"
-                android:background="?attr/actionBarItemBackground"
-                android:scaleType="centerCrop"
-                app:srcCompat="@drawable/ic_action_close_red" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="46dp"
-            android:minHeight="46dp"
-            android:padding="8dp">
-
-            <ImageView
-                android:id="@+id/jsIcon"
-                android:paddingTop="6dp"
-                android:paddingBottom="6dp"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentStart="true"
-                android:layout_marginEnd="16dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/icon_java"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_toEndOf="@+id/jsIcon"
-                android:layout_toStartOf="@+id/imageButton_js"
-                android:includeFontPadding="false"
-                android:gravity="center_vertical"
-                android:text="@string/setting_title_javascript"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <CheckBox
-                android:layout_centerVertical="true"
-                android:id="@+id/switch_js"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentEnd="true"
-                android:checked="false" />
-
-            <ImageButton
-                android:paddingTop="6dp"
-                android:paddingBottom="6dp"
-                android:id="@+id/imageButton_js"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_toStartOf="@+id/switch_js"
-                android:background="?attr/actionBarItemBackground"
-                android:scaleType="centerCrop"
-                app:srcCompat="@drawable/ic_action_close_red"/>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="46dp"
-            android:minHeight="46dp"
-            android:padding="8dp">
-
-            <ImageView
-                android:layout_centerVertical="true"
-                android:id="@+id/cookieIcon"
-                android:paddingTop="6dp"
-                android:paddingBottom="6dp"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentStart="true"
-                android:layout_marginEnd="16dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/icon_cookie"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_toEndOf="@+id/cookieIcon"
-                android:layout_toStartOf="@+id/imageButton_cookie"
-                android:includeFontPadding="false"
-                android:gravity="center_vertical"
-                android:text="@string/setting_title_cookie"
-                android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-            <CheckBox
-                android:layout_centerVertical="true"
-                android:id="@+id/switch_cookie"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentEnd="true"
-                android:checked="false"/>
-
-            <ImageButton
-                android:paddingTop="6dp"
-                android:paddingBottom="6dp"
-                android:id="@+id/imageButton_cookie"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_toStartOf="@+id/switch_cookie"
-                android:background="?attr/actionBarItemBackground"
-                android:scaleType="centerCrop"
-                app:srcCompat="@drawable/ic_action_close_red"/>
-
-        </RelativeLayout>
-
-        <View
-            android:layout_margin="8dp"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?android:attr/colorButtonNormal" />
-
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="8dp">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:layout_gravity="center_horizontal">
+                android:padding="8dp">
 
                 <LinearLayout
-                    android:layout_width="42dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:layout_marginEnd="6dp"
-                    android:orientation="vertical">
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center_horizontal">
 
-                    <View
-                        android:id="@+id/toggle_historyView"
+                    <LinearLayout
                         android:layout_width="42dp"
-                        android:layout_height="2dp"
-                        android:background="@color/colorAccent" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:layout_marginEnd="6dp"
+                        android:orientation="vertical">
 
-                    <ImageButton
-                        android:id="@+id/toggle_history"
+                        <View
+                            android:id="@+id/toggle_historyView"
+                            android:layout_width="42dp"
+                            android:layout_height="2dp"
+                            android:background="?android:attr/colorAccent" />
+
+                        <ImageButton
+                            android:id="@+id/toggle_history"
+                            android:layout_width="42dp"
+                            android:layout_height="42dp"
+                            android:layout_gravity="center_vertical|center_horizontal"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginEnd="2dp"
+                            android:background="?attr/actionBarItemBackground"
+                            android:src="@drawable/icon_history" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:layout_width="42dp"
-                        android:layout_height="42dp"
-                        android:layout_gravity="center_vertical|center_horizontal"
-                        android:layout_marginStart="2dp"
-                        android:layout_marginEnd="2dp"
-                        android:background="?attr/actionBarItemBackground"
-                        android:src="@drawable/icon_history" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:layout_marginEnd="6dp"
+                        android:orientation="vertical">
+
+                        <View
+                            android:id="@+id/toggle_locationView"
+                            android:layout_width="42dp"
+                            android:layout_height="2dp"
+                            android:background="?android:attr/colorAccent" />
+
+                        <ImageButton
+                            android:id="@+id/toggle_location"
+                            android:layout_width="42dp"
+                            android:layout_height="42dp"
+                            android:layout_gravity="center_vertical|center_horizontal"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginEnd="2dp"
+                            android:background="?attr/actionBarItemBackground"
+                            android:src="@drawable/icon_location" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="42dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:layout_marginEnd="6dp"
+                        android:orientation="vertical">
+
+                        <View
+                            android:id="@+id/toggle_imagesView"
+                            android:layout_width="42dp"
+                            android:layout_height="2dp"
+                            android:background="?android:attr/colorAccent" />
+
+                        <ImageButton
+                            android:id="@+id/toggle_images"
+                            android:layout_width="42dp"
+                            android:layout_height="42dp"
+                            android:layout_gravity="center_vertical|center_horizontal"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginEnd="2dp"
+                            android:background="?attr/actionBarItemBackground"
+                            android:src="@drawable/icon_image" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="42dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:layout_marginEnd="6dp"
+                        android:orientation="vertical">
+
+                        <View
+                            android:id="@+id/toggle_remoteView"
+                            android:layout_width="42dp"
+                            android:layout_height="2dp"
+                            android:background="?android:attr/colorAccent" />
+
+                        <ImageButton
+                            android:id="@+id/toggle_remote"
+                            android:layout_width="42dp"
+                            android:layout_height="42dp"
+                            android:layout_gravity="center_vertical|center_horizontal"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginEnd="2dp"
+                            android:background="?attr/actionBarItemBackground"
+                            android:src="@drawable/icon_remote" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="42dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:layout_marginEnd="6dp"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <View
+                            android:id="@+id/toggle_invertView"
+                            android:layout_width="42dp"
+                            android:layout_height="2dp"
+                            android:background="?android:attr/colorAccent" />
+
+                        <ImageButton
+                            android:id="@+id/toggle_invert"
+                            android:layout_width="42dp"
+                            android:layout_height="42dp"
+                            android:layout_gravity="center_vertical|center_horizontal"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginEnd="2dp"
+                            android:background="?attr/actionBarItemBackground"
+                            android:src="@drawable/icon_night" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="42dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:layout_marginEnd="6dp"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <View
+                            android:layout_width="42dp"
+                            android:layout_height="2dp"
+                            android:background="?android:attr/colorAccent"
+                            android:visibility="invisible" />
+
+                        <ImageButton
+                            android:id="@+id/toggle_font"
+                            android:layout_width="42dp"
+                            android:layout_height="42dp"
+                            android:layout_gravity="center_vertical|center_horizontal"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginEnd="2dp"
+                            android:background="?attr/actionBarItemBackground"
+                            android:src="@drawable/icon_settings" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="42dp"
+            </HorizontalScrollView>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp">
+
+                <Button
+                    android:id="@+id/action_ok"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:layout_marginEnd="6dp"
-                    android:orientation="vertical">
+                    android:layout_alignParentEnd="true"
+                    android:includeFontPadding="false"
+                    android:background="?attr/selectableItemBackground"
+                    android:textColor="?android:attr/colorAccent"
+                    android:text="@string/dialog_toggle_reload"
+                    android:layout_marginEnd="6dp"/>
 
-                    <View
-                        android:id="@+id/toggle_locationView"
-                        android:layout_width="42dp"
-                        android:layout_height="2dp"
-                        android:background="@color/colorAccent" />
-
-                    <ImageButton
-                        android:id="@+id/toggle_location"
-                        android:layout_width="42dp"
-                        android:layout_height="42dp"
-                        android:layout_gravity="center_vertical|center_horizontal"
-                        android:layout_marginStart="2dp"
-                        android:layout_marginEnd="2dp"
-                        android:background="?attr/actionBarItemBackground"
-                        android:src="@drawable/icon_location" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="42dp"
+                <Button android:id="@+id/action_cancel"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:layout_marginEnd="6dp"
-                    android:orientation="vertical">
+                    android:layout_toStartOf="@+id/action_ok"
+                    android:includeFontPadding="false"
+                    android:background="?attr/selectableItemBackground"
+                    android:textColor="?android:attr/colorAccent"
+                    android:text="@string/app_ok"/>
 
-                    <View
-                        android:id="@+id/toggle_imagesView"
-                        android:layout_width="42dp"
-                        android:layout_height="2dp"
-                        android:background="@color/colorAccent" />
+            </RelativeLayout>
 
-                    <ImageButton
-                        android:id="@+id/toggle_images"
-                        android:layout_width="42dp"
-                        android:layout_height="42dp"
-                        android:layout_gravity="center_vertical|center_horizontal"
-                        android:layout_marginStart="2dp"
-                        android:layout_marginEnd="2dp"
-                        android:background="?attr/actionBarItemBackground"
-                        android:src="@drawable/icon_image" />
+        </LinearLayout>
 
-                </LinearLayout>
+    </ScrollView>
 
-                <LinearLayout
-                    android:layout_width="42dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:layout_marginEnd="6dp"
-                    android:orientation="vertical">
-
-                    <View
-                        android:id="@+id/toggle_remoteView"
-                        android:layout_width="42dp"
-                        android:layout_height="2dp"
-                        android:background="@color/colorAccent" />
-
-                    <ImageButton
-                        android:id="@+id/toggle_remote"
-                        android:layout_width="42dp"
-                        android:layout_height="42dp"
-                        android:layout_gravity="center_vertical|center_horizontal"
-                        android:layout_marginStart="2dp"
-                        android:layout_marginEnd="2dp"
-                        android:background="?attr/actionBarItemBackground"
-                        android:src="@drawable/icon_remote" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="42dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:layout_marginEnd="6dp"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <View
-                        android:id="@+id/toggle_invertView"
-                        android:layout_width="42dp"
-                        android:layout_height="2dp"
-                        android:background="@color/colorAccent" />
-
-                    <ImageButton
-                        android:id="@+id/toggle_invert"
-                        android:layout_width="42dp"
-                        android:layout_height="42dp"
-                        android:layout_gravity="center_vertical|center_horizontal"
-                        android:layout_marginStart="2dp"
-                        android:layout_marginEnd="2dp"
-                        android:background="?attr/actionBarItemBackground"
-                        android:src="@drawable/icon_night" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="42dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:layout_marginEnd="6dp"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <View
-                        android:layout_width="42dp"
-                        android:layout_height="2dp"
-                        android:background="@color/colorAccent"
-                        android:visibility="invisible" />
-
-                    <ImageButton
-                        android:id="@+id/toggle_font"
-                        android:layout_width="42dp"
-                        android:layout_height="42dp"
-                        android:layout_gravity="center_vertical|center_horizontal"
-                        android:layout_marginStart="2dp"
-                        android:layout_marginEnd="2dp"
-                        android:background="?attr/actionBarItemBackground"
-                        android:src="@drawable/icon_settings" />
-
-                </LinearLayout>
-
-
-            </LinearLayout>
-
-        </HorizontalScrollView>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="46dp"
-            android:minHeight="46dp">
-
-            <Button
-                android:id="@+id/action_ok"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:includeFontPadding="false"
-                android:background="?attr/selectableItemBackground"
-                android:textColor="@color/colorAccent"
-                android:text="@string/dialog_toggle_reload"
-                android:layout_marginEnd="6dp"/>
-
-            <Button android:id="@+id/action_cancel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toStartOf="@+id/action_ok"
-                android:includeFontPadding="false"
-                android:background="?attr/selectableItemBackground"
-                android:textColor="@color/colorAccent"
-                android:text="@string/app_ok"/>
-
-        </RelativeLayout>
-
-    </LinearLayout>
-
-</ScrollView>
+</LinearLayout>
 
 

@@ -13,6 +13,7 @@
         <item>@string/setting_summary_search_engine_searx</item>
         <item>@string/setting_summary_search_engine_qwant</item>
         <item>@string/setting_summary_search_engine_ecosia</item>
+        <item>@string/setting_title_searchEngine</item>
     </string-array>
 
     <string-array name="setting_values_search_engine">
@@ -25,6 +26,7 @@
         <item>6</item>
         <item>7</item>
         <item>9</item>
+        <item>8</item>
     </string-array>
 
     <!-- User agent -->
@@ -125,6 +127,19 @@
         <item>125</item>
         <item>150</item>
         <item>175</item>
+    </string-array>
+
+    <!-- theme -->
+    <string-array name="setting_entries_theme">
+        <item>@string/setting_theme_system</item>
+        <item>@string/setting_theme_light</item>
+        <item>@string/setting_theme_dark</item>
+    </string-array>
+
+    <string-array name="setting_values_theme">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
     </string-array>
 
     <!-- General -->

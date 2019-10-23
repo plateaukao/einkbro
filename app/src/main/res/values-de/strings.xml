@@ -51,7 +51,7 @@
     <string name="menu_share_pdf">PDF teilen</string>
     <string name="menu_shareClipboard">Kopiere in Zwischenablage</string>
     <string name="menu_other_searchSite">Suche auf Seite</string>
-    <string name="menu_other_fileManager">Dateimanager öffnen</string>
+    <string name="menu_other_fileManager">Öffne Dateimanager</string>
     <string name="menu_other_info">Über \"FOSS Browser\"</string>
     <string name="menu_other_help">Hilfe</string>
     <!-- Dialog -->
@@ -130,8 +130,9 @@
     <string name="setting_title_history">Verlauf</string>
     <string name="setting_summary_history">Speichere den Verlauf der besuchten Internetseiten.</string>
     <!-- browser clear -->
-    <string name="data_summary">Alle Dateien werden in das \"Android/data/de.baumann.browser/files/browser_backup/\"
-        Verzeichnis deiner Sd-Karte exportiert. Dieses Verzeichnis wird GELÖSCHT, wenn du \"FOSS Browser\" deinstallierst. Mache also regelmäßig eine Sicherung auf einem sicheren Speicher.</string>
+    <string name="data_summary">Sicherungen werden im \"Android/data/de.baumann.browser/files/browser_backup/\" - Verzeichnis
+        deiner SD-Karte gespeichert. Dieses Verzeicnis wird GELÖSCHT, wenn du \"FOSS Browser\" deinstallierst. Mache deshalb
+        regelmäßig eine Sicherung an einem sicheren Platz.</string>
     <string name="clear_menu_done_all">Alles erledigt</string>
     <string name="clear_title_quit">Löschen beim Verlassen der Anwendung</string>
     <string name="clear_summary_quit">Jedesmal wenn \"FOSS Browser\" beendet wird, werden oben ausgewählte Daten gelöscht.</string>
@@ -151,12 +152,15 @@
     <string name="setting_filter">Lesezeichen Filter</string>
     <string name="setting_filter_summary">Um den Filterdialog anzuzeigen bitte lange auf das Lesezeichenicon in der Übersicht
         drücken. Entscheide welche Filter du nutzen willst.</string>
+
     <string name="setting_title_fav">Favorit</string>
-    <string name="setting_summary_fav">Hier können Sie die Internetseite ändern, die beim Start von \"FOSS-Browser\" geladen wird.
-    Gib \"about:blank\" ein, um eine leere Startseite zu erhalten.</string>
+    <string name="setting_summary_fav">Hier kannst du einstellen, welche Internetseite beim Start von \"FOSS Browser\" geladen
+        wird. Gib \"about:blank\" ein, wenn du eine leere Startseite willst.</string>
+
     <string name="setting_title_searchEngine">Eigene Suchmaschine</string>
-    <string name="setting_summary_searchEngine">Hier kannst du eine benutzerdefinierte Suchadresse eingeben. Wähle auch \"Eigene Suchmaschine\" als Suchanbieter
-    aus.</string>
+    <string name="setting_summary_searchEngine">Gib eine eigene URL für Suchanfragen ein. Wähle außerdem \"Eigene Suchmaschine\" als
+        Suchanbieter aus.</string>
+
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">Toolbar verstecken</string>
     <string name="setting_summary_hide">Benutze den ganzen Bildschirm, wenn du durch Internetseiten scrollst. Wenn du die
@@ -164,15 +168,16 @@
     <string name="setting_title_background">Links öffnen</string>
     <string name="setting_summary_background">Zeige eine Benachrichtigung und öffne Links im Hintergrund. Wenn dies nicht aktiviert
         ist, öffnen sich Links sofort.</string>
-    <string name="setting_theme">Thema</string>
-    <string name="setting_theme_summary">App-Thema festlegen.</string>
-    <string name="setting_theme_system">System Thema</string>
-    <string name="setting_theme_light">Helles Thema</string>
-    <string name="setting_theme_dark">Dunkles Thema</string>
     <string name="setting_title_themeColor">Passe Farben an</string>
     <string name="setting_summary_themeColor">Färbe einige Stellen der Benutzeroberfläche, passend zur besuchten
     Internetseite.</string>
-    <string name="setting_title_theme">Benutzeroberfläche</string>
+    <string name="setting_theme">Thema</string>
+    <string name="setting_theme_summary">Ändere das Aussehen der App.</string>
+    <string name="setting_theme_system">Systemeinstellungen</string>
+    <string name="setting_theme_light">Helles Aussehen</string>
+    <string name="setting_theme_dark">Dunkles Aussehen</string>
+
+    <string name="setting_title_theme">UI</string>
     <string name="setting_title_behavior">Verhalten</string>
     <string name="setting_summary_toolbarShow">Die Zurücktaste zeigt immer zuerst die Toolbar, bevor es im Browserverlauf zurückgeht.</string>
     <string name="setting_title_toolbarShow">Zuerst die Toolbar</string>
@@ -231,11 +236,13 @@
     <string name="setting_title_export_whitelistCookie">Cookie Ausnahmen sichern</string>
     <string name="setting_title_import_whitelistCookie">Cookie Ausnahmen wiederherstellen</string>
     <string name="export_whitelistCookie">export_whitelist_Cookie</string>
-    <string name="setting_title_export_appData">Exportiere deine Daten</string>
-    <string name="setting_title_import_appData">Importiere deine Daten</string>
-    <string name="setting_summary_export_appData">Exportiere App-Daten (Startpage + Vorschau, Verlauf, Lesezeichen)
-        und deine persönlichen Einstellungen.</string>
-    <string name="title_appData">App-Daten</string>
+
+
+    <string name="setting_title_export_appData">App Daten sichern</string>
+    <string name="setting_title_import_appData">App Daten widerherstellen</string>
+    <string name="setting_summary_export_appData">Sichere alle Anwendungsdaten (Startseite, Verlauf, Lesezeichen) und deine
+        persönlichen Einstellungen.</string>
+    <string name="title_appData">App Daten</string>
     <string name="hint_database">Dies löscht alle aktuellen Daten. Willst du fortfahren?</string>
     <!-- Others setting -->
     <string name="setting_title_others">Sonstiges</string>
@@ -292,14 +299,15 @@
     <string name="whitelist_add">Hinzufügen</string>
     <!-- Dialog help -->
     <string name="dialogHelp_tipTitle">Tipps</string>
-    <string name="dialogHelp_tipText">        &lt;b&gt;Menüs und Dialoge&lt;/b&gt;&lt;br&gt;
-        Alle Menüs und Dialoge werden am unteren Bildschirmrand geöffnet. Wenn der Dialog groß ist, sehen Sie zuerst nur den oberen Teil
-        an. Wenn Sie es nach oben wischen, wird der Rest sichtbar.&lt;br&gt;
-        Sie können sie schließen, indem Sie die Zurück-Taste drücken, sie nach unten wischen oder durch Klicken auf&lt;br&gt;&lt;br&gt;
+    <string name="dialogHelp_tipText">
+        &lt;b&gt;Menüs und Dialoge&lt;/b&gt;&lt;br&gt;
+        Alle Menüs und Dialoge öffnen sich am unteren Bildschirmrand. Bei größeren  Dialogen öffnet sich dabei zuerst nur
+        der obere Teil. Wenn du diesen nach oben ziehst, wird der untere Teil sichtbar.&lt;br&gt;
+        Sie lassen sich durch die Zurücktaste, durch nach unten Wischen oder einen Klick außerhalb schließen.&lt;br&gt;&lt;br&gt;
 
-        &lt;b&gt;Lange drücken&lt;/b&gt;&lt;br&gt;
-        Wenn Sie das Menü-Symbol oder die \"Navigationstaste\" lange drücken, wird der \"Schnelle Schalter-Dialog\" angezeigt. Wenn Sie
-        lang auf das \"Lesezeichen-Symbol\" drücken, wird der \"Filter Dialog\" angezeigt.
+        &lt;b&gt;Langes drücken&lt;/b&gt;&lt;br&gt;
+        Wenn du das Menü-Icon oder den \"Navigationskopf\" lange drückst, öffnen sich die \"Schnelleinstellungen\". Wenn
+        du das Lesezeichen-Icon lange drückst, öffnet sich der Filterdialog.
     </string>
     <string name="dialogHelp_overviewTitle">Übersicht</string>
     <string name="dialogHelp_overviewText">        Die \"Übersicht\" besteht aus zwei Teilen (Tabvorschau und persönliche Inhalte). Sie verfügt über ein eigenes Menü und
@@ -314,29 +322,30 @@
         Hier gibt es drei Inhalte, welche angezeigt werden können: die Startseite, deine Lesezeichen und dein Browserverlauf.
         Wenn du einen Eintrag lange drückst, öffnet sich ein Menü mit weiteren Möglichkeiten.
     </string>
-    <string name="dialogHelp_filterText">Du kannst deinen Lesezeichen eine Farbe als Filter zuordnen. So kannst du viele Lesezeichen in Gruppen ordnen.
-        Den Filterdialog kannst du öffnen, indem du lange auf das Lesezeichen-Icon drückst. Wenn du lange auf einen
-        Eintrag drückst, kannst du ihm einen anderen Namen geben. In den Einstellungen kannst du ausserdem einzelne
-        Einträge deaktivieren.
+    <string name="dialogHelp_filterText">Du kannst deinen Lesezeichen einen Filter zuordnen. So kannst du viele Lesezeichen in
+        Gruppen ordnen. Den Filterdialog kannst du öffnen, indem du lange auf das Lesezeichen-Icon drückst. Wenn du einen
+        Eintrag aktivierst, erscheint ein Dialog, in dem du den Namen des Filters bearbeiten kannst.
     </string>
     <!-- Dialog changelog -->
     <string name="changelog_title">Änderungen</string>
-    <string name="changelog_dialog">Deine Sprache wird noch nicht unterstützt? Du möchtest FOSS Browser übersetzen? Oder eine bestehende Übersetzung bearbeiten??
+  
+    <string name="changelog_dialog">
+        Deine Sprache wird nicht unterstützt? Du möchtest FOSS Browser übersetzen? Oder eine bestehende Übersetzung verbessern?
         Hilf uns auf Crowdin: https://crowdin.com/project/foss-browser.&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Auf den folgenden Internetseiten findest du alle Informationen zu \"FOSS Browser\".
         Bitte lies auch den Hilfedialog in der Anwendung.&lt;/b&gt;&lt;br&gt;&lt;br&gt;
 
-        \u25AA &lt;i&gt;Projektseite:&lt;/i&gt; https://github.com/scoute-dich/Browser&lt;br&gt;
-        \u25AA &lt;i&gt;Änderungen:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;br&gt;
+        \u25AA &lt;i&gt;Project site:&lt;/i&gt; https://github.com/scoute-dich/Browser&lt;br&gt;
+        \u25AA &lt;i&gt;Changelog:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;br&gt;
         \u25AA &lt;i&gt;FAQ:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/FAQs.md&lt;br&gt;
-        \u25AA &lt;i&gt;Lizenz:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/LICENSE.md&lt;br&gt;
-        \u25AA &lt;i&gt;Datenschutz:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/PRIVACY.md
+        \u25AA &lt;i&gt;License:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/LICENSE.md&lt;br&gt;
+        \u25AA &lt;i&gt;Privacy:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/PRIVACY.md
 
     </string>
     <!-- License changelog -->
-    <string name="license_title">Copyright © 2017  von Gaukler Faun</string>
-    <string name="license_dialog">        Besuche für mehr Informationen die Projektseite auf Github: https://github.com/scoute-dich/Browser&lt;br&gt;&lt;br&gt;
+    <string name="license_title">Copyright © 2017  by Gaukler Faun</string>
+    <string name="license_dialog">Besuche für mehr Informationen die Projektseite auf Github: https://github.com/scoute-dich/Browser&lt;br&gt;&lt;br&gt;
 
         Dieses Programm ist freie Software. Sie können es unter den Bedingungen der GNU General Public License, wie von
         der Free Software Foundation veröffentlicht, weitergeben und/oder modifizieren, entweder gemäß Version 3 der Lizenz oder
@@ -362,19 +371,19 @@
         Apache License Version 2.0&lt;br&gt;
         hummatli&lt;br&gt;
         &lt;i&gt;https://github.com/hummatli/SimpleEncryptionLib</string>
-    <string name="cont_dialog">        &lt;i&gt;First I would like to thank all people who contributed in any way on this project. They submitted issues,
-        translated or helped in any other way. On following sites you can become a active member of this
-        great community:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
+  
+    <string name="cont_dialog">&lt;i&gt;Zuerst möchte ich allen Nutzern danken, die an diesem Projekt beteiligt sind. Sie helfen
+        Fehler zu finden, übersetzen oder haben auf eine andere Art einen Beitrag geleistet. Auf den
+        folgenden Internetseiten kannst du Mitglied dieser Gemeinschaft werden:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Crowdin:&lt;/b&gt;&lt;br&gt;
-        Crowdin is an online plattform to translate applications in other languages. A big thanks to all translators. You can
-        also help.&lt;br&gt;
+        Crowdin ist eine Onlineplattform um Anwendungen in andere Sprachen zu Übersetzen. Mein Dank gilt allen Übersetzern. Hilf auch du.&lt;br&gt;
         &lt;i&gt;https://crowdin.com/project/foss-browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
 
-        &lt;b&gt;XDA-thread:&lt;/b&gt;&lt;br&gt;
-        XDA is a great community for developers and smartphone enthusiasts. Here you can report issues, ask for new features
-        and everything other related to \"FOSS Browser\".&lt;br&gt;
+        &lt;b&gt;XDA-Thread:&lt;/b&gt;&lt;br&gt;
+        XDA ist eine großartige Gemeinschaft für Entwickler und Smartphoneentusiasten. Hier kannst du Fehler melden, nach neuen
+        Funktionen fragen oder dich mit anderen Nutzern austauschen.&lt;br&gt;
         &lt;i&gt;https://forum.xda-developers.com/android/apps-games/app-browser-t3500091&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Github:&lt;/b&gt;&lt;br&gt;

@@ -2,9 +2,9 @@
 
 <resources>
 
-    <color name="colorPrimary">#303030</color>
-    <color name="colorPrimaryDark">#303030</color>
-    <color name="colorAccent">#90b324</color>
+    <color name="colorPrimary">#424242</color>
+    <color name="colorPrimaryDark">#212121</color>
+    <color name="colorAccent">#009688</color>
 
     <color name="color_transparent">@android:color/transparent</color>
     <color name="color_light">#fafafa</color>
@@ -12,5 +12,6 @@
 
     <color name="color_red">#F44336</color>
     <color name="color_shadow">#A6263238</color>
+    <color name="color_shadow_light">@color/cardview_shadow_start_color</color>
 
 </resources>

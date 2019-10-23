@@ -2,6 +2,8 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <Preference android:summary="@string/dialogHelp_filterText" />
+
     <CheckBoxPreference
         android:key="filter_01"
         android:defaultValue="true"
