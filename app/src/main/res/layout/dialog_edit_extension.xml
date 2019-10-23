@@ -9,7 +9,7 @@
     android:paddingTop="15dp"
     tools:ignore="Autofill">
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
@@ -23,9 +23,9 @@
             android:inputType="text"
             android:hint="@string/dialog_title_hint" />
 
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
@@ -39,6 +39,6 @@
             android:inputType="text"
             android:hint="@string/dialog_extension_hint" />
 
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
 </LinearLayout>

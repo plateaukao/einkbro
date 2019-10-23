@@ -550,7 +550,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/menu_help"
+                android:id="@+id/menu_fileManager"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
@@ -565,7 +565,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginEnd="16dp"
                     android:gravity="center_vertical"
-                    android:src="@drawable/icon_help" />
+                    android:src="@drawable/icon_file" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -574,7 +574,7 @@
                     android:ellipsize="end"
                     android:gravity="center_vertical"
                     android:maxLines="1"
-                    android:text="@string/menu_other_help"
+                    android:text="@string/menu_other_fileManager"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
             </LinearLayout>
@@ -660,7 +660,7 @@
                         android:id="@+id/floatButton_tabView"
                         android:layout_width="42dp"
                         android:layout_height="2dp"
-                        android:background="@color/colorAccent" />
+                        android:background="?android:attr/colorAccent" />
 
                     <ImageButton
                         android:id="@+id/floatButton_tab"
@@ -686,7 +686,7 @@
                         android:id="@+id/floatButton_shareView"
                         android:layout_width="42dp"
                         android:layout_height="2dp"
-                        android:background="@color/colorAccent"
+                        android:background="?android:attr/colorAccent"
                         tools:ignore="TooManyViews" />
 
                     <ImageButton
@@ -714,7 +714,7 @@
                         android:id="@+id/floatButton_saveView"
                         android:layout_width="42dp"
                         android:layout_height="2dp"
-                        android:background="@color/colorAccent" />
+                        android:background="?android:attr/colorAccent" />
 
                     <ImageButton
                         android:id="@+id/floatButton_save"
@@ -740,7 +740,7 @@
                         android:id="@+id/floatButton_moreView"
                         android:layout_width="42dp"
                         android:layout_height="2dp"
-                        android:background="@color/colorAccent"
+                        android:background="?android:attr/colorAccent"
                         tools:ignore="TooManyViews" />
 
                     <ImageButton

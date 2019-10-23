@@ -61,7 +61,7 @@
                     android:id="@+id/overview_titleIcons_startView"
                     android:layout_width="42dp"
                     android:layout_height="2dp"
-                    android:background="@color/colorAccent"
+                    android:background="?android:attr/colorAccent"
                     android:visibility="visible"/>
 
                 <ImageButton
@@ -87,7 +87,7 @@
                     android:id="@+id/overview_titleIcons_bookmarksView"
                     android:layout_width="42dp"
                     android:layout_height="2dp"
-                    android:background="@color/colorAccent"
+                    android:background="?android:attr/colorAccent"
                     android:visibility="visible"/>
 
                 <ImageButton
@@ -113,7 +113,7 @@
                     android:id="@+id/overview_titleIcons_historyView"
                     android:layout_width="42dp"
                     android:layout_height="2dp"
-                    android:background="@color/colorAccent"
+                    android:background="?android:attr/colorAccent"
                     android:visibility="visible"/>
 
                 <ImageButton
@@ -208,7 +208,7 @@
                 android:id="@+id/open_newTabView"
                 android:layout_width="42dp"
                 android:layout_height="2dp"
-                android:background="@color/colorAccent"
+                android:background="?android:attr/colorAccent"
                 android:visibility="visible"/>
 
             <ImageButton
@@ -234,7 +234,7 @@
                 android:id="@+id/open_bookmarkView"
                 android:layout_width="42dp"
                 android:layout_height="2dp"
-                android:background="@color/colorAccent"
+                android:background="?android:attr/colorAccent"
                 android:visibility="visible" />
 
             <ImageButton
@@ -260,7 +260,7 @@
                 android:id="@+id/open_historyView"
                 android:layout_width="42dp"
                 android:layout_height="2dp"
-                android:background="@color/colorAccent"
+                android:background="?android:attr/colorAccent"
                 android:visibility="visible" />
 
             <ImageButton
@@ -285,7 +285,7 @@
             <View
                 android:layout_width="42dp"
                 android:layout_height="2dp"
-                android:background="@color/colorAccent"
+                android:background="?android:attr/colorAccent"
                 android:visibility="invisible" />
 
             <ImageButton

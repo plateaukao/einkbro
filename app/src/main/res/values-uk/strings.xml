@@ -10,7 +10,6 @@
     <string name="album_title_history">Історія</string>
     <string name="album_title_home">Головна</string>
     <string name="album_title_files">Файл</string>
-    <string name="album_untitled"></string>
     <string name="notification_content_holderTitle">Відкрити вкладки …</string>
     <string name="notification_content_holder">… Натисніть, щоб переглянути сторінки</string>
     <string name="search_hint">Пошук</string>
@@ -31,7 +30,6 @@
     <string name="main_menu_new_tabOpen">Нова вкладка</string>
     <string name="main_omnibox_input_hint">Пошук або введення URL-адреси</string>
     <string name="menu_open_with">Відкрити посилання з …</string>
-    <string name="menu_share">Загальний доступ</string>
     <string name="menu_quit">Вихід</string>
     <string name="menu_openFav">Open Favorite</string>
     <string name="menu_delete">Видалити</string>
@@ -43,7 +41,6 @@
     <string name="menu_sc">Shortcut on home screen</string>
     <string name="menu_sort">Сортувати за…</string>
     <string name="menu_filter">Фільтр за кольором…</string>
-    <string name="menu_blank">Blank start site</string>
     <string name="menu_share_screenshot">Поділитися скріншотом</string>
     <string name="menu_share_link">Поділитися посиланням</string>
     <string name="menu_save_screenshot">Зберегти скріншот</string>
@@ -52,7 +49,6 @@
     <string name="menu_save_as">Зберегти як …</string>
     <string name="menu_save_pdf">Зберегти в PDF</string>
     <string name="menu_share_pdf">Поділитися PDF</string>
-    <string name="menu_share_pdfToast">Завершений. Відкрити файловий менеджер для спільного використання?</string>
     <string name="menu_shareClipboard">Copy to clipboard</string>
     <string name="menu_other_searchSite">Пошук по сайту</string>
     <string name="menu_other_help">Допомога</string>
@@ -65,7 +61,6 @@
     <string name="dialog_sign_in_password">Пароль</string>
     <string name="dialog_button_custom">Вручну</string>
     <string name="dialog_title_download">Хочете завантажити файл?</string>
-    <string name="dialog_title_sign_in">Увійти</string>
     <string name="dialog_content_resubmission">Хочете повторно відправити свої дані?</string>
     <string name="dialog_content_ssl_error">Сертифікат сайту не є довіреним. Все одно продовжити?</string>
     <string name="dialog_sortName">Сортувати за назвою</string>
@@ -73,7 +68,7 @@
     <string name="dialog_sortDate">Sort by date</string>
     <!-- Settings -->
     <string name="setting_label">Налаштування</string>
-    <!-- Browser setting -->
+    <!-- browser setting -->
     <string name="setting_title_browser">Налаштування браузера</string>
     <string name="setting_title_clear_control">Контроль даних</string>
     <string name="setting_title_start_control">Управління запуском</string>
@@ -98,7 +93,7 @@
     <string name="setting_summary_remote">Увімкніть віддалений вміст, який не знаходиться безпосередньо на веб-сайті, який ви відвідуєте. Відключення цього є більш безпечним і економить обсяг даних. Але деякий вміст більше не буде відображатися.</string>
     <string name="setting_title_save_data">Request \'Save Data\'</string>
     <string name="setting_summary_save_data">Tell websites that you would prefer to save data. Supported websites will load faster.</string>
-    <!-- Browser start -->
+    <!-- browser start -->
     <string name="setting_title_images">Зображення</string>
     <string name="setting_summary_images">Увімкнути відображення зображень. Вимкнення може бути корисно для збереження мобільних даних і прискорення завантаження сайтів.</string>
     <string name="setting_title_cookie">Куки</string>
@@ -118,8 +113,7 @@
     <string name="setting_summary_location">Дозволити веб-сайтам доступ до вашого місця розташування. Деякі веб-сайти (наприклад, Карти Google) потребують цього.</string>
     <string name="setting_title_history">Історія</string>
     <string name="setting_summary_history">Збережіть історію відвідуваних веб-сайтів.</string>
-    <!-- Browser clear -->
-    <string name="clear_summary">Всі файли будуть експортовані в каталог \"Документи\" вашої SD-карти. Кожен експорт буде перезаписувати старий. Для відновлення в каталозі повинен бути файл з правильним ім\'ям.</string>
+    <!-- browser clear -->
     <string name="clear_menu_done_all">Все зроблено</string>
     <string name="clear_title_quit">Очистити при виході з програми</string>
     <string name="clear_summary_quit">Кожен раз при виході з \"Foss Browser\" всі перераховані вище перевірені дані будуть видалятися.</string>
@@ -143,8 +137,6 @@
     <string name="setting_summary_hide">Використовуйте весь екран при прокручуванні сайтів. Якщо ви натиснете кнопку \"Назад\", то покинете повноекранний режим.</string>
     <string name="setting_title_background">Відкрити посилання</string>
     <string name="setting_summary_background">Відображати повідомлення і відкривати посилання в тлі. Якщо відключені посилання будуть відкриті негайно.</string>
-    <string name="setting_title_themeDark">Світла тема</string>
-    <string name="setting_summary_themeDark">Вам подобається трохи яскравіше? Зробіть це!</string>
     <string name="setting_title_themeColor">Color UI</string>
     <string name="setting_summary_themeColor">Tint some elements from the UI to match the website colors.</string>
     <string name="setting_title_theme">UI</string>
@@ -175,8 +167,6 @@
     <string name="setting_overView_hide_title">Hide tab previews</string>
     <string name="setting_overView_hide_summary">In expanded overview the tab preview will hide. Then you have more place for your
     bookmarks.</string>
-    <string name="setting_overView_place_title">Only tab preview</string>
-    <string name="setting_overView_place_summary">Only show the tab preview when extending overview to switch tabs more comfortable.</string>
     <string name="setting_gestures">Жести</string>
     <string name="setting_gestures_use_title">Використовувати жести</string>
     <string name="setting_gestures_use_summary">Використовуйте жести на панелі інструментів і кнопку Навігація.</string>
@@ -199,7 +189,6 @@
     <string name="setting_gesture_09">Відкрити нову вкладку</string>
     <string name="setting_gesture_10">Закрити вкладку</string>
     <!-- Data -->
-    <string name="export_bookmarks">export_bookmarks</string>
     <string name="setting_title_export_whitelist">Експорт білого списку AdBlock</string>
     <string name="setting_title_import_whitelist">Імпорт білого списку AdBlock</string>
     <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
@@ -209,20 +198,13 @@
     <string name="setting_title_export_whitelistCookie">Експорт білого списку куки</string>
     <string name="setting_title_import_whitelistCookie">Імпорт білого списку куки</string>
     <string name="export_whitelistCookie">export_whitelist_Cookie</string>
-    <string name="setting_title_export_database">Експорт даних</string>
-    <string name="setting_title_import_database">Імпорт бази даних</string>
-    <string name="setting_summary_export_database">Експортуйте всю базу даних (початкова сторінка + превью, історія, закладки) на вашу SD-карту. Ваші дані для входу не будуть скопійовані.</string>
-    <string name="title_database">База даних</string>
     <string name="hint_database">Це призведе до видалення всіх поточних налаштувань і даних. Продовжити?</string>
     <!-- Others setting -->
     <string name="setting_title_others">Інший</string>
     <string name="setting_title_license">Ліцензія</string>
-    <string name="setting_summary_license">\"FOSS Browser\" повністю безкоштовний (і вільний), а також з відкритим вихідним кодом.</string>
     <string name="setting_title_appSettings">Налаштування</string>
     <string name="setting_summary_appSettings">Відкрийте системні налаштування \"FOSS Browser\". Там ви можете надати дозволи, очистити дані програми і так далі.</string>
     <string name="setting_title_community">Підтримка</string>
-    <string name="setting_summary_community">Подивіться, хто вніс зміни в цей проект. Ви також можете допомогти в подальшій розробці, повідомити про проблему або просто отримати останні новини, що стосуються проекту.</string>
-    <string name="setting_summary_changelog">Показати останній список змін.</string>
     <!-- Toast -->
     <string name="toast_add_to_home_successful">Успішно додано на головну</string>
     <string name="toast_add_to_home_failed">Не вдалося додати на головну</string>
@@ -296,20 +278,6 @@
         There are three parts: the Startsite, your Bookmarks and your History. If you long click an entry
         a menu with more options will appear.
     </string>
-    <string name="dialogHelp_gesturesTitle">Жести</string>
-    <string name="dialogHelp_gesturesText">        On the toolbar and the \"Navigation button\" you can use gestures:&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Toolbar&lt;/b&gt;&lt;br&gt;
-        \u25AA swipe up/down     \u2192  show Overview/nothing&lt;br&gt;
-        \u25AA swipe left/right  \u2192  change tabs&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Navigation button&lt;/b&gt;&lt;br&gt;
-        \u25AA swipe up/down     \u2192  scroll up/down&lt;br&gt;
-        \u25AA swipe left/right  \u2192  previous/next in history&lt;br&gt;&lt;br&gt;
-
-        You can change this in the settings.
-    </string>
-    <string name="dialogHelp_filterTitle">Filter</string>
     <string name="dialogHelp_filterText">        You can tag your bookmarks with colors. In this way you can group your bookmarks. You can open the filter dialog by
         long pressing the bookmark icon. If you long press on an entry, you can edit its name. In the settings you can
         disable unused entries.

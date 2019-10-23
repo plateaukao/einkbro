@@ -10,7 +10,6 @@
     <string name="album_title_history">Verlauf</string>
     <string name="album_title_home">Startseite</string>
     <string name="album_title_files">Dateien</string>
-    <string name="album_untitled"></string>
     <string name="notification_content_holderTitle">Geöffnete Tabs …</string>
     <string name="notification_content_holder">… Anklicken um die Seiten zu sehen</string>
     <string name="search_hint">Suche</string>
@@ -31,7 +30,6 @@
     <string name="main_menu_new_tabOpen">Neuer Tab (Vordergrund)</string>
     <string name="main_omnibox_input_hint">Suchen oder URL eingeben</string>
     <string name="menu_open_with">Link öffnen mit …</string>
-    <string name="menu_share">Teilen</string>
     <string name="menu_quit">Beenden</string>
     <string name="menu_openFav">Favorit öffnen</string>
     <string name="menu_delete">Löschen</string>
@@ -43,7 +41,6 @@
     <string name="menu_sc">Verknüpfung auf Startschirm</string>
     <string name="menu_sort">Sortiere nach …</string>
     <string name="menu_filter">Filter …</string>
-    <string name="menu_blank">Leere Startseite</string>
     <string name="menu_share_screenshot">Bildschirmfoto teilen</string>
     <string name="menu_share_link">Link teilen</string>
     <string name="menu_save_screenshot">Bildschirmfoto speichern</string>
@@ -52,9 +49,10 @@
     <string name="menu_save_as">Speichere als …</string>
     <string name="menu_save_pdf">PDF speichern</string>
     <string name="menu_share_pdf">PDF teilen</string>
-    <string name="menu_share_pdfToast">Fertig. Dateimanager öffnen, um die Datei zu teilen?</string>
     <string name="menu_shareClipboard">Kopiere in Zwischenablage</string>
     <string name="menu_other_searchSite">Suche auf Seite</string>
+    <string name="menu_other_fileManager">Öffne Dateimanager</string>
+    <string name="menu_other_info">Über \"FOSS Browser\"</string>
     <string name="menu_other_help">Hilfe</string>
     <!-- Dialog -->
     <string name="dialog_toggle_reload">Neu laden</string>
@@ -65,7 +63,6 @@
     <string name="dialog_sign_in_password">Passwort</string>
     <string name="dialog_button_custom">Eigene</string>
     <string name="dialog_title_download">Möchtest du die Datei herunterladen?</string>
-    <string name="dialog_title_sign_in">Anmelden</string>
     <string name="dialog_content_resubmission">Möchtest du die Daten erneut senden?</string>
     <string name="dialog_content_ssl_error">Das Zertifikat der Seite ist nicht sicher. Trotzdem fortfahren?</string>
     <string name="dialog_sortName">Sortiere nach Namen</string>
@@ -73,7 +70,7 @@
     <string name="dialog_sortDate">Sortiere nach Datum</string>
     <!-- Settings -->
     <string name="setting_label">Einstellungen</string>
-    <!-- Browser setting -->
+    <!-- browser setting -->
     <string name="setting_title_browser">Browser Einstellungen</string>
     <string name="setting_title_clear_control">Browserdaten</string>
     <string name="setting_title_start_control">Start Einstellungen</string>
@@ -103,7 +100,7 @@
     <string name="setting_title_save_data">Fordere \'Daten sparen\'</string>
     <string name="setting_summary_save_data">Fordere von Internetseiten an, dass du Datenvolumen sparen willst. Unterstütze
         Internetseiten werden dann schneller geladen.</string>
-    <!-- Browser start -->
+    <!-- browser start -->
     <string name="setting_title_images">Bilder</string>
     <string name="setting_summary_images">Aktiviere das automatische Laden von Bildern. Wenn du dies deaktivierst, sparst du
         Datenvolumen und die Internetseiten laden schneller.</string>
@@ -132,9 +129,10 @@
         für die Navigation) benötigen diese Berechtigung.</string>
     <string name="setting_title_history">Verlauf</string>
     <string name="setting_summary_history">Speichere den Verlauf der besuchten Internetseiten.</string>
-    <!-- Browser clear -->
-    <string name="clear_summary">Sicherungen werden im \"Documents\" - Verzeichnis deiner SD-Karte gespeichert. Neue Sicherungen
-        überschreiben immer die alten. Zum Wiederherstellen muss eine Datei mit dem richtigen Namen in diesem Verzeichnis sein.</string>
+    <!-- browser clear -->
+    <string name="data_summary">Sicherungen werden im \"Android/data/de.baumann.browser/files/browser_backup/\" - Verzeichnis
+        deiner SD-Karte gespeichert. Dieses Verzeicnis wird GELÖSCHT, wenn du \"FOSS Browser\" deinstallierst. Mache deshalb
+        regelmäßig eine Sicherung an einem sicheren Platz.</string>
     <string name="clear_menu_done_all">Alles erledigt</string>
     <string name="clear_title_quit">Löschen beim Verlassen der Anwendung</string>
     <string name="clear_summary_quit">Jedesmal wenn \"FOSS Browser\" beendet wird, werden oben ausgewählte Daten gelöscht.</string>
@@ -154,6 +152,15 @@
     <string name="setting_filter">Lesezeichen Filter</string>
     <string name="setting_filter_summary">Um den Filterdialog anzuzeigen bitte lange auf das Lesezeichenicon in der Übersicht
         drücken. Entscheide welche Filter du nutzen willst.</string>
+
+    <string name="setting_title_fav">Favorit</string>
+    <string name="setting_summary_fav">Hier kannst du einstellen, welche Internetseite beim Start von \"FOSS Browser\" geladen
+        wird. Gib \"about:blank\" ein, wenn du eine leere Startseite willst.</string>
+
+    <string name="setting_title_searchEngine">Eigene Suchmaschine</string>
+    <string name="setting_summary_searchEngine">Gib eine eigene URL für Suchanfragen ein. Wähle außerdem \"Eigene Suchmaschine\" als
+        Suchanbieter aus.</string>
+
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">Toolbar verstecken</string>
     <string name="setting_summary_hide">Benutze den ganzen Bildschirm, wenn du durch Internetseiten scrollst. Wenn du die
@@ -161,11 +168,15 @@
     <string name="setting_title_background">Links öffnen</string>
     <string name="setting_summary_background">Zeige eine Benachrichtigung und öffne Links im Hintergrund. Wenn dies nicht aktiviert
         ist, öffnen sich Links sofort.</string>
-    <string name="setting_title_themeDark">Helles Thema</string>
-    <string name="setting_summary_themeDark">Du magst es lieber ein bisschen heller? Dann tu es!</string>
     <string name="setting_title_themeColor">Passe Farben an</string>
     <string name="setting_summary_themeColor">Färbe einige Stellen der Benutzeroberfläche, passend zur besuchten
     Internetseite.</string>
+    <string name="setting_theme">Thema</string>
+    <string name="setting_theme_summary">Ändere das Aussehen der App.</string>
+    <string name="setting_theme_system">Systemeinstellungen</string>
+    <string name="setting_theme_light">Helles Aussehen</string>
+    <string name="setting_theme_dark">Dunkles Aussehen</string>
+
     <string name="setting_title_theme">UI</string>
     <string name="setting_title_behavior">Verhalten</string>
     <string name="setting_summary_toolbarShow">Die Zurücktaste zeigt immer zuerst die Toolbar, bevor es im Browserverlauf zurückgeht.</string>
@@ -194,9 +205,6 @@
     <string name="setting_overView_hide_title">Verstecke Tabvorschau</string>
     <string name="setting_overView_hide_summary">In der komplett ausgeklappten Übersicht wird die Tabvorschau versteckt. Du hast dann
         mehr Platz für deine Lesezeichen.</string>
-    <string name="setting_overView_place_title">Nur Tabvorschau</string>
-    <string name="setting_overView_place_summary">Um die Tabs einfacher wechseln zu können, wird beim ersten öffnen der
-        Übersicht nur die Tabvorschau angezeigt.</string>
     <string name="setting_gestures">Gesten</string>
     <string name="setting_gestures_use_title">Benutze Gesten</string>
     <string name="setting_gestures_use_summary">Benutze Gesten auf der Toolbar oder dem \"Navigationsknopf\".</string>
@@ -219,7 +227,6 @@
     <string name="setting_gesture_09">Neuen Tab öffnen</string>
     <string name="setting_gesture_10">Tab schließen</string>
     <!-- Data -->
-    <string name="export_bookmarks">export_bookmarks</string>
     <string name="setting_title_export_whitelist">AdBlock Ausnahmen sichern</string>
     <string name="setting_title_import_whitelist">AdBlock Ausnahmen wiederherstellen</string>
     <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
@@ -229,23 +236,21 @@
     <string name="setting_title_export_whitelistCookie">Cookie Ausnahmen sichern</string>
     <string name="setting_title_import_whitelistCookie">Cookie Ausnahmen wiederherstellen</string>
     <string name="export_whitelistCookie">export_whitelist_Cookie</string>
-    <string name="setting_title_export_database">Datenbank sichern</string>
-    <string name="setting_title_import_database">Datenbank wiederherstellen</string>
-    <string name="setting_summary_export_database">Sichere alle Anwendungsdaten (Startseite + Vorschaubilder, Lesezeichen,
-        Verlauf) auf deine SD-Karte.</string>
-    <string name="title_database">Datenbank</string>
+
+
+    <string name="setting_title_export_appData">App Daten sichern</string>
+    <string name="setting_title_import_appData">App Daten widerherstellen</string>
+    <string name="setting_summary_export_appData">Sichere alle Anwendungsdaten (Startseite, Verlauf, Lesezeichen) und deine
+        persönlichen Einstellungen.</string>
+    <string name="title_appData">App Daten</string>
     <string name="hint_database">Dies löscht alle aktuellen Daten. Willst du fortfahren?</string>
     <!-- Others setting -->
     <string name="setting_title_others">Sonstiges</string>
     <string name="setting_title_license">Lizenz</string>
-    <string name="setting_summary_license">\"FOSS Browser\" ist komplett frei (wie in Freiheit) und Open Source.</string>
     <string name="setting_title_appSettings">App Einstellungen</string>
     <string name="setting_summary_appSettings">Öffne die Systemeinstellungen von \"FOSS Browser\". Dort kannst du, je nach Android Version,
         verschiedene Einstellungen vornehmen oder nachträglich Berechtigungen erteilen.</string>
     <string name="setting_title_community">Mitmachen</string>
-    <string name="setting_summary_community">Erfahre, wer alles bei diesem Projekt geholfen hat. Oder magst du selbst bei der weiteren
-        Entwicklung helfen, Vorschläge machen oder dich einfach informieren?</string>
-    <string name="setting_summary_changelog">Sehe dir eine Liste der letzten Änderungen an, um zu erfahren, was es neues gibt.</string>
     <!-- Toast -->
     <string name="toast_add_to_home_successful">Erfolgreich zum Startschirm hinzugefügt</string>
     <string name="toast_add_to_home_failed">Konnte nicht zum Startschirm hinzugefügt werden</string>
@@ -294,11 +299,7 @@
     <string name="whitelist_add">Hinzufügen</string>
     <!-- Dialog help -->
     <string name="dialogHelp_tipTitle">Tipps</string>
-    <string name="dialogHelp_tipText">        &lt;b&gt;Favorit&lt;/b&gt;&lt;br&gt;
-        Du kannst festlegen, welche Internetseite beim Start von \"FOSS Browser\" geladen wird: Du kannst jeden Eintrag
-        aus der Übersicht (Startseite, Lesezeichen, Verlauf) durch langes Drücken auswählen. Über das Menü in der Übersicht
-        kannst du außerdem eine leere Startseite festlegen.&lt;br&gt;&lt;br&gt;
-
+    <string name="dialogHelp_tipText">
         &lt;b&gt;Menüs und Dialoge&lt;/b&gt;&lt;br&gt;
         Alle Menüs und Dialoge öffnen sich am unteren Bildschirmrand. Bei größeren  Dialogen öffnet sich dabei zuerst nur
         der obere Teil. Wenn du diesen nach oben ziehst, wird der untere Teil sichtbar.&lt;br&gt;
@@ -321,24 +322,9 @@
         Hier gibt es drei Inhalte, welche angezeigt werden können: die Startseite, deine Lesezeichen und dein Browserverlauf.
         Wenn du einen Eintrag lange drückst, öffnet sich ein Menü mit weiteren Möglichkeiten.
     </string>
-    <string name="dialogHelp_gesturesTitle">Gesten</string>
-    <string name="dialogHelp_gesturesText">        Auf der Toolbar und dem \"Navigationsknopf\" kannst du Gesten benutzen:&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Toolbar&lt;/b&gt;&lt;br&gt;
-        \u25AA Nach oben/unten wischen     \u2192  Übersicht zeigen/nichts&lt;br&gt;
-        \u25AA Nach links/rechts wischen  \u2192  Tabs wechseln&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Navigationsknopf&lt;/b&gt;&lt;br&gt;
-        \u25AA Nach oben/unten wischen     \u2192  nach oben/unten scrollen&lt;br&gt;
-        \u25AA Nach links/rechts wischen  \u2192  zurück/vor im Browserverlauf&lt;br&gt;&lt;br&gt;
-
-        In den Einstellungen kannst du sie anpassen.
-    </string>
-    <string name="dialogHelp_filterTitle">Filter</string>
-    <string name="dialogHelp_filterText">        Du kannst deinen Lesezeichen eine Farbe als Filter zuordnen. So kannst du viele Lesezeichen in Gruppen ordnen.
-        Den Filterdialog kannst du öffnen, indem du lange auf das Lesezeichen-Icon drückst. Wenn du lange auf einen
-        Eintrag drückst, kannst du ihm einen anderen Namen geben. In den Einstellungen kannst du außerdem einzelne
-        Einträge deaktivieren.
+    <string name="dialogHelp_filterText">Du kannst deinen Lesezeichen einen Filter zuordnen. So kannst du viele Lesezeichen in
+        Gruppen ordnen. Den Filterdialog kannst du öffnen, indem du lange auf das Lesezeichen-Icon drückst. Wenn du einen
+        Eintrag aktivierst, erscheint ein Dialog, in dem du den Namen des Filters bearbeiten kannst.
     </string>
     <!-- Dialog changelog -->
     <string name="changelog_title">Änderungen</string>

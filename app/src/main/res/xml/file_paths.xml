@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<paths>
-    <external-path path="Android/data/de.baumann.browser/" name="files_root" />
-    <external-path path="." name="external_storage_root" />
-</paths>

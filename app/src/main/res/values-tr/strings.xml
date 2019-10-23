@@ -10,7 +10,6 @@
     <string name="album_title_history">Geçmiş</string>
     <string name="album_title_home">Ana sayfa</string>
     <string name="album_title_files">Dosyalar</string>
-    <string name="album_untitled"></string>
     <string name="notification_content_holderTitle">Açılan sekmeler …</string>
     <string name="notification_content_holder">… Sayfaları Görüntülemek için Tıklayın</string>
     <string name="search_hint">Ara</string>
@@ -31,7 +30,6 @@
     <string name="main_menu_new_tabOpen">Yeni sekme (ön plan)</string>
     <string name="main_omnibox_input_hint">Arayın veya URL girin</string>
     <string name="menu_open_with">Bağlantıyı aç…</string>
-    <string name="menu_share">Paylaş</string>
     <string name="menu_quit">Çık</string>
     <string name="menu_openFav">Open Favorite</string>
     <string name="menu_delete">Sil</string>
@@ -43,7 +41,6 @@
     <string name="menu_sc">Shortcut on home screen</string>
     <string name="menu_sort">Sırala …</string>
     <string name="menu_filter">Renge göre filtrele…</string>
-    <string name="menu_blank">Boş başlangıç sitesi</string>
     <string name="menu_share_screenshot">Ekran görüntüsünü paylaş</string>
     <string name="menu_share_link">Bağlantıyı paylaş</string>
     <string name="menu_save_screenshot">Ekran görüntüsünü kaydet</string>
@@ -52,7 +49,6 @@
     <string name="menu_save_as">Kaydet…</string>
     <string name="menu_save_pdf">PDF olarak kaydet</string>
     <string name="menu_share_pdf">PDF paylaş</string>
-    <string name="menu_share_pdfToast">Tamamlandı. Paylaşmak için dosya yöneticisi açılsın mı?</string>
     <string name="menu_shareClipboard">Copy to clipboard</string>
     <string name="menu_other_searchSite">Sitede ara</string>
     <string name="menu_other_help">Yardım</string>
@@ -65,7 +61,6 @@
     <string name="dialog_sign_in_password">Parola</string>
     <string name="dialog_button_custom">Özel</string>
     <string name="dialog_title_download">Dosyayı indirmek ister misiniz?</string>
-    <string name="dialog_title_sign_in">Giriş yap</string>
     <string name="dialog_content_resubmission">Verilerinizi yeniden göndermek ister misiniz?</string>
     <string name="dialog_content_ssl_error">Sitenin sertifikası güvenilir değil. Yine de devam edilsin mi?</string>
     <string name="dialog_sortName">İsme göre sırala</string>
@@ -73,7 +68,7 @@
     <string name="dialog_sortDate">Sort by date</string>
     <!-- Settings -->
     <string name="setting_label">Ayarlar</string>
-    <!-- Browser setting -->
+    <!-- browser setting -->
     <string name="setting_title_browser">Tarayıcı Ayarları</string>
     <string name="setting_title_clear_control">Veri Denetimi</string>
     <string name="setting_title_start_control">Başlangıç Denetimi</string>
@@ -101,7 +96,7 @@
         Bunu devre dışı bırakmak daha güvenli, daha hızlı ve veri hacminden tasarruf sağlar. Ancak bazı içerikler artık görüntülenmeyecektir.</string>
     <string name="setting_title_save_data">\'Veri Kaydetme\' İsteği</string>
     <string name="setting_summary_save_data">Web sitelerine verileri kaydetmeyi tercih edeceğinizi söyleyin. Desteklenen web siteleri daha hızlı yükleyecektir.</string>
-    <!-- Browser start -->
+    <!-- browser start -->
     <string name="setting_title_images">Görüntüler</string>
     <string name="setting_summary_images">Ağ görüntülerini etkinleştirin. Devre dışı bırakmak, mobil verileri tasarrufu
 	ve web sitelerini daha hızlı yüklemek için yararlı olabilir.</string>
@@ -128,9 +123,7 @@
 	için bunun etkin olması gerekir.</string>
     <string name="setting_title_history">Geçmiş</string>
     <string name="setting_summary_history">Ziyaret edilen web sitelerinin geçmişini kaydedin.</string>
-    <!-- Browser clear -->
-    <string name="clear_summary">Tüm dosyalar SD kartınızın \"Belgeler\" dizinine aktarılacaktır. Her aktarma eskisinin 
-	üzerine yazacaktır. Geri yüklemek için dizinde doğru ada sahip bir dosya olmalıdır.</string>
+    <!-- browser clear -->
     <string name="clear_menu_done_all">Hepsi bitti</string>
     <string name="clear_title_quit">Uygulamadan çıkışta temizle</string>
     <string name="clear_summary_quit">\"FOSS Tarayıcısı\"ndan her çıkışta  yukarıdaki tüm kontrol edilen veriler silinecektir.</string>
@@ -156,8 +149,6 @@
     <string name="setting_title_background">Bağlantıları aç</string>
     <string name="setting_summary_background">Bir bildirim görüntüleyin ve bağlantıları arka planda açın. Devre dışı bırakırsanız,
 	bağlantılar hemen açılacaktır.</string>
-    <string name="setting_title_themeDark">Açık tema</string>
-    <string name="setting_summary_themeDark">Biraz daha parlak mı seviyorsunuz? Yapın!</string>
     <string name="setting_title_themeColor">Color UI</string>
     <string name="setting_summary_themeColor">Tint some elements from the UI to match the website colors.</string>
     <string name="setting_title_theme">UI</string>
@@ -188,8 +179,6 @@
     <string name="setting_overView_hide_title">Hide tab previews</string>
     <string name="setting_overView_hide_summary">In expanded overview the tab preview will hide. Then you have more place for your
     bookmarks.</string>
-    <string name="setting_overView_place_title">Only tab preview</string>
-    <string name="setting_overView_place_summary">Only show the tab preview when extending overview to switch tabs more comfortable.</string>
     <string name="setting_gestures">Hareketler</string>
     <string name="setting_gestures_use_title">Hareketleri kullan</string>
     <string name="setting_gestures_use_summary">Araç çubuğunda ve \"Gezinme düğmesi\" üzerinde hareketleri kullanın.</string>
@@ -212,7 +201,6 @@
     <string name="setting_gesture_09">Yeni sekme aç</string>
     <string name="setting_gesture_10">Sekmeyi kapat</string>
     <!-- Data -->
-    <string name="export_bookmarks">aktarilan_yerimleri</string>
     <string name="setting_title_export_whitelist">Reklam Engelleyici beyaz listesini dışa aktar</string>
     <string name="setting_title_import_whitelist">Reklam Engelleyici beyaz listesini içe aktar</string>
     <string name="export_whitelistAdBlock">AdBlock_beyazliste_aktarim</string>
@@ -222,23 +210,14 @@
     <string name="setting_title_export_whitelistCookie">Çerez beyaz listesini dışa aktar</string>
     <string name="setting_title_import_whitelistCookie">Çerez beyaz listesini içe aktar</string>
     <string name="export_whitelistCookie">Cerez_beyazliste_aktarim</string>
-    <string name="setting_title_export_database">Veritabanını dışa aktar</string>
-    <string name="setting_title_import_database">Veritabanını içe aktar</string>
-    <string name="setting_summary_export_database">Tüm veritabanını (Başlangıç sayfası + önizlemeler, Geçmiş, Yer İmleri)
-	SD kartınıza aktarın.</string>
-    <string name="title_database">Veritabanı</string>
     <string name="hint_database">Bu, mevcut tüm ayarlarınızı ve verilerinizi silecektir. Devam edilsin mi?</string>
     <!-- Others setting -->
     <string name="setting_title_others">Diğer</string>
     <string name="setting_title_license">Lisans</string>
-    <string name="setting_summary_license">\"FOSS Tarayıcı\" tamamen ücretsizdir (özgürlük gibi) ve açık kaynaklıdır.</string>
     <string name="setting_title_appSettings">Uygulama ayarları</string>
     <string name="setting_summary_appSettings">\"FOSS Tarayıcı\" için sistem uygulama ayarlarını açın. Burada Android
 	sürümü izin verme izninize bağlı olarak, uygulama verilerini temizleyebilirsiniz.</string>
     <string name="setting_title_community">Katkıda Bulunanlar</string>
-    <string name="setting_summary_community">Bu proje için bir şey emeği geçenlere bakın. Ya da daha fazla geliştirme
-	konusunda yardımcı olmak, bir sorunu bildirmek veya projelerimle ilgili en son haberleri almak ister misiniz?</string>
-    <string name="setting_summary_changelog">Yenilikleri görmek için en son değişiklik günlüğünü göster.</string>
     <!-- Toast -->
     <string name="toast_add_to_home_successful">Başarıyla ana sayfaya eklendi</string>
     <string name="toast_add_to_home_failed">Ana sayfaya eklenemedi</string>
@@ -313,20 +292,6 @@
         There are three parts: the Startsite, your Bookmarks and your History. If you long click an entry
         a menu with more options will appear.
     </string>
-    <string name="dialogHelp_gesturesTitle">Hareketler</string>
-    <string name="dialogHelp_gesturesText">        On the toolbar and the \"Navigation button\" you can use gestures:&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Toolbar&lt;/b&gt;&lt;br&gt;
-        \u25AA swipe up/down     \u2192  show Overview/nothing&lt;br&gt;
-        \u25AA swipe left/right  \u2192  change tabs&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Navigation button&lt;/b&gt;&lt;br&gt;
-        \u25AA swipe up/down     \u2192  scroll up/down&lt;br&gt;
-        \u25AA swipe left/right  \u2192  previous/next in history&lt;br&gt;&lt;br&gt;
-
-        You can change this in the settings.
-    </string>
-    <string name="dialogHelp_filterTitle">Filter</string>
     <string name="dialogHelp_filterText">        You can tag your bookmarks with colors. In this way you can group your bookmarks. You can open the filter dialog by
         long pressing the bookmark icon. If you long press on an entry, you can edit its name. In the settings you can
         disable unused entries.
