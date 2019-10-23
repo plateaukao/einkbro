@@ -23,7 +23,7 @@
     <string name="color_yellow">Sarı</string>
     <string name="color_orange">Turuncu</string>
     <string name="color_brown">Kahverengi</string>
-    <string name="color_grey">Grey</string>
+    <string name="color_grey">Gri</string>
     <!-- Menu -->
     <string name="main_menu_tabPreview">Sekme önizlemesini aç</string>
     <string name="main_menu_new_tab">Yeni sekme (arka plan)</string>
@@ -31,14 +31,14 @@
     <string name="main_omnibox_input_hint">Arayın veya URL girin</string>
     <string name="menu_open_with">Bağlantıyı aç…</string>
     <string name="menu_quit">Çık</string>
-    <string name="menu_openFav">Open Favorite</string>
+    <string name="menu_openFav">Sık Kullanılanı Aç</string>
     <string name="menu_delete">Sil</string>
     <string name="menu_delete_list">Listeyi sil</string>
     <string name="menu_edit">Düzenle</string>
     <string name="menu_closeTab">Sekmeyi kapat</string>
     <string name="menu_download">İndirmeleri aç</string>
     <string name="menu_fav">Başlangıç sitesi olarak ayarla</string>
-    <string name="menu_sc">Shortcut on home screen</string>
+    <string name="menu_sc">Ana ekranda kısayol</string>
     <string name="menu_sort">Sırala …</string>
     <string name="menu_filter">Renge göre filtrele…</string>
     <string name="menu_share_screenshot">Ekran görüntüsünü paylaş</string>
@@ -49,11 +49,13 @@
     <string name="menu_save_as">Kaydet…</string>
     <string name="menu_save_pdf">PDF olarak kaydet</string>
     <string name="menu_share_pdf">PDF paylaş</string>
-    <string name="menu_shareClipboard">Copy to clipboard</string>
+    <string name="menu_shareClipboard">Panoya kopyala</string>
     <string name="menu_other_searchSite">Sitede ara</string>
+    <string name="menu_other_fileManager">Open file manager</string>
+    <string name="menu_other_info">About \"FOSS Browser\"</string>
     <string name="menu_other_help">Yardım</string>
     <!-- Dialog -->
-    <string name="dialog_toggle_reload">Reload</string>
+    <string name="dialog_toggle_reload">Yeniden yükle</string>
     <string name="dialog_title_hint">Başlık:</string>
     <string name="dialog_url_hint">URL:</string>
     <string name="dialog_extension_hint">Uzantı (örneğin: \".jpg\"):</string>
@@ -65,7 +67,7 @@
     <string name="dialog_content_ssl_error">Sitenin sertifikası güvenilir değil. Yine de devam edilsin mi?</string>
     <string name="dialog_sortName">İsme göre sırala</string>
     <string name="dialog_sortIcon">Simgeye göre sırala</string>
-    <string name="dialog_sortDate">Sort by date</string>
+    <string name="dialog_sortDate">Tarihe göre sırala</string>
     <!-- Settings -->
     <string name="setting_label">Ayarlar</string>
     <!-- browser setting -->
@@ -124,6 +126,9 @@
     <string name="setting_title_history">Geçmiş</string>
     <string name="setting_summary_history">Ziyaret edilen web sitelerinin geçmişini kaydedin.</string>
     <!-- browser clear -->
+    <string name="data_summary">All files will be exported to the \"Android/data/de.baumann.browser/files/browser_backup/\"
+        directory of your sd-card. This directory will be DELETED, if you uninstall \"FOSS Browser\". So make a backup regularly on a save
+        place.</string>
     <string name="clear_menu_done_all">Hepsi bitti</string>
     <string name="clear_title_quit">Uygulamadan çıkışta temizle</string>
     <string name="clear_summary_quit">\"FOSS Tarayıcısı\"ndan her çıkışta  yukarıdaki tüm kontrol edilen veriler silinecektir.</string>
@@ -139,9 +144,15 @@
     <string name="setting_title_data">Yedekleme</string>
     <string name="setting_summary_ui">Tercihlerinize uygun olarak uygulamanın davranışını ve arayüzünü değiştirin.</string>
     <string name="setting_summary_data">Birkaç uygulama verisini (beyaz listeler, yer imleri) içe ve dışa aktarın.</string>
-    <string name="setting_filter">Bookmark filter</string>
-    <string name="setting_filter_summary">To show the filter dialog long press on the bookmark icon in the overview. Decide which
-        filters you will use.</string>
+    <string name="setting_filter">Yer imi süzgeci</string>
+    <string name="setting_filter_summary">Süzgeç iletişim kutusunu göstermek için genel bakıştaki yer imi simgesine uzun basın.  Hangi süzgeçleri kullanacağınıza 
+          karar verin.</string>
+    <string name="setting_title_fav">Favorite</string>
+    <string name="setting_summary_fav">Here you can change the default website which loads on start of \"FOSS Browser\".
+    Enter \"about:blank\" to get an emty start site.</string>
+    <string name="setting_title_searchEngine">Custom search engine</string>
+    <string name="setting_summary_searchEngine">Here you can enter a custom search URL. Also choose \"Custom search engine\" as search
+    provider.</string>
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">Araç çubuğunu gizle</string>
     <string name="setting_summary_hide">Web siteleri arasında gezinirken tüm ekranı kullanın. Eğer Geri düğmesine basarsanız
@@ -149,12 +160,17 @@
     <string name="setting_title_background">Bağlantıları aç</string>
     <string name="setting_summary_background">Bir bildirim görüntüleyin ve bağlantıları arka planda açın. Devre dışı bırakırsanız,
 	bağlantılar hemen açılacaktır.</string>
-    <string name="setting_title_themeColor">Color UI</string>
-    <string name="setting_summary_themeColor">Tint some elements from the UI to match the website colors.</string>
-    <string name="setting_title_theme">UI</string>
-    <string name="setting_title_behavior">Behavior</string>
-    <string name="setting_summary_toolbarShow">Pressing back will make the toolbar visible, before going back in history.</string>
-    <string name="setting_title_toolbarShow">First toolbar</string>
+    <string name="setting_theme">Theme</string>
+    <string name="setting_theme_summary">Set the app theme.</string>
+    <string name="setting_theme_system">System theme</string>
+    <string name="setting_theme_light">Light theme</string>
+    <string name="setting_theme_dark">Dark theme</string>
+    <string name="setting_title_themeColor">Arayüz rengi</string>
+    <string name="setting_summary_themeColor">Kullanıcı arayüzündeki bazı öğeleri web sitesi renkleriyle eşleştirmek için renklendirin.</string>
+    <string name="setting_title_theme">Arayüz</string>
+    <string name="setting_title_behavior">Davranış</string>
+    <string name="setting_summary_toolbarShow">Geri basmak, geçmişe geri dönmeden önce araç çubuğunu görünür kılar.</string>
+    <string name="setting_title_toolbarShow">İlk araç çubuğu</string>
     <string name="setting_title_nav">Gezinme düğmesi</string>
     <string name="setting_title_nav_pos">Konum</string>
     <string name="setting_summary_nav_pos">\"Gezinti düğmesi\"nin nereye yerleştirileceğine karar verin.</string>
@@ -176,9 +192,9 @@
     <string name="setting_overView">Genel Bakış</string>
     <string name="setting_overView_onStart_title">Başlangıçta göster</string>
     <string name="setting_overView_onStart_summary">Her uygulama başlangıcında \"Genel Bakış\" açılır.</string>
-    <string name="setting_overView_hide_title">Hide tab previews</string>
-    <string name="setting_overView_hide_summary">In expanded overview the tab preview will hide. Then you have more place for your
-    bookmarks.</string>
+    <string name="setting_overView_hide_title">Sekme önizlemelerini gizle</string>
+    <string name="setting_overView_hide_summary">Genişletilmiş bakışta, sekme önizlemesi gizlenir.  O zaman yer imleriniz için daha fazla
+    yeriniz olur.</string>
     <string name="setting_gestures">Hareketler</string>
     <string name="setting_gestures_use_title">Hareketleri kullan</string>
     <string name="setting_gestures_use_summary">Araç çubuğunda ve \"Gezinme düğmesi\" üzerinde hareketleri kullanın.</string>
@@ -210,6 +226,11 @@
     <string name="setting_title_export_whitelistCookie">Çerez beyaz listesini dışa aktar</string>
     <string name="setting_title_import_whitelistCookie">Çerez beyaz listesini içe aktar</string>
     <string name="export_whitelistCookie">Cerez_beyazliste_aktarim</string>
+    <string name="setting_title_export_appData">Export app data</string>
+    <string name="setting_title_import_appData">Import app data</string>
+    <string name="setting_summary_export_appData">Export app data (Startpage + previews, History, Bookmarks)
+        and your personal settings.</string>
+    <string name="title_appData">App data</string>
     <string name="hint_database">Bu, mevcut tüm ayarlarınızı ve verilerinizi silecektir. Devam edilsin mi?</string>
     <!-- Others setting -->
     <string name="setting_title_others">Diğer</string>
@@ -265,13 +286,8 @@
     <string name="whitelist_edit_hint">Etki alanı</string>
     <string name="whitelist_add">Ekle</string>
     <!-- Dialog help -->
-    <string name="dialogHelp_tipTitle">Tips</string>
-    <string name="dialogHelp_tipText">        &lt;b&gt;Start site&lt;/b&gt;&lt;br&gt;
-        You can decide which site loads when \"FOSS Browser\" starts: By long pressing an entry in the
-        overview (Startsite, Bookmarks, History) you can choose it. Over the menu of the overview you can also set
-        a blank start site.&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Menus and dialogs&lt;/b&gt;&lt;br&gt;
+    <string name="dialogHelp_tipTitle">İpuçları</string>
+    <string name="dialogHelp_tipText">        &lt;b&gt;Menus and dialogs&lt;/b&gt;&lt;br&gt;
         All menus and dialogs are opened at the bottom of the screen. If the dialog is large you will first see only
         the upper part. If you swipe it up, the rest will get visible.&lt;br&gt;
         You can close them by pressing the back button, swiping them down or by clicking outside&lt;br&gt;&lt;br&gt;
@@ -292,23 +308,22 @@
         There are three parts: the Startsite, your Bookmarks and your History. If you long click an entry
         a menu with more options will appear.
     </string>
-    <string name="dialogHelp_filterText">        You can tag your bookmarks with colors. In this way you can group your bookmarks. You can open the filter dialog by
-        long pressing the bookmark icon. If you long press on an entry, you can edit its name. In the settings you can
-        disable unused entries.
+    <string name="dialogHelp_filterText">        You can tag your bookmarks with filters. In this way you can group your bookmarks. You can open the filter dialog by
+        long pressing the bookmark icon. If you activate an entry a dialog will appear, where you can edit the name of the filter.
     </string>
     <!-- Dialog changelog -->
     <string name="changelog_title">Değişiklik günlüğü</string>
-    <string name="changelog_dialog">        Your language isn\'t supported yet? You want to translate FOSS Browser? Or make improvements to existing translations?
-        Feel free to join us on Crowdin: https://crowdin.com/project/foss-browser.&lt;br&gt;&lt;br&gt;
+    <string name="changelog_dialog">        Diliniz henüz desteklenmiyor mu?  FOSS Tarayıcısını çevirmek ister misiniz?  Veya mevcut çevirilerde geliştirmeler mi yapmak istiyorsunuz?
+        Crowdin\'de bize katılmaktan çekinmeyin: https://crowdin.com/project/foss-browser.&lt;br&gt;&lt;br&gt;
 
-        &lt;b&gt;On the following sites you have access to all important information about \"FOSS Browser\".
-        Please read also the help dialog within the app.&lt;/b&gt;&lt;br&gt;&lt;br&gt;
+        &lt;b&gt;Aşağıdaki sitelerde \"FOSS Tarayıcısı\" ile ilgili tüm önemli bilgilere erişebilirsiniz.
+        Lütfen uygulama içindeki yardım iletişim kutusunu da okuyun.&lt;/b&gt;&lt;br&gt;&lt;br&gt;
 
-        \u25AA &lt;i&gt;Project site:&lt;/i&gt; https://github.com/scoute-dich/Browser&lt;br&gt;
-        \u25AA &lt;i&gt;Changelog:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;br&gt;
-        \u25AA &lt;i&gt;FAQ:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/FAQs.md&lt;br&gt;
-        \u25AA &lt;i&gt;License:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/LICENSE.md&lt;br&gt;
-        \u25AA &lt;i&gt;Privacy:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/PRIVACY.md
+        \u25AA &lt;i&gt;Proje sitesi:&lt;/i&gt; https://github.com/scoute-dich/Browser&lt;br&gt;
+        \u25AA &lt;i&gt;Değişiklikler:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;br&gt;
+        \u25AA &lt;i&gt;SSS:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/FAQs.md&lt;br&gt;
+        \u25AA &lt;i&gt;Lisans:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/LICENSE.md&lt;br&gt;
+        \u25AA &lt;i&gt;Gizlilik:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/PRIVACY.md
 
     </string>
     <!-- License changelog -->
@@ -344,122 +359,122 @@
         Apache License Version 2.0&lt;br&gt;
         hummatli&lt;br&gt;
         &lt;i&gt;https://github.com/hummatli/SimpleEncryptionLib</string>
-    <string name="cont_dialog">        &lt;i&gt;First I would like to thank all people who contributed in any way on this project. They submitted issues,
-        translated or helped in any other way. On following sites you can become a active member of this
-        great community:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
+    <string name="cont_dialog">        &lt;i&gt;Öncelikle bu projeye herhangi bir şekilde katkıda bulunan herkese teşekkür etmek istiyorum. Sorunlar gönderdiler,
+        çeviri yaptılar ve başka herhangi bir şekilde yardımcı oldular. Aşağıdaki sitelerde bu harika topluluğun 
+        aktif bir üyesi olabilirsiniz:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Crowdin:&lt;/b&gt;&lt;br&gt;
-        Crowdin is an online plattform to translate applications in other languages. A big thanks to all translators. You can
-        also help.&lt;br&gt;
+        Crowdin uygulamaları diğer dillere çevirmek için kullanılan online bir platformdur. Siz de
+        yardımcı olabilirsiniz.&lt;br&gt;
         &lt;i&gt;https://crowdin.com/project/foss-browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
 
-        &lt;b&gt;XDA-thread:&lt;/b&gt;&lt;br&gt;
-        XDA is a great community for developers and smartphone enthusiasts. Here you can report issues, ask for new features
-        and everything other related to \"FOSS Browser\".&lt;br&gt;
+        &lt;b&gt;XDA-forumu:&lt;/b&gt;&lt;br&gt;
+        XDA, geliştiriciler ve akıllı telefon meraklıları için harika bir topluluktur. Burada sorunları bildirebilir, yeni özellikler ve
+        \"FOSS Browser\" ile ilgili her şeyi isteyebilirsiniz.&lt;br&gt;
         &lt;i&gt;https://forum.xda-developers.com/android/apps-games/app-browser-t3500091&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Github:&lt;/b&gt;&lt;br&gt;
-        On Github you can see the source code of \"FOSS Browser\". This is the more technical solution: open issues, ask for new
-        features or even help developing or translating.&lt;br&gt;
+        GitHub\'da \"FOSS Browser\"ın kaynak kodunu görebilirsiniz. Bu daha teknik bir çözüm: sorunlar açın, yeni özellikler isteyin,
+        hatta geliştirilmesine veya çevrilmesine yardımcı olun.&lt;br&gt;
         &lt;i&gt;https://github.com/scoute-dich/browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
 
 
-        &lt;i&gt;Following people contributed at this project. If I have forgotten anybody, please contact me:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
+        &lt;i&gt;Aşağıdaki kişiler bu projeye katkıda bulundu. Birini unutmuşsam, lütfen benimle iletişime geçin.:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Gaukler Faun&lt;/b&gt;&lt;br&gt;
-        \u25AA Main developer and initiator of this project&lt;br&gt;
+        \u25AA Bu projenin ana geliştiricisi ve başlatıcısı&lt;br&gt;
         &lt;i&gt;https://github.com/scoute-dich&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Ali Demirtas&lt;/b&gt;&lt;br&gt;
-        \u25AA Turkish Translation&lt;br&gt;
+        \u25AA Türkçe çeviri&lt;br&gt;
         &lt;i&gt;https://github.com/ali-demirtas&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;CGSLURP LLC&lt;/b&gt;&lt;br&gt;
-        \u25AA Helped to implement AdBlock and \"request desktop site\" in the previous version of \"FOSS Browser\".&lt;br&gt;
+        \u25AA \"FOSS Browser\"ın önceki sürümünde AdBlock ve \"masaüstü sitesi isteme\" uygulamasına yardımcı oldu.&lt;br&gt;
         &lt;i&gt;https://github.com/futrDevelopment&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;element54&lt;/b&gt;&lt;br&gt;
-        \u25AA fix: keyboard problems (issue #105)&lt;br&gt;
-        \u25AA new: option to disable confirmation dialogs on exit&lt;br&gt;
+        \u25AA düzeltme: klavye sorunları (sorun #105)&lt;br&gt;
+        \u25AA yeni: çıkışta onaylama iletişim kutularını devre dışı bırakma seçeneği&lt;br&gt;
         &lt;i&gt;https://github.com/element54&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;elmru&lt;/b&gt;&lt;br&gt;
-        \u25AA Taiwan Trad. Chinese Translation&lt;br&gt;
+        \u25AA Tayvan Geleneksel Çince çeviri&lt;br&gt;
         &lt;i&gt;https://github.com/kogiokka&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Enrico Monese&lt;/b&gt;&lt;br&gt;
-        \u25AA Italian Translation&lt;br&gt;
+        \u25AA İtalyanca çeviri&lt;br&gt;
         &lt;i&gt;https://github.com/EnricoMonese&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Francois&lt;/b&gt;&lt;br&gt;
-        \u25AA French Translation&lt;br&gt;
+        \u25AA Fransızca çeviri&lt;br&gt;
         &lt;i&gt;https://github.com/franco27&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;gh-pmjm&lt;/b&gt;&lt;br&gt;
-        \u25AA Polish translation&lt;br&gt;
+        \u25AA Lehçe çeviri&lt;br&gt;
         &lt;i&gt;https://github.com/gh-pmjm&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;gr1sh&lt;/b&gt;&lt;br&gt;
-        \u25AA fix: some German strings (issues #124, #131)&lt;br&gt;
+        \u25AA düzeltme: bazı Almanca stringler (sayı #124, #131)&lt;br&gt;
         &lt;i&gt;https://github.com/gr1sh&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Harry Heights&lt;/b&gt;&lt;br&gt;
-        \u25AA Documentation of FOSS Browser&lt;br&gt;
+        \u25AA FOSS Browser Dokümantasyonu&lt;br&gt;
         &lt;i&gt;https://github.com/HarryHeights&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Heimen Stoffels&lt;/b&gt;&lt;br&gt;
-        \u25AA Dutch translation&lt;br&gt;
+        \u25AA Flemenkçe çeviri&lt;br&gt;
         &lt;i&gt;https://github.com/Vistaus&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Hellohat&lt;/b&gt;&lt;br&gt;
-        \u25AA French translation&lt;br&gt;
+        \u25AA Fransızca çeviri&lt;br&gt;
         &lt;i&gt;https://github.com/Hellohat&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Herman Nunez&lt;/b&gt;&lt;br&gt;
-        \u25AA Spanish translation&lt;br&gt;
+        \u25AA İspanyolca çeviri&lt;br&gt;
         &lt;i&gt;https://github.com/junior012&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Jumping Yang&lt;/b&gt;&lt;br&gt;
-        \u25AA Chinese translation in the previous version of \"FOSS Browser\"&lt;br&gt;
+        \u25AA \"FOSS Browser\"ın önceki sürümünde Çince çeviri&lt;br&gt;
         &lt;i&gt;https://github.com/JumpingYang001&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;lishoujun&lt;/b&gt;&lt;br&gt;
-        \u25AA Chinese translation&lt;br&gt;
+        \u25AA Çince çeviri&lt;br&gt;
         \u25AA bug hunting&lt;br&gt;
         &lt;i&gt;https://github.com/lishoujun&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Peter Bui&lt;/b&gt;&lt;br&gt;
-        \u25AA more font sizes to choose&lt;br&gt;
+        \u25AA daha fazla yazı tipi boyutu seçeneği&lt;br&gt;
         &lt;i&gt;https://github.com/pbui&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Secangkir Kopi&lt;/b&gt;&lt;br&gt;
-        \u25AA Indonesian translation&lt;br&gt;
+        \u25AA Endonezyaca çeviri&lt;br&gt;
         &lt;i&gt;https://github.com/Secangkir-Kopi&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Sérgio Marques&lt;/b&gt;&lt;br&gt;
-        \u25AA Portuguese translation&lt;br&gt;
+        \u25AA Portekizce çeviri&lt;br&gt;
         &lt;i&gt;https://github.com/smarquespt&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;splinet&lt;/b&gt;&lt;br&gt;
-        \u25AA Russian translation in the previous version of \"FOSS Browser\"&lt;br&gt;
+        \u25AA \"FOSS Browser\"ın önceki sürümünde Rusça çeviri&lt;br&gt;
         &lt;i&gt;https://github.com/splinet&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;SkewedZeppelin&lt;/b&gt;&lt;br&gt;
-        \u25AA Add option to enable Save-Data header&lt;br&gt;
+        \u25AA Veri-Tasarrufu başlığını etkinleştirmek için seçenek ekleme&lt;br&gt;
         &lt;i&gt;https://github.com/SkewedZeppelin&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Tobiplayer3&lt;/b&gt;&lt;br&gt;
-        \u25AA added Qwant search engine&lt;br&gt;
-        \u25AA option to open new tab instead of exiting app&lt;br&gt;
+        \u25AA Qwant arama motorunu ekledi&lt;br&gt;
+        \u25AA uygulamadan çıkmak yerine yeni sekme açma seçeneği&lt;br&gt;
         &lt;i&gt;https://github.com/Tobiplayer3&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Vladimir Kosolapov&lt;/b&gt;&lt;br&gt;
-        \u25AA Russian translation&lt;br&gt;
+        \u25AA Rusça çeviri&lt;br&gt;
         &lt;i&gt;https://github.com/0x264f&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;YC L&lt;/b&gt;&lt;br&gt;
-        \u25AA Chinese Translation&lt;br&gt;
+        \u25AA Çince çeviri&lt;br&gt;
         &lt;i&gt;https://github.com/smallg0at&lt;/i&gt;
 
     </string>
