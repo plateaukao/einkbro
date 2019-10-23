@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/activity_main"
+    android:background="@color/color_light"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="ContentDescription">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:ignore="ContentDescription,Overdraw">
 
     <RelativeLayout
         android:id="@+id/appBar"
@@ -16,7 +17,7 @@
         <RelativeLayout android:id="@+id/main_omnibox"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorPrimary">
+            android:background="@color/colorPrimaryDark">
 
             <ImageButton android:id="@+id/omnibox_overview"
                 android:layout_centerInParent="true"
@@ -64,7 +65,7 @@
                 android:maxLines="1"
                 android:ellipsize="end"
                 android:textColor="@color/color_light"
-                android:background="@color/colorPrimary"/>
+                android:background="@color/colorPrimaryDark"/>
 
             <TextView
                 android:id="@+id/omnibox_title"
@@ -81,12 +82,12 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textStyle="bold"
                 android:textColor="@color/color_light"
-                android:background="@color/colorPrimary" />
+                android:background="@color/colorPrimaryDark" />
 
         </RelativeLayout>
 
         <RelativeLayout android:id="@+id/main_search_panel"
-            android:background="@color/colorPrimary"
+            android:background="@color/colorPrimaryDark"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:minHeight="@dimen/layout_margin_56dp"

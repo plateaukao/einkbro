@@ -21,9 +21,9 @@
             android:layout_gravity="center"
             android:background="?attr/actionBarItemBackground"
             android:contentDescription="@null"
-            android:src="@drawable/circle_red" />
+            android:src="@drawable/circle_red_big" />
 
-        <android.support.design.widget.TextInputLayout
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/login_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -39,11 +39,11 @@
                 android:hint="@string/dialog_title_hint"
                 android:importantForAutofill="no" />
 
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:passwordToggleEnabled="false" >
@@ -57,9 +57,9 @@
             android:hint="@string/dialog_url_hint"
             android:importantForAutofill="no" />
 
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:passwordToggleEnabled="false" >
@@ -73,9 +73,9 @@
             android:hint="@string/dialog_sign_in_username"
             android:importantForAutofill="no" />
 
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:passwordToggleEnabled="true" >
@@ -89,7 +89,7 @@
             android:hint="@string/dialog_sign_in_password"
             android:importantForAutofill="no" />
 
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -103,7 +103,7 @@
             android:layout_alignParentEnd="true"
             android:includeFontPadding="false"
             android:background="?attr/selectableItemBackground"
-            android:textColor="@color/colorAccent"
+            android:textColor="?android:attr/colorAccent"
             android:text="@string/app_ok"/>
 
         <Button android:id="@+id/action_cancel"
@@ -112,7 +112,7 @@
             android:layout_toStartOf="@+id/action_ok"
             android:includeFontPadding="false"
             android:background="?attr/selectableItemBackground"
-            android:textColor="@color/colorAccent"
+            android:textColor="?android:attr/colorAccent"
             android:text="@string/app_cancel"/>
 
     </RelativeLayout>

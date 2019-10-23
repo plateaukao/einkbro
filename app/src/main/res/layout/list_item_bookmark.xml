@@ -2,25 +2,25 @@
 
 <LinearLayout android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/layout_margin_12dp"
+    android:padding="12dp"
     android:descendantFocusability="blocksDescendants"
     android:orientation="horizontal"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ImageView
         android:id="@+id/ib_icon"
-        android:layout_width="24dp"
+        android:layout_width="8dp"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
         android:contentDescription="@null"
         android:scaleType="fitCenter"
-        android:src="@drawable/circle_red" />
+        android:src="@drawable/circle_red_big" />
 
     <TextView android:id="@+id/record_item_title"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:includeFontPadding="false"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:maxLines="1"

@@ -28,7 +28,7 @@
         tools:targetApi="m">
 
         <!-- Holder -->
-        <activity android:name="de.baumann.browser.Activity.HolderActivity"
+        <activity android:name="de.baumann.browser.activity.HolderActivity"
                   android:label="@string/app_name"
                   android:launchMode="singleInstance"
                   android:excludeFromRecents="true"
@@ -42,12 +42,12 @@
             </intent-filter>
         </activity>
 
-        <service android:name="de.baumann.browser.Service.HolderService"
+        <service android:name="de.baumann.browser.service.HolderService"
                  android:label="@string/app_name"
                  android:icon="@mipmap/ic_launcher"/>
 
         <!-- BrowserActivity -->
-        <activity android:name="de.baumann.browser.Activity.BrowserActivity"
+        <activity android:name="de.baumann.browser.activity.BrowserActivity"
                   android:label="@string/app_name"
                   android:launchMode="singleInstance"
                   android:configChanges="orientation|keyboardHidden|screenSize"
@@ -77,60 +77,50 @@
         </activity>
 
         <!-- Settings -->
-        <activity android:name="de.baumann.browser.Activity.Settings_Activity"
+        <activity android:name="de.baumann.browser.activity.Settings_Activity"
             android:label="@string/setting_label"
             android:theme="@style/AppTheme"/>
 
-        <activity android:name="de.baumann.browser.Activity.Whitelist_AdBlock"
+        <activity android:name="de.baumann.browser.activity.Whitelist_AdBlock"
             android:label="@string/setting_title_whitelist"
             android:theme="@style/AppTheme"/>
 
-        <activity android:name="de.baumann.browser.Activity.Whitelist_Javascript"
+        <activity android:name="de.baumann.browser.activity.Whitelist_Javascript"
             android:label="@string/setting_title_whitelistJS"
             android:theme="@style/AppTheme"/>
 
-        <activity android:name="de.baumann.browser.Activity.Whitelist_Cookie"
+        <activity android:name="de.baumann.browser.activity.Whitelist_Cookie"
             android:label="@string/setting_title_whitelistCookie"
             android:theme="@style/AppTheme"/>
 
-        <activity android:name="de.baumann.browser.Activity.Settings_ClearActivity"
+        <activity android:name="de.baumann.browser.activity.Settings_ClearActivity"
             android:label="@string/setting_title_clear_control"
             android:theme="@style/AppTheme"/>
 
-        <activity android:name="de.baumann.browser.Activity.Settings_StartActivity"
+        <activity android:name="de.baumann.browser.activity.Settings_StartActivity"
             android:label="@string/setting_title_start_control"
             android:theme="@style/AppTheme"/>
 
-        <activity android:name="de.baumann.browser.Activity.Settings_DataActivity"
+        <activity android:name="de.baumann.browser.activity.Settings_DataActivity"
             android:label="@string/setting_title_data"
             android:theme="@style/AppTheme"/>
 
-        <activity android:name="de.baumann.browser.Activity.Settings_UIActivity"
+        <activity android:name="de.baumann.browser.activity.Settings_UIActivity"
             android:label="@string/setting_title_ui"
             android:theme="@style/AppTheme"/>
 
-        <activity android:name="de.baumann.browser.Activity.Settings_GestureActivity"
+        <activity android:name="de.baumann.browser.activity.Settings_GestureActivity"
             android:label="@string/setting_gestures"
             android:theme="@style/AppTheme"/>
 
-        <activity android:name="de.baumann.browser.Activity.Settings_FilterActivity"
+        <activity android:name="de.baumann.browser.activity.Settings_FilterActivity"
             android:label="@string/setting_filter"
             android:theme="@style/AppTheme"/>
 
         <!-- ClearService | Provider-->
-        <service android:name="de.baumann.browser.Service.ClearService"
+        <service android:name="de.baumann.browser.service.ClearService"
                  android:label="@string/app_name"
                  android:icon="@mipmap/ic_launcher"/>
-
-        <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="de.baumann.browser.provider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"/>
-        </provider>
 
     </application>
 

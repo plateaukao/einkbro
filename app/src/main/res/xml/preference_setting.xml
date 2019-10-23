@@ -1,18 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory android:title="@string/setting_title_browser">
+    <PreferenceCategory
+        android:title="@string/setting_title_browser"
+        app:initialExpandedChildrenCount="3">
 
-        <Preference android:title="@string/setting_title_start_control"
+        <EditTextPreference
+            android:defaultValue="https://github.com/scoute-dich/browser"
+            android:key="favoriteURL"
+            android:title="@string/setting_title_fav"
+            android:summary="@string/setting_summary_fav"
+            android:icon="@drawable/star_grey"/>
+
+        <Preference
+            android:key="settings_start"
+            android:title="@string/setting_title_start_control"
             android:summary="@string/setting_summary_start_control"
             android:icon="@drawable/icon_earth"/>
 
-        <Preference android:title="@string/setting_title_clear_control"
+        <Preference
+            android:key="settings_clear"
+            android:title="@string/setting_title_clear_control"
             android:icon="@drawable/icon_delete"
             android:summary="@string/setting_summary_clear_control" />
 
-        <de.baumann.browser.View.SearchEngineListPreference
+        <ListPreference
             android:icon="@drawable/icon_search"
             android:key="@string/sp_search_engine"
             android:defaultValue="0"
@@ -21,32 +35,46 @@
             android:entries="@array/setting_entries_search_engine"
             android:entryValues="@array/setting_values_search_engine"/>
 
+        <EditTextPreference
+            android:defaultValue="https://www.ecosia.org/search?q="
+            android:key="sp_search_engine_custom"
+            android:title="@string/setting_title_searchEngine"
+            android:summary="@string/setting_summary_searchEngine"
+            android:icon="@drawable/icon_edit"/>
+
     </PreferenceCategory>
 
 
-    <PreferenceCategory android:title="@string/setting_title_app">
+    <PreferenceCategory
+        android:title="@string/setting_title_app"
+        app:initialExpandedChildrenCount="3">
 
         <Preference
+            android:key="settings_ui"
             android:icon="@drawable/icon_ui"
             android:title="@string/setting_title_ui"
             android:summary="@string/setting_summary_ui"/>
 
         <Preference
+            android:key="settings_filter"
             android:icon="@drawable/filter_variant"
             android:title="@string/setting_filter"
             android:summary="@string/setting_filter_summary"/>
 
         <Preference
+            android:key="settings_gesture"
             android:icon="@drawable/gesture_tap"
             android:title="@string/setting_gestures"
             android:summary="@string/setting_gestures_use_summary"/>
 
         <Preference
+            android:key="settings_data"
             android:icon="@drawable/icon_backup"
             android:title="@string/setting_title_data"
             android:summary="@string/setting_summary_data"/>
 
         <Preference
+            android:key="settings_appSettings"
             android:icon="@drawable/icon_settings"
             android:title="@string/setting_title_appSettings"
             android:summary="@string/setting_summary_appSettings"/>
@@ -54,22 +82,29 @@
     </PreferenceCategory>
 
 
-    <PreferenceCategory android:title="@string/setting_title_others">
+    <PreferenceCategory
+        android:title="@string/setting_title_others"
+        app:initialExpandedChildrenCount="0">
 
         <Preference
-            android:icon="@drawable/icon_list"
-            android:title="@string/changelog_title"
-            android:summary="@string/setting_summary_changelog"/>
-
-        <Preference
+            android:key="settings_community"
             android:icon="@drawable/icon_group"
-            android:title="@string/setting_title_community"
-            android:summary="@string/setting_summary_community"/>
+            android:title="@string/setting_title_community"/>
 
         <Preference
+            android:key="settings_help"
+            android:icon="@drawable/icon_help"
+            android:title="@string/menu_other_help"/>
+
+        <Preference
+            android:key="settings_license"
             android:icon="@drawable/icon_copyright"
-            android:title="@string/setting_title_license"
-            android:summary="@string/setting_summary_license"/>
+            android:title="@string/setting_title_license"/>
+
+        <Preference
+            android:key="settings_info"
+            android:icon="@drawable/icon_info"
+            android:title="@string/menu_other_info"/>
 
     </PreferenceCategory>
 

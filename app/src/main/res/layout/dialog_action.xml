@@ -33,7 +33,7 @@
             android:paddingEnd="8dp"
             android:paddingStart="8dp"
             android:background="?attr/selectableItemBackground"
-            android:textColor="@color/colorAccent"
+            android:textColor="?android:attr/colorAccent"
             android:text="@string/app_ok"/>
 
         <Button android:id="@+id/action_cancel"
@@ -44,7 +44,7 @@
             android:paddingEnd="8dp"
             android:paddingStart="8dp"
             android:background="?attr/selectableItemBackground"
-            android:textColor="@color/colorAccent"
+            android:textColor="?android:attr/colorAccent"
             android:text="@string/app_cancel"/>
 
     </RelativeLayout>

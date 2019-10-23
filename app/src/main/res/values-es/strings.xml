@@ -10,7 +10,6 @@
     <string name="album_title_history">Historia</string>
     <string name="album_title_home">Inicio</string>
     <string name="album_title_files">Archivos</string>
-    <string name="album_untitled"></string>
     <string name="notification_content_holderTitle">Pestañas abiertas…</string>
     <string name="notification_content_holder">… Haga clic para ver las páginas</string>
     <string name="search_hint">Búsqueda</string>
@@ -31,7 +30,6 @@
     <string name="main_menu_new_tabOpen">Nueva pestaña (primer plano)</string>
     <string name="main_omnibox_input_hint">Buscar o escribir URL</string>
     <string name="menu_open_with">Abrir enlace con …</string>
-    <string name="menu_share">Compartir</string>
     <string name="menu_quit">Salir</string>
     <string name="menu_openFav">Open Favorite</string>
     <string name="menu_delete">Borrar</string>
@@ -43,7 +41,6 @@
     <string name="menu_sc">Shortcut on home screen</string>
     <string name="menu_sort">Sort by …</string>
     <string name="menu_filter">Filter by …</string>
-    <string name="menu_blank">Blank start site</string>
     <string name="menu_share_screenshot">Compartir captura</string>
     <string name="menu_share_link">Compartir enlace</string>
     <string name="menu_save_screenshot">Guardar captura</string>
@@ -52,7 +49,6 @@
     <string name="menu_save_as">Guardar como…</string>
     <string name="menu_save_pdf">Save as PDF</string>
     <string name="menu_share_pdf">Share PDF</string>
-    <string name="menu_share_pdfToast">Complete. Open file manager to share?</string>
     <string name="menu_shareClipboard">Copy to clipboard</string>
     <string name="menu_other_searchSite">Buscar en sitio web</string>
     <string name="menu_other_help">Ayuda</string>
@@ -65,7 +61,6 @@
     <string name="dialog_sign_in_password">Contraseña</string>
     <string name="dialog_button_custom">Personalizado</string>
     <string name="dialog_title_download">¿desea descargar el archivo?</string>
-    <string name="dialog_title_sign_in">Iniciar sesión</string>
     <string name="dialog_content_resubmission">¿desea reenviar sus datos?</string>
     <string name="dialog_content_ssl_error">No se confía en el certificado del sitio web. ¿proceder de todos modos?</string>
     <string name="dialog_sortName">Sort by name</string>
@@ -73,7 +68,7 @@
     <string name="dialog_sortDate">Sort by date</string>
     <!-- Settings -->
     <string name="setting_label">Configuración</string>
-    <!-- Browser setting -->
+    <!-- browser setting -->
     <string name="setting_title_browser">Configuración de Navegador</string>
     <string name="setting_title_clear_control">Control de Datos</string>
     <string name="setting_title_start_control">Iniciar control</string>
@@ -98,7 +93,7 @@
     <string name="setting_summary_remote">Habilite el contenido remoto, que no es directamente del sitio web que está visitando.         Deshabilitar esto es más seguro, más rápido y ahorra volumen de datos. Pero no se mostrará más contenido.</string>
     <string name="setting_title_save_data">Request \'Save Data\'</string>
     <string name="setting_summary_save_data">Tell websites that you would prefer to save data. Supported websites will load faster.</string>
-    <!-- Browser start -->
+    <!-- browser start -->
     <string name="setting_title_images">Imágenes</string>
     <string name="setting_summary_images">Habilitar imágenes de red. La desactivación podría ser útil para ahorrar datos móviles y para cargar sitios web más rápidamente.</string>
     <string name="setting_title_cookie">Cookies</string>
@@ -118,8 +113,7 @@
     <string name="setting_summary_location">Permitir que los sitios web accedan a su ubicación. Algunos sitios web (como Google Maps para la navegación) necesitan esto habilitado.</string>
     <string name="setting_title_history">Historia</string>
     <string name="setting_summary_history">Guarda la historia de los sitios web visitados.</string>
-    <!-- Browser clear -->
-    <string name="clear_summary">Todos los archivos se exportarán al directorio \"Documentos\" de su tarjeta SD. Cada exportación sobrescribirá a la antigua. Para restaurar debe haber un archivo con el nombre correcto en el directorio.</string>
+    <!-- browser clear -->
     <string name="clear_menu_done_all">Todo listo</string>
     <string name="clear_title_quit">Limpia después de salir</string>
     <string name="clear_summary_quit">Cada vez que sales \"Navegador FOSS\" todos los datos anteriores se borrarán.</string>
@@ -143,8 +137,6 @@
     <string name="setting_summary_hide">Utilice la pantalla completa al desplazarse por sitios Web. Si pulsa el botón atrás, dejará el modo de pantalla completa.</string>
     <string name="setting_title_background">Abrir enlaces</string>
     <string name="setting_summary_background">Mostrar una notificación y abrir enlace en segundo plano. Si los enlaces deshabilitados se abren inmediatamente.</string>
-    <string name="setting_title_themeDark">Light theme</string>
-    <string name="setting_summary_themeDark">¿te gusta un poco más brillante? ¡Hazlo!</string>
     <string name="setting_title_themeColor">Color UI</string>
     <string name="setting_summary_themeColor">Tint some elements from the UI to match the website colors.</string>
     <string name="setting_title_theme">UI</string>
@@ -175,8 +167,6 @@
     <string name="setting_overView_hide_title">Hide tab previews</string>
     <string name="setting_overView_hide_summary">In expanded overview the tab preview will hide. Then you have more place for your
     bookmarks.</string>
-    <string name="setting_overView_place_title">Only tab preview</string>
-    <string name="setting_overView_place_summary">Only show the tab preview when extending overview to switch tabs more comfortable.</string>
     <string name="setting_gestures">Gestures</string>
     <string name="setting_gestures_use_title">Use gestures</string>
     <string name="setting_gestures_use_summary">Use gestures on the toolbar and the \"Navigation button\".</string>
@@ -199,7 +189,6 @@
     <string name="setting_gesture_09">Open new tab</string>
     <string name="setting_gesture_10">Cerrar pestaña</string>
     <!-- Data -->
-    <string name="export_bookmarks">exportar_marcadores</string>
     <string name="setting_title_export_whitelist">Exportar lista blanca AdBlock</string>
     <string name="setting_title_import_whitelist">Importar lista blanca AdBlock</string>
     <string name="export_whitelistAdBlock">exportar_listablanca_Adblock</string>
@@ -209,20 +198,13 @@
     <string name="setting_title_export_whitelistCookie">Exportar lista blanca Cookie</string>
     <string name="setting_title_import_whitelistCookie">Importar lista blanca Cookie</string>
     <string name="export_whitelistCookie">exportar_listablanca_Cookie</string>
-    <string name="setting_title_export_database">Exportar base de datos</string>
-    <string name="setting_title_import_database">Importar base de datos</string>
-    <string name="setting_summary_export_database">Exporte toda la base de datos (página de inicio + previsualizaciones, historial, marcadores) a su tarjeta SD. Los datos de inicio de sesión no se copiarán.</string>
-    <string name="title_database">Base de datos</string>
     <string name="hint_database">Esto borrará todas sus configuraciones y datos actuales. ¿Quiere proceder?</string>
     <!-- Others setting -->
     <string name="setting_title_others">Otros</string>
     <string name="setting_title_license">Licencia</string>
-    <string name="setting_summary_license">\"Navegador FOSS \"es totalmente gratuito (como en libertad) y de código abierto.</string>
     <string name="setting_title_appSettings">Configuración de la aplicación</string>
     <string name="setting_summary_appSettings">Abrir la configuración de la aplicación del sistema para Navegador \"FOSS \". Allí puede, dependiendo de su versión de Android permisos de concesión, borrar los datos de la aplicación y así sucesivamente.</string>
     <string name="setting_title_community">Contribuyendo</string>
-    <string name="setting_summary_community">Vea quién aportó algo a este proyecto. O quieres ayudar con el desarrollo, reportar un problema o simplemente recibir las últimas noticias relacionadas con mis proyectos?</string>
-    <string name="setting_summary_changelog">Mostrar el último cambios para ver qué hay de nuevo.</string>
     <!-- Toast -->
     <string name="toast_add_to_home_successful">Agregado con éxito al inicio</string>
     <string name="toast_add_to_home_failed">No se pudo agregar a la Página principal</string>
@@ -294,20 +276,6 @@
         There are three parts: the Startsite, your Bookmarks and your History. If you long click an entry
         a menu with more options will appear.
     </string>
-    <string name="dialogHelp_gesturesTitle">Gestures</string>
-    <string name="dialogHelp_gesturesText">        On the toolbar and the \"Navigation button\" you can use gestures:&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Toolbar&lt;/b&gt;&lt;br&gt;
-        \u25AA swipe up/down     \u2192  show Overview/nothing&lt;br&gt;
-        \u25AA swipe left/right  \u2192  change tabs&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Navigation button&lt;/b&gt;&lt;br&gt;
-        \u25AA swipe up/down     \u2192  scroll up/down&lt;br&gt;
-        \u25AA swipe left/right  \u2192  previous/next in history&lt;br&gt;&lt;br&gt;
-
-        You can change this in the settings.
-    </string>
-    <string name="dialogHelp_filterTitle">Filter</string>
     <string name="dialogHelp_filterText">        You can tag your bookmarks with colors. In this way you can group your bookmarks. You can open the filter dialog by
         long pressing the bookmark icon. If you long press on an entry, you can edit its name. In the settings you can
         disable unused entries.

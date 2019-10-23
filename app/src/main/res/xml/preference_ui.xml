@@ -42,12 +42,14 @@
             android:title="@string/setting_title_themeColor"
             android:summary="@string/setting_summary_themeColor"/>
 
-        <CheckBoxPreference
-            android:key="sp_lightUI"
+        <ListPreference
             android:icon="@drawable/icon_ui"
-            android:defaultValue="false"
-            android:title="@string/setting_title_themeDark"
-            android:summary="@string/setting_summary_themeDark"/>
+            android:key="sp_theme"
+            android:defaultValue="1"
+            android:title="@string/setting_theme"
+            android:summary="@string/setting_theme_summary"
+            android:entries="@array/setting_entries_theme"
+            android:entryValues="@array/setting_values_theme"/>
 
         <ListPreference
             android:icon="@drawable/icon_size"
