@@ -316,7 +316,7 @@
     </string>
     <string name="dialogHelp_filterText">Du kannst deinen Lesezeichen eine Farbe als Filter zuordnen. So kannst du viele Lesezeichen in Gruppen ordnen.
         Den Filterdialog kannst du öffnen, indem du lange auf das Lesezeichen-Icon drückst. Wenn du lange auf einen
-        Eintrag drückst, kannst du ihm einen anderen Namen geben. In den Einstellungen kannst du außerdem einzelne
+        Eintrag drückst, kannst du ihm einen anderen Namen geben. In den Einstellungen kannst du ausserdem einzelne
         Einträge deaktivieren.
     </string>
     <!-- Dialog changelog -->
@@ -372,7 +372,7 @@
         &lt;i&gt;https://crowdin.com/project/foss-browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
 
-        &lt;b&gt;XDA-Forum:&lt;/b&gt;&lt;br&gt;
+        &lt;b&gt;XDA-thread:&lt;/b&gt;&lt;br&gt;
         XDA is a great community for developers and smartphone enthusiasts. Here you can report issues, ask for new features
         and everything other related to \"FOSS Browser\".&lt;br&gt;
         &lt;i&gt;https://forum.xda-developers.com/android/apps-games/app-browser-t3500091&lt;/i&gt;&lt;br&gt;&lt;br&gt;
