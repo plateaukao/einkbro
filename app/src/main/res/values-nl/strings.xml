@@ -10,7 +10,6 @@
     <string name="album_title_history">Geschiedenis</string>
     <string name="album_title_home">Startpagina</string>
     <string name="album_title_files">Bestanden</string>
-    <string name="album_untitled"></string>
     <string name="notification_content_holderTitle">Geopende tabbladen…</string>
     <string name="notification_content_holder">…druk om pagina\'s te tonen</string>
     <string name="search_hint">Zoeken</string>
@@ -31,7 +30,6 @@
     <string name="main_menu_new_tabOpen">Nieuw tabblad (voorgrond)</string>
     <string name="main_omnibox_input_hint">Zoek, of typ een URL</string>
     <string name="menu_open_with">Link openen met…</string>
-    <string name="menu_share">Delen</string>
     <string name="menu_quit">Afsluiten</string>
     <string name="menu_openFav">Open Favorite</string>
     <string name="menu_delete">Verwijderen</string>
@@ -43,7 +41,6 @@
     <string name="menu_sc">Shortcut on home screen</string>
     <string name="menu_sort">Sort by …</string>
     <string name="menu_filter">Filter by …</string>
-    <string name="menu_blank">Blank start site</string>
     <string name="menu_share_screenshot">Schermafdruk delen</string>
     <string name="menu_share_link">Link delen</string>
     <string name="menu_save_screenshot">Schermafdruk opslaan</string>
@@ -52,9 +49,10 @@
     <string name="menu_save_as">Opslaan als…</string>
     <string name="menu_save_pdf">Opslaan als PDF-bestand</string>
     <string name="menu_share_pdf">PDF-bestand delen</string>
-    <string name="menu_share_pdfToast">Voltooid. Wil je bestandsbeheerd openen om het te delen?</string>
     <string name="menu_shareClipboard">Copy to clipboard</string>
     <string name="menu_other_searchSite">Website doorzoeken</string>
+    <string name="menu_other_fileManager">Open file manager</string>
+    <string name="menu_other_info">About \"FOSS Browser\"</string>
     <string name="menu_other_help">Hulp</string>
     <!-- Dialog -->
     <string name="dialog_toggle_reload">Reload</string>
@@ -65,7 +63,6 @@
     <string name="dialog_sign_in_password">Wachtwoord</string>
     <string name="dialog_button_custom">Aangepast</string>
     <string name="dialog_title_download">Wil je het bestand downloaden?</string>
-    <string name="dialog_title_sign_in">Inloggen</string>
     <string name="dialog_content_resubmission">Wil je je gegevens opnieuw versturen?</string>
     <string name="dialog_content_ssl_error">Het certificaat van deze website is onvertrouwd. Wil je tóch doorgaan?</string>
     <string name="dialog_sortName">Sort by name</string>
@@ -73,7 +70,7 @@
     <string name="dialog_sortDate">Sort by date</string>
     <!-- Settings -->
     <string name="setting_label">Instellingen</string>
-    <!-- Browser setting -->
+    <!-- browser setting -->
     <string name="setting_title_browser">Browserinstellingen</string>
     <string name="setting_title_clear_control">Gegevensbeheer</string>
     <string name="setting_title_start_control">Beheer starten</string>
@@ -100,7 +97,7 @@
         Uitschakelen is veiliger, sneller en bespaart mobiele gegevens, maar sommige inhoud wordt hierdoor niet meer getoond.</string>
     <string name="setting_title_save_data">Request \'Save Data\'</string>
     <string name="setting_summary_save_data">Tell websites that you would prefer to save data. Supported websites will load faster.</string>
-    <!-- Browser start -->
+    <!-- browser start -->
     <string name="setting_title_images">Afbeeldingen</string>
     <string name="setting_summary_images">Schakelt netwerkafbeeldingen in. Uitschakelen kan nuttig zijn om mobiele gegevens te besparen en om websites sneller te laden.</string>
     <string name="setting_title_cookie">Cookies</string>
@@ -126,9 +123,10 @@
         hebben dit nodig.</string>
     <string name="setting_title_history">Geschiedenis</string>
     <string name="setting_summary_history">Geschiedenis opslaan van bezochte websites.</string>
-    <!-- Browser clear -->
-    <string name="clear_summary">Alle bestanden worden geëxporteerd naar de map \"Documenten\" van je SD-kaart. Elke exportering overschrijft
-        de oude. Om te herstellen is een bestand met de juiste naam in de map nodig.</string>
+    <!-- browser clear -->
+    <string name="data_summary">All files will be exported to the \"Android/data/de.baumann.browser/files/browser_backup/\"
+        directory of your sd-card. This directory will be DELETED, if you uninstall \"FOSS Browser\". So make a backup regularly on a save
+        place.</string>
     <string name="clear_menu_done_all">Alles voltooid</string>
     <string name="clear_title_quit">Wissen bij afsluiten</string>
     <string name="clear_summary_quit">Elke keer als je \"FOSS-browser\" afsluit, dan worden alle hierboven aangevinkte gegevens gewist.</string>
@@ -147,6 +145,12 @@
     <string name="setting_filter">Bookmark filter</string>
     <string name="setting_filter_summary">To show the filter dialog long press on the bookmark icon in the overview. Decide which
         filters you will use.</string>
+    <string name="setting_title_fav">Favorite</string>
+    <string name="setting_summary_fav">Here you can change the default website which loads on start of \"FOSS Browser\".
+    Enter \"about:blank\" to get an emty start site.</string>
+    <string name="setting_title_searchEngine">Custom search engine</string>
+    <string name="setting_summary_searchEngine">Here you can enter a custom search URL. Also choose \"Custom search engine\" as search
+    provider.</string>
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">Werkbalk verbergen</string>
     <string name="setting_summary_hide">Gebruik, tijdens het scrollen op websites, het hele scherm. Als je op de terug-knop drukt,
@@ -154,8 +158,11 @@
     <string name="setting_title_background">Links openen</string>
     <string name="setting_summary_background">Melding tonen en links openen op de achtergrond. Als je dit uitschakelt, dan openen links
     meteen.</string>
-    <string name="setting_title_themeDark">Licht thema</string>
-    <string name="setting_summary_themeDark">Wil je wat meer licht in je leven? Doe het!</string>
+    <string name="setting_theme">Theme</string>
+    <string name="setting_theme_summary">Set the app theme.</string>
+    <string name="setting_theme_system">System theme</string>
+    <string name="setting_theme_light">Light theme</string>
+    <string name="setting_theme_dark">Dark theme</string>
     <string name="setting_title_themeColor">Color UI</string>
     <string name="setting_summary_themeColor">Tint some elements from the UI to match the website colors.</string>
     <string name="setting_title_theme">UI</string>
@@ -186,8 +193,6 @@
     <string name="setting_overView_hide_title">Hide tab previews</string>
     <string name="setting_overView_hide_summary">In expanded overview the tab preview will hide. Then you have more place for your
     bookmarks.</string>
-    <string name="setting_overView_place_title">Only tab preview</string>
-    <string name="setting_overView_place_summary">Only show the tab preview when extending overview to switch tabs more comfortable.</string>
     <string name="setting_gestures">Gestures</string>
     <string name="setting_gestures_use_title">Use gestures</string>
     <string name="setting_gestures_use_summary">Use gestures on the toolbar and the \"Navigation button\".</string>
@@ -210,7 +215,6 @@
     <string name="setting_gesture_09">Open new tab</string>
     <string name="setting_gesture_10">Tabblad sluiten</string>
     <!-- Data -->
-    <string name="export_bookmarks">Bladwijzers exporteren</string>
     <string name="setting_title_export_whitelist">Advertentieblokkering - witte lijst exporteren</string>
     <string name="setting_title_import_whitelist">Advertentieblokkering - witte lijst importeren</string>
     <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
@@ -220,23 +224,19 @@
     <string name="setting_title_export_whitelistCookie">Cookies - witte lijst exporteren</string>
     <string name="setting_title_import_whitelistCookie">Cookies - witte lijst importeren</string>
     <string name="export_whitelistCookie">export_whitelist_Cookie</string>
-    <string name="setting_title_export_database">Databank exporteren</string>
-    <string name="setting_title_import_database">Databank importeren</string>
-    <string name="setting_summary_export_database">Exporteer de gehele databank (startpagina + voorbeelden, geschiedenis, bladwijzers) naar je
-        SD-kaart. Je inloggegevens worden niet geback-upt.</string>
-    <string name="title_database">Databank</string>
+    <string name="setting_title_export_appData">Export app data</string>
+    <string name="setting_title_import_appData">Import app data</string>
+    <string name="setting_summary_export_appData">Export app data (Startpage + previews, History, Bookmarks)
+        and your personal settings.</string>
+    <string name="title_appData">App data</string>
     <string name="hint_database">Dit verwijdert al je huidige instellingen en gegevens. Wil je doorgaan?</string>
     <!-- Others setting -->
     <string name="setting_title_others">Overig</string>
     <string name="setting_title_license">Licentie</string>
-    <string name="setting_summary_license">\"FOSS-browser\" is volledig vrij (als in \'vrijheid\') en open source.</string>
     <string name="setting_title_appSettings">App-instellingen</string>
     <string name="setting_summary_appSettings">Opent de app-instellingen voor \"FOSS-browser\". Daar kun je,
         afhankelijk van je Android-versie, machtigingen verlenen, de appgegevens wissen, enz.</string>
     <string name="setting_title_community">Bijdragen</string>
-    <string name="setting_summary_community">Bekijk wie er heeft bijgedragen aan het project. Of wil je helpen
-        bij de ontwikkeling, een probleem rapporteren of het laatste nieuws over mijn projecten bekijken?</string>
-    <string name="setting_summary_changelog">Nieuwste wijzigingslog bekijken</string>
     <!-- Toast -->
     <string name="toast_add_to_home_successful">Toegevoegd aan beginscherm</string>
     <string name="toast_add_to_home_failed">Toevoegen mislukt</string>
@@ -287,12 +287,7 @@
     <string name="whitelist_add">Toevoegen</string>
     <!-- Dialog help -->
     <string name="dialogHelp_tipTitle">Tips</string>
-    <string name="dialogHelp_tipText">        &lt;b&gt;Start site&lt;/b&gt;&lt;br&gt;
-        You can decide which site loads when \"FOSS Browser\" starts: By long pressing an entry in the
-        overview (Startsite, Bookmarks, History) you can choose it. Over the menu of the overview you can also set
-        a blank start site.&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Menus and dialogs&lt;/b&gt;&lt;br&gt;
+    <string name="dialogHelp_tipText">        &lt;b&gt;Menus and dialogs&lt;/b&gt;&lt;br&gt;
         All menus and dialogs are opened at the bottom of the screen. If the dialog is large you will first see only
         the upper part. If you swipe it up, the rest will get visible.&lt;br&gt;
         You can close them by pressing the back button, swiping them down or by clicking outside&lt;br&gt;&lt;br&gt;
@@ -313,23 +308,8 @@
         There are three parts: the Startsite, your Bookmarks and your History. If you long click an entry
         a menu with more options will appear.
     </string>
-    <string name="dialogHelp_gesturesTitle">Gestures</string>
-    <string name="dialogHelp_gesturesText">        On the toolbar and the \"Navigation button\" you can use gestures:&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Toolbar&lt;/b&gt;&lt;br&gt;
-        \u25AA swipe up/down     \u2192  show Overview/nothing&lt;br&gt;
-        \u25AA swipe left/right  \u2192  change tabs&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Navigation button&lt;/b&gt;&lt;br&gt;
-        \u25AA swipe up/down     \u2192  scroll up/down&lt;br&gt;
-        \u25AA swipe left/right  \u2192  previous/next in history&lt;br&gt;&lt;br&gt;
-
-        You can change this in the settings.
-    </string>
-    <string name="dialogHelp_filterTitle">Filter</string>
-    <string name="dialogHelp_filterText">        You can tag your bookmarks with colors. In this way you can group your bookmarks. You can open the filter dialog by
-        long pressing the bookmark icon. If you long press on an entry, you can edit its name. In the settings you can
-        disable unused entries.
+    <string name="dialogHelp_filterText">        You can tag your bookmarks with filters. In this way you can group your bookmarks. You can open the filter dialog by
+        long pressing the bookmark icon. If you activate an entry a dialog will appear, where you can edit the name of the filter.
     </string>
     <!-- Dialog changelog -->
     <string name="changelog_title">Changelog</string>
