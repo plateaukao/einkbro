@@ -10,7 +10,6 @@
     <string name="album_title_history">Cronologia</string>
     <string name="album_title_home">Home</string>
     <string name="album_title_files">File</string>
-    <string name="album_untitled"></string>
     <string name="notification_content_holderTitle">Schede aperte …</string>
     <string name="notification_content_holder">… Tocca per vedere le pagine</string>
     <string name="search_hint">Cerca</string>
@@ -31,7 +30,6 @@
     <string name="main_menu_new_tabOpen">Nuova scheda (primo piano)</string>
     <string name="main_omnibox_input_hint">Cerca o inserisci URL</string>
     <string name="menu_open_with">Apri link con …</string>
-    <string name="menu_share">Condividi</string>
     <string name="menu_quit">Chiudi</string>
     <string name="menu_openFav">Open Favorite</string>
     <string name="menu_delete">Elimina</string>
@@ -43,7 +41,6 @@
     <string name="menu_sc">Shortcut on home screen</string>
     <string name="menu_sort">Sort by …</string>
     <string name="menu_filter">Filter by …</string>
-    <string name="menu_blank">Blank start site</string>
     <string name="menu_share_screenshot">Condividi screenshot</string>
     <string name="menu_share_link">Condividi link</string>
     <string name="menu_save_screenshot">Salva screenshot</string>
@@ -52,9 +49,10 @@
     <string name="menu_save_as">Salva come …</string>
     <string name="menu_save_pdf">Salva come PDF</string>
     <string name="menu_share_pdf">Condividi PDF</string>
-    <string name="menu_share_pdfToast">Completato. Aprire il file manager per condividere?</string>
     <string name="menu_shareClipboard">Copy to clipboard</string>
     <string name="menu_other_searchSite">Cerca nel sito</string>
+    <string name="menu_other_fileManager">Open file manager</string>
+    <string name="menu_other_info">About \"FOSS Browser\"</string>
     <string name="menu_other_help">Aiuto</string>
     <!-- Dialog -->
     <string name="dialog_toggle_reload">Reload</string>
@@ -65,7 +63,6 @@
     <string name="dialog_sign_in_password">Password</string>
     <string name="dialog_button_custom">Personalizzato</string>
     <string name="dialog_title_download">Vuoi scaricare il file?</string>
-    <string name="dialog_title_sign_in">Sign in</string>
     <string name="dialog_content_resubmission">Inviare nuovamente i dati?</string>
     <string name="dialog_content_ssl_error">Il certificato del sito non è attendibile. Procedere comunque?</string>
     <string name="dialog_sortName">Sort by name</string>
@@ -73,7 +70,7 @@
     <string name="dialog_sortDate">Sort by date</string>
     <!-- Settings -->
     <string name="setting_label">Impostazioni</string>
-    <!-- Browser setting -->
+    <!-- browser setting -->
     <string name="setting_title_browser">Impostazioni Browser</string>
     <string name="setting_title_clear_control">Dati</string>
     <string name="setting_title_start_control">Opzioni iniziali</string>
@@ -98,7 +95,7 @@
     <string name="setting_summary_remote">Abilita i contenuti remoti, che non provengono direttamente dal sito web che stai visitando. La disattivazione è più sicura, più rapida e consente di risparmiare volume di dati. Ma alcuni contenuti non saranno più visualizzati.</string>
     <string name="setting_title_save_data">Request \'Save Data\'</string>
     <string name="setting_summary_save_data">Tell websites that you would prefer to save data. Supported websites will load faster.</string>
-    <!-- Browser start -->
+    <!-- browser start -->
     <string name="setting_title_images">Immagini</string>
     <string name="setting_summary_images">Abilita immagini di rete. La disabilitazione potrebbe essere utile per salvare i dati del cellulare e per caricare più velocemente i siti web.</string>
     <string name="setting_title_cookie">Cookies</string>
@@ -118,8 +115,10 @@
     <string name="setting_summary_location">Permetti ai siti web di accedere alla tua posizione. Alcuni siti web (come Google maps per la navigazione) hanno bisogno di questa funzione.</string>
     <string name="setting_title_history">Cronologia</string>
     <string name="setting_summary_history">Salva la cronologia dei site web visitati.</string>
-    <!-- Browser clear -->
-    <string name="clear_summary">Tutti i file vengono esportati nella cartella \"Documents\" della sd-card. Ogni esportazione sovrascriverà la precedente. Per eseguire il ripristino è necessario che nella directory sia presente un file con il nome corretto.</string>
+    <!-- browser clear -->
+    <string name="data_summary">All files will be exported to the \"Android/data/de.baumann.browser/files/browser_backup/\"
+        directory of your sd-card. This directory will be DELETED, if you uninstall \"FOSS Browser\". So make a backup regularly on a save
+        place.</string>
     <string name="clear_menu_done_all">Tutto</string>
     <string name="clear_title_quit">Cancella quando si chiude l\'applicazione</string>
     <string name="clear_summary_quit">Ogni volta che si esce da \"FOSS Browser\" tutti i dati selezionati sopra vengono cancellati.</string>
@@ -138,13 +137,22 @@
     <string name="setting_filter">Bookmark filter</string>
     <string name="setting_filter_summary">To show the filter dialog long press on the bookmark icon in the overview. Decide which
         filters you will use.</string>
+    <string name="setting_title_fav">Favorite</string>
+    <string name="setting_summary_fav">Here you can change the default website which loads on start of \"FOSS Browser\".
+    Enter \"about:blank\" to get an emty start site.</string>
+    <string name="setting_title_searchEngine">Custom search engine</string>
+    <string name="setting_summary_searchEngine">Here you can enter a custom search URL. Also choose \"Custom search engine\" as search
+    provider.</string>
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">Nascondi barra degli strumenti</string>
     <string name="setting_summary_hide">Utilizzare l\'intero schermo per scorrere i siti web. Se si preme il pulsante Indietro, si esce dalla modalità a schermo intero.</string>
     <string name="setting_title_background">Apri link</string>
     <string name="setting_summary_background">Visualizzare una notifica e aprire i collegamenti in background. Se disattivato, i collegamenti si apriranno immediatamente.</string>
-    <string name="setting_title_themeDark">Tema chiaro</string>
-    <string name="setting_summary_themeDark">Preferisci un po\' di luce? Ok!</string>
+    <string name="setting_theme">Theme</string>
+    <string name="setting_theme_summary">Set the app theme.</string>
+    <string name="setting_theme_system">System theme</string>
+    <string name="setting_theme_light">Light theme</string>
+    <string name="setting_theme_dark">Dark theme</string>
     <string name="setting_title_themeColor">Color UI</string>
     <string name="setting_summary_themeColor">Tint some elements from the UI to match the website colors.</string>
     <string name="setting_title_theme">UI</string>
@@ -175,8 +183,6 @@
     <string name="setting_overView_hide_title">Hide tab previews</string>
     <string name="setting_overView_hide_summary">In expanded overview the tab preview will hide. Then you have more place for your
     bookmarks.</string>
-    <string name="setting_overView_place_title">Only tab preview</string>
-    <string name="setting_overView_place_summary">Only show the tab preview when extending overview to switch tabs more comfortable.</string>
     <string name="setting_gestures">Gestures</string>
     <string name="setting_gestures_use_title">Use gestures</string>
     <string name="setting_gestures_use_summary">Use gestures on the toolbar and the \"Navigation button\".</string>
@@ -199,7 +205,6 @@
     <string name="setting_gesture_09">Open new tab</string>
     <string name="setting_gesture_10">Chiudi scheda</string>
     <!-- Data -->
-    <string name="export_bookmarks">export_bookmarks</string>
     <string name="setting_title_export_whitelist">Esporta whitelist AdBlock</string>
     <string name="setting_title_import_whitelist">Importa whitelist AdBlock</string>
     <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
@@ -209,20 +214,18 @@
     <string name="setting_title_export_whitelistCookie">Esporta whitelist Cookie</string>
     <string name="setting_title_import_whitelistCookie">Importa whitelist Cookie</string>
     <string name="export_whitelistCookie">export_whitelist_Cookie</string>
-    <string name="setting_title_export_database">Esporta database</string>
-    <string name="setting_title_import_database">Importa database</string>
-    <string name="setting_summary_export_database">Esporta l\'intero database (Startpage + Anteprime, Cronologia, Segnalibri) nella tua sd-card. I dati di accesso non vengono salvati.</string>
-    <string name="title_database">Database</string>
+    <string name="setting_title_export_appData">Export app data</string>
+    <string name="setting_title_import_appData">Import app data</string>
+    <string name="setting_summary_export_appData">Export app data (Startpage + previews, History, Bookmarks)
+        and your personal settings.</string>
+    <string name="title_appData">App data</string>
     <string name="hint_database">In questo modo verranno eliminate tutte le impostazioni e i dati correnti. Continuare?</string>
     <!-- Others setting -->
     <string name="setting_title_others">Altro</string>
     <string name="setting_title_license">Licenza</string>
-    <string name="setting_summary_license">\"FOSS Browser\" è completamente gratuito (come in libertà) e open source.</string>
     <string name="setting_title_appSettings">Impostazioni App</string>
     <string name="setting_summary_appSettings">Aprire le impostazioni dell\'applicazione di sistema per \"FOSS Browser\". Qui è possibile, a seconda della versione Android di concedere le autorizzazioni, cancellare i dati delle applicazioni e così via.</string>
     <string name="setting_title_community">Contribuire</string>
-    <string name="setting_summary_community">Vedere chi ha contribuito a questo progetto. Oppure vuoi aiutare con ulteriori sviluppi, segnalare un problema o semplicemente ricevere le ultime notizie relative ai miei progetti?</string>
-    <string name="setting_summary_changelog">Mostra l\'ultimo changelog per vedere le novità.</string>
     <!-- Toast -->
     <string name="toast_add_to_home_successful">Aggiunto con successo a Home</string>
     <string name="toast_add_to_home_failed">Impossibile aggiungere a Home</string>
@@ -268,12 +271,7 @@
     <string name="whitelist_add">Aggiungi</string>
     <!-- Dialog help -->
     <string name="dialogHelp_tipTitle">Tips</string>
-    <string name="dialogHelp_tipText">        &lt;b&gt;Start site&lt;/b&gt;&lt;br&gt;
-        You can decide which site loads when \"FOSS Browser\" starts: By long pressing an entry in the
-        overview (Startsite, Bookmarks, History) you can choose it. Over the menu of the overview you can also set
-        a blank start site.&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Menus and dialogs&lt;/b&gt;&lt;br&gt;
+    <string name="dialogHelp_tipText">        &lt;b&gt;Menus and dialogs&lt;/b&gt;&lt;br&gt;
         All menus and dialogs are opened at the bottom of the screen. If the dialog is large you will first see only
         the upper part. If you swipe it up, the rest will get visible.&lt;br&gt;
         You can close them by pressing the back button, swiping them down or by clicking outside&lt;br&gt;&lt;br&gt;
@@ -294,23 +292,8 @@
         There are three parts: the Startsite, your Bookmarks and your History. If you long click an entry
         a menu with more options will appear.
     </string>
-    <string name="dialogHelp_gesturesTitle">Gestures</string>
-    <string name="dialogHelp_gesturesText">        On the toolbar and the \"Navigation button\" you can use gestures:&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Toolbar&lt;/b&gt;&lt;br&gt;
-        \u25AA swipe up/down     \u2192  show Overview/nothing&lt;br&gt;
-        \u25AA swipe left/right  \u2192  change tabs&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Navigation button&lt;/b&gt;&lt;br&gt;
-        \u25AA swipe up/down     \u2192  scroll up/down&lt;br&gt;
-        \u25AA swipe left/right  \u2192  previous/next in history&lt;br&gt;&lt;br&gt;
-
-        You can change this in the settings.
-    </string>
-    <string name="dialogHelp_filterTitle">Filter</string>
-    <string name="dialogHelp_filterText">        You can tag your bookmarks with colors. In this way you can group your bookmarks. You can open the filter dialog by
-        long pressing the bookmark icon. If you long press on an entry, you can edit its name. In the settings you can
-        disable unused entries.
+    <string name="dialogHelp_filterText">        You can tag your bookmarks with filters. In this way you can group your bookmarks. You can open the filter dialog by
+        long pressing the bookmark icon. If you activate an entry a dialog will appear, where you can edit the name of the filter.
     </string>
     <!-- Dialog changelog -->
     <string name="changelog_title">Changelog</string>
