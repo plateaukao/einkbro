@@ -1,3 +1,15 @@
+### v 6.8 (WIP)
+- new: moving to AndroidX libraries
+- new: favorite settings
+- updated: settings (especially filter settings)
+- updated: saving locations of backups and screenshots
+
+### v 6.7
+- new: backup and restore settings
+- fix: saving on startsite
+- fix: toolbar not showing title
+- fix: making backups
+
 ### v 6.6
 - fix: storage permission problems
 - fix: location permission problems

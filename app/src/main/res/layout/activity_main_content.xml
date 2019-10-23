@@ -9,7 +9,7 @@
 
     <FrameLayout android:id="@+id/main_content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent"/>
 
     <ProgressBar
         style="?android:attr/progressBarStyleHorizontal"
@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="4dp"
         android:maxHeight="4dp"
-        android:progressTint="@color/colorAccent"
+        android:progressTint="?android:attr/colorAccent"
         android:layout_alignParentBottom="true"/>
 
     <View
@@ -26,7 +26,7 @@
         android:background="@drawable/shadow_above"
         android:layout_alignParentBottom="true"/>
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_imageButtonNav_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -34,12 +34,12 @@
         android:layout_alignParentEnd="true"
         android:layout_margin="18dp"
         android:visibility="gone"
-        app:backgroundTint="@color/colorAccent"
+        app:backgroundTint="?android:attr/colorAccent"
         app:fabSize="mini"
         app:srcCompat="@drawable/ic_action_overflow"
         tools:ignore="RelativeOverlap" />
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_imageButtonNav_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -47,12 +47,12 @@
         android:layout_alignParentStart="true"
         android:layout_margin="18dp"
         android:visibility="gone"
-        app:backgroundTint="@color/colorAccent"
+        app:backgroundTint="?android:attr/colorAccent"
         app:fabSize="mini"
         app:srcCompat="@drawable/ic_action_overflow"
         tools:ignore="RelativeOverlap" />
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_imageButtonNav_center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
         android:layout_centerInParent="true"
         android:layout_margin="18dp"
         android:visibility="gone"
-        app:backgroundTint="@color/colorAccent"
+        app:backgroundTint="?android:attr/colorAccent"
         app:fabSize="mini"
         app:srcCompat="@drawable/ic_action_overflow"
         tools:ignore="RelativeOverlap" />

@@ -51,8 +51,6 @@
     <string name="menu_share_pdf">Поділитися PDF</string>
     <string name="menu_shareClipboard">Copy to clipboard</string>
     <string name="menu_other_searchSite">Пошук по сайту</string>
-    <string name="menu_other_fileManager">Open file manager</string>
-    <string name="menu_other_info">About \"FOSS Browser\"</string>
     <string name="menu_other_help">Допомога</string>
     <!-- Dialog -->
     <string name="dialog_toggle_reload">Reload</string>
@@ -116,9 +114,6 @@
     <string name="setting_title_history">Історія</string>
     <string name="setting_summary_history">Збережіть історію відвідуваних веб-сайтів.</string>
     <!-- browser clear -->
-    <string name="data_summary">All files will be exported to the \"Android/data/de.baumann.browser/files/browser_backup/\"
-        directory of your sd-card. This directory will be DELETED, if you uninstall \"FOSS Browser\". So make a backup regularly on a save
-        place.</string>
     <string name="clear_menu_done_all">Все зроблено</string>
     <string name="clear_title_quit">Очистити при виході з програми</string>
     <string name="clear_summary_quit">Кожен раз при виході з \"Foss Browser\" всі перераховані вище перевірені дані будуть видалятися.</string>
@@ -137,22 +132,11 @@
     <string name="setting_filter">Bookmark filter</string>
     <string name="setting_filter_summary">To show the filter dialog long press on the bookmark icon in the overview. Decide which
         filters you will use.</string>
-    <string name="setting_title_fav">Favorite</string>
-    <string name="setting_summary_fav">Here you can change the default website which loads on start of \"FOSS Browser\".
-    Enter \"about:blank\" to get an emty start site.</string>
-    <string name="setting_title_searchEngine">Custom search engine</string>
-    <string name="setting_summary_searchEngine">Here you can enter a custom search URL. Also choose \"Custom search engine\" as search
-    provider.</string>
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">Приховати Панель інструментів</string>
     <string name="setting_summary_hide">Використовуйте весь екран при прокручуванні сайтів. Якщо ви натиснете кнопку \"Назад\", то покинете повноекранний режим.</string>
     <string name="setting_title_background">Відкрити посилання</string>
     <string name="setting_summary_background">Відображати повідомлення і відкривати посилання в тлі. Якщо відключені посилання будуть відкриті негайно.</string>
-    <string name="setting_theme">Theme</string>
-    <string name="setting_theme_summary">Set the app theme.</string>
-    <string name="setting_theme_system">System theme</string>
-    <string name="setting_theme_light">Light theme</string>
-    <string name="setting_theme_dark">Dark theme</string>
     <string name="setting_title_themeColor">Color UI</string>
     <string name="setting_summary_themeColor">Tint some elements from the UI to match the website colors.</string>
     <string name="setting_title_theme">UI</string>
@@ -214,11 +198,6 @@
     <string name="setting_title_export_whitelistCookie">Експорт білого списку куки</string>
     <string name="setting_title_import_whitelistCookie">Імпорт білого списку куки</string>
     <string name="export_whitelistCookie">export_whitelist_Cookie</string>
-    <string name="setting_title_export_appData">Export app data</string>
-    <string name="setting_title_import_appData">Import app data</string>
-    <string name="setting_summary_export_appData">Export app data (Startpage + previews, History, Bookmarks)
-        and your personal settings.</string>
-    <string name="title_appData">App data</string>
     <string name="hint_database">Це призведе до видалення всіх поточних налаштувань і даних. Продовжити?</string>
     <!-- Others setting -->
     <string name="setting_title_others">Інший</string>
@@ -273,7 +252,12 @@
     <string name="whitelist_add">Додати</string>
     <!-- Dialog help -->
     <string name="dialogHelp_tipTitle">Tips</string>
-    <string name="dialogHelp_tipText">        &lt;b&gt;Menus and dialogs&lt;/b&gt;&lt;br&gt;
+    <string name="dialogHelp_tipText">        &lt;b&gt;Start site&lt;/b&gt;&lt;br&gt;
+        You can decide which site loads when \"FOSS Browser\" starts: By long pressing an entry in the
+        overview (Startsite, Bookmarks, History) you can choose it. Over the menu of the overview you can also set
+        a blank start site.&lt;br&gt;&lt;br&gt;
+
+        &lt;b&gt;Menus and dialogs&lt;/b&gt;&lt;br&gt;
         All menus and dialogs are opened at the bottom of the screen. If the dialog is large you will first see only
         the upper part. If you swipe it up, the rest will get visible.&lt;br&gt;
         You can close them by pressing the back button, swiping them down or by clicking outside&lt;br&gt;&lt;br&gt;
@@ -294,8 +278,9 @@
         There are three parts: the Startsite, your Bookmarks and your History. If you long click an entry
         a menu with more options will appear.
     </string>
-    <string name="dialogHelp_filterText">        You can tag your bookmarks with filters. In this way you can group your bookmarks. You can open the filter dialog by
-        long pressing the bookmark icon. If you activate an entry a dialog will appear, where you can edit the name of the filter.
+    <string name="dialogHelp_filterText">        You can tag your bookmarks with colors. In this way you can group your bookmarks. You can open the filter dialog by
+        long pressing the bookmark icon. If you long press on an entry, you can edit its name. In the settings you can
+        disable unused entries.
     </string>
     <!-- Dialog changelog -->
     <string name="changelog_title">Список змін</string>

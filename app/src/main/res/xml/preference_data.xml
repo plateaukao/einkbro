@@ -2,29 +2,51 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <Preference android:summary="@string/clear_summary" />
+    <Preference android:summary="@string/data_summary" />
 
-    <PreferenceCategory android:title="@string/title_database">
+    <PreferenceCategory android:title="@string/title_appData">
         <Preference
-            android:title="@string/setting_title_export_database"
-            android:summary="@string/setting_summary_export_database"/>
+            android:key="data_exDB"
+            android:icon="@drawable/icon_export"
+            android:title="@string/setting_title_export_appData"
+            android:summary="@string/setting_summary_export_appData"/>
         <Preference
-            android:title="@string/setting_title_import_database"/>
+            android:key="data_imDB"
+            android:icon="@drawable/icon_import"
+            android:title="@string/setting_title_import_appData"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/setting_title_adblock">
-        <Preference android:title="@string/setting_title_export_whitelist" />
-        <Preference android:title="@string/setting_title_import_whitelist" />
+        <Preference
+            android:key="data_exAdBlock"
+            android:icon="@drawable/icon_export"
+            android:title="@string/setting_title_export_whitelist" />
+        <Preference
+            android:key="data_imAdBlock"
+            android:icon="@drawable/icon_import"
+            android:title="@string/setting_title_import_whitelist" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/setting_title_javascript">
-        <Preference android:title="@string/setting_title_export_whitelistJS" />
-        <Preference android:title="@string/setting_title_import_whitelistJS" />
+        <Preference
+            android:key="data_exJava"
+            android:icon="@drawable/icon_export"
+            android:title="@string/setting_title_export_whitelistJS" />
+        <Preference
+            android:key="data_imJava"
+            android:icon="@drawable/icon_import"
+            android:title="@string/setting_title_import_whitelistJS" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/setting_title_cookie">
-        <Preference android:title="@string/setting_title_export_whitelistCookie" />
-        <Preference android:title="@string/setting_title_import_whitelistCookie" />
+        <Preference
+            android:key="data_exCookie"
+            android:icon="@drawable/icon_export"
+            android:title="@string/setting_title_export_whitelistCookie" />
+        <Preference
+            android:key="data_imCookie"
+            android:icon="@drawable/icon_import"
+            android:title="@string/setting_title_import_whitelistCookie" />
     </PreferenceCategory>
 
 </PreferenceScreen>

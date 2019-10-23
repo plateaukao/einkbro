@@ -4,7 +4,7 @@
 
     <gradient
         android:startColor="@color/color_transparent"
-        android:endColor="@color/cardview_shadow_start_color"
+        android:endColor="@color/color_shadow_light"
         android:angle="90"/>
 
 </shape>
