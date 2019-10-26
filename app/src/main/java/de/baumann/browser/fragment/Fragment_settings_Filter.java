@@ -176,13 +176,9 @@ public class Fragment_settings_Filter extends PreferenceFragmentCompat {
             @Override
             public void onClick(View view) {
                 String text = editText.getText().toString().trim();
-                if (text.isEmpty()) {
-                    NinjaToast.show(getActivity(), getString(R.string.toast_input_empty));
-                } else {
-                    sp.edit().putString(string_spName_icon_01, text).apply();
-                    Objects.requireNonNull(preference).setTitle(sp.getString(string_spName_icon_01, string_spNameDefault));
-                    bottomSheetDialog.cancel();
-                }
+                sp.edit().putString(string_spName_icon_01, text).apply();
+                Objects.requireNonNull(preference).setTitle(sp.getString(string_spName_icon_01, string_spNameDefault));
+                bottomSheetDialog.cancel();
             }
         });
         Button action_cancel = dialogView.findViewById(R.id.action_cancel);

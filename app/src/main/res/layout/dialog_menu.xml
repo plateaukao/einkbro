@@ -277,7 +277,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/menu_shareCLipboard"
+                android:id="@+id/menu_shareClipboard"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"

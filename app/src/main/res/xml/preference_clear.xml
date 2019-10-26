@@ -3,28 +3,34 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <CheckBoxPreference android:key="@string/sp_clear_cache"
+        android:icon="@drawable/ic_save_data"
         android:defaultValue="false"
         android:title="@string/clear_title_cache"/>
 
     <CheckBoxPreference android:key="@string/sp_clear_history"
+        android:icon="@drawable/icon_history"
         android:defaultValue="false"
         android:title="@string/clear_title_history"/>
 
     <CheckBoxPreference android:key="sp_clearIndexedDB"
+        android:icon="@drawable/icon_export"
         android:defaultValue="false"
         android:title="@string/clear_title_indexedDB"/>
 
     <CheckBoxPreference android:key="@string/sp_clear_cookie"
+        android:icon="@drawable/icon_cookie"
         android:defaultValue="false"
         android:title="@string/clear_title_cookie"
         android:summary="@string/setting_summary_cookie_delete"/>
 
     <CheckBoxPreference android:key="@string/sp_clear_quit"
+        android:icon="@drawable/icon_exit"
         android:defaultValue="false"
         android:title="@string/clear_title_quit"
         android:summary="@string/clear_summary_quit"/>
 
     <Preference android:key="sp_deleteDatabase"
+        android:icon="@drawable/icon_delete"
         android:title="@string/clear_title_deleteDatabase"
         android:summary="@string/clear_summary_deleteDatabase"/>
 

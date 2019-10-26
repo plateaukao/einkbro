@@ -318,7 +318,6 @@
         Den Filterdialog kannst du öffnen, indem du lange auf das Lesezeichen-Icon drückst. Wenn du einen Eintrag aktivierst, erscheint ein Dialog, in dem du den Namen des Filters bearbeiten kannst.
     </string>
     <!-- Dialog changelog -->
-    <string name="changelog_title">Änderungen</string>
     <string name="changelog_dialog">Deine Sprache wird noch nicht unterstützt? Du möchtest FOSS Browser übersetzen? Oder eine bestehende Übersetzung bearbeiten?
         Hilf uns auf Crowdin: https://crowdin.com/project/foss-browser&lt;br&gt;&lt;br&gt;
 
