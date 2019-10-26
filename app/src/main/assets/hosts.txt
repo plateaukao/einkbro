@@ -24,7 +24,6 @@ ad.ettoday.net
 ad.ettoday.net
 cd1.ettoday.net
 
-
 # AdAway default blocklist
 # Blocking mobile ad providers and some analytics providers
 # 
