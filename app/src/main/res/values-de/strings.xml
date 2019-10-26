@@ -131,7 +131,7 @@
     <string name="setting_summary_history">Speichere den Verlauf der besuchten Internetseiten.</string>
     <!-- browser clear -->
     <string name="data_summary">Alle Dateien werden in das \"Android/data/de.baumann.browser/files/browser_backup/\"
-        Verzeichnis deiner Sd-Karte exportiert. Dieses Verzeichnis wird GELÖSCHT, wenn du \"FOSS Browser\" deinstallierst. Mache also regelmäßig eine Sicherung auf einem sicheren Speicher.</string>
+        Verzeichnis deiner SD-Karte exportiert. Dieses Verzeichnis wird GELÖSCHT, wenn du \"FOSS Browser\" deinstallierst. Mache also regelmäßig eine Sicherung auf einem sicheren Speicher.</string>
     <string name="clear_menu_done_all">Alles erledigt</string>
     <string name="clear_title_quit">Löschen beim Verlassen der Anwendung</string>
     <string name="clear_summary_quit">Jedesmal wenn \"FOSS Browser\" beendet wird, werden oben ausgewählte Daten gelöscht.</string>
@@ -152,7 +152,7 @@
     <string name="setting_filter_summary">Um den Filterdialog anzuzeigen bitte lange auf das Lesezeichenicon in der Übersicht
         drücken. Entscheide welche Filter du nutzen willst.</string>
     <string name="setting_title_fav">Favorit</string>
-    <string name="setting_summary_fav">Hier können Sie die Internetseite ändern, die beim Start von \"FOSS-Browser\" geladen wird.
+    <string name="setting_summary_fav">Hier kannst du die Internetseite ändern, die beim Start von \"FOSS-Browser\" geladen wird.
     Gib \"about:blank\" ein, um eine leere Startseite zu erhalten.</string>
     <string name="setting_title_searchEngine">Eigene Suchmaschine</string>
     <string name="setting_summary_searchEngine">Hier kannst du eine benutzerdefinierte Suchadresse eingeben. Wähle auch \"Eigene Suchmaschine\" als Suchanbieter
@@ -315,14 +315,12 @@
         Wenn du einen Eintrag lange drückst, öffnet sich ein Menü mit weiteren Möglichkeiten.
     </string>
     <string name="dialogHelp_filterText">Du kannst deinen Lesezeichen eine Farbe als Filter zuordnen. So kannst du viele Lesezeichen in Gruppen ordnen.
-        Den Filterdialog kannst du öffnen, indem du lange auf das Lesezeichen-Icon drückst. Wenn du lange auf einen
-        Eintrag drückst, kannst du ihm einen anderen Namen geben. In den Einstellungen kannst du ausserdem einzelne
-        Einträge deaktivieren.
+        Den Filterdialog kannst du öffnen, indem du lange auf das Lesezeichen-Icon drückst. Wenn du einen Eintrag aktivierst, erscheint ein Dialog, in dem du den Namen des Filters bearbeiten kannst.
     </string>
     <!-- Dialog changelog -->
     <string name="changelog_title">Änderungen</string>
-    <string name="changelog_dialog">Deine Sprache wird noch nicht unterstützt? Du möchtest FOSS Browser übersetzen? Oder eine bestehende Übersetzung bearbeiten??
-        Hilf uns auf Crowdin: https://crowdin.com/project/foss-browser.&lt;br&gt;&lt;br&gt;
+    <string name="changelog_dialog">Deine Sprache wird noch nicht unterstützt? Du möchtest FOSS Browser übersetzen? Oder eine bestehende Übersetzung bearbeiten?
+        Hilf uns auf Crowdin: https://crowdin.com/project/foss-browser&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Auf den folgenden Internetseiten findest du alle Informationen zu \"FOSS Browser\".
         Bitte lies auch den Hilfedialog in der Anwendung.&lt;/b&gt;&lt;br&gt;&lt;br&gt;
@@ -362,28 +360,23 @@
         Apache License Version 2.0&lt;br&gt;
         hummatli&lt;br&gt;
         &lt;i&gt;https://github.com/hummatli/SimpleEncryptionLib</string>
-    <string name="cont_dialog">        &lt;i&gt;First I would like to thank all people who contributed in any way on this project. They submitted issues,
-        translated or helped in any other way. On following sites you can become a active member of this
-        great community:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
+    <string name="cont_dialog">        &lt;i&gt;Als erstes möchte ich Allen danken, die auf irgendeine Art etwas zu diesem Projekt beigetragen haben. Sie meldeten Fehler, übersetzten oder halfen beim Programmieren. Auf den folgenden Seiten kannst du Teil dieser Gemeinschaft werden:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Crowdin:&lt;/b&gt;&lt;br&gt;
-        Crowdin is an online plattform to translate applications in other languages. A big thanks to all translators. You can
-        also help.&lt;br&gt;
+        Crowdin ist eine Onlineplattform um Anwendungen in andere Sprachen zu übersetzen. An Dieser Stelle geht ein großer Dank an alle Helfer. Auch du kannst helfen.&lt;br&gt;
         &lt;i&gt;https://crowdin.com/project/foss-browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
 
-        &lt;b&gt;XDA-thread:&lt;/b&gt;&lt;br&gt;
-        XDA is a great community for developers and smartphone enthusiasts. Here you can report issues, ask for new features
-        and everything other related to \"FOSS Browser\".&lt;br&gt;
+        &lt;b&gt;XDA-Forum:&lt;/b&gt;&lt;br&gt;
+        XDA ist eine großartige Plattform für Entwickler und Smortphonefreunde. Hier kannst du Fehler melden, Wünsche äußern oder einfach ein bisschen über \"FOSS Browser\" reden.&lt;br&gt;
         &lt;i&gt;https://forum.xda-developers.com/android/apps-games/app-browser-t3500091&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Github:&lt;/b&gt;&lt;br&gt;
-        On Github you can see the source code of \"FOSS Browser\". This is the more technical solution: open issues, ask for new
-        features or even help developing or translating.&lt;br&gt;
+        Auf Github kannst du den Quellcode von \"FOSS Browser\" ansehen. HIer steht die Arbei am Quellcode im Vordergrund: melde Fehler oder hilf, den Code zu verbessern.&lt;br&gt;
         &lt;i&gt;https://github.com/scoute-dich/browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
 
 
-        &lt;i&gt;Following people contributed at this project. If I have forgotten anybody, please contact me:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
+        &lt;i&gt;Folgende Personen beteiligten sich direkt am Projekt. Sollte ich jemanden vergessen haben, gebt mir bitte Bescheid:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Gaukler Faun&lt;/b&gt;&lt;br&gt;
         \u25AA Main developer and initiator of this project&lt;br&gt;
