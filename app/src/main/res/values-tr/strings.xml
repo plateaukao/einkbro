@@ -312,7 +312,6 @@
         long pressing the bookmark icon. If you activate an entry a dialog will appear, where you can edit the name of the filter.
     </string>
     <!-- Dialog changelog -->
-    <string name="changelog_title">Değişiklik günlüğü</string>
     <string name="changelog_dialog">        Diliniz henüz desteklenmiyor mu?  FOSS Tarayıcısını çevirmek ister misiniz?  Veya mevcut çevirilerde geliştirmeler mi yapmak istiyorsunuz?
         Crowdin\'de bize katılmaktan çekinmeyin: https://crowdin.com/project/foss-browser.&lt;br&gt;&lt;br&gt;
 

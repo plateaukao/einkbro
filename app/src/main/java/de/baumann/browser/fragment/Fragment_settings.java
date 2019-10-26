@@ -101,7 +101,7 @@ public class Fragment_settings extends PreferenceFragmentCompat {
         Objects.requireNonNull(findPreference("settings_info")).setOnPreferenceClickListener(new androidx.preference.Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(androidx.preference.Preference preference) {
-                showLicenseDialog(getString(R.string.changelog_title), getString(R.string.changelog_dialog));
+                showLicenseDialog(getString(R.string.menu_other_info), getString(R.string.changelog_dialog));
                 return false;
             }
         });
