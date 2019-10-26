@@ -2807,7 +2807,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         menu_fileManager = dialogView.findViewById(R.id.menu_fileManager);
         menu_fileManager.setOnClickListener(BrowserActivity.this);
 
-        menu_shareCP = dialogView.findViewById(R.id.menu_shareCLipboard);
+        menu_shareCP = dialogView.findViewById(R.id.menu_shareClipboard);
         menu_shareCP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

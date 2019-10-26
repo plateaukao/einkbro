@@ -382,7 +382,6 @@
 
     <!-- Dialog changelog -->
 
-    <string name="changelog_title">Changelog</string>
     <string name="changelog_dialog">
 
         Your language isn\'t supported yet? You want to translate FOSS Browser? Or make improvements to existing translations?
