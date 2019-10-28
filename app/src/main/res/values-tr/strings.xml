@@ -228,7 +228,7 @@
     <string name="export_whitelistCookie">Cerez_beyazliste_aktarim</string>
     <string name="setting_title_export_appData">Uygulama verilerini dışa aktar</string>
     <string name="setting_title_import_appData">Uygulama verilerini içe aktar</string>
-    <string name="setting_summary_export_appData">Uygulama verilerini (Başlangıç sayfası + önizlemeler, Geçmiş, Sık Kullanılanlar)
+    <string name="setting_summary_export_appData">Uygulama verilerini (Başlangıç sayfası + önizlemeler, Geçmiş, Yer imleri)
         ve kişisel ayarlarınızı dışa aktarın.</string>
     <string name="title_appData">Uygulama verileri</string>
     <string name="hint_database">Bu, mevcut tüm ayarlarınızı ve verilerinizi silecektir. Devam edilsin mi?</string>
@@ -287,14 +287,14 @@
     <string name="whitelist_add">Ekle</string>
     <!-- Dialog help -->
     <string name="dialogHelp_tipTitle">İpuçları</string>
-    <string name="dialogHelp_tipText">        &lt;b&gt;Menus and dialogs&lt;/b&gt;&lt;br&gt;
-        All menus and dialogs are opened at the bottom of the screen. If the dialog is large you will first see only
-        the upper part. If you swipe it up, the rest will get visible.&lt;br&gt;
-        You can close them by pressing the back button, swiping them down or by clicking outside&lt;br&gt;&lt;br&gt;
+    <string name="dialogHelp_tipText">        &lt;b&gt;Menüler ve iletişim kutuları&lt;/b&gt;&lt;br&gt;
+        Tüm menüler ve iletişim kutuları ekranın altında açılır. Eğer iletişim kutusu büyükse önce sadece üst
+        kısmını görürsünüz. Yukarı kaydırdığınızda geri kalanı da görünecektir.&lt;br&gt;
+        Geri düğmesine basarak, aşağı kaydırarak veya dışarısına tıklayarak kapatabilirsiniz.&lt;br&gt;&lt;br&gt;
 
-        &lt;b&gt;Long press&lt;/b&gt;&lt;br&gt;
-        If you long press the menu icon or the \"Navigation button\", the \"Fast toggle dialog\" will show. If you long
-        press the \"Bookmark icon\", the \"Filter dialog\" will show.
+        &lt;b&gt;Uzun basma&lt;/b&gt;&lt;br&gt;
+        Menü simgesine veya \"Gezinme düğmesi\"ne uzun basarsanız, \"Hızlı aç/kapa iletişim kutusu\" görünecektir.
+        \"Yer imi simgesi\"ne uzun basarsanız, \"Filtre iletişim kutusu\" görünecektir.
     </string>
     <string name="dialogHelp_overviewTitle">Genel Bakış</string>
     <string name="dialogHelp_overviewText">        There are two parts in the \"Overview\" (tab preview and personal data). There is an extra menu. In the settings
@@ -308,9 +308,8 @@
         There are three parts: the Startsite, your Bookmarks and your History. If you long click an entry
         a menu with more options will appear.
     </string>
-    <string name="dialogHelp_filterText">        You can tag your bookmarks with filters. In this way you can group your bookmarks. You can open the filter dialog by
-        long pressing the bookmark icon. If you activate an entry a dialog will appear, where you can edit the name of the filter.
-    </string>
+    <string name="dialogHelp_filterText">        Yer imlerinizi filtrelerle etiketleyebilirsiniz. Bu şekilde yer imlerinizi gruplandırabilirsiniz. Filtre iletişim kutusunu yer imleri
+        simgesine uzun basarak açabilirsiniz. Bir girişi aktifleştirirseniz, filtrenin adını düzenleyebileceğiniz bir iletişim kutusu görünecektir.    </string>
     <!-- Dialog changelog -->
     <string name="changelog_dialog">        Diliniz henüz desteklenmiyor mu?  FOSS Tarayıcısını çevirmek ister misiniz?  Veya mevcut çevirilerde geliştirmeler mi yapmak istiyorsunuz?
         Crowdin\'de bize katılmaktan çekinmeyin: https://crowdin.com/project/foss-browser.&lt;br&gt;&lt;br&gt;
