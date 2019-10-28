@@ -51,8 +51,8 @@
     <string name="menu_share_pdf">PDF paylaş</string>
     <string name="menu_shareClipboard">Panoya kopyala</string>
     <string name="menu_other_searchSite">Sitede ara</string>
-    <string name="menu_other_fileManager">Open file manager</string>
-    <string name="menu_other_info">About \"FOSS Browser\"</string>
+    <string name="menu_other_fileManager">Dosya yöneticisini aç</string>
+    <string name="menu_other_info">\"Foss Browser\" hakkında</string>
     <string name="menu_other_help">Yardım</string>
     <!-- Dialog -->
     <string name="dialog_toggle_reload">Yeniden yükle</string>
@@ -126,9 +126,9 @@
     <string name="setting_title_history">Geçmiş</string>
     <string name="setting_summary_history">Ziyaret edilen web sitelerinin geçmişini kaydedin.</string>
     <!-- browser clear -->
-    <string name="data_summary">All files will be exported to the \"Android/data/de.baumann.browser/files/browser_backup/\"
-        directory of your sd-card. This directory will be DELETED, if you uninstall \"FOSS Browser\". So make a backup regularly on a save
-        place.</string>
+    <string name="data_summary">Tüm dosyalar SD kartınızın \"Android/data/de.baumann.browser/files/browser_backup/\"
+        dizinine aktarılacaktır. Eğer \"FOSS Browser\"ı kaldırırsanız dizin SİLİNECEKTİR. Bu yüzden düzenli olarak bir yere yedekleme
+        alın.</string>
     <string name="clear_menu_done_all">Hepsi bitti</string>
     <string name="clear_title_quit">Uygulamadan çıkışta temizle</string>
     <string name="clear_summary_quit">\"FOSS Tarayıcısı\"ndan her çıkışta  yukarıdaki tüm kontrol edilen veriler silinecektir.</string>
@@ -147,12 +147,12 @@
     <string name="setting_filter">Yer imi süzgeci</string>
     <string name="setting_filter_summary">Süzgeç iletişim kutusunu göstermek için genel bakıştaki yer imi simgesine uzun basın.  Hangi süzgeçleri kullanacağınıza 
           karar verin.</string>
-    <string name="setting_title_fav">Favorite</string>
-    <string name="setting_summary_fav">Here you can change the default website which loads on start of \"FOSS Browser\".
-    Enter \"about:blank\" to get an emty start site.</string>
-    <string name="setting_title_searchEngine">Custom search engine</string>
-    <string name="setting_summary_searchEngine">Here you can enter a custom search URL. Also choose \"Custom search engine\" as search
-    provider.</string>
+    <string name="setting_title_fav">Başlangıç sitesi</string>
+    <string name="setting_summary_fav">Buradan \"FOSS Browser\" başlatıldığında yüklenen varsayılan websitesini değiştirebilirsiniz.
+    Boş bir başlangıç sitesi için \"about:blank\" girin.</string>
+    <string name="setting_title_searchEngine">Özel arama motoru</string>
+    <string name="setting_summary_searchEngine">Buradan özel arama URL\'si girebilirsiniz. Ayrıca arama sağlayıcısı olarak \"Özel arama motoru\"nu
+    seçin.</string>
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">Araç çubuğunu gizle</string>
     <string name="setting_summary_hide">Web siteleri arasında gezinirken tüm ekranı kullanın. Eğer Geri düğmesine basarsanız
@@ -160,11 +160,11 @@
     <string name="setting_title_background">Bağlantıları aç</string>
     <string name="setting_summary_background">Bir bildirim görüntüleyin ve bağlantıları arka planda açın. Devre dışı bırakırsanız,
 	bağlantılar hemen açılacaktır.</string>
-    <string name="setting_theme">Theme</string>
-    <string name="setting_theme_summary">Set the app theme.</string>
-    <string name="setting_theme_system">System theme</string>
-    <string name="setting_theme_light">Light theme</string>
-    <string name="setting_theme_dark">Dark theme</string>
+    <string name="setting_theme">Tema</string>
+    <string name="setting_theme_summary">Uygulamanın temasını ayarlayın.</string>
+    <string name="setting_theme_system">Sistem teması</string>
+    <string name="setting_theme_light">Açık tema</string>
+    <string name="setting_theme_dark">Karanlık tema</string>
     <string name="setting_title_themeColor">Arayüz rengi</string>
     <string name="setting_summary_themeColor">Kullanıcı arayüzündeki bazı öğeleri web sitesi renkleriyle eşleştirmek için renklendirin.</string>
     <string name="setting_title_theme">Arayüz</string>
@@ -226,11 +226,11 @@
     <string name="setting_title_export_whitelistCookie">Çerez beyaz listesini dışa aktar</string>
     <string name="setting_title_import_whitelistCookie">Çerez beyaz listesini içe aktar</string>
     <string name="export_whitelistCookie">Cerez_beyazliste_aktarim</string>
-    <string name="setting_title_export_appData">Export app data</string>
-    <string name="setting_title_import_appData">Import app data</string>
-    <string name="setting_summary_export_appData">Export app data (Startpage + previews, History, Bookmarks)
-        and your personal settings.</string>
-    <string name="title_appData">App data</string>
+    <string name="setting_title_export_appData">Uygulama verilerini dışa aktar</string>
+    <string name="setting_title_import_appData">Uygulama verilerini içe aktar</string>
+    <string name="setting_summary_export_appData">Uygulama verilerini (Başlangıç sayfası + önizlemeler, Geçmiş, Sık Kullanılanlar)
+        ve kişisel ayarlarınızı dışa aktarın.</string>
+    <string name="title_appData">Uygulama verileri</string>
     <string name="hint_database">Bu, mevcut tüm ayarlarınızı ve verilerinizi silecektir. Devam edilsin mi?</string>
     <!-- Others setting -->
     <string name="setting_title_others">Diğer</string>
