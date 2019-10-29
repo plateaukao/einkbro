@@ -61,7 +61,6 @@
     <string name="dialog_extension_hint">Расширение (например: \".jpg\"):</string>
     <string name="dialog_sign_in_username">Имя пользователя</string>
     <string name="dialog_sign_in_password">Пароль</string>
-    <string name="dialog_button_custom">Вручную</string>
     <string name="dialog_title_download">Хотите загрузить файл?</string>
     <string name="dialog_content_resubmission">Хотите повторно отправить свои данные?</string>
     <string name="dialog_content_ssl_error">Сертификат сайта не является доверенным. Всё равно продолжить?</string>
@@ -165,18 +164,11 @@
     <string name="setting_summary_nav_pos_right">Справа</string>
     <string name="setting_summary_nav_pos_left">Cлева</string>
     <string name="setting_summary_nav_pos_center">По центру</string>
-    <string name="setting_title_nav_show">Скрыть</string>
-    <string name="setting_summary_nav_show">Скрыть \"Кнопку навигации\", при отображении панели инструментов.</string>
     <string name="setting_summary_tab">Что должно отображаться при запуске \"FOSS Browser\"? Начальная страница, закладки, …</string>
     <string name="setting_title_confirm_exit">Подтвердить выход из браузера</string>
     <string name="setting_summary_confirm_exit">Диалоговое окно подтверждения при закрытии браузера.</string>
     <string name="setting_title_confirm_tab_close">Подтвердить закрытие вкладки</string>
     <string name="setting_summary_confirm_tab_close">Диалоговое окно подтверждения при закрытии вкладки.</string>
-    <string name="setting_hide_always">Скрывать всегда</string>
-    <string name="setting_hide_down">Только при прокрутке вниз</string>
-    <string name="setting_hide_never">Всегда видна</string>
-    <string name="setting_hideNav_always">Скрывать всегда</string>
-    <string name="setting_hideNav_toolbar">При отображении панели инструментов</string>
     <string name="setting_overView">Overview</string>
     <string name="setting_overView_onStart_title">Show on start</string>
     <string name="setting_overView_onStart_summary">Open the \"Overview\" on every app start.</string>
