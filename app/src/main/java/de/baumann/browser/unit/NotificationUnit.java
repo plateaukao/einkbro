@@ -46,6 +46,7 @@ public class NotificationUnit {
         Intent stopNotification = new Intent("stopNotification");
         PendingIntent stopNotificationPI = PendingIntent.getBroadcast(context, 0, stopNotification, PendingIntent.FLAG_CANCEL_CURRENT);
 
+
         NotificationCompat.Action action_UN = new NotificationCompat.Action.Builder(R.drawable.icon_earth, context.getString(R.string.toast_closeNotification), stopNotificationPI).build();
 
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
