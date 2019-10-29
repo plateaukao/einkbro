@@ -61,7 +61,6 @@
     <string name="dialog_extension_hint">Rozszerzenie (np.: \".jpg\"):</string>
     <string name="dialog_sign_in_username">Login</string>
     <string name="dialog_sign_in_password">Hasło</string>
-    <string name="dialog_button_custom">Własna</string>
     <string name="dialog_title_download">Rozpocząć pobieranie?</string>
     <string name="dialog_content_resubmission">Ponowić wysyłkę danych?</string>
     <string name="dialog_content_ssl_error">Wykryto niezaufany certyfikat. Chcesz kontynuować?</string>
@@ -166,18 +165,11 @@
     <string name="setting_summary_nav_pos_right">Po prawej</string>
     <string name="setting_summary_nav_pos_left">Po lewej</string>
     <string name="setting_summary_nav_pos_center">Pośrodku</string>
-    <string name="setting_title_nav_show">Widoczność</string>
-    <string name="setting_summary_nav_show">Zdecyduj o zachowaniu \”Przycisku nawigacyjnego\” w towarzystwie panelu dolnego.</string>
     <string name="setting_summary_tab">Co powinno wyświetlać się domyślnie po wysunięciu Wszechglądu? Kolekcja ważnych witryn, zakładki, historia?</string>
     <string name="setting_title_confirm_exit">Potwierdzaj zamknięcie przeglądarki</string>
     <string name="setting_summary_confirm_exit">Wyświetlaj komunikat przy zamykaniu apki.</string>
     <string name="setting_title_confirm_tab_close">Potwierdzaj zamknięcie karty</string>
     <string name="setting_summary_confirm_tab_close">Wyświetlaj komunikat o zamykaniu karty.</string>
-    <string name="setting_hide_always">Zawsze ukryty</string>
-    <string name="setting_hide_down">Ukryty przy przewijaniu w dół</string>
-    <string name="setting_hide_never">Zawsze widoczny</string>
-    <string name="setting_hideNav_always">Zawsze ukryty</string>
-    <string name="setting_hideNav_toolbar">Ukryty w trakcie wyświetlania panelu dolnego</string>
     <string name="setting_overView">Wszechgląd</string>
     <string name="setting_overView_onStart_title">Wysuwaj na starcie</string>
     <string name="setting_overView_onStart_summary">Pokazuj panel \"Wszechglądu\" przy każdym uruchomieniu apki.</string>

@@ -61,7 +61,6 @@
     <string name="dialog_extension_hint">Endung (z.B.: \".jpg\"):</string>
     <string name="dialog_sign_in_username">Benutzername</string>
     <string name="dialog_sign_in_password">Passwort</string>
-    <string name="dialog_button_custom">Eigene</string>
     <string name="dialog_title_download">Möchtest du die Datei herunterladen?</string>
     <string name="dialog_content_resubmission">Möchtest du die Daten erneut senden?</string>
     <string name="dialog_content_ssl_error">Das Zertifikat der Seite ist nicht sicher. Trotzdem fortfahren?</string>
@@ -182,18 +181,11 @@
     <string name="setting_summary_nav_pos_right">Rechts</string>
     <string name="setting_summary_nav_pos_left">Links</string>
     <string name="setting_summary_nav_pos_center">Mitte</string>
-    <string name="setting_title_nav_show">Verstecken</string>
-    <string name="setting_summary_nav_show">Verstecke den \"Navigationsknopf\" wenn die Toolbar angezeigt wird.</string>
     <string name="setting_summary_tab">Was soll beim Start der \"Übersicht\" angezeigt werden? Die Startseite, deine Lesezeichen, …</string>
     <string name="setting_title_confirm_exit">Bestätigung beim Verlassen</string>
     <string name="setting_summary_confirm_exit">Bestätigungsdialog, bevor du \"FOSS Browser\" beendest.</string>
     <string name="setting_title_confirm_tab_close">Bestätigung Tab schließen</string>
     <string name="setting_summary_confirm_tab_close">Bestätigungsdialog, bevor ein Tab geschlossen wird.</string>
-    <string name="setting_hide_always">Immer verstecken</string>
-    <string name="setting_hide_down">Nur beim runter scrollen</string>
-    <string name="setting_hide_never">Nie verstecken</string>
-    <string name="setting_hideNav_always">Immer verstecken</string>
-    <string name="setting_hideNav_toolbar">Wenn Toolbar sichtbar</string>
     <string name="setting_overView">Übersicht</string>
     <string name="setting_overView_onStart_title">Zeige beim Appstart</string>
     <string name="setting_overView_onStart_summary">Öffne als erstes die \"Übersicht\" bei jedem Appstart.</string>

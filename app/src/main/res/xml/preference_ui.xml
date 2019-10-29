@@ -64,6 +64,13 @@
 
     <PreferenceCategory android:title="@string/setting_title_toolbar">
 
+        <CheckBoxPreference
+            android:key="hideToolbar"
+            android:icon="@drawable/icon_fullscreen"
+            android:defaultValue="true"
+            android:title="@string/setting_title_hideToolbar"
+            android:summary="@string/setting_summary_hide"/>
+
         <CheckBoxPreference android:key="sp_toolbarShow"
             android:icon="@drawable/icon_show"
             android:defaultValue="false"
@@ -71,13 +78,13 @@
             android:summary="@string/setting_summary_toolbarShow"/>
 
         <ListPreference
-            android:title="@string/setting_title_hideToolbar"
-            android:icon="@drawable/icon_fullscreen"
-            android:summary="@string/setting_summary_hide"
-            android:key="sp_hideToolbar"
+            android:title="@string/setting_title_nav_pos"
+            android:icon="@drawable/icon_arrow_expand"
+            android:summary="@string/setting_summary_nav_pos"
+            android:key="nav_position"
             android:defaultValue="0"
-            android:entries="@array/setting_entries_toolbar"
-            android:entryValues="@array/setting_values_toolbar" />
+            android:entries="@array/setting_entries_nav_pos"
+            android:entryValues="@array/setting_values_nav_pos" />
 
     </PreferenceCategory>
 
@@ -103,29 +110,6 @@
             android:defaultValue="0"
             android:entries="@array/setting_entries_tab"
             android:entryValues="@array/setting_values_tab" />
-
-    </PreferenceCategory>
-
-
-    <PreferenceCategory android:title="@string/setting_title_nav">
-
-        <ListPreference
-            android:title="@string/setting_title_nav_show"
-            android:icon="@drawable/icon_eye_off"
-            android:summary="@string/setting_summary_nav_show"
-            android:key="sp_hideNav"
-            android:defaultValue="0"
-            android:entries="@array/setting_entries_nav"
-            android:entryValues="@array/setting_values_nav" />
-
-        <ListPreference
-            android:title="@string/setting_title_nav_pos"
-            android:icon="@drawable/icon_arrow_expand"
-            android:summary="@string/setting_summary_nav_pos"
-            android:key="nav_position"
-            android:defaultValue="0"
-            android:entries="@array/setting_entries_nav_pos"
-            android:entryValues="@array/setting_values_nav_pos" />
 
     </PreferenceCategory>
 

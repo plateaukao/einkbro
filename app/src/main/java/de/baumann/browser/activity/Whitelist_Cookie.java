@@ -23,11 +23,11 @@ import de.baumann.browser.database.RecordAction;
 import de.baumann.browser.Ninja.R;
 import de.baumann.browser.unit.BrowserUnit;
 import de.baumann.browser.unit.HelperUnit;
-import de.baumann.browser.view.Adapter_Cookie;
+import de.baumann.browser.view.Adapter_Whitelist;
 import de.baumann.browser.view.NinjaToast;
 
 public class Whitelist_Cookie extends AppCompatActivity {
-    private Adapter_Cookie adapter;
+    private Adapter_Whitelist adapter;
     private List<String> list;
 
     @Override
@@ -49,7 +49,7 @@ public class Whitelist_Cookie extends AppCompatActivity {
         ListView listView = findViewById(R.id.whitelist);
         listView.setEmptyView(findViewById(R.id.whitelist_empty));
 
-        adapter = new Adapter_Cookie(this, list);
+        adapter = new Adapter_Whitelist(this, list);
         listView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 

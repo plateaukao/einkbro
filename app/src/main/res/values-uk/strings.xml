@@ -61,7 +61,6 @@
     <string name="dialog_extension_hint">Розширення (наприклад: \".jpg\"):</string>
     <string name="dialog_sign_in_username">Ім\'я користувача</string>
     <string name="dialog_sign_in_password">Пароль</string>
-    <string name="dialog_button_custom">Вручну</string>
     <string name="dialog_title_download">Хочете завантажити файл?</string>
     <string name="dialog_content_resubmission">Хочете повторно відправити свої дані?</string>
     <string name="dialog_content_ssl_error">Сертифікат сайту не є довіреним. Все одно продовжити?</string>
@@ -165,18 +164,11 @@
     <string name="setting_summary_nav_pos_right">Праворуч</string>
     <string name="setting_summary_nav_pos_left">Зліва</string>
     <string name="setting_summary_nav_pos_center">По центру</string>
-    <string name="setting_title_nav_show">Приховати Кнопку навігації</string>
-    <string name="setting_summary_nav_show">Приховати \"Кнопку навігації\", при відображенні Панелі інструментів.</string>
     <string name="setting_summary_tab">Що повинно відображатися при запуску \"FOSS Browser\"? Початкова сторінка, закладки …</string>
     <string name="setting_title_confirm_exit">Підтвердити вихід з браузера</string>
     <string name="setting_summary_confirm_exit">Діалогове вікно підтвердження при закритті браузера.</string>
     <string name="setting_title_confirm_tab_close">Підтвердити закриття вкладки</string>
     <string name="setting_summary_confirm_tab_close">Діалогове вікно підтвердження при закритті вкладки.</string>
-    <string name="setting_hide_always">Приховувати завжди</string>
-    <string name="setting_hide_down">Тільки при прокручуванні вниз</string>
-    <string name="setting_hide_never">Завжди видно</string>
-    <string name="setting_hideNav_always">Приховувати завжди</string>
-    <string name="setting_hideNav_toolbar">При відображенні панелі інструментів</string>
     <string name="setting_overView">Огляд</string>
     <string name="setting_overView_onStart_title">Показувати при запуску</string>
     <string name="setting_overView_onStart_summary">Відкрити \"Огляд\" при запуску додатка.</string>

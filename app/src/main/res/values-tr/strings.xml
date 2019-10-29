@@ -61,7 +61,6 @@
     <string name="dialog_extension_hint">Uzantı (örneğin: \".jpg\"):</string>
     <string name="dialog_sign_in_username">Kullancı adı</string>
     <string name="dialog_sign_in_password">Parola</string>
-    <string name="dialog_button_custom">Özel</string>
     <string name="dialog_title_download">Dosyayı indirmek ister misiniz?</string>
     <string name="dialog_content_resubmission">Verilerinizi yeniden göndermek ister misiniz?</string>
     <string name="dialog_content_ssl_error">Sitenin sertifikası güvenilir değil. Yine de devam edilsin mi?</string>
@@ -177,18 +176,11 @@
     <string name="setting_summary_nav_pos_right">Sağ</string>
     <string name="setting_summary_nav_pos_left">Sol</string>
     <string name="setting_summary_nav_pos_center">Orta</string>
-    <string name="setting_title_nav_show">Gizle</string>
-    <string name="setting_summary_nav_show">Araç çubuğu gösterildiğinde \"Gezinme Düğmesi\"ni gizleyin.</string>
     <string name="setting_summary_tab">\"Genel Bakış\" başlangıcında ne gösterilmelidir? Başlangıç sayfası, Yer imleriniz, …</string>
     <string name="setting_title_confirm_exit">Tarayıcı çıkışını onayla</string>
     <string name="setting_summary_confirm_exit">Tarayıcıyı kapatırken onay iletişim kutusu gösterilir.</string>
     <string name="setting_title_confirm_tab_close">Sekme kapatmayı onayla</string>
     <string name="setting_summary_confirm_tab_close">Bir sekmeyi kapatırken onay iletişim kutusu gösterilir.</string>
-    <string name="setting_hide_always">Her zaman gizle</string>
-    <string name="setting_hide_down">Sadece aşağı kaydırırken</string>
-    <string name="setting_hide_never">Asla gizleme</string>
-    <string name="setting_hideNav_always">Her zaman gizle</string>
-    <string name="setting_hideNav_toolbar">Araç çubuğu gösterildiğinde</string>
     <string name="setting_overView">Genel Bakış</string>
     <string name="setting_overView_onStart_title">Başlangıçta göster</string>
     <string name="setting_overView_onStart_summary">Her uygulama başlangıcında \"Genel Bakış\" açılır.</string>

@@ -61,7 +61,6 @@
     <string name="dialog_extension_hint">Extension (par exemple: \".jpg\"):</string>
     <string name="dialog_sign_in_username">Nom d\'utilisateur</string>
     <string name="dialog_sign_in_password">Mot de passe</string>
-    <string name="dialog_button_custom">Personnaliser</string>
     <string name="dialog_title_download">Voulez-vous télécharger le fichier?</string>
     <string name="dialog_content_resubmission">Souhaitez-vous soumettre à nouveau vos données?</string>
     <string name="dialog_content_ssl_error">Le certificat du site n\'est pas fiable. Continuez quand même?</string>
@@ -176,18 +175,11 @@
     <string name="setting_summary_nav_pos_right">Droite</string>
     <string name="setting_summary_nav_pos_left">Gauche</string>
     <string name="setting_summary_nav_pos_center">Milieu</string>
-    <string name="setting_title_nav_show">Cacher</string>
-    <string name="setting_summary_nav_show">Masquer le \"Bouton de navigation\" quand la barre d\'outils est affichée.</string>
     <string name="setting_summary_tab">Que doit-on montrer au début de la \"Vue d\'ensemble\"? La page d\'accueil, signets, …</string>
     <string name="setting_title_confirm_exit">Confirmer pour quitter</string>
     <string name="setting_summary_confirm_exit">Fenêtre de confirmation avant fermeture du navigateur.</string>
     <string name="setting_title_confirm_tab_close">Confirmer fermeture onglet</string>
     <string name="setting_summary_confirm_tab_close">Fenêtre de confirmation avant fermeture d\'un onglet.</string>
-    <string name="setting_hide_always">Masquer toujours</string>
-    <string name="setting_hide_down">Seulement en faisant défiler vers le bas</string>
-    <string name="setting_hide_never">Ne jamais cacher</string>
-    <string name="setting_hideNav_always">Masquer toujours</string>
-    <string name="setting_hideNav_toolbar">Quand la barre d\'outils est affichée</string>
     <string name="setting_overView">Vue d\'ensemble</string>
     <string name="setting_overView_onStart_title">Montrer au démarrage</string>
     <string name="setting_overView_onStart_summary">Ouvrir \"vue d\'ensemble\" à chaque démarrage de l\'application.</string>
