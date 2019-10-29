@@ -61,7 +61,6 @@
     <string name="dialog_extension_hint">Extensión (por ejemplo: \".jpg\"):</string>
     <string name="dialog_sign_in_username">Usuario</string>
     <string name="dialog_sign_in_password">Contraseña</string>
-    <string name="dialog_button_custom">Personalizado</string>
     <string name="dialog_title_download">¿Desea descargar el archivo?</string>
     <string name="dialog_content_resubmission">¿Desea reenviar sus datos?</string>
     <string name="dialog_content_ssl_error">El certificado del sitio no es seguro. ¿Continuar de todos modos?</string>
@@ -164,18 +163,11 @@
     <string name="setting_summary_nav_pos_right">Derecha</string>
     <string name="setting_summary_nav_pos_left">Izquierda</string>
     <string name="setting_summary_nav_pos_center">Centro</string>
-    <string name="setting_title_nav_show">Ocultar</string>
-    <string name="setting_summary_nav_show">Oculte el \"botón de navegación\" cuando se muestre la barra de herramientas.</string>
     <string name="setting_summary_tab">Lo que debe mostrarse en la vista general. La página de inicio, los marcadores, …</string>
     <string name="setting_title_confirm_exit">Confirmar salida del navegador</string>
     <string name="setting_summary_confirm_exit">Mostrar un diálogo de confirmación al cerrar el navegador.</string>
     <string name="setting_title_confirm_tab_close">Confirmar cerrado de pestañas</string>
     <string name="setting_summary_confirm_tab_close">Mostrar un diálogo de confirmación al cerrar pestañas.</string>
-    <string name="setting_hide_always">Siempre oculto</string>
-    <string name="setting_hide_down">Sólo mientras se desplaza hacia abajo</string>
-    <string name="setting_hide_never">No ocultar nunca</string>
-    <string name="setting_hideNav_always">Ocultar siempre</string>
-    <string name="setting_hideNav_toolbar">Cuando se vea la barra de herra.</string>
     <string name="setting_overView">Vista general</string>
     <string name="setting_overView_onStart_title">Mostrar al inicio</string>
     <string name="setting_overView_onStart_summary">Abrir la vista general en cada inicio de la aplicación.</string>
