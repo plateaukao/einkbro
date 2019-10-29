@@ -1,6 +1,8 @@
 ### v 6.8 (WIP)
 - new: moving to AndroidX libraries
 - new: favorite settings
+- updated: Turkish translation
+- updated: Czech translation
 - updated: settings (especially filter settings)
 - updated: saving locations of backups and screenshots
 

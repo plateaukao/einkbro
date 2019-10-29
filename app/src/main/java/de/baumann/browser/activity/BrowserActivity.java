@@ -249,7 +249,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     }
 
     private int originalOrientation;
-    private int shortAnimTime;
     private int vibrantColor;
     private int vibrantColor_System;
 
@@ -343,8 +342,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         contentFrame = findViewById(R.id.main_content);
         appBar = findViewById(R.id.appBar);
 
-        shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-
         dimen156dp = getResources().getDimensionPixelSize(R.dimen.layout_width_156dp);
         dimen144dp = getResources().getDimensionPixelSize(R.dimen.layout_width_144dp);
         dimen117dp = getResources().getDimensionPixelSize(R.dimen.layout_height_117dp);
@@ -402,12 +399,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         if (sp.getBoolean("start_tabStart", false)){
             showOverview();
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                }
-            }, shortAnimTime);
+            mBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         }
     }
 
@@ -634,11 +626,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         }
 
         bottomSheetDialog_OverView.show();
-        new Handler().postDelayed(new Runnable() {
-            public void run() {
-                tab_ScrollView.smoothScrollTo(currentAlbumController.getAlbumView().getLeft(), 0);
-            }
-        }, shortAnimTime);
+        tab_ScrollView.smoothScrollTo(currentAlbumController.getAlbumView().getLeft(), 0);
     }
 
     public void hideOverview () {
@@ -1050,28 +1038,15 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             filePathCallback = null;
         } else if ("sc_history".equals(action)) {
             pinAlbums(null);
-            showOverview();
-            new Handler().postDelayed(new Runnable() {
-                public void run() {
-                    open_history.performClick();
-                }
-            }, shortAnimTime);
+            showOverview();open_history.performClick();
         } else if ("sc_bookmark".equals(action)) {
             pinAlbums(null);
             showOverview();
-            new Handler().postDelayed(new Runnable() {
-                public void run() {
-                    open_bookmark.performClick();
-                }
-            }, shortAnimTime);
+            open_bookmark.performClick();
         } else if ("sc_startPage".equals(action)) {
             pinAlbums(null);
             showOverview();
-            new Handler().postDelayed(new Runnable() {
-                public void run() {
-                    open_startPage.performClick();
-                }
-            }, shortAnimTime);
+            open_startPage.performClick();
         } else if (Intent.ACTION_SEND.equals(action)) {
             pinAlbums(intent.getStringExtra(Intent.EXTRA_TEXT));
         } else if ("".equals(action)) {
