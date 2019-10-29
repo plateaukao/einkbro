@@ -2166,8 +2166,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         showOmnibox();
         hideSearchPanel();
         tab_container.removeAllViews();
-        ninjaWebView = new NinjaWebView(context);
-        ninjaWebView = (NinjaWebView) currentAlbumController;
 
         for (AlbumController controller : BrowserContainer.list()) {
             ((NinjaWebView) controller).setBrowserController(this);
@@ -2268,25 +2266,17 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     }
 
     private void scrollChange () {
-
-        if (Objects.requireNonNull(sp.getString("sp_hideToolbar", "0")).equals("0") ||
-                Objects.requireNonNull(sp.getString("sp_hideToolbar", "0")).equals("1")) {
-
+        if (Objects.requireNonNull(sp.getBoolean("hideToolbar", true))) {
             ninjaWebView.setOnScrollChangeListener(new NinjaWebView.OnScrollChangeListener() {
                 @Override
                 public void onScrollChange(int scrollY, int oldScrollY) {
                     int height = (int) Math.floor(ninjaWebView.getContentHeight() * ninjaWebView.getResources().getDisplayMetrics().density);
                     int webViewHeight = ninjaWebView.getHeight();
-                    int cutoff = height - webViewHeight - 112 * Math.round(getResources().getDisplayMetrics().density); // Don't be too strict on the cutoff point
-
-                    if (Objects.requireNonNull(sp.getString("sp_hideToolbar", "0")).equals("0")) {
-                        if (scrollY > oldScrollY && cutoff >= scrollY) {
-                            hideOmnibox();
-                        } else if (scrollY < oldScrollY){
-                            showOmnibox();
-                        }
-                    } else if (Objects.requireNonNull(sp.getString("sp_hideToolbar", "0")).equals("1")) {
+                    int cutoff = height - webViewHeight - 112 * Math.round(getResources().getDisplayMetrics().density);
+                    if (scrollY > oldScrollY && cutoff >= scrollY) {
                         hideOmnibox();
+                    } else if (scrollY < oldScrollY){
+                        showOmnibox();
                     }
                 }
             });
@@ -2324,7 +2314,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             updateBookmarks();
             updateRefresh(false);
             progressBar.setVisibility(View.GONE);
-            currentAlbumController.setAlbumCover(ViewUnit.capture(((View) currentAlbumController), dimen144dp, dimen108dp, Bitmap.Config.RGB_565));
         }
     }
 
@@ -2664,22 +2653,9 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         Objects.requireNonNull(imm).hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    @SuppressLint("RestrictedApi")
     private void showOmnibox() {
         if (omnibox.getVisibility() == View.GONE && searchPanel.getVisibility() == View.GONE) {
-
-            String showNavButton = Objects.requireNonNull(sp.getString("sp_hideNav", "0"));
-
-            switch (showNavButton) {
-                case "0":
-                case "1":
-                    fab_imageButtonNav.setVisibility(View.GONE);
-                    break;
-                default:
-                    fab_imageButtonNav.setVisibility(View.VISIBLE);
-                    break;
-            }
-
+            fab_imageButtonNav.setVisibility(View.GONE);
             if (omnibox.getVisibility() == View.GONE) {
                 searchPanel.setVisibility(View.GONE);
                 omnibox.setVisibility(View.VISIBLE);
@@ -2689,17 +2665,8 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         }
     }
 
-    @SuppressLint("RestrictedApi")
     private void hideOmnibox() {
-
-        String showNavButton = Objects.requireNonNull(sp.getString("sp_hideNav", "0"));
-
-        if ("1".equals(showNavButton)) {
-            fab_imageButtonNav.setVisibility(View.GONE);
-        } else {
-            fab_imageButtonNav.setVisibility(View.VISIBLE);
-        }
-
+        fab_imageButtonNav.setVisibility(View.VISIBLE);
         if (omnibox.getVisibility() == View.VISIBLE) {
             omnibox.setVisibility(View.GONE);
             searchPanel.setVisibility(View.GONE);

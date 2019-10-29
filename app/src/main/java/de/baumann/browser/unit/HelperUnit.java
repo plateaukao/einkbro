@@ -142,9 +142,7 @@ public class HelperUnit {
 
     public static void applyTheme(Context context) {
         sp = PreferenceManager.getDefaultSharedPreferences(context);
-
         String showNavButton = Objects.requireNonNull(sp.getString("sp_theme", "1"));
-
         switch (showNavButton) {
             case "0":
                 context.setTheme(R.style.AppTheme_system);
@@ -167,27 +165,15 @@ public class HelperUnit {
     public static void setBottomSheetBehavior (final BottomSheetDialog dialog, final View view, int beh) {
         BottomSheetBehavior mBehavior = BottomSheetBehavior.from((View) view.getParent());
         mBehavior.setState(beh);
-
         mBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
-
-                try {
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            dialog.cancel();
-                        }
-                    }, 250);
-                } catch (Exception e) {
-                    Log.w("browser", "Error cancel dialog");
+                if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+                    dialog.cancel();
                 }
-
             }
-
             @Override
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-
             }
         });
     }
@@ -225,16 +211,12 @@ public class HelperUnit {
 
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context);
         View dialogView = View.inflate(context, R.layout.dialog_help, null);
-
         ImageButton dialogHelp_tip = dialogView.findViewById(R.id.dialogHelp_tip);
         ImageButton dialogHelp_overview = dialogView.findViewById(R.id.dialogHelp_overview);
-
         final View dialogHelp_tipView = dialogView.findViewById(R.id.dialogHelp_tipView);
         final View dialogHelp_overviewView = dialogView.findViewById(R.id.dialogHelp_overviewView);
-
         final TextView dialogHelp_tv_title = dialogView.findViewById(R.id.dialogHelp_title);
         final TextView dialogHelp_tv_text = dialogView.findViewById(R.id.dialogHelp_tv);
-
         dialogHelp_tv_title.setText(HelperUnit.textSpannable(context.getResources().getString(R.string.dialogHelp_tipTitle)));
         dialogHelp_tv_text.setText(HelperUnit.textSpannable(context.getResources().getString(R.string.dialogHelp_tipText)));
 

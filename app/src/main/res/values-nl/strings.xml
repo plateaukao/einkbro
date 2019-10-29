@@ -61,7 +61,6 @@
     <string name="dialog_extension_hint">Extensie (bijv.: \".jpg\"):</string>
     <string name="dialog_sign_in_username">Gebruikersnaam</string>
     <string name="dialog_sign_in_password">Wachtwoord</string>
-    <string name="dialog_button_custom">Aangepast</string>
     <string name="dialog_title_download">Wil je het bestand downloaden?</string>
     <string name="dialog_content_resubmission">Wil je je gegevens opnieuw versturen?</string>
     <string name="dialog_content_ssl_error">Het certificaat van deze website is onvertrouwd. Wil je tóch doorgaan?</string>
@@ -175,18 +174,11 @@
     <string name="setting_summary_nav_pos_right">Rechts</string>
     <string name="setting_summary_nav_pos_left">Links</string>
     <string name="setting_summary_nav_pos_center">Midden</string>
-    <string name="setting_title_nav_show">Verbergen</string>
-    <string name="setting_summary_nav_show">Verberg de \"Navigatieknop\" als de werkbalk zichtbaar is.</string>
     <string name="setting_summary_tab">Wat moet er worden getoond bij het opstarten van \"FOSS-browser\": de startpagina, je bladwijzers, …?</string>
     <string name="setting_title_confirm_exit">Afsluiten bevestigen</string>
     <string name="setting_summary_confirm_exit">Bevestigingsscherm tonen bij het afsluiten van de browser.</string>
     <string name="setting_title_confirm_tab_close">Tabblad sluiten bevestigen</string>
     <string name="setting_summary_confirm_tab_close">Bevestigingsscherm tonen bij het sluiten van een tabblad.</string>
-    <string name="setting_hide_always">Altijd verbergen</string>
-    <string name="setting_hide_down">Alleen tijdens omlaag scrollen</string>
-    <string name="setting_hide_never">Nooit verbergen</string>
-    <string name="setting_hideNav_always">Altijd verbergen</string>
-    <string name="setting_hideNav_toolbar">Als werkbalk zichtbaar is</string>
     <string name="setting_overView">Overview</string>
     <string name="setting_overView_onStart_title">Show on start</string>
     <string name="setting_overView_onStart_summary">Open the \"Overview\" on every app start.</string>
