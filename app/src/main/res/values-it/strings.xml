@@ -61,7 +61,6 @@
     <string name="dialog_extension_hint">Estensione (per esempio: \".jpg\"):</string>
     <string name="dialog_sign_in_username">Username</string>
     <string name="dialog_sign_in_password">Password</string>
-    <string name="dialog_button_custom">Personalizzato</string>
     <string name="dialog_title_download">Vuoi scaricare il file?</string>
     <string name="dialog_content_resubmission">Inviare nuovamente i dati?</string>
     <string name="dialog_content_ssl_error">Il certificato del sito non è attendibile. Procedere comunque?</string>
@@ -165,18 +164,11 @@
     <string name="setting_summary_nav_pos_right">Destra</string>
     <string name="setting_summary_nav_pos_left">Sinistra</string>
     <string name="setting_summary_nav_pos_center">Centro</string>
-    <string name="setting_title_nav_show">Nascondi</string>
-    <string name="setting_summary_nav_show">Nascondere il \"Pulsante di navigazione\" quando è visualizzata la barra degli strumenti.</string>
     <string name="setting_summary_tab">Cosa deve essere mostrato all\' apertura di \"FOSS Browser\"? Pagina iniziale, i tuoi segnalibri, …</string>
     <string name="setting_title_confirm_exit">Conferma l\'uscita dal browser</string>
     <string name="setting_summary_confirm_exit">Finestra di conferma per la chiusura del browser.</string>
     <string name="setting_title_confirm_tab_close">Confermare la chiusura delle schede</string>
     <string name="setting_summary_confirm_tab_close">Finestra di conferma per la chiusura delle schede.</string>
-    <string name="setting_hide_always">Nascondi sempre</string>
-    <string name="setting_hide_down">Solo durante lo scorrimento verso il basso</string>
-    <string name="setting_hide_never">Non nascondere mai</string>
-    <string name="setting_hideNav_always">Nascondi sempre</string>
-    <string name="setting_hideNav_toolbar">Quando la barra degli strumenti è visibile</string>
     <string name="setting_overView">Overview</string>
     <string name="setting_overView_onStart_title">Show on start</string>
     <string name="setting_overView_onStart_summary">Open the \"Overview\" on every app start.</string>
