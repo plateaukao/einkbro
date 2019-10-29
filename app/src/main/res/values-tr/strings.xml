@@ -51,8 +51,8 @@
     <string name="menu_share_pdf">PDF paylaş</string>
     <string name="menu_shareClipboard">Panoya kopyala</string>
     <string name="menu_other_searchSite">Sitede ara</string>
-    <string name="menu_other_fileManager">Open file manager</string>
-    <string name="menu_other_info">About \"FOSS Browser\"</string>
+    <string name="menu_other_fileManager">Dosya yöneticisini aç</string>
+    <string name="menu_other_info">\"Foss Browser\" hakkında</string>
     <string name="menu_other_help">Yardım</string>
     <!-- Dialog -->
     <string name="dialog_toggle_reload">Yeniden yükle</string>
@@ -126,9 +126,9 @@
     <string name="setting_title_history">Geçmiş</string>
     <string name="setting_summary_history">Ziyaret edilen web sitelerinin geçmişini kaydedin.</string>
     <!-- browser clear -->
-    <string name="data_summary">All files will be exported to the \"Android/data/de.baumann.browser/files/browser_backup/\"
-        directory of your sd-card. This directory will be DELETED, if you uninstall \"FOSS Browser\". So make a backup regularly on a save
-        place.</string>
+    <string name="data_summary">Tüm dosyalar SD kartınızın \"Android/data/de.baumann.browser/files/browser_backup/\"
+        dizinine aktarılacaktır. Eğer \"FOSS Browser\"ı kaldırırsanız dizin SİLİNECEKTİR. Bu yüzden düzenli olarak bir yere yedekleme
+        alın.</string>
     <string name="clear_menu_done_all">Hepsi bitti</string>
     <string name="clear_title_quit">Uygulamadan çıkışta temizle</string>
     <string name="clear_summary_quit">\"FOSS Tarayıcısı\"ndan her çıkışta  yukarıdaki tüm kontrol edilen veriler silinecektir.</string>
@@ -147,12 +147,12 @@
     <string name="setting_filter">Yer imi süzgeci</string>
     <string name="setting_filter_summary">Süzgeç iletişim kutusunu göstermek için genel bakıştaki yer imi simgesine uzun basın.  Hangi süzgeçleri kullanacağınıza 
           karar verin.</string>
-    <string name="setting_title_fav">Favorite</string>
-    <string name="setting_summary_fav">Here you can change the default website which loads on start of \"FOSS Browser\".
-    Enter \"about:blank\" to get an emty start site.</string>
-    <string name="setting_title_searchEngine">Custom search engine</string>
-    <string name="setting_summary_searchEngine">Here you can enter a custom search URL. Also choose \"Custom search engine\" as search
-    provider.</string>
+    <string name="setting_title_fav">Başlangıç sitesi</string>
+    <string name="setting_summary_fav">Buradan \"FOSS Browser\" başlatıldığında yüklenen varsayılan websitesini değiştirebilirsiniz.
+    Boş bir başlangıç sitesi için \"about:blank\" girin.</string>
+    <string name="setting_title_searchEngine">Özel arama motoru</string>
+    <string name="setting_summary_searchEngine">Buradan özel arama URL\'si girebilirsiniz. Ayrıca arama sağlayıcısı olarak \"Özel arama motoru\"nu
+    seçin.</string>
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">Araç çubuğunu gizle</string>
     <string name="setting_summary_hide">Web siteleri arasında gezinirken tüm ekranı kullanın. Eğer Geri düğmesine basarsanız
@@ -160,11 +160,11 @@
     <string name="setting_title_background">Bağlantıları aç</string>
     <string name="setting_summary_background">Bir bildirim görüntüleyin ve bağlantıları arka planda açın. Devre dışı bırakırsanız,
 	bağlantılar hemen açılacaktır.</string>
-    <string name="setting_theme">Theme</string>
-    <string name="setting_theme_summary">Set the app theme.</string>
-    <string name="setting_theme_system">System theme</string>
-    <string name="setting_theme_light">Light theme</string>
-    <string name="setting_theme_dark">Dark theme</string>
+    <string name="setting_theme">Tema</string>
+    <string name="setting_theme_summary">Uygulamanın temasını ayarlayın.</string>
+    <string name="setting_theme_system">Sistem teması</string>
+    <string name="setting_theme_light">Açık tema</string>
+    <string name="setting_theme_dark">Karanlık tema</string>
     <string name="setting_title_themeColor">Arayüz rengi</string>
     <string name="setting_summary_themeColor">Kullanıcı arayüzündeki bazı öğeleri web sitesi renkleriyle eşleştirmek için renklendirin.</string>
     <string name="setting_title_theme">Arayüz</string>
@@ -226,11 +226,11 @@
     <string name="setting_title_export_whitelistCookie">Çerez beyaz listesini dışa aktar</string>
     <string name="setting_title_import_whitelistCookie">Çerez beyaz listesini içe aktar</string>
     <string name="export_whitelistCookie">Cerez_beyazliste_aktarim</string>
-    <string name="setting_title_export_appData">Export app data</string>
-    <string name="setting_title_import_appData">Import app data</string>
-    <string name="setting_summary_export_appData">Export app data (Startpage + previews, History, Bookmarks)
-        and your personal settings.</string>
-    <string name="title_appData">App data</string>
+    <string name="setting_title_export_appData">Uygulama verilerini dışa aktar</string>
+    <string name="setting_title_import_appData">Uygulama verilerini içe aktar</string>
+    <string name="setting_summary_export_appData">Uygulama verilerini (Başlangıç sayfası + önizlemeler, Geçmiş, Yer imleri)
+        ve kişisel ayarlarınızı dışa aktarın.</string>
+    <string name="title_appData">Uygulama verileri</string>
     <string name="hint_database">Bu, mevcut tüm ayarlarınızı ve verilerinizi silecektir. Devam edilsin mi?</string>
     <!-- Others setting -->
     <string name="setting_title_others">Diğer</string>
@@ -287,14 +287,14 @@
     <string name="whitelist_add">Ekle</string>
     <!-- Dialog help -->
     <string name="dialogHelp_tipTitle">İpuçları</string>
-    <string name="dialogHelp_tipText">        &lt;b&gt;Menus and dialogs&lt;/b&gt;&lt;br&gt;
-        All menus and dialogs are opened at the bottom of the screen. If the dialog is large you will first see only
-        the upper part. If you swipe it up, the rest will get visible.&lt;br&gt;
-        You can close them by pressing the back button, swiping them down or by clicking outside&lt;br&gt;&lt;br&gt;
+    <string name="dialogHelp_tipText">        &lt;b&gt;Menüler ve iletişim kutuları&lt;/b&gt;&lt;br&gt;
+        Tüm menüler ve iletişim kutuları ekranın altında açılır. Eğer iletişim kutusu büyükse önce sadece üst
+        kısmını görürsünüz. Yukarı kaydırdığınızda geri kalanı da görünecektir.&lt;br&gt;
+        Geri düğmesine basarak, aşağı kaydırarak veya dışarısına tıklayarak kapatabilirsiniz.&lt;br&gt;&lt;br&gt;
 
-        &lt;b&gt;Long press&lt;/b&gt;&lt;br&gt;
-        If you long press the menu icon or the \"Navigation button\", the \"Fast toggle dialog\" will show. If you long
-        press the \"Bookmark icon\", the \"Filter dialog\" will show.
+        &lt;b&gt;Uzun basma&lt;/b&gt;&lt;br&gt;
+        Menü simgesine veya \"Gezinme düğmesi\"ne uzun basarsanız, \"Hızlı aç/kapa iletişim kutusu\" görünecektir.
+        \"Yer imi simgesi\"ne uzun basarsanız, \"Filtre iletişim kutusu\" görünecektir.
     </string>
     <string name="dialogHelp_overviewTitle">Genel Bakış</string>
     <string name="dialogHelp_overviewText">        There are two parts in the \"Overview\" (tab preview and personal data). There is an extra menu. In the settings
@@ -308,9 +308,8 @@
         There are three parts: the Startsite, your Bookmarks and your History. If you long click an entry
         a menu with more options will appear.
     </string>
-    <string name="dialogHelp_filterText">        You can tag your bookmarks with filters. In this way you can group your bookmarks. You can open the filter dialog by
-        long pressing the bookmark icon. If you activate an entry a dialog will appear, where you can edit the name of the filter.
-    </string>
+    <string name="dialogHelp_filterText">        Yer imlerinizi filtrelerle etiketleyebilirsiniz. Bu şekilde yer imlerinizi gruplandırabilirsiniz. Filtre iletişim kutusunu yer imleri
+        simgesine uzun basarak açabilirsiniz. Bir girişi aktifleştirirseniz, filtrenin adını düzenleyebileceğiniz bir iletişim kutusu görünecektir.    </string>
     <!-- Dialog changelog -->
     <string name="changelog_dialog">        Diliniz henüz desteklenmiyor mu?  FOSS Tarayıcısını çevirmek ister misiniz?  Veya mevcut çevirilerde geliştirmeler mi yapmak istiyorsunuz?
         Crowdin\'de bize katılmaktan çekinmeyin: https://crowdin.com/project/foss-browser.&lt;br&gt;&lt;br&gt;
