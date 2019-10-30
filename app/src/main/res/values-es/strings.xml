@@ -51,8 +51,8 @@
     <string name="menu_share_pdf">Compartir PDF</string>
     <string name="menu_shareClipboard">Copiar al portapapeles</string>
     <string name="menu_other_searchSite">Buscar en sitio web</string>
-    <string name="menu_other_fileManager">Open file manager</string>
-    <string name="menu_other_info">About \"FOSS Browser\"</string>
+    <string name="menu_other_fileManager">Abrir gestor de archivos</string>
+    <string name="menu_other_info">Acerca de \"Navegador FOSS\"</string>
     <string name="menu_other_help">Ayuda</string>
     <!-- Dialog -->
     <string name="dialog_toggle_reload">Recargar</string>
@@ -115,9 +115,8 @@
     <string name="setting_title_history">Historial</string>
     <string name="setting_summary_history">Guardar el historial de sitios web visitados.</string>
     <!-- browser clear -->
-    <string name="data_summary">All files will be exported to the \"Android/data/de.baumann.browser/files/browser_backup/\"
-        directory of your sd-card. This directory will be DELETED, if you uninstall \"FOSS Browser\". So make a backup regularly on a save
-        place.</string>
+    <string name="data_summary">Todos los archivos se exportarán al directorio \"Android/data/de.baumann.browser/files/browser_backup/\".
+Si desinstala la aplicación, el mismo será eliminado. Por tanto se recomienda realizar copias de seguridad de este directorio.</string>
     <string name="clear_menu_done_all">Todo listo</string>
     <string name="clear_title_quit">Limpiar al salir de la aplicación</string>
     <string name="clear_summary_quit">Cada vez quesalga del \"Navegador FOSS\", se borrarán todos los ítems tildados anteriormente.</string>
@@ -135,7 +134,7 @@
     <string name="setting_summary_data">Importar y exportar varios datos (listas blancas, marcadores, etc.).</string>
     <string name="setting_filter">Filtro de marcadores</string>
     <string name="setting_filter_summary">Para mostrar el diálogo realiza una pulsación larga en el icono de marcadores en la vista general. Decida qué filtros usará.</string>
-    <string name="setting_title_fav">Favorite</string>
+    <string name="setting_title_fav">Favorito</string>
     <string name="setting_summary_fav">Here you can change the default website which loads on start of \"FOSS Browser\".
     Enter \"about:blank\" to get an emty start site.</string>
     <string name="setting_title_searchEngine">Custom search engine</string>
