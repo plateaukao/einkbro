@@ -135,21 +135,20 @@ Si desinstala la aplicación, el mismo será eliminado. Por tanto se recomienda 
     <string name="setting_filter">Filtro de marcadores</string>
     <string name="setting_filter_summary">Para mostrar el diálogo realiza una pulsación larga en el icono de marcadores en la vista general. Decida qué filtros usará.</string>
     <string name="setting_title_fav">Favorito</string>
-    <string name="setting_summary_fav">Here you can change the default website which loads on start of \"FOSS Browser\".
-    Enter \"about:blank\" to get an emty start site.</string>
-    <string name="setting_title_searchEngine">Custom search engine</string>
-    <string name="setting_summary_searchEngine">Here you can enter a custom search URL. Also choose \"Custom search engine\" as search
-    provider.</string>
+    <string name="setting_summary_fav">Aquí puede cambiar el sitio web a cargar en el inicio de la aplicación.
+Puede disponer una página en blanco escribiendo \"about:blank\".</string>
+    <string name="setting_title_searchEngine">Motor de búsqueda personalizado</string>
+    <string name="setting_summary_searchEngine">Aquí puede ingresar la URL de un motor de búsqueda personalizado. Para aplicarlo, elija \"Motor de búsqueda personalizado\" como proveedor de búsquedas.</string>
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">Ocultar barra de herramientas</string>
     <string name="setting_summary_hide">Utilice la pantalla completa al desplazarse por sitios web. Si pulsa el botón \"volver\", dejará el modo de pantalla completa.</string>
     <string name="setting_title_background">Apertura de enlaces</string>
     <string name="setting_summary_background">Mostrar una notificación y abrir enlace en segundo plano. Si se deshabilita, los enlaces se abren inmediatamente en primer plano.</string>
-    <string name="setting_theme">Theme</string>
-    <string name="setting_theme_summary">Set the app theme.</string>
-    <string name="setting_theme_system">System theme</string>
-    <string name="setting_theme_light">Light theme</string>
-    <string name="setting_theme_dark">Dark theme</string>
+    <string name="setting_theme">Tema</string>
+    <string name="setting_theme_summary">Elija el tema de la aplicación.</string>
+    <string name="setting_theme_system">Tema del sistema</string>
+    <string name="setting_theme_light">Tema claro</string>
+    <string name="setting_theme_dark">Tema oscuro</string>
     <string name="setting_title_themeColor">Interfaz de usuario coloreada</string>
     <string name="setting_summary_themeColor">Colorea algunos elementos de la interfaz de usuario para que coincidan con los colores del sitio web.</string>
     <string name="setting_title_theme">Interfaz de usuario</string>
@@ -203,11 +202,10 @@ Si desinstala la aplicación, el mismo será eliminado. Por tanto se recomienda 
     <string name="setting_title_export_whitelistCookie">Exportar lista blanca de cookies</string>
     <string name="setting_title_import_whitelistCookie">Importar lista blanca de cookies</string>
     <string name="export_whitelistCookie">exportar_listablanca_cookies</string>
-    <string name="setting_title_export_appData">Export app data</string>
-    <string name="setting_title_import_appData">Import app data</string>
-    <string name="setting_summary_export_appData">Export app data (Startpage + previews, History, Bookmarks)
-        and your personal settings.</string>
-    <string name="title_appData">App data</string>
+    <string name="setting_title_export_appData">Exportar datos de la aplicación</string>
+    <string name="setting_title_import_appData">Importar datos de la aplicación</string>
+    <string name="setting_summary_export_appData">Exporta la página de inicio, previsualizaciones, historial, marcadores, y sus ajustes personales.</string>
+    <string name="title_appData">Datos de la aplicación</string>
     <string name="hint_database">Esto borrará todas sus configuraciones y datos actuales. ¿Quiere proceder?</string>
     <!-- Others setting -->
     <string name="setting_title_others">Otros</string>
