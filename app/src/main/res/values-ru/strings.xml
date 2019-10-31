@@ -13,17 +13,17 @@
     <string name="notification_content_holderTitle">Открытые вкладки …</string>
     <string name="notification_content_holder">… Нажмите, чтобы просмотреть страницы</string>
     <string name="search_hint">Поиск</string>
-    <string name="color_red">Red</string>
-    <string name="color_pink">Pink</string>
-    <string name="color_purple">Purple</string>
-    <string name="color_blue">Blue</string>
-    <string name="color_teal">Teal</string>
-    <string name="color_green">Green</string>
-    <string name="color_lime">Lime</string>
-    <string name="color_yellow">Yellow</string>
-    <string name="color_orange">Orange</string>
-    <string name="color_brown">Brown</string>
-    <string name="color_grey">Grey</string>
+    <string name="color_red">Красный</string>
+    <string name="color_pink">Розовый</string>
+    <string name="color_purple">Фиолетовый</string>
+    <string name="color_blue">Синий</string>
+    <string name="color_teal">Бирюзовый</string>
+    <string name="color_green">Зеленый</string>
+    <string name="color_lime">Лимонный</string>
+    <string name="color_yellow">Желтый</string>
+    <string name="color_orange">Оранжевый</string>
+    <string name="color_brown">Коричневый</string>
+    <string name="color_grey">Серый</string>
     <!-- Menu -->
     <string name="main_menu_tabPreview">Предпросмотр вкладок</string>
     <string name="main_menu_new_tab">Новая вкладка (фон)</string>
@@ -31,16 +31,16 @@
     <string name="main_omnibox_input_hint">Поиск или ввод URL-адреса</string>
     <string name="menu_open_with">Открыть ссылку с …</string>
     <string name="menu_quit">Выход</string>
-    <string name="menu_openFav">Open Favorite</string>
+    <string name="menu_openFav">Открыть избранное</string>
     <string name="menu_delete">Удалить</string>
     <string name="menu_delete_list">Очистить данные</string>
     <string name="menu_edit">Изменить</string>
     <string name="menu_closeTab">Закрыть вкладку</string>
     <string name="menu_download">Открытые загрузки</string>
     <string name="menu_fav">Set as start site</string>
-    <string name="menu_sc">Shortcut on home screen</string>
-    <string name="menu_sort">Sort by …</string>
-    <string name="menu_filter">Filter by …</string>
+    <string name="menu_sc">Ярлык на главном экране</string>
+    <string name="menu_sort">Сортировка по…</string>
+    <string name="menu_filter">Фильтр по …</string>
     <string name="menu_share_screenshot">Поделиться скриншотом</string>
     <string name="menu_share_link">Поделиться ссылкой</string>
     <string name="menu_save_screenshot">Сохранить скриншот</string>
@@ -49,13 +49,13 @@
     <string name="menu_save_as">Сохранить как …</string>
     <string name="menu_save_pdf">Сохранить в PDF</string>
     <string name="menu_share_pdf">Поделиться PDF</string>
-    <string name="menu_shareClipboard">Copy to clipboard</string>
+    <string name="menu_shareClipboard">Копировать в буфер</string>
     <string name="menu_other_searchSite">Поиск по сайту</string>
-    <string name="menu_other_fileManager">Open file manager</string>
-    <string name="menu_other_info">About \"FOSS Browser\"</string>
+    <string name="menu_other_fileManager">Открыть файловый менеджер</string>
+    <string name="menu_other_info">О программе \"FOSS Browser\"</string>
     <string name="menu_other_help">Помощь</string>
     <!-- Dialog -->
-    <string name="dialog_toggle_reload">Reload</string>
+    <string name="dialog_toggle_reload">Перезагрузить</string>
     <string name="dialog_title_hint">Заголовок:</string>
     <string name="dialog_url_hint">Url:</string>
     <string name="dialog_extension_hint">Расширение (например: \".jpg\"):</string>
@@ -64,9 +64,9 @@
     <string name="dialog_title_download">Хотите загрузить файл?</string>
     <string name="dialog_content_resubmission">Хотите повторно отправить свои данные?</string>
     <string name="dialog_content_ssl_error">Сертификат сайта не является доверенным. Всё равно продолжить?</string>
-    <string name="dialog_sortName">Sort by name</string>
-    <string name="dialog_sortIcon">Sort by icon</string>
-    <string name="dialog_sortDate">Sort by date</string>
+    <string name="dialog_sortName">Сортировать по названию</string>
+    <string name="dialog_sortIcon">Сортировать по значку</string>
+    <string name="dialog_sortDate">Сортировать по дате</string>
     <!-- Settings -->
     <string name="setting_label">Настройки</string>
     <!-- browser setting -->
@@ -79,10 +79,10 @@
     <string name="setting_summary_search_engine">Здесь вы можете выбрать предпочтительную поисковую систему или установить свою.</string>
     <string name="setting_summary_search_engine_google">Google</string>
     <string name="setting_summary_search_engine_duckduckgo">DuckDuckGo</string>
-    <string name="setting_summary_search_engine_startpage">StartPage</string>
+    <string name="setting_summary_search_engine_startpage">Стартовая страница</string>
     <string name="setting_summary_search_engine_bing">Bing</string>
     <string name="setting_summary_search_engine_baidu">Baidu</string>
-    <string name="setting_summary_search_engine_startpage_de">StartPage (de)</string>
+    <string name="setting_summary_search_engine_startpage_de">Начальная страница (de)</string>
     <string name="setting_summary_search_engine_searx">Searx</string>
     <string name="setting_summary_search_engine_qwant">Qwant</string>
     <string name="setting_summary_search_engine_ecosia">Ecosia</string>
@@ -92,8 +92,8 @@
     <string name="setting_summary_font">Измените размер шрифта для отображения веб-сайтов.</string>
     <string name="setting_title_remote">Удаленный контент</string>
     <string name="setting_summary_remote">Включите удаленный контент, который не находится непосредственно на посещаемом вами веб-сайте. Отключение этого является более безопасным и экономит объем данных. Но некоторое содержимое больше не будет отображаться.</string>
-    <string name="setting_title_save_data">Request \'Save Data\'</string>
-    <string name="setting_summary_save_data">Tell websites that you would prefer to save data. Supported websites will load faster.</string>
+    <string name="setting_title_save_data">Запрос \'Сохранить данные\'</string>
+    <string name="setting_summary_save_data">Расскажите веб-сайтам, что Вы хотели бы сохранить данные. Поддерживаемые веб-сайты будут загружаться быстрее.</string>
     <!-- browser start -->
     <string name="setting_title_images">Изображения</string>
     <string name="setting_summary_images">Включить отображение изображений. Отключение может быть полезно для сохранения мобильных данных и ускорения загрузки сайтов.</string>
@@ -115,9 +115,8 @@
     <string name="setting_title_history">История</string>
     <string name="setting_summary_history">Сохраните историю посещаемых веб-сайтов.</string>
     <!-- browser clear -->
-    <string name="data_summary">All files will be exported to the \"Android/data/de.baumann.browser/files/browser_backup/\"
-        directory of your sd-card. This directory will be DELETED, if you uninstall \"FOSS Browser\". So make a backup regularly on a save
-        place.</string>
+    <string name="data_summary">Все файлы будут экспортированы в каталог Вашей SD-карты: Android/data/de.baumann.browser/files/browser_backup/\".
+Этот каталог будет УДАЛЕН, если Вы удалите \"FOSS Browser\". Поэтому регулярно делайте резервные копии..</string>
     <string name="clear_menu_done_all">Всё сделано</string>
     <string name="clear_title_quit">Очистить при выходе из приложения</string>
     <string name="clear_summary_quit">Каждый раз при выходе из \"FOSS Browser\" все вышеперечисленные проверенные данные будут удаляться.</string>
@@ -133,10 +132,9 @@
     <string name="setting_title_data">Резервное копирование</string>
     <string name="setting_summary_ui">Измените поведение и интерфейс приложения в соответствии с вашими предпочтениями.</string>
     <string name="setting_summary_data">Импортируйте и экспортируйте данные приложения (белые списки, закладки).</string>
-    <string name="setting_filter">Bookmark filter</string>
-    <string name="setting_filter_summary">To show the filter dialog long press on the bookmark icon in the overview. Decide which
-        filters you will use.</string>
-    <string name="setting_title_fav">Favorite</string>
+    <string name="setting_filter">Фильтр закладок</string>
+    <string name="setting_filter_summary">Чтобы отобразить диалоговое окно фильтра, удерживайте нажатие на значке закладок в окне. Определите, какие фильтры Вы будете использовать.</string>
+    <string name="setting_title_fav">Избранное</string>
     <string name="setting_summary_fav">Here you can change the default website which loads on start of \"FOSS Browser\".
     Enter \"about:blank\" to get an emty start site.</string>
     <string name="setting_title_searchEngine">Custom search engine</string>
