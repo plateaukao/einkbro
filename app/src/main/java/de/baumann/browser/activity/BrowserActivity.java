@@ -1359,14 +1359,14 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                         open_startPage.performClick();
                     }
 
-                    if (sp.getBoolean("overView_hide", false)){
+                    if (sp.getBoolean("overView_hide", true)){
                         overview_top.setVisibility(View.GONE);
                     } else {
                         overview_topButtons.setVisibility(View.GONE);
                     }
 
                 } else {
-                    if (sp.getBoolean("overView_hide", false)){
+                    if (sp.getBoolean("overView_hide", true)){
                         overview_top.setVisibility(View.VISIBLE);
                     } else {
                         overview_topButtons.setVisibility(View.VISIBLE);

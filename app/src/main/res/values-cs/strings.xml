@@ -10,8 +10,6 @@
     <string name="album_title_history">Historie</string>
     <string name="album_title_home">Plocha</string>
     <string name="album_title_files">Soubory</string>
-    <string name="notification_content_holderTitle">Otevřené karty …</string>
-    <string name="notification_content_holder">… klikněte pro zobrazení stránek</string>
     <string name="search_hint">Hledat</string>
     <string name="color_red">Červená</string>
     <string name="color_pink">Růžová</string>
@@ -155,16 +153,11 @@
     <string name="setting_title_hideToolbar">Hide toolbar</string>
     <string name="setting_summary_hide">Use the whole screen when scrolling through websites. If you press the back button you will
     leave fullscreen mode.</string>
-    <string name="setting_title_background">Otevřít odkazy</string>
-    <string name="setting_summary_background">Display a notification and open links in background. If disabled links will open
-    immediately.</string>
     <string name="setting_theme">Motiv</string>
     <string name="setting_theme_summary">Nastavte motiv aplikace.</string>
     <string name="setting_theme_system">Motiv systému</string>
     <string name="setting_theme_light">Světlý motiv</string>
     <string name="setting_theme_dark">Tmavý motiv</string>
-    <string name="setting_title_themeColor">Barva UI</string>
-    <string name="setting_summary_themeColor">Zabarvěte některé prvky z UI tak, aby odpovídaly barvám webových stránek.</string>
     <string name="setting_title_theme">UI</string>
     <string name="setting_title_behavior">Chování</string>
     <string name="setting_summary_toolbarShow">Pressing back will make the toolbar visible, before going back in history.</string>
@@ -245,7 +238,6 @@
     <string name="toast_input_empty">You haven\'t input anything</string>
     <string name="toast_invalid_domain">Neplatná doména</string>
     <string name="toast_load_error">Can\'t load this URL</string>
-    <string name="toast_load_in_background">Loading in background</string>
     <string name="toast_new_tab_successful">Successfully opened in a new tab</string>
     <string name="toast_share_failed">Nelze sdílet tuto stránku</string>
     <string name="toast_start_download">Zahajování stahování</string>
@@ -266,7 +258,6 @@
     <string name="toast_restart">You must restart \"FOSS Browser\" to apply changes. Close now?</string>
     <string name="toast_quit">Do you want to quit \"FOSS Browser\"?</string>
     <string name="toast_close_tab">Do you want to close current tab?</string>
-    <string name="toast_closeNotification">Close all opened websites.</string>
     <string name="toast_downloadComplete">Download complete. Open file manager?</string>
     <string name="toast_unsecured">This website uses an unsecured connection (\"http\"). Do you want to try a secure
         connection (\"https\")?</string>

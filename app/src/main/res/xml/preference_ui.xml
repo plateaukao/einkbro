@@ -85,7 +85,7 @@
 
         <CheckBoxPreference android:key="overView_hide"
             android:icon="@drawable/view_headline"
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:title="@string/setting_overView_hide_title"
             android:summary="@string/setting_overView_hide_summary"/>
 

@@ -10,8 +10,6 @@
     <string name="album_title_history">Geçmiş</string>
     <string name="album_title_home">Ana sayfa</string>
     <string name="album_title_files">Dosyalar</string>
-    <string name="notification_content_holderTitle">Açılan sekmeler …</string>
-    <string name="notification_content_holder">… Sayfaları Görüntülemek için Tıklayın</string>
     <string name="search_hint">Ara</string>
     <string name="color_red">Kırmızı</string>
     <string name="color_pink">Pembe</string>
@@ -156,16 +154,11 @@
     <string name="setting_title_hideToolbar">Araç çubuğunu gizle</string>
     <string name="setting_summary_hide">Web siteleri arasında gezinirken tüm ekranı kullanın. Eğer Geri düğmesine basarsanız
 	tam ekran modundan çıkılacaktır.</string>
-    <string name="setting_title_background">Bağlantıları aç</string>
-    <string name="setting_summary_background">Bir bildirim görüntüleyin ve bağlantıları arka planda açın. Devre dışı bırakırsanız,
-	bağlantılar hemen açılacaktır.</string>
     <string name="setting_theme">Tema</string>
     <string name="setting_theme_summary">Uygulamanın temasını ayarlayın.</string>
     <string name="setting_theme_system">Sistem teması</string>
     <string name="setting_theme_light">Açık tema</string>
     <string name="setting_theme_dark">Karanlık tema</string>
-    <string name="setting_title_themeColor">Arayüz rengi</string>
-    <string name="setting_summary_themeColor">Kullanıcı arayüzündeki bazı öğeleri web sitesi renkleriyle eşleştirmek için renklendirin.</string>
     <string name="setting_title_theme">Arayüz</string>
     <string name="setting_title_behavior">Davranış</string>
     <string name="setting_summary_toolbarShow">Geri basmak, geçmişe geri dönmeden önce araç çubuğunu görünür kılar.</string>
@@ -246,7 +239,6 @@
     <string name="toast_input_empty">Hiçbir şey girmediniz</string>
     <string name="toast_invalid_domain">Geçersiz etki alanı</string>
     <string name="toast_load_error">Bu URL yüklenemiyor</string>
-    <string name="toast_load_in_background">Arka planda yükleniyor</string>
     <string name="toast_new_tab_successful">Yeni bir sekmede başarıyla açıldı</string>
     <string name="toast_share_failed">Bu sayfa paylaşılamıyor</string>
     <string name="toast_start_download">İndirmeye başla</string>
@@ -267,7 +259,6 @@
     <string name="toast_restart">Değişiklikleri uygulamak için \"FOSS Tarayıcı\"sını yeniden başlatmanız gerekir. Şimdi kapatılsın mı?</string>
     <string name="toast_quit">\"FOSS Tarayıcı\"sından çıkmak istiyor musunuz?</string>
     <string name="toast_close_tab">Geçerli sekmeyi kapatmak istiyor musunuz?</string>
-    <string name="toast_closeNotification">Tüm açılan web sitelerini kapatın.</string>
     <string name="toast_downloadComplete">İndirme tamamlandı. Dosya yöneticisi açılsın mı?</string>
     <string name="toast_unsecured">Bu web sitesi güvenli olmayan bir bağlantı kullanıyor (\"http\"). Güvenli bir bağlantı
 	denemek ister misiniz (\"https\")?</string>
