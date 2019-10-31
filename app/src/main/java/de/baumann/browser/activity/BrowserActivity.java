@@ -23,10 +23,6 @@ import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.ColorMatrix;
-import android.graphics.ColorMatrixColorFilter;
-import android.graphics.Paint;
 import android.graphics.Point;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -48,13 +44,9 @@ import androidx.core.app.NotificationCompat;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.palette.graphics.Palette;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.util.TypedValue;
-import android.view.ContextThemeWrapper;
-import android.view.Display;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -105,7 +97,6 @@ import de.baumann.browser.database.Record;
 import de.baumann.browser.database.RecordAction;
 import de.baumann.browser.Ninja.R;
 import de.baumann.browser.service.ClearService;
-import de.baumann.browser.service.HolderService;
 import de.baumann.browser.task.ScreenshotTask;
 import de.baumann.browser.unit.BrowserUnit;
 import de.baumann.browser.unit.HelperUnit;
@@ -249,20 +240,8 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     }
 
     private int originalOrientation;
-    private int vibrantColor;
-    private int vibrantColor_System;
-
     private float dimen156dp;
-    private float dimen144dp;
     private float dimen117dp;
-    private float dimen108dp;
-
-    private static final float[] NEGATIVE_COLOR = {
-            -1.0f, 0, 0, 0, 255, // Red
-            0, -1.0f, 0, 0, 255, // Green
-            0, 0, -1.0f, 0, 255, // Blue
-            0, 0, 0, 1.0f, 0     // Alpha
-    };
 
     private WebChromeClient.CustomViewCallback customViewCallback;
     private ValueCallback<Uri[]> filePathCallback = null;
@@ -343,18 +322,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         appBar = findViewById(R.id.appBar);
 
         dimen156dp = getResources().getDimensionPixelSize(R.dimen.layout_width_156dp);
-        dimen144dp = getResources().getDimensionPixelSize(R.dimen.layout_width_144dp);
         dimen117dp = getResources().getDimensionPixelSize(R.dimen.layout_height_117dp);
-        dimen108dp = getResources().getDimensionPixelSize(R.dimen.layout_height_108dp);
-
-        // Load default colors
-
-        TypedValue typedValue = new TypedValue();
-        ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(this, android.R.style.Theme_DeviceDefault);
-        contextThemeWrapper.getTheme().resolveAttribute(android.R.attr.colorPrimaryDark, typedValue, true);
-
-        vibrantColor_System = typedValue.data;
-        vibrantColor = vibrantColor_System;
 
         initOmnibox();
         initSearchPanel();
@@ -399,7 +367,12 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         if (sp.getBoolean("start_tabStart", false)){
             showOverview();
-            mBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                }
+            }, 250);
         }
     }
 
@@ -434,7 +407,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     public void onResume() {
         super.onResume();
 
-        IntentUnit.setContext(context);
         dispatchIntent(getIntent());
         updateOmnibox();
 
@@ -473,25 +445,11 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     }
 
     @Override
-    public void onPause() {
-        Intent toHolderService = new Intent(context, HolderService.class);
-        IntentUnit.setClear(false);
-        stopService(toHolderService);
-        inputBox.clearFocus();
-        IntentUnit.setContext(context);
-        super.onPause();
-    }
-
-    @Override
     public void onDestroy() {
         boolean clearIndexedDB = sp.getBoolean(("sp_clearIndexedDB"), false);
         if (clearIndexedDB) {
             BrowserUnit.clearIndexedDB(context);
         }
-
-        Intent toHolderService = new Intent(this, HolderService.class);
-        IntentUnit.setClear(true);
-        stopService(toHolderService);
 
         if (sp.getBoolean(getString(R.string.sp_clear_quit), false)) {
             Intent toClearService = new Intent(this, ClearService.class);
@@ -526,37 +484,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 return true;
         }
         return false;
-    }
-
-    private void setColor () {
-
-        if (sp.getBoolean("sp_themeColor", true) && ninjaWebView == currentAlbumController){
-            Display display = getWindowManager().getDefaultDisplay();
-            Point size = new Point();
-            display.getSize(size);
-
-            int width = size.x;
-            final Bitmap icon = ViewUnit.capture(ninjaWebView, width, 112, Bitmap.Config.ARGB_8888);
-
-            Palette.from(icon).generate(new Palette.PaletteAsyncListener() {
-                public void onGenerated(Palette p) {
-                    final Palette.Swatch vibrant = p.getVibrantSwatch();
-
-                    if(vibrant != null  && isDarkColor(vibrant.getRgb())){
-                        vibrantColor = vibrant.getRgb();
-                    } else {
-                        vibrantColor = vibrantColor_System;
-                    }
-
-                    sp.edit().putInt("vibrantColor", vibrantColor).commit();
-
-                    omnibox.setBackgroundColor(vibrantColor);
-                    omniboxTitle.setBackgroundColor(vibrantColor);
-                    inputBox.setBackgroundColor(vibrantColor);
-                    fab_imageButtonNav.setBackgroundTintList(ColorStateList.valueOf(vibrantColor));
-                }
-            });
-        }
     }
 
     @Override
@@ -1024,55 +951,33 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
     private void dispatchIntent(Intent intent) {
 
-
-        Intent toHolderService = new Intent(context, HolderService.class);
-        IntentUnit.setClear(false);
-        stopService(toHolderService);
-
         String action = intent.getAction();
+        String url = intent.getStringExtra(Intent.EXTRA_TEXT);
 
-        if (intent.getAction() != null && intent.getAction().equals(Intent.ACTION_WEB_SEARCH)) {
-            // From ActionMode and some others
-            pinAlbums(intent.getStringExtra(SearchManager.QUERY));
+        if ("".equals(action)) {
+            Log.i(TAG, "resumed FOSS browser");
+        } else if (intent.getAction() != null && intent.getAction().equals(Intent.ACTION_WEB_SEARCH)) {
+            addAlbum(null, intent.getStringExtra(SearchManager.QUERY), true);
         } else if (filePathCallback != null) {
             filePathCallback = null;
         } else if ("sc_history".equals(action)) {
-            pinAlbums(null);
-            showOverview();open_history.performClick();
+            addAlbum(null, sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"), true);
+            showOverview();
+            open_history.performClick();
         } else if ("sc_bookmark".equals(action)) {
-            pinAlbums(null);
+            addAlbum(null, sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"), true);
             showOverview();
             open_bookmark.performClick();
         } else if ("sc_startPage".equals(action)) {
-            pinAlbums(null);
+            addAlbum(null, sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"), true);
             showOverview();
             open_startPage.performClick();
         } else if (Intent.ACTION_SEND.equals(action)) {
-            pinAlbums(intent.getStringExtra(Intent.EXTRA_TEXT));
-        } else if ("".equals(action)) {
-            Log.i(TAG, "resumed FOSS browser");
+            addAlbum(null, url, true);
         } else {
-            pinAlbums(null);
+            addAlbum(null, sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"), true);
         }
         getIntent().setAction("");
-    }
-
-    private void initRendering(View view) {
-        if (sp.getBoolean("sp_invert", false)) {
-            Paint paint = new Paint();
-            ColorMatrix matrix = new ColorMatrix();
-            matrix.set(NEGATIVE_COLOR);
-            ColorMatrix gcm = new ColorMatrix();
-            gcm.setSaturation(0);
-            ColorMatrix concat = new ColorMatrix();
-            concat.setConcat(matrix, gcm);
-            ColorMatrixColorFilter filter = new ColorMatrixColorFilter(concat);
-            paint.setColorFilter(filter);
-            // maybe sometime LAYER_TYPE_NONE would better?
-            view.setLayerType(View.LAYER_TYPE_HARDWARE, paint);
-        } else {
-            view.setLayerType(View.LAYER_TYPE_HARDWARE, null);
-        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -1086,16 +991,15 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         omniboxTitle = findViewById(R.id.omnibox_title);
         progressBar = findViewById(R.id.main_progress_bar);
 
-        int fab_position = Integer.parseInt(Objects.requireNonNull(sp.getString("nav_position", "0")));
+        String nav_position = Objects.requireNonNull(sp.getString("nav_position", "0"));
 
-        switch (fab_position) {
-            case 1:
+        switch (nav_position) {
+            case "1":
                 fab_imageButtonNav = findViewById(R.id.fab_imageButtonNav_left);
                 break;
-            case 2:
+            case "2":
                 fab_imageButtonNav = findViewById(R.id.fab_imageButtonNav_center);
                 break;
-            case 0:
             default:
                 fab_imageButtonNav = findViewById(R.id.fab_imageButtonNav_right);
                 break;
@@ -1133,6 +1037,13 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         if (sp.getBoolean("sp_gestures_use", true)) {
             fab_imageButtonNav.setOnTouchListener(new SwipeTouchListener(context) {
+                public void onSwipeTop() { performGesture("setting_gesture_nav_up"); }
+                public void onSwipeBottom() { performGesture("setting_gesture_nav_down"); }
+                public void onSwipeRight() { performGesture("setting_gesture_nav_right"); }
+                public void onSwipeLeft() { performGesture("setting_gesture_nav_left"); }
+            });
+
+            omniboxOverflow.setOnTouchListener(new SwipeTouchListener(context) {
                 public void onSwipeTop() { performGesture("setting_gesture_nav_up"); }
                 public void onSwipeBottom() { performGesture("setting_gesture_nav_down"); }
                 public void onSwipeRight() { performGesture("setting_gesture_nav_right"); }
@@ -1186,10 +1097,11 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     }
 
     private void performGesture (String gesture) {
-        String fab_position = Objects.requireNonNull(sp.getString(gesture, "0"));
+        String gestureAction = Objects.requireNonNull(sp.getString(gesture, "0"));
+        AlbumController controller;
         ninjaWebView = (NinjaWebView) currentAlbumController;
 
-        switch (fab_position) {
+        switch (gestureAction) {
             case "01":
 
                 break;
@@ -1214,12 +1126,12 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 ninjaWebView.pageDown(true);
                 break;
             case "06":
-                AlbumController controller = nextAlbumController(false);
+                controller = nextAlbumController(false);
                 showAlbum(controller);
                 break;
             case "07":
-                AlbumController controller2 = nextAlbumController(true);
-                showAlbum(controller2);
+                controller = nextAlbumController(true);
+                showAlbum(controller);
                 break;
             case "08":
                 showOverview();
@@ -2018,7 +1930,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                     toggle_invertView.setVisibility(View.VISIBLE);
                     sp.edit().putBoolean("sp_invert", true).commit();
                 }
-                initRendering(contentFrame);
+                HelperUnit.initRendering(contentFrame);
             }
         });
 
@@ -2101,15 +2013,12 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             NotificationCompat.Action action_UN = new NotificationCompat.Action.Builder(R.drawable.icon_earth, getString(R.string.toast_titleConfirm_pasteUN), copyUN).build();
             NotificationCompat.Action action_PW = new NotificationCompat.Action.Builder(R.drawable.icon_earth, getString(R.string.toast_titleConfirm_pastePW), copyPW).build();
 
-            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-            int color = sp.getInt("vibrantColor", 0);
-
             Notification n  = builder
                     .setCategory(Notification.CATEGORY_MESSAGE)
                     .setSmallIcon(R.drawable.ic_notification_ninja)
                     .setContentTitle(getString(R.string.app_name))
                     .setContentText(getString(R.string.toast_titleConfirm_paste))
-                    .setColor(color)
+                    .setColor(getResources().getColor(R.color.colorAccent))
                     .setAutoCancel(true)
                     .setPriority(Notification.PRIORITY_HIGH)
                     .setVibrate(new long[0])
@@ -2159,39 +2068,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         if (url != null && !url.isEmpty()) {
             ninjaWebView.loadUrl(url);
-        }
-    }
-
-    private synchronized void pinAlbums(String url) {
-        showOmnibox();
-        hideSearchPanel();
-        tab_container.removeAllViews();
-
-        for (AlbumController controller : BrowserContainer.list()) {
-            ((NinjaWebView) controller).setBrowserController(this);
-            tab_container.addView(controller.getAlbumView(), LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
-            controller.getAlbumView().setVisibility(View.VISIBLE);
-            controller.deactivate();
-        }
-
-        if (BrowserContainer.size() < 1 && url == null) {
-            addAlbum("", sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"), true);
-            if (android.os.Build.VERSION.SDK_INT < 28) {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        omniboxRefresh.performClick();
-                    }
-                }, 500);
-            }
-        } else if (BrowserContainer.size() >= 1 && url == null) {
-            int index = BrowserContainer.size() - 1;
-            currentAlbumController = BrowserContainer.get(index);
-            contentFrame.removeAllViews();
-            contentFrame.addView((View) currentAlbumController);
-            currentAlbumController.activate();
-        } else if (url != null) { // When url != null
-            addAlbum("", url, true);
         }
     }
 
@@ -2257,8 +2133,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
     private void updateOmnibox() {
         if (ninjaWebView == currentAlbumController) {
-            omniboxTitle.setText(currentAlbumController.getAlbumTitle());
-            setColor();
+            omniboxTitle.setText(ninjaWebView.getTitle());
         } else {
             ninjaWebView = (NinjaWebView) currentAlbumController;
             updateProgress(ninjaWebView.getProgress());
@@ -2283,28 +2158,13 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         }
     }
 
-    private static boolean isDarkColor(int color) {
-        if (android.R.color.transparent == color)
-            return false;
-
-        boolean rtnValue = false;
-        int[] rgb = { Color.red(color), Color.green(color), Color.blue(color) };
-        int brightness = (int) Math.sqrt(rgb[0] * rgb[0] * .241 + rgb[1] * rgb[1] * .691 + rgb[2] * rgb[2] * .068);
-        // color is light
-        if (brightness >= 200) {
-            rtnValue = true;
-        }
-        return !rtnValue;
-    }
-
     @Override
     public synchronized void updateProgress(int progress) {
         progressBar.setProgress(progress);
 
         updateOmnibox();
-        setColor();
         scrollChange();
-        initRendering(contentFrame);
+        HelperUnit.initRendering(contentFrame);
         ninjaWebView.requestFocus();
 
         if (progress < BrowserUnit.PROGRESS_MAX) {
@@ -2314,46 +2174,37 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             updateBookmarks();
             updateRefresh(false);
             progressBar.setVisibility(View.GONE);
+            currentAlbumController.setAlbumCover(ViewUnit.capture(ninjaWebView, dimen156dp, dimen117dp, Bitmap.Config.ARGB_8888));
         }
     }
 
     private void updateRefresh(boolean running) {
         if (running) {
-            omniboxRefresh.setImageDrawable(ViewUnit.getDrawable(context, R.drawable.ic_action_close));
+            omniboxRefresh.setImageResource(R.drawable.icon_close);
         } else {
             try {
                 if (ninjaWebView.getUrl().contains("https://")) {
-                    omniboxRefresh.setImageDrawable(ViewUnit.getDrawable(context, R.drawable.ic_action_refresh));
+                    omniboxRefresh.setImageResource(R.drawable.icon_refresh);
                 } else {
-                    omniboxRefresh.setImageDrawable(ViewUnit.getDrawable(context, R.drawable.icon_alert));
+                    omniboxRefresh.setImageResource(R.drawable.icon_alert);
                 }
             } catch (Exception e) {
-                omniboxRefresh.setImageDrawable(ViewUnit.getDrawable(context, R.drawable.ic_action_refresh));
+                omniboxRefresh.setImageResource(R.drawable.icon_refresh);
             }
         }
     }
 
-
     @Override
     public void showFileChooser(ValueCallback<Uri[]> filePathCallback) {
-
         if(mFilePathCallback != null) {
             mFilePathCallback.onReceiveValue(null);
         }
         mFilePathCallback = filePathCallback;
-
         Intent contentSelectionIntent = new Intent(Intent.ACTION_GET_CONTENT);
         contentSelectionIntent.addCategory(Intent.CATEGORY_OPENABLE);
         contentSelectionIntent.setType("*/*");
-
-        Intent[] intentArray;
-        intentArray = new Intent[0];
-
         Intent chooserIntent = new Intent(Intent.ACTION_CHOOSER);
         chooserIntent.putExtra(Intent.EXTRA_INTENT, contentSelectionIntent);
-        chooserIntent.putExtra(Intent.EXTRA_TITLE, "Image Chooser");
-        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, intentArray);
-
         startActivityForResult(chooserIntent, INPUT_FILE_REQUEST_CODE);
     }
 
@@ -2492,7 +2343,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                     counter = counter + 1;
                     sp.edit().putInt("counter", counter).commit();
 
-                    Bitmap bitmap = ViewUnit.createImage(3, 3, vibrantColor);
+                    Bitmap bitmap = ViewUnit.createImage(3, 3, getResources().getColor(R.color.colorPrimary));
                     String filename = counter + BrowserUnit.SUFFIX_PNG;
                     GridItem itemAlbum = new GridItem(HelperUnit.domain(url), url, filename, counter);
 
@@ -2653,6 +2504,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         Objects.requireNonNull(imm).hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
+    @SuppressLint("RestrictedApi")
     private void showOmnibox() {
         if (omnibox.getVisibility() == View.GONE && searchPanel.getVisibility() == View.GONE) {
             fab_imageButtonNav.setVisibility(View.GONE);
@@ -2665,6 +2517,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         }
     }
 
+    @SuppressLint("RestrictedApi")
     private void hideOmnibox() {
         fab_imageButtonNav.setVisibility(View.VISIBLE);
         if (omnibox.getVisibility() == View.VISIBLE) {

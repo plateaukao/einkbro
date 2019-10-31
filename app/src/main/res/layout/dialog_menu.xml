@@ -20,8 +20,7 @@
         android:gravity="center_vertical|center_horizontal"
         android:maxLines="1"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textStyle="bold"
-        android:textColor="?android:attr/textColorSecondary" />
+        android:textStyle="bold" />
 
     <View
         android:layout_margin="8dp"
@@ -64,7 +63,8 @@
                     android:gravity="center_vertical"
                     android:maxLines="1"
                     android:text="@string/main_menu_tabPreview"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="?android:attr/textColorPrimary"/>
 
             </LinearLayout>
 
@@ -93,7 +93,8 @@
                     android:gravity="center_vertical"
                     android:maxLines="1"
                     android:text="@string/main_menu_new_tabOpen"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="?android:attr/textColorPrimary" />
 
             </LinearLayout>
 
@@ -122,7 +123,8 @@
                     android:gravity="center_vertical"
                     android:maxLines="1"
                     android:text="@string/menu_openFav"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="?android:attr/textColorPrimary" />
 
             </LinearLayout>
 
@@ -152,7 +154,8 @@
                     android:gravity="center_vertical"
                     android:maxLines="1"
                     android:text="@string/menu_closeTab"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="?android:attr/textColorPrimary" />
 
             </LinearLayout>
 
@@ -181,7 +184,8 @@
                     android:gravity="center_vertical"
                     android:maxLines="1"
                     android:text="@string/menu_quit"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="?android:attr/textColorPrimary" />
 
             </LinearLayout>
 
@@ -212,7 +216,8 @@
                     android:gravity="center_vertical"
                     android:maxLines="1"
                     android:text="@string/menu_share_screenshot"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="?android:attr/textColorPrimary" />
 
             </LinearLayout>
 
@@ -242,7 +247,8 @@
                     android:ellipsize="end"
                     android:gravity="center_vertical"
                     android:maxLines="1"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="?android:attr/textColorPrimary" />
 
             </LinearLayout>
 
@@ -272,7 +278,8 @@
                     android:gravity="center_vertical"
                     android:maxLines="1"
                     android:text="@string/menu_share_link"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="?android:attr/textColorPrimary" />
 
             </LinearLayout>
 
@@ -302,7 +309,8 @@
                     android:gravity="center_vertical"
                     android:maxLines="1"
                     android:text="@string/menu_shareClipboard"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="?android:attr/textColorPrimary" />
 
             </LinearLayout>
 
@@ -333,7 +341,8 @@
                     android:gravity="center_vertical"
                     android:maxLines="1"
                     android:text="@string/menu_open_with"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="?android:attr/textColorPrimary" />
 
             </LinearLayout>
 
@@ -363,7 +372,8 @@
                     android:gravity="center_vertical"
                     android:maxLines="1"
                     android:text="@string/menu_save_screenshot"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="?android:attr/textColorPrimary" />
 
             </LinearLayout>
 
@@ -394,7 +404,8 @@
                     android:ellipsize="end"
                     android:gravity="center_vertical"
                     android:maxLines="1"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="?android:attr/textColorPrimary" />
 
             </LinearLayout>
 
@@ -425,7 +436,8 @@
                     android:gravity="center_vertical"
                     android:maxLines="1"
                     android:text="@string/menu_save_home"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="?android:attr/textColorPrimary" />
 
             </LinearLayout>
 
@@ -455,7 +467,8 @@
                     android:gravity="center_vertical"
                     android:maxLines="1"
                     android:text="@string/menu_save_bookmark"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="?android:attr/textColorPrimary" />
 
             </LinearLayout>
 
@@ -485,7 +498,8 @@
                     android:gravity="center_vertical"
                     android:maxLines="1"
                     android:text="@string/menu_sc"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="?android:attr/textColorPrimary" />
 
             </LinearLayout>
 
@@ -515,7 +529,8 @@
                     android:gravity="center_vertical"
                     android:maxLines="1"
                     android:text="@string/menu_other_searchSite"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="?android:attr/textColorPrimary" />
 
             </LinearLayout>
 
@@ -545,7 +560,8 @@
                     android:gravity="center_vertical"
                     android:maxLines="1"
                     android:text="@string/menu_fav"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="?android:attr/textColorPrimary" />
 
             </LinearLayout>
 
@@ -575,7 +591,8 @@
                     android:gravity="center_vertical"
                     android:maxLines="1"
                     android:text="@string/menu_other_fileManager"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="?android:attr/textColorPrimary" />
 
             </LinearLayout>
 
@@ -606,7 +623,8 @@
                     android:gravity="center_vertical"
                     android:maxLines="1"
                     android:text="@string/menu_download"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="?android:attr/textColorPrimary" />
 
             </LinearLayout>
 
@@ -636,7 +654,8 @@
                     android:gravity="center_vertical"
                     android:maxLines="1"
                     android:text="@string/setting_label"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="?android:attr/textColorPrimary" />
 
             </LinearLayout>
 

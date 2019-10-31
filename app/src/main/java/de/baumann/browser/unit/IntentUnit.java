@@ -39,12 +39,4 @@ public class IntentUnit {
     public static Context getContext() {
         return context;
     }
-
-    private static boolean clear = false;
-    public static boolean isClear() {
-        return clear;
-    }
-    public synchronized static void setClear(boolean b) {
-        clear = b;
-    }
 }

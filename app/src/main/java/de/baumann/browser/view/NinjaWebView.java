@@ -326,7 +326,6 @@ public class NinjaWebView extends WebView implements AlbumController {
             browserController.updateProgress(progress);
         }
 
-        setAlbumCover(ViewUnit.capture(this, dimen144dp, dimen108dp, Bitmap.Config.RGB_565));
         if (isLoadFinish()) {
             setAlbumCover(ViewUnit.capture(NinjaWebView.this, dimen144dp, dimen108dp, Bitmap.Config.RGB_565));
             if (prepareRecord()) {

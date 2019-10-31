@@ -20,8 +20,7 @@
         android:layout_marginBottom="@dimen/layout_margin_16dp"
         android:text="@string/dialogHelp_tipTitle"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textStyle="bold"
-        android:textColor="?android:attr/textColorSecondary"/>
+        android:textStyle="bold"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -97,7 +96,5 @@
         </LinearLayout>
 
     </LinearLayout>
-
-
 
 </LinearLayout>
