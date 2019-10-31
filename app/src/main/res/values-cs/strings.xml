@@ -99,8 +99,7 @@
     <string name="setting_summary_save_data">Oznámí webovým stránkám, že byste raději ukládali data. Podporované webové stránky se budou načítat rychleji.</string>
     <!-- browser start -->
     <string name="setting_title_images">Obrázky</string>
-    <string name="setting_summary_images">Enable Network images. Disabling could be useful to save mobile data and to load
-    websites faster.</string>
+    <string name="setting_summary_images">Povolí automatické načítání obrázků. Vypnutí by mohlo být užitečné pro šetření mobilních dat a rychlejší     načítání webových stránek.</string>
     <string name="setting_title_cookie">Cookies</string>
     <string name="setting_summary_cookie_delete">If enabled, all cookies will be deleted. Also the Cookies of trusted websites.</string>
     <string name="setting_summary_cookie">Enable Cookies. Cookies are small text files, which are stored on your device. Websites
