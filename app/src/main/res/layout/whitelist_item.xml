@@ -22,6 +22,6 @@
         android:layout_toStartOf="@id/whitelist_item_cancel"
         android:layout_marginStart="@dimen/layout_margin_16dp"
         android:includeFontPadding="false"
-        android:textAppearance="?android:attr/textAppearanceMedium"/>
+        android:textAppearance="?android:attr/textAppearanceListItem"/>
 
 </RelativeLayout>

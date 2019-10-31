@@ -5,12 +5,6 @@
 
     <PreferenceCategory android:title="@string/setting_title_behavior">
 
-        <CheckBoxPreference android:key="sp_background"
-            android:icon="@drawable/icon_link"
-            android:defaultValue="true"
-            android:title="@string/setting_title_background"
-            android:summary="@string/setting_summary_background"/>
-
         <CheckBoxPreference
             android:defaultValue="true"
             android:icon="@drawable/icon_exit"
@@ -35,13 +29,6 @@
 
     <PreferenceCategory android:title="@string/setting_title_theme">
 
-        <CheckBoxPreference
-            android:key="sp_themeColor"
-            android:icon="@drawable/icon_changecolor"
-            android:defaultValue="true"
-            android:title="@string/setting_title_themeColor"
-            android:summary="@string/setting_summary_themeColor"/>
-
         <ListPreference
             android:icon="@drawable/icon_ui"
             android:key="sp_theme"
@@ -59,6 +46,12 @@
             android:summary="@string/setting_summary_font"
             android:entries="@array/setting_entries_font"
             android:entryValues="@array/setting_values_font"/>
+
+        <CheckBoxPreference android:key="sp_invert"
+            android:icon="@drawable/icon_night"
+            android:defaultValue="false"
+            android:title="@string/setting_title_inverted"
+            android:summary="@string/setting_summary_inverted"/>
 
     </PreferenceCategory>
 
@@ -97,7 +90,7 @@
             android:summary="@string/setting_overView_hide_summary"/>
 
         <CheckBoxPreference android:key="start_tabStart"
-            android:icon="@drawable/icon_restart"
+            android:icon="@drawable/icon_refresh"
             android:defaultValue="false"
             android:title="@string/setting_overView_onStart_title"
             android:summary="@string/setting_overView_onStart_summary"/>

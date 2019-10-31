@@ -44,6 +44,7 @@
         android:layout_marginEnd="@dimen/layout_margin_8dp"
         android:includeFontPadding="false"
         android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="?android:attr/textColorPrimary"
         android:maxLines="1"
         android:ellipsize="end"/>
 

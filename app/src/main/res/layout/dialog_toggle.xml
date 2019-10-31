@@ -20,8 +20,7 @@
         android:gravity="center_vertical|center_horizontal"
         android:maxLines="1"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textStyle="bold"
-        android:textColor="?android:attr/textColorSecondary" />
+        android:textStyle="bold" />
 
     <View
         android:layout_margin="8dp"
@@ -64,7 +63,8 @@
                     android:includeFontPadding="false"
                     android:gravity="center_vertical"
                     android:text="@string/setting_title_adblock"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <CheckBox
                     android:layout_centerVertical="true"
@@ -114,7 +114,8 @@
                     android:includeFontPadding="false"
                     android:gravity="center_vertical"
                     android:text="@string/setting_title_javascript"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="?android:attr/textColorPrimary" />
 
                 <CheckBox
                     android:layout_centerVertical="true"
@@ -166,7 +167,8 @@
                     android:includeFontPadding="false"
                     android:gravity="center_vertical"
                     android:text="@string/setting_title_cookie"
-                    android:textAppearance="?android:attr/textAppearanceMedium"/>
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="?android:attr/textColorPrimary"/>
 
                 <CheckBox
                     android:layout_centerVertical="true"

@@ -36,7 +36,7 @@
         android:visibility="gone"
         app:backgroundTint="?android:attr/colorAccent"
         app:fabSize="mini"
-        app:srcCompat="@drawable/ic_action_overflow"
+        app:srcCompat="@drawable/icon_overflow_fab"
         tools:ignore="RelativeOverlap" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -49,7 +49,7 @@
         android:visibility="gone"
         app:backgroundTint="?android:attr/colorAccent"
         app:fabSize="mini"
-        app:srcCompat="@drawable/ic_action_overflow"
+        app:srcCompat="@drawable/icon_overflow_fab"
         tools:ignore="RelativeOverlap" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -62,7 +62,7 @@
         android:visibility="gone"
         app:backgroundTint="?android:attr/colorAccent"
         app:fabSize="mini"
-        app:srcCompat="@drawable/ic_action_overflow"
+        app:srcCompat="@drawable/icon_overflow_fab"
         tools:ignore="RelativeOverlap" />
 
 </RelativeLayout>

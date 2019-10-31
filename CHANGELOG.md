@@ -1,10 +1,13 @@
 ### v 6.8 (WIP)
+- new: follow system theme
 - new: moving to AndroidX libraries
 - new: favorite settings
+- updated: themes
 - updated: Turkish translation
 - updated: Czech translation
 - updated: settings (especially filter settings)
 - updated: saving locations of backups and screenshots
+- removed: tinting of toolbar
 
 ### v 6.7
 - new: backup and restore settings

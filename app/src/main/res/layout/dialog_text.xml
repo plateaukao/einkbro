@@ -18,8 +18,7 @@
         android:padding="16dp"
         android:text="@string/app_name"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textStyle="bold"
-        android:textColor="?android:attr/textColorSecondary" />
+        android:textStyle="bold" />
 
     <ScrollView
         android:layout_width="match_parent"

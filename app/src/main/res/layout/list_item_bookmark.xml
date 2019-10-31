@@ -22,7 +22,7 @@
         android:gravity="center_vertical"
         android:layout_marginStart="16dp"
         android:includeFontPadding="false"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAppearance="?android:attr/textAppearanceListItem"
         android:maxLines="1"
         android:ellipsize="end"/>
 

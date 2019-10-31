@@ -34,13 +34,6 @@
         android:title="@string/setting_title_location"
         android:summary="@string/setting_summary_location"/>
 
-    <CheckBoxPreference android:key="sp_invert"
-        android:icon="@drawable/icon_night"
-        android:defaultValue="false"
-        android:title="@string/setting_title_inverted"
-        android:summary="@string/setting_summary_inverted"/>
-
-
     <PreferenceCategory android:title="@string/setting_title_adblock">
 
         <CheckBoxPreference

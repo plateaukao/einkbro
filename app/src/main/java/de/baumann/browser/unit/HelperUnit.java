@@ -27,10 +27,13 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ShortcutInfo;
 import android.content.pm.ShortcutManager;
+import android.graphics.Color;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Paint;
 import android.graphics.drawable.Icon;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Handler;
 import androidx.preference.PreferenceManager;
 import android.provider.Settings;
 import androidx.annotation.NonNull;
@@ -40,7 +43,6 @@ import android.text.Html;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.util.Linkify;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -313,5 +315,44 @@ public class HelperUnit {
         }
         Linkify.addLinks(s, Linkify.WEB_URLS);
         return s;
+    }
+
+    public static boolean isDarkColor(int color) {
+        if (android.R.color.transparent == color)
+            return false;
+
+        boolean rtnValue = false;
+        int[] rgb = { Color.red(color), Color.green(color), Color.blue(color) };
+        int brightness = (int) Math.sqrt(rgb[0] * rgb[0] * .241 + rgb[1] * rgb[1] * .691 + rgb[2] * rgb[2] * .068);
+        // color is light
+        if (brightness >= 200) {
+            rtnValue = true;
+        }
+        return !rtnValue;
+    }
+
+    private static final float[] NEGATIVE_COLOR = {
+            -1.0f, 0, 0, 0, 255, // Red
+            0, -1.0f, 0, 0, 255, // Green
+            0, 0, -1.0f, 0, 255, // Blue
+            0, 0, 0, 1.0f, 0     // Alpha
+    };
+
+    public static void initRendering(View view) {
+        if (sp.getBoolean("sp_invert", false)) {
+            Paint paint = new Paint();
+            ColorMatrix matrix = new ColorMatrix();
+            matrix.set(NEGATIVE_COLOR);
+            ColorMatrix gcm = new ColorMatrix();
+            gcm.setSaturation(0);
+            ColorMatrix concat = new ColorMatrix();
+            concat.setConcat(matrix, gcm);
+            ColorMatrixColorFilter filter = new ColorMatrixColorFilter(concat);
+            paint.setColorFilter(filter);
+            // maybe sometime LAYER_TYPE_NONE would better?
+            view.setLayerType(View.LAYER_TYPE_HARDWARE, paint);
+        } else {
+            view.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        }
     }
 }
