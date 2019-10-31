@@ -101,7 +101,7 @@
     <string name="setting_title_images">Obrázky</string>
     <string name="setting_summary_images">Povolí automatické načítání obrázků. Vypnutí by mohlo být užitečné pro šetření mobilních dat a rychlejší     načítání webových stránek.</string>
     <string name="setting_title_cookie">Cookies</string>
-    <string name="setting_summary_cookie_delete">If enabled, all cookies will be deleted. Also the Cookies of trusted websites.</string>
+    <string name="setting_summary_cookie_delete">Pokud je povoleno, všechny cookies budou smazány. Také cookies důvěryhodných webových stránek.</string>
     <string name="setting_summary_cookie">Enable Cookies. Cookies are small text files, which are stored on your device. Websites
     use them for example to store user settings (for example search settings). But they could also be used to collect personal
         user data. Third party cookies (they collect user data for advertising) are always disabled.</string>
@@ -118,11 +118,11 @@
     <string name="setting_summary_adblock">Enable AdBlock to block annoying ads. Sites also load faster when enabled.</string>
     <string name="setting_title_whitelist">AdBlock whitelist</string>
     <string name="setting_summary_whitelist">Allow these sites to show ads. Some sites do not work, when AdBlock is enabled.</string>
-    <string name="setting_title_location">Location</string>
+    <string name="setting_title_location">Poloha</string>
     <string name="setting_summary_location">Allow websites to access your location. Some websites (like Google maps for navigation)
         need this enabled.</string>
-    <string name="setting_title_history">History</string>
-    <string name="setting_summary_history">Save the history of visited websites.</string>
+    <string name="setting_title_history">Historie</string>
+    <string name="setting_summary_history">Uložit historii navštívených stránek.</string>
     <!-- browser clear -->
     <string name="data_summary">Všechny soubory budou exportovány do adresáře „Android/data/de.baumann.browser/files/browser_backup/“
         na vaší SD kartě. Tento adresář bude SMAZÁN, když odinstalujetel „FOSS Browser“. Proto si vytvořte zálohu na bezpečném
@@ -155,7 +155,7 @@
     <string name="setting_title_hideToolbar">Hide toolbar</string>
     <string name="setting_summary_hide">Use the whole screen when scrolling through websites. If you press the back button you will
     leave fullscreen mode.</string>
-    <string name="setting_title_background">Open links</string>
+    <string name="setting_title_background">Otevřít odkazy</string>
     <string name="setting_summary_background">Display a notification and open links in background. If disabled links will open
     immediately.</string>
     <string name="setting_theme">Motiv</string>
@@ -169,12 +169,12 @@
     <string name="setting_title_behavior">Chování</string>
     <string name="setting_summary_toolbarShow">Pressing back will make the toolbar visible, before going back in history.</string>
     <string name="setting_title_toolbarShow">First toolbar</string>
-    <string name="setting_title_nav">Navigation button</string>
-    <string name="setting_title_nav_pos">Position</string>
-    <string name="setting_summary_nav_pos">Decide where the \"Navigation Button\" will be placed.</string>
-    <string name="setting_summary_nav_pos_right">Right</string>
-    <string name="setting_summary_nav_pos_left">Left</string>
-    <string name="setting_summary_nav_pos_center">Center</string>
+    <string name="setting_title_nav">Navigační tlačítka</string>
+    <string name="setting_title_nav_pos">Pozice</string>
+    <string name="setting_summary_nav_pos">Rozhodněte, kde budou umístěna „Navigační tlačítka“.</string>
+    <string name="setting_summary_nav_pos_right">Vpravo</string>
+    <string name="setting_summary_nav_pos_left">Vlevo</string>
+    <string name="setting_summary_nav_pos_center">Uprostřed</string>
     <string name="setting_summary_tab">What should be shown at the start of the \"Overview\"? The Start Page, you bookmarks, …</string>
     <string name="setting_title_confirm_exit">Confirm browser exit</string>
     <string name="setting_summary_confirm_exit">Confirmation dialog when closing browser.</string>
@@ -217,12 +217,12 @@
     <string name="setting_title_export_whitelistCookie">Export Cookie whitelist</string>
     <string name="setting_title_import_whitelistCookie">Import Cookie whitelist</string>
     <string name="export_whitelistCookie">export_whitelist_Cookie</string>
-    <string name="setting_title_export_appData">Export app data</string>
-    <string name="setting_title_import_appData">Import app data</string>
-    <string name="setting_summary_export_appData">Export app data (Startpage + previews, History, Bookmarks)
-        and your personal settings.</string>
-    <string name="title_appData">App data</string>
-    <string name="hint_database">This will delete all your current settings and data. Will you proceed?</string>
+    <string name="setting_title_export_appData">Exportovat data aplikace</string>
+    <string name="setting_title_import_appData">Importovat data aplikace</string>
+    <string name="setting_summary_export_appData">Exportovat data aplikace (Úvodní stránka + náhledy, historie, záložky)
+        a vaše osobní nastavení.</string>
+    <string name="title_appData">Data aplikace</string>
+    <string name="hint_database">Toto vymaže všechna vaše aktuální nastavení a data. Chcete pokračovat?</string>
     <!-- Others setting -->
     <string name="setting_title_others">Další</string>
     <string name="setting_title_license">Licence</string>
@@ -247,11 +247,11 @@
     <string name="toast_load_error">Can\'t load this URL</string>
     <string name="toast_load_in_background">Loading in background</string>
     <string name="toast_new_tab_successful">Successfully opened in a new tab</string>
-    <string name="toast_share_failed">Can\'t share this page</string>
-    <string name="toast_start_download">Starting download</string>
+    <string name="toast_share_failed">Nelze sdílet tuto stránku</string>
+    <string name="toast_start_download">Zahajování stahování</string>
     <string name="toast_wait_a_minute">Please wait for a moment</string>
-    <string name="toast_titleConfirm_delete">Do you really want to delete the entry?</string>
-    <string name="toast_titleConfirm_paste">Copy data to clipboard?</string>
+    <string name="toast_titleConfirm_delete">Opravdu chcete odstranit položku?</string>
+    <string name="toast_titleConfirm_paste">Kopírovat data do schránky?</string>
     <string name="toast_titleConfirm_pasteUN">Uživatelské jméno</string>
     <string name="toast_titleConfirm_pastePW">Heslo</string>
     <string name="toast_error">Uuups. Something went wrong.</string>
