@@ -93,10 +93,10 @@
     <string name="setting_title_font">Velikost písma</string>
     <string name="setting_summary_font">Změna velikost písma pro zobrazování webových stránek.</string>
     <string name="setting_title_remote">Vzdálený obsah</string>
-    <string name="setting_summary_remote">Enable remote content, which is not directly from the website you are visiting.
-        Disabling this is more secure, faster and saves data volume. But some content will not be displayed anymore.</string>
-    <string name="setting_title_save_data">Request \'Save Data\'</string>
-    <string name="setting_summary_save_data">Tell websites that you would prefer to save data. Supported websites will load faster.</string>
+    <string name="setting_summary_remote">Povolte vzdálený obsah, který není přímo z navštívené webové stránky..
+        Zakázání je bezpečnější, rychlejší a šetří spotřebu dat. Určitý obsah se však již nebude nadále zobrazovat.</string>
+    <string name="setting_title_save_data">Požadavek „Ušetřit data“</string>
+    <string name="setting_summary_save_data">Oznámí webovým stránkám, že byste raději ukládali data. Podporované webové stránky se budou načítat rychleji.</string>
     <!-- browser start -->
     <string name="setting_title_images">Obrázky</string>
     <string name="setting_summary_images">Enable Network images. Disabling could be useful to save mobile data and to load
@@ -125,9 +125,9 @@
     <string name="setting_title_history">History</string>
     <string name="setting_summary_history">Save the history of visited websites.</string>
     <!-- browser clear -->
-    <string name="data_summary">All files will be exported to the \"Android/data/de.baumann.browser/files/browser_backup/\"
-        directory of your sd-card. This directory will be DELETED, if you uninstall \"FOSS Browser\". So make a backup regularly on a save
-        place.</string>
+    <string name="data_summary">Všechny soubory budou exportovány do adresáře „Android/data/de.baumann.browser/files/browser_backup/“
+        na vaší SD kartě. Tento adresář bude SMAZÁN, když odinstalujetel „FOSS Browser“. Proto si vytvořte zálohu na bezpečném
+        místě.</string>
     <string name="clear_menu_done_all">Done all</string>
     <string name="clear_title_quit">Clear when application exits</string>
     <string name="clear_summary_quit">Every time you quit \"FOSS Browser\" all above checked data will be deleted.</string>
