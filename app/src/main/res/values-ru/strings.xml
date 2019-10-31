@@ -137,7 +137,7 @@
     <string name="setting_title_fav">Избранное</string>
     <string name="setting_summary_fav">Here you can change the default website which loads on start of \"FOSS Browser\".
     Enter \"about:blank\" to get an emty start site.</string>
-    <string name="setting_title_searchEngine">Custom search engine</string>
+    <string name="setting_title_searchEngine">Пользовательская поисковая система</string>
     <string name="setting_summary_searchEngine">Here you can enter a custom search URL. Also choose \"Custom search engine\" as search
     provider.</string>
     <!-- App behavior -->
@@ -145,11 +145,11 @@
     <string name="setting_summary_hide">Используйте весь экран при прокрутке сайтов. Если вы нажмете кнопку Назад, то покинете полноэкранный режим.</string>
     <string name="setting_title_background">Открыть ссылки</string>
     <string name="setting_summary_background">Отображать уведомление и открывать ссылки в фоне. Если отключенные ссылки будут открыты немедленно.</string>
-    <string name="setting_theme">Theme</string>
+    <string name="setting_theme">Тема</string>
     <string name="setting_theme_summary">Set the app theme.</string>
-    <string name="setting_theme_system">System theme</string>
-    <string name="setting_theme_light">Light theme</string>
-    <string name="setting_theme_dark">Dark theme</string>
+    <string name="setting_theme_system">Системная тема</string>
+    <string name="setting_theme_light">Светлая тема</string>
+    <string name="setting_theme_dark">Темная тема</string>
     <string name="setting_title_themeColor">Color UI</string>
     <string name="setting_summary_themeColor">Tint some elements from the UI to match the website colors.</string>
     <string name="setting_title_theme">UI</string>
