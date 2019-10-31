@@ -10,8 +10,6 @@
     <string name="album_title_history">История</string>
     <string name="album_title_home">Главная</string>
     <string name="album_title_files">Файлы</string>
-    <string name="notification_content_holderTitle">Открытые вкладки …</string>
-    <string name="notification_content_holder">… Нажмите, чтобы просмотреть страницы</string>
     <string name="search_hint">Поиск</string>
     <string name="color_red">Красный</string>
     <string name="color_pink">Розовый</string>
@@ -143,15 +141,11 @@
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">Скрыть панель инструментов</string>
     <string name="setting_summary_hide">Используйте весь экран при прокрутке сайтов. Если вы нажмете кнопку Назад, то покинете полноэкранный режим.</string>
-    <string name="setting_title_background">Открыть ссылки</string>
-    <string name="setting_summary_background">Отображать уведомление и открывать ссылки в фоне. Если отключенные ссылки будут открыты немедленно.</string>
     <string name="setting_theme">Тема</string>
     <string name="setting_theme_summary">Set the app theme.</string>
     <string name="setting_theme_system">Системная тема</string>
     <string name="setting_theme_light">Светлая тема</string>
     <string name="setting_theme_dark">Темная тема</string>
-    <string name="setting_title_themeColor">Цвет интерфейса</string>
-    <string name="setting_summary_themeColor">Tint some elements from the UI to match the website colors.</string>
     <string name="setting_title_theme">UI</string>
     <string name="setting_title_behavior">Behavior</string>
     <string name="setting_summary_toolbarShow">Pressing back will make the toolbar visible, before going back in history.</string>
@@ -231,7 +225,6 @@
     <string name="toast_input_empty">Вы ничего не ввели</string>
     <string name="toast_invalid_domain">Неверный домен</string>
     <string name="toast_load_error">Не удается загрузить этот URL</string>
-    <string name="toast_load_in_background">Загрузка в фоне</string>
     <string name="toast_new_tab_successful">Успешно открыто в новой вкладке</string>
     <string name="toast_share_failed">Не удаётся поделиться этой страницей</string>
     <string name="toast_start_download">Начало загрузки</string>
@@ -250,7 +243,6 @@
     <string name="toast_restart">Чтобы применить изменения, необходимо перезапустить \"FOSS Browser\". Закрыть сейчас?</string>
     <string name="toast_quit">Хотите выйти из \"FOSS Browser\"?</string>
     <string name="toast_close_tab">Хотите закрыть текущую вкладку?</string>
-    <string name="toast_closeNotification">Закрыть все открытые веб-сайты.</string>
     <string name="toast_downloadComplete">Загрузка завершена. Открыть файловый менеджер?</string>
     <string name="toast_unsecured">Сайт использует незащищенное соединение (\"http\"). Хотите попробовать безопасное соединение (\"https\")?</string>
     <string name="toast_backup">Сохранить данные? Это перезапишет старую резервную копию.</string>
