@@ -10,8 +10,6 @@
     <string name="album_title_history">Verlauf</string>
     <string name="album_title_home">Startseite</string>
     <string name="album_title_files">Dateien</string>
-    <string name="notification_content_holderTitle">Geöffnete Tabs …</string>
-    <string name="notification_content_holder">… Anklicken um die Seiten zu sehen</string>
     <string name="search_hint">Suche</string>
     <string name="color_red">Rot</string>
     <string name="color_pink">Pink</string>
@@ -160,17 +158,11 @@
     <string name="setting_title_hideToolbar">Toolbar verstecken</string>
     <string name="setting_summary_hide">Benutze den ganzen Bildschirm, wenn du durch Internetseiten scrollst. Wenn du die
         \"Zurücktaste\" drückst, verlässt du den Vollbildmodus.</string>
-    <string name="setting_title_background">Links öffnen</string>
-    <string name="setting_summary_background">Zeige eine Benachrichtigung und öffne Links im Hintergrund. Wenn dies nicht aktiviert
-        ist, öffnen sich Links sofort.</string>
     <string name="setting_theme">Thema</string>
     <string name="setting_theme_summary">App-Thema festlegen.</string>
     <string name="setting_theme_system">System Thema</string>
     <string name="setting_theme_light">Helles Thema</string>
     <string name="setting_theme_dark">Dunkles Thema</string>
-    <string name="setting_title_themeColor">Passe Farben an</string>
-    <string name="setting_summary_themeColor">Färbe einige Stellen der Benutzeroberfläche, passend zur besuchten
-    Internetseite.</string>
     <string name="setting_title_theme">Benutzeroberfläche</string>
     <string name="setting_title_behavior">Verhalten</string>
     <string name="setting_summary_toolbarShow">Die Zurücktaste zeigt immer zuerst die Toolbar, bevor es im Browserverlauf zurückgeht.</string>
@@ -251,7 +243,6 @@
     <string name="toast_input_empty">Du hast nichts eingegeben</string>
     <string name="toast_invalid_domain">Ungültige Domain</string>
     <string name="toast_load_error">URL konnte nicht geladen werden</string>
-    <string name="toast_load_in_background">Lade URL im Hintergrund</string>
     <string name="toast_new_tab_successful">Neuer Tab geöffnet</string>
     <string name="toast_share_failed">Kann die Seite nicht teilen</string>
     <string name="toast_start_download">Starte Download</string>
@@ -272,7 +263,6 @@
     <string name="toast_restart">Du musst \"FOSS Browser\" neustarten, damit die Änderungen wirksam werden. Jetzt beenden?</string>
     <string name="toast_quit">Möchtest du \"FOSS Browser\" beenden?</string>
     <string name="toast_close_tab">Möchtest du den aktuellen Tab schließen?</string>
-    <string name="toast_closeNotification">Alle Internetseiten schließen.</string>
     <string name="toast_downloadComplete">Download vollständig. Dateimanager öffnen?</string>
     <string name="toast_unsecured">Die Internetseite benutzt eine unsichere Verbindung (\"http\"). Möchtest du versuchen
         eine gesicherte Verbindung herstellen (\"https\")?</string>
