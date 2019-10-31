@@ -10,8 +10,6 @@
     <string name="album_title_history">Historia</string>
     <string name="album_title_home">Witryny</string>
     <string name="album_title_files">Pliki</string>
-    <string name="notification_content_holderTitle">Otwarte karty</string>
-    <string name="notification_content_holder">Dotknij, aby zobaczyć strony</string>
     <string name="search_hint">Wyszukaj</string>
     <string name="color_red">Czerwień</string>
     <string name="color_pink">Róż</string>
@@ -146,15 +144,11 @@
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">Ukryj dolny panel</string>
     <string name="setting_summary_hide">Pokazuj witryny na całym ekranie. Dotykając przycisku wstecz wyjdziesz z trybu pełnoekranowego.</string>
-    <string name="setting_title_background">Otwieranie łączy w tle</string>
-    <string name="setting_summary_background">Domyślnie FOSS wyświetla powiadomienie o otwarciu witryny w tle. Wyłączenie tej funkcji sprawi, iż łącza będą natychmiast otwierały okno przeglądarki.</string>
     <string name="setting_theme">Theme</string>
     <string name="setting_theme_summary">Set the app theme.</string>
     <string name="setting_theme_system">System theme</string>
     <string name="setting_theme_light">Light theme</string>
     <string name="setting_theme_dark">Dark theme</string>
-    <string name="setting_title_themeColor">Color UI</string>
-    <string name="setting_summary_themeColor">Tint some elements from the UI to match the website colors.</string>
     <string name="setting_title_theme">UI</string>
     <string name="setting_title_behavior">Behavior</string>
     <string name="setting_summary_toolbarShow">Pressing back will make the toolbar visible, before going back in history.</string>
@@ -234,7 +228,6 @@
     <string name="toast_input_empty">Nie wprowadziłeś niczego</string>
     <string name="toast_invalid_domain">Niewłaściwy adres</string>
     <string name="toast_load_error">Nie można załadować adresu</string>
-    <string name="toast_load_in_background">Ładowanie w tle</string>
     <string name="toast_new_tab_successful">Załadowano w nowej karcie</string>
     <string name="toast_share_failed">Nie można udostępnić</string>
     <string name="toast_start_download">Rozpoczynanie pobierania</string>
@@ -253,7 +246,6 @@
     <string name="toast_restart">Musisz uruchomić ponownie \"FOSS Browser\”, aby zachować te zmiany. Zamknąć teraz?</string>
     <string name="toast_quit">Zamknąć \"FOSS Browser\"?</string>
     <string name="toast_close_tab">Zamknąć aktualną kartę?</string>
-    <string name="toast_closeNotification">Zamknij wszystkie karty witryn.</string>
     <string name="toast_downloadComplete">Pobieranie ukończone. Otworzyć katalog pobierania?</string>
     <string name="toast_unsecured">Ta witryna używa nieszyfrowanego połączenia (\"http\"). Spróbować przejść na szyfrowane (\"https\")?</string>
     <string name="toast_backup">Dokonać nowej kopii bezpieczeństwa danych? Nadpisze ona poprzednią kopię.</string>
