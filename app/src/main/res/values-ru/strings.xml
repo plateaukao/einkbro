@@ -150,7 +150,7 @@
     <string name="setting_theme_system">Системная тема</string>
     <string name="setting_theme_light">Светлая тема</string>
     <string name="setting_theme_dark">Темная тема</string>
-    <string name="setting_title_themeColor">Color UI</string>
+    <string name="setting_title_themeColor">Цвет интерфейса</string>
     <string name="setting_summary_themeColor">Tint some elements from the UI to match the website colors.</string>
     <string name="setting_title_theme">UI</string>
     <string name="setting_title_behavior">Behavior</string>
