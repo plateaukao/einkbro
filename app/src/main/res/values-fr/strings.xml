@@ -10,8 +10,6 @@
     <string name="album_title_history">Historique</string>
     <string name="album_title_home">Accueil</string>
     <string name="album_title_files">Fichiers</string>
-    <string name="notification_content_holderTitle">Onglets ouverts …</string>
-    <string name="notification_content_holder">… Cliquez pour voir les pages</string>
     <string name="search_hint">Chercher</string>
     <string name="color_red">Rouge</string>
     <string name="color_pink">Rose</string>
@@ -155,16 +153,11 @@
     <string name="setting_title_hideToolbar">Cacher barre d\'outils</string>
     <string name="setting_summary_hide">Utiliser la totalité de l\'écran lorsque vous visitez des sites web. Si vous appuyez sur le bouton Précédent, 
         vous quitterez le mode plein écran..</string>
-    <string name="setting_title_background">Ouvrir les liens</string>
-    <string name="setting_summary_background">Afficher une notification et ouvrir les liens en arrière-plan. Si désactivé, les liens s\'ouvriront 
-    immédiatement.</string>
     <string name="setting_theme">Theme</string>
     <string name="setting_theme_summary">Set the app theme.</string>
     <string name="setting_theme_system">System theme</string>
     <string name="setting_theme_light">Light theme</string>
     <string name="setting_theme_dark">Dark theme</string>
-    <string name="setting_title_themeColor">Color UI</string>
-    <string name="setting_summary_themeColor">Tint some elements from the UI to match the website colors.</string>
     <string name="setting_title_theme">UI</string>
     <string name="setting_title_behavior">Behavior</string>
     <string name="setting_summary_toolbarShow">Pressing back will make the toolbar visible, before going back in history.</string>
@@ -245,7 +238,6 @@
     <string name="toast_input_empty">Vous n\'avez rien entré.</string>
     <string name="toast_invalid_domain">Domaine non valide</string>
     <string name="toast_load_error">Impossible de charger cette URL</string>
-    <string name="toast_load_in_background">Chargement en arrière-plan</string>
     <string name="toast_new_tab_successful">Ouvert avec succès dans un nouvel onglet</string>
     <string name="toast_share_failed">Impossible de partager cette page</string>
     <string name="toast_start_download">Démarrage du téléchargement</string>
@@ -266,7 +258,6 @@
     <string name="toast_restart">Vous devez redémarrer \"FOSS Browser\" pour appliquer les modifications. Fermer maintenant?</string>
     <string name="toast_quit">Voulez-vous quitter \"FOSS Browser\"?</string>
     <string name="toast_close_tab">Voulez-vous fermer l’onglet actuel?</string>
-    <string name="toast_closeNotification">Fermer tous les sites Web ouverts.</string>
     <string name="toast_downloadComplete">Téléchargement fini. Ouvrir le gestionnaire de fichiers?</string>
     <string name="toast_unsecured">Ce site utilise une connexion non sécurisée (\"http\"). Voulez-vous essayer une connexion
         sécurisée (\"https\")?</string>
