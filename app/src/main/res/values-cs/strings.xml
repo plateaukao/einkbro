@@ -147,8 +147,8 @@
     <string name="setting_summary_searchEngine">Zde můžete zadat vlastní adresu URL pro vyhledávání. Taky zvolit „Vlastní vyhledávač“ jako poskytovatele vyhledávání.</string>
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">Skrýt Panel nástrojů</string>
-    <string name="setting_summary_hide">Use the whole screen when scrolling through websites. If you press the back button you will
-    leave fullscreen mode.</string>
+    <string name="setting_summary_hide">Při procházení webovými stránkami použít celou obrazovku. Pokud stisknete tlačítko Zpět,
+    opustíte režim celé obrazovky.</string>
     <string name="setting_theme">Motiv</string>
     <string name="setting_theme_summary">Nastavte motiv aplikace.</string>
     <string name="setting_theme_system">Motiv systému</string>
@@ -164,22 +164,22 @@
     <string name="setting_summary_nav_pos_right">Vpravo</string>
     <string name="setting_summary_nav_pos_left">Vlevo</string>
     <string name="setting_summary_nav_pos_center">Uprostřed</string>
-    <string name="setting_summary_tab">What should be shown at the start of the \"Overview\"? The Start Page, you bookmarks, …</string>
-    <string name="setting_title_confirm_exit">Confirm browser exit</string>
-    <string name="setting_summary_confirm_exit">Confirmation dialog when closing browser.</string>
-    <string name="setting_title_confirm_tab_close">Confirm tab close</string>
-    <string name="setting_summary_confirm_tab_close">Confirmation dialog when closing a tab.</string>
+    <string name="setting_summary_tab">Co by mělo být uvedeno při spuštění „Přehledu“? Úvodní stránka, vaše záložky, …</string>
+    <string name="setting_title_confirm_exit">Potvrdit ukončení prohlížeče</string>
+    <string name="setting_summary_confirm_exit">Okno potvrzení při ukončení prohlížeče.</string>
+    <string name="setting_title_confirm_tab_close">Potvrdit zavření karty</string>
+    <string name="setting_summary_confirm_tab_close">Okno potvrzení při zavření karty.</string>
     <string name="setting_overView">Přehled</string>
     <string name="setting_overView_onStart_title">Zobrazit při spuštění</string>
     <string name="setting_overView_onStart_summary">Otevře „Přehled“ při každém spuštění aplikace.</string>
-    <string name="setting_overView_hide_title">Hide tab previews</string>
-    <string name="setting_overView_hide_summary">In expanded overview the tab preview will hide. Then you have more place for your
-    bookmarks.</string>
+    <string name="setting_overView_hide_title">Skrýt náhledy karty</string>
+    <string name="setting_overView_hide_summary">V rozšířeném přehledu se náhled karty skryje. Pak budete mít více místa pro vaše
+    záložky.</string>
     <string name="setting_gestures">Gesta</string>
     <string name="setting_gestures_use_title">Použít gesta</string>
     <string name="setting_gestures_use_summary">Použijte gesta na Panelu nástrojů a „Navigační tlačítka“.</string>
-    <string name="setting_title_reopenLastTab">Reopen last tab</string>
-    <string name="setting_summary_reopenLastTab">Reopen a new tab when the last tab is closed instead of exiting the browser.</string>
+    <string name="setting_title_reopenLastTab">Znovu otevřít poslední kartu</string>
+    <string name="setting_summary_reopenLastTab">Znovu otevřít novou kartu po zavření poslední karty namísto ukončení prohlížeče.</string>
     <!-- gestures -->
     <string name="setting_title_toolbar">Panel nástrojů</string>
     <string name="setting_gesture_up">Přejetí nahoru</string>
@@ -187,24 +187,24 @@
     <string name="setting_gesture_left">Přejetí vlevo</string>
     <string name="setting_gesture_right">Přejetí vpravo</string>
     <string name="setting_gesture_01">Žádné gesto</string>
-    <string name="setting_gesture_02">Forward in history</string>
-    <string name="setting_gesture_03">Back in history</string>
+    <string name="setting_gesture_02">Vpřed v Historii</string>
+    <string name="setting_gesture_03">Zpět v historii</string>
     <string name="setting_gesture_04">Posunout nahoru</string>
     <string name="setting_gesture_05">Posunout dolů</string>
-    <string name="setting_gesture_06">Switch to left tab</string>
-    <string name="setting_gesture_07">Switch to right tab</string>
-    <string name="setting_gesture_08">Show overview</string>
-    <string name="setting_gesture_09">Open new tab</string>
+    <string name="setting_gesture_06">Přepnout na levou kartu</string>
+    <string name="setting_gesture_07">Přepnout na pravou kartu</string>
+    <string name="setting_gesture_08">Zobrazit přehled</string>
+    <string name="setting_gesture_09">Otevřít novou kartu</string>
     <string name="setting_gesture_10">Zavřít kartu</string>
     <!-- Data -->
-    <string name="setting_title_export_whitelist">Export AdBlock whitelist</string>
-    <string name="setting_title_import_whitelist">Import AdBlock whitelist</string>
+    <string name="setting_title_export_whitelist">Exportovat seznam povolených - AdBlock</string>
+    <string name="setting_title_import_whitelist">Importovat seznam povolených - AdBlock</string>
     <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
-    <string name="setting_title_export_whitelistJS">Export JavaScript whitelist</string>
-    <string name="setting_title_import_whitelistJS">Import JavaScript whitelist</string>
+    <string name="setting_title_export_whitelistJS">Exportovat seznam povolených - JavaScript</string>
+    <string name="setting_title_import_whitelistJS">Importovat seznam povolených - JavaScript</string>
     <string name="export_whitelistJS">export_whitelist_Javascript</string>
-    <string name="setting_title_export_whitelistCookie">Export Cookie whitelist</string>
-    <string name="setting_title_import_whitelistCookie">Import Cookie whitelist</string>
+    <string name="setting_title_export_whitelistCookie">Exportovat seznam povolených - Cookies</string>
+    <string name="setting_title_import_whitelistCookie">Importovat seznam povolených - Cookies</string>
     <string name="export_whitelistCookie">export_whitelist_Cookie</string>
     <string name="setting_title_export_appData">Exportovat data aplikace</string>
     <string name="setting_title_import_appData">Importovat data aplikace</string>
@@ -222,7 +222,7 @@
     <!-- Toast -->
     <string name="toast_add_to_home_successful">Úspěšně přidáno na plochu</string>
     <string name="toast_add_to_home_failed">Přidání na plochu se nezdařilo</string>
-    <string name="toast_add_whitelist_successful">Successfully added Domain</string>
+    <string name="toast_add_whitelist_successful">Doména byla úspěšně přidána</string>
     <string name="toast_already_exist_in_home">Na ploše již existuje</string>
     <string name="toast_copy_successful">Úspěšně zkopírováno</string>
     <string name="toast_delete_successful">Úspěšně smazáno</string>
