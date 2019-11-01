@@ -141,13 +141,12 @@
     <string name="setting_filter_summary">Chcete-li zobrazit dialogové okno filtru, stiskněte v přehledu ikonu záložek. Rozhodněte, které
         filtry použijete.</string>
     <string name="setting_title_fav">Oblíbené</string>
-    <string name="setting_summary_fav">Here you can change the default website which loads on start of \"FOSS Browser\".
-    Enter \"about:blank\" to get an emty start site.</string>
+    <string name="setting_summary_fav">Zde můžete změnit výchozí webovou stránku, která se načte při spuštění aplikace „FOSS Browser“.
+    Zadáním „about:blank“ zobrazíte prázdnou úvodní stránku.</string>
     <string name="setting_title_searchEngine">Vlastní vyhledávač</string>
-    <string name="setting_summary_searchEngine">Here you can enter a custom search URL. Also choose \"Custom search engine\" as search
-    provider.</string>
+    <string name="setting_summary_searchEngine">Zde můžete zadat vlastní adresu URL pro vyhledávání. Taky zvolit „Vlastní vyhledávač“ jako poskytovatele vyhledávání.</string>
     <!-- App behavior -->
-    <string name="setting_title_hideToolbar">Hide toolbar</string>
+    <string name="setting_title_hideToolbar">Skrýt Panel nástrojů</string>
     <string name="setting_summary_hide">Use the whole screen when scrolling through websites. If you press the back button you will
     leave fullscreen mode.</string>
     <string name="setting_theme">Motiv</string>
@@ -157,8 +156,8 @@
     <string name="setting_theme_dark">Tmavý motiv</string>
     <string name="setting_title_theme">UI</string>
     <string name="setting_title_behavior">Chování</string>
-    <string name="setting_summary_toolbarShow">Pressing back will make the toolbar visible, before going back in history.</string>
-    <string name="setting_title_toolbarShow">First toolbar</string>
+    <string name="setting_summary_toolbarShow">Stisknutím tlačítka Zpět se Panel nástrojů zviditelní před návratem do historie.</string>
+    <string name="setting_title_toolbarShow">První Panel nástrojů</string>
     <string name="setting_title_nav">Navigační tlačítka</string>
     <string name="setting_title_nav_pos">Pozice</string>
     <string name="setting_summary_nav_pos">Rozhodněte, kde budou umístěna „Navigační tlačítka“.</string>
@@ -178,7 +177,7 @@
     bookmarks.</string>
     <string name="setting_gestures">Gesta</string>
     <string name="setting_gestures_use_title">Použít gesta</string>
-    <string name="setting_gestures_use_summary">Use gestures on the toolbar and the \"Navigation button\".</string>
+    <string name="setting_gestures_use_summary">Použijte gesta na Panelu nástrojů a „Navigační tlačítka“.</string>
     <string name="setting_title_reopenLastTab">Reopen last tab</string>
     <string name="setting_summary_reopenLastTab">Reopen a new tab when the last tab is closed instead of exiting the browser.</string>
     <!-- gestures -->
