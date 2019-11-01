@@ -100,49 +100,46 @@
     <string name="setting_summary_images">Povolí automatické načítání obrázků. Vypnutí by mohlo být užitečné pro šetření mobilních dat a rychlejší     načítání webových stránek.</string>
     <string name="setting_title_cookie">Cookies</string>
     <string name="setting_summary_cookie_delete">Pokud je povoleno, všechny cookies budou smazány. Také cookies důvěryhodných webových stránek.</string>
-    <string name="setting_summary_cookie">Enable Cookies. Cookies are small text files, which are stored on your device. Websites
-    use them for example to store user settings (for example search settings). But they could also be used to collect personal
-        user data. Third party cookies (they collect user data for advertising) are always disabled.</string>
-    <string name="setting_title_whitelistCookie">Cookie whitelist</string>
-    <string name="setting_summary_whitelistCookie">If you disable Cookies, you can use this whitelist to allow sites you
-        trust to use save cookies.</string>
+    <string name="setting_summary_cookie">Povolit cookies. Cookies jsou malé textové soubory, které jsou uloženy ve vašem zařízení. Webové stránky     je používají např. k uložení uživatelských nastavení (např. nastavení vyhledávání). můžou však být použity ke sběru osobních
+        uživatelských dat. Cookies třetích stran (ukládají uživatelská data pro zobrazení reklam), jsou vždy zakázány.</string>
+    <string name="setting_title_whitelistCookie">Seznam povolených - Cookies</string>
+    <string name="setting_summary_whitelistCookie">Pokud cookies zakážete, můžete pomocí tohoto seznamu povolených povolit webům, kterým důvěřujete,         používat uložené cookies.</string>
     <string name="setting_title_javascript">JavaScript</string>
-    <string name="setting_summary_javascript">Enable JavaScript. Many websites need JavaScript for their functionality (menus,
-        loading and displaying images, …). But they are also a risk and can be used for attacks.</string>
-    <string name="setting_title_whitelistJS">JavaScript whitelist</string>
-    <string name="setting_summary_whitelistJS">If you disable JavaScript, you can use this whitelist to allow sites you
-        trust to use javascript.</string>
+    <string name="setting_summary_javascript">Povolit JavaScript. Mnoho webových stránek potřebuje pro svou funkčnost JavaScript (nabídky,
+        načítání a zobrazování obrázků, …). Je však také rizikem a může být použit k útokům.</string>
+    <string name="setting_title_whitelistJS">Seznam povolených - JavaScript</string>
+    <string name="setting_summary_whitelistJS">Pokud JavaScript zakážete, můžete pomocí tohoto seznamu povolených povolit webům, kterým důvěřujete,         používat JavaScript.</string>
     <string name="setting_title_adblock">AdBlock</string>
-    <string name="setting_summary_adblock">Enable AdBlock to block annoying ads. Sites also load faster when enabled.</string>
-    <string name="setting_title_whitelist">AdBlock whitelist</string>
-    <string name="setting_summary_whitelist">Allow these sites to show ads. Some sites do not work, when AdBlock is enabled.</string>
+    <string name="setting_summary_adblock">Zapněte AdBlock pro blokování obtěžujících reklam. Stránky se budou načítat rychleji.</string>
+    <string name="setting_title_whitelist">Seznam povolených - AdBlock</string>
+    <string name="setting_summary_whitelist">Povolit těmto webům zobrazovat reklamy. Pokud jsou zapnuty funkce AdBlock, některé weby nefungují.</string>
     <string name="setting_title_location">Poloha</string>
-    <string name="setting_summary_location">Allow websites to access your location. Some websites (like Google maps for navigation)
-        need this enabled.</string>
+    <string name="setting_summary_location">Povolit webům přístup k vaší poloze. Některé weby (jako Mapy Google pro navigaci)
+        to potřebují mít zapnuté.</string>
     <string name="setting_title_history">Historie</string>
     <string name="setting_summary_history">Uložit historii navštívených stránek.</string>
     <!-- browser clear -->
     <string name="data_summary">Všechny soubory budou exportovány do adresáře „Android/data/de.baumann.browser/files/browser_backup/“
         na vaší SD kartě. Tento adresář bude SMAZÁN, když odinstalujetel „FOSS Browser“. Proto si vytvořte zálohu na bezpečném
         místě.</string>
-    <string name="clear_menu_done_all">Done all</string>
-    <string name="clear_title_quit">Clear when application exits</string>
-    <string name="clear_summary_quit">Every time you quit \"FOSS Browser\" all above checked data will be deleted.</string>
+    <string name="clear_menu_done_all">Vše hotovo</string>
+    <string name="clear_title_quit">Vymazat při ukončení aplikace</string>
+    <string name="clear_summary_quit">Při každém ukončení aplikace „FOSS Browser“ budou všechna výše uvedená data smazána.</string>
     <string name="clear_title_cache">Vymazat mezipaměť</string>
     <string name="clear_title_cookie">Vymazat soubory cookie</string>
     <string name="clear_title_history">Vymazat historii</string>
-    <string name="clear_title_indexedDB">Clear \"indexed databases\" and \"local webview storage\"</string>
+    <string name="clear_title_indexedDB">Vymazat „indexované databáze“ a „lokální úložiště webview“</string>
     <string name="clear_title_deleteDatabase">Vymazat databázi</string>
-    <string name="clear_summary_deleteDatabase">Delete the whole database (Startpage, bookmarks, history and all whitelists).</string>
+    <string name="clear_summary_deleteDatabase">Vymazat celou databázi (úvodní stránku, záložky, historii a všechny seznamy povolených).</string>
     <!-- App setting -->
     <string name="setting_title_app">Nastavení aplikace</string>
     <string name="setting_title_ui">Chování/UI</string>
     <string name="setting_title_data">Záloha</string>
-    <string name="setting_summary_ui">Change the behavior and ui of the app to suit your preferences.</string>
-    <string name="setting_summary_data">Import and export several app data (whitelists, bookmarks).</string>
+    <string name="setting_summary_ui">Změňte chování a UI aplikace podle svých představ.</string>
+    <string name="setting_summary_data">Importovat a exportovat některá data aplikace (seznamy povolených, záložky).</string>
     <string name="setting_filter">Filtr záložek</string>
-    <string name="setting_filter_summary">To show the filter dialog long press on the bookmark icon in the overview. Decide which
-        filters you will use.</string>
+    <string name="setting_filter_summary">Chcete-li zobrazit dialogové okno filtru, stiskněte v přehledu ikonu záložek. Rozhodněte, které
+        filtry použijete.</string>
     <string name="setting_title_fav">Oblíbené</string>
     <string name="setting_summary_fav">Here you can change the default website which loads on start of \"FOSS Browser\".
     Enter \"about:blank\" to get an emty start site.</string>
