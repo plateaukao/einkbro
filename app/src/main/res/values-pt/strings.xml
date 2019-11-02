@@ -181,24 +181,24 @@
     <string name="setting_title_reopenLastTab">Reabrir última aba</string>
     <string name="setting_summary_reopenLastTab">Ao fechar a última aba reabrir uma nova em vez de sair do navegador.</string>
     <!-- gestures -->
-    <string name="setting_title_toolbar">Toolbar</string>
-    <string name="setting_gesture_up">Swipe up</string>
-    <string name="setting_gesture_down">Swipe down</string>
-    <string name="setting_gesture_left">Swipe left</string>
-    <string name="setting_gesture_right">Swipe right</string>
-    <string name="setting_gesture_01">Nothing</string>
-    <string name="setting_gesture_02">Forward in history</string>
-    <string name="setting_gesture_03">Back in history</string>
-    <string name="setting_gesture_04">Scroll to top</string>
-    <string name="setting_gesture_05">Scroll to bottom</string>
-    <string name="setting_gesture_06">Switch to left tab</string>
-    <string name="setting_gesture_07">Switch to right tab</string>
-    <string name="setting_gesture_08">Show overview</string>
-    <string name="setting_gesture_09">Open new tab</string>
-    <string name="setting_gesture_10">Close tab</string>
+    <string name="setting_title_toolbar">Barra de ferramentas</string>
+    <string name="setting_gesture_up">Deslizar para cima</string>
+    <string name="setting_gesture_down">Deslizar para baixo</string>
+    <string name="setting_gesture_left">Deslizar para a esquerda</string>
+    <string name="setting_gesture_right">Deslizar para a direita</string>
+    <string name="setting_gesture_01">Não fazer nada</string>
+    <string name="setting_gesture_02">Avançar no histórico</string>
+    <string name="setting_gesture_03">Voltar no histórico</string>
+    <string name="setting_gesture_04">Rolar para o topo</string>
+    <string name="setting_gesture_05">Rolar para o final</string>
+    <string name="setting_gesture_06">Alternar para a aba esquerda</string>
+    <string name="setting_gesture_07">Alternar para a aba direita</string>
+    <string name="setting_gesture_08">Mostrar visão geral</string>
+    <string name="setting_gesture_09">Abrir nova aba</string>
+    <string name="setting_gesture_10">Fechar aba</string>
     <!-- Data -->
-    <string name="setting_title_export_whitelist">Export AdBlock whitelist</string>
-    <string name="setting_title_import_whitelist">Import AdBlock whitelist</string>
+    <string name="setting_title_export_whitelist">Exportar lista branca de AdBlock</string>
+    <string name="setting_title_import_whitelist">Importar lista branca de AdBlock</string>
     <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
     <string name="setting_title_export_whitelistJS">Export JavaScript whitelist</string>
     <string name="setting_title_import_whitelistJS">Import JavaScript whitelist</string>
@@ -335,28 +335,27 @@
         Apache License Version 2.0&lt;br&gt;
         hummatli&lt;br&gt;
         &lt;i&gt;https://github.com/hummatli/SimpleEncryptionLib</string>
-    <string name="cont_dialog">        &lt;i&gt;First I would like to thank all people who contributed in any way on this project. They submitted issues,
-        translated or helped in any other way. On following sites you can become a active member of this
-        great community:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
+    <string name="cont_dialog">        &lt;i&gt;Primeiro eu gostaria de agradecer a todas as pessoas que contribuíram de alguma forma com esse projeto. Eles submeteram os problemas encontrados,
+        traduziram ou ajudaram de alguma outra forma. Pelos sites seguintes você pode se tornar um membro ativo dessa ótima comunidade:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Crowdin:&lt;/b&gt;&lt;br&gt;
-        Crowdin is an online plattform to translate applications in other languages. A big thanks to all translators. You can
-        also help.&lt;br&gt;
+        Crowdin é uma plataforma online para tradução de aplicativos em outras línguas. Um muito obrigado a todos os tradutores. Você também
+        pode ajudar.&lt;br&gt;
         &lt;i&gt;https://crowdin.com/project/foss-browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
 
         &lt;b&gt;XDA-thread:&lt;/b&gt;&lt;br&gt;
-        XDA is a great community for developers and smartphone enthusiasts. Here you can report issues, ask for new features
-        and everything other related to \"FOSS Browser\".&lt;br&gt;
+        XDA é uma ótima comunidade de desenvolvedor e entusiastas de smartphones. Aqui você pode relatar qualquer erro encontrado, pedir por novas funções
+        e qualquer outra coisa relacionada ao \"FOSS Browser\".&lt;br&gt;
         &lt;i&gt;https://forum.xda-developers.com/android/apps-games/app-browser-t3500091&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Github:&lt;/b&gt;&lt;br&gt;
-        On Github you can see the source code of \"FOSS Browser\". This is the more technical solution: open issues, ask for new
-        features or even help developing or translating.&lt;br&gt;
+        No Github você consegue ver o código fonte do \"FOSS Browser\". Está é uma solução mais técnica: abrir chamados, pedir por novas
+        funcionalidade ou até mesmo ajudar a desenvolver ou traduzir.&lt;br&gt;
         &lt;i&gt;https://github.com/scoute-dich/browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
 
 
-        &lt;i&gt;Following people contributed at this project. If I have forgotten anybody, please contact me:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
+        &lt;i&gt;As pessoas a seguir contribuíram na tradução desse projeto. Se eu esqueci de alguém, por favor me contate:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Gaukler Faun&lt;/b&gt;&lt;br&gt;
         \u25AA Main developer and initiator of this project&lt;br&gt;
