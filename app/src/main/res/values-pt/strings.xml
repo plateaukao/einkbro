@@ -118,16 +118,13 @@
     <string name="setting_title_whitelist">AdBlock whitelist</string>
     <string name="setting_summary_whitelist">Permitir que o sites desta lista mostrem anúncios. Alguns sites não funcionam, quando o AdBlock está ativo.</string>
     <string name="setting_title_location">Localização</string>
-    <string name="setting_summary_location">Allow websites to access your location. Some websites (like Google maps for navigation)
-        need this enabled.</string>
-    <string name="setting_title_history">History</string>
-    <string name="setting_summary_history">Save the history of visited websites.</string>
+    <string name="setting_summary_location">Permitir que os sites acessem sua localização. Alguns sites (como o Google Maps para navegação) precisam dessa opção ativa.</string>
+    <string name="setting_title_history">Histórico</string>
+    <string name="setting_summary_history">Salvar o histórico dos sites visitados.</string>
     <!-- browser clear -->
-    <string name="data_summary">All files will be exported to the \"Android/data/de.baumann.browser/files/browser_backup/\"
-        directory of your sd-card. This directory will be DELETED, if you uninstall \"FOSS Browser\". So make a backup regularly on a save
-        place.</string>
-    <string name="clear_menu_done_all">Done all</string>
-    <string name="clear_title_quit">Clear when application exits</string>
+    <string name="data_summary">Todos os arquivos serão exportados para o caminho \"Android/data/de.baumann.browser/files/browser_backup/\" do seu cartão SD. Esse diretório será APAGADO, se você desinstalar o \"FOSS Browser\". Então faça backup regularmente em um local de salvamento.</string>
+    <string name="clear_menu_done_all">Terminado</string>
+    <string name="clear_title_quit">Limpar ao fechar a aplicação</string>
     <string name="clear_summary_quit">Every time you quit \"FOSS Browser\" all above checked data will be deleted.</string>
     <string name="clear_title_cache">Clear Cache</string>
     <string name="clear_title_cookie">Clear Cookies</string>
