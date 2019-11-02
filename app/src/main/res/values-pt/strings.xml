@@ -54,28 +54,28 @@
     <string name="menu_other_help">Ajuda</string>
     <!-- Dialog -->
     <string name="dialog_toggle_reload">Recarregar</string>
-    <string name="dialog_title_hint">Title:</string>
+    <string name="dialog_title_hint">Título:</string>
     <string name="dialog_url_hint">Url:</string>
-    <string name="dialog_extension_hint">Extension (for example: \".jpg\"):</string>
-    <string name="dialog_sign_in_username">Username</string>
-    <string name="dialog_sign_in_password">Password</string>
-    <string name="dialog_title_download">Do you want to download the file?</string>
-    <string name="dialog_content_resubmission">Would you like to resubmit your data?</string>
-    <string name="dialog_content_ssl_error">The certificate of the site is not trusted. Proceed anyway?</string>
-    <string name="dialog_sortName">Sort by name</string>
-    <string name="dialog_sortIcon">Sort by icon</string>
-    <string name="dialog_sortDate">Sort by date</string>
+    <string name="dialog_extension_hint">Extensão (por exemplo: \".jpg\"):</string>
+    <string name="dialog_sign_in_username">Usuário</string>
+    <string name="dialog_sign_in_password">Senha</string>
+    <string name="dialog_title_download">Você quer baixar este arquivo?</string>
+    <string name="dialog_content_resubmission">Gostaria de reenviar os seus dados?</string>
+    <string name="dialog_content_ssl_error">O certificado do site não é de confiança. Continuar mesmo assim?</string>
+    <string name="dialog_sortName">Ordenar por nome</string>
+    <string name="dialog_sortIcon">Ordenar por ícone</string>
+    <string name="dialog_sortDate">Ordenar por data</string>
     <!-- Settings -->
-    <string name="setting_label">Settings</string>
+    <string name="setting_label">Configurações</string>
     <!-- browser setting -->
-    <string name="setting_title_browser">Browser Settings</string>
-    <string name="setting_title_clear_control">Data Control</string>
-    <string name="setting_title_start_control">Start Control</string>
-    <string name="setting_summary_clear_control">Clear your browser data or decide what data will be cleared when you leave
-    the application.</string>
-    <string name="setting_summary_start_control">Decide which components of the browser will be enabled on start.</string>
-    <string name="setting_title_search_engine">Search Engine</string>
-    <string name="setting_summary_search_engine">Here you can choose your preferred search engine or set a custom one.</string>
+    <string name="setting_title_browser">Configurações do navegador</string>
+    <string name="setting_title_clear_control">Controle de dados</string>
+    <string name="setting_title_start_control">Controle de inicialização</string>
+    <string name="setting_summary_clear_control">Limpar dados do navegador ou decidir os dados que serão removidos
+ ao fechar a aplicação.</string>
+    <string name="setting_summary_start_control">Decide quais componentes do navegador serão ativados na inicialização.</string>
+    <string name="setting_title_search_engine">Mecanismo de busca</string>
+    <string name="setting_summary_search_engine">Aqui você pode escolher seu mecanismo de busca preferido ou definir um personalizado.</string>
     <string name="setting_summary_search_engine_google">Google</string>
     <string name="setting_summary_search_engine_duckduckgo">DuckDuckGo</string>
     <string name="setting_summary_search_engine_startpage">StartPage</string>
@@ -85,20 +85,20 @@
     <string name="setting_summary_search_engine_searx">Searx</string>
     <string name="setting_summary_search_engine_qwant">Qwant</string>
     <string name="setting_summary_search_engine_ecosia">Ecosia</string>
-    <string name="setting_title_inverted">Inverted colors</string>
-    <string name="setting_summary_inverted">If checked, content will be rendered in a inverted grey scale mode. This
-    is a kind of \"night mode\".</string>
-    <string name="setting_title_font">Font size</string>
-    <string name="setting_summary_font">Change the font size for displaying websites.</string>
-    <string name="setting_title_remote">Remote content</string>
-    <string name="setting_summary_remote">Enable remote content, which is not directly from the website you are visiting.
-        Disabling this is more secure, faster and saves data volume. But some content will not be displayed anymore.</string>
-    <string name="setting_title_save_data">Request \'Save Data\'</string>
-    <string name="setting_summary_save_data">Tell websites that you would prefer to save data. Supported websites will load faster.</string>
+    <string name="setting_title_inverted">Cores invertidas</string>
+    <string name="setting_summary_inverted">Se ativo, o conteúdo será processado no modo invertido da escala de cinza.
+	É um tipo de \"modo noturno\".</string>
+    <string name="setting_title_font">Tamanho da fonte</string>
+    <string name="setting_summary_font">Alterar o tamanho da fonte para exibir sites.</string>
+    <string name="setting_title_remote">Conteúdo remoto</string>
+    <string name="setting_summary_remote">Habilitar conteúdo remoto, que não é diretamente do site que você está visitando.
+        Desabilitar isto é mais seguro, mais rápido e poupa dados. Mas alguns conteúdos não serão mais exibidos.</string>
+    <string name="setting_title_save_data">Pedir para \'Salvar Dados\'</string>
+    <string name="setting_summary_save_data">Informar aos sites que você prefere salvar dados. Sites suportados irão carregar mais rápido.</string>
     <!-- browser start -->
-    <string name="setting_title_images">Images</string>
-    <string name="setting_summary_images">Enable Network images. Disabling could be useful to save mobile data and to load
-    websites faster.</string>
+    <string name="setting_title_images">Imagens</string>
+    <string name="setting_summary_images">Ativar imagens de rede. Desativar pode ser útil para salvar dados móveis e carregar
+    sites mais rápido.</string>
     <string name="setting_title_cookie">Cookies</string>
     <string name="setting_summary_cookie_delete">If enabled, all cookies will be deleted. Also the Cookies of trusted websites.</string>
     <string name="setting_summary_cookie">Enable Cookies. Cookies are small text files, which are stored on your device. Websites
