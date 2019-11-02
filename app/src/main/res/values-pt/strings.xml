@@ -157,29 +157,29 @@
     <string name="setting_title_theme">UI</string>
     <string name="setting_title_behavior">Comportamento</string>
     <string name="setting_summary_toolbarShow">Pressionar voltar faz a barra de ferramentas visível, antes de voltar ao histórico.</string>
-    <string name="setting_title_toolbarShow">First toolbar</string>
-    <string name="setting_title_nav">Navigation button</string>
-    <string name="setting_title_nav_pos">Position</string>
-    <string name="setting_summary_nav_pos">Decide where the \"Navigation Button\" will be placed.</string>
-    <string name="setting_summary_nav_pos_right">Right</string>
-    <string name="setting_summary_nav_pos_left">Left</string>
-    <string name="setting_summary_nav_pos_center">Center</string>
-    <string name="setting_summary_tab">What should be shown at the start of the \"Overview\"? The Start Page, you bookmarks, …</string>
-    <string name="setting_title_confirm_exit">Confirm browser exit</string>
-    <string name="setting_summary_confirm_exit">Confirmation dialog when closing browser.</string>
-    <string name="setting_title_confirm_tab_close">Confirm tab close</string>
-    <string name="setting_summary_confirm_tab_close">Confirmation dialog when closing a tab.</string>
-    <string name="setting_overView">Overview</string>
-    <string name="setting_overView_onStart_title">Show on start</string>
-    <string name="setting_overView_onStart_summary">Open the \"Overview\" on every app start.</string>
-    <string name="setting_overView_hide_title">Hide tab previews</string>
-    <string name="setting_overView_hide_summary">In expanded overview the tab preview will hide. Then you have more place for your
-    bookmarks.</string>
-    <string name="setting_gestures">Gestures</string>
-    <string name="setting_gestures_use_title">Use gestures</string>
-    <string name="setting_gestures_use_summary">Use gestures on the toolbar and the \"Navigation button\".</string>
-    <string name="setting_title_reopenLastTab">Reopen last tab</string>
-    <string name="setting_summary_reopenLastTab">Reopen a new tab when the last tab is closed instead of exiting the browser.</string>
+    <string name="setting_title_toolbarShow">Primeiro barra de ferramentas</string>
+    <string name="setting_title_nav">Botão de navegação</string>
+    <string name="setting_title_nav_pos">Posição</string>
+    <string name="setting_summary_nav_pos">Decide o local para colocar o \"Botão de Navegação\".</string>
+    <string name="setting_summary_nav_pos_right">Direita</string>
+    <string name="setting_summary_nav_pos_left">Esquerda</string>
+    <string name="setting_summary_nav_pos_center">Centro</string>
+    <string name="setting_summary_tab">O que deve ser mostrado no início da \"Visão Geral\"? A página inicial, seus favoritos, …</string>
+    <string name="setting_title_confirm_exit">Confirmar saída do navegador</string>
+    <string name="setting_summary_confirm_exit">Diálogo de confirmação ao fechar o navegador.</string>
+    <string name="setting_title_confirm_tab_close">Confirmar fechamento da aba</string>
+    <string name="setting_summary_confirm_tab_close">Diálogo de confirmação ao fechar a aba.</string>
+    <string name="setting_overView">Visão Geral</string>
+    <string name="setting_overView_onStart_title">Mostrar ao iniciar</string>
+    <string name="setting_overView_onStart_summary">Abra a \"Visão Geral\" ao iniciar o aplicativo.</string>
+    <string name="setting_overView_hide_title">Ocultar pré-visualizações de aba</string>
+    <string name="setting_overView_hide_summary">Em visão geral expandida a pré-visualização das abas será ocultada. Então você tem mais lugar para seus
+    favoritos.</string>
+    <string name="setting_gestures">Gestos</string>
+    <string name="setting_gestures_use_title">Utilizar gestos</string>
+    <string name="setting_gestures_use_summary">Utilizar gestos na barra de ferramentas e no \"Botão de Navegação\".</string>
+    <string name="setting_title_reopenLastTab">Reabrir última aba</string>
+    <string name="setting_summary_reopenLastTab">Ao fechar a última aba reabrir uma nova em vez de sair do navegador.</string>
     <!-- gestures -->
     <string name="setting_title_toolbar">Toolbar</string>
     <string name="setting_gesture_up">Swipe up</string>
@@ -236,35 +236,34 @@
     <string name="toast_load_error">Can\'t load this URL</string>
     <string name="toast_new_tab_successful">Successfully opened in a new tab</string>
     <string name="toast_share_failed">Can\'t share this page</string>
-    <string name="toast_start_download">Starting download</string>
-    <string name="toast_wait_a_minute">Please wait for a moment</string>
-    <string name="toast_titleConfirm_delete">Do you really want to delete the entry?</string>
-    <string name="toast_titleConfirm_paste">Copy data to clipboard?</string>
-    <string name="toast_titleConfirm_pasteUN">Username</string>
-    <string name="toast_titleConfirm_pastePW">Password</string>
-    <string name="toast_error">Uuups. Something went wrong.</string>
-    <string name="toast_newTitle">Entry already exists. Please enter new title.</string>
-    <string name="toast_edit_successful">Successfully saved</string>
-    <string name="toast_webview_forward">Can\'t load next site</string>
-    <string name="toast_clear">Do you really want to clear?</string>
-    <string name="toast_permission_sdCard">\"FOSS Browser\" needs the permission to \"read and write on your storage\". This
-        is needed to download files, taking screenshots and making backups of your data.</string>
-    <string name="toast_permission_loc">\"FOSS Browser\" needs the permission to \"access your location\". This is requested from some
-        websites for example when they offer some kind of navigation.</string>
-    <string name="toast_restart">You must restart \"FOSS Browser\" to apply changes. Close now?</string>
-    <string name="toast_quit">Do you want to quit \"FOSS Browser\"?</string>
-    <string name="toast_close_tab">Do you want to close current tab?</string>
-    <string name="toast_downloadComplete">Download complete. Open file manager?</string>
-    <string name="toast_unsecured">This website uses an unsecured connection (\"http\"). Do you want to try a secure
-        connection (\"https\")?</string>
-    <string name="toast_backup">Backup data? This will overwrite the old backup.</string>
-    <string name="toast_fav">Successfully set as favorite.</string>
+    <string name="toast_start_download">Iniciando download</string>
+    <string name="toast_wait_a_minute">Por favor aguarde um pouco</string>
+    <string name="toast_titleConfirm_delete">Tem certeza de que deseja apagar a entrada?</string>
+    <string name="toast_titleConfirm_paste">Copiar dados para área de transferência?</string>
+    <string name="toast_titleConfirm_pasteUN">Usuário</string>
+    <string name="toast_titleConfirm_pastePW">Senha</string>
+    <string name="toast_error">Oops! Algo deu errado.</string>
+    <string name="toast_newTitle">A entrada já existe. Digite outro título.</string>
+    <string name="toast_edit_successful">Salvo com sucesso</string>
+    <string name="toast_webview_forward">Não é possível carregar o próximo site</string>
+    <string name="toast_clear">Você realmente quer limpar?</string>
+    <string name="toast_permission_sdCard">\"FOSS Browser\" precisa da permissão \"ler e escrever no armazenamento\".
+	Está permissão é necessária para baixar arquivos, obter capturas de tela e fazer backups dos seus dados.</string>
+    <string name="toast_permission_loc">\"FOSS Browser\" precisa de permissão para \"acessar sua localização\". Isso é solicitado por alguns sites, por exemplo quando eles oferecem algum tipo de navegação.</string>
+    <string name="toast_restart">Você deve reiniciar o \"FOSS Browser\" para aplicar as alterações. Fechar agora?</string>
+    <string name="toast_quit">Deseja sair do \"FOSS Browser\"?</string>
+    <string name="toast_close_tab">Deseja fechar a aba atual?</string>
+    <string name="toast_downloadComplete">Download finalizado. Abrir o gerenciador de arquivos?</string>
+    <string name="toast_unsecured">Este site usa uma conexão não segura (\"http\"). Você quer tentar uma conexão
+        segura (\"https\")?</string>
+    <string name="toast_backup">Criar backup? Irá substituir os dados do backup anterior.</string>
+    <string name="toast_fav">Definido como favorito com sucesso.</string>
     <!-- Whitelist -->
-    <string name="whitelist_menu_clear">Clear</string>
-    <string name="whitelist_edit_hint">Domain</string>
-    <string name="whitelist_add">Add</string>
+    <string name="whitelist_menu_clear">Limpar</string>
+    <string name="whitelist_edit_hint">Domínio</string>
+    <string name="whitelist_add">Adicionar</string>
     <!-- Dialog help -->
-    <string name="dialogHelp_tipTitle">Tips</string>
+    <string name="dialogHelp_tipTitle">Dicas</string>
     <string name="dialogHelp_tipText">        &lt;b&gt;Menus and dialogs&lt;/b&gt;&lt;br&gt;
         All menus and dialogs are opened at the bottom of the screen. If the dialog is large you will first see only
         the upper part. If you swipe it up, the rest will get visible.&lt;br&gt;
