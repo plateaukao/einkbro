@@ -264,16 +264,16 @@
     <string name="whitelist_add">Adicionar</string>
     <!-- Dialog help -->
     <string name="dialogHelp_tipTitle">Dicas</string>
-    <string name="dialogHelp_tipText">        &lt;b&gt;Menus and dialogs&lt;/b&gt;&lt;br&gt;
-        All menus and dialogs are opened at the bottom of the screen. If the dialog is large you will first see only
-        the upper part. If you swipe it up, the rest will get visible.&lt;br&gt;
-        You can close them by pressing the back button, swiping them down or by clicking outside&lt;br&gt;&lt;br&gt;
+    <string name="dialogHelp_tipText">        &lt;b&gt;Menus e diálogos&lt;/b&gt;&lt;br&gt;
+        Todos os menus e diálogos são abertos na parte inferior da tela. Se a caixa de diálogo é grande, primeiro você verá apenas
+        a parte superior. Se você deslizar para cima, o resto ficará visível.&lt;br&gt;
+        Você pode fechá-los pressionando o botão voltar, deslize para baixo ou clicando fora&lt;br&gt;&lt;br&gt;
 
-        &lt;b&gt;Long press&lt;/b&gt;&lt;br&gt;
-        If you long press the menu icon or the \"Navigation button\", the \"Fast toggle dialog\" will show. If you long
-        press the \"Bookmark icon\", the \"Filter dialog\" will show.
+        &lt;b&gt;Toque longo&lt;/b&gt;&lt;br&gt;
+        Se você pressionar longamente o ícone do menu ou o \"Botão de navegação\", a mensagem \"Alternador rápido\" será exibida. Se você pressionar longamente
+         o \"Ícone de Favorito\", o \"Dialogo de filtro\" será exibido.
     </string>
-    <string name="dialogHelp_overviewTitle">Overview</string>
+    <string name="dialogHelp_overviewTitle">Visão Geral</string>
     <string name="dialogHelp_overviewText">        There are two parts in the \"Overview\" (tab preview and personal data). There is an extra menu. In the settings
         you can change the behavior of the \"Overview\".&lt;br&gt;&lt;br&gt;
 
@@ -285,25 +285,25 @@
         There are three parts: the Startsite, your Bookmarks and your History. If you long click an entry
         a menu with more options will appear.
     </string>
-    <string name="dialogHelp_filterText">        You can tag your bookmarks with filters. In this way you can group your bookmarks. You can open the filter dialog by
-        long pressing the bookmark icon. If you activate an entry a dialog will appear, where you can edit the name of the filter.
+    <string name="dialogHelp_filterText">Você pode etiquetar seus favoritos com filtros. Dessa forma você pode agrupar seus favoritos. Você pode abrir o diálogo de filtro
+        pressionar longamente o ícone de favoritos. Se você ativar uma entrada o diálogo irá aparecer, permitindo você de editar o nome dos filtros.
     </string>
     <!-- Dialog changelog -->
-    <string name="changelog_dialog">        Your language isn\'t supported yet? You want to translate FOSS Browser? Or make improvements to existing translations?
-        Feel free to join us on Crowdin: https://crowdin.com/project/foss-browser.&lt;br&gt;&lt;br&gt;
+    <string name="changelog_dialog">        Seu idioma ainda não é suportado? Quer traduzir o FOSS Browser? Ou fazer melhoras nas traduções existentes?
+        Sinta-se livre para se juntar conosco no Crowdin: https://crowdin.com/project/foss-browser.&lt;br&gt;&lt;br&gt;
 
-        &lt;b&gt;On the following sites you have access to all important information about \"FOSS Browser\".
-        Please read also the help dialog within the app.&lt;/b&gt;&lt;br&gt;&lt;br&gt;
+        &lt;b&gt;Nos sites seguintes você tera acesso a todas as informações importantes sobre o \"FOSS Browser\".
+        Por favor, leia também o diálogo de ajuda do aplicativo.&lt;/b&gt;&lt;br&gt;&lt;br&gt;
 
-        \u25AA &lt;i&gt;Project site:&lt;/i&gt; https://github.com/scoute-dich/Browser&lt;br&gt;
+        \u25AA &lt;i&gt;Site do projeto:&lt;/i&gt; https://github.com/scoute-dich/Browser&lt;br&gt;
         \u25AA &lt;i&gt;Changelog:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;br&gt;
         \u25AA &lt;i&gt;FAQ:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/FAQs.md&lt;br&gt;
-        \u25AA &lt;i&gt;License:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/LICENSE.md&lt;br&gt;
-        \u25AA &lt;i&gt;Privacy:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/PRIVACY.md
+        \u25AA &lt;i&gt;Licença:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/LICENSE.md&lt;br&gt;
+        \u25AA &lt;i&gt;Privacidade:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/PRIVACY.md
 
     </string>
     <!-- License changelog -->
-    <string name="license_title">Copyright © 2017  by Gaukler Faun</string>
+    <string name="license_title">Copyright © 2017 por Gaukler Faun</string>
     <string name="license_dialog">        &lt;i&gt;For more information visit the project site on Github: https://github.com/scoute-dich/Browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         This program is free software: you can redistribute it and/or modify
