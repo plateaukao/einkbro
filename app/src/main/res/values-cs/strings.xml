@@ -216,8 +216,8 @@
     <string name="setting_title_others">Další</string>
     <string name="setting_title_license">Licence</string>
     <string name="setting_title_appSettings">Nastavení aplikace</string>
-    <string name="setting_summary_appSettings">Open the system app settings for \"FOSS Browser\". There you can,
-        depending on your Android version grant permissions, clear the app data and so on.</string>
+    <string name="setting_summary_appSettings">Otevřete systémová nastavení pro „FOSS Browser“. Tam můžete
+        v závislosti na vaší verzi Android udělit oprávnění, vymazat data aplikace atd.</string>
     <string name="setting_title_community">Přispívání</string>
     <!-- Toast -->
     <string name="toast_add_to_home_successful">Úspěšně přidáno na plochu</string>
@@ -247,10 +247,10 @@
     <string name="toast_edit_successful">Úspěšně uloženo</string>
     <string name="toast_webview_forward">Nelze načíst další stránku</string>
     <string name="toast_clear">Opravdu chcete odstranit?</string>
-    <string name="toast_permission_sdCard">\"FOSS Browser\" needs the permission to \"read and write on your storage\". This
-        is needed to download files, taking screenshots and making backups of your data.</string>
-    <string name="toast_permission_loc">\"FOSS Browser\" needs the permission to \"access your location\". This is requested from some
-        websites for example when they offer some kind of navigation.</string>
+    <string name="toast_permission_sdCard">„FOSS Browser“ vyžaduje oprávnění „čtení a zápis do vašeho úložiště“. Toto
+        je zapotřebí ke stahování souborů, pořizování snímků obrazovky a vytváření záloh vašich dat.</string>
+    <string name="toast_permission_loc">„FOSS Browser“ vyžaduje oprávnění k „přístupu k vaší poloze“. To je vyžadováno od některých
+        webových stránek. Například, když nabízejí nějaký druh navigace.</string>
     <string name="toast_restart">Pro provedení změn musíte restartovat aplikaci „FOSS Browser“. Ukončit nyní?</string>
     <string name="toast_quit">Opravdu chcete ukončit aplikaci „FOSS Browser“?</string>
     <string name="toast_close_tab">Opravdu chcete zavřít aktuální kartu?</string>
