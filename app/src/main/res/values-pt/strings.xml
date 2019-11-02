@@ -100,22 +100,21 @@
     <string name="setting_summary_images">Ativar imagens de rede. Desativar pode ser útil para salvar dados móveis e carregar
     sites mais rápido.</string>
     <string name="setting_title_cookie">Cookies</string>
-    <string name="setting_summary_cookie_delete">If enabled, all cookies will be deleted. Also the Cookies of trusted websites.</string>
-    <string name="setting_summary_cookie">Enable Cookies. Cookies are small text files, which are stored on your device. Websites
-    use them for example to store user settings (for example search settings). But they could also be used to collect personal
-        user data. Third party cookies (they collect user data for advertising) are always disabled.</string>
-    <string name="setting_title_whitelistCookie">Cookie whitelist</string>
-    <string name="setting_summary_whitelistCookie">If you disable Cookies, you can use this whitelist to allow sites you
-        trust to use save cookies.</string>
+    <string name="setting_summary_cookie_delete">Se ativo, todos os cookies serão apagados. Inclusive os cookies de sites confiáveis.</string>
+    <string name="setting_summary_cookie">Permitir utilização de cookies. Os cookies são pequenos arquivos de texto e são armazenados no seu dispositivo.
+	Os sites utilizam cookies para guardar as configurações do usuário (por exemplo configurações de busca). Mas também podem ser utilizados para
+	obter dados pessoais. Os cookies de terceiros (eles recolhem dados do usuário para publicidade) estão sempre desativados.</string>
+    <string name="setting_title_whitelistCookie">Lista branca para cookies</string>
+    <string name="setting_summary_whitelistCookie">Se desativar os Cookies, pode utilizar esta lista para permitir que os sites em que confia
+	guardem cookies.</string>
     <string name="setting_title_javascript">JavaScript</string>
-    <string name="setting_summary_javascript">Enable JavaScript. Many websites need JavaScript for their functionality (menus,
-        loading and displaying images, …). But they are also a risk and can be used for attacks.</string>
-    <string name="setting_title_whitelistJS">JavaScript whitelist</string>
-    <string name="setting_summary_whitelistJS">If you disable JavaScript, you can use this whitelist to allow sites you
-        trust to use javascript.</string>
+    <string name="setting_summary_javascript">Habilitar JavaScript. Muitos sites precisam de JavaScript para sua funcionalidade (menus,
+        carregamento e exibição de imagens, …). Mas são também um risco e podem ser utilizados para ataques.</string>
+    <string name="setting_title_whitelistJS">Lista branca para JavaScript</string>
+    <string name="setting_summary_whitelistJS">Se desativar a utilização de JavaScript, pode utilizar esta lista para permitir que os sites em que confia utilizem JavaScript.</string>
     <string name="setting_title_adblock">AdBlock</string>
-    <string name="setting_summary_adblock">Enable AdBlock to block annoying ads. Sites also load faster when enabled.</string>
-    <string name="setting_title_whitelist">AdBlock whitelist</string>
+    <string name="setting_summary_adblock">Ative o AdBlock para bloquear anúncios irritantes. Sites também carregam mais rápido quando ativo.</string>
+    <string name="setting_title_whitelist">Lista branca para AdBlock</string>
     <string name="setting_summary_whitelist">Permitir que o sites desta lista mostrem anúncios. Alguns sites não funcionam, quando o AdBlock está ativo.</string>
     <string name="setting_title_location">Localização</string>
     <string name="setting_summary_location">Permitir que os sites acessem sua localização. Alguns sites (como o Google Maps para navegação) precisam dessa opção ativa.</string>
@@ -125,16 +124,16 @@
     <string name="data_summary">Todos os arquivos serão exportados para o caminho \"Android/data/de.baumann.browser/files/browser_backup/\" do seu cartão SD. Esse diretório será APAGADO, se você desinstalar o \"FOSS Browser\". Então faça backup regularmente em um local de salvamento.</string>
     <string name="clear_menu_done_all">Terminado</string>
     <string name="clear_title_quit">Limpar ao fechar a aplicação</string>
-    <string name="clear_summary_quit">Every time you quit \"FOSS Browser\" all above checked data will be deleted.</string>
-    <string name="clear_title_cache">Clear Cache</string>
-    <string name="clear_title_cookie">Clear Cookies</string>
-    <string name="clear_title_history">Clear History</string>
-    <string name="clear_title_indexedDB">Clear \"indexed databases\" and \"local webview storage\"</string>
-    <string name="clear_title_deleteDatabase">Delete database</string>
-    <string name="clear_summary_deleteDatabase">Delete the whole database (Startpage, bookmarks, history and all whitelists).</string>
+    <string name="clear_summary_quit">Sempre que sair do \"FOSS Browser\" todos os dados marcados acima serão excluídos.</string>
+    <string name="clear_title_cache">Limpar o Cache</string>
+    <string name="clear_title_cookie">Limpar Cookies</string>
+    <string name="clear_title_history">Apagar o Histórico</string>
+    <string name="clear_title_indexedDB">Limpar \"bancos de dados indexados\" e \"armazenamento local do webview\"</string>
+    <string name="clear_title_deleteDatabase">Apagar base de dados</string>
+    <string name="clear_summary_deleteDatabase">Apagar toda a base de dados (Página inicial, favoritos, histórico e todas as listas brancas).</string>
     <!-- App setting -->
-    <string name="setting_title_app">App Settings</string>
-    <string name="setting_title_ui">Behavior/UI</string>
+    <string name="setting_title_app">Configurações do Aplicativo</string>
+    <string name="setting_title_ui">Comportamento/Interface</string>
     <string name="setting_title_data">Backup</string>
     <string name="setting_summary_ui">Change the behavior and ui of the app to suit your preferences.</string>
     <string name="setting_summary_data">Import and export several app data (whitelists, bookmarks).</string>
