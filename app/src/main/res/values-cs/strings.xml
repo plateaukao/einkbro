@@ -287,8 +287,8 @@ vedle&lt;br&gt;&lt;br&gt;
         There are three parts: the Startsite, your Bookmarks and your History. If you long click an entry
         a menu with more options will appear.
     </string>
-    <string name="dialogHelp_filterText">        You can tag your bookmarks with filters. In this way you can group your bookmarks. You can open the filter dialog by
-        long pressing the bookmark icon. If you activate an entry a dialog will appear, where you can edit the name of the filter.
+    <string name="dialogHelp_filterText">        Záložky můžete označit filtry. Tímto způsobem můžete seskupovat své záložky. Můžete otevřít dialogové okno filtru
+        dlouhým stisknutím ikony záložky. Pokud aktivujete položku, objeví se dialogové okno, kde můžete upravit název filtru.
     </string>
     <!-- Dialog changelog -->
     <string name="changelog_dialog">        Váš jazyk zatím není podporován? Chcete přeložit FOSS Browser? Nebo vylepšit stávající překlady?
