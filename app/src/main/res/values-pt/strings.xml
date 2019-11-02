@@ -39,21 +39,21 @@
     <string name="menu_sc">Atalho adicionado na tela inicial</string>
     <string name="menu_sort">Ordenar por…</string>
     <string name="menu_filter">Filtrar por …</string>
-    <string name="menu_share_screenshot">Share screenshot</string>
-    <string name="menu_share_link">Share link</string>
-    <string name="menu_save_screenshot">Save screenshot</string>
-    <string name="menu_save_home">Save at Home</string>
-    <string name="menu_save_bookmark">Save as bookmark</string>
-    <string name="menu_save_as">Save as …</string>
-    <string name="menu_save_pdf">Save as PDF</string>
-    <string name="menu_share_pdf">Share PDF</string>
-    <string name="menu_shareClipboard">Copy to clipboard</string>
-    <string name="menu_other_searchSite">Search on site</string>
-    <string name="menu_other_fileManager">Open file manager</string>
-    <string name="menu_other_info">About \"FOSS Browser\"</string>
-    <string name="menu_other_help">Help</string>
+    <string name="menu_share_screenshot">Compartilhar captura de tela</string>
+    <string name="menu_share_link">Compartilhar link</string>
+    <string name="menu_save_screenshot">Salvar captura de tela</string>
+    <string name="menu_save_home">Guardar em Início</string>
+    <string name="menu_save_bookmark">Salvar como favorito</string>
+    <string name="menu_save_as">Salvar como …</string>
+    <string name="menu_save_pdf">Salvar como PDF</string>
+    <string name="menu_share_pdf">Compartilhar PDF</string>
+    <string name="menu_shareClipboard">Copiar para a área de transferência</string>
+    <string name="menu_other_searchSite">Procurar no site</string>
+    <string name="menu_other_fileManager">Abrir o gerenciador de arquivos</string>
+    <string name="menu_other_info">Sobre o \"Navegador FOSS\"</string>
+    <string name="menu_other_help">Ajuda</string>
     <!-- Dialog -->
-    <string name="dialog_toggle_reload">Reload</string>
+    <string name="dialog_toggle_reload">Recarregar</string>
     <string name="dialog_title_hint">Title:</string>
     <string name="dialog_url_hint">Url:</string>
     <string name="dialog_extension_hint">Extension (for example: \".jpg\"):</string>
@@ -116,8 +116,8 @@
     <string name="setting_title_adblock">AdBlock</string>
     <string name="setting_summary_adblock">Enable AdBlock to block annoying ads. Sites also load faster when enabled.</string>
     <string name="setting_title_whitelist">AdBlock whitelist</string>
-    <string name="setting_summary_whitelist">Allow these sites to show ads. Some sites do not work, when AdBlock is enabled.</string>
-    <string name="setting_title_location">Location</string>
+    <string name="setting_summary_whitelist">Permitir que o sites desta lista mostrem anúncios. Alguns sites não funcionam, quando o AdBlock está ativo.</string>
+    <string name="setting_title_location">Localização</string>
     <string name="setting_summary_location">Allow websites to access your location. Some websites (like Google maps for navigation)
         need this enabled.</string>
     <string name="setting_title_history">History</string>
