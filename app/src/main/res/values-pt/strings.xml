@@ -135,29 +135,28 @@
     <string name="setting_title_app">Configurações do Aplicativo</string>
     <string name="setting_title_ui">Comportamento/Interface</string>
     <string name="setting_title_data">Backup</string>
-    <string name="setting_summary_ui">Change the behavior and ui of the app to suit your preferences.</string>
-    <string name="setting_summary_data">Import and export several app data (whitelists, bookmarks).</string>
-    <string name="setting_filter">Bookmark filter</string>
-    <string name="setting_filter_summary">To show the filter dialog long press on the bookmark icon in the overview. Decide which
-        filters you will use.</string>
-    <string name="setting_title_fav">Favorite</string>
-    <string name="setting_summary_fav">Here you can change the default website which loads on start of \"FOSS Browser\".
-    Enter \"about:blank\" to get an emty start site.</string>
-    <string name="setting_title_searchEngine">Custom search engine</string>
-    <string name="setting_summary_searchEngine">Here you can enter a custom search URL. Also choose \"Custom search engine\" as search
-    provider.</string>
+    <string name="setting_summary_ui">Alterar o comportamento e a interface do aplicativo ao seu gosto.</string>
+    <string name="setting_summary_data">Importar e exportar os dados do aplicativo (lista branca, favoritos…).</string>
+    <string name="setting_filter">Filtro de favoritos</string>
+    <string name="setting_filter_summary">Para mostrar a caixa de diálogo de filtros, pressione o ícone de marcador na visão geral. Decida qual filtro
+        você vai usar.</string>
+    <string name="setting_title_fav">Favorito</string>
+    <string name="setting_summary_fav">Aqui você pode mudar a página inicial do \"FOSS Browser\".
+    Coloque \"about:blank\" para uma página em branco.</string>
+    <string name="setting_title_searchEngine">Mecanismo de pesquisa customizado</string>
+    <string name="setting_summary_searchEngine">Aqui você pode inserir uma URL de pesquisa customizada. Também escolha \"Mecanismo de pesquisa customizado\".</string>
     <!-- App behavior -->
-    <string name="setting_title_hideToolbar">Hide toolbar</string>
-    <string name="setting_summary_hide">Use the whole screen when scrolling through websites. If you press the back button you will
-    leave fullscreen mode.</string>
-    <string name="setting_theme">Theme</string>
-    <string name="setting_theme_summary">Set the app theme.</string>
-    <string name="setting_theme_system">System theme</string>
-    <string name="setting_theme_light">Light theme</string>
-    <string name="setting_theme_dark">Dark theme</string>
+    <string name="setting_title_hideToolbar">Ocultar barra de ferramentas</string>
+    <string name="setting_summary_hide">Use a tela inteira ao navegar nos sites. Se pressionar o botão voltar você
+    deixa o modo de tela cheia.</string>
+    <string name="setting_theme"> Tema</string>
+    <string name="setting_theme_summary">Definir o tema do aplicativo.</string>
+    <string name="setting_theme_system">Tema do sistema</string>
+    <string name="setting_theme_light">Tema claro</string>
+    <string name="setting_theme_dark">Tema escuro</string>
     <string name="setting_title_theme">UI</string>
-    <string name="setting_title_behavior">Behavior</string>
-    <string name="setting_summary_toolbarShow">Pressing back will make the toolbar visible, before going back in history.</string>
+    <string name="setting_title_behavior">Comportamento</string>
+    <string name="setting_summary_toolbarShow">Pressionar voltar faz a barra de ferramentas visível, antes de voltar ao histórico.</string>
     <string name="setting_title_toolbarShow">First toolbar</string>
     <string name="setting_title_nav">Navigation button</string>
     <string name="setting_title_nav_pos">Position</string>
