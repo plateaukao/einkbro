@@ -265,14 +265,15 @@
     <string name="whitelist_add">Přidat</string>
     <!-- Dialog help -->
     <string name="dialogHelp_tipTitle">Tipy</string>
-    <string name="dialogHelp_tipText">        &lt;b&gt;Menus and dialogs&lt;/b&gt;&lt;br&gt;
-        All menus and dialogs are opened at the bottom of the screen. If the dialog is large you will first see only
-        the upper part. If you swipe it up, the rest will get visible.&lt;br&gt;
-        You can close them by pressing the back button, swiping them down or by clicking outside&lt;br&gt;&lt;br&gt;
+    <string name="dialogHelp_tipText">        &lt;b&gt;Nabídky a dialogy&lt;/b&gt;&lt;br&gt;
+        Všechny nabídky a dialogy jsou otevřeny ve spodní části obrazovky. Pokud je dialog velký, uvidíte nejprve pouze
+        horní část. Pokud potáhnete nahoru, zbytek se zviditelní.&lt;br&gt;
+        Můžete je zavřít stisknutím tlačítka Zpět, potáhnutím dolů nebo klepnutím
+vedle&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Long press&lt;/b&gt;&lt;br&gt;
-        If you long press the menu icon or the \"Navigation button\", the \"Fast toggle dialog\" will show. If you long
-        press the \"Bookmark icon\", the \"Filter dialog\" will show.
+        Pokud dlouze stisknete ikonu nabídky nebo „Navigační tlačítko“, zobrazí se „Rychlý přepínač dialogu“. Pokud dlouze
+        stisknete „ikonu Záložky“, zobrazí se „Filtr dialogu“.
     </string>
     <string name="dialogHelp_overviewTitle">Přehled</string>
     <string name="dialogHelp_overviewText">        There are two parts in the \"Overview\" (tab preview and personal data). There is an extra menu. In the settings
