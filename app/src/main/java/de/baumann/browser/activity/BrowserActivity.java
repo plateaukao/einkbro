@@ -20,10 +20,8 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Point;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
@@ -243,6 +241,9 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     private float dimen156dp;
     private float dimen117dp;
 
+    private boolean searchOnSite;
+    private boolean onPause;
+
     private WebChromeClient.CustomViewCallback customViewCallback;
     private ValueCallback<Uri[]> filePathCallback = null;
     private AlbumController currentAlbumController = null;
@@ -404,6 +405,12 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     }
 
     @Override
+    protected void onPause() {
+        onPause = true;
+        super.onPause();
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
 
@@ -553,7 +560,13 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         }
 
         bottomSheetDialog_OverView.show();
-        tab_ScrollView.smoothScrollTo(currentAlbumController.getAlbumView().getLeft(), 0);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                tab_ScrollView.smoothScrollTo(currentAlbumController.getAlbumView().getLeft(), 0);
+            }
+        }, 250);
     }
 
     public void hideOverview () {
@@ -963,19 +976,36 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         } else if ("sc_history".equals(action)) {
             addAlbum(null, sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"), true);
             showOverview();
-            open_history.performClick();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    open_history.performClick();
+                }
+            }, 250);
         } else if ("sc_bookmark".equals(action)) {
             addAlbum(null, sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"), true);
             showOverview();
-            open_bookmark.performClick();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    open_bookmark.performClick();
+                }
+            }, 250);
         } else if ("sc_startPage".equals(action)) {
             addAlbum(null, sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"), true);
             showOverview();
-            open_startPage.performClick();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    open_startPage.performClick();
+                }
+            }, 250);
         } else if (Intent.ACTION_SEND.equals(action)) {
             addAlbum(null, url, true);
         } else {
-            addAlbum(null, sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"), true);
+            if (!onPause) {
+                addAlbum(null, sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"), true);
+            }
         }
         getIntent().setAction("");
     }
@@ -1067,7 +1097,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                     return true;
                 }
                 updateAlbum(query);
-                hideKeyboard(activity);
                 showOmnibox();
                 return false;
             }
@@ -2041,7 +2070,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
     private synchronized void addAlbum(String title, final String url, final boolean foreground) {
 
-        showOmnibox();
         ninjaWebView = new NinjaWebView(context);
         ninjaWebView.setBrowserController(this);
         ninjaWebView.setAlbumTitle(title);
@@ -2051,7 +2079,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         if (currentAlbumController != null) {
             int index = BrowserContainer.indexOf(currentAlbumController) + 1;
             BrowserContainer.add(ninjaWebView, index);
-            tab_container.addView(albumView, index, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT));
+            tab_container.addView(albumView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         } else {
             BrowserContainer.add(ninjaWebView);
             tab_container.addView(albumView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -2062,9 +2090,10 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             ninjaWebView.loadUrl(url);
             ninjaWebView.deactivate();
             return;
+        } else {
+            showOmnibox();
+            showAlbum(ninjaWebView);
         }
-
-        showAlbum(ninjaWebView);
 
         if (url != null && !url.isEmpty()) {
             ninjaWebView.loadUrl(url);
@@ -2506,40 +2535,41 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
     @SuppressLint("RestrictedApi")
     private void showOmnibox() {
-        if (omnibox.getVisibility() == View.GONE && searchPanel.getVisibility() == View.GONE) {
+        if (!searchOnSite)  {
             fab_imageButtonNav.setVisibility(View.GONE);
-            if (omnibox.getVisibility() == View.GONE) {
-                searchPanel.setVisibility(View.GONE);
-                omnibox.setVisibility(View.VISIBLE);
-                omniboxTitle.setVisibility(View.VISIBLE);
-                appBar.setVisibility(View.VISIBLE);
-            }
+            searchPanel.setVisibility(View.GONE);
+            omnibox.setVisibility(View.VISIBLE);
+            omniboxTitle.setVisibility(View.VISIBLE);
+            appBar.setVisibility(View.VISIBLE);
+            hideKeyboard(activity);
         }
     }
 
     @SuppressLint("RestrictedApi")
     private void hideOmnibox() {
-        fab_imageButtonNav.setVisibility(View.VISIBLE);
-        if (omnibox.getVisibility() == View.VISIBLE) {
-            omnibox.setVisibility(View.GONE);
+        if (!searchOnSite)  {
+            fab_imageButtonNav.setVisibility(View.VISIBLE);
             searchPanel.setVisibility(View.GONE);
+            omnibox.setVisibility(View.GONE);
+            omniboxTitle.setVisibility(View.GONE);
             appBar.setVisibility(View.GONE);
         }
     }
 
     private void hideSearchPanel() {
-        hideKeyboard(activity);
-        omniboxTitle.setVisibility(View.VISIBLE);
+        searchOnSite = false;
         searchBox.setText("");
-        searchPanel.setVisibility(View.GONE);
-        omnibox.setVisibility(View.VISIBLE);
+        showOmnibox();
     }
 
+    @SuppressLint("RestrictedApi")
     private void showSearchPanel() {
-        showOmnibox();
+        searchOnSite = true;
+        fab_imageButtonNav.setVisibility(View.GONE);
         omnibox.setVisibility(View.GONE);
-        omniboxTitle.setVisibility(View.GONE);
         searchPanel.setVisibility(View.VISIBLE);
+        omniboxTitle.setVisibility(View.GONE);
+        appBar.setVisibility(View.VISIBLE);
     }
 
     @SuppressWarnings("SameReturnValue")

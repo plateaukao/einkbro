@@ -31,7 +31,7 @@
         android:layout_centerInParent="true"
         android:layout_alignParentEnd="true"
         android:includeFontPadding="false"
-        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textAppearance="?android:attr/textAppearanceListItemSecondary"
         android:maxLines="1"
         android:ellipsize="end"/>
 
@@ -43,8 +43,7 @@
         android:layout_toStartOf="@id/record_item_time"
         android:layout_marginEnd="@dimen/layout_margin_8dp"
         android:includeFontPadding="false"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="?android:attr/textColorPrimary"
+        android:textAppearance="?android:attr/textAppearanceListItem"
         android:maxLines="1"
         android:ellipsize="end"/>
 

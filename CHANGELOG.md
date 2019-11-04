@@ -5,9 +5,12 @@
 - updated: themes
 - updated: Turkish translation
 - updated: Czech translation
+- updated: Brazilian translation
+- updated: Turkish translation
 - updated: settings (especially filter settings)
 - updated: saving locations of backups and screenshots
 - removed: tinting of toolbar
+- removed: open links in background
 
 ### v 6.7
 - new: backup and restore settings
