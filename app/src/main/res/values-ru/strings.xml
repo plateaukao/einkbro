@@ -133,23 +133,22 @@
     <string name="setting_filter">Фильтр закладок</string>
     <string name="setting_filter_summary">Чтобы отобразить диалоговое окно фильтра, удерживайте нажатие на значке закладок в окне. Определите, какие фильтры Вы будете использовать.</string>
     <string name="setting_title_fav">Избранное</string>
-    <string name="setting_summary_fav">Here you can change the default website which loads on start of \"FOSS Browser\".
-    Enter \"about:blank\" to get an emty start site.</string>
+    <string name="setting_summary_fav">Здесь Вы можете изменить веб-сайт по умолчанию, который загружается при запуске \"FOSS Browser\".
+    Введите \"about:blank\", чтобы открывалась путая вкладка.</string>
     <string name="setting_title_searchEngine">Пользовательская поисковая система</string>
-    <string name="setting_summary_searchEngine">Here you can enter a custom search URL. Also choose \"Custom search engine\" as search
-    provider.</string>
+    <string name="setting_summary_searchEngine">Здесь Вы можете ввести свой адрес для поиска. Также можно выбрать \"Пользовательская поисковая система\" для поиска по умолчанию.</string>
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">Скрыть панель инструментов</string>
     <string name="setting_summary_hide">Используйте весь экран при прокрутке сайтов. Если вы нажмете кнопку Назад, то покинете полноэкранный режим.</string>
     <string name="setting_theme">Тема</string>
-    <string name="setting_theme_summary">Set the app theme.</string>
+    <string name="setting_theme_summary">Установить тему приложения.</string>
     <string name="setting_theme_system">Системная тема</string>
     <string name="setting_theme_light">Светлая тема</string>
     <string name="setting_theme_dark">Темная тема</string>
-    <string name="setting_title_theme">UI</string>
-    <string name="setting_title_behavior">Behavior</string>
-    <string name="setting_summary_toolbarShow">Pressing back will make the toolbar visible, before going back in history.</string>
-    <string name="setting_title_toolbarShow">First toolbar</string>
+    <string name="setting_title_theme">Интерфейс</string>
+    <string name="setting_title_behavior">Поведение</string>
+    <string name="setting_summary_toolbarShow">Нажатие назад сделает панель инструментов видимой, прежде чем вернуться в историю.</string>
+    <string name="setting_title_toolbarShow">Первая панель инструментов</string>
     <string name="setting_title_nav">Кнопка навигации</string>
     <string name="setting_title_nav_pos">Положение</string>
     <string name="setting_summary_nav_pos">Определите, где будет размещена \"Кнопка навигации \".</string>
@@ -161,32 +160,31 @@
     <string name="setting_summary_confirm_exit">Диалоговое окно подтверждения при закрытии браузера.</string>
     <string name="setting_title_confirm_tab_close">Подтвердить закрытие вкладки</string>
     <string name="setting_summary_confirm_tab_close">Диалоговое окно подтверждения при закрытии вкладки.</string>
-    <string name="setting_overView">Overview</string>
-    <string name="setting_overView_onStart_title">Show on start</string>
-    <string name="setting_overView_onStart_summary">Open the \"Overview\" on every app start.</string>
-    <string name="setting_overView_hide_title">Hide tab previews</string>
-    <string name="setting_overView_hide_summary">In expanded overview the tab preview will hide. Then you have more place for your
-    bookmarks.</string>
-    <string name="setting_gestures">Gestures</string>
-    <string name="setting_gestures_use_title">Use gestures</string>
-    <string name="setting_gestures_use_summary">Use gestures on the toolbar and the \"Navigation button\".</string>
-    <string name="setting_title_reopenLastTab">Reopen last tab</string>
-    <string name="setting_summary_reopenLastTab">Reopen a new tab when the last tab is closed instead of exiting the browser.</string>
+    <string name="setting_overView">Обзор</string>
+    <string name="setting_overView_onStart_title">Показывать при запуске</string>
+    <string name="setting_overView_onStart_summary">Открывать \"Обзор\" при каждом запуске приложения.</string>
+    <string name="setting_overView_hide_title">Скрыть предпросмотр вкладки</string>
+    <string name="setting_overView_hide_summary">В расширенном обзоре предварительный просмотр вкладки будет скрыт. Будет доступно больше места для Ваших закладок.</string>
+    <string name="setting_gestures">Жесты</string>
+    <string name="setting_gestures_use_title">Использовать жесты</string>
+    <string name="setting_gestures_use_summary">Использовать жесты в панели инструментов и на кнопке навигации.</string>
+    <string name="setting_title_reopenLastTab">Открыть последнюю вкладку</string>
+    <string name="setting_summary_reopenLastTab">Открыть новую вкладку при закрытии последней вкладки вместо выхода из браузера.</string>
     <!-- gestures -->
-    <string name="setting_title_toolbar">Toolbar</string>
-    <string name="setting_gesture_up">Swipe up</string>
-    <string name="setting_gesture_down">Swipe down</string>
-    <string name="setting_gesture_left">Swipe left</string>
-    <string name="setting_gesture_right">Swipe right</string>
-    <string name="setting_gesture_01">Nothing</string>
-    <string name="setting_gesture_02">Forward in history</string>
-    <string name="setting_gesture_03">Back in history</string>
-    <string name="setting_gesture_04">Scroll to top</string>
-    <string name="setting_gesture_05">Scroll to bottom</string>
-    <string name="setting_gesture_06">Switch to left tab</string>
-    <string name="setting_gesture_07">Switch to right tab</string>
-    <string name="setting_gesture_08">Show overview</string>
-    <string name="setting_gesture_09">Open new tab</string>
+    <string name="setting_title_toolbar">Панель инструментов</string>
+    <string name="setting_gesture_up">Свайп вверх</string>
+    <string name="setting_gesture_down">Свайп вниз</string>
+    <string name="setting_gesture_left">Свайп влево</string>
+    <string name="setting_gesture_right">Свайп вправо</string>
+    <string name="setting_gesture_01">Ничего</string>
+    <string name="setting_gesture_02">Переслать в историю</string>
+    <string name="setting_gesture_03">Вернуться в историю</string>
+    <string name="setting_gesture_04">Прокрутка вверх</string>
+    <string name="setting_gesture_05">Прокрутка вниз</string>
+    <string name="setting_gesture_06">Переключиться на левую вкладку</string>
+    <string name="setting_gesture_07">Переключиться на правую вкладку</string>
+    <string name="setting_gesture_08">Показать обзор</string>
+    <string name="setting_gesture_09">Открыть новую вкладку</string>
     <string name="setting_gesture_10">Закрыть вкладку</string>
     <!-- Data -->
     <string name="setting_title_export_whitelist">Экспорт белого списка AdBlock</string>
@@ -198,11 +196,11 @@
     <string name="setting_title_export_whitelistCookie">Экспорт белого списка куки</string>
     <string name="setting_title_import_whitelistCookie">Импорт белого списка куки</string>
     <string name="export_whitelistCookie">export_whitelist_Cookie</string>
-    <string name="setting_title_export_appData">Export app data</string>
-    <string name="setting_title_import_appData">Import app data</string>
-    <string name="setting_summary_export_appData">Export app data (Startpage + previews, History, Bookmarks)
-        and your personal settings.</string>
-    <string name="title_appData">App data</string>
+    <string name="setting_title_export_appData">Экспорт данных</string>
+    <string name="setting_title_import_appData">Импорт данных</string>
+    <string name="setting_summary_export_appData">Экспортировать данные приложения (стартовая страница + предпросмотры, история, закладки)
+        и Ваши личные настройки.</string>
+    <string name="title_appData">Данные приложения</string>
     <string name="hint_database">Это приведет к удалению всех текущих настроек и данных. Продолжить?</string>
     <!-- Others setting -->
     <string name="setting_title_others">Другие</string>
@@ -252,17 +250,15 @@
     <string name="whitelist_edit_hint">Домен</string>
     <string name="whitelist_add">Добавить</string>
     <!-- Dialog help -->
-    <string name="dialogHelp_tipTitle">Tips</string>
-    <string name="dialogHelp_tipText">        &lt;b&gt;Menus and dialogs&lt;/b&gt;&lt;br&gt;
-        All menus and dialogs are opened at the bottom of the screen. If the dialog is large you will first see only
-        the upper part. If you swipe it up, the rest will get visible.&lt;br&gt;
-        You can close them by pressing the back button, swiping them down or by clicking outside&lt;br&gt;&lt;br&gt;
+    <string name="dialogHelp_tipTitle">Подсказки</string>
+    <string name="dialogHelp_tipText">        &lt;b&gt;Меню и диалоги&lt;/b&gt;&lt;br&gt;
+       Все меню и диалоги открываются внизу экрана. Если диалог большой, сперва Вы увидите верхнюю часть.Если Вы прокрутите её, будет видна оставшаяся часть.&lt;br&gt;
+       Закрытие производится кнопкой Назад, свайпом вниз или кликом на пустом месте&lt;br&gt;&lt;br&gt;
 
-        &lt;b&gt;Long press&lt;/b&gt;&lt;br&gt;
-        If you long press the menu icon or the \"Navigation button\", the \"Fast toggle dialog\" will show. If you long
-        press the \"Bookmark icon\", the \"Filter dialog\" will show.
+        &lt;b&gt;Удержание нажатия&lt;/b&gt;&lt;br&gt;
+        Длительное удержание на значке меню или на кнопке навигации вызывает бытрый диалог переключения, удержание значка закладки вызывает диалог фильтров.
     </string>
-    <string name="dialogHelp_overviewTitle">Overview</string>
+    <string name="dialogHelp_overviewTitle">Обзор</string>
     <string name="dialogHelp_overviewText">        There are two parts in the \"Overview\" (tab preview and personal data). There is an extra menu. In the settings
         you can change the behavior of the \"Overview\".&lt;br&gt;&lt;br&gt;
 
@@ -274,21 +270,21 @@
         There are three parts: the Startsite, your Bookmarks and your History. If you long click an entry
         a menu with more options will appear.
     </string>
-    <string name="dialogHelp_filterText">        You can tag your bookmarks with filters. In this way you can group your bookmarks. You can open the filter dialog by
-        long pressing the bookmark icon. If you activate an entry a dialog will appear, where you can edit the name of the filter.
+    <string name="dialogHelp_filterText">        Вы можете присвоить своим закладкам фильтры. Так можно создавать группы закладок. Можно открыть диалог фильтров
+        удержанием нажатия на значке закладки. Если Вы активировали ввод, появится диалог, позволяющий изменить имя фильтра.
     </string>
     <!-- Dialog changelog -->
-    <string name="changelog_dialog">        Your language isn\'t supported yet? You want to translate FOSS Browser? Or make improvements to existing translations?
-        Feel free to join us on Crowdin: https://crowdin.com/project/foss-browser.&lt;br&gt;&lt;br&gt;
+    <string name="changelog_dialog">        Отсутствует Ваш язык? Вы хотите помочь с переводом FOSS Browser? Или улучшить существующий перевод?
+        Присединяйтесь к нам на Crowdin: https://crowdin.com/project/foss-browser.&lt;br&gt;&lt;br&gt;
 
-        &lt;b&gt;On the following sites you have access to all important information about \"FOSS Browser\".
-        Please read also the help dialog within the app.&lt;/b&gt;&lt;br&gt;&lt;br&gt;
+        &lt;b&gt;На следующих сайтах Вы получите всю важную информацию о \"FOSS Browser\".
+        Пожалуйста, пользуйтесь также правкой внутри приложения.&lt;/b&gt;&lt;br&gt;&lt;br&gt;
 
-        \u25AA &lt;i&gt;Project site:&lt;/i&gt; https://github.com/scoute-dich/Browser&lt;br&gt;
-        \u25AA &lt;i&gt;Changelog:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;br&gt;
-        \u25AA &lt;i&gt;FAQ:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/FAQs.md&lt;br&gt;
-        \u25AA &lt;i&gt;License:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/LICENSE.md&lt;br&gt;
-        \u25AA &lt;i&gt;Privacy:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/PRIVACY.md
+        \u25AA &lt;i&gt;Сайт проекта:&lt;/i&gt; https://github.com/scoute-dich/Browser&lt;br&gt;
+        \u25AA &lt;i&gt;История изменений:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;br&gt;
+        \u25AA &lt;i&gt;Вопросы и ответы:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/FAQs.md&lt;br&gt;
+        \u25AA &lt;i&gt;Лицензия:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/LICENSE.md&lt;br&gt;
+        \u25AA &lt;i&gt;Конфиденциальность:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/PRIVACY.md
 
     </string>
     <!-- License changelog -->
