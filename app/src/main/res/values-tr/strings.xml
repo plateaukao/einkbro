@@ -340,27 +340,27 @@
         Apache License Version 2.0&lt;br&gt;
         hummatli&lt;br&gt;
         &lt;i&gt;https://github.com/hummatli/SimpleEncryptionLib</string>
-    <string name="cont_dialog">        &lt;i&gt;Öncelikle bu projeye herhangi bir şekilde katkıda bulunan herkese teşekkür etmek istiyorum. Sorunlar gönderdiler,
-        çeviri yaptılar ve başka herhangi bir şekilde yardımcı oldular. Aşağıdaki sitelerde bu harika topluluğun 
-        aktif bir üyesi olabilirsiniz:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
+    <string name="cont_dialog">        &lt;i&gt;First I would like to thank all people who contributed in any way on this project. They submitted issues,
+        translated or helped in any other way. On following sites you can become a active member of this
+        great community:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Crowdin:&lt;/b&gt;&lt;br&gt;
-        Crowdin uygulamaları diğer dillere çevirmek için kullanılan online bir platformdur. Siz de
-        yardımcı olabilirsiniz.&lt;br&gt;
+        Crowdin is an online plattform to translate applications in other languages. A big thanks to all translators. You can
+        also help.&lt;br&gt;
         &lt;i&gt;https://crowdin.com/project/foss-browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
 
-        &lt;b&gt;XDA-forumu:&lt;/b&gt;&lt;br&gt;
-        XDA, geliştiriciler ve akıllı telefon meraklıları için harika bir topluluktur. Burada sorunları bildirebilir, yeni özellikler ve
-        \"FOSS Browser\" ile ilgili her şeyi isteyebilirsiniz.&lt;br&gt;
+        &lt;b&gt;XDA-thread:&lt;/b&gt;&lt;br&gt;
+        XDA is a great community for developers and smartphone enthusiasts. Here you can report issues, ask for new features
+        and everything other related to \"FOSS Browser\".&lt;br&gt;
         &lt;i&gt;https://forum.xda-developers.com/android/apps-games/app-browser-t3500091&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Github:&lt;/b&gt;&lt;br&gt;
-        GitHub\'da \"FOSS Browser\"ın kaynak kodunu görebilirsiniz. Bu daha teknik bir çözüm: sorunlar açın, yeni özellikler isteyin,
-        hatta geliştirilmesine veya çevrilmesine yardımcı olun.&lt;br&gt;
+        On Github you can see the source code of \"FOSS Browser\". This is the more technical solution: open issues, ask for new
+        features or even help developing or translating.&lt;br&gt;
         &lt;i&gt;https://github.com/scoute-dich/browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
 
 
-        &lt;i&gt;Aşağıdaki kişiler bu projeye katkıda bulundu. Birini unutmuşsam, lütfen benimle iletişime geçin.:&lt;/i&gt;
+        &lt;i&gt;Following people contributed at this project. If I have forgotten anybody, please contact me:&lt;/i&gt;
     </string>
 </resources>
