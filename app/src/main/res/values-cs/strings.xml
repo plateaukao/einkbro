@@ -337,123 +337,27 @@ vedle&lt;br&gt;&lt;br&gt;
         Apache License Version 2.0&lt;br&gt;
         hummatli&lt;br&gt;
         &lt;i&gt;https://github.com/hummatli/SimpleEncryptionLib</string>
-    <string name="cont_dialog">        &lt;i&gt;Nejprve bych rád poděkoval všem lidem, kteří jakýmkoli způsobem přispěli k tomuto projektu. Všem, kteří řešili problémy,
-        překládali nebo pomáhali jiným způsobem. Na následujících stránkách se můžete stát aktivním členem
-        skvělé komunity:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
+    <string name="cont_dialog">        &lt;i&gt;First I would like to thank all people who contributed in any way on this project. They submitted issues,
+        translated or helped in any other way. On following sites you can become a active member of this
+        great community:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Crowdin:&lt;/b&gt;&lt;br&gt;
-        Crowdin je online platforma pro překlad aplikací do různých jazyků. Velké díky všem překladatelům. Můžeté
-        také pomoci.&lt;br&gt;
+        Crowdin is an online plattform to translate applications in other languages. A big thanks to all translators. You can
+        also help.&lt;br&gt;
         &lt;i&gt;https://crowdin.com/project/foss-browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
 
-        &lt;b&gt;Vlákno XDA:&lt;/b&gt;&lt;br&gt;
-        XDA je skvělá komunita pro vývojáře a milovníky chytrých telefonů. Zde můžete hlásit problémy, žádat o nové funkce
-        a všechno ostatní co souvisí s aplikací „FOSS Browser“.&lt;br&gt;
+        &lt;b&gt;XDA-thread:&lt;/b&gt;&lt;br&gt;
+        XDA is a great community for developers and smartphone enthusiasts. Here you can report issues, ask for new features
+        and everything other related to \"FOSS Browser\".&lt;br&gt;
         &lt;i&gt;https://forum.xda-developers.com/android/apps-games/app-browser-t3500091&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
-        &lt;b&gt;GitHub:&lt;/b&gt;&lt;br&gt;
-        Na GitHubu můžete vidět zdrojový kód aplikace „FOSS Browser“. Toto je více technické řešení: nahlaste problém, žádejte o nové
-        funkce, nebo pomáhejte při vývoji a překladech.&lt;br&gt;
+        &lt;b&gt;Github:&lt;/b&gt;&lt;br&gt;
+        On Github you can see the source code of \"FOSS Browser\". This is the more technical solution: open issues, ask for new
+        features or even help developing or translating.&lt;br&gt;
         &lt;i&gt;https://github.com/scoute-dich/browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
 
 
-        &lt;i&gt;Následující lidé přispěli do tohoto projektu. Pokud jsem na někoho zapomněl, kontaktujte mě:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Gaukler Faun&lt;/b&gt;&lt;br&gt;
-        \u25AA Hlavní vývojář a iniciátor tohoto projektu&lt;br&gt;
-        &lt;i&gt;https://github.com/scoute-dich&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Ali Demirtas&lt;/b&gt;&lt;br&gt;
-        \u25AA Překlad do turečtiny&lt;br&gt;
-        &lt;i&gt;https://github.com/ali-demirtas&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;CGSLURP LLC&lt;/b&gt;&lt;br&gt;
-        \u25AA Pomohl implementovat AdBlock v předchozí verzi aplikace „FOSS Browser“.&lt;br&gt;
-        &lt;i&gt;https://github.com/futrDevelopment&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;element54&lt;/b&gt;&lt;br&gt;
-        \u25AA fix: keyboard problems (issue #105)&lt;br&gt;
-        \u25AA new: option to disable confirmation dialogs on exit&lt;br&gt;
-        &lt;i&gt;https://github.com/element54&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;elmru&lt;/b&gt;&lt;br&gt;
-        \u25AA Překlad do tajvanštiny a čínštiny&lt;br&gt;
-        &lt;i&gt;https://github.com/kogiokka&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Enrico Monese&lt;/b&gt;&lt;br&gt;
-        \u25AA Překlad do italštiny&lt;br&gt;
-        &lt;i&gt;https://github.com/EnricoMonese&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Francois&lt;/b&gt;&lt;br&gt;
-        \u25AA Překlad do francouštiny&lt;br&gt;
-        &lt;i&gt;https://github.com/franco27&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;gh-pmjm&lt;/b&gt;&lt;br&gt;
-        \u25AA Překlad do polštiny&lt;br&gt;
-        &lt;i&gt;https://github.com/gh-pmjm&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;gr1sh&lt;/b&gt;&lt;br&gt;
-        \u25AA fix: some German strings (issues #124, #131)&lt;br&gt;
-        &lt;i&gt;https://github.com/gr1sh&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Harry Heights&lt;/b&gt;&lt;br&gt;
-        \u25AA Dokumentace aplikace FOSS Browser&lt;br&gt;
-        &lt;i&gt;https://github.com/HarryHeights&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Heimen Stoffels&lt;/b&gt;&lt;br&gt;
-        \u25AA Překlad do holandštiny&lt;br&gt;
-        &lt;i&gt;https://github.com/Vistaus&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Hellohat&lt;/b&gt;&lt;br&gt;
-        \u25AA Překlad do francouštiny&lt;br&gt;
-        &lt;i&gt;https://github.com/Hellohat&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Herman Nunez&lt;/b&gt;&lt;br&gt;
-        \u25AA Překlad do španělštiny&lt;br&gt;
-        &lt;i&gt;https://github.com/junior012&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Jumping Yang&lt;/b&gt;&lt;br&gt;
-        \u25AA Překlad do čínštiny předchozí verze aplikace „FOSS Browser“&lt;br&gt;
-        &lt;i&gt;https://github.com/JumpingYang001&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;lishoujun&lt;/b&gt;&lt;br&gt;
-        \u25AA Překlad do čínštiny&lt;br&gt;
-        \u25AA bug hunting&lt;br&gt;
-        &lt;i&gt;https://github.com/lishoujun&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Peter Bui&lt;/b&gt;&lt;br&gt;
-        \u25AA Přidání dalších velikostí písem&lt;br&gt;
-        &lt;i&gt;https://github.com/pbui&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Secangkir Kopi&lt;/b&gt;&lt;br&gt;
-        \u25AA Překlad do indonéštiny&lt;br&gt;
-        &lt;i&gt;https://github.com/Secangkir-Kopi&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Sérgio Marques&lt;/b&gt;&lt;br&gt;
-        \u25AA Překlad do portugalštiny&lt;br&gt;
-        &lt;i&gt;https://github.com/smarquespt&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;splinet&lt;/b&gt;&lt;br&gt;
-        \u25AA Překlad do ruštiny předchozí verze aplikace „FOSS Browser“&lt;br&gt;
-        &lt;i&gt;https://github.com/splinet&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;SkewedZeppelin&lt;/b&gt;&lt;br&gt;
-        \u25AA Přidal možnost hlavičky Ušetřit data&lt;br&gt;
-        &lt;i&gt;https://github.com/SkewedZeppelin&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Tobiplayer3&lt;/b&gt;&lt;br&gt;
-        \u25AA Přidal Qwant vyhledávač&lt;br&gt;
-        \u25AA možnost otevření nové karty namísto ukončení aplikace&lt;br&gt;
-        &lt;i&gt;https://github.com/Tobiplayer3&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Vladimir Kosolapov&lt;/b&gt;&lt;br&gt;
-        \u25AA Překlad do ruštiny&lt;br&gt;
-        &lt;i&gt;https://github.com/0x264f&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;YC L&lt;/b&gt;&lt;br&gt;
-        \u25AA Překlad do čínštiny&lt;br&gt;
-        &lt;i&gt;https://github.com/smallg0at&lt;/i&gt;
-
+        &lt;i&gt;Following people contributed at this project. If I have forgotten anybody, please contact me:&lt;/i&gt;
     </string>
 </resources>
