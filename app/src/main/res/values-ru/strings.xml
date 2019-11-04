@@ -290,123 +290,125 @@
     <!-- License changelog -->
     <string name="license_title">Copyright © 2017 by Gaukler Faun</string>
     <string name="license_dialog">&lt;i&gt;For more information visit the project site on Github: https://github.com/scoute-dich/Browser&lt;/i&gt;&lt;br&gt;&lt;br&gt; This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program. If not, see http://www.gnu.org/licenses.&lt;br&gt;&lt;br&gt; &lt;i&gt;Following open source libraries or projects are used within this software:&lt;/i&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt; &lt;b&gt;Android Sliding Up Panel&lt;/b&gt;&lt;br&gt; Apache License Version 2.0&lt;br&gt; Umano: News Read To You&lt;br&gt; &lt;i&gt;http://git.io/vUruG&lt;/i&gt;&lt;br&gt;&lt;br&gt; &lt;b&gt;Android Swipe-to-Dismiss&lt;/b&gt;&lt;br&gt; Apache License Version 2.0&lt;br&gt; Roman Nurik&lt;br&gt; &lt;i&gt;http://git.io/vUruO&lt;/i&gt;&lt;br&gt;&lt;br&gt; &lt;b&gt;DynamicGrid&lt;/b&gt;&lt;br&gt; Apache License Version 2.0&lt;br&gt; askerov&lt;br&gt; &lt;i&gt;http://git.io/vTHZH&lt;/i&gt;&lt;br&gt;&lt;br&gt; &lt;b&gt;Lightning Browser&lt;/b&gt;&lt;br&gt; Mozilla Public License Version 2.0&lt;br&gt; Anthony Restaino&lt;br&gt; &lt;i&gt;http://git.io/vUruk&lt;/i&gt;&lt;br&gt;&lt;br&gt; &lt;b&gt;Material Design Icons&lt;/b&gt;&lt;br&gt; SIL Open Font License, Version 1.1.&lt;br&gt; Templarian&lt;br&gt; &lt;i&gt;https://github.com/Templarian/MaterialDesign&lt;/i&gt;&lt;br&gt;&lt;br&gt; &lt;b&gt;Ninja&lt;/b&gt;&lt;br&gt; Apache License Version 2.0&lt;br&gt; Matthew Lee&lt;br&gt; &lt;i&gt;http://git.io/vUrEh&lt;/i&gt;&lt;br&gt;&lt;br&gt; &lt;b&gt;SimpleEncryptionLib&lt;/b&gt;&lt;br&gt; Apache License Version 2.0&lt;br&gt; hummatli&lt;br&gt; &lt;i&gt;https://github.com/hummatli/SimpleEncryptionLib</string>
-    <string name="cont_dialog">        &lt;i&gt;First I would like to thank all people who contributed in any way on this project. They submitted issues,
-        translated or helped in any other way. On following sites you can become a active member of this
-        great community:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
+    <string name="cont_dialog">        &lt;i&gt;Сперва я бы хотел поблагодарить всех людей, которые внесли вклад в проект. Они отправляли информацию,,
+        переводили или помогали другими способами. На следующих сайтах Вы сможете стать членами этого замечательного
+        сообщества:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Crowdin:&lt;/b&gt;&lt;br&gt;
-        Crowdin is an online plattform to translate applications in other languages. A big thanks to all translators. You can
-        also help.&lt;br&gt;
+        Crowdin - это онлайн-платформа для перевода приложений. Огромное спасибо всем переводчикам. Вы тоже
+        можете помочь.&lt;br&gt;
         &lt;i&gt;https://crowdin.com/project/foss-browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
 
-        &lt;b&gt;XDA-thread:&lt;/b&gt;&lt;br&gt;
-        XDA is a great community for developers and smartphone enthusiasts. Here you can report issues, ask for new features
-        and everything other related to \"FOSS Browser\".&lt;br&gt;
+        &lt;b&gt;Тема на XDA:&lt;/b&gt;&lt;br&gt;
+        XDA - это болшое сообщество разработчиков и любителей смартфонов. Здесь Вы можете сообщить о проблеах, запросить новые функции
+        и узнать всё, что касается \"FOSS Browser\".&lt;br&gt;
         &lt;i&gt;https://forum.xda-developers.com/android/apps-games/app-browser-t3500091&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Github:&lt;/b&gt;&lt;br&gt;
-        On Github you can see the source code of \"FOSS Browser\". This is the more technical solution: open issues, ask for new
-        features or even help developing or translating.&lt;br&gt;
+        на Github Вы сможете увидеть исходный код \"FOSS Browser\". Это более техническое решение: открывайте проблемные вопросы, запрашивайте новые
+        функции или.&lt;br&gt;даже помогайте в разработке или переводе
         &lt;i&gt;https://github.com/scoute-dich/browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
 
 
-        &lt;i&gt;Following people contributed at this project. If I have forgotten anybody, please contact me:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
+        &lt;i&gt;Следующие люди внесли вклад в проект. Если я кого-то забыл, сообщите мне:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Gaukler Faun&lt;/b&gt;&lt;br&gt;
-        \u25AA Main developer and initiator of this project&lt;br&gt;
+        \u25AA Главный разработчик и инициатор проекта&lt;br&gt;
         &lt;i&gt;https://github.com/scoute-dich&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Ali Demirtas&lt;/b&gt;&lt;br&gt;
-        \u25AA Turkish Translation&lt;br&gt;
+        \u25AA Турецкий перевод&lt;br&gt;
         &lt;i&gt;https://github.com/ali-demirtas&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;CGSLURP LLC&lt;/b&gt;&lt;br&gt;
-        \u25AA Helped to implement AdBlock and \"request desktop site\" in the previous version of \"FOSS Browser\".&lt;br&gt;
+        \u25AA Помощь в реализации AdBlock и запроса версии для ПК в предыдущей версии \"FOSS Browser\".&lt;br&gt;
         &lt;i&gt;https://github.com/futrDevelopment&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;element54&lt;/b&gt;&lt;br&gt;
-        \u25AA fix: keyboard problems (issue #105)&lt;br&gt;
-        \u25AA new: option to disable confirmation dialogs on exit&lt;br&gt;
+        \u25AA исправление: проблемы клавиатуры (issue #105)&lt;br&gt;
+        \u25AA новое: опция отключения диалогов подтверждения при выходе&lt;br&gt;
         &lt;i&gt;https://github.com/element54&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;elmru&lt;/b&gt;&lt;br&gt;
-        \u25AA Taiwan Trad. Chinese Translation&lt;br&gt;
+        \u25AA Традиционный китайский перевод&lt;br&gt;
         &lt;i&gt;https://github.com/kogiokka&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Enrico Monese&lt;/b&gt;&lt;br&gt;
-        \u25AA Italian Translation&lt;br&gt;
+        \u25AA Итальянский перевод&lt;br&gt;
         &lt;i&gt;https://github.com/EnricoMonese&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Francois&lt;/b&gt;&lt;br&gt;
-        \u25AA French Translation&lt;br&gt;
+        \u25AA Франузский перевод&lt;br&gt;
         &lt;i&gt;https://github.com/franco27&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;gh-pmjm&lt;/b&gt;&lt;br&gt;
-        \u25AA Polish translation&lt;br&gt;
+        \u25AA Польский перевод&lt;br&gt;
         &lt;i&gt;https://github.com/gh-pmjm&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;gr1sh&lt;/b&gt;&lt;br&gt;
-        \u25AA fix: some German strings (issues #124, #131)&lt;br&gt;
+        \u25AA исправление: некоторые строки в немецком (issues #124, #131)&lt;br&gt;
         &lt;i&gt;https://github.com/gr1sh&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Harry Heights&lt;/b&gt;&lt;br&gt;
-        \u25AA Documentation of FOSS Browser&lt;br&gt;
+        \u25AA Документация FOSS Browser&lt;br&gt;
         &lt;i&gt;https://github.com/HarryHeights&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Heimen Stoffels&lt;/b&gt;&lt;br&gt;
-        \u25AA Dutch translation&lt;br&gt;
+        \u25AA Голландский перевод&lt;br&gt;
         &lt;i&gt;https://github.com/Vistaus&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Hellohat&lt;/b&gt;&lt;br&gt;
-        \u25AA French translation&lt;br&gt;
+        \u25AA Французский перевод&lt;br&gt;
         &lt;i&gt;https://github.com/Hellohat&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Herman Nunez&lt;/b&gt;&lt;br&gt;
-        \u25AA Spanish translation&lt;br&gt;
+        \u25AA Испанский перевод&lt;br&gt;
         &lt;i&gt;https://github.com/junior012&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Jumping Yang&lt;/b&gt;&lt;br&gt;
-        \u25AA Chinese translation in the previous version of \"FOSS Browser\"&lt;br&gt;
+        \u25AA Китайский перевод в предыдущей версии \"FOSS Browser\"&lt;br&gt;
         &lt;i&gt;https://github.com/JumpingYang001&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;lishoujun&lt;/b&gt;&lt;br&gt;
-        \u25AA Chinese translation&lt;br&gt;
+        \u25AA Китайский перевод&lt;br&gt;
         \u25AA bug hunting&lt;br&gt;
         &lt;i&gt;https://github.com/lishoujun&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Peter Bui&lt;/b&gt;&lt;br&gt;
-        \u25AA more font sizes to choose&lt;br&gt;
+        \u25AA больше шрифтов для выбора&lt;br&gt;
         &lt;i&gt;https://github.com/pbui&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Secangkir Kopi&lt;/b&gt;&lt;br&gt;
-        \u25AA Indonesian translation&lt;br&gt;
+        \u25AA Индонезийский перевод&lt;br&gt;
         &lt;i&gt;https://github.com/Secangkir-Kopi&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Sérgio Marques&lt;/b&gt;&lt;br&gt;
-        \u25AA Portuguese translation&lt;br&gt;
+        \u25AA Португальский перевод&lt;br&gt;
         &lt;i&gt;https://github.com/smarquespt&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;splinet&lt;/b&gt;&lt;br&gt;
-        \u25AA Russian translation in the previous version of \"FOSS Browser\"&lt;br&gt;
+        \u25AA Русский перевод в предыдущей версии \"FOSS Browser\"&lt;br&gt;
         &lt;i&gt;https://github.com/splinet&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;SkewedZeppelin&lt;/b&gt;&lt;br&gt;
-        \u25AA Add option to enable Save-Data header&lt;br&gt;
+        \u25AA Добавление опции включения сохранения данных&lt;br&gt;
         &lt;i&gt;https://github.com/SkewedZeppelin&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Tobiplayer3&lt;/b&gt;&lt;br&gt;
-        \u25AA added Qwant search engine&lt;br&gt;
-        \u25AA option to open new tab instead of exiting app&lt;br&gt;
+        \u25AA добавление поиска Qwant&lt;br&gt;
+        \u25AA опция открытия новой вкладки вместо выхода&lt;br&gt;
         &lt;i&gt;https://github.com/Tobiplayer3&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Vladimir Kosolapov&lt;/b&gt;&lt;br&gt;
-        \u25AA Russian translation&lt;br&gt;
+        \u25AA Русский перевод&lt;br&gt;
         &lt;i&gt;https://github.com/0x264f&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;YC L&lt;/b&gt;&lt;br&gt;
-        \u25AA Chinese Translation&lt;br&gt;
+        \u25AA Китайский перевод&lt;br&gt;
         &lt;i&gt;https://github.com/smallg0at&lt;/i&gt;
 
-    </string>
+     &lt;b&gt;Dmitry Chernogaev (gaich@xda)&lt;/b&gt;&lt;br&gt;
+        \u25AA Русский перевод&lt;br&gt;
+        &lt;i&gt;https://forum.xda-developers.com/member.php?u=4563466&lt;/i&gt;&lt;br&gt;&lt;br&gt;    </string>
 </resources>
