@@ -100,59 +100,55 @@
     <string name="setting_summary_images">Povolí automatické načítání obrázků. Vypnutí by mohlo být užitečné pro šetření mobilních dat a rychlejší     načítání webových stránek.</string>
     <string name="setting_title_cookie">Cookies</string>
     <string name="setting_summary_cookie_delete">Pokud je povoleno, všechny cookies budou smazány. Také cookies důvěryhodných webových stránek.</string>
-    <string name="setting_summary_cookie">Enable Cookies. Cookies are small text files, which are stored on your device. Websites
-    use them for example to store user settings (for example search settings). But they could also be used to collect personal
-        user data. Third party cookies (they collect user data for advertising) are always disabled.</string>
-    <string name="setting_title_whitelistCookie">Cookie whitelist</string>
-    <string name="setting_summary_whitelistCookie">If you disable Cookies, you can use this whitelist to allow sites you
-        trust to use save cookies.</string>
+    <string name="setting_summary_cookie">Povolit cookies. Cookies jsou malé textové soubory, které jsou uloženy ve vašem zařízení. Webové stránky     je používají např. k uložení uživatelských nastavení (např. nastavení vyhledávání). můžou však být použity ke sběru osobních
+        uživatelských dat. Cookies třetích stran (ukládají uživatelská data pro zobrazení reklam), jsou vždy zakázány.</string>
+    <string name="setting_title_whitelistCookie">Seznam povolených - Cookies</string>
+    <string name="setting_summary_whitelistCookie">Pokud cookies zakážete, můžete pomocí tohoto seznamu povolených povolit webům, kterým důvěřujete,         používat uložené cookies.</string>
     <string name="setting_title_javascript">JavaScript</string>
-    <string name="setting_summary_javascript">Enable JavaScript. Many websites need JavaScript for their functionality (menus,
-        loading and displaying images, …). But they are also a risk and can be used for attacks.</string>
-    <string name="setting_title_whitelistJS">JavaScript whitelist</string>
-    <string name="setting_summary_whitelistJS">If you disable JavaScript, you can use this whitelist to allow sites you
-        trust to use javascript.</string>
+    <string name="setting_summary_javascript">Povolit JavaScript. Mnoho webových stránek potřebuje pro svou funkčnost JavaScript (nabídky,
+        načítání a zobrazování obrázků, …). Je však také rizikem a může být použit k útokům.</string>
+    <string name="setting_title_whitelistJS">Seznam povolených - JavaScript</string>
+    <string name="setting_summary_whitelistJS">Pokud JavaScript zakážete, můžete pomocí tohoto seznamu povolených povolit webům, kterým důvěřujete,         používat JavaScript.</string>
     <string name="setting_title_adblock">AdBlock</string>
-    <string name="setting_summary_adblock">Enable AdBlock to block annoying ads. Sites also load faster when enabled.</string>
-    <string name="setting_title_whitelist">AdBlock whitelist</string>
-    <string name="setting_summary_whitelist">Allow these sites to show ads. Some sites do not work, when AdBlock is enabled.</string>
+    <string name="setting_summary_adblock">Zapněte AdBlock pro blokování obtěžujících reklam. Stránky se budou načítat rychleji.</string>
+    <string name="setting_title_whitelist">Seznam povolených - AdBlock</string>
+    <string name="setting_summary_whitelist">Povolit těmto webům zobrazovat reklamy. Pokud jsou zapnuty funkce AdBlock, některé weby nefungují.</string>
     <string name="setting_title_location">Poloha</string>
-    <string name="setting_summary_location">Allow websites to access your location. Some websites (like Google maps for navigation)
-        need this enabled.</string>
+    <string name="setting_summary_location">Povolit webům přístup k vaší poloze. Některé weby (jako Mapy Google pro navigaci)
+        to potřebují mít zapnuté.</string>
     <string name="setting_title_history">Historie</string>
     <string name="setting_summary_history">Uložit historii navštívených stránek.</string>
     <!-- browser clear -->
     <string name="data_summary">Všechny soubory budou exportovány do adresáře „Android/data/de.baumann.browser/files/browser_backup/“
         na vaší SD kartě. Tento adresář bude SMAZÁN, když odinstalujetel „FOSS Browser“. Proto si vytvořte zálohu na bezpečném
         místě.</string>
-    <string name="clear_menu_done_all">Done all</string>
-    <string name="clear_title_quit">Clear when application exits</string>
-    <string name="clear_summary_quit">Every time you quit \"FOSS Browser\" all above checked data will be deleted.</string>
+    <string name="clear_menu_done_all">Vše hotovo</string>
+    <string name="clear_title_quit">Vymazat při ukončení aplikace</string>
+    <string name="clear_summary_quit">Při každém ukončení aplikace „FOSS Browser“ budou všechna výše uvedená data smazána.</string>
     <string name="clear_title_cache">Vymazat mezipaměť</string>
     <string name="clear_title_cookie">Vymazat soubory cookie</string>
     <string name="clear_title_history">Vymazat historii</string>
-    <string name="clear_title_indexedDB">Clear \"indexed databases\" and \"local webview storage\"</string>
+    <string name="clear_title_indexedDB">Vymazat „indexované databáze“ a „lokální úložiště webview“</string>
     <string name="clear_title_deleteDatabase">Vymazat databázi</string>
-    <string name="clear_summary_deleteDatabase">Delete the whole database (Startpage, bookmarks, history and all whitelists).</string>
+    <string name="clear_summary_deleteDatabase">Vymazat celou databázi (úvodní stránku, záložky, historii a všechny seznamy povolených).</string>
     <!-- App setting -->
     <string name="setting_title_app">Nastavení aplikace</string>
     <string name="setting_title_ui">Chování/UI</string>
     <string name="setting_title_data">Záloha</string>
-    <string name="setting_summary_ui">Change the behavior and ui of the app to suit your preferences.</string>
-    <string name="setting_summary_data">Import and export several app data (whitelists, bookmarks).</string>
+    <string name="setting_summary_ui">Změňte chování a UI aplikace podle svých představ.</string>
+    <string name="setting_summary_data">Importovat a exportovat některá data aplikace (seznamy povolených, záložky).</string>
     <string name="setting_filter">Filtr záložek</string>
-    <string name="setting_filter_summary">To show the filter dialog long press on the bookmark icon in the overview. Decide which
-        filters you will use.</string>
+    <string name="setting_filter_summary">Chcete-li zobrazit dialogové okno filtru, stiskněte v přehledu ikonu záložek. Rozhodněte, které
+        filtry použijete.</string>
     <string name="setting_title_fav">Oblíbené</string>
-    <string name="setting_summary_fav">Here you can change the default website which loads on start of \"FOSS Browser\".
-    Enter \"about:blank\" to get an emty start site.</string>
+    <string name="setting_summary_fav">Zde můžete změnit výchozí webovou stránku, která se načte při spuštění aplikace „FOSS Browser“.
+    Zadáním „about:blank“ zobrazíte prázdnou úvodní stránku.</string>
     <string name="setting_title_searchEngine">Vlastní vyhledávač</string>
-    <string name="setting_summary_searchEngine">Here you can enter a custom search URL. Also choose \"Custom search engine\" as search
-    provider.</string>
+    <string name="setting_summary_searchEngine">Zde můžete zadat vlastní adresu URL pro vyhledávání. Taky zvolit „Vlastní vyhledávač“ jako poskytovatele vyhledávání.</string>
     <!-- App behavior -->
-    <string name="setting_title_hideToolbar">Hide toolbar</string>
-    <string name="setting_summary_hide">Use the whole screen when scrolling through websites. If you press the back button you will
-    leave fullscreen mode.</string>
+    <string name="setting_title_hideToolbar">Skrýt Panel nástrojů</string>
+    <string name="setting_summary_hide">Při procházení webovými stránkami použít celou obrazovku. Pokud stisknete tlačítko Zpět,
+    opustíte režim celé obrazovky.</string>
     <string name="setting_theme">Motiv</string>
     <string name="setting_theme_summary">Nastavte motiv aplikace.</string>
     <string name="setting_theme_system">Motiv systému</string>
@@ -160,30 +156,30 @@
     <string name="setting_theme_dark">Tmavý motiv</string>
     <string name="setting_title_theme">UI</string>
     <string name="setting_title_behavior">Chování</string>
-    <string name="setting_summary_toolbarShow">Pressing back will make the toolbar visible, before going back in history.</string>
-    <string name="setting_title_toolbarShow">First toolbar</string>
+    <string name="setting_summary_toolbarShow">Stisknutím tlačítka Zpět se Panel nástrojů zviditelní před návratem do historie.</string>
+    <string name="setting_title_toolbarShow">První Panel nástrojů</string>
     <string name="setting_title_nav">Navigační tlačítka</string>
     <string name="setting_title_nav_pos">Pozice</string>
     <string name="setting_summary_nav_pos">Rozhodněte, kde budou umístěna „Navigační tlačítka“.</string>
     <string name="setting_summary_nav_pos_right">Vpravo</string>
     <string name="setting_summary_nav_pos_left">Vlevo</string>
     <string name="setting_summary_nav_pos_center">Uprostřed</string>
-    <string name="setting_summary_tab">What should be shown at the start of the \"Overview\"? The Start Page, you bookmarks, …</string>
-    <string name="setting_title_confirm_exit">Confirm browser exit</string>
-    <string name="setting_summary_confirm_exit">Confirmation dialog when closing browser.</string>
-    <string name="setting_title_confirm_tab_close">Confirm tab close</string>
-    <string name="setting_summary_confirm_tab_close">Confirmation dialog when closing a tab.</string>
+    <string name="setting_summary_tab">Co by mělo být uvedeno při spuštění „Přehledu“? Úvodní stránka, vaše záložky, …</string>
+    <string name="setting_title_confirm_exit">Potvrdit ukončení prohlížeče</string>
+    <string name="setting_summary_confirm_exit">Okno potvrzení při ukončení prohlížeče.</string>
+    <string name="setting_title_confirm_tab_close">Potvrdit zavření karty</string>
+    <string name="setting_summary_confirm_tab_close">Okno potvrzení při zavření karty.</string>
     <string name="setting_overView">Přehled</string>
     <string name="setting_overView_onStart_title">Zobrazit při spuštění</string>
     <string name="setting_overView_onStart_summary">Otevře „Přehled“ při každém spuštění aplikace.</string>
-    <string name="setting_overView_hide_title">Hide tab previews</string>
-    <string name="setting_overView_hide_summary">In expanded overview the tab preview will hide. Then you have more place for your
-    bookmarks.</string>
+    <string name="setting_overView_hide_title">Skrýt náhledy karty</string>
+    <string name="setting_overView_hide_summary">V rozšířeném přehledu se náhled karty skryje. Pak budete mít více místa pro vaše
+    záložky.</string>
     <string name="setting_gestures">Gesta</string>
     <string name="setting_gestures_use_title">Použít gesta</string>
-    <string name="setting_gestures_use_summary">Use gestures on the toolbar and the \"Navigation button\".</string>
-    <string name="setting_title_reopenLastTab">Reopen last tab</string>
-    <string name="setting_summary_reopenLastTab">Reopen a new tab when the last tab is closed instead of exiting the browser.</string>
+    <string name="setting_gestures_use_summary">Použijte gesta na Panelu nástrojů a „Navigační tlačítka“.</string>
+    <string name="setting_title_reopenLastTab">Znovu otevřít poslední kartu</string>
+    <string name="setting_summary_reopenLastTab">Znovu otevřít novou kartu po zavření poslední karty namísto ukončení prohlížeče.</string>
     <!-- gestures -->
     <string name="setting_title_toolbar">Panel nástrojů</string>
     <string name="setting_gesture_up">Přejetí nahoru</string>
@@ -191,24 +187,24 @@
     <string name="setting_gesture_left">Přejetí vlevo</string>
     <string name="setting_gesture_right">Přejetí vpravo</string>
     <string name="setting_gesture_01">Žádné gesto</string>
-    <string name="setting_gesture_02">Forward in history</string>
-    <string name="setting_gesture_03">Back in history</string>
+    <string name="setting_gesture_02">Vpřed v Historii</string>
+    <string name="setting_gesture_03">Zpět v historii</string>
     <string name="setting_gesture_04">Posunout nahoru</string>
     <string name="setting_gesture_05">Posunout dolů</string>
-    <string name="setting_gesture_06">Switch to left tab</string>
-    <string name="setting_gesture_07">Switch to right tab</string>
-    <string name="setting_gesture_08">Show overview</string>
-    <string name="setting_gesture_09">Open new tab</string>
+    <string name="setting_gesture_06">Přepnout na levou kartu</string>
+    <string name="setting_gesture_07">Přepnout na pravou kartu</string>
+    <string name="setting_gesture_08">Zobrazit přehled</string>
+    <string name="setting_gesture_09">Otevřít novou kartu</string>
     <string name="setting_gesture_10">Zavřít kartu</string>
     <!-- Data -->
-    <string name="setting_title_export_whitelist">Export AdBlock whitelist</string>
-    <string name="setting_title_import_whitelist">Import AdBlock whitelist</string>
+    <string name="setting_title_export_whitelist">Exportovat seznam povolených - AdBlock</string>
+    <string name="setting_title_import_whitelist">Importovat seznam povolených - AdBlock</string>
     <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
-    <string name="setting_title_export_whitelistJS">Export JavaScript whitelist</string>
-    <string name="setting_title_import_whitelistJS">Import JavaScript whitelist</string>
+    <string name="setting_title_export_whitelistJS">Exportovat seznam povolených - JavaScript</string>
+    <string name="setting_title_import_whitelistJS">Importovat seznam povolených - JavaScript</string>
     <string name="export_whitelistJS">export_whitelist_Javascript</string>
-    <string name="setting_title_export_whitelistCookie">Export Cookie whitelist</string>
-    <string name="setting_title_import_whitelistCookie">Import Cookie whitelist</string>
+    <string name="setting_title_export_whitelistCookie">Exportovat seznam povolených - Cookies</string>
+    <string name="setting_title_import_whitelistCookie">Importovat seznam povolených - Cookies</string>
     <string name="export_whitelistCookie">export_whitelist_Cookie</string>
     <string name="setting_title_export_appData">Exportovat data aplikace</string>
     <string name="setting_title_import_appData">Importovat data aplikace</string>
@@ -220,48 +216,48 @@
     <string name="setting_title_others">Další</string>
     <string name="setting_title_license">Licence</string>
     <string name="setting_title_appSettings">Nastavení aplikace</string>
-    <string name="setting_summary_appSettings">Open the system app settings for \"FOSS Browser\". There you can,
-        depending on your Android version grant permissions, clear the app data and so on.</string>
+    <string name="setting_summary_appSettings">Otevřete systémová nastavení pro „FOSS Browser“. Tam můžete
+        v závislosti na vaší verzi Android udělit oprávnění, vymazat data aplikace atd.</string>
     <string name="setting_title_community">Přispívání</string>
     <!-- Toast -->
     <string name="toast_add_to_home_successful">Úspěšně přidáno na plochu</string>
     <string name="toast_add_to_home_failed">Přidání na plochu se nezdařilo</string>
-    <string name="toast_add_whitelist_successful">Successfully added Domain</string>
+    <string name="toast_add_whitelist_successful">Doména byla úspěšně přidána</string>
     <string name="toast_already_exist_in_home">Na ploše již existuje</string>
     <string name="toast_copy_successful">Úspěšně zkopírováno</string>
     <string name="toast_delete_successful">Úspěšně smazáno</string>
-    <string name="toast_domain_already_exists">Domain already exists</string>
+    <string name="toast_domain_already_exists">Doména již existuje</string>
     <string name="toast_export_successful">Exportováno jako&#160;</string>
     <string name="toast_export_failed">Chyba exportu</string>
     <string name="toast_import_successful">Importovaný počet:&#160;</string>
     <string name="toast_import_failed">Chyba importu</string>
-    <string name="toast_input_empty">You haven\'t input anything</string>
+    <string name="toast_input_empty">Nic jste nevložili</string>
     <string name="toast_invalid_domain">Neplatná doména</string>
-    <string name="toast_load_error">Can\'t load this URL</string>
-    <string name="toast_new_tab_successful">Successfully opened in a new tab</string>
+    <string name="toast_load_error">Nelze načíst tuto URL</string>
+    <string name="toast_new_tab_successful">Úspěšně otevřeno na nové kartě</string>
     <string name="toast_share_failed">Nelze sdílet tuto stránku</string>
     <string name="toast_start_download">Zahajování stahování</string>
-    <string name="toast_wait_a_minute">Please wait for a moment</string>
+    <string name="toast_wait_a_minute">Prosím, počkejte chvilku</string>
     <string name="toast_titleConfirm_delete">Opravdu chcete odstranit položku?</string>
     <string name="toast_titleConfirm_paste">Kopírovat data do schránky?</string>
     <string name="toast_titleConfirm_pasteUN">Uživatelské jméno</string>
     <string name="toast_titleConfirm_pastePW">Heslo</string>
-    <string name="toast_error">Uuups. Something went wrong.</string>
-    <string name="toast_newTitle">Entry already exists. Please enter new title.</string>
+    <string name="toast_error">Jejda. Něco se pokazilo.</string>
+    <string name="toast_newTitle">Položka již existuje. Zadejte prosím nový název.</string>
     <string name="toast_edit_successful">Úspěšně uloženo</string>
-    <string name="toast_webview_forward">Can\'t load next site</string>
-    <string name="toast_clear">Do you really want to clear?</string>
-    <string name="toast_permission_sdCard">\"FOSS Browser\" needs the permission to \"read and write on your storage\". This
-        is needed to download files, taking screenshots and making backups of your data.</string>
-    <string name="toast_permission_loc">\"FOSS Browser\" needs the permission to \"access your location\". This is requested from some
-        websites for example when they offer some kind of navigation.</string>
-    <string name="toast_restart">You must restart \"FOSS Browser\" to apply changes. Close now?</string>
-    <string name="toast_quit">Do you want to quit \"FOSS Browser\"?</string>
-    <string name="toast_close_tab">Do you want to close current tab?</string>
-    <string name="toast_downloadComplete">Download complete. Open file manager?</string>
-    <string name="toast_unsecured">This website uses an unsecured connection (\"http\"). Do you want to try a secure
-        connection (\"https\")?</string>
-    <string name="toast_backup">Backup data? This will overwrite the old backup.</string>
+    <string name="toast_webview_forward">Nelze načíst další stránku</string>
+    <string name="toast_clear">Opravdu chcete odstranit?</string>
+    <string name="toast_permission_sdCard">„FOSS Browser“ vyžaduje oprávnění „čtení a zápis do vašeho úložiště“. Toto
+        je zapotřebí ke stahování souborů, pořizování snímků obrazovky a vytváření záloh vašich dat.</string>
+    <string name="toast_permission_loc">„FOSS Browser“ vyžaduje oprávnění k „přístupu k vaší poloze“. To je vyžadováno od některých
+        webových stránek. Například, když nabízejí nějaký druh navigace.</string>
+    <string name="toast_restart">Pro provedení změn musíte restartovat aplikaci „FOSS Browser“. Ukončit nyní?</string>
+    <string name="toast_quit">Opravdu chcete ukončit aplikaci „FOSS Browser“?</string>
+    <string name="toast_close_tab">Opravdu chcete zavřít aktuální kartu?</string>
+    <string name="toast_downloadComplete">Stahování dokončeno. Otevřít správce souborů?</string>
+    <string name="toast_unsecured">Tato stránka používá nezabezpečené připojení („http“). Chcete zkusit zabezpečné
+        připojení („https“)?</string>
+    <string name="toast_backup">Zálohovat data? Tato akce přepíše starou zálohu.</string>
     <string name="toast_fav">Úspěšně nastaveno jako oblíbené.</string>
     <!-- Whitelist -->
     <string name="whitelist_menu_clear">Vymazat</string>
@@ -269,14 +265,15 @@
     <string name="whitelist_add">Přidat</string>
     <!-- Dialog help -->
     <string name="dialogHelp_tipTitle">Tipy</string>
-    <string name="dialogHelp_tipText">        &lt;b&gt;Menus and dialogs&lt;/b&gt;&lt;br&gt;
-        All menus and dialogs are opened at the bottom of the screen. If the dialog is large you will first see only
-        the upper part. If you swipe it up, the rest will get visible.&lt;br&gt;
-        You can close them by pressing the back button, swiping them down or by clicking outside&lt;br&gt;&lt;br&gt;
+    <string name="dialogHelp_tipText">        &lt;b&gt;Nabídky a dialogy&lt;/b&gt;&lt;br&gt;
+        Všechny nabídky a dialogy jsou otevřeny ve spodní části obrazovky. Pokud je dialog velký, uvidíte nejprve pouze
+        horní část. Pokud potáhnete nahoru, zbytek se zviditelní.&lt;br&gt;
+        Můžete je zavřít stisknutím tlačítka Zpět, potáhnutím dolů nebo klepnutím
+vedle&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Long press&lt;/b&gt;&lt;br&gt;
-        If you long press the menu icon or the \"Navigation button\", the \"Fast toggle dialog\" will show. If you long
-        press the \"Bookmark icon\", the \"Filter dialog\" will show.
+        Pokud dlouze stisknete ikonu nabídky nebo „Navigační tlačítko“, zobrazí se „Rychlý přepínač dialogu“. Pokud dlouze
+        stisknete „ikonu Záložky“, zobrazí se „Filtr dialogu“.
     </string>
     <string name="dialogHelp_overviewTitle">Přehled</string>
     <string name="dialogHelp_overviewText">        There are two parts in the \"Overview\" (tab preview and personal data). There is an extra menu. In the settings
@@ -290,21 +287,21 @@
         There are three parts: the Startsite, your Bookmarks and your History. If you long click an entry
         a menu with more options will appear.
     </string>
-    <string name="dialogHelp_filterText">        You can tag your bookmarks with filters. In this way you can group your bookmarks. You can open the filter dialog by
-        long pressing the bookmark icon. If you activate an entry a dialog will appear, where you can edit the name of the filter.
+    <string name="dialogHelp_filterText">        Záložky můžete označit filtry. Tímto způsobem můžete seskupovat své záložky. Můžete otevřít dialogové okno filtru
+        dlouhým stisknutím ikony záložky. Pokud aktivujete položku, objeví se dialogové okno, kde můžete upravit název filtru.
     </string>
     <!-- Dialog changelog -->
-    <string name="changelog_dialog">        Your language isn\'t supported yet? You want to translate FOSS Browser? Or make improvements to existing translations?
-        Feel free to join us on Crowdin: https://crowdin.com/project/foss-browser.&lt;br&gt;&lt;br&gt;
+    <string name="changelog_dialog">        Váš jazyk zatím není podporován? Chcete přeložit FOSS Browser? Nebo vylepšit stávající překlady?
+        Neváhejte a připojte se k nám na Crowdinu: https://crowdin.com/project/foss-browser.&lt;br&gt;&lt;br&gt;
 
-        &lt;b&gt;On the following sites you have access to all important information about \"FOSS Browser\".
-        Please read also the help dialog within the app.&lt;/b&gt;&lt;br&gt;&lt;br&gt;
+        &lt;b&gt;Na následujících stránkách máte přístup ke všem důležitým informacím o aplikaci „FOSS Browser“.
+        Přečtěte si také dialog nápovědy v aplikaci.&lt;/b&gt;&lt;br&gt;&lt;br&gt;
 
-        \u25AA &lt;i&gt;Project site:&lt;/i&gt; https://github.com/scoute-dich/Browser&lt;br&gt;
-        \u25AA &lt;i&gt;Changelog:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;br&gt;
+        \u25AA &lt;i&gt;Stránka projektu:&lt;/i&gt; https://github.com/scoute-dich/Browser&lt;br&gt;
+        \u25AA &lt;i&gt;Seznam změn:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;br&gt;
         \u25AA &lt;i&gt;FAQ:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/FAQs.md&lt;br&gt;
-        \u25AA &lt;i&gt;License:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/LICENSE.md&lt;br&gt;
-        \u25AA &lt;i&gt;Privacy:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/PRIVACY.md
+        \u25AA &lt;i&gt;Licence:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/LICENSE.md&lt;br&gt;
+        \u25AA &lt;i&gt;Ochrana soukromí:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/PRIVACY.md
 
     </string>
     <!-- License changelog -->
