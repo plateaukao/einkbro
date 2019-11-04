@@ -11,15 +11,16 @@
     tools:ignore="ContentDescription">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/layout_width_144dp"
+        android:minWidth="@dimen/layout_width_144dp"
         android:layout_height="wrap_content"
         app:cardUseCompatPadding="true"
         app:elevation="0dp"
         tools:ignore="PrivateResource">
 
-        <ImageView android:id="@+id/album_cover"
-            android:contentDescription="@null"
-            android:layout_width="wrap_content"
+        <ImageView
+            android:id="@+id/album_cover"
+            android:layout_width="@dimen/layout_width_144dp"
             android:minWidth="@dimen/layout_width_144dp"
             android:layout_height="@dimen/layout_height_108dp"
             android:layout_gravity="center"
@@ -46,6 +47,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_toStartOf="@+id/album_close"
                 android:layout_width="@dimen/layout_width_144dp"
+                android:layout_marginStart="8dp"
                 android:includeFontPadding="false"
                 android:minWidth="@dimen/layout_width_144dp"
                 android:layout_height="match_parent"
@@ -53,7 +55,7 @@
                 android:gravity="center_vertical"
                 android:maxLines="1"
                 android:ellipsize="end"
-                android:textColor="@color/color_light"
+                android:textColor="?android:attr/colorLongPressedHighlight"
                 tools:ignore="RtlSymmetry" />
 
         </RelativeLayout>
