@@ -340,123 +340,27 @@
         Apache License Version 2.0&lt;br&gt;
         hummatli&lt;br&gt;
         &lt;i&gt;https://github.com/hummatli/SimpleEncryptionLib</string>
-    <string name="cont_dialog">        &lt;i&gt;Öncelikle bu projeye herhangi bir şekilde katkıda bulunan herkese teşekkür etmek istiyorum. Sorunlar gönderdiler,
-        çeviri yaptılar ve başka herhangi bir şekilde yardımcı oldular. Aşağıdaki sitelerde bu harika topluluğun 
-        aktif bir üyesi olabilirsiniz:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
+    <string name="cont_dialog">        &lt;i&gt;First I would like to thank all people who contributed in any way on this project. They submitted issues,
+        translated or helped in any other way. On following sites you can become a active member of this
+        great community:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Crowdin:&lt;/b&gt;&lt;br&gt;
-        Crowdin uygulamaları diğer dillere çevirmek için kullanılan online bir platformdur. Siz de
-        yardımcı olabilirsiniz.&lt;br&gt;
+        Crowdin is an online plattform to translate applications in other languages. A big thanks to all translators. You can
+        also help.&lt;br&gt;
         &lt;i&gt;https://crowdin.com/project/foss-browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
 
-        &lt;b&gt;XDA-forumu:&lt;/b&gt;&lt;br&gt;
-        XDA, geliştiriciler ve akıllı telefon meraklıları için harika bir topluluktur. Burada sorunları bildirebilir, yeni özellikler ve
-        \"FOSS Browser\" ile ilgili her şeyi isteyebilirsiniz.&lt;br&gt;
+        &lt;b&gt;XDA-thread:&lt;/b&gt;&lt;br&gt;
+        XDA is a great community for developers and smartphone enthusiasts. Here you can report issues, ask for new features
+        and everything other related to \"FOSS Browser\".&lt;br&gt;
         &lt;i&gt;https://forum.xda-developers.com/android/apps-games/app-browser-t3500091&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Github:&lt;/b&gt;&lt;br&gt;
-        GitHub\'da \"FOSS Browser\"ın kaynak kodunu görebilirsiniz. Bu daha teknik bir çözüm: sorunlar açın, yeni özellikler isteyin,
-        hatta geliştirilmesine veya çevrilmesine yardımcı olun.&lt;br&gt;
+        On Github you can see the source code of \"FOSS Browser\". This is the more technical solution: open issues, ask for new
+        features or even help developing or translating.&lt;br&gt;
         &lt;i&gt;https://github.com/scoute-dich/browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
 
 
-        &lt;i&gt;Aşağıdaki kişiler bu projeye katkıda bulundu. Birini unutmuşsam, lütfen benimle iletişime geçin.:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Gaukler Faun&lt;/b&gt;&lt;br&gt;
-        \u25AA Bu projenin ana geliştiricisi ve başlatıcısı&lt;br&gt;
-        &lt;i&gt;https://github.com/scoute-dich&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Ali Demirtas&lt;/b&gt;&lt;br&gt;
-        \u25AA Türkçe çeviri&lt;br&gt;
-        &lt;i&gt;https://github.com/ali-demirtas&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;CGSLURP LLC&lt;/b&gt;&lt;br&gt;
-        \u25AA \"FOSS Browser\"ın önceki sürümünde AdBlock ve \"masaüstü sitesi isteme\" uygulamasına yardımcı oldu.&lt;br&gt;
-        &lt;i&gt;https://github.com/futrDevelopment&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;element54&lt;/b&gt;&lt;br&gt;
-        \u25AA düzeltme: klavye sorunları (sorun #105)&lt;br&gt;
-        \u25AA yeni: çıkışta onaylama iletişim kutularını devre dışı bırakma seçeneği&lt;br&gt;
-        &lt;i&gt;https://github.com/element54&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;elmru&lt;/b&gt;&lt;br&gt;
-        \u25AA Tayvan Geleneksel Çince çeviri&lt;br&gt;
-        &lt;i&gt;https://github.com/kogiokka&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Enrico Monese&lt;/b&gt;&lt;br&gt;
-        \u25AA İtalyanca çeviri&lt;br&gt;
-        &lt;i&gt;https://github.com/EnricoMonese&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Francois&lt;/b&gt;&lt;br&gt;
-        \u25AA Fransızca çeviri&lt;br&gt;
-        &lt;i&gt;https://github.com/franco27&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;gh-pmjm&lt;/b&gt;&lt;br&gt;
-        \u25AA Lehçe çeviri&lt;br&gt;
-        &lt;i&gt;https://github.com/gh-pmjm&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;gr1sh&lt;/b&gt;&lt;br&gt;
-        \u25AA düzeltme: bazı Almanca stringler (sayı #124, #131)&lt;br&gt;
-        &lt;i&gt;https://github.com/gr1sh&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Harry Heights&lt;/b&gt;&lt;br&gt;
-        \u25AA FOSS Browser Dokümantasyonu&lt;br&gt;
-        &lt;i&gt;https://github.com/HarryHeights&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Heimen Stoffels&lt;/b&gt;&lt;br&gt;
-        \u25AA Flemenkçe çeviri&lt;br&gt;
-        &lt;i&gt;https://github.com/Vistaus&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Hellohat&lt;/b&gt;&lt;br&gt;
-        \u25AA Fransızca çeviri&lt;br&gt;
-        &lt;i&gt;https://github.com/Hellohat&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Herman Nunez&lt;/b&gt;&lt;br&gt;
-        \u25AA İspanyolca çeviri&lt;br&gt;
-        &lt;i&gt;https://github.com/junior012&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Jumping Yang&lt;/b&gt;&lt;br&gt;
-        \u25AA \"FOSS Browser\"ın önceki sürümünde Çince çeviri&lt;br&gt;
-        &lt;i&gt;https://github.com/JumpingYang001&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;lishoujun&lt;/b&gt;&lt;br&gt;
-        \u25AA Çince çeviri&lt;br&gt;
-        \u25AA bug hunting&lt;br&gt;
-        &lt;i&gt;https://github.com/lishoujun&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Peter Bui&lt;/b&gt;&lt;br&gt;
-        \u25AA daha fazla yazı tipi boyutu seçeneği&lt;br&gt;
-        &lt;i&gt;https://github.com/pbui&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Secangkir Kopi&lt;/b&gt;&lt;br&gt;
-        \u25AA Endonezyaca çeviri&lt;br&gt;
-        &lt;i&gt;https://github.com/Secangkir-Kopi&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Sérgio Marques&lt;/b&gt;&lt;br&gt;
-        \u25AA Portekizce çeviri&lt;br&gt;
-        &lt;i&gt;https://github.com/smarquespt&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;splinet&lt;/b&gt;&lt;br&gt;
-        \u25AA \"FOSS Browser\"ın önceki sürümünde Rusça çeviri&lt;br&gt;
-        &lt;i&gt;https://github.com/splinet&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;SkewedZeppelin&lt;/b&gt;&lt;br&gt;
-        \u25AA Veri-Tasarrufu başlığını etkinleştirmek için seçenek ekleme&lt;br&gt;
-        &lt;i&gt;https://github.com/SkewedZeppelin&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Tobiplayer3&lt;/b&gt;&lt;br&gt;
-        \u25AA Qwant arama motorunu ekledi&lt;br&gt;
-        \u25AA uygulamadan çıkmak yerine yeni sekme açma seçeneği&lt;br&gt;
-        &lt;i&gt;https://github.com/Tobiplayer3&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Vladimir Kosolapov&lt;/b&gt;&lt;br&gt;
-        \u25AA Rusça çeviri&lt;br&gt;
-        &lt;i&gt;https://github.com/0x264f&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;YC L&lt;/b&gt;&lt;br&gt;
-        \u25AA Çince çeviri&lt;br&gt;
-        &lt;i&gt;https://github.com/smallg0at&lt;/i&gt;
-
+        &lt;i&gt;Following people contributed at this project. If I have forgotten anybody, please contact me:&lt;/i&gt;
     </string>
 </resources>
