@@ -341,27 +341,27 @@
         Apache License Version 2.0&lt;br&gt;
         hummatli&lt;br&gt;
         &lt;i&gt;https://github.com/hummatli/SimpleEncryptionLib</string>
-    <string name="cont_dialog">        &lt;i&gt;First I would like to thank all people who contributed in any way on this project. They submitted issues,
-        translated or helped in any other way. On following sites you can become a active member of this
-        great community:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
+    <string name="cont_dialog">        &lt;i&gt;Zuerst möchte ich mich bei allen Leuten bedanken, die in irgendeiner Weise an diesem Projekt mitgewirkt haben. Sie haben Themen eingereicht,
+        übersetzt oder anderweitig geholfen. Auf folgenden Seiten können Sie ein aktives Mitglied dieser
+        großen Community werden:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Crowdin:&lt;/b&gt;&lt;br&gt;
-        Crowdin is an online plattform to translate applications in other languages. A big thanks to all translators. You can
-        also help.&lt;br&gt;
-        &lt;i&gt;https://crowdin.com/project/foss-browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;
+        Crowdin ist eine Online-Plattform, um Anwendungen in andere Sprachen zu übersetzen. Ein großes Dankeschön an alle Übersetzer. Sie können
+        auch helfen.&lt;br&gt;
+        &lt;i&gt;https://crowdin. om/project/foss-browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
 
-        &lt;b&gt;XDA-thread:&lt;/b&gt;&lt;br&gt;
-        XDA is a great community for developers and smartphone enthusiasts. Here you can report issues, ask for new features
-        and everything other related to \"FOSS Browser\".&lt;br&gt;
-        &lt;i&gt;https://forum.xda-developers.com/android/apps-games/app-browser-t3500091&lt;/i&gt;&lt;br&gt;&lt;br&gt;
+        &lt;b&gt;XDA-Thread:&lt;/b&gt;&lt;br&gt;
+        XDA ist eine tolle Community für Entwickler und Smartphone-Enthusiasten. Hier können Sie Probleme melden, nach neuen Funktionen fragen
+        und alles, was mit \"FOSS Browser\" zusammenhängt.&lt;br&gt;
+        &lt;i&gt;https://forum.xda-developers. om/android/apps-games/app-browser-t3500091&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Github:&lt;/b&gt;&lt;br&gt;
-        On Github you can see the source code of \"FOSS Browser\". This is the more technical solution: open issues, ask for new
-        features or even help developing or translating.&lt;br&gt;
-        &lt;i&gt;https://github.com/scoute-dich/browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+        Auf Github sehen Sie den Quellcode von \"FOSS Browser\". Das ist die eher technische Lösung: offene Fragen. Fragen Sie nach neuen
+        Funktionen oder helfen Sie sogar bei der Entwicklung oder Übersetzung.&lt;br&gt;
+        &lt;i&gt;https://github. om/scoute-dich/browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
 
 
-        &lt;i&gt;Following people contributed at this project. If I have forgotten anybody, please contact me:&lt;/i&gt;
+        &lt;i&gt;Folgende Personen haben an diesem Projekt mitgewirkt. Wenn ich jemanden vergessen habe, kontaktieren Sie mich bitte:&lt;/i&gt;
     </string>
 </resources>

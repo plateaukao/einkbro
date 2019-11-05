@@ -337,27 +337,27 @@ vedle&lt;br&gt;&lt;br&gt;
         Apache License Version 2.0&lt;br&gt;
         hummatli&lt;br&gt;
         &lt;i&gt;https://github.com/hummatli/SimpleEncryptionLib</string>
-    <string name="cont_dialog">        &lt;i&gt;First I would like to thank all people who contributed in any way on this project. They submitted issues,
-        translated or helped in any other way. On following sites you can become a active member of this
-        great community:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
+    <string name="cont_dialog">        &lt;i&gt;Nejprve bych chtěl poděkovat všem lidem, kteří přispěli jakýmkoli způsobem k tomuto projektu. Byly odeslány otázky,
+        přeloženy nebo pomáhaly jakýmkoli jiným způsobem. Na následujících stránkách se můžete stát aktivním členem této
+        skvělé komunity:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Crowdin:&lt;/b&gt;&lt;br&gt;
-        Crowdin is an online plattform to translate applications in other languages. A big thanks to all translators. You can
-        also help.&lt;br&gt;
-        &lt;i&gt;https://crowdin.com/project/foss-browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;
+        Crowdin je online platforma pro překlad aplikací v jiných jazycích. Velké díky všem překladatelům. Můžete také
+        pomoci.&lt;br&gt;
+        &lt;i&gt;https://crowdin. om/project/foss-browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
 
-        &lt;b&gt;XDA-thread:&lt;/b&gt;&lt;br&gt;
-        XDA is a great community for developers and smartphone enthusiasts. Here you can report issues, ask for new features
-        and everything other related to \"FOSS Browser\".&lt;br&gt;
-        &lt;i&gt;https://forum.xda-developers.com/android/apps-games/app-browser-t3500091&lt;/i&gt;&lt;br&gt;&lt;br&gt;
+        &lt;b&gt;XDA-vlákno:&lt;/b&gt;&lt;br&gt;
+        XDA je skvělá komunita pro vývojáře a nadšence pro chytré telefony. Zde můžete hlásit problémy, požádat o nové funkce
+        a vše ostatní související s \"FOSS prohlížeč\".&lt;br&gt;
+        &lt;i&gt;https://forum.xda-developerů. om/android/apps-games/app-browser-t3500091&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Github:&lt;/b&gt;&lt;br&gt;
-        On Github you can see the source code of \"FOSS Browser\". This is the more technical solution: open issues, ask for new
-        features or even help developing or translating.&lt;br&gt;
-        &lt;i&gt;https://github.com/scoute-dich/browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+        na Github můžete vidět zdrojový kód \"FOSS prohlížeč\". Toto je techničtější řešení: otevřené problémy, požádat o nové
+        funkcí, nebo dokonce pomoci s vývojem nebo překladem.&lt;br&gt;
+        &lt;i&gt;https://github. om/scoute-dich/prohlížeč&lt;/i&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
 
 
-        &lt;i&gt;Following people contributed at this project. If I have forgotten anybody, please contact me:&lt;/i&gt;
+        &lt;/i&gt;        &lt;i&gt;Po vyhledání informací o tomto projektu přispěli. Pokud jsem někoho zapomněl, kontaktujte mě:&lt;/i&gt;
     </string>
 </resources>
