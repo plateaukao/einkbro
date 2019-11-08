@@ -152,8 +152,14 @@ public class HelperUnit {
             case "1":
                 context.setTheme(R.style.AppTheme);
                 break;
-            default:
+            case "2":
                 context.setTheme(R.style.AppTheme_dark);
+                break;
+            case "3":
+                context.setTheme(R.style.AppTheme_amoled);
+                break;
+            default:
+                context.setTheme(R.style.AppTheme);
                 break;
         }
     }
