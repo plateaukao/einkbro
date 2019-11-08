@@ -5,7 +5,7 @@
     <string name="app_name">FOSS Browser</string>
     <string name="app_ok">OK</string>
     <string name="app_cancel">Abbrechen</string>
-    <string name="list_empty">Liste ist leer</string>
+    <string name="list_empty">Aktuelle Liste ist leer</string>
     <string name="album_title_bookmarks">Lesezeichen</string>
     <string name="album_title_history">Verlauf</string>
     <string name="album_title_home">Startseite</string>
@@ -15,15 +15,15 @@
     <string name="color_pink">Pink</string>
     <string name="color_purple">Lila</string>
     <string name="color_blue">Blau</string>
-    <string name="color_teal">Teal</string>
+    <string name="color_teal">Petrol</string>
     <string name="color_green">Grün</string>
-    <string name="color_lime">Limette</string>
+    <string name="color_lime">Lindgrün</string>
     <string name="color_yellow">Gelb</string>
     <string name="color_orange">Orange</string>
     <string name="color_brown">Braun</string>
     <string name="color_grey">Grau</string>
     <!-- Menu -->
-    <string name="main_menu_tabPreview">Öffne Tabvorschau</string>
+    <string name="main_menu_tabPreview">Tabvorschau öffnen</string>
     <string name="main_menu_new_tab">Neuer Tab (Hintergrund)</string>
     <string name="main_menu_new_tabOpen">Neuer Tab (Vordergrund)</string>
     <string name="main_omnibox_input_hint">Suchen oder URL eingeben</string>
@@ -34,48 +34,48 @@
     <string name="menu_delete_list">Liste löschen</string>
     <string name="menu_edit">Bearbeiten</string>
     <string name="menu_closeTab">Tab schließen</string>
-    <string name="menu_download">Öffne Downloads</string>
+    <string name="menu_download">Downloads öffnen</string>
     <string name="menu_fav">Als Favorit speichern</string>
-    <string name="menu_sc">Verknüpfung auf Startschirm</string>
+    <string name="menu_sc">Verknüpfung auf Startbildschirm</string>
     <string name="menu_sort">Sortiere nach …</string>
-    <string name="menu_filter">Filter …</string>
+    <string name="menu_filter">Filter nach …</string>
     <string name="menu_share_screenshot">Bildschirmfoto teilen</string>
     <string name="menu_share_link">Link teilen</string>
     <string name="menu_save_screenshot">Bildschirmfoto speichern</string>
-    <string name="menu_save_home">Speichere auf Startseite</string>
-    <string name="menu_save_bookmark">Speichere als Lesezeichen</string>
-    <string name="menu_save_as">Speichere als …</string>
-    <string name="menu_save_pdf">PDF speichern</string>
+    <string name="menu_save_home">Auf Startseite speichern</string>
+    <string name="menu_save_bookmark">Als Lesezeichen speichern</string>
+    <string name="menu_save_as">Speichern als …</string>
+    <string name="menu_save_pdf">Als PDF speichern</string>
     <string name="menu_share_pdf">PDF teilen</string>
-    <string name="menu_shareClipboard">Kopiere in Zwischenablage</string>
-    <string name="menu_other_searchSite">Suche auf Seite</string>
+    <string name="menu_shareClipboard">In Zwischenablage kopieren</string>
+    <string name="menu_other_searchSite">Auf Website suchen</string>
     <string name="menu_other_fileManager">Dateimanager öffnen</string>
     <string name="menu_other_info">Über \"FOSS Browser\"</string>
     <string name="menu_other_help">Hilfe</string>
     <!-- Dialog -->
     <string name="dialog_toggle_reload">Neu laden</string>
     <string name="dialog_title_hint">Titel:</string>
-    <string name="dialog_url_hint">Url:</string>
-    <string name="dialog_extension_hint">Endung (z.B.: \".jpg\"):</string>
+    <string name="dialog_url_hint">URL:</string>
+    <string name="dialog_extension_hint">Dateiendung (z.B.: \".jpg\"):</string>
     <string name="dialog_sign_in_username">Benutzername</string>
     <string name="dialog_sign_in_password">Passwort</string>
     <string name="dialog_title_download">Möchtest du die Datei herunterladen?</string>
     <string name="dialog_content_resubmission">Möchtest du die Daten erneut senden?</string>
-    <string name="dialog_content_ssl_error">Das Zertifikat der Seite ist nicht sicher. Trotzdem fortfahren?</string>
-    <string name="dialog_sortName">Sortiere nach Namen</string>
-    <string name="dialog_sortIcon">Sortiere nach Icon</string>
-    <string name="dialog_sortDate">Sortiere nach Datum</string>
+    <string name="dialog_content_ssl_error">Das Zertifikat der Seite ist nicht vertrauenswürdig. Trotzdem fortfahren?</string>
+    <string name="dialog_sortName">Nach Namen sortieren</string>
+    <string name="dialog_sortIcon">Nach Icon sortieren</string>
+    <string name="dialog_sortDate">Nach Datum sortieren</string>
     <!-- Settings -->
     <string name="setting_label">Einstellungen</string>
     <!-- browser setting -->
-    <string name="setting_title_browser">Browser Einstellungen</string>
-    <string name="setting_title_clear_control">Browserdaten</string>
-    <string name="setting_title_start_control">Start Einstellungen</string>
-    <string name="setting_summary_clear_control">Lösche die Daten des Browsers oder entscheide, welche Daten beim Verlassen der
+    <string name="setting_title_browser">Browser-Einstellungen</string>
+    <string name="setting_title_clear_control">Datenkontrolle</string>
+    <string name="setting_title_start_control">Start-Einstellungen</string>
+    <string name="setting_summary_clear_control">Lösche Deine Browserdaten, oder entscheide, welche Daten beim Verlassen der
         Anwendung automatisch gelöscht werden.</string>
-    <string name="setting_summary_start_control">Entscheide welche Funktionen des Browsers beim Start aktiviert sind.</string>
+    <string name="setting_summary_start_control">Entscheide, welche Komponenten des Browsers beim Start aktiviert werden.</string>
     <string name="setting_title_search_engine">Suchmaschine</string>
-    <string name="setting_summary_search_engine">Hier kannst du eine Suchmaschine auswählen oder eine eigene eingeben.</string>
+    <string name="setting_summary_search_engine">Hier kannst du deine bevorzugte Suchmaschine auswählen, oder eine eigene einrichten.</string>
     <string name="setting_summary_search_engine_google">Google</string>
     <string name="setting_summary_search_engine_duckduckgo">DuckDuckGo</string>
     <string name="setting_summary_search_engine_startpage">StartPage</string>
@@ -89,106 +89,88 @@
     <string name="setting_summary_inverted">Wenn aktiviert, werden Inhalte in einem invertierten schwarz/weiß-Modus
         dargestellt. Dies ist eine Art \"Nachtmodus\".</string>
     <string name="setting_title_font">Schriftgröße</string>
-    <string name="setting_summary_font">Ändere die Schriftgröße, mit der Internetseiten dargestellt werden.</string>
+    <string name="setting_summary_font">Ändere die Schriftgröße für die Darstellung von Websites.</string>
     <string name="setting_title_remote">Entfernte Inhalte</string>
-    <string name="setting_summary_remote">Aktiviere das Laden entfernter Inhalte, die nicht direkt von der besuchten
-        Internetseite stammen. Wenn du dies deaktivierst ist es sicherer, schneller und spart Datenvolumen. Manche
-        Inhalte werden dann allerdings nicht mehr angezeigt.</string>
-    <string name="setting_title_save_data">Fordere \'Daten sparen\'</string>
-    <string name="setting_summary_save_data">Fordere von Internetseiten an, dass du Datenvolumen sparen willst. Unterstütze
-        Internetseiten werden dann schneller geladen.</string>
+    <string name="setting_summary_remote">Aktiviere das Laden entfernter Inhalte, die nicht direkt von der besuchten Website stammen.
+Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inhalte werden dann allerdings nicht mehr angezeigt.</string>
+    <string name="setting_title_save_data">\'Daten sparen\' verlangen</string>
+    <string name="setting_summary_save_data">Websites mitteilen, dass du Datenvolumen sparen willst. Unterstütze Websites werden schneller geladen.</string>
     <!-- browser start -->
     <string name="setting_title_images">Bilder</string>
-    <string name="setting_summary_images">Aktiviere das automatische Laden von Bildern. Wenn du dies deaktivierst, sparst du
-        Datenvolumen und die Internetseiten laden schneller.</string>
+    <string name="setting_summary_images">Bilder aus dem Netzwerk aktivieren. Deaktivierung könnte hilfreich sein, um mobiles Datenvolumen zu sparen und Websites schneller zu laden.</string>
     <string name="setting_title_cookie">Cookies</string>
-    <string name="setting_summary_cookie_delete">Wenn dies aktiviert ist, werden alle Cookies gelöscht. Auch die von
-        Internetseiten, denen du das Speichern erlaubt hast.</string>
-    <string name="setting_summary_cookie">Aktiviere Cookies. Cookies sind kleine Textdateien, die auf deinem Gerät gespeichert
-        werden. Internetseiten können sie nutzen um die Benutzereinstellungen (z.B. bei Suchmaschienen) zu speichern. Cookies von
-        Dritten (sie sammeln zu Werbezwecken Nutzerdaten) sind immer deaktiviert.</string>
-    <string name="setting_title_whitelistCookie">Cookie Ausnahmen</string>
-    <string name="setting_summary_whitelistCookie">Wenn du Cookies deaktivierst, kannst du hier Ausnahmen hinzufügen, um bestimmten Seiten,
-        denen du vertraust, das Speichern von Cookies zu erlauben.</string>
+    <string name="setting_summary_cookie_delete">Falls aktiviert, werden alle Cookies gelöscht. Auch die von vertrauenswürdigen Websites.</string>
+    <string name="setting_summary_cookie">Aktiviere Cookies. Cookies sind kleine Textdateien, die auf deinem Gerät gespeichert werden. Websites können sie z.B. nutzen, um die Benutzereinstellungen (z.B. bei Suchmaschinen) zu speichern. Aber sie können auch dazu genutzt werden, um persönliche Nutzerdaten zu sammeln. Cookies von Dritten (sie sammeln zu Werbezwecken Nutzerdaten) sind immer deaktiviert.</string>
+    <string name="setting_title_whitelistCookie">Cookie-Positivliste</string>
+    <string name="setting_summary_whitelistCookie">Wenn du Cookies deaktivierst, kannst du diese Positivliste nutzen, um Websites, denen du vertraust, das Benutzen von gespeicherten Cookies zu erlauben.</string>
     <string name="setting_title_javascript">JavaScript</string>
-    <string name="setting_summary_javascript">Aktiviere JavaScript. Viele Internetseiten brauchen JavaScript um richtig zu
-        funktionieren (Menüs, laden von Bildern, …). JavaScript stellt allerdings ein Sicherheitsrisiko dar und kann benutzt werden,
-        um dein Gerät anzugreifen.</string>
-    <string name="setting_title_whitelistJS">JavaScript Ausnahmen</string>
-    <string name="setting_summary_whitelistJS">Wenn du JavaScript deaktivierst, kannst du hier Ausnahmen hinzufügen, um bestimmten Seiten,
-        denen du vertraust, die Benutzung zu erlauben.</string>
+    <string name="setting_summary_javascript">Aktiviere JavaScript. Viele Websites brauchen JavaScript für ihre Funktionsfähigkeit (Menüs, Laden und Darstellen von Bildern, …). Aber es stellt auch ein Sicherheitsrisiko dar und kann für Angriffe benutzt werden.</string>
+    <string name="setting_title_whitelistJS">JavaScript-Positivliste</string>
+    <string name="setting_summary_whitelistJS">Wenn du JavaScript deaktivierst, kannst du diese Positivliste nutzen, um Websites, denen du vertraust, das Benutzen von JavaScript zu erlauben.</string>
     <string name="setting_title_adblock">AdBlock</string>
-    <string name="setting_summary_adblock">Aktiviere AdBlock um unerwünschte Werbung zu blockieren. Internetseiten sind dann auch schneller geladen.</string>
-    <string name="setting_title_whitelist">AdBlock Ausnahmen</string>
-    <string name="setting_summary_whitelist">Erlaube diesen Seiten Werbung einzublenden. Manche Seiten funktionieren bei aktviertem AdBlocker nicht.</string>
-    <string name="setting_title_location">Ortungsdienst</string>
-    <string name="setting_summary_location">Erlaube Internetseiten deine genaue Position zu bestimmen. Manche Seiten (z.B. Goodle Maps
-        für die Navigation) benötigen diese Berechtigung.</string>
+    <string name="setting_summary_adblock">Aktiviere AdBlock, um lästige Werbung zu blockieren. Websites laden auch schneller, falls eingeschaltet.</string>
+    <string name="setting_title_whitelist">AdBlock-Positivliste</string>
+    <string name="setting_summary_whitelist">Diesen Websites erlauben, Werbung einzublenden. Einige Websites funktionieren nicht, wenn AdBlock aktiviert ist.</string>
+    <string name="setting_title_location">Standortbestimmung</string>
+    <string name="setting_summary_location">Websites gestatten, auf den Standort zuzugreifen. Einige Websites (wie für Navigation Google Maps) benötigen dies aktiviert.</string>
     <string name="setting_title_history">Verlauf</string>
-    <string name="setting_summary_history">Speichere den Verlauf der besuchten Internetseiten.</string>
+    <string name="setting_summary_history">Speichere den Verlauf der besuchten Websites.</string>
     <!-- browser clear -->
-    <string name="data_summary">Alle Dateien werden in das \"Android/data/de.baumann.browser/files/browser_backup/\"
-        Verzeichnis deiner SD-Karte exportiert. Dieses Verzeichnis wird GELÖSCHT, wenn du \"FOSS Browser\" deinstallierst. Mache also regelmäßig eine Sicherung auf einem sicheren Speicher.</string>
+    <string name="data_summary">Alle Dateien werden in das Verzeichnis \"Android/data/de.baumann.browser/files/browser_backup/\" deiner SD-Karte exportiert. Dieses Verzeichnis wird GELÖSCHT, wenn du \"FOSS Browser\" deinstallierst. Mache also regelmäßig eine Sicherung an einer sicheren Stelle.</string>
     <string name="clear_menu_done_all">Alles erledigt</string>
-    <string name="clear_title_quit">Löschen beim Verlassen der Anwendung</string>
-    <string name="clear_summary_quit">Jedesmal wenn \"FOSS Browser\" beendet wird, werden oben ausgewählte Daten gelöscht.</string>
-    <string name="clear_title_cache">Lösche Cache</string>
-    <string name="clear_title_cookie">Lösche Cookies</string>
-    <string name="clear_title_history">Lösche den Verlauf</string>
-    <string name="clear_title_indexedDB">Lösche \"Indizierte Datenbanken\" und \"Lokalen WebView-Speicher\"</string>
-    <string name="clear_title_deleteDatabase">Lösche Datenbank</string>
-    <string name="clear_summary_deleteDatabase">Lösche die komplette Datenbank (Startseite, Lesezeichen, Verlauf und
-        sämtliche Ausnahmen).</string>
+    <string name="clear_title_quit">Bereinigen, wenn die Anwendung schließt</string>
+    <string name="clear_summary_quit">Jedesmal, wenn du \"FOSS Browser\" schließt, werden alle oben ausgewählte Daten gelöscht.</string>
+    <string name="clear_title_cache">Cache löschen</string>
+    <string name="clear_title_cookie">Cookies löschen</string>
+    <string name="clear_title_history">Verlauf löschen</string>
+    <string name="clear_title_indexedDB">\"Indizierte Datenbanken\" und \"Lokalen WebView-Speicher\" löschen</string>
+    <string name="clear_title_deleteDatabase">Datenbank löschen</string>
+    <string name="clear_summary_deleteDatabase">Die gesamte Datenbank löschen (Startseite, Lesezeichen, Verlauf und alle Positivlisten).</string>
     <!-- App setting -->
-    <string name="setting_title_app">App Einstellungen</string>
-    <string name="setting_title_ui">Verhalten/UI</string>
+    <string name="setting_title_app">App-Einstellungen</string>
+    <string name="setting_title_ui">Verhalten/Oberfläche</string>
     <string name="setting_title_data">Sicherung</string>
-    <string name="setting_summary_ui">Ändere das Verhalten und die Benutzeroberfläche entsprechend deinen Wünschen.</string>
-    <string name="setting_summary_data">Sichere bestimmte Daten (Ausnahmen, Lesezeichen) oder stelle sie wieder her.</string>
-    <string name="setting_filter">Lesezeichen Filter</string>
-    <string name="setting_filter_summary">Um den Filterdialog anzuzeigen bitte lange auf das Lesezeichenicon in der Übersicht
-        drücken. Entscheide welche Filter du nutzen willst.</string>
+    <string name="setting_summary_ui">Das Verhalten und die Benutzeroberfläche ändern, um mit deinen Vorlieben übereinzustimmen.</string>
+    <string name="setting_summary_data">Verschiedene App-Daten importieren und exportieren (Positivlisten, Lesezeichen).</string>
+    <string name="setting_filter">Lesezeichen-Filter</string>
+    <string name="setting_filter_summary">Um den Filterdialog anzuzeigen, lang auf das Lesezeichenicon in der Übersicht drücken. Entscheide, welche Filter du nutzen wirst.</string>
     <string name="setting_title_fav">Favorit</string>
-    <string name="setting_summary_fav">Hier kannst du die Internetseite ändern, die beim Start von \"FOSS-Browser\" geladen wird.
-    Gib \"about:blank\" ein, um eine leere Startseite zu erhalten.</string>
-    <string name="setting_title_searchEngine">Eigene Suchmaschine</string>
-    <string name="setting_summary_searchEngine">Hier kannst du eine benutzerdefinierte Suchadresse eingeben. Wähle auch \"Eigene Suchmaschine\" als Suchanbieter
-    aus.</string>
+    <string name="setting_summary_fav">Hier kannst du die voreingestellte Website ändern, die beim Start von \"FOSS-Browser\" lädt. Gib \"about:blank\" ein, um eine leere Startseite zu erhalten.</string>
+    <string name="setting_title_searchEngine">Nutzerdefinierte Suchmaschine</string>
+    <string name="setting_summary_searchEngine">Hier kannst du eine benutzerdefinierte Such-URL eingeben. Wähle auch \"Benutzerdefinierte Suchmaschine\" als Suchanbieter aus.</string>
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">Toolbar verstecken</string>
-    <string name="setting_summary_hide">Benutze den ganzen Bildschirm, wenn du durch Internetseiten scrollst. Wenn du die
-        \"Zurücktaste\" drückst, verlässt du den Vollbildmodus.</string>
-    <string name="setting_theme">Thema</string>
-    <string name="setting_theme_summary">App-Thema festlegen.</string>
-    <string name="setting_theme_system">System Thema</string>
-    <string name="setting_theme_light">Helles Thema</string>
-    <string name="setting_theme_dark">Dunkles Thema</string>
+    <string name="setting_summary_hide">Benutze den ganzen Bildschirm beim Scrollen durch Websites. Wenn du die \"Zurück-Taste\" drückst, verlässt du den Vollbildmodus.</string>
+    <string name="setting_theme">Theme</string>
+    <string name="setting_theme_summary">App-Theme festlegen.</string>
+    <string name="setting_theme_system">System-Theme</string>
+    <string name="setting_theme_light">Helles Theme</string>
+    <string name="setting_theme_dark">Dunkles Theme</string>
     <string name="setting_title_theme">Benutzeroberfläche</string>
     <string name="setting_title_behavior">Verhalten</string>
-    <string name="setting_summary_toolbarShow">Die Zurücktaste zeigt immer zuerst die Toolbar, bevor es im Browserverlauf zurückgeht.</string>
+    <string name="setting_summary_toolbarShow">Drücken der Zurück-Taste wird die Toolbar sichtbar machen, bevor es im Browserverlauf zurückgeht.</string>
     <string name="setting_title_toolbarShow">Zuerst die Toolbar</string>
     <string name="setting_title_nav">Navigationsknopf</string>
     <string name="setting_title_nav_pos">Position</string>
-    <string name="setting_summary_nav_pos">Entscheide wo der \"Navigationsknopf\" platziert wird.</string>
+    <string name="setting_summary_nav_pos">Entscheide, wo der \"Navigationsknopf\" platziert wird.</string>
     <string name="setting_summary_nav_pos_right">Rechts</string>
     <string name="setting_summary_nav_pos_left">Links</string>
     <string name="setting_summary_nav_pos_center">Mitte</string>
     <string name="setting_summary_tab">Was soll beim Start der \"Übersicht\" angezeigt werden? Die Startseite, deine Lesezeichen, …</string>
-    <string name="setting_title_confirm_exit">Bestätigung beim Verlassen</string>
-    <string name="setting_summary_confirm_exit">Bestätigungsdialog, bevor du \"FOSS Browser\" beendest.</string>
-    <string name="setting_title_confirm_tab_close">Bestätigung Tab schließen</string>
-    <string name="setting_summary_confirm_tab_close">Bestätigungsdialog, bevor ein Tab geschlossen wird.</string>
+    <string name="setting_title_confirm_exit">Verlassen des Browsers bestätigen</string>
+    <string name="setting_summary_confirm_exit">Bestätigungsdialog beim Schließen des Browsers.</string>
+    <string name="setting_title_confirm_tab_close">Schließen des Tabs bestätigen</string>
+    <string name="setting_summary_confirm_tab_close">Bestätigungsdialog beim Schließen eines Tabs.</string>
     <string name="setting_overView">Übersicht</string>
-    <string name="setting_overView_onStart_title">Zeige beim Appstart</string>
-    <string name="setting_overView_onStart_summary">Öffne als erstes die \"Übersicht\" bei jedem Appstart.</string>
-    <string name="setting_overView_hide_title">Verstecke Tabvorschau</string>
-    <string name="setting_overView_hide_summary">In der komplett ausgeklappten Übersicht wird die Tabvorschau versteckt. Du hast dann
-        mehr Platz für deine Lesezeichen.</string>
+    <string name="setting_overView_onStart_title">Beim Start anzeigen</string>
+    <string name="setting_overView_onStart_summary">Die \"Übersicht\" bei jedem App-Start öffnen.</string>
+    <string name="setting_overView_hide_title">Tab-Vorschauen verstecken</string>
+    <string name="setting_overView_hide_summary">In der erweiterten Übersicht wird die Tab-Vorschau versteckt. Du hast dann mehr Platz für deine Lesezeichen.</string>
     <string name="setting_gestures">Gesten</string>
-    <string name="setting_gestures_use_title">Benutze Gesten</string>
-    <string name="setting_gestures_use_summary">Benutze Gesten auf der Toolbar oder dem \"Navigationsknopf\".</string>
-    <string name="setting_title_reopenLastTab">Öffne letzten Tab neu</string>
-    <string name="setting_summary_reopenLastTab">Öffne einen neuen Tab, wenn der letzte geschlossen wird, anstatt den Browser zu schließen.</string>
+    <string name="setting_gestures_use_title">Gesten benutzen</string>
+    <string name="setting_gestures_use_summary">Gesten auf der Toolbar benutzen und den \"Navigationsknopf\".</string>
+    <string name="setting_title_reopenLastTab">Letzten Tab neu öffnen</string>
+    <string name="setting_summary_reopenLastTab">Einen neuen Tab öffnen, anstatt den Browser zu verlassen, wenn der letzte Tab geschlossen wird.</string>
     <!-- gestures -->
     <string name="setting_title_toolbar">Toolbar</string>
     <string name="setting_gesture_up">Nach oben wischen</string>
@@ -200,72 +182,67 @@
     <string name="setting_gesture_03">Zurück im Verlauf</string>
     <string name="setting_gesture_04">Nach oben scrollen</string>
     <string name="setting_gesture_05">Nach unten scrollen</string>
-    <string name="setting_gesture_06">Zum Tab links wechsel</string>
-    <string name="setting_gesture_07">Zum Tab rechts wechseln</string>
+    <string name="setting_gesture_06">Zum linken Tab wechseln</string>
+    <string name="setting_gesture_07">Zum rechten Tab wechseln</string>
     <string name="setting_gesture_08">Übersicht zeigen</string>
     <string name="setting_gesture_09">Neuen Tab öffnen</string>
     <string name="setting_gesture_10">Tab schließen</string>
     <!-- Data -->
-    <string name="setting_title_export_whitelist">AdBlock Ausnahmen sichern</string>
-    <string name="setting_title_import_whitelist">AdBlock Ausnahmen wiederherstellen</string>
+    <string name="setting_title_export_whitelist">AdBlock-Positivliste exportieren</string>
+    <string name="setting_title_import_whitelist">AdBlock-Positivliste importieren</string>
     <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
-    <string name="setting_title_export_whitelistJS">JavaScript Ausnahmen sichern</string>
-    <string name="setting_title_import_whitelistJS">JavaScript Ausnahmen wiederherstellen</string>
+    <string name="setting_title_export_whitelistJS">JavaScript-Positivliste exportieren</string>
+    <string name="setting_title_import_whitelistJS">JavaScript-Positivliste importieren</string>
     <string name="export_whitelistJS">export_whitelist_Javascript</string>
-    <string name="setting_title_export_whitelistCookie">Cookie Ausnahmen sichern</string>
-    <string name="setting_title_import_whitelistCookie">Cookie Ausnahmen wiederherstellen</string>
+    <string name="setting_title_export_whitelistCookie">Cookie-Positivliste exportieren</string>
+    <string name="setting_title_import_whitelistCookie">Cookie-Positivliste importieren</string>
     <string name="export_whitelistCookie">export_whitelist_Cookie</string>
-    <string name="setting_title_export_appData">Exportiere deine Daten</string>
-    <string name="setting_title_import_appData">Importiere deine Daten</string>
-    <string name="setting_summary_export_appData">Exportiere App-Daten (Startpage + Vorschau, Verlauf, Lesezeichen)
-        und deine persönlichen Einstellungen.</string>
+    <string name="setting_title_export_appData">App-Daten exportieren</string>
+    <string name="setting_title_import_appData">App-Daten importieren</string>
+    <string name="setting_summary_export_appData">Exportiere App-Daten (Startpage &amp; Vorschauen, Verlauf, Lesezeichen) und deine persönlichen Einstellungen.</string>
     <string name="title_appData">App-Daten</string>
-    <string name="hint_database">Dies löscht alle aktuellen Daten. Willst du fortfahren?</string>
+    <string name="hint_database">Dies löscht alle aktuellen Einstellungen und Daten. Willst du fortfahren?</string>
     <!-- Others setting -->
-    <string name="setting_title_others">Sonstiges</string>
+    <string name="setting_title_others">Sonstige</string>
     <string name="setting_title_license">Lizenz</string>
-    <string name="setting_title_appSettings">App Einstellungen</string>
-    <string name="setting_summary_appSettings">Öffne die Systemeinstellungen von \"FOSS Browser\". Dort kannst du, je nach Android Version,
-        verschiedene Einstellungen vornehmen oder nachträglich Berechtigungen erteilen.</string>
+    <string name="setting_title_appSettings">App-Einstellungen</string>
+    <string name="setting_summary_appSettings">Gehe in Systemeinstellungen => Apps zu \"FOSS Browser\". Je nach Android Version kannst du dort Berechtigungen erteilen, die App-Daten löschen usw.</string>
     <string name="setting_title_community">Mitmachen</string>
     <!-- Toast -->
-    <string name="toast_add_to_home_successful">Erfolgreich zum Startschirm hinzugefügt</string>
-    <string name="toast_add_to_home_failed">Konnte nicht zum Startschirm hinzugefügt werden</string>
+    <string name="toast_add_to_home_successful">Erfolgreich zum Startbildschirm hinzugefügt</string>
+    <string name="toast_add_to_home_failed">Hinzufügen zum Startbildschirm missglückt</string>
     <string name="toast_add_whitelist_successful">Domain erfolgreich hinzugefügt</string>
-    <string name="toast_already_exist_in_home">Dieser Eintrag existiert bereits</string>
+    <string name="toast_already_exist_in_home">Existiert bereits auf dem Startbildschirm</string>
     <string name="toast_copy_successful">Erfolgreich kopiert</string>
     <string name="toast_delete_successful">Erfolgreich gelöscht</string>
-    <string name="toast_domain_already_exists">Domain ist bereits in der Liste</string>
-    <string name="toast_export_successful">Gesichert als:&#160;</string>
-    <string name="toast_export_failed">Sicherung fehlgeschlagen</string>
-    <string name="toast_import_successful">Wiederhergestellt:&#160;</string>
-    <string name="toast_import_failed">Wiederherstellung fehlgeschlagen</string>
+    <string name="toast_domain_already_exists">Domain existiert bereits</string>
+    <string name="toast_export_successful">Exportiert als:&#160;</string>
+    <string name="toast_export_failed">Export fehlgeschlagen</string>
+    <string name="toast_import_successful">Importregistrierung:&#160;</string>
+    <string name="toast_import_failed">Import fehlgeschlagen</string>
     <string name="toast_input_empty">Du hast nichts eingegeben</string>
     <string name="toast_invalid_domain">Ungültige Domain</string>
-    <string name="toast_load_error">URL konnte nicht geladen werden</string>
-    <string name="toast_new_tab_successful">Neuer Tab geöffnet</string>
-    <string name="toast_share_failed">Kann die Seite nicht teilen</string>
+    <string name="toast_load_error">Kann diese URL nicht laden</string>
+    <string name="toast_new_tab_successful">Erfolgreich in neuem Tab geöffnet</string>
+    <string name="toast_share_failed">Kann diese Seite nicht teilen</string>
     <string name="toast_start_download">Starte Download</string>
-    <string name="toast_wait_a_minute">Bitte warte einen Moment</string>
+    <string name="toast_wait_a_minute">Bitte einen Moment warten</string>
     <string name="toast_titleConfirm_delete">Möchtest du den Eintrag wirklich löschen?</string>
-    <string name="toast_titleConfirm_paste">In die Zwischenablage kopieren?</string>
+    <string name="toast_titleConfirm_paste">Daten in die Zwischenablage kopieren?</string>
     <string name="toast_titleConfirm_pasteUN">Benutzername</string>
     <string name="toast_titleConfirm_pastePW">Passwort</string>
     <string name="toast_error">Uuups. Etwas ist schief gelaufen. :-(</string>
-    <string name="toast_newTitle">Eintrag existiert schon. Bitte wähle einen anderen Titel.</string>
+    <string name="toast_newTitle">Eintrag existiert schon. Bitte gib einen neuen Titel ein.</string>
     <string name="toast_edit_successful">Erfolgreich gespeichert</string>
-    <string name="toast_webview_forward">Kann keine nächste Seite laden</string>
-    <string name="toast_clear">Möchtest du die Daten wirklich löschen?</string>
-    <string name="toast_permission_sdCard">\"FOSS Browser\" braucht die Berechtigung \"Zugriff auf den Gerätespeicher\". Dies ist
-        notwendig um Dateien herunterzuladen, Bildschirmfotos zu machen und deine Einstellungen zu sichern.</string>
-    <string name="toast_permission_loc">\"FOSS Browser\" braucht die Berechtigung \"Zugriff auf den Standort\". Dies fordern z.B.
-        Internetseiten die einen Navigationsdienst anbieten an.</string>
+    <string name="toast_webview_forward">Kann die nächste Seite nicht laden</string>
+    <string name="toast_clear">Möchtest du wirklich bereinigen?</string>
+    <string name="toast_permission_sdCard">\"FOSS Browser\" braucht die Berechtigung zum Lesen und Schreiben auf deinem Gerätespeicher. Dies ist notwendig, um Dateien herunterzuladen, Bildschirmfotos zu machen und deine Daten zu sichern.</string>
+    <string name="toast_permission_loc">\"FOSS Browser\" braucht die Berechtigung \"Zugriff auf deinen Standort\". Dies wird von einigen Websites verlangt, z.B. wenn sie eine Art von Navigation anbieten.</string>
     <string name="toast_restart">Du musst \"FOSS Browser\" neustarten, damit die Änderungen wirksam werden. Jetzt beenden?</string>
     <string name="toast_quit">Möchtest du \"FOSS Browser\" beenden?</string>
     <string name="toast_close_tab">Möchtest du den aktuellen Tab schließen?</string>
     <string name="toast_downloadComplete">Download vollständig. Dateimanager öffnen?</string>
-    <string name="toast_unsecured">Die Internetseite benutzt eine unsichere Verbindung (\"http\"). Möchtest du versuchen
-        eine gesicherte Verbindung herstellen (\"https\")?</string>
+    <string name="toast_unsecured">Diese Website benutzt eine ungesicherte Verbindung (\"http\"). Möchtest du eine gesicherte Verbindung (\"https\") versuchen?</string>
     <string name="toast_backup">Daten sichern? Das überschreibt die alte Sicherung.</string>
     <string name="toast_fav">Erfolgreich als Favorit gespeichert.</string>
     <!-- Whitelist -->
@@ -274,37 +251,29 @@
     <string name="whitelist_add">Hinzufügen</string>
     <!-- Dialog help -->
     <string name="dialogHelp_tipTitle">Tipps</string>
-    <string name="dialogHelp_tipText">        &lt;b&gt;Menüs und Dialoge&lt;/b&gt;&lt;br&gt;
-        Alle Menüs und Dialoge werden am unteren Bildschirmrand geöffnet. Wenn der Dialog groß ist, sehen Sie zuerst nur den oberen Teil
-        an. Wenn Sie es nach oben wischen, wird der Rest sichtbar.&lt;br&gt;
-        Sie können sie schließen, indem Sie die Zurück-Taste drücken, sie nach unten wischen oder durch Klicken auf&lt;br&gt;&lt;br&gt;
+    <string name="dialogHelp_tipText">&lt;b&gt;Menüs und Dialoge&lt;/b&gt;&lt;br&gt;
+Alle Menüs und Dialoge werden am unteren Bildschirmrand geöffnet. Wenn der Dialog groß ist, wirst du zuerst nur den oberen Teil sehen. Wenn du nach oben wischt, wird der Rest sichtbar.&lt;br&gt;
+Du kannst sie durch Drücken der Zurück-Taste, nach Unten-wischen oder einen Klicken außerhalb schließen&lt;br&gt;&lt;br&gt;
 
-        &lt;b&gt;Lange drücken&lt;/b&gt;&lt;br&gt;
-        Wenn Sie das Menü-Symbol oder die \"Navigationstaste\" lange drücken, wird der \"Schnelle Schalter-Dialog\" angezeigt. Wenn Sie
-        lang auf das \"Lesezeichen-Symbol\" drücken, wird der \"Filter Dialog\" angezeigt.
-    </string>
+&lt;b&gt;Lang Drücken&lt;/b&gt;&lt;br&gt;
+Wenn du das Menü-Symbol oder die \"Navigationstaste\" lang drückst, wird der \"Schnell-Schalter-Dialog\" angezeigt. Wenn du lang auf das \"Lesezeichen-Icon\" drücken, wird der \"Filter-Dialog\" angezeigt.</string>
     <string name="dialogHelp_overviewTitle">Übersicht</string>
-    <string name="dialogHelp_overviewText">        Die \"Übersicht\" besteht aus zwei Teilen (Tabvorschau und persönliche Inhalte). Sie verfügt über ein eigenes Menü und
-        du kannst sie in den Einstellungen an deine Wünsche angepassen.&lt;br&gt;&lt;br&gt;
+    <string name="dialogHelp_overviewText">Die \"Übersicht\" besteht aus zwei Teilen (Tab-Vorschau und persönliche Daten). Sie verfügt über ein eigenes Menü. In den Einstellungen kannst du das Verhalten der Übersicht ändern.&lt;br&gt;&lt;br&gt;
 
-        &lt;b&gt;Tabvorschau&lt;/b&gt;&lt;br&gt;
-        Sie befindet sich in der \"Übersicht\" oben. Wenn du zu einem geöffneten Tab wechseln willst, klicke die Vorschau an.
-        Du kannst einen Tab schließen, indem du die Vorschau lange drückst. Wenn du die \"Tabvorschau\" nach oben ziehst,
-        öffnen sich deine persönlichen Inhalte.&lt;br&gt;&lt;br&gt;
+&lt;b&gt;Tab-Vorschau&lt;/b&gt;&lt;br&gt;
+Es ist der obere Teil der \"Übersicht\". Um Tabs zu wechseln, klick einfach auf die Vorschau. Um einen Tab zu schließen, lang die Vorschau lange drücken. Wenn du die \"Tab-Vorschau\" nach oben wischt, öffnet sich dein persönlicher Inhalt.&lt;br&gt;&lt;br&gt;
 
-        &lt;b&gt;Persönliche Inhalte&lt;/b&gt;&lt;br&gt;
-        Hier gibt es drei Inhalte, welche angezeigt werden können: die Startseite, deine Lesezeichen und dein Browserverlauf.
-        Wenn du einen Eintrag lange drückst, öffnet sich ein Menü mit weiteren Möglichkeiten.
+&lt;b&gt;Persönliche Inhalt&lt;/b&gt;&lt;br&gt;
+Hier gibt es drei Teile: die Startseite, deine Lesezeichen und dein Browserverlauf. Wenn du auf einen Eintrag lang drückst, erscheint ein Menü mit weiteren Möglichkeiten.
     </string>
-    <string name="dialogHelp_filterText">Du kannst deinen Lesezeichen eine Farbe als Filter zuordnen. So kannst du viele Lesezeichen in Gruppen ordnen.
-        Den Filterdialog kannst du öffnen, indem du lange auf das Lesezeichen-Icon drückst. Wenn du einen Eintrag aktivierst, erscheint ein Dialog, in dem du den Namen des Filters bearbeiten kannst.
+    <string name="dialogHelp_filterText">Du kannst deinen Lesezeichen mit Filter markieren. So kannst du deine Lesezeichengruppieren. Den Filterdialog kannst du öffnen durch langes Drücken auf das Lesezeichen-Icon. Wenn du einen Eintrag aktivierst, erscheint ein Dialog, in dem du den Namen des Filters bearbeiten kannst.
     </string>
     <!-- Dialog changelog -->
-    <string name="changelog_dialog">Deine Sprache wird noch nicht unterstützt? Du möchtest FOSS Browser übersetzen? Oder eine bestehende Übersetzung bearbeiten?
-        Hilf uns auf Crowdin: https://crowdin.com/project/foss-browser&lt;br&gt;&lt;br&gt;
+    <string name="changelog_dialog">Deine Sprache wird noch nicht unterstützt? Du möchtest FOSS Browser übersetzen? Oder eine bestehende Übersetzung verbessern?
+Zögere nicht, uns auf Crowdin beizutreten: https://crowdin.com/project/foss-browser&lt;br&gt;&lt;br&gt;
 
-        &lt;b&gt;Auf den folgenden Internetseiten findest du alle Informationen zu \"FOSS Browser\".
-        Bitte lies auch den Hilfedialog in der Anwendung.&lt;/b&gt;&lt;br&gt;&lt;br&gt;
+&lt;b&gt;Auf den folgenden Internetseiten findest du alle wichtigen Informationen zu \"FOSS Browser\".
+Bitte lies auch den Hilfedialog in der Anwendung.&lt;/b&gt;&lt;br&gt;&lt;br&gt;
 
         \u25AA &lt;i&gt;Projektseite:&lt;/i&gt; https://github.com/scoute-dich/Browser&lt;br&gt;
         \u25AA &lt;i&gt;Änderungen:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;br&gt;
@@ -348,18 +317,18 @@
         &lt;b&gt;Crowdin:&lt;/b&gt;&lt;br&gt;
         Crowdin ist eine Online-Plattform, um Anwendungen in andere Sprachen zu übersetzen. Ein großes Dankeschön an alle Übersetzer. Sie können
         auch helfen.&lt;br&gt;
-        &lt;i&gt;https://crowdin. om/project/foss-browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;
+        &lt;i&gt;https://crowdin.com/project/foss-browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
 
         &lt;b&gt;XDA-Thread:&lt;/b&gt;&lt;br&gt;
         XDA ist eine tolle Community für Entwickler und Smartphone-Enthusiasten. Hier können Sie Probleme melden, nach neuen Funktionen fragen
         und alles, was mit \"FOSS Browser\" zusammenhängt.&lt;br&gt;
-        &lt;i&gt;https://forum.xda-developers. om/android/apps-games/app-browser-t3500091&lt;/i&gt;&lt;br&gt;&lt;br&gt;
+        &lt;i&gt;https://forum.xda-developers.com/android/apps-games/app-browser-t3500091&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Github:&lt;/b&gt;&lt;br&gt;
         Auf Github sehen Sie den Quellcode von \"FOSS Browser\". Das ist die eher technische Lösung: offene Fragen. Fragen Sie nach neuen
         Funktionen oder helfen Sie sogar bei der Entwicklung oder Übersetzung.&lt;br&gt;
-        &lt;i&gt;https://github. om/scoute-dich/browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+        &lt;i&gt;https://github.com/scoute-dich/browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
 
 
         &lt;i&gt;Folgende Personen haben an diesem Projekt mitgewirkt. Wenn ich jemanden vergessen habe, kontaktieren Sie mich bitte:&lt;/i&gt;
