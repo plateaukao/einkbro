@@ -216,7 +216,7 @@
     <string name="setting_title_others">Outros</string>
     <string name="setting_title_license">Licença</string>
     <string name="setting_title_appSettings">Configurações do aplicativo</string>
-    <string name="setting_summary_appSettings">Abra as configurações de aplicativo do sistema para \"FOSS Browser\". Aí você pode,
+    <string name="setting_summary_appSettings">Abre as configurações de aplicativo do sistema para \"FOSS Browser\". Aí você pode,
         dependendo das permissões de acesso da versão do Android, limpar os dados do aplicativo e outros.</string>
     <string name="setting_title_community">Contribuições</string>
     <!-- Toast -->
@@ -226,7 +226,7 @@
     <string name="toast_already_exist_in_home">Já existe em Início</string>
     <string name="toast_copy_successful">Copiado com sucesso</string>
     <string name="toast_delete_successful">Apagado com sucesso</string>
-    <string name="toast_domain_already_exists">Domínio já existente</string>
+    <string name="toast_domain_already_exists">O domínio já existente</string>
     <string name="toast_export_successful">Exportado como:&#160;</string>
     <string name="toast_export_failed">Falha ao exportar</string>
     <string name="toast_import_successful">Importações:&#160;</string>
@@ -234,7 +234,7 @@
     <string name="toast_input_empty">Você não inseriu nada</string>
     <string name="toast_invalid_domain">Domínio inválido</string>
     <string name="toast_load_error">Não é possível carregar esta URL</string>
-    <string name="toast_new_tab_successful">Aberto com sucesso em uma nova aba</string>
+    <string name="toast_new_tab_successful">Aberto em uma nova aba</string>
     <string name="toast_share_failed">Não é possível compartilhar esta página</string>
     <string name="toast_start_download">Iniciando download</string>
     <string name="toast_wait_a_minute">Por favor aguarde um pouco</string>
