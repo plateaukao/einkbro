@@ -130,7 +130,7 @@
     <string name="clear_title_history">Limpar o Histórico</string>
     <string name="clear_title_indexedDB">Limpar \"bancos de dados indexados\" e \"armazenamento local do webview\"</string>
     <string name="clear_title_deleteDatabase">Apagar base de dados</string>
-    <string name="clear_summary_deleteDatabase">Apagar toda a base de dados (Página inicial, favoritos, histórico e todas as listas brancas).</string>
+    <string name="clear_summary_deleteDatabase">Apagar toda a base de dados (Início, favoritos, histórico e todas as listas brancas).</string>
     <!-- App setting -->
     <string name="setting_title_app">Configurações do Aplicativo</string>
     <string name="setting_title_ui">Comportamento/Interface</string>
@@ -149,7 +149,7 @@
     <string name="setting_title_hideToolbar">Ocultar barra de ferramentas</string>
     <string name="setting_summary_hide">Use a tela inteira ao navegar nos sites. Se pressionar o botão voltar você
     deixa o modo de tela cheia.</string>
-    <string name="setting_theme"> Tema</string>
+    <string name="setting_theme">Tema</string>
     <string name="setting_theme_summary">Definir o tema do aplicativo.</string>
     <string name="setting_theme_system">Tema do sistema</string>
     <string name="setting_theme_light">Tema claro</string>
@@ -164,7 +164,7 @@
     <string name="setting_summary_nav_pos_right">Direita</string>
     <string name="setting_summary_nav_pos_left">Esquerda</string>
     <string name="setting_summary_nav_pos_center">Centro</string>
-    <string name="setting_summary_tab">O que deve ser mostrado no início da \"Visão Geral\"? A página inicial, seus favoritos, …</string>
+    <string name="setting_summary_tab">O que deve ser mostrado no início da \"Visão Geral\"? O Início, seus favoritos, …</string>
     <string name="setting_title_confirm_exit">Confirmar saída do navegador</string>
     <string name="setting_summary_confirm_exit">Diálogo de confirmação ao fechar o navegador.</string>
     <string name="setting_title_confirm_tab_close">Confirmar fechamento da aba</string>
