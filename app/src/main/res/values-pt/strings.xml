@@ -75,7 +75,7 @@
  ao fechar a aplicação.</string>
     <string name="setting_summary_start_control">Decide quais componentes do navegador serão ativados na inicialização.</string>
     <string name="setting_title_search_engine">Mecanismo de busca</string>
-    <string name="setting_summary_search_engine">Aqui você pode escolher seu mecanismo de busca preferido ou definir um personalizado.</string>
+    <string name="setting_summary_search_engine">Escolha seu mecanismo de busca preferido ou defina um personalizado.</string>
     <string name="setting_summary_search_engine_google">Google</string>
     <string name="setting_summary_search_engine_duckduckgo">DuckDuckGo</string>
     <string name="setting_summary_search_engine_startpage">StartPage</string>
