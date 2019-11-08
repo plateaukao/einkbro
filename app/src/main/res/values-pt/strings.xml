@@ -156,30 +156,30 @@
     <string name="setting_theme_dark">Tema escuro</string>
     <string name="setting_title_theme">UI</string>
     <string name="setting_title_behavior">Comportamento</string>
-    <string name="setting_summary_toolbarShow">Pressionar voltar faz a barra de ferramentas visível, antes de voltar ao histórico.</string>
-    <string name="setting_title_toolbarShow">Primeiro barra de ferramentas</string>
+    <string name="setting_summary_toolbarShow">Pressionar Voltar faz a barra de ferramentas ficar visível antes de voltar ao histórico.</string>
+    <string name="setting_title_toolbarShow">Barra de ferramentas primeiro</string>
     <string name="setting_title_nav">Botão de navegação</string>
     <string name="setting_title_nav_pos">Posição</string>
-    <string name="setting_summary_nav_pos">Decide o local para colocar o \"Botão de Navegação\".</string>
+    <string name="setting_summary_nav_pos">Decide o local do \"Botão de Navegação\".</string>
     <string name="setting_summary_nav_pos_right">Direita</string>
     <string name="setting_summary_nav_pos_left">Esquerda</string>
     <string name="setting_summary_nav_pos_center">Centro</string>
-    <string name="setting_summary_tab">O que deve ser mostrado no início da \"Visão Geral\"? O Início, seus favoritos, …</string>
+    <string name="setting_summary_tab">O que deve ser exibido no início da \"Visão Geral\"? O Início, seus favoritos, …</string>
     <string name="setting_title_confirm_exit">Confirmar saída do navegador</string>
     <string name="setting_summary_confirm_exit">Diálogo de confirmação ao fechar o navegador.</string>
     <string name="setting_title_confirm_tab_close">Confirmar fechamento da aba</string>
     <string name="setting_summary_confirm_tab_close">Diálogo de confirmação ao fechar a aba.</string>
     <string name="setting_overView">Visão Geral</string>
     <string name="setting_overView_onStart_title">Mostrar ao iniciar</string>
-    <string name="setting_overView_onStart_summary">Abra a \"Visão Geral\" ao iniciar o aplicativo.</string>
-    <string name="setting_overView_hide_title">Ocultar pré-visualizações de aba</string>
-    <string name="setting_overView_hide_summary">Em visão geral expandida a pré-visualização das abas será ocultada. Então você tem mais lugar para seus
+    <string name="setting_overView_onStart_summary">Abrir a \"Visão Geral\" ao iniciar o aplicativo.</string>
+    <string name="setting_overView_hide_title">Ocultar visualização de aba</string>
+    <string name="setting_overView_hide_summary">Na visão geral expandida a visualização das abas ficará oculta. Assim você tem mais lugar para seus
     favoritos.</string>
     <string name="setting_gestures">Gestos</string>
     <string name="setting_gestures_use_title">Utilizar gestos</string>
-    <string name="setting_gestures_use_summary">Utilizar gestos na barra de ferramentas e no \"Botão de Navegação\".</string>
+    <string name="setting_gestures_use_summary">Utilizar gestos na barra de ferramentas e no \"botão de Navegação\".</string>
     <string name="setting_title_reopenLastTab">Reabrir última aba</string>
-    <string name="setting_summary_reopenLastTab">Ao fechar a última aba reabrir uma nova em vez de sair do navegador.</string>
+    <string name="setting_summary_reopenLastTab">Ao fechar a última aba reabre uma nova ao invés de sair do navegador.</string>
     <!-- gestures -->
     <string name="setting_title_toolbar">Barra de ferramentas</string>
     <string name="setting_gesture_up">Deslizar para cima</string>
@@ -208,7 +208,7 @@
     <string name="export_whitelistCookie">export_whitelist_Cookie</string>
     <string name="setting_title_export_appData">Exportar dados do aplicativo</string>
     <string name="setting_title_import_appData">Importar dados do aplicativo</string>
-    <string name="setting_summary_export_appData">Exportar dados do aplicativo (Página inicial + pré-visualizações, Histórico, Favoritos)
+    <string name="setting_summary_export_appData">Exportar dados do aplicativo (Início + pré-visualizações, Histórico, Favoritos)
         e suas configurações pessoais.</string>
     <string name="title_appData">Dados do aplicativo</string>
     <string name="hint_database">Isto irá apagar todas as suas configurações e dados atuais. Continuar?</string>
