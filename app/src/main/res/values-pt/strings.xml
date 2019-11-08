@@ -93,7 +93,7 @@
     <string name="setting_title_remote">Conteúdo remoto</string>
     <string name="setting_summary_remote">Habilitar conteúdo remoto, que não é diretamente do site que você está visitando.
         Desabilitar isto é mais seguro, mais rápido e poupa dados. Mas alguns conteúdos não serão mais exibidos.</string>
-    <string name="setting_title_save_data">Pedir para \'Salvar Dados\'</string>
+    <string name="setting_title_save_data">Solicitar \'Salvar Dados\'</string>
     <string name="setting_summary_save_data">Informar aos sites que você prefere salvar dados. Sites suportados irão carregar mais rápido.</string>
     <!-- browser start -->
     <string name="setting_title_images">Imagens</string>
