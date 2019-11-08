@@ -59,19 +59,19 @@
     <string name="dialog_extension_hint">Extensão (por exemplo: \".jpg\"):</string>
     <string name="dialog_sign_in_username">Usuário</string>
     <string name="dialog_sign_in_password">Senha</string>
-    <string name="dialog_title_download">Você quer baixar este arquivo?</string>
+    <string name="dialog_title_download">Deseja baixar este arquivo?</string>
     <string name="dialog_content_resubmission">Gostaria de reenviar os seus dados?</string>
-    <string name="dialog_content_ssl_error">O certificado do site não é de confiança. Continuar mesmo assim?</string>
+    <string name="dialog_content_ssl_error">O certificado do site não é de confiança. Continuar?</string>
     <string name="dialog_sortName">Ordenar por nome</string>
     <string name="dialog_sortIcon">Ordenar por ícone</string>
     <string name="dialog_sortDate">Ordenar por data</string>
     <!-- Settings -->
     <string name="setting_label">Configurações</string>
     <!-- browser setting -->
-    <string name="setting_title_browser">Configurações do navegador</string>
-    <string name="setting_title_clear_control">Controle de dados</string>
-    <string name="setting_title_start_control">Controle de inicialização</string>
-    <string name="setting_summary_clear_control">Limpar dados do navegador ou decidir os dados que serão removidos
+    <string name="setting_title_browser">Configurações do Navegador</string>
+    <string name="setting_title_clear_control">Controle de Dados</string>
+    <string name="setting_title_start_control">Controle de Inicialização</string>
+    <string name="setting_summary_clear_control">Limpa os dados do navegador ou decide os dados que serão removidos
  ao fechar a aplicação.</string>
     <string name="setting_summary_start_control">Decide quais componentes do navegador serão ativados na inicialização.</string>
     <string name="setting_title_search_engine">Mecanismo de busca</string>
