@@ -257,7 +257,7 @@
     <string name="toast_unsecured">Este site usa uma conexão não segura (\"http\"). Você quer tentar uma conexão
         segura (\"https\")?</string>
     <string name="toast_backup">Criar backup? Irá substituir os dados do backup anterior.</string>
-    <string name="toast_fav">Definido como favorito com sucesso.</string>
+    <string name="toast_fav">Definido como favorito.</string>
     <!-- Whitelist -->
     <string name="whitelist_menu_clear">Limpar</string>
     <string name="whitelist_edit_hint">Domínio</string>
