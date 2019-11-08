@@ -111,11 +111,11 @@
     <string name="setting_summary_javascript">Habilitar JavaScript. Muitos sites precisam de JavaScript para sua funcionalidade (menus,
         carregamento e exibição de imagens, …). Mas são também um risco e podem ser utilizados para ataques.</string>
     <string name="setting_title_whitelistJS">Lista branca para JavaScript</string>
-    <string name="setting_summary_whitelistJS">Se desativar a utilização de JavaScript, pode utilizar esta lista para permitir que os sites em que confia utilizem JavaScript.</string>
+    <string name="setting_summary_whitelistJS">Se desativar o uso de JavaScript, você pode utilizar esta lista para permitir que os sites em que confia utilizem JavaScript.</string>
     <string name="setting_title_adblock">AdBlock</string>
-    <string name="setting_summary_adblock">Ative o AdBlock para bloquear anúncios irritantes. Sites também carregam mais rápido quando ativo.</string>
+    <string name="setting_summary_adblock">Ativa o AdBlock para bloquear anúncios irritantes. Sites também carregam mais rápido quando ativo.</string>
     <string name="setting_title_whitelist">Lista branca para AdBlock</string>
-    <string name="setting_summary_whitelist">Permitir que o sites desta lista mostrem anúncios. Alguns sites não funcionam, quando o AdBlock está ativo.</string>
+    <string name="setting_summary_whitelist">Permitir que o sites desta lista mostrem anúncios. Alguns sites não funcionam quando o AdBlock está ativo.</string>
     <string name="setting_title_location">Localização</string>
     <string name="setting_summary_location">Permitir que os sites acessem sua localização. Alguns sites (como o Google Maps para navegação) precisam dessa opção ativa.</string>
     <string name="setting_title_history">Histórico</string>
@@ -123,11 +123,11 @@
     <!-- browser clear -->
     <string name="data_summary">Todos os arquivos serão exportados para o caminho \"Android/data/de.baumann.browser/files/browser_backup/\" do seu cartão SD. Esse diretório será APAGADO, se você desinstalar o \"FOSS Browser\". Então faça backup regularmente em um local de salvamento.</string>
     <string name="clear_menu_done_all">Terminado</string>
-    <string name="clear_title_quit">Limpar ao fechar a aplicação</string>
+    <string name="clear_title_quit">Limpar ao fechar o aplicativo</string>
     <string name="clear_summary_quit">Sempre que sair do \"FOSS Browser\" todos os dados marcados acima serão excluídos.</string>
     <string name="clear_title_cache">Limpar o Cache</string>
     <string name="clear_title_cookie">Limpar Cookies</string>
-    <string name="clear_title_history">Apagar o Histórico</string>
+    <string name="clear_title_history">Limpar o Histórico</string>
     <string name="clear_title_indexedDB">Limpar \"bancos de dados indexados\" e \"armazenamento local do webview\"</string>
     <string name="clear_title_deleteDatabase">Apagar base de dados</string>
     <string name="clear_summary_deleteDatabase">Apagar toda a base de dados (Página inicial, favoritos, histórico e todas as listas brancas).</string>
