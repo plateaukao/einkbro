@@ -42,14 +42,14 @@
     <string name="menu_share_screenshot">Compartilhar captura de tela</string>
     <string name="menu_share_link">Compartilhar link</string>
     <string name="menu_save_screenshot">Salvar captura de tela</string>
-    <string name="menu_save_home">Guardar em Início</string>
+    <string name="menu_save_home">Salvar em Início</string>
     <string name="menu_save_bookmark">Salvar como favorito</string>
     <string name="menu_save_as">Salvar como …</string>
     <string name="menu_save_pdf">Salvar como PDF</string>
     <string name="menu_share_pdf">Compartilhar PDF</string>
-    <string name="menu_shareClipboard">Copiar para a área de transferência</string>
+    <string name="menu_shareClipboard">Copiar para área de transferência</string>
     <string name="menu_other_searchSite">Procurar no site</string>
-    <string name="menu_other_fileManager">Abrir o gerenciador de arquivos</string>
+    <string name="menu_other_fileManager">Abrir gerenciador de arquivos</string>
     <string name="menu_other_info">Sobre o \"Navegador FOSS\"</string>
     <string name="menu_other_help">Ajuda</string>
     <!-- Dialog -->
