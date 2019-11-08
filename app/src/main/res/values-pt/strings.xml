@@ -86,7 +86,7 @@
     <string name="setting_summary_search_engine_qwant">Qwant</string>
     <string name="setting_summary_search_engine_ecosia">Ecosia</string>
     <string name="setting_title_inverted">Cores invertidas</string>
-    <string name="setting_summary_inverted">Se ativo, o conteúdo será processado no modo invertido da escala de cinza.
+    <string name="setting_summary_inverted">Se selecionado, o conteúdo será processado no modo invertido da escala de cinza.
 	É um tipo de \"modo noturno\".</string>
     <string name="setting_title_font">Tamanho da fonte</string>
     <string name="setting_summary_font">Alterar o tamanho da fonte para exibir sites.</string>
