@@ -15,15 +15,18 @@ import de.baumann.browser.unit.HelperUnit;
 import de.baumann.browser.view.NinjaToast;
 
 @SuppressLint("StaticFieldLeak")
-public class ExportWhitelistAdBlockTask extends AsyncTask<Void, Void, Boolean> {
+public class ExportWhiteListTask extends AsyncTask<Void, Void, Boolean> {
+
     private final Context context;
     private BottomSheetDialog dialog;
     private String path;
+    private int table;
 
-    public ExportWhitelistAdBlockTask(Context context) {
+    public ExportWhiteListTask(Context context, int i) {
         this.context = context;
         this.dialog = null;
         this.path = null;
+        this.table = i;
     }
 
     @Override
@@ -41,7 +44,17 @@ public class ExportWhitelistAdBlockTask extends AsyncTask<Void, Void, Boolean> {
 
     @Override
     protected Boolean doInBackground(Void... params) {
-        path = BrowserUnit.exportWhitelist(context, 0);
+        switch (table) {
+            case 0:
+                path = BrowserUnit.exportWhitelist(context, 0);
+                break;
+            case 1:
+                path = BrowserUnit.exportWhitelist(context, 1);
+                break;
+            default:
+                path = BrowserUnit.exportWhitelist(context, 2);
+                break;
+        }
         return !isCancelled() && path != null && !path.isEmpty();
     }
 

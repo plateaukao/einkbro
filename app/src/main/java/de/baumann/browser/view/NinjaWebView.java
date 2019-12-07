@@ -3,16 +3,15 @@ package de.baumann.browser.view;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.net.MailTo;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
+
 import androidx.preference.PreferenceManager;
+
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.*;
 import android.webkit.CookieManager;
 import android.webkit.WebSettings;
@@ -21,10 +20,8 @@ import android.webkit.WebView;
 import de.baumann.browser.browser.*;
 import de.baumann.browser.Ninja.R;
 import de.baumann.browser.unit.BrowserUnit;
-import de.baumann.browser.unit.IntentUnit;
 import de.baumann.browser.unit.ViewUnit;
 
-import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -56,6 +53,7 @@ public class NinjaWebView extends WebView implements AlbumController {
     public interface OnScrollChangeListener {
         /**
          * Called when the scroll position of a view changes.
+         *
          * @param scrollY    Current vertical scroll origin.
          * @param oldScrollY Previous vertical scroll origin.
          */
@@ -65,7 +63,6 @@ public class NinjaWebView extends WebView implements AlbumController {
     private Context context;
     private int dimen144dp;
     private int dimen108dp;
-    private int animTime;
 
     private Album album;
     private NinjaWebViewClient webViewClient;
@@ -75,12 +72,14 @@ public class NinjaWebView extends WebView implements AlbumController {
     private GestureDetector gestureDetector;
 
     private AdBlock adBlock;
+
     public AdBlock getAdBlock() {
         return adBlock;
     }
 
     private Javascript javaHosts;
     private Cookie cookieHosts;
+
     public Cookie getCookieHosts() {
         return cookieHosts;
     }
@@ -89,14 +88,17 @@ public class NinjaWebView extends WebView implements AlbumController {
     private WebSettings webSettings;
 
     private boolean foreground;
+
     public boolean isForeground() {
         return foreground;
     }
 
     private BrowserController browserController = null;
+
     public BrowserController getBrowserController() {
         return browserController;
     }
+
     public void setBrowserController(BrowserController browserController) {
         this.browserController = browserController;
         this.album.setBrowserController(browserController);
@@ -108,7 +110,6 @@ public class NinjaWebView extends WebView implements AlbumController {
         this.context = context;
         this.dimen144dp = getResources().getDimensionPixelSize(R.dimen.layout_width_144dp);
         this.dimen108dp = getResources().getDimensionPixelSize(R.dimen.layout_height_108dp);
-        this.animTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
         this.foreground = false;
 
         this.adBlock = new AdBlock(this.context);
@@ -143,16 +144,15 @@ public class NinjaWebView extends WebView implements AlbumController {
 
     @TargetApi(Build.VERSION_CODES.O)
     private synchronized void initWebSettings() {
+        String MyUA = "Mozilla/5.0 (Android 5.0; Mobile; rv:41.0) Gecko/41.0 Firefox/41.0";
         webSettings = getSettings();
+        webSettings.setUserAgentString(MyUA);
         webSettings.setBuiltInZoomControls(true);
         webSettings.setDisplayZoomControls(false);
         webSettings.setSupportZoom(true);
-
-        webSettings.setDomStorageEnabled(true);
+        webSettings.setSupportMultipleWindows(true);
         webSettings.setLoadWithOverviewMode(true);
         webSettings.setUseWideViewPort(true);
-        webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
-
         if (android.os.Build.VERSION.SDK_INT >= 26) {
             webSettings.setSafeBrowsingEnabled(true);
         }
@@ -160,18 +160,16 @@ public class NinjaWebView extends WebView implements AlbumController {
 
     public synchronized void initPreferences() {
         sp = PreferenceManager.getDefaultSharedPreferences(context);
-
         webViewClient.enableAdBlock(sp.getBoolean(context.getString(R.string.sp_ad_block), true));
-
         webSettings = getSettings();
         webSettings.setTextZoom(Integer.parseInt(Objects.requireNonNull(sp.getString("sp_fontSize", "100"))));
         webSettings.setAllowFileAccessFromFileURLs(sp.getBoolean(("sp_remote"), false));
         webSettings.setAllowUniversalAccessFromFileURLs(sp.getBoolean(("sp_remote"), false));
+        webSettings.setDomStorageEnabled(sp.getBoolean(("sp_remote"), false));
         webSettings.setBlockNetworkImage(!sp.getBoolean(context.getString(R.string.sp_images), true));
         webSettings.setJavaScriptEnabled(sp.getBoolean(context.getString(R.string.sp_javascript), true));
         webSettings.setJavaScriptCanOpenWindowsAutomatically(sp.getBoolean(context.getString(R.string.sp_javascript), true));
         webSettings.setGeolocationEnabled(sp.getBoolean(context.getString(R.string.sp_location), false));
-
         CookieManager manager = CookieManager.getInstance();
         manager.setAcceptCookie(sp.getBoolean(context.getString(R.string.sp_cookies), true));
     }
@@ -182,10 +180,10 @@ public class NinjaWebView extends WebView implements AlbumController {
         album.setBrowserController(browserController);
     }
 
-    public synchronized HashMap<String, String> getRequestHeaders () {
+    public synchronized HashMap<String, String> getRequestHeaders() {
         HashMap<String, String> requestHeaders = new HashMap<>();
         requestHeaders.put("DNT", "1");
-        if (sp.getBoolean(context.getString(R.string.sp_savedata), false)){
+        if (sp.getBoolean(context.getString(R.string.sp_savedata), false)) {
             requestHeaders.put("Save-Data", "on");
         }
         return requestHeaders;
@@ -200,29 +198,7 @@ public class NinjaWebView extends WebView implements AlbumController {
             return;
         }
 
-        if (!url.contains("://")) {
-            url = BrowserUnit.queryWrapper(context, url.trim());
-        }
-
-        if (url.startsWith(BrowserUnit.URL_SCHEME_MAIL_TO)) {
-            Intent intent = IntentUnit.getEmailIntent(MailTo.parse(url));
-            context.startActivity(intent);
-            reload();
-            return;
-
-        } else if (url.startsWith(BrowserUnit.URL_SCHEME_INTENT)) {
-            Intent intent;
-            try {
-                intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME);
-                context.startActivity(intent);
-            } catch (URISyntaxException u) {
-                Log.w("browser", "Error parsing URL");
-            }
-            return;
-        }
-
         if (!sp.getBoolean(context.getString(R.string.sp_javascript), true)) {
-
             if (javaHosts.isWhite(url)) {
                 webSettings = getSettings();
                 webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
@@ -234,57 +210,7 @@ public class NinjaWebView extends WebView implements AlbumController {
             }
         }
 
-        if (!sp.getBoolean(context.getString(R.string.sp_cookies), true)) {
-
-            if (cookieHosts.isWhite(url)) {
-                CookieManager manager = CookieManager.getInstance();
-                manager.getCookie(url);
-                manager.setAcceptCookie(true);
-            } else {
-                CookieManager manager = CookieManager.getInstance();
-                manager.setAcceptCookie(false);
-            }
-        }
-
-        webViewClient.updateWhite(adBlock.isWhite(url));
-        super.loadUrl(url, getRequestHeaders());
-
-        if (browserController != null && foreground) {
-            browserController.updateBookmarks();
-        }
-    }
-
-    @SuppressLint("SetJavaScriptEnabled")
-    @Override
-    public void reload() {
-        webViewClient.updateWhite(adBlock.isWhite(getUrl()));
-
-        if (!sp.getBoolean(context.getString(R.string.sp_javascript), true)) {
-
-            if (javaHosts.isWhite(getUrl())) {
-                webSettings = getSettings();
-                webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
-                webSettings.setJavaScriptEnabled(true);
-            } else {
-                webSettings = getSettings();
-                webSettings.setJavaScriptCanOpenWindowsAutomatically(false);
-                webSettings.setJavaScriptEnabled(false);
-            }
-        }
-
-        if (!sp.getBoolean(context.getString(R.string.sp_cookies), true)) {
-
-            if (cookieHosts.isWhite(getUrl())) {
-                CookieManager manager = CookieManager.getInstance();
-                manager.getCookie(getUrl());
-                manager.setAcceptCookie(true);
-            } else {
-                CookieManager manager = CookieManager.getInstance();
-                manager.setAcceptCookie(false);
-            }
-        }
-
-        super.reload();
+        super.loadUrl(BrowserUnit.queryWrapper(context, url.trim()), getRequestHeaders());
     }
 
     @Override
@@ -327,7 +253,13 @@ public class NinjaWebView extends WebView implements AlbumController {
         }
 
         if (isLoadFinish()) {
-            setAlbumCover(ViewUnit.capture(NinjaWebView.this, dimen144dp, dimen108dp, Bitmap.Config.RGB_565));
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    setAlbumCover(ViewUnit.capture(NinjaWebView.this, dimen144dp, dimen108dp, Bitmap.Config.RGB_565));
+                }
+            }, 250);
+
             if (prepareRecord()) {
                 browserController.updateAutoComplete();
             }
@@ -336,9 +268,6 @@ public class NinjaWebView extends WebView implements AlbumController {
 
     public synchronized void update(String title) {
         album.setAlbumTitle(title);
-        if (foreground) {
-            browserController.updateBookmarks();
-        }
     }
 
     @Override

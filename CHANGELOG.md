@@ -1,8 +1,12 @@
 ### v 6.8 (WIP)
+- new: search in all overview inventries
+- new: Blank target href open a new tab
+- new: removed device model and build number from user agent string
 - new: follow system theme
 - new: Amoled theme
 - new: moving to AndroidX libraries
 - new: favorite settings
+- updated: adblock hosts
 - updated: themes
 - updated: Turkish translation
 - updated: Czech translation

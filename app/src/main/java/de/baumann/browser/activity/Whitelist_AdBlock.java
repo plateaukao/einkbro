@@ -23,6 +23,7 @@ import de.baumann.browser.database.RecordAction;
 import de.baumann.browser.Ninja.R;
 import de.baumann.browser.unit.BrowserUnit;
 import de.baumann.browser.unit.HelperUnit;
+import de.baumann.browser.unit.RecordUnit;
 import de.baumann.browser.view.Adapter_Whitelist;
 import de.baumann.browser.view.NinjaToast;
 
@@ -43,7 +44,7 @@ public class Whitelist_AdBlock extends AppCompatActivity {
 
         RecordAction action = new RecordAction(this);
         action.open(false);
-        list = action.listDomains();
+        list = action.listDomains(RecordUnit.TABLE_WHITELIST);
         action.close();
 
         ListView listView = findViewById(R.id.whitelist);
@@ -66,7 +67,7 @@ public class Whitelist_AdBlock extends AppCompatActivity {
                 } else {
                     RecordAction action = new RecordAction(Whitelist_AdBlock.this);
                     action.open(true);
-                    if (action.checkDomain(domain)) {
+                    if (action.checkDomain(domain, RecordUnit.TABLE_WHITELIST)) {
                         NinjaToast.show(Whitelist_AdBlock.this, R.string.toast_domain_already_exists);
                     } else {
                         AdBlock adBlock = new AdBlock(Whitelist_AdBlock.this);
@@ -89,7 +90,7 @@ public class Whitelist_AdBlock extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_whitelist, menu);
+        getMenuInflater().inflate(R.menu.menu_clear, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -99,12 +100,11 @@ public class Whitelist_AdBlock extends AppCompatActivity {
             case android.R.id.home:
                 finish();
                 break;
-            case R.id.whitelist_menu_clear:
-
+            case R.id.menu_clear:
                 final BottomSheetDialog dialog = new BottomSheetDialog(Whitelist_AdBlock.this);
                 View dialogView = View.inflate(Whitelist_AdBlock.this, R.layout.dialog_action, null);
                 TextView textView = dialogView.findViewById(R.id.dialog_text);
-                textView.setText(R.string.toast_clear);
+                textView.setText(R.string.hint_database);
                 Button action_ok = dialogView.findViewById(R.id.action_ok);
                 action_ok.setOnClickListener(new View.OnClickListener() {
                     @Override

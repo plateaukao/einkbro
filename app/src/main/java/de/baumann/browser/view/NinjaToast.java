@@ -20,6 +20,7 @@ public class NinjaToast {
 
     public static void show(Context context, String text) {
 
+
         Activity activity = (Activity) context;
 
         LayoutInflater inflater = activity.getLayoutInflater();

@@ -66,10 +66,6 @@ public class ViewUnit {
         return context.getResources().getDisplayMetrics().density;
     }
 
-    public static Drawable getDrawable(Context context, int id) {
-        return context.getResources().getDrawable(id, null);
-    }
-
     private static int getWindowHeight(Context context) {
         return context.getResources().getDisplayMetrics().heightPixels;
     }

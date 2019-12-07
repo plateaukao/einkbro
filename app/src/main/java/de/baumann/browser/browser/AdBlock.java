@@ -6,6 +6,7 @@ import android.content.res.AssetManager;
 import android.util.Log;
 
 import de.baumann.browser.database.RecordAction;
+import de.baumann.browser.unit.RecordUnit;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -44,7 +45,7 @@ public class AdBlock {
         RecordAction action = new RecordAction(context);
         action.open(false);
         whitelist.clear();
-        whitelist.addAll(action.listDomains());
+        whitelist.addAll(action.listDomains(RecordUnit.TABLE_WHITELIST));
         action.close();
     }
 
@@ -97,7 +98,7 @@ public class AdBlock {
     public synchronized void addDomain(String domain) {
         RecordAction action = new RecordAction(context);
         action.open(true);
-        action.addDomain(domain);
+        action.addDomain(domain, RecordUnit.TABLE_WHITELIST);
         action.close();
         whitelist.add(domain);
     }
@@ -105,7 +106,7 @@ public class AdBlock {
     public synchronized void removeDomain(String domain) {
         RecordAction action = new RecordAction(context);
         action.open(true);
-        action.deleteDomain(domain);
+        action.deleteDomain(domain, RecordUnit.TABLE_WHITELIST);
         action.close();
         whitelist.remove(domain);
     }
