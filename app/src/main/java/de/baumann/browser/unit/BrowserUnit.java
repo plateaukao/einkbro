@@ -14,10 +14,16 @@ import android.os.Build;
 import android.os.Environment;
 import androidx.preference.PreferenceManager;
 import android.util.Log;
+import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.URLUtil;
 import android.webkit.ValueCallback;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -181,72 +187,87 @@ public class BrowserUnit {
         }
     }
 
-    public static void download(final Context context, String url, String contentDisposition, String mimeType) {
-        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-        String filename = URLUtil.guessFileName(url, contentDisposition, mimeType); // Maybe unexpected filename.
+    public static void download(final Context context, final String url, final String contentDisposition, final String mimeType) {
 
-        CookieManager cookieManager = CookieManager.getInstance();
-        String cookie = cookieManager.getCookie(url);
+        String text = context.getString(R.string.dialog_title_download) + " - " + URLUtil.guessFileName(url, contentDisposition, mimeType);
+        final BottomSheetDialog dialog = new BottomSheetDialog(context);
+        View dialogView = View.inflate(context, R.layout.dialog_action, null);
+        TextView textView = dialogView.findViewById(R.id.dialog_text);
+        textView.setText(text);
+        Button action_ok = dialogView.findViewById(R.id.action_ok);
+        action_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+                String filename = URLUtil.guessFileName(url, contentDisposition, mimeType); // Maybe unexpected filename.
 
-        request.addRequestHeader("Cookie", cookie);
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        request.setTitle(filename);
-        request.setMimeType(mimeType);
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
+                CookieManager cookieManager = CookieManager.getInstance();
+                String cookie = cookieManager.getCookie(url);
+                request.addRequestHeader("Cookie", cookie);
+                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                request.setTitle(filename);
+                request.setMimeType(mimeType);
+                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
+                DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+                assert manager != null;
 
-        DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-        assert manager != null;
-
-        if (android.os.Build.VERSION.SDK_INT >= 23) {
-            int hasWRITE_EXTERNAL_STORAGE = context.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
-                Activity activity = (Activity) context;
-                HelperUnit.grantPermissionsStorage(activity);
-            } else {
-                manager.enqueue(request);
-                try {
-                    NinjaToast.show(context, R.string.toast_start_download);
-                } catch (Exception e) {
-                    Toast.makeText(context, R.string.toast_start_download, Toast.LENGTH_SHORT).show();
+                if (android.os.Build.VERSION.SDK_INT >= 23) {
+                    int hasWRITE_EXTERNAL_STORAGE = context.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                    if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
+                        Activity activity = (Activity) context;
+                        HelperUnit.grantPermissionsStorage(activity);
+                    } else {
+                        manager.enqueue(request);
+                        try {
+                            NinjaToast.show(context, R.string.toast_start_download);
+                        } catch (Exception e) {
+                            Toast.makeText(context, R.string.toast_start_download, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                } else {
+                    manager.enqueue(request);
+                    try {
+                        NinjaToast.show(context, R.string.toast_start_download);
+                    } catch (Exception e) {
+                        Toast.makeText(context, R.string.toast_start_download, Toast.LENGTH_SHORT).show();
+                    }
                 }
+                dialog.cancel();
             }
-
-        } else {
-            manager.enqueue(request);
-            try {
-                NinjaToast.show(context, R.string.toast_start_download);
-            } catch (Exception e) {
-                Toast.makeText(context, R.string.toast_start_download, Toast.LENGTH_SHORT).show();
+        });
+        Button action_cancel = dialogView.findViewById(R.id.action_cancel);
+        action_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.cancel();
             }
-        }
+        });
+        dialog.setContentView(dialogView);
+        dialog.show();
+        HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
     }
 
     public static String exportWhitelist(Context context, int i) {
         RecordAction action = new RecordAction(context);
         List<String> list;
         String filename;
-
         action.open(false);
-
         switch (i) {
             case 0:
-                list = action.listDomains();
+                list = action.listDomains(RecordUnit.TABLE_WHITELIST);
                 filename = context.getString(R.string.export_whitelistAdBlock);
                 break;
             case 1:
-                list = action.listDomainsJS();
+                list = action.listDomains(RecordUnit.TABLE_JAVASCRIPT);
                 filename = context.getString(R.string.export_whitelistJS);
                 break;
             default:
-                list = action.listDomainsCookie();
+                list = action.listDomains(RecordUnit.TABLE_COOKIE);
                 filename = context.getString(R.string.export_whitelistCookie);
                 break;
         }
-
         action.close();
-
         File file = new File(context.getExternalFilesDir(null), "browser_backup//" + filename + SUFFIX_TXT);
-
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(file, false));
             for (String domain : list) {
@@ -260,23 +281,52 @@ public class BrowserUnit {
         }
     }
 
-    public static int importWhitelist(Context context) {
-
-        String filename = context.getString(R.string.export_whitelistAdBlock);
-        File file = new File(context.getExternalFilesDir(null), "browser_backup//" + filename + SUFFIX_TXT);
-
-        AdBlock adBlock = new AdBlock(context);
+    public static int importWhitelist (Context context, int i) {
         int count = 0;
-
         try {
+            String filename;
+            AdBlock adBlock = null;
+            Javascript js = null;
+            Cookie cookie = null;
+            switch (i) {
+                case 0:
+                    adBlock= new AdBlock(context);
+                    filename = context.getString(R.string.export_whitelistAdBlock);
+                    break;
+                case 1:
+                    js = new Javascript(context);
+                    filename = context.getString(R.string.export_whitelistJS);
+                    break;
+                default:
+                    cookie = new Cookie(context);
+                    filename = context.getString(R.string.export_whitelistAdBlock);
+                    break;
+            }
+            File file = new File(context.getExternalFilesDir(null), "browser_backup//" + filename + SUFFIX_TXT);
             RecordAction action = new RecordAction(context);
             action.open(true);
             BufferedReader reader = new BufferedReader(new FileReader(file));
             String line;
             while ((line = reader.readLine()) != null) {
-                if (!action.checkDomain(line)) {
-                    adBlock.addDomain(line);
-                    count++;
+                switch (i) {
+                    case 0:
+                        if (!action.checkDomain(line, RecordUnit.TABLE_WHITELIST)) {
+                            adBlock.addDomain(line);
+                            count++;
+                        }
+                        break;
+                    case 1:
+                        if (!action.checkDomain(line, RecordUnit.TABLE_JAVASCRIPT)) {
+                            js.addDomain(line);
+                            count++;
+                        }
+                        break;
+                    default:
+                        if (!action.checkDomain(line, RecordUnit.COLUMN_DOMAIN)) {
+                            cookie.addDomain(line);
+                            count++;
+                        }
+                        break;
                 }
             }
             reader.close();
@@ -284,63 +334,6 @@ public class BrowserUnit {
         } catch (Exception e) {
             Log.w("browser", "Error reading file", e);
         }
-
-        return count;
-    }
-
-    public static int importWhitelistJS(Context context) {
-
-        String filename = context.getString(R.string.export_whitelistJS);
-        File file = new File(context.getExternalFilesDir(null), "browser_backup//" + filename + SUFFIX_TXT);
-
-        Javascript js = new Javascript(context);
-        int count = 0;
-
-        try {
-            RecordAction action = new RecordAction(context);
-            action.open(true);
-            BufferedReader reader = new BufferedReader(new FileReader(file));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                if (!action.checkDomainJS(line)) {
-                    js.addDomain(line);
-                    count++;
-                }
-            }
-            reader.close();
-            action.close();
-        } catch (Exception e) {
-            Log.w("browser", "Error reading file", e);
-        }
-
-        return count;
-    }
-
-    public static int importWhitelistCookie(Context context) {
-
-        String filename = context.getString(R.string.export_whitelistCookie);
-        File file = new File(context.getExternalFilesDir(null), "browser_backup//" + filename + SUFFIX_TXT);
-
-        Cookie cookie = new Cookie(context);
-        int count = 0;
-
-        try {
-            RecordAction action = new RecordAction(context);
-            action.open(true);
-            BufferedReader reader = new BufferedReader(new FileReader(file));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                if (!action.checkDomainCookie(line)) {
-                    cookie.addDomain(line);
-                    count++;
-                }
-            }
-            reader.close();
-            action.close();
-        } catch (Exception e) {
-            Log.w("browser", "Error reading file", e);
-        }
-
         return count;
     }
 
@@ -362,7 +355,6 @@ public class BrowserUnit {
         }
     }
 
-    // CookieManager.removeAllCookies() must be called on a thread with a running Looper.
     public static void clearCookie() {
         CookieManager cookieManager = CookieManager.getInstance();
         cookieManager.flush();
@@ -377,7 +369,6 @@ public class BrowserUnit {
         action.open(true);
         action.clearHistory();
         action.close();
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
             ShortcutManager shortcutManager = context.getSystemService(ShortcutManager.class);
             Objects.requireNonNull(shortcutManager).removeAllDynamicShortcuts();
@@ -385,15 +376,11 @@ public class BrowserUnit {
     }
 
     public static void clearIndexedDB (Context context) {
-
         File data = Environment.getDataDirectory();
-
         String indexedDB = "//data//" + context.getPackageName() + "//app_webview//" + "//IndexedDB";
         String localStorage = "//data//" + context.getPackageName()  + "//app_webview//" + "//Local Storage";
-
         final File indexedDB_dir = new File(data, indexedDB);
         final File localStorage_dir = new File(data, localStorage);
-
         BrowserUnit.deleteDir(indexedDB_dir);
         BrowserUnit.deleteDir(localStorage_dir);
     }

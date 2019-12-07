@@ -38,12 +38,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import de.baumann.browser.Ninja.R;
-import de.baumann.browser.task.ExportWhitelistCookieTask;
-import de.baumann.browser.task.ExportWhitelistJSTask;
-import de.baumann.browser.task.ExportWhitelistAdBlockTask;
-import de.baumann.browser.task.ImportWhitelistAdBlockTask;
-import de.baumann.browser.task.ImportWhitelistCookieTask;
-import de.baumann.browser.task.ImportWhitelistJSTask;
+import de.baumann.browser.task.ExportWhiteListTask;
+import de.baumann.browser.task.ImportWhitelistTask;
 import de.baumann.browser.unit.BrowserUnit;
 import de.baumann.browser.unit.HelperUnit;
 import de.baumann.browser.view.NinjaToast;
@@ -91,12 +87,12 @@ public class Fragment_settings_data extends PreferenceFragmentCompat {
                             } else {
                                 dialog.cancel();
                                 makeBackupDir();
-                                new ExportWhitelistAdBlockTask(getActivity()).execute();
+                                new ExportWhiteListTask(getActivity(), 0).execute();
                             }
                         } else {
                             dialog.cancel();
                             makeBackupDir();
-                            new ExportWhitelistAdBlockTask(getActivity()).execute();
+                            new ExportWhiteListTask(getActivity(), 0).execute();
                         }
                     }
                 });
@@ -138,11 +134,11 @@ public class Fragment_settings_data extends PreferenceFragmentCompat {
                                 dialog.cancel();
                             } else {
                                 dialog.cancel();
-                                new ImportWhitelistAdBlockTask(getActivity()).execute();
+                                new ImportWhitelistTask(getActivity(), 0).execute();
                             }
                         } else {
                             dialog.cancel();
-                            new ImportWhitelistAdBlockTask(getActivity()).execute();
+                            new ImportWhitelistTask(getActivity(), 0).execute();
                         }
                     }
                 });
@@ -185,12 +181,12 @@ public class Fragment_settings_data extends PreferenceFragmentCompat {
                             } else {
                                 dialog.cancel();
                                 makeBackupDir();
-                                new ExportWhitelistCookieTask(getActivity()).execute();
+                                new ExportWhiteListTask(getActivity(), 2).execute();
                             }
                         } else {
                             dialog.cancel();
                             makeBackupDir();
-                            new ExportWhitelistCookieTask(getActivity()).execute();
+                            new ExportWhiteListTask(getActivity(), 2).execute();
                         }
                     }
                 });
@@ -232,11 +228,11 @@ public class Fragment_settings_data extends PreferenceFragmentCompat {
                                 dialog.cancel();
                             } else {
                                 dialog.cancel();
-                                new ImportWhitelistCookieTask(getActivity()).execute();
+                                new ImportWhitelistTask(getActivity(), 2).execute();
                             }
                         } else {
                             dialog.cancel();
-                            new ImportWhitelistCookieTask(getActivity()).execute();
+                            new ImportWhitelistTask(getActivity(), 2).execute();
                         }
                     }
                 });
@@ -279,12 +275,12 @@ public class Fragment_settings_data extends PreferenceFragmentCompat {
                             } else {
                                 dialog.cancel();
                                 makeBackupDir();
-                                new ExportWhitelistJSTask(getActivity()).execute();
+                                new ExportWhiteListTask(getActivity(), 1).execute();
                             }
                         } else {
                             dialog.cancel();
                             makeBackupDir();
-                            new ExportWhitelistJSTask(getActivity()).execute();
+                            new ExportWhiteListTask(getActivity(), 1).execute();
                         }
                     }
                 });
@@ -326,11 +322,11 @@ public class Fragment_settings_data extends PreferenceFragmentCompat {
                                 dialog.cancel();
                             } else {
                                 dialog.cancel();
-                                new ImportWhitelistJSTask(getActivity()).execute();
+                                new ImportWhitelistTask(getActivity(), 1).execute();
                             }
                         } else {
                             dialog.cancel();
-                            new ImportWhitelistJSTask(getActivity()).execute();
+                            new ImportWhitelistTask(getActivity(), 1).execute();
                         }
                     }
                 });

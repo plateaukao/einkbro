@@ -170,6 +170,30 @@ public class HelperUnit {
         NinjaToast.show(context, R.string.toast_fav);
     }
 
+    public static void showRestartDialog (Context context) {
+        final BottomSheetDialog dialog = new BottomSheetDialog(context);
+        View dialogView = View.inflate(context, R.layout.dialog_action, null);
+        TextView textView = dialogView.findViewById(R.id.dialog_text);
+        textView.setText(R.string.toast_restart);
+        Button action_ok = dialogView.findViewById(R.id.action_ok);
+        action_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                System.exit(0);
+            }
+        });
+        Button action_cancel = dialogView.findViewById(R.id.action_cancel);
+        action_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.cancel();
+            }
+        });
+        dialog.setContentView(dialogView);
+        dialog.show();
+        HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
+    }
+
     public static void setBottomSheetBehavior (final BottomSheetDialog dialog, final View view, int beh) {
         BottomSheetBehavior mBehavior = BottomSheetBehavior.from((View) view.getParent());
         mBehavior.setState(beh);
@@ -187,31 +211,35 @@ public class HelperUnit {
     }
 
     public static void createShortcut (Context context, String title, String url) {
-        Intent i = new Intent();
-        i.setAction(Intent.ACTION_VIEW);
-        i.setData(Uri.parse(url));
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) { // code for adding shortcut on pre oreo device
-            Intent installer = new Intent();
-            installer.putExtra("android.intent.extra.shortcut.INTENT", i);
-            installer.putExtra("android.intent.extra.shortcut.NAME", title);
-            installer.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(context.getApplicationContext(), R.drawable.qc_bookmarks));
-            installer.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
-            context.sendBroadcast(installer);
-        } else {
-            ShortcutManager shortcutManager = context.getSystemService(ShortcutManager.class);
-            assert shortcutManager != null;
-            if (shortcutManager.isRequestPinShortcutSupported()) {
-                ShortcutInfo pinShortcutInfo =
-                        new ShortcutInfo.Builder(context, url)
-                                .setShortLabel(title)
-                                .setLongLabel(title)
-                                .setIcon(Icon.createWithResource(context, R.drawable.qc_bookmarks))
-                                .setIntent(new Intent(Intent.ACTION_VIEW, Uri.parse(url)))
-                                .build();
-                shortcutManager.requestPinShortcut(pinShortcutInfo, null);
+        try {
+            Intent i = new Intent();
+            i.setAction(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(url));
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) { // code for adding shortcut on pre oreo device
+                Intent installer = new Intent();
+                installer.putExtra("android.intent.extra.shortcut.INTENT", i);
+                installer.putExtra("android.intent.extra.shortcut.NAME", title);
+                installer.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(context.getApplicationContext(), R.drawable.qc_bookmarks));
+                installer.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
+                context.sendBroadcast(installer);
             } else {
-                System.out.println("failed_to_add");
+                ShortcutManager shortcutManager = context.getSystemService(ShortcutManager.class);
+                assert shortcutManager != null;
+                if (shortcutManager.isRequestPinShortcutSupported()) {
+                    ShortcutInfo pinShortcutInfo =
+                            new ShortcutInfo.Builder(context, url)
+                                    .setShortLabel(title)
+                                    .setLongLabel(title)
+                                    .setIcon(Icon.createWithResource(context, R.drawable.qc_bookmarks))
+                                    .setIntent(new Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+                                    .build();
+                    shortcutManager.requestPinShortcut(pinShortcutInfo, null);
+                } else {
+                    System.out.println("failed_to_add");
+                }
             }
+        } catch (Exception e) {
+            System.out.println("failed_to_add");
         }
     }
 

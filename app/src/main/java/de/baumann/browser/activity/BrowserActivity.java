@@ -28,7 +28,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.os.StrictMode;
 
 import androidx.preference.PreferenceManager;
 import android.print.PrintAttributes;
@@ -41,7 +40,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.core.app.NotificationCompat;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -271,10 +269,10 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+        //AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         WebView.enableSlowWholeDocumentDraw();
-        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-        StrictMode.setVmPolicy(builder.build());
+        //StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        //StrictMode.setVmPolicy(builder.build());
 
         context = BrowserActivity.this;
         activity = BrowserActivity.this;
@@ -513,13 +511,10 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
     @Override
     public void updateAutoComplete() {
-
         RecordAction action = new RecordAction(this);
         action.open(false);
-        List<Record> list = action.listHistory();
-        list.addAll(action.listHistory());
+        List<Record> list = action.listEntries(activity, true);
         action.close();
-
         CompleteAdapter adapter = new CompleteAdapter(this, R.layout.complete_item, list);
         inputBox.setAdapter(adapter);
         adapter.notifyDataSetChanged();
@@ -534,13 +529,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 hideKeyboard(activity);
             }
         });
-    }
-
-    @Override
-    public void updateBookmarks() {
-        RecordAction action = new RecordAction(context);
-        action.open(false);
-        action.close();
     }
 
     private void showOverview() {
@@ -710,10 +698,8 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                     int counter = sp.getInt("counter", 0);
                     counter = counter + 1;
                     sp.edit().putInt("counter", counter).commit();
-
                     Bitmap bitmap = ViewUnit.capture(ninjaWebView, dimen156dp, dimen117dp, Bitmap.Config.ARGB_8888);
                     String filename = counter + BrowserUnit.SUFFIX_PNG;
-
                     GridItem itemAlbum = new GridItem(title, url, filename, counter);
 
                     if (BrowserUnit.bitmap2File(context, bitmap, filename) && action.addGridItem(itemAlbum)) {
@@ -1107,9 +1093,14 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             public void onFocusChange(View v, boolean hasFocus) {
                 if (inputBox.hasFocus()) {
                     ninjaWebView.stopLoading();
-                    omniboxTitle.setVisibility(View.GONE);
                     inputBox.setText(ninjaWebView.getUrl());
-                    inputBox.setSelection(0,inputBox.getText().toString().length());
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            omniboxTitle.setVisibility(View.GONE);
+                            inputBox.setSelection(0,inputBox.getText().toString().length());
+                        }
+                    }, 250);
                 } else {
                     omniboxTitle.setVisibility(View.VISIBLE);
                     omniboxTitle.setText(ninjaWebView.getTitle());
@@ -1117,10 +1108,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 }
             }
         });
-
-        updateBookmarks();
         updateAutoComplete();
-
         omniboxRefresh.setOnClickListener(this);
         omniboxOverview.setOnClickListener(this);
     }
@@ -1465,7 +1453,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 overview_titleIcons_bookmarksView.setVisibility(View.VISIBLE);
                 overview_titleIcons_historyView.setVisibility(View.INVISIBLE);
                 overViewTab = getString(R.string.album_title_bookmarks);
-                sp.edit().putString("filter_passBY", "00").apply();
+                sp.edit().putString("filter_bookmarks", "00").apply();
                 initBookmarkList();
             }
         });
@@ -1495,7 +1483,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 RecordAction action = new RecordAction(context);
                 action.open(false);
                 final List<Record> list;
-                list = action.listHistory();
+                list = action.listEntries(activity, false);
                 action.close();
 
                 adapter = new Adapter_Record(context, list);
@@ -1538,7 +1526,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             @Override
             public boolean onLongClick(View v) {
                 if (!overViewTab.equals(getString(R.string.album_title_bookmarks))) {
-                open_bookmark.performClick();
+                    open_bookmark.performClick();
                 }
                 show_dialogFilter();
                 return false;
@@ -1653,7 +1641,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 "pass_title",
         };
 
-        String search = sp.getString("filter_passBY", "00");
+        String search = sp.getString("filter_bookmarks", "00");
 
         if (Objects.requireNonNull(search).equals("00")) {
             row = db.fetchAllData(activity);
@@ -2192,6 +2180,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         progressBar.setProgress(progress);
 
         updateOmnibox();
+        updateAutoComplete();
         scrollChange();
         HelperUnit.initRendering(contentFrame);
         ninjaWebView.requestFocus();
@@ -2200,10 +2189,8 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             updateRefresh(true);
             progressBar.setVisibility(View.VISIBLE);
         } else {
-            updateBookmarks();
             updateRefresh(false);
             progressBar.setVisibility(View.GONE);
-            currentAlbumController.setAlbumCover(ViewUnit.capture(ninjaWebView, dimen156dp, dimen117dp, Bitmap.Config.ARGB_8888));
         }
     }
 
@@ -2761,11 +2748,10 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                             Record record = recordList.get(location);
                             RecordAction action = new RecordAction(context);
                             action.open(true);
-                            action.deleteHistory(record);
+                            action.deleteHistoryItem(record);
                             action.close();
                             recordList.remove(location);
                             adapterRecord.notifyDataSetChanged();
-                            updateBookmarks();
                             updateAutoComplete();
                             hideBottomSheetDialog ();
                         }
@@ -3047,7 +3033,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                sp.edit().putString("filter_passBY", gridList.get(position).getOrdinal()).apply();
+                sp.edit().putString("filter_bookmarks", gridList.get(position).getOrdinal()).apply();
                 initBookmarkList();
                 hideBottomSheetDialog ();
             }

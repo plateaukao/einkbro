@@ -15,6 +15,7 @@ import java.util.Locale;
 import java.util.Set;
 
 import de.baumann.browser.database.RecordAction;
+import de.baumann.browser.unit.RecordUnit;
 
 public class Javascript {
     private static final String FILE = "javaHosts.txt";
@@ -46,7 +47,7 @@ public class Javascript {
         RecordAction action = new RecordAction(context);
         action.open(false);
         whitelistJS.clear();
-        whitelistJS.addAll(action.listDomainsJS());
+        whitelistJS.addAll(action.listDomains(RecordUnit.TABLE_JAVASCRIPT));
         action.close();
     }
 
@@ -73,7 +74,7 @@ public class Javascript {
     public synchronized void addDomain(String domain) {
         RecordAction action = new RecordAction(context);
         action.open(true);
-        action.addDomainJS(domain);
+        action.addDomain(domain, RecordUnit.TABLE_JAVASCRIPT);
         action.close();
         whitelistJS.add(domain);
     }
@@ -81,7 +82,7 @@ public class Javascript {
     public synchronized void removeDomain(String domain) {
         RecordAction action = new RecordAction(context);
         action.open(true);
-        action.deleteDomainJS(domain);
+        action.deleteDomain(domain, RecordUnit.TABLE_JAVASCRIPT);
         action.close();
         whitelistJS.remove(domain);
     }

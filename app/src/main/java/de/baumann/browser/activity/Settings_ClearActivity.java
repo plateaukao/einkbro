@@ -1,8 +1,7 @@
 package de.baumann.browser.activity;
 
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.os.Bundle;
-import androidx.preference.PreferenceManager;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,9 +15,8 @@ import android.widget.TextView;
 
 import de.baumann.browser.fragment.Fragment_clear;
 import de.baumann.browser.Ninja.R;
-import de.baumann.browser.unit.BrowserUnit;
+import de.baumann.browser.service.ClearService;
 import de.baumann.browser.unit.HelperUnit;
-import de.baumann.browser.view.NinjaToast;
 
 public class Settings_ClearActivity extends AppCompatActivity {
 
@@ -52,17 +50,17 @@ public class Settings_ClearActivity extends AppCompatActivity {
             case android.R.id.home:
                 finish();
                 break;
-            case R.id.clear_menu_done_all:
-
+            case R.id.menu_clear:
                 final BottomSheetDialog dialog = new BottomSheetDialog(Settings_ClearActivity.this);
                 View dialogView = View.inflate(Settings_ClearActivity.this, R.layout.dialog_action, null);
                 TextView textView = dialogView.findViewById(R.id.dialog_text);
-                textView.setText(R.string.toast_clear);
+                textView.setText(R.string.hint_database);
                 Button action_ok = dialogView.findViewById(R.id.action_ok);
                 action_ok.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        clear();
+                        Intent toClearService = new Intent(Settings_ClearActivity.this, ClearService.class);
+                        startService(toClearService);
                         dialog.cancel();
                     }
                 });
@@ -81,38 +79,5 @@ public class Settings_ClearActivity extends AppCompatActivity {
                 break;
         }
         return true;
-    }
-
-    private void clear() {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean clearCache = sp.getBoolean(getString(R.string.sp_clear_cache), false);
-        boolean clearCookie = sp.getBoolean(getString(R.string.sp_clear_cookie), false);
-        boolean clearHistory = sp.getBoolean(getString(R.string.sp_clear_history), false);
-        boolean clearIndexedDB = sp.getBoolean(("sp_clearIndexedDB"), false);
-
-        BottomSheetDialog dialog = new BottomSheetDialog(this);
-
-        View dialogView = View.inflate(this, R.layout.dialog_progress, null);
-        TextView textView = dialogView.findViewById(R.id.dialog_text);
-        textView.setText(this.getString(R.string.toast_wait_a_minute));
-        dialog.setContentView(dialogView);
-        dialog.show();
-
-        if (clearCache) {
-            BrowserUnit.clearCache(this);
-        }
-        if (clearCookie) {
-            BrowserUnit.clearCookie();
-        }
-        if (clearHistory) {
-            BrowserUnit.clearHistory(this);
-        }
-        if (clearIndexedDB) {
-            BrowserUnit.clearIndexedDB(this);
-        }
-
-        dialog.hide();
-        dialog.dismiss();
-        NinjaToast.show(this, R.string.toast_delete_successful);
     }
 }

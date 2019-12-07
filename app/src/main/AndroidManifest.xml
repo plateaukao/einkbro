@@ -18,12 +18,11 @@
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:allowBackup="true"
-        android:enabled="true"
         android:largeHeap="true"
         android:hardwareAccelerated="true"
         android:usesCleartextTraffic="true"
         android:fullBackupContent="@xml/backup_descriptor"
-        tools:targetApi="m">
+        tools:ignore="UnusedAttribute">
 
         <!-- Holder -->
         <activity android:name="de.baumann.browser.activity.HolderActivity"

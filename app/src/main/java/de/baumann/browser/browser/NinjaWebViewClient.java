@@ -6,9 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.pm.ShortcutInfo;
 import android.content.pm.ShortcutManager;
-import android.graphics.drawable.Icon;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
@@ -18,7 +16,6 @@ import androidx.annotation.NonNull;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.textfield.TextInputLayout;
-import android.util.Log;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.HttpAuthHandler;
@@ -33,7 +30,6 @@ import android.widget.TextView;
 
 import java.io.ByteArrayInputStream;
 import java.net.URISyntaxException;
-import java.util.Collections;
 import java.util.Objects;
 
 import de.baumann.browser.database.Record;
@@ -45,8 +41,6 @@ import de.baumann.browser.unit.IntentUnit;
 import de.baumann.browser.view.NinjaToast;
 import de.baumann.browser.view.NinjaWebView;
 
-import static android.content.ContentValues.TAG;
-
 public class NinjaWebViewClient extends WebViewClient {
     private final NinjaWebView ninjaWebView;
     private final Context context;
@@ -56,9 +50,6 @@ public class NinjaWebViewClient extends WebViewClient {
     private final Cookie cookie;
 
     private boolean white;
-    public void updateWhite(boolean white) {
-        this.white = white;
-    }
 
     private boolean enable;
     public void enableAdBlock(boolean enable) {
@@ -80,11 +71,9 @@ public class NinjaWebViewClient extends WebViewClient {
     public void onPageFinished(WebView view, String url) {
         super.onPageFinished(view, url);
 
-        ShortcutManager shortcutManager = null;
-        String title = ninjaWebView.getTitle();
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
-            shortcutManager = context.getSystemService(ShortcutManager.class);
+            ShortcutManager shortcutManager = context.getSystemService(ShortcutManager.class);
+            Objects.requireNonNull(shortcutManager).removeAllDynamicShortcuts();
         }
 
         if (sp.getBoolean("saveHistory", true)) {
@@ -92,42 +81,12 @@ public class NinjaWebViewClient extends WebViewClient {
             action.open(true);
 
             if (action.checkHistory(url)) {
-                action.deleteHistoryOld(url);
+                action.deleteHistoryItemByURL(url);
                 action.addHistory(new Record(ninjaWebView.getTitle(), url, System.currentTimeMillis()));
             } else {
                 action.addHistory(new Record(ninjaWebView.getTitle(), url, System.currentTimeMillis()));
             }
             action.close();
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1  && !title.isEmpty() && !url.isEmpty()) {
-                try {
-                    if (sp.getInt("shortcut_number", 0) == 0) {
-                        ShortcutInfo shortcut = new ShortcutInfo.Builder(context, "0")
-                                .setShortLabel(title)
-                                .setLongLabel(title)
-                                .setIcon(Icon.createWithResource(context, R.drawable.qc_history))
-                                .setIntent(new Intent(Intent.ACTION_VIEW, Uri.parse(url)))
-                                .build();
-                        Objects.requireNonNull(shortcutManager).addDynamicShortcuts(Collections.singletonList(shortcut));
-                        sp.edit().putInt("shortcut_number", 1).apply();
-                    } else {
-                        ShortcutInfo shortcut = new ShortcutInfo.Builder(context, "1")
-                                .setShortLabel(title)
-                                .setLongLabel(title)
-                                .setIcon(Icon.createWithResource(context, R.drawable.qc_history))
-                                .setIntent(new Intent(Intent.ACTION_VIEW, Uri.parse(url)))
-                                .build();
-                        Objects.requireNonNull(shortcutManager).addDynamicShortcuts(Collections.singletonList(shortcut));
-                        sp.edit().putInt("shortcut_number", 0).apply();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
-                Objects.requireNonNull(shortcutManager).removeAllDynamicShortcuts();
-            }
         }
 
         if (ninjaWebView.isForeground()) {
@@ -152,27 +111,21 @@ public class NinjaWebViewClient extends WebViewClient {
 
     private boolean handleUri(WebView webView, final Uri uri) {
 
-        Log.i(TAG, "Uri =" + uri);
-        final String url = uri.toString();
-        // Based on some condition you need to determine if you are going to load the url
-        // in your web view itself or in a browser.
-        // You can use `host` or `scheme` or any part of the `uri` to decide.
-        // open web links as usual
+        String url = uri.toString();
+        Uri parsedUri = Uri.parse(url);
+        PackageManager packageManager = context.getPackageManager();
+        Intent browseIntent = new Intent(Intent.ACTION_VIEW).setData(parsedUri);
 
         if (url.startsWith("http")) {
             webView.loadUrl(url, ninjaWebView.getRequestHeaders());
             return true;
         }
 
-        //try to find browse activity to handle uri
-        Uri parsedUri = Uri.parse(url);
-        PackageManager packageManager = context.getPackageManager();
-        Intent browseIntent = new Intent(Intent.ACTION_VIEW).setData(parsedUri);
         if (browseIntent.resolveActivity(packageManager) != null) {
             context.startActivity(browseIntent);
             return true;
         }
-        //if not activity found, try to parse intent://
+
         if (url.startsWith("intent:")) {
             try {
                 Intent intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME);
@@ -201,7 +154,6 @@ public class NinjaWebViewClient extends WebViewClient {
                 return false;
             }
         }
-        white = adBlock.isWhite(url);
         return true;//do nothing in other cases
     }
 
@@ -216,13 +168,13 @@ public class NinjaWebViewClient extends WebViewClient {
             );
         }
 
-        if (!sp.getBoolean(context.getString(R.string.sp_cookies), true)) {
 
+        if (!sp.getBoolean(context.getString(R.string.sp_cookies), true)) {
             if (cookie.isWhite(url)) {
                 CookieManager manager = CookieManager.getInstance();
                 manager.getCookie(url);
                 manager.setAcceptCookie(true);
-            }  else {
+            } else {
                 CookieManager manager = CookieManager.getInstance();
                 manager.setAcceptCookie(false);
             }
@@ -240,19 +192,6 @@ public class NinjaWebViewClient extends WebViewClient {
                     new ByteArrayInputStream("".getBytes())
             );
         }
-
-        if (!sp.getBoolean(context.getString(R.string.sp_cookies), true)) {
-
-            if (cookie.isWhite(request.getUrl().toString())) {
-                CookieManager manager = CookieManager.getInstance();
-                manager.getCookie(request.getUrl().toString());
-                manager.setAcceptCookie(true);
-            }  else {
-                CookieManager manager = CookieManager.getInstance();
-                manager.setAcceptCookie(false);
-            }
-        }
-
         return super.shouldInterceptRequest(view, request);
     }
 

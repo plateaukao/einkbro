@@ -16,22 +16,23 @@ import de.baumann.browser.unit.HelperUnit;
 import de.baumann.browser.view.NinjaToast;
 
 @SuppressLint("StaticFieldLeak")
-public class ImportWhitelistJSTask extends AsyncTask<Void, Void, Boolean> {
+public class ImportWhitelistTask extends AsyncTask<Void, Void, Boolean> {
+
     private final Context context;
     private BottomSheetDialog dialog;
     private int count;
+    private int table;
 
-    public ImportWhitelistJSTask(Activity activity) {
+    public ImportWhitelistTask(Activity activity, int i) {
         this.context = activity;
         this.dialog = null;
         this.count = 0;
+        this.table = i;
     }
 
     @Override
     protected void onPreExecute() {
-
         dialog = new BottomSheetDialog(context);
-
         View dialogView = View.inflate(context, R.layout.dialog_progress, null);
         TextView textView = dialogView.findViewById(R.id.dialog_text);
         textView.setText(context.getString(R.string.toast_wait_a_minute));
@@ -44,7 +45,17 @@ public class ImportWhitelistJSTask extends AsyncTask<Void, Void, Boolean> {
 
     @Override
     protected Boolean doInBackground(Void... params) {
-        count = BrowserUnit.importWhitelistJS(context);
+        switch (table) {
+            case 0:
+                count = BrowserUnit.importWhitelist(context, 0);
+                break;
+            case 1:
+                count = BrowserUnit.importWhitelist(context, 1);
+                break;
+            default:
+                count = BrowserUnit.importWhitelist(context, 2);
+                break;
+        }
         return !isCancelled() && count >= 0;
     }
 

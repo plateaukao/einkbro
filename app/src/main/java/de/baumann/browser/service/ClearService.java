@@ -10,6 +10,7 @@ import de.baumann.browser.Ninja.R;
 import de.baumann.browser.unit.BrowserUnit;
 
 public class ClearService extends Service {
+
     @Override
     public IBinder onBind(Intent intent) {
         return null;
