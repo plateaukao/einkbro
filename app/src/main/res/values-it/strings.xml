@@ -8,20 +8,20 @@
     <string name="list_empty">La lista corrente è vuota</string>
     <string name="album_title_bookmarks">Segnalibri</string>
     <string name="album_title_history">Cronologia</string>
-    <string name="album_title_home">Home</string>
+    <string name="album_title_home">Inizio</string>
     <string name="album_title_files">File</string>
     <string name="search_hint">Cerca</string>
-    <string name="color_red">Red</string>
-    <string name="color_pink">Pink</string>
-    <string name="color_purple">Purple</string>
-    <string name="color_blue">Blue</string>
-    <string name="color_teal">Teal</string>
-    <string name="color_green">Green</string>
+    <string name="color_red">Rosso</string>
+    <string name="color_pink">Rosa</string>
+    <string name="color_purple">Viola</string>
+    <string name="color_blue">Blu</string>
+    <string name="color_teal">Verde acqua</string>
+    <string name="color_green">Verde</string>
     <string name="color_lime">Lime</string>
-    <string name="color_yellow">Yellow</string>
-    <string name="color_orange">Orange</string>
-    <string name="color_brown">Brown</string>
-    <string name="color_grey">Grey</string>
+    <string name="color_yellow">Giallo</string>
+    <string name="color_orange">Arancione</string>
+    <string name="color_brown">Marrone</string>
+    <string name="color_grey">Grigio</string>
     <!-- Menu -->
     <string name="main_menu_tabPreview">Apri anteprima schede</string>
     <string name="main_menu_new_tab">Nuova scheda (secondo piano)</string>
@@ -29,16 +29,16 @@
     <string name="main_omnibox_input_hint">Cerca o inserisci URL</string>
     <string name="menu_open_with">Apri link con …</string>
     <string name="menu_quit">Chiudi</string>
-    <string name="menu_openFav">Open Favorite</string>
+    <string name="menu_openFav">Apri i preferiti</string>
     <string name="menu_delete">Elimina</string>
     <string name="menu_delete_list">Elimina lista</string>
     <string name="menu_edit">Modifica</string>
     <string name="menu_closeTab">Chiudi scheda</string>
     <string name="menu_download">Apri download</string>
     <string name="menu_fav">Set as start site</string>
-    <string name="menu_sc">Shortcut on home screen</string>
-    <string name="menu_sort">Sort by …</string>
-    <string name="menu_filter">Filter by …</string>
+    <string name="menu_sc">Crea collegamento nella Home</string>
+    <string name="menu_sort">Ordina per …</string>
+    <string name="menu_filter">Filtra per …</string>
     <string name="menu_share_screenshot">Condividi screenshot</string>
     <string name="menu_share_link">Condividi link</string>
     <string name="menu_save_screenshot">Salva screenshot</string>
@@ -47,24 +47,24 @@
     <string name="menu_save_as">Salva come …</string>
     <string name="menu_save_pdf">Salva come PDF</string>
     <string name="menu_share_pdf">Condividi PDF</string>
-    <string name="menu_shareClipboard">Copy to clipboard</string>
+    <string name="menu_shareClipboard">Copia negli Appunti</string>
     <string name="menu_other_searchSite">Cerca nel sito</string>
-    <string name="menu_other_fileManager">Open file manager</string>
-    <string name="menu_other_info">About \"FOSS Browser\"</string>
+    <string name="menu_other_fileManager">Apri file manager</string>
+    <string name="menu_other_info">Info su \"FOSS Browser\"</string>
     <string name="menu_other_help">Aiuto</string>
     <!-- Dialog -->
-    <string name="dialog_toggle_reload">Reload</string>
+    <string name="dialog_toggle_reload">Ricarica</string>
     <string name="dialog_title_hint">Titolo:</string>
     <string name="dialog_url_hint">Url:</string>
     <string name="dialog_extension_hint">Estensione (per esempio: \".jpg\"):</string>
-    <string name="dialog_sign_in_username">Username</string>
+    <string name="dialog_sign_in_username">Nome utente</string>
     <string name="dialog_sign_in_password">Password</string>
     <string name="dialog_title_download">Vuoi scaricare il file?</string>
     <string name="dialog_content_resubmission">Inviare nuovamente i dati?</string>
     <string name="dialog_content_ssl_error">Il certificato del sito non è attendibile. Procedere comunque?</string>
-    <string name="dialog_sortName">Sort by name</string>
-    <string name="dialog_sortIcon">Sort by icon</string>
-    <string name="dialog_sortDate">Sort by date</string>
+    <string name="dialog_sortName">Ordina per nome</string>
+    <string name="dialog_sortIcon">Ordina per icona</string>
+    <string name="dialog_sortDate">Ordina per data</string>
     <!-- Settings -->
     <string name="setting_label">Impostazioni</string>
     <!-- browser setting -->
@@ -77,10 +77,10 @@
     <string name="setting_summary_search_engine">Qui puoi scegliere il tuo motore di ricerca preferito o impostarne uno personalizzato.</string>
     <string name="setting_summary_search_engine_google">Google</string>
     <string name="setting_summary_search_engine_duckduckgo">DuckDuckGo</string>
-    <string name="setting_summary_search_engine_startpage">StartPage</string>
+    <string name="setting_summary_search_engine_startpage">Pagina iniziale</string>
     <string name="setting_summary_search_engine_bing">Bing</string>
     <string name="setting_summary_search_engine_baidu">Baidu</string>
-    <string name="setting_summary_search_engine_startpage_de">StartPage (de)</string>
+    <string name="setting_summary_search_engine_startpage_de">Pagina iniziale (de)</string>
     <string name="setting_summary_search_engine_searx">Searx</string>
     <string name="setting_summary_search_engine_qwant">Qwant</string>
     <string name="setting_summary_search_engine_ecosia">Ecosia</string>
@@ -90,8 +90,8 @@
     <string name="setting_summary_font">Modificare la dimensione dei caratteri per la visualizzazione dei siti Web.</string>
     <string name="setting_title_remote">Contenuti remoti</string>
     <string name="setting_summary_remote">Abilita i contenuti remoti, che non provengono direttamente dal sito web che stai visitando. La disattivazione è più sicura, più rapida e consente di risparmiare volume di dati. Ma alcuni contenuti non saranno più visualizzati.</string>
-    <string name="setting_title_save_data">Request \'Save Data\'</string>
-    <string name="setting_summary_save_data">Tell websites that you would prefer to save data. Supported websites will load faster.</string>
+    <string name="setting_title_save_data">Richiedi \'Salva dati\'</string>
+    <string name="setting_summary_save_data">Indica ai siti web che preferisci salvare i dati. I siti web supportati caricheranno più velocemente.</string>
     <!-- browser start -->
     <string name="setting_title_images">Immagini</string>
     <string name="setting_summary_images">Abilita immagini di rete. La disabilitazione potrebbe essere utile per salvare i dati del cellulare e per caricare più velocemente i siti web.</string>
@@ -131,18 +131,18 @@
     <string name="setting_title_data">Backup</string>
     <string name="setting_summary_ui">Cambia il comportamento e UI dell\'app in base alle tue preferenze.</string>
     <string name="setting_summary_data">Importazione ed esportazione di vari dati dell\' app (whitelist, segnalibri).</string>
-    <string name="setting_filter">Bookmark filter</string>
+    <string name="setting_filter">Filtro dei segnalibri</string>
     <string name="setting_filter_summary">To show the filter dialog long press on the bookmark icon in the overview. Decide which
         filters you will use.</string>
-    <string name="setting_title_fav">Favorite</string>
+    <string name="setting_title_fav">Preferito</string>
     <string name="setting_summary_fav">Here you can change the default website which loads on start of \"FOSS Browser\".
     Enter \"about:blank\" to get an emty start site.</string>
-    <string name="setting_title_searchEngine">Custom search engine</string>
+    <string name="setting_title_searchEngine">Motore di ricerca personalizzato</string>
     <string name="setting_summary_searchEngine">Qui puoi inserire un URL di ricerca personalizzato. Scegli anche \"Motore di ricerca personalizzato\" come metodo di ricerca.</string>
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">Nascondi barra degli strumenti</string>
     <string name="setting_summary_hide">Utilizzare l\'intero schermo per scorrere i siti web. Se si preme il pulsante Indietro, si esce dalla modalità a schermo intero.</string>
-    <string name="setting_theme">Theme</string>
+    <string name="setting_theme">Tema</string>
     <string name="setting_theme_summary">Imposta il tema dell\'app.</string>
     <string name="setting_theme_system">Tema di sistema</string>
     <string name="setting_theme_light">Tema chiaro</string>
@@ -324,27 +324,27 @@
         Apache License Version 2.0&lt;br&gt;
         hummatli&lt;br&gt;
         &lt;i&gt;https://github.com/hummatli/SimpleEncryptionLib</string>
-    <string name="cont_dialog">        &lt;i&gt;First I would like to thank all people who contributed in any way on this project. They submitted issues,
-        translated or helped in any other way. On following sites you can become a active member of this
-        great community:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
+    <string name="cont_dialog">        &lt;i&gt;Prima di tutto vorrei ringraziare tutte le persone che hanno contribuito in vari modi al progetto. Hanno sottomesso problemi,
+        tradotto o aiutato in molti modi. Nei seguenti siti puoi diventare un membro attivo di questa
+        grande comunità:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Crowdin:&lt;/b&gt;&lt;br&gt;
-        Crowdin is an online plattform to translate applications in other languages. A big thanks to all translators. You can
-        also help.&lt;br&gt;
+        Crowdin è una piattaforma online per tradurre applicazioni in diverse lingue. Un grande grazie a tutti i traduttori. Anche tu 
+        puoi aiutare.&lt;br&gt;
         &lt;i&gt;https://crowdin.com/project/foss-browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
 
         &lt;b&gt;XDA-thread:&lt;/b&gt;&lt;br&gt;
-        XDA is a great community for developers and smartphone enthusiasts. Here you can report issues, ask for new features
-        and everything other related to \"FOSS Browser\".&lt;br&gt;
+        XDA è una grande comunità di sviluppatori e appassionati di smartphone. Qui puoi riportare bug, chiedere nuove funzioni
+        e qualunque altra cosa riguardante \"FOSS Browser\".&lt;br&gt;
         &lt;i&gt;https://forum.xda-developers.com/android/apps-games/app-browser-t3500091&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Github:&lt;/b&gt;&lt;br&gt;
-        On Github you can see the source code of \"FOSS Browser\". This is the more technical solution: open issues, ask for new
-        features or even help developing or translating.&lt;br&gt;
+        Su Github puoi vedere il codice sorgente di \"FOSS Browser\". Questa è una soluzione più tecnica: aprire \"Issue\", chiedere nuove
+        funzioni o anche aiutare a sviluppare e tradurre.&lt;br&gt;
         &lt;i&gt;https://github.com/scoute-dich/browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
 
 
-        &lt;i&gt;Following people contributed at this project. If I have forgotten anybody, please contact me:&lt;/i&gt;
+        &lt;i&gt;Le seguenti persone hanno contribuito al progetto. Se ho dimenticato qualcuno, mi si contatti:&lt;/i&gt;
     </string>
 </resources>
