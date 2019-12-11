@@ -149,8 +149,8 @@
     <string name="setting_theme_dark">Tema Scuro</string>
     <string name="setting_title_theme">Interfaccia utente</string>
     <string name="setting_title_behavior">Comportamento</string>
-    <string name="setting_summary_toolbarShow">Pressing back will make the toolbar visible, before going back in history.</string>
-    <string name="setting_title_toolbarShow">First toolbar</string>
+    <string name="setting_summary_toolbarShow">Premendo il tasto indietro vedrai la barra degli strumenti, prima di tornare indietro nella storia.</string>
+    <string name="setting_title_toolbarShow">Prima barra degli strumenti</string>
     <string name="setting_title_nav">Pulsante di navigazione</string>
     <string name="setting_title_nav_pos">Posizione</string>
     <string name="setting_summary_nav_pos">Decidere dove posizionare il \"Pulsante di Navigazione\".</string>
@@ -162,48 +162,47 @@
     <string name="setting_summary_confirm_exit">Finestra di conferma per la chiusura del browser.</string>
     <string name="setting_title_confirm_tab_close">Confermare la chiusura delle schede</string>
     <string name="setting_summary_confirm_tab_close">Finestra di conferma per la chiusura delle schede.</string>
-    <string name="setting_overView">Overview</string>
-    <string name="setting_overView_onStart_title">Show on start</string>
-    <string name="setting_overView_onStart_summary">Open the \"Overview\" on every app start.</string>
-    <string name="setting_overView_hide_title">Hide tab previews</string>
-    <string name="setting_overView_hide_summary">In expanded overview the tab preview will hide. Then you have more place for your
-    bookmarks.</string>
-    <string name="setting_gestures">Gestures</string>
-    <string name="setting_gestures_use_title">Use gestures</string>
-    <string name="setting_gestures_use_summary">Use gestures on the toolbar and the \"Navigation button\".</string>
-    <string name="setting_title_reopenLastTab">Reopen last tab</string>
-    <string name="setting_summary_reopenLastTab">Reopen a new tab when the last tab is closed instead of exiting the browser.</string>
+    <string name="setting_overView">Panoramica</string>
+    <string name="setting_overView_onStart_title">Mostra all\'avvio</string>
+    <string name="setting_overView_onStart_summary">Apri \"Panoramica\" all\'avvio dell\'app.</string>
+    <string name="setting_overView_hide_title">Nascondi l\'anteprima delle schede</string>
+    <string name="setting_overView_hide_summary">Nella panoramica espansa l\'anteprima della scheda si nasconderà. Quindi hai più posto per i tuoi segnalibri.</string>
+    <string name="setting_gestures">Gesti</string>
+    <string name="setting_gestures_use_title">Usa gesti</string>
+    <string name="setting_gestures_use_summary">Usa gesti sulla barra degli strumenti e il pulsante \"Navigazione\".</string>
+    <string name="setting_title_reopenLastTab">Riapri l\'ultima scheda</string>
+    <string name="setting_summary_reopenLastTab">Apri una nuova scheda quando l\'ultima scheda viene chiusa, invece di uscire dal browser.</string>
     <!-- gestures -->
-    <string name="setting_title_toolbar">Toolbar</string>
-    <string name="setting_gesture_up">Swipe up</string>
-    <string name="setting_gesture_down">Swipe down</string>
-    <string name="setting_gesture_left">Swipe left</string>
-    <string name="setting_gesture_right">Swipe right</string>
-    <string name="setting_gesture_01">Nothing</string>
-    <string name="setting_gesture_02">Forward in history</string>
-    <string name="setting_gesture_03">Back in history</string>
-    <string name="setting_gesture_04">Scroll to top</string>
-    <string name="setting_gesture_05">Scroll to bottom</string>
-    <string name="setting_gesture_06">Switch to left tab</string>
-    <string name="setting_gesture_07">Switch to right tab</string>
-    <string name="setting_gesture_08">Show overview</string>
-    <string name="setting_gesture_09">Open new tab</string>
+    <string name="setting_title_toolbar">Barra degli Strumenti</string>
+    <string name="setting_gesture_up">Scorri verso l\'alto</string>
+    <string name="setting_gesture_down">Scorri verso il basso</string>
+    <string name="setting_gesture_left">Scorri a sinistra</string>
+    <string name="setting_gesture_right">Scorri a destra</string>
+    <string name="setting_gesture_01">Niente</string>
+    <string name="setting_gesture_02">Vai avanti nella cronologia</string>
+    <string name="setting_gesture_03">Indietro nella cronologia</string>
+    <string name="setting_gesture_04">Scorri su</string>
+    <string name="setting_gesture_05">Scorri verso il basso</string>
+    <string name="setting_gesture_06">Passa alla scheda a sinistra</string>
+    <string name="setting_gesture_07">Passa alla scheda a sinistra</string>
+    <string name="setting_gesture_08">Mostra panoramica</string>
+    <string name="setting_gesture_09">Apri una nuova scheda</string>
     <string name="setting_gesture_10">Chiudi scheda</string>
     <!-- Data -->
     <string name="setting_title_export_whitelist">Esporta whitelist AdBlock</string>
     <string name="setting_title_import_whitelist">Importa whitelist AdBlock</string>
-    <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
+    <string name="export_whitelistAdBlock">esporta_whitelist_AdBlock</string>
     <string name="setting_title_export_whitelistJS">Esporta whitelist JavaScript</string>
     <string name="setting_title_import_whitelistJS">Importa whitelist JavaScript</string>
-    <string name="export_whitelistJS">export_whitelist_Javascript</string>
+    <string name="export_whitelistJS">esporta_whitelist_Javascript</string>
     <string name="setting_title_export_whitelistCookie">Esporta whitelist Cookie</string>
     <string name="setting_title_import_whitelistCookie">Importa whitelist Cookie</string>
-    <string name="export_whitelistCookie">export_whitelist_Cookie</string>
-    <string name="setting_title_export_appData">Export app data</string>
-    <string name="setting_title_import_appData">Import app data</string>
-    <string name="setting_summary_export_appData">Export app data (Startpage + previews, History, Bookmarks)
-        and your personal settings.</string>
-    <string name="title_appData">App data</string>
+    <string name="export_whitelistCookie">esporta_whitelist_cookie</string>
+    <string name="setting_title_export_appData">Esporta dati dell\'app</string>
+    <string name="setting_title_import_appData">Importa dati dell\'app</string>
+    <string name="setting_summary_export_appData">Esporta i dati dell\' app (pagina iniziale + anteprime, cronologia, segnalibri)
+        e le tue impostazioni personali.</string>
+    <string name="title_appData">Dati app</string>
     <string name="hint_database">In questo modo verranno eliminate tutte le impostazioni e i dati correnti. Continuare?</string>
     <!-- Others setting -->
     <string name="setting_title_others">Altro</string>
@@ -232,7 +231,7 @@
     <string name="toast_wait_a_minute">Attendere un momento</string>
     <string name="toast_titleConfirm_delete">Vuoi davvero cancellare la voce?</string>
     <string name="toast_titleConfirm_paste">Copiare i dati negli appunti?</string>
-    <string name="toast_titleConfirm_pasteUN">Username</string>
+    <string name="toast_titleConfirm_pasteUN">Nome utente</string>
     <string name="toast_titleConfirm_pastePW">Password</string>
     <string name="toast_error">Uuups. Qualcosa è andato storto</string>
     <string name="toast_newTitle">La voce esiste già. Per favore inserisci un nuovo titolo.</string>
@@ -253,7 +252,7 @@
     <string name="whitelist_edit_hint">Dominio</string>
     <string name="whitelist_add">Aggiungi</string>
     <!-- Dialog help -->
-    <string name="dialogHelp_tipTitle">Tips</string>
+    <string name="dialogHelp_tipTitle">Consigli</string>
     <string name="dialogHelp_tipText">        &lt;b&gt;Menus and dialogs&lt;/b&gt;&lt;br&gt;
         All menus and dialogs are opened at the bottom of the screen. If the dialog is large you will first see only
         the upper part. If you swipe it up, the rest will get visible.&lt;br&gt;
@@ -263,7 +262,7 @@
         If you long press the menu icon or the \"Navigation button\", the \"Fast toggle dialog\" will show. If you long
         press the \"Bookmark icon\", the \"Filter dialog\" will show.
     </string>
-    <string name="dialogHelp_overviewTitle">Overview</string>
+    <string name="dialogHelp_overviewTitle">Panoramica</string>
     <string name="dialogHelp_overviewText">        There are two parts in the \"Overview\" (tab preview and personal data). There is an extra menu. In the settings
         you can change the behavior of the \"Overview\".&lt;br&gt;&lt;br&gt;
 
