@@ -139,6 +139,8 @@
     Inserisci \"about:blank\" per avere una pagina vuota.</string>
     <string name="setting_title_searchEngine">Motore di ricerca personalizzato</string>
     <string name="setting_summary_searchEngine">Qui puoi inserire un URL di ricerca personalizzato. Scegli anche \"Motore di ricerca personalizzato\" come metodo di ricerca.</string>
+    <string name="setting_title_userAgent">Custom user agent</string>
+    <string name="setting_summary_userAgent">Here you can enter a custom user agent. Let empty to use default one.</string>
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">Nascondi barra degli strumenti</string>
     <string name="setting_summary_hide">Utilizzare l\'intero schermo per scorrere i siti web. Se si preme il pulsante Indietro, si esce dalla modalità a schermo intero.</string>
