@@ -15,15 +15,10 @@ public class BrowserContainer {
     public synchronized static void add(AlbumController controller) {
         list.add(controller);
     }
-
-    public synchronized static void add(AlbumController controller, int index) {
-        list.add(index, controller);
-    }
+    public synchronized static void add(AlbumController controller, int index) { list.add(index, controller); }
 
     public synchronized static void remove(AlbumController controller) {
-        if (controller instanceof NinjaWebView) {
-            ((NinjaWebView) controller).destroy();
-        }
+        ((NinjaWebView) controller).destroy();
         list.remove(controller);
     }
 
@@ -41,9 +36,7 @@ public class BrowserContainer {
 
     public synchronized static void clear() {
         for (AlbumController albumController : list) {
-            if (albumController instanceof NinjaWebView) {
-                ((NinjaWebView) albumController).destroy();
-            }
+            ((NinjaWebView) albumController).destroy();
         }
         list.clear();
     }

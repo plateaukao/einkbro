@@ -412,6 +412,31 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     public void onResume() {
         super.onResume();
 
+        if (sp.getInt("restart_changed", 1) == 1) {
+            sp.edit().putInt("restart_changed", 0).apply();
+            final BottomSheetDialog dialog = new BottomSheetDialog(context);
+            View dialogView = View.inflate(context, R.layout.dialog_action, null);
+            TextView textView = dialogView.findViewById(R.id.dialog_text);
+            textView.setText(R.string.toast_restart);
+            Button action_ok = dialogView.findViewById(R.id.action_ok);
+            action_ok.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onDestroy();
+                }
+            });
+            Button action_cancel = dialogView.findViewById(R.id.action_cancel);
+            action_cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.cancel();
+                }
+            });
+            dialog.setContentView(dialogView);
+            dialog.show();
+            HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
+        }
+
         dispatchIntent(getIntent());
         updateOmnibox();
 
@@ -451,18 +476,13 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
     @Override
     public void onDestroy() {
-        boolean clearIndexedDB = sp.getBoolean(("sp_clearIndexedDB"), false);
-        if (clearIndexedDB) {
-            BrowserUnit.clearIndexedDB(context);
-        }
-
         if (sp.getBoolean(getString(R.string.sp_clear_quit), false)) {
             Intent toClearService = new Intent(this, ClearService.class);
             startService(toClearService);
         }
-
         BrowserContainer.clear();
         IntentUnit.setContext(null);
+        unregisterReceiver(downloadReceiver);
         super.onDestroy();
     }
 
@@ -2289,7 +2309,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             videoView = null;
         }
         setRequestedOrientation(originalOrientation);
-        ninjaWebView.reload();
 
         return true;
     }
