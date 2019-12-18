@@ -86,8 +86,5 @@ class Album {
     public void activate() {
         albumView.setBackgroundResource(R.drawable.album_shape_accent);
     }
-
-    public void deactivate() {
-        albumView.setBackgroundResource(R.drawable.album_shape_transparent);
-    }
+    public void deactivate() { albumView.setBackgroundResource(R.drawable.album_shape_transparent); }
 }

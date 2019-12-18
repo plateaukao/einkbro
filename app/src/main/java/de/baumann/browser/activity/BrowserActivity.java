@@ -99,7 +99,6 @@ import de.baumann.browser.unit.HelperUnit;
 import de.baumann.browser.unit.IntentUnit;
 import de.baumann.browser.unit.ViewUnit;
 import de.baumann.browser.view.CompleteAdapter;
-import de.baumann.browser.view.FullscreenHolder;
 import de.baumann.browser.view.GridAdapter;
 import de.baumann.browser.view.GridAdapter_filter;
 import de.baumann.browser.view.GridItem;
@@ -2257,7 +2256,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         customView = view;
         originalOrientation = getRequestedOrientation();
 
-        fullscreenHolder = new FullscreenHolder(context);
+        fullscreenHolder = new FrameLayout(context);
         fullscreenHolder.addView(
                 customView,
                 new FrameLayout.LayoutParams(

@@ -42,6 +42,14 @@
             android:summary="@string/setting_summary_searchEngine"
             android:icon="@drawable/icon_edit"/>
 
+        <EditTextPreference
+            android:selectable="true"
+            android:key="userAgent"
+            android:title="@string/setting_title_userAgent"
+            android:summary="@string/setting_summary_userAgent"
+            android:icon="@drawable/icon_useragent"/>
+
+
     </PreferenceCategory>
 
 
