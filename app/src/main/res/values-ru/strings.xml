@@ -137,6 +137,8 @@
     Введите \"about:blank\", чтобы открывалась пуcтая вкладка.</string>
     <string name="setting_title_searchEngine">Пользовательская поисковая система</string>
     <string name="setting_summary_searchEngine">Здесь Вы можете ввести свой адрес для поиска. Также можно выбрать \"Пользовательская поисковая система\" для поиска по умолчанию.</string>
+    <string name="setting_title_userAgent">Custom user agent</string>
+    <string name="setting_summary_userAgent">Here you can enter a custom user agent. Let empty to use default one.</string>
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">Скрыть панель инструментов</string>
     <string name="setting_summary_hide">Используйте весь экран при прокрутке сайтов. Если вы нажмете кнопку Назад, то покинете полноэкранный режим.</string>
