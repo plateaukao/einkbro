@@ -148,9 +148,7 @@ public class NinjaWebView extends WebView implements AlbumController {
 
     @TargetApi(Build.VERSION_CODES.O)
     private synchronized void initWebSettings() {
-        String MyUA = "Mozilla/5.0 (Android 5.0; Mobile; rv:41.0) Gecko/41.0 Firefox/41.0";
         webSettings = getSettings();
-        //webSettings.setUserAgentString(MyUA);
         webSettings.setBuiltInZoomControls(true);
         webSettings.setDisplayZoomControls(false);
         webSettings.setSupportZoom(true);
@@ -164,6 +162,14 @@ public class NinjaWebView extends WebView implements AlbumController {
 
     public synchronized void initPreferences() {
         sp = PreferenceManager.getDefaultSharedPreferences(context);
+        String userAgent = sp.getString("userAgent", "");
+        webSettings = getSettings();
+
+        if (!userAgent.isEmpty()) {
+            String MyUA = "\"" + userAgent + "\"";
+            webSettings.setUserAgentString(MyUA);
+        }
+
         webViewClient.enableAdBlock(sp.getBoolean(context.getString(R.string.sp_ad_block), true));
         webSettings = getSettings();
         webSettings.setTextZoom(Integer.parseInt(Objects.requireNonNull(sp.getString("sp_fontSize", "100"))));

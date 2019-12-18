@@ -1,5 +1,7 @@
+### v 6.9 (WIP)
+
 ### v 6.8
-- new: search in all overview inventries
+- new: search in all overview entries
 - new: Blank target href open a new tab
 - new: removed device model and build number from user agent string
 - new: follow system theme
