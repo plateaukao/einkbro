@@ -137,6 +137,8 @@ Si desinstala la aplicación, el mismo será eliminado. Por tanto se recomienda 
 Puede disponer una página en blanco escribiendo \"about:blank\".</string>
     <string name="setting_title_searchEngine">Motor de búsqueda personalizado</string>
     <string name="setting_summary_searchEngine">Aquí puede ingresar la URL de un motor de búsqueda personalizado. Para aplicarlo, elija \"Motor de búsqueda personalizado\" como proveedor de búsquedas.</string>
+    <string name="setting_title_userAgent">Custom user agent</string>
+    <string name="setting_summary_userAgent">Here you can enter a custom user agent. Let empty to use default one.</string>
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">Ocultar barra de herramientas</string>
     <string name="setting_summary_hide">Utilice la pantalla completa al desplazarse por sitios web. Si pulsa el botón \"volver\", dejará el modo de pantalla completa.</string>

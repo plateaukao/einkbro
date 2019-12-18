@@ -145,6 +145,8 @@
     Coloque \"about:blank\" para uma página em branco.</string>
     <string name="setting_title_searchEngine">Mecanismo de pesquisa customizado</string>
     <string name="setting_summary_searchEngine">Aqui você pode inserir uma URL de pesquisa customizada. Também escolha \"Mecanismo de pesquisa customizado\".</string>
+    <string name="setting_title_userAgent">Custom user agent</string>
+    <string name="setting_summary_userAgent">Here you can enter a custom user agent. Let empty to use default one.</string>
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">Ocultar barra de ferramentas</string>
     <string name="setting_summary_hide">Use a tela inteira ao navegar nos sites. Se pressionar o botão voltar você
