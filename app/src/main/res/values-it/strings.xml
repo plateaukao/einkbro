@@ -8,20 +8,20 @@
     <string name="list_empty">La lista corrente è vuota</string>
     <string name="album_title_bookmarks">Segnalibri</string>
     <string name="album_title_history">Cronologia</string>
-    <string name="album_title_home">Home</string>
+    <string name="album_title_home">Pagina principale</string>
     <string name="album_title_files">File</string>
     <string name="search_hint">Cerca</string>
-    <string name="color_red">Red</string>
-    <string name="color_pink">Pink</string>
-    <string name="color_purple">Purple</string>
-    <string name="color_blue">Blue</string>
-    <string name="color_teal">Teal</string>
-    <string name="color_green">Green</string>
+    <string name="color_red">Rosso</string>
+    <string name="color_pink">Rosa</string>
+    <string name="color_purple">Viola</string>
+    <string name="color_blue">Blu</string>
+    <string name="color_teal">Verde acqua</string>
+    <string name="color_green">Verde</string>
     <string name="color_lime">Lime</string>
-    <string name="color_yellow">Yellow</string>
-    <string name="color_orange">Orange</string>
-    <string name="color_brown">Brown</string>
-    <string name="color_grey">Grey</string>
+    <string name="color_yellow">Giallo</string>
+    <string name="color_orange">Arancione</string>
+    <string name="color_brown">Marrone</string>
+    <string name="color_grey">Grigio</string>
     <!-- Menu -->
     <string name="main_menu_tabPreview">Apri anteprima schede</string>
     <string name="main_menu_new_tab">Nuova scheda (secondo piano)</string>
@@ -29,16 +29,16 @@
     <string name="main_omnibox_input_hint">Cerca o inserisci URL</string>
     <string name="menu_open_with">Apri link con …</string>
     <string name="menu_quit">Chiudi</string>
-    <string name="menu_openFav">Open Favorite</string>
+    <string name="menu_openFav">Apri i preferiti</string>
     <string name="menu_delete">Elimina</string>
     <string name="menu_delete_list">Elimina lista</string>
     <string name="menu_edit">Modifica</string>
     <string name="menu_closeTab">Chiudi scheda</string>
     <string name="menu_download">Apri download</string>
     <string name="menu_fav">Set as start site</string>
-    <string name="menu_sc">Shortcut on home screen</string>
-    <string name="menu_sort">Sort by …</string>
-    <string name="menu_filter">Filter by …</string>
+    <string name="menu_sc">Crea collegamento nella Home</string>
+    <string name="menu_sort">Ordina per …</string>
+    <string name="menu_filter">Filtra per …</string>
     <string name="menu_share_screenshot">Condividi screenshot</string>
     <string name="menu_share_link">Condividi link</string>
     <string name="menu_save_screenshot">Salva screenshot</string>
@@ -47,24 +47,24 @@
     <string name="menu_save_as">Salva come …</string>
     <string name="menu_save_pdf">Salva come PDF</string>
     <string name="menu_share_pdf">Condividi PDF</string>
-    <string name="menu_shareClipboard">Copy to clipboard</string>
+    <string name="menu_shareClipboard">Copia negli Appunti</string>
     <string name="menu_other_searchSite">Cerca nel sito</string>
-    <string name="menu_other_fileManager">Open file manager</string>
-    <string name="menu_other_info">About \"FOSS Browser\"</string>
+    <string name="menu_other_fileManager">Apri file manager</string>
+    <string name="menu_other_info">Info su \"FOSS Browser\"</string>
     <string name="menu_other_help">Aiuto</string>
     <!-- Dialog -->
-    <string name="dialog_toggle_reload">Reload</string>
+    <string name="dialog_toggle_reload">Ricarica</string>
     <string name="dialog_title_hint">Titolo:</string>
     <string name="dialog_url_hint">Url:</string>
     <string name="dialog_extension_hint">Estensione (per esempio: \".jpg\"):</string>
-    <string name="dialog_sign_in_username">Username</string>
+    <string name="dialog_sign_in_username">Nome utente</string>
     <string name="dialog_sign_in_password">Password</string>
     <string name="dialog_title_download">Vuoi scaricare il file?</string>
     <string name="dialog_content_resubmission">Inviare nuovamente i dati?</string>
     <string name="dialog_content_ssl_error">Il certificato del sito non è attendibile. Procedere comunque?</string>
-    <string name="dialog_sortName">Sort by name</string>
-    <string name="dialog_sortIcon">Sort by icon</string>
-    <string name="dialog_sortDate">Sort by date</string>
+    <string name="dialog_sortName">Ordina per nome</string>
+    <string name="dialog_sortIcon">Ordina per icona</string>
+    <string name="dialog_sortDate">Ordina per data</string>
     <!-- Settings -->
     <string name="setting_label">Impostazioni</string>
     <!-- browser setting -->
@@ -77,10 +77,10 @@
     <string name="setting_summary_search_engine">Qui puoi scegliere il tuo motore di ricerca preferito o impostarne uno personalizzato.</string>
     <string name="setting_summary_search_engine_google">Google</string>
     <string name="setting_summary_search_engine_duckduckgo">DuckDuckGo</string>
-    <string name="setting_summary_search_engine_startpage">StartPage</string>
+    <string name="setting_summary_search_engine_startpage">Pagina iniziale</string>
     <string name="setting_summary_search_engine_bing">Bing</string>
     <string name="setting_summary_search_engine_baidu">Baidu</string>
-    <string name="setting_summary_search_engine_startpage_de">StartPage (de)</string>
+    <string name="setting_summary_search_engine_startpage_de">Pagina iniziale (de)</string>
     <string name="setting_summary_search_engine_searx">Searx</string>
     <string name="setting_summary_search_engine_qwant">Qwant</string>
     <string name="setting_summary_search_engine_ecosia">Ecosia</string>
@@ -90,8 +90,8 @@
     <string name="setting_summary_font">Modificare la dimensione dei caratteri per la visualizzazione dei siti Web.</string>
     <string name="setting_title_remote">Contenuti remoti</string>
     <string name="setting_summary_remote">Abilita i contenuti remoti, che non provengono direttamente dal sito web che stai visitando. La disattivazione è più sicura, più rapida e consente di risparmiare volume di dati. Ma alcuni contenuti non saranno più visualizzati.</string>
-    <string name="setting_title_save_data">Request \'Save Data\'</string>
-    <string name="setting_summary_save_data">Tell websites that you would prefer to save data. Supported websites will load faster.</string>
+    <string name="setting_title_save_data">Richiedi \'Salva dati\'</string>
+    <string name="setting_summary_save_data">Indica ai siti web che preferisci salvare i dati. I siti web supportati caricheranno più velocemente.</string>
     <!-- browser start -->
     <string name="setting_title_images">Immagini</string>
     <string name="setting_summary_images">Abilita immagini di rete. La disabilitazione potrebbe essere utile per salvare i dati del cellulare e per caricare più velocemente i siti web.</string>
@@ -113,9 +113,9 @@
     <string name="setting_title_history">Cronologia</string>
     <string name="setting_summary_history">Salva la cronologia dei site web visitati.</string>
     <!-- browser clear -->
-    <string name="data_summary">All files will be exported to the \"Android/data/de.baumann.browser/files/browser_backup/\"
-        directory of your sd-card. This directory will be DELETED, if you uninstall \"FOSS Browser\". So make a backup regularly on a save
-        place.</string>
+    <string name="data_summary">Tutti i file saranno esportati nella cartella \"Android/data/de.baumann.browser/files/browser_backup/\"
+        della tua sd-card. Questa directory sarà ELIMINATA se si disinstalla \"FOSS Browser\". Quindi è consigliato di fare un backup regolarmente in un posto
+        sicuro.</string>
     <string name="clear_menu_done_all">Tutto</string>
     <string name="clear_title_quit">Cancella quando si chiude l\'applicazione</string>
     <string name="clear_summary_quit">Ogni volta che si esce da \"FOSS Browser\" tutti i dati selezionati sopra vengono cancellati.</string>
@@ -131,27 +131,26 @@
     <string name="setting_title_data">Backup</string>
     <string name="setting_summary_ui">Cambia il comportamento e UI dell\'app in base alle tue preferenze.</string>
     <string name="setting_summary_data">Importazione ed esportazione di vari dati dell\' app (whitelist, segnalibri).</string>
-    <string name="setting_filter">Bookmark filter</string>
-    <string name="setting_filter_summary">To show the filter dialog long press on the bookmark icon in the overview. Decide which
-        filters you will use.</string>
-    <string name="setting_title_fav">Favorite</string>
-    <string name="setting_summary_fav">Here you can change the default website which loads on start of \"FOSS Browser\".
-    Enter \"about:blank\" to get an emty start site.</string>
-    <string name="setting_title_searchEngine">Custom search engine</string>
-    <string name="setting_summary_searchEngine">Here you can enter a custom search URL. Also choose \"Custom search engine\" as search
-    provider.</string>
+    <string name="setting_filter">Filtro dei segnalibri</string>
+    <string name="setting_filter_summary">Per mostrare la finestra di dialogo premi sull\'icona dei segnalibri nella panoramica.
+        Decidi quali filtri utilizzare.</string>
+    <string name="setting_title_fav">Preferito</string>
+    <string name="setting_summary_fav">Qui puoi cambiare il sito di default che carica all\'avvio di \"FOSS Browser\".
+    Inserisci \"about:blank\" per avere una pagina vuota.</string>
+    <string name="setting_title_searchEngine">Motore di ricerca personalizzato</string>
+    <string name="setting_summary_searchEngine">Qui puoi inserire un URL di ricerca personalizzato. Scegli anche \"Motore di ricerca personalizzato\" come metodo di ricerca.</string>
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">Nascondi barra degli strumenti</string>
     <string name="setting_summary_hide">Utilizzare l\'intero schermo per scorrere i siti web. Se si preme il pulsante Indietro, si esce dalla modalità a schermo intero.</string>
-    <string name="setting_theme">Theme</string>
-    <string name="setting_theme_summary">Set the app theme.</string>
-    <string name="setting_theme_system">System theme</string>
-    <string name="setting_theme_light">Light theme</string>
-    <string name="setting_theme_dark">Dark theme</string>
-    <string name="setting_title_theme">UI</string>
-    <string name="setting_title_behavior">Behavior</string>
-    <string name="setting_summary_toolbarShow">Pressing back will make the toolbar visible, before going back in history.</string>
-    <string name="setting_title_toolbarShow">First toolbar</string>
+    <string name="setting_theme">Tema</string>
+    <string name="setting_theme_summary">Imposta il tema dell\'app.</string>
+    <string name="setting_theme_system">Tema di sistema</string>
+    <string name="setting_theme_light">Tema chiaro</string>
+    <string name="setting_theme_dark">Tema Scuro</string>
+    <string name="setting_title_theme">Interfaccia utente</string>
+    <string name="setting_title_behavior">Comportamento</string>
+    <string name="setting_summary_toolbarShow">Premendo il tasto indietro vedrai la barra degli strumenti, prima di tornare indietro nella storia.</string>
+    <string name="setting_title_toolbarShow">Prima barra degli strumenti</string>
     <string name="setting_title_nav">Pulsante di navigazione</string>
     <string name="setting_title_nav_pos">Posizione</string>
     <string name="setting_summary_nav_pos">Decidere dove posizionare il \"Pulsante di Navigazione\".</string>
@@ -163,48 +162,47 @@
     <string name="setting_summary_confirm_exit">Finestra di conferma per la chiusura del browser.</string>
     <string name="setting_title_confirm_tab_close">Confermare la chiusura delle schede</string>
     <string name="setting_summary_confirm_tab_close">Finestra di conferma per la chiusura delle schede.</string>
-    <string name="setting_overView">Overview</string>
-    <string name="setting_overView_onStart_title">Show on start</string>
-    <string name="setting_overView_onStart_summary">Open the \"Overview\" on every app start.</string>
-    <string name="setting_overView_hide_title">Hide tab previews</string>
-    <string name="setting_overView_hide_summary">In expanded overview the tab preview will hide. Then you have more place for your
-    bookmarks.</string>
-    <string name="setting_gestures">Gestures</string>
-    <string name="setting_gestures_use_title">Use gestures</string>
-    <string name="setting_gestures_use_summary">Use gestures on the toolbar and the \"Navigation button\".</string>
-    <string name="setting_title_reopenLastTab">Reopen last tab</string>
-    <string name="setting_summary_reopenLastTab">Reopen a new tab when the last tab is closed instead of exiting the browser.</string>
+    <string name="setting_overView">Panoramica</string>
+    <string name="setting_overView_onStart_title">Mostra all\'avvio</string>
+    <string name="setting_overView_onStart_summary">Apri \"Panoramica\" all\'avvio dell\'app.</string>
+    <string name="setting_overView_hide_title">Nascondi l\'anteprima delle schede</string>
+    <string name="setting_overView_hide_summary">Nella panoramica espansa l\'anteprima della scheda si nasconderà. Quindi hai più posto per i tuoi segnalibri.</string>
+    <string name="setting_gestures">Gesti</string>
+    <string name="setting_gestures_use_title">Usa gesti</string>
+    <string name="setting_gestures_use_summary">Usa gesti sulla barra degli strumenti e il pulsante \"Navigazione\".</string>
+    <string name="setting_title_reopenLastTab">Riapri l\'ultima scheda</string>
+    <string name="setting_summary_reopenLastTab">Apri una nuova scheda quando l\'ultima scheda viene chiusa, invece di uscire dal browser.</string>
     <!-- gestures -->
-    <string name="setting_title_toolbar">Toolbar</string>
-    <string name="setting_gesture_up">Swipe up</string>
-    <string name="setting_gesture_down">Swipe down</string>
-    <string name="setting_gesture_left">Swipe left</string>
-    <string name="setting_gesture_right">Swipe right</string>
-    <string name="setting_gesture_01">Nothing</string>
-    <string name="setting_gesture_02">Forward in history</string>
-    <string name="setting_gesture_03">Back in history</string>
-    <string name="setting_gesture_04">Scroll to top</string>
-    <string name="setting_gesture_05">Scroll to bottom</string>
-    <string name="setting_gesture_06">Switch to left tab</string>
-    <string name="setting_gesture_07">Switch to right tab</string>
-    <string name="setting_gesture_08">Show overview</string>
-    <string name="setting_gesture_09">Open new tab</string>
+    <string name="setting_title_toolbar">Barra degli Strumenti</string>
+    <string name="setting_gesture_up">Scorri verso l\'alto</string>
+    <string name="setting_gesture_down">Scorri verso il basso</string>
+    <string name="setting_gesture_left">Scorri a sinistra</string>
+    <string name="setting_gesture_right">Scorri a destra</string>
+    <string name="setting_gesture_01">Niente</string>
+    <string name="setting_gesture_02">Vai avanti nella cronologia</string>
+    <string name="setting_gesture_03">Indietro nella cronologia</string>
+    <string name="setting_gesture_04">Scorri su</string>
+    <string name="setting_gesture_05">Scorri verso il basso</string>
+    <string name="setting_gesture_06">Passa alla scheda a sinistra</string>
+    <string name="setting_gesture_07">Passa alla scheda a sinistra</string>
+    <string name="setting_gesture_08">Mostra panoramica</string>
+    <string name="setting_gesture_09">Apri una nuova scheda</string>
     <string name="setting_gesture_10">Chiudi scheda</string>
     <!-- Data -->
     <string name="setting_title_export_whitelist">Esporta whitelist AdBlock</string>
     <string name="setting_title_import_whitelist">Importa whitelist AdBlock</string>
-    <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
+    <string name="export_whitelistAdBlock">esporta_whitelist_AdBlock</string>
     <string name="setting_title_export_whitelistJS">Esporta whitelist JavaScript</string>
     <string name="setting_title_import_whitelistJS">Importa whitelist JavaScript</string>
-    <string name="export_whitelistJS">export_whitelist_Javascript</string>
+    <string name="export_whitelistJS">esporta_whitelist_Javascript</string>
     <string name="setting_title_export_whitelistCookie">Esporta whitelist Cookie</string>
     <string name="setting_title_import_whitelistCookie">Importa whitelist Cookie</string>
-    <string name="export_whitelistCookie">export_whitelist_Cookie</string>
-    <string name="setting_title_export_appData">Export app data</string>
-    <string name="setting_title_import_appData">Import app data</string>
-    <string name="setting_summary_export_appData">Export app data (Startpage + previews, History, Bookmarks)
-        and your personal settings.</string>
-    <string name="title_appData">App data</string>
+    <string name="export_whitelistCookie">esporta_whitelist_cookie</string>
+    <string name="setting_title_export_appData">Esporta dati dell\'app</string>
+    <string name="setting_title_import_appData">Importa dati dell\'app</string>
+    <string name="setting_summary_export_appData">Esporta i dati dell\' app (pagina iniziale + anteprime, cronologia, segnalibri)
+        e le tue impostazioni personali.</string>
+    <string name="title_appData">Dati app</string>
     <string name="hint_database">In questo modo verranno eliminate tutte le impostazioni e i dati correnti. Continuare?</string>
     <!-- Others setting -->
     <string name="setting_title_others">Altro</string>
@@ -233,7 +231,7 @@
     <string name="toast_wait_a_minute">Attendere un momento</string>
     <string name="toast_titleConfirm_delete">Vuoi davvero cancellare la voce?</string>
     <string name="toast_titleConfirm_paste">Copiare i dati negli appunti?</string>
-    <string name="toast_titleConfirm_pasteUN">Username</string>
+    <string name="toast_titleConfirm_pasteUN">Nome utente</string>
     <string name="toast_titleConfirm_pastePW">Password</string>
     <string name="toast_error">Uuups. Qualcosa è andato storto</string>
     <string name="toast_newTitle">La voce esiste già. Per favore inserisci un nuovo titolo.</string>
@@ -254,17 +252,17 @@
     <string name="whitelist_edit_hint">Dominio</string>
     <string name="whitelist_add">Aggiungi</string>
     <!-- Dialog help -->
-    <string name="dialogHelp_tipTitle">Tips</string>
-    <string name="dialogHelp_tipText">        &lt;b&gt;Menus and dialogs&lt;/b&gt;&lt;br&gt;
-        All menus and dialogs are opened at the bottom of the screen. If the dialog is large you will first see only
-        the upper part. If you swipe it up, the rest will get visible.&lt;br&gt;
-        You can close them by pressing the back button, swiping them down or by clicking outside&lt;br&gt;&lt;br&gt;
+    <string name="dialogHelp_tipTitle">Consigli</string>
+    <string name="dialogHelp_tipText">        &lt;b&gt;Menu e finestre&lt;/b&gt;&lt;br&gt;
+        Tutti i menu e le finestre sono aperti nella parte inferiore dello schermo. Se la finestra di dialogo è ampia, vedrai inizialmente solo
+        la parte superiore. Se la trascini su, potrai vedere il resto.&lt;br&gt;
+        Puoi chiudere le finestre premendo il pulsante Indietro, trascinandole verso il baso o cliccando fuori da esse&lt;br&gt;&lt;br&gt;
 
-        &lt;b&gt;Long press&lt;/b&gt;&lt;br&gt;
-        If you long press the menu icon or the \"Navigation button\", the \"Fast toggle dialog\" will show. If you long
-        press the \"Bookmark icon\", the \"Filter dialog\" will show.
+        &lt;b&gt;Premere a lungo&lt;/b&gt;&lt;br&gt;
+        Se premi a lungo l\'icona del menu o il pulsante \"Navigazione\", la finestra \"Toggle Veloce\" verrà mostrata. Se tieni premuta l\'
+        \"Icona Segnalibri\", verrà mostrata la \"finestra filtro\".
     </string>
-    <string name="dialogHelp_overviewTitle">Overview</string>
+    <string name="dialogHelp_overviewTitle">Panoramica</string>
     <string name="dialogHelp_overviewText">        There are two parts in the \"Overview\" (tab preview and personal data). There is an extra menu. In the settings
         you can change the behavior of the \"Overview\".&lt;br&gt;&lt;br&gt;
 
@@ -276,25 +274,25 @@
         There are three parts: the Startsite, your Bookmarks and your History. If you long click an entry
         a menu with more options will appear.
     </string>
-    <string name="dialogHelp_filterText">        You can tag your bookmarks with filters. In this way you can group your bookmarks. You can open the filter dialog by
-        long pressing the bookmark icon. If you activate an entry a dialog will appear, where you can edit the name of the filter.
+    <string name="dialogHelp_filterText">Puoi segnare i tuoi segnalibri con dei filtri. In questo modo puoi raggruppare i tuoi segnalibri. Puoi aprire la finestra dei filtri
+        premendo a lungo l\'icona dei segnalibri. Se attivi una voce, una finestra apparirà, dove puoi modificare il nome del filtro.
     </string>
     <!-- Dialog changelog -->
-    <string name="changelog_dialog">        Your language isn\'t supported yet? You want to translate FOSS Browser? Or make improvements to existing translations?
-        Feel free to join us on Crowdin: https://crowdin.com/project/foss-browser.&lt;br&gt;&lt;br&gt;
+    <string name="changelog_dialog">        La tua lingua non è ancora supportata? Vuoi tradurre FOSS Browser? O migliorare traduzioni già esistenti?
+        Sentiti libero di unirti su Crowdin: https://crowdin.com/project/foss-browser.&lt;br&gt;&lt;br&gt;
 
-        &lt;b&gt;On the following sites you have access to all important information about \"FOSS Browser\".
-        Please read also the help dialog within the app.&lt;/b&gt;&lt;br&gt;&lt;br&gt;
+        &lt;b&gt;Nei prossimi siti ci sono tutte le informazioni importanti su \"FOSS Browser\".
+        Si prega di leggere il dialogo di aiuto nell\'app.&lt;/b&gt;&lt;br&gt;&lt;br&gt;
 
-        \u25AA &lt;i&gt;Project site:&lt;/i&gt; https://github.com/scoute-dich/Browser&lt;br&gt;
+        \u25AA &lt;i&gt;Sito del progetto:&lt;/i&gt; https://github.com/scoute-dich/Browser&lt;br&gt;
         \u25AA &lt;i&gt;Changelog:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;br&gt;
         \u25AA &lt;i&gt;FAQ:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/FAQs.md&lt;br&gt;
-        \u25AA &lt;i&gt;License:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/LICENSE.md&lt;br&gt;
+        \u25AA &lt;i&gt;Licenza:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/LICENSE.md&lt;br&gt;
         \u25AA &lt;i&gt;Privacy:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/PRIVACY.md
 
     </string>
     <!-- License changelog -->
-    <string name="license_title">Copyright © 2017  by Gaukler Faun</string>
+    <string name="license_title">Copyright © 2017  di Gaukler Faun</string>
     <string name="license_dialog">        &lt;i&gt;For more information visit the project site on Github: https://github.com/scoute-dich/Browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         This program is free software: you can redistribute it and/or modify
@@ -326,27 +324,27 @@
         Apache License Version 2.0&lt;br&gt;
         hummatli&lt;br&gt;
         &lt;i&gt;https://github.com/hummatli/SimpleEncryptionLib</string>
-    <string name="cont_dialog">        &lt;i&gt;First I would like to thank all people who contributed in any way on this project. They submitted issues,
-        translated or helped in any other way. On following sites you can become a active member of this
-        great community:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
+    <string name="cont_dialog">        &lt;i&gt;Prima di tutto vorrei ringraziare tutte le persone che hanno contribuito in vari modi al progetto. Hanno sottomesso problemi,
+        tradotto o aiutato in molti modi. Nei seguenti siti puoi diventare un membro attivo di questa
+        grande comunità:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Crowdin:&lt;/b&gt;&lt;br&gt;
-        Crowdin is an online plattform to translate applications in other languages. A big thanks to all translators. You can
-        also help.&lt;br&gt;
+        Crowdin è una piattaforma online per tradurre applicazioni in diverse lingue. Un grande grazie a tutti i traduttori. Anche tu 
+        puoi aiutare.&lt;br&gt;
         &lt;i&gt;https://crowdin.com/project/foss-browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
 
         &lt;b&gt;XDA-thread:&lt;/b&gt;&lt;br&gt;
-        XDA is a great community for developers and smartphone enthusiasts. Here you can report issues, ask for new features
-        and everything other related to \"FOSS Browser\".&lt;br&gt;
+        XDA è una grande comunità di sviluppatori e appassionati di smartphone. Qui puoi riportare bug, chiedere nuove funzioni
+        e qualunque altra cosa riguardante \"FOSS Browser\".&lt;br&gt;
         &lt;i&gt;https://forum.xda-developers.com/android/apps-games/app-browser-t3500091&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Github:&lt;/b&gt;&lt;br&gt;
-        On Github you can see the source code of \"FOSS Browser\". This is the more technical solution: open issues, ask for new
-        features or even help developing or translating.&lt;br&gt;
+        Su Github puoi vedere il codice sorgente di \"FOSS Browser\". Questa è una soluzione più tecnica: aprire \"Issue\", chiedere nuove
+        funzioni o anche aiutare a sviluppare e tradurre.&lt;br&gt;
         &lt;i&gt;https://github.com/scoute-dich/browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
 
 
-        &lt;i&gt;Following people contributed at this project. If I have forgotten anybody, please contact me:&lt;/i&gt;
+        &lt;i&gt;Le seguenti persone hanno contribuito al progetto. Se ho dimenticato qualcuno, mi si contatti:&lt;/i&gt;
     </string>
 </resources>
