@@ -148,6 +148,8 @@
     <string name="setting_title_searchEngine">Custom search engine</string>
     <string name="setting_summary_searchEngine">Here you can enter a custom search URL. Also choose \"Custom search engine\" as search
     provider.</string>
+    <string name="setting_title_userAgent">Custom user agent</string>
+    <string name="setting_summary_userAgent">Here you can enter a custom user agent. Let empty to use default one.</string>
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">Werkbalk verbergen</string>
     <string name="setting_summary_hide">Gebruik, tijdens het scrollen op websites, het hele scherm. Als je op de terug-knop drukt,
