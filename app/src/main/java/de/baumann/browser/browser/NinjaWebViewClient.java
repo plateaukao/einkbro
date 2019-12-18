@@ -6,11 +6,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.pm.ShortcutManager;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
 import android.os.Message;
+
 import androidx.preference.PreferenceManager;
 import androidx.annotation.NonNull;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -30,7 +30,6 @@ import android.widget.TextView;
 
 import java.io.ByteArrayInputStream;
 import java.net.URISyntaxException;
-import java.util.Objects;
 
 import de.baumann.browser.database.Record;
 import de.baumann.browser.database.RecordAction;
@@ -42,15 +41,14 @@ import de.baumann.browser.view.NinjaToast;
 import de.baumann.browser.view.NinjaWebView;
 
 public class NinjaWebViewClient extends WebViewClient {
+
     private final NinjaWebView ninjaWebView;
     private final Context context;
     private final SharedPreferences sp;
-
     private final AdBlock adBlock;
     private final Cookie cookie;
 
     private boolean white;
-
     private boolean enable;
     public void enableAdBlock(boolean enable) {
         this.enable = enable;
@@ -71,15 +69,9 @@ public class NinjaWebViewClient extends WebViewClient {
     public void onPageFinished(WebView view, String url) {
         super.onPageFinished(view, url);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
-            ShortcutManager shortcutManager = context.getSystemService(ShortcutManager.class);
-            Objects.requireNonNull(shortcutManager).removeAllDynamicShortcuts();
-        }
-
         if (sp.getBoolean("saveHistory", true)) {
             RecordAction action = new RecordAction(context);
             action.open(true);
-
             if (action.checkHistory(url)) {
                 action.deleteHistoryItemByURL(url);
                 action.addHistory(new Record(ninjaWebView.getTitle(), url, System.currentTimeMillis()));
@@ -167,8 +159,6 @@ public class NinjaWebViewClient extends WebViewClient {
                     new ByteArrayInputStream("".getBytes())
             );
         }
-
-
         if (!sp.getBoolean(context.getString(R.string.sp_cookies), true)) {
             if (cookie.isWhite(url)) {
                 CookieManager manager = CookieManager.getInstance();
@@ -179,7 +169,6 @@ public class NinjaWebViewClient extends WebViewClient {
                 manager.setAcceptCookie(false);
             }
         }
-
         return super.shouldInterceptRequest(view, url);
     }
 
@@ -191,6 +180,16 @@ public class NinjaWebViewClient extends WebViewClient {
                     BrowserUnit.URL_ENCODING,
                     new ByteArrayInputStream("".getBytes())
             );
+        }
+        if (!sp.getBoolean(context.getString(R.string.sp_cookies), true)) {
+            if (cookie.isWhite(request.getUrl().toString())) {
+                CookieManager manager = CookieManager.getInstance();
+                manager.getCookie(request.getUrl().toString());
+                manager.setAcceptCookie(true);
+            } else {
+                CookieManager manager = CookieManager.getInstance();
+                manager.setAcceptCookie(false);
+            }
         }
         return super.shouldInterceptRequest(view, request);
     }
@@ -228,16 +227,35 @@ public class NinjaWebViewClient extends WebViewClient {
     }
 
     @Override
-    public void onReceivedSslError(WebView view, @NonNull final SslErrorHandler handler, SslError error) {
-        Context holder = IntentUnit.getContext();
-        if (!(holder instanceof Activity)) {
-            return;
-        }
+    public void onReceivedSslError(WebView view, final SslErrorHandler handler, SslError error) {
 
-        final BottomSheetDialog dialog = new BottomSheetDialog(holder);
-        View dialogView = View.inflate(holder, R.layout.dialog_action, null);
+        String message = "\"SSL Certificate error.\"";
+        switch (error.getPrimaryError()) {
+            case SslError.SSL_UNTRUSTED:
+                message = "\"Certificate authority is not trusted.\"";
+                break;
+            case SslError.SSL_EXPIRED:
+                message = "\"Certificate has expired.\"";
+                break;
+            case SslError.SSL_IDMISMATCH:
+                message = "\"Certificate Hostname mismatch.\"";
+                break;
+            case SslError.SSL_NOTYETVALID:
+                message = "\"Certificate is not yet valid.\"";
+                break;
+            case SslError.SSL_DATE_INVALID:
+                message = "\"Certificate date is invalid.\"";
+                break;
+            case SslError.SSL_INVALID:
+                message = "\"Certificate is invalid.\"";
+                break;
+        }
+        String text = message + " - " + context.getString(R.string.dialog_content_ssl_error);
+
+        final BottomSheetDialog dialog = new BottomSheetDialog(context);
+        View dialogView = View.inflate(context, R.layout.dialog_action, null);
         TextView textView = dialogView.findViewById(R.id.dialog_text);
-        textView.setText(R.string.dialog_content_ssl_error);
+        textView.setText(text);
         Button action_ok = dialogView.findViewById(R.id.action_ok);
         action_ok.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -261,14 +279,9 @@ public class NinjaWebViewClient extends WebViewClient {
 
     @Override
     public void onReceivedHttpAuthRequest(WebView view, @NonNull final HttpAuthHandler handler, String host, String realm) {
-        Context holder = IntentUnit.getContext();
-        if (!(holder instanceof Activity)) {
-            return;
-        }
 
-        final BottomSheetDialog dialog = new BottomSheetDialog(holder);
-        View dialogView = View.inflate(holder, R.layout.dialog_edit_bookmark, null);
-
+        final BottomSheetDialog dialog = new BottomSheetDialog(context);
+        View dialogView = View.inflate(context, R.layout.dialog_edit_bookmark, null);
 
         final EditText pass_userNameET = dialogView.findViewById(R.id.pass_userName);
         final EditText pass_userPWET = dialogView.findViewById(R.id.pass_userPW);

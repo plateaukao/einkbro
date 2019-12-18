@@ -84,6 +84,10 @@ public class NinjaWebView extends WebView implements AlbumController {
         return cookieHosts;
     }
 
+    public Javascript getJavaHosts() {
+        return javaHosts;
+    }
+
     private SharedPreferences sp;
     private WebSettings webSettings;
 
@@ -146,7 +150,7 @@ public class NinjaWebView extends WebView implements AlbumController {
     private synchronized void initWebSettings() {
         String MyUA = "Mozilla/5.0 (Android 5.0; Mobile; rv:41.0) Gecko/41.0 Firefox/41.0";
         webSettings = getSettings();
-        webSettings.setUserAgentString(MyUA);
+        //webSettings.setUserAgentString(MyUA);
         webSettings.setBuiltInZoomControls(true);
         webSettings.setDisplayZoomControls(false);
         webSettings.setSupportZoom(true);
@@ -192,24 +196,22 @@ public class NinjaWebView extends WebView implements AlbumController {
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     public synchronized void loadUrl(String url) {
-
         if (url == null || url.trim().isEmpty()) {
             NinjaToast.show(context, R.string.toast_load_error);
             return;
-        }
-
-        if (!sp.getBoolean(context.getString(R.string.sp_javascript), true)) {
-            if (javaHosts.isWhite(url)) {
-                webSettings = getSettings();
-                webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
-                webSettings.setJavaScriptEnabled(true);
-            } else {
-                webSettings = getSettings();
-                webSettings.setJavaScriptCanOpenWindowsAutomatically(false);
-                webSettings.setJavaScriptEnabled(false);
+        } else {
+            if (!sp.getBoolean(context.getString(R.string.sp_javascript), true)) {
+                if (javaHosts.isWhite(url)) {
+                    webSettings = getSettings();
+                    webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
+                    webSettings.setJavaScriptEnabled(true);
+                } else {
+                    webSettings = getSettings();
+                    webSettings.setJavaScriptCanOpenWindowsAutomatically(false);
+                    webSettings.setJavaScriptEnabled(false);
+                }
             }
         }
-
         super.loadUrl(BrowserUnit.queryWrapper(context, url.trim()), getRequestHeaders());
     }
 
@@ -251,7 +253,6 @@ public class NinjaWebView extends WebView implements AlbumController {
         if (foreground) {
             browserController.updateProgress(progress);
         }
-
         if (isLoadFinish()) {
             new Handler().postDelayed(new Runnable() {
                 @Override

@@ -1,8 +1,6 @@
 package de.baumann.browser.activity;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import androidx.preference.PreferenceManager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
@@ -34,21 +32,10 @@ public class Settings_Activity extends AppCompatActivity {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        if (sp.getInt("restart_changed", 1) == 1) {
-            sp.edit().putInt("restart_changed", 0).apply();
-            HelperUnit.showRestartDialog(this);
-        }
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         if (menuItem.getItemId() == android.R.id.home) {
             finish();
         }
-
         return true;
     }
 }

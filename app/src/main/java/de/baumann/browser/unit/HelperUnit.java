@@ -170,30 +170,6 @@ public class HelperUnit {
         NinjaToast.show(context, R.string.toast_fav);
     }
 
-    public static void showRestartDialog (Context context) {
-        final BottomSheetDialog dialog = new BottomSheetDialog(context);
-        View dialogView = View.inflate(context, R.layout.dialog_action, null);
-        TextView textView = dialogView.findViewById(R.id.dialog_text);
-        textView.setText(R.string.toast_restart);
-        Button action_ok = dialogView.findViewById(R.id.action_ok);
-        action_ok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                System.exit(0);
-            }
-        });
-        Button action_cancel = dialogView.findViewById(R.id.action_cancel);
-        action_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.cancel();
-            }
-        });
-        dialog.setContentView(dialogView);
-        dialog.show();
-        HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
-    }
-
     public static void setBottomSheetBehavior (final BottomSheetDialog dialog, final View view, int beh) {
         BottomSheetBehavior mBehavior = BottomSheetBehavior.from((View) view.getParent());
         mBehavior.setState(beh);
