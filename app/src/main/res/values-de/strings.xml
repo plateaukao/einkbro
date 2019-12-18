@@ -138,8 +138,8 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="setting_summary_fav">Hier kannst du die voreingestellte Website ändern, die beim Start von \"FOSS-Browser\" lädt. Gib \"about:blank\" ein, um eine leere Startseite zu erhalten.</string>
     <string name="setting_title_searchEngine">Nutzerdefinierte Suchmaschine</string>
     <string name="setting_summary_searchEngine">Hier kannst du eine benutzerdefinierte Such-URL eingeben. Wähle auch \"Benutzerdefinierte Suchmaschine\" als Suchanbieter aus.</string>
-    <string name="setting_title_userAgent">Custom user agent</string>
-    <string name="setting_summary_userAgent">Here you can enter a custom user agent. Let empty to use default one.</string>
+    <string name="setting_title_userAgent">Eigener Useragent</string>
+    <string name="setting_summary_userAgent">Hier kannst du einen eigenen Useragent eingeben. Leer lassen um den Standard zu verwenden.</string>
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">Toolbar verstecken</string>
     <string name="setting_summary_hide">Benutze den ganzen Bildschirm beim Scrollen durch Websites. Wenn du die \"Zurück-Taste\" drückst, verlässt du den Vollbildmodus.</string>
