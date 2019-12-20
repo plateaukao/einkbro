@@ -145,8 +145,8 @@
     Zadáním „about:blank“ zobrazíte prázdnou úvodní stránku.</string>
     <string name="setting_title_searchEngine">Vlastní vyhledávač</string>
     <string name="setting_summary_searchEngine">Zde můžete zadat vlastní adresu URL pro vyhledávání. Taky zvolit „Vlastní vyhledávač“ jako poskytovatele vyhledávání.</string>
-    <string name="setting_title_userAgent">Custom user agent</string>
-    <string name="setting_summary_userAgent">Here you can enter a custom user agent. Let empty to use default one.</string>
+    <string name="setting_title_userAgent">Vlastní uživatelský agent</string>
+    <string name="setting_summary_userAgent">Zde můžete zadat vlastní uživatelský agent. Ponechte prázdné pro použití výchozího.</string>
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">Skrýt Panel nástrojů</string>
     <string name="setting_summary_hide">Při procházení webovými stránkami použít celou obrazovku. Pokud stisknete tlačítko Zpět,
