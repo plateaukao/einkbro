@@ -108,7 +108,7 @@
     <string name="setting_title_javascript">JavaScript</string>
     <string name="setting_summary_javascript">Enable JavaScript. Many websites need JavaScript for their functionality (menus,
         loading and displaying images, …). But they are also a risk and can be used for attacks.</string>
-    <string name="setting_title_whitelistJS">JavaScript whitelist</string>
+    <string name="setting_title_whitelistJS">Lista branca JavaScript</string>
     <string name="setting_summary_whitelistJS">If you disable JavaScript, you can use this whitelist to allow sites you
         trust to use javascript.</string>
     <string name="setting_title_adblock">AdBlock</string>
@@ -170,7 +170,7 @@
     <string name="setting_overView">Overview</string>
     <string name="setting_overView_onStart_title">Mostrar ao iniciar</string>
     <string name="setting_overView_onStart_summary">Open the \"Overview\" on every app start.</string>
-    <string name="setting_overView_hide_title">Hide tab previews</string>
+    <string name="setting_overView_hide_title">Não pré-visualizar separadores</string>
     <string name="setting_overView_hide_summary">In expanded overview the tab preview will hide. Then you have more place for your
     bookmarks.</string>
     <string name="setting_gestures">Gestos</string>
@@ -195,14 +195,14 @@
     <string name="setting_gesture_09">Abrir novo separador</string>
     <string name="setting_gesture_10">Fechar separador</string>
     <!-- Data -->
-    <string name="setting_title_export_whitelist">Export AdBlock whitelist</string>
-    <string name="setting_title_import_whitelist">Import AdBlock whitelist</string>
+    <string name="setting_title_export_whitelist">Exportar lista branca AdBlock</string>
+    <string name="setting_title_import_whitelist">Importar lista branca AdBlock</string>
     <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
-    <string name="setting_title_export_whitelistJS">Export JavaScript whitelist</string>
-    <string name="setting_title_import_whitelistJS">Import JavaScript whitelist</string>
+    <string name="setting_title_export_whitelistJS">Exportar lista branca JavaScript</string>
+    <string name="setting_title_import_whitelistJS">Importar lista branca JavaScript</string>
     <string name="export_whitelistJS">export_whitelist_Javascript</string>
-    <string name="setting_title_export_whitelistCookie">Export Cookie whitelist</string>
-    <string name="setting_title_import_whitelistCookie">Import Cookie whitelist</string>
+    <string name="setting_title_export_whitelistCookie">Exportar lista branca de Cookies</string>
+    <string name="setting_title_import_whitelistCookie">Importar lista branca de Cookies</string>
     <string name="export_whitelistCookie">export_whitelist_Cookie</string>
     <string name="setting_title_export_appData">Exportar dados da aplicação</string>
     <string name="setting_title_import_appData">Importar dados da aplicação</string>
@@ -254,8 +254,8 @@
     <string name="toast_close_tab">Deseja fechar o separador atual?</string>
     <string name="toast_downloadComplete">Descarga terminada. Abrir gestor de ficheiros?</string>
     <string name="toast_unsecured">Este site utiliza um ligação insegura (\"http\") Dese tentar estabelecer uma ligação segura (\"https\")?</string>
-    <string name="toast_backup">Backup data? This will overwrite the old backup.</string>
-    <string name="toast_fav">Successfully set as favorite.</string>
+    <string name="toast_backup">Criar backup dos dados? Os dados antigos serão substituídos.</string>
+    <string name="toast_fav">Definido como favorito.</string>
     <!-- Whitelist -->
     <string name="whitelist_menu_clear">Limpar</string>
     <string name="whitelist_edit_hint">Domínio</string>
@@ -301,8 +301,8 @@
 
     </string>
     <!-- License changelog -->
-    <string name="license_title">Copyright © 2017  by Gaukler Faun</string>
-    <string name="license_dialog">        &lt;i&gt;For more information visit the project site on Github: https://github.com/scoute-dich/Browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;
+    <string name="license_title">Copyright © 2017-2020  by Gaukler Faun</string>
+    <string name="license_dialog">        &lt;i&gt;Para obter mais informações, aceda à nossa página Github: https://github.com/scoute-dich/Browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         This program is free software: you can redistribute it and/or modify
         it under the terms of the GNU General Public License as published by
@@ -317,7 +317,7 @@
         You should have received a copy of the GNU General Public License
         along with this program.  If not, see http://www.gnu.org/licenses.&lt;br&gt;&lt;br&gt;
 
-        &lt;i&gt;Following open source libraries or projects are used within this software:&lt;/i&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
+        &lt;i&gt;Esta aplicação utiliza as bibliotecas e/ou projetos Open Source abaixo indicados:&lt;/i&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Material Design Icons&lt;/b&gt;&lt;br&gt;
         SIL Open Font License, Version 1.1.&lt;br&gt;
