@@ -122,23 +122,21 @@
     <string name="setting_title_history">Histórico</string>
     <string name="setting_summary_history">Guardar histórico dos sites visitados.</string>
     <!-- browser clear -->
-    <string name="data_summary">All files will be exported to the \"Android/data/de.baumann.browser/files/browser_backup/\"
-        directory of your sd-card. This directory will be DELETED, if you uninstall \"FOSS Browser\". So make a backup regularly on a save
-        place.</string>
-    <string name="clear_menu_done_all">Done all</string>
-    <string name="clear_title_quit">Clear when application exits</string>
-    <string name="clear_summary_quit">Every time you quit \"FOSS Browser\" all above checked data will be deleted.</string>
-    <string name="clear_title_cache">Clear Cache</string>
-    <string name="clear_title_cookie">Clear Cookies</string>
-    <string name="clear_title_history">Clear History</string>
-    <string name="clear_title_indexedDB">Clear \"indexed databases\" and \"local webview storage\"</string>
-    <string name="clear_title_deleteDatabase">Delete database</string>
-    <string name="clear_summary_deleteDatabase">Delete the whole database (Startpage, bookmarks, history and all whitelists).</string>
+    <string name="data_summary">Todos os ficheiros serão exportados para o diretório \"Android/data/de.baumann.browser/files/browser_backup/\" do seu cartão SD. Este diretório será apagado se desinstalar a aplicação. Aconselhamos que efetue regularmente os backups para outro diretório.</string>
+    <string name="clear_menu_done_all">Terminar</string>
+    <string name="clear_title_quit">Limpar ao sair da aplicação</string>
+    <string name="clear_summary_quit">Sempre que sair da aplicação, os dados assinalados serão apagados.</string>
+    <string name="clear_title_cache">Limpar cache</string>
+    <string name="clear_title_cookie">Limpar cookies</string>
+    <string name="clear_title_history">Limpar histórico</string>
+    <string name="clear_title_indexedDB">Limpar \"indexed databases\" e \"local webview storage\"</string>
+    <string name="clear_title_deleteDatabase">Apagar base de dados</string>
+    <string name="clear_summary_deleteDatabase">Apaga toda a base de dados (Página inicial, marcadores, histórico e sites permitidos).</string>
     <!-- App setting -->
-    <string name="setting_title_app">App Settings</string>
-    <string name="setting_title_ui">Behavior/UI</string>
+    <string name="setting_title_app">Definições</string>
+    <string name="setting_title_ui">Comportamento/Interface</string>
     <string name="setting_title_data">Backup</string>
-    <string name="setting_summary_ui">Change the behavior and ui of the app to suit your preferences.</string>
+    <string name="setting_summary_ui">Alterar comportamento e interface da aplicação ao seu gosto.</string>
     <string name="setting_summary_data">Import and export several app data (whitelists, bookmarks).</string>
     <string name="setting_filter">Bookmark filter</string>
     <string name="setting_filter_summary">To show the filter dialog long press on the bookmark icon in the overview. Decide which
