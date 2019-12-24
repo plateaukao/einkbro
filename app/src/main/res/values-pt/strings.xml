@@ -137,11 +137,10 @@
     <string name="setting_title_ui">Comportamento/Interface</string>
     <string name="setting_title_data">Backup</string>
     <string name="setting_summary_ui">Alterar comportamento e interface da aplicação ao seu gosto.</string>
-    <string name="setting_summary_data">Import and export several app data (whitelists, bookmarks).</string>
-    <string name="setting_filter">Bookmark filter</string>
-    <string name="setting_filter_summary">To show the filter dialog long press on the bookmark icon in the overview. Decide which
-        filters you will use.</string>
-    <string name="setting_title_fav">Favorite</string>
+    <string name="setting_summary_data">Importar e exportar dados da aplicação (sites permitidos, marcadores).</string>
+    <string name="setting_filter">Filtro de marcadores</string>
+    <string name="setting_filter_summary">Para mostrar o filtro, toque longo no ícone de marcadores. Poderá então escolher os filtros a utilizar.</string>
+    <string name="setting_title_fav">Favorito</string>
     <string name="setting_summary_fav">Here you can change the default website which loads on start of \"FOSS Browser\".
     Enter \"about:blank\" to get an emty start site.</string>
     <string name="setting_title_searchEngine">Custom search engine</string>
@@ -150,26 +149,25 @@
     <string name="setting_title_userAgent">Custom user agent</string>
     <string name="setting_summary_userAgent">Here you can enter a custom user agent. Let empty to use default one.</string>
     <!-- App behavior -->
-    <string name="setting_title_hideToolbar">Hide toolbar</string>
-    <string name="setting_summary_hide">Use the whole screen when scrolling through websites. If you press the back button you will
-    leave fullscreen mode.</string>
-    <string name="setting_theme">Theme</string>
-    <string name="setting_theme_summary">Set the app theme.</string>
-    <string name="setting_theme_system">System theme</string>
-    <string name="setting_theme_light">Light theme</string>
-    <string name="setting_theme_dark">Dark theme</string>
-    <string name="setting_title_theme">UI</string>
-    <string name="setting_title_behavior">Behavior</string>
+    <string name="setting_title_hideToolbar">Ocultar barra de ferramentas</string>
+    <string name="setting_summary_hide">Utilizar modo de ecrã completo ao deslocar nos sites. Se tocar no botão Back sai do modo de ecrã completo.</string>
+    <string name="setting_theme">Tema</string>
+    <string name="setting_theme_summary">Definir tema da aplicação.</string>
+    <string name="setting_theme_system">Tema do sistema</string>
+    <string name="setting_theme_light">Tema claro</string>
+    <string name="setting_theme_dark">Tema escuro</string>
+    <string name="setting_title_theme">Interface</string>
+    <string name="setting_title_behavior">Comportamento</string>
     <string name="setting_summary_toolbarShow">Pressing back will make the toolbar visible, before going back in history.</string>
-    <string name="setting_title_toolbarShow">First toolbar</string>
-    <string name="setting_title_nav">Navigation button</string>
-    <string name="setting_title_nav_pos">Position</string>
-    <string name="setting_summary_nav_pos">Decide where the \"Navigation Button\" will be placed.</string>
-    <string name="setting_summary_nav_pos_right">Right</string>
-    <string name="setting_summary_nav_pos_left">Left</string>
-    <string name="setting_summary_nav_pos_center">Center</string>
+    <string name="setting_title_toolbarShow">Primeira barra de ferramentas</string>
+    <string name="setting_title_nav">Botão de navegação</string>
+    <string name="setting_title_nav_pos">Posição</string>
+    <string name="setting_summary_nav_pos">Escolha o local para colocar o botão de navegação.</string>
+    <string name="setting_summary_nav_pos_right">Direita</string>
+    <string name="setting_summary_nav_pos_left">Esquerda</string>
+    <string name="setting_summary_nav_pos_center">Centro</string>
     <string name="setting_summary_tab">What should be shown at the start of the \"Overview\"? The Start Page, you bookmarks, …</string>
-    <string name="setting_title_confirm_exit">Confirm browser exit</string>
+    <string name="setting_title_confirm_exit">Confirmar ao sair</string>
     <string name="setting_summary_confirm_exit">Confirmation dialog when closing browser.</string>
     <string name="setting_title_confirm_tab_close">Confirm tab close</string>
     <string name="setting_summary_confirm_tab_close">Confirmation dialog when closing a tab.</string>
