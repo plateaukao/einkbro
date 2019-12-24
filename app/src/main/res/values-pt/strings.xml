@@ -75,7 +75,7 @@
     the application.</string>
     <string name="setting_summary_start_control">Decide which components of the browser will be enabled on start.</string>
     <string name="setting_title_search_engine">Motor de pesquisa</string>
-    <string name="setting_summary_search_engine">Here you can choose your preferred search engine or set a custom one.</string>
+    <string name="setting_summary_search_engine">Aqui pode escolher um motor de pesquisa ou adicionar um personalizado.</string>
     <string name="setting_summary_search_engine_google">Google</string>
     <string name="setting_summary_search_engine_duckduckgo">DuckDuckGo</string>
     <string name="setting_summary_search_engine_startpage">StartPage</string>
@@ -91,16 +91,14 @@
     <string name="setting_title_font">Tamanho da letra</string>
     <string name="setting_summary_font">Alterar o tamanho do tipo de letra nos sites.</string>
     <string name="setting_title_remote">Conteúdo remoto</string>
-    <string name="setting_summary_remote">Enable remote content, which is not directly from the website you are visiting.
-        Disabling this is more secure, faster and saves data volume. But some content will not be displayed anymore.</string>
+    <string name="setting_summary_remote">Ativa o conteúdo remoto que não está diretamente relacionado com o site visitado. Se desativar a opção, pode estar mais seguros, navegar mais rápido e poupar dados. Mas é possível que algum conteúdo não seja mostrado.</string>
     <string name="setting_title_save_data">Solicitar \'Save Data\'</string>
-    <string name="setting_summary_save_data">Tell websites that you would prefer to save data. Supported websites will load faster.</string>
+    <string name="setting_summary_save_data">Informar os sites de que deseja guardar os dados. Os sites suportados serão carregados mais rápido.</string>
     <!-- browser start -->
     <string name="setting_title_images">Imagens</string>
-    <string name="setting_summary_images">Enable Network images. Disabling could be useful to save mobile data and to load
-    websites faster.</string>
+    <string name="setting_summary_images">Ativa as imagens de rede. Se desativar a opção, pode poupar dados e carregar os sites mais rápido.</string>
     <string name="setting_title_cookie">Cookies</string>
-    <string name="setting_summary_cookie_delete">If enabled, all cookies will be deleted. Also the Cookies of trusted websites.</string>
+    <string name="setting_summary_cookie_delete">Se ativar a opção, todos os cookies serão apagados. Os cookies de sites fiáveis também serão apagados.</string>
     <string name="setting_summary_cookie">Enable Cookies. Cookies are small text files, which are stored on your device. Websites
     use them for example to store user settings (for example search settings). But they could also be used to collect personal
         user data. Third party cookies (they collect user data for advertising) are always disabled.</string>
@@ -141,13 +139,11 @@
     <string name="setting_filter">Filtro de marcadores</string>
     <string name="setting_filter_summary">Para mostrar o filtro, toque longo no ícone de marcadores. Poderá então escolher os filtros a utilizar.</string>
     <string name="setting_title_fav">Favorito</string>
-    <string name="setting_summary_fav">Here you can change the default website which loads on start of \"FOSS Browser\".
-    Enter \"about:blank\" to get an emty start site.</string>
-    <string name="setting_title_searchEngine">Custom search engine</string>
-    <string name="setting_summary_searchEngine">Here you can enter a custom search URL. Also choose \"Custom search engine\" as search
-    provider.</string>
-    <string name="setting_title_userAgent">Custom user agent</string>
-    <string name="setting_summary_userAgent">Here you can enter a custom user agent. Let empty to use default one.</string>
+    <string name="setting_summary_fav">Aqui pode alterar o site que será carregado ao iniciar a aplicação. Introduza \"about:blank\" para não utilizar um site.</string>
+    <string name="setting_title_searchEngine">Motor de pesquisa personalizado</string>
+    <string name="setting_summary_searchEngine">Aqui pode introduzir o URL que será utilizado nas pesquisas. Tem que escolher \"Motor de pesquisa personalizado\" no fornecedor de pesquisas.</string>
+    <string name="setting_title_userAgent">Agente personalizado</string>
+    <string name="setting_summary_userAgent">Aqui pode introduzir um agente de utilizador personalizado. Deixe em branco para utilizar o agente padrão.</string>
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">Ocultar barra de ferramentas</string>
     <string name="setting_summary_hide">Utilizar modo de ecrã completo ao deslocar nos sites. Se tocar no botão Back sai do modo de ecrã completo.</string>
@@ -191,12 +187,12 @@
     <string name="setting_gesture_01">Nada</string>
     <string name="setting_gesture_02">Avançar no histórico</string>
     <string name="setting_gesture_03">Recuar no histórico</string>
-    <string name="setting_gesture_04">Scroll to top</string>
-    <string name="setting_gesture_05">Scroll to bottom</string>
-    <string name="setting_gesture_06">Switch to left tab</string>
-    <string name="setting_gesture_07">Switch to right tab</string>
+    <string name="setting_gesture_04">Ir para o topo</string>
+    <string name="setting_gesture_05">Ir para a base</string>
+    <string name="setting_gesture_06">Trocar para o separador da esquerda</string>
+    <string name="setting_gesture_07">Trocar para o separador da direita</string>
     <string name="setting_gesture_08">Show overview</string>
-    <string name="setting_gesture_09">Open new tab</string>
+    <string name="setting_gesture_09">Abrir novo separador</string>
     <string name="setting_gesture_10">Fechar separador</string>
     <!-- Data -->
     <string name="setting_title_export_whitelist">Export AdBlock whitelist</string>
@@ -209,23 +205,23 @@
     <string name="setting_title_import_whitelistCookie">Import Cookie whitelist</string>
     <string name="export_whitelistCookie">export_whitelist_Cookie</string>
     <string name="setting_title_export_appData">Exportar dados da aplicação</string>
-    <string name="setting_title_import_appData">Import app data</string>
+    <string name="setting_title_import_appData">Importar dados da aplicação</string>
     <string name="setting_summary_export_appData">Export app data (Startpage + previews, History, Bookmarks)
         and your personal settings.</string>
-    <string name="title_appData">App data</string>
-    <string name="hint_database">This will delete all your current settings and data. Will you proceed?</string>
+    <string name="title_appData">Dados da aplicação</string>
+    <string name="hint_database">Está prestes a apagar todos os dados da aplicação. Tem a certeza?</string>
     <!-- Others setting -->
-    <string name="setting_title_others">Others</string>
-    <string name="setting_title_license">License</string>
-    <string name="setting_title_appSettings">App settings</string>
+    <string name="setting_title_others">Outras</string>
+    <string name="setting_title_license">Licença</string>
+    <string name="setting_title_appSettings">Definições da aplicação</string>
     <string name="setting_summary_appSettings">Open the system app settings for \"FOSS Browser\". There you can,
         depending on your Android version grant permissions, clear the app data and so on.</string>
     <string name="setting_title_community">Participar</string>
     <!-- Toast -->
-    <string name="toast_add_to_home_successful">Successfully added to Home</string>
-    <string name="toast_add_to_home_failed">Failed to add to Home</string>
-    <string name="toast_add_whitelist_successful">Successfully added Domain</string>
-    <string name="toast_already_exist_in_home">Already exist in home</string>
+    <string name="toast_add_to_home_successful">Adicionado a Início</string>
+    <string name="toast_add_to_home_failed">Falha ao adicionar a Início</string>
+    <string name="toast_add_whitelist_successful">Domínio adicionado com sucesso</string>
+    <string name="toast_already_exist_in_home">Já existe em Início</string>
     <string name="toast_copy_successful">Copiado com sucesso</string>
     <string name="toast_delete_successful">Apagado com sucesso</string>
     <string name="toast_domain_already_exists">Domínio já existe</string>
@@ -233,7 +229,7 @@
     <string name="toast_export_failed">Falha ao exportar</string>
     <string name="toast_import_successful">Importado:&#160;</string>
     <string name="toast_import_failed">Falha ao importar</string>
-    <string name="toast_input_empty">You haven\'t input anything</string>
+    <string name="toast_input_empty">Não introduziu dados</string>
     <string name="toast_invalid_domain">Domínio inválido</string>
     <string name="toast_load_error">Não é possível carregar este URL</string>
     <string name="toast_new_tab_successful">Aberto com sucesso em novo separador</string>
@@ -246,19 +242,18 @@
     <string name="toast_titleConfirm_pastePW">Palavra-passe</string>
     <string name="toast_error">Algo errado aconteceu.</string>
     <string name="toast_newTitle">Entry already exists. Please enter new title.</string>
-    <string name="toast_edit_successful">Successfully saved</string>
+    <string name="toast_edit_successful">Adicionado com sucesso</string>
     <string name="toast_webview_forward">Can\'t load next site</string>
-    <string name="toast_clear">Do you really want to clear?</string>
+    <string name="toast_clear">Tem a certeza de que deseja limpar?</string>
     <string name="toast_permission_sdCard">\"FOSS Browser\" needs the permission to \"read and write on your storage\". This
         is needed to download files, taking screenshots and making backups of your data.</string>
     <string name="toast_permission_loc">\"FOSS Browser\" needs the permission to \"access your location\". This is requested from some
         websites for example when they offer some kind of navigation.</string>
     <string name="toast_restart">You must restart \"FOSS Browser\" to apply changes. Close now?</string>
-    <string name="toast_quit">Do you want to quit \"FOSS Browser\"?</string>
-    <string name="toast_close_tab">Do you want to close current tab?</string>
-    <string name="toast_downloadComplete">Download complete. Open file manager?</string>
-    <string name="toast_unsecured">This website uses an unsecured connection (\"http\"). Do you want to try a secure
-        connection (\"https\")?</string>
+    <string name="toast_quit">Deseja sair da aplicação?</string>
+    <string name="toast_close_tab">Deseja fechar o separador atual?</string>
+    <string name="toast_downloadComplete">Descarga terminada. Abrir gestor de ficheiros?</string>
+    <string name="toast_unsecured">Este site utiliza um ligação insegura (\"http\") Dese tentar estabelecer uma ligação segura (\"https\")?</string>
     <string name="toast_backup">Backup data? This will overwrite the old backup.</string>
     <string name="toast_fav">Successfully set as favorite.</string>
     <!-- Whitelist -->
