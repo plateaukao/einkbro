@@ -97,18 +97,13 @@
     <string name="setting_summary_images">Ativa as imagens de rede. Se desativar a opção, pode poupar dados e carregar os sites mais rápido.</string>
     <string name="setting_title_cookie">Cookies</string>
     <string name="setting_summary_cookie_delete">Se ativar a opção, todos os cookies serão apagados. Os cookies de sites fiáveis também serão apagados.</string>
-    <string name="setting_summary_cookie">Enable Cookies. Cookies are small text files, which are stored on your device. Websites
-    use them for example to store user settings (for example search settings). But they could also be used to collect personal
-        user data. Third party cookies (they collect user data for advertising) are always disabled.</string>
+    <string name="setting_summary_cookie">Ativa a utilização de cookies. Os cookies são pequenos ficheiros de texto guardados no seu dispositivo. Os sites podem utilizar cookies para guardar definições do utilizador (por exemplo, nas pesquisas web). Mas os cookies também podem ser utilizados para obter dados pessoais e privados. Os cookies de terceiros (recolhem dados para mostrar anúncios) estarão sempre desativados.</string>
     <string name="setting_title_whitelistCookie">Cookies permitidos</string>
-    <string name="setting_summary_whitelistCookie">If you disable Cookies, you can use this whitelist to allow sites you
-        trust to use save cookies.</string>
+    <string name="setting_summary_whitelistCookie">Se desativar os cookies, pode utilizar esta lista para permitir que os sites por si definidos possam guardar cookies.</string>
     <string name="setting_title_javascript">JavaScript</string>
-    <string name="setting_summary_javascript">Enable JavaScript. Many websites need JavaScript for their functionality (menus,
-        loading and displaying images, …). But they are also a risk and can be used for attacks.</string>
+    <string name="setting_summary_javascript">Ativa a utilização de JavaScript. Alguns sites necessitam de executar JavaScript para as suas funcionalidades (menus, carregamento e exibição de imagens...). Mas são também um risco e podem ser utilizados para ataques.</string>
     <string name="setting_title_whitelistJS">Lista branca JavaScript</string>
-    <string name="setting_summary_whitelistJS">If you disable JavaScript, you can use this whitelist to allow sites you
-        trust to use javascript.</string>
+    <string name="setting_summary_whitelistJS">Se desativar os Javascripts, pode utilizar esta lista para permitir que os sites por si definidos possam utilizar JavaScript.</string>
     <string name="setting_title_adblock">AdBlock</string>
     <string name="setting_summary_adblock">Ativar AdBlock para bloquear os anúncios. Se ativa, os sites são carregados mais rapidamente.</string>
     <string name="setting_title_whitelist">Anúncios permitidos</string>
@@ -152,7 +147,7 @@
     <string name="setting_theme_dark">Tema escuro</string>
     <string name="setting_title_theme">Interface</string>
     <string name="setting_title_behavior">Comportamento</string>
-    <string name="setting_summary_toolbarShow">Pressing back will make the toolbar visible, before going back in history.</string>
+    <string name="setting_summary_toolbarShow">Se premir \"Back\", a barra de ferramentas ficará visível em vez de recuar no histórico.</string>
     <string name="setting_title_toolbarShow">Primeira barra de ferramentas</string>
     <string name="setting_title_nav">Botão de navegação</string>
     <string name="setting_title_nav_pos">Posição</string>
@@ -160,22 +155,21 @@
     <string name="setting_summary_nav_pos_right">Direita</string>
     <string name="setting_summary_nav_pos_left">Esquerda</string>
     <string name="setting_summary_nav_pos_center">Centro</string>
-    <string name="setting_summary_tab">What should be shown at the start of the \"Overview\"? The Start Page, you bookmarks, …</string>
+    <string name="setting_summary_tab">O que deve ser mostrado na \"Vista global\"? Página inicial, marcadores…</string>
     <string name="setting_title_confirm_exit">Confirmar ao sair</string>
     <string name="setting_summary_confirm_exit">Mostrar diálogo para confirmar o fecho do navegador.</string>
     <string name="setting_title_confirm_tab_close">Confirmar fecho do separador</string>
     <string name="setting_summary_confirm_tab_close">Mostrar diálogo para confirmar o fecho do separador.</string>
-    <string name="setting_overView">Overview</string>
+    <string name="setting_overView">Vista global</string>
     <string name="setting_overView_onStart_title">Mostrar ao iniciar</string>
-    <string name="setting_overView_onStart_summary">Open the \"Overview\" on every app start.</string>
+    <string name="setting_overView_onStart_summary">Abrir \"Vista global\" ao iniciar a aplicação.</string>
     <string name="setting_overView_hide_title">Não pré-visualizar separadores</string>
-    <string name="setting_overView_hide_summary">In expanded overview the tab preview will hide. Then you have more place for your
-    bookmarks.</string>
+    <string name="setting_overView_hide_summary">Na vista global expandida, a pré-visualização de separadores estará ocultada. Assim, terá mais espaço para os seus marcadores.</string>
     <string name="setting_gestures">Gestos</string>
     <string name="setting_gestures_use_title">Utilizar gestos</string>
     <string name="setting_gestures_use_summary">Utilizar gestos na barra de ferramentas e no botão de navegação.</string>
     <string name="setting_title_reopenLastTab">Reabrir último separador</string>
-    <string name="setting_summary_reopenLastTab">Reopen a new tab when the last tab is closed instead of exiting the browser.</string>
+    <string name="setting_summary_reopenLastTab">Ao fechar o último separador, abrir um novo separador em vez de fechar a aplicação.</string>
     <!-- gestures -->
     <string name="setting_title_toolbar">Barra de ferramentas</string>
     <string name="setting_gesture_up">Deslizar para cima</string>
@@ -189,7 +183,7 @@
     <string name="setting_gesture_05">Ir para a base</string>
     <string name="setting_gesture_06">Trocar para o separador da esquerda</string>
     <string name="setting_gesture_07">Trocar para o separador da direita</string>
-    <string name="setting_gesture_08">Show overview</string>
+    <string name="setting_gesture_08">Mostrar Vista global</string>
     <string name="setting_gesture_09">Abrir novo separador</string>
     <string name="setting_gesture_10">Fechar separador</string>
     <!-- Data -->
@@ -204,8 +198,7 @@
     <string name="export_whitelistCookie">export_whitelist_Cookie</string>
     <string name="setting_title_export_appData">Exportar dados da aplicação</string>
     <string name="setting_title_import_appData">Importar dados da aplicação</string>
-    <string name="setting_summary_export_appData">Export app data (Startpage + previews, History, Bookmarks)
-        and your personal settings.</string>
+    <string name="setting_summary_export_appData">Exportar dados da aplicação (página inicial + pré-visualizações, histórico, marcadores) e definições do utilizador.</string>
     <string name="title_appData">Dados da aplicação</string>
     <string name="hint_database">Está prestes a apagar todos os dados da aplicação. Tem a certeza?</string>
     <!-- Others setting -->
