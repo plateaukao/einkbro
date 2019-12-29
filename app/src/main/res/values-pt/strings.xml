@@ -250,14 +250,12 @@
     <string name="whitelist_add">Adicionar</string>
     <!-- Dialog help -->
     <string name="dialogHelp_tipTitle">Dicas</string>
-    <string name="dialogHelp_tipText">        &lt;b&gt;Menus and dialogs&lt;/b&gt;&lt;br&gt;
-        All menus and dialogs are opened at the bottom of the screen. If the dialog is large you will first see only
-        the upper part. If you swipe it up, the rest will get visible.&lt;br&gt;
-        You can close them by pressing the back button, swiping them down or by clicking outside&lt;br&gt;&lt;br&gt;
+    <string name="dialogHelp_tipText">        &lt;b&gt;Menus e diálogos&lt;/b&gt;&lt;br&gt;
+        Todos os menus e diálogos são mostrados na parte inferior da aplicação. Se o diálogo for muito extenso, apenas conseguirá ver uma parte. Se deslizar para cim, o resto do diálogo ficará visível.&lt;br&gt;
+        Pode fechar os menus e os diálogos tocando no botão \"Back\", deslizando para baixo ou tocando fora de qualquer um deles&lt;br&gt;&lt;br&gt;
 
-        &lt;b&gt;Long press&lt;/b&gt;&lt;br&gt;
-        If you long press the menu icon or the \"Navigation button\", the \"Fast toggle dialog\" will show. If you long
-        press the \"Bookmark icon\", the \"Filter dialog\" will show.
+        &lt;b&gt;Toque longo&lt;/b&gt;&lt;br&gt;
+        Se tocar longamente no ícone Menu ou no \"Botão de navegação\", será mostrado o diálogo \"Fast toggle\". Se tocar longamente no ícone \"Marcador\", será mostrado o diálogo \"Filtro\".
     </string>
     <string name="dialogHelp_overviewTitle">Vista global</string>
     <string name="dialogHelp_overviewText">        There are two parts in the \"Overview\" (tab preview and personal data). There is an extra menu. In the settings
@@ -273,17 +271,17 @@
     </string>
     <string name="dialogHelp_filterText">Pode associar os seus marcadores a filtros. Desta forma, consegue agrupar os separadores facilmente. Assim que o fizer, pode abrir o diálogo com um toque longo no ícone Marcadores. Se ativar uma entrada surge um diálogo, no qual pode editar o nome do filtro.    </string>
     <!-- Dialog changelog -->
-    <string name="changelog_dialog">        Your language isn\'t supported yet? You want to translate FOSS Browser? Or make improvements to existing translations?
-        Feel free to join us on Crowdin: https://crowdin.com/project/foss-browser.&lt;br&gt;&lt;br&gt;
+    <string name="changelog_dialog">        A aplicação não está disponível no seu idioma? Quer ajudar a traduzir \"FOSS Browser\"? Ou talvez melhorar a tradução existente?
+        Junte-se a nós na plataforma Crowdin: https://crowdin.com/project/foss-browser.&lt;br&gt;&lt;br&gt;
 
-        &lt;b&gt;On the following sites you have access to all important information about \"FOSS Browser\".
-        Please read also the help dialog within the app.&lt;/b&gt;&lt;br&gt;&lt;br&gt;
+        &lt;b&gt;Nos sites indicados abaixo, pode obter mais informações acerca de \"FOSS Browser\".
+        Também pode consultar o diálogo de ajuda existente na aplicação.&lt;/b&gt;&lt;br&gt;&lt;br&gt;
 
-        \u25AA &lt;i&gt;Project site:&lt;/i&gt; https://github.com/scoute-dich/Browser&lt;br&gt;
-        \u25AA &lt;i&gt;Changelog:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;br&gt;
+        \u25AA &lt;i&gt;Site do projeto:&lt;/i&gt; https://github.com/scoute-dich/Browser&lt;br&gt;
+        \u25AA &lt;i&gt;Registo de alterações:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;br&gt;
         \u25AA &lt;i&gt;FAQ:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/FAQs.md&lt;br&gt;
-        \u25AA &lt;i&gt;License:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/LICENSE.md&lt;br&gt;
-        \u25AA &lt;i&gt;Privacy:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/PRIVACY.md
+        \u25AA &lt;i&gt;Licença:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/LICENSE.md&lt;br&gt;
+        \u25AA &lt;i&gt;Política de privacidade:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/PRIVACY.md
 
     </string>
     <!-- License changelog -->
