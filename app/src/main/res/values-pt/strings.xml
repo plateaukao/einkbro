@@ -205,8 +205,7 @@
     <string name="setting_title_others">Outras</string>
     <string name="setting_title_license">Licença</string>
     <string name="setting_title_appSettings">Definições da aplicação</string>
-    <string name="setting_summary_appSettings">Open the system app settings for \"FOSS Browser\". There you can,
-        depending on your Android version grant permissions, clear the app data and so on.</string>
+    <string name="setting_summary_appSettings">Abrir definições do sistema para \"FOSS Browser\". Nas definições, conforme a versão Android utilizada, conceder permissões, limpar os dados da aplicação e ver outras informações.</string>
     <string name="setting_title_community">Participar</string>
     <!-- Toast -->
     <string name="toast_add_to_home_successful">Adicionado a Início</string>
@@ -232,15 +231,13 @@
     <string name="toast_titleConfirm_pasteUN">Nome do utilizador</string>
     <string name="toast_titleConfirm_pastePW">Palavra-passe</string>
     <string name="toast_error">Algo errado aconteceu.</string>
-    <string name="toast_newTitle">Entry already exists. Please enter new title.</string>
+    <string name="toast_newTitle">Entrada existente. Escolha outro título.</string>
     <string name="toast_edit_successful">Adicionado com sucesso</string>
-    <string name="toast_webview_forward">Can\'t load next site</string>
+    <string name="toast_webview_forward">Não foi possível carregar o site</string>
     <string name="toast_clear">Tem a certeza de que deseja limpar?</string>
-    <string name="toast_permission_sdCard">\"FOSS Browser\" needs the permission to \"read and write on your storage\". This
-        is needed to download files, taking screenshots and making backups of your data.</string>
-    <string name="toast_permission_loc">\"FOSS Browser\" needs the permission to \"access your location\". This is requested from some
-        websites for example when they offer some kind of navigation.</string>
-    <string name="toast_restart">You must restart \"FOSS Browser\" to apply changes. Close now?</string>
+    <string name="toast_permission_sdCard">\"FOSS Browser\" necessita da permissão \"read and write on your storage\". Esta permissão é necessária para descarregar ficheiros, tirar capturas de ecrã e para efetuar o backup dos seus dados.</string>
+    <string name="toast_permission_loc">\"FOSS Browser\" necessita da permissão \"aceder à localização\". Esta permissão é necessária para que alguns sites mostrem os dados de navegação (exemplo: Google Maps).</string>
+    <string name="toast_restart">Tem que reiniciar a aplicação para aplicar as alterações. Fechar agora?</string>
     <string name="toast_quit">Deseja sair da aplicação?</string>
     <string name="toast_close_tab">Deseja fechar o separador atual?</string>
     <string name="toast_downloadComplete">Descarga terminada. Abrir gestor de ficheiros?</string>
@@ -262,7 +259,7 @@
         If you long press the menu icon or the \"Navigation button\", the \"Fast toggle dialog\" will show. If you long
         press the \"Bookmark icon\", the \"Filter dialog\" will show.
     </string>
-    <string name="dialogHelp_overviewTitle">Overview</string>
+    <string name="dialogHelp_overviewTitle">Vista global</string>
     <string name="dialogHelp_overviewText">        There are two parts in the \"Overview\" (tab preview and personal data). There is an extra menu. In the settings
         you can change the behavior of the \"Overview\".&lt;br&gt;&lt;br&gt;
 
@@ -274,9 +271,7 @@
         There are three parts: the Startsite, your Bookmarks and your History. If you long click an entry
         a menu with more options will appear.
     </string>
-    <string name="dialogHelp_filterText">        You can tag your bookmarks with filters. In this way you can group your bookmarks. You can open the filter dialog by
-        long pressing the bookmark icon. If you activate an entry a dialog will appear, where you can edit the name of the filter.
-    </string>
+    <string name="dialogHelp_filterText">Pode associar os seus marcadores a filtros. Desta forma, consegue agrupar os separadores facilmente. Assim que o fizer, pode abrir o diálogo com um toque longo no ícone Marcadores. Se ativar uma entrada surge um diálogo, no qual pode editar o nome do filtro.    </string>
     <!-- Dialog changelog -->
     <string name="changelog_dialog">        Your language isn\'t supported yet? You want to translate FOSS Browser? Or make improvements to existing translations?
         Feel free to join us on Crowdin: https://crowdin.com/project/foss-browser.&lt;br&gt;&lt;br&gt;
