@@ -71,9 +71,8 @@
     <string name="setting_title_browser">Definições do navegador</string>
     <string name="setting_title_clear_control">Controlo de dados</string>
     <string name="setting_title_start_control">Controlo de arranque</string>
-    <string name="setting_summary_clear_control">Clear your browser data or decide what data will be cleared when you leave
-    the application.</string>
-    <string name="setting_summary_start_control">Decide which components of the browser will be enabled on start.</string>
+    <string name="setting_summary_clear_control">Limpar dados do navegador ou escolher os dados que serão apagados ao fechar a aplicação.</string>
+    <string name="setting_summary_start_control">Escolha os componentes que serão ativados ao iniciar o navegador.</string>
     <string name="setting_title_search_engine">Motor de pesquisa</string>
     <string name="setting_summary_search_engine">Aqui pode escolher um motor de pesquisa ou adicionar um personalizado.</string>
     <string name="setting_summary_search_engine_google">Google</string>
@@ -86,8 +85,7 @@
     <string name="setting_summary_search_engine_qwant">Qwant</string>
     <string name="setting_summary_search_engine_ecosia">Ecosia</string>
     <string name="setting_title_inverted">Inverter cores</string>
-    <string name="setting_summary_inverted">If checked, content will be rendered in a inverted grey scale mode. This
-    is a kind of \"night mode\".</string>
+    <string name="setting_summary_inverted">Se ativada, o conteúdo será mostrado no modo de escala cinza invertida. Pode ser visto como o \"modo noturno\".</string>
     <string name="setting_title_font">Tamanho da letra</string>
     <string name="setting_summary_font">Alterar o tamanho do tipo de letra nos sites.</string>
     <string name="setting_title_remote">Conteúdo remoto</string>
