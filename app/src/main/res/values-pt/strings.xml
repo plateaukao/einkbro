@@ -258,16 +258,13 @@
         Se tocar longamente no ícone Menu ou no \"Botão de navegação\", será mostrado o diálogo \"Fast toggle\". Se tocar longamente no ícone \"Marcador\", será mostrado o diálogo \"Filtro\".
     </string>
     <string name="dialogHelp_overviewTitle">Vista global</string>
-    <string name="dialogHelp_overviewText">        There are two parts in the \"Overview\" (tab preview and personal data). There is an extra menu. In the settings
-        you can change the behavior of the \"Overview\".&lt;br&gt;&lt;br&gt;
+    <string name="dialogHelp_overviewText">        Existem duas áreas na \"Vista global\" (pré-visualização de separadores e dados pessoais). Existe também um menu extra. Nas definições pode alterar o comportamento da \"Vista global\".&lt;br&gt;&lt;br&gt;
 
-        &lt;b&gt;Tab preview&lt;/b&gt;&lt;br&gt;
-        It is the upper part of the \"Overview\". To change tabs just click the preview. To close a tab long press the
-        preview. If you swipe the tab preview up, your personal content will open.&lt;br&gt;&lt;br&gt;
+        &lt;b&gt;Pré-visualização de separadores&lt;/b&gt;&lt;br&gt;
+        Está na parte superior da \"Vista global\". Para trocar de separadores, basta tocar na sua pré-visualização. Para fechar um separador, toque longo na pré-visualização. Se deslizar a pré-visualização para cima, será aberto o seu conteúdo pessoal.&lt;br&gt;&lt;br&gt;
 
-        &lt;b&gt;Personal content&lt;/b&gt;&lt;br&gt;
-        There are three parts: the Startsite, your Bookmarks and your History. If you long click an entry
-        a menu with more options will appear.
+        &lt;b&gt;Conteúdo pessoal&lt;/b&gt;&lt;br&gt;
+        Está dividido em três partes: página inicial, marcadores e histórico. Se tocar longamente numa entrada, surgirá um menu com mais opções.
     </string>
     <string name="dialogHelp_filterText">Pode associar os seus marcadores a filtros. Desta forma, consegue agrupar os separadores facilmente. Assim que o fizer, pode abrir o diálogo com um toque longo no ícone Marcadores. Se ativar uma entrada surge um diálogo, no qual pode editar o nome do filtro.    </string>
     <!-- Dialog changelog -->
@@ -317,27 +314,22 @@
         Apache License Version 2.0&lt;br&gt;
         hummatli&lt;br&gt;
         &lt;i&gt;https://github.com/hummatli/SimpleEncryptionLib</string>
-    <string name="cont_dialog">        &lt;i&gt;First I would like to thank all people who contributed in any way on this project. They submitted issues,
-        translated or helped in any other way. On following sites you can become a active member of this
-        great community:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
+    <string name="cont_dialog">        &lt;i&gt;Gostaria agradecer a todas as pessoas que, de alguma forma, participaram no desenvolvimento desta aplicação. O meu obrigado às pessoas que comunicaram os erros encontrados, às pessoas que ajudaram a traduzir e a todas as pessoas que de alguma forma ajudaram a tornar esta aplicação melhor. Nos sites indicados abaixo, pode obter informações sobre com se tornar parte ativa deste projeto:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Crowdin:&lt;/b&gt;&lt;br&gt;
-        Crowdin is an online plattform to translate applications in other languages. A big thanks to all translators. You can
-        also help.&lt;br&gt;
-        &lt;i&gt;https://crowdin.com/project/foss-browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;
+        Crowdin é uma plataforma para ajudar a traduzir aplicações em diversos idiomas. Um especial obrigado a todos os tradutores. Vocês também pode participar, saiba mais aqui.&lt;br&gt;
+&lt;i&gt;https://crowdin.com/project/foss-browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
 
         &lt;b&gt;XDA-thread:&lt;/b&gt;&lt;br&gt;
-        XDA is a great community for developers and smartphone enthusiasts. Here you can report issues, ask for new features
-        and everything other related to \"FOSS Browser\".&lt;br&gt;
-        &lt;i&gt;https://forum.xda-developers.com/android/apps-games/app-browser-t3500091&lt;/i&gt;&lt;br&gt;&lt;br&gt;
+        XDA é uma comunidade para programadores e entusiastas de aplicações para smartphones e tablets. Aqui pode reportar erros, submeter as suas ideias, solicitar funcionalidades e falar de tudo sobre a aplicação \"FOSS Browser\".&lt;br&gt;
+&lt;i&gt;https://forum.xda-developers.com/android/apps-games/app-browser-t3500091&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Github:&lt;/b&gt;&lt;br&gt;
-        On Github you can see the source code of \"FOSS Browser\". This is the more technical solution: open issues, ask for new
-        features or even help developing or translating.&lt;br&gt;
+        Em Github, pode analisar o código fonte de \"FOSS Browser\". Esta é um recurso mais técnico: pode comunicar erros, solicitar funcionalidades e também ajudar no desenvolvimento.&lt;br&gt;
         &lt;i&gt;https://github.com/scoute-dich/browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
 
 
-        &lt;i&gt;Following people contributed at this project. If I have forgotten anybody, please contact me:&lt;/i&gt;
+        &lt;i&gt;As pessoas abaixo indicadas ajudaram a construir este projeto. Se houver alguém que tenha contribuído e não esteja aqui, contacte-me em:&lt;/i&gt;
     </string>
 </resources>
