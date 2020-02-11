@@ -3,6 +3,8 @@
 - new: Italian translation
 - new: custom user agent
 - new: removed storage permission for Android 10+
+- updated: some translations
+- updated: Android libraries
 
 ### v 6.8
 - new: search in all overview entries
