@@ -166,8 +166,7 @@ public class NinjaWebView extends WebView implements AlbumController {
         webSettings = getSettings();
 
         if (!userAgent.isEmpty()) {
-            String MyUA = "\"" + userAgent + "\"";
-            webSettings.setUserAgentString(MyUA);
+            webSettings.setUserAgentString(userAgent);
         }
 
         webViewClient.enableAdBlock(sp.getBoolean(context.getString(R.string.sp_ad_block), true));

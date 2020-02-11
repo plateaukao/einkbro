@@ -137,7 +137,7 @@ public class BrowserUnit {
         }
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        String custom = sp.getString(context.getString(R.string.sp_search_engine_custom), SEARCH_ENGINE_STARTPAGE);
+        String custom = sp.getString("sp_search_engine_custom", SEARCH_ENGINE_STARTPAGE);
         final int i = Integer.valueOf(Objects.requireNonNull(sp.getString(context.getString(R.string.sp_search_engine), "9")));
         switch (i) {
             case 0:
@@ -211,7 +211,7 @@ public class BrowserUnit {
                 DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
                 assert manager != null;
 
-                if (android.os.Build.VERSION.SDK_INT >= 23) {
+                if (android.os.Build.VERSION.SDK_INT >= 23 && android.os.Build.VERSION.SDK_INT < 29) {
                     int hasWRITE_EXTERNAL_STORAGE = context.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
                     if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
                         Activity activity = (Activity) context;

@@ -629,7 +629,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 break;
 
             case R.id.menu_shareScreenshot:
-                if (android.os.Build.VERSION.SDK_INT >= 23) {
+                if (android.os.Build.VERSION.SDK_INT >= 23 && android.os.Build.VERSION.SDK_INT < 29) {
                     int hasWRITE_EXTERNAL_STORAGE = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
                     if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
                         HelperUnit.grantPermissionsStorage(activity);
@@ -668,7 +668,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 break;
 
             case R.id.menu_saveScreenshot:
-                if (android.os.Build.VERSION.SDK_INT >= 23) {
+                if (android.os.Build.VERSION.SDK_INT >= 23 && android.os.Build.VERSION.SDK_INT < 29) {
                     int hasWRITE_EXTERNAL_STORAGE = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
                     if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
                         HelperUnit.grantPermissionsStorage(activity);
@@ -754,7 +754,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 Intent intent2 = new Intent(Intent.ACTION_VIEW);
                 intent2.setType( "*/*");
                 intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(Intent.createChooser(intent2, null));
+                context.startActivity(intent2, null);
                 break;
 
             case R.id.menu_download:
@@ -1117,6 +1117,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                         @Override
                         public void run() {
                             omniboxTitle.setVisibility(View.GONE);
+                            inputBox.requestFocus();
                             inputBox.setSelection(0,inputBox.getText().toString().length());
                         }
                     }, 250);
@@ -2362,44 +2363,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             }
         });
 
-        LinearLayout contextMenu_saveStart = dialogView.findViewById(R.id.contextMenu_saveStart);
-        contextMenu_saveStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hideBottomSheetDialog ();
-                RecordAction action = new RecordAction(context);
-                action.open(true);
-                if (action.checkGridItem(url)) {
-                    NinjaToast.show(context, getString(R.string.toast_already_exist_in_home));
-                } else {
-
-                    int counter = sp.getInt("counter", 0);
-                    counter = counter + 1;
-                    sp.edit().putInt("counter", counter).commit();
-
-                    Bitmap bitmap = ViewUnit.createImage(3, 3, getResources().getColor(R.color.colorPrimary));
-                    String filename = counter + BrowserUnit.SUFFIX_PNG;
-                    GridItem itemAlbum = new GridItem(HelperUnit.domain(url), url, filename, counter);
-
-                    if (BrowserUnit.bitmap2File(context, bitmap, filename) && action.addGridItem(itemAlbum)) {
-                        NinjaToast.show(context, getString(R.string.toast_add_to_home_successful));
-                    } else {
-                        NinjaToast.show(context, getString(R.string.toast_add_to_home_failed));
-                    }
-                }
-                action.close();
-            }
-        });
-
-        LinearLayout contextLink_sc = dialogView.findViewById(R.id.contextLink_sc);
-        contextLink_sc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                hideBottomSheetDialog ();
-                HelperUnit.createShortcut(context, HelperUnit.domain(url), url);
-            }
-        });
-
         LinearLayout contextLink_saveAs = dialogView.findViewById(R.id.contextLink_saveAs);
         contextLink_saveAs.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -2438,7 +2401,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                 NinjaToast.show(context, getString(R.string.toast_input_empty));
                             } else {
 
-                                if (android.os.Build.VERSION.SDK_INT >= 23) {
+                                if (android.os.Build.VERSION.SDK_INT >= 23 && android.os.Build.VERSION.SDK_INT < 29) {
                                     int hasWRITE_EXTERNAL_STORAGE = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
                                     if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
                                         HelperUnit.grantPermissionsStorage(activity);

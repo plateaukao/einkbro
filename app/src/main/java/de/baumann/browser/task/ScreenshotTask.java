@@ -104,20 +104,19 @@ public class ScreenshotTask extends AsyncTask<Void, Void, Boolean> {
                 //noinspection ResultOfMethodCallIgnored
                 file.mkdir();
             }
-
-            File image = new File(imagesDir, name + ".png");
+            File image = new File(imagesDir, name + ".jpg");
             fos = new FileOutputStream(image);
             uri = Uri.fromFile(image);
         }
 
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
         Objects.requireNonNull(fos).flush();
         fos.close();
     }
 
     @Override
     protected Boolean doInBackground(Void... params) {
-        if (android.os.Build.VERSION.SDK_INT >= 23) {
+        if (android.os.Build.VERSION.SDK_INT >= 23 && android.os.Build.VERSION.SDK_INT < 29) {
             int hasWRITE_EXTERNAL_STORAGE = context.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
             if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
                 HelperUnit.grantPermissionsStorage(activity);
@@ -137,7 +136,6 @@ public class ScreenshotTask extends AsyncTask<Void, Void, Boolean> {
                 path = null;
             }
         }
-
         return path != null && !path.isEmpty();
     }
 
@@ -150,7 +148,7 @@ public class ScreenshotTask extends AsyncTask<Void, Void, Boolean> {
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_VIEW);
             intent.setDataAndType(uri, "image/*");
-            context.startActivity(Intent.createChooser(intent, null));
+            context.startActivity(intent);
         } else {
             final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(activity);
             View dialogView = View.inflate(activity, R.layout.dialog_action, null);
@@ -160,12 +158,10 @@ public class ScreenshotTask extends AsyncTask<Void, Void, Boolean> {
             action_ok.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     intent.setDataAndType(uri, "*/*");
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(Intent.createChooser(intent, null));
-
+                    context.startActivity(intent);
                     bottomSheetDialog.cancel();
                 }
             });

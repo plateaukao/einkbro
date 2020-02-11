@@ -34,6 +34,8 @@ import android.graphics.Paint;
 import android.graphics.drawable.Icon;
 import android.net.Uri;
 import android.os.Build;
+
+import androidx.annotation.RequiresApi;
 import androidx.preference.PreferenceManager;
 import android.provider.Settings;
 import androidx.annotation.NonNull;
@@ -64,7 +66,7 @@ public class HelperUnit {
     private static SharedPreferences sp;
 
     public static void grantPermissionsStorage(final Activity activity) {
-        if (android.os.Build.VERSION.SDK_INT >= 23) {
+        if (android.os.Build.VERSION.SDK_INT >= 23 && android.os.Build.VERSION.SDK_INT < 29) {
             int hasWRITE_EXTERNAL_STORAGE = activity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
             if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
                 if (!activity.shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
@@ -74,6 +76,7 @@ public class HelperUnit {
                     textView.setText(R.string.toast_permission_sdCard);
                     Button action_ok = dialogView.findViewById(R.id.action_ok);
                     action_ok.setOnClickListener(new View.OnClickListener() {
+                        @RequiresApi(api = Build.VERSION_CODES.M)
                         @Override
                         public void onClick(View view) {
                             activity.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},

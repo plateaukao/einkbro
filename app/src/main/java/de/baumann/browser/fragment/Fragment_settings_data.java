@@ -79,7 +79,7 @@ public class Fragment_settings_data extends PreferenceFragmentCompat {
                 action_ok.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (android.os.Build.VERSION.SDK_INT >= 23) {
+                        if (android.os.Build.VERSION.SDK_INT >= 23 && android.os.Build.VERSION.SDK_INT < 29) {
                             int hasWRITE_EXTERNAL_STORAGE = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
                             if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
                                 HelperUnit.grantPermissionsStorage(getActivity());
@@ -127,7 +127,7 @@ public class Fragment_settings_data extends PreferenceFragmentCompat {
                 action_ok.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (android.os.Build.VERSION.SDK_INT >= 23) {
+                        if (android.os.Build.VERSION.SDK_INT >= 23 && android.os.Build.VERSION.SDK_INT < 29) {
                             int hasWRITE_EXTERNAL_STORAGE = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
                             if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
                                 HelperUnit.grantPermissionsStorage(getActivity());
@@ -173,7 +173,7 @@ public class Fragment_settings_data extends PreferenceFragmentCompat {
                 action_ok.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (android.os.Build.VERSION.SDK_INT >= 23) {
+                        if (android.os.Build.VERSION.SDK_INT >= 23 && android.os.Build.VERSION.SDK_INT < 29) {
                             int hasWRITE_EXTERNAL_STORAGE = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
                             if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
                                 HelperUnit.grantPermissionsStorage(getActivity());
@@ -221,7 +221,7 @@ public class Fragment_settings_data extends PreferenceFragmentCompat {
                 action_ok.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (android.os.Build.VERSION.SDK_INT >= 23) {
+                        if (android.os.Build.VERSION.SDK_INT >= 23 && android.os.Build.VERSION.SDK_INT < 29) {
                             int hasWRITE_EXTERNAL_STORAGE = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
                             if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
                                 HelperUnit.grantPermissionsStorage(getActivity());
@@ -267,7 +267,7 @@ public class Fragment_settings_data extends PreferenceFragmentCompat {
                 action_ok.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (android.os.Build.VERSION.SDK_INT >= 23) {
+                        if (android.os.Build.VERSION.SDK_INT >= 23 && android.os.Build.VERSION.SDK_INT < 29) {
                             int hasWRITE_EXTERNAL_STORAGE = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
                             if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
                                 HelperUnit.grantPermissionsStorage(getActivity());
@@ -315,7 +315,7 @@ public class Fragment_settings_data extends PreferenceFragmentCompat {
                 action_ok.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (android.os.Build.VERSION.SDK_INT >= 23) {
+                        if (android.os.Build.VERSION.SDK_INT >= 23 && android.os.Build.VERSION.SDK_INT < 29) {
                             int hasWRITE_EXTERNAL_STORAGE = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
                             if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
                                 HelperUnit.grantPermissionsStorage(getActivity());
@@ -363,7 +363,7 @@ public class Fragment_settings_data extends PreferenceFragmentCompat {
                     public void onClick(View view) {
                         dialog.cancel();
                         try {
-                            if (android.os.Build.VERSION.SDK_INT >= 23) {
+                            if (android.os.Build.VERSION.SDK_INT >= 23 && android.os.Build.VERSION.SDK_INT < 29) {
                                 int hasWRITE_EXTERNAL_STORAGE = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
                                 if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
                                     HelperUnit.grantPermissionsStorage(getActivity());
@@ -420,7 +420,7 @@ public class Fragment_settings_data extends PreferenceFragmentCompat {
                     public void onClick(View view) {
                         dialog.cancel();
                         try {
-                            if (android.os.Build.VERSION.SDK_INT >= 23) {
+                            if (android.os.Build.VERSION.SDK_INT >= 23 && android.os.Build.VERSION.SDK_INT < 29) {
                                 int hasWRITE_EXTERNAL_STORAGE = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
                                 if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
                                     HelperUnit.grantPermissionsStorage(getActivity());
@@ -461,7 +461,7 @@ public class Fragment_settings_data extends PreferenceFragmentCompat {
     private void makeBackupDir () {
         File backupDir = new File(Objects.requireNonNull(getActivity()).getExternalFilesDir(null), "browser_backup//");
         File noMedia = new File(backupDir, "//.nomedia");
-        if (android.os.Build.VERSION.SDK_INT >= 23) {
+        if (android.os.Build.VERSION.SDK_INT >= 23 && android.os.Build.VERSION.SDK_INT < 29) {
             int hasWRITE_EXTERNAL_STORAGE = Objects.requireNonNull(getActivity()).checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
             if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
                 HelperUnit.grantPermissionsStorage(getActivity());
