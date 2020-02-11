@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.util.Log;
 import android.view.View;
 import android.webkit.*;
 
@@ -66,27 +65,5 @@ public class NinjaWebChromeClient extends WebChromeClient {
         HelperUnit.grantPermissionsLoc(activity);
         callback.invoke(origin, true, false);
         super.onGeolocationPermissionsShowPrompt(origin, callback);
-    }
-
-    @Override
-    public void onPermissionRequestCanceled(PermissionRequest request) {
-        super.onPermissionRequestCanceled(request);
-    }
-
-    @Override
-    public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
-        result.confirm();
-        return  true;
-    }
-
-    @Override
-    public void onPermissionRequest(PermissionRequest request) {
-        request.grant(request.getResources());
-        try {
-            request.grant(request.getResources());
-            request.getOrigin();
-        } catch (Exception ex) {
-            Log.d("FOSS BROWSER","Perm granted");
-        }
     }
 }
