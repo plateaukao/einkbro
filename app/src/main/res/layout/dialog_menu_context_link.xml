@@ -161,36 +161,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/contextMenu_saveStart"
-                android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:minHeight="46dp"
-                android:paddingEnd="8dp"
-                android:paddingStart="8dp"
-                android:background="?attr/selectableItemBackground"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="16dp"
-                    android:gravity="center_vertical"
-                    android:src="@drawable/icon_earth" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:includeFontPadding="false"
-                    android:ellipsize="end"
-                    android:gravity="center_vertical"
-                    android:maxLines="1"
-                    android:text="@string/menu_save_home"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="?android:attr/textColorPrimary" />
-
-            </LinearLayout>
-
-            <LinearLayout
                 android:id="@+id/contextLink_saveAs"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
@@ -209,36 +179,6 @@
 
                 <TextView
                     android:text="@string/menu_save_as"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:includeFontPadding="false"
-                    android:ellipsize="end"
-                    android:gravity="center_vertical"
-                    android:maxLines="1"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="?android:attr/textColorPrimary" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/contextLink_sc"
-                android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:minHeight="46dp"
-                android:paddingEnd="8dp"
-                android:paddingStart="8dp"
-                android:background="?attr/selectableItemBackground"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="16dp"
-                    android:gravity="center_vertical"
-                    android:src="@drawable/link_plus" />
-
-                <TextView
-                    android:text="@string/menu_sc"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:includeFontPadding="false"

@@ -1,4 +1,8 @@
-### v 6.9 (WIP)
+### v 6.9
+- fix: custom search engine
+- new: Italian translation
+- new: custom user agent
+- new: removed storage permission for Android 10+
 
 ### v 6.8
 - new: search in all overview entries

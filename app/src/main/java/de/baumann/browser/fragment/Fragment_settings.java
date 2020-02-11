@@ -1,6 +1,7 @@
 package de.baumann.browser.fragment;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -26,7 +27,7 @@ import de.baumann.browser.activity.Settings_UIActivity;
 import de.baumann.browser.unit.HelperUnit;
 import de.baumann.browser.Ninja.R;
 
-public class Fragment_settings extends PreferenceFragmentCompat {
+public class Fragment_settings extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private boolean showContributors;
 
@@ -134,6 +135,12 @@ public class Fragment_settings extends PreferenceFragmentCompat {
         });
     }
 
+    @Override
+    public void onSharedPreferenceChanged(final SharedPreferences sp, String key) {
+        if (key.equals("userAgent") || key.equals("sp_search_engine_custom") || key.equals("@string/sp_search_engine")) {
+            sp.edit().putInt("restart_changed", 1).apply();
+        }
+    }
 
     private void showLicenseDialog(String title, String text) {
 
