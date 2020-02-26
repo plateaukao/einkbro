@@ -34,7 +34,7 @@
     <string name="menu_edit">Изменить</string>
     <string name="menu_closeTab">Закрыть вкладку</string>
     <string name="menu_download">Открытые загрузки</string>
-    <string name="menu_fav">Set as start site</string>
+    <string name="menu_fav">Сохранить как избранное</string>
     <string name="menu_sc">Ярлык на главном экране</string>
     <string name="menu_sort">Сортировка по…</string>
     <string name="menu_filter">Фильтр по …</string>
@@ -245,7 +245,7 @@
     <string name="toast_downloadComplete">Загрузка завершена. Открыть файловый менеджер?</string>
     <string name="toast_unsecured">Сайт использует незащищенное соединение (\"http\"). Хотите попробовать безопасное соединение (\"https\")?</string>
     <string name="toast_backup">Сохранить данные? Это перезапишет старую резервную копию.</string>
-    <string name="toast_fav">Successfully set as start site.</string>
+    <string name="toast_fav">Успешно добавлено в избранное.</string>
     <!-- Whitelist -->
     <string name="whitelist_menu_clear">Очистить</string>
     <string name="whitelist_edit_hint">Домен</string>
