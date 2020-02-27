@@ -34,7 +34,7 @@
     <string name="menu_edit">Изменить</string>
     <string name="menu_closeTab">Закрыть вкладку</string>
     <string name="menu_download">Открытые загрузки</string>
-    <string name="menu_fav">Сохранить как избранное</string>
+    <string name="menu_fav">Сохранить как стартовую страницу</string>
     <string name="menu_sc">Ярлык на главном экране</string>
     <string name="menu_sort">Сортировка по…</string>
     <string name="menu_filter">Фильтр по …</string>
