@@ -124,57 +124,57 @@
     <string name="data_summary">All files will be exported to the \"Android/data/de.baumann.browser/files/browser_backup/\"
         directory of your sd-card. This directory will be DELETED, if you uninstall \"FOSS Browser\". So make a backup regularly on a save
         place.</string>
-    <string name="clear_menu_done_all">Done all</string>
-    <string name="clear_title_quit">Clear when application exits</string>
+    <string name="clear_menu_done_all">全て完了</string>
+    <string name="clear_title_quit">アプリ終了時に消去</string>
     <string name="clear_summary_quit">Every time you quit \"FOSS Browser\" all above checked data will be deleted.</string>
-    <string name="clear_title_cache">Clear Cache</string>
-    <string name="clear_title_cookie">Clear Cookies</string>
-    <string name="clear_title_history">Clear History</string>
+    <string name="clear_title_cache">キャッシュを削除</string>
+    <string name="clear_title_cookie">クッキーを消去</string>
+    <string name="clear_title_history">履歴を削除</string>
     <string name="clear_title_indexedDB">Clear \"indexed databases\" and \"local webview storage\"</string>
-    <string name="clear_title_deleteDatabase">Delete database</string>
+    <string name="clear_title_deleteDatabase">データベースを削除</string>
     <string name="clear_summary_deleteDatabase">Delete the whole database (Startpage, bookmarks, history and all whitelists).</string>
     <!-- App setting -->
-    <string name="setting_title_app">App Settings</string>
-    <string name="setting_title_ui">Behavior/UI</string>
-    <string name="setting_title_data">Backup</string>
+    <string name="setting_title_app">アプリの設定</string>
+    <string name="setting_title_ui">動作/UI</string>
+    <string name="setting_title_data">バックアップ</string>
     <string name="setting_summary_ui">Change the behavior and ui of the app to suit your preferences.</string>
     <string name="setting_summary_data">Import and export several app data (whitelists, bookmarks).</string>
-    <string name="setting_filter">Bookmark filter</string>
+    <string name="setting_filter">ブックマークフィルタ</string>
     <string name="setting_filter_summary">To show the filter dialog long press on the bookmark icon in the overview. Decide which
         filters you will use.</string>
-    <string name="setting_title_fav">Favorite</string>
+    <string name="setting_title_fav">お気に入り</string>
     <string name="setting_summary_fav">Here you can change the default website which loads on start of \"FOSS Browser\".
     Enter \"about:blank\" to get an emty start site.</string>
-    <string name="setting_title_searchEngine">Custom search engine</string>
+    <string name="setting_title_searchEngine">カスタム検索エンジン</string>
     <string name="setting_summary_searchEngine">Here you can enter a custom search URL. Also choose \"Custom search engine\" as search
     provider.</string>
-    <string name="setting_title_userAgent">Custom user agent</string>
+    <string name="setting_title_userAgent">カスタムユーザーエージェント</string>
     <string name="setting_summary_userAgent">Here you can enter a custom user agent. Let empty to use default one.</string>
     <!-- App behavior -->
-    <string name="setting_title_hideToolbar">Hide toolbar</string>
+    <string name="setting_title_hideToolbar">ツールバーを非表示</string>
     <string name="setting_summary_hide">Use the whole screen when scrolling through websites. If you press the back button you will
     leave fullscreen mode.</string>
-    <string name="setting_theme">Theme</string>
-    <string name="setting_theme_summary">Set the app theme.</string>
-    <string name="setting_theme_system">System theme</string>
-    <string name="setting_theme_light">Light theme</string>
-    <string name="setting_theme_dark">Dark theme</string>
+    <string name="setting_theme">テーマ</string>
+    <string name="setting_theme_summary">アプリのテーマを設定する</string>
+    <string name="setting_theme_system">システムテーマ</string>
+    <string name="setting_theme_light">明るいテーマ</string>
+    <string name="setting_theme_dark">暗いテーマ</string>
     <string name="setting_title_theme">UI</string>
-    <string name="setting_title_behavior">Behavior</string>
+    <string name="setting_title_behavior">動作</string>
     <string name="setting_summary_toolbarShow">Pressing back will make the toolbar visible, before going back in history.</string>
-    <string name="setting_title_toolbarShow">First toolbar</string>
-    <string name="setting_title_nav">Navigation button</string>
-    <string name="setting_title_nav_pos">Position</string>
+    <string name="setting_title_toolbarShow">第一ツールバー</string>
+    <string name="setting_title_nav">ナビゲーションボタン</string>
+    <string name="setting_title_nav_pos">位置</string>
     <string name="setting_summary_nav_pos">Decide where the \"Navigation Button\" will be placed.</string>
-    <string name="setting_summary_nav_pos_right">Right</string>
-    <string name="setting_summary_nav_pos_left">Left</string>
-    <string name="setting_summary_nav_pos_center">Center</string>
+    <string name="setting_summary_nav_pos_right">右</string>
+    <string name="setting_summary_nav_pos_left">左</string>
+    <string name="setting_summary_nav_pos_center">中央</string>
     <string name="setting_summary_tab">What should be shown at the start of the \"Overview\"? The Start Page, you bookmarks, …</string>
-    <string name="setting_title_confirm_exit">Confirm browser exit</string>
+    <string name="setting_title_confirm_exit">ブラウザ終了の確認</string>
     <string name="setting_summary_confirm_exit">Confirmation dialog when closing browser.</string>
-    <string name="setting_title_confirm_tab_close">Confirm tab close</string>
+    <string name="setting_title_confirm_tab_close">タブ削除の確認</string>
     <string name="setting_summary_confirm_tab_close">Confirmation dialog when closing a tab.</string>
-    <string name="setting_overView">Overview</string>
+    <string name="setting_overView">概観</string>
     <string name="setting_overView_onStart_title">Show on start</string>
     <string name="setting_overView_onStart_summary">Open the \"Overview\" on every app start.</string>
     <string name="setting_overView_hide_title">Hide tab previews</string>
@@ -212,7 +212,7 @@
     <string name="setting_title_import_whitelistCookie">Import Cookie whitelist</string>
     <string name="export_whitelistCookie">export_whitelist_Cookie</string>
     <string name="setting_title_export_appData">Export app data</string>
-    <string name="setting_title_import_appData">Import app data</string>
+    <string name="setting_title_import_appData">アプリデータのインポート</string>
     <string name="setting_summary_export_appData">Export app data (Startpage + previews, History, Bookmarks)
         and your personal settings.</string>
     <string name="title_appData">App data</string>
