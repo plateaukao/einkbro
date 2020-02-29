@@ -54,20 +54,20 @@
     <!-- Dialog -->
     <string name="dialog_toggle_reload">再読込</string>
     <string name="dialog_title_hint">タイトル:</string>
-    <string name="dialog_url_hint">Url:</string>
+    <string name="dialog_url_hint">URL:</string>
     <string name="dialog_extension_hint">Extension (for example: \".jpg\"):</string>
-    <string name="dialog_sign_in_username">Username</string>
-    <string name="dialog_sign_in_password">Password</string>
-    <string name="dialog_title_download">Do you want to download the file?</string>
-    <string name="dialog_content_resubmission">Would you like to resubmit your data?</string>
-    <string name="dialog_content_ssl_error">The certificate of the site is not trusted. Proceed anyway?</string>
-    <string name="dialog_sortName">Sort by name</string>
-    <string name="dialog_sortIcon">Sort by icon</string>
-    <string name="dialog_sortDate">Sort by date</string>
+    <string name="dialog_sign_in_username">ユーザー名</string>
+    <string name="dialog_sign_in_password">パスワード</string>
+    <string name="dialog_title_download">ファイルをダウンロードしますか?</string>
+    <string name="dialog_content_resubmission">データを再送信しますか?</string>
+    <string name="dialog_content_ssl_error">このサーバーの証明書は信頼されていません、続行しますか?</string>
+    <string name="dialog_sortName">名前順</string>
+    <string name="dialog_sortIcon">アイコン順</string>
+    <string name="dialog_sortDate">日付順</string>
     <!-- Settings -->
-    <string name="setting_label">Settings</string>
+    <string name="setting_label">設定</string>
     <!-- browser setting -->
-    <string name="setting_title_browser">Browser Settings</string>
+    <string name="setting_title_browser">ブラウザ設定</string>
     <string name="setting_title_clear_control">Data Control</string>
     <string name="setting_title_start_control">Start Control</string>
     <string name="setting_summary_clear_control">Clear your browser data or decide what data will be cleared when you leave
