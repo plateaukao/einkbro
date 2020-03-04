@@ -1,6 +1,6 @@
 ## Important | Wichtig
 
-This is the default startsite of "Foss Browser". You can set every bookmark as startsite by longpressing. You can also set an emty
+This is the default startsite of "Foss Browser". You can set every bookmark as startsite by longpressing. You can also set an empty
 startpage via the menu in your bookmarklist. PLEASE READ ALSO THE HELP DIALOG FOR FURTHER INSTRUCTIONS.
 
 Dies ist die Startseite von "FOSS Browser". Jedes Lesezeichen kann durch langes drücken als Startseite gesetzt werden. Im Menü
