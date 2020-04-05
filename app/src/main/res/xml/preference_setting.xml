@@ -8,7 +8,7 @@
         app:initialExpandedChildrenCount="3">
 
         <EditTextPreference
-            android:defaultValue="https://github.com/scoute-dich/browser"
+            android:defaultValue="https://www.google.com"
             android:key="favoriteURL"
             android:title="@string/setting_title_fav"
             android:summary="@string/setting_summary_fav"
@@ -36,7 +36,7 @@
             android:entryValues="@array/setting_values_search_engine"/>
 
         <EditTextPreference
-            android:defaultValue="https://www.ecosia.org/search?q="
+            android:defaultValue="https://www.google.com/search?q="
             android:key="sp_search_engine_custom"
             android:title="@string/setting_title_searchEngine"
             android:summary="@string/setting_summary_searchEngine"
