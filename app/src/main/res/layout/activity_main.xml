@@ -36,11 +36,20 @@
                 android:src="@drawable/icon_overflow"
                 android:background="?attr/actionBarItemBackground"/>
 
-            <ImageButton android:id="@+id/omnibox_refresh"
+            <ImageButton android:id="@+id/omnibox_page_down"
                 android:layout_centerInParent="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toStartOf="@id/omnibox_overflow"
+                android:padding="8dp"
+                android:src="@drawable/down_arrow"
+                android:background="?attr/actionBarItemBackground"/>
+
+            <ImageButton android:id="@+id/omnibox_refresh"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@id/omnibox_page_down"
                 android:padding="8dp"
                 android:src="@drawable/icon_refresh"
                 android:background="?attr/actionBarItemBackground"/>
