@@ -22,6 +22,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Rect;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
@@ -45,8 +46,10 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import android.view.TouchDelegate;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.CookieManager;
@@ -160,6 +163,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     private ImageButton searchDown;
     private ImageButton searchCancel;
     private ImageButton omniboxRefresh;
+    private ImageButton omniboxPageDown;
     private ImageButton omniboxOverflow;
     private ImageButton omniboxOverview;
 
@@ -899,6 +903,10 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 showOverview();
                 break;
 
+            case R.id.omnibox_page_down:
+                ninjaWebView.pageDownWithNoAnimation();
+                break;
+
             case R.id.omnibox_refresh:
                 if (url != null && ninjaWebView.isLoadFinish()) {
 
@@ -1021,6 +1029,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         omnibox = findViewById(R.id.main_omnibox);
         inputBox = findViewById(R.id.main_omnibox_input);
         omniboxRefresh = findViewById(R.id.omnibox_refresh);
+        omniboxPageDown = findViewById(R.id.omnibox_page_down);
         omniboxOverview = findViewById(R.id.omnibox_overview);
         omniboxOverflow = findViewById(R.id.omnibox_overflow);
         omniboxTitle = findViewById(R.id.omnibox_title);
@@ -1130,7 +1139,26 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         });
         updateAutoComplete();
         omniboxRefresh.setOnClickListener(this);
+        omniboxPageDown.setOnClickListener(this);
         omniboxOverview.setOnClickListener(this);
+
+        // scroll to top
+        omniboxPageDown.setOnLongClickListener(new View.OnLongClickListener(){
+            @Override
+            public boolean onLongClick(View v) {
+                ninjaWebView.jumpToTop();
+                return true;
+            }
+        });
+
+        // hide bottom bar when refresh button is long pressed.
+        omniboxRefresh.setOnLongClickListener(new View.OnLongClickListener(){
+            @Override
+            public boolean onLongClick(View v) {
+                hideOmnibox();
+                return true;
+            }
+        });
     }
 
     private void performGesture (String gesture) {
@@ -2188,7 +2216,8 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                     int webViewHeight = ninjaWebView.getHeight();
                     int cutoff = height - webViewHeight - 112 * Math.round(getResources().getDisplayMetrics().density);
                     if (scrollY > oldScrollY && cutoff >= scrollY) {
-                        hideOmnibox();
+                        // Daniel
+                        //hideOmnibox();
                     } else if (scrollY < oldScrollY){
                         showOmnibox();
                     }
