@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/main_content"
         android:layout_alignParentEnd="true"
-        android:layout_margin="18dp"
+        android:layout_margin="36dp"
         android:visibility="gone"
         app:backgroundTint="?android:attr/colorAccent"
         app:fabSize="mini"

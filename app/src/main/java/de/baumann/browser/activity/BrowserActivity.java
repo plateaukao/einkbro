@@ -610,7 +610,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             case R.id.menu_newTabOpen:
                 hideBottomSheetDialog();
                 hideOverview();
-                addAlbum(getString(R.string.app_name), sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"), true);
+                addAlbum(getString(R.string.app_name), sp.getString("favoriteURL", "https://www.google.com"), true);
                 break;
 
             case R.id.menu_closeTab:
@@ -979,7 +979,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         } else if (filePathCallback != null) {
             filePathCallback = null;
         } else if ("sc_history".equals(action)) {
-            addAlbum(null, sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"), true);
+            addAlbum(null, sp.getString("favoriteURL", "https://www.google.com"), true);
             showOverview();
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -988,7 +988,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 }
             }, 250);
         } else if ("sc_bookmark".equals(action)) {
-            addAlbum(null, sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"), true);
+            addAlbum(null, sp.getString("favoriteURL", "https://www.google.com"), true);
             showOverview();
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -997,7 +997,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 }
             }, 250);
         } else if ("sc_startPage".equals(action)) {
-            addAlbum(null, sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"), true);
+            addAlbum(null, sp.getString("favoriteURL", "https://www.google.com"), true);
             showOverview();
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -1009,7 +1009,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             addAlbum(null, url, true);
         } else {
             if (!onPause) {
-                addAlbum(null, sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"), true);
+                addAlbum(null, sp.getString("favoriteURL", "https://www.google.com"), true);
             }
         }
         getIntent().setAction("");
@@ -1157,10 +1157,12 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 }
                 break;
             case "04":
-                ninjaWebView.pageUp(true);
+                //ninjaWebView.pageUp(true);
+                ninjaWebView.jumpToTop();
                 break;
             case "05":
-                ninjaWebView.pageDown(true);
+                //ninjaWebView.pageDown(false);
+                ninjaWebView.pageDownWithNoAnimation();
                 break;
             case "06":
                 controller = nextAlbumController(false);
@@ -1174,7 +1176,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 showOverview();
                 break;
             case "09":
-                addAlbum(getString(R.string.app_name), sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"), true);
+                addAlbum(getString(R.string.app_name), sp.getString("favoriteURL", "https://www.google.com"), true);
                 break;
             case "10":
                 removeAlbum(currentAlbumController);

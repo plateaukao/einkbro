@@ -12,6 +12,7 @@ import android.os.Message;
 import androidx.preference.PreferenceManager;
 
 import android.util.AttributeSet;
+import android.util.Base64;
 import android.view.*;
 import android.webkit.CookieManager;
 import android.webkit.WebSettings;
@@ -22,6 +23,7 @@ import de.baumann.browser.Ninja.R;
 import de.baumann.browser.unit.BrowserUnit;
 import de.baumann.browser.unit.ViewUnit;
 
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -133,6 +135,7 @@ public class NinjaWebView extends WebView implements AlbumController {
     }
 
     private synchronized void initWebView() {
+        WebView.setWebContentsDebuggingEnabled(true);
         setWebViewClient(webViewClient);
         setWebChromeClient(webChromeClient);
         setDownloadListener(downloadListener);
@@ -201,6 +204,11 @@ public class NinjaWebView extends WebView implements AlbumController {
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     public synchronized void loadUrl(String url) {
+        if(url.startsWith("javascript")) {
+            // Daniel
+            return;
+        }
+
         if (url == null || url.trim().isEmpty()) {
             NinjaToast.show(context, R.string.toast_load_error);
             return;
@@ -307,5 +315,13 @@ public class NinjaWebView extends WebView implements AlbumController {
                 || url.startsWith(BrowserUnit.URL_SCHEME_ABOUT)
                 || url.startsWith(BrowserUnit.URL_SCHEME_MAIL_TO)
                 || url.startsWith(BrowserUnit.URL_SCHEME_INTENT));
+    }
+
+    public void jumpToTop() {
+        scrollTo(0, 0);
+    }
+
+    public void pageDownWithNoAnimation() {
+        scrollTo(0, getScrollY() + getHeight() / 3 * 2);
     }
 }
