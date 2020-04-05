@@ -67,7 +67,7 @@ public class NinjaWebViewClient extends WebViewClient {
 
     @Override
     public void onPageFinished(WebView view, String url) {
-        super.onPageFinished(view, url);
+        //super.onPageFinished(view, url);
 
         if (sp.getBoolean("saveHistory", true)) {
             RecordAction action = new RecordAction(context);

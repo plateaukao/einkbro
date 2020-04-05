@@ -32,10 +32,11 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/main_content"
         android:layout_alignParentEnd="true"
-        android:layout_margin="36dp"
+        android:layout_margin="18dp"
         android:visibility="gone"
+        android:alpha="0.4"
         app:backgroundTint="?android:attr/colorAccent"
-        app:fabSize="mini"
+        app:fabSize="normal"
         app:srcCompat="@drawable/icon_overflow_fab"
         tools:ignore="RelativeOverlap" />
 
@@ -48,7 +49,8 @@
         android:layout_margin="18dp"
         android:visibility="gone"
         app:backgroundTint="?android:attr/colorAccent"
-        app:fabSize="mini"
+        app:fabSize="normal"
+        android:alpha="0.4"
         app:srcCompat="@drawable/icon_overflow_fab"
         tools:ignore="RelativeOverlap" />
 
@@ -61,7 +63,8 @@
         android:layout_margin="18dp"
         android:visibility="gone"
         app:backgroundTint="?android:attr/colorAccent"
-        app:fabSize="mini"
+        app:fabSize="normal"
+        android:alpha="0.4"
         app:srcCompat="@drawable/icon_overflow_fab"
         tools:ignore="RelativeOverlap" />
 

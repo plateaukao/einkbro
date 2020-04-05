@@ -135,7 +135,7 @@ public class NinjaWebView extends WebView implements AlbumController {
     }
 
     private synchronized void initWebView() {
-        WebView.setWebContentsDebuggingEnabled(true);
+        //WebView.setWebContentsDebuggingEnabled(true);
         setWebViewClient(webViewClient);
         setWebChromeClient(webChromeClient);
         setDownloadListener(downloadListener);
@@ -201,13 +201,17 @@ public class NinjaWebView extends WebView implements AlbumController {
         return requestHeaders;
     }
 
+
     @SuppressLint("SetJavaScriptEnabled")
     @Override
     public synchronized void loadUrl(String url) {
+        /*
         if(url.startsWith("javascript")) {
             // Daniel
             return;
         }
+
+         */
 
         if (url == null || url.trim().isEmpty()) {
             NinjaToast.show(context, R.string.toast_load_error);
