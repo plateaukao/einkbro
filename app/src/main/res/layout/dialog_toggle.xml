@@ -313,20 +313,20 @@
                         android:orientation="vertical">
 
                         <View
-                            android:id="@+id/toggle_invertView"
+                            android:id="@+id/toggle_desktopView"
                             android:layout_width="42dp"
                             android:layout_height="2dp"
                             android:background="?android:attr/colorAccent" />
 
                         <ImageButton
-                            android:id="@+id/toggle_invert"
+                            android:id="@+id/toggle_desktop"
                             android:layout_width="42dp"
                             android:layout_height="42dp"
                             android:layout_gravity="center_vertical|center_horizontal"
                             android:layout_marginStart="2dp"
                             android:layout_marginEnd="2dp"
                             android:background="?attr/actionBarItemBackground"
-                            android:src="@drawable/icon_night" />
+                            android:src="@drawable/icon_desktop" />
 
                     </LinearLayout>
 

@@ -22,7 +22,6 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Rect;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
@@ -46,10 +45,8 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
-import android.view.TouchDelegate;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.CookieManager;
@@ -1891,8 +1888,8 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         final ImageButton toggle_remote = dialogView.findViewById(R.id.toggle_remote);
         final View toggle_remoteView = dialogView.findViewById(R.id.toggle_remoteView);
 
-        final ImageButton toggle_invert = dialogView.findViewById(R.id.toggle_invert);
-        final View toggle_invertView = dialogView.findViewById(R.id.toggle_invertView);
+        final ImageButton toggle_desktop = dialogView.findViewById(R.id.toggle_desktop);
+        final View toggle_desktopView = dialogView.findViewById(R.id.toggle_desktopView);
 
         final ImageButton toggle_font = dialogView.findViewById(R.id.toggle_font);
 
@@ -1981,23 +1978,22 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             }
         });
 
-        if (sp.getBoolean("sp_invert", false)) {
-            toggle_invertView.setVisibility(View.VISIBLE);
+        if (sp.getBoolean("sp_desktop", false)) {
+            toggle_desktopView.setVisibility(View.VISIBLE);
         } else {
-            toggle_invertView.setVisibility(View.INVISIBLE);
+            toggle_desktopView.setVisibility(View.INVISIBLE);
         }
 
-        toggle_invert.setOnClickListener(new View.OnClickListener() {
+        toggle_desktop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (sp.getBoolean("sp_invert", false)) {
-                    toggle_invertView.setVisibility(View.INVISIBLE);
-                    sp.edit().putBoolean("sp_invert", false).commit();
+                if (sp.getBoolean("sp_desktop", false)) {
+                    toggle_desktopView.setVisibility(View.INVISIBLE);
+                    sp.edit().putBoolean("sp_desktop", false).commit();
                 } else {
-                    toggle_invertView.setVisibility(View.VISIBLE);
-                    sp.edit().putBoolean("sp_invert", true).commit();
+                    toggle_desktopView.setVisibility(View.VISIBLE);
+                    sp.edit().putBoolean("sp_desktop", true).commit();
                 }
-                HelperUnit.initRendering(contentFrame);
             }
         });
 

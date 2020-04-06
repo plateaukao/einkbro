@@ -93,6 +93,8 @@ public class NinjaWebView extends WebView implements AlbumController {
     private SharedPreferences sp;
     private WebSettings webSettings;
 
+    private String defaultUserAgent;
+
     private boolean foreground;
 
     public boolean isForeground() {
@@ -170,6 +172,14 @@ public class NinjaWebView extends WebView implements AlbumController {
 
         if (!userAgent.isEmpty()) {
             webSettings.setUserAgentString(userAgent);
+        }
+
+        Boolean isDesktopMode = sp.getBoolean("sp_desktop", false);
+        if (isDesktopMode) {
+            defaultUserAgent = webSettings.getUserAgentString();
+            webSettings.setUserAgentString(BrowserUnit.UA_DESKTOP);
+        } else {
+            webSettings.setUserAgentString(defaultUserAgent);
         }
 
         webViewClient.enableAdBlock(sp.getBoolean(context.getString(R.string.sp_ad_block), true));
