@@ -4,7 +4,7 @@
 
 
     <!-- App -->
-    <string name="app_name">FBro</string>
+    <string name="app_name">EinkBro</string>
     <string name="app_ok">OK</string>
     <string name="app_cancel">Cancel</string>
     <string name="list_empty">Current list is empty</string>
