@@ -165,6 +165,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     private ImageButton omniboxPageDown;
     private ImageButton omniboxOverflow;
     private ImageButton omniboxOverview;
+    private TextView omniboxTabCount;
 
     private ImageButton open_startPage;
     private ImageButton open_bookmark;
@@ -559,10 +560,12 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         overview_topButtons.setVisibility(View.VISIBLE);
         mBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
+        /* Daniel: why duplicate?
         if (currentAlbumController != null) {
             currentAlbumController.deactivate();
             currentAlbumController.activate();
         }
+         */
 
         if (currentAlbumController != null) {
             currentAlbumController.deactivate();
@@ -574,7 +577,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                tab_ScrollView.smoothScrollTo(currentAlbumController.getAlbumView().getLeft(), 0);
+                tab_ScrollView.scrollTo(currentAlbumController.getAlbumView().getLeft(), 0);
             }
         }, 250);
     }
@@ -1044,6 +1047,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         omniboxPageUp = findViewById(R.id.omnibox_page_up);
         omniboxPageDown = findViewById(R.id.omnibox_page_down);
         omniboxOverview = findViewById(R.id.omnibox_overview);
+        omniboxTabCount = findViewById(R.id.omnibox_web_count);
         omniboxOverflow = findViewById(R.id.omnibox_overflow);
         omniboxTitle = findViewById(R.id.omnibox_title);
         progressBar = findViewById(R.id.main_progress_bar);
@@ -2131,9 +2135,11 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         if (currentAlbumController != null) {
             int index = BrowserContainer.indexOf(currentAlbumController) + 1;
             BrowserContainer.add(ninjaWebView, index);
+            updateWebViewCount();
             tab_container.addView(albumView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         } else {
             BrowserContainer.add(ninjaWebView);
+            updateWebViewCount();
             tab_container.addView(albumView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         }
 
@@ -2150,6 +2156,10 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         if (url != null && !url.isEmpty()) {
             ninjaWebView.loadUrl(url);
         }
+    }
+
+    private void updateWebViewCount() {
+        omniboxTabCount.setText(String.valueOf(BrowserContainer.size()));
     }
 
     private synchronized void updateAlbum(String url) {
@@ -2203,6 +2213,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                     tab_container.removeView(controller.getAlbumView());
                     int index = BrowserContainer.indexOf(controller);
                     BrowserContainer.remove(controller);
+                    updateWebViewCount();
                     if (index >= BrowserContainer.size()) {
                         index = BrowserContainer.size() - 1;
                     }
