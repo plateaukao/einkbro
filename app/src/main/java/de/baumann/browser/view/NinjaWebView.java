@@ -181,6 +181,8 @@ public class NinjaWebView extends WebView implements AlbumController {
         } else {
             webSettings.setUserAgentString(defaultUserAgent);
         }
+        webSettings.setUseWideViewPort(isDesktopMode);
+        webSettings.setLoadWithOverviewMode(isDesktopMode);
 
         webViewClient.enableAdBlock(sp.getBoolean(context.getString(R.string.sp_ad_block), true));
         webSettings = getSettings();
@@ -336,6 +338,14 @@ public class NinjaWebView extends WebView implements AlbumController {
     }
 
     public void pageDownWithNoAnimation() {
-        scrollTo(0, getScrollY() + getHeight() / 3 * 2);
+        scrollTo(0, getScrollY() + shiftOffset());
+    }
+
+    public void pageUpWithNoAnimation() {
+        scrollTo(0, getScrollY() - shiftOffset());
+    }
+
+    public int shiftOffset() {
+        return getHeight() / 5 * 4;
     }
 }
