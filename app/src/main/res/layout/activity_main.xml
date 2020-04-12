@@ -23,16 +23,26 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
-                android:src="@drawable/icon_preview"
+                android:src="@drawable/icon_tab_outline"
                 android:background="?attr/actionBarItemBackground"/>
+
+            <TextView android:id="@+id/omnibox_web_count"
+                android:layout_centerInParent="true"
+                android:layout_alignStart="@+id/omnibox_overview"
+                android:layout_alignEnd="@+id/omnibox_overview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:paddingStart="16dp"
+                android:text="1"
+                android:textColor="@android:color/black"/>
 
             <ImageButton android:id="@+id/omnibox_overflow"
                 android:layout_centerInParent="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:padding="8dp"
-                android:layout_marginRight="20dp"
+                android:layout_marginEnd="20dp"
                 android:src="@drawable/icon_overflow"
                 android:background="?attr/actionBarItemBackground"/>
 
