@@ -160,6 +160,8 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     private ImageButton searchDown;
     private ImageButton searchCancel;
     private ImageButton omniboxRefresh;
+    private ImageButton omniboxPageBack;
+    private ImageButton omniboxPageUp;
     private ImageButton omniboxPageDown;
     private ImageButton omniboxOverflow;
     private ImageButton omniboxOverview;
@@ -900,6 +902,18 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 showOverview();
                 break;
 
+            case R.id.omnibox_page_back:
+                if (ninjaWebView.canGoBack()) {
+                    ninjaWebView.goBack();
+                } else {
+                    removeAlbum(currentAlbumController);
+                }
+                break;
+
+            case R.id.omnibox_page_up:
+                ninjaWebView.pageUpWithNoAnimation();
+                break;
+
             case R.id.omnibox_page_down:
                 ninjaWebView.pageDownWithNoAnimation();
                 break;
@@ -1026,6 +1040,8 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         omnibox = findViewById(R.id.main_omnibox);
         inputBox = findViewById(R.id.main_omnibox_input);
         omniboxRefresh = findViewById(R.id.omnibox_refresh);
+        omniboxPageBack = findViewById(R.id.omnibox_page_back);
+        omniboxPageUp = findViewById(R.id.omnibox_page_up);
         omniboxPageDown = findViewById(R.id.omnibox_page_down);
         omniboxOverview = findViewById(R.id.omnibox_overview);
         omniboxOverflow = findViewById(R.id.omnibox_overflow);
@@ -1136,11 +1152,13 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         });
         updateAutoComplete();
         omniboxRefresh.setOnClickListener(this);
+        omniboxPageBack.setOnClickListener(this);
+        omniboxPageUp.setOnClickListener(this);
         omniboxPageDown.setOnClickListener(this);
         omniboxOverview.setOnClickListener(this);
 
         // scroll to top
-        omniboxPageDown.setOnLongClickListener(new View.OnLongClickListener(){
+        omniboxPageUp.setOnLongClickListener(new View.OnLongClickListener(){
             @Override
             public boolean onLongClick(View v) {
                 ninjaWebView.jumpToTop();

@@ -78,7 +78,7 @@ public class BrowserUnit {
     private static final String URL_PREFIX_GOOGLE_PLUS = "plus.url.google.com/url?q=";
     private static final String URL_SUFFIX_GOOGLE_PLUS = "&rct";
 
-    public static final String UA_DESKTOP = "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36";
+    public static final String UA_DESKTOP = "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML like Gecko) Chrome/44.0.2403.155 Safari/537.36";
 
     public static boolean isURL(String url) {
         if (url == null) {
