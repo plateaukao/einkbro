@@ -42,14 +42,32 @@
                 android:layout_height="wrap_content"
                 android:layout_toStartOf="@id/omnibox_overflow"
                 android:padding="8dp"
-                android:src="@drawable/down_arrow"
+                android:src="@drawable/icon_arrow_down_gest"
+                android:background="?attr/actionBarItemBackground"/>
+
+            <ImageButton android:id="@+id/omnibox_page_up"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@id/omnibox_page_down"
+                android:padding="8dp"
+                android:src="@drawable/icon_arrow_up_gest"
+                android:background="?attr/actionBarItemBackground"/>
+
+            <ImageButton android:id="@+id/omnibox_page_back"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toStartOf="@id/omnibox_page_up"
+                android:padding="8dp"
+                android:src="@drawable/icon_arrow_left_gest"
                 android:background="?attr/actionBarItemBackground"/>
 
             <ImageButton android:id="@+id/omnibox_refresh"
                 android:layout_centerInParent="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toStartOf="@id/omnibox_page_down"
+                android:layout_toStartOf="@id/omnibox_page_back"
                 android:padding="8dp"
                 android:src="@drawable/icon_refresh"
                 android:background="?attr/actionBarItemBackground"/>
@@ -86,7 +104,7 @@
                 android:maxLines="1"
                 android:text="@string/app_name"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="?android:attr/textColorSecondary"
+                android:textColor="@android:color/black"
                 android:textStyle="bold"
                 android:background="?android:attr/colorBackground" />
 
