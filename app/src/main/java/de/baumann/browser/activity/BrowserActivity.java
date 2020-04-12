@@ -1142,13 +1142,13 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            omniboxTitle.setVisibility(View.GONE);
+                            toggleIconsOnOmnibox(true);
                             inputBox.requestFocus();
                             inputBox.setSelection(0,inputBox.getText().toString().length());
                         }
                     }, 250);
                 } else {
-                    omniboxTitle.setVisibility(View.VISIBLE);
+                    toggleIconsOnOmnibox(false);
                     omniboxTitle.setText(ninjaWebView.getTitle());
                     hideKeyboard(activity);
                 }
@@ -1178,6 +1178,19 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 return true;
             }
         });
+    }
+
+    private void toggleIconsOnOmnibox(Boolean shouldHide) {
+        int visibility = shouldHide ? View.GONE : View.VISIBLE;
+
+        omniboxTitle.setVisibility(visibility);
+        omniboxRefresh.setVisibility(visibility);
+        omniboxOverview.setVisibility(visibility);
+        omniboxTabCount.setVisibility(visibility);
+        omniboxPageBack.setVisibility(visibility);
+        omniboxPageDown.setVisibility(visibility);
+        omniboxPageUp.setVisibility(visibility);
+        omniboxOverflow.setVisibility(visibility);
     }
 
     private void performGesture (String gesture) {
