@@ -20,6 +20,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
@@ -43,7 +44,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,6 +80,7 @@ import android.widget.VideoView;
 import com.mobapphome.mahencryptorlib.MAHEncryptor;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -253,6 +258,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
     private ValueCallback<Uri[]> mFilePathCallback;
 
+    private ActionMode mActionMode;
     // Classes
 
     private class VideoCompletionListener implements MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener {
@@ -3127,5 +3133,37 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             }
         }
         return list.get(index);
+    }
+
+    @Override
+    public void onActionModeStarted(ActionMode mode) {
+        if (mActionMode == null) {
+            mActionMode = mode;
+            Menu menu = mode.getMenu();
+
+            MenuItem googleTranslateItem = null;
+            List<MenuItem> toBeRemovedList = new ArrayList();
+            for (int index = 1; index < menu.size(); index++) {
+                MenuItem item = menu.getItem(index);
+                if (item.getIntent() != null && item.getIntent().getComponent() != null &&
+                        item.getIntent().getComponent().getPackageName().equals("com.google.android.apps.translate")) {
+                    googleTranslateItem = item;
+                    break;
+                }
+                toBeRemovedList.add(item);
+            }
+
+            for(MenuItem item: toBeRemovedList) {
+                menu.removeItem(item.getItemId());
+            }
+        }
+
+        super.onActionModeStarted(mode);
+    }
+
+    @Override
+    public void onActionModeFinished(ActionMode mode) {
+        mActionMode = null;
+        super.onActionModeFinished(mode);
     }
 }
