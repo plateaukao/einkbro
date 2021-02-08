@@ -498,7 +498,15 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
-            
+
+            case KeyEvent.KEYCODE_VOLUME_DOWN:
+                ninjaWebView.pageDownWithNoAnimation();
+                hideOmnibox();
+                return true;
+            case KeyEvent.KEYCODE_VOLUME_UP:
+                ninjaWebView.pageUpWithNoAnimation();
+                hideOmnibox();
+                return true;
             case KeyEvent.KEYCODE_MENU:
                 return showOverflow();
             case KeyEvent.KEYCODE_BACK:
@@ -1091,7 +1099,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         fab_imageButtonNav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showOverflow();
+                showOmnibox();
             }
         });
 
@@ -1223,11 +1231,9 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 }
                 break;
             case "04":
-                //ninjaWebView.pageUp(true);
                 ninjaWebView.jumpToTop();
                 break;
             case "05":
-                //ninjaWebView.pageDown(false);
                 ninjaWebView.pageDownWithNoAnimation();
                 break;
             case "06":
