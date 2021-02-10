@@ -20,7 +20,6 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
@@ -44,10 +43,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.ActionMode;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,7 +76,6 @@ import android.widget.VideoView;
 import com.mobapphome.mahencryptorlib.MAHEncryptor;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -121,39 +116,30 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
     // Menus
 
-    private LinearLayout menu_tabPreview;
-    private LinearLayout menu_newTabOpen;
-    private LinearLayout menu_closeTab;
-    private LinearLayout menu_quit;
+    private View menu_tabPreview;
+    private View menu_newTabOpen;
+    private View menu_closeTab;
+    private View menu_quit;
 
-    private LinearLayout menu_shareScreenshot;
-    private LinearLayout menu_shareLink;
-    private LinearLayout menu_sharePDF;
-    private LinearLayout menu_openWith;
+    private View menu_shareScreenshot;
+    private View menu_shareLink;
+    private View menu_sharePDF;
+    private View menu_openWith;
 
-    private LinearLayout menu_searchSite;
-    private LinearLayout menu_settings;
-    private LinearLayout menu_download;
-    private LinearLayout menu_saveScreenshot;
-    private LinearLayout menu_saveBookmark;
-    private LinearLayout menu_savePDF;
-    private LinearLayout menu_saveStart;
-    private LinearLayout menu_fileManager;
+    private View menu_searchSite;
+    private View menu_settings;
+    private View menu_download;
+    private View menu_saveScreenshot;
+    private View menu_saveBookmark;
+    private View menu_savePDF;
+    private View menu_saveStart;
+    private View menu_fileManager;
 
-    private LinearLayout menu_fav;
-    private LinearLayout menu_sc;
-    private LinearLayout menu_openFav;
-    private LinearLayout menu_shareCP;
+    private View menu_fav;
+    private View menu_sc;
+    private View menu_openFav;
+    private View menu_shareCP;
 
-    private View floatButton_tabView;
-    private View floatButton_saveView;
-    private View floatButton_shareView;
-    private View floatButton_moreView;
-
-    private ImageButton fab_tab;
-    private ImageButton fab_share;
-    private ImageButton fab_save;
-    private ImageButton fab_more;
     private ImageButton tab_plus;
     private ImageButton tab_plus_bottom;
 
@@ -258,7 +244,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
     private ValueCallback<Uri[]> mFilePathCallback;
 
-    private ActionMode mActionMode;
     // Classes
 
     private class VideoCompletionListener implements MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener {
@@ -627,23 +612,23 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
             case R.id.tab_plus:
             case R.id.tab_plus_bottom:
-            case R.id.menu_newTabOpen:
+            case R.id.button_newTabOpen:
                 hideBottomSheetDialog();
                 hideOverview();
                 addAlbum(getString(R.string.app_name), sp.getString("favoriteURL", "https://www.google.com"), true);
                 break;
 
-            case R.id.menu_closeTab:
+            case R.id.button_closeTab:
                 hideBottomSheetDialog ();
                 removeAlbum(currentAlbumController);
                 break;
 
-            case R.id.menu_tabPreview:
+            case R.id.button_tabPreview:
                 hideBottomSheetDialog ();
                 showOverview();
                 break;
 
-            case R.id.menu_quit:
+            case R.id.button_quit:
                 hideBottomSheetDialog ();
                 doubleTapsQuit();
                 break;
@@ -780,137 +765,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             case R.id.menu_download:
                 hideBottomSheetDialog ();
                 startActivity(new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS));
-                break;
-
-            case R.id.floatButton_tab:
-                menu_newTabOpen.setVisibility(View.VISIBLE);
-                menu_closeTab.setVisibility(View.VISIBLE);
-                menu_tabPreview.setVisibility(View.VISIBLE);
-                menu_quit.setVisibility(View.VISIBLE);
-
-                menu_shareScreenshot.setVisibility(View.GONE);
-                menu_shareLink.setVisibility(View.GONE);
-                menu_sharePDF.setVisibility(View.GONE);
-                menu_openWith.setVisibility(View.GONE);
-
-                menu_saveScreenshot.setVisibility(View.GONE);
-                menu_saveBookmark.setVisibility(View.GONE);
-                menu_savePDF.setVisibility(View.GONE);
-                menu_saveStart.setVisibility(View.GONE);
-
-                floatButton_tabView.setVisibility(View.VISIBLE);
-                floatButton_saveView.setVisibility(View.INVISIBLE);
-                floatButton_shareView.setVisibility(View.INVISIBLE);
-                floatButton_moreView.setVisibility(View.INVISIBLE);
-
-                menu_searchSite.setVisibility(View.GONE);
-                menu_fileManager.setVisibility(View.GONE);
-                menu_settings.setVisibility(View.GONE);
-                menu_download.setVisibility(View.GONE);
-
-                menu_fav.setVisibility(View.GONE);
-                menu_sc.setVisibility(View.GONE);
-                menu_openFav.setVisibility(View.VISIBLE);
-                menu_shareCP.setVisibility(View.GONE);
-
-                break;
-
-            case R.id.floatButton_share:
-                menu_newTabOpen.setVisibility(View.GONE);
-                menu_closeTab.setVisibility(View.GONE);
-                menu_tabPreview.setVisibility(View.GONE);
-                menu_quit.setVisibility(View.GONE);
-
-                menu_shareScreenshot.setVisibility(View.VISIBLE);
-                menu_shareLink.setVisibility(View.VISIBLE);
-                menu_sharePDF.setVisibility(View.VISIBLE);
-                menu_openWith.setVisibility(View.VISIBLE);
-
-                menu_saveScreenshot.setVisibility(View.GONE);
-                menu_saveBookmark.setVisibility(View.GONE);
-                menu_savePDF.setVisibility(View.GONE);
-                menu_saveStart.setVisibility(View.GONE);
-
-                floatButton_tabView.setVisibility(View.INVISIBLE);
-                floatButton_saveView.setVisibility(View.INVISIBLE);
-                floatButton_shareView.setVisibility(View.VISIBLE);
-                floatButton_moreView.setVisibility(View.INVISIBLE);
-
-                menu_searchSite.setVisibility(View.GONE);
-                menu_fileManager.setVisibility(View.GONE);
-                menu_settings.setVisibility(View.GONE);
-                menu_download.setVisibility(View.GONE);
-
-                menu_fav.setVisibility(View.GONE);
-                menu_sc.setVisibility(View.GONE);
-                menu_openFav.setVisibility(View.GONE);
-                menu_shareCP.setVisibility(View.VISIBLE);
-                break;
-
-            case R.id.floatButton_save:
-                menu_newTabOpen.setVisibility(View.GONE);
-                menu_closeTab.setVisibility(View.GONE);
-                menu_tabPreview.setVisibility(View.GONE);
-                menu_quit.setVisibility(View.GONE);
-
-                menu_shareScreenshot.setVisibility(View.GONE);
-                menu_shareLink.setVisibility(View.GONE);
-                menu_sharePDF.setVisibility(View.GONE);
-                menu_openWith.setVisibility(View.GONE);
-
-                menu_saveScreenshot.setVisibility(View.VISIBLE);
-                menu_saveBookmark.setVisibility(View.VISIBLE);
-                menu_savePDF.setVisibility(View.VISIBLE);
-                menu_saveStart.setVisibility(View.VISIBLE);
-
-                menu_searchSite.setVisibility(View.GONE);
-                menu_fileManager.setVisibility(View.GONE);
-
-                floatButton_tabView.setVisibility(View.INVISIBLE);
-                floatButton_saveView.setVisibility(View.VISIBLE);
-                floatButton_shareView.setVisibility(View.INVISIBLE);
-                floatButton_moreView.setVisibility(View.INVISIBLE);
-
-                menu_settings.setVisibility(View.GONE);
-                menu_download.setVisibility(View.GONE);
-
-                menu_fav.setVisibility(View.GONE);
-                menu_sc.setVisibility(View.VISIBLE);
-                menu_openFav.setVisibility(View.GONE);
-                menu_shareCP.setVisibility(View.GONE);
-                break;
-
-            case R.id.floatButton_more:
-                menu_newTabOpen.setVisibility(View.GONE);
-                menu_closeTab.setVisibility(View.GONE);
-                menu_tabPreview.setVisibility(View.GONE);
-                menu_quit.setVisibility(View.GONE);
-
-                menu_shareScreenshot.setVisibility(View.GONE);
-                menu_shareLink.setVisibility(View.GONE);
-                menu_sharePDF.setVisibility(View.GONE);
-                menu_openWith.setVisibility(View.GONE);
-
-                menu_saveScreenshot.setVisibility(View.GONE);
-                menu_saveBookmark.setVisibility(View.GONE);
-                menu_savePDF.setVisibility(View.GONE);
-                menu_saveStart.setVisibility(View.GONE);
-
-                floatButton_tabView.setVisibility(View.INVISIBLE);
-                floatButton_saveView.setVisibility(View.INVISIBLE);
-                floatButton_shareView.setVisibility(View.INVISIBLE);
-                floatButton_moreView.setVisibility(View.VISIBLE);
-
-                menu_settings.setVisibility(View.VISIBLE);
-                menu_searchSite.setVisibility(View.VISIBLE);
-                menu_fileManager.setVisibility(View.VISIBLE);
-                menu_download.setVisibility(View.VISIBLE);
-
-                menu_fav.setVisibility(View.VISIBLE);
-                menu_sc.setVisibility(View.GONE);
-                menu_openFav.setVisibility(View.GONE);
-                menu_shareCP.setVisibility(View.GONE);
-
                 break;
 
             // Buttons
@@ -2628,30 +2482,16 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         View dialogView = View.inflate(context, R.layout.dialog_menu, null);
 
-        fab_tab = dialogView.findViewById(R.id.floatButton_tab);
-        fab_tab.setOnClickListener(BrowserActivity.this);
-        fab_share = dialogView.findViewById(R.id.floatButton_share);
-        fab_share.setOnClickListener(BrowserActivity.this);
-        fab_save = dialogView.findViewById(R.id.floatButton_save);
-        fab_save.setOnClickListener(BrowserActivity.this);
-        fab_more = dialogView.findViewById(R.id.floatButton_more);
-        fab_more.setOnClickListener(BrowserActivity.this);
-
-        floatButton_tabView = dialogView.findViewById(R.id.floatButton_tabView);
-        floatButton_saveView = dialogView.findViewById(R.id.floatButton_saveView);
-        floatButton_shareView = dialogView.findViewById(R.id.floatButton_shareView);
-        floatButton_moreView = dialogView.findViewById(R.id.floatButton_moreView);
-
         dialogTitle = dialogView.findViewById(R.id.dialog_title);
         dialogTitle.setText(ninjaWebView.getTitle());
 
-        menu_newTabOpen = dialogView.findViewById(R.id.menu_newTabOpen);
+        menu_newTabOpen = dialogView.findViewById(R.id.button_newTabOpen);
         menu_newTabOpen.setOnClickListener(BrowserActivity.this);
-        menu_closeTab = dialogView.findViewById(R.id.menu_closeTab);
+        menu_closeTab = dialogView.findViewById(R.id.button_closeTab);
         menu_closeTab.setOnClickListener(BrowserActivity.this);
-        menu_tabPreview = dialogView.findViewById(R.id.menu_tabPreview);
+        menu_tabPreview = dialogView.findViewById(R.id.button_tabPreview);
         menu_tabPreview.setOnClickListener(BrowserActivity.this);
-        menu_quit = dialogView.findViewById(R.id.menu_quit);
+        menu_quit = dialogView.findViewById(R.id.button_quit);
         menu_quit.setOnClickListener(BrowserActivity.this);
 
         menu_shareScreenshot = dialogView.findViewById(R.id.menu_shareScreenshot);
@@ -2692,7 +2532,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 NinjaToast.show(context, R.string.toast_copy_successful);
             }
         });
-        menu_openFav = dialogView.findViewById(R.id.menu_openFav);
+        menu_openFav = dialogView.findViewById(R.id.button_openFav);
         menu_openFav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -3139,37 +2979,5 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             }
         }
         return list.get(index);
-    }
-
-    @Override
-    public void onActionModeStarted(ActionMode mode) {
-        if (mActionMode == null) {
-            mActionMode = mode;
-            Menu menu = mode.getMenu();
-
-            MenuItem googleTranslateItem = null;
-            List<MenuItem> toBeRemovedList = new ArrayList();
-            for (int index = 1; index < menu.size(); index++) {
-                MenuItem item = menu.getItem(index);
-                if (item.getIntent() != null && item.getIntent().getComponent() != null &&
-                        item.getIntent().getComponent().getPackageName().equals("com.google.android.apps.translate")) {
-                    googleTranslateItem = item;
-                    break;
-                }
-                toBeRemovedList.add(item);
-            }
-
-            for(MenuItem item: toBeRemovedList) {
-                menu.removeItem(item.getItemId());
-            }
-        }
-
-        super.onActionModeStarted(mode);
-    }
-
-    @Override
-    public void onActionModeFinished(ActionMode mode) {
-        mActionMode = null;
-        super.onActionModeFinished(mode);
     }
 }
