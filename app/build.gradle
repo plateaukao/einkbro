@@ -8,15 +8,15 @@ android {
         applicationId "de.baumann.browser"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 102
-        versionName "7.0"
+        versionCode 103
+        versionName "7.1"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
@@ -35,4 +35,5 @@ dependencies {
     implementation 'com.mobapphome.library:mah-encryptor-lib:1.0.1'
     implementation 'androidx.preference:preference:1.1.0'
     implementation 'androidx.legacy:legacy-preference-v14:1.0.0'
+    implementation 'androidx.gridlayout:gridlayout:1.0.0'
 }
