@@ -22,8 +22,8 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="4dp"
-        android:background="@drawable/shadow_above"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
         android:layout_alignParentBottom="true"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -32,11 +32,15 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/main_content"
         android:layout_alignParentEnd="true"
-        android:layout_margin="18dp"
+        android:layout_margin="20dp"
         android:visibility="gone"
-        android:alpha="0.4"
-        app:backgroundTint="?android:attr/colorAccent"
-        app:fabSize="normal"
+        app:fabSize="mini"
+        app:borderWidth="1dp"
+        android:background="@android:color/transparent"
+        android:backgroundTint="@android:color/transparent"
+        android:tint="@android:color/black"
+        tools:visibility="visible"
+        android:elevation="0dp"
         app:srcCompat="@drawable/icon_overflow_fab"
         tools:ignore="RelativeOverlap" />
 
@@ -48,8 +52,7 @@
         android:layout_alignParentStart="true"
         android:layout_margin="18dp"
         android:visibility="gone"
-        app:backgroundTint="?android:attr/colorAccent"
-        app:fabSize="normal"
+        app:fabSize="mini"
         android:alpha="0.4"
         app:srcCompat="@drawable/icon_overflow_fab"
         tools:ignore="RelativeOverlap" />
@@ -62,10 +65,8 @@
         android:layout_centerInParent="true"
         android:layout_margin="18dp"
         android:visibility="gone"
-        app:backgroundTint="?android:attr/colorAccent"
-        app:fabSize="normal"
+        app:fabSize="mini"
         android:alpha="0.4"
-        app:srcCompat="@drawable/icon_overflow_fab"
         tools:ignore="RelativeOverlap" />
 
 </RelativeLayout>
