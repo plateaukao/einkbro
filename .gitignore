@@ -14,3 +14,5 @@ local.properties
 gradle
 build
 *.iml
+app/release
+.DS_Store
