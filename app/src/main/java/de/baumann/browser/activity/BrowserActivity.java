@@ -3,6 +3,7 @@ package de.baumann.browser.activity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.DownloadManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -22,6 +23,10 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.InsetDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
@@ -43,10 +48,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.CookieManager;
@@ -140,7 +148,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     private View menu_openFav;
     private View menu_shareCP;
 
-    private ImageButton tab_plus;
     private ImageButton tab_plus_bottom;
 
     private Adapter_Record adapter;
@@ -168,7 +175,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     private ProgressBar progressBar;
     private EditText searchBox;
     private BottomSheetDialog bottomSheetDialog;
-    private BottomSheetDialog bottomSheetDialog_OverView;
+    private AlertDialog bottomSheetDialog_OverView;
     private NinjaWebView ninjaWebView;
     private ListView listView;
     private TextView omniboxTitle;
@@ -179,7 +186,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
     private HorizontalScrollView tab_ScrollView;
     private LinearLayout overview_top;
-    private LinearLayout overview_topButtons;
 
     // Layouts
 
@@ -194,17 +200,12 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     private View open_bookmarkView;
     private View open_historyView;
 
-    private View overview_titleIcons_startView;
-    private View overview_titleIcons_bookmarksView;
-    private View overview_titleIcons_historyView;
-
     // Others
 
     private String title;
     private String url;
     private String overViewTab;
     private BroadcastReceiver downloadReceiver;
-    private BottomSheetBehavior mBehavior;
 
 
     private Activity activity;
@@ -360,12 +361,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         if (sp.getBoolean("start_tabStart", false)){
             showOverview();
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                }
-            }, 250);
         }
     }
 
@@ -555,16 +550,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
     private void showOverview() {
 
-        overview_top.setVisibility(View.VISIBLE);
-        overview_topButtons.setVisibility(View.VISIBLE);
-        mBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-
-        /* Daniel: why duplicate?
-        if (currentAlbumController != null) {
-            currentAlbumController.deactivate();
-            currentAlbumController.activate();
-        }
-         */
+        showCurrentTabInOverview();
 
         if (currentAlbumController != null) {
             currentAlbumController.deactivate();
@@ -572,6 +558,17 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         }
 
         bottomSheetDialog_OverView.show();
+        Rect displayRectangle = new Rect();
+        getWindow().getDecorView().getWindowVisibleDisplayFrame(displayRectangle);
+
+        Window window = bottomSheetDialog_OverView.getWindow();
+        WindowManager.LayoutParams wlp = window.getAttributes();
+        wlp.width = displayRectangle.width();
+        wlp.height = (int)(displayRectangle.height() * 0.5);
+        wlp.gravity = Gravity.BOTTOM;
+        wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+        window.setAttributes(wlp);
+
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -610,7 +607,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
             // Menu overflow
 
-            case R.id.tab_plus:
             case R.id.tab_plus_bottom:
             case R.id.button_newTabOpen:
                 hideBottomSheetDialog();
@@ -1113,36 +1109,33 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     @SuppressLint("ClickableViewAccessibility")
     private void initOverview() {
 
-        bottomSheetDialog_OverView = new BottomSheetDialog(context);
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         View dialogView = View.inflate(context, R.layout.dialog_overiew, null);
+        dialogBuilder.setView(dialogView);
+        bottomSheetDialog_OverView = dialogBuilder.create();
+        ColorDrawable back = new ColorDrawable(Color.TRANSPARENT);
+        InsetDrawable inset = new InsetDrawable(back, -8, -8, -8, -8);
+        bottomSheetDialog_OverView.getWindow().setBackgroundDrawable(inset);
+        bottomSheetDialog_OverView.setCanceledOnTouchOutside(true);
+
 
         open_startPage = dialogView.findViewById(R.id.open_newTab_2);
         open_bookmark = dialogView.findViewById(R.id.open_bookmark_2);
         open_history = dialogView.findViewById(R.id.open_history_2);
         open_menu = dialogView.findViewById(R.id.open_menu);
         tab_container = dialogView.findViewById(R.id.tab_container);
-        tab_plus = dialogView.findViewById(R.id.tab_plus);
-        tab_plus.setOnClickListener(this);
         tab_plus_bottom = dialogView.findViewById(R.id.tab_plus_bottom);
         tab_plus_bottom.setOnClickListener(this);
         tab_ScrollView = dialogView.findViewById(R.id.tab_ScrollView);
         overview_top = dialogView.findViewById(R.id.overview_top);
-        overview_topButtons = dialogView.findViewById(R.id.overview_topButtons);
         listView = dialogView.findViewById(R.id.home_list_2);
 
         open_startPageView = dialogView.findViewById(R.id.open_newTabView);
         open_bookmarkView = dialogView.findViewById(R.id.open_bookmarkView);
         open_historyView = dialogView.findViewById(R.id.open_historyView);
 
-        overview_titleIcons_startView = dialogView.findViewById(R.id.overview_titleIcons_startView);
-        overview_titleIcons_bookmarksView = dialogView.findViewById(R.id.overview_titleIcons_bookmarksView);
-        overview_titleIcons_historyView = dialogView.findViewById(R.id.overview_titleIcons_historyView);
 
         gridView = dialogView.findViewById(R.id.home_grid_2);
-
-        final ImageButton overview_titleIcons_start = dialogView.findViewById(R.id.overview_titleIcons_start);
-        final ImageButton overview_titleIcons_bookmarks = dialogView.findViewById(R.id.overview_titleIcons_bookmarks);
-        final ImageButton overview_titleIcons_history = dialogView.findViewById(R.id.overview_titleIcons_history);
 
         // allow scrolling in listView without closing the bottomSheetDialog
         listView.setOnTouchListener(new ListView.OnTouchListener() {
@@ -1307,56 +1300,15 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         bottomSheetDialog_OverView.setContentView(dialogView);
 
-        mBehavior = BottomSheetBehavior.from((View) dialogView.getParent());
-        int peekHeight = Math.round(200 * getResources().getDisplayMetrics().density);
-        mBehavior.setPeekHeight(peekHeight);
-        mBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {
-
-                if (newState == BottomSheetBehavior.STATE_HIDDEN){
-                    hideOverview();
-                } else if (newState == BottomSheetBehavior.STATE_EXPANDED){
-
-                    if (overViewTab.equals(getString(R.string.album_title_bookmarks))) {
-                        initBookmarkList();
-                    } else if (overViewTab.equals(getString(R.string.album_title_home))) {
-                        open_startPage.performClick();
-                    }
-
-                    if (sp.getBoolean("overView_hide", true)){
-                        overview_top.setVisibility(View.GONE);
-                    } else {
-                        overview_topButtons.setVisibility(View.GONE);
-                    }
-
-                } else {
-                    if (sp.getBoolean("overView_hide", true)){
-                        overview_top.setVisibility(View.VISIBLE);
-                    } else {
-                        overview_topButtons.setVisibility(View.VISIBLE);
-                    }
-                }
-            }
-
-            @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-
-            }
-        });
-
         open_startPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                overview_top.setVisibility(View.VISIBLE);
                 gridView.setVisibility(View.VISIBLE);
                 listView.setVisibility(View.GONE);
                 open_startPageView.setVisibility(View.VISIBLE);
                 open_bookmarkView.setVisibility(View.INVISIBLE);
                 open_historyView.setVisibility(View.INVISIBLE);
-                overview_titleIcons_startView.setVisibility(View.VISIBLE);
-                overview_titleIcons_bookmarksView.setVisibility(View.INVISIBLE);
-                overview_titleIcons_historyView.setVisibility(View.INVISIBLE);
                 overViewTab = getString(R.string.album_title_home);
 
                 RecordAction action = new RecordAction(context);
@@ -1391,15 +1343,13 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         open_bookmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                overview_top.setVisibility(View.GONE);
+
                 gridView.setVisibility(View.GONE);
                 listView.setVisibility(View.VISIBLE);
                 open_startPageView.setVisibility(View.INVISIBLE);
                 open_bookmarkView.setVisibility(View.VISIBLE);
                 open_historyView.setVisibility(View.INVISIBLE);
-                overview_titleIcons_startView.setVisibility(View.INVISIBLE);
-                overview_titleIcons_bookmarksView.setVisibility(View.VISIBLE);
-                overview_titleIcons_historyView.setVisibility(View.INVISIBLE);
                 overViewTab = getString(R.string.album_title_bookmarks);
                 sp.edit().putString("filter_bookmarks", "00").apply();
                 initBookmarkList();
@@ -1417,15 +1367,13 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         open_history.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                overview_top.setVisibility(View.GONE);
+
                 gridView.setVisibility(View.GONE);
                 listView.setVisibility(View.VISIBLE);
                 open_startPageView.setVisibility(View.INVISIBLE);
                 open_bookmarkView.setVisibility(View.INVISIBLE);
                 open_historyView.setVisibility(View.VISIBLE);
-                overview_titleIcons_startView.setVisibility(View.INVISIBLE);
-                overview_titleIcons_bookmarksView.setVisibility(View.INVISIBLE);
-                overview_titleIcons_historyView.setVisibility(View.VISIBLE);
                 overViewTab = getString(R.string.album_title_history);
 
                 RecordAction action = new RecordAction(context);
@@ -1456,50 +1404,18 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             }
         });
 
-        overview_titleIcons_start.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                open_startPage.performClick();
-            }
-        });
+        showCurrentTabInOverview();
+    }
 
-        overview_titleIcons_bookmarks.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                open_bookmark.performClick();
-            }
-        });
-
-        overview_titleIcons_bookmarks.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                if (!overViewTab.equals(getString(R.string.album_title_bookmarks))) {
-                    open_bookmark.performClick();
-                }
-                show_dialogFilter();
-                return false;
-            }
-        });
-
-        overview_titleIcons_history.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                open_history.performClick();
-            }
-        });
-
+    private void showCurrentTabInOverview() {
         switch (Objects.requireNonNull(sp.getString("start_tab", "0"))) {
-
             case "3":
-                overview_top.setVisibility(View.GONE);
                 open_bookmark.performClick();
                 break;
             case "4":
-                overview_top.setVisibility(View.GONE);
                 open_history.performClick();
                 break;
             default:
-                overview_top.setVisibility(View.GONE);
                 open_startPage.performClick();
                 break;
         }

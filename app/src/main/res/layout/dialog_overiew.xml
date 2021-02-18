@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
-    android:background="?android:attr/colorBackground"
+    android:background="@android:color/white"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,11 +9,17 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
+        android:layout_above="@+id/home_buttons"
         android:id="@+id/overview_top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="invisible"
         android:orientation="vertical">
-
+        <View
+            android:layout_alignParentTop="true"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
         <HorizontalScrollView
             android:id="@+id/tab_ScrollView"
             android:layout_width="match_parent"
@@ -23,112 +29,12 @@
             android:paddingTop="16dp"
             android:paddingBottom="16dp"
             android:scrollbars="none">
-
             <LinearLayout
                 android:id="@+id/tab_container"
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
-
         </HorizontalScrollView>
-
-        <LinearLayout
-            android:id="@+id/overview_topButtons"
-            android:layout_width="fill_parent"
-            android:layout_height="56dp"
-            android:minHeight="56dp"
-            android:orientation="horizontal"
-            android:gravity="center">
-
-            <ImageButton
-                android:id="@+id/tab_plus"
-                android:layout_width="42dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical|center_horizontal"
-                android:layout_marginEnd="2dp"
-                android:layout_marginStart="2dp"
-                android:background="?attr/actionBarItemBackground"
-                android:src="@drawable/icon_plus" />
-
-            <LinearLayout
-                android:layout_marginEnd="6dp"
-                android:layout_marginStart="6dp"
-                android:orientation="vertical"
-                android:layout_width="42dp"
-                android:layout_height="wrap_content">
-
-                <View
-                    android:id="@+id/overview_titleIcons_startView"
-                    android:layout_width="42dp"
-                    android:layout_height="2dp"
-                    android:background="?android:attr/colorAccent"
-                    android:visibility="visible"/>
-
-                <ImageButton
-                    android:id="@+id/overview_titleIcons_start"
-                    android:layout_width="42dp"
-                    android:layout_height="42dp"
-                    android:layout_gravity="center_vertical|center_horizontal"
-                    android:layout_marginEnd="2dp"
-                    android:layout_marginStart="2dp"
-                    android:background="?attr/actionBarItemBackground"
-                    android:src="@drawable/icon_earth" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_marginEnd="6dp"
-                android:layout_marginStart="6dp"
-                android:orientation="vertical"
-                android:layout_width="42dp"
-                android:layout_height="wrap_content">
-
-                <View
-                    android:id="@+id/overview_titleIcons_bookmarksView"
-                    android:layout_width="42dp"
-                    android:layout_height="2dp"
-                    android:background="?android:attr/colorAccent"
-                    android:visibility="visible"/>
-
-                <ImageButton
-                    android:id="@+id/overview_titleIcons_bookmarks"
-                    android:layout_width="42dp"
-                    android:layout_height="42dp"
-                    android:layout_gravity="center_vertical|center_horizontal"
-                    android:layout_marginEnd="2dp"
-                    android:layout_marginStart="2dp"
-                    android:background="?attr/actionBarItemBackground"
-                    android:src="@drawable/icon_bookmark" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_marginEnd="6dp"
-                android:layout_marginStart="6dp"
-                android:orientation="vertical"
-                android:layout_width="42dp"
-                android:layout_height="wrap_content">
-
-                <View
-                    android:id="@+id/overview_titleIcons_historyView"
-                    android:layout_width="42dp"
-                    android:layout_height="2dp"
-                    android:background="?android:attr/colorAccent"
-                    android:visibility="visible"/>
-
-                <ImageButton
-                    android:id="@+id/overview_titleIcons_history"
-                    android:layout_width="42dp"
-                    android:layout_height="42dp"
-                    android:layout_gravity="center_vertical|center_horizontal"
-                    android:layout_marginEnd="2dp"
-                    android:layout_marginStart="2dp"
-                    android:background="?attr/actionBarItemBackground"
-                    android:src="@drawable/ic_action_history" />
-
-            </LinearLayout>
-
-        </LinearLayout>
 
     </LinearLayout>
 
@@ -142,8 +48,8 @@
         <View
             android:layout_alignParentTop="true"
             android:layout_width="match_parent"
-            android:layout_height="4dp"
-            android:background="@drawable/shadow_below"/>
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
 
         <GridView
             android:stackFromBottom="true"
@@ -169,12 +75,6 @@
             android:layout_height="match_parent"
             android:gravity="center">
         </ListView>
-
-        <View
-            android:layout_alignParentBottom="true"
-            android:layout_width="match_parent"
-            android:layout_height="4dp"
-            android:background="@drawable/shadow_above"/>
 
     </RelativeLayout>
 
