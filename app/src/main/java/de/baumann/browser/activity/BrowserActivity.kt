@@ -62,24 +62,6 @@ import java.io.File
 import java.util.*
 
 class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickListener {
-    // Menus
-    private lateinit var menuCloseTab: View
-    private lateinit var menu_quit: View
-    private lateinit var menu_shareScreenshot: View
-    private lateinit var menu_shareLink: View
-    private lateinit var menu_sharePDF: View
-    private lateinit var menu_openWith: View
-    private lateinit var menu_searchSite: View
-    private lateinit var menu_settings: View
-    private lateinit var menu_download: View
-    private lateinit var menu_saveScreenshot: View
-    private lateinit var menu_saveBookmark: View
-    private lateinit var menu_savePDF: View
-    private lateinit var menu_fileManager: View
-    private lateinit var menu_fav: View
-    private lateinit var menu_sc: View
-    private lateinit var menu_openFav: View
-    private lateinit var menu_shareCP: View
     private lateinit var tab_plus_bottom: ImageButton
     private lateinit var adapter: Adapter_Record
 
@@ -102,7 +84,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private lateinit var inputBox: AutoCompleteTextView
     private lateinit var progressBar: ProgressBar
     private lateinit var searchBox: EditText
-    private lateinit var bottomSheetDialog: BottomSheetDialog
     private lateinit var bottomSheetDialog_OverView: AlertDialog
     private lateinit var ninjaWebView: NinjaWebView
     private lateinit var listView: ListView
@@ -111,6 +92,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private lateinit var tab_ScrollView: HorizontalScrollView
     private lateinit var overview_top: LinearLayout
 
+    private var bottomSheetDialog: BottomSheetDialog? = null
     private var videoView: VideoView? = null
     private var customView: View? = null
 
@@ -230,8 +212,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 }
                 val action_cancel = dialogView.findViewById<Button>(R.id.action_cancel)
                 action_cancel.setOnClickListener { hideBottomSheetDialog() }
-                bottomSheetDialog.setContentView(dialogView)
-                bottomSheetDialog.show()
+                bottomSheetDialog?.setContentView(dialogView)
+                bottomSheetDialog?.show()
                 HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
             }
         }
@@ -308,8 +290,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 }
                 val action_cancel = dialogView.findViewById<Button>(R.id.action_cancel)
                 action_cancel.setOnClickListener { hideBottomSheetDialog() }
-                bottomSheetDialog.setContentView(dialogView)
-                bottomSheetDialog.show()
+                bottomSheetDialog?.setContentView(dialogView)
+                bottomSheetDialog?.show()
                 HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
             }
         }
@@ -398,16 +380,22 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         currentAlbumController?.deactivate()
         currentAlbumController?.activate()
         bottomSheetDialog_OverView.show()
+        updateOverViewHeight()
+
+        Handler().postDelayed({ tab_ScrollView.scrollTo(currentAlbumController?.albumView?.left ?: 0, 0) }, 250)
+    }
+
+    private fun updateOverViewHeight() {
         val displayRectangle = Rect()
         window.decorView.getWindowVisibleDisplayFrame(displayRectangle)
         val window = bottomSheetDialog_OverView.window ?: return
-        val wlp = window?.attributes ?: return
+        val wlp = window.attributes
         wlp.width = displayRectangle.width()
-        wlp.height = (displayRectangle.height() * 0.5).toInt()
+        //wlp.height = (displayRectangle.height() * 0.5).toInt()
+        wlp.height = WindowManager.LayoutParams.WRAP_CONTENT
         wlp.gravity = Gravity.BOTTOM
         wlp.flags = wlp.flags and WindowManager.LayoutParams.FLAG_DIM_BEHIND.inv()
         window.attributes = wlp
-        Handler().postDelayed({ tab_ScrollView.scrollTo(currentAlbumController?.albumView?.left ?: 0, 0) }, 250)
     }
 
     override fun hideOverview() {
@@ -417,9 +405,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     }
 
     private fun hideBottomSheetDialog() {
-        if (bottomSheetDialog != null) {
-            bottomSheetDialog.cancel()
-        }
+        bottomSheetDialog?.cancel()
     }
 
     override fun onClick(v: View) {
@@ -561,8 +547,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                         hideBottomSheetDialog()
                         ninjaWebView.reload()
                     }
-                    bottomSheetDialog.setContentView(dialogView)
-                    bottomSheetDialog.show()
+                    bottomSheetDialog?.setContentView(dialogView)
+                    bottomSheetDialog?.show()
                     HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
                 } else {
                     ninjaWebView.reload()
@@ -899,8 +885,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                         hideBottomSheetDialog()
                     }
                 }
-                bottomSheetDialog.setContentView(dialogView)
-                bottomSheetDialog.show()
+                bottomSheetDialog?.setContentView(dialogView)
+                bottomSheetDialog?.show()
                 HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
             }
             val tv_delete = dialogView.findViewById<LinearLayout>(R.id.tv_delete)
@@ -933,12 +919,12 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 }
                 val action_cancel = dialogView3.findViewById<Button>(R.id.action_cancel)
                 action_cancel.setOnClickListener { hideBottomSheetDialog() }
-                bottomSheetDialog.setContentView(dialogView3)
-                bottomSheetDialog.show()
+                bottomSheetDialog?.setContentView(dialogView3)
+                bottomSheetDialog?.show()
                 HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView3, BottomSheetBehavior.STATE_EXPANDED)
             }
-            bottomSheetDialog.setContentView(dialogView)
-            bottomSheetDialog.show()
+            bottomSheetDialog?.setContentView(dialogView)
+            bottomSheetDialog?.show()
             HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
         })
         bottomSheetDialog_OverView.setContentView(dialogView)
@@ -1202,7 +1188,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         val toggle_desktopView = dialogView.findViewById<View>(R.id.toggle_desktopView)
         val toggle_font = dialogView.findViewById<ImageButton>(R.id.toggle_font)
         toggle_font.setOnClickListener {
-            bottomSheetDialog.cancel()
+            bottomSheetDialog?.cancel()
             val intent = Intent(this, Settings_Activity::class.java)
             startActivity(intent)
         }
@@ -1286,8 +1272,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         }
         val action_cancel = dialogView.findViewById<Button>(R.id.action_cancel)
         action_cancel.setOnClickListener { hideBottomSheetDialog() }
-        bottomSheetDialog.setContentView(dialogView)
-        bottomSheetDialog.show()
+        bottomSheetDialog?.setContentView(dialogView)
+        bottomSheetDialog?.show()
         HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
     }
 
@@ -1409,8 +1395,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             }
             val action_cancel = dialogView.findViewById<Button>(R.id.action_cancel)
             action_cancel.setOnClickListener { hideBottomSheetDialog() }
-            bottomSheetDialog.setContentView(dialogView)
-            bottomSheetDialog.show()
+            bottomSheetDialog?.setContentView(dialogView)
+            bottomSheetDialog?.show()
             HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
         }
     }
@@ -1658,8 +1644,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 e.printStackTrace()
             }
         }
-        bottomSheetDialog.setContentView(dialogView)
-        bottomSheetDialog.show()
+        bottomSheetDialog?.setContentView(dialogView)
+        bottomSheetDialog?.show()
         HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
     }
 
@@ -1684,8 +1670,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             action_ok.setOnClickListener { finish() }
             val action_cancel = dialogView.findViewById<Button>(R.id.action_cancel)
             action_cancel.setOnClickListener { hideBottomSheetDialog() }
-            bottomSheetDialog.setContentView(dialogView)
-            bottomSheetDialog.show()
+            bottomSheetDialog?.setContentView(dialogView)
+            bottomSheetDialog?.show()
             HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
         }
     }
@@ -1732,57 +1718,41 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private fun showOverflow(): Boolean {
         bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
         val dialogView = View.inflate(this, R.layout.dialog_menu, null)
-        menuCloseTab = dialogView.findViewById(R.id.button_closeTab)
-        menuCloseTab.setOnClickListener(this)
-        menu_quit = dialogView.findViewById(R.id.button_quit)
-        menu_quit.setOnClickListener(this)
-        menu_shareScreenshot = dialogView.findViewById(R.id.menu_shareScreenshot)
-        menu_shareScreenshot.setOnClickListener(this)
-        menu_shareLink = dialogView.findViewById(R.id.menu_shareLink)
-        menu_shareLink.setOnClickListener(this)
-        menu_sharePDF = dialogView.findViewById(R.id.menu_sharePDF)
-        menu_sharePDF.setOnClickListener(this)
-        menu_openWith = dialogView.findViewById(R.id.menu_openWith)
-        menu_openWith.setOnClickListener(this)
-        menu_saveScreenshot = dialogView.findViewById(R.id.menu_saveScreenshot)
-        menu_saveScreenshot.setOnClickListener(this)
-        menu_saveBookmark = dialogView.findViewById(R.id.menu_saveBookmark)
-        menu_saveBookmark.setOnClickListener(this)
-        menu_savePDF = dialogView.findViewById(R.id.contextLink_saveAs)
-        menu_savePDF.setOnClickListener(this)
-        menu_searchSite = dialogView.findViewById(R.id.menu_searchSite)
-        menu_searchSite.setOnClickListener(this)
-        menu_settings = dialogView.findViewById(R.id.menu_settings)
-        menu_settings.setOnClickListener(this)
-        menu_download = dialogView.findViewById(R.id.menu_download)
-        menu_download.setOnClickListener(this)
-        menu_fileManager = dialogView.findViewById(R.id.menu_fileManager)
-        menu_fileManager.setOnClickListener(this)
-        menu_shareCP = dialogView.findViewById(R.id.menu_shareClipboard)
-        menu_shareCP.setOnClickListener {
+        dialogView.findViewById<View>(R.id.button_closeTab).setOnClickListener(this)
+        dialogView.findViewById<View>(R.id.button_quit).setOnClickListener(this)
+        dialogView.findViewById<View>(R.id.menu_shareScreenshot).setOnClickListener(this)
+        dialogView.findViewById<View>(R.id.menu_shareLink).setOnClickListener(this)
+        dialogView.findViewById<View>(R.id.menu_sharePDF).setOnClickListener(this)
+        dialogView.findViewById<View>(R.id.menu_openWith).setOnClickListener(this)
+        dialogView.findViewById<View>(R.id.menu_saveScreenshot).setOnClickListener(this)
+        dialogView.findViewById<View>(R.id.menu_saveBookmark).setOnClickListener(this)
+        dialogView.findViewById<View>(R.id.contextLink_saveAs).setOnClickListener(this)
+        dialogView.findViewById<View>(R.id.menu_searchSite).setOnClickListener(this)
+        dialogView.findViewById<View>(R.id.menu_settings).setOnClickListener(this)
+        dialogView.findViewById<View>(R.id.menu_download).setOnClickListener(this)
+        dialogView.findViewById<View>(R.id.menu_fileManager).setOnClickListener(this)
+        dialogView.findViewById<View>(R.id.menu_shareClipboard).setOnClickListener {
             hideBottomSheetDialog()
             val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
             val clip = ClipData.newPlainText("text", url)
             Objects.requireNonNull(clipboard).setPrimaryClip(clip)
             NinjaToast.show(this, R.string.toast_copy_successful)
         }
-        menu_openFav = dialogView.findViewById(R.id.button_openFav)
-        menu_openFav.setOnClickListener {
+        dialogView.findViewById<View>(R.id.button_openFav).setOnClickListener {
             hideBottomSheetDialog()
             updateAlbum(sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"))
         }
-        menu_sc = dialogView.findViewById(R.id.menu_sc)
-        menu_sc.setOnClickListener {
+        dialogView.findViewById<View>(R.id.menu_sc).setOnClickListener {
             hideBottomSheetDialog()
             HelperUnit.createShortcut(this, ninjaWebView.title, ninjaWebView.url)
         }
-        menu_fav = dialogView.findViewById(R.id.menu_fav)
-        menu_fav.setOnClickListener {
+        dialogView.findViewById<View>(R.id.menu_fav).setOnClickListener {
             hideBottomSheetDialog()
-            HelperUnit.setFavorite(this, url)
+            HelperUnit.setFavorite(this, ninjaWebView.url)
         }
-        bottomSheetDialog.setContentView(dialogView)
-        bottomSheetDialog.show()
+
+        bottomSheetDialog?.setContentView(dialogView)
+        bottomSheetDialog?.show()
         HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
         return true
     }
@@ -1839,8 +1809,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 hideBottomSheetDialog()
             }
             dialogView.findViewById<Button>(R.id.action_cancel).setOnClickListener { hideBottomSheetDialog() }
-            bottomSheetDialog.setContentView(dialogView)
-            bottomSheetDialog.show()
+            bottomSheetDialog?.setContentView(dialogView)
+            bottomSheetDialog?.show()
             HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
         }
 
@@ -1870,13 +1840,13 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 hideKeyboard(this)
                 hideBottomSheetDialog()
             }
-            bottomSheetDialog.setContentView(dialogView)
-            bottomSheetDialog.show()
+            bottomSheetDialog?.setContentView(dialogView)
+            bottomSheetDialog?.show()
             HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
         }
 
-        bottomSheetDialog.setContentView(dialogView)
-        bottomSheetDialog.show()
+        bottomSheetDialog?.setContentView(dialogView)
+        bottomSheetDialog?.show()
         HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
     }
 
@@ -1929,8 +1899,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 hideBottomSheetDialog()
             }
             dialogView.findViewById<Button>(R.id.action_cancel).setOnClickListener { hideBottomSheetDialog() }
-            bottomSheetDialog.setContentView(dialogView)
-            bottomSheetDialog.show()
+            bottomSheetDialog?.setContentView(dialogView)
+            bottomSheetDialog?.show()
             HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
         }
 
@@ -1970,8 +1940,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                         hideBottomSheetDialog()
                     }
                     HelperUnit.switchIcon(this, pass_creation, "pass_creation", ib_icon)
-                    bottomSheetDialog.setContentView(dialogView)
-                    bottomSheetDialog.show()
+                    bottomSheetDialog?.setContentView(dialogView)
+                    bottomSheetDialog?.show()
                     HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
                     ib_icon.setOnClickListener {
                         try {
@@ -2037,8 +2007,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                                 initBookmarkList()
                                 hideBottomSheetDialog()
                             }
-                            bottomSheetDialog.setContentView(dialogView)
-                            bottomSheetDialog.show()
+                            bottomSheetDialog?.setContentView(dialogView)
+                            bottomSheetDialog?.show()
                             HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
                         } catch (e: Exception) {
                             e.printStackTrace()
@@ -2052,8 +2022,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 }
         }
 
-        bottomSheetDialog.setContentView(dialogView)
-        bottomSheetDialog.show()
+        bottomSheetDialog?.setContentView(dialogView)
+        bottomSheetDialog?.show()
         HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
     }
 
@@ -2112,13 +2082,13 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 hideBottomSheetDialog()
             }
             dialogView.findViewById<Button>(R.id.action_cancel).setOnClickListener { hideBottomSheetDialog() }
-            bottomSheetDialog.setContentView(dialogView)
-            bottomSheetDialog.show()
+            bottomSheetDialog?.setContentView(dialogView)
+            bottomSheetDialog?.show()
             HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
         }
 
-        bottomSheetDialog.setContentView(dialogView)
-        bottomSheetDialog.show()
+        bottomSheetDialog?.setContentView(dialogView)
+        bottomSheetDialog?.show()
         HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
     }
 
@@ -2196,8 +2166,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 }
             }
             dialogView.findViewById<Button>(R.id.action_cancel).setOnClickListener { hideBottomSheetDialog() }
-            bottomSheetDialog.setContentView(dialogView)
-            bottomSheetDialog.show()
+            bottomSheetDialog?.setContentView(dialogView)
+            bottomSheetDialog?.show()
             HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
         }
 
@@ -2228,8 +2198,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                     hideKeyboard(this)
                     hideBottomSheetDialog()
                 }
-                bottomSheetDialog.setContentView(dialogView)
-                bottomSheetDialog.show()
+                bottomSheetDialog?.setContentView(dialogView)
+                bottomSheetDialog?.show()
                 HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
             } else if (overViewTab == getString(R.string.album_title_bookmarks)) {
                 try {
@@ -2266,8 +2236,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                         hideBottomSheetDialog()
                     }
                     HelperUnit.switchIcon(this, pass_creation, "pass_creation", ib_icon)
-                    bottomSheetDialog.setContentView(dialogView)
-                    bottomSheetDialog.show()
+                    bottomSheetDialog?.setContentView(dialogView)
+                    bottomSheetDialog?.show()
                     HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
                     ib_icon.setOnClickListener {
                         try {
@@ -2333,8 +2303,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                                 initBookmarkList()
                                 hideBottomSheetDialog()
                             }
-                            bottomSheetDialog.setContentView(dialogView)
-                            bottomSheetDialog.show()
+                            bottomSheetDialog?.setContentView(dialogView)
+                            bottomSheetDialog?.show()
                             HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
                         } catch (e: Exception) {
                             e.printStackTrace()
@@ -2348,8 +2318,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 }
             }
         }
-        bottomSheetDialog.setContentView(dialogView)
-        bottomSheetDialog.show()
+        bottomSheetDialog?.setContentView(dialogView)
+        bottomSheetDialog?.show()
         HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
     }
 
@@ -2412,8 +2382,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             initBookmarkList()
             hideBottomSheetDialog()
         }
-        bottomSheetDialog.setContentView(dialogView)
-        bottomSheetDialog.show()
+        bottomSheetDialog?.setContentView(dialogView)
+        bottomSheetDialog?.show()
         HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
     }
 
