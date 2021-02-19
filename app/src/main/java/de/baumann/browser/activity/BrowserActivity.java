@@ -3,7 +3,6 @@ package de.baumann.browser.activity;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Dialog;
 import android.app.DownloadManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -22,7 +21,6 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
@@ -40,7 +38,6 @@ import android.print.PrintDocumentAdapter;
 import android.print.PrintManager;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.core.app.NotificationCompat;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -123,8 +120,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
     // Menus
 
-    private View menu_tabPreview;
-    private View menu_newTabOpen;
     private View menu_closeTab;
     private View menu_quit;
 
@@ -139,7 +134,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     private View menu_saveScreenshot;
     private View menu_saveBookmark;
     private View menu_savePDF;
-    private View menu_saveStart;
     private View menu_fileManager;
 
     private View menu_fav;
@@ -169,7 +163,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     private ImageButton open_history;
     private ImageButton open_menu;
 
-    private FloatingActionButton fab_imageButtonNav;
+    private ImageButton fab_imageButtonNav;
     private AutoCompleteTextView inputBox;
     private ProgressBar progressBar;
     private EditText searchBox;
@@ -178,7 +172,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     private NinjaWebView ninjaWebView;
     private ListView listView;
     private TextView omniboxTitle;
-    private TextView dialogTitle;
     private GridView gridView;
     private View customView;
     private VideoView videoView;
@@ -607,7 +600,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             // Menu overflow
 
             case R.id.tab_plus_bottom:
-            case R.id.button_newTabOpen:
                 hideBottomSheetDialog();
                 hideOverview();
                 addAlbum(getString(R.string.app_name), sp.getString("favoriteURL", "https://www.google.com"), true);
@@ -616,11 +608,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             case R.id.button_closeTab:
                 hideBottomSheetDialog ();
                 removeAlbum(currentAlbumController);
-                break;
-
-            case R.id.button_tabPreview:
-                hideBottomSheetDialog ();
-                showOverview();
                 break;
 
             case R.id.button_quit:
@@ -705,29 +692,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                     e.printStackTrace();
                     NinjaToast.show(context, R.string.toast_error);
                 }
-                break;
-
-            case R.id.menu_saveStart:
-                hideBottomSheetDialog ();
-                action.open(true);
-                if (action.checkGridItem(url)) {
-                    NinjaToast.show(context, getString(R.string.toast_already_exist_in_home));
-                } else {
-
-                    int counter = sp.getInt("counter", 0);
-                    counter = counter + 1;
-                    sp.edit().putInt("counter", counter).commit();
-                    Bitmap bitmap = ViewUnit.capture(ninjaWebView, dimen156dp, dimen117dp, Bitmap.Config.ARGB_8888);
-                    String filename = counter + BrowserUnit.SUFFIX_PNG;
-                    GridItem itemAlbum = new GridItem(title, url, filename, counter);
-
-                    if (BrowserUnit.bitmap2File(context, bitmap, filename) && action.addGridItem(itemAlbum)) {
-                        NinjaToast.show(context, getString(R.string.toast_add_to_home_successful));
-                    } else {
-                        NinjaToast.show(context, getString(R.string.toast_add_to_home_failed));
-                    }
-                }
-                action.close();
                 break;
 
                 // Omnibox
@@ -2166,8 +2130,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     private void show_contextMenu_link(final String url) {
         bottomSheetDialog = new BottomSheetDialog(context, R.style.BottomSheetDialog);
         View dialogView = View.inflate(context, R.layout.dialog_menu_context_link, null);
-        dialogTitle = dialogView.findViewById(R.id.dialog_title);
-        dialogTitle.setText(url);
 
         LinearLayout contextLink_newTab = dialogView.findViewById(R.id.contextLink_newTab);
         contextLink_newTab.setOnClickListener(new View.OnClickListener() {
@@ -2397,15 +2359,8 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         View dialogView = View.inflate(context, R.layout.dialog_menu, null);
 
-        dialogTitle = dialogView.findViewById(R.id.dialog_title);
-        dialogTitle.setText(ninjaWebView.getTitle());
-
-        menu_newTabOpen = dialogView.findViewById(R.id.button_newTabOpen);
-        menu_newTabOpen.setOnClickListener(BrowserActivity.this);
         menu_closeTab = dialogView.findViewById(R.id.button_closeTab);
         menu_closeTab.setOnClickListener(BrowserActivity.this);
-        menu_tabPreview = dialogView.findViewById(R.id.button_tabPreview);
-        menu_tabPreview.setOnClickListener(BrowserActivity.this);
         menu_quit = dialogView.findViewById(R.id.button_quit);
         menu_quit.setOnClickListener(BrowserActivity.this);
 
@@ -2424,8 +2379,6 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         menu_saveBookmark.setOnClickListener(BrowserActivity.this);
         menu_savePDF = dialogView.findViewById(R.id.contextLink_saveAs);
         menu_savePDF.setOnClickListener(BrowserActivity.this);
-        menu_saveStart = dialogView.findViewById(R.id.menu_saveStart);
-        menu_saveStart.setOnClickListener(BrowserActivity.this);
 
         menu_searchSite = dialogView.findViewById(R.id.menu_searchSite);
         menu_searchSite.setOnClickListener(BrowserActivity.this);

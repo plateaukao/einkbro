@@ -6,25 +6,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/dialog_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:gravity="center_vertical|center_horizontal"
-        android:includeFontPadding="false"
-        android:maxLines="1"
-        android:padding="8dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textStyle="bold" />
-
-    <View
-        android:id="@+id/separator"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_margin="8dp"
-        android:background="?android:attr/colorButtonNormal" />
-
     <androidx.gridlayout.widget.GridLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -33,17 +14,18 @@
         app:rowCount="3">
 
         <ImageView
-            android:id="@+id/button_tabPreview"
-            android:layout_width="@dimen/menu_button_size"
-            android:layout_height="@dimen/menu_button_size"
-            android:src="@drawable/icon_preview" />
-
-        <ImageView
-            android:id="@+id/button_newTabOpen"
+            android:id="@+id/menu_saveBookmark"
             android:layout_width="@dimen/menu_button_size"
             android:layout_height="@dimen/menu_button_size"
             android:gravity="center_vertical"
-            android:src="@drawable/icon_tab_plus" />
+            android:src="@drawable/icon_bookmark" />
+
+        <ImageView
+            android:id="@+id/menu_shareLink"
+            android:layout_width="@dimen/menu_button_size"
+            android:layout_height="@dimen/menu_button_size"
+            android:gravity="center_vertical"
+            android:src="@drawable/icon_menu_share" />
 
         <ImageView
             android:id="@+id/button_openFav"
@@ -58,13 +40,6 @@
             android:layout_height="@dimen/menu_button_size"
             android:gravity="center_vertical"
             android:src="@drawable/icon_close" />
-
-        <ImageView
-            android:id="@+id/button_quit"
-            android:layout_width="@dimen/menu_button_size"
-            android:layout_height="@dimen/menu_button_size"
-            android:gravity="center_vertical"
-            android:src="@drawable/icon_exit" />
 
         <ImageView
             android:id="@+id/menu_shareScreenshot"
@@ -88,13 +63,6 @@
             android:src="@drawable/clipboard_outline" />
 
         <ImageView
-            android:id="@+id/menu_shareLink"
-            android:layout_width="@dimen/menu_button_size"
-            android:layout_height="@dimen/menu_button_size"
-            android:gravity="center_vertical"
-            android:src="@drawable/icon_menu_share" />
-
-        <ImageView
             android:id="@+id/menu_openWith"
             android:layout_width="@dimen/menu_button_size"
             android:layout_height="@dimen/menu_button_size"
@@ -109,13 +77,6 @@
             android:src="@drawable/icon_fullscreen" />
 
         <ImageView
-            android:id="@+id/menu_saveBookmark"
-            android:layout_width="@dimen/menu_button_size"
-            android:layout_height="@dimen/menu_button_size"
-            android:gravity="center_vertical"
-            android:src="@drawable/icon_bookmark" />
-
-        <ImageView
             android:id="@+id/menu_sc"
             android:layout_width="@dimen/menu_button_size"
             android:layout_height="@dimen/menu_button_size"
@@ -128,13 +89,6 @@
             android:layout_height="@dimen/menu_button_size"
             android:gravity="center_vertical"
             android:src="@drawable/icon_file" />
-
-        <ImageView
-            android:id="@+id/menu_saveStart"
-            android:layout_width="@dimen/menu_button_size"
-            android:layout_height="@dimen/menu_button_size"
-            android:gravity="center_vertical"
-            android:src="@drawable/icon_earth" />
 
         <ImageView
             android:id="@+id/menu_searchSite"
@@ -163,6 +117,14 @@
             android:layout_height="@dimen/menu_button_size"
             android:gravity="center_vertical"
             android:src="@drawable/icon_download" />
+
+        <ImageView
+            android:id="@+id/button_quit"
+            android:layout_width="@dimen/menu_button_size"
+            android:layout_height="@dimen/menu_button_size"
+            android:gravity="center_vertical"
+            android:src="@drawable/icon_exit" />
+
 
         <ImageView
             android:id="@+id/menu_settings"

@@ -26,19 +26,18 @@
         android:background="@android:color/darker_gray"
         android:layout_alignParentBottom="true"/>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <ImageButton
         android:id="@+id/fab_imageButtonNav_right"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_alignBottom="@+id/main_content"
         android:layout_alignParentEnd="true"
         android:layout_margin="20dp"
         android:visibility="gone"
         app:fabSize="mini"
         app:borderWidth="1dp"
-        android:background="@android:color/transparent"
-        android:backgroundTint="@android:color/transparent"
-        android:tint="@android:color/black"
+        android:background="@drawable/roundcorner"
+        android:tint="@android:color/darker_gray"
         tools:visibility="visible"
         android:elevation="0dp"
         app:srcCompat="@drawable/icon_overflow_fab"
