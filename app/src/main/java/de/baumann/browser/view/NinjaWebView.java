@@ -169,6 +169,7 @@ public class NinjaWebView extends WebView implements AlbumController {
         sp = PreferenceManager.getDefaultSharedPreferences(context);
         String userAgent = sp.getString("userAgent", "");
         webSettings = getSettings();
+        defaultUserAgent = webSettings.getUserAgentString();
 
         if (!userAgent.isEmpty()) {
             webSettings.setUserAgentString(userAgent);
@@ -176,10 +177,9 @@ public class NinjaWebView extends WebView implements AlbumController {
 
         Boolean isDesktopMode = sp.getBoolean("sp_desktop", false);
         if (isDesktopMode) {
-            defaultUserAgent = webSettings.getUserAgentString();
             webSettings.setUserAgentString(BrowserUnit.UA_DESKTOP);
         } else {
-            webSettings.setUserAgentString(defaultUserAgent);
+            webSettings.setUserAgentString(defaultUserAgent.replace("wv", ""));
         }
         webSettings.setUseWideViewPort(isDesktopMode);
         webSettings.setLoadWithOverviewMode(isDesktopMode);
