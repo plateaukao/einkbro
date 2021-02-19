@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 29
@@ -36,4 +37,9 @@ dependencies {
     implementation 'androidx.preference:preference:1.1.0'
     implementation 'androidx.legacy:legacy-preference-v14:1.0.0'
     implementation 'androidx.gridlayout:gridlayout:1.0.0'
+    implementation "androidx.core:core-ktx:+"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+repositories {
+    mavenCentral()
 }
