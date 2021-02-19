@@ -382,7 +382,10 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         bottomSheetDialog_OverView.show()
         updateOverViewHeight()
 
-        Handler().postDelayed({ tab_ScrollView.scrollTo(currentAlbumController?.albumView?.left ?: 0, 0) }, 250)
+        Handler().postDelayed({
+            tab_ScrollView.scrollTo(currentAlbumController?.albumView?.left
+                    ?: 0, 0)
+        }, 250)
     }
 
     private fun updateOverViewHeight() {
@@ -911,7 +914,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                             open_bookmark.performClick()
                         }
                         getString(R.string.album_title_history) -> {
-                            BrowserUnit.clearHistory(BrowserActivity@this)
+                            BrowserUnit.clearHistory(BrowserActivity@ this)
                             open_history.performClick()
                         }
                     }
@@ -936,9 +939,9 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             open_bookmarkView.visibility = View.INVISIBLE
             open_historyView.visibility = View.INVISIBLE
             overViewTab = getString(R.string.album_title_home)
-            val action = RecordAction(BrowserActivity@this)
+            val action = RecordAction(BrowserActivity@ this)
             action.open(false)
-            val gridList = action.listGrid(BrowserActivity@this)
+            val gridList = action.listGrid(BrowserActivity@ this)
             action.close()
             gridAdapter = GridAdapter(this, gridList)
             gridView.adapter = gridAdapter
@@ -975,7 +978,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             open_bookmarkView.setVisibility(View.INVISIBLE)
             open_historyView.setVisibility(View.VISIBLE)
             overViewTab = getString(R.string.album_title_history)
-            val action = RecordAction(BrowserActivity@this)
+            val action = RecordAction(BrowserActivity@ this)
             action.open(false)
             val list: List<Record>
             list = action.listEntries(this, false)
@@ -1068,7 +1071,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 val bookmarks_icon = row.getString(row.getColumnIndexOrThrow("pass_creation"))
                 val v = super.getView(position, convertView, parent)
                 val iv_icon = v.findViewById<ImageView>(R.id.ib_icon)
-                HelperUnit.switchIcon(this@BrowserActivity , bookmarks_icon, "pass_creation", iv_icon)
+                HelperUnit.switchIcon(this@BrowserActivity, bookmarks_icon, "pass_creation", iv_icon)
                 return v
             }
         }
@@ -1425,7 +1428,9 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     }
 
     private fun updateOmnibox() {
-        if (ninjaWebView === currentAlbumController) {
+        if(!this::ninjaWebView.isInitialized) return
+
+        if (this::ninjaWebView.isInitialized && ninjaWebView === currentAlbumController) {
             omniboxTitle.text = ninjaWebView.title
         } else {
             ninjaWebView = currentAlbumController as NinjaWebView
@@ -1649,7 +1654,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
     }
 
-    override fun onLongPress(url: String) {
+    override fun onLongPress(url: String?) {
         val result = ninjaWebView.hitTestResult
         if (url != null) {
             show_contextMenu_link(url)
@@ -1851,7 +1856,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     }
 
     private fun showBookmarkContextMenu(title: String, url: String,
-                                         userName: String, userPW: String, _id: String, pass_creation: String?
+                                        userName: String, userPW: String, _id: String, pass_creation: String?
     ) {
         bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
         val dialogView = View.inflate(this, R.layout.dialog_menu_context_list, null)
@@ -2029,7 +2034,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
 
     private fun showHistoryContextMenu(title: String, url: String, adapterRecord: Adapter_Record,
                                        recordList: MutableList<Record>, location: Int
-     ) {
+    ) {
         bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
         val dialogView = View.inflate(this, R.layout.dialog_menu_context_list, null)
         val db = BookmarkList(this)
@@ -2419,6 +2424,34 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             }
         }
         return list[index]
+    }
+
+    private var mActionMode: ActionMode? = null
+    override fun onActionModeStarted(mode: ActionMode) {
+        if (mActionMode == null) {
+            mActionMode = mode
+            val menu = mode.menu
+            var googleTranslateItem: MenuItem? = null
+            val toBeRemovedList: MutableList<MenuItem> = mutableListOf()
+            for (index in 1 until menu.size()) {
+                val item = menu.getItem(index)
+                //if (item.intent?.component?.packageName == "com.google.android.apps.translate") {
+                if (item.intent?.component?.packageName == "info.plateaukao.naverdict") {
+                    googleTranslateItem = item
+                    break
+                }
+                toBeRemovedList.add(item)
+            }
+            for (item in toBeRemovedList) {
+                menu.removeItem(item.itemId)
+            }
+        }
+        super.onActionModeStarted(mode)
+    }
+
+    override fun onActionModeFinished(mode: ActionMode?) {
+        mActionMode = null
+        super.onActionModeFinished(mode)
     }
 
     companion object {
