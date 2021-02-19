@@ -10,8 +10,8 @@
         android:id="@+id/appBar"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:minHeight="40dp">
+        android:layout_height="50dp"
+        android:minHeight="50dp">
 
         <RelativeLayout android:id="@+id/main_omnibox"
             android:layout_width="match_parent"
