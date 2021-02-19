@@ -17,4 +17,9 @@
         <item name="android:colorBackground">@android:color/black</item>
     </style>
 
+    <style name="BottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="android:backgroundDimAmount">0</item>
+        <item name="android:windowAnimationStyle">@null</item>
+    </style>
+
 </resources>

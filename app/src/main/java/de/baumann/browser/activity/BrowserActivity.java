@@ -38,7 +38,6 @@ import androidx.preference.PreferenceManager;
 import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintManager;
-import androidx.annotation.NonNull;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -330,7 +329,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
             @Override
             public void onReceive(Context context, Intent intent) {
-                bottomSheetDialog = new BottomSheetDialog(context);
+                bottomSheetDialog = new BottomSheetDialog(context, R.style.BottomSheetDialog);
                 View dialogView = View.inflate(context, R.layout.dialog_action, null);
                 TextView textView = dialogView.findViewById(R.id.dialog_text);
                 textView.setText(R.string.toast_downloadComplete);
@@ -403,7 +402,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         if (sp.getInt("restart_changed", 1) == 1) {
             sp.edit().putInt("restart_changed", 0).apply();
-            final BottomSheetDialog dialog = new BottomSheetDialog(context);
+            final BottomSheetDialog dialog = new BottomSheetDialog(context, R.style.BottomSheetDialog);
             View dialogView = View.inflate(context, R.layout.dialog_action, null);
             TextView textView = dialogView.findViewById(R.id.dialog_text);
             textView.setText(R.string.toast_restart);
@@ -436,7 +435,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 sp.edit().putBoolean("pdf_share", false).commit();
                 startActivity(new Intent(DownloadManager.ACTION_VIEW_DOWNLOADS));
             } else {
-                bottomSheetDialog = new BottomSheetDialog(context);
+                bottomSheetDialog = new BottomSheetDialog(context, R.style.BottomSheetDialog);
                 View dialogView = View.inflate(context, R.layout.dialog_action, null);
                 TextView textView = dialogView.findViewById(R.id.dialog_text);
                 textView.setText(R.string.toast_downloadComplete);
@@ -789,7 +788,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 if (url != null && ninjaWebView.isLoadFinish()) {
 
                     if (!url.startsWith("https://")) {
-                        bottomSheetDialog = new BottomSheetDialog(context);
+                        bottomSheetDialog = new BottomSheetDialog(context, R.style.BottomSheetDialog);
                         View dialogView = View.inflate(context, R.layout.dialog_action, null);
                         TextView textView = dialogView.findViewById(R.id.dialog_text);
                         textView.setText(R.string.toast_unsecured);
@@ -1174,7 +1173,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         open_menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bottomSheetDialog = new BottomSheetDialog(context);
+                bottomSheetDialog = new BottomSheetDialog(context, R.style.BottomSheetDialog);
                 View dialogView = View.inflate(context, R.layout.dialog_menu_overview, null);
 
                 LinearLayout bookmark_sort = dialogView.findViewById(R.id.bookmark_sort);
@@ -1202,7 +1201,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                     @Override
                     public void onClick(View v) {
                         hideBottomSheetDialog ();
-                        bottomSheetDialog = new BottomSheetDialog(context);
+                        bottomSheetDialog = new BottomSheetDialog(context, R.style.BottomSheetDialog);
                         View dialogView = View.inflate(context, R.layout.dialog_bookmark_sort, null);
                         LinearLayout dialog_sortName = dialogView.findViewById(R.id.dialog_sortName);
                         TextView bookmark_sort_tv = dialogView.findViewById(R.id.bookmark_sort_tv);
@@ -1254,7 +1253,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                     @Override
                     public void onClick(View v) {
                         hideBottomSheetDialog ();
-                        bottomSheetDialog = new BottomSheetDialog(context);
+                        bottomSheetDialog = new BottomSheetDialog(context, R.style.BottomSheetDialog);
                         View dialogView3 = View.inflate(context, R.layout.dialog_action, null);
                         TextView textView = dialogView3.findViewById(R.id.dialog_text);
                         textView.setText(R.string.hint_database);
@@ -1562,7 +1561,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
     private void show_dialogFastToggle() {
 
-        bottomSheetDialog = new BottomSheetDialog(context);
+        bottomSheetDialog = new BottomSheetDialog(context, R.style.BottomSheetDialog);
         View dialogView = View.inflate(context, R.layout.dialog_toggle, null);
 
         CheckBox sw_java = dialogView.findViewById(R.id.switch_js);
@@ -1966,7 +1965,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         if(!sp.getBoolean("sp_close_tab_confirm", false)) {
             okAction.run();
         } else {
-            bottomSheetDialog = new BottomSheetDialog(context);
+            bottomSheetDialog = new BottomSheetDialog(context, R.style.BottomSheetDialog);
             View dialogView = View.inflate(context, R.layout.dialog_action, null);
             TextView textView = dialogView.findViewById(R.id.dialog_text);
             textView.setText(R.string.toast_close_tab);
@@ -2165,7 +2164,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     }
 
     private void show_contextMenu_link(final String url) {
-        bottomSheetDialog = new BottomSheetDialog(context);
+        bottomSheetDialog = new BottomSheetDialog(context, R.style.BottomSheetDialog);
         View dialogView = View.inflate(context, R.layout.dialog_menu_context_link, null);
         dialogTitle = dialogView.findViewById(R.id.dialog_title);
         dialogTitle.setText(url);
@@ -2317,7 +2316,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
         if (!sp.getBoolean("sp_close_browser_confirm", true)) {
             finish();
         } else {
-            bottomSheetDialog = new BottomSheetDialog(context);
+            bottomSheetDialog = new BottomSheetDialog(context, R.style.BottomSheetDialog);
             View dialogView = View.inflate(context, R.layout.dialog_action, null);
             TextView textView = dialogView.findViewById(R.id.dialog_text);
             textView.setText(R.string.toast_quit);
@@ -2394,7 +2393,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
     @SuppressWarnings("SameReturnValue")
     private boolean showOverflow() {
 
-        bottomSheetDialog = new BottomSheetDialog(context);
+        bottomSheetDialog = new BottomSheetDialog(context, R.style.BottomSheetDialog);
 
         View dialogView = View.inflate(context, R.layout.dialog_menu, null);
 
@@ -2485,7 +2484,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                        final GridItem gridItem) {
 
 
-        bottomSheetDialog = new BottomSheetDialog(context);
+        bottomSheetDialog = new BottomSheetDialog(context, R.style.BottomSheetDialog);
         View dialogView = View.inflate(context, R.layout.dialog_menu_context_list, null);
 
         final BookmarkList db = new BookmarkList(context);
@@ -2542,7 +2541,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
             @Override
             public void onClick(View v) {
                 hideBottomSheetDialog ();
-                bottomSheetDialog = new BottomSheetDialog(context);
+                bottomSheetDialog = new BottomSheetDialog(context, R.style.BottomSheetDialog);
                 View dialogView = View.inflate(context, R.layout.dialog_action, null);
                 TextView textView = dialogView.findViewById(R.id.dialog_text);
                 textView.setText(R.string.toast_titleConfirm_delete);
@@ -2595,7 +2594,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                 hideBottomSheetDialog ();
 
                 if (overViewTab.equals(getString(R.string.album_title_home))) {
-                    bottomSheetDialog = new BottomSheetDialog(context);
+                    bottomSheetDialog = new BottomSheetDialog(context, R.style.BottomSheetDialog);
                     View dialogView = View.inflate(context, R.layout.dialog_edit_title, null);
 
                     final EditText editText = dialogView.findViewById(R.id.dialog_edit);
@@ -2635,8 +2634,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                     HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
                 } else if (overViewTab.equals(getString(R.string.album_title_bookmarks))){
                     try {
-
-                        bottomSheetDialog = new BottomSheetDialog(context);
+                        bottomSheetDialog = new BottomSheetDialog(context, R.style.BottomSheetDialog);
 
                         View dialogView = View.inflate(context, R.layout.dialog_edit_bookmark, null);
 
@@ -2701,7 +2699,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
                                     hideBottomSheetDialog ();
                                     hideKeyboard(activity);
 
-                                    bottomSheetDialog = new BottomSheetDialog(context);
+                                    bottomSheetDialog = new BottomSheetDialog(context, R.style.BottomSheetDialog);
                                     View dialogView = View.inflate(context, R.layout.dialog_edit_icon, null);
 
                                     GridView grid = dialogView.findViewById(R.id.grid_filter);
@@ -2793,7 +2791,7 @@ public class BrowserActivity extends AppCompatActivity implements BrowserControl
 
         open_bookmark.performClick();
 
-        bottomSheetDialog = new BottomSheetDialog(context);
+        bottomSheetDialog = new BottomSheetDialog(context, R.style.BottomSheetDialog);
         View dialogView = View.inflate(context, R.layout.dialog_edit_icon, null);
 
         GridView grid = dialogView.findViewById(R.id.grid_filter);
