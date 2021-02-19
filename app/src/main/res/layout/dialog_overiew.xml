@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
     android:background="@android:color/white"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:ignore="ContentDescription"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
-        android:layout_above="@+id/home_buttons"
         android:id="@+id/overview_top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="invisible"
         android:orientation="vertical">
         <View
-            android:layout_alignParentTop="true"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@android:color/darker_gray"/>
@@ -38,15 +36,11 @@
 
     </LinearLayout>
 
-
     <RelativeLayout
-        android:layout_below="@+id/overview_top"
-        android:layout_above="@+id/home_buttons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
         <View
-            android:layout_alignParentTop="true"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@android:color/darker_gray"/>
@@ -58,7 +52,7 @@
             android:padding="4dp"
             android:id="@+id/home_grid_2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center"
             android:stretchMode="columnWidth"
             android:numColumns="auto_fit">
@@ -72,14 +66,13 @@
             android:visibility="gone"
             android:id="@+id/home_list_2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center">
         </ListView>
 
     </RelativeLayout>
 
     <LinearLayout
-        android:layout_alignParentBottom="true"
         android:id="@+id/home_buttons"
         android:layout_width="fill_parent"
         android:layout_height="56dp"
@@ -202,4 +195,4 @@
 
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>
