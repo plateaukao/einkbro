@@ -13,7 +13,7 @@ import de.baumann.browser.unit.BrowserUnit
 class GridAdapter(private val context: Context, private val list: List<GridItem>) : BaseAdapter() {
     private class Holder(val title: TextView, val cover: ImageView)
 
-    override fun getView(position: Int, convertView: View, parent: ViewGroup): View {
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val holder: Holder
         var view = convertView
         if (view == null) {
@@ -29,7 +29,7 @@ class GridAdapter(private val context: Context, private val list: List<GridItem>
         val item = list[position]
         holder.title.text = item.title
         holder.cover.setImageBitmap(BrowserUnit.file2Bitmap(context, item.filename))
-        return view
+        return view!!
     }
 
     override fun getCount(): Int = list.size
