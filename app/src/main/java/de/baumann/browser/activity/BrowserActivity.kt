@@ -47,7 +47,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.mobapphome.mahencryptorlib.MAHEncryptor
 import de.baumann.browser.Ninja.R
-import de.baumann.browser.activity.BrowserActivity
 import de.baumann.browser.browser.*
 import de.baumann.browser.database.BookmarkList
 import de.baumann.browser.database.Record
@@ -132,7 +131,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private var url: String? = null
     private var overViewTab: String? = null
     private var downloadReceiver: BroadcastReceiver? = null
-    private var activity: Activity? = null
     private var context: Context? = null
     private lateinit var sp: SharedPreferences
     private var mahEncryptor: MAHEncryptor? = null
@@ -176,15 +174,11 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         WebView.enableSlowWholeDocumentDraw()
-        //StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-        //StrictMode.setVmPolicy(builder.build());
         context = this@BrowserActivity
-        activity = this@BrowserActivity
         sp = PreferenceManager.getDefaultSharedPreferences(context)
         sp.edit().putInt("restart_changed", 0).apply()
-        sp.edit().putBoolean("pdf_create", false).commit()
+        sp.edit().putBoolean("pdf_create", false).apply()
         HelperUnit.applyTheme(context)
         setContentView(R.layout.activity_main)
         if (Objects.requireNonNull(sp.getString("saved_key_ok", "no")) == "no") {
@@ -283,8 +277,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
 
     public override fun onResume() {
         super.onResume()
-        if (sp!!.getInt("restart_changed", 1) == 1) {
-            sp!!.edit().putInt("restart_changed", 0).apply()
+        if (sp.getInt("restart_changed", 1) == 1) {
+            sp.edit().putInt("restart_changed", 0).apply()
             val dialog = BottomSheetDialog(context!!, R.style.BottomSheetDialog)
             val dialogView = View.inflate(context, R.layout.dialog_action, null)
             val textView = dialogView.findViewById<TextView>(R.id.dialog_text)
@@ -299,10 +293,10 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         }
         dispatchIntent(intent)
         updateOmnibox()
-        if (sp!!.getBoolean("pdf_create", false)) {
-            sp!!.edit().putBoolean("pdf_create", false).commit()
-            if (sp!!.getBoolean("pdf_share", false)) {
-                sp!!.edit().putBoolean("pdf_share", false).commit()
+        if (sp.getBoolean("pdf_create", false)) {
+            sp.edit().putBoolean("pdf_create", false).apply()
+            if (sp.getBoolean("pdf_share", false)) {
+                sp.edit().putBoolean("pdf_share", false).apply()
                 startActivity(Intent(DownloadManager.ACTION_VIEW_DOWNLOADS))
             } else {
                 bottomSheetDialog = BottomSheetDialog(context!!, R.style.BottomSheetDialog)
@@ -324,7 +318,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     }
 
     public override fun onDestroy() {
-        if (sp!!.getBoolean(getString(R.string.sp_clear_quit), false)) {
+        if (sp.getBoolean(getString(R.string.sp_clear_quit), false)) {
             val toClearService = Intent(this, ClearService::class.java)
             startService(toClearService)
         }
@@ -337,26 +331,26 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         when (keyCode) {
             KeyEvent.KEYCODE_VOLUME_DOWN -> {
-                ninjaWebView!!.pageDownWithNoAnimation()
+                ninjaWebView.pageDownWithNoAnimation()
                 hideOmnibox()
                 return true
             }
             KeyEvent.KEYCODE_VOLUME_UP -> {
-                ninjaWebView!!.pageUpWithNoAnimation()
+                ninjaWebView.pageUpWithNoAnimation()
                 hideOmnibox()
                 return true
             }
             KeyEvent.KEYCODE_MENU -> return showOverflow()
             KeyEvent.KEYCODE_BACK -> {
-                hideKeyboard(activity)
+                hideKeyboard(this)
                 hideOverview()
                 if (fullscreenHolder != null || customView != null || videoView != null) {
                     return onHideCustomView()
-                } else if (omnibox!!.visibility == View.GONE && sp!!.getBoolean("sp_toolbarShow", true)) {
+                } else if (omnibox!!.visibility == View.GONE && sp.getBoolean("sp_toolbarShow", true)) {
                     showOmnibox()
                 } else {
-                    if (ninjaWebView!!.canGoBack()) {
-                        ninjaWebView!!.goBack()
+                    if (ninjaWebView.canGoBack()) {
+                        ninjaWebView.goBack()
                     } else {
                         removeAlbum(currentAlbumController!!)
                     }
@@ -386,7 +380,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     override fun updateAutoComplete() {
         val action = RecordAction(this)
         action.open(false)
-        val list = action.listEntries(activity, true)
+        val list = action.listEntries(this, true)
         action.close()
         val adapter = CompleteAdapter(this, R.layout.complete_item, list)
         inputBox!!.setAdapter(adapter)
@@ -397,7 +391,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         inputBox!!.onItemClickListener = OnItemClickListener { parent, view, position, id ->
             val url = (view.findViewById<View>(R.id.complete_item_url) as TextView).text.toString()
             updateAlbum(url)
-            hideKeyboard(activity)
+            hideKeyboard(this)
         }
     }
 
@@ -436,8 +430,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         val action = RecordAction(context)
         ninjaWebView = currentAlbumController as NinjaWebView
         try {
-            title = ninjaWebView!!.title.trim { it <= ' ' }
-            url = ninjaWebView!!.url.trim { it <= ' ' }
+            title = ninjaWebView.title.trim { it <= ' ' }
+            url = ninjaWebView.url.trim { it <= ' ' }
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -445,7 +439,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             R.id.tab_plus_bottom -> {
                 hideBottomSheetDialog()
                 hideOverview()
-                addAlbum(getString(R.string.app_name), sp!!.getString("favoriteURL", "https://www.google.com"), true)
+                addAlbum(getString(R.string.app_name), sp.getString("favoriteURL", "https://www.google.com"), true)
             }
             R.id.button_closeTab -> {
                 hideBottomSheetDialog()
@@ -458,15 +452,15 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             R.id.menu_shareScreenshot -> if (Build.VERSION.SDK_INT >= 23 && Build.VERSION.SDK_INT < 29) {
                 val hasWRITE_EXTERNAL_STORAGE = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
-                    HelperUnit.grantPermissionsStorage(activity)
+                    HelperUnit.grantPermissionsStorage(this)
                 } else {
                     hideBottomSheetDialog()
-                    sp!!.edit().putInt("screenshot", 1).apply()
+                    sp.edit().putInt("screenshot", 1).apply()
                     ScreenshotTask(context, ninjaWebView).execute()
                 }
             } else {
                 hideBottomSheetDialog()
-                sp!!.edit().putInt("screenshot", 1).apply()
+                sp.edit().putInt("screenshot", 1).apply()
                 ScreenshotTask(context, ninjaWebView).execute()
             }
             R.id.menu_shareLink -> {
@@ -491,21 +485,21 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             R.id.menu_saveScreenshot -> if (Build.VERSION.SDK_INT >= 23 && Build.VERSION.SDK_INT < 29) {
                 val hasWRITE_EXTERNAL_STORAGE = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
-                    HelperUnit.grantPermissionsStorage(activity)
+                    HelperUnit.grantPermissionsStorage(this)
                 } else {
                     hideBottomSheetDialog()
-                    sp!!.edit().putInt("screenshot", 0).apply()
+                    sp.edit().putInt("screenshot", 0).apply()
                     ScreenshotTask(context, ninjaWebView).execute()
                 }
             } else {
                 hideBottomSheetDialog()
-                sp!!.edit().putInt("screenshot", 0).apply()
+                sp.edit().putInt("screenshot", 0).apply()
                 ScreenshotTask(context, ninjaWebView).execute()
             }
             R.id.menu_saveBookmark -> {
                 hideBottomSheetDialog()
                 try {
-                    val mahEncryptor = MAHEncryptor.newInstance(Objects.requireNonNull(sp!!.getString("saved_key", "")))
+                    val mahEncryptor = MAHEncryptor.newInstance(Objects.requireNonNull(sp.getString("saved_key", "")))
                     val encrypted_userName = mahEncryptor.encode("")
                     val encrypted_userPW = mahEncryptor.encode("")
                     val db = BookmarkList(context)
@@ -513,7 +507,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                     if (db.isExist(url)) {
                         NinjaToast.show(context, R.string.toast_newTitle)
                     } else {
-                        db.insert(HelperUnit.secString(ninjaWebView!!.title), url, encrypted_userName, encrypted_userPW, "01")
+                        db.insert(HelperUnit.secString(ninjaWebView.title), url, encrypted_userName, encrypted_userPW, "01")
                         NinjaToast.show(context, R.string.toast_edit_successful)
                         initBookmarkList()
                     }
@@ -524,7 +518,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             }
             R.id.menu_searchSite -> {
                 hideBottomSheetDialog()
-                hideKeyboard(activity)
+                hideKeyboard(this)
                 showSearchPanel()
             }
             R.id.contextLink_saveAs -> {
@@ -548,14 +542,14 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 startActivity(Intent(DownloadManager.ACTION_VIEW_DOWNLOADS))
             }
             R.id.omnibox_overview -> showOverview()
-            R.id.omnibox_page_back -> if (ninjaWebView!!.canGoBack()) {
-                ninjaWebView!!.goBack()
+            R.id.omnibox_page_back -> if (ninjaWebView.canGoBack()) {
+                ninjaWebView.goBack()
             } else {
                 removeAlbum(currentAlbumController!!)
             }
-            R.id.omnibox_page_up -> ninjaWebView!!.pageUpWithNoAnimation()
-            R.id.omnibox_page_down -> ninjaWebView!!.pageDownWithNoAnimation()
-            R.id.omnibox_refresh -> if (url != null && ninjaWebView!!.isLoadFinish) {
+            R.id.omnibox_page_up -> ninjaWebView.pageUpWithNoAnimation()
+            R.id.omnibox_page_down -> ninjaWebView.pageDownWithNoAnimation()
+            R.id.omnibox_refresh -> if (url != null && ninjaWebView.isLoadFinish) {
                 if (!url!!.startsWith("https://")) {
                     bottomSheetDialog = BottomSheetDialog(context!!, R.style.BottomSheetDialog)
                     val dialogView = View.inflate(context, R.layout.dialog_action, null)
@@ -564,24 +558,24 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                     val action_ok = dialogView.findViewById<Button>(R.id.action_ok)
                     action_ok.setOnClickListener {
                         hideBottomSheetDialog()
-                        ninjaWebView!!.loadUrl(url!!.replace("http://", "https://"))
+                        ninjaWebView.loadUrl(url!!.replace("http://", "https://"))
                     }
                     val action_cancel2 = dialogView.findViewById<Button>(R.id.action_cancel)
                     action_cancel2.setOnClickListener {
                         hideBottomSheetDialog()
-                        ninjaWebView!!.reload()
+                        ninjaWebView.reload()
                     }
                     bottomSheetDialog!!.setContentView(dialogView)
                     bottomSheetDialog!!.show()
                     HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
                 } else {
-                    ninjaWebView!!.reload()
+                    ninjaWebView.reload()
                 }
             } else if (url == null) {
                 val text = getString(R.string.toast_load_error) + ": " + url
                 NinjaToast.show(context, text)
             } else {
-                ninjaWebView!!.stopLoading()
+                ninjaWebView.stopLoading()
             }
             else -> {
             }
@@ -592,18 +586,18 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private fun printPDF(share: Boolean) {
         try {
             if (share) {
-                sp!!.edit().putBoolean("pdf_share", true).commit()
+                sp.edit().putBoolean("pdf_share", true).apply()
             } else {
-                sp!!.edit().putBoolean("pdf_share", false).commit()
+                sp.edit().putBoolean("pdf_share", false).apply()
             }
-            val title = HelperUnit.fileName(ninjaWebView!!.url)
+            val title = HelperUnit.fileName(ninjaWebView.url)
             val printManager = getSystemService(PRINT_SERVICE) as PrintManager
-            val printAdapter = ninjaWebView!!.createPrintDocumentAdapter(title)
+            val printAdapter = ninjaWebView.createPrintDocumentAdapter(title)
             Objects.requireNonNull(printManager).print(title, printAdapter, PrintAttributes.Builder().build())
-            sp!!.edit().putBoolean("pdf_create", true).commit()
+            sp.edit().putBoolean("pdf_create", true).apply()
         } catch (e: Exception) {
             NinjaToast.show(context, R.string.toast_error)
-            sp!!.edit().putBoolean("pdf_create", false).commit()
+            sp.edit().putBoolean("pdf_create", false).apply()
             e.printStackTrace()
         }
     }
@@ -618,22 +612,22 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         } else if (filePathCallback != null) {
             filePathCallback = null
         } else if ("sc_history" == action) {
-            addAlbum(null, sp!!.getString("favoriteURL", "https://www.google.com"), true)
+            addAlbum(null, sp.getString("favoriteURL", "https://www.google.com"), true)
             showOverview()
             Handler().postDelayed({ open_history!!.performClick() }, 250)
         } else if ("sc_bookmark" == action) {
-            addAlbum(null, sp!!.getString("favoriteURL", "https://www.google.com"), true)
+            addAlbum(null, sp.getString("favoriteURL", "https://www.google.com"), true)
             showOverview()
             Handler().postDelayed({ open_bookmark!!.performClick() }, 250)
         } else if ("sc_startPage" == action) {
-            addAlbum(null, sp!!.getString("favoriteURL", "https://www.google.com"), true)
+            addAlbum(null, sp.getString("favoriteURL", "https://www.google.com"), true)
             showOverview()
             Handler().postDelayed({ open_startPage!!.performClick() }, 250)
         } else if (Intent.ACTION_SEND == action) {
             addAlbum(null, url, true)
         } else {
             if (!onPause) {
-                addAlbum(null, sp!!.getString("favoriteURL", "https://www.google.com"), true)
+                addAlbum(null, sp.getString("favoriteURL", "https://www.google.com"), true)
             }
         }
         getIntent().action = ""
@@ -652,7 +646,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         omniboxOverflow = findViewById(R.id.omnibox_overflow)
         omniboxTitle = findViewById(R.id.omnibox_title)
         progressBar = findViewById(R.id.main_progress_bar)
-        val nav_position = Objects.requireNonNull(sp!!.getString("nav_position", "0"))
+        val nav_position = Objects.requireNonNull(sp.getString("nav_position", "0"))
         fab_imageButtonNav = when (nav_position) {
             "1" -> findViewById(R.id.fab_imageButtonNav_left)
             "2" -> findViewById(R.id.fab_imageButtonNav_center)
@@ -668,7 +662,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         })
         fab_imageButtonNav.setOnClickListener(View.OnClickListener { showOmnibox() })
         omniboxOverflow.setOnClickListener(View.OnClickListener { showOverflow() })
-        if (sp!!.getBoolean("sp_gestures_use", true)) {
+        if (sp.getBoolean("sp_gestures_use", true)) {
             fab_imageButtonNav.setOnTouchListener(object : SwipeTouchListener(context) {
                 override fun onSwipeTop() {
                     performGesture("setting_gesture_nav_up")
@@ -733,8 +727,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         })
         inputBox.setOnFocusChangeListener(OnFocusChangeListener { v, hasFocus ->
             if (inputBox.hasFocus()) {
-                ninjaWebView!!.stopLoading()
-                inputBox.setText(ninjaWebView!!.url)
+                ninjaWebView.stopLoading()
+                inputBox.setText(ninjaWebView.url)
                 Handler().postDelayed({
                     toggleIconsOnOmnibox(true)
                     inputBox.requestFocus()
@@ -742,8 +736,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 }, 250)
             } else {
                 toggleIconsOnOmnibox(false)
-                omniboxTitle.setText(ninjaWebView!!.title)
-                hideKeyboard(activity)
+                omniboxTitle.setText(ninjaWebView.title)
+                hideKeyboard(this)
             }
         })
         updateAutoComplete()
@@ -755,7 +749,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
 
         // scroll to top
         omniboxPageUp.setOnLongClickListener(OnLongClickListener {
-            ninjaWebView!!.jumpToTop()
+            ninjaWebView.jumpToTop()
             true
         })
 
@@ -779,24 +773,24 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     }
 
     private fun performGesture(gesture: String) {
-        val gestureAction = Objects.requireNonNull(sp!!.getString(gesture, "0"))
+        val gestureAction = Objects.requireNonNull(sp.getString(gesture, "0"))
         val controller: AlbumController?
         ninjaWebView = currentAlbumController as NinjaWebView
         when (gestureAction) {
             "01" -> {
             }
-            "02" -> if (ninjaWebView!!.canGoForward()) {
-                ninjaWebView!!.goForward()
+            "02" -> if (ninjaWebView.canGoForward()) {
+                ninjaWebView.goForward()
             } else {
                 NinjaToast.show(context, R.string.toast_webview_forward)
             }
-            "03" -> if (ninjaWebView!!.canGoBack()) {
-                ninjaWebView!!.goBack()
+            "03" -> if (ninjaWebView.canGoBack()) {
+                ninjaWebView.goBack()
             } else {
                 removeAlbum(currentAlbumController!!)
             }
-            "04" -> ninjaWebView!!.jumpToTop()
-            "05" -> ninjaWebView!!.pageDownWithNoAnimation()
+            "04" -> ninjaWebView.jumpToTop()
+            "05" -> ninjaWebView.pageDownWithNoAnimation()
             "06" -> {
                 controller = nextAlbumController(false)
                 showAlbum(controller!!)
@@ -806,7 +800,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 showAlbum(controller!!)
             }
             "08" -> showOverview()
-            "09" -> addAlbum(getString(R.string.app_name), sp!!.getString("favoriteURL", "https://www.google.com"), true)
+            "09" -> addAlbum(getString(R.string.app_name), sp.getString("favoriteURL", "https://www.google.com"), true)
             "10" -> removeAlbum(currentAlbumController!!)
         }
     }
@@ -888,11 +882,11 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 }
                 dialog_sortName.setOnClickListener {
                     if (overViewTab == getString(R.string.album_title_bookmarks)) {
-                        sp!!.edit().putString("sortDBB", "title").apply()
+                        sp.edit().putString("sortDBB", "title").apply()
                         initBookmarkList()
                         hideBottomSheetDialog()
                     } else if (overViewTab == getString(R.string.album_title_home)) {
-                        sp!!.edit().putString("sort_startSite", "title").apply()
+                        sp.edit().putString("sort_startSite", "title").apply()
                         open_startPage.performClick()
                         hideBottomSheetDialog()
                     }
@@ -900,11 +894,11 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 val dialog_sortIcon = dialogView.findViewById<LinearLayout>(R.id.dialog_sortIcon)
                 dialog_sortIcon.setOnClickListener {
                     if (overViewTab == getString(R.string.album_title_bookmarks)) {
-                        sp!!.edit().putString("sortDBB", "icon").apply()
+                        sp.edit().putString("sortDBB", "icon").apply()
                         initBookmarkList()
                         hideBottomSheetDialog()
                     } else if (overViewTab == getString(R.string.album_title_home)) {
-                        sp!!.edit().putString("sort_startSite", "ordinal").apply()
+                        sp.edit().putString("sort_startSite", "ordinal").apply()
                         open_startPage.performClick()
                         hideBottomSheetDialog()
                     }
@@ -982,7 +976,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             open_bookmarkView.setVisibility(View.VISIBLE)
             open_historyView.setVisibility(View.INVISIBLE)
             overViewTab = getString(R.string.album_title_bookmarks)
-            sp!!.edit().putString("filter_bookmarks", "00").apply()
+            sp.edit().putString("filter_bookmarks", "00").apply()
             initBookmarkList()
         })
         open_bookmark.setOnLongClickListener(OnLongClickListener {
@@ -1000,7 +994,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             val action = RecordAction(context)
             action.open(false)
             val list: List<Record>
-            list = action.listEntries(activity, false)
+            list = action.listEntries(this, false)
             action.close()
             adapter = Adapter_Record(context, list)
             listView.setAdapter(adapter)
@@ -1019,7 +1013,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     }
 
     private fun showCurrentTabInOverview() {
-        when (Objects.requireNonNull(sp!!.getString("start_tab", "0"))) {
+        when (Objects.requireNonNull(sp.getString("start_tab", "0"))) {
             "3" -> open_bookmark!!.performClick()
             "4" -> open_history!!.performClick()
             else -> open_startPage!!.performClick()
@@ -1057,7 +1051,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 NinjaToast.show(context, getString(R.string.toast_input_empty))
                 return@OnClickListener
             }
-            hideKeyboard(activity)
+            hideKeyboard(this)
             (currentAlbumController as NinjaWebView?)!!.findNext(false)
         })
         searchDown.setOnClickListener(View.OnClickListener {
@@ -1066,7 +1060,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 NinjaToast.show(context, getString(R.string.toast_input_empty))
                 return@OnClickListener
             }
-            hideKeyboard(activity)
+            hideKeyboard(this)
             (currentAlbumController as NinjaWebView?)!!.findNext(true)
         })
         searchCancel.setOnClickListener(View.OnClickListener { hideSearchPanel() })
@@ -1077,29 +1071,26 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         val row: Cursor
         db.open()
         val layoutStyle = R.layout.list_item_bookmark
-        val xml_id = intArrayOf(
-                R.id.record_item_title
-        )
-        val column = arrayOf(
-                "pass_title")
-        val search = sp!!.getString("filter_bookmarks", "00")
+        val xml_id = intArrayOf(R.id.record_item_title)
+        val column = arrayOf("pass_title")
+        val search = sp.getString("filter_bookmarks", "00")
         row = if (Objects.requireNonNull(search) == "00") {
-            db.fetchAllData(activity)
+            db.fetchAllData(this)
         } else {
             db.fetchDataByFilter(search, "pass_creation")
         }
         val adapter: SimpleCursorAdapter = object : SimpleCursorAdapter(context, layoutStyle, row, column, xml_id, 0) {
-            override fun getView(position: Int, convertView: View, parent: ViewGroup): View {
-                val row = listView!!.getItemAtPosition(position) as Cursor
+            override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+                val row = listView.getItemAtPosition(position) as Cursor
                 val bookmarks_icon = row.getString(row.getColumnIndexOrThrow("pass_creation"))
                 val v = super.getView(position, convertView, parent)
                 val iv_icon = v.findViewById<ImageView>(R.id.ib_icon)
-                HelperUnit.switchIcon(activity, bookmarks_icon, "pass_creation", iv_icon)
+                HelperUnit.switchIcon(this@BrowserActivity , bookmarks_icon, "pass_creation", iv_icon)
                 return v
             }
         }
-        listView!!.adapter = adapter
-        listView!!.onItemClickListener = OnItemClickListener { adapterView, view, position, id ->
+        listView.adapter = adapter
+        listView.onItemClickListener = OnItemClickListener { adapterView, view, position, id ->
             val pass_content = row.getString(row.getColumnIndexOrThrow("pass_content"))
             val pass_icon = row.getString(row.getColumnIndexOrThrow("pass_icon"))
             val pass_attachment = row.getString(row.getColumnIndexOrThrow("pass_attachment"))
@@ -1107,7 +1098,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             toast_login(pass_icon, pass_attachment)
             hideOverview()
         }
-        listView!!.onItemLongClickListener = OnItemLongClickListener { parent, view, position, id ->
+        listView.onItemLongClickListener = OnItemLongClickListener { parent, view, position, id ->
             val row = listView!!.getItemAtPosition(position) as Cursor
             val _id = row.getString(row.getColumnIndexOrThrow("_id"))
             val pass_title = row.getString(row.getColumnIndexOrThrow("pass_title"))
@@ -1131,27 +1122,15 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         val sw_cookie = dialogView.findViewById<CheckBox>(R.id.switch_cookie)
         val whitelist_cookie = dialogView.findViewById<ImageButton>(R.id.imageButton_cookie)
         val dialog_title = dialogView.findViewById<TextView>(R.id.dialog_title)
-        dialog_title.text = HelperUnit.domain(ninjaWebView!!.url)
+        dialog_title.text = HelperUnit.domain(ninjaWebView.url)
         javaHosts = Javascript(context)
         cookieHosts = Cookie(context)
         adBlock = AdBlock(context)
         ninjaWebView = currentAlbumController as NinjaWebView
-        val url = ninjaWebView!!.url
-        if (sp!!.getBoolean(getString(R.string.sp_javascript), true)) {
-            sw_java.isChecked = true
-        } else {
-            sw_java.isChecked = false
-        }
-        if (sp!!.getBoolean(getString(R.string.sp_ad_block), true)) {
-            sw_adBlock.isChecked = true
-        } else {
-            sw_adBlock.isChecked = false
-        }
-        if (sp!!.getBoolean(getString(R.string.sp_cookies), true)) {
-            sw_cookie.isChecked = true
-        } else {
-            sw_cookie.isChecked = false
-        }
+        val url = ninjaWebView.url
+        sw_java.isChecked = sp.getBoolean(getString(R.string.sp_javascript), true)
+        sw_adBlock.isChecked = sp.getBoolean(getString(R.string.sp_ad_block), true)
+        sw_cookie.isChecked = sp.getBoolean(getString(R.string.sp_cookies), true)
         if (javaHosts!!.isWhite(url)) {
             whiteList_js.setImageResource(R.drawable.check_green)
         } else {
@@ -1168,7 +1147,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             whiteList_ab.setImageResource(R.drawable.ic_action_close_red)
         }
         whiteList_js.setOnClickListener {
-            if (javaHosts!!.isWhite(ninjaWebView!!.url)) {
+            if (javaHosts!!.isWhite(ninjaWebView.url)) {
                 whiteList_js.setImageResource(R.drawable.ic_action_close_red)
                 javaHosts!!.removeDomain(HelperUnit.domain(url))
             } else {
@@ -1177,7 +1156,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             }
         }
         whitelist_cookie.setOnClickListener {
-            if (cookieHosts!!.isWhite(ninjaWebView!!.url)) {
+            if (cookieHosts!!.isWhite(ninjaWebView.url)) {
                 whitelist_cookie.setImageResource(R.drawable.ic_action_close_red)
                 cookieHosts!!.removeDomain(HelperUnit.domain(url))
             } else {
@@ -1186,7 +1165,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             }
         }
         whiteList_ab.setOnClickListener {
-            if (adBlock!!.isWhite(ninjaWebView!!.url)) {
+            if (adBlock!!.isWhite(ninjaWebView.url)) {
                 whiteList_ab.setImageResource(R.drawable.ic_action_close_red)
                 adBlock!!.removeDomain(HelperUnit.domain(url))
             } else {
@@ -1196,23 +1175,23 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         }
         sw_java.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                sp!!.edit().putBoolean(getString(R.string.sp_javascript), true).commit()
+                sp.edit().putBoolean(getString(R.string.sp_javascript), true).apply()
             } else {
-                sp!!.edit().putBoolean(getString(R.string.sp_javascript), false).commit()
+                sp.edit().putBoolean(getString(R.string.sp_javascript), false).apply()
             }
         }
         sw_adBlock.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                sp!!.edit().putBoolean(getString(R.string.sp_ad_block), true).commit()
+                sp.edit().putBoolean(getString(R.string.sp_ad_block), true).apply()
             } else {
-                sp!!.edit().putBoolean(getString(R.string.sp_ad_block), false).commit()
+                sp.edit().putBoolean(getString(R.string.sp_ad_block), false).apply()
             }
         }
         sw_cookie.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                sp!!.edit().putBoolean(getString(R.string.sp_cookies), true).commit()
+                sp.edit().putBoolean(getString(R.string.sp_cookies), true).apply()
             } else {
-                sp!!.edit().putBoolean(getString(R.string.sp_cookies), false).commit()
+                sp.edit().putBoolean(getString(R.string.sp_cookies), false).apply()
             }
         }
         val toggle_history = dialogView.findViewById<ImageButton>(R.id.toggle_history)
@@ -1231,82 +1210,82 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             val intent = Intent(context, Settings_Activity::class.java)
             startActivity(intent)
         }
-        if (sp!!.getBoolean("saveHistory", false)) {
+        if (sp.getBoolean("saveHistory", false)) {
             toggle_historyView.visibility = View.VISIBLE
         } else {
             toggle_historyView.visibility = View.INVISIBLE
         }
         toggle_history.setOnClickListener {
-            if (sp!!.getBoolean("saveHistory", false)) {
+            if (sp.getBoolean("saveHistory", false)) {
                 toggle_historyView.visibility = View.INVISIBLE
-                sp!!.edit().putBoolean("saveHistory", false).commit()
+                sp.edit().putBoolean("saveHistory", false).apply()
             } else {
                 toggle_historyView.visibility = View.VISIBLE
-                sp!!.edit().putBoolean("saveHistory", true).commit()
+                sp.edit().putBoolean("saveHistory", true).apply()
             }
         }
-        if (sp!!.getBoolean(getString(R.string.sp_location), false)) {
+        if (sp.getBoolean(getString(R.string.sp_location), false)) {
             toggle_locationView.visibility = View.VISIBLE
         } else {
             toggle_locationView.visibility = View.INVISIBLE
         }
         toggle_location.setOnClickListener {
-            if (sp!!.getBoolean(getString(R.string.sp_location), false)) {
+            if (sp.getBoolean(getString(R.string.sp_location), false)) {
                 toggle_locationView.visibility = View.INVISIBLE
-                sp!!.edit().putBoolean(getString(R.string.sp_location), false).commit()
+                sp.edit().putBoolean(getString(R.string.sp_location), false).apply()
             } else {
                 toggle_locationView.visibility = View.VISIBLE
-                sp!!.edit().putBoolean(getString(R.string.sp_location), true).commit()
+                sp.edit().putBoolean(getString(R.string.sp_location), true).apply()
             }
         }
-        if (sp!!.getBoolean(getString(R.string.sp_images), true)) {
+        if (sp.getBoolean(getString(R.string.sp_images), true)) {
             toggle_imagesView.visibility = View.VISIBLE
         } else {
             toggle_imagesView.visibility = View.INVISIBLE
         }
         toggle_images.setOnClickListener {
-            if (sp!!.getBoolean(getString(R.string.sp_images), true)) {
+            if (sp.getBoolean(getString(R.string.sp_images), true)) {
                 toggle_imagesView.visibility = View.INVISIBLE
-                sp!!.edit().putBoolean(getString(R.string.sp_images), false).commit()
+                sp.edit().putBoolean(getString(R.string.sp_images), false).apply()
             } else {
                 toggle_imagesView.visibility = View.VISIBLE
-                sp!!.edit().putBoolean(getString(R.string.sp_images), true).commit()
+                sp.edit().putBoolean(getString(R.string.sp_images), true).apply()
             }
         }
-        if (sp!!.getBoolean("sp_remote", true)) {
+        if (sp.getBoolean("sp_remote", true)) {
             toggle_remoteView.visibility = View.VISIBLE
         } else {
             toggle_remoteView.visibility = View.INVISIBLE
         }
         toggle_remote.setOnClickListener {
-            if (sp!!.getBoolean("sp_remote", true)) {
+            if (sp.getBoolean("sp_remote", true)) {
                 toggle_remoteView.visibility = View.INVISIBLE
-                sp!!.edit().putBoolean("sp_remote", false).commit()
+                sp.edit().putBoolean("sp_remote", false).apply()
             } else {
                 toggle_remoteView.visibility = View.VISIBLE
-                sp!!.edit().putBoolean("sp_remote", true).commit()
+                sp.edit().putBoolean("sp_remote", true).apply()
             }
         }
-        if (sp!!.getBoolean("sp_desktop", false)) {
+        if (sp.getBoolean("sp_desktop", false)) {
             toggle_desktopView.visibility = View.VISIBLE
         } else {
             toggle_desktopView.visibility = View.INVISIBLE
         }
         toggle_desktop.setOnClickListener {
-            if (sp!!.getBoolean("sp_desktop", false)) {
+            if (sp.getBoolean("sp_desktop", false)) {
                 toggle_desktopView.visibility = View.INVISIBLE
-                sp!!.edit().putBoolean("sp_desktop", false).commit()
+                sp.edit().putBoolean("sp_desktop", false).apply()
             } else {
                 toggle_desktopView.visibility = View.VISIBLE
-                sp!!.edit().putBoolean("sp_desktop", true).commit()
+                sp.edit().putBoolean("sp_desktop", true).apply()
             }
         }
         val but_OK = dialogView.findViewById<Button>(R.id.action_ok)
         but_OK.setOnClickListener {
             if (ninjaWebView != null) {
                 hideBottomSheetDialog()
-                ninjaWebView!!.initPreferences()
-                ninjaWebView!!.reload()
+                ninjaWebView.initPreferences()
+                ninjaWebView.reload()
             }
         }
         val action_cancel = dialogView.findViewById<Button>(R.id.action_cancel)
@@ -1369,7 +1348,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                     .addAction(action_PW)
                     .build()
             val notificationManager = (getSystemService(NOTIFICATION_SERVICE) as NotificationManager)
-            if (decrypted_userName.length > 0 || decrypted_userPW.length > 0) {
+            if (decrypted_userName.isNotEmpty() || decrypted_userPW.isNotEmpty()) {
                 notificationManager.notify(0, n)
             }
         } catch (e: Exception) {
@@ -1381,10 +1360,10 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     @Synchronized
     private fun addAlbum(title: String?, url: String?, foreground: Boolean) {
         ninjaWebView = NinjaWebView(context)
-        ninjaWebView!!.browserController = this
-        ninjaWebView!!.albumTitle = title
+        ninjaWebView.browserController = this
+        ninjaWebView.albumTitle = title
         ViewUnit.bound(context, ninjaWebView)
-        val albumView = ninjaWebView!!.albumView
+        val albumView = ninjaWebView.albumView
         if (currentAlbumController != null) {
             val index = BrowserContainer.indexOf(currentAlbumController) + 1
             BrowserContainer.add(ninjaWebView, index)
@@ -1397,15 +1376,15 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         }
         if (!foreground) {
             ViewUnit.bound(context, ninjaWebView)
-            ninjaWebView!!.loadUrl(url)
-            ninjaWebView!!.deactivate()
+            ninjaWebView.loadUrl(url)
+            ninjaWebView.deactivate()
             return
         } else {
             showOmnibox()
-            showAlbum(ninjaWebView!!)
+            showAlbum(ninjaWebView)
         }
         if (url != null && !url.isEmpty()) {
-            ninjaWebView!!.loadUrl(url)
+            ninjaWebView.loadUrl(url)
         }
     }
 
@@ -1420,7 +1399,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     }
 
     private fun closeTabConfirmation(okAction: Runnable) {
-        if (!sp!!.getBoolean("sp_close_tab_confirm", false)) {
+        if (!sp.getBoolean("sp_close_tab_confirm", false)) {
             okAction.run()
         } else {
             bottomSheetDialog = BottomSheetDialog(context!!, R.style.BottomSheetDialog)
@@ -1443,10 +1422,10 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     @Synchronized
     override fun removeAlbum(controller: AlbumController) {
         if (BrowserContainer.size() <= 1) {
-            if (!sp!!.getBoolean("sp_reopenLastTab", false)) {
+            if (!sp.getBoolean("sp_reopenLastTab", false)) {
                 doubleTapsQuit()
             } else {
-                updateAlbum(sp!!.getString("favoriteURL", "https://github.com/scoute-dich/browser"))
+                updateAlbum(sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"))
                 hideOverview()
             }
         } else {
@@ -1465,18 +1444,18 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
 
     private fun updateOmnibox() {
         if (ninjaWebView === currentAlbumController) {
-            omniboxTitle!!.text = ninjaWebView!!.title
+            omniboxTitle!!.text = ninjaWebView.title
         } else {
             ninjaWebView = currentAlbumController as NinjaWebView
-            updateProgress(ninjaWebView!!.progress)
+            updateProgress(ninjaWebView.progress)
         }
     }
 
     private fun scrollChange() {
-        if (Objects.requireNonNull(sp!!.getBoolean("hideToolbar", true))) {
-            ninjaWebView!!.setOnScrollChangeListener { scrollY, oldScrollY ->
-                val height = Math.floor(ninjaWebView!!.contentHeight * ninjaWebView!!.resources.displayMetrics.density.toDouble()).toInt()
-                val webViewHeight = ninjaWebView!!.height
+        if (Objects.requireNonNull(sp.getBoolean("hideToolbar", true))) {
+            ninjaWebView.setOnScrollChangeListener { scrollY, oldScrollY ->
+                val height = Math.floor(ninjaWebView.contentHeight * ninjaWebView.resources.displayMetrics.density.toDouble()).toInt()
+                val webViewHeight = ninjaWebView.height
                 val cutoff = height - webViewHeight - 112 * Math.round(resources.displayMetrics.density)
                 if (scrollY > oldScrollY && cutoff >= scrollY) {
                     // Daniel
@@ -1495,7 +1474,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         updateAutoComplete()
         scrollChange()
         HelperUnit.initRendering(contentFrame)
-        ninjaWebView!!.requestFocus()
+        ninjaWebView.requestFocus()
         if (progress < BrowserUnit.PROGRESS_MAX) {
             updateRefresh(true)
             progressBar!!.visibility = View.VISIBLE
@@ -1510,7 +1489,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             omniboxRefresh!!.setImageResource(R.drawable.icon_close)
         } else {
             try {
-                if (ninjaWebView!!.url.contains("https://")) {
+                if (ninjaWebView.url.contains("https://")) {
                     omniboxRefresh!!.setImageResource(R.drawable.icon_refresh)
                 } else {
                     omniboxRefresh!!.setImageResource(R.drawable.icon_alert)
@@ -1633,7 +1612,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 val editExtension = dialogView.findViewById<EditText>(R.id.dialog_edit_extension)
                 val filename = URLUtil.guessFileName(url, null, null)
                 editTitle.setHint(R.string.dialog_title_hint)
-                editTitle.setText(HelperUnit.fileName(ninjaWebView!!.url))
+                editTitle.setText(HelperUnit.fileName(ninjaWebView.url))
                 val extension = filename.substring(filename.lastIndexOf("."))
                 if (extension.length <= 8) {
                     editExtension.setText(extension)
@@ -1650,7 +1629,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                         if (Build.VERSION.SDK_INT >= 23 && Build.VERSION.SDK_INT < 29) {
                             val hasWRITE_EXTERNAL_STORAGE = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                             if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
-                                HelperUnit.grantPermissionsStorage(activity)
+                                HelperUnit.grantPermissionsStorage(this)
                             } else {
                                 val source = Uri.parse(url)
                                 val request = DownloadManager.Request(source)
@@ -1659,7 +1638,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                                 request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename)
                                 val dm = (getSystemService(DOWNLOAD_SERVICE) as DownloadManager)
                                 dm.enqueue(request)
-                                hideKeyboard(activity)
+                                hideKeyboard(this)
                             }
                         } else {
                             val source = Uri.parse(url)
@@ -1669,13 +1648,13 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                             request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename)
                             val dm = (getSystemService(DOWNLOAD_SERVICE) as DownloadManager)
                             dm.enqueue(request)
-                            hideKeyboard(activity)
+                            hideKeyboard(this)
                         }
                     }
                 }
                 builder.setNegativeButton(R.string.app_cancel) { dialog, whichButton ->
                     dialog.cancel()
-                    hideKeyboard(activity)
+                    hideKeyboard(this)
                 }
                 val dialog = builder.create()
                 dialog.show()
@@ -1689,7 +1668,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     }
 
     override fun onLongPress(url: String) {
-        val result = ninjaWebView!!.hitTestResult
+        val result = ninjaWebView.hitTestResult
         if (url != null) {
             show_contextMenu_link(url)
         } else if (result.type == HitTestResult.IMAGE_TYPE || result.type == HitTestResult.SRC_IMAGE_ANCHOR_TYPE || result.type == HitTestResult.SRC_ANCHOR_TYPE) {
@@ -1698,7 +1677,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     }
 
     private fun doubleTapsQuit() {
-        if (!sp!!.getBoolean("sp_close_browser_confirm", true)) {
+        if (!sp.getBoolean("sp_close_browser_confirm", true)) {
             finish()
         } else {
             bottomSheetDialog = BottomSheetDialog(context!!, R.style.BottomSheetDialog)
@@ -1723,7 +1702,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             omnibox!!.visibility = View.VISIBLE
             omniboxTitle!!.visibility = View.VISIBLE
             appBar!!.visibility = View.VISIBLE
-            hideKeyboard(activity)
+            hideKeyboard(this)
         }
     }
 
@@ -1794,19 +1773,19 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         menu_openFav = dialogView.findViewById(R.id.button_openFav)
         menu_openFav.setOnClickListener(View.OnClickListener {
             hideBottomSheetDialog()
-            updateAlbum(sp!!.getString("favoriteURL", "https://github.com/scoute-dich/browser"))
+            updateAlbum(sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"))
         })
         menu_sc = dialogView.findViewById(R.id.menu_sc)
         menu_sc.setOnClickListener(View.OnClickListener {
             hideBottomSheetDialog()
-            HelperUnit.createShortcut(context, ninjaWebView!!.title, ninjaWebView!!.url)
+            HelperUnit.createShortcut(context, ninjaWebView.title, ninjaWebView.url)
         })
         menu_fav = dialogView.findViewById(R.id.menu_fav)
         menu_fav.setOnClickListener(View.OnClickListener {
             hideBottomSheetDialog()
             HelperUnit.setFavorite(context, url)
         })
-        bottomSheetDialog!!.setContentView(dialogView)
+        bottomSheetDialog.setContentView(dialogView)
         bottomSheetDialog!!.show()
         HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
         return true
@@ -1906,14 +1885,14 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                         gridItem!!.title = text
                         action.updateGridItem(gridItem)
                         action.close()
-                        hideKeyboard(activity)
+                        hideKeyboard(this)
                         open_startPage!!.performClick()
                     }
                     hideBottomSheetDialog()
                 }
                 val action_cancel = dialogView.findViewById<Button>(R.id.action_cancel)
                 action_cancel.setOnClickListener {
-                    hideKeyboard(activity)
+                    hideKeyboard(this)
                     hideBottomSheetDialog()
                 }
                 bottomSheetDialog!!.setContentView(dialogView)
@@ -1943,7 +1922,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                             val encrypted_userPW = mahEncryptor!!.encode(pass_userPWET.text.toString().trim { it <= ' ' })
                             db.update(_id!!.toInt(), HelperUnit.secString(input_pass_title), HelperUnit.secString(input_pass_url), HelperUnit.secString(encrypted_userName), HelperUnit.secString(encrypted_userPW), pass_creation)
                             initBookmarkList()
-                            hideKeyboard(activity)
+                            hideKeyboard(this)
                         } catch (e: Exception) {
                             e.printStackTrace()
                             NinjaToast.show(context, R.string.toast_error)
@@ -1952,10 +1931,10 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                     }
                     val action_cancel = dialogView.findViewById<Button>(R.id.action_cancel)
                     action_cancel.setOnClickListener {
-                        hideKeyboard(activity)
+                        hideKeyboard(this)
                         hideBottomSheetDialog()
                     }
-                    HelperUnit.switchIcon(activity, pass_creation, "pass_creation", ib_icon)
+                    HelperUnit.switchIcon(this, pass_creation, "pass_creation", ib_icon)
                     bottomSheetDialog!!.setContentView(dialogView)
                     bottomSheetDialog!!.show()
                     HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
@@ -1966,53 +1945,53 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                             val encrypted_userName = mahEncryptor!!.encode(pass_userNameET.text.toString().trim { it <= ' ' })
                             val encrypted_userPW = mahEncryptor!!.encode(pass_userPWET.text.toString().trim { it <= ' ' })
                             hideBottomSheetDialog()
-                            hideKeyboard(activity)
+                            hideKeyboard(this)
                             bottomSheetDialog = BottomSheetDialog(context!!, R.style.BottomSheetDialog)
                             val dialogView = View.inflate(context, R.layout.dialog_edit_icon, null)
                             val grid = dialogView.findViewById<GridView>(R.id.grid_filter)
-                            val itemAlbum_01 = GridItem_filter(sp!!.getString("icon_01", resources.getString(R.string.color_red)), "icon_01", resources.getDrawable(R.drawable.circle_red_big), "01")
-                            val itemAlbum_02 = GridItem_filter(sp!!.getString("icon_02", resources.getString(R.string.color_pink)), "icon_02", resources.getDrawable(R.drawable.circle_pink_big), "02")
-                            val itemAlbum_03 = GridItem_filter(sp!!.getString("icon_03", resources.getString(R.string.color_purple)), "icon_03", resources.getDrawable(R.drawable.circle_purple_big), "03")
-                            val itemAlbum_04 = GridItem_filter(sp!!.getString("icon_04", resources.getString(R.string.color_blue)), "icon_04", resources.getDrawable(R.drawable.circle_blue_big), "04")
-                            val itemAlbum_05 = GridItem_filter(sp!!.getString("icon_05", resources.getString(R.string.color_teal)), "icon_05", resources.getDrawable(R.drawable.circle_teal_big), "05")
-                            val itemAlbum_06 = GridItem_filter(sp!!.getString("icon_06", resources.getString(R.string.color_green)), "icon_06", resources.getDrawable(R.drawable.circle_green_big), "06")
-                            val itemAlbum_07 = GridItem_filter(sp!!.getString("icon_07", resources.getString(R.string.color_lime)), "icon_07", resources.getDrawable(R.drawable.circle_lime_big), "07")
-                            val itemAlbum_08 = GridItem_filter(sp!!.getString("icon_08", resources.getString(R.string.color_yellow)), "icon_08", resources.getDrawable(R.drawable.circle_yellow_big), "08")
-                            val itemAlbum_09 = GridItem_filter(sp!!.getString("icon_09", resources.getString(R.string.color_orange)), "icon_09", resources.getDrawable(R.drawable.circle_orange_big), "09")
-                            val itemAlbum_10 = GridItem_filter(sp!!.getString("icon_10", resources.getString(R.string.color_brown)), "icon_10", resources.getDrawable(R.drawable.circle_brown_big), "10")
-                            val itemAlbum_11 = GridItem_filter(sp!!.getString("icon_11", resources.getString(R.string.color_grey)), "icon_11", resources.getDrawable(R.drawable.circle_grey_big), "11")
+                            val itemAlbum_01 = GridItem_filter(sp.getString("icon_01", resources.getString(R.string.color_red)), "icon_01", resources.getDrawable(R.drawable.circle_red_big), "01")
+                            val itemAlbum_02 = GridItem_filter(sp.getString("icon_02", resources.getString(R.string.color_pink)), "icon_02", resources.getDrawable(R.drawable.circle_pink_big), "02")
+                            val itemAlbum_03 = GridItem_filter(sp.getString("icon_03", resources.getString(R.string.color_purple)), "icon_03", resources.getDrawable(R.drawable.circle_purple_big), "03")
+                            val itemAlbum_04 = GridItem_filter(sp.getString("icon_04", resources.getString(R.string.color_blue)), "icon_04", resources.getDrawable(R.drawable.circle_blue_big), "04")
+                            val itemAlbum_05 = GridItem_filter(sp.getString("icon_05", resources.getString(R.string.color_teal)), "icon_05", resources.getDrawable(R.drawable.circle_teal_big), "05")
+                            val itemAlbum_06 = GridItem_filter(sp.getString("icon_06", resources.getString(R.string.color_green)), "icon_06", resources.getDrawable(R.drawable.circle_green_big), "06")
+                            val itemAlbum_07 = GridItem_filter(sp.getString("icon_07", resources.getString(R.string.color_lime)), "icon_07", resources.getDrawable(R.drawable.circle_lime_big), "07")
+                            val itemAlbum_08 = GridItem_filter(sp.getString("icon_08", resources.getString(R.string.color_yellow)), "icon_08", resources.getDrawable(R.drawable.circle_yellow_big), "08")
+                            val itemAlbum_09 = GridItem_filter(sp.getString("icon_09", resources.getString(R.string.color_orange)), "icon_09", resources.getDrawable(R.drawable.circle_orange_big), "09")
+                            val itemAlbum_10 = GridItem_filter(sp.getString("icon_10", resources.getString(R.string.color_brown)), "icon_10", resources.getDrawable(R.drawable.circle_brown_big), "10")
+                            val itemAlbum_11 = GridItem_filter(sp.getString("icon_11", resources.getString(R.string.color_grey)), "icon_11", resources.getDrawable(R.drawable.circle_grey_big), "11")
                             val gridList = mutableListOf<GridItem_filter>()
-                            if (sp!!.getBoolean("filter_01", true)) {
+                            if (sp.getBoolean("filter_01", true)) {
                                 gridList.add(itemAlbum_01)
                             }
-                            if (sp!!.getBoolean("filter_02", true)) {
+                            if (sp.getBoolean("filter_02", true)) {
                                 gridList.add(itemAlbum_02)
                             }
-                            if (sp!!.getBoolean("filter_03", true)) {
+                            if (sp.getBoolean("filter_03", true)) {
                                 gridList.add(itemAlbum_03)
                             }
-                            if (sp!!.getBoolean("filter_04", true)) {
+                            if (sp.getBoolean("filter_04", true)) {
                                 gridList.add(itemAlbum_04)
                             }
-                            if (sp!!.getBoolean("filter_05", true)) {
+                            if (sp.getBoolean("filter_05", true)) {
                                 gridList.add(itemAlbum_05)
                             }
-                            if (sp!!.getBoolean("filter_06", true)) {
+                            if (sp.getBoolean("filter_06", true)) {
                                 gridList.add(itemAlbum_06)
                             }
-                            if (sp!!.getBoolean("filter_07", true)) {
+                            if (sp.getBoolean("filter_07", true)) {
                                 gridList.add(itemAlbum_07)
                             }
-                            if (sp!!.getBoolean("filter_08", true)) {
+                            if (sp.getBoolean("filter_08", true)) {
                                 gridList.add(itemAlbum_08)
                             }
-                            if (sp!!.getBoolean("filter_09", true)) {
+                            if (sp.getBoolean("filter_09", true)) {
                                 gridList.add(itemAlbum_09)
                             }
-                            if (sp!!.getBoolean("filter_10", true)) {
+                            if (sp.getBoolean("filter_10", true)) {
                                 gridList.add(itemAlbum_10)
                             }
-                            if (sp!!.getBoolean("filter_11", true)) {
+                            if (sp.getBoolean("filter_11", true)) {
                                 gridList.add(itemAlbum_11)
                             }
                             val gridAdapter = GridAdapter_filter(context, gridList)
@@ -2049,56 +2028,56 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         bottomSheetDialog = BottomSheetDialog(context!!, R.style.BottomSheetDialog)
         val dialogView = View.inflate(context, R.layout.dialog_edit_icon, null)
         val grid = dialogView.findViewById<GridView>(R.id.grid_filter)
-        val itemAlbum_01 = GridItem_filter(sp!!.getString("icon_01", resources.getString(R.string.color_red)), "icon_01", resources.getDrawable(R.drawable.circle_red_big), "01")
-        val itemAlbum_02 = GridItem_filter(sp!!.getString("icon_02", resources.getString(R.string.color_pink)), "icon_02", resources.getDrawable(R.drawable.circle_pink_big), "02")
-        val itemAlbum_03 = GridItem_filter(sp!!.getString("icon_03", resources.getString(R.string.color_purple)), "icon_03", resources.getDrawable(R.drawable.circle_purple_big), "03")
-        val itemAlbum_04 = GridItem_filter(sp!!.getString("icon_04", resources.getString(R.string.color_blue)), "icon_04", resources.getDrawable(R.drawable.circle_blue_big), "04")
-        val itemAlbum_05 = GridItem_filter(sp!!.getString("icon_05", resources.getString(R.string.color_teal)), "icon_05", resources.getDrawable(R.drawable.circle_teal_big), "05")
-        val itemAlbum_06 = GridItem_filter(sp!!.getString("icon_06", resources.getString(R.string.color_green)), "icon_06", resources.getDrawable(R.drawable.circle_green_big), "06")
-        val itemAlbum_07 = GridItem_filter(sp!!.getString("icon_07", resources.getString(R.string.color_lime)), "icon_07", resources.getDrawable(R.drawable.circle_lime_big), "07")
-        val itemAlbum_08 = GridItem_filter(sp!!.getString("icon_08", resources.getString(R.string.color_yellow)), "icon_08", resources.getDrawable(R.drawable.circle_yellow_big), "08")
-        val itemAlbum_09 = GridItem_filter(sp!!.getString("icon_09", resources.getString(R.string.color_orange)), "icon_09", resources.getDrawable(R.drawable.circle_orange_big), "09")
-        val itemAlbum_10 = GridItem_filter(sp!!.getString("icon_10", resources.getString(R.string.color_brown)), "icon_10", resources.getDrawable(R.drawable.circle_brown_big), "10")
-        val itemAlbum_11 = GridItem_filter(sp!!.getString("icon_11", resources.getString(R.string.color_grey)), "icon_11", resources.getDrawable(R.drawable.circle_grey_big), "11")
+        val itemAlbum_01 = GridItem_filter(sp.getString("icon_01", resources.getString(R.string.color_red)), "icon_01", resources.getDrawable(R.drawable.circle_red_big), "01")
+        val itemAlbum_02 = GridItem_filter(sp.getString("icon_02", resources.getString(R.string.color_pink)), "icon_02", resources.getDrawable(R.drawable.circle_pink_big), "02")
+        val itemAlbum_03 = GridItem_filter(sp.getString("icon_03", resources.getString(R.string.color_purple)), "icon_03", resources.getDrawable(R.drawable.circle_purple_big), "03")
+        val itemAlbum_04 = GridItem_filter(sp.getString("icon_04", resources.getString(R.string.color_blue)), "icon_04", resources.getDrawable(R.drawable.circle_blue_big), "04")
+        val itemAlbum_05 = GridItem_filter(sp.getString("icon_05", resources.getString(R.string.color_teal)), "icon_05", resources.getDrawable(R.drawable.circle_teal_big), "05")
+        val itemAlbum_06 = GridItem_filter(sp.getString("icon_06", resources.getString(R.string.color_green)), "icon_06", resources.getDrawable(R.drawable.circle_green_big), "06")
+        val itemAlbum_07 = GridItem_filter(sp.getString("icon_07", resources.getString(R.string.color_lime)), "icon_07", resources.getDrawable(R.drawable.circle_lime_big), "07")
+        val itemAlbum_08 = GridItem_filter(sp.getString("icon_08", resources.getString(R.string.color_yellow)), "icon_08", resources.getDrawable(R.drawable.circle_yellow_big), "08")
+        val itemAlbum_09 = GridItem_filter(sp.getString("icon_09", resources.getString(R.string.color_orange)), "icon_09", resources.getDrawable(R.drawable.circle_orange_big), "09")
+        val itemAlbum_10 = GridItem_filter(sp.getString("icon_10", resources.getString(R.string.color_brown)), "icon_10", resources.getDrawable(R.drawable.circle_brown_big), "10")
+        val itemAlbum_11 = GridItem_filter(sp.getString("icon_11", resources.getString(R.string.color_grey)), "icon_11", resources.getDrawable(R.drawable.circle_grey_big), "11")
         val gridList: MutableList<GridItem_filter> = mutableListOf()
-        if (sp!!.getBoolean("filter_01", true)) {
+        if (sp.getBoolean("filter_01", true)) {
             gridList.add(itemAlbum_01)
         }
-        if (sp!!.getBoolean("filter_02", true)) {
+        if (sp.getBoolean("filter_02", true)) {
             gridList.add(itemAlbum_02)
         }
-        if (sp!!.getBoolean("filter_03", true)) {
+        if (sp.getBoolean("filter_03", true)) {
             gridList.add(itemAlbum_03)
         }
-        if (sp!!.getBoolean("filter_04", true)) {
+        if (sp.getBoolean("filter_04", true)) {
             gridList.add(itemAlbum_04)
         }
-        if (sp!!.getBoolean("filter_05", true)) {
+        if (sp.getBoolean("filter_05", true)) {
             gridList.add(itemAlbum_05)
         }
-        if (sp!!.getBoolean("filter_06", true)) {
+        if (sp.getBoolean("filter_06", true)) {
             gridList.add(itemAlbum_06)
         }
-        if (sp!!.getBoolean("filter_07", true)) {
+        if (sp.getBoolean("filter_07", true)) {
             gridList.add(itemAlbum_07)
         }
-        if (sp!!.getBoolean("filter_08", true)) {
+        if (sp.getBoolean("filter_08", true)) {
             gridList.add(itemAlbum_08)
         }
-        if (sp!!.getBoolean("filter_09", true)) {
+        if (sp.getBoolean("filter_09", true)) {
             gridList.add(itemAlbum_09)
         }
-        if (sp!!.getBoolean("filter_10", true)) {
+        if (sp.getBoolean("filter_10", true)) {
             gridList.add(itemAlbum_10)
         }
-        if (sp!!.getBoolean("filter_11", true)) {
+        if (sp.getBoolean("filter_11", true)) {
             gridList.add(itemAlbum_11)
         }
         val gridAdapter = GridAdapter_filter(context, gridList)
         grid.adapter = gridAdapter
         gridAdapter.notifyDataSetChanged()
         grid.onItemClickListener = OnItemClickListener { parent, view, position, id ->
-            sp!!.edit().putString("filter_bookmarks", gridList[position].ordinal).apply()
+            sp.edit().putString("filter_bookmarks", gridList[position].ordinal).apply()
             initBookmarkList()
             hideBottomSheetDialog()
         }
@@ -2143,8 +2122,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
 
     companion object {
         private const val INPUT_FILE_REQUEST_CODE = 1
-        private fun hideKeyboard(activity: Activity?) {
-            val imm = activity!!.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        private fun hideKeyboard(activity: Activity) {
+            val imm = activity.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
             //Find the currently focused view, so we can grab the correct window token from it.
             var view = activity.currentFocus
             //If no view currently has focus, create a new one, just so we can grab a window token from it
