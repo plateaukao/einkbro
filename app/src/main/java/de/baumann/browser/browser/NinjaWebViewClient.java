@@ -276,39 +276,4 @@ public class NinjaWebViewClient extends WebViewClient {
         dialog.show();
         HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
     }
-
-    @Override
-    public void onReceivedHttpAuthRequest(WebView view, @NonNull final HttpAuthHandler handler, String host, String realm) {
-
-        final BottomSheetDialog dialog = new BottomSheetDialog(context);
-        View dialogView = View.inflate(context, R.layout.dialog_edit_bookmark, null);
-
-        final EditText pass_userNameET = dialogView.findViewById(R.id.pass_userName);
-        final EditText pass_userPWET = dialogView.findViewById(R.id.pass_userPW);
-
-        TextInputLayout login_title = dialogView.findViewById(R.id.login_title);
-        login_title.setVisibility(View.GONE);
-
-        Button action_ok = dialogView.findViewById(R.id.action_ok);
-        action_ok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String user = pass_userNameET.getText().toString().trim();
-                String pass = pass_userPWET.getText().toString().trim();
-                handler.proceed(user, pass);
-                dialog.cancel();
-            }
-        });
-        Button action_cancel = dialogView.findViewById(R.id.action_cancel);
-        action_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                handler.cancel();
-                dialog.cancel();
-            }
-        });
-        dialog.setContentView(dialogView);
-        dialog.show();
-        HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
-    }
 }
