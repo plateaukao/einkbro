@@ -3,14 +3,14 @@ apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 29
-    buildToolsVersion '28.0.3'
+    buildToolsVersion '29.0.2'
 
     defaultConfig {
         applicationId "de.baumann.browser"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 103
-        versionName "7.1"
+        versionCode 104
+        versionName "7.2"
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -23,6 +23,10 @@ android {
     lintOptions {
         checkReleaseBuilds false
         disable 'MissingTranslation'
+    }
+
+    buildFeatures {
+        viewBinding true
     }
 
     return void
