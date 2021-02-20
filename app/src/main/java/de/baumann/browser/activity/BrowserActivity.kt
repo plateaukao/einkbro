@@ -2,7 +2,9 @@ package de.baumann.browser.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.*
+import android.app.Activity
+import android.app.DownloadManager
+import android.app.SearchManager
 import android.content.*
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
@@ -41,6 +43,7 @@ import android.widget.AdapterView.OnItemLongClickListener
 import android.widget.TextView.OnEditorActionListener
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -412,21 +415,22 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         } catch (e: Exception) {
             e.printStackTrace()
         }
+        hideBottomSheetDialog()
         when (v.id) {
+            R.id.button_size -> {
+                showFontSizeChangeDialog()
+            }
             R.id.tab_plus_bottom -> {
-                hideBottomSheetDialog()
                 hideOverview()
                 addAlbum(getString(R.string.app_name), sp.getString("favoriteURL", "https://www.google.com"), true)
             }
             R.id.button_closeTab -> {
-                hideBottomSheetDialog()
                 removeAlbum(currentAlbumController!!)
             }
             R.id.button_quit -> {
-                hideBottomSheetDialog()
                 doubleTapsQuit()
             }
-            R.id.menu_shareScreenshot -> if (Build.VERSION.SDK_INT >= 23 && Build.VERSION.SDK_INT < 29) {
+            R.id.menu_shareScreenshot -> if (Build.VERSION.SDK_INT in 23..28) {
                 val hasWRITE_EXTERNAL_STORAGE = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
                     HelperUnit.grantPermissionsStorage(this)
@@ -441,7 +445,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 ScreenshotTask(this, ninjaWebView).execute()
             }
             R.id.menu_shareLink -> {
-                hideBottomSheetDialog()
                 if (prepareRecord()) {
                     NinjaToast.show(this, getString(R.string.toast_share_failed))
                 } else {
@@ -449,17 +452,15 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 }
             }
             R.id.menu_sharePDF -> {
-                hideBottomSheetDialog()
                 printPDF(true)
             }
             R.id.menu_openWith -> {
-                hideBottomSheetDialog()
                 val intent = Intent(Intent.ACTION_VIEW)
                 intent.data = Uri.parse(url)
                 val chooser = Intent.createChooser(intent, getString(R.string.menu_open_with))
                 startActivity(chooser)
             }
-            R.id.menu_saveScreenshot -> if (Build.VERSION.SDK_INT >= 23 && Build.VERSION.SDK_INT < 29) {
+            R.id.menu_saveScreenshot -> if (Build.VERSION.SDK_INT in 23..28) {
                 val hasWRITE_EXTERNAL_STORAGE = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
                     HelperUnit.grantPermissionsStorage(this)
@@ -474,7 +475,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 ScreenshotTask(this, ninjaWebView).execute()
             }
             R.id.menu_saveBookmark -> {
-                hideBottomSheetDialog()
                 try {
                     val db = BookmarkList(this)
                     db.open()
@@ -491,21 +491,17 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 }
             }
             R.id.menu_searchSite -> {
-                hideBottomSheetDialog()
                 hideKeyboard(this)
                 showSearchPanel()
             }
             R.id.contextLink_saveAs -> {
-                hideBottomSheetDialog()
                 printPDF(false)
             }
             R.id.menu_settings -> {
-                hideBottomSheetDialog()
                 val settings = Intent(this@BrowserActivity, Settings_Activity::class.java)
                 startActivity(settings)
             }
             R.id.menu_fileManager -> {
-                hideBottomSheetDialog()
                 val intent2 = Intent(Intent.ACTION_VIEW)
                 intent2.type = "*/*"
                 intent2.flags = Intent.FLAG_ACTIVITY_NEW_TASK
@@ -557,13 +553,23 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     }
 
     // Methods
+    private fun showFontSizeChangeDialog() {
+        val fontArray = resources.getStringArray(R.array.setting_entries_font)
+        val valueArray = resources.getStringArray(R.array.setting_values_font)
+        val selected = valueArray.indexOf(sp.getString("sp_fontSize", "100")!!)
+        AlertDialog.Builder(this).apply{
+            setTitle("Choose Font Size")
+            setSingleChoiceItems(fontArray, selected) { dialog, which ->
+                sp.edit().putString("sp_fontSize", valueArray[which]).apply()
+                ninjaWebView.settings.textZoom = Integer.parseInt(sp.getString("sp_fontSize", "100") ?: "100")
+                dialog.dismiss()
+            }
+        }.create().show()
+    }
+
     private fun printPDF(share: Boolean) {
         try {
-            if (share) {
-                sp.edit().putBoolean("pdf_share", true).apply()
-            } else {
-                sp.edit().putBoolean("pdf_share", false).apply()
-            }
+            sp.edit().putBoolean("pdf_share", share).apply()
             val title = HelperUnit.fileName(ninjaWebView.url)
             val printManager = getSystemService(PRINT_SERVICE) as PrintManager
             val printAdapter = ninjaWebView.createPrintDocumentAdapter(title)
@@ -1588,10 +1594,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             val dialogView = View.inflate(this, R.layout.dialog_action, null)
             val textView = dialogView.findViewById<TextView>(R.id.dialog_text)
             textView.setText(R.string.toast_quit)
-            val action_ok = dialogView.findViewById<Button>(R.id.action_ok)
-            action_ok.setOnClickListener { finish() }
-            val action_cancel = dialogView.findViewById<Button>(R.id.action_cancel)
-            action_cancel.setOnClickListener { hideBottomSheetDialog() }
+            dialogView.findViewById<Button>(R.id.action_ok).setOnClickListener { finish() }
+            dialogView.findViewById<Button>(R.id.action_cancel).setOnClickListener { hideBottomSheetDialog() }
             bottomSheetDialog?.setContentView(dialogView)
             bottomSheetDialog?.show()
             HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
@@ -1640,6 +1644,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private fun showOverflow(): Boolean {
         bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
         val dialogView = View.inflate(this, R.layout.dialog_menu, null)
+        dialogView.findViewById<View>(R.id.button_size).setOnClickListener(this)
         dialogView.findViewById<View>(R.id.button_closeTab).setOnClickListener(this)
         dialogView.findViewById<View>(R.id.button_quit).setOnClickListener(this)
         dialogView.findViewById<View>(R.id.menu_shareScreenshot).setOnClickListener(this)
@@ -1685,36 +1690,30 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         val dialogView = View.inflate(this, R.layout.dialog_menu_context_list, null)
         val db = BookmarkList(this)
         db.open()
-        val contextList_edit = dialogView.findViewById<LinearLayout>(R.id.menu_contextList_edit)
-        val contextList_fav = dialogView.findViewById<LinearLayout>(R.id.menu_contextList_fav)
-        val contextList_sc = dialogView.findViewById<LinearLayout>(R.id.menu_contextLink_sc)
-        val contextList_newTab = dialogView.findViewById<LinearLayout>(R.id.menu_contextList_newTab)
-        val contextList_newTabOpen = dialogView.findViewById<LinearLayout>(R.id.menu_contextList_newTabOpen)
-        val contextList_delete = dialogView.findViewById<LinearLayout>(R.id.menu_contextList_delete)
         if (overViewTab == getString(R.string.album_title_history)) {
-            contextList_edit.visibility = View.GONE
+            dialogView.findViewById<LinearLayout>(R.id.menu_contextList_edit).visibility = View.GONE
         } else {
-            contextList_edit.visibility = View.VISIBLE
+            dialogView.findViewById<LinearLayout>(R.id.menu_contextList_edit).visibility = View.VISIBLE
         }
-        contextList_fav.setOnClickListener {
+        dialogView.findViewById<LinearLayout>(R.id.menu_contextList_fav).setOnClickListener {
             hideBottomSheetDialog()
             HelperUnit.setFavorite(this, url)
         }
-        contextList_sc.setOnClickListener {
+        dialogView.findViewById<LinearLayout>(R.id.menu_contextLink_sc).setOnClickListener {
             hideBottomSheetDialog()
             HelperUnit.createShortcut(this, title, url)
         }
-        contextList_newTab.setOnClickListener {
+        dialogView.findViewById<LinearLayout>(R.id.menu_contextList_newTab).setOnClickListener {
             addAlbum(getString(R.string.app_name), url, false)
             NinjaToast.show(this, getString(R.string.toast_new_tab_successful))
             hideBottomSheetDialog()
         }
-        contextList_newTabOpen.setOnClickListener {
+        dialogView.findViewById<LinearLayout>(R.id.menu_contextList_newTabOpen).setOnClickListener {
             addAlbum(getString(R.string.app_name), url, true)
             hideBottomSheetDialog()
             hideOverview()
         }
-        contextList_delete.setOnClickListener {
+        dialogView.findViewById<LinearLayout>(R.id.menu_contextList_delete).setOnClickListener {
             hideBottomSheetDialog()
             bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
             val dialogView = View.inflate(this, R.layout.dialog_action, null)
@@ -1736,7 +1735,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
         }
 
-        contextList_edit.setOnClickListener {
+        dialogView.findViewById<LinearLayout>(R.id.menu_contextList_edit).setOnClickListener {
             hideBottomSheetDialog()
             bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
             val dialogView = View.inflate(this, R.layout.dialog_edit_title, null)
@@ -1779,36 +1778,30 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         val dialogView = View.inflate(this, R.layout.dialog_menu_context_list, null)
         val db = BookmarkList(this)
         db.open()
-        val contextList_edit = dialogView.findViewById<LinearLayout>(R.id.menu_contextList_edit)
-        val contextList_fav = dialogView.findViewById<LinearLayout>(R.id.menu_contextList_fav)
-        val contextList_sc = dialogView.findViewById<LinearLayout>(R.id.menu_contextLink_sc)
-        val contextList_newTab = dialogView.findViewById<LinearLayout>(R.id.menu_contextList_newTab)
-        val contextList_newTabOpen = dialogView.findViewById<LinearLayout>(R.id.menu_contextList_newTabOpen)
-        val contextList_delete = dialogView.findViewById<LinearLayout>(R.id.menu_contextList_delete)
         if (overViewTab == getString(R.string.album_title_history)) {
-            contextList_edit.visibility = View.GONE
+            dialogView.findViewById<LinearLayout>(R.id.menu_contextList_edit).visibility = View.GONE
         } else {
-            contextList_edit.visibility = View.VISIBLE
+            dialogView.findViewById<LinearLayout>(R.id.menu_contextList_edit).visibility = View.VISIBLE
         }
-        contextList_fav.setOnClickListener {
+        dialogView.findViewById<LinearLayout>(R.id.menu_contextList_fav).setOnClickListener {
             hideBottomSheetDialog()
             HelperUnit.setFavorite(this, url)
         }
-        contextList_sc.setOnClickListener {
+        dialogView.findViewById<LinearLayout>(R.id.menu_contextLink_sc).setOnClickListener {
             hideBottomSheetDialog()
             HelperUnit.createShortcut(this, title, url)
         }
-        contextList_newTab.setOnClickListener {
+        dialogView.findViewById<LinearLayout>(R.id.menu_contextList_newTab).setOnClickListener {
             addAlbum(getString(R.string.app_name), url, false)
             NinjaToast.show(this, getString(R.string.toast_new_tab_successful))
             hideBottomSheetDialog()
         }
-        contextList_newTabOpen.setOnClickListener {
+        dialogView.findViewById<LinearLayout>(R.id.menu_contextList_newTabOpen).setOnClickListener {
             addAlbum(getString(R.string.app_name), url, true)
             hideBottomSheetDialog()
             hideOverview()
         }
-        contextList_delete.setOnClickListener {
+        dialogView.findViewById<LinearLayout>(R.id.menu_contextList_delete).setOnClickListener {
             hideBottomSheetDialog()
             bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
             val dialogView = View.inflate(this, R.layout.dialog_action, null)
@@ -1826,7 +1819,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
         }
 
-        contextList_edit.setOnClickListener {
+        dialogView.findViewById<LinearLayout>(R.id.menu_contextList_edit).setOnClickListener {
             hideBottomSheetDialog()
                 try {
                     bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
