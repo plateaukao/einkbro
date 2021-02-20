@@ -22,7 +22,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
+                android:padding="10dp"
                 android:src="@drawable/icon_tab_outline"
                 android:background="@android:color/white"/>
 
@@ -33,7 +33,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
-                android:paddingStart="16dp"
+                android:paddingStart="18dp"
                 android:text="1"
                 android:textColor="@android:color/black"/>
 
@@ -42,7 +42,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_marginEnd="20dp"
+                android:padding="10dp"
                 android:src="@drawable/icon_overflow"
                 android:background="@android:color/white"/>
 
@@ -110,6 +110,8 @@
                 android:layout_toStartOf="@id/omnibox_refresh"
                 android:layout_toEndOf="@+id/omnibox_overview"
                 android:includeFontPadding="false"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="@string/app_name"
