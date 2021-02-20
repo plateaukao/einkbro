@@ -48,6 +48,7 @@ import androidx.preference.PreferenceManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import de.baumann.browser.Ninja.R
+import de.baumann.browser.Ninja.databinding.ActivityMainBinding
 import de.baumann.browser.browser.*
 import de.baumann.browser.database.BookmarkList
 import de.baumann.browser.database.Record
@@ -70,13 +71,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private lateinit var searchUp: ImageButton
     private lateinit var searchDown: ImageButton
     private lateinit var searchCancel: ImageButton
-    private lateinit var omniboxRefresh: ImageButton
-    private lateinit var omniboxPageBack: ImageButton
-    private lateinit var omniboxPageUp: ImageButton
-    private lateinit var omniboxPageDown: ImageButton
-    private lateinit var omniboxOverflow: ImageButton
-    private lateinit var omniboxOverview: ImageButton
-    private lateinit var omniboxTabCount: TextView
     private lateinit var open_startPage: ImageButton
     private lateinit var open_bookmark: ImageButton
     private lateinit var open_history: ImageButton
@@ -98,7 +92,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private var customView: View? = null
 
     // Layouts
-    private lateinit var appBar: RelativeLayout
     private lateinit var omnibox: RelativeLayout
     private lateinit var searchPanel: RelativeLayout
     private lateinit var contentFrame: FrameLayout
@@ -140,6 +133,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private var currentAlbumController: AlbumController? = null
     private var mFilePathCallback: ValueCallback<Array<Uri>>? = null
 
+    private lateinit var binding: ActivityMainBinding
     // Classes
     private inner class VideoCompletionListener : OnCompletionListener, MediaPlayer.OnErrorListener {
         override fun onError(mp: MediaPlayer, what: Int, extra: Int): Boolean {
@@ -155,12 +149,14 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        binding = ActivityMainBinding.inflate(layoutInflater)
+
         WebView.enableSlowWholeDocumentDraw()
         sp = PreferenceManager.getDefaultSharedPreferences(this)
         sp.edit().putInt("restart_changed", 0).apply()
         sp.edit().putBoolean("pdf_create", false).apply()
         HelperUnit.applyTheme(this)
-        setContentView(R.layout.activity_main)
+        setContentView(binding.root)
         if (Objects.requireNonNull(sp.getString("saved_key_ok", "no")) == "no") {
             val chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!§$%&/()=?;:_-.,+#*<>".toCharArray()
             val sb = StringBuilder()
@@ -185,7 +181,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             sp.edit().putBoolean(getString(R.string.sp_location), false).apply()
         }
         contentFrame = findViewById(R.id.main_content)
-        appBar = findViewById(R.id.appBar)
         dimen156dp = resources.getDimensionPixelSize(R.dimen.layout_width_156dp).toFloat()
         dimen117dp = resources.getDimensionPixelSize(R.dimen.layout_height_117dp).toFloat()
         initOmnibox()
@@ -617,13 +612,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private fun initOmnibox() {
         omnibox = findViewById(R.id.main_omnibox)
         inputBox = findViewById(R.id.main_omnibox_input)
-        omniboxRefresh = findViewById(R.id.omnibox_refresh)
-        omniboxPageBack = findViewById(R.id.omnibox_page_back)
-        omniboxPageUp = findViewById(R.id.omnibox_page_up)
-        omniboxPageDown = findViewById(R.id.omnibox_page_down)
-        omniboxOverview = findViewById(R.id.omnibox_overview)
-        omniboxTabCount = findViewById(R.id.omnibox_web_count)
-        omniboxOverflow = findViewById(R.id.omnibox_overflow)
         omniboxTitle = findViewById(R.id.omnibox_title)
         progressBar = findViewById(R.id.main_progress_bar)
         val nav_position = Objects.requireNonNull(sp.getString("nav_position", "0"))
@@ -636,12 +624,12 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             show_dialogFastToggle()
             false
         })
-        omniboxOverflow.setOnLongClickListener(OnLongClickListener {
+        binding.omniboxOverflow.setOnLongClickListener(OnLongClickListener {
             show_dialogFastToggle()
             false
         })
         fab_imageButtonNav.setOnClickListener(View.OnClickListener { showOmnibox() })
-        omniboxOverflow.setOnClickListener(View.OnClickListener { showOverflow() })
+        binding.omniboxOverflow.setOnClickListener(View.OnClickListener { showOverflow() })
         if (sp.getBoolean("sp_gestures_use", true)) {
             fab_imageButtonNav.setOnTouchListener(object : SwipeTouchListener(this) {
                 override fun onSwipeTop() {
@@ -660,7 +648,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                     performGesture("setting_gesture_nav_left")
                 }
             })
-            omniboxOverflow.setOnTouchListener(object : SwipeTouchListener(this) {
+            binding.omniboxOverflow.setOnTouchListener(object : SwipeTouchListener(this) {
                 override fun onSwipeTop() {
                     performGesture("setting_gesture_nav_up")
                 }
@@ -721,20 +709,20 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             }
         })
         updateAutoComplete()
-        omniboxRefresh.setOnClickListener(this)
-        omniboxPageBack.setOnClickListener(this)
-        omniboxPageUp.setOnClickListener(this)
-        omniboxPageDown.setOnClickListener(this)
-        omniboxOverview.setOnClickListener(this)
+        binding.omniboxRefresh.setOnClickListener(this)
+        binding.omniboxPageBack.setOnClickListener(this)
+        binding.omniboxPageUp.setOnClickListener(this)
+        binding.omniboxPageDown.setOnClickListener(this)
+        binding.omniboxOverview.setOnClickListener(this)
 
         // scroll to top
-        omniboxPageUp.setOnLongClickListener(OnLongClickListener {
+        binding.omniboxPageUp.setOnLongClickListener(OnLongClickListener {
             ninjaWebView.jumpToTop()
             true
         })
 
         // hide bottom bar when refresh button is long pressed.
-        omniboxRefresh.setOnLongClickListener(OnLongClickListener {
+        binding.omniboxRefresh.setOnLongClickListener(OnLongClickListener {
             hideOmnibox()
             true
         })
@@ -743,13 +731,13 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private fun toggleIconsOnOmnibox(shouldHide: Boolean) {
         val visibility = if (shouldHide) View.GONE else View.VISIBLE
         omniboxTitle.visibility = visibility
-        omniboxRefresh.visibility = visibility
-        omniboxOverview.visibility = visibility
-        omniboxTabCount.visibility = visibility
-        omniboxPageBack.visibility = visibility
-        omniboxPageDown.visibility = visibility
-        omniboxPageUp.visibility = visibility
-        omniboxOverflow.visibility = visibility
+        binding.omniboxRefresh.visibility = visibility
+        binding.omniboxOverview.visibility = visibility
+        binding.omniboxWebCount.visibility = visibility
+        binding.omniboxPageBack.visibility = visibility
+        binding.omniboxPageDown.visibility = visibility
+        binding.omniboxPageUp.visibility = visibility
+        binding.omniboxOverflow.visibility = visibility
     }
 
     private fun performGesture(gesture: String) {
@@ -1297,7 +1285,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     }
 
     private fun updateWebViewCount() {
-        omniboxTabCount.text = BrowserContainer.size().toString()
+        binding.omniboxWebCount.text = BrowserContainer.size().toString()
     }
 
     @Synchronized
@@ -1396,16 +1384,16 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
 
     private fun updateRefresh(running: Boolean) {
         if (running) {
-            omniboxRefresh.setImageResource(R.drawable.icon_close)
+            binding.omniboxRefresh.setImageResource(R.drawable.icon_close)
         } else {
             try {
                 if (ninjaWebView.url.contains("https://")) {
-                    omniboxRefresh.setImageResource(R.drawable.icon_refresh)
+                    binding.omniboxRefresh.setImageResource(R.drawable.icon_refresh)
                 } else {
-                    omniboxRefresh.setImageResource(R.drawable.icon_alert)
+                    binding.omniboxRefresh.setImageResource(R.drawable.icon_alert)
                 }
             } catch (e: Exception) {
-                omniboxRefresh.setImageResource(R.drawable.icon_refresh)
+                binding.omniboxRefresh.setImageResource(R.drawable.icon_refresh)
             }
         }
     }
@@ -1609,7 +1597,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             searchPanel.visibility = View.GONE
             omnibox.visibility = View.VISIBLE
             omniboxTitle.visibility = View.VISIBLE
-            appBar.visibility = View.VISIBLE
+            binding.appBar.visibility = View.VISIBLE
             hideKeyboard(this)
         }
     }
@@ -1621,7 +1609,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             searchPanel.visibility = View.GONE
             omnibox.visibility = View.GONE
             omniboxTitle.visibility = View.GONE
-            appBar.visibility = View.GONE
+            binding.appBar.visibility = View.GONE
         }
     }
 
@@ -1638,7 +1626,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         omnibox.visibility = View.GONE
         searchPanel.visibility = View.VISIBLE
         omniboxTitle.visibility = View.GONE
-        appBar.visibility = View.VISIBLE
+        binding.appBar.visibility = View.VISIBLE
     }
 
     private fun showOverflow(): Boolean {
