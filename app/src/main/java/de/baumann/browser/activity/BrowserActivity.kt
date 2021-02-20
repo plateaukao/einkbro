@@ -41,11 +41,9 @@ import android.widget.AdapterView.OnItemLongClickListener
 import android.widget.TextView.OnEditorActionListener
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
 import androidx.preference.PreferenceManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.mobapphome.mahencryptorlib.MAHEncryptor
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.browser.*
 import de.baumann.browser.database.BookmarkList
@@ -114,7 +112,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private var overViewTab: String? = null
     private var downloadReceiver: BroadcastReceiver? = null
     private lateinit var sp: SharedPreferences
-    private lateinit var mahEncryptor: MAHEncryptor
     private var javaHosts: Javascript? = null
     private var cookieHosts: Cookie? = null
     private var adBlock: AdBlock? = null
@@ -183,11 +180,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             sp.edit().putString("setting_gesture_nav_left", "03").apply()
             sp.edit().putString("setting_gesture_nav_right", "02").apply()
             sp.edit().putBoolean(getString(R.string.sp_location), false).apply()
-        }
-        try {
-            mahEncryptor = MAHEncryptor.newInstance(Objects.requireNonNull(sp.getString("saved_key", "")))
-        } catch (e: Exception) {
-            e.printStackTrace()
         }
         contentFrame = findViewById(R.id.main_content)
         appBar = findViewById(R.id.appBar)
@@ -484,15 +476,12 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             R.id.menu_saveBookmark -> {
                 hideBottomSheetDialog()
                 try {
-                    val mahEncryptor = MAHEncryptor.newInstance(Objects.requireNonNull(sp.getString("saved_key", "")))
-                    val encrypted_userName = mahEncryptor.encode("")
-                    val encrypted_userPW = mahEncryptor.encode("")
                     val db = BookmarkList(this)
                     db.open()
                     if (db.isExist(url)) {
                         NinjaToast.show(this, R.string.toast_newTitle)
                     } else {
-                        db.insert(HelperUnit.secString(ninjaWebView.title), url, encrypted_userName, encrypted_userPW, "01")
+                        db.insert(HelperUnit.secString(ninjaWebView.title), url, "", "", "01")
                         NinjaToast.show(this, R.string.toast_edit_successful)
                         initBookmarkList()
                     }
@@ -842,18 +831,13 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
             val dialogView = View.inflate(this, R.layout.dialog_menu_overview, null)
             val bookmark_sort = dialogView.findViewById<LinearLayout>(R.id.bookmark_sort)
-            val bookmark_filter = dialogView.findViewById<LinearLayout>(R.id.bookmark_filter)
             if (overViewTab == getString(R.string.album_title_bookmarks)) {
-                bookmark_filter.visibility = View.VISIBLE
                 bookmark_sort.visibility = View.VISIBLE
             } else if (overViewTab == getString(R.string.album_title_home)) {
-                bookmark_filter.visibility = View.GONE
                 bookmark_sort.visibility = View.VISIBLE
             } else if (overViewTab == getString(R.string.album_title_history)) {
-                bookmark_filter.visibility = View.GONE
                 bookmark_sort.visibility = View.GONE
             }
-            bookmark_filter.setOnClickListener { show_dialogFilter() }
             bookmark_sort.setOnClickListener {
                 hideBottomSheetDialog()
                 bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
@@ -963,12 +947,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             open_bookmarkView.setVisibility(View.VISIBLE)
             open_historyView.setVisibility(View.INVISIBLE)
             overViewTab = getString(R.string.album_title_bookmarks)
-            sp.edit().putString("filter_bookmarks", "00").apply()
             initBookmarkList()
-        })
-        open_bookmark.setOnLongClickListener(OnLongClickListener {
-            show_dialogFilter()
-            false
         })
         open_history.setOnClickListener(View.OnClickListener {
             overview_top.setVisibility(View.GONE)
@@ -1081,7 +1060,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             val pass_icon = row.getString(row.getColumnIndexOrThrow("pass_icon"))
             val pass_attachment = row.getString(row.getColumnIndexOrThrow("pass_attachment"))
             updateAlbum(pass_content)
-            toast_login(pass_icon, pass_attachment)
             hideOverview()
         }
         listView.onItemLongClickListener = OnItemLongClickListener { parent, view, position, id ->
@@ -1280,67 +1258,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
     }
 
-    private fun toast_login(userName: String, passWord: String) {
-        try {
-            val decrypted_userName = mahEncryptor.decode(userName)
-            val decrypted_userPW = mahEncryptor.decode(passWord)
-            val clipboard = (getSystemService(CLIPBOARD_SERVICE) as ClipboardManager)
-            val unCopy: BroadcastReceiver = object : BroadcastReceiver() {
-                override fun onReceive(context: Context, intent: Intent) {
-                    val clip = ClipData.newPlainText("text", decrypted_userName)
-                    clipboard.setPrimaryClip(clip)
-                    NinjaToast.show(this@BrowserActivity, R.string.toast_copy_successful)
-                }
-            }
-            val pwCopy: BroadcastReceiver = object : BroadcastReceiver() {
-                override fun onReceive(context: Context, intent: Intent) {
-                    val clip = ClipData.newPlainText("text", decrypted_userPW)
-                    clipboard.setPrimaryClip(clip)
-                    NinjaToast.show(this@BrowserActivity, R.string.toast_copy_successful)
-                }
-            }
-            val intentFilter = IntentFilter("unCopy")
-            registerReceiver(unCopy, intentFilter)
-            val copy = Intent("unCopy")
-            val copyUN = PendingIntent.getBroadcast(this, 0, copy, PendingIntent.FLAG_CANCEL_CURRENT)
-            val intentFilter2 = IntentFilter("pwCopy")
-            registerReceiver(pwCopy, intentFilter2)
-            val copy2 = Intent("pwCopy")
-            val copyPW = PendingIntent.getBroadcast(this, 1, copy2, PendingIntent.FLAG_CANCEL_CURRENT)
-            val builder: NotificationCompat.Builder
-            val mNotificationManager = (getSystemService(NOTIFICATION_SERVICE) as NotificationManager)
-            builder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                val CHANNEL_ID = "browser_not" // The id of the channel.
-                val name: CharSequence = getString(R.string.app_name) // The user-visible name of the channel.
-                val mChannel = NotificationChannel(CHANNEL_ID, name, NotificationManager.IMPORTANCE_HIGH)
-                mNotificationManager.createNotificationChannel(mChannel)
-                NotificationCompat.Builder(this, CHANNEL_ID)
-            } else {
-                NotificationCompat.Builder(this)
-            }
-            val action_UN = NotificationCompat.Action.Builder(R.drawable.icon_earth, getString(R.string.toast_titleConfirm_pasteUN), copyUN).build()
-            val action_PW = NotificationCompat.Action.Builder(R.drawable.icon_earth, getString(R.string.toast_titleConfirm_pastePW), copyPW).build()
-            val n = builder
-                    .setCategory(Notification.CATEGORY_MESSAGE)
-                    .setSmallIcon(R.drawable.ic_notification_ninja)
-                    .setContentTitle(getString(R.string.app_name))
-                    .setContentText(getString(R.string.toast_titleConfirm_paste))
-                    .setColor(resources.getColor(R.color.colorAccent))
-                    .setAutoCancel(true)
-                    .setPriority(Notification.PRIORITY_HIGH)
-                    .setVibrate(LongArray(0))
-                    .addAction(action_UN)
-                    .addAction(action_PW)
-                    .build()
-            val notificationManager = (getSystemService(NOTIFICATION_SERVICE) as NotificationManager)
-            if (decrypted_userName.isNotEmpty() || decrypted_userPW.isNotEmpty()) {
-                notificationManager.notify(0, n)
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-            NinjaToast.show(this, R.string.toast_error)
-        }
-    }
 
     @Synchronized
     private fun addAlbum(title: String?, url: String?, foreground: Boolean) {
@@ -1915,23 +1832,14 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                     bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
                     val dialogView = View.inflate(this, R.layout.dialog_edit_bookmark, null)
                     val pass_titleET = dialogView.findViewById<EditText>(R.id.pass_title)
-                    val pass_userNameET = dialogView.findViewById<EditText>(R.id.pass_userName)
-                    val pass_userPWET = dialogView.findViewById<EditText>(R.id.pass_userPW)
                     val pass_URLET = dialogView.findViewById<EditText>(R.id.pass_url)
-                    val ib_icon = dialogView.findViewById<ImageView>(R.id.ib_icon)
-                    val decrypted_userName = mahEncryptor.decode(userName)
-                    val decrypted_userPW = mahEncryptor.decode(userPW)
                     pass_titleET.setText(title)
-                    pass_userNameET.setText(decrypted_userName)
-                    pass_userPWET.setText(decrypted_userPW)
                     pass_URLET.setText(url)
                     dialogView.findViewById<Button>(R.id.action_ok).setOnClickListener {
                         try {
                             val input_pass_title = pass_titleET.text.toString().trim { it <= ' ' }
                             val input_pass_url = pass_URLET.text.toString().trim { it <= ' ' }
-                            val encrypted_userName = mahEncryptor.encode(pass_userNameET.text.toString().trim { it <= ' ' })
-                            val encrypted_userPW = mahEncryptor.encode(pass_userPWET.text.toString().trim { it <= ' ' })
-                            db.update(_id.toInt(), HelperUnit.secString(input_pass_title), HelperUnit.secString(input_pass_url), HelperUnit.secString(encrypted_userName), HelperUnit.secString(encrypted_userPW), pass_creation)
+                            db.update(_id.toInt(), HelperUnit.secString(input_pass_title), HelperUnit.secString(input_pass_url), "", "", pass_creation)
                             initBookmarkList()
                             hideKeyboard(this)
                         } catch (e: Exception) {
@@ -1944,83 +1852,9 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                         hideKeyboard(this)
                         hideBottomSheetDialog()
                     }
-                    HelperUnit.switchIcon(this, pass_creation, "pass_creation", ib_icon)
                     bottomSheetDialog?.setContentView(dialogView)
                     bottomSheetDialog?.show()
                     HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
-                    ib_icon.setOnClickListener {
-                        try {
-                            val input_pass_title = pass_titleET.text.toString().trim { it <= ' ' }
-                            val input_pass_url = pass_URLET.text.toString().trim { it <= ' ' }
-                            val encrypted_userName = mahEncryptor.encode(pass_userNameET.text.toString().trim { it <= ' ' })
-                            val encrypted_userPW = mahEncryptor.encode(pass_userPWET.text.toString().trim { it <= ' ' })
-                            hideBottomSheetDialog()
-                            hideKeyboard(this)
-                            bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
-                            val dialogView = View.inflate(this, R.layout.dialog_edit_icon, null)
-                            val grid = dialogView.findViewById<GridView>(R.id.grid_filter)
-                            val itemAlbum_01 = GridItem_filter(sp.getString("icon_01", resources.getString(R.string.color_red)), "icon_01", resources.getDrawable(R.drawable.circle_red_big), "01")
-                            val itemAlbum_02 = GridItem_filter(sp.getString("icon_02", resources.getString(R.string.color_pink)), "icon_02", resources.getDrawable(R.drawable.circle_pink_big), "02")
-                            val itemAlbum_03 = GridItem_filter(sp.getString("icon_03", resources.getString(R.string.color_purple)), "icon_03", resources.getDrawable(R.drawable.circle_purple_big), "03")
-                            val itemAlbum_04 = GridItem_filter(sp.getString("icon_04", resources.getString(R.string.color_blue)), "icon_04", resources.getDrawable(R.drawable.circle_blue_big), "04")
-                            val itemAlbum_05 = GridItem_filter(sp.getString("icon_05", resources.getString(R.string.color_teal)), "icon_05", resources.getDrawable(R.drawable.circle_teal_big), "05")
-                            val itemAlbum_06 = GridItem_filter(sp.getString("icon_06", resources.getString(R.string.color_green)), "icon_06", resources.getDrawable(R.drawable.circle_green_big), "06")
-                            val itemAlbum_07 = GridItem_filter(sp.getString("icon_07", resources.getString(R.string.color_lime)), "icon_07", resources.getDrawable(R.drawable.circle_lime_big), "07")
-                            val itemAlbum_08 = GridItem_filter(sp.getString("icon_08", resources.getString(R.string.color_yellow)), "icon_08", resources.getDrawable(R.drawable.circle_yellow_big), "08")
-                            val itemAlbum_09 = GridItem_filter(sp.getString("icon_09", resources.getString(R.string.color_orange)), "icon_09", resources.getDrawable(R.drawable.circle_orange_big), "09")
-                            val itemAlbum_10 = GridItem_filter(sp.getString("icon_10", resources.getString(R.string.color_brown)), "icon_10", resources.getDrawable(R.drawable.circle_brown_big), "10")
-                            val itemAlbum_11 = GridItem_filter(sp.getString("icon_11", resources.getString(R.string.color_grey)), "icon_11", resources.getDrawable(R.drawable.circle_grey_big), "11")
-                            val gridList = mutableListOf<GridItem_filter>()
-                            if (sp.getBoolean("filter_01", true)) {
-                                gridList.add(itemAlbum_01)
-                            }
-                            if (sp.getBoolean("filter_02", true)) {
-                                gridList.add(itemAlbum_02)
-                            }
-                            if (sp.getBoolean("filter_03", true)) {
-                                gridList.add(itemAlbum_03)
-                            }
-                            if (sp.getBoolean("filter_04", true)) {
-                                gridList.add(itemAlbum_04)
-                            }
-                            if (sp.getBoolean("filter_05", true)) {
-                                gridList.add(itemAlbum_05)
-                            }
-                            if (sp.getBoolean("filter_06", true)) {
-                                gridList.add(itemAlbum_06)
-                            }
-                            if (sp.getBoolean("filter_07", true)) {
-                                gridList.add(itemAlbum_07)
-                            }
-                            if (sp.getBoolean("filter_08", true)) {
-                                gridList.add(itemAlbum_08)
-                            }
-                            if (sp.getBoolean("filter_09", true)) {
-                                gridList.add(itemAlbum_09)
-                            }
-                            if (sp.getBoolean("filter_10", true)) {
-                                gridList.add(itemAlbum_10)
-                            }
-                            if (sp.getBoolean("filter_11", true)) {
-                                gridList.add(itemAlbum_11)
-                            }
-                            val gridAdapter = GridAdapter_filter(this, gridList)
-                            grid.adapter = gridAdapter
-                            gridAdapter.notifyDataSetChanged()
-                            grid.onItemClickListener = OnItemClickListener { parent, view, position, id ->
-                                db.update(_id.toInt(), HelperUnit.secString(input_pass_title), HelperUnit.secString(input_pass_url), HelperUnit.secString(encrypted_userName), HelperUnit.secString(encrypted_userPW), gridList[position].ordinal)
-                                initBookmarkList()
-                                hideBottomSheetDialog()
-                            }
-                            bottomSheetDialog?.setContentView(dialogView)
-                            bottomSheetDialog?.show()
-                            HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                            hideBottomSheetDialog()
-                            NinjaToast.show(this, R.string.toast_error)
-                        }
-                    }
                 } catch (e: Exception) {
                     e.printStackTrace()
                     NinjaToast.show(this, R.string.toast_error)
@@ -2039,36 +1873,30 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         val dialogView = View.inflate(this, R.layout.dialog_menu_context_list, null)
         val db = BookmarkList(this)
         db.open()
-        val contextList_edit = dialogView.findViewById<LinearLayout>(R.id.menu_contextList_edit)
-        val contextList_fav = dialogView.findViewById<LinearLayout>(R.id.menu_contextList_fav)
-        val contextList_sc = dialogView.findViewById<LinearLayout>(R.id.menu_contextLink_sc)
-        val contextList_newTab = dialogView.findViewById<LinearLayout>(R.id.menu_contextList_newTab)
-        val contextList_newTabOpen = dialogView.findViewById<LinearLayout>(R.id.menu_contextList_newTabOpen)
-        val contextList_delete = dialogView.findViewById<LinearLayout>(R.id.menu_contextList_delete)
         if (overViewTab == getString(R.string.album_title_history)) {
-            contextList_edit.visibility = View.GONE
+            dialogView.findViewById<LinearLayout>(R.id.menu_contextList_edit).visibility = View.GONE
         } else {
-            contextList_edit.visibility = View.VISIBLE
+            dialogView.findViewById<LinearLayout>(R.id.menu_contextList_edit).visibility = View.VISIBLE
         }
-        contextList_fav.setOnClickListener {
+        dialogView.findViewById<LinearLayout>(R.id.menu_contextList_fav).setOnClickListener {
             hideBottomSheetDialog()
             HelperUnit.setFavorite(this, url)
         }
-        contextList_sc.setOnClickListener {
+        dialogView.findViewById<LinearLayout>(R.id.menu_contextLink_sc).setOnClickListener {
             hideBottomSheetDialog()
             HelperUnit.createShortcut(this, title, url)
         }
-        contextList_newTab.setOnClickListener {
+        dialogView.findViewById<LinearLayout>(R.id.menu_contextList_newTab).setOnClickListener {
             addAlbum(getString(R.string.app_name), url, false)
             NinjaToast.show(this, getString(R.string.toast_new_tab_successful))
             hideBottomSheetDialog()
         }
-        contextList_newTabOpen.setOnClickListener {
+        dialogView.findViewById<LinearLayout>(R.id.menu_contextList_newTabOpen).setOnClickListener {
             addAlbum(getString(R.string.app_name), url, true)
             hideBottomSheetDialog()
             hideOverview()
         }
-        contextList_delete.setOnClickListener {
+        dialogView.findViewById<LinearLayout>(R.id.menu_contextList_delete).setOnClickListener {
             hideBottomSheetDialog()
             bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
             val dialogView = View.inflate(this, R.layout.dialog_action, null)
@@ -2092,301 +1920,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
         }
 
-        bottomSheetDialog?.setContentView(dialogView)
-        bottomSheetDialog?.show()
-        HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
-    }
-
-    private fun show_contextMenu_list(title: String, url: String,
-                                      adapterRecord: Adapter_Record, recordList: MutableList<Record>, location: Int,
-                                      userName: String, userPW: String, _id: String, pass_creation: String?,
-                                      gridItem: GridItem) {
-        bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
-        val dialogView = View.inflate(this, R.layout.dialog_menu_context_list, null)
-        val db = BookmarkList(this)
-        db.open()
-        val contextList_edit = dialogView.findViewById<LinearLayout>(R.id.menu_contextList_edit)
-        val contextList_fav = dialogView.findViewById<LinearLayout>(R.id.menu_contextList_fav)
-        val contextList_sc = dialogView.findViewById<LinearLayout>(R.id.menu_contextLink_sc)
-        val contextList_newTab = dialogView.findViewById<LinearLayout>(R.id.menu_contextList_newTab)
-        val contextList_newTabOpen = dialogView.findViewById<LinearLayout>(R.id.menu_contextList_newTabOpen)
-        val contextList_delete = dialogView.findViewById<LinearLayout>(R.id.menu_contextList_delete)
-        if (overViewTab == getString(R.string.album_title_history)) {
-            contextList_edit.visibility = View.GONE
-        } else {
-            contextList_edit.visibility = View.VISIBLE
-        }
-        contextList_fav.setOnClickListener {
-            hideBottomSheetDialog()
-            HelperUnit.setFavorite(this, url)
-        }
-        contextList_sc.setOnClickListener {
-            hideBottomSheetDialog()
-            HelperUnit.createShortcut(this, title, url)
-        }
-        contextList_newTab.setOnClickListener {
-            addAlbum(getString(R.string.app_name), url, false)
-            NinjaToast.show(this, getString(R.string.toast_new_tab_successful))
-            hideBottomSheetDialog()
-        }
-        contextList_newTabOpen.setOnClickListener {
-            addAlbum(getString(R.string.app_name), url, true)
-            hideBottomSheetDialog()
-            hideOverview()
-        }
-        contextList_delete.setOnClickListener {
-            hideBottomSheetDialog()
-            bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
-            val dialogView = View.inflate(this, R.layout.dialog_action, null)
-            val textView = dialogView.findViewById<TextView>(R.id.dialog_text)
-            textView.setText(R.string.toast_titleConfirm_delete)
-
-            dialogView.findViewById<Button>(R.id.action_ok).setOnClickListener {
-                when (overViewTab) {
-                    getString(R.string.album_title_home) -> {
-                        val action = RecordAction(this@BrowserActivity)
-                        action.open(true)
-                        action.deleteGridItem(gridItem)
-                        action.close()
-                        deleteFile(gridItem.filename)
-                        open_startPage.performClick()
-                        hideBottomSheetDialog()
-                    }
-                    getString(R.string.album_title_bookmarks) -> {
-                        db.delete(_id.toInt())
-                        initBookmarkList()
-                        hideBottomSheetDialog()
-                    }
-                    getString(R.string.album_title_history) -> {
-                        val record = recordList[location]
-                        val action = RecordAction(this@BrowserActivity)
-                        action.open(true)
-                        action.deleteHistoryItem(record)
-                        action.close()
-                        recordList.removeAt(location)
-                        adapterRecord.notifyDataSetChanged()
-                        updateAutoComplete()
-                        hideBottomSheetDialog()
-                    }
-                }
-            }
-            dialogView.findViewById<Button>(R.id.action_cancel).setOnClickListener { hideBottomSheetDialog() }
-            bottomSheetDialog?.setContentView(dialogView)
-            bottomSheetDialog?.show()
-            HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
-        }
-
-        contextList_edit.setOnClickListener {
-            hideBottomSheetDialog()
-            if (overViewTab == getString(R.string.album_title_home)) {
-                bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
-                val dialogView = View.inflate(this, R.layout.dialog_edit_title, null)
-                val editText = dialogView.findViewById<EditText>(R.id.dialog_edit)
-                editText.setHint(R.string.dialog_title_hint)
-                editText.setText(title)
-                dialogView.findViewById<Button>(R.id.action_ok).setOnClickListener {
-                    val text = editText.text.toString().trim { it <= ' ' }
-                    if (text.isEmpty()) {
-                        NinjaToast.show(this, getString(R.string.toast_input_empty))
-                    } else {
-                        val action = RecordAction(this@BrowserActivity)
-                        action.open(true)
-                        gridItem.title = text
-                        action.updateGridItem(gridItem)
-                        action.close()
-                        hideKeyboard(this)
-                        open_startPage.performClick()
-                    }
-                    hideBottomSheetDialog()
-                }
-                dialogView.findViewById<Button>(R.id.action_cancel).setOnClickListener {
-                    hideKeyboard(this)
-                    hideBottomSheetDialog()
-                }
-                bottomSheetDialog?.setContentView(dialogView)
-                bottomSheetDialog?.show()
-                HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
-            } else if (overViewTab == getString(R.string.album_title_bookmarks)) {
-                try {
-                    bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
-                    val dialogView = View.inflate(this, R.layout.dialog_edit_bookmark, null)
-                    val pass_titleET = dialogView.findViewById<EditText>(R.id.pass_title)
-                    val pass_userNameET = dialogView.findViewById<EditText>(R.id.pass_userName)
-                    val pass_userPWET = dialogView.findViewById<EditText>(R.id.pass_userPW)
-                    val pass_URLET = dialogView.findViewById<EditText>(R.id.pass_url)
-                    val ib_icon = dialogView.findViewById<ImageView>(R.id.ib_icon)
-                    val decrypted_userName = mahEncryptor.decode(userName)
-                    val decrypted_userPW = mahEncryptor.decode(userPW)
-                    pass_titleET.setText(title)
-                    pass_userNameET.setText(decrypted_userName)
-                    pass_userPWET.setText(decrypted_userPW)
-                    pass_URLET.setText(url)
-                    dialogView.findViewById<Button>(R.id.action_ok).setOnClickListener {
-                        try {
-                            val input_pass_title = pass_titleET.text.toString().trim { it <= ' ' }
-                            val input_pass_url = pass_URLET.text.toString().trim { it <= ' ' }
-                            val encrypted_userName = mahEncryptor.encode(pass_userNameET.text.toString().trim { it <= ' ' })
-                            val encrypted_userPW = mahEncryptor.encode(pass_userPWET.text.toString().trim { it <= ' ' })
-                            db.update(_id.toInt(), HelperUnit.secString(input_pass_title), HelperUnit.secString(input_pass_url), HelperUnit.secString(encrypted_userName), HelperUnit.secString(encrypted_userPW), pass_creation)
-                            initBookmarkList()
-                            hideKeyboard(this)
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                            NinjaToast.show(this, R.string.toast_error)
-                        }
-                        hideBottomSheetDialog()
-                    }
-                    dialogView.findViewById<Button>(R.id.action_cancel).setOnClickListener {
-                        hideKeyboard(this)
-                        hideBottomSheetDialog()
-                    }
-                    HelperUnit.switchIcon(this, pass_creation, "pass_creation", ib_icon)
-                    bottomSheetDialog?.setContentView(dialogView)
-                    bottomSheetDialog?.show()
-                    HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
-                    ib_icon.setOnClickListener {
-                        try {
-                            val input_pass_title = pass_titleET.text.toString().trim { it <= ' ' }
-                            val input_pass_url = pass_URLET.text.toString().trim { it <= ' ' }
-                            val encrypted_userName = mahEncryptor.encode(pass_userNameET.text.toString().trim { it <= ' ' })
-                            val encrypted_userPW = mahEncryptor.encode(pass_userPWET.text.toString().trim { it <= ' ' })
-                            hideBottomSheetDialog()
-                            hideKeyboard(this)
-                            bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
-                            val dialogView = View.inflate(this, R.layout.dialog_edit_icon, null)
-                            val grid = dialogView.findViewById<GridView>(R.id.grid_filter)
-                            val itemAlbum_01 = GridItem_filter(sp.getString("icon_01", resources.getString(R.string.color_red)), "icon_01", resources.getDrawable(R.drawable.circle_red_big), "01")
-                            val itemAlbum_02 = GridItem_filter(sp.getString("icon_02", resources.getString(R.string.color_pink)), "icon_02", resources.getDrawable(R.drawable.circle_pink_big), "02")
-                            val itemAlbum_03 = GridItem_filter(sp.getString("icon_03", resources.getString(R.string.color_purple)), "icon_03", resources.getDrawable(R.drawable.circle_purple_big), "03")
-                            val itemAlbum_04 = GridItem_filter(sp.getString("icon_04", resources.getString(R.string.color_blue)), "icon_04", resources.getDrawable(R.drawable.circle_blue_big), "04")
-                            val itemAlbum_05 = GridItem_filter(sp.getString("icon_05", resources.getString(R.string.color_teal)), "icon_05", resources.getDrawable(R.drawable.circle_teal_big), "05")
-                            val itemAlbum_06 = GridItem_filter(sp.getString("icon_06", resources.getString(R.string.color_green)), "icon_06", resources.getDrawable(R.drawable.circle_green_big), "06")
-                            val itemAlbum_07 = GridItem_filter(sp.getString("icon_07", resources.getString(R.string.color_lime)), "icon_07", resources.getDrawable(R.drawable.circle_lime_big), "07")
-                            val itemAlbum_08 = GridItem_filter(sp.getString("icon_08", resources.getString(R.string.color_yellow)), "icon_08", resources.getDrawable(R.drawable.circle_yellow_big), "08")
-                            val itemAlbum_09 = GridItem_filter(sp.getString("icon_09", resources.getString(R.string.color_orange)), "icon_09", resources.getDrawable(R.drawable.circle_orange_big), "09")
-                            val itemAlbum_10 = GridItem_filter(sp.getString("icon_10", resources.getString(R.string.color_brown)), "icon_10", resources.getDrawable(R.drawable.circle_brown_big), "10")
-                            val itemAlbum_11 = GridItem_filter(sp.getString("icon_11", resources.getString(R.string.color_grey)), "icon_11", resources.getDrawable(R.drawable.circle_grey_big), "11")
-                            val gridList = mutableListOf<GridItem_filter>()
-                            if (sp.getBoolean("filter_01", true)) {
-                                gridList.add(itemAlbum_01)
-                            }
-                            if (sp.getBoolean("filter_02", true)) {
-                                gridList.add(itemAlbum_02)
-                            }
-                            if (sp.getBoolean("filter_03", true)) {
-                                gridList.add(itemAlbum_03)
-                            }
-                            if (sp.getBoolean("filter_04", true)) {
-                                gridList.add(itemAlbum_04)
-                            }
-                            if (sp.getBoolean("filter_05", true)) {
-                                gridList.add(itemAlbum_05)
-                            }
-                            if (sp.getBoolean("filter_06", true)) {
-                                gridList.add(itemAlbum_06)
-                            }
-                            if (sp.getBoolean("filter_07", true)) {
-                                gridList.add(itemAlbum_07)
-                            }
-                            if (sp.getBoolean("filter_08", true)) {
-                                gridList.add(itemAlbum_08)
-                            }
-                            if (sp.getBoolean("filter_09", true)) {
-                                gridList.add(itemAlbum_09)
-                            }
-                            if (sp.getBoolean("filter_10", true)) {
-                                gridList.add(itemAlbum_10)
-                            }
-                            if (sp.getBoolean("filter_11", true)) {
-                                gridList.add(itemAlbum_11)
-                            }
-                            val gridAdapter = GridAdapter_filter(this, gridList)
-                            grid.adapter = gridAdapter
-                            gridAdapter.notifyDataSetChanged()
-                            grid.onItemClickListener = OnItemClickListener { parent, view, position, id ->
-                                db.update(_id.toInt(), HelperUnit.secString(input_pass_title), HelperUnit.secString(input_pass_url), HelperUnit.secString(encrypted_userName), HelperUnit.secString(encrypted_userPW), gridList[position].ordinal)
-                                initBookmarkList()
-                                hideBottomSheetDialog()
-                            }
-                            bottomSheetDialog?.setContentView(dialogView)
-                            bottomSheetDialog?.show()
-                            HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                            hideBottomSheetDialog()
-                            NinjaToast.show(this, R.string.toast_error)
-                        }
-                    }
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    NinjaToast.show(this, R.string.toast_error)
-                }
-            }
-        }
-        bottomSheetDialog?.setContentView(dialogView)
-        bottomSheetDialog?.show()
-        HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
-    }
-
-    private fun show_dialogFilter() {
-        hideBottomSheetDialog()
-        open_bookmark.performClick()
-        bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
-        val dialogView = View.inflate(this, R.layout.dialog_edit_icon, null)
-        val grid = dialogView.findViewById<GridView>(R.id.grid_filter)
-        val itemAlbum_01 = GridItem_filter(sp.getString("icon_01", resources.getString(R.string.color_red)), "icon_01", resources.getDrawable(R.drawable.circle_red_big), "01")
-        val itemAlbum_02 = GridItem_filter(sp.getString("icon_02", resources.getString(R.string.color_pink)), "icon_02", resources.getDrawable(R.drawable.circle_pink_big), "02")
-        val itemAlbum_03 = GridItem_filter(sp.getString("icon_03", resources.getString(R.string.color_purple)), "icon_03", resources.getDrawable(R.drawable.circle_purple_big), "03")
-        val itemAlbum_04 = GridItem_filter(sp.getString("icon_04", resources.getString(R.string.color_blue)), "icon_04", resources.getDrawable(R.drawable.circle_blue_big), "04")
-        val itemAlbum_05 = GridItem_filter(sp.getString("icon_05", resources.getString(R.string.color_teal)), "icon_05", resources.getDrawable(R.drawable.circle_teal_big), "05")
-        val itemAlbum_06 = GridItem_filter(sp.getString("icon_06", resources.getString(R.string.color_green)), "icon_06", resources.getDrawable(R.drawable.circle_green_big), "06")
-        val itemAlbum_07 = GridItem_filter(sp.getString("icon_07", resources.getString(R.string.color_lime)), "icon_07", resources.getDrawable(R.drawable.circle_lime_big), "07")
-        val itemAlbum_08 = GridItem_filter(sp.getString("icon_08", resources.getString(R.string.color_yellow)), "icon_08", resources.getDrawable(R.drawable.circle_yellow_big), "08")
-        val itemAlbum_09 = GridItem_filter(sp.getString("icon_09", resources.getString(R.string.color_orange)), "icon_09", resources.getDrawable(R.drawable.circle_orange_big), "09")
-        val itemAlbum_10 = GridItem_filter(sp.getString("icon_10", resources.getString(R.string.color_brown)), "icon_10", resources.getDrawable(R.drawable.circle_brown_big), "10")
-        val itemAlbum_11 = GridItem_filter(sp.getString("icon_11", resources.getString(R.string.color_grey)), "icon_11", resources.getDrawable(R.drawable.circle_grey_big), "11")
-        val gridList: MutableList<GridItem_filter> = mutableListOf()
-        if (sp.getBoolean("filter_01", true)) {
-            gridList.add(itemAlbum_01)
-        }
-        if (sp.getBoolean("filter_02", true)) {
-            gridList.add(itemAlbum_02)
-        }
-        if (sp.getBoolean("filter_03", true)) {
-            gridList.add(itemAlbum_03)
-        }
-        if (sp.getBoolean("filter_04", true)) {
-            gridList.add(itemAlbum_04)
-        }
-        if (sp.getBoolean("filter_05", true)) {
-            gridList.add(itemAlbum_05)
-        }
-        if (sp.getBoolean("filter_06", true)) {
-            gridList.add(itemAlbum_06)
-        }
-        if (sp.getBoolean("filter_07", true)) {
-            gridList.add(itemAlbum_07)
-        }
-        if (sp.getBoolean("filter_08", true)) {
-            gridList.add(itemAlbum_08)
-        }
-        if (sp.getBoolean("filter_09", true)) {
-            gridList.add(itemAlbum_09)
-        }
-        if (sp.getBoolean("filter_10", true)) {
-            gridList.add(itemAlbum_10)
-        }
-        if (sp.getBoolean("filter_11", true)) {
-            gridList.add(itemAlbum_11)
-        }
-        val gridAdapter = GridAdapter_filter(this, gridList)
-        grid.adapter = gridAdapter
-        gridAdapter.notifyDataSetChanged()
-        grid.onItemClickListener = OnItemClickListener { parent, view, position, id ->
-            sp.edit().putString("filter_bookmarks", gridList[position].ordinal).apply()
-            initBookmarkList()
-            hideBottomSheetDialog()
-        }
         bottomSheetDialog?.setContentView(dialogView)
         bottomSheetDialog?.show()
         HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
@@ -2431,13 +1964,10 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         if (mActionMode == null) {
             mActionMode = mode
             val menu = mode.menu
-            var googleTranslateItem: MenuItem? = null
             val toBeRemovedList: MutableList<MenuItem> = mutableListOf()
-            for (index in 1 until menu.size()) {
+            for (index in 0 until menu.size()) {
                 val item = menu.getItem(index)
-                //if (item.intent?.component?.packageName == "com.google.android.apps.translate") {
                 if (item.intent?.component?.packageName == "info.plateaukao.naverdict") {
-                    googleTranslateItem = item
                     break
                 }
                 toBeRemovedList.add(item)
@@ -2445,11 +1975,17 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             for (item in toBeRemovedList) {
                 menu.removeItem(item.itemId)
             }
+            for (item in toBeRemovedList) {
+                if (item.title == "Copy") {
+                    menu.add(0, item.itemId, Menu.NONE, item.title)
+                }
+            }
         }
         super.onActionModeStarted(mode)
     }
 
     override fun onActionModeFinished(mode: ActionMode?) {
+        ninjaWebView.clearFocus()
         mActionMode = null
         super.onActionModeFinished(mode)
     }
