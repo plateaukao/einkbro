@@ -88,6 +88,7 @@
             android:layout_marginEnd="2dp"
             android:layout_marginStart="2dp"
             android:background="?attr/actionBarItemBackground"
+            android:onClick="onClick"
             android:src="@drawable/icon_plus" />
 
         <LinearLayout
@@ -112,6 +113,7 @@
                 android:layout_marginEnd="2dp"
                 android:layout_marginStart="2dp"
                 android:background="?attr/actionBarItemBackground"
+                android:onClick="onClick"
                 android:src="@drawable/icon_earth" />
 
         </LinearLayout>
@@ -138,6 +140,7 @@
                 android:layout_marginEnd="2dp"
                 android:layout_marginStart="2dp"
                 android:background="?attr/actionBarItemBackground"
+                android:onClick="onClick"
                 android:src="@drawable/icon_bookmark" />
 
         </LinearLayout>
@@ -164,6 +167,7 @@
                 android:layout_marginEnd="2dp"
                 android:layout_marginStart="2dp"
                 android:background="?attr/actionBarItemBackground"
+                android:onClick="onClick"
                 android:src="@drawable/ic_action_history" />
 
         </LinearLayout>
@@ -189,6 +193,7 @@
                 android:layout_marginEnd="2dp"
                 android:layout_marginStart="2dp"
                 android:background="?attr/actionBarItemBackground"
+                android:onClick="onClick"
                 android:src="@drawable/icon_dots" />
 
         </LinearLayout>
