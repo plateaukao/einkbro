@@ -27,8 +27,6 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.*
 import android.view.View.OnFocusChangeListener
-import android.view.View.OnLongClickListener
-import android.view.View.OnTouchListener
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.webkit.CookieManager
@@ -63,7 +61,6 @@ import java.io.File
 import java.util.*
 
 class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickListener {
-    private lateinit var tab_plus_bottom: ImageButton
     private lateinit var adapter: Adapter_Record
 
     // Views
@@ -360,7 +357,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         updateOverViewHeight()
 
         Handler().postDelayed({
-            tab_ScrollView.scrollTo(currentAlbumController?.albumView?.left?: 0, 0)
+            tab_ScrollView.scrollTo(currentAlbumController?.albumView?.left ?: 0, 0)
         }, 250)
     }
 
@@ -401,7 +398,9 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             R.id.button_size -> showFontSizeChangeDialog()
             R.id.tab_plus_bottom -> {
                 hideOverview()
-                addAlbum(getString(R.string.app_name), sp.getString("favoriteURL", "https://www.google.com"), true)
+                addAlbum(getString(R.string.app_name), "", true)
+                inputBox.requestFocus()
+                showKeyboard()
             }
             R.id.button_closeTab -> removeAlbum(currentAlbumController!!)
             R.id.button_quit -> doubleTapsQuit()
@@ -496,13 +495,11 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                     val dialogView = View.inflate(this, R.layout.dialog_action, null)
                     val textView = dialogView.findViewById<TextView>(R.id.dialog_text)
                     textView.setText(R.string.toast_unsecured)
-                    val action_ok = dialogView.findViewById<Button>(R.id.action_ok)
-                    action_ok.setOnClickListener {
+                    dialogView.findViewById<Button>(R.id.action_ok).setOnClickListener {
                         hideBottomSheetDialog()
                         ninjaWebView.loadUrl(url?.replace("http://", "https://") ?: "")
                     }
-                    val action_cancel2 = dialogView.findViewById<Button>(R.id.action_cancel)
-                    action_cancel2.setOnClickListener {
+                    dialogView.findViewById<Button>(R.id.action_cancel).setOnClickListener {
                         hideBottomSheetDialog()
                         ninjaWebView.reload()
                     }
@@ -522,6 +519,11 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         }
     }
 
+    private fun showKeyboard() {
+        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
+    }
+
     // Methods
     private fun showFontSizeChangeDialog() {
         val fontArray = resources.getStringArray(R.array.setting_entries_font)
@@ -531,7 +533,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             setTitle("Choose Font Size")
             setSingleChoiceItems(fontArray, selected) { dialog, which ->
                 sp.edit().putString("sp_fontSize", valueArray[which]).apply()
-                ninjaWebView.settings.textZoom = Integer.parseInt(sp.getString("sp_fontSize", "100") ?: "100")
+                ninjaWebView.settings.textZoom = Integer.parseInt(sp.getString("sp_fontSize", "100")
+                        ?: "100")
                 dialog.dismiss()
             }
         }.create().show()
@@ -595,71 +598,34 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             "2" -> findViewById(R.id.fab_imageButtonNav_center)
             else -> findViewById(R.id.fab_imageButtonNav_right)
         }
-        fab_imageButtonNav.setOnLongClickListener(OnLongClickListener {
+        fab_imageButtonNav.setOnLongClickListener {
             show_dialogFastToggle()
             false
-        })
-        binding.omniboxOverflow.setOnLongClickListener(OnLongClickListener {
+        }
+        binding.omniboxOverflow.setOnLongClickListener {
             show_dialogFastToggle()
             false
-        })
-        fab_imageButtonNav.setOnClickListener(View.OnClickListener { showOmnibox() })
-        binding.omniboxOverflow.setOnClickListener(View.OnClickListener { showOverflow() })
+        }
+        fab_imageButtonNav.setOnClickListener { showOmnibox() }
+        binding.omniboxOverflow.setOnClickListener { showOverflow() }
         if (sp.getBoolean("sp_gestures_use", true)) {
-            fab_imageButtonNav.setOnTouchListener(object : SwipeTouchListener(this) {
-                override fun onSwipeTop() {
-                    performGesture("setting_gesture_nav_up")
-                }
-
-                override fun onSwipeBottom() {
-                    performGesture("setting_gesture_nav_down")
-                }
-
-                override fun onSwipeRight() {
-                    performGesture("setting_gesture_nav_right")
-                }
-
-                override fun onSwipeLeft() {
-                    performGesture("setting_gesture_nav_left")
-                }
-            })
-            binding.omniboxOverflow.setOnTouchListener(object : SwipeTouchListener(this) {
-                override fun onSwipeTop() {
-                    performGesture("setting_gesture_nav_up")
-                }
-
-                override fun onSwipeBottom() {
-                    performGesture("setting_gesture_nav_down")
-                }
-
-                override fun onSwipeRight() {
-                    performGesture("setting_gesture_nav_right")
-                }
-
-                override fun onSwipeLeft() {
-                    performGesture("setting_gesture_nav_left")
-                }
-            })
+            val onTouchListener = object : SwipeTouchListener(this) {
+                override fun onSwipeTop() = performGesture("setting_gesture_nav_up")
+                override fun onSwipeBottom() = performGesture("setting_gesture_nav_down")
+                override fun onSwipeRight() = performGesture("setting_gesture_nav_right")
+                override fun onSwipeLeft() = performGesture("setting_gesture_nav_left")
+            }
+            fab_imageButtonNav.setOnTouchListener(onTouchListener)
+            binding.omniboxOverflow.setOnTouchListener(onTouchListener)
             inputBox.setOnTouchListener(object : SwipeTouchListener(this) {
-                override fun onSwipeTop() {
-                    performGesture("setting_gesture_tb_up")
-                }
-
-                override fun onSwipeBottom() {
-                    performGesture("setting_gesture_tb_down")
-                }
-
-                override fun onSwipeRight() {
-                    performGesture("setting_gesture_tb_right")
-                }
-
-                override fun onSwipeLeft() {
-                    performGesture("setting_gesture_tb_left")
-                }
+                override fun onSwipeTop() = performGesture("setting_gesture_tb_up")
+                override fun onSwipeBottom() = performGesture("setting_gesture_tb_down")
+                override fun onSwipeRight() = performGesture("setting_gesture_tb_right")
+                override fun onSwipeLeft() = performGesture("setting_gesture_tb_left")
             })
         }
         inputBox.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
-            val query = inputBox.getText().toString().trim { it <= ' ' }
+            val query = inputBox.text.toString().trim { it <= ' ' }
             if (query.isEmpty()) {
                 NinjaToast.show(this, getString(R.string.toast_input_empty))
                 return@OnEditorActionListener true
@@ -675,11 +641,11 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 Handler().postDelayed({
                     toggleIconsOnOmnibox(true)
                     inputBox.requestFocus()
-                    inputBox.setSelection(0, inputBox.getText().toString().length)
+                    inputBox.setSelection(0, inputBox.text.toString().length)
                 }, 250)
             } else {
                 toggleIconsOnOmnibox(false)
-                omniboxTitle.setText(ninjaWebView.title)
+                omniboxTitle.text = ninjaWebView.title
                 hideKeyboard(this)
             }
         }
@@ -693,16 +659,16 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         }
 
         // scroll to top
-        binding.omniboxPageUp.setOnLongClickListener(OnLongClickListener {
+        binding.omniboxPageUp.setOnLongClickListener {
             ninjaWebView.jumpToTop()
             true
-        })
+        }
 
         // hide bottom bar when refresh button is long pressed.
-        binding.omniboxRefresh.setOnLongClickListener(OnLongClickListener {
+        binding.omniboxRefresh.setOnLongClickListener {
             hideOmnibox()
             true
-        })
+        }
     }
 
     private fun toggleIconsOnOmnibox(shouldHide: Boolean) {
@@ -765,8 +731,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         open_history = dialogView.findViewById(R.id.open_history_2)
         open_menu = dialogView.findViewById(R.id.open_menu)
         tab_container = dialogView.findViewById(R.id.tab_container)
-        tab_plus_bottom = dialogView.findViewById(R.id.tab_plus_bottom)
-        tab_plus_bottom.setOnClickListener(this)
         tab_ScrollView = dialogView.findViewById(R.id.tab_ScrollView)
         overview_top = dialogView.findViewById(R.id.overview_top)
         listView = dialogView.findViewById(R.id.home_list_2)
@@ -776,7 +740,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         gridView = dialogView.findViewById(R.id.home_grid_2)
 
         // allow scrolling in listView without closing the bottomSheetDialog
-        listView.setOnTouchListener(OnTouchListener { v, event ->
+        listView.setOnTouchListener { v, event ->
             val action = event.action
             if (action == MotionEvent.ACTION_DOWN) { // Disallow NestedScrollView to intercept touch events.
                 if (listView.canScrollVertically(-1)) {
@@ -786,8 +750,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             // Handle ListView touch events.
             v.onTouchEvent(event)
             true
-        })
-        gridView.setOnTouchListener(OnTouchListener { v, event ->
+        }
+        gridView.setOnTouchListener { v, event ->
             val action = event.action
             if (action == MotionEvent.ACTION_DOWN) { // Disallow NestedScrollView to intercept touch events.
                 if (gridView.canScrollVertically(-1)) {
@@ -797,8 +761,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             // Handle ListView touch events.
             v.onTouchEvent(event)
             true
-        })
-        open_menu.setOnClickListener(View.OnClickListener {
+        }
+        open_menu.setOnClickListener {
             bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
             val dialogView = View.inflate(this, R.layout.dialog_menu_overview, null)
             val bookmark_sort = dialogView.findViewById<LinearLayout>(R.id.bookmark_sort)
@@ -874,7 +838,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             }
             bottomSheetDialog?.setContentView(dialogView)
             bottomSheetDialog?.show()
-        })
+        }
         bottomSheetDialog_OverView.setContentView(dialogView)
         open_startPage.setOnClickListener {
             overview_top.visibility = View.VISIBLE
@@ -956,23 +920,21 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable) {
-                if (currentAlbumController != null) {
-                    (currentAlbumController as NinjaWebView).findAllAsync(s.toString())
-                }
+                (currentAlbumController as NinjaWebView?)?.findAllAsync(s.toString())
             }
         })
         searchBox.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
             if (actionId != EditorInfo.IME_ACTION_DONE) {
                 return@OnEditorActionListener false
             }
-            if (searchBox.getText().toString().isEmpty()) {
+            if (searchBox.text.toString().isEmpty()) {
                 NinjaToast.show(this, getString(R.string.toast_input_empty))
                 return@OnEditorActionListener true
             }
             false
         })
         searchUp.setOnClickListener(View.OnClickListener {
-            val query = searchBox.getText().toString()
+            val query = searchBox.text.toString()
             if (query.isEmpty()) {
                 NinjaToast.show(this, getString(R.string.toast_input_empty))
                 return@OnClickListener
@@ -981,7 +943,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             (currentAlbumController as NinjaWebView).findNext(false)
         })
         searchDown.setOnClickListener(View.OnClickListener {
-            val query = searchBox.getText().toString()
+            val query = searchBox.text.toString()
             if (query.isEmpty()) {
                 NinjaToast.show(this, getString(R.string.toast_input_empty))
                 return@OnClickListener
@@ -1894,13 +1856,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         private const val INPUT_FILE_REQUEST_CODE = 1
         private fun hideKeyboard(activity: Activity) {
             val imm = activity.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-            //Find the currently focused view, so we can grab the correct window token from it.
-            var view = activity.currentFocus
-            //If no view currently has focus, create a new one, just so we can grab a window token from it
-            if (view == null) {
-                view = View(activity)
-            }
-            Objects.requireNonNull(imm).hideSoftInputFromWindow(view.windowToken, 0)
+            var view = activity.currentFocus ?: View(activity)
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
         }
     }
 }
