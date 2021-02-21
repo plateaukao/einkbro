@@ -292,7 +292,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             }
             KeyEvent.KEYCODE_MENU -> return showOverflow()
             KeyEvent.KEYCODE_BACK -> {
-                hideKeyboard(this)
+                hideKeyboard()
                 hideOverview()
                 if (fullscreenHolder != null || customView != null || videoView != null) {
                     return onHideCustomView()
@@ -341,7 +341,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         inputBox.onItemClickListener = OnItemClickListener { parent, view, position, id ->
             val url = (view.findViewById<View>(R.id.complete_item_url) as TextView).text.toString()
             updateAlbum(url)
-            hideKeyboard(this)
+            hideKeyboard()
         }
     }
 
@@ -459,7 +459,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 }
             }
             R.id.menu_searchSite -> {
-                hideKeyboard(this)
+                hideKeyboard()
                 showSearchPanel()
             }
             R.id.contextLink_saveAs -> printPDF(false)
@@ -642,7 +642,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             } else {
                 toggleIconsOnOmnibox(false)
                 omniboxTitle.text = ninjaWebView.title
-                hideKeyboard(this)
+                hideKeyboard()
             }
         }
         updateAutoComplete()
@@ -932,7 +932,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 NinjaToast.show(this, getString(R.string.toast_input_empty))
                 return@OnClickListener
             }
-            hideKeyboard(this)
+            hideKeyboard()
             (currentAlbumController as NinjaWebView).findNext(false)
         })
         findViewById<ImageButton?>(R.id.main_search_down).setOnClickListener(View.OnClickListener {
@@ -941,7 +941,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 NinjaToast.show(this, getString(R.string.toast_input_empty))
                 return@OnClickListener
             }
-            hideKeyboard(this)
+            hideKeyboard()
             (currentAlbumController as NinjaWebView).findNext(true)
         })
         findViewById<ImageButton?>(R.id.main_search_cancel).setOnClickListener { hideSearchPanel() }
@@ -1432,7 +1432,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                                 request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename)
                                 val dm = (getSystemService(DOWNLOAD_SERVICE) as DownloadManager)
                                 dm.enqueue(request)
-                                hideKeyboard(this)
+                                hideKeyboard()
                             }
                         } else {
                             val source = Uri.parse(url)
@@ -1442,13 +1442,13 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                             request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename)
                             val dm = (getSystemService(DOWNLOAD_SERVICE) as DownloadManager)
                             dm.enqueue(request)
-                            hideKeyboard(this)
+                            hideKeyboard()
                         }
                     }
                 }
                 builder.setNegativeButton(R.string.app_cancel) { dialog, whichButton ->
                     dialog.cancel()
-                    hideKeyboard(this)
+                    hideKeyboard()
                 }
                 val dialog = builder.create()
                 dialog.show()
@@ -1492,7 +1492,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             omnibox.visibility = View.VISIBLE
             omniboxTitle.visibility = View.VISIBLE
             binding.appBar.visibility = View.VISIBLE
-            hideKeyboard(this)
+            hideKeyboard()
         }
     }
 
@@ -1617,13 +1617,13 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                     gridItem.title = text
                     action.updateGridItem(gridItem)
                     action.close()
-                    hideKeyboard(this)
+                    hideKeyboard()
                     open_startPage.performClick()
                 }
                 hideBottomSheetDialog()
             }
             dialogView.findViewById<Button>(R.id.action_cancel).setOnClickListener {
-                hideKeyboard(this)
+                hideKeyboard()
                 hideBottomSheetDialog()
             }
             bottomSheetDialog?.setContentView(dialogView)
@@ -1696,7 +1696,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                             val input_pass_url = pass_URLET.text.toString().trim { it <= ' ' }
                             db.update(_id.toInt(), HelperUnit.secString(input_pass_title), HelperUnit.secString(input_pass_url), "", "", pass_creation)
                             initBookmarkList()
-                            hideKeyboard(this)
+                            hideKeyboard()
                         } catch (e: Exception) {
                             e.printStackTrace()
                             NinjaToast.show(this, R.string.toast_error)
@@ -1704,7 +1704,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                         hideBottomSheetDialog()
                     }
                     dialogView.findViewById<Button>(R.id.action_cancel).setOnClickListener {
-                        hideKeyboard(this)
+                        hideKeyboard()
                         hideBottomSheetDialog()
                     }
                     bottomSheetDialog?.setContentView(dialogView)
@@ -1845,12 +1845,12 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         super.onActionModeFinished(mode)
     }
 
+    private fun hideKeyboard() {
+        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        var view = this.currentFocus ?: View(this)
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
+    }
     companion object {
         private const val INPUT_FILE_REQUEST_CODE = 1
-        private fun hideKeyboard(activity: Activity) {
-            val imm = activity.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-            var view = activity.currentFocus ?: View(activity)
-            imm.hideSoftInputFromWindow(view.windowToken, 0)
-        }
     }
 }
