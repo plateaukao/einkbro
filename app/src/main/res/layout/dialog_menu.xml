@@ -23,6 +23,7 @@
                 android:layout_height="@dimen/menu_button_size"
                 android:padding="10dp"
                 android:gravity="center_vertical"
+                android:onClick="onClick"
                 android:src="@drawable/icon_bookmark" />
             <TextView
                 android:layout_width="match_parent"
@@ -42,6 +43,7 @@
                 android:layout_height="@dimen/menu_button_size"
                 android:padding="10dp"
                 android:gravity="center_vertical"
+                android:onClick="onClick"
                 android:src="@drawable/icon_menu_share" />
             <TextView
                 android:layout_width="match_parent"
@@ -81,6 +83,7 @@
                 android:layout_height="@dimen/menu_button_size"
                 android:padding="10dp"
                 android:gravity="center_vertical"
+                android:onClick="onClick"
                 android:src="@drawable/icon_close" />
 
             <TextView
@@ -101,6 +104,7 @@
                 android:layout_height="@dimen/menu_button_size"
                 android:padding="10dp"
                 android:gravity="center_vertical"
+                android:onClick="onClick"
                 android:src="@drawable/icon_fullscreen" />
 
             <TextView
@@ -121,6 +125,7 @@
                 android:layout_height="@dimen/menu_button_size"
                 android:padding="10dp"
                 android:gravity="center_vertical"
+                android:onClick="onClick"
                 android:src="@drawable/icon_document" />
 
             <TextView
@@ -142,6 +147,7 @@
                 android:layout_height="@dimen/menu_button_size"
                 android:padding="10dp"
                 android:gravity="center_vertical"
+                android:onClick="onClick"
                 android:src="@drawable/icon_size" />
             <TextView
                 android:layout_width="match_parent"
@@ -181,6 +187,7 @@
                 android:layout_height="@dimen/menu_button_size"
                 android:padding="10dp"
                 android:gravity="center_vertical"
+                android:onClick="onClick"
                 android:src="@drawable/icon_exit" />
 
             <TextView
@@ -201,6 +208,7 @@
                 android:layout_height="@dimen/menu_button_size"
                 android:padding="10dp"
                 android:gravity="center_vertical"
+                android:onClick="onClick"
                 android:src="@drawable/icon_fullscreen" />
 
             <TextView
@@ -241,6 +249,7 @@
                 android:layout_height="@dimen/menu_button_size"
                 android:padding="10dp"
                 android:gravity="center_vertical"
+                android:onClick="onClick"
                 android:src="@drawable/icon_file" />
 
             <TextView
@@ -261,6 +270,7 @@
                 android:layout_height="@dimen/menu_button_size"
                 android:padding="10dp"
                 android:gravity="center_vertical"
+                android:onClick="onClick"
                 android:src="@drawable/icon_search" />
 
             <TextView
@@ -281,6 +291,7 @@
                 android:layout_height="@dimen/menu_button_size"
                 android:padding="10dp"
                 android:gravity="center_vertical"
+                android:onClick="onClick"
                 android:src="@drawable/icon_document" />
 
             <TextView
@@ -321,6 +332,7 @@
                 android:layout_height="@dimen/menu_button_size"
                 android:padding="10dp"
                 android:gravity="center_vertical"
+                android:onClick="onClick"
                 android:src="@drawable/icon_download" />
 
             <TextView
@@ -342,6 +354,7 @@
                 android:layout_height="@dimen/menu_button_size"
                 android:padding="10dp"
                 android:gravity="center_vertical"
+                android:onClick="onClick"
                 android:src="@drawable/icon_exit" />
             <TextView
                 android:layout_width="match_parent"
@@ -361,6 +374,7 @@
                 android:layout_height="@dimen/menu_button_size"
                 android:padding="10dp"
                 android:gravity="center_vertical"
+                android:onClick="onClick"
                 android:src="@drawable/icon_settings" />
             <TextView
                 android:layout_width="match_parent"
