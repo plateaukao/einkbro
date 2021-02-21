@@ -108,14 +108,15 @@
                 android:inputType="textUri"
                 android:maxLines="1"
                 android:ellipsize="end"
-                android:background="?android:attr/colorBackground"/>
+                android:background="@android:color/white"/>
 
             <TextView
                 android:id="@+id/omnibox_title"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_marginStart="8dp"
+                android:layout_alignParentLeft="true"
                 android:layout_toStartOf="@id/omnibox_refresh"
                 android:layout_alignParentStart="true"
                 android:includeFontPadding="false"
@@ -127,7 +128,7 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/black"
                 android:textStyle="bold"
-                android:background="?android:attr/colorBackground" />
+                android:background="@android:color/white" />
 
         </RelativeLayout>
 
