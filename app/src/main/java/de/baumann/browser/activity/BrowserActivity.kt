@@ -49,6 +49,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.ActivityMainBinding
+import de.baumann.browser.Ninja.databinding.DialogMenuBinding
 import de.baumann.browser.browser.*
 import de.baumann.browser.database.BookmarkList
 import de.baumann.browser.database.Record
@@ -204,7 +205,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 action_cancel.setOnClickListener { hideBottomSheetDialog() }
                 bottomSheetDialog?.setContentView(dialogView)
                 bottomSheetDialog?.show()
-                HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
             }
         }
         val filter = IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE)
@@ -259,7 +259,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             action_cancel.setOnClickListener { dialog.cancel() }
             dialog.setContentView(dialogView)
             dialog.show()
-            HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
         }
         dispatchIntent(intent)
         updateOmnibox()
@@ -282,7 +281,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 action_cancel.setOnClickListener { hideBottomSheetDialog() }
                 bottomSheetDialog?.setContentView(dialogView)
                 bottomSheetDialog?.show()
-                HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
             }
         }
     }
@@ -532,7 +530,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                     }
                     bottomSheetDialog?.setContentView(dialogView)
                     bottomSheetDialog?.show()
-                    HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
                 } else {
                     ninjaWebView.reload()
                 }
@@ -868,7 +865,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 }
                 bottomSheetDialog?.setContentView(dialogView)
                 bottomSheetDialog?.show()
-                HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
             }
             val tv_delete = dialogView.findViewById<LinearLayout>(R.id.tv_delete)
             tv_delete.setOnClickListener {
@@ -902,11 +898,9 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 action_cancel.setOnClickListener { hideBottomSheetDialog() }
                 bottomSheetDialog?.setContentView(dialogView3)
                 bottomSheetDialog?.show()
-                HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView3, BottomSheetBehavior.STATE_EXPANDED)
             }
             bottomSheetDialog?.setContentView(dialogView)
             bottomSheetDialog?.show()
-            HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
         })
         bottomSheetDialog_OverView.setContentView(dialogView)
         open_startPage.setOnClickListener(View.OnClickListener {
@@ -1137,20 +1131,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 sp.edit().putBoolean(getString(R.string.sp_javascript), false).apply()
             }
         }
-        sw_adBlock.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                sp.edit().putBoolean(getString(R.string.sp_ad_block), true).apply()
-            } else {
-                sp.edit().putBoolean(getString(R.string.sp_ad_block), false).apply()
-            }
-        }
-        sw_cookie.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                sp.edit().putBoolean(getString(R.string.sp_cookies), true).apply()
-            } else {
-                sp.edit().putBoolean(getString(R.string.sp_cookies), false).apply()
-            }
-        }
+        sw_adBlock.setOnCheckedChangeListener { _, isChecked -> sp.edit().putBoolean(getString(R.string.sp_ad_block), isChecked).apply() }
+        sw_cookie.setOnCheckedChangeListener { _, isChecked -> sp.edit().putBoolean(getString(R.string.sp_cookies), isChecked).apply() }
         val toggle_history = dialogView.findViewById<ImageButton>(R.id.toggle_history)
         val toggle_historyView = dialogView.findViewById<View>(R.id.toggle_historyView)
         val toggle_location = dialogView.findViewById<ImageButton>(R.id.toggle_location)
@@ -1249,7 +1231,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         action_cancel.setOnClickListener { hideBottomSheetDialog() }
         bottomSheetDialog?.setContentView(dialogView)
         bottomSheetDialog?.show()
-        HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
     }
 
 
@@ -1311,7 +1292,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             action_cancel.setOnClickListener { hideBottomSheetDialog() }
             bottomSheetDialog?.setContentView(dialogView)
             bottomSheetDialog?.show()
-            HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
         }
     }
 
@@ -1562,7 +1542,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         }
         bottomSheetDialog?.setContentView(dialogView)
         bottomSheetDialog?.show()
-        HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
     }
 
     override fun onLongPress(url: String?) {
@@ -1586,7 +1565,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             dialogView.findViewById<Button>(R.id.action_cancel).setOnClickListener { hideBottomSheetDialog() }
             bottomSheetDialog?.setContentView(dialogView)
             bottomSheetDialog?.show()
-            HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
         }
     }
 
@@ -1631,49 +1609,33 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
 
     private fun showOverflow(): Boolean {
         bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
-        val dialogView = View.inflate(this, R.layout.dialog_menu, null)
-        dialogView.findViewById<View>(R.id.button_size).setOnClickListener(this)
-        dialogView.findViewById<View>(R.id.button_closeTab).setOnClickListener(this)
-        dialogView.findViewById<View>(R.id.button_quit).setOnClickListener(this)
-        dialogView.findViewById<View>(R.id.menu_shareScreenshot).setOnClickListener(this)
-        dialogView.findViewById<View>(R.id.menu_shareLink).setOnClickListener(this)
-        dialogView.findViewById<View>(R.id.menu_sharePDF).setOnClickListener(this)
-        dialogView.findViewById<View>(R.id.menu_openWith).setOnClickListener(this)
-        dialogView.findViewById<View>(R.id.menu_saveScreenshot).setOnClickListener(this)
-        dialogView.findViewById<View>(R.id.menu_saveBookmark).setOnClickListener(this)
-        dialogView.findViewById<View>(R.id.contextLink_saveAs).setOnClickListener(this)
-        dialogView.findViewById<View>(R.id.menu_searchSite).setOnClickListener(this)
-        dialogView.findViewById<View>(R.id.menu_settings).setOnClickListener(this)
-        dialogView.findViewById<View>(R.id.menu_download).setOnClickListener(this)
-        dialogView.findViewById<View>(R.id.menu_fileManager).setOnClickListener(this)
-        dialogView.findViewById<View>(R.id.menu_shareClipboard).setOnClickListener {
+        val binding = DialogMenuBinding.inflate(this.layoutInflater)
+        binding.menuShareClipboard.setOnClickListener {
             hideBottomSheetDialog()
             val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
             val clip = ClipData.newPlainText("text", url)
             Objects.requireNonNull(clipboard).setPrimaryClip(clip)
             NinjaToast.show(this, R.string.toast_copy_successful)
         }
-        dialogView.findViewById<View>(R.id.button_openFav).setOnClickListener {
+        binding.buttonOpenFav.setOnClickListener {
             hideBottomSheetDialog()
             updateAlbum(sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"))
         }
-        dialogView.findViewById<View>(R.id.menu_sc).setOnClickListener {
+        binding.menuSc.setOnClickListener {
             hideBottomSheetDialog()
             HelperUnit.createShortcut(this, ninjaWebView.title, ninjaWebView.url)
         }
-        dialogView.findViewById<View>(R.id.menu_fav).setOnClickListener {
+        binding.menuFav.setOnClickListener {
             hideBottomSheetDialog()
             HelperUnit.setFavorite(this, ninjaWebView.url)
         }
 
-        bottomSheetDialog?.setContentView(dialogView)
+        bottomSheetDialog?.setContentView(binding.root)
         bottomSheetDialog?.show()
-        HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
         return true
     }
 
-    private fun showStartPageContextMenu(title: String, url: String, gridItem: GridItem)
-    {
+    private fun showStartPageContextMenu(title: String, url: String, gridItem: GridItem) {
         bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
         val dialogView = View.inflate(this, R.layout.dialog_menu_context_list, null)
         val db = BookmarkList(this)
@@ -1720,7 +1682,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             dialogView.findViewById<Button>(R.id.action_cancel).setOnClickListener { hideBottomSheetDialog() }
             bottomSheetDialog?.setContentView(dialogView)
             bottomSheetDialog?.show()
-            HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
         }
 
         dialogView.findViewById<LinearLayout>(R.id.menu_contextList_edit).setOnClickListener {
@@ -1751,12 +1712,10 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             }
             bottomSheetDialog?.setContentView(dialogView)
             bottomSheetDialog?.show()
-            HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
         }
 
         bottomSheetDialog?.setContentView(dialogView)
         bottomSheetDialog?.show()
-        HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
     }
 
     private fun showBookmarkContextMenu(title: String, url: String,
@@ -1804,7 +1763,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             dialogView.findViewById<Button>(R.id.action_cancel).setOnClickListener { hideBottomSheetDialog() }
             bottomSheetDialog?.setContentView(dialogView)
             bottomSheetDialog?.show()
-            HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
         }
 
         dialogView.findViewById<LinearLayout>(R.id.menu_contextList_edit).setOnClickListener {
@@ -1835,7 +1793,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                     }
                     bottomSheetDialog?.setContentView(dialogView)
                     bottomSheetDialog?.show()
-                    HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
                 } catch (e: Exception) {
                     e.printStackTrace()
                     NinjaToast.show(this, R.string.toast_error)
@@ -1844,7 +1801,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
 
         bottomSheetDialog?.setContentView(dialogView)
         bottomSheetDialog?.show()
-        HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
     }
 
     private fun showHistoryContextMenu(title: String, url: String, adapterRecord: Adapter_Record,
@@ -1898,12 +1854,10 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             dialogView.findViewById<Button>(R.id.action_cancel).setOnClickListener { hideBottomSheetDialog() }
             bottomSheetDialog?.setContentView(dialogView)
             bottomSheetDialog?.show()
-            HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
         }
 
         bottomSheetDialog?.setContentView(dialogView)
         bottomSheetDialog?.show()
-        HelperUnit.setBottomSheetBehavior(bottomSheetDialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
     }
 
     private fun setCustomFullscreen(fullscreen: Boolean) {
@@ -1943,22 +1897,27 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private var mActionMode: ActionMode? = null
     override fun onActionModeStarted(mode: ActionMode) {
         if (mActionMode == null) {
+            var isNaverDictExist = false
             mActionMode = mode
             val menu = mode.menu
             val toBeRemovedList: MutableList<MenuItem> = mutableListOf()
             for (index in 0 until menu.size()) {
                 val item = menu.getItem(index)
                 if (item.intent?.component?.packageName == "info.plateaukao.naverdict") {
+                    isNaverDictExist = true
                     break
                 }
                 toBeRemovedList.add(item)
             }
-            for (item in toBeRemovedList) {
-                menu.removeItem(item.itemId)
-            }
-            for (item in toBeRemovedList) {
-                if (item.title == "Copy") {
-                    menu.add(0, item.itemId, Menu.NONE, item.title)
+            // only works when naver dict app is installed.
+            if (isNaverDictExist) {
+                for (item in toBeRemovedList) {
+                    menu.removeItem(item.itemId)
+                }
+                for (item in toBeRemovedList) {
+                    if (item.title == "Copy") {
+                        menu.add(0, item.itemId, Menu.NONE, item.title)
+                    }
                 }
             }
         }
@@ -1966,7 +1925,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     }
 
     override fun onActionModeFinished(mode: ActionMode?) {
-        ninjaWebView.clearFocus()
         mActionMode = null
         super.onActionModeFinished(mode)
     }
