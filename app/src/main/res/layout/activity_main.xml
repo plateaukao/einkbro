@@ -17,26 +17,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageButton android:id="@+id/omnibox_overview"
-                android:layout_centerInParent="true"
-                android:layout_alignParentStart="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:src="@drawable/icon_tab_outline"
-                android:background="@android:color/white"/>
-
-            <TextView android:id="@+id/omnibox_web_count"
-                android:layout_centerInParent="true"
-                android:layout_alignStart="@+id/omnibox_overview"
-                android:layout_alignEnd="@+id/omnibox_overview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:paddingStart="18dp"
-                android:text="1"
-                android:textColor="@android:color/black"/>
-
             <ImageButton android:id="@+id/omnibox_overflow"
                 android:layout_centerInParent="true"
                 android:layout_width="wrap_content"
@@ -46,11 +26,33 @@
                 android:src="@drawable/icon_overflow"
                 android:background="@android:color/white"/>
 
+            <ImageButton
+                android:id="@+id/omnibox_overview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_toStartOf="@id/omnibox_overflow"
+                android:background="@android:color/white"
+                android:padding="10dp"
+                android:src="@drawable/icon_tab_outline" />
+
+            <TextView
+                android:id="@+id/omnibox_web_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/omnibox_overview"
+                android:layout_alignEnd="@+id/omnibox_overview"
+                android:layout_centerInParent="true"
+                android:paddingStart="18dp"
+                android:text="1"
+                android:textAlignment="center"
+                android:textColor="@android:color/black" />
+
             <ImageButton android:id="@+id/omnibox_page_down"
                 android:layout_centerInParent="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toStartOf="@id/omnibox_overflow"
+                android:layout_toStartOf="@id/omnibox_overview"
                 android:padding="8dp"
                 android:src="@drawable/icon_arrow_down_gest"
                 android:background="@android:color/white"/>
@@ -82,9 +84,10 @@
                 android:src="@drawable/icon_refresh"
                 android:background="@android:color/white"/>
 
+
             <AutoCompleteTextView android:id="@+id/main_omnibox_input"
                 android:layout_width="match_parent"
-                android:layout_toEndOf="@+id/omnibox_overview"
+                android:layout_alignParentStart="true"
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
                 android:layout_toStartOf="@id/omnibox_refresh"
@@ -108,14 +111,14 @@
                 android:layout_centerInParent="true"
                 android:layout_marginStart="8dp"
                 android:layout_toStartOf="@id/omnibox_refresh"
-                android:layout_toEndOf="@+id/omnibox_overview"
+                android:layout_alignParentStart="true"
                 android:includeFontPadding="false"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="@string/app_name"
-                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/black"
                 android:textStyle="bold"
                 android:background="?android:attr/colorBackground" />
@@ -160,7 +163,6 @@
                 android:layout_gravity="center"
                 android:src="@drawable/icon_arrow_up_gest"
                 android:background="@android:color/white"/>
-
             <EditText android:id="@+id/main_search_box"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
