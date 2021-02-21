@@ -63,10 +63,6 @@ import java.util.*
 class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickListener {
     private lateinit var adapter: Adapter_Record
 
-    // Views
-    private lateinit var searchUp: ImageButton
-    private lateinit var searchDown: ImageButton
-    private lateinit var searchCancel: ImageButton
     private lateinit var open_startPage: ImageButton
     private lateinit var open_bookmark: ImageButton
     private lateinit var open_history: ImageButton
@@ -913,9 +909,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private fun initSearchPanel() {
         searchPanel = findViewById(R.id.main_search_panel)
         searchBox = findViewById(R.id.main_search_box)
-        searchUp = findViewById(R.id.main_search_up)
-        searchDown = findViewById(R.id.main_search_down)
-        searchCancel = findViewById(R.id.main_search_cancel)
         searchBox.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
@@ -933,7 +926,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             }
             false
         })
-        searchUp.setOnClickListener(View.OnClickListener {
+        findViewById<ImageButton?>(R.id.main_search_up).setOnClickListener(View.OnClickListener {
             val query = searchBox.text.toString()
             if (query.isEmpty()) {
                 NinjaToast.show(this, getString(R.string.toast_input_empty))
@@ -942,7 +935,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             hideKeyboard(this)
             (currentAlbumController as NinjaWebView).findNext(false)
         })
-        searchDown.setOnClickListener(View.OnClickListener {
+        findViewById<ImageButton?>(R.id.main_search_down).setOnClickListener(View.OnClickListener {
             val query = searchBox.text.toString()
             if (query.isEmpty()) {
                 NinjaToast.show(this, getString(R.string.toast_input_empty))
@@ -951,11 +944,11 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             hideKeyboard(this)
             (currentAlbumController as NinjaWebView).findNext(true)
         })
-        searchCancel.setOnClickListener(View.OnClickListener { hideSearchPanel() })
+        findViewById<ImageButton?>(R.id.main_search_cancel).setOnClickListener { hideSearchPanel() }
     }
 
     private fun initBookmarkList() {
-        val db = BookmarkList(this)
+        val db = BookmarkList(this).apply { open() }
         val row: Cursor
         db.open()
         val layoutStyle = R.layout.list_item_bookmark
