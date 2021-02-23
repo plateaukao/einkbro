@@ -188,16 +188,16 @@
     <string name="setting_gesture_down">Přejetí dolů</string>
     <string name="setting_gesture_left">Přejetí vlevo</string>
     <string name="setting_gesture_right">Přejetí vpravo</string>
-    <string name="setting_gesture_01">Žádné gesto</string>
-    <string name="setting_gesture_02">Vpřed v Historii</string>
-    <string name="setting_gesture_03">Zpět v historii</string>
-    <string name="setting_gesture_04">Posunout nahoru</string>
-    <string name="setting_gesture_05">Posunout dolů</string>
-    <string name="setting_gesture_06">Přepnout na levou kartu</string>
-    <string name="setting_gesture_07">Přepnout na pravou kartu</string>
-    <string name="setting_gesture_08">Zobrazit přehled</string>
-    <string name="setting_gesture_09">Otevřít novou kartu</string>
-    <string name="setting_gesture_10">Zavřít kartu</string>
+    <string name="nothing">Žádné gesto</string>
+    <string name="forward_in_history">Vpřed v Historii</string>
+    <string name="back_in_history">Zpět v historii</string>
+    <string name="scroll_to_top">Posunout nahoru</string>
+    <string name="scroll_to_bottom">Posunout dolů</string>
+    <string name="switch_to_left_tab">Přepnout na levou kartu</string>
+    <string name="switch_to_right_tab">Přepnout na pravou kartu</string>
+    <string name="show_overview">Zobrazit přehled</string>
+    <string name="open_new_tab">Otevřít novou kartu</string>
+    <string name="close_tab">Zavřít kartu</string>
     <!-- Data -->
     <string name="setting_title_export_whitelist">Exportovat seznam povolených - AdBlock</string>
     <string name="setting_title_import_whitelist">Importovat seznam povolených - AdBlock</string>

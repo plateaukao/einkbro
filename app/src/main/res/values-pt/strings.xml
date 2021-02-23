@@ -176,16 +176,16 @@
     <string name="setting_gesture_down">Deslizar para baixo</string>
     <string name="setting_gesture_left">Deslizar à esquerda</string>
     <string name="setting_gesture_right">Deslizar à direita</string>
-    <string name="setting_gesture_01">Nada</string>
-    <string name="setting_gesture_02">Avançar no histórico</string>
-    <string name="setting_gesture_03">Recuar no histórico</string>
-    <string name="setting_gesture_04">Ir para o topo</string>
-    <string name="setting_gesture_05">Ir para a base</string>
-    <string name="setting_gesture_06">Trocar para o separador da esquerda</string>
-    <string name="setting_gesture_07">Trocar para o separador da direita</string>
-    <string name="setting_gesture_08">Mostrar Vista global</string>
-    <string name="setting_gesture_09">Abrir novo separador</string>
-    <string name="setting_gesture_10">Fechar separador</string>
+    <string name="nothing">Nada</string>
+    <string name="forward_in_history">Avançar no histórico</string>
+    <string name="back_in_history">Recuar no histórico</string>
+    <string name="scroll_to_top">Ir para o topo</string>
+    <string name="scroll_to_bottom">Ir para a base</string>
+    <string name="switch_to_left_tab">Trocar para o separador da esquerda</string>
+    <string name="switch_to_right_tab">Trocar para o separador da direita</string>
+    <string name="show_overview">Mostrar Vista global</string>
+    <string name="open_new_tab">Abrir novo separador</string>
+    <string name="close_tab">Fechar separador</string>
     <!-- Data -->
     <string name="setting_title_export_whitelist">Exportar lista branca AdBlock</string>
     <string name="setting_title_import_whitelist">Importar lista branca AdBlock</string>
