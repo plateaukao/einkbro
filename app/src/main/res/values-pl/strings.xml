@@ -183,16 +183,16 @@
     <string name="setting_gesture_down">Pociągnięcie w doł</string>
     <string name="setting_gesture_left">Przesunięcie w lewo</string>
     <string name="setting_gesture_right">Przesunięcie w prawo</string>
-    <string name="setting_gesture_01">Brak akcji</string>
-    <string name="setting_gesture_02">Strona naprzód</string>
-    <string name="setting_gesture_03">Strona wstecz</string>
-    <string name="setting_gesture_04">Przenieś na górę witryny</string>
-    <string name="setting_gesture_05">Przenieś do dół witryny</string>
-    <string name="setting_gesture_06">Przenieś do karty po lewej</string>
-    <string name="setting_gesture_07">Przenieś do karty do prawej</string>
-    <string name="setting_gesture_08">Pokaż Wszechgląd</string>
-    <string name="setting_gesture_09">Otwórz nową kartę</string>
-    <string name="setting_gesture_10">Zamknij aktywną kartę</string>
+    <string name="nothing">Brak akcji</string>
+    <string name="forward_in_history">Strona naprzód</string>
+    <string name="back_in_history">Strona wstecz</string>
+    <string name="scroll_to_top">Przenieś na górę witryny</string>
+    <string name="scroll_to_bottom">Przenieś do dół witryny</string>
+    <string name="switch_to_left_tab">Przenieś do karty po lewej</string>
+    <string name="switch_to_right_tab">Przenieś do karty do prawej</string>
+    <string name="show_overview">Pokaż Wszechgląd</string>
+    <string name="open_new_tab">Otwórz nową kartę</string>
+    <string name="close_tab">Zamknij aktywną kartę</string>
     <!-- Data -->
     <string name="setting_title_export_whitelist">Eksportuj białą listę AdBlock</string>
     <string name="setting_title_import_whitelist">Importuj białą listę AdBlock</string>

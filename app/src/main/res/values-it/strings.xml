@@ -180,16 +180,16 @@
     <string name="setting_gesture_down">Scorri verso il basso</string>
     <string name="setting_gesture_left">Scorri a sinistra</string>
     <string name="setting_gesture_right">Scorri a destra</string>
-    <string name="setting_gesture_01">Niente</string>
-    <string name="setting_gesture_02">Vai avanti nella cronologia</string>
-    <string name="setting_gesture_03">Indietro nella cronologia</string>
-    <string name="setting_gesture_04">Scorri su</string>
-    <string name="setting_gesture_05">Scorri verso il basso</string>
-    <string name="setting_gesture_06">Passa alla scheda a sinistra</string>
-    <string name="setting_gesture_07">Passa alla scheda a sinistra</string>
-    <string name="setting_gesture_08">Mostra panoramica</string>
-    <string name="setting_gesture_09">Apri una nuova scheda</string>
-    <string name="setting_gesture_10">Chiudi scheda</string>
+    <string name="nothing">Niente</string>
+    <string name="forward_in_history">Vai avanti nella cronologia</string>
+    <string name="back_in_history">Indietro nella cronologia</string>
+    <string name="scroll_to_top">Scorri su</string>
+    <string name="scroll_to_bottom">Scorri verso il basso</string>
+    <string name="switch_to_left_tab">Passa alla scheda a sinistra</string>
+    <string name="switch_to_right_tab">Passa alla scheda a sinistra</string>
+    <string name="show_overview">Mostra panoramica</string>
+    <string name="open_new_tab">Apri una nuova scheda</string>
+    <string name="close_tab">Chiudi scheda</string>
     <!-- Data -->
     <string name="setting_title_export_whitelist">Esporta whitelist AdBlock</string>
     <string name="setting_title_import_whitelist">Importa whitelist AdBlock</string>

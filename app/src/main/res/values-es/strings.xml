@@ -177,16 +177,16 @@ Puede disponer una página en blanco escribiendo \"about:blank\".</string>
     <string name="setting_gesture_down">Deslizar hacia abajo</string>
     <string name="setting_gesture_left">Deslizar a la izquierda</string>
     <string name="setting_gesture_right">Deslizar a la derecha</string>
-    <string name="setting_gesture_01">No hacer nada</string>
-    <string name="setting_gesture_02">Avanzar en el historial</string>
-    <string name="setting_gesture_03">Retroceder en el historial</string>
-    <string name="setting_gesture_04">Desplazarse hacia arriba</string>
-    <string name="setting_gesture_05">Desplazarse hacia abajo</string>
-    <string name="setting_gesture_06">Cambiar a pestaña a la izquierda</string>
-    <string name="setting_gesture_07">Cambiar a pestaña a la derecha</string>
-    <string name="setting_gesture_08">Mostrar vista general</string>
-    <string name="setting_gesture_09">Abrir nueva pestaña</string>
-    <string name="setting_gesture_10">Cerrar pestaña</string>
+    <string name="nothing">No hacer nada</string>
+    <string name="forward_in_history">Avanzar en el historial</string>
+    <string name="back_in_history">Retroceder en el historial</string>
+    <string name="scroll_to_top">Desplazarse hacia arriba</string>
+    <string name="scroll_to_bottom">Desplazarse hacia abajo</string>
+    <string name="switch_to_left_tab">Cambiar a pestaña a la izquierda</string>
+    <string name="switch_to_right_tab">Cambiar a pestaña a la derecha</string>
+    <string name="show_overview">Mostrar vista general</string>
+    <string name="open_new_tab">Abrir nueva pestaña</string>
+    <string name="close_tab">Cerrar pestaña</string>
     <!-- Data -->
     <string name="setting_title_export_whitelist">Exportar lista blanca de anuncios</string>
     <string name="setting_title_import_whitelist">Importar lista blanca de anuncios</string>

@@ -192,16 +192,16 @@
     <string name="setting_gesture_down">Balayez vers le bas</string>
     <string name="setting_gesture_left">Balayez à gauche</string>
     <string name="setting_gesture_right">Balayer à droite</string>
-    <string name="setting_gesture_01">Rien</string>
-    <string name="setting_gesture_02">Depuis l\'historique</string>
-    <string name="setting_gesture_03">Retour dans l\'historique</string>
-    <string name="setting_gesture_04">Défilement vers le haut</string>
-    <string name="setting_gesture_05">Défilement vers le bas</string>
-    <string name="setting_gesture_06">Basculer vers l’onglet gauche</string>
-    <string name="setting_gesture_07">Basculer vers l’onglet droit</string>
-    <string name="setting_gesture_08">Voir vue d’ensemble</string>
-    <string name="setting_gesture_09">Ouvrir nouvel onglet</string>
-    <string name="setting_gesture_10">Fermer l’onglet</string>
+    <string name="nothing">Rien</string>
+    <string name="forward_in_history">Depuis l\'historique</string>
+    <string name="back_in_history">Retour dans l\'historique</string>
+    <string name="scroll_to_top">Défilement vers le haut</string>
+    <string name="scroll_to_bottom">Défilement vers le bas</string>
+    <string name="switch_to_left_tab">Basculer vers l’onglet gauche</string>
+    <string name="switch_to_right_tab">Basculer vers l’onglet droit</string>
+    <string name="show_overview">Voir vue d’ensemble</string>
+    <string name="open_new_tab">Ouvrir nouvel onglet</string>
+    <string name="close_tab">Fermer l’onglet</string>
     <!-- Data -->
     <string name="setting_title_export_whitelist">Exporter la liste blanche d’AdBlock</string>
     <string name="setting_title_import_whitelist">Importer la liste blanche d’AdBlock</string>

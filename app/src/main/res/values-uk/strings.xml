@@ -182,16 +182,16 @@
     <string name="setting_gesture_down">Проведіть вниз</string>
     <string name="setting_gesture_left">Проведіть пальцем вліво</string>
     <string name="setting_gesture_right">Проведіть праворуч</string>
-    <string name="setting_gesture_01">Нічого</string>
-    <string name="setting_gesture_02">Вперед в історію</string>
-    <string name="setting_gesture_03">Назад в історію</string>
-    <string name="setting_gesture_04">Прокрутити вгору</string>
-    <string name="setting_gesture_05">Прокрутити вниз</string>
-    <string name="setting_gesture_06">Перемкнутися на вкладку ліворуч</string>
-    <string name="setting_gesture_07">Перемкнутися на праву вкладку</string>
-    <string name="setting_gesture_08">Показати вигляд</string>
-    <string name="setting_gesture_09">Відкрити нову вкладку</string>
-    <string name="setting_gesture_10">Закрити вкладку</string>
+    <string name="nothing">Нічого</string>
+    <string name="forward_in_history">Вперед в історію</string>
+    <string name="back_in_history">Назад в історію</string>
+    <string name="scroll_to_top">Прокрутити вгору</string>
+    <string name="scroll_to_bottom">Прокрутити вниз</string>
+    <string name="switch_to_left_tab">Перемкнутися на вкладку ліворуч</string>
+    <string name="switch_to_right_tab">Перемкнутися на праву вкладку</string>
+    <string name="show_overview">Показати вигляд</string>
+    <string name="open_new_tab">Відкрити нову вкладку</string>
+    <string name="close_tab">Закрити вкладку</string>
     <!-- Data -->
     <string name="setting_title_export_whitelist">Експорт білого списку AdBlock</string>
     <string name="setting_title_import_whitelist">Імпорт білого списку AdBlock</string>
