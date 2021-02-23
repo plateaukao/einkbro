@@ -34,7 +34,6 @@
         android:layout_alignParentEnd="true"
         android:layout_margin="20dp"
         android:visibility="gone"
-        app:fabSize="mini"
         app:borderWidth="1dp"
         android:background="@drawable/roundcorner"
         android:tint="@android:color/darker_gray"
@@ -43,29 +42,34 @@
         app:srcCompat="@drawable/icon_overflow_fab"
         tools:ignore="RelativeOverlap" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <ImageButton
         android:id="@+id/fab_imageButtonNav_left"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_alignBottom="@+id/main_content"
         android:layout_alignParentStart="true"
         android:layout_margin="18dp"
+        app:borderWidth="1dp"
+        android:background="@drawable/roundcorner"
+        android:tint="@android:color/darker_gray"
+        android:elevation="0dp"
         android:visibility="gone"
-        app:fabSize="mini"
-        android:alpha="0.4"
         app:srcCompat="@drawable/icon_overflow_fab"
         tools:ignore="RelativeOverlap" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <ImageButton
         android:id="@+id/fab_imageButtonNav_center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_alignBottom="@+id/main_content"
         android:layout_centerInParent="true"
         android:layout_margin="18dp"
         android:visibility="gone"
-        app:fabSize="mini"
-        android:alpha="0.4"
+        app:borderWidth="1dp"
+        android:background="@drawable/roundcorner"
+        android:tint="@android:color/darker_gray"
+        android:elevation="0dp"
+        app:srcCompat="@drawable/icon_overflow_fab"
         tools:ignore="RelativeOverlap" />
 
 </RelativeLayout>

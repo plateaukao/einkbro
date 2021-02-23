@@ -179,16 +179,16 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="setting_gesture_down">Nach unten wischen</string>
     <string name="setting_gesture_left">Nach links wischen</string>
     <string name="setting_gesture_right">Nach rechts wischen</string>
-    <string name="setting_gesture_01">Nichts</string>
-    <string name="setting_gesture_02">Vorwärts im Verlauf</string>
-    <string name="setting_gesture_03">Zurück im Verlauf</string>
-    <string name="setting_gesture_04">Nach oben scrollen</string>
-    <string name="setting_gesture_05">Nach unten scrollen</string>
-    <string name="setting_gesture_06">Zum linken Tab wechseln</string>
-    <string name="setting_gesture_07">Zum rechten Tab wechseln</string>
-    <string name="setting_gesture_08">Übersicht zeigen</string>
-    <string name="setting_gesture_09">Neuen Tab öffnen</string>
-    <string name="setting_gesture_10">Tab schließen</string>
+    <string name="nothing">Nichts</string>
+    <string name="forward_in_history">Vorwärts im Verlauf</string>
+    <string name="back_in_history">Zurück im Verlauf</string>
+    <string name="scroll_to_top">Nach oben scrollen</string>
+    <string name="scroll_to_bottom">Nach unten scrollen</string>
+    <string name="switch_to_left_tab">Zum linken Tab wechseln</string>
+    <string name="switch_to_right_tab">Zum rechten Tab wechseln</string>
+    <string name="show_overview">Übersicht zeigen</string>
+    <string name="open_new_tab">Neuen Tab öffnen</string>
+    <string name="close_tab">Tab schließen</string>
     <!-- Data -->
     <string name="setting_title_export_whitelist">AdBlock-Positivliste exportieren</string>
     <string name="setting_title_import_whitelist">AdBlock-Positivliste importieren</string>

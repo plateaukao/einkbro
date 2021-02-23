@@ -191,16 +191,16 @@
     <string name="setting_gesture_down">Swipe down</string>
     <string name="setting_gesture_left">Swipe left</string>
     <string name="setting_gesture_right">Swipe right</string>
-    <string name="setting_gesture_01">Nothing</string>
-    <string name="setting_gesture_02">Forward in history</string>
-    <string name="setting_gesture_03">Back in history</string>
-    <string name="setting_gesture_04">Scroll to top</string>
-    <string name="setting_gesture_05">Scroll to bottom</string>
-    <string name="setting_gesture_06">Switch to left tab</string>
-    <string name="setting_gesture_07">Switch to right tab</string>
-    <string name="setting_gesture_08">Show overview</string>
-    <string name="setting_gesture_09">Open new tab</string>
-    <string name="setting_gesture_10">Tabblad sluiten</string>
+    <string name="nothing">Nothing</string>
+    <string name="forward_in_history">Forward in history</string>
+    <string name="back_in_history">Back in history</string>
+    <string name="scroll_to_top">Scroll to top</string>
+    <string name="scroll_to_bottom">Scroll to bottom</string>
+    <string name="switch_to_left_tab">Switch to left tab</string>
+    <string name="switch_to_right_tab">Switch to right tab</string>
+    <string name="show_overview">Show overview</string>
+    <string name="open_new_tab">Open new tab</string>
+    <string name="close_tab">Tabblad sluiten</string>
     <!-- Data -->
     <string name="setting_title_export_whitelist">Advertentieblokkering - witte lijst exporteren</string>
     <string name="setting_title_import_whitelist">Advertentieblokkering - witte lijst importeren</string>

@@ -240,7 +240,10 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             val dialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
             val dialogView = View.inflate(this, R.layout.dialog_action, null)
             dialogView.findViewById<TextView>(R.id.dialog_text).setText(R.string.toast_restart)
-            dialogView.findViewById<Button>(R.id.action_ok).setOnClickListener { onDestroy() }
+            dialogView.findViewById<Button>(R.id.action_ok).setOnClickListener {
+                dialog.dismiss()
+                finish()
+            }
             dialogView.findViewById<Button>(R.id.action_cancel).setOnClickListener { dialog.cancel() }
             dialog.setContentView(dialogView)
             dialog.show()
@@ -709,6 +712,10 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             "08" -> showOverview()
             "09" -> addAlbum(getString(R.string.app_name), sp.getString("favoriteURL", "https://www.google.com"), true)
             "10" -> removeAlbum(currentAlbumController!!)
+            // page up
+            "11" -> ninjaWebView.pageUpWithNoAnimation()
+            // page down
+            "12" -> ninjaWebView.pageDownWithNoAnimation()
         }
     }
 
@@ -1256,11 +1263,11 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 val height = Math.floor(ninjaWebView.contentHeight * ninjaWebView.resources.displayMetrics.density.toDouble()).toInt()
                 val webViewHeight = ninjaWebView.height
                 val cutoff = height - webViewHeight - 112 * Math.round(resources.displayMetrics.density)
-                if (scrollY > oldScrollY && cutoff >= scrollY) {
+                if (scrollY in (oldScrollY + 1)..cutoff) {
                     // Daniel
                     //hideOmnibox();
                 } else if (scrollY < oldScrollY) {
-                    showOmnibox()
+                    //showOmnibox()
                 }
             }
         }
@@ -1847,7 +1854,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
 
     private fun hideKeyboard() {
         val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        var view = this.currentFocus ?: View(this)
+        var view = this.currentFocus ?: return
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
     companion object {

@@ -177,16 +177,16 @@
     <string name="setting_gesture_down">Свайп вниз</string>
     <string name="setting_gesture_left">Свайп влево</string>
     <string name="setting_gesture_right">Свайп вправо</string>
-    <string name="setting_gesture_01">Ничего</string>
-    <string name="setting_gesture_02">Переслать в историю</string>
-    <string name="setting_gesture_03">Вернуться в историю</string>
-    <string name="setting_gesture_04">Прокрутка вверх</string>
-    <string name="setting_gesture_05">Прокрутка вниз</string>
-    <string name="setting_gesture_06">Переключиться на левую вкладку</string>
-    <string name="setting_gesture_07">Переключиться на правую вкладку</string>
-    <string name="setting_gesture_08">Показать обзор</string>
-    <string name="setting_gesture_09">Открыть новую вкладку</string>
-    <string name="setting_gesture_10">Закрыть вкладку</string>
+    <string name="nothing">Ничего</string>
+    <string name="forward_in_history">Переслать в историю</string>
+    <string name="back_in_history">Вернуться в историю</string>
+    <string name="scroll_to_top">Прокрутка вверх</string>
+    <string name="scroll_to_bottom">Прокрутка вниз</string>
+    <string name="switch_to_left_tab">Переключиться на левую вкладку</string>
+    <string name="switch_to_right_tab">Переключиться на правую вкладку</string>
+    <string name="show_overview">Показать обзор</string>
+    <string name="open_new_tab">Открыть новую вкладку</string>
+    <string name="close_tab">Закрыть вкладку</string>
     <!-- Data -->
     <string name="setting_title_export_whitelist">Экспорт белого списка AdBlock</string>
     <string name="setting_title_import_whitelist">Импорт белого списка AdBlock</string>
