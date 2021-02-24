@@ -361,7 +361,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     }
 
     override fun hideOverview() {
-        overviewView.visibility = View.INVISIBLE
+        overviewView.visibility = INVISIBLE
     }
 
     private fun hideBottomSheetDialog() {
@@ -369,7 +369,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     }
 
     override fun onClick(v: View) {
-        val action = RecordAction(this)
         ninjaWebView = currentAlbumController as NinjaWebView
         try {
             title = ninjaWebView.title.trim { it <= ' ' }
@@ -733,12 +732,16 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
             val dialogView = View.inflate(this, R.layout.dialog_menu_overview, null)
             val bookmark_sort = dialogView.findViewById<LinearLayout>(R.id.bookmark_sort)
-            if (overViewTab == getString(R.string.album_title_bookmarks)) {
-                bookmark_sort.visibility = View.VISIBLE
-            } else if (overViewTab == getString(R.string.album_title_home)) {
-                bookmark_sort.visibility = View.VISIBLE
-            } else if (overViewTab == getString(R.string.album_title_history)) {
-                bookmark_sort.visibility = View.GONE
+            when (overViewTab) {
+                getString(R.string.album_title_bookmarks) -> {
+                    bookmark_sort.visibility = View.VISIBLE
+                }
+                getString(R.string.album_title_home) -> {
+                    bookmark_sort.visibility = View.VISIBLE
+                }
+                getString(R.string.album_title_history) -> {
+                    bookmark_sort.visibility = View.GONE
+                }
             }
             bookmark_sort.setOnClickListener {
                 hideBottomSheetDialog()
@@ -808,27 +811,21 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         }
         open_startPage.setOnClickListener {
             overview_top.visibility = VISIBLE
-            listView.visibility = INVISIBLE
-            open_startPageView.visibility = VISIBLE
-            open_bookmarkView.visibility = INVISIBLE
-            open_historyView.visibility = INVISIBLE
+            listView.visibility = GONE
+            toggleOverviewFocus(open_startPageView)
             overViewTab = getString(R.string.album_title_home)
         }
         open_bookmark.setOnClickListener {
             overview_top.visibility = INVISIBLE
             listView.visibility = VISIBLE
-            open_startPageView.visibility = INVISIBLE
-            open_bookmarkView.visibility = VISIBLE
-            open_historyView.visibility = INVISIBLE
+            toggleOverviewFocus(open_bookmarkView)
             overViewTab = getString(R.string.album_title_bookmarks)
             initBookmarkList()
         }
         open_history.setOnClickListener {
             overview_top.visibility = INVISIBLE
             listView.visibility = VISIBLE
-            open_startPageView.visibility = INVISIBLE
-            open_bookmarkView.visibility = INVISIBLE
-            open_historyView.visibility = VISIBLE
+            toggleOverviewFocus(open_historyView)
             overViewTab = getString(R.string.album_title_history)
             val action = RecordAction(BrowserActivity@ this)
             action.open(false)
@@ -848,6 +845,12 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             }
         }
         showCurrentTabInOverview()
+    }
+
+    private fun toggleOverviewFocus(view: View) {
+        open_startPageView.visibility = if (open_startPageView == view) VISIBLE else INVISIBLE
+        open_bookmarkView.visibility = if (open_bookmarkView== view) VISIBLE else INVISIBLE
+        open_historyView.visibility = if (open_historyView== view) VISIBLE else INVISIBLE
     }
 
     private fun showCurrentTabInOverview() {
