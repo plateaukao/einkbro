@@ -10,36 +10,6 @@
     tools:ignore="ContentDescription">
 
     <LinearLayout
-        android:id="@+id/bookmark_filter"
-        android:layout_width="match_parent"
-        android:layout_height="46dp"
-        android:minHeight="46dp"
-        android:paddingEnd="8dp"
-        android:paddingStart="8dp"
-        android:background="?attr/selectableItemBackground"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="16dp"
-            android:gravity="center_vertical"
-            android:src="@drawable/filter_variant" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:includeFontPadding="false"
-            android:ellipsize="end"
-            android:gravity="center_vertical"
-            android:maxLines="1"
-            android:text="@string/menu_filter"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="?android:attr/textColorPrimary"/>
-
-    </LinearLayout>
-
-    <LinearLayout
         android:id="@+id/bookmark_sort"
         android:layout_width="match_parent"
         android:layout_height="46dp"

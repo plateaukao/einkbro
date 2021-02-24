@@ -22,4 +22,9 @@
         <item name="android:windowAnimationStyle">@null</item>
     </style>
 
+    <style name="NoAnimation" parent="@android:style/Theme.Dialog">
+        <item name="android:windowAnimationStyle">@null</item>
+    </style>
+
+
 </resources>

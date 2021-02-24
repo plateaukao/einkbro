@@ -75,7 +75,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private lateinit var ninjaWebView: NinjaWebView
     private lateinit var listView: ListView
     private lateinit var omniboxTitle: TextView
-    private lateinit var gridView: GridView
     private lateinit var tab_ScrollView: HorizontalScrollView
     private lateinit var overview_top: LinearLayout
 
@@ -126,6 +125,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private var mFilePathCallback: ValueCallback<Array<Uri>>? = null
 
     private lateinit var binding: ActivityMainBinding
+
+    private lateinit var bookmarkDB: BookmarkList
     // Classes
     private inner class VideoCompletionListener : OnCompletionListener, MediaPlayer.OnErrorListener {
         override fun onError(mp: MediaPlayer, what: Int, extra: Int): Boolean {
@@ -142,6 +143,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
+
+        bookmarkDB = BookmarkList(this).apply { open() }
 
         WebView.enableSlowWholeDocumentDraw()
         sp = PreferenceManager.getDefaultSharedPreferences(this)
@@ -447,12 +450,10 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             }
             R.id.menu_saveBookmark -> {
                 try {
-                    val db = BookmarkList(this)
-                    db.open()
-                    if (db.isExist(url)) {
+                    if (bookmarkDB.isExist(url)) {
                         NinjaToast.show(this, R.string.toast_newTitle)
                     } else {
-                        db.insert(HelperUnit.secString(ninjaWebView.title), url, "", "", "01")
+                        bookmarkDB.insert(HelperUnit.secString(ninjaWebView.title), url, "", "", "01")
                         NinjaToast.show(this, R.string.toast_edit_successful)
                         initBookmarkList()
                     }
@@ -740,24 +741,12 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         open_startPageView = dialogView.findViewById(R.id.open_newTabView)
         open_bookmarkView = dialogView.findViewById(R.id.open_bookmarkView)
         open_historyView = dialogView.findViewById(R.id.open_historyView)
-        gridView = dialogView.findViewById(R.id.home_grid_2)
 
         // allow scrolling in listView without closing the bottomSheetDialog
         listView.setOnTouchListener { v, event ->
             val action = event.action
             if (action == MotionEvent.ACTION_DOWN) { // Disallow NestedScrollView to intercept touch events.
                 if (listView.canScrollVertically(-1)) {
-                    v.parent.requestDisallowInterceptTouchEvent(true)
-                }
-            }
-            // Handle ListView touch events.
-            v.onTouchEvent(event)
-            true
-        }
-        gridView.setOnTouchListener { v, event ->
-            val action = event.action
-            if (action == MotionEvent.ACTION_DOWN) { // Disallow NestedScrollView to intercept touch events.
-                if (gridView.canScrollVertically(-1)) {
                     v.parent.requestDisallowInterceptTouchEvent(true)
                 }
             }
@@ -845,45 +834,25 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         bottomSheetDialog_OverView.setContentView(dialogView)
         open_startPage.setOnClickListener {
             overview_top.visibility = View.VISIBLE
-            gridView.visibility = View.VISIBLE
             listView.visibility = View.GONE
             open_startPageView.visibility = View.VISIBLE
             open_bookmarkView.visibility = View.INVISIBLE
             open_historyView.visibility = View.INVISIBLE
             overViewTab = getString(R.string.album_title_home)
-            val action = RecordAction(BrowserActivity@ this)
-            action.open(false)
-            val gridList = action.listGrid(BrowserActivity@ this)
-            action.close()
-            gridAdapter = GridAdapter(this, gridList)
-            gridView.adapter = gridAdapter
-            gridAdapter.notifyDataSetChanged()
-            gridView.onItemClickListener = OnItemClickListener { parent, view, position, id ->
-                updateAlbum(gridList[position].url)
-                hideOverview()
-            }
-            gridView.onItemLongClickListener = OnItemLongClickListener { parent, view, position, id ->
-                showStartPageContextMenu(gridList[position].title, gridList[position].url, gridList[position])
-                true
-            }
         }
         open_bookmark.setOnClickListener {
-            overview_top.setVisibility(View.GONE)
-            gridView.setVisibility(View.GONE)
-            listView.setVisibility(View.VISIBLE)
-            open_startPageView.setVisibility(View.INVISIBLE)
-            open_bookmarkView.setVisibility(View.VISIBLE)
-            open_historyView.setVisibility(View.INVISIBLE)
+            listView.visibility = View.VISIBLE
+            open_startPageView.visibility = View.INVISIBLE
+            open_bookmarkView.visibility = View.VISIBLE
+            open_historyView.visibility = View.INVISIBLE
             overViewTab = getString(R.string.album_title_bookmarks)
             initBookmarkList()
         }
         open_history.setOnClickListener(View.OnClickListener {
-            overview_top.setVisibility(View.GONE)
-            gridView.setVisibility(View.GONE)
-            listView.setVisibility(View.VISIBLE)
-            open_startPageView.setVisibility(View.INVISIBLE)
-            open_bookmarkView.setVisibility(View.INVISIBLE)
-            open_historyView.setVisibility(View.VISIBLE)
+            listView.visibility = View.VISIBLE
+            open_startPageView.visibility = View.INVISIBLE
+            open_bookmarkView.visibility = View.INVISIBLE
+            open_historyView.visibility = View.VISIBLE
             overViewTab = getString(R.string.album_title_history)
             val action = RecordAction(BrowserActivity@ this)
             action.open(false)
@@ -955,17 +924,15 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     }
 
     private fun initBookmarkList() {
-        val db = BookmarkList(this).apply { open() }
         val row: Cursor
-        db.open()
         val layoutStyle = R.layout.list_item_bookmark
         val xml_id = intArrayOf(R.id.record_item_title)
         val column = arrayOf("pass_title")
         val search = sp.getString("filter_bookmarks", "00")
         row = if (Objects.requireNonNull(search) == "00") {
-            db.fetchAllData(this)
+            bookmarkDB.fetchAllData(this)
         } else {
-            db.fetchDataByFilter(search, "pass_creation")
+            bookmarkDB.fetchDataByFilter(search, "pass_creation")
         }
         val adapter: SimpleCursorAdapter = object : SimpleCursorAdapter(this, layoutStyle, row, column, xml_id, 0) {
             override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
@@ -977,6 +944,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 return v
             }
         }
+
         listView.adapter = adapter
         listView.onItemClickListener = OnItemClickListener { adapterView, view, position, id ->
             val pass_content = row.getString(row.getColumnIndexOrThrow("pass_content"))
@@ -1558,96 +1526,11 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         return true
     }
 
-    private fun showStartPageContextMenu(title: String, url: String, gridItem: GridItem) {
-        bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
-        val dialogView = View.inflate(this, R.layout.dialog_menu_context_list, null)
-        val db = BookmarkList(this)
-        db.open()
-        if (overViewTab == getString(R.string.album_title_history)) {
-            dialogView.findViewById<LinearLayout>(R.id.menu_contextList_edit).visibility = View.GONE
-        } else {
-            dialogView.findViewById<LinearLayout>(R.id.menu_contextList_edit).visibility = View.VISIBLE
-        }
-        dialogView.findViewById<LinearLayout>(R.id.menu_contextList_fav).setOnClickListener {
-            hideBottomSheetDialog()
-            HelperUnit.setFavorite(this, url)
-        }
-        dialogView.findViewById<LinearLayout>(R.id.menu_contextLink_sc).setOnClickListener {
-            hideBottomSheetDialog()
-            HelperUnit.createShortcut(this, title, url)
-        }
-        dialogView.findViewById<LinearLayout>(R.id.menu_contextList_newTab).setOnClickListener {
-            addAlbum(getString(R.string.app_name), url, false)
-            NinjaToast.show(this, getString(R.string.toast_new_tab_successful))
-            hideBottomSheetDialog()
-        }
-        dialogView.findViewById<LinearLayout>(R.id.menu_contextList_newTabOpen).setOnClickListener {
-            addAlbum(getString(R.string.app_name), url, true)
-            hideBottomSheetDialog()
-            hideOverview()
-        }
-        dialogView.findViewById<LinearLayout>(R.id.menu_contextList_delete).setOnClickListener {
-            hideBottomSheetDialog()
-            bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
-            val dialogView = View.inflate(this, R.layout.dialog_action, null)
-            val textView = dialogView.findViewById<TextView>(R.id.dialog_text)
-            textView.setText(R.string.toast_titleConfirm_delete)
-
-            dialogView.findViewById<Button>(R.id.action_ok).setOnClickListener {
-                val action = RecordAction(this@BrowserActivity)
-                action.open(true)
-                action.deleteGridItem(gridItem)
-                action.close()
-                deleteFile(gridItem.filename)
-                open_startPage.performClick()
-                hideBottomSheetDialog()
-            }
-            dialogView.findViewById<Button>(R.id.action_cancel).setOnClickListener { hideBottomSheetDialog() }
-            bottomSheetDialog?.setContentView(dialogView)
-            bottomSheetDialog?.show()
-        }
-
-        dialogView.findViewById<LinearLayout>(R.id.menu_contextList_edit).setOnClickListener {
-            hideBottomSheetDialog()
-            bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
-            val dialogView = View.inflate(this, R.layout.dialog_edit_title, null)
-            val editText = dialogView.findViewById<EditText>(R.id.dialog_edit)
-            editText.setHint(R.string.dialog_title_hint)
-            editText.setText(title)
-            dialogView.findViewById<Button>(R.id.action_ok).setOnClickListener {
-                val text = editText.text.toString().trim { it <= ' ' }
-                if (text.isEmpty()) {
-                    NinjaToast.show(this, getString(R.string.toast_input_empty))
-                } else {
-                    val action = RecordAction(this@BrowserActivity)
-                    action.open(true)
-                    gridItem.title = text
-                    action.updateGridItem(gridItem)
-                    action.close()
-                    hideKeyboard()
-                    open_startPage.performClick()
-                }
-                hideBottomSheetDialog()
-            }
-            dialogView.findViewById<Button>(R.id.action_cancel).setOnClickListener {
-                hideKeyboard()
-                hideBottomSheetDialog()
-            }
-            bottomSheetDialog?.setContentView(dialogView)
-            bottomSheetDialog?.show()
-        }
-
-        bottomSheetDialog?.setContentView(dialogView)
-        bottomSheetDialog?.show()
-    }
-
     private fun showBookmarkContextMenu(title: String, url: String,
                                         userName: String, userPW: String, _id: String, pass_creation: String?
     ) {
         bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
         val dialogView = View.inflate(this, R.layout.dialog_menu_context_list, null)
-        val db = BookmarkList(this)
-        db.open()
         if (overViewTab == getString(R.string.album_title_history)) {
             dialogView.findViewById<LinearLayout>(R.id.menu_contextList_edit).visibility = View.GONE
         } else {
@@ -1679,7 +1562,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             textView.setText(R.string.toast_titleConfirm_delete)
 
             dialogView.findViewById<Button>(R.id.action_ok).setOnClickListener {
-                db.delete(_id.toInt())
+                bookmarkDB.delete(_id.toInt())
                 initBookmarkList()
                 hideBottomSheetDialog()
             }
@@ -1701,7 +1584,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                         try {
                             val input_pass_title = pass_titleET.text.toString().trim { it <= ' ' }
                             val input_pass_url = pass_URLET.text.toString().trim { it <= ' ' }
-                            db.update(_id.toInt(), HelperUnit.secString(input_pass_title), HelperUnit.secString(input_pass_url), "", "", pass_creation)
+                            bookmarkDB.update(_id.toInt(), HelperUnit.secString(input_pass_title), HelperUnit.secString(input_pass_url), "", "", pass_creation)
                             initBookmarkList()
                             hideKeyboard()
                         } catch (e: Exception) {
@@ -1731,8 +1614,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     ) {
         bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
         val dialogView = View.inflate(this, R.layout.dialog_menu_context_list, null)
-        val db = BookmarkList(this)
-        db.open()
         if (overViewTab == getString(R.string.album_title_history)) {
             dialogView.findViewById<LinearLayout>(R.id.menu_contextList_edit).visibility = View.GONE
         } else {
