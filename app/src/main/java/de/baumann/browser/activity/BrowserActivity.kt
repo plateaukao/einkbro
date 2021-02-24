@@ -8,6 +8,7 @@ import android.content.*
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.database.Cursor
+import android.graphics.Rect
 import android.media.MediaPlayer
 import android.media.MediaPlayer.OnCompletionListener
 import android.net.Uri
@@ -38,6 +39,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.internal.ViewUtils
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.ActivityMainBinding
 import de.baumann.browser.Ninja.databinding.DialogMenuBinding
@@ -240,7 +242,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             dialogView.findViewById<TextView>(R.id.dialog_text).setText(R.string.toast_restart)
             dialogView.findViewById<Button>(R.id.action_ok).setOnClickListener {
                 dialog.dismiss()
-                finish()
+                recreate()
             }
             dialogView.findViewById<Button>(R.id.action_cancel).setOnClickListener { dialog.cancel() }
             dialog.setContentView(dialogView)
@@ -579,6 +581,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             "2" -> findViewById(R.id.fab_imageButtonNav_center)
             else -> findViewById(R.id.fab_imageButtonNav_right)
         }
+        expandViewTouchArea(fab_imageButtonNav, ViewUnit.dpToPixel(this, 20).toInt())
+        fab_imageButtonNav.setOnClickListener { showOmnibox() }
         fab_imageButtonNav.setOnLongClickListener {
             show_dialogFastToggle()
             false
@@ -587,7 +591,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             show_dialogFastToggle()
             false
         }
-        fab_imageButtonNav.setOnClickListener { showOmnibox() }
         binding.omniboxOverflow.setOnClickListener { showOverflow() }
         if (sp.getBoolean("sp_gestures_use", true)) {
             val onTouchListener = object : SwipeTouchListener(this) {
@@ -649,6 +652,20 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         binding.omniboxRefresh.setOnLongClickListener {
             hideOmnibox()
             true
+        }
+    }
+
+    private fun expandViewTouchArea(view: View, size: Int) {
+        val parent = view.parent as View // button: the view you want to enlarge hit area
+
+        parent.post {
+            val rect = Rect()
+            view.getHitRect(rect)
+            rect.top -= size
+            rect.left -= size
+            rect.bottom += size
+            rect.right += size
+            parent.touchDelegate = TouchDelegate(rect, view)
         }
     }
 
@@ -1441,11 +1458,11 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     @SuppressLint("RestrictedApi")
     private fun showOmnibox() {
         if (!searchOnSite) {
-            fab_imageButtonNav.visibility = View.GONE
-            searchPanel.visibility = View.GONE
-            omnibox.visibility = View.VISIBLE
-            omniboxTitle.visibility = View.VISIBLE
-            binding.appBar.visibility = View.VISIBLE
+            fab_imageButtonNav.visibility = INVISIBLE
+            searchPanel.visibility = GONE
+            omnibox.visibility = VISIBLE
+            omniboxTitle.visibility = VISIBLE
+            binding.appBar.visibility = VISIBLE
             hideKeyboard()
         }
     }
@@ -1453,11 +1470,11 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     @SuppressLint("RestrictedApi")
     private fun hideOmnibox() {
         if (!searchOnSite) {
-            fab_imageButtonNav.visibility = View.VISIBLE
-            searchPanel.visibility = View.GONE
-            omnibox.visibility = View.GONE
-            omniboxTitle.visibility = View.GONE
-            binding.appBar.visibility = View.GONE
+            fab_imageButtonNav.visibility = VISIBLE
+            searchPanel.visibility = GONE
+            omnibox.visibility = GONE
+            omniboxTitle.visibility = GONE
+            binding.appBar.visibility = GONE
         }
     }
 
@@ -1470,11 +1487,11 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     @SuppressLint("RestrictedApi")
     private fun showSearchPanel() {
         searchOnSite = true
-        fab_imageButtonNav.visibility = View.GONE
-        omnibox.visibility = View.GONE
-        searchPanel.visibility = View.VISIBLE
-        omniboxTitle.visibility = View.GONE
-        binding.appBar.visibility = View.VISIBLE
+        fab_imageButtonNav.visibility = INVISIBLE
+        omnibox.visibility = GONE
+        searchPanel.visibility = VISIBLE
+        omniboxTitle.visibility = GONE
+        binding.appBar.visibility = VISIBLE
     }
 
     private fun showOverflow(): Boolean {
