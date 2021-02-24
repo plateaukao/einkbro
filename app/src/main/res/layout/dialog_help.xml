@@ -9,7 +9,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="?android:attr/colorBackground"
     tools:ignore="ContentDescription"
-    android:animateLayoutChanges="true"
+    android:animateLayoutChanges="false"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <TextView
