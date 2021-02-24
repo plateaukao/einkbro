@@ -50,7 +50,7 @@
         android:dividerHeight="0dp"
         android:fastScrollEnabled="true"
         android:gravity="center"
-        android:minHeight="150dp"
+        android:minHeight="300dp"
         android:stackFromBottom="true"
         android:visibility="gone"></ListView>
 

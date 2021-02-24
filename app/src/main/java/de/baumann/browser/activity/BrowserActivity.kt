@@ -2,17 +2,12 @@ package de.baumann.browser.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.DownloadManager
 import android.app.SearchManager
 import android.content.*
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.database.Cursor
-import android.graphics.Color
-import android.graphics.Rect
-import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.InsetDrawable
 import android.media.MediaPlayer
 import android.media.MediaPlayer.OnCompletionListener
 import android.net.Uri
@@ -26,7 +21,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.*
-import android.view.View.OnFocusChangeListener
+import android.view.View.*
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.webkit.CookieManager
@@ -71,7 +66,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private lateinit var inputBox: AutoCompleteTextView
     private lateinit var progressBar: ProgressBar
     private lateinit var searchBox: EditText
-    private lateinit var bottomSheetDialog_OverView: AlertDialog
+    private lateinit var overviewView: ViewGroup
     private lateinit var ninjaWebView: NinjaWebView
     private lateinit var listView: ListView
     private lateinit var omniboxTitle: TextView
@@ -299,7 +294,10 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             KeyEvent.KEYCODE_MENU -> return showOverflow()
             KeyEvent.KEYCODE_BACK -> {
                 hideKeyboard()
-                hideOverview()
+                if (overviewView.visibility == VISIBLE) {
+                    hideOverview()
+                    return true
+                }
                 if (fullscreenHolder != null || customView != null || videoView != null) {
                     return onHideCustomView()
                 } else if (omnibox.visibility == View.GONE && sp.getBoolean("sp_toolbarShow", true)) {
@@ -355,31 +353,15 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         showCurrentTabInOverview()
         currentAlbumController?.deactivate()
         currentAlbumController?.activate()
-        bottomSheetDialog_OverView.show()
-        updateOverViewHeight()
+        overviewView.visibility = VISIBLE
 
         Handler().postDelayed({
             tab_ScrollView.scrollTo(currentAlbumController?.albumView?.left ?: 0, 0)
         }, 250)
     }
 
-    private fun updateOverViewHeight() {
-        val displayRectangle = Rect()
-        window.decorView.getWindowVisibleDisplayFrame(displayRectangle)
-        val window = bottomSheetDialog_OverView.window ?: return
-        val wlp = window.attributes
-        wlp.width = displayRectangle.width()
-        //wlp.height = (displayRectangle.height() * 0.5).toInt()
-        wlp.height = WindowManager.LayoutParams.WRAP_CONTENT
-        wlp.gravity = Gravity.BOTTOM
-        wlp.flags = wlp.flags and WindowManager.LayoutParams.FLAG_DIM_BEHIND.inv()
-        window.attributes = wlp
-    }
-
     override fun hideOverview() {
-        if (bottomSheetDialog_OverView != null) {
-            bottomSheetDialog_OverView.dismiss()
-        }
+        overviewView.visibility = View.INVISIBLE
     }
 
     private fun hideBottomSheetDialog() {
@@ -722,25 +704,18 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
 
     @SuppressLint("ClickableViewAccessibility")
     private fun initOverview() {
-        val dialogBuilder = AlertDialog.Builder(this)
-        val dialogView = View.inflate(this, R.layout.dialog_overiew, null)
-        dialogBuilder.setView(dialogView)
-        bottomSheetDialog_OverView = dialogBuilder.create()
-        val back = ColorDrawable(Color.TRANSPARENT)
-        val inset = InsetDrawable(back, -8, -8, -8, -8)
-        bottomSheetDialog_OverView.window?.setBackgroundDrawable(inset)
-        bottomSheetDialog_OverView.setCanceledOnTouchOutside(true)
-        open_startPage = dialogView.findViewById(R.id.open_newTab_2)
-        open_bookmark = dialogView.findViewById(R.id.open_bookmark_2)
-        open_history = dialogView.findViewById(R.id.open_history_2)
-        open_menu = dialogView.findViewById(R.id.open_menu)
-        tab_container = dialogView.findViewById(R.id.tab_container)
-        tab_ScrollView = dialogView.findViewById(R.id.tab_ScrollView)
-        overview_top = dialogView.findViewById(R.id.overview_top)
-        listView = dialogView.findViewById(R.id.home_list_2)
-        open_startPageView = dialogView.findViewById(R.id.open_newTabView)
-        open_bookmarkView = dialogView.findViewById(R.id.open_bookmarkView)
-        open_historyView = dialogView.findViewById(R.id.open_historyView)
+        overviewView = findViewById(R.id.layout_overview)
+        open_startPage = findViewById(R.id.open_newTab_2)
+        open_bookmark = findViewById(R.id.open_bookmark_2)
+        open_history = findViewById(R.id.open_history_2)
+        open_menu = findViewById(R.id.open_menu)
+        tab_container = findViewById(R.id.tab_container)
+        tab_ScrollView = findViewById(R.id.tab_ScrollView)
+        overview_top = findViewById(R.id.overview_top)
+        listView = findViewById(R.id.home_list_2)
+        open_startPageView = findViewById(R.id.open_newTabView)
+        open_bookmarkView = findViewById(R.id.open_bookmarkView)
+        open_historyView = findViewById(R.id.open_historyView)
 
         // allow scrolling in listView without closing the bottomSheetDialog
         listView.setOnTouchListener { v, event ->
@@ -831,28 +806,29 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             bottomSheetDialog?.setContentView(dialogView)
             bottomSheetDialog?.show()
         }
-        bottomSheetDialog_OverView.setContentView(dialogView)
         open_startPage.setOnClickListener {
-            overview_top.visibility = View.VISIBLE
-            listView.visibility = View.GONE
-            open_startPageView.visibility = View.VISIBLE
-            open_bookmarkView.visibility = View.INVISIBLE
-            open_historyView.visibility = View.INVISIBLE
+            overview_top.visibility = VISIBLE
+            listView.visibility = INVISIBLE
+            open_startPageView.visibility = VISIBLE
+            open_bookmarkView.visibility = INVISIBLE
+            open_historyView.visibility = INVISIBLE
             overViewTab = getString(R.string.album_title_home)
         }
         open_bookmark.setOnClickListener {
-            listView.visibility = View.VISIBLE
-            open_startPageView.visibility = View.INVISIBLE
-            open_bookmarkView.visibility = View.VISIBLE
-            open_historyView.visibility = View.INVISIBLE
+            overview_top.visibility = INVISIBLE
+            listView.visibility = VISIBLE
+            open_startPageView.visibility = INVISIBLE
+            open_bookmarkView.visibility = VISIBLE
+            open_historyView.visibility = INVISIBLE
             overViewTab = getString(R.string.album_title_bookmarks)
             initBookmarkList()
         }
-        open_history.setOnClickListener(View.OnClickListener {
-            listView.visibility = View.VISIBLE
-            open_startPageView.visibility = View.INVISIBLE
-            open_bookmarkView.visibility = View.INVISIBLE
-            open_historyView.visibility = View.VISIBLE
+        open_history.setOnClickListener {
+            overview_top.visibility = INVISIBLE
+            listView.visibility = VISIBLE
+            open_startPageView.visibility = INVISIBLE
+            open_bookmarkView.visibility = INVISIBLE
+            open_historyView.visibility = VISIBLE
             overViewTab = getString(R.string.album_title_history)
             val action = RecordAction(BrowserActivity@ this)
             action.open(false)
@@ -870,7 +846,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 showHistoryContextMenu(list[position].title, list[position].url, adapter, list, position)
                 true
             }
-        })
+        }
         showCurrentTabInOverview()
     }
 
