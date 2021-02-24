@@ -69,7 +69,7 @@
             android:layout_gravity="center_vertical|center_horizontal"
             android:layout_marginStart="2dp"
             android:layout_marginEnd="2dp"
-            android:background="?attr/actionBarItemBackground"
+            android:background="@android:color/transparent"
             android:onClick="onClick"
             android:src="@drawable/icon_plus" />
 
@@ -94,7 +94,7 @@
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:layout_marginStart="2dp"
                 android:layout_marginEnd="2dp"
-                android:background="?attr/actionBarItemBackground"
+                android:background="@android:color/transparent"
                 android:onClick="onClick"
                 android:src="@drawable/icon_earth" />
 
@@ -121,7 +121,7 @@
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:layout_marginStart="2dp"
                 android:layout_marginEnd="2dp"
-                android:background="?attr/actionBarItemBackground"
+                android:background="@android:color/transparent"
                 android:onClick="onClick"
                 android:src="@drawable/icon_bookmark" />
 
@@ -148,7 +148,7 @@
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:layout_marginStart="2dp"
                 android:layout_marginEnd="2dp"
-                android:background="?attr/actionBarItemBackground"
+                android:background="@android:color/transparent"
                 android:onClick="onClick"
                 android:src="@drawable/ic_action_history" />
 
@@ -174,7 +174,7 @@
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:layout_marginStart="2dp"
                 android:layout_marginEnd="2dp"
-                android:background="?attr/actionBarItemBackground"
+                android:background="@android:color/transparent"
                 android:onClick="onClick"
                 android:src="@drawable/icon_dots" />
 
