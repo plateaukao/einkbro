@@ -337,6 +337,10 @@ public class NinjaWebView extends WebView implements AlbumController {
         scrollTo(0, 0);
     }
 
+    public void jumpToBottom() {
+        scrollTo(0, getHeight());
+    }
+
     public void pageDownWithNoAnimation() {
         scrollTo(0, getScrollY() + shiftOffset());
     }
@@ -347,5 +351,14 @@ public class NinjaWebView extends WebView implements AlbumController {
 
     public int shiftOffset() {
         return getHeight() / 5 * 4;
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (!browserController.handleKeyEvent(event)) {
+            return super.dispatchKeyEvent(event);
+        } else {
+            return true;
+        }
     }
 }
