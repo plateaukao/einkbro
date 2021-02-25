@@ -39,7 +39,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.internal.ViewUtils
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.ActivityMainBinding
 import de.baumann.browser.Ninja.databinding.DialogMenuBinding
@@ -313,6 +312,10 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 }
                 return true
             }
+            // vim bindings
+            KeyEvent.KEYCODE_O -> {
+                inputBox.performClick()
+            }
         }
         return false
     }
@@ -388,7 +391,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 showKeyboard()
             }
             R.id.button_closeTab -> removeAlbum(currentAlbumController!!)
-            R.id.button_quit -> doubleTapsQuit()
+            R.id.button_quit -> finish()
             R.id.menu_shareScreenshot -> if (Build.VERSION.SDK_INT in 23..28) {
                 val hasWRITE_EXTERNAL_STORAGE = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
@@ -516,11 +519,23 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             setTitle("Choose Font Size")
             setSingleChoiceItems(fontArray, selected) { dialog, which ->
                 sp.edit().putString("sp_fontSize", valueArray[which]).apply()
-                ninjaWebView.settings.textZoom = Integer.parseInt(sp.getString("sp_fontSize", "100")
-                        ?: "100")
+                changeFontSize(Integer.parseInt(sp.getString("sp_fontSize", "100") ?: "100"))
                 dialog.dismiss()
             }
         }.create().show()
+    }
+
+    private fun changeFontSize(size: Int) {
+        ninjaWebView.settings.textZoom = size
+    }
+
+    private fun increaseFontSize() {
+        ninjaWebView.settings.textZoom += 20
+    }
+
+    private fun decreaseFontSize() {
+        if (ninjaWebView.settings.textZoom <= 20) return
+        ninjaWebView.settings.textZoom -= 20
     }
 
     private fun printPDF(share: Boolean) {
@@ -747,18 +762,12 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         }
         open_menu.setOnClickListener {
             bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
-            val dialogView = View.inflate(this, R.layout.dialog_menu_overview, null)
+            val dialogView = inflate(this, R.layout.dialog_menu_overview, null)
             val bookmark_sort = dialogView.findViewById<LinearLayout>(R.id.bookmark_sort)
             when (overViewTab) {
-                getString(R.string.album_title_bookmarks) -> {
-                    bookmark_sort.visibility = View.VISIBLE
-                }
-                getString(R.string.album_title_home) -> {
-                    bookmark_sort.visibility = View.VISIBLE
-                }
-                getString(R.string.album_title_history) -> {
-                    bookmark_sort.visibility = View.GONE
-                }
+                getString(R.string.album_title_bookmarks) -> bookmark_sort.visibility = VISIBLE
+                getString(R.string.album_title_home) -> bookmark_sort.visibility = VISIBLE
+                getString(R.string.album_title_history) -> bookmark_sort.visibility = GONE
             }
             bookmark_sort.setOnClickListener {
                 hideBottomSheetDialog()
@@ -1155,7 +1164,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             showOmnibox()
             showAlbum(ninjaWebView)
         }
-        if (url != null && !url.isEmpty()) {
+        if (url?.isNotEmpty() == true) {
             ninjaWebView.loadUrl(url)
         }
     }
@@ -1191,7 +1200,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     override fun removeAlbum(controller: AlbumController) {
         if (BrowserContainer.size() <= 1) {
             if (!sp.getBoolean("sp_reopenLastTab", false)) {
-                doubleTapsQuit()
+                finish()
             } else {
                 updateAlbum(sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"))
                 hideOverview()
@@ -1341,6 +1350,85 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         return true
     }
 
+    private var previousKeyEvent: KeyEvent? = null
+    override fun handleKeyEvent(event: KeyEvent?): Boolean {
+        if (event?.action != KeyEvent.ACTION_DOWN) return false
+        if (ninjaWebView.hitTestResult.type == HitTestResult.EDIT_TEXT_TYPE) return false
+
+        if (event.isShiftPressed) {
+            when (event.keyCode) {
+                KeyEvent.KEYCODE_J -> {
+                    val controller = nextAlbumController(true) ?: return true
+                    showAlbum(controller)
+                }
+                KeyEvent.KEYCODE_K ->  {
+                    val controller = nextAlbumController(false) ?: return true
+                    showAlbum(controller)
+                }
+                KeyEvent.KEYCODE_G -> ninjaWebView.jumpToBottom()
+                else -> return false
+            }
+        } else { // non-capital
+            when (event.keyCode) {
+                // vim bindings
+                KeyEvent.KEYCODE_B -> {
+                    showOverview()
+                    open_bookmark.performClick()
+                }
+                KeyEvent.KEYCODE_O -> {
+                    if (previousKeyEvent?.keyCode == KeyEvent.KEYCODE_V) {
+                        decreaseFontSize()
+                        previousKeyEvent = null
+                    } else {
+                        inputBox.requestFocus()
+                    }
+                }
+                KeyEvent.KEYCODE_J -> ninjaWebView.pageDownWithNoAnimation()
+                KeyEvent.KEYCODE_K -> ninjaWebView.pageUpWithNoAnimation()
+                KeyEvent.KEYCODE_H -> ninjaWebView.goBack()
+                KeyEvent.KEYCODE_L -> ninjaWebView.goForward()
+                KeyEvent.KEYCODE_D -> removeAlbum(currentAlbumController!!)
+                KeyEvent.KEYCODE_T -> {
+                    addAlbum(getString(R.string.app_name), "", true)
+                    inputBox.requestFocus()
+                }
+                KeyEvent.KEYCODE_SLASH -> showSearchPanel()
+                KeyEvent.KEYCODE_G -> {
+                    when {
+                        previousKeyEvent == null -> {
+                            previousKeyEvent = event
+                        }
+                        previousKeyEvent?.keyCode == KeyEvent.KEYCODE_G -> {
+                            // gg
+                            ninjaWebView.jumpToTop()
+                            previousKeyEvent = null
+                        }
+                        else -> {
+                            previousKeyEvent = null
+                        }
+                    }
+                }
+                KeyEvent.KEYCODE_V -> {
+                    if (previousKeyEvent == null) {
+                        previousKeyEvent = event
+                    } else {
+                        previousKeyEvent = null
+                    }
+                }
+                KeyEvent.KEYCODE_I -> {
+                    if (previousKeyEvent?.keyCode == KeyEvent.KEYCODE_V) {
+                        increaseFontSize()
+                        previousKeyEvent = null
+                    }
+                }
+
+                else -> return false
+            }
+        }
+        return true
+
+    }
+
     private fun show_contextMenu_link(url: String?) {
         bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
         val dialogView = View.inflate(this, R.layout.dialog_menu_context_link, null)
@@ -1437,21 +1525,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             show_contextMenu_link(url)
         } else if (result.type == HitTestResult.IMAGE_TYPE || result.type == HitTestResult.SRC_IMAGE_ANCHOR_TYPE || result.type == HitTestResult.SRC_ANCHOR_TYPE) {
             show_contextMenu_link(result.extra)
-        }
-    }
-
-    private fun doubleTapsQuit() {
-        if (!sp.getBoolean("sp_close_browser_confirm", true)) {
-            finish()
-        } else {
-            bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
-            val dialogView = View.inflate(this, R.layout.dialog_action, null)
-            val textView = dialogView.findViewById<TextView>(R.id.dialog_text)
-            textView.setText(R.string.toast_quit)
-            dialogView.findViewById<Button>(R.id.action_ok).setOnClickListener { finish() }
-            dialogView.findViewById<Button>(R.id.action_cancel).setOnClickListener { hideBottomSheetDialog() }
-            bottomSheetDialog?.setContentView(dialogView)
-            bottomSheetDialog?.show()
         }
     }
 

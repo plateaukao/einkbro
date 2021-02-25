@@ -1,6 +1,7 @@
 package de.baumann.browser.browser;
 
 import android.net.Uri;
+import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
@@ -15,4 +16,5 @@ public interface BrowserController {
     void onLongPress(String url);
     void hideOverview ();
     boolean onHideCustomView();
+    boolean handleKeyEvent(KeyEvent event);
 }
