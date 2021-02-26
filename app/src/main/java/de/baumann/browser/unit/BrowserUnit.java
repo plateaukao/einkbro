@@ -399,4 +399,9 @@ public class BrowserUnit {
         }
         return dir != null && dir.delete();
     }
+
+    public static void printTimestamp(String function) {
+        Long timestamp = System.currentTimeMillis();
+        Log.v("timestamp", function + " timestamp:" + timestamp);
+    }
 }

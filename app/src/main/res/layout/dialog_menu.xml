@@ -1,23 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
+<com.google.android.flexbox.FlexboxLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="right"
-    android:orientation="horizontal">
+    android:layout_height="match_parent"
+    app:flexWrap="wrap"
+    app:alignItems="stretch"
+    app:alignContent="stretch" >
 
-    <androidx.gridlayout.widget.GridLayout
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:useDefaultMargins="true"
-        app:columnCount="7"
-        app:rowCount="3">
+        android:orientation="vertical">
+        <ImageView
+            android:id="@+id/menu_searchSite"
+            android:layout_width="@dimen/menu_button_size"
+            android:layout_height="@dimen/menu_button_size"
+            android:padding="10dp"
+            android:gravity="center_vertical"
+            android:onClick="onClick"
+            android:src="@drawable/icon_search" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:lines="2"
+            android:textSize="10sp"
+            android:text="@string/menu_other_searchSite"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <ImageView
+            android:id="@+id/menu_shareClipboard"
+            android:layout_width="@dimen/menu_button_size"
+            android:layout_height="@dimen/menu_button_size"
+            android:padding="10dp"
+            android:gravity="center_vertical"
+            android:src="@drawable/clipboard_outline" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:lines="2"
+            android:textSize="10sp"
+            android:text="@string/menu_shareClipboard"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
             android:orientation="vertical">
             <ImageView
                 android:id="@+id/menu_saveBookmark"
@@ -54,47 +89,6 @@
                 android:lines="2"
                 android:textSize="10sp"
                 android:text="@string/menu_share_link"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <ImageView
-                android:id="@+id/button_openFav"
-                android:layout_width="@dimen/menu_button_size"
-                android:layout_height="@dimen/menu_button_size"
-                android:padding="10dp"
-                android:gravity="center_vertical"
-                android:src="@drawable/star_grey" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:lines="2"
-                android:textSize="10sp"
-                android:text="@string/menu_openFav"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <ImageView
-                android:id="@+id/button_closeTab"
-                android:layout_width="@dimen/menu_button_size"
-                android:layout_height="@dimen/menu_button_size"
-                android:padding="10dp"
-                android:gravity="center_vertical"
-                android:onClick="onClick"
-                android:src="@drawable/icon_close" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:lines="2"
-                android:textSize="10sp"
-                android:text="@string/menu_closeTab"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
@@ -164,68 +158,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <ImageView
-                android:id="@+id/menu_shareClipboard"
-                android:layout_width="@dimen/menu_button_size"
-                android:layout_height="@dimen/menu_button_size"
-                android:padding="10dp"
-                android:gravity="center_vertical"
-                android:src="@drawable/clipboard_outline" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:lines="2"
-                android:textSize="10sp"
-                android:text="@string/menu_shareClipboard"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <ImageView
-                android:id="@+id/menu_openWith"
-                android:layout_width="@dimen/menu_button_size"
-                android:layout_height="@dimen/menu_button_size"
-                android:padding="10dp"
-                android:gravity="center_vertical"
-                android:onClick="onClick"
-                android:src="@drawable/icon_exit" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:lines="2"
-                android:textSize="10sp"
-                android:text="@string/menu_open_with"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <ImageView
-                android:id="@+id/menu_saveScreenshot"
-                android:layout_width="@dimen/menu_button_size"
-                android:layout_height="@dimen/menu_button_size"
-                android:padding="10dp"
-                android:gravity="center_vertical"
-                android:onClick="onClick"
-                android:src="@drawable/icon_fullscreen" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:lines="2"
-                android:textSize="10sp"
-                android:text="@string/menu_save_screenshot"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <ImageView
                 android:id="@+id/menu_sc"
                 android:layout_width="@dimen/menu_button_size"
                 android:layout_height="@dimen/menu_button_size"
@@ -241,51 +173,30 @@
                 android:textSize="10sp"
                 android:text="@string/menu_sc"/>
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <ImageView
-                android:id="@+id/menu_fileManager"
-                android:layout_width="@dimen/menu_button_size"
-                android:layout_height="@dimen/menu_button_size"
-                android:padding="10dp"
-                android:gravity="center_vertical"
-                android:onClick="onClick"
-                android:src="@drawable/icon_file" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <ImageView
+            android:id="@+id/menu_saveScreenshot"
+            android:layout_width="@dimen/menu_button_size"
+            android:layout_height="@dimen/menu_button_size"
+            android:padding="10dp"
+            android:gravity="center_vertical"
+            android:onClick="onClick"
+            android:src="@drawable/icon_fullscreen" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:lines="2"
-                android:textSize="10sp"
-                android:text="@string/menu_other_fileManager"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <ImageView
-                android:id="@+id/menu_searchSite"
-                android:layout_width="@dimen/menu_button_size"
-                android:layout_height="@dimen/menu_button_size"
-                android:padding="10dp"
-                android:gravity="center_vertical"
-                android:onClick="onClick"
-                android:src="@drawable/icon_search" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:lines="2"
-                android:textSize="10sp"
-                android:text="@string/menu_other_searchSite"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:lines="2"
+            android:textSize="10sp"
+            android:text="@string/menu_save_screenshot"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
             android:orientation="vertical">
             <ImageView
                 android:id="@+id/contextLink_saveAs"
@@ -324,9 +235,71 @@
                 android:textSize="10sp"
                 android:text="@string/menu_fav"/>
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <ImageView
+            android:id="@+id/menu_openWith"
+            android:layout_width="@dimen/menu_button_size"
+            android:layout_height="@dimen/menu_button_size"
+            android:padding="10dp"
+            android:gravity="center_vertical"
+            android:onClick="onClick"
+            android:src="@drawable/icon_exit" />
+
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:lines="2"
+            android:textSize="10sp"
+            android:text="@string/menu_open_with"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <ImageView
+            android:id="@+id/menu_fileManager"
+            android:layout_width="@dimen/menu_button_size"
+            android:layout_height="@dimen/menu_button_size"
+            android:padding="10dp"
+            android:gravity="center_vertical"
+            android:onClick="onClick"
+            android:src="@drawable/icon_file" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:lines="2"
+            android:textSize="10sp"
+            android:text="@string/menu_other_fileManager"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <ImageView
+            android:id="@+id/button_openFav"
+            android:layout_width="@dimen/menu_button_size"
+            android:layout_height="@dimen/menu_button_size"
+            android:padding="10dp"
+            android:gravity="center_vertical"
+            android:src="@drawable/star_grey" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:lines="2"
+            android:textSize="10sp"
+            android:text="@string/menu_openFav"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
             android:orientation="vertical">
             <ImageView
                 android:id="@+id/menu_download"
@@ -345,9 +318,30 @@
                 android:textSize="10sp"
                 android:text="@string/menu_download"/>
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <ImageView
+            android:id="@+id/button_closeTab"
+            android:layout_width="@dimen/menu_button_size"
+            android:layout_height="@dimen/menu_button_size"
+            android:padding="10dp"
+            android:gravity="center_vertical"
+            android:onClick="onClick"
+            android:src="@drawable/icon_close" />
+
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:lines="2"
+            android:textSize="10sp"
+            android:text="@string/menu_closeTab"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <ImageView
@@ -386,6 +380,5 @@
                 android:textSize="10sp"
                 android:text="Settings"/>
         </LinearLayout>
-    </androidx.gridlayout.widget.GridLayout>
-</LinearLayout>
+</com.google.android.flexbox.FlexboxLayout>
 

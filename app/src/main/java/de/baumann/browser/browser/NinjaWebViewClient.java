@@ -15,17 +15,14 @@ import androidx.preference.PreferenceManager;
 import androidx.annotation.NonNull;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.textfield.TextInputLayout;
 import android.view.View;
 import android.webkit.CookieManager;
-import android.webkit.HttpAuthHandler;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import java.io.ByteArrayInputStream;
@@ -67,8 +64,6 @@ public class NinjaWebViewClient extends WebViewClient {
 
     @Override
     public void onPageFinished(WebView view, String url) {
-        //super.onPageFinished(view, url);
-
         if (sp.getBoolean("saveHistory", true)) {
             RecordAction action = new RecordAction(context);
             action.open(true);
@@ -80,12 +75,14 @@ public class NinjaWebViewClient extends WebViewClient {
             }
             action.close();
         }
+        /* Daniel
 
         if (ninjaWebView.isForeground()) {
             ninjaWebView.invalidate();
         } else {
             ninjaWebView.postInvalidate();
         }
+         */
     }
 
     @Override
