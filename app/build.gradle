@@ -2,13 +2,14 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion '29.0.2'
+    compileSdkVersion 30
+    buildToolsVersion '30.0.3'
 
     defaultConfig {
-        applicationId "de.baumann.browser"
-        minSdkVersion 23
-        targetSdkVersion 29
+        //applicationId "de.baumann.browser"
+        applicationId "info.plateaukao.einkbro"
+        minSdkVersion 19
+        targetSdkVersion 30
         versionCode 104
         versionName "7.2"
         vectorDrawables.useSupportLibrary = true
@@ -33,17 +34,11 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.google.android.material:material:1.1.0'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'com.mobapphome.library:mah-encryptor-lib:1.0.1'
     implementation 'androidx.preference:preference:1.1.0'
-    implementation 'androidx.legacy:legacy-preference-v14:1.0.0'
-    implementation 'androidx.gridlayout:gridlayout:1.0.0'
-    implementation "androidx.core:core-ktx:+"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-}
-repositories {
-    mavenCentral()
+
+    implementation 'com.google.android:flexbox:2.0.1'
 }

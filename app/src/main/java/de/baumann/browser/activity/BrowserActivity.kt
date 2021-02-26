@@ -347,7 +347,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         inputBox.threshold = 1
         inputBox.dropDownVerticalOffset = -16
         inputBox.dropDownWidth = ViewUnit.getWindowWidth(this)
-        inputBox.onItemClickListener = OnItemClickListener { parent, view, position, id ->
+        inputBox.onItemClickListener = OnItemClickListener { _, view, _, _ ->
             val url = (view.findViewById<View>(R.id.complete_item_url) as TextView).text.toString()
             updateAlbum(url)
             hideKeyboard()
@@ -360,7 +360,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         currentAlbumController?.activate()
         overviewView.visibility = VISIBLE
 
-        Handler().postDelayed({
+        ninjaWebView.postDelayed({
             tab_ScrollView.scrollTo(currentAlbumController?.albumView?.left ?: 0, 0)
         }, 250)
     }
@@ -376,8 +376,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     override fun onClick(v: View) {
         ninjaWebView = currentAlbumController as NinjaWebView
         try {
-            title = ninjaWebView.title.trim { it <= ' ' }
-            url = ninjaWebView.url.trim { it <= ' ' }
+            title = ninjaWebView.title?.trim { it <= ' ' }
+            url = ninjaWebView.url?.trim { it <= ' ' }
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -565,15 +565,15 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         } else if ("sc_history" == action) {
             addAlbum(null, sp.getString("favoriteURL", "https://www.google.com"), true)
             showOverview()
-            Handler().postDelayed({ open_history.performClick() }, 250)
+            ninjaWebView.postDelayed({ open_history.performClick() }, 250)
         } else if ("sc_bookmark" == action) {
             addAlbum(null, sp.getString("favoriteURL", "https://www.google.com"), true)
             showOverview()
-            Handler().postDelayed({ open_bookmark.performClick() }, 250)
+            ninjaWebView.postDelayed({ open_bookmark.performClick() }, 250)
         } else if ("sc_startPage" == action) {
             addAlbum(null, sp.getString("favoriteURL", "https://www.google.com"), true)
             showOverview()
-            Handler().postDelayed({ open_startPage.performClick() }, 250)
+            ninjaWebView.postDelayed({ open_startPage.performClick() }, 250)
         } else if (Intent.ACTION_SEND == action) {
             addAlbum(null, url, true)
         } else {
@@ -623,7 +623,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 override fun onSwipeLeft() = performGesture("setting_gesture_tb_left")
             })
         }
-        inputBox.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
+        inputBox.setOnEditorActionListener(OnEditorActionListener { _, _, _ ->
             val query = inputBox.text.toString().trim { it <= ' ' }
             if (query.isEmpty()) {
                 NinjaToast.show(this, getString(R.string.toast_input_empty))
@@ -633,7 +633,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             showOmnibox()
             false
         })
-        inputBox.onFocusChangeListener = OnFocusChangeListener { v, hasFocus ->
+        inputBox.onFocusChangeListener = OnFocusChangeListener { _, _ ->
             if (inputBox.hasFocus()) {
                 ninjaWebView.stopLoading()
                 inputBox.setText(ninjaWebView.url)
@@ -772,13 +772,13 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             bookmark_sort.setOnClickListener {
                 hideBottomSheetDialog()
                 bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
-                val dialogView = View.inflate(this, R.layout.dialog_bookmark_sort, null)
+                val sortView = View.inflate(this, R.layout.dialog_bookmark_sort, null)
                 if (overViewTab == getString(R.string.album_title_bookmarks)) {
-                    dialogView.findViewById<TextView>(R.id.bookmark_sort_tv).text = resources.getString(R.string.dialog_sortIcon)
+                    sortView.findViewById<TextView>(R.id.bookmark_sort_tv).text = resources.getString(R.string.dialog_sortIcon)
                 } else if (overViewTab == getString(R.string.album_title_home)) {
-                    dialogView.findViewById<TextView>(R.id.bookmark_sort_tv).text = resources.getString(R.string.dialog_sortDate)
+                    sortView.findViewById<TextView>(R.id.bookmark_sort_tv).text = resources.getString(R.string.dialog_sortDate)
                 }
-                dialogView.findViewById<LinearLayout>(R.id.dialog_sortName).setOnClickListener {
+                sortView.findViewById<LinearLayout>(R.id.dialog_sortName).setOnClickListener {
                     if (overViewTab == getString(R.string.album_title_bookmarks)) {
                         sp.edit().putString("sortDBB", "title").apply()
                         initBookmarkList()
@@ -789,7 +789,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                         hideBottomSheetDialog()
                     }
                 }
-                dialogView.findViewById<LinearLayout>(R.id.dialog_sortIcon).setOnClickListener {
+                sortView.findViewById<LinearLayout>(R.id.dialog_sortIcon).setOnClickListener {
                     if (overViewTab == getString(R.string.album_title_bookmarks)) {
                         sp.edit().putString("sortDBB", "icon").apply()
                         initBookmarkList()
@@ -800,7 +800,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                         hideBottomSheetDialog()
                     }
                 }
-                bottomSheetDialog?.setContentView(dialogView)
+                bottomSheetDialog?.setContentView(sortView)
                 bottomSheetDialog?.show()
             }
             dialogView.findViewById<LinearLayout>(R.id.tv_delete).setOnClickListener {
@@ -822,7 +822,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                             open_bookmark.performClick()
                         }
                         getString(R.string.album_title_history) -> {
-                            BrowserUnit.clearHistory(BrowserActivity@ this)
+                            BrowserUnit.clearHistory(this)
                             open_history.performClick()
                         }
                     }
@@ -853,7 +853,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             listView.visibility = VISIBLE
             toggleOverviewFocus(open_historyView)
             overViewTab = getString(R.string.album_title_history)
-            val action = RecordAction(BrowserActivity@ this)
+            val action = RecordAction(this)
             action.open(false)
             val list: List<Record>
             list = action.listEntries(this, false)
@@ -861,11 +861,11 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             adapter = Adapter_Record(this, list)
             listView.adapter = adapter
             adapter.notifyDataSetChanged()
-            listView.onItemClickListener = OnItemClickListener { parent, view, position, id ->
+            listView.onItemClickListener = OnItemClickListener { _, _, position, _ ->
                 updateAlbum(list[position].url)
                 hideOverview()
             }
-            listView.onItemLongClickListener = OnItemLongClickListener { parent, view, position, id ->
+            listView.onItemLongClickListener = OnItemLongClickListener { _, _, position, _ ->
                 showHistoryContextMenu(list[position].title, list[position].url, adapter, list, position)
                 true
             }
@@ -897,7 +897,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 (currentAlbumController as NinjaWebView?)?.findAllAsync(s.toString())
             }
         })
-        searchBox.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
+        searchBox.setOnEditorActionListener(OnEditorActionListener { _, actionId, _->
             if (actionId != EditorInfo.IME_ACTION_DONE) {
                 return@OnEditorActionListener false
             }
@@ -907,24 +907,24 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             }
             false
         })
-        findViewById<ImageButton?>(R.id.main_search_up).setOnClickListener(View.OnClickListener {
+        findViewById<ImageButton?>(R.id.main_search_up).setOnClickListener {
             val query = searchBox.text.toString()
             if (query.isEmpty()) {
                 NinjaToast.show(this, getString(R.string.toast_input_empty))
-                return@OnClickListener
+                return@setOnClickListener
             }
             hideKeyboard()
             (currentAlbumController as NinjaWebView).findNext(false)
-        })
-        findViewById<ImageButton?>(R.id.main_search_down).setOnClickListener(View.OnClickListener {
+        }
+        findViewById<ImageButton?>(R.id.main_search_down).setOnClickListener {
             val query = searchBox.text.toString()
             if (query.isEmpty()) {
                 NinjaToast.show(this, getString(R.string.toast_input_empty))
-                return@OnClickListener
+                return@setOnClickListener
             }
             hideKeyboard()
             (currentAlbumController as NinjaWebView).findNext(true)
-        })
+        }
         findViewById<ImageButton?>(R.id.main_search_cancel).setOnClickListener { hideSearchPanel() }
     }
 
@@ -1140,6 +1140,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
 
     @Synchronized
     private fun addAlbum(title: String?, url: String?, foreground: Boolean) {
+        if (url == null) return
         ninjaWebView = NinjaWebView(this)
         ninjaWebView.browserController = this
         ninjaWebView.albumTitle = title
@@ -1175,6 +1176,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
 
     @Synchronized
     private fun updateAlbum(url: String?) {
+        if (url == null) return
         (currentAlbumController as NinjaWebView).loadUrl(url)
         updateOmnibox()
     }
@@ -1268,7 +1270,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             binding.omniboxRefresh.setImageResource(R.drawable.icon_close)
         } else {
             try {
-                if (ninjaWebView.url.contains("https://")) {
+                if (ninjaWebView.url?.contains("https://") == true) {
                     binding.omniboxRefresh.setImageResource(R.drawable.icon_refresh)
                 } else {
                     binding.omniboxRefresh.setImageResource(R.drawable.icon_alert)
@@ -1460,9 +1462,9 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             try {
                 hideBottomSheetDialog()
                 val builder = AlertDialog.Builder(this@BrowserActivity)
-                val dialogView = View.inflate(this, R.layout.dialog_edit_extension, null)
-                val editTitle = dialogView.findViewById<EditText>(R.id.dialog_edit)
-                val editExtension = dialogView.findViewById<EditText>(R.id.dialog_edit_extension)
+                val menuView = inflate(this, R.layout.dialog_edit_extension, null)
+                val editTitle = menuView.findViewById<EditText>(R.id.dialog_edit)
+                val editExtension = menuView.findViewById<EditText>(R.id.dialog_edit_extension)
                 val filename = URLUtil.guessFileName(url, null, null)
                 editTitle.setHint(R.string.dialog_title_hint)
                 editTitle.setText(HelperUnit.fileName(ninjaWebView.url))
@@ -1470,7 +1472,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 if (extension.length <= 8) {
                     editExtension.setText(extension)
                 }
-                builder.setView(dialogView)
+                builder.setView(menuView)
                 builder.setTitle(R.string.menu_edit)
                 builder.setPositiveButton(R.string.app_ok) { dialog, whichButton ->
                     val title = editTitle.text.toString().trim { it <= ' ' }
@@ -1626,17 +1628,17 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         dialogView.findViewById<LinearLayout>(R.id.menu_contextList_delete).setOnClickListener {
             hideBottomSheetDialog()
             bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
-            val dialogView = View.inflate(this, R.layout.dialog_action, null)
-            val textView = dialogView.findViewById<TextView>(R.id.dialog_text)
+            val menuView = View.inflate(this, R.layout.dialog_action, null)
+            val textView = menuView.findViewById<TextView>(R.id.dialog_text)
             textView.setText(R.string.toast_titleConfirm_delete)
 
-            dialogView.findViewById<Button>(R.id.action_ok).setOnClickListener {
+            menuView.findViewById<Button>(R.id.action_ok).setOnClickListener {
                 bookmarkDB.delete(_id.toInt())
                 initBookmarkList()
                 hideBottomSheetDialog()
             }
-            dialogView.findViewById<Button>(R.id.action_cancel).setOnClickListener { hideBottomSheetDialog() }
-            bottomSheetDialog?.setContentView(dialogView)
+            menuView.findViewById<Button>(R.id.action_cancel).setOnClickListener { hideBottomSheetDialog() }
+            bottomSheetDialog?.setContentView(menuView)
             bottomSheetDialog?.show()
         }
 
@@ -1644,12 +1646,12 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             hideBottomSheetDialog()
                 try {
                     bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
-                    val dialogView = View.inflate(this, R.layout.dialog_edit_bookmark, null)
-                    val pass_titleET = dialogView.findViewById<EditText>(R.id.pass_title)
-                    val pass_URLET = dialogView.findViewById<EditText>(R.id.pass_url)
+                    val menuView = View.inflate(this, R.layout.dialog_edit_bookmark, null)
+                    val pass_titleET = menuView.findViewById<EditText>(R.id.pass_title)
+                    val pass_URLET = menuView.findViewById<EditText>(R.id.pass_url)
                     pass_titleET.setText(title)
                     pass_URLET.setText(url)
-                    dialogView.findViewById<Button>(R.id.action_ok).setOnClickListener {
+                    menuView.findViewById<Button>(R.id.action_ok).setOnClickListener {
                         try {
                             val input_pass_title = pass_titleET.text.toString().trim { it <= ' ' }
                             val input_pass_url = pass_URLET.text.toString().trim { it <= ' ' }
@@ -1662,11 +1664,11 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                         }
                         hideBottomSheetDialog()
                     }
-                    dialogView.findViewById<Button>(R.id.action_cancel).setOnClickListener {
+                    menuView.findViewById<Button>(R.id.action_cancel).setOnClickListener {
                         hideKeyboard()
                         hideBottomSheetDialog()
                     }
-                    bottomSheetDialog?.setContentView(dialogView)
+                    bottomSheetDialog?.setContentView(menuView)
                     bottomSheetDialog?.show()
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -1736,12 +1738,12 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private fun setCustomFullscreen(fullscreen: Boolean) {
         val decorView = window.decorView
         if (fullscreen) {
-            decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
-                    or View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
-                    or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
+            decorView.systemUiVisibility = (SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    or SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    or SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    or SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
+                    or SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
+                    or SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
         } else {
             decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
         }
@@ -1798,9 +1800,10 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     }
 
     override fun onActionModeFinished(mode: ActionMode?) {
-        mActionMode = null
         super.onActionModeFinished(mode)
+        mActionMode = null
     }
+
 
     private fun hideKeyboard() {
         val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
