@@ -54,8 +54,6 @@
     <string name="dialog_title_hint">Заголовок:</string>
     <string name="dialog_url_hint">Url:</string>
     <string name="dialog_extension_hint">Расширение (например: \".jpg\"):</string>
-    <string name="dialog_sign_in_username">Имя пользователя</string>
-    <string name="dialog_sign_in_password">Пароль</string>
     <string name="dialog_title_download">Хотите загрузить файл?</string>
     <string name="dialog_content_resubmission">Хотите повторно отправить свои данные?</string>
     <string name="dialog_content_ssl_error">Сертификат сайта не является доверенным. Всё равно продолжить?</string>

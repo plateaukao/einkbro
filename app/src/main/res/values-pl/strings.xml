@@ -55,8 +55,6 @@
     <string name="dialog_title_hint">Tytuł:</string>
     <string name="dialog_url_hint">Url:</string>
     <string name="dialog_extension_hint">Rozszerzenie (np.: \".jpg\"):</string>
-    <string name="dialog_sign_in_username">Login</string>
-    <string name="dialog_sign_in_password">Hasło</string>
     <string name="dialog_title_download">Rozpocząć pobieranie?</string>
     <string name="dialog_content_resubmission">Ponowić wysyłkę danych?</string>
     <string name="dialog_content_ssl_error">Wykryto niezaufany certyfikat. Chcesz kontynuować?</string>

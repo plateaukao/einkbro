@@ -8,7 +8,7 @@ android {
     defaultConfig {
         //applicationId "de.baumann.browser"
         applicationId "info.plateaukao.einkbro"
-        minSdkVersion 19
+        minSdkVersion 23
         targetSdkVersion 30
         versionCode 105
         versionName "8.0"

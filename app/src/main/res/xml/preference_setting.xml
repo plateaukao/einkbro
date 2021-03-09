@@ -64,12 +64,6 @@
             android:summary="@string/setting_summary_ui"/>
 
         <Preference
-            android:key="settings_filter"
-            android:icon="@drawable/filter_variant"
-            android:title="@string/setting_filter"
-            android:summary="@string/setting_filter_summary"/>
-
-        <Preference
             android:key="settings_gesture"
             android:icon="@drawable/gesture_tap"
             android:title="@string/setting_gestures"

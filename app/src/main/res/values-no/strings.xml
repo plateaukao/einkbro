@@ -55,8 +55,6 @@
     <string name="dialog_title_hint">Title:</string>
     <string name="dialog_url_hint">Url:</string>
     <string name="dialog_extension_hint">Extension (for example: \".jpg\"):</string>
-    <string name="dialog_sign_in_username">Username</string>
-    <string name="dialog_sign_in_password">Password</string>
     <string name="dialog_title_download">Do you want to download the file?</string>
     <string name="dialog_content_resubmission">Would you like to resubmit your data?</string>
     <string name="dialog_content_ssl_error">The certificate of the site is not trusted. Proceed anyway?</string>

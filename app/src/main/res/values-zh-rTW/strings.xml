@@ -3,77 +3,74 @@
 <resources>
     <!-- App -->
     <string name="app_name">EinkBro瀏覽器</string>
-    <string name="list_empty">Current list is empty</string>
-    <string name="album_title_bookmarks">Bookmarks</string>
-    <string name="album_title_history">History</string>
-    <string name="album_title_home">Home</string>
-    <string name="album_title_files">Files</string>
-    <string name="search_hint">Search</string>
-    <string name="color_red">Red</string>
-    <string name="color_pink">Pink</string>
-    <string name="color_purple">Purple</string>
-    <string name="color_blue">Blue</string>
+    <string name="list_empty">目前清單是空的</string>
+    <string name="album_title_bookmarks">書籤</string>
+    <string name="album_title_history">歷史</string>
+    <string name="album_title_home">首頁</string>
+    <string name="album_title_files">檔案</string>
+    <string name="search_hint">搜尋</string>
+    <string name="color_red">紅</string>
+    <string name="color_pink">粉紅</string>
+    <string name="color_purple">紫</string>
+    <string name="color_blue">藍</string>
     <string name="color_teal">Teal</string>
-    <string name="color_green">Green</string>
+    <string name="color_green">綠</string>
     <string name="color_lime">Lime</string>
-    <string name="color_yellow">Yellow</string>
-    <string name="color_orange">Orange</string>
-    <string name="color_brown">Brown</string>
-    <string name="color_grey">Grey</string>
+    <string name="color_yellow">黃</string>
+    <string name="color_orange">橘</string>
+    <string name="color_brown">咖啡</string>
+    <string name="color_grey">灰</string>
     <!-- Menu -->
-    <string name="main_menu_tabPreview">Open tab preview</string>
-    <string name="main_menu_new_tab">New tab (background)</string>
-    <string name="main_menu_new_tabOpen">New tab (foreground)</string>
-    <string name="main_omnibox_input_hint">Search or type URL</string>
-    <string name="menu_open_with">Open link with …</string>
-    <string name="menu_quit">Quit</string>
-    <string name="menu_openFav">Open Favorite</string>
-    <string name="menu_delete">Delete</string>
-    <string name="menu_delete_list">Delete list</string>
-    <string name="menu_edit">Edit</string>
-    <string name="menu_closeTab">Close tab</string>
-    <string name="menu_download">Open downloads</string>
-    <string name="menu_fav">Save as favorite</string>
-    <string name="menu_sc">Shortcut on home screen</string>
-    <string name="menu_sort">Sort by …</string>
-    <string name="menu_filter">Filter by …</string>
-    <string name="menu_share_screenshot">Share screenshot</string>
-    <string name="menu_share_link">Share link</string>
-    <string name="menu_save_screenshot">Save screenshot</string>
-    <string name="menu_save_home">Save at Home</string>
-    <string name="menu_save_bookmark">Save as bookmark</string>
-    <string name="menu_save_as">Save as …</string>
-    <string name="menu_save_pdf">Save as PDF</string>
-    <string name="menu_share_pdf">Share PDF</string>
-    <string name="menu_shareClipboard">Copy to clipboard</string>
-    <string name="menu_other_searchSite">Search on site</string>
-    <string name="menu_other_fileManager">Open file manager</string>
-    <string name="menu_other_info">About \"EinkBro Browser\"</string>
-    <string name="menu_other_help">Help</string>
+    <string name="main_menu_tabPreview">開啟分頁列表</string>
+    <string name="main_menu_new_tab">新增分頁(背景)</string>
+    <string name="main_menu_new_tabOpen">新增分頁(前景)</string>
+    <string name="main_omnibox_input_hint">搜尋或輸入網址</string>
+    <string name="menu_open_with">用其他開啟</string>
+    <string name="menu_quit">離開</string>
+    <string name="menu_openFav">開啟最愛</string>
+    <string name="menu_delete">刪除</string>
+    <string name="menu_delete_list">刪除列表</string>
+    <string name="menu_edit">編輯</string>
+    <string name="menu_closeTab">關閉分頁</string>
+    <string name="menu_download">開啟下載</string>
+    <string name="menu_fav">存為最愛</string>
+    <string name="menu_sc">建立捷徑</string>
+    <string name="menu_sort">排序</string>
+    <string name="menu_filter">過濾</string>
+    <string name="menu_share_screenshot">分享截圖</string>
+    <string name="menu_share_link">分享網址</string>
+    <string name="menu_save_screenshot">儲存截圖</string>
+    <string name="menu_save_home">存為首頁</string>
+    <string name="menu_save_bookmark">加入書籤</string>
+    <string name="menu_save_as">存為...</string>
+    <string name="menu_save_pdf">存成 PDF</string>
+    <string name="menu_share_pdf">分享 PDF</string>
+    <string name="menu_shareClipboard">複製網址</string>
+    <string name="menu_other_searchSite">網頁內搜尋</string>
+    <string name="menu_other_fileManager">檔案總管</string>
+    <string name="menu_other_info">關於 \"EinkBro 瀏覽器\"</string>
+    <string name="menu_other_help">協助</string>
     <!-- Dialog -->
-    <string name="dialog_toggle_reload">Reload</string>
-    <string name="dialog_title_hint">Title:</string>
-    <string name="dialog_url_hint">Url:</string>
-    <string name="dialog_extension_hint">Extension (for example: \".jpg\"):</string>
-    <string name="dialog_sign_in_username">Username</string>
-    <string name="dialog_sign_in_password">Password</string>
-    <string name="dialog_title_download">Do you want to download the file?</string>
-    <string name="dialog_content_resubmission">Would you like to resubmit your data?</string>
-    <string name="dialog_content_ssl_error">The certificate of the site is not trusted. Proceed anyway?</string>
-    <string name="dialog_sortName">Sort by name</string>
-    <string name="dialog_sortIcon">Sort by icon</string>
-    <string name="dialog_sortDate">Sort by date</string>
+    <string name="dialog_toggle_reload">重新載入</string>
+    <string name="dialog_title_hint">標題:</string>
+    <string name="dialog_url_hint">網址:</string>
+    <string name="dialog_extension_hint">Extension (例如: \".jpg\"):</string>
+    <string name="dialog_title_download">你想下載檔案嗎?</string>
+    <string name="dialog_content_resubmission">想要重新送出資料嗎?</string>
+    <string name="dialog_content_ssl_error">該網站的憑證不可信任，要繼續前往嗎?</string>
+    <string name="dialog_sortName">依名稱排序</string>
+    <string name="dialog_sortIcon">依圖案排序</string>
+    <string name="dialog_sortDate">依日期</string>
     <!-- Settings -->
-    <string name="setting_label">Settings</string>
+    <string name="setting_label">設定</string>
     <!-- browser setting -->
-    <string name="setting_title_browser">Browser Settings</string>
-    <string name="setting_title_clear_control">Data Control</string>
-    <string name="setting_title_start_control">Start Control</string>
-    <string name="setting_summary_clear_control">Clear your browser data or decide what data will be cleared when you leave
-    the application.</string>
-    <string name="setting_summary_start_control">Decide which components of the browser will be enabled on start.</string>
-    <string name="setting_title_search_engine">Search Engine</string>
-    <string name="setting_summary_search_engine">Here you can choose your preferred search engine or set a custom one.</string>
+    <string name="setting_title_browser">瀏覽設定</string>
+    <string name="setting_title_clear_control">資料控制</string>
+    <string name="setting_title_start_control">啟動設定</string>
+    <string name="setting_summary_clear_control">清除瀏覽器資料或是當離開程式時決定要清除什麼資料</string>
+    <string name="setting_summary_start_control">決定當啟動時哪些元件被開啟</string>
+    <string name="setting_title_search_engine">搜尋服務</string>
+    <string name="setting_summary_search_engine">設定你想要使用的搜尋服務</string>
     <string name="setting_summary_search_engine_google">Google</string>
     <string name="setting_summary_search_engine_duckduckgo">DuckDuckGo</string>
     <string name="setting_summary_search_engine_startpage">StartPage</string>
@@ -83,26 +80,24 @@
     <string name="setting_summary_search_engine_searx">Searx</string>
     <string name="setting_summary_search_engine_qwant">Qwant</string>
     <string name="setting_summary_search_engine_ecosia">Ecosia</string>
-    <string name="setting_title_inverted">Inverted colors</string>
-    <string name="setting_summary_inverted">If checked, content will be rendered in a inverted grey scale mode. This
-    is a kind of \"night mode\".</string>
-    <string name="setting_title_font">Font size</string>
-    <string name="setting_summary_font">Change the font size for displaying websites.</string>
+    <string name="setting_title_inverted">反轉顏色</string>
+    <string name="setting_summary_inverted">如果開啟，網頁內容會以相反的顏色呈現，有點類似 Dark Mode</string>
+    <string name="setting_title_font">字型大小</string>
+    <string name="setting_summary_font">改變網頁的字型大小</string>
     <string name="setting_title_remote">Remote content</string>
     <string name="setting_summary_remote">Enable remote content, which is not directly from the website you are visiting.
         Disabling this is more secure, faster and saves data volume. But some content will not be displayed anymore.</string>
-    <string name="setting_title_save_data">Request \'Save Data\'</string>
-    <string name="setting_summary_save_data">Tell websites that you would prefer to save data. Supported websites will load faster.</string>
+    <string name="setting_title_save_data">\'儲存資料\' 需求</string>
+    <string name="setting_summary_save_data">告訴網站你傾向於儲存資料。下次可能會載入得比較快</string>
     <!-- browser start -->
-    <string name="setting_title_images">Images</string>
-    <string name="setting_summary_images">Enable Network images. Disabling could be useful to save mobile data and to load
-    websites faster.</string>
+    <string name="setting_title_images">圖片</string>
+    <string name="setting_summary_images">支援下載網路圖片。如果關閉，可以節省網路流量，網頁載入也會比較快</string>
     <string name="setting_title_cookie">Cookies</string>
     <string name="setting_summary_cookie_delete">If enabled, all cookies will be deleted. Also the Cookies of trusted websites.</string>
     <string name="setting_summary_cookie">Enable Cookies. Cookies are small text files, which are stored on your device. Websites
     use them for example to store user settings (for example search settings). But they could also be used to collect personal
         user data. Third party cookies (they collect user data for advertising) are always disabled.</string>
-    <string name="setting_title_whitelistCookie">Cookie whitelist</string>
+    <string name="setting_title_whitelistCookie">Cookie 白名單</string>
     <string name="setting_summary_whitelistCookie">If you disable Cookies, you can use this whitelist to allow sites you
         trust to use save cookies.</string>
     <string name="setting_title_javascript">JavaScript</string>
@@ -134,12 +129,12 @@
     <string name="clear_title_deleteDatabase">Delete database</string>
     <string name="clear_summary_deleteDatabase">Delete the whole database (Startpage, bookmarks, history and all whitelists).</string>
     <!-- App setting -->
-    <string name="setting_title_app">App Settings</string>
-    <string name="setting_title_ui">Behavior/UI</string>
-    <string name="setting_title_data">Backup</string>
-    <string name="setting_summary_ui">Change the behavior and ui of the app to suit your preferences.</string>
+    <string name="setting_title_app">應用設定</string>
+    <string name="setting_title_ui">操作行為/介面</string>
+    <string name="setting_title_data">備份</string>
+    <string name="setting_summary_ui">改為操作行為或介面，讓它更符合你的使用習慣</string>
     <string name="setting_summary_data">Import and export several app data (whitelists, bookmarks).</string>
-    <string name="setting_filter">Bookmark filter</string>
+    <string name="setting_filter">過濾書籤</string>
     <string name="setting_filter_summary">To show the filter dialog long press on the bookmark icon in the overview. Decide which
         filters you will use.</string>
     <string name="setting_title_fav">Favorite</string>
@@ -180,13 +175,13 @@
     <string name="setting_overView_hide_title">Hide tab previews</string>
     <string name="setting_overView_hide_summary">In expanded overview the tab preview will hide. Then you have more place for your
     bookmarks.</string>
-    <string name="setting_gestures">Gestures</string>
-    <string name="setting_gestures_use_title">Use gestures</string>
-    <string name="setting_gestures_use_summary">Use gestures on the toolbar and the \"Navigation button\".</string>
-    <string name="setting_title_reopenLastTab">Reopen last tab</string>
+    <string name="setting_gestures">手勢</string>
+    <string name="setting_gestures_use_title">使用手勢</string>
+    <string name="setting_gestures_use_summary">在工具列或浮動按鈕上使用手勢</string>
+    <string name="setting_title_reopenLastTab">重新開啟最後一個分頁</string>
     <string name="setting_summary_reopenLastTab">Reopen a new tab when the last tab is closed instead of exiting the browser.</string>
     <!-- gestures -->
-    <string name="setting_title_toolbar">Toolbar</string>
+    <string name="setting_title_toolbar">工具列</string>
     <string name="setting_gesture_up">Swipe up</string>
     <string name="setting_gesture_down">Swipe down</string>
     <string name="setting_gesture_left">Swipe left</string>
@@ -220,7 +215,7 @@
     <!-- Others setting -->
     <string name="setting_title_others">Others</string>
     <string name="setting_title_license">License</string>
-    <string name="setting_title_appSettings">App settings</string>
+    <string name="setting_title_appSettings">App 的系統設定</string>
     <string name="setting_summary_appSettings">Open the system app settings for \"EinkBro Browser\". There you can,
         depending on your Android version grant permissions, clear the app data and so on.</string>
     <string name="setting_title_community">Contributing</string>

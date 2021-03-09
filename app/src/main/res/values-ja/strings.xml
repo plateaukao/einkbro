@@ -54,8 +54,6 @@
     <string name="dialog_title_hint">タイトル:</string>
     <string name="dialog_url_hint">URL:</string>
     <string name="dialog_extension_hint">Extension (for example: \".jpg\"):</string>
-    <string name="dialog_sign_in_username">ユーザー名</string>
-    <string name="dialog_sign_in_password">パスワード</string>
     <string name="dialog_title_download">ファイルをダウンロードしますか?</string>
     <string name="dialog_content_resubmission">データを再送信しますか?</string>
     <string name="dialog_content_ssl_error">このサーバーの証明書は信頼されていません、続行しますか?</string>
