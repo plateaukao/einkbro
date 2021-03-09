@@ -151,16 +151,17 @@ public class NinjaWebViewClient extends WebViewClient {
         return true;//do nothing in other cases
     }
 
+    private WebResourceResponse webResourceResponse = new WebResourceResponse(
+            BrowserUnit.MIME_TYPE_TEXT_PLAIN,
+            BrowserUnit.URL_ENCODING,
+            new ByteArrayInputStream("".getBytes())
+    );
+
     @Override
     @SuppressWarnings("deprecation")
     public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
-        if (enable && !white && adBlock.isAd(url)) {
-            return new WebResourceResponse(
-                    BrowserUnit.MIME_TYPE_TEXT_PLAIN,
-                    BrowserUnit.URL_ENCODING,
-                    new ByteArrayInputStream("".getBytes())
-            );
-        }
+        if (enable && !white && adBlock.isAd(url)) { return webResourceResponse; }
+
         if (!sp.getBoolean(context.getString(R.string.sp_cookies), true)) {
             if (cookie.isWhite(url)) {
                 CookieManager manager = CookieManager.getInstance();
