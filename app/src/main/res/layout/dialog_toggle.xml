@@ -383,7 +383,7 @@
                     android:includeFontPadding="false"
                     android:background="?attr/selectableItemBackground"
                     android:textColor="?android:attr/colorAccent"
-                    android:text="@string/app_ok"/>
+                    android:text="@android:string/ok"/>
 
             </RelativeLayout>
 
