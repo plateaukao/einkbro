@@ -57,6 +57,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
+import de.baumann.browser.Ninja.BuildConfig;
 import de.baumann.browser.Ninja.R;
 import de.baumann.browser.view.NinjaToast;
 

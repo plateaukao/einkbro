@@ -33,6 +33,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.List;
 import java.util.Locale;
@@ -191,7 +192,8 @@ public class BrowserUnit {
 
     public static void download(final Context context, final String url, final String contentDisposition, final String mimeType) {
 
-        String text = context.getString(R.string.dialog_title_download) + " - " + URLUtil.guessFileName(url, contentDisposition, mimeType);
+        final String filename = guessFilename(url, contentDisposition, mimeType);
+        String text = context.getString(R.string.dialog_title_download) + " - " + filename;
         final BottomSheetDialog dialog = new BottomSheetDialog(context);
         View dialogView = View.inflate(context, R.layout.dialog_action, null);
         TextView textView = dialogView.findViewById(R.id.dialog_text);
@@ -201,7 +203,6 @@ public class BrowserUnit {
             @Override
             public void onClick(View view) {
                 DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-                String filename = URLUtil.guessFileName(url, contentDisposition, mimeType); // Maybe unexpected filename.
 
                 CookieManager cookieManager = CookieManager.getInstance();
                 String cookie = cookieManager.getCookie(url);
@@ -213,7 +214,7 @@ public class BrowserUnit {
                 DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
                 assert manager != null;
 
-                if (android.os.Build.VERSION.SDK_INT >= 23 && android.os.Build.VERSION.SDK_INT < 29) {
+                if (android.os.Build.VERSION.SDK_INT >= 23) {
                     int hasWRITE_EXTERNAL_STORAGE = context.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
                     if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
                         Activity activity = (Activity) context;
@@ -403,5 +404,16 @@ public class BrowserUnit {
     public static void printTimestamp(String function) {
         Long timestamp = System.currentTimeMillis();
         Log.v("timestamp", function + " timestamp:" + timestamp);
+    }
+
+    private static String guessFilename(final String url, final String contentDisposition, final String mimeType) {
+        final String prefix = "filename*=utf-8''";
+        final String decodedContentDescription = URLDecoder.decode(contentDisposition);
+        if (decodedContentDescription.toLowerCase().contains("filename*=utf-8''")) {
+            int index = decodedContentDescription.toLowerCase().indexOf(prefix);
+            return decodedContentDescription.substring(index + prefix.length());
+        }
+
+        return URLUtil.guessFileName(url, contentDisposition, mimeType);
     }
 }
