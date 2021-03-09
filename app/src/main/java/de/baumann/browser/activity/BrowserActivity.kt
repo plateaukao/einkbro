@@ -1474,7 +1474,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 }
                 builder.setView(menuView)
                 builder.setTitle(R.string.menu_edit)
-                builder.setPositiveButton(R.string.app_ok) { dialog, whichButton ->
+                builder.setPositiveButton(android.R.string.ok) { dialog, whichButton ->
                     val title = editTitle.text.toString().trim { it <= ' ' }
                     val extension = editExtension.text.toString().trim { it <= ' ' }
                     val filename = title + extension
@@ -1507,7 +1507,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                         }
                     }
                 }
-                builder.setNegativeButton(R.string.app_cancel) { dialog, whichButton ->
+                builder.setNegativeButton(android.R.string.cancel) { dialog, whichButton ->
                     dialog.cancel()
                     hideKeyboard()
                 }

@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App -->
-    <string name="app_name">Браузер FOSS</string>
-    <string name="app_ok">ОК</string>
-    <string name="app_cancel">Отмена</string>
+    <string name="app_name">Браузер EinkBro</string>
     <string name="list_empty">Текущий список пуст</string>
     <string name="album_title_bookmarks">Закладки</string>
     <string name="album_title_history">История</string>
@@ -49,7 +47,7 @@
     <string name="menu_shareClipboard">Копировать в буфер</string>
     <string name="menu_other_searchSite">Поиск по сайту</string>
     <string name="menu_other_fileManager">Открыть файловый менеджер</string>
-    <string name="menu_other_info">О программе \"FOSS Browser\"</string>
+    <string name="menu_other_info">О программе \"EinkBro Browser\"</string>
     <string name="menu_other_help">Помощь</string>
     <!-- Dialog -->
     <string name="dialog_toggle_reload">Перезагрузить</string>
@@ -113,10 +111,10 @@
     <string name="setting_summary_history">Сохраните историю посещаемых веб-сайтов.</string>
     <!-- browser clear -->
     <string name="data_summary">Все файлы будут экспортированы в каталог Вашей SD-карты: Android/data/de.baumann.browser/files/browser_backup/\".
-Этот каталог будет УДАЛЕН, если Вы удалите \"FOSS Browser\". Поэтому регулярно делайте резервные копии..</string>
+Этот каталог будет УДАЛЕН, если Вы удалите \"EinkBro Browser\". Поэтому регулярно делайте резервные копии..</string>
     <string name="clear_menu_done_all">Всё сделано</string>
     <string name="clear_title_quit">Очистить при выходе из приложения</string>
-    <string name="clear_summary_quit">Каждый раз при выходе из \"FOSS Browser\" все вышеперечисленные проверенные данные будут удаляться.</string>
+    <string name="clear_summary_quit">Каждый раз при выходе из \"EinkBro Browser\" все вышеперечисленные проверенные данные будут удаляться.</string>
     <string name="clear_title_cache">Очистить кэш</string>
     <string name="clear_title_cookie">Очистить куки</string>
     <string name="clear_title_history">Очистить историю</string>
@@ -132,7 +130,7 @@
     <string name="setting_filter">Фильтр закладок</string>
     <string name="setting_filter_summary">Чтобы отобразить диалоговое окно фильтра, удерживайте нажатие на значке закладок в окне. Определите, какие фильтры Вы будете использовать.</string>
     <string name="setting_title_fav">Избранное</string>
-    <string name="setting_summary_fav">Здесь Вы можете изменить веб-сайт по умолчанию, который загружается при запуске \"FOSS Browser\".
+    <string name="setting_summary_fav">Здесь Вы можете изменить веб-сайт по умолчанию, который загружается при запуске \"EinkBro Browser\".
     Введите \"about:blank\", чтобы открывалась пуcтая вкладка.</string>
     <string name="setting_title_searchEngine">Пользовательская поисковая система</string>
     <string name="setting_summary_searchEngine">Здесь Вы можете ввести свой адрес для поиска. Также можно выбрать \"Пользовательская поисковая система\" для поиска по умолчанию.</string>
@@ -156,7 +154,7 @@
     <string name="setting_summary_nav_pos_right">Справа</string>
     <string name="setting_summary_nav_pos_left">Cлева</string>
     <string name="setting_summary_nav_pos_center">По центру</string>
-    <string name="setting_summary_tab">Что должно отображаться при запуске \"FOSS Browser\"? Начальная страница, закладки, …</string>
+    <string name="setting_summary_tab">Что должно отображаться при запуске \"EinkBro Browser\"? Начальная страница, закладки, …</string>
     <string name="setting_title_confirm_exit">Подтвердить выход из браузера</string>
     <string name="setting_summary_confirm_exit">Диалоговое окно подтверждения при закрытии браузера.</string>
     <string name="setting_title_confirm_tab_close">Подтвердить закрытие вкладки</string>
@@ -207,7 +205,7 @@
     <string name="setting_title_others">Другие</string>
     <string name="setting_title_license">Лицензия</string>
     <string name="setting_title_appSettings">Настройки</string>
-    <string name="setting_summary_appSettings">Откройте системные настройки \"FOSS Browser\". Там вы можете предоставить разрешения, очистить данные приложения и так далее.</string>
+    <string name="setting_summary_appSettings">Откройте системные настройки \"EinkBro Browser\". Там вы можете предоставить разрешения, очистить данные приложения и так далее.</string>
     <string name="setting_title_community">Поддержка</string>
     <!-- Toast -->
     <string name="toast_add_to_home_successful">Успешно добавлено на главную</string>
@@ -237,10 +235,10 @@
     <string name="toast_edit_successful">Успешно сохранено</string>
     <string name="toast_webview_forward">Не удается загрузить следующий сайт</string>
     <string name="toast_clear">Действительно хотите очистить?</string>
-    <string name="toast_permission_sdCard">\"FOSS Browser\" нуждается в разрешении на \"чтение и запись\". Это необходимо для загрузки файлов, сборки в файловый менеджер и снятия скриншотов. Если вы еще не предоставили разрешение, можете сделайте это позже в настройках. </string>
-    <string name="toast_permission_loc">\"FOSS Browser\" нуждается в разрешении получения \"доступа к вашему местоположению\". Это необходимо для некоторых веб-сайтов, например, когда они предлагают какую-то навигацию. Если вы еще не предоставили разрешение, можете сделать это позже в настройках. </string>
-    <string name="toast_restart">Чтобы применить изменения, необходимо перезапустить \"FOSS Browser\". Закрыть сейчас?</string>
-    <string name="toast_quit">Хотите выйти из \"FOSS Browser\"?</string>
+    <string name="toast_permission_sdCard">\"EinkBro Browser\" нуждается в разрешении на \"чтение и запись\". Это необходимо для загрузки файлов, сборки в файловый менеджер и снятия скриншотов. Если вы еще не предоставили разрешение, можете сделайте это позже в настройках. </string>
+    <string name="toast_permission_loc">\"EinkBro Browser\" нуждается в разрешении получения \"доступа к вашему местоположению\". Это необходимо для некоторых веб-сайтов, например, когда они предлагают какую-то навигацию. Если вы еще не предоставили разрешение, можете сделать это позже в настройках. </string>
+    <string name="toast_restart">Чтобы применить изменения, необходимо перезапустить \"EinkBro Browser\". Закрыть сейчас?</string>
+    <string name="toast_quit">Хотите выйти из \"EinkBro Browser\"?</string>
     <string name="toast_close_tab">Хотите закрыть текущую вкладку?</string>
     <string name="toast_downloadComplete">Загрузка завершена. Открыть файловый менеджер?</string>
     <string name="toast_unsecured">Сайт использует незащищенное соединение (\"http\"). Хотите попробовать безопасное соединение (\"https\")?</string>
@@ -275,10 +273,10 @@
         удержанием нажатия на значке закладки. Если Вы активировали ввод, появится диалог, позволяющий изменить имя фильтра.
     </string>
     <!-- Dialog changelog -->
-    <string name="changelog_dialog">        Отсутствует Ваш язык? Вы хотите помочь с переводом FOSS Browser? Или улучшить существующий перевод?
+    <string name="changelog_dialog">        Отсутствует Ваш язык? Вы хотите помочь с переводом EinkBro Browser? Или улучшить существующий перевод?
         Присединяйтесь к нам на Crowdin: https://crowdin.com/project/foss-browser.&lt;br&gt;&lt;br&gt;
 
-        &lt;b&gt;На следующих сайтах Вы получите всю важную информацию о \"FOSS Browser\".
+        &lt;b&gt;На следующих сайтах Вы получите всю важную информацию о \"EinkBro Browser\".
         Пожалуйста, пользуйтесь также правкой внутри приложения.&lt;/b&gt;&lt;br&gt;&lt;br&gt;
 
         \u25AA &lt;i&gt;Сайт проекта:&lt;/i&gt; https://github.com/scoute-dich/Browser&lt;br&gt;
@@ -303,11 +301,11 @@
 
         &lt;b&gt;Тема на XDA:&lt;/b&gt;&lt;br&gt;
         XDA - это отличное сообщество для разработчиков и энтузиастов смартфонов. Здесь Вы можете сообщить о проблемах, запросить новые возможности
-        и узнать все остальное, что связано с \"FOSS Browser\".&lt;br&gt;
+        и узнать все остальное, что связано с \"EinkBro Browser\".&lt;br&gt;
         &lt;i&gt;https://forum.xda-developers. om/android/apps-games/app-browser-t3500091&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Github:&lt;/b&gt;&lt;br&gt;
-        На Github Вы можете увидеть исходный код \"FOSS Browser\". Это более техническое решение: открывайте карточки проблем, запрашивайте новые функции
+        На Github Вы можете увидеть исходный код \"EinkBro Browser\". Это более техническое решение: открывайте карточки проблем, запрашивайте новые функции
         или даже окажите помощь в разработке или переводе.&lt;br&gt;
         &lt;i&gt;https://github. om/scoute-dich/browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
 
