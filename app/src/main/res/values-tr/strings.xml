@@ -55,8 +55,6 @@
     <string name="dialog_title_hint">Başlık:</string>
     <string name="dialog_url_hint">URL:</string>
     <string name="dialog_extension_hint">Uzantı (örneğin: \".jpg\"):</string>
-    <string name="dialog_sign_in_username">Kullancı adı</string>
-    <string name="dialog_sign_in_password">Parola</string>
     <string name="dialog_title_download">Dosyayı indirmek ister misiniz?</string>
     <string name="dialog_content_resubmission">Verilerinizi yeniden göndermek ister misiniz?</string>
     <string name="dialog_content_ssl_error">Sitenin sertifikası güvenilir değil. Yine de devam edilsin mi?</string>

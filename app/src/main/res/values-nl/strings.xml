@@ -55,8 +55,6 @@
     <string name="dialog_title_hint">Titel:</string>
     <string name="dialog_url_hint">Url:</string>
     <string name="dialog_extension_hint">Extensie (bijv.: \".jpg\"):</string>
-    <string name="dialog_sign_in_username">Gebruikersnaam</string>
-    <string name="dialog_sign_in_password">Wachtwoord</string>
     <string name="dialog_title_download">Wil je het bestand downloaden?</string>
     <string name="dialog_content_resubmission">Wil je je gegevens opnieuw versturen?</string>
     <string name="dialog_content_ssl_error">Het certificaat van deze website is onvertrouwd. Wil je tóch doorgaan?</string>

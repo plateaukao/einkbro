@@ -55,8 +55,6 @@
     <string name="dialog_title_hint">Název:</string>
     <string name="dialog_url_hint">URL:</string>
     <string name="dialog_extension_hint">Přípona (například: \".jpg\"):</string>
-    <string name="dialog_sign_in_username">Uživatelské jméno</string>
-    <string name="dialog_sign_in_password">Heslo</string>
     <string name="dialog_title_download">Chcete stáhnout soubor?</string>
     <string name="dialog_content_resubmission">Chcete znovu odeslat data?</string>
     <string name="dialog_content_ssl_error">Certifikát webové stránky není důvěryhodný. Přesto pokračovat?</string>
