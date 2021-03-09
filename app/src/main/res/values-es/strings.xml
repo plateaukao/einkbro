@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App -->
-    <string name="app_name">Navegador FOSS</string>
-    <string name="app_ok">ok</string>
-    <string name="app_cancel">Cancelar</string>
+    <string name="app_name">Navegador EinkBro</string>
     <string name="list_empty">La lista actual está vacía</string>
     <string name="album_title_bookmarks">Marcadores</string>
     <string name="album_title_history">Historial</string>
@@ -49,7 +47,7 @@
     <string name="menu_shareClipboard">Copiar al portapapeles</string>
     <string name="menu_other_searchSite">Buscar en sitio web</string>
     <string name="menu_other_fileManager">Abrir gestor de archivos</string>
-    <string name="menu_other_info">Acerca de \"Navegador FOSS\"</string>
+    <string name="menu_other_info">Acerca de \"Navegador EinkBro\"</string>
     <string name="menu_other_help">Ayuda</string>
     <!-- Dialog -->
     <string name="dialog_toggle_reload">Recargar</string>
@@ -116,7 +114,7 @@
 Si desinstala la aplicación, el mismo será eliminado. Por tanto se recomienda realizar copias de seguridad de este directorio.</string>
     <string name="clear_menu_done_all">Todo listo</string>
     <string name="clear_title_quit">Limpiar al salir de la aplicación</string>
-    <string name="clear_summary_quit">Cada vez quesalga del \"Navegador FOSS\", se borrarán todos los ítems tildados anteriormente.</string>
+    <string name="clear_summary_quit">Cada vez quesalga del \"Navegador EinkBro\", se borrarán todos los ítems tildados anteriormente.</string>
     <string name="clear_title_cache">Borrar caché</string>
     <string name="clear_title_cookie">Borrar cookies</string>
     <string name="clear_title_history">Borrar el historial</string>
@@ -206,7 +204,7 @@ Puede disponer una página en blanco escribiendo \"about:blank\".</string>
     <string name="setting_title_others">Otros</string>
     <string name="setting_title_license">Licencia</string>
     <string name="setting_title_appSettings">Configuración de la aplicación</string>
-    <string name="setting_summary_appSettings">Abrir la configuración de la aplicación del sistema para \"Navegador FOSS\". Allí puede, dependiendo de su versión de Android, conceder permisos o borrar los datos de la aplicación entre otros.</string>
+    <string name="setting_summary_appSettings">Abrir la configuración de la aplicación del sistema para \"Navegador EinkBro\". Allí puede, dependiendo de su versión de Android, conceder permisos o borrar los datos de la aplicación entre otros.</string>
     <string name="setting_title_community">Contribuyentes</string>
     <!-- Toast -->
     <string name="toast_add_to_home_successful">Agregado a la página principal</string>
@@ -236,10 +234,10 @@ Puede disponer una página en blanco escribiendo \"about:blank\".</string>
     <string name="toast_edit_successful">Guardado con éxito</string>
     <string name="toast_webview_forward">No se puede cargar el sitio</string>
     <string name="toast_clear">¿Está seguro de querer borrar?</string>
-    <string name="toast_permission_sdCard">\"Navegador FOSS\" necesita permisos para \"leer y escribir en almacenamiento\". Esto es necesario para descargar archivos, capturas de pantalla y realizar respaldos.</string>
-    <string name="toast_permission_loc">\"Navegador FOSS\" necesita permisos para \"acceder a su ubicación\". Esto se solicita desde algunos sitios web, cuando por ej. ofrecen algún servicio de navegación.</string>
-    <string name="toast_restart">Debe reiniciar \"Navegador FOSS\" para aplicar cambios. ¿Cerrar ahora?</string>
-    <string name="toast_quit">¿Desea salir de \"Navegador FOSS\"?</string>
+    <string name="toast_permission_sdCard">\"Navegador EinkBro\" necesita permisos para \"leer y escribir en almacenamiento\". Esto es necesario para descargar archivos, capturas de pantalla y realizar respaldos.</string>
+    <string name="toast_permission_loc">\"Navegador EinkBro\" necesita permisos para \"acceder a su ubicación\". Esto se solicita desde algunos sitios web, cuando por ej. ofrecen algún servicio de navegación.</string>
+    <string name="toast_restart">Debe reiniciar \"Navegador EinkBro\" para aplicar cambios. ¿Cerrar ahora?</string>
+    <string name="toast_quit">¿Desea salir de \"Navegador EinkBro\"?</string>
     <string name="toast_close_tab">¿Desea cerrar la pestaña actual?</string>
     <string name="toast_downloadComplete">Descarga completa. ¿Abrir el gestor de archivos?</string>
     <string name="toast_unsecured">Este sitio web utiliza una conexión no segura (\"http\"). ¿Desea intentar una conexión segura (\"https\")?</string>
@@ -272,10 +270,10 @@ Tiene tres partes: la página de inicio, sus marcadores y el historial. Si manti
         long pressing the bookmark icon. If you activate an entry a dialog will appear, where you can edit the name of the filter.
     </string>
     <!-- Dialog changelog -->
-    <string name="changelog_dialog">        Your language isn\'t supported yet? You want to translate FOSS Browser? Or make improvements to existing translations?
+    <string name="changelog_dialog">        Your language isn\'t supported yet? You want to translate EinkBro Browser? Or make improvements to existing translations?
         Feel free to join us on Crowdin: https://crowdin.com/project/foss-browser.&lt;br&gt;&lt;br&gt;
 
-        &lt;b&gt;On the following sites you have access to all important information about \"FOSS Browser\".
+        &lt;b&gt;On the following sites you have access to all important information about \"EinkBro Browser\".
         Please read also the help dialog within the app.&lt;/b&gt;&lt;br&gt;&lt;br&gt;
 
         \u25AA &lt;i&gt;Project site:&lt;/i&gt; https://github.com/scoute-dich/Browser&lt;br&gt;
@@ -330,11 +328,11 @@ Tiene tres partes: la página de inicio, sus marcadores y el historial. Si manti
 
         &lt;b&gt;XDA-thread:&lt;/b&gt;&lt;br&gt;
         XDA is a great community for developers and smartphone enthusiasts. Here you can report issues, ask for new features
-        and everything other related to \"FOSS Browser\".&lt;br&gt;
+        and everything other related to \"EinkBro Browser\".&lt;br&gt;
         &lt;i&gt;https://forum.xda-developers.com/android/apps-games/app-browser-t3500091&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Github:&lt;/b&gt;&lt;br&gt;
-        On Github you can see the source code of \"FOSS Browser\". This is the more technical solution: open issues, ask for new
+        On Github you can see the source code of \"EinkBro Browser\". This is the more technical solution: open issues, ask for new
         features or even help developing or translating.&lt;br&gt;
         &lt;i&gt;https://github.com/scoute-dich/browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
 

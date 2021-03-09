@@ -167,7 +167,7 @@ public class Fragment_settings extends PreferenceFragmentCompat implements Share
                     "https://crowdin.com/profile/gaich");
 
             dialog_text.append("\n\nDmitry Gaich\n" +
-                    "\u25AA Helped to implement AdBlock and \"request desktop site\" in the previous version of \"FOSS Browser\".\n" +
+                    "\u25AA Helped to implement AdBlock and \"request desktop site\" in the previous version of \"EinkBro Browser\".\n" +
                     "https://github.com/futrDevelopment");
 
             dialog_text.append("\n\nelement54\n" +
@@ -196,7 +196,7 @@ public class Fragment_settings extends PreferenceFragmentCompat implements Share
                     "https://github.com/gr1sh");
 
             dialog_text.append("\n\nHarry Heights\n" +
-                    "\u25AA Documentation of FOSS Browser\n" +
+                    "\u25AA Documentation of EinkBro Browser\n" +
                     " https://github.com/HarryHeights");
 
             dialog_text.append("\n\nHeimen Stoffels\n" +
@@ -212,7 +212,7 @@ public class Fragment_settings extends PreferenceFragmentCompat implements Share
                     "https://github.com/junior012");
 
             dialog_text.append("\n\nJumping Yang\n" +
-                    "\u25AA Chinese translation in the previous version of \"FOSS Browser\"\n" +
+                    "\u25AA Chinese translation in the previous version of \"EinkBro Browser\"\n" +
                     "https://github.com/JumpingYang001");
 
             dialog_text.append("\n\nlishoujun\n" +
@@ -245,7 +245,7 @@ public class Fragment_settings extends PreferenceFragmentCompat implements Share
                     "https://github.com/smarquespt");
 
             dialog_text.append("\n\nsplinet\n" +
-                    "\u25AA Russian translation in the previous version of \"FOSS Browser\"\n" +
+                    "\u25AA Russian translation in the previous version of \"EinkBro Browser\"\n" +
                     "https://github.com/splinet");
 
             dialog_text.append("\n\nSkewedZeppelin\n" +
