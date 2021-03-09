@@ -54,8 +54,6 @@
     <string name="dialog_title_hint">Título de entrada</string>
     <string name="dialog_url_hint">URL:</string>
     <string name="dialog_extension_hint">Extensión (por ejemplo: \".jpg\"):</string>
-    <string name="dialog_sign_in_username">Usuario</string>
-    <string name="dialog_sign_in_password">Contraseña</string>
     <string name="dialog_title_download">¿Desea descargar el archivo?</string>
     <string name="dialog_content_resubmission">¿Desea reenviar sus datos?</string>
     <string name="dialog_content_ssl_error">El certificado del sitio no es seguro. ¿Continuar de todos modos?</string>

@@ -35,14 +35,6 @@ public class Fragment_settings extends PreferenceFragmentCompat implements Share
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.preference_setting, rootKey);
 
-        Objects.requireNonNull(findPreference("settings_filter")).setOnPreferenceClickListener(new androidx.preference.Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(androidx.preference.Preference preference) {
-                Intent intent = new Intent(getActivity(), Settings_FilterActivity.class);
-                Objects.requireNonNull(getActivity()).startActivity(intent);
-                return false;
-            }
-        });
         Objects.requireNonNull(findPreference("settings_data")).setOnPreferenceClickListener(new androidx.preference.Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(androidx.preference.Preference preference) {
