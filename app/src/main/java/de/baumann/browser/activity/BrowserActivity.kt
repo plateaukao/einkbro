@@ -25,11 +25,8 @@ import android.view.*
 import android.view.View.*
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.webkit.CookieManager
-import android.webkit.URLUtil
-import android.webkit.ValueCallback
+import android.webkit.*
 import android.webkit.WebChromeClient.CustomViewCallback
-import android.webkit.WebView
 import android.webkit.WebView.HitTestResult
 import android.widget.*
 import android.widget.AdapterView.OnItemClickListener
@@ -1582,11 +1579,12 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         }
         binding.buttonOpenFav.setOnClickListener {
             hideBottomSheetDialog()
-            updateAlbum(sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"))
+            updateAlbum(sp.getString("favoriteURL", "https://github.com/plateaukao/browser"))
         }
         binding.menuSc.setOnClickListener {
             hideBottomSheetDialog()
-            HelperUnit.createShortcut(this, ninjaWebView.title, ninjaWebView.url)
+            ninjaWebView.favicon
+            HelperUnit.createShortcut(this, ninjaWebView.title, ninjaWebView.url, ninjaWebView.favicon)
         }
         binding.menuFav.setOnClickListener {
             hideBottomSheetDialog()
@@ -1614,7 +1612,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         }
         dialogView.findViewById<LinearLayout>(R.id.menu_contextLink_sc).setOnClickListener {
             hideBottomSheetDialog()
-            HelperUnit.createShortcut(this, title, url)
+            HelperUnit.createShortcut(this, title, url, null)
         }
         dialogView.findViewById<LinearLayout>(R.id.menu_contextList_newTab).setOnClickListener {
             addAlbum(getString(R.string.app_name), url, false)
@@ -1697,7 +1695,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         }
         dialogView.findViewById<LinearLayout>(R.id.menu_contextLink_sc).setOnClickListener {
             hideBottomSheetDialog()
-            HelperUnit.createShortcut(this, title, url)
+            HelperUnit.createShortcut(this, title, url, null)
         }
         dialogView.findViewById<LinearLayout>(R.id.menu_contextList_newTab).setOnClickListener {
             addAlbum(getString(R.string.app_name), url, false)
