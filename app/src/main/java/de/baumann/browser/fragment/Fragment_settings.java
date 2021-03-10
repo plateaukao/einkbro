@@ -39,7 +39,7 @@ public class Fragment_settings extends PreferenceFragmentCompat implements Share
             @Override
             public boolean onPreferenceClick(androidx.preference.Preference preference) {
                 Intent intent = new Intent(getActivity(), Settings_DataActivity.class);
-                Objects.requireNonNull(getActivity()).startActivity(intent);
+                requireActivity().startActivity(intent);
                 return false;
             }
         });
@@ -47,7 +47,7 @@ public class Fragment_settings extends PreferenceFragmentCompat implements Share
             @Override
             public boolean onPreferenceClick(androidx.preference.Preference preference) {
                 Intent intent = new Intent(getActivity(), Settings_UIActivity.class);
-                Objects.requireNonNull(getActivity()).startActivity(intent);
+                requireActivity().startActivity(intent);
                 return false;
             }
         });
@@ -55,7 +55,7 @@ public class Fragment_settings extends PreferenceFragmentCompat implements Share
             @Override
             public boolean onPreferenceClick(androidx.preference.Preference preference) {
                 Intent intent = new Intent(getActivity(), Settings_GestureActivity.class);
-                Objects.requireNonNull(getActivity()).startActivity(intent);
+                requireActivity().startActivity(intent);
                 return false;
             }
         });
@@ -63,7 +63,7 @@ public class Fragment_settings extends PreferenceFragmentCompat implements Share
             @Override
             public boolean onPreferenceClick(androidx.preference.Preference preference) {
                 Intent intent = new Intent(getActivity(), Settings_StartActivity.class);
-                Objects.requireNonNull(getActivity()).startActivity(intent);
+                requireActivity().startActivity(intent);
                 return false;
             }
         });
@@ -71,7 +71,7 @@ public class Fragment_settings extends PreferenceFragmentCompat implements Share
             @Override
             public boolean onPreferenceClick(androidx.preference.Preference preference) {
                 Intent intent = new Intent(getActivity(), Settings_ClearActivity.class);
-                Objects.requireNonNull(getActivity()).startActivity(intent);
+                requireActivity().startActivity(intent);
                 return false;
             }
         });
@@ -119,7 +119,7 @@ public class Fragment_settings extends PreferenceFragmentCompat implements Share
             public boolean onPreferenceClick(androidx.preference.Preference preference) {
                 Intent intent = new Intent();
                 intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                Uri uri = Uri.fromParts("package", Objects.requireNonNull(getActivity()).getPackageName(), null);
+                Uri uri = Uri.fromParts("package", requireActivity().getPackageName(), null);
                 intent.setData(uri);
                 getActivity().startActivity(intent);
                 return false;
@@ -136,7 +136,7 @@ public class Fragment_settings extends PreferenceFragmentCompat implements Share
 
     private void showLicenseDialog(String title, String text) {
 
-        final BottomSheetDialog dialog = new BottomSheetDialog(Objects.requireNonNull(getActivity()));
+        final BottomSheetDialog dialog = new BottomSheetDialog(requireActivity());
         View dialogView = View.inflate(getActivity(), R.layout.dialog_text, null);
 
         TextView dialog_title = dialogView.findViewById(R.id.dialog_title);
