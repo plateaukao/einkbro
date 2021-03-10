@@ -201,7 +201,7 @@
     <include layout="@layout/dialog_overiew"
         android:id="@+id/layout_overview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:visibility="invisible"
         android:layout_alignParentBottom="true"
         />

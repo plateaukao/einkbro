@@ -746,6 +746,11 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         open_bookmarkView = findViewById(R.id.open_bookmarkView)
         open_historyView = findViewById(R.id.open_historyView)
 
+        overviewView.setOnTouchListener { _, _ ->
+            hideOverview()
+            true
+        }
+
         // allow scrolling in listView without closing the bottomSheetDialog
         listView.setOnTouchListener { v, event ->
             val action = event.action
