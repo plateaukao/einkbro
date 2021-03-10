@@ -149,24 +149,7 @@ public class HelperUnit {
 
     public static void applyTheme(Context context) {
         sp = PreferenceManager.getDefaultSharedPreferences(context);
-        String showNavButton = Objects.requireNonNull(sp.getString("sp_theme", "1"));
-        switch (showNavButton) {
-            case "0":
-                context.setTheme(R.style.AppTheme_system);
-                break;
-            case "1":
-                context.setTheme(R.style.AppTheme);
-                break;
-            case "2":
-                context.setTheme(R.style.AppTheme_dark);
-                break;
-            case "3":
-                context.setTheme(R.style.AppTheme_amoled);
-                break;
-            default:
-                context.setTheme(R.style.AppTheme);
-                break;
-        }
+        context.setTheme(R.style.AppTheme);
     }
 
     public static void setFavorite (Context context, String url) {

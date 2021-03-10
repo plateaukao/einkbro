@@ -26,7 +26,7 @@ public class Fragment_clear extends PreferenceFragmentCompat {
             @Override
             public boolean onPreferenceClick(androidx.preference.Preference preference) {
                 final SharedPreferences sp = getPreferenceScreen().getSharedPreferences();
-                final BottomSheetDialog dialog = new BottomSheetDialog(Objects.requireNonNull(getActivity()));
+                final BottomSheetDialog dialog = new BottomSheetDialog(requireActivity());
                 View dialogView = View.inflate(getActivity(), R.layout.dialog_action, null);
                 TextView textView = dialogView.findViewById(R.id.dialog_text);
                 textView.setText(R.string.hint_database);

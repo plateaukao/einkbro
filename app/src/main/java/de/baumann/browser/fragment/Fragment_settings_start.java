@@ -22,7 +22,7 @@ public class Fragment_settings_start extends PreferenceFragmentCompat {
             @Override
             public boolean onPreferenceClick(androidx.preference.Preference preference) {
                 Intent intent = new Intent(getActivity(), Whitelist_AdBlock.class);
-                Objects.requireNonNull(getActivity()).startActivity(intent);
+                requireActivity().startActivity(intent);
                 return false;
             }
         });
@@ -30,7 +30,7 @@ public class Fragment_settings_start extends PreferenceFragmentCompat {
             @Override
             public boolean onPreferenceClick(androidx.preference.Preference preference) {
                 Intent intent = new Intent(getActivity(), Whitelist_Javascript.class);
-                Objects.requireNonNull(getActivity()).startActivity(intent);
+                requireActivity().startActivity(intent);
                 return false;
             }
         });
@@ -38,7 +38,7 @@ public class Fragment_settings_start extends PreferenceFragmentCompat {
             @Override
             public boolean onPreferenceClick(androidx.preference.Preference preference) {
                 Intent intent = new Intent(getActivity(), Whitelist_Cookie.class);
-                Objects.requireNonNull(getActivity()).startActivity(intent);
+                requireActivity().startActivity(intent);
                 return false;
             }
         });

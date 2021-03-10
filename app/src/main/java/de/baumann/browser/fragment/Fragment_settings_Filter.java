@@ -24,27 +24,27 @@ public class Fragment_settings_Filter extends PreferenceFragmentCompat {
         final SharedPreferences sp = getPreferenceScreen().getSharedPreferences();
 
         final Preference filter_01 = findPreference("filter_01");
-        Objects.requireNonNull(filter_01).setTitle(sp.getString("icon_01", Objects.requireNonNull(getActivity()).getResources().getString(R.string.color_red)));
+        Objects.requireNonNull(filter_01).setTitle(sp.getString("icon_01", requireActivity().getResources().getString(R.string.color_red)));
         final Preference filter_02 = findPreference("filter_02");
-        Objects.requireNonNull(filter_02).setTitle(sp.getString("icon_02", Objects.requireNonNull(getActivity()).getResources().getString(R.string.color_pink)));
+        Objects.requireNonNull(filter_02).setTitle(sp.getString("icon_02", requireActivity().getResources().getString(R.string.color_pink)));
         final Preference filter_03 = findPreference("filter_03");
-        Objects.requireNonNull(filter_03).setTitle(sp.getString("icon_03", Objects.requireNonNull(getActivity()).getResources().getString(R.string.color_purple)));
+        Objects.requireNonNull(filter_03).setTitle(sp.getString("icon_03", requireActivity().getResources().getString(R.string.color_purple)));
         final Preference filter_04 = findPreference("filter_04");
-        Objects.requireNonNull(filter_04).setTitle(sp.getString("icon_04", Objects.requireNonNull(getActivity()).getResources().getString(R.string.color_blue)));
+        Objects.requireNonNull(filter_04).setTitle(sp.getString("icon_04", requireActivity().getResources().getString(R.string.color_blue)));
         final Preference filter_05 = findPreference("filter_05");
-        Objects.requireNonNull(filter_05).setTitle(sp.getString("icon_05", Objects.requireNonNull(getActivity()).getResources().getString(R.string.color_teal)));
+        Objects.requireNonNull(filter_05).setTitle(sp.getString("icon_05", requireActivity().getResources().getString(R.string.color_teal)));
         final Preference filter_06 = findPreference("filter_06");
-        Objects.requireNonNull(filter_06).setTitle(sp.getString("icon_06", Objects.requireNonNull(getActivity()).getResources().getString(R.string.color_green)));
+        Objects.requireNonNull(filter_06).setTitle(sp.getString("icon_06", requireActivity().getResources().getString(R.string.color_green)));
         final Preference filter_07 = findPreference("filter_07");
-        Objects.requireNonNull(filter_07).setTitle(sp.getString("icon_07", Objects.requireNonNull(getActivity()).getResources().getString(R.string.color_lime)));
+        Objects.requireNonNull(filter_07).setTitle(sp.getString("icon_07", requireActivity().getResources().getString(R.string.color_lime)));
         final Preference filter_08 = findPreference("filter_08");
-        Objects.requireNonNull(filter_08).setTitle(sp.getString("icon_08", Objects.requireNonNull(getActivity()).getResources().getString(R.string.color_yellow)));
+        Objects.requireNonNull(filter_08).setTitle(sp.getString("icon_08", requireActivity().getResources().getString(R.string.color_yellow)));
         final Preference filter_09 = findPreference("filter_09");
-        Objects.requireNonNull(filter_09).setTitle(sp.getString("icon_09", Objects.requireNonNull(getActivity()).getResources().getString(R.string.color_orange)));
+        Objects.requireNonNull(filter_09).setTitle(sp.getString("icon_09", requireActivity().getResources().getString(R.string.color_orange)));
         final Preference filter_10 = findPreference("filter_10");
-        Objects.requireNonNull(filter_10).setTitle(sp.getString("icon_10", Objects.requireNonNull(getActivity()).getResources().getString(R.string.color_brown)));
+        Objects.requireNonNull(filter_10).setTitle(sp.getString("icon_10", requireActivity().getResources().getString(R.string.color_brown)));
         final Preference filter_11 = findPreference("filter_11");
-        Objects.requireNonNull(filter_11).setTitle(sp.getString("icon_11", Objects.requireNonNull(getActivity()).getResources().getString(R.string.color_grey)));
+        Objects.requireNonNull(filter_11).setTitle(sp.getString("icon_11", requireActivity().getResources().getString(R.string.color_grey)));
 
         filter_01.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
@@ -160,7 +160,7 @@ public class Fragment_settings_Filter extends PreferenceFragmentCompat {
 
     private void editFilterNames (final String string_spName_icon_01, final String string_spNameDefault, final Preference preference) {
 
-        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(Objects.requireNonNull(getActivity()));
+        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(requireActivity());
         View dialogView = View.inflate(getActivity(), R.layout.dialog_edit_title, null);
 
         final EditText editText = dialogView.findViewById(R.id.dialog_edit);
