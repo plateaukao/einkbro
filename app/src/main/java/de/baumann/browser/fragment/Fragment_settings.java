@@ -8,19 +8,16 @@ import android.provider.Settings;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
-import android.text.SpannableStringBuilder;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.preference.PreferenceFragmentCompat;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 import de.baumann.browser.activity.Settings_ClearActivity;
 import de.baumann.browser.activity.Settings_DataActivity;
-import de.baumann.browser.activity.Settings_FilterActivity;
 import de.baumann.browser.activity.Settings_GestureActivity;
 import de.baumann.browser.activity.Settings_StartActivity;
 import de.baumann.browser.activity.Settings_UIActivity;
