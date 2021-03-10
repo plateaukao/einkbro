@@ -193,6 +193,7 @@ public class BrowserUnit {
     public static void download(final Context context, final String url, final String contentDisposition, final String mimeType) {
 
         final String filename = guessFilename(url, contentDisposition, mimeType);
+        //final String filename = URLUtil.guessFileName(url, contentDisposition, mimeType);
         String text = context.getString(R.string.dialog_title_download) + " - " + filename;
         final BottomSheetDialog dialog = new BottomSheetDialog(context);
         View dialogView = View.inflate(context, R.layout.dialog_action, null);
@@ -211,10 +212,11 @@ public class BrowserUnit {
                 request.setTitle(filename);
                 request.setMimeType(mimeType);
                 request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
+                //request.setDestinationUri(Uri.fromFile(new File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + "/", "1.epub")));
                 DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
                 assert manager != null;
 
-                if (android.os.Build.VERSION.SDK_INT >= 23) {
+                if (android.os.Build.VERSION.SDK_INT >= 23 && Build.VERSION.SDK_INT < 29) {
                     int hasWRITE_EXTERNAL_STORAGE = context.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
                     if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
                         Activity activity = (Activity) context;

@@ -53,11 +53,11 @@ public class Fragment_settings_data extends PreferenceFragmentCompat {
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.preference_data, rootKey);
 
-        File sd = Objects.requireNonNull(getActivity()).getExternalFilesDir(null);
+        File sd = requireActivity().getExternalFilesDir(null);
         File data = Environment.getDataDirectory();
 
 
-        String previewsPath_app = "//data//" + Objects.requireNonNull(getActivity()).getPackageName() + "//";
+        String previewsPath_app = "//data//" + requireActivity().getPackageName() + "//";
         String previewsPath_backup = "browser_backup//data//";
         final File previewsFolder_app = new File(data, previewsPath_app);
         final File previewsFolder_backup = new File(sd, previewsPath_backup);
@@ -71,7 +71,7 @@ public class Fragment_settings_data extends PreferenceFragmentCompat {
                 Button action_ok;
                 Button action_cancel;
 
-                dialog = new BottomSheetDialog(Objects.requireNonNull(getActivity()));
+                dialog = new BottomSheetDialog(requireActivity());
                 dialogView = View.inflate(getActivity(), R.layout.dialog_action, null);
                 textView = dialogView.findViewById(R.id.dialog_text);
                 textView.setText(R.string.toast_backup);
@@ -119,7 +119,7 @@ public class Fragment_settings_data extends PreferenceFragmentCompat {
                 Button action_ok;
                 Button action_cancel;
 
-                dialog = new BottomSheetDialog(Objects.requireNonNull(getActivity()));
+                dialog = new BottomSheetDialog(requireActivity());
                 dialogView = View.inflate(getActivity(), R.layout.dialog_action, null);
                 textView = dialogView.findViewById(R.id.dialog_text);
                 textView.setText(R.string.hint_database);
@@ -165,7 +165,7 @@ public class Fragment_settings_data extends PreferenceFragmentCompat {
                 Button action_ok;
                 Button action_cancel;
 
-                dialog = new BottomSheetDialog(Objects.requireNonNull(getActivity()));
+                dialog = new BottomSheetDialog(requireActivity());
                 dialogView = View.inflate(getActivity(), R.layout.dialog_action, null);
                 textView = dialogView.findViewById(R.id.dialog_text);
                 textView.setText(R.string.toast_backup);
@@ -213,7 +213,7 @@ public class Fragment_settings_data extends PreferenceFragmentCompat {
                 Button action_ok;
                 Button action_cancel;
 
-                dialog = new BottomSheetDialog(Objects.requireNonNull(getActivity()));
+                dialog = new BottomSheetDialog(requireActivity());
                 dialogView = View.inflate(getActivity(), R.layout.dialog_action, null);
                 textView = dialogView.findViewById(R.id.dialog_text);
                 textView.setText(R.string.hint_database);
@@ -259,7 +259,7 @@ public class Fragment_settings_data extends PreferenceFragmentCompat {
                 Button action_ok;
                 Button action_cancel;
 
-                dialog = new BottomSheetDialog(Objects.requireNonNull(getActivity()));
+                dialog = new BottomSheetDialog(requireActivity());
                 dialogView = View.inflate(getActivity(), R.layout.dialog_action, null);
                 textView = dialogView.findViewById(R.id.dialog_text);
                 textView.setText(R.string.toast_backup);
@@ -307,7 +307,7 @@ public class Fragment_settings_data extends PreferenceFragmentCompat {
                 Button action_ok;
                 Button action_cancel;
 
-                dialog = new BottomSheetDialog(Objects.requireNonNull(getActivity()));
+                dialog = new BottomSheetDialog(requireActivity());
                 dialogView = View.inflate(getActivity(), R.layout.dialog_action, null);
                 textView = dialogView.findViewById(R.id.dialog_text);
                 textView.setText(R.string.hint_database);
@@ -353,7 +353,7 @@ public class Fragment_settings_data extends PreferenceFragmentCompat {
                 Button action_ok;
                 Button action_cancel;
 
-                dialog = new BottomSheetDialog(Objects.requireNonNull(getActivity()));
+                dialog = new BottomSheetDialog(requireActivity());
                 dialogView = View.inflate(getActivity(), R.layout.dialog_action, null);
                 textView = dialogView.findViewById(R.id.dialog_text);
                 textView.setText(R.string.toast_backup);
@@ -410,7 +410,7 @@ public class Fragment_settings_data extends PreferenceFragmentCompat {
                 Button action_ok;
                 Button action_cancel;
 
-                dialog = new BottomSheetDialog(Objects.requireNonNull(getActivity()));
+                dialog = new BottomSheetDialog(requireActivity());
                 dialogView = View.inflate(getActivity(), R.layout.dialog_action, null);
                 textView = dialogView.findViewById(R.id.dialog_text);
                 textView.setText(R.string.hint_database);
@@ -459,10 +459,10 @@ public class Fragment_settings_data extends PreferenceFragmentCompat {
     }
 
     private void makeBackupDir () {
-        File backupDir = new File(Objects.requireNonNull(getActivity()).getExternalFilesDir(null), "browser_backup//");
+        File backupDir = new File(requireActivity().getExternalFilesDir(null), "browser_backup//");
         File noMedia = new File(backupDir, "//.nomedia");
         if (android.os.Build.VERSION.SDK_INT >= 23 && android.os.Build.VERSION.SDK_INT < 29) {
-            int hasWRITE_EXTERNAL_STORAGE = Objects.requireNonNull(getActivity()).checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            int hasWRITE_EXTERNAL_STORAGE = requireActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
             if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
                 HelperUnit.grantPermissionsStorage(getActivity());
             } else {
