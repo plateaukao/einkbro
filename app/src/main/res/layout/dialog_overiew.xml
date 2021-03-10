@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/white"
     android:orientation="vertical"
     tools:ignore="ContentDescription">
 
@@ -12,6 +11,7 @@
         android:id="@+id/overview_top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@android:color/white"
         android:layout_gravity="bottom"
         android:layout_marginBottom="56dp"
         android:orientation="vertical">
@@ -52,7 +52,7 @@
         android:gravity="center"
         android:minHeight="300dp"
         android:stackFromBottom="true"
-        android:visibility="gone"></ListView>
+        android:visibility="gone"/>
 
     <LinearLayout
         android:id="@+id/home_buttons"
@@ -60,6 +60,7 @@
         android:layout_height="56dp"
         android:layout_gravity="bottom"
         android:gravity="center"
+        android:background="@android:color/white"
         android:orientation="horizontal">
 
         <ImageButton
