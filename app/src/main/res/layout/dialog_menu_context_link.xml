@@ -46,7 +46,7 @@
                 android:minHeight="46dp"
                 android:paddingEnd="8dp"
                 android:paddingStart="8dp"
-                android:background="?attr/selectableItemBackground"
+                android:background="@drawable/item_bg_selector"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -76,7 +76,7 @@
                 android:minHeight="46dp"
                 android:paddingEnd="8dp"
                 android:paddingStart="8dp"
-                android:background="?attr/selectableItemBackground"
+                android:background="@drawable/item_bg_selector"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -106,7 +106,7 @@
                 android:minHeight="46dp"
                 android:paddingEnd="8dp"
                 android:paddingStart="8dp"
-                android:background="?attr/selectableItemBackground"
+                android:background="@drawable/item_bg_selector"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -137,7 +137,7 @@
                 android:minHeight="46dp"
                 android:paddingEnd="8dp"
                 android:paddingStart="8dp"
-                android:background="?attr/selectableItemBackground"
+                android:background="@drawable/item_bg_selector"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -167,7 +167,7 @@
                 android:minHeight="46dp"
                 android:paddingEnd="8dp"
                 android:paddingStart="8dp"
-                android:background="?attr/selectableItemBackground"
+                android:background="@drawable/item_bg_selector"
                 android:orientation="horizontal">
 
                 <ImageView
