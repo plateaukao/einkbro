@@ -4,6 +4,7 @@
 <RelativeLayout android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="@dimen/layout_margin_12dp"
+    android:background="@drawable/item_bg_selector"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <TextView

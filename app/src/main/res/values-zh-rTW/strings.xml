@@ -42,7 +42,7 @@
     <string name="menu_save_screenshot">儲存截圖</string>
     <string name="menu_save_home">存為首頁</string>
     <string name="menu_save_bookmark">加入書籤</string>
-    <string name="menu_save_as">存為...</string>
+    <string name="menu_save_as">儲存 PDF</string>
     <string name="menu_save_pdf">存成 PDF</string>
     <string name="menu_share_pdf">分享 PDF</string>
     <string name="menu_shareClipboard">複製網址</string>
