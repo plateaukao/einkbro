@@ -6,7 +6,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     tools:ignore="ContentDescription">
 
-    <RelativeLayout
+    <FrameLayout
         android:id="@+id/appBar"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
@@ -17,87 +17,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageButton android:id="@+id/omnibox_overflow"
-                android:layout_centerInParent="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:padding="10dp"
-                android:src="@drawable/icon_overflow"
-                android:onClick="onClick"
-                android:background="@android:color/white"/>
-
-            <ImageButton
-                android:id="@+id/omnibox_overview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_toStartOf="@id/omnibox_overflow"
-                android:background="@android:color/white"
-                android:padding="10dp"
-                android:onClick="onClick"
-                android:src="@drawable/icon_tab_outline" />
-
-            <TextView
-                android:id="@+id/omnibox_web_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignStart="@+id/omnibox_overview"
-                android:layout_alignEnd="@+id/omnibox_overview"
-                android:layout_centerInParent="true"
-                android:paddingStart="18dp"
-                android:text="1"
-                android:textAlignment="center"
-                android:textColor="@android:color/black" />
-
-            <ImageButton android:id="@+id/omnibox_page_down"
-                android:layout_centerInParent="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toStartOf="@id/omnibox_overview"
-                android:padding="8dp"
-                android:src="@drawable/icon_arrow_down_gest"
-                android:onClick="onClick"
-                android:background="@android:color/white"/>
-
-            <ImageButton android:id="@+id/omnibox_page_up"
-                android:layout_centerInParent="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toStartOf="@id/omnibox_page_down"
-                android:padding="8dp"
-                android:src="@drawable/icon_arrow_up_gest"
-                android:onClick="onClick"
-                android:background="@android:color/white"/>
-
-            <ImageButton android:id="@+id/omnibox_touch"
-                android:layout_centerInParent="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toStartOf="@id/omnibox_page_up"
-                android:padding="8dp"
-                android:src="@drawable/gesture_tap"
-                android:onClick="onClick"
-                android:alpha="0.5"
-                android:background="@android:color/white"/>
-
-            <ImageButton android:id="@+id/omnibox_refresh"
-                android:layout_centerInParent="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toStartOf="@id/omnibox_touch"
-                android:padding="8dp"
-                android:src="@drawable/icon_refresh"
-                android:onClick="onClick"
-                android:background="@android:color/white"/>
-
-
             <AutoCompleteTextView android:id="@+id/main_omnibox_input"
                 android:layout_width="match_parent"
                 android:layout_alignParentStart="true"
                 android:layout_height="match_parent"
                 android:layout_centerInParent="true"
-                android:layout_toStartOf="@id/omnibox_refresh"
                 android:layout_marginStart="8dp"
                 android:includeFontPadding="false"
                 android:hint="@string/main_omnibox_input_hint"
@@ -111,32 +35,118 @@
                 android:ellipsize="end"
                 android:background="@android:color/white"/>
 
-            <TextView
-                android:id="@+id/omnibox_title"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_marginStart="8dp"
-                android:layout_alignParentLeft="true"
-                android:layout_toStartOf="@id/omnibox_refresh"
-                android:layout_alignParentStart="true"
-                android:includeFontPadding="false"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:text="@string/app_name"
-                android:textColor="@android:color/black"
-                android:textStyle="bold"
-                android:background="@android:color/white" />
+            <LinearLayout
+                android:id="@+id/icon_bar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/white" >
+
+                <TextView
+                    android:id="@+id/omnibox_title"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="8dp"
+                    android:includeFontPadding="false"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/app_name"
+                    android:textColor="@android:color/black"
+                    android:textStyle="bold"
+                    android:gravity="center_vertical"
+                    android:background="@android:color/white" />
+
+                <ImageButton android:id="@+id/omnibox_refresh"
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_toStartOf="@id/omnibox_touch"
+                    android:padding="8dp"
+                    android:src="@drawable/icon_refresh"
+                    android:onClick="onClick"
+                    android:background="@android:color/white"/>
+
+
+                <ImageButton android:id="@+id/omnibox_touch"
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="8dp"
+                    android:src="@drawable/gesture_tap"
+                    android:onClick="onClick"
+                    android:alpha="0.3"
+                    android:background="@android:color/white"/>
+
+                <ImageButton android:id="@+id/omnibox_page_up"
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="8dp"
+                    android:src="@drawable/icon_arrow_up_gest"
+                    android:onClick="onClick"
+                    android:background="@android:color/white"/>
+
+
+                <ImageButton android:id="@+id/omnibox_page_down"
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="8dp"
+                    android:src="@drawable/icon_arrow_down_gest"
+                    android:onClick="onClick"
+                    android:background="@android:color/white"/>
+
+                <TextView
+                    android:id="@+id/omnibox_overview"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/button_border_bg"
+                    android:gravity="center"
+                    android:text="1"
+                    android:padding="5dp"
+                    android:textColor="@android:color/black"
+                    android:onClick="onClick" />
+
+                <ImageButton android:id="@+id/omnibox_overflow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:src="@drawable/icon_overflow"
+                    android:onClick="onClick"
+                    android:background="@android:color/white"/>
+
+            </LinearLayout>
 
         </RelativeLayout>
 
-        <RelativeLayout android:id="@+id/main_search_panel"
+        <LinearLayout android:id="@+id/main_search_panel"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:minHeight="@dimen/layout_margin_56dp"
-            android:visibility="gone">
+            android:visibility="gone"
+            android:orientation="horizontal">
+
+            <EditText android:id="@+id/main_search_box"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="8dp"
+                android:includeFontPadding="false"
+                android:paddingStart="@dimen/layout_margin_8dp"
+                android:paddingEnd="@dimen/layout_margin_8dp"
+                android:hint="@string/search_hint"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:background="?android:attr/colorBackground"
+                android:importantForAutofill="no"
+                tools:targetApi="o" />
+
 
             <ImageButton android:id="@+id/main_search_cancel"
                 android:contentDescription="@null"
@@ -153,7 +163,6 @@
                 android:contentDescription="@null"
                 android:layout_width="42dp"
                 android:layout_height="42dp"
-                android:layout_toStartOf="@id/main_search_cancel"
                 android:layout_marginTop="@dimen/layout_margin_8dp"
                 android:layout_marginBottom="@dimen/layout_margin_8dp"
                 android:layout_gravity="center"
@@ -164,34 +173,14 @@
                 android:contentDescription="@null"
                 android:layout_width="42dp"
                 android:layout_height="42dp"
-                android:layout_toStartOf="@id/main_search_down"
                 android:layout_marginTop="@dimen/layout_margin_8dp"
                 android:layout_marginBottom="@dimen/layout_margin_8dp"
                 android:layout_gravity="center"
                 android:src="@drawable/icon_arrow_up_gest"
                 android:background="@android:color/white"/>
-            <EditText android:id="@+id/main_search_box"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_centerInParent="true"
-                android:layout_toStartOf="@id/main_search_up"
-                android:layout_marginStart="8dp"
-                android:includeFontPadding="false"
-                android:paddingStart="@dimen/layout_margin_8dp"
-                android:paddingEnd="@dimen/layout_margin_8dp"
-                android:hint="@string/search_hint"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:imeOptions="actionDone"
-                android:inputType="text"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:background="?android:attr/colorBackground"
-                android:importantForAutofill="no"
-                tools:targetApi="o" />
+        </LinearLayout>
 
-        </RelativeLayout>
-
-    </RelativeLayout>
+    </FrameLayout>
 
     <include layout="@layout/activity_main_content"
         android:layout_width="match_parent"
