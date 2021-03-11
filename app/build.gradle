@@ -6,12 +6,12 @@ android {
     buildToolsVersion '30.0.3'
 
     defaultConfig {
-        applicationId "de.baumann.browser"
-        //applicationId "info.plateaukao.einkbro"
+        //applicationId "de.baumann.browser"
+        applicationId "info.plateaukao.einkbro"
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode 105
-        versionName "8.0"
+        versionCode 106
+        versionName "8.1"
         vectorDrawables.useSupportLibrary = true
     }
 
