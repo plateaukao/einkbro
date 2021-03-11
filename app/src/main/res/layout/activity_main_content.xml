@@ -44,11 +44,10 @@
 
     <ImageButton
         android:id="@+id/fab_imageButtonNav_right"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_alignBottom="@+id/main_content"
         android:layout_alignParentEnd="true"
-        android:layout_margin="20dp"
         android:visibility="gone"
         app:borderWidth="1dp"
         android:background="@drawable/roundcorner"
@@ -60,11 +59,10 @@
 
     <ImageButton
         android:id="@+id/fab_imageButtonNav_left"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_alignBottom="@+id/main_content"
         android:layout_alignParentStart="true"
-        android:layout_margin="18dp"
         app:borderWidth="1dp"
         android:background="@drawable/roundcorner"
         android:tint="@android:color/darker_gray"
@@ -75,11 +73,10 @@
 
     <ImageButton
         android:id="@+id/fab_imageButtonNav_center"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_alignBottom="@+id/main_content"
         android:layout_centerInParent="true"
-        android:layout_margin="18dp"
         android:visibility="invisible"
         app:borderWidth="1dp"
         android:background="@drawable/roundcorner"
