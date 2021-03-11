@@ -32,7 +32,6 @@ import android.widget.*
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.AdapterView.OnItemLongClickListener
 import android.widget.TextView.OnEditorActionListener
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
@@ -109,8 +108,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     }
 
     private var originalOrientation = 0
-    private var dimen156dp = 0f
-    private var dimen117dp = 0f
     private var searchOnSite = false
     private var onPause = false
     private var customViewCallback: CustomViewCallback? = null
@@ -170,8 +167,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             sp.edit().putBoolean(getString(R.string.sp_location), false).apply()
         }
         contentFrame = findViewById(R.id.main_content)
-        dimen156dp = resources.getDimensionPixelSize(R.dimen.layout_width_156dp).toFloat()
-        dimen117dp = resources.getDimensionPixelSize(R.dimen.layout_height_117dp).toFloat()
         initOmnibox()
         initSearchPanel()
         initOverview()
@@ -466,11 +461,16 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 startActivity(Intent(DownloadManager.ACTION_VIEW_DOWNLOADS))
             }
             R.id.omnibox_overview -> showOverview()
+            R.id.omnibox_touch -> toggleTouchFeature()
+            R.id.touch_left -> ninjaWebView.pageUpWithNoAnimation()
+            R.id.touch_right -> ninjaWebView.pageDownWithNoAnimation()
+            /* Daniel
             R.id.omnibox_page_back -> if (ninjaWebView.canGoBack()) {
                 ninjaWebView.goBack()
             } else {
                 removeAlbum(currentAlbumController!!)
             }
+            */
             R.id.omnibox_page_up -> ninjaWebView.pageUpWithNoAnimation()
             R.id.omnibox_page_down -> ninjaWebView.pageDownWithNoAnimation()
             R.id.omnibox_refresh -> if (url != null && ninjaWebView.isLoadFinish) {
@@ -500,6 +500,18 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             }
             else -> {
             }
+        }
+    }
+
+    private fun  toggleTouchFeature() {
+        if (binding.omniboxTouch.alpha != 1.0F) {
+            binding.omniboxTouch.alpha = 1.0F
+            findViewById<View>(R.id.touch_left).visibility = VISIBLE
+            findViewById<View>(R.id.touch_right).visibility = VISIBLE
+        } else {
+            binding.omniboxTouch.alpha = 0.5F
+            findViewById<View>(R.id.touch_left).visibility = INVISIBLE
+            findViewById<View>(R.id.touch_right).visibility = INVISIBLE
         }
     }
 
@@ -688,7 +700,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         binding.omniboxRefresh.visibility = visibility
         binding.omniboxOverview.visibility = visibility
         binding.omniboxWebCount.visibility = visibility
-        binding.omniboxPageBack.visibility = visibility
+        //binding.omniboxPageBack.visibility = visibility
         binding.omniboxPageDown.visibility = visibility
         binding.omniboxPageUp.visibility = visibility
         binding.omniboxOverflow.visibility = visibility
@@ -1144,6 +1156,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     @Synchronized
     private fun addAlbum(title: String?, url: String?, foreground: Boolean) {
         if (url == null) return
+
         ninjaWebView = NinjaWebView(this)
         ninjaWebView.browserController = this
         ninjaWebView.albumTitle = title
@@ -1168,7 +1181,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             showOmnibox()
             showAlbum(ninjaWebView)
         }
-        if (url?.isNotEmpty() == true) {
+        if (url.isNotEmpty()) {
             ninjaWebView.loadUrl(url)
         }
     }
@@ -1184,15 +1197,15 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         updateOmnibox()
     }
 
-    private fun closeTabConfirmation(okAction: Runnable) {
+    private fun closeTabConfirmation(okAction: () -> Unit) {
         if (!sp.getBoolean("sp_close_tab_confirm", false)) {
-            okAction.run()
+            okAction()
         } else {
             bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
             val dialogView = View.inflate(this, R.layout.dialog_action, null)
             dialogView.findViewById<TextView>(R.id.dialog_text).setText(R.string.toast_close_tab)
             dialogView.findViewById<Button>(R.id.action_ok).setOnClickListener {
-                okAction.run()
+                okAction()
                 hideBottomSheetDialog()
             }
             dialogView.findViewById<Button>(R.id.action_cancel).setOnClickListener { hideBottomSheetDialog() }
@@ -1207,7 +1220,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             if (!sp.getBoolean("sp_reopenLastTab", false)) {
                 finish()
             } else {
-                updateAlbum(sp.getString("favoriteURL", "https://github.com/scoute-dich/browser"))
+                updateAlbum(sp.getString("favoriteURL", "https://github.com/plateaukao/browser"))
                 hideOverview()
             }
         } else {
