@@ -77,7 +77,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
 
     // Layouts
     private lateinit var omnibox: RelativeLayout
-    private lateinit var searchPanel: RelativeLayout
+    private lateinit var searchPanel: ViewGroup
     private lateinit var contentFrame: FrameLayout
     private lateinit var tab_container: LinearLayout
     private lateinit var open_startPageView: View
@@ -509,7 +509,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             findViewById<View>(R.id.touch_left).visibility = VISIBLE
             findViewById<View>(R.id.touch_right).visibility = VISIBLE
         } else {
-            binding.omniboxTouch.alpha = 0.5F
+            binding.omniboxTouch.alpha = 0.3F
             findViewById<View>(R.id.touch_left).visibility = INVISIBLE
             findViewById<View>(R.id.touch_right).visibility = INVISIBLE
         }
@@ -695,15 +695,9 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     }
 
     private fun toggleIconsOnOmnibox(shouldHide: Boolean) {
-        val visibility = if (shouldHide) View.GONE else View.VISIBLE
+        val visibility = if (shouldHide) GONE else VISIBLE
+        binding.iconBar.visibility = visibility
         omniboxTitle.visibility = visibility
-        binding.omniboxRefresh.visibility = visibility
-        binding.omniboxOverview.visibility = visibility
-        binding.omniboxWebCount.visibility = visibility
-        //binding.omniboxPageBack.visibility = visibility
-        binding.omniboxPageDown.visibility = visibility
-        binding.omniboxPageUp.visibility = visibility
-        binding.omniboxOverflow.visibility = visibility
     }
 
     private fun performGesture(gesture: String) {
@@ -1187,7 +1181,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     }
 
     private fun updateWebViewCount() {
-        binding.omniboxWebCount.text = BrowserContainer.size().toString()
+        binding.omniboxOverview.text = BrowserContainer.size().toString()
     }
 
     @Synchronized
