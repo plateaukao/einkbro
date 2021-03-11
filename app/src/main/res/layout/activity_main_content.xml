@@ -9,7 +9,23 @@
 
     <FrameLayout android:id="@+id/main_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
+    </FrameLayout>
+    <View android:id="@+id/touch_left"
+        android:layout_width="80dp"
+        android:layout_height="match_parent"
+        android:visibility="invisible"
+        android:background="@color/color_transparent"
+        android:onClick="onClick"
+        />
+    <View android:id="@+id/touch_right"
+        android:layout_alignParentRight="true"
+        android:layout_width="80dp"
+        android:layout_height="match_parent"
+        android:visibility="invisible"
+        android:background="@color/color_transparent"
+        android:onClick="onClick"
+        />
 
     <ProgressBar
         style="?android:attr/progressBarStyleHorizontal"
