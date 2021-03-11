@@ -294,8 +294,10 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 }
                 if (fullscreenHolder != null || customView != null || videoView != null) {
                     return onHideCustomView()
-                } else if (omnibox.visibility == View.GONE && sp.getBoolean("sp_toolbarShow", true)) {
+                } else if (omnibox.visibility == GONE && sp.getBoolean("sp_toolbarShow", true)) {
                     showOmnibox()
+                } else if (binding.iconBar.visibility == GONE) {
+                    inputBox.clearFocus()
                 } else {
                     if (ninjaWebView.canGoBack()) {
                         ninjaWebView.goBack()
@@ -651,6 +653,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                     toggleIconsOnOmnibox(true)
                     inputBox.requestFocus()
                     inputBox.setSelection(0, inputBox.text.toString().length)
+                    showKeyboard()
                 }, 250)
             } else {
                 toggleIconsOnOmnibox(false)
