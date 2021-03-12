@@ -7,7 +7,9 @@ browser with a nice looking user interface.
 
 ### E-Ink specific features
 
-- Add pageUp / pageDown / Back button in bottom function bar
+- Add pageUp / pageDown / Back button on toolbar
+- Support using physical volume keys for pageUp/pageDown
+- Support tapping on screen left/right edge for pageUp/Down (finger button on toolbar)
 - Add desktop mode feature
 - Make all icons in high contrast colors
 - Add WebView count in bottom function bar
