@@ -54,6 +54,8 @@ import java.io.File
 import java.util.*
 import kotlin.math.floor
 import kotlin.math.roundToInt
+import kotlin.system.exitProcess
+
 
 class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickListener {
     private lateinit var adapter: Adapter_Record
@@ -145,7 +147,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         sp.edit().putBoolean("pdf_create", false).apply()
         HelperUnit.applyTheme(this)
         setContentView(binding.root)
-        if (Objects.requireNonNull(sp.getString("saved_key_ok", "no")) == "no") {
+        if (sp.getString("saved_key_ok", "no") == "no") {
             val chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!§$%&/()=?;:_-.,+#*<>".toCharArray()
             val sb = StringBuilder()
             val random = Random()
@@ -236,7 +238,10 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             dialogView.findViewById<TextView>(R.id.dialog_text).setText(R.string.toast_restart)
             dialogView.findViewById<Button>(R.id.action_ok).setOnClickListener {
                 dialog.dismiss()
-                recreate()
+
+                finishAffinity(); // Finishes all activities.
+                startActivity(packageManager.getLaunchIntentForPackage(packageName));    // Start the launch activity
+                exitProcess(0)
             }
             dialogView.findViewById<Button>(R.id.action_cancel).setOnClickListener { dialog.cancel() }
             dialog.setContentView(dialogView)
@@ -934,7 +939,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 (currentAlbumController as NinjaWebView?)?.findAllAsync(s.toString())
             }
         })
-        searchBox.setOnEditorActionListener(OnEditorActionListener { _, actionId, _->
+        searchBox.setOnEditorActionListener(OnEditorActionListener { _, actionId, _ ->
             if (actionId != EditorInfo.IME_ACTION_DONE) {
                 return@OnEditorActionListener false
             }
@@ -1406,7 +1411,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                     val controller = nextAlbumController(true) ?: return true
                     showAlbum(controller)
                 }
-                KeyEvent.KEYCODE_K ->  {
+                KeyEvent.KEYCODE_K -> {
                     val controller = nextAlbumController(false) ?: return true
                     showAlbum(controller)
                 }
