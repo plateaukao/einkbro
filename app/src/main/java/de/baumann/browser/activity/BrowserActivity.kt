@@ -52,6 +52,8 @@ import de.baumann.browser.unit.ViewUnit
 import de.baumann.browser.view.*
 import java.io.File
 import java.util.*
+import kotlin.math.floor
+import kotlin.math.roundToInt
 
 class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickListener {
     private lateinit var adapter: Adapter_Record
@@ -277,12 +279,10 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         when (keyCode) {
             KeyEvent.KEYCODE_VOLUME_DOWN -> {
                 ninjaWebView.pageDownWithNoAnimation()
-                hideOmnibox()
                 return true
             }
             KeyEvent.KEYCODE_VOLUME_UP -> {
                 ninjaWebView.pageUpWithNoAnimation()
-                hideOmnibox()
                 return true
             }
             KeyEvent.KEYCODE_MENU -> return showOverflow()
@@ -463,7 +463,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 startActivity(Intent(DownloadManager.ACTION_VIEW_DOWNLOADS))
             }
             R.id.omnibox_overview -> showOverview()
-            R.id.omnibox_touch -> toggleTouchFeature()
+            R.id.omnibox_touch -> toggleTouchTurnPageFeature()
             R.id.touch_left -> ninjaWebView.pageUpWithNoAnimation()
             R.id.touch_right -> ninjaWebView.pageDownWithNoAnimation()
             /* Daniel
@@ -473,8 +473,13 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 removeAlbum(currentAlbumController!!)
             }
             */
-            R.id.omnibox_page_up -> ninjaWebView.pageUpWithNoAnimation()
-            R.id.omnibox_page_down -> ninjaWebView.pageDownWithNoAnimation()
+            R.id.omnibox_page_up -> {
+                ninjaWebView.pageUpWithNoAnimation()
+            }
+            R.id.omnibox_page_down -> {
+                keepToolbar = true
+                ninjaWebView.pageDownWithNoAnimation()
+            }
             R.id.omnibox_refresh -> if (url != null && ninjaWebView.isLoadFinish) {
                 if (url?.startsWith("https://") != true) {
                     bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
@@ -505,15 +510,17 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         }
     }
 
-    private fun  toggleTouchFeature() {
+    private fun  toggleTouchTurnPageFeature() {
         if (binding.omniboxTouch.alpha != 1.0F) {
             binding.omniboxTouch.alpha = 1.0F
             findViewById<View>(R.id.touch_left).visibility = VISIBLE
             findViewById<View>(R.id.touch_right).visibility = VISIBLE
+            fab_imageButtonNav.setImageResource(R.drawable.gesture_tap)
         } else {
             binding.omniboxTouch.alpha = 0.3F
             findViewById<View>(R.id.touch_left).visibility = INVISIBLE
             findViewById<View>(R.id.touch_right).visibility = INVISIBLE
+            fab_imageButtonNav.setImageResource(R.drawable.icon_overflow_fab)
         }
     }
 
@@ -602,18 +609,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         inputBox = findViewById(R.id.main_omnibox_input)
         omniboxTitle = findViewById(R.id.omnibox_title)
         progressBar = findViewById(R.id.main_progress_bar)
-        val nav_position = Objects.requireNonNull(sp.getString("nav_position", "0"))
-        fab_imageButtonNav = when (nav_position) {
-            "1" -> findViewById(R.id.fab_imageButtonNav_left)
-            "2" -> findViewById(R.id.fab_imageButtonNav_center)
-            else -> findViewById(R.id.fab_imageButtonNav_right)
-        }
-        expandViewTouchArea(fab_imageButtonNav, ViewUnit.dpToPixel(this, 20).toInt())
-        fab_imageButtonNav.setOnClickListener { showOmnibox() }
-        fab_imageButtonNav.setOnLongClickListener {
-            show_dialogFastToggle()
-            false
-        }
+        initFAB()
         binding.omniboxOverflow.setOnLongClickListener {
             show_dialogFastToggle()
             false
@@ -680,6 +676,35 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         binding.omniboxRefresh.setOnLongClickListener {
             hideOmnibox()
             true
+        }
+    }
+
+    private fun initFAB() {
+        fab_imageButtonNav = findViewById(R.id.fab_imageButtonNav)
+        val navPosition = sp.getString("nav_position", "0")
+        val params = RelativeLayout.LayoutParams(fab_imageButtonNav.layoutParams.width, fab_imageButtonNav.layoutParams.height)
+        when (navPosition) {
+            "1" -> {
+                // left
+                fab_imageButtonNav.layoutParams = params.apply {
+                    addRule(RelativeLayout.ALIGN_PARENT_LEFT)
+                    addRule(RelativeLayout.ALIGN_BOTTOM, R.id.main_content)
+                }
+            }
+            "2" -> {
+                // center
+                fab_imageButtonNav.layoutParams = params.apply {
+                    addRule(RelativeLayout.CENTER_HORIZONTAL)
+                    addRule(RelativeLayout.ALIGN_BOTTOM, R.id.main_content)
+                }
+            }
+        }
+
+        expandViewTouchArea(fab_imageButtonNav, ViewUnit.dpToPixel(this, 20).toInt())
+        fab_imageButtonNav.setOnClickListener { showOmnibox() }
+        fab_imageButtonNav.setOnLongClickListener {
+            show_dialogFastToggle()
+            false
         }
     }
 
@@ -1245,15 +1270,20 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         }
     }
 
+    var keepToolbar = false
     private fun scrollChange() {
-        if (Objects.requireNonNull(sp.getBoolean("hideToolbar", true))) {
+        if (sp.getBoolean("hideToolbar", true)) {
             ninjaWebView.setOnScrollChangeListener { scrollY, oldScrollY ->
-                val height = Math.floor(ninjaWebView.contentHeight * ninjaWebView.resources.displayMetrics.density.toDouble()).toInt()
+                val height = floor(x = ninjaWebView.contentHeight * ninjaWebView.resources.displayMetrics.density.toDouble()).toInt()
                 val webViewHeight = ninjaWebView.height
-                val cutoff = height - webViewHeight - 112 * Math.round(resources.displayMetrics.density)
+                val cutoff = height - webViewHeight - 112 * resources.displayMetrics.density.roundToInt()
                 if (scrollY in (oldScrollY + 1)..cutoff) {
-                    // Daniel
-                    //hideOmnibox();
+                    if (!keepToolbar) {
+                        // Daniel
+                        hideOmnibox();
+                    } else {
+                        keepToolbar = false
+                    }
                 } else if (scrollY < oldScrollY) {
                     //showOmnibox()
                 }
