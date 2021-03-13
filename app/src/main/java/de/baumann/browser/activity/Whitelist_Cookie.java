@@ -24,7 +24,7 @@ import de.baumann.browser.Ninja.R;
 import de.baumann.browser.unit.BrowserUnit;
 import de.baumann.browser.unit.HelperUnit;
 import de.baumann.browser.unit.RecordUnit;
-import de.baumann.browser.view.Adapter_Whitelist;
+import de.baumann.browser.view.adapter.Adapter_Whitelist;
 import de.baumann.browser.view.NinjaToast;
 
 public class Whitelist_Cookie extends AppCompatActivity {

@@ -1,4 +1,4 @@
-package de.baumann.browser.view;
+package de.baumann.browser.view.adapter;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
@@ -13,6 +13,7 @@ import java.util.List;
 
 import de.baumann.browser.browser.Javascript;
 import de.baumann.browser.Ninja.R;
+import de.baumann.browser.view.NinjaToast;
 
 public class Adapter_Whitelist extends ArrayAdapter<String> {
     private final Context context;
