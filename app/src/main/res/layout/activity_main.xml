@@ -95,7 +95,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:padding="8dp"
-                    android:src="@drawable/icon_arrow_up_gest"
+                    android:src="@drawable/ic_page_up"
                     android:onClick="onClick"
                     android:background="@android:color/white"/>
 
@@ -105,7 +105,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:padding="8dp"
-                    android:src="@drawable/icon_arrow_down_gest"
+                    android:src="@drawable/ic_page_down"
                     android:onClick="onClick"
                     android:background="@android:color/white"/>
 
