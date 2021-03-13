@@ -933,6 +933,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         }
         open_bookmark.setOnClickListener { openBookmarkPage() }
         open_history.setOnClickListener { openHistoryPage() }
+
+        findViewById<View>(R.id.button_close_overview).setOnClickListener { hideOverview() }
         showCurrentTabInOverview()
     }
 

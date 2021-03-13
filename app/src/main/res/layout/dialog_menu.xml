@@ -62,7 +62,7 @@
                 android:padding="10dp"
                 android:gravity="center_vertical"
                 android:onClick="onClick"
-                android:src="@drawable/icon_bookmark" />
+                android:src="@drawable/ic_bookmark" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -247,7 +247,7 @@
             android:padding="10dp"
             android:gravity="center_vertical"
             android:onClick="onClick"
-            android:src="@drawable/icon_exit" />
+            android:src="@drawable/ic_open_in" />
 
         <TextView
             android:layout_width="match_parent"

@@ -76,9 +76,10 @@
 
         <LinearLayout
             android:layout_width="42dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:layout_marginEnd="6dp"
+            android:layout_height="match_parent"
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp"
+            android:gravity="center"
             android:orientation="vertical">
 
             <View
@@ -103,9 +104,10 @@
 
         <LinearLayout
             android:layout_width="42dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:layout_marginEnd="6dp"
+            android:layout_height="match_parent"
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp"
+            android:gravity="center"
             android:orientation="vertical">
 
             <View
@@ -130,9 +132,10 @@
 
         <LinearLayout
             android:layout_width="42dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:layout_marginEnd="6dp"
+            android:layout_height="match_parent"
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp"
+            android:gravity="center"
             android:orientation="vertical">
 
             <View
@@ -157,16 +160,11 @@
 
         <LinearLayout
             android:layout_width="42dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="6dp"
-            android:layout_marginEnd="6dp"
+            android:layout_height="match_parent"
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp"
+            android:gravity="center"
             android:orientation="vertical">
-
-            <View
-                android:layout_width="42dp"
-                android:layout_height="2dp"
-                android:background="?android:attr/colorAccent"
-                android:visibility="invisible" />
 
             <ImageButton
                 android:id="@+id/open_menu"
@@ -178,6 +176,27 @@
                 android:background="@android:color/transparent"
                 android:onClick="onClick"
                 android:src="@drawable/icon_dots" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="42dp"
+            android:layout_height="match_parent"
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/button_close_overview"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
+                android:background="@android:color/transparent"
+                android:onClick="onClick"
+                android:src="@drawable/icon_arrow_down_gest" />
 
         </LinearLayout>
 
