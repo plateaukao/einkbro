@@ -440,5 +440,8 @@
 
         &lt;i>Following people contributed at this project. If I have forgotten anybody, please contact me:&lt;/i>
     </string>
+    <string name="setting_title_toolbar_icons">Icons on toolbar</string>
+    <string name="setting_summary_toolbar_icons">Decide what icons should be shown on toolbar</string>
+    <string name="setting_summary_desktop">Support desktop mode of web site</string>
 
 </resources>
