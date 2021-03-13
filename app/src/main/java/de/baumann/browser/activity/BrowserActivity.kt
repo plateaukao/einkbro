@@ -8,6 +8,7 @@ import android.content.*
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.database.Cursor
+import android.graphics.Color
 import android.graphics.Rect
 import android.media.MediaPlayer
 import android.media.MediaPlayer.OnCompletionListener
@@ -77,6 +78,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private lateinit var omniboxTitle: TextView
     private lateinit var tab_ScrollView: HorizontalScrollView
     private lateinit var overview_top: LinearLayout
+    private lateinit var touchAreaLeft: View
+    private lateinit var touchAreaRight: View
 
     private var bottomSheetDialog: BottomSheetDialog? = null
     private var videoView: VideoView? = null
@@ -177,6 +180,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         initOmnibox()
         initSearchPanel()
         initOverview()
+        initTouchArea()
         AdBlock(this) // For AdBlock cold boot
         Javascript(this)
         Cookie(this)
@@ -200,6 +204,11 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         if (sp.getBoolean("start_tabStart", false)) {
             showOverview()
         }
+    }
+
+    private fun initTouchArea() {
+        touchAreaLeft = findViewById(R.id.touch_left)
+        touchAreaRight = findViewById(R.id.touch_right)
     }
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -520,19 +529,35 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     }
 
     private fun  toggleTouchTurnPageFeature() {
+        // touch on
         if (binding.omniboxTouch.alpha != 1.0F) {
             binding.omniboxTouch.alpha = 1.0F
-            findViewById<View>(R.id.touch_left).visibility = VISIBLE
-            findViewById<View>(R.id.touch_right).visibility = VISIBLE
+
+            touchAreaLeft.visibility = VISIBLE
+            touchAreaRight.visibility = VISIBLE
+
             fab_imageButtonNav.setImageResource(R.drawable.ic_touch_enabled)
             binding.omniboxTouch.setImageResource(R.drawable.ic_touch_enabled)
+
+            showTouchAreaHint()
         } else {
             binding.omniboxTouch.alpha = 0.99F
-            findViewById<View>(R.id.touch_left).visibility = INVISIBLE
-            findViewById<View>(R.id.touch_right).visibility = INVISIBLE
+            touchAreaLeft.visibility = INVISIBLE
+            touchAreaRight.visibility = INVISIBLE
             fab_imageButtonNav.setImageResource(R.drawable.icon_overflow_fab)
             binding.omniboxTouch.setImageResource(R.drawable.ic_touch_disabled)
         }
+    }
+
+    private fun showTouchAreaHint() {
+        touchAreaLeft.setBackgroundResource(R.drawable.touch_area_border)
+        touchAreaRight.setBackgroundResource(R.drawable.touch_area_border)
+        Timer("showTouchAreaHint", false).schedule(object: TimerTask() {
+            override fun run() {
+                touchAreaLeft.setBackgroundColor(Color.TRANSPARENT)
+                touchAreaRight.setBackgroundColor(Color.TRANSPARENT)
+            }
+        }, 500)
     }
 
     private fun showKeyboard() {

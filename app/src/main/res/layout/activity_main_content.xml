@@ -12,18 +12,20 @@
         android:layout_height="match_parent">
     </FrameLayout>
     <View android:id="@+id/touch_left"
-        android:layout_width="80dp"
-        android:layout_height="match_parent"
+        android:layout_width="150dp"
+        android:layout_height="250dp"
         android:visibility="invisible"
-        android:background="@color/color_transparent"
+        android:background="@drawable/touch_area_border"
+        android:layout_alignParentBottom="true"
         android:onClick="onClick"
         />
     <View android:id="@+id/touch_right"
         android:layout_alignParentRight="true"
-        android:layout_width="80dp"
-        android:layout_height="match_parent"
+        android:layout_width="150dp"
+        android:layout_height="250dp"
         android:visibility="invisible"
-        android:background="@color/color_transparent"
+        android:background="@drawable/touch_area_border"
+        android:layout_alignParentBottom="true"
         android:onClick="onClick"
         />
 
