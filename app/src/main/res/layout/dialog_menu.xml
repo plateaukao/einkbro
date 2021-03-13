@@ -41,7 +41,7 @@
             android:layout_height="@dimen/menu_button_size"
             android:padding="10dp"
             android:gravity="center_vertical"
-            android:src="@drawable/clipboard_outline" />
+            android:src="@drawable/ic_copy" />
 
         <TextView
             android:layout_width="match_parent"
@@ -123,7 +123,7 @@
                 android:padding="10dp"
                 android:gravity="center_vertical"
                 android:onClick="onClick"
-                android:src="@drawable/icon_document" />
+                android:src="@drawable/ic_pdf" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -206,7 +206,7 @@
                 android:padding="10dp"
                 android:gravity="center_vertical"
                 android:onClick="onClick"
-                android:src="@drawable/icon_document" />
+                android:src="@drawable/ic_pdf" />
 
             <TextView
                 android:layout_width="match_parent"

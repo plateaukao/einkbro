@@ -39,6 +39,7 @@
                 android:id="@+id/icon_bar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:gravity="right"
                 android:background="@android:color/white" >
 
                 <TextView
@@ -58,6 +59,16 @@
                     android:gravity="center_vertical"
                     android:background="@android:color/white" />
 
+                <ImageButton android:id="@+id/omnibox_back"
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="8dp"
+                    android:src="@drawable/icon_arrow_left_gest"
+                    android:onClick="onClick"
+                    android:background="@android:color/white"/>
+
+
                 <ImageButton android:id="@+id/omnibox_refresh"
                     android:layout_centerInParent="true"
                     android:layout_width="wrap_content"
@@ -74,9 +85,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:padding="8dp"
-                    android:src="@drawable/gesture_tap"
+                    android:src="@drawable/ic_touch_disabled"
+                    android:alpha="0.99"
                     android:onClick="onClick"
-                    android:alpha="0.3"
                     android:background="@android:color/white"/>
 
                 <ImageButton android:id="@+id/omnibox_page_up"
@@ -99,7 +110,7 @@
                     android:background="@android:color/white"/>
 
                 <TextView
-                    android:id="@+id/omnibox_overview"
+                    android:id="@+id/omnibox_tabcount"
                     android:layout_width="40dp"
                     android:layout_height="match_parent"
                     android:background="@drawable/button_border_bg"
@@ -109,12 +120,28 @@
                     android:textColor="@android:color/black"
                     android:onClick="onClick" />
 
-                <ImageButton android:id="@+id/omnibox_overflow"
+                <ImageButton android:id="@+id/omnibox_font"
+                    android:layout_centerInParent="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="8dp"
+                    android:src="@drawable/icon_size"
+                    android:onClick="onClick"
+                    android:background="@android:color/white"/>
+
+                <ImageButton android:id="@+id/omnibox_setting"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:padding="10dp"
                     android:src="@drawable/icon_overflow"
-                    android:onClick="onClick"
+                    android:background="@android:color/white"/>
+
+                <ImageButton android:id="@+id/omnibox_bookmark"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_bookmarks"
+                    android:tint="@android:color/black"
                     android:background="@android:color/white"/>
 
             </LinearLayout>
