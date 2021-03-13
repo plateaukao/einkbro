@@ -32,9 +32,9 @@
             android:entryValues="@array/setting_values_font"/>
 
         <de.baumann.browser.view.sortlistpreference.MultiSelectDragListPreference
-            android:icon="@drawable/icon_settings"
+            android:icon="@drawable/ic_toolbar"
             android:key="sp_toolbar_icons"
-            android:defaultValue="@array/empty_array"
+            android:defaultValue="@array/default_toolbar_icons"
             android:title="@string/setting_title_toolbar_icons"
             android:dialogTitle="@string/setting_title_toolbar_icons"
             android:summary="@string/setting_summary_toolbar_icons"
