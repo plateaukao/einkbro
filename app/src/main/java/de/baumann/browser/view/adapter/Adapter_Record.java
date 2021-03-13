@@ -1,4 +1,4 @@
-package de.baumann.browser.view;
+package de.baumann.browser.view.adapter;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
@@ -48,7 +48,8 @@ public class Adapter_Record extends ArrayAdapter<Record> {
         }
 
         Record record = list.get(position);
-        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd", Locale.getDefault());holder.title.setText(record.getTitle());
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd", Locale.getDefault());
+        holder.title.setText(record.getTitle());
         holder.time.setText(sdf.format(record.getTime()));
 
         return view;
