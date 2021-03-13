@@ -1,4 +1,4 @@
-package de.baumann.browser.view
+package de.baumann.browser.view.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.unit.BrowserUnit
+import de.baumann.browser.view.GridItem
 
 class GridAdapter(private val context: Context, private val list: List<GridItem>) : BaseAdapter() {
     private class Holder(val title: TextView, val cover: ImageView)

@@ -1,4 +1,4 @@
-package de.baumann.browser.view;
+package de.baumann.browser.view.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,6 +11,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import de.baumann.browser.Ninja.R;
+import de.baumann.browser.view.GridItem_filter;
 
 public class GridAdapter_filter extends BaseAdapter {
     private static class Holder {

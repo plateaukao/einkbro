@@ -30,11 +30,12 @@ import android.webkit.WebChromeClient.CustomViewCallback
 import android.webkit.WebView.HitTestResult
 import android.widget.*
 import android.widget.AdapterView.OnItemClickListener
-import android.widget.AdapterView.OnItemLongClickListener
 import android.widget.TextView.OnEditorActionListener
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.ActivityMainBinding
@@ -50,6 +51,7 @@ import de.baumann.browser.unit.HelperUnit
 import de.baumann.browser.unit.IntentUnit
 import de.baumann.browser.unit.ViewUnit
 import de.baumann.browser.view.*
+import de.baumann.browser.view.adapter.*
 import java.io.File
 import java.util.*
 import kotlin.math.floor
@@ -58,7 +60,7 @@ import kotlin.system.exitProcess
 
 
 class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickListener {
-    private lateinit var adapter: Adapter_Record
+    private lateinit var adapter: RecordAdapter
 
     private lateinit var open_startPage: ImageButton
     private lateinit var open_bookmark: ImageButton
@@ -70,7 +72,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private lateinit var searchBox: EditText
     private lateinit var overviewView: ViewGroup
     private lateinit var ninjaWebView: NinjaWebView
-    private lateinit var listView: ListView
+    private lateinit var recyclerView: RecyclerView
     private lateinit var omniboxTitle: TextView
     private lateinit var tab_ScrollView: HorizontalScrollView
     private lateinit var overview_top: LinearLayout
@@ -780,7 +782,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         tab_container = findViewById(R.id.tab_container)
         tab_ScrollView = findViewById(R.id.tab_ScrollView)
         overview_top = findViewById(R.id.overview_top)
-        listView = findViewById(R.id.home_list_2)
+        recyclerView = findViewById(R.id.home_list_2)
         open_startPageView = findViewById(R.id.open_newTabView)
         open_bookmarkView = findViewById(R.id.open_bookmarkView)
         open_historyView = findViewById(R.id.open_historyView)
@@ -791,10 +793,13 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         }
 
         // allow scrolling in listView without closing the bottomSheetDialog
-        listView.setOnTouchListener { v, event ->
+        recyclerView.layoutManager = LinearLayoutManager(this).apply {
+            reverseLayout = true
+        }
+        recyclerView.setOnTouchListener { v, event ->
             val action = event.action
             if (action == MotionEvent.ACTION_DOWN) { // Disallow NestedScrollView to intercept touch events.
-                if (listView.canScrollVertically(-1)) {
+                if (recyclerView.canScrollVertically(-1)) {
                     v.parent.requestDisallowInterceptTouchEvent(true)
                 }
             }
@@ -879,38 +884,38 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         }
         open_startPage.setOnClickListener {
             overview_top.visibility = VISIBLE
-            listView.visibility = GONE
+            recyclerView.visibility = GONE
             toggleOverviewFocus(open_startPageView)
             overViewTab = getString(R.string.album_title_home)
         }
         open_bookmark.setOnClickListener {
             overview_top.visibility = INVISIBLE
-            listView.visibility = VISIBLE
+            recyclerView.visibility = VISIBLE
             toggleOverviewFocus(open_bookmarkView)
             overViewTab = getString(R.string.album_title_bookmarks)
             initBookmarkList()
         }
         open_history.setOnClickListener {
             overview_top.visibility = INVISIBLE
-            listView.visibility = VISIBLE
+            recyclerView.visibility = VISIBLE
             toggleOverviewFocus(open_historyView)
             overViewTab = getString(R.string.album_title_history)
             val action = RecordAction(this)
             action.open(false)
-            val list: List<Record>
-            list = action.listEntries(this, false)
+            val list: MutableList<Record> = action.listEntries(this, false)
             action.close()
-            adapter = Adapter_Record(this, list)
-            listView.adapter = adapter
+            adapter = RecordAdapter(
+                    list,
+                    { position ->
+                        updateAlbum(list[position].url)
+                        hideOverview()
+                    },
+                    { position ->
+                        showHistoryContextMenu(list[position].title, list[position].url, adapter, list, position)
+                    }
+            )
+            recyclerView.adapter = adapter
             adapter.notifyDataSetChanged()
-            listView.onItemClickListener = OnItemClickListener { _, _, position, _ ->
-                updateAlbum(list[position].url)
-                hideOverview()
-            }
-            listView.onItemLongClickListener = OnItemLongClickListener { _, _, position, _ ->
-                showHistoryContextMenu(list[position].title, list[position].url, adapter, list, position)
-                true
-            }
         }
         showCurrentTabInOverview()
     }
@@ -971,46 +976,36 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     }
 
     private fun initBookmarkList() {
-        val row: Cursor
-        val layoutStyle = R.layout.list_item_bookmark
-        val xml_id = intArrayOf(R.id.record_item_title)
-        val column = arrayOf("pass_title")
-        val search = sp.getString("filter_bookmarks", "00")
-        row = if (Objects.requireNonNull(search) == "00") {
-            bookmarkDB.fetchAllData(this)
-        } else {
-            bookmarkDB.fetchDataByFilter(search, "pass_creation")
-        }
-        val adapter: SimpleCursorAdapter = object : SimpleCursorAdapter(this, layoutStyle, row, column, xml_id, 0) {
-            override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-                val row = listView.getItemAtPosition(position) as Cursor
-                val bookmarks_icon = row.getString(row.getColumnIndexOrThrow("pass_creation"))
-                val v = super.getView(position, convertView, parent)
-                val iv_icon = v.findViewById<ImageView>(R.id.ib_icon)
-                HelperUnit.switchIcon(this@BrowserActivity, bookmarks_icon, "pass_creation", iv_icon)
-                return v
+        val adapter = object: SimpleCursorRecyclerAdapter(
+                R.layout.list_item_bookmark,
+                bookmarkDB.fetchAllData(this),
+                arrayOf("pass_title"),
+                intArrayOf(R.id.record_item_title)
+        ) {
+            override fun onBindViewHolder(holder: SimpleViewHolder, cursor: Cursor) {
+                super.onBindViewHolder(holder, cursor)
+                holder.itemView.setOnClickListener {
+                    val position = holder.adapterPosition
+                    cursor.moveToPosition(position)
+                    val passContent = cursor.getString(cursor.getColumnIndexOrThrow("pass_content"))
+                    updateAlbum(passContent)
+                    hideOverview()
+                }
+                holder.itemView.setOnLongClickListener {
+                    val position = holder.adapterPosition
+                    cursor.moveToPosition(position)
+                    val id = cursor.getString(cursor.getColumnIndexOrThrow("_id"))
+                    val passTitle = cursor.getString(cursor.getColumnIndexOrThrow("pass_title"))
+                    val passContent = cursor.getString(cursor.getColumnIndexOrThrow("pass_content"))
+                    val passIcon = cursor.getString(cursor.getColumnIndexOrThrow("pass_icon"))
+                    val passAttachment = cursor.getString(cursor.getColumnIndexOrThrow("pass_attachment"))
+                    val passCreation = cursor.getString(cursor.getColumnIndexOrThrow("pass_creation"))
+                    showBookmarkContextMenu(passTitle, passContent, passIcon, passAttachment, id, passCreation)
+                    true
+                }
             }
         }
-
-        listView.adapter = adapter
-        listView.onItemClickListener = OnItemClickListener { adapterView, view, position, id ->
-            val pass_content = row.getString(row.getColumnIndexOrThrow("pass_content"))
-            val pass_icon = row.getString(row.getColumnIndexOrThrow("pass_icon"))
-            val pass_attachment = row.getString(row.getColumnIndexOrThrow("pass_attachment"))
-            updateAlbum(pass_content)
-            hideOverview()
-        }
-        listView.onItemLongClickListener = OnItemLongClickListener { parent, view, position, id ->
-            val row = listView.getItemAtPosition(position) as Cursor
-            val _id = row.getString(row.getColumnIndexOrThrow("_id"))
-            val pass_title = row.getString(row.getColumnIndexOrThrow("pass_title"))
-            val pass_content = row.getString(row.getColumnIndexOrThrow("pass_content"))
-            val pass_icon = row.getString(row.getColumnIndexOrThrow("pass_icon"))
-            val pass_attachment = row.getString(row.getColumnIndexOrThrow("pass_attachment"))
-            val pass_creation = row.getString(row.getColumnIndexOrThrow("pass_creation"))
-            showBookmarkContextMenu(pass_title, pass_content, pass_icon, pass_attachment, _id, pass_creation)
-            true
-        }
+        recyclerView.adapter = adapter
     }
 
     private fun show_dialogFastToggle() {
@@ -1729,7 +1724,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         bottomSheetDialog?.show()
     }
 
-    private fun showHistoryContextMenu(title: String, url: String, adapterRecord: Adapter_Record,
+    private fun showHistoryContextMenu(title: String, url: String, recordAdapter: RecordAdapter,
                                        recordList: MutableList<Record>, location: Int
     ) {
         bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
@@ -1771,7 +1766,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 action.deleteHistoryItem(record)
                 action.close()
                 recordList.removeAt(location)
-                adapterRecord.notifyDataSetChanged()
+                recordAdapter.notifyDataSetChanged()
                 updateAutoComplete()
                 hideBottomSheetDialog()
             }

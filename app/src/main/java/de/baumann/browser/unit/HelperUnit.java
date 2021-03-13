@@ -197,7 +197,7 @@ public class HelperUnit {
                 if (bitmap!=null) {
                     icon = Icon.createWithBitmap(bitmap);
                 } else {
-                    Icon.createWithResource(context, R.drawable.qc_bookmarks);
+                    icon = Icon.createWithResource(context, R.drawable.qc_bookmarks);
                 }
 
                 if (shortcutManager.isRequestPinShortcutSupported()) {

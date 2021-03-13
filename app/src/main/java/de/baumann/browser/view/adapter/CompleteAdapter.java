@@ -1,4 +1,4 @@
-package de.baumann.browser.view;
+package de.baumann.browser.view.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
