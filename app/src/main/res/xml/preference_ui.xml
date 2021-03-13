@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:klyph="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory android:title="@string/setting_title_behavior">
 
@@ -31,11 +31,21 @@
             android:entries="@array/setting_entries_font"
             android:entryValues="@array/setting_values_font"/>
 
+        <de.baumann.browser.view.sortlistpreference.MultiSelectDragListPreference
+            android:icon="@drawable/icon_settings"
+            android:key="sp_toolbar_icons"
+            android:defaultValue="@array/empty_array"
+            android:title="@string/setting_title_toolbar_icons"
+            android:dialogTitle="@string/setting_title_toolbar_icons"
+            android:summary="@string/setting_summary_toolbar_icons"
+            klyph:entries="@array/setting_entries_toolbar_icons"
+            klyph:entryValues="@array/setting_values_toolbar_icons"/>
+
         <CheckBoxPreference android:key="sp_desktop"
-            android:icon="@drawable/icon_night"
+            android:icon="@drawable/icon_desktop"
             android:defaultValue="false"
             android:title="Desktop mode"
-            android:summary="@string/setting_summary_inverted"/>
+            android:summary="@string/setting_summary_desktop"/>
 
     </PreferenceCategory>
 
