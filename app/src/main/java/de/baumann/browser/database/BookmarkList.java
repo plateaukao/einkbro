@@ -98,10 +98,10 @@ public class BookmarkList {
         String[] columns = new String[]{"_id", "pass_title", "pass_content", "pass_icon","pass_attachment","pass_creation"};
         switch (Objects.requireNonNull(sp.getString("sortDBB", "title"))) {
             case "title":
-                return sqlDb.query(dbTable, columns, null, null, null, null, "pass_title" + " COLLATE NOCASE DESC;");
+                return sqlDb.query(dbTable, columns, null, null, null, null, "pass_title" + " COLLATE NOCASE ASC;");
 
             case "icon": {
-                String orderBy = "pass_creation" + " COLLATE NOCASE DESC;" + "," + "pass_title" + " COLLATE NOCASE ASC;";
+                String orderBy = "pass_creation" + " COLLATE NOCASE ASC;" + "," + "pass_title" + " COLLATE NOCASE ASC;";
                 return sqlDb.query(dbTable, columns, null, null, null, null, orderBy);
             }
         }

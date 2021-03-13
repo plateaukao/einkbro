@@ -52,6 +52,7 @@ import de.baumann.browser.unit.IntentUnit
 import de.baumann.browser.unit.ViewUnit
 import de.baumann.browser.view.*
 import de.baumann.browser.view.adapter.*
+import de.baumann.browser.view.toolbaricons.ToolbarAction
 import java.io.File
 import java.util.*
 import kotlin.math.floor
@@ -97,7 +98,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private var url: String? = null
     private var overViewTab: String? = null
     private var downloadReceiver: BroadcastReceiver? = null
-    private lateinit var sp: SharedPreferences
+    private val sp: SharedPreferences by lazy { PreferenceManager.getDefaultSharedPreferences(this) }
     private var javaHosts: Javascript? = null
     private var cookieHosts: Cookie? = null
     private var adBlock: AdBlock? = null
@@ -144,7 +145,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         bookmarkDB = BookmarkList(this).apply { open() }
 
         WebView.enableSlowWholeDocumentDraw()
-        sp = PreferenceManager.getDefaultSharedPreferences(this)
+
         sp.edit().putInt("restart_changed", 0).apply()
         sp.edit().putBoolean("pdf_create", false).apply()
         HelperUnit.applyTheme(this)
@@ -358,11 +359,11 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
 
     private fun showOverview() {
         showCurrentTabInOverview()
-        currentAlbumController?.deactivate()
-        currentAlbumController?.activate()
         overviewView.visibility = VISIBLE
 
-        ninjaWebView.postDelayed({
+        currentAlbumController?.deactivate()
+        currentAlbumController?.activate()
+        binding.root.postDelayed({
             tab_ScrollView.scrollTo(currentAlbumController?.albumView?.left ?: 0, 0)
         }, 250)
     }
@@ -469,17 +470,18 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 hideBottomSheetDialog()
                 startActivity(Intent(DownloadManager.ACTION_VIEW_DOWNLOADS))
             }
-            R.id.omnibox_overview -> showOverview()
+
+            // --- tool bar handling
+            R.id.omnibox_tabcount -> showOverview()
             R.id.omnibox_touch -> toggleTouchTurnPageFeature()
+            R.id.omnibox_font -> showFontSizeChangeDialog()
             R.id.touch_left -> ninjaWebView.pageUpWithNoAnimation()
             R.id.touch_right -> ninjaWebView.pageDownWithNoAnimation()
-            /* Daniel
-            R.id.omnibox_page_back -> if (ninjaWebView.canGoBack()) {
+            R.id.omnibox_back -> if (ninjaWebView.canGoBack()) {
                 ninjaWebView.goBack()
             } else {
                 removeAlbum(currentAlbumController!!)
             }
-            */
             R.id.omnibox_page_up -> {
                 ninjaWebView.pageUpWithNoAnimation()
             }
@@ -522,12 +524,14 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             binding.omniboxTouch.alpha = 1.0F
             findViewById<View>(R.id.touch_left).visibility = VISIBLE
             findViewById<View>(R.id.touch_right).visibility = VISIBLE
-            fab_imageButtonNav.setImageResource(R.drawable.gesture_tap)
+            fab_imageButtonNav.setImageResource(R.drawable.ic_touch_enabled)
+            binding.omniboxTouch.setImageResource(R.drawable.ic_touch_enabled)
         } else {
-            binding.omniboxTouch.alpha = 0.3F
+            binding.omniboxTouch.alpha = 0.99F
             findViewById<View>(R.id.touch_left).visibility = INVISIBLE
             findViewById<View>(R.id.touch_right).visibility = INVISIBLE
             fab_imageButtonNav.setImageResource(R.drawable.icon_overflow_fab)
+            binding.omniboxTouch.setImageResource(R.drawable.ic_touch_disabled)
         }
     }
 
@@ -591,11 +595,11 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         } else if ("sc_history" == action) {
             addAlbum(null, sp.getString("favoriteURL", "https://www.google.com"), true)
             showOverview()
-            ninjaWebView.postDelayed({ open_history.performClick() }, 250)
+            ninjaWebView.postDelayed({ openHistoryPage() }, 250)
         } else if ("sc_bookmark" == action) {
             addAlbum(null, sp.getString("favoriteURL", "https://www.google.com"), true)
             showOverview()
-            ninjaWebView.postDelayed({ open_bookmark.performClick() }, 250)
+            ninjaWebView.postDelayed({ openBookmarkPage() }, 250)
         } else if ("sc_startPage" == action) {
             addAlbum(null, sp.getString("favoriteURL", "https://www.google.com"), true)
             showOverview()
@@ -617,11 +621,11 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         omniboxTitle = findViewById(R.id.omnibox_title)
         progressBar = findViewById(R.id.main_progress_bar)
         initFAB()
-        binding.omniboxOverflow.setOnLongClickListener {
+        binding.omniboxSetting.setOnLongClickListener {
             show_dialogFastToggle()
             false
         }
-        binding.omniboxOverflow.setOnClickListener { showOverflow() }
+        binding.omniboxSetting.setOnClickListener { showOverflow() }
         if (sp.getBoolean("sp_gestures_use", true)) {
             val onTouchListener = object : SwipeTouchListener(this) {
                 override fun onSwipeTop() = performGesture("setting_gesture_nav_up")
@@ -630,7 +634,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 override fun onSwipeLeft() = performGesture("setting_gesture_nav_left")
             }
             fab_imageButtonNav.setOnTouchListener(onTouchListener)
-            binding.omniboxOverflow.setOnTouchListener(onTouchListener)
+            binding.omniboxSetting.setOnTouchListener(onTouchListener)
             inputBox.setOnTouchListener(object : SwipeTouchListener(this) {
                 override fun onSwipeTop() = performGesture("setting_gesture_tb_up")
                 override fun onSwipeBottom() = performGesture("setting_gesture_tb_down")
@@ -667,9 +671,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         updateAutoComplete()
 
         // long click on overview, show bookmark
-        binding.omniboxOverview.setOnLongClickListener {
-            showOverview()
-            open_bookmark.performClick()
+        binding.omniboxTabcount.setOnLongClickListener {
+            openBookmarkPage()
             true
         }
 
@@ -684,6 +687,46 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             hideOmnibox()
             true
         }
+
+        binding.omniboxBookmark.setOnClickListener { openBookmarkPage() }
+
+        sp.registerOnSharedPreferenceChangeListener(preferenceListener)
+
+        reorderToolbarIcons()
+    }
+
+    private val preferenceListener = SharedPreferences.OnSharedPreferenceChangeListener {
+        _, key -> if (key.equals("sp_toolbar_icons")) reorderToolbarIcons()
+    }
+
+    private val toolbarActionViews: List<View> by lazy {
+        val childCount = binding.iconBar.childCount
+        val children = mutableListOf<View>()
+        for (i in 0 until childCount) {
+            children.add(binding.iconBar.getChildAt(i))
+        }
+
+        children
+    }
+
+    private fun reorderToolbarIcons() {
+        toolbarActionViews.size
+
+        val iconListString = sp.getString("sp_toolbar_icons", "0,2,3,4,5,6,8") ?: return
+        val iconEnums = iconStringToEnumList(iconListString)
+        if (iconEnums.isNotEmpty()) {
+            binding.iconBar.removeAllViews()
+            iconEnums.forEach { actionEnum ->
+                binding.iconBar.addView(toolbarActionViews[actionEnum.ordinal])
+            }
+            binding.iconBar.requestLayout()
+        }
+    }
+
+    private fun iconStringToEnumList(iconListString: String): List<ToolbarAction> {
+        if (iconListString.isBlank()) return listOf()
+
+        return iconListString.split(",").map{ ToolbarAction.fromOrdinal(it.toInt())}
     }
 
     private fun initFAB() {
@@ -870,7 +913,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                         }
                         getString(R.string.album_title_history) -> {
                             BrowserUnit.clearHistory(this)
-                            open_history.performClick()
+                            openHistoryPage()
                         }
                     }
                     hideBottomSheetDialog()
@@ -888,36 +931,46 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             toggleOverviewFocus(open_startPageView)
             overViewTab = getString(R.string.album_title_home)
         }
-        open_bookmark.setOnClickListener {
-            overview_top.visibility = INVISIBLE
-            recyclerView.visibility = VISIBLE
-            toggleOverviewFocus(open_bookmarkView)
-            overViewTab = getString(R.string.album_title_bookmarks)
-            initBookmarkList()
-        }
-        open_history.setOnClickListener {
-            overview_top.visibility = INVISIBLE
-            recyclerView.visibility = VISIBLE
-            toggleOverviewFocus(open_historyView)
-            overViewTab = getString(R.string.album_title_history)
-            val action = RecordAction(this)
-            action.open(false)
-            val list: MutableList<Record> = action.listEntries(this, false)
-            action.close()
-            adapter = RecordAdapter(
-                    list,
-                    { position ->
-                        updateAlbum(list[position].url)
-                        hideOverview()
-                    },
-                    { position ->
-                        showHistoryContextMenu(list[position].title, list[position].url, adapter, list, position)
-                    }
-            )
-            recyclerView.adapter = adapter
-            adapter.notifyDataSetChanged()
-        }
+        open_bookmark.setOnClickListener { openBookmarkPage() }
+        open_history.setOnClickListener { openHistoryPage() }
         showCurrentTabInOverview()
+    }
+
+    private fun openHistoryPage() {
+        overviewView.visibility = VISIBLE
+
+        overview_top.visibility = INVISIBLE
+        recyclerView.visibility = VISIBLE
+        toggleOverviewFocus(open_historyView)
+
+        overViewTab = getString(R.string.album_title_history)
+
+        val action = RecordAction(this)
+        action.open(false)
+        val list: MutableList<Record> = action.listEntries(this, false)
+        action.close()
+        adapter = RecordAdapter(
+                list,
+                { position ->
+                    updateAlbum(list[position].url)
+                    hideOverview()
+                },
+                { position ->
+                    showHistoryContextMenu(list[position].title, list[position].url, adapter, list, position)
+                }
+        )
+        recyclerView.adapter = adapter
+        adapter.notifyDataSetChanged()
+    }
+
+    private fun openBookmarkPage() {
+        overviewView.visibility = VISIBLE
+
+        overview_top.visibility = INVISIBLE
+        recyclerView.visibility = VISIBLE
+        toggleOverviewFocus(open_bookmarkView)
+        overViewTab = getString(R.string.album_title_bookmarks)
+        initBookmarkList()
     }
 
     private fun toggleOverviewFocus(view: View) {
@@ -928,8 +981,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
 
     private fun showCurrentTabInOverview() {
         when (Objects.requireNonNull(sp.getString("start_tab", "0"))) {
-            "3" -> open_bookmark.performClick()
-            "4" -> open_history.performClick()
+            "3" -> openBookmarkPage()
+            "4" -> openHistoryPage()
             else -> open_startPage.performClick()
         }
     }
@@ -1209,7 +1262,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     }
 
     private fun updateWebViewCount() {
-        binding.omniboxOverview.text = BrowserContainer.size().toString()
+        binding.omniboxTabcount.text = BrowserContainer.size().toString()
     }
 
     @Synchronized
@@ -1416,10 +1469,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         } else { // non-capital
             when (event.keyCode) {
                 // vim bindings
-                KeyEvent.KEYCODE_B -> {
-                    showOverview()
-                    open_bookmark.performClick()
-                }
+                KeyEvent.KEYCODE_B -> openBookmarkPage()
                 KeyEvent.KEYCODE_O -> {
                     if (previousKeyEvent?.keyCode == KeyEvent.KEYCODE_V) {
                         decreaseFontSize()

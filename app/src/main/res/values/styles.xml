@@ -4,7 +4,7 @@
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
-        <item name="dragIcon">@drawable/icon_drag</item>
+        <item name="dragIcon">@drawable/ic_drag</item>
     </style>
 
     <!-- remove preference activity background color -->

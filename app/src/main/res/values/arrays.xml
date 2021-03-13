@@ -116,7 +116,9 @@
         <item>page up</item>
         <item>page down</item>
         <item>tab count</item>
+        <item>font size</item>
         <item>settings</item>
+        <item>bookmarks</item>
     </string-array>
 
     <string-array name="setting_values_toolbar_icons">
@@ -128,6 +130,17 @@
         <item>5</item>
         <item>6</item>
         <item>7</item>
+        <item>8</item>
+        <item>9</item>
+    </string-array>
+    <string-array name="default_toolbar_icons">
+        <item>0</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>8</item>
     </string-array>
 
     <!-- theme -->
@@ -144,7 +157,6 @@
         <item>2</item>
         <item>3</item>
     </string-array>
-    <string-array name="empty_array" />
 
     <!-- General -->
     <string name="sp_ad_block">SP_AD_BLOCK_9</string>
