@@ -143,21 +143,6 @@
         <item>8</item>
     </string-array>
 
-    <!-- theme -->
-    <string-array name="setting_entries_theme">
-        <item>@string/setting_theme_system</item>
-        <item>@string/setting_theme_light</item>
-        <item>@string/setting_theme_dark</item>
-        <item>"Amoled"</item>
-    </string-array>
-
-    <string-array name="setting_values_theme">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-    </string-array>
-
     <!-- General -->
     <string name="sp_ad_block">SP_AD_BLOCK_9</string>
     <string name="sp_cookies">SP_COOKIES_9</string>
