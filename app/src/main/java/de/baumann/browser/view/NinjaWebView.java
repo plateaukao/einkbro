@@ -352,7 +352,7 @@ public class NinjaWebView extends WebView implements AlbumController {
     }
 
     public int shiftOffset() {
-        return getHeight() - (int)ViewUnit.dpToPixel(getContext(), 50);
+        return getHeight() - (int)ViewUnit.dpToPixel(getContext(), 80);
     }
 
     @Override
