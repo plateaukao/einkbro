@@ -103,10 +103,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private var overViewTab: String? = null
     private var downloadReceiver: BroadcastReceiver? = null
     private val sp: SharedPreferences by lazy { PreferenceManager.getDefaultSharedPreferences(this) }
-    private var javaHosts: Javascript? = null
-    private var cookieHosts: Cookie? = null
-    private var adBlock: AdBlock? = null
-    private lateinit var gridAdapter: GridAdapter
     private fun prepareRecord(): Boolean {
         val webView = currentAlbumController as NinjaWebView
         val title = webView.title
@@ -210,6 +206,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private fun initTouchArea() {
         touchAreaLeft = findViewById(R.id.touch_left)
         touchAreaRight = findViewById(R.id.touch_right)
+        binding.omniboxTouch.setOnLongClickListener { showTouchAreaHint(); true }
     }
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
