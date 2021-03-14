@@ -74,7 +74,7 @@ class FastToggleDialog(
             updateViewVisibility(toggleHistoryView, sp.getBoolean("saveHistory", false))
         }
         toggleLocation.setOnClickListener {
-            updateBooleanPref(getString(R.string.sp_location))
+            updateBooleanPref(getString(R.string.sp_location), false)
             updateViewVisibility(toggleLocationView, R.string.sp_location)
         }
         toggleImages.setOnClickListener {
@@ -82,7 +82,7 @@ class FastToggleDialog(
             updateViewVisibility(toggleImagesView, R.string.sp_images)
         }
         toggleMediaContinue.setOnClickListener {
-            updateBooleanPref("sp_media_continue")
+            updateBooleanPref("sp_media_continue", false)
             updateViewVisibility(toggleMediaContinueView, sp.getBoolean("sp_media_continue", false))
         }
         toggleRemote.setOnClickListener {
@@ -90,7 +90,7 @@ class FastToggleDialog(
             updateViewVisibility(toggleRemoteView, sp.getBoolean("sp_remote", true))
         }
         toggleDesktop.setOnClickListener {
-            updateBooleanPref("sp_desktop")
+            updateBooleanPref("sp_desktop", false)
             updateViewVisibility(toggleDesktopView, sp.getBoolean("sp_desktop", false))
         }
     }
@@ -162,8 +162,8 @@ class FastToggleDialog(
         imgButton.setImageResource(resId)
     }
 
-    private fun updateBooleanPref(prefKey: String) =
-        sp.edit { putBoolean(prefKey, !sp.getBoolean(prefKey, true)) }
+    private fun updateBooleanPref(prefKey: String, defaultValue: Boolean = true) =
+        sp.edit { putBoolean(prefKey, !sp.getBoolean(prefKey, defaultValue)) }
 
     private fun updateViewVisibility(view: View, shouldBeVisible: Boolean) {
         view.visibility = if (shouldBeVisible) VISIBLE else INVISIBLE
