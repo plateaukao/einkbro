@@ -6,7 +6,6 @@ android {
     buildToolsVersion '30.0.3'
 
     defaultConfig {
-        //applicationId "de.baumann.browser"
         applicationId "info.plateaukao.einkbro"
         minSdkVersion 23
         targetSdkVersion 30

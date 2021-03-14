@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.ImageButton
@@ -24,12 +25,13 @@ class FastToggleDialog(
         private val title: String,
         private val url: String,
         private val okAction: () -> Unit,
-) : BottomSheetDialog(context) {
+) : BottomSheetDialog(context, R.style.BottomSheetDialog) {
     private val sp: SharedPreferences by lazy { PreferenceManager.getDefaultSharedPreferences(context) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(View.inflate(context, R.layout.dialog_toggle, null))
+        window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         initViews()
     }
 
