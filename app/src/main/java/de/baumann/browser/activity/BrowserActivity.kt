@@ -53,6 +53,7 @@ import de.baumann.browser.unit.IntentUnit
 import de.baumann.browser.unit.ViewUnit
 import de.baumann.browser.view.*
 import de.baumann.browser.view.adapter.*
+import de.baumann.browser.view.dialog.FastToggleDialog
 import de.baumann.browser.view.toolbaricons.ToolbarAction
 import java.io.File
 import java.util.*
@@ -647,7 +648,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         progressBar = findViewById(R.id.main_progress_bar)
         initFAB()
         binding.omniboxSetting.setOnLongClickListener {
-            show_dialogFastToggle()
+            showFastToggleDialog()
             false
         }
         binding.omniboxSetting.setOnClickListener { showOverflow() }
@@ -778,7 +779,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         expandViewTouchArea(fab_imageButtonNav, ViewUnit.dpToPixel(this, 20).toInt())
         fab_imageButtonNav.setOnClickListener { showOmnibox() }
         fab_imageButtonNav.setOnLongClickListener {
-            show_dialogFastToggle()
+            showFastToggleDialog()
             false
         }
     }
@@ -1088,170 +1089,14 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         recyclerView.adapter = adapter
     }
 
-    private fun show_dialogFastToggle() {
-        bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
-        val dialogView = View.inflate(this, R.layout.dialog_toggle, null)
-        val sw_java = dialogView.findViewById<CheckBox>(R.id.switch_js)
-        val whiteList_js = dialogView.findViewById<ImageButton>(R.id.imageButton_js)
-        val sw_adBlock = dialogView.findViewById<CheckBox>(R.id.switch_adBlock)
-        val whiteList_ab = dialogView.findViewById<ImageButton>(R.id.imageButton_ab)
-        val sw_cookie = dialogView.findViewById<CheckBox>(R.id.switch_cookie)
-        val whitelist_cookie = dialogView.findViewById<ImageButton>(R.id.imageButton_cookie)
-        val dialog_title = dialogView.findViewById<TextView>(R.id.dialog_title)
-        dialog_title.text = HelperUnit.domain(ninjaWebView.url)
-        javaHosts = Javascript(this)
-        cookieHosts = Cookie(this)
-        adBlock = AdBlock(this)
-        ninjaWebView = currentAlbumController as NinjaWebView
-        val url = ninjaWebView.url
-        sw_java.isChecked = sp.getBoolean(getString(R.string.sp_javascript), true)
-        sw_adBlock.isChecked = sp.getBoolean(getString(R.string.sp_ad_block), true)
-        sw_cookie.isChecked = sp.getBoolean(getString(R.string.sp_cookies), true)
-        if (javaHosts!!.isWhite(url)) {
-            whiteList_js.setImageResource(R.drawable.check_green)
-        } else {
-            whiteList_js.setImageResource(R.drawable.ic_action_close_red)
-        }
-        if (cookieHosts!!.isWhite(url)) {
-            whitelist_cookie.setImageResource(R.drawable.check_green)
-        } else {
-            whitelist_cookie.setImageResource(R.drawable.ic_action_close_red)
-        }
-        if (adBlock!!.isWhite(url)) {
-            whiteList_ab.setImageResource(R.drawable.check_green)
-        } else {
-            whiteList_ab.setImageResource(R.drawable.ic_action_close_red)
-        }
-        whiteList_js.setOnClickListener {
-            if (javaHosts!!.isWhite(ninjaWebView.url)) {
-                whiteList_js.setImageResource(R.drawable.ic_action_close_red)
-                javaHosts!!.removeDomain(HelperUnit.domain(url))
-            } else {
-                whiteList_js.setImageResource(R.drawable.check_green)
-                javaHosts!!.addDomain(HelperUnit.domain(url))
-            }
-        }
-        whitelist_cookie.setOnClickListener {
-            if (cookieHosts!!.isWhite(ninjaWebView.url)) {
-                whitelist_cookie.setImageResource(R.drawable.ic_action_close_red)
-                cookieHosts!!.removeDomain(HelperUnit.domain(url))
-            } else {
-                whitelist_cookie.setImageResource(R.drawable.check_green)
-                cookieHosts!!.addDomain(HelperUnit.domain(url))
-            }
-        }
-        whiteList_ab.setOnClickListener {
-            if (adBlock!!.isWhite(ninjaWebView.url)) {
-                whiteList_ab.setImageResource(R.drawable.ic_action_close_red)
-                adBlock!!.removeDomain(HelperUnit.domain(url))
-            } else {
-                whiteList_ab.setImageResource(R.drawable.check_green)
-                adBlock!!.addDomain(HelperUnit.domain(url))
-            }
-        }
-        sw_java.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                sp.edit().putBoolean(getString(R.string.sp_javascript), true).apply()
-            } else {
-                sp.edit().putBoolean(getString(R.string.sp_javascript), false).apply()
-            }
-        }
-        sw_adBlock.setOnCheckedChangeListener { _, isChecked -> sp.edit().putBoolean(getString(R.string.sp_ad_block), isChecked).apply() }
-        sw_cookie.setOnCheckedChangeListener { _, isChecked -> sp.edit().putBoolean(getString(R.string.sp_cookies), isChecked).apply() }
-        val toggle_historyView = dialogView.findViewById<View>(R.id.toggle_historyView)
-        val toggle_location = dialogView.findViewById<ImageButton>(R.id.toggle_location)
-        val toggle_locationView = dialogView.findViewById<View>(R.id.toggle_locationView)
-        val toggle_images = dialogView.findViewById<ImageButton>(R.id.toggle_images)
-        val toggle_imagesView = dialogView.findViewById<View>(R.id.toggle_imagesView)
-        val toggle_remote = dialogView.findViewById<ImageButton>(R.id.toggle_remote)
-        val toggle_remoteView = dialogView.findViewById<View>(R.id.toggle_remoteView)
-        val toggle_desktop = dialogView.findViewById<ImageButton>(R.id.toggle_desktop)
-        val toggle_desktopView = dialogView.findViewById<View>(R.id.toggle_desktopView)
-        dialogView.findViewById<ImageButton>(R.id.toggle_font).setOnClickListener {
-            bottomSheetDialog?.cancel()
-            val intent = Intent(this, Settings_Activity::class.java)
-            startActivity(intent)
-        }
-        if (sp.getBoolean("saveHistory", false)) {
-            toggle_historyView.visibility = View.VISIBLE
-        } else {
-            toggle_historyView.visibility = View.INVISIBLE
-        }
-        dialogView.findViewById<ImageButton>(R.id.toggle_history).setOnClickListener {
-            if (sp.getBoolean("saveHistory", false)) {
-                toggle_historyView.visibility = View.INVISIBLE
-                sp.edit().putBoolean("saveHistory", false).apply()
-            } else {
-                toggle_historyView.visibility = View.VISIBLE
-                sp.edit().putBoolean("saveHistory", true).apply()
-            }
-        }
-        if (sp.getBoolean(getString(R.string.sp_location), false)) {
-            toggle_locationView.visibility = View.VISIBLE
-        } else {
-            toggle_locationView.visibility = View.INVISIBLE
-        }
-        toggle_location.setOnClickListener {
-            if (sp.getBoolean(getString(R.string.sp_location), false)) {
-                toggle_locationView.visibility = View.INVISIBLE
-                sp.edit().putBoolean(getString(R.string.sp_location), false).apply()
-            } else {
-                toggle_locationView.visibility = View.VISIBLE
-                sp.edit().putBoolean(getString(R.string.sp_location), true).apply()
-            }
-        }
-        if (sp.getBoolean(getString(R.string.sp_images), true)) {
-            toggle_imagesView.visibility = View.VISIBLE
-        } else {
-            toggle_imagesView.visibility = View.INVISIBLE
-        }
-        toggle_images.setOnClickListener {
-            if (sp.getBoolean(getString(R.string.sp_images), true)) {
-                toggle_imagesView.visibility = View.INVISIBLE
-                sp.edit().putBoolean(getString(R.string.sp_images), false).apply()
-            } else {
-                toggle_imagesView.visibility = View.VISIBLE
-                sp.edit().putBoolean(getString(R.string.sp_images), true).apply()
-            }
-        }
-        if (sp.getBoolean("sp_remote", true)) {
-            toggle_remoteView.visibility = View.VISIBLE
-        } else {
-            toggle_remoteView.visibility = View.INVISIBLE
-        }
-        toggle_remote.setOnClickListener {
-            if (sp.getBoolean("sp_remote", true)) {
-                toggle_remoteView.visibility = View.INVISIBLE
-                sp.edit().putBoolean("sp_remote", false).apply()
-            } else {
-                toggle_remoteView.visibility = View.VISIBLE
-                sp.edit().putBoolean("sp_remote", true).apply()
-            }
-        }
-        if (sp.getBoolean("sp_desktop", false)) {
-            toggle_desktopView.visibility = View.VISIBLE
-        } else {
-            toggle_desktopView.visibility = View.INVISIBLE
-        }
-        toggle_desktop.setOnClickListener {
-            if (sp.getBoolean("sp_desktop", false)) {
-                toggle_desktopView.visibility = View.INVISIBLE
-                sp.edit().putBoolean("sp_desktop", false).apply()
-            } else {
-                toggle_desktopView.visibility = View.VISIBLE
-                sp.edit().putBoolean("sp_desktop", true).apply()
-            }
-        }
-        dialogView.findViewById<Button>(R.id.action_ok).setOnClickListener {
+    private fun showFastToggleDialog() {
+        bottomSheetDialog = FastToggleDialog( this, ninjaWebView.title ?: "", ninjaWebView.url ?: "")
+        {
             if (ninjaWebView != null) {
-                hideBottomSheetDialog()
                 ninjaWebView.initPreferences()
                 ninjaWebView.reload()
             }
-        }
-        dialogView.findViewById<Button>(R.id.action_cancel).setOnClickListener { hideBottomSheetDialog() }
-        bottomSheetDialog?.setContentView(dialogView)
-        bottomSheetDialog?.show()
+        }.apply { show() }
     }
 
 
