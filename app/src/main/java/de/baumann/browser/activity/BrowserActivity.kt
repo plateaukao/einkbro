@@ -89,7 +89,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     // Layouts
     private lateinit var omnibox: RelativeLayout
     private lateinit var searchPanel: ViewGroup
-    private lateinit var contentFrame: FrameLayout
+    private lateinit var mainContentLayout: FrameLayout
     private lateinit var tab_container: LinearLayout
     private lateinit var open_startPageView: View
     private lateinit var open_bookmarkView: View
@@ -173,7 +173,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             sp.edit().putString("setting_gesture_nav_right", "02").apply()
             sp.edit().putBoolean(getString(R.string.sp_location), false).apply()
         }
-        contentFrame = findViewById(R.id.main_content)
+        mainContentLayout = findViewById(R.id.main_content)
         initOmnibox()
         initSearchPanel()
         initOverview()
@@ -335,11 +335,11 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         if (currentAlbumController != null) {
             currentAlbumController?.deactivate()
             val av = controller as View
-            contentFrame.removeAllViews()
-            contentFrame.addView(av)
+            mainContentLayout.removeAllViews()
+            mainContentLayout.addView(av)
         } else {
-            contentFrame.removeAllViews()
-            contentFrame.addView(controller as View)
+            mainContentLayout.removeAllViews()
+            mainContentLayout.addView(controller as View)
         }
         currentAlbumController = controller
         currentAlbumController?.activate()
@@ -1219,7 +1219,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         updateOmnibox()
         updateAutoComplete()
         scrollChange()
-        HelperUnit.initRendering(contentFrame)
+        HelperUnit.initRendering(mainContentLayout)
         ninjaWebView.requestFocus()
         if (progress < BrowserUnit.PROGRESS_MAX) {
             updateRefresh(true)

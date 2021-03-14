@@ -143,13 +143,9 @@ public class NinjaWebView extends WebView implements AlbumController {
         setWebViewClient(webViewClient);
         setWebChromeClient(webChromeClient);
         setDownloadListener(downloadListener);
-        setOnTouchListener(new OnTouchListener() {
-            @SuppressLint("ClickableViewAccessibility")
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                gestureDetector.onTouchEvent(motionEvent);
-                return false;
-            }
+        setOnTouchListener((view, motionEvent) -> {
+            gestureDetector.onTouchEvent(motionEvent);
+            return false;
         });
     }
 
@@ -182,21 +178,24 @@ public class NinjaWebView extends WebView implements AlbumController {
             webSettings.setUserAgentString(BrowserUnit.UA_DESKTOP);
         } else {
             webSettings.setUserAgentString(defaultUserAgent.replace("wv", ""));
-            //webSettings.setUserAgentString("Mozilla/5.0 (Linux; Android 11; sdk_gphone_x86_64_arm64 Build/RPB3.200720.005; ) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/83.0.4103.106 Safari/537.36");
         }
         webSettings.setUseWideViewPort(isDesktopMode);
         webSettings.setLoadWithOverviewMode(isDesktopMode);
 
         webViewClient.enableAdBlock(sp.getBoolean(context.getString(R.string.sp_ad_block), true));
         webSettings = getSettings();
+        webSettings.setAppCacheEnabled(true);
+        webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);
         webSettings.setTextZoom(Integer.parseInt(sp.getString("sp_fontSize", "100")));
-        webSettings.setAllowFileAccessFromFileURLs(sp.getBoolean(("sp_remote"), false));
-        webSettings.setAllowUniversalAccessFromFileURLs(sp.getBoolean(("sp_remote"), false));
-        webSettings.setDomStorageEnabled(sp.getBoolean(("sp_remote"), false));
+        webSettings.setAllowFileAccessFromFileURLs(sp.getBoolean(("sp_remote"), true));
+        webSettings.setAllowUniversalAccessFromFileURLs(sp.getBoolean(("sp_remote"), true));
+        webSettings.setDomStorageEnabled(sp.getBoolean(("sp_remote"), true));
+        webSettings.setDatabaseEnabled(true);
         webSettings.setBlockNetworkImage(!sp.getBoolean(context.getString(R.string.sp_images), true));
         webSettings.setJavaScriptEnabled(sp.getBoolean(context.getString(R.string.sp_javascript), true));
         webSettings.setJavaScriptCanOpenWindowsAutomatically(sp.getBoolean(context.getString(R.string.sp_javascript), true));
         webSettings.setGeolocationEnabled(sp.getBoolean(context.getString(R.string.sp_location), false));
+        webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         CookieManager manager = CookieManager.getInstance();
         manager.setAcceptCookie(sp.getBoolean(context.getString(R.string.sp_cookies), true));
     }
@@ -216,6 +215,16 @@ public class NinjaWebView extends WebView implements AlbumController {
         return requestHeaders;
     }
 
+    /* continue playing if preference is set */
+    @Override
+    protected void onWindowVisibilityChanged(int visibility) {
+        if (sp.getBoolean("sp_media_continue", false)) {
+            if (visibility != View.GONE && visibility != View.INVISIBLE)
+                super.onWindowVisibilityChanged(View.VISIBLE);
+        } else {
+            super.onWindowVisibilityChanged(visibility);
+        }
+    }
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override

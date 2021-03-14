@@ -55,6 +55,8 @@ class FastToggleDialog(
         val toggleLocationView = findViewById<View>(R.id.toggle_locationView) ?: return
         val toggleImages = findViewById<ImageButton>(R.id.toggle_images) ?: return
         val toggleImagesView = findViewById<View>(R.id.toggle_imagesView) ?: return
+        val toggleMediaContinue = findViewById<ImageButton>(R.id.toggle_media_continue) ?: return
+        val toggleMediaContinueView = findViewById<View>(R.id.toggle_media_continue_view) ?: return
         val toggleRemote = findViewById<ImageButton>(R.id.toggle_remote) ?: return
         val toggleRemoteView = findViewById<View>(R.id.toggle_remoteView) ?: return
         val toggleDesktop = findViewById<ImageButton>(R.id.toggle_desktop) ?: return
@@ -63,6 +65,7 @@ class FastToggleDialog(
         updateViewVisibility(toggleHistoryView, sp.getBoolean("saveHistory", false))
         updateViewVisibility(toggleLocationView, R.string.sp_location)
         updateViewVisibility(toggleImagesView, sp.getBoolean(getString(R.string.sp_images), true))
+        updateViewVisibility(toggleMediaContinueView, sp.getBoolean("sp_media_continue", false))
         updateViewVisibility(toggleRemoteView, sp.getBoolean("sp_remote", true))
         updateViewVisibility(toggleDesktopView, sp.getBoolean("sp_desktop", false))
 
@@ -77,6 +80,10 @@ class FastToggleDialog(
         toggleImages.setOnClickListener {
             updateBooleanPref(getString(R.string.sp_images))
             updateViewVisibility(toggleImagesView, R.string.sp_images)
+        }
+        toggleMediaContinue.setOnClickListener {
+            updateBooleanPref("sp_media_continue")
+            updateViewVisibility(toggleMediaContinueView, sp.getBoolean("sp_media_continue", false))
         }
         toggleRemote.setOnClickListener {
             updateBooleanPref("sp_remote")
