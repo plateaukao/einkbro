@@ -448,5 +448,6 @@
     <string name="image">image</string>
     <string name="desktop">desktop</string>
     <string name="remote">remote</string>
+    <string name="media_continue">continue</string>
 
 </resources>
