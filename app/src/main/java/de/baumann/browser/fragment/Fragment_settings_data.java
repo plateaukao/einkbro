@@ -62,319 +62,284 @@ public class Fragment_settings_data extends PreferenceFragmentCompat {
         final File previewsFolder_app = new File(data, previewsPath_app);
         final File previewsFolder_backup = new File(sd, previewsPath_backup);
 
-        Objects.requireNonNull(findPreference("data_exAdBlock")).setOnPreferenceClickListener(new androidx.preference.Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(androidx.preference.Preference preference) {
+        findPreference("data_exAdBlock").setOnPreferenceClickListener(preference -> {
 
-                View dialogView;
-                TextView textView;
-                Button action_ok;
-                Button action_cancel;
+            View dialogView;
+            TextView textView;
+            Button action_ok;
+            Button action_cancel;
 
-                dialog = new BottomSheetDialog(requireActivity());
-                dialogView = View.inflate(getActivity(), R.layout.dialog_action, null);
-                textView = dialogView.findViewById(R.id.dialog_text);
-                textView.setText(R.string.toast_backup);
-                action_ok = dialogView.findViewById(R.id.action_ok);
-                action_ok.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (android.os.Build.VERSION.SDK_INT >= 23 && android.os.Build.VERSION.SDK_INT < 29) {
-                            int hasWRITE_EXTERNAL_STORAGE = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                            if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
-                                HelperUnit.grantPermissionsStorage(getActivity());
-                                dialog.cancel();
-                            } else {
-                                dialog.cancel();
-                                makeBackupDir();
-                                new ExportWhiteListTask(getActivity(), 0).execute();
-                            }
+            dialog = new BottomSheetDialog(requireActivity());
+            dialogView = View.inflate(getActivity(), R.layout.dialog_action, null);
+            textView = dialogView.findViewById(R.id.dialog_text);
+            textView.setText(R.string.toast_backup);
+            action_ok = dialogView.findViewById(R.id.action_ok);
+            action_ok.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (android.os.Build.VERSION.SDK_INT >= 23 && android.os.Build.VERSION.SDK_INT < 29) {
+                        int hasWRITE_EXTERNAL_STORAGE = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                        if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
+                            HelperUnit.grantPermissionsStorage(getActivity());
+                            dialog.cancel();
                         } else {
                             dialog.cancel();
                             makeBackupDir();
                             new ExportWhiteListTask(getActivity(), 0).execute();
                         }
-                    }
-                });
-                action_cancel = dialogView.findViewById(R.id.action_cancel);
-                action_cancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
+                    } else {
                         dialog.cancel();
+                        makeBackupDir();
+                        new ExportWhiteListTask(getActivity(), 0).execute();
                     }
-                });
-                dialog.setContentView(dialogView);
-                dialog.show();
-                HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
-                return false;
-            }
+                }
+            });
+            action_cancel = dialogView.findViewById(R.id.action_cancel);
+            action_cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.cancel();
+                }
+            });
+            dialog.setContentView(dialogView);
+            dialog.show();
+            HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
+            return false;
         });
 
-        Objects.requireNonNull(findPreference("data_imAdBlock")).setOnPreferenceClickListener(new androidx.preference.Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(androidx.preference.Preference preference) {
+        findPreference("data_imAdBlock").setOnPreferenceClickListener(preference -> {
 
-                View dialogView;
-                TextView textView;
-                Button action_ok;
-                Button action_cancel;
+            View dialogView;
+            TextView textView;
+            Button action_ok;
+            Button action_cancel;
 
-                dialog = new BottomSheetDialog(requireActivity());
-                dialogView = View.inflate(getActivity(), R.layout.dialog_action, null);
-                textView = dialogView.findViewById(R.id.dialog_text);
-                textView.setText(R.string.hint_database);
-                action_ok = dialogView.findViewById(R.id.action_ok);
-                action_ok.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (android.os.Build.VERSION.SDK_INT >= 23 && android.os.Build.VERSION.SDK_INT < 29) {
-                            int hasWRITE_EXTERNAL_STORAGE = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                            if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
-                                HelperUnit.grantPermissionsStorage(getActivity());
-                                dialog.cancel();
-                            } else {
-                                dialog.cancel();
-                                new ImportWhitelistTask(getActivity(), 0).execute();
-                            }
+            dialog = new BottomSheetDialog(requireActivity());
+            dialogView = View.inflate(getActivity(), R.layout.dialog_action, null);
+            textView = dialogView.findViewById(R.id.dialog_text);
+            textView.setText(R.string.hint_database);
+            action_ok = dialogView.findViewById(R.id.action_ok);
+            action_ok.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (android.os.Build.VERSION.SDK_INT >= 23 && android.os.Build.VERSION.SDK_INT < 29) {
+                        int hasWRITE_EXTERNAL_STORAGE = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                        if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
+                            HelperUnit.grantPermissionsStorage(getActivity());
+                            dialog.cancel();
                         } else {
                             dialog.cancel();
                             new ImportWhitelistTask(getActivity(), 0).execute();
                         }
-                    }
-                });
-                action_cancel = dialogView.findViewById(R.id.action_cancel);
-                action_cancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
+                    } else {
                         dialog.cancel();
+                        new ImportWhitelistTask(getActivity(), 0).execute();
                     }
-                });
-                dialog.setContentView(dialogView);
-                dialog.show();
-                HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
-                return false;
-            }
+                }
+            });
+            action_cancel = dialogView.findViewById(R.id.action_cancel);
+            action_cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.cancel();
+                }
+            });
+            dialog.setContentView(dialogView);
+            dialog.show();
+            HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
+            return false;
         });
 
-        Objects.requireNonNull(findPreference("data_exCookie")).setOnPreferenceClickListener(new androidx.preference.Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(androidx.preference.Preference preference) {
+        findPreference("data_exCookie").setOnPreferenceClickListener(preference -> {
 
-                View dialogView;
-                TextView textView;
-                Button action_ok;
-                Button action_cancel;
+            View dialogView;
+            TextView textView;
+            Button action_ok;
+            Button action_cancel;
 
-                dialog = new BottomSheetDialog(requireActivity());
-                dialogView = View.inflate(getActivity(), R.layout.dialog_action, null);
-                textView = dialogView.findViewById(R.id.dialog_text);
-                textView.setText(R.string.toast_backup);
-                action_ok = dialogView.findViewById(R.id.action_ok);
-                action_ok.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (android.os.Build.VERSION.SDK_INT >= 23 && android.os.Build.VERSION.SDK_INT < 29) {
-                            int hasWRITE_EXTERNAL_STORAGE = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                            if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
-                                HelperUnit.grantPermissionsStorage(getActivity());
-                                dialog.cancel();
-                            } else {
-                                dialog.cancel();
-                                makeBackupDir();
-                                new ExportWhiteListTask(getActivity(), 2).execute();
-                            }
+            dialog = new BottomSheetDialog(requireActivity());
+            dialogView = View.inflate(getActivity(), R.layout.dialog_action, null);
+            textView = dialogView.findViewById(R.id.dialog_text);
+            textView.setText(R.string.toast_backup);
+            action_ok = dialogView.findViewById(R.id.action_ok);
+            action_ok.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (android.os.Build.VERSION.SDK_INT >= 23 && android.os.Build.VERSION.SDK_INT < 29) {
+                        int hasWRITE_EXTERNAL_STORAGE = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                        if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
+                            HelperUnit.grantPermissionsStorage(getActivity());
+                            dialog.cancel();
                         } else {
                             dialog.cancel();
                             makeBackupDir();
                             new ExportWhiteListTask(getActivity(), 2).execute();
                         }
-                    }
-                });
-                action_cancel = dialogView.findViewById(R.id.action_cancel);
-                action_cancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
+                    } else {
                         dialog.cancel();
+                        makeBackupDir();
+                        new ExportWhiteListTask(getActivity(), 2).execute();
                     }
-                });
-                dialog.setContentView(dialogView);
-                dialog.show();
-                HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
-                return false;
-            }
+                }
+            });
+            action_cancel = dialogView.findViewById(R.id.action_cancel);
+            action_cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.cancel();
+                }
+            });
+            dialog.setContentView(dialogView);
+            dialog.show();
+            HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
+            return false;
         });
 
-        Objects.requireNonNull(findPreference("data_imCookie")).setOnPreferenceClickListener(new androidx.preference.Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(androidx.preference.Preference preference) {
+        findPreference("data_imCookie").setOnPreferenceClickListener(preference -> {
 
-                View dialogView;
-                TextView textView;
-                Button action_ok;
-                Button action_cancel;
+            View dialogView;
+            TextView textView;
+            Button action_ok;
+            Button action_cancel;
 
-                dialog = new BottomSheetDialog(requireActivity());
-                dialogView = View.inflate(getActivity(), R.layout.dialog_action, null);
-                textView = dialogView.findViewById(R.id.dialog_text);
-                textView.setText(R.string.hint_database);
-                action_ok = dialogView.findViewById(R.id.action_ok);
-                action_ok.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (android.os.Build.VERSION.SDK_INT >= 23 && android.os.Build.VERSION.SDK_INT < 29) {
-                            int hasWRITE_EXTERNAL_STORAGE = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                            if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
-                                HelperUnit.grantPermissionsStorage(getActivity());
-                                dialog.cancel();
-                            } else {
-                                dialog.cancel();
-                                new ImportWhitelistTask(getActivity(), 2).execute();
-                            }
+            dialog = new BottomSheetDialog(requireActivity());
+            dialogView = View.inflate(getActivity(), R.layout.dialog_action, null);
+            textView = dialogView.findViewById(R.id.dialog_text);
+            textView.setText(R.string.hint_database);
+            action_ok = dialogView.findViewById(R.id.action_ok);
+            action_ok.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (android.os.Build.VERSION.SDK_INT >= 23 && android.os.Build.VERSION.SDK_INT < 29) {
+                        int hasWRITE_EXTERNAL_STORAGE = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                        if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
+                            HelperUnit.grantPermissionsStorage(getActivity());
+                            dialog.cancel();
                         } else {
                             dialog.cancel();
                             new ImportWhitelistTask(getActivity(), 2).execute();
                         }
-                    }
-                });
-                action_cancel = dialogView.findViewById(R.id.action_cancel);
-                action_cancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
+                    } else {
                         dialog.cancel();
+                        new ImportWhitelistTask(getActivity(), 2).execute();
                     }
-                });
-                dialog.setContentView(dialogView);
-                dialog.show();
-                HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
-                return false;
-            }
+                }
+            });
+            action_cancel = dialogView.findViewById(R.id.action_cancel);
+            action_cancel.setOnClickListener(view -> dialog.cancel());
+            dialog.setContentView(dialogView);
+            dialog.show();
+            HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
+            return false;
         });
 
-        Objects.requireNonNull(findPreference("data_exJava")).setOnPreferenceClickListener(new androidx.preference.Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(androidx.preference.Preference preference) {
+        findPreference("data_exJava").setOnPreferenceClickListener(preference -> {
 
-                View dialogView;
-                TextView textView;
-                Button action_ok;
-                Button action_cancel;
+            View dialogView;
+            TextView textView;
+            Button action_ok;
+            Button action_cancel;
 
-                dialog = new BottomSheetDialog(requireActivity());
-                dialogView = View.inflate(getActivity(), R.layout.dialog_action, null);
-                textView = dialogView.findViewById(R.id.dialog_text);
-                textView.setText(R.string.toast_backup);
-                action_ok = dialogView.findViewById(R.id.action_ok);
-                action_ok.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (android.os.Build.VERSION.SDK_INT >= 23 && android.os.Build.VERSION.SDK_INT < 29) {
-                            int hasWRITE_EXTERNAL_STORAGE = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                            if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
-                                HelperUnit.grantPermissionsStorage(getActivity());
-                                dialog.cancel();
-                            } else {
-                                dialog.cancel();
-                                makeBackupDir();
-                                new ExportWhiteListTask(getActivity(), 1).execute();
-                            }
-                        } else {
+            dialog = new BottomSheetDialog(requireActivity());
+            dialogView = View.inflate(getActivity(), R.layout.dialog_action, null);
+            textView = dialogView.findViewById(R.id.dialog_text);
+            textView.setText(R.string.toast_backup);
+            action_ok = dialogView.findViewById(R.id.action_ok);
+            action_ok.setOnClickListener(view -> {
+                if (android.os.Build.VERSION.SDK_INT >= 23 && android.os.Build.VERSION.SDK_INT < 29) {
+                    int hasWRITE_EXTERNAL_STORAGE = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                    if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
+                        HelperUnit.grantPermissionsStorage(getActivity());
+                        dialog.cancel();
+                    } else {
+                        dialog.cancel();
+                        makeBackupDir();
+                        new ExportWhiteListTask(getActivity(), 1).execute();
+                    }
+                } else {
+                    dialog.cancel();
+                    makeBackupDir();
+                    new ExportWhiteListTask(getActivity(), 1).execute();
+                }
+            });
+            action_cancel = dialogView.findViewById(R.id.action_cancel);
+            action_cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.cancel();
+                }
+            });
+            dialog.setContentView(dialogView);
+            dialog.show();
+            HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
+            return false;
+        });
+
+        findPreference("data_imJava").setOnPreferenceClickListener(preference -> {
+
+            View dialogView;
+            TextView textView;
+            Button action_ok;
+            Button action_cancel;
+
+            dialog = new BottomSheetDialog(requireActivity());
+            dialogView = View.inflate(getActivity(), R.layout.dialog_action, null);
+            textView = dialogView.findViewById(R.id.dialog_text);
+            textView.setText(R.string.hint_database);
+            action_ok = dialogView.findViewById(R.id.action_ok);
+            action_ok.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (android.os.Build.VERSION.SDK_INT >= 23 && android.os.Build.VERSION.SDK_INT < 29) {
+                        int hasWRITE_EXTERNAL_STORAGE = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                        if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
+                            HelperUnit.grantPermissionsStorage(getActivity());
                             dialog.cancel();
-                            makeBackupDir();
-                            new ExportWhiteListTask(getActivity(), 1).execute();
-                        }
-                    }
-                });
-                action_cancel = dialogView.findViewById(R.id.action_cancel);
-                action_cancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        dialog.cancel();
-                    }
-                });
-                dialog.setContentView(dialogView);
-                dialog.show();
-                HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
-                return false;
-            }
-        });
-
-        Objects.requireNonNull(findPreference("data_imJava")).setOnPreferenceClickListener(new androidx.preference.Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(androidx.preference.Preference preference) {
-
-                View dialogView;
-                TextView textView;
-                Button action_ok;
-                Button action_cancel;
-
-                dialog = new BottomSheetDialog(requireActivity());
-                dialogView = View.inflate(getActivity(), R.layout.dialog_action, null);
-                textView = dialogView.findViewById(R.id.dialog_text);
-                textView.setText(R.string.hint_database);
-                action_ok = dialogView.findViewById(R.id.action_ok);
-                action_ok.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (android.os.Build.VERSION.SDK_INT >= 23 && android.os.Build.VERSION.SDK_INT < 29) {
-                            int hasWRITE_EXTERNAL_STORAGE = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                            if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
-                                HelperUnit.grantPermissionsStorage(getActivity());
-                                dialog.cancel();
-                            } else {
-                                dialog.cancel();
-                                new ImportWhitelistTask(getActivity(), 1).execute();
-                            }
                         } else {
                             dialog.cancel();
                             new ImportWhitelistTask(getActivity(), 1).execute();
                         }
-                    }
-                });
-                action_cancel = dialogView.findViewById(R.id.action_cancel);
-                action_cancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
+                    } else {
                         dialog.cancel();
+                        new ImportWhitelistTask(getActivity(), 1).execute();
                     }
-                });
-                dialog.setContentView(dialogView);
-                dialog.show();
-                HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
-                return false;
-            }
+                }
+            });
+            action_cancel = dialogView.findViewById(R.id.action_cancel);
+            action_cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.cancel();
+                }
+            });
+            dialog.setContentView(dialogView);
+            dialog.show();
+            HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
+            return false;
         });
 
-        Objects.requireNonNull(findPreference("data_exDB")).setOnPreferenceClickListener(new androidx.preference.Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(androidx.preference.Preference preference) {
+        findPreference("data_exDB").setOnPreferenceClickListener(preference -> {
 
-                View dialogView;
-                TextView textView;
-                Button action_ok;
-                Button action_cancel;
+            View dialogView;
+            TextView textView;
+            Button action_ok;
+            Button action_cancel;
 
-                dialog = new BottomSheetDialog(requireActivity());
-                dialogView = View.inflate(getActivity(), R.layout.dialog_action, null);
-                textView = dialogView.findViewById(R.id.dialog_text);
-                textView.setText(R.string.toast_backup);
-                action_ok = dialogView.findViewById(R.id.action_ok);
-                action_ok.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        dialog.cancel();
-                        try {
-                            if (android.os.Build.VERSION.SDK_INT >= 23 && android.os.Build.VERSION.SDK_INT < 29) {
-                                int hasWRITE_EXTERNAL_STORAGE = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                                if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
-                                    HelperUnit.grantPermissionsStorage(getActivity());
-                                    dialog.cancel();
-                                } else {
-                                    makeBackupDir();
-                                    BrowserUnit.deleteDir(previewsFolder_backup);
-                                    copyDirectory(previewsFolder_app, previewsFolder_backup);
-                                    backupUserPrefs(getActivity());
-                                    NinjaToast.show(getActivity(), getString(R.string.toast_export_successful) + "browser_backup");
-                                }
+            dialog = new BottomSheetDialog(requireActivity());
+            dialogView = View.inflate(getActivity(), R.layout.dialog_action, null);
+            textView = dialogView.findViewById(R.id.dialog_text);
+            textView.setText(R.string.toast_backup);
+            action_ok = dialogView.findViewById(R.id.action_ok);
+            action_ok.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.cancel();
+                    try {
+                        if (android.os.Build.VERSION.SDK_INT >= 23 && android.os.Build.VERSION.SDK_INT < 29) {
+                            int hasWRITE_EXTERNAL_STORAGE = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                            if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
+                                HelperUnit.grantPermissionsStorage(getActivity());
+                                dialog.cancel();
                             } else {
                                 makeBackupDir();
                                 BrowserUnit.deleteDir(previewsFolder_backup);
@@ -382,79 +347,82 @@ public class Fragment_settings_data extends PreferenceFragmentCompat {
                                 backupUserPrefs(getActivity());
                                 NinjaToast.show(getActivity(), getString(R.string.toast_export_successful) + "browser_backup");
                             }
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                        } else {
+                            makeBackupDir();
+                            BrowserUnit.deleteDir(previewsFolder_backup);
+                            copyDirectory(previewsFolder_app, previewsFolder_backup);
+                            backupUserPrefs(getActivity());
+                            NinjaToast.show(getActivity(), getString(R.string.toast_export_successful) + "browser_backup");
                         }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                });
-                action_cancel = dialogView.findViewById(R.id.action_cancel);
-                action_cancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        dialog.cancel();
-                    }
-                });
-                dialog.setContentView(dialogView);
-                dialog.show();
-                HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
-                return false;
-            }
+                }
+            });
+            action_cancel = dialogView.findViewById(R.id.action_cancel);
+            action_cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.cancel();
+                }
+            });
+            dialog.setContentView(dialogView);
+            dialog.show();
+            HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
+            return false;
         });
 
-        Objects.requireNonNull(findPreference("data_imDB")).setOnPreferenceClickListener(new androidx.preference.Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(androidx.preference.Preference preference) {
+        findPreference("data_imDB").setOnPreferenceClickListener(preference -> {
 
-                View dialogView;
-                TextView textView;
-                Button action_ok;
-                Button action_cancel;
+            View dialogView;
+            TextView textView;
+            Button action_ok;
+            Button action_cancel;
 
-                dialog = new BottomSheetDialog(requireActivity());
-                dialogView = View.inflate(getActivity(), R.layout.dialog_action, null);
-                textView = dialogView.findViewById(R.id.dialog_text);
-                textView.setText(R.string.hint_database);
-                action_ok = dialogView.findViewById(R.id.action_ok);
-                action_ok.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        dialog.cancel();
-                        try {
-                            if (android.os.Build.VERSION.SDK_INT >= 23 && android.os.Build.VERSION.SDK_INT < 29) {
-                                int hasWRITE_EXTERNAL_STORAGE = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                                if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
-                                    HelperUnit.grantPermissionsStorage(getActivity());
-                                    dialog.cancel();
-                                } else {
-                                    BrowserUnit.deleteDir(previewsFolder_app);
-                                    copyDirectory(previewsFolder_backup, previewsFolder_app);
-                                    restoreUserPrefs(getActivity());
-                                    dialogRestart();
-                                }
+            dialog = new BottomSheetDialog(requireActivity());
+            dialogView = View.inflate(getActivity(), R.layout.dialog_action, null);
+            textView = dialogView.findViewById(R.id.dialog_text);
+            textView.setText(R.string.hint_database);
+            action_ok = dialogView.findViewById(R.id.action_ok);
+            action_ok.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.cancel();
+                    try {
+                        if (android.os.Build.VERSION.SDK_INT >= 23 && android.os.Build.VERSION.SDK_INT < 29) {
+                            int hasWRITE_EXTERNAL_STORAGE = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                            if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
+                                HelperUnit.grantPermissionsStorage(getActivity());
+                                dialog.cancel();
                             } else {
                                 BrowserUnit.deleteDir(previewsFolder_app);
                                 copyDirectory(previewsFolder_backup, previewsFolder_app);
                                 restoreUserPrefs(getActivity());
                                 dialogRestart();
                             }
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                        } else {
+                            BrowserUnit.deleteDir(previewsFolder_app);
+                            copyDirectory(previewsFolder_backup, previewsFolder_app);
+                            restoreUserPrefs(getActivity());
+                            dialogRestart();
                         }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                });
-                action_cancel = dialogView.findViewById(R.id.action_cancel);
-                action_cancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        dialog.cancel();
-                    }
-                });
-                dialog.setContentView(dialogView);
-                dialog.show();
-                HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
-                return false;
-            }
+                }
+            });
+            action_cancel = dialogView.findViewById(R.id.action_cancel);
+            action_cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.cancel();
+                }
+            });
+            dialog.setContentView(dialogView);
+            dialog.show();
+            HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
+            return false;
         });
     }
 

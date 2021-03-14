@@ -361,6 +361,14 @@
                 android:gravity="right"
                 android:minHeight="46dp">
 
+                <Button android:id="@+id/action_cancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:background="?attr/selectableItemBackground"
+                    android:textColor="?android:attr/colorAccent"
+                    android:text="@android:string/ok"/>
+
                 <Button
                     android:id="@+id/action_ok"
                     android:layout_width="wrap_content"
@@ -371,13 +379,6 @@
                     android:text="@string/dialog_toggle_reload"
                     android:layout_marginEnd="6dp"/>
 
-                <Button android:id="@+id/action_cancel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:includeFontPadding="false"
-                    android:background="?attr/selectableItemBackground"
-                    android:textColor="?android:attr/colorAccent"
-                    android:text="@android:string/ok"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
