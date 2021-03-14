@@ -22,37 +22,34 @@ public class Fragment_clear extends PreferenceFragmentCompat {
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.preference_clear, rootKey);
 
-        Objects.requireNonNull(findPreference("sp_deleteDatabase")).setOnPreferenceClickListener(new androidx.preference.Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(androidx.preference.Preference preference) {
-                final SharedPreferences sp = getPreferenceScreen().getSharedPreferences();
-                final BottomSheetDialog dialog = new BottomSheetDialog(requireActivity());
-                View dialogView = View.inflate(getActivity(), R.layout.dialog_action, null);
-                TextView textView = dialogView.findViewById(R.id.dialog_text);
-                textView.setText(R.string.hint_database);
-                Button action_ok = dialogView.findViewById(R.id.action_ok);
-                action_ok.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        dialog.cancel();
-                        getActivity().deleteDatabase("Ninja4.db");
-                        getActivity().deleteDatabase("pass_DB_v01.db");
-                        sp.edit().putInt("restart_changed", 1).apply();
-                        getActivity().finish();
-                    }
-                });
-                Button action_cancel = dialogView.findViewById(R.id.action_cancel);
-                action_cancel.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        dialog.cancel();
-                    }
-                });
-                dialog.setContentView(dialogView);
-                dialog.show();
-                HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
-                return false;
-            }
+        findPreference("sp_deleteDatabase").setOnPreferenceClickListener(preference -> {
+            final SharedPreferences sp = getPreferenceScreen().getSharedPreferences();
+            final BottomSheetDialog dialog = new BottomSheetDialog(requireActivity());
+            View dialogView = View.inflate(getActivity(), R.layout.dialog_action, null);
+            TextView textView = dialogView.findViewById(R.id.dialog_text);
+            textView.setText(R.string.hint_database);
+            Button action_ok = dialogView.findViewById(R.id.action_ok);
+            action_ok.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.cancel();
+                    getActivity().deleteDatabase("Ninja4.db");
+                    getActivity().deleteDatabase("pass_DB_v01.db");
+                    sp.edit().putInt("restart_changed", 1).apply();
+                    getActivity().finish();
+                }
+            });
+            Button action_cancel = dialogView.findViewById(R.id.action_cancel);
+            action_cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.cancel();
+                }
+            });
+            dialog.setContentView(dialogView);
+            dialog.show();
+            HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
+            return false;
         });
     }
 }
