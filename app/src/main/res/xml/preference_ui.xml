@@ -39,7 +39,9 @@
             android:dialogTitle="@string/setting_title_toolbar_icons"
             android:summary="@string/setting_summary_toolbar_icons"
             klyph:entries="@array/setting_entries_toolbar_icons"
-            klyph:entryValues="@array/setting_values_toolbar_icons"/>
+            klyph:entryValues="@array/setting_values_toolbar_icons"
+            klyph:entryIconIds="@array/setting_ids_toolbar_icons"
+            />
 
         <CheckBoxPreference android:key="sp_desktop"
             android:icon="@drawable/icon_desktop"
