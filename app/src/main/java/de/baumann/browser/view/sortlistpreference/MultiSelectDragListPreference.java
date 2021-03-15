@@ -40,6 +40,7 @@ public class MultiSelectDragListPreference extends DialogPreference
 {
     public CharSequence[] entries;
     public CharSequence[] entryValues;
+    public int[] entryIconIds;
     public List<String> values = new ArrayList<>();
     public List<String> newValues = new ArrayList<>();
 
@@ -51,7 +52,32 @@ public class MultiSelectDragListPreference extends DialogPreference
                 R.styleable.MultiSelectDragListPreference, 0, 0);
         entries = a.getTextArray(R.styleable.MultiSelectDragListPreference_entries);
         entryValues = a.getTextArray(R.styleable.MultiSelectDragListPreference_entryValues);
+        CharSequence[] iconResourceString = a.getTextArray(R.styleable.MultiSelectDragListPreference_entryIconIds);
+        entryIconIds = convertIconResStringToIds(iconResourceString);
         a.recycle();
+    }
+
+    private int[] convertIconResStringToIds(CharSequence[] resStrings) {
+        int[] idArray = new int[resStrings.length];
+        for(int i = 0; i < resStrings.length; i++) {
+            if (resStrings[i] == null) {
+                idArray[i] = 0;
+                continue;
+            }
+
+            String resString = resStrings[i].toString();
+            if(resString.length() == 0) {
+                idArray[i] = 0;
+                continue;
+            }
+
+            String[] splits = resString.split("/");
+            String type = splits[1];
+            String name = splits[2].substring(0, splits[2].length()-4);
+            int id = getContext().getResources().getIdentifier(name, type, getContext().getPackageName());
+            idArray[i] = id;
+        }
+        return idArray;
     }
 
     public MultiSelectDragListPreference(Context context)

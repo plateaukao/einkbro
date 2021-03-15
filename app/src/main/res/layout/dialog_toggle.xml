@@ -349,7 +349,6 @@
                             android:textColor="@android:color/black"
                             android:text="@string/remote" />
 
-
                     </LinearLayout>
 
                     <LinearLayout

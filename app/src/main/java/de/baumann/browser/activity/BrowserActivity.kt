@@ -489,13 +489,12 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             } else {
                 removeAlbum(currentAlbumController!!)
             }
-            R.id.omnibox_page_up -> {
-                ninjaWebView.pageUpWithNoAnimation()
-            }
+            R.id.omnibox_page_up -> ninjaWebView.pageUpWithNoAnimation()
             R.id.omnibox_page_down -> {
                 keepToolbar = true
                 ninjaWebView.pageDownWithNoAnimation()
             }
+
             R.id.omnibox_refresh -> if (url != null && ninjaWebView.isLoadFinish) {
                 if (url?.startsWith("https://") != true) {
                     bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
@@ -520,6 +519,9 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 NinjaToast.show(this, text)
             } else {
                 ninjaWebView.stopLoading()
+            }
+            R.id.omnibox_bar_setting -> {
+                // show preference dialog
             }
             else -> {
             }

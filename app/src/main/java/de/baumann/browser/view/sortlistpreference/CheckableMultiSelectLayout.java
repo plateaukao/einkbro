@@ -7,7 +7,7 @@ import android.widget.LinearLayout;
 
 public class CheckableMultiSelectLayout extends LinearLayout implements Checkable
 {
-    private static final int CHECKABLE_CHILD_INDEX = 1;
+    private static final int CHECKABLE_CHILD_INDEX = 2;
     private Checkable child;
 
     public CheckableMultiSelectLayout(Context context, AttributeSet attrs) {

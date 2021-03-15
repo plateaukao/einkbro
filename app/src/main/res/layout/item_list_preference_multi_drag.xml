@@ -14,6 +14,14 @@
         android:paddingRight="8dp"
         />
 
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        />
+
     <CheckedTextView
         android:checkMark="?android:attr/listChoiceIndicatorMultiple"
         android:id="@+id/text"
@@ -21,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="?android:attr/textColorSecondary"
+        android:textColor="@android:color/black"
         android:gravity="center_vertical"
         />
 
