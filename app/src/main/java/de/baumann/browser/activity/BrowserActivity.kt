@@ -206,10 +206,18 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         }
     }
 
+    private var isShowingTouchArea = false
     private fun initTouchArea() {
         touchAreaLeft = findViewById(R.id.touch_left)
         touchAreaRight = findViewById(R.id.touch_right)
-        binding.omniboxTouch.setOnLongClickListener { showTouchAreaHint(); true }
+        binding.omniboxTouch.setOnLongClickListener {
+            if (!isShowingTouchArea) {
+                showTouchAreaHint(false)
+            } else {
+                hideTouchAreaHint()
+            }
+            true
+        }
     }
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -557,15 +565,24 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         }
     }
 
-    private fun showTouchAreaHint() {
+    private fun hideTouchAreaHint() {
+        isShowingTouchArea = false
+        touchAreaLeft.setBackgroundColor(Color.TRANSPARENT)
+        touchAreaRight.setBackgroundColor(Color.TRANSPARENT)
+    }
+
+    private fun showTouchAreaHint(shouldDismissAfterTimeout: Boolean = true) {
+        isShowingTouchArea = true
         touchAreaLeft.setBackgroundResource(R.drawable.touch_area_border)
         touchAreaRight.setBackgroundResource(R.drawable.touch_area_border)
-        Timer("showTouchAreaHint", false).schedule(object: TimerTask() {
-            override fun run() {
-                touchAreaLeft.setBackgroundColor(Color.TRANSPARENT)
-                touchAreaRight.setBackgroundColor(Color.TRANSPARENT)
-            }
-        }, 500)
+        if (shouldDismissAfterTimeout) {
+            Timer("showTouchAreaHint", false)
+                    .schedule(object : TimerTask() {
+                        override fun run() {
+                            hideTouchAreaHint()
+                        }
+                    }, 500)
+        }
     }
 
     private fun showKeyboard() {
