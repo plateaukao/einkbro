@@ -56,7 +56,7 @@ class MultiSelectDragListPreferenceDialog(
         val checkedPositions = listView.checkedItemPositions
         for (i in 0 until n) {
             if (checkedPositions[i]) {
-                preference.newValues.add(preference.entryValues[listOf(*preference.entries).indexOf(iconListAdapter.getItem(i))] as String)
+                preference.newValues.add(preference.entryValues[listOf(*preference.entries).indexOf(iconListAdapter.getItem(i)?.title)] as String)
             }
         }
     }
