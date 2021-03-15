@@ -4,11 +4,10 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
-import androidx.preference.PreferenceDialogFragmentCompat;
 
 import android.view.MenuItem;
 
-import de.baumann.browser.fragment.Fragment_settings_UI;
+import de.baumann.browser.fragment.UiSettingsFragment;
 import de.baumann.browser.Ninja.R;
 import de.baumann.browser.unit.HelperUnit;
 import de.baumann.browser.util.Constants;
@@ -26,7 +25,7 @@ public class Settings_UIActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Fragment_settings_UI fragment = new Fragment_settings_UI();
+        UiSettingsFragment fragment = new UiSettingsFragment();
         if(getIntent().getBooleanExtra(Constants.ARG_LAUNCH_TOOLBAR_SETTING, false)) {
             Bundle bundle = new Bundle();
             bundle.putBoolean(Constants.ARG_LAUNCH_TOOLBAR_SETTING, true);
