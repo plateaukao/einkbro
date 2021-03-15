@@ -15,7 +15,10 @@ import de.baumann.browser.Ninja.R
 import de.baumann.browser.view.sortlistpreference.DragSortListView.DropListener
 import java.util.*
 
-class MultiSelectDragListPreferenceDialog(private val preference: MultiSelectDragListPreference) : PreferenceDialogFragmentCompat() {
+class MultiSelectDragListPreferenceDialog(
+        private val preference: MultiSelectDragListPreference,
+        private val shouldFinishActivityAfterDismissed: Boolean
+) : PreferenceDialogFragmentCompat() {
     private lateinit var listView: DragSortListView
     private val selectedItems: BooleanArray
         private get() {
@@ -149,6 +152,10 @@ class MultiSelectDragListPreferenceDialog(private val preference: MultiSelectDra
             }
         }
         mPreferenceChanged = false
+
+        if (shouldFinishActivityAfterDismissed) {
+            activity?.finish()
+        }
     }
 }
 

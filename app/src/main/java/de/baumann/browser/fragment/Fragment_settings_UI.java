@@ -1,16 +1,21 @@
 package de.baumann.browser.fragment;
 
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
 import de.baumann.browser.Ninja.R;
+import de.baumann.browser.util.Constants;
 import de.baumann.browser.view.sortlistpreference.MultiSelectDragListPreference;
 import de.baumann.browser.view.sortlistpreference.MultiSelectDragListPreferenceDialog;
 
@@ -24,7 +29,7 @@ public class Fragment_settings_UI extends PreferenceFragmentCompat implements Sh
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (getArguments().getBoolean("launch_toolbar_setting", false)) {
+        if (getArguments().getBoolean(Constants.ARG_LAUNCH_TOOLBAR_SETTING, false)) {
             showToolbarSettingDialog(null);
         }
     }
@@ -40,6 +45,15 @@ public class Fragment_settings_UI extends PreferenceFragmentCompat implements Sh
     public void onPause() {
         super.onPause();
         getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        // if ti's only for this preference, we should close it right after the dialog
+        if (getArguments().getBoolean(Constants.ARG_LAUNCH_TOOLBAR_SETTING, false)) {
+            getActivity().finish();
+        }
     }
 
     @Override
@@ -67,10 +81,14 @@ public class Fragment_settings_UI extends PreferenceFragmentCompat implements Sh
     }
 
     public void showToolbarSettingDialog(MultiSelectDragListPreference preference) {
+        MultiSelectDragListPreference localPreference;
         if (preference == null) {
-            preference = findPreference("sp_toolbar_icons");
+            localPreference = findPreference("sp_toolbar_icons");
+        } else {
+            localPreference = preference;
         }
-        final DialogFragment f = new MultiSelectDragListPreferenceDialog( preference);
+        boolean shouldFinishActivityWhenDismissed = preference == null;
+        final DialogFragment f = new MultiSelectDragListPreferenceDialog(localPreference, shouldFinishActivityWhenDismissed);
         f.setTargetFragment(this, 0);
         f.show(getParentFragmentManager(), DIALOG_FRAGMENT_TAG);
     }
