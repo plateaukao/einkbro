@@ -4,6 +4,8 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
+import androidx.preference.PreferenceDialogFragmentCompat;
+
 import android.view.MenuItem;
 
 import de.baumann.browser.fragment.Fragment_settings_UI;
@@ -12,7 +14,6 @@ import de.baumann.browser.unit.HelperUnit;
 
 public class Settings_UIActivity extends AppCompatActivity {
 
-    @SuppressWarnings("ConstantConditions")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,10 +25,17 @@ public class Settings_UIActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        Fragment_settings_UI fragment = new Fragment_settings_UI();
+        if(getIntent().getBooleanExtra("launch_toolbar_setting", false)) {
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("launch_toolbar_setting", true);
+            fragment.setArguments(bundle);
+        }
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.content_frame, new Fragment_settings_UI())
+                .replace(R.id.content_frame, fragment)
                 .commit();
+
     }
 
     @Override

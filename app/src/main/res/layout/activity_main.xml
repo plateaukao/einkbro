@@ -141,7 +141,6 @@
                     android:layout_height="match_parent"
                     android:padding="10dp"
                     android:src="@drawable/ic_bookmarks"
-                    android:tint="@android:color/black"
                     android:background="@android:color/white"/>
 
                 <ImageButton android:id="@+id/omnibox_bar_setting"
@@ -149,7 +148,7 @@
                     android:layout_height="match_parent"
                     android:padding="10dp"
                     android:src="@drawable/ic_toolbar"
-                    android:tint="@android:color/black"
+                    android:onClick="onClick"
                     android:background="@android:color/white"/>
 
             </LinearLayout>

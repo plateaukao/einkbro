@@ -54,6 +54,8 @@ import de.baumann.browser.unit.ViewUnit
 import de.baumann.browser.view.*
 import de.baumann.browser.view.adapter.*
 import de.baumann.browser.view.dialog.FastToggleDialog
+import de.baumann.browser.view.sortlistpreference.MultiSelectDragListPreference
+import de.baumann.browser.view.sortlistpreference.MultiSelectDragListPreferenceDialog
 import de.baumann.browser.view.toolbaricons.ToolbarAction
 import java.io.File
 import java.util.*
@@ -383,6 +385,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         bottomSheetDialog?.cancel()
     }
 
+    @SuppressLint("RestrictedApi")
     override fun onClick(v: View) {
         ninjaWebView = currentAlbumController as NinjaWebView
         try {
@@ -521,7 +524,9 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 ninjaWebView.stopLoading()
             }
             R.id.omnibox_bar_setting -> {
-                // show preference dialog
+                val intent = Intent( this, Settings_UIActivity::class.java)
+                        .putExtra("launch_toolbar_setting", true)
+                startActivity(intent)
             }
             else -> {
             }

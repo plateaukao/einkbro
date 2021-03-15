@@ -2,7 +2,10 @@ package de.baumann.browser.fragment;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
@@ -16,6 +19,14 @@ public class Fragment_settings_UI extends PreferenceFragmentCompat implements Sh
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.preference_ui, rootKey);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if (getArguments().getBoolean("launch_toolbar_setting", false)) {
+            showToolbarSettingDialog(null);
+        }
     }
 
     @Override
@@ -41,6 +52,7 @@ public class Fragment_settings_UI extends PreferenceFragmentCompat implements Sh
     }
 
     private static final String DIALOG_FRAGMENT_TAG = "toolbar_icons";
+
     @Override
     public void onDisplayPreferenceDialog(Preference preference) {
         if (getParentFragmentManager().findFragmentByTag(DIALOG_FRAGMENT_TAG) != null) {
@@ -48,11 +60,18 @@ public class Fragment_settings_UI extends PreferenceFragmentCompat implements Sh
         }
 
         if (preference instanceof MultiSelectDragListPreference) {
-            final DialogFragment f = new MultiSelectDragListPreferenceDialog((MultiSelectDragListPreference) preference);
-            f.setTargetFragment(this, 0);
-            f.show(getParentFragmentManager(), DIALOG_FRAGMENT_TAG);
+            showToolbarSettingDialog((MultiSelectDragListPreference)preference);
         } else {
             super.onDisplayPreferenceDialog(preference);
         }
+    }
+
+    public void showToolbarSettingDialog(MultiSelectDragListPreference preference) {
+        if (preference == null) {
+            preference = findPreference("sp_toolbar_icons");
+        }
+        final DialogFragment f = new MultiSelectDragListPreferenceDialog( preference);
+        f.setTargetFragment(this, 0);
+        f.show(getParentFragmentManager(), DIALOG_FRAGMENT_TAG);
     }
 }
