@@ -51,6 +51,7 @@ import de.baumann.browser.unit.BrowserUnit
 import de.baumann.browser.unit.HelperUnit
 import de.baumann.browser.unit.IntentUnit
 import de.baumann.browser.unit.ViewUnit
+import de.baumann.browser.util.Constants
 import de.baumann.browser.view.*
 import de.baumann.browser.view.adapter.*
 import de.baumann.browser.view.dialog.FastToggleDialog
@@ -279,6 +280,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 bottomSheetDialog?.show()
             }
         }
+        overridePendingTransition(0, 0)
     }
 
     public override fun onDestroy() {
@@ -525,8 +527,9 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             }
             R.id.omnibox_bar_setting -> {
                 val intent = Intent( this, Settings_UIActivity::class.java)
-                        .putExtra("launch_toolbar_setting", true)
+                        .putExtra(Constants.ARG_LAUNCH_TOOLBAR_SETTING, true)
                 startActivity(intent)
+                overridePendingTransition(0, 0);
             }
             else -> {
             }

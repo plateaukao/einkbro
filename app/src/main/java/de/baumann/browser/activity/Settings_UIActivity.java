@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import de.baumann.browser.fragment.Fragment_settings_UI;
 import de.baumann.browser.Ninja.R;
 import de.baumann.browser.unit.HelperUnit;
+import de.baumann.browser.util.Constants;
 
 public class Settings_UIActivity extends AppCompatActivity {
 
@@ -26,9 +27,9 @@ public class Settings_UIActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Fragment_settings_UI fragment = new Fragment_settings_UI();
-        if(getIntent().getBooleanExtra("launch_toolbar_setting", false)) {
+        if(getIntent().getBooleanExtra(Constants.ARG_LAUNCH_TOOLBAR_SETTING, false)) {
             Bundle bundle = new Bundle();
-            bundle.putBoolean("launch_toolbar_setting", true);
+            bundle.putBoolean(Constants.ARG_LAUNCH_TOOLBAR_SETTING, true);
             fragment.setArguments(bundle);
         }
         getSupportFragmentManager()
