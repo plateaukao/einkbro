@@ -151,6 +151,14 @@
                     android:onClick="onClick"
                     android:background="@android:color/white"/>
 
+                <ImageButton android:id="@+id/omnibox_vertical_read"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_vertical_read"
+                    android:onClick="onClick"
+                    android:background="@android:color/white"/>
+
             </LinearLayout>
         </RelativeLayout>
 
