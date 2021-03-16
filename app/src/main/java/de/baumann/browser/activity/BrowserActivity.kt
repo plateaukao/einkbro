@@ -55,8 +55,6 @@ import de.baumann.browser.util.Constants
 import de.baumann.browser.view.*
 import de.baumann.browser.view.adapter.*
 import de.baumann.browser.view.dialog.FastToggleDialog
-import de.baumann.browser.view.sortlistpreference.MultiSelectDragListPreference
-import de.baumann.browser.view.sortlistpreference.MultiSelectDragListPreferenceDialog
 import de.baumann.browser.view.toolbaricons.ToolbarAction
 import java.io.File
 import java.util.*
@@ -68,11 +66,11 @@ import kotlin.system.exitProcess
 class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickListener {
     private lateinit var adapter: RecordAdapter
 
-    private lateinit var open_startPage: ImageButton
-    private lateinit var open_bookmark: ImageButton
-    private lateinit var open_history: ImageButton
-    private lateinit var open_menu: ImageButton
-    private lateinit var fab_imageButtonNav: ImageButton
+    private lateinit var btnOpenStartPage: ImageButton
+    private lateinit var btnOpenBookmark: ImageButton
+    private lateinit var btnOpenHistory: ImageButton
+    private lateinit var btnOpenMenu: ImageButton
+    private lateinit var fabImagebuttonnav: ImageButton
     private lateinit var inputBox: AutoCompleteTextView
     private lateinit var progressBar: ProgressBar
     private lateinit var searchBox: EditText
@@ -80,8 +78,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private lateinit var ninjaWebView: NinjaWebView
     private lateinit var recyclerView: RecyclerView
     private lateinit var omniboxTitle: TextView
-    private lateinit var tab_ScrollView: HorizontalScrollView
-    private lateinit var overview_top: LinearLayout
+    private lateinit var tabScrollview: HorizontalScrollView
+    private lateinit var overviewTop: LinearLayout
     private lateinit var touchAreaLeft: View
     private lateinit var touchAreaRight: View
 
@@ -210,6 +208,10 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private fun initTouchArea() {
         touchAreaLeft = findViewById(R.id.touch_left)
         touchAreaRight = findViewById(R.id.touch_right)
+        touchAreaLeft.setOnLongClickListener {
+            ninjaWebView.jumpToTop()
+            true
+        }
         binding.omniboxTouch.setOnLongClickListener {
             if (!isShowingTouchArea) {
                 showTouchAreaHint(false)
@@ -383,7 +385,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         currentAlbumController?.deactivate()
         currentAlbumController?.activate()
         binding.root.postDelayed({
-            tab_ScrollView.scrollTo(currentAlbumController?.albumView?.left ?: 0, 0)
+            tabScrollview.scrollTo(currentAlbumController?.albumView?.left ?: 0, 0)
         }, 250)
     }
 
@@ -552,7 +554,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             touchAreaLeft.visibility = VISIBLE
             touchAreaRight.visibility = VISIBLE
 
-            fab_imageButtonNav.setImageResource(R.drawable.ic_touch_enabled)
+            fabImagebuttonnav.setImageResource(R.drawable.ic_touch_enabled)
             binding.omniboxTouch.setImageResource(R.drawable.ic_touch_enabled)
 
             showTouchAreaHint()
@@ -560,7 +562,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             binding.omniboxTouch.alpha = 0.99F
             touchAreaLeft.visibility = INVISIBLE
             touchAreaRight.visibility = INVISIBLE
-            fab_imageButtonNav.setImageResource(R.drawable.icon_overflow_fab)
+            fabImagebuttonnav.setImageResource(R.drawable.icon_overflow_fab)
             binding.omniboxTouch.setImageResource(R.drawable.ic_touch_disabled)
         }
     }
@@ -653,7 +655,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         } else if ("sc_startPage" == action) {
             addAlbum(null, sp.getString("favoriteURL", "https://www.google.com"), true)
             showOverview()
-            ninjaWebView.postDelayed({ open_startPage.performClick() }, 250)
+            ninjaWebView.postDelayed({ btnOpenStartPage.performClick() }, 250)
         } else if (Intent.ACTION_SEND == action) {
             addAlbum(null, url, true)
         } else {
@@ -683,7 +685,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 override fun onSwipeRight() = performGesture("setting_gesture_nav_right")
                 override fun onSwipeLeft() = performGesture("setting_gesture_nav_left")
             }
-            fab_imageButtonNav.setOnTouchListener(onTouchListener)
+            fabImagebuttonnav.setOnTouchListener(onTouchListener)
             binding.omniboxSetting.setOnTouchListener(onTouchListener)
             inputBox.setOnTouchListener(object : SwipeTouchListener(this) {
                 override fun onSwipeTop() = performGesture("setting_gesture_tb_up")
@@ -780,29 +782,29 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     }
 
     private fun initFAB() {
-        fab_imageButtonNav = findViewById(R.id.fab_imageButtonNav)
+        fabImagebuttonnav = findViewById(R.id.fab_imageButtonNav)
         val navPosition = sp.getString("nav_position", "0")
-        val params = RelativeLayout.LayoutParams(fab_imageButtonNav.layoutParams.width, fab_imageButtonNav.layoutParams.height)
+        val params = RelativeLayout.LayoutParams(fabImagebuttonnav.layoutParams.width, fabImagebuttonnav.layoutParams.height)
         when (navPosition) {
             "1" -> {
                 // left
-                fab_imageButtonNav.layoutParams = params.apply {
+                fabImagebuttonnav.layoutParams = params.apply {
                     addRule(RelativeLayout.ALIGN_PARENT_LEFT)
                     addRule(RelativeLayout.ALIGN_BOTTOM, R.id.main_content)
                 }
             }
             "2" -> {
                 // center
-                fab_imageButtonNav.layoutParams = params.apply {
+                fabImagebuttonnav.layoutParams = params.apply {
                     addRule(RelativeLayout.CENTER_HORIZONTAL)
                     addRule(RelativeLayout.ALIGN_BOTTOM, R.id.main_content)
                 }
             }
         }
 
-        expandViewTouchArea(fab_imageButtonNav, ViewUnit.dpToPixel(this, 20).toInt())
-        fab_imageButtonNav.setOnClickListener { showOmnibox() }
-        fab_imageButtonNav.setOnLongClickListener {
+        expandViewTouchArea(fabImagebuttonnav, ViewUnit.dpToPixel(this, 20).toInt())
+        fabImagebuttonnav.setOnClickListener { showOmnibox() }
+        fabImagebuttonnav.setOnLongClickListener {
             showFastToggleDialog()
             false
         }
@@ -868,13 +870,13 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     @SuppressLint("ClickableViewAccessibility")
     private fun initOverview() {
         overviewView = findViewById(R.id.layout_overview)
-        open_startPage = findViewById(R.id.open_newTab_2)
-        open_bookmark = findViewById(R.id.open_bookmark_2)
-        open_history = findViewById(R.id.open_history_2)
-        open_menu = findViewById(R.id.open_menu)
+        btnOpenStartPage = findViewById(R.id.open_newTab_2)
+        btnOpenBookmark = findViewById(R.id.open_bookmark_2)
+        btnOpenHistory = findViewById(R.id.open_history_2)
+        btnOpenMenu = findViewById(R.id.open_menu)
         tab_container = findViewById(R.id.tab_container)
-        tab_ScrollView = findViewById(R.id.tab_ScrollView)
-        overview_top = findViewById(R.id.overview_top)
+        tabScrollview = findViewById(R.id.tab_ScrollView)
+        overviewTop = findViewById(R.id.overview_top)
         recyclerView = findViewById(R.id.home_list_2)
         open_startPageView = findViewById(R.id.open_newTabView)
         open_bookmarkView = findViewById(R.id.open_bookmarkView)
@@ -900,7 +902,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             v.onTouchEvent(event)
             true
         }
-        open_menu.setOnClickListener {
+        btnOpenMenu.setOnClickListener {
             bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
             val dialogView = inflate(this, R.layout.dialog_menu_overview, null)
             val bookmark_sort = dialogView.findViewById<LinearLayout>(R.id.bookmark_sort)
@@ -925,7 +927,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                         hideBottomSheetDialog()
                     } else if (overViewTab == getString(R.string.album_title_home)) {
                         sp.edit().putString("sort_startSite", "title").apply()
-                        open_startPage.performClick()
+                        btnOpenStartPage.performClick()
                         hideBottomSheetDialog()
                     }
                 }
@@ -936,7 +938,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                         hideBottomSheetDialog()
                     } else if (overViewTab == getString(R.string.album_title_home)) {
                         sp.edit().putString("sort_startSite", "ordinal").apply()
-                        open_startPage.performClick()
+                        btnOpenStartPage.performClick()
                         hideBottomSheetDialog()
                     }
                 }
@@ -952,14 +954,14 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                     when (overViewTab) {
                         getString(R.string.album_title_home) -> {
                             BrowserUnit.clearHome(this)
-                            open_startPage.performClick()
+                            btnOpenStartPage.performClick()
                         }
                         getString(R.string.album_title_bookmarks) -> {
                             val data = Environment.getDataDirectory()
                             val bookmarksPath_app = "//data//$packageName//databases//pass_DB_v01.db"
                             val bookmarkFile_app = File(data, bookmarksPath_app)
                             BrowserUnit.deleteDir(bookmarkFile_app)
-                            open_bookmark.performClick()
+                            btnOpenBookmark.performClick()
                         }
                         getString(R.string.album_title_history) -> {
                             BrowserUnit.clearHistory(this)
@@ -975,14 +977,14 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             bottomSheetDialog?.setContentView(dialogView)
             bottomSheetDialog?.show()
         }
-        open_startPage.setOnClickListener {
-            overview_top.visibility = VISIBLE
+        btnOpenStartPage.setOnClickListener {
+            overviewTop.visibility = VISIBLE
             recyclerView.visibility = GONE
             toggleOverviewFocus(open_startPageView)
             overViewTab = getString(R.string.album_title_home)
         }
-        open_bookmark.setOnClickListener { openBookmarkPage() }
-        open_history.setOnClickListener { openHistoryPage() }
+        btnOpenBookmark.setOnClickListener { openBookmarkPage() }
+        btnOpenHistory.setOnClickListener { openHistoryPage() }
 
         findViewById<View>(R.id.button_close_overview).setOnClickListener { hideOverview() }
         showCurrentTabInOverview()
@@ -991,7 +993,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private fun openHistoryPage() {
         overviewView.visibility = VISIBLE
 
-        overview_top.visibility = INVISIBLE
+        overviewTop.visibility = INVISIBLE
         recyclerView.visibility = VISIBLE
         toggleOverviewFocus(open_historyView)
 
@@ -1018,7 +1020,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private fun openBookmarkPage() {
         overviewView.visibility = VISIBLE
 
-        overview_top.visibility = INVISIBLE
+        overviewTop.visibility = INVISIBLE
         recyclerView.visibility = VISIBLE
         toggleOverviewFocus(open_bookmarkView)
         overViewTab = getString(R.string.album_title_bookmarks)
@@ -1035,7 +1037,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         when (Objects.requireNonNull(sp.getString("start_tab", "0"))) {
             "3" -> openBookmarkPage()
             "4" -> openHistoryPage()
-            else -> open_startPage.performClick()
+            else -> btnOpenStartPage.performClick()
         }
     }
 
@@ -1522,7 +1524,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     @SuppressLint("RestrictedApi")
     private fun showOmnibox() {
         if (!searchOnSite) {
-            fab_imageButtonNav.visibility = INVISIBLE
+            fabImagebuttonnav.visibility = INVISIBLE
             searchPanel.visibility = GONE
             omnibox.visibility = VISIBLE
             omniboxTitle.visibility = VISIBLE
@@ -1534,7 +1536,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     @SuppressLint("RestrictedApi")
     private fun hideOmnibox() {
         if (!searchOnSite) {
-            fab_imageButtonNav.visibility = VISIBLE
+            fabImagebuttonnav.visibility = VISIBLE
             searchPanel.visibility = GONE
             omnibox.visibility = GONE
             omniboxTitle.visibility = GONE
@@ -1551,7 +1553,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     @SuppressLint("RestrictedApi")
     private fun showSearchPanel() {
         searchOnSite = true
-        fab_imageButtonNav.visibility = INVISIBLE
+        fabImagebuttonnav.visibility = INVISIBLE
         omnibox.visibility = GONE
         searchPanel.visibility = VISIBLE
         omniboxTitle.visibility = GONE
