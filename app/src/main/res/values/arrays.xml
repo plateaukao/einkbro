@@ -120,7 +120,7 @@
         <item>settings</item>
         <item>bookmarks</item>
         <item>toolbar</item>
-        <item>vertical</item>
+        <!-- <item>vertical</item> -->
     </string-array>
     <integer-array name="setting_ids_toolbar_icons">
         <item>@null</item>
@@ -134,7 +134,7 @@
         <item>@drawable/icon_settings</item>
         <item>@drawable/ic_bookmarks</item>
         <item>@drawable/ic_toolbar</item>
-        <item>@drawable/ic_vertical_read</item>
+<!--        <item>@drawable/ic_vertical_read</item>-->
     </integer-array>
 
     <string-array name="setting_values_toolbar_icons">
@@ -149,7 +149,7 @@
         <item>8</item>
         <item>9</item>
         <item>10</item>
-        <item>11</item>
+<!--        <item>11</item>-->
     </string-array>
     <string-array name="default_toolbar_icons">
         <item>0</item>
