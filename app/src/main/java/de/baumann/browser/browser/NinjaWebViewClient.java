@@ -51,6 +51,7 @@ public class NinjaWebViewClient extends WebViewClient {
 
     private boolean white;
     private boolean enable;
+
     public void enableAdBlock(boolean enable) {
         this.enable = enable;
     }
@@ -66,7 +67,6 @@ public class NinjaWebViewClient extends WebViewClient {
         this.enable = true;
     }
 
-    boolean isReaderJsInjected = false;
     @Override
     public void onPageFinished(WebView view, String url) {
         if (sp.getBoolean("saveHistory", true)) {
@@ -80,14 +80,6 @@ public class NinjaWebViewClient extends WebViewClient {
             }
             action.close();
         }
-        /* Daniel testing codes for reader mode
-        if (!isReaderJsInjected) {
-            injectScriptFile(view, "readability.js");
-            isReaderJsInjected = true;
-        } else {
-            isReaderJsInjected = false;
-        }
-         */
     }
 
     @Override
@@ -280,27 +272,4 @@ public class NinjaWebViewClient extends WebViewClient {
         HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);
     }
 
-    public void injectScriptFile(WebView view, String scriptFile) {
-        InputStream input;
-        try {
-            input = view.getContext().getAssets().open(scriptFile);
-            byte[] buffer = new byte[input.available()];
-            input.read(buffer);
-            input.close();
-
-            // String-ify the script byte-array using BASE64 encoding !!!
-            String encoded = Base64.encodeToString(buffer, Base64.NO_WRAP);
-            view.loadUrl("javascript:(function() {" +
-                    "var parent = document.getElementsByTagName('head').item(0);" +
-                    "var script = document.createElement('script');" +
-                    "script.type = 'text/javascript';" +
-                    // Tell the browser to BASE64-decode the string into your script !!!
-                    "script.innerHTML = window.atob('" + encoded + "');" +
-                    "parent.appendChild(script)" +
-                    "})()");
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
 }
