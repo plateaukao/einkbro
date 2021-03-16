@@ -136,6 +136,8 @@ class MultiSelectDragListPreferenceDialog(
                 val iconResId = item?.iconResId ?: 0
                 if (iconResId != 0) {
                     imageView.setImageResource(iconResId)
+                } else {
+                    imageView.setImageIcon(null)
                 }
                 view.findViewById<TextView>(R.id.text).text = item?.title ?: ""
                 return view
