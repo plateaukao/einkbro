@@ -126,6 +126,9 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private lateinit var binding: ActivityMainBinding
 
     private lateinit var bookmarkDB: BookmarkList
+
+    private var isVerticalRead = false
+
     // Classes
     private inner class VideoCompletionListener : OnCompletionListener, MediaPlayer.OnErrorListener {
         override fun onError(mp: MediaPlayer, what: Int, extra: Int): Boolean {
@@ -508,6 +511,14 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             R.id.omnibox_page_down -> {
                 keepToolbar = true
                 ninjaWebView.pageDownWithNoAnimation()
+            }
+            R.id.omnibox_vertical_read -> {
+                isVerticalRead = !isVerticalRead
+                if (isVerticalRead) {
+                    ninjaWebView.applyVerticalRead()
+                } else {
+                    ninjaWebView.applyHorizontalRead()
+                }
             }
 
             R.id.omnibox_refresh -> if (url != null && ninjaWebView.isLoadFinish) {

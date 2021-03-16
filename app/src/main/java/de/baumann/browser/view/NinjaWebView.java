@@ -25,46 +25,29 @@ import de.baumann.browser.Ninja.R;
 import de.baumann.browser.unit.BrowserUnit;
 import de.baumann.browser.unit.ViewUnit;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 
 public class NinjaWebView extends WebView implements AlbumController {
 
-    private OnScrollChangeListener onScrollChangeListener;
 
+    private static final String verticalLayoutCss = "body {\n" +
+            "-webkit-writing-mode: vertical-rl;\n" +
+            "writing-mode: vertical-rl;\n" +
+            "}";
 
-    public NinjaWebView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
+    private static final String horizontalLayoutCss = "body {\n" +
+            "-webkit-writing-mode: horizontal-tb;\n" +
+            "writing-mode: horizontal-tb;\n" +
+            "}";
 
-    public NinjaWebView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-    }
-
-    @Override
-    protected void onScrollChanged(int l, int t, int old_l, int old_t) {
-        super.onScrollChanged(l, t, old_l, old_t);
-        if (onScrollChangeListener != null) {
-            onScrollChangeListener.onScrollChange(t, old_t);
-        }
-    }
-
-    public void setOnScrollChangeListener(OnScrollChangeListener onScrollChangeListener) {
-        this.onScrollChangeListener = onScrollChangeListener;
-    }
-
-    public interface OnScrollChangeListener {
-        /**
-         * Called when the scroll position of a view changes.
-         *
-         * @param scrollY    Current vertical scroll origin.
-         * @param oldScrollY Previous vertical scroll origin.
-         */
-        void onScrollChange(int scrollY, int oldScrollY);
-    }
 
     private Context context;
     private int dimen144dp;
     private int dimen108dp;
+
+    private OnScrollChangeListener onScrollChangeListener;
 
     private Album album;
     private NinjaWebViewClient webViewClient;
@@ -97,11 +80,38 @@ public class NinjaWebView extends WebView implements AlbumController {
 
     private boolean foreground;
 
+    private boolean isVerticalRead = false;
+
     public boolean isForeground() {
         return foreground;
     }
 
     private BrowserController browserController = null;
+
+    public NinjaWebView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public NinjaWebView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
+
+    @Override
+    protected void onScrollChanged(int l, int t, int old_l, int old_t) {
+        super.onScrollChanged(l, t, old_l, old_t);
+        if (onScrollChangeListener != null) {
+            onScrollChangeListener.onScrollChange(t, old_t);
+        }
+    }
+
+    public void setOnScrollChangeListener(OnScrollChangeListener onScrollChangeListener) {
+        this.onScrollChangeListener = onScrollChangeListener;
+    }
+
+    public interface OnScrollChangeListener {
+        void onScrollChange(int scrollY, int oldScrollY);
+    }
+
 
     public BrowserController getBrowserController() {
         return browserController;
@@ -349,19 +359,35 @@ public class NinjaWebView extends WebView implements AlbumController {
     }
 
     public void jumpToBottom() {
-        scrollTo(0, getHeight());
+        if (isVerticalRead) {
+            scrollTo(computeHorizontalScrollRange(), 0);
+        } else {
+            scrollTo(0, computeVerticalScrollRange());
+        }
     }
 
     public void pageDownWithNoAnimation() {
-        scrollTo(0, getScrollY() + shiftOffset());
+        if (isVerticalRead) {
+            scrollBy(shiftOffset(), 0);
+        } else {
+            scrollBy(0, shiftOffset());
+        }
     }
 
     public void pageUpWithNoAnimation() {
-        scrollTo(0, getScrollY() - shiftOffset());
+        if (isVerticalRead) {
+            scrollBy(-shiftOffset(), 0);
+        } else {
+            scrollBy(0, -shiftOffset());
+        }
     }
 
     public int shiftOffset() {
-        return getHeight() - (int)ViewUnit.dpToPixel(getContext(), 80);
+        if (isVerticalRead) {
+            return getWidth() - (int) ViewUnit.dpToPixel(getContext(), 20);
+        } else {
+            return getHeight() - (int) ViewUnit.dpToPixel(getContext(), 80);
+        }
     }
 
     @Override
@@ -372,4 +398,43 @@ public class NinjaWebView extends WebView implements AlbumController {
             return true;
         }
     }
+
+    public void applyVerticalRead() {
+        isVerticalRead = true;
+        injectJavascript(this, verticalLayoutCss.getBytes());
+    }
+    public void applyHorizontalRead() {
+        isVerticalRead = false;
+        injectJavascript(this, horizontalLayoutCss.getBytes());
+    }
+
+    private void injectScriptFile(WebView view, String scriptFile) {
+        InputStream input;
+        try {
+            input = view.getContext().getAssets().open(scriptFile);
+            byte[] buffer = new byte[input.available()];
+            input.read(buffer);
+            input.close();
+
+            injectJavascript(view, buffer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void injectJavascript(WebView view, byte[] bytes) {
+        try {
+            String encoded = Base64.encodeToString(bytes, Base64.NO_WRAP);
+            view.loadUrl("javascript:(function() {" +
+                    "var parent = document.getElementsByTagName('head').item(0);" +
+                    "var style = document.createElement('style');" +
+                    "style.type = 'text/css';" +
+                    "style.innerHTML = window.atob('" + encoded + "');" +
+                    "parent.appendChild(style)" +
+                    "})()");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
