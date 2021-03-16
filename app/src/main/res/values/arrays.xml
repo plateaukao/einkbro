@@ -129,7 +129,7 @@
         <item>@drawable/ic_touch_enabled</item>
         <item>@drawable/ic_page_up</item>
         <item>@drawable/ic_page_down</item>
-        <item>@drawable/icon_tab_unselected</item>
+        <item>@drawable/icon_preview</item>
         <item>@drawable/icon_size</item>
         <item>@drawable/icon_settings</item>
         <item>@drawable/ic_bookmarks</item>
