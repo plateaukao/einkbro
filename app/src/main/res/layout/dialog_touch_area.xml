@@ -36,7 +36,7 @@
                 android:textSize="25dp" />
 
             <RadioButton
-                android:id="@+id/touch_left"
+                android:id="@+id/touch_area_bottom_left"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
@@ -47,7 +47,7 @@
                 android:textSize="25dp" />
 
             <RadioButton
-                android:id="@+id/touch_right"
+                android:id="@+id/touch_area_bottom_right"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
@@ -64,8 +64,8 @@
             android:layout_margin="10dp"
             android:background="@android:color/black" />
 
-
         <LinearLayout
+            android:id="@+id/show_touch_area"
             android:layout_width="match_parent"
             android:layout_height="46dp"
             android:minHeight="46dp"
@@ -79,7 +79,6 @@
                 android:checked="true" />
 
             <TextView
-                android:id="@+id/text_show_touch_area"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
@@ -87,20 +86,7 @@
                 android:text="@string/show_touch_area_hint"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="?android:attr/textColorPrimary" />
-
-
         </LinearLayout>
-
-            <Button
-                android:id="@+id/action_close"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackground"
-                android:includeFontPadding="false"
-                android:text="@string/close"
-                android:layout_gravity="right"
-                android:textColor="?android:attr/colorAccent" />
-
     </LinearLayout>
 </LinearLayout>
 
