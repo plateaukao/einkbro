@@ -51,3 +51,5 @@ browser with a nice looking user interface.
 - screenshots of the whole website
 - share/save as PDF
 - open links in other apps (for example YouTube)
+
+<div>App icon is made by <a href="https://www.flaticon.com/authors/turkkub" title="turkkub">turkkub</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
