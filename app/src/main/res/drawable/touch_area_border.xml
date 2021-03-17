@@ -6,10 +6,10 @@
             android:shape="rectangle" >
             <solid android:color="@android:color/transparent" />
             <stroke
-                android:width="1dp"
+                android:width="1px"
                 android:dashWidth="10px"
                 android:dashGap="10px"
-                android:color="#000" />
+                android:color="#c000" />
         </shape>
     </item>
     <item
@@ -23,10 +23,10 @@
             android:shape="rectangle" >
             <solid android:color="@android:color/transparent" />
             <stroke
-                android:width="1dp"
+                android:width="1px"
                 android:dashWidth="10px"
                 android:dashGap="10px"
-                android:color="#fff" />
+                android:color="#cfff" />
         </shape>
     </item>
 </layer-list>

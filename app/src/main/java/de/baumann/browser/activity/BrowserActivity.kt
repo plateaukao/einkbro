@@ -34,6 +34,7 @@ import android.widget.AdapterView.OnItemClickListener
 import android.widget.TextView.OnEditorActionListener
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -45,6 +46,7 @@ import de.baumann.browser.browser.*
 import de.baumann.browser.database.BookmarkList
 import de.baumann.browser.database.Record
 import de.baumann.browser.database.RecordAction
+import de.baumann.browser.preference.TouchAreaType
 import de.baumann.browser.service.ClearService
 import de.baumann.browser.task.ScreenshotTask
 import de.baumann.browser.unit.BrowserUnit
@@ -81,8 +83,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private lateinit var omniboxTitle: TextView
     private lateinit var tabScrollview: HorizontalScrollView
     private lateinit var overviewTop: LinearLayout
-    private lateinit var touchAreaLeft: View
-    private lateinit var touchAreaRight: View
+    private lateinit var touchAreaPageUp: View
+    private lateinit var touchAreaPageDown: View
 
     private var bottomSheetDialog: BottomSheetDialog? = null
     private var videoView: VideoView? = null
@@ -208,27 +210,20 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         }
     }
 
-    private var isShowingTouchArea = false
     private fun initTouchArea() {
-        touchAreaLeft = findViewById(R.id.touch_left)
-        touchAreaRight = findViewById(R.id.touch_right)
-        touchAreaLeft.setOnLongClickListener {
-            ninjaWebView.jumpToTop()
-            true
-        }
+        updateTouchAreaType()
         binding.omniboxTouch.setOnLongClickListener {
             TouchAreaDialog(BrowserActivity@this).show()
-            /*
-            if (!isShowingTouchArea) {
-                showTouchAreaHint(false)
-            } else {
-                hideTouchAreaHint()
-            }
-
-             */
             true
         }
         sp.registerOnSharedPreferenceChangeListener(touchAreaChangeListener)
+
+        val isEnabled = sp.getBoolean("sp_enable_touch", false)
+        if (isEnabled) {
+            enableTouch()
+        } else {
+            disableTouch()
+        }
     }
 
     private val touchAreaChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
@@ -239,13 +234,56 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             } else {
                 hideTouchAreaHint()
             }
-
+        }
+        if (key.equals("sp_touch_area_type")) {
+            updateTouchAreaType()
         }
     }
 
+    private fun updateTouchAreaType() {
+        // hide current one, and reset listener
+        if (this::touchAreaPageUp.isInitialized) {
+            with(touchAreaPageUp) {
+                visibility = INVISIBLE
+                setOnLongClickListener(null)
+                setOnClickListener(null)
+            }
+            with(touchAreaPageDown) {
+                visibility = INVISIBLE
+                setOnLongClickListener(null)
+                setOnClickListener(null)
+            }
+        }
 
+        when(TouchAreaType.values()[sp.getInt("sp_touch_area_type", 0)]) {
+                TouchAreaType.BottomLeftRight -> {
+                    touchAreaPageUp = findViewById(R.id.touch_area_bottom_left)
+                    touchAreaPageDown = findViewById(R.id.touch_area_bottom_right)
+                }
+                TouchAreaType.Left -> {
+                    touchAreaPageUp = findViewById(R.id.touch_area_left_1)
+                    touchAreaPageDown = findViewById(R.id.touch_area_left_2)
+                }
+                TouchAreaType.Right -> {
+                    touchAreaPageUp = findViewById(R.id.touch_area_right_1)
+                    touchAreaPageDown = findViewById(R.id.touch_area_right_2)
+                }
+            }
 
-    public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        val isTouchEnabled = sp.getBoolean("sp_enable_touch", false)
+        with (touchAreaPageUp) {
+            if (isTouchEnabled) visibility = VISIBLE
+            setOnClickListener { ninjaWebView.pageUpWithNoAnimation() }
+            setOnLongClickListener { ninjaWebView.jumpToTop(); true }
+        }
+        with (touchAreaPageDown) {
+            if (isTouchEnabled) visibility = VISIBLE
+            setOnClickListener { ninjaWebView.pageDownWithNoAnimation() }
+            setOnLongClickListener { ninjaWebView.jumpToBottom(); true }
+        }
+    }
+
+public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode != INPUT_FILE_REQUEST_CODE || mFilePathCallback == null) {
             super.onActivityResult(requestCode, resultCode, data)
             return
@@ -520,8 +558,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             R.id.omnibox_tabcount -> showOverview()
             R.id.omnibox_touch -> toggleTouchTurnPageFeature()
             R.id.omnibox_font -> showFontSizeChangeDialog()
-            R.id.touch_left -> ninjaWebView.pageUpWithNoAnimation()
-            R.id.touch_right -> ninjaWebView.pageDownWithNoAnimation()
             R.id.omnibox_back -> if (ninjaWebView.canGoBack()) {
                 ninjaWebView.goBack()
             } else {
@@ -578,36 +614,42 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     }
 
     private fun  toggleTouchTurnPageFeature() {
-        // touch on
-        if (binding.omniboxTouch.alpha != 1.0F) {
-            binding.omniboxTouch.alpha = 1.0F
-
-            touchAreaLeft.visibility = VISIBLE
-            touchAreaRight.visibility = VISIBLE
-
-            fabImagebuttonnav.setImageResource(R.drawable.ic_touch_enabled)
-            binding.omniboxTouch.setImageResource(R.drawable.ic_touch_enabled)
-
-            showTouchAreaHint()
-        } else {
-            binding.omniboxTouch.alpha = 0.99F
-            touchAreaLeft.visibility = INVISIBLE
-            touchAreaRight.visibility = INVISIBLE
-            fabImagebuttonnav.setImageResource(R.drawable.icon_overflow_fab)
-            binding.omniboxTouch.setImageResource(R.drawable.ic_touch_disabled)
+        // off: turn on
+        if (sp.getBoolean("sp_enable_touch", false)) {
+            sp.edit { putBoolean("sp_enable_touch", true) }
+            enableTouch()
+        } else { // turn off
+            sp.edit { putBoolean("sp_enable_touch", false) }
+            disableTouch()
         }
+    }
+    private fun enableTouch() {
+        binding.omniboxTouch.alpha = 1.0F
+
+        touchAreaPageUp.visibility = VISIBLE
+        touchAreaPageDown.visibility = VISIBLE
+
+        fabImagebuttonnav.setImageResource(R.drawable.ic_touch_enabled)
+        binding.omniboxTouch.setImageResource(R.drawable.ic_touch_enabled)
+        showTouchAreaHint()
+    }
+
+    private fun disableTouch() {
+        binding.omniboxTouch.alpha = 0.99F
+        touchAreaPageUp.visibility = INVISIBLE
+        touchAreaPageDown.visibility = INVISIBLE
+        fabImagebuttonnav.setImageResource(R.drawable.icon_overflow_fab)
+        binding.omniboxTouch.setImageResource(R.drawable.ic_touch_disabled)
     }
 
     private fun hideTouchAreaHint() {
-        isShowingTouchArea = false
-        touchAreaLeft.setBackgroundColor(Color.TRANSPARENT)
-        touchAreaRight.setBackgroundColor(Color.TRANSPARENT)
+        touchAreaPageUp.setBackgroundColor(Color.TRANSPARENT)
+        touchAreaPageDown.setBackgroundColor(Color.TRANSPARENT)
     }
 
     private fun showTouchAreaHint() {
-        isShowingTouchArea = true
-        touchAreaLeft.setBackgroundResource(R.drawable.touch_area_border)
-        touchAreaRight.setBackgroundResource(R.drawable.touch_area_border)
+        touchAreaPageUp.setBackgroundResource(R.drawable.touch_area_border)
+        touchAreaPageDown.setBackgroundResource(R.drawable.touch_area_border)
         if (!sp.getBoolean("sp_touch_area_hint", false)) {
             Timer("showTouchAreaHint", false)
                     .schedule(object : TimerTask() {
