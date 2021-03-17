@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    tools:ignore="ContentDescription">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/black" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp">
+
+            <RadioButton
+                android:id="@+id/touch_left_right"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layoutDirection="rtl"
+                android:textAlignment="textStart"
+                android:text="touch left/right"
+                android:buttonTint="@android:color/black"
+                android:textSize="25dp" />
+
+            <RadioButton
+                android:id="@+id/touch_left"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:textAlignment="textStart"
+                android:layoutDirection="rtl"
+                android:buttonTint="@android:color/black"
+                android:text="touch left"
+                android:textSize="25dp" />
+
+            <RadioButton
+                android:id="@+id/touch_right"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:textAlignment="textStart"
+                android:layoutDirection="rtl"
+                android:buttonTint="@android:color/black"
+                android:text="touch right"
+                android:textSize="25dp" />
+        </RadioGroup>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_margin="10dp"
+            android:background="@android:color/black" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:minHeight="46dp"
+            android:padding="8dp">
+
+            <CheckBox
+                android:id="@+id/switch_show_touch_area_hint"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:buttonTint="@android:color/black"
+                android:checked="true" />
+
+            <TextView
+                android:id="@+id/text_show_touch_area"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:includeFontPadding="false"
+                android:text="@string/show_touch_area_hint"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="?android:attr/textColorPrimary" />
+
+
+        </LinearLayout>
+
+            <Button
+                android:id="@+id/action_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:includeFontPadding="false"
+                android:text="@string/close"
+                android:layout_gravity="right"
+                android:textColor="?android:attr/colorAccent" />
+
+    </LinearLayout>
+</LinearLayout>
+
+

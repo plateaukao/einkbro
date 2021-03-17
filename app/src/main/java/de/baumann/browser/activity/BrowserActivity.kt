@@ -55,6 +55,7 @@ import de.baumann.browser.util.Constants
 import de.baumann.browser.view.*
 import de.baumann.browser.view.adapter.*
 import de.baumann.browser.view.dialog.FastToggleDialog
+import de.baumann.browser.view.dialog.TouchAreaDialog
 import de.baumann.browser.view.toolbaricons.ToolbarAction
 import java.io.File
 import java.util.*
@@ -216,14 +217,33 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             true
         }
         binding.omniboxTouch.setOnLongClickListener {
+            TouchAreaDialog(BrowserActivity@this).show()
+            /*
             if (!isShowingTouchArea) {
                 showTouchAreaHint(false)
             } else {
                 hideTouchAreaHint()
             }
+
+             */
             true
         }
+        sp.registerOnSharedPreferenceChangeListener(touchAreaChangeListener)
     }
+
+    private val touchAreaChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+        if (key.equals("sp_touch_area_hint")) {
+            val shouldShowHint = sp.getBoolean("sp_touch_area_hint", false)
+            if (shouldShowHint) {
+                showTouchAreaHint()
+            } else {
+                hideTouchAreaHint()
+            }
+
+        }
+    }
+
+
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode != INPUT_FILE_REQUEST_CODE || mFilePathCallback == null) {
@@ -584,11 +604,11 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         touchAreaRight.setBackgroundColor(Color.TRANSPARENT)
     }
 
-    private fun showTouchAreaHint(shouldDismissAfterTimeout: Boolean = true) {
+    private fun showTouchAreaHint() {
         isShowingTouchArea = true
         touchAreaLeft.setBackgroundResource(R.drawable.touch_area_border)
         touchAreaRight.setBackgroundResource(R.drawable.touch_area_border)
-        if (shouldDismissAfterTimeout) {
+        if (!sp.getBoolean("sp_touch_area_hint", false)) {
             Timer("showTouchAreaHint", false)
                     .schedule(object : TimerTask() {
                         override fun run() {
@@ -753,12 +773,12 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
 
         binding.omniboxBookmark.setOnClickListener { openBookmarkPage() }
 
-        sp.registerOnSharedPreferenceChangeListener(preferenceListener)
+        sp.registerOnSharedPreferenceChangeListener(toolbarChangeListener)
 
         reorderToolbarIcons()
     }
 
-    private val preferenceListener = SharedPreferences.OnSharedPreferenceChangeListener {
+    private val toolbarChangeListener = SharedPreferences.OnSharedPreferenceChangeListener {
         _, key -> if (key.equals("sp_toolbar_icons")) reorderToolbarIcons()
     }
 

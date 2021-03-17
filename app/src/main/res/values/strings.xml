@@ -449,5 +449,7 @@
     <string name="desktop">desktop</string>
     <string name="remote">remote</string>
     <string name="media_continue">continue</string>
+    <string name="show_touch_area_hint">show touch area hint when on</string>
+    <string name="close">Close</string>
 
 </resources>
