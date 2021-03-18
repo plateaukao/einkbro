@@ -350,4 +350,7 @@
 
         &lt;i&gt;Following people contributed at this project. If I have forgotten anybody, please contact me:&lt;/i&gt;
     </string>
+    <string name="left_right">左右側</string>
+    <string name="touch_left_side">左側</string>
+    <string name="touch_right_side">右側</string>
 </resources>

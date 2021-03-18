@@ -359,7 +359,7 @@ public class NinjaWebView extends WebView implements AlbumController {
     }
 
     public void jumpToBottom() {
-        if (isVerticalRead) {
+        if (getVerticalRead()) {
             scrollTo(computeHorizontalScrollRange(), 0);
         } else {
             scrollTo(0, computeVerticalScrollRange());
@@ -367,7 +367,7 @@ public class NinjaWebView extends WebView implements AlbumController {
     }
 
     public void pageDownWithNoAnimation() {
-        if (isVerticalRead) {
+        if (getVerticalRead()) {
             scrollBy(shiftOffset(), 0);
         } else {
             scrollBy(0, shiftOffset());
@@ -375,7 +375,7 @@ public class NinjaWebView extends WebView implements AlbumController {
     }
 
     public void pageUpWithNoAnimation() {
-        if (isVerticalRead) {
+        if (getVerticalRead()) {
             scrollBy(-shiftOffset(), 0);
         } else {
             scrollBy(0, -shiftOffset());
@@ -383,7 +383,7 @@ public class NinjaWebView extends WebView implements AlbumController {
     }
 
     public int shiftOffset() {
-        if (isVerticalRead) {
+        if (getVerticalRead()) {
             return getWidth() - (int) ViewUnit.dpToPixel(getContext(), 40);
         } else {
             return getHeight() - (int) ViewUnit.dpToPixel(getContext(), 80);
@@ -400,11 +400,12 @@ public class NinjaWebView extends WebView implements AlbumController {
     }
 
     public void applyVerticalRead() {
-        isVerticalRead = true;
+        setVerticalRead(true);
         injectJavascript(this, verticalLayoutCss.getBytes());
     }
+
     public void applyHorizontalRead() {
-        isVerticalRead = false;
+        setVerticalRead(false);
         injectJavascript(this, horizontalLayoutCss.getBytes());
     }
 
@@ -437,4 +438,11 @@ public class NinjaWebView extends WebView implements AlbumController {
         }
     }
 
+    private void setVerticalRead(boolean isEnabled) {
+        sp.edit().putBoolean("sp_vertical_read", isEnabled).apply();
+    }
+
+    private boolean getVerticalRead() {
+        return sp.getBoolean("sp_vertical_read", false);
+    }
 }
