@@ -43,7 +43,16 @@ class UiSettingsFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeL
     }
 
     override fun onSharedPreferenceChanged(sp: SharedPreferences, key: String) {
-        if (key == "sp_exit" || key == "sp_toggle" || key == "sp_add" || key == "sp_theme" || key == "nav_position" || key == "sp_hideOmni" || key == "start_tab" || key == "sp_hideSB" || key == "overView_place" || key == "overView_hide") {
+        if (key == "sp_exit" ||
+                key == "sp_toggle" ||
+                key == "sp_add" ||
+                key == "sp_theme" ||
+                key == "nav_position" ||
+                key == "sp_hideOmni" ||
+                key == "start_tab" ||
+                key == "sp_hideSB" ||
+                key == "overView_place" ||
+                key == "overView_hide") {
             sp.edit().putInt("restart_changed", 1).apply()
         }
     }
@@ -62,7 +71,7 @@ class UiSettingsFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeL
     private fun showToolbarSettingDialog(preference: MultiSelectDragListPreference?) {
         val localPreference: MultiSelectDragListPreference = preference ?: findPreference("sp_toolbar_icons") ?: return
         val shouldFinishActivityWhenDismissed = preference == null
-        val f: DialogFragment = MultiSelectDragListPreferenceDialog(localPreference!!, shouldFinishActivityWhenDismissed)
+        val f: DialogFragment = MultiSelectDragListPreferenceDialog(localPreference, shouldFinishActivityWhenDismissed)
         f.setTargetFragment(this, 0)
         f.show(parentFragmentManager, DIALOG_FRAGMENT_TAG)
     }

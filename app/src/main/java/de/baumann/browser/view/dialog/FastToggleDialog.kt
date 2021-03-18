@@ -1,8 +1,10 @@
 package de.baumann.browser.view.dialog
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
@@ -57,8 +59,6 @@ class FastToggleDialog(
         val toggleImagesView = findViewById<View>(R.id.toggle_imagesView) ?: return
         val toggleMediaContinue = findViewById<ImageButton>(R.id.toggle_media_continue) ?: return
         val toggleMediaContinueView = findViewById<View>(R.id.toggle_media_continue_view) ?: return
-        val toggleRemote = findViewById<ImageButton>(R.id.toggle_remote) ?: return
-        val toggleRemoteView = findViewById<View>(R.id.toggle_remoteView) ?: return
         val toggleDesktop = findViewById<ImageButton>(R.id.toggle_desktop) ?: return
         val toggleDesktopView = findViewById<View>(R.id.toggle_desktopView) ?: return
 
@@ -66,7 +66,6 @@ class FastToggleDialog(
         updateViewVisibility(toggleLocationView, R.string.sp_location)
         updateViewVisibility(toggleImagesView, sp.getBoolean(getString(R.string.sp_images), true))
         updateViewVisibility(toggleMediaContinueView, sp.getBoolean("sp_media_continue", false))
-        updateViewVisibility(toggleRemoteView, sp.getBoolean("sp_remote", true))
         updateViewVisibility(toggleDesktopView, sp.getBoolean("sp_desktop", false))
 
         toggleHistory.setOnClickListener {
@@ -84,10 +83,6 @@ class FastToggleDialog(
         toggleMediaContinue.setOnClickListener {
             updateBooleanPref("sp_media_continue", false)
             updateViewVisibility(toggleMediaContinueView, sp.getBoolean("sp_media_continue", false))
-        }
-        toggleRemote.setOnClickListener {
-            updateBooleanPref("sp_remote")
-            updateViewVisibility(toggleRemoteView, sp.getBoolean("sp_remote", true))
         }
         toggleDesktop.setOnClickListener {
             updateBooleanPref("sp_desktop", false)
