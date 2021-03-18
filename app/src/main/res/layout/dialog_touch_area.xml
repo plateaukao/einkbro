@@ -26,35 +26,41 @@
 
             <RadioButton
                 android:id="@+id/touch_left_right"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:layout_gravity="start"
                 android:layoutDirection="rtl"
                 android:textAlignment="textStart"
-                android:text="touch left/right"
+                android:drawableLeft="@drawable/ic_touch_left_right"
+                android:text="  touch left/right"
                 android:buttonTint="@android:color/black"
                 android:textSize="25dp" />
 
             <RadioButton
                 android:id="@+id/touch_area_bottom_left"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:layout_gravity="start"
                 android:textAlignment="textStart"
+                android:drawableLeft="@drawable/ic_touch_left"
                 android:layoutDirection="rtl"
                 android:buttonTint="@android:color/black"
-                android:text="touch left"
+                android:text="  touch left side"
                 android:textSize="25dp" />
 
             <RadioButton
                 android:id="@+id/touch_area_bottom_right"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:layout_gravity="start"
                 android:textAlignment="textStart"
+                android:drawableLeft="@drawable/ic_touch_right"
                 android:layoutDirection="rtl"
                 android:buttonTint="@android:color/black"
-                android:text="touch right"
+                android:text="  touch right side"
                 android:textSize="25dp" />
         </RadioGroup>
 

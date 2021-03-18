@@ -615,12 +615,13 @@ public override fun onActivityResult(requestCode: Int, resultCode: Int, data: In
 
     private fun  toggleTouchTurnPageFeature() {
         // off: turn on
-        if (sp.getBoolean("sp_enable_touch", false)) {
-            sp.edit { putBoolean("sp_enable_touch", true) }
+        //if (sp.getBoolean("sp_enable_touch", false)) {
+        if(binding.omniboxTouch.alpha != 1.0F) {
             enableTouch()
+            sp.edit(commit = true) { putBoolean("sp_enable_touch", true) }
         } else { // turn off
-            sp.edit { putBoolean("sp_enable_touch", false) }
             disableTouch()
+            sp.edit(commit = true) { putBoolean("sp_enable_touch", false) }
         }
     }
     private fun enableTouch() {
