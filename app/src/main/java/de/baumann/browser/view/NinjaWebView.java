@@ -400,12 +400,10 @@ public class NinjaWebView extends WebView implements AlbumController {
     }
 
     public void applyVerticalRead() {
-        setVerticalRead(true);
         injectJavascript(this, verticalLayoutCss.getBytes());
     }
 
     public void applyHorizontalRead() {
-        setVerticalRead(false);
         injectJavascript(this, horizontalLayoutCss.getBytes());
     }
 
@@ -436,10 +434,6 @@ public class NinjaWebView extends WebView implements AlbumController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private void setVerticalRead(boolean isEnabled) {
-        sp.edit().putBoolean("sp_vertical_read", isEnabled).apply();
     }
 
     private boolean getVerticalRead() {
