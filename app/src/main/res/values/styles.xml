@@ -12,6 +12,10 @@
         <item name="android:background">@android:color/white</item>
     </style>
 
+    <style name="TouchAreaDialog" parent="Theme.MaterialComponents.Light.Dialog.Alert">
+        <item name="android:backgroundDimAmount">0</item>
+        <item name="android:windowAnimationStyle">@null</item>
+    </style>
     <style name="BottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="android:backgroundDimAmount">0</item>
         <item name="android:windowAnimationStyle">@null</item>

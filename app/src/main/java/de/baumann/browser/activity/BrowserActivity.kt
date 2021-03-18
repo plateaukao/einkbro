@@ -2,6 +2,7 @@ package de.baumann.browser.activity
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.app.DownloadManager
 import android.app.SearchManager
 import android.content.*
@@ -86,7 +87,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private lateinit var touchAreaPageUp: View
     private lateinit var touchAreaPageDown: View
 
-    private var bottomSheetDialog: BottomSheetDialog? = null
+    private var bottomSheetDialog: Dialog? = null
     private var videoView: VideoView? = null
     private var customView: View? = null
 

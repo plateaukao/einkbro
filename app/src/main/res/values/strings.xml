@@ -451,5 +451,8 @@
     <string name="media_continue">continue</string>
     <string name="show_touch_area_hint">show touch area hint when on</string>
     <string name="close">Close</string>
+    <string name="left_right">left/right</string>
+    <string name="touch_left_side">left side</string>
+    <string name="touch_right_side">right side</string>
 
 </resources>

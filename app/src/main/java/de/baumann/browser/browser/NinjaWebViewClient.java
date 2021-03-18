@@ -80,6 +80,10 @@ public class NinjaWebViewClient extends WebViewClient {
             }
             action.close();
         }
+
+        if (sp.getBoolean("sp_vertical_read", false)) {
+            ((NinjaWebView)view).applyVerticalRead();
+        }
     }
 
     @Override
