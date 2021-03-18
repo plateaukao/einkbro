@@ -23,18 +23,25 @@ import de.baumann.browser.browser.Javascript
 import de.baumann.browser.unit.HelperUnit
 
 class FastToggleDialog(
-        context: Context,
+        private val context: Context,
         private val title: String,
         private val url: String,
         private val okAction: () -> Unit,
-) : BottomSheetDialog(context, R.style.BottomSheetDialog) {
+) {
     private val sp: SharedPreferences by lazy { PreferenceManager.getDefaultSharedPreferences(context) }
+    private lateinit var dialog: AlertDialog
+    private lateinit var view: View
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(View.inflate(context, R.layout.dialog_toggle, null))
-        window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+
+    fun show() {
+        view = View.inflate(context, R.layout.dialog_toggle, null)
+        val builder = AlertDialog.Builder(context, R.style.TouchAreaDialog).apply { setView(view) }
+
         initViews()
+        dialog = builder.create().apply {
+            window?.setGravity(Gravity.BOTTOM)
+        }
+        dialog.show()
     }
 
     private fun initViews() {
@@ -46,21 +53,21 @@ class FastToggleDialog(
     }
 
     private fun initTitle() {
-        val dialogTitle = findViewById<TextView>(R.id.dialog_title) ?: return
+        val dialogTitle = view.findViewById<TextView>(R.id.dialog_title) ?: return
         dialogTitle.text = title
     }
 
     private fun initToggles() {
-        val toggleHistory = findViewById<ImageButton>(R.id.toggle_history) ?: return
-        val toggleHistoryView = findViewById<View>(R.id.toggle_historyView) ?: return
-        val toggleLocation = findViewById<ImageButton>(R.id.toggle_location) ?: return
-        val toggleLocationView = findViewById<View>(R.id.toggle_locationView) ?: return
-        val toggleImages = findViewById<ImageButton>(R.id.toggle_images) ?: return
-        val toggleImagesView = findViewById<View>(R.id.toggle_imagesView) ?: return
-        val toggleMediaContinue = findViewById<ImageButton>(R.id.toggle_media_continue) ?: return
-        val toggleMediaContinueView = findViewById<View>(R.id.toggle_media_continue_view) ?: return
-        val toggleDesktop = findViewById<ImageButton>(R.id.toggle_desktop) ?: return
-        val toggleDesktopView = findViewById<View>(R.id.toggle_desktopView) ?: return
+        val toggleHistory = view.findViewById<ImageButton>(R.id.toggle_history) ?: return
+        val toggleHistoryView = view.findViewById<View>(R.id.toggle_historyView) ?: return
+        val toggleLocation = view.findViewById<ImageButton>(R.id.toggle_location) ?: return
+        val toggleLocationView = view.findViewById<View>(R.id.toggle_locationView) ?: return
+        val toggleImages = view.findViewById<ImageButton>(R.id.toggle_images) ?: return
+        val toggleImagesView = view.findViewById<View>(R.id.toggle_imagesView) ?: return
+        val toggleMediaContinue = view.findViewById<ImageButton>(R.id.toggle_media_continue) ?: return
+        val toggleMediaContinueView = view.findViewById<View>(R.id.toggle_media_continue_view) ?: return
+        val toggleDesktop = view.findViewById<ImageButton>(R.id.toggle_desktop) ?: return
+        val toggleDesktopView = view.findViewById<View>(R.id.toggle_desktopView) ?: return
 
         updateViewVisibility(toggleHistoryView, sp.getBoolean("saveHistory", false))
         updateViewVisibility(toggleLocationView, R.string.sp_location)
@@ -95,9 +102,9 @@ class FastToggleDialog(
         val cookieHosts = Cookie(context)
         val adBlock = AdBlock(context)
 
-        val btnJavaScriptWhiteList = findViewById<ImageButton>(R.id.imageButton_js) ?: return
-        val btnAbWhiteList = findViewById<ImageButton>(R.id.imageButton_ab) ?: return
-        val btnCookieWhiteList = findViewById<ImageButton>(R.id.imageButton_cookie) ?: return
+        val btnJavaScriptWhiteList = view.findViewById<ImageButton>(R.id.imageButton_js) ?: return
+        val btnAbWhiteList = view.findViewById<ImageButton>(R.id.imageButton_ab) ?: return
+        val btnCookieWhiteList = view.findViewById<ImageButton>(R.id.imageButton_cookie) ?: return
 
         setImgButtonResource(btnJavaScriptWhiteList, javaHosts.isWhite(url))
         setImgButtonResource(btnCookieWhiteList, cookieHosts.isWhite(url))
@@ -130,9 +137,9 @@ class FastToggleDialog(
     }
 
     private fun initSwitches() {
-        val switchJavascript = findViewById<CheckBox>(R.id.switch_js) ?: return
-        val switchAdBlock = findViewById<CheckBox>(R.id.switch_adBlock) ?: return
-        val switchCookie = findViewById<CheckBox>(R.id.switch_cookie) ?: return
+        val switchJavascript = view.findViewById<CheckBox>(R.id.switch_js) ?: return
+        val switchAdBlock = view.findViewById<CheckBox>(R.id.switch_adBlock) ?: return
+        val switchCookie = view.findViewById<CheckBox>(R.id.switch_cookie) ?: return
         switchJavascript.isChecked = sp.getBoolean(getString(R.string.sp_javascript), true)
         switchAdBlock.isChecked = sp.getBoolean(getString(R.string.sp_ad_block), true)
         switchCookie.isChecked = sp.getBoolean(getString(R.string.sp_cookies), true)
@@ -143,11 +150,11 @@ class FastToggleDialog(
     }
 
     private fun initOkCancelBar() {
-        findViewById<Button>(R.id.action_ok)?.setOnClickListener {
-            dismiss()
+        view.findViewById<Button>(R.id.action_ok)?.setOnClickListener {
+            dialog.dismiss()
             okAction.invoke()
         }
-        findViewById<Button>(R.id.action_cancel)?.setOnClickListener { dismiss() }
+        view.findViewById<Button>(R.id.action_cancel)?.setOnClickListener { dialog.dismiss() }
     }
 
     private fun getString(resId: Int): String = context.getString(resId)

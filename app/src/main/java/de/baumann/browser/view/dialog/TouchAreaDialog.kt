@@ -17,12 +17,12 @@ import de.baumann.browser.preference.TouchAreaType
 class TouchAreaDialog(private val context: Context) {
     private val sp: SharedPreferences by lazy { PreferenceManager.getDefaultSharedPreferences(context) }
 
-    private var builder: AlertDialog.Builder = AlertDialog.Builder(context, R.style.TouchAreaDialog)
     private lateinit var dialog: AlertDialog
 
     fun show() {
         val view = View.inflate(context, R.layout.dialog_touch_area, null)
-        builder.setView(view)
+        val builder = AlertDialog.Builder(context, R.style.TouchAreaDialog).apply { setView(view) }
+
         initViews(view)
         dialog = builder.create().apply {
             window?.setGravity(Gravity.BOTTOM)

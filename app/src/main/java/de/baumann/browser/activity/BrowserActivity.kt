@@ -131,8 +131,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
 
     private lateinit var bookmarkDB: BookmarkList
 
-    private var isVerticalRead = false
-
     // Classes
     private inner class VideoCompletionListener : OnCompletionListener, MediaPlayer.OnErrorListener {
         override fun onError(mp: MediaPlayer, what: Int, extra: Int): Boolean {
@@ -214,7 +212,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private fun initTouchArea() {
         updateTouchAreaType()
         binding.omniboxTouch.setOnLongClickListener {
-            TouchAreaDialog(BrowserActivity@this).show()
+            TouchAreaDialog(BrowserActivity@ this).show()
             true
         }
         sp.registerOnSharedPreferenceChangeListener(touchAreaChangeListener)
@@ -257,27 +255,27 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         }
 
         when(TouchAreaType.values()[sp.getInt("sp_touch_area_type", 0)]) {
-                TouchAreaType.BottomLeftRight -> {
-                    touchAreaPageUp = findViewById(R.id.touch_area_bottom_left)
-                    touchAreaPageDown = findViewById(R.id.touch_area_bottom_right)
-                }
-                TouchAreaType.Left -> {
-                    touchAreaPageUp = findViewById(R.id.touch_area_left_1)
-                    touchAreaPageDown = findViewById(R.id.touch_area_left_2)
-                }
-                TouchAreaType.Right -> {
-                    touchAreaPageUp = findViewById(R.id.touch_area_right_1)
-                    touchAreaPageDown = findViewById(R.id.touch_area_right_2)
-                }
+            TouchAreaType.BottomLeftRight -> {
+                touchAreaPageUp = findViewById(R.id.touch_area_bottom_left)
+                touchAreaPageDown = findViewById(R.id.touch_area_bottom_right)
+            }
+            TouchAreaType.Left -> {
+                touchAreaPageUp = findViewById(R.id.touch_area_left_1)
+                touchAreaPageDown = findViewById(R.id.touch_area_left_2)
+            }
+            TouchAreaType.Right -> {
+                touchAreaPageUp = findViewById(R.id.touch_area_right_1)
+                touchAreaPageDown = findViewById(R.id.touch_area_right_2)
+            }
             }
 
         val isTouchEnabled = sp.getBoolean("sp_enable_touch", false)
-        with (touchAreaPageUp) {
+        with(touchAreaPageUp) {
             if (isTouchEnabled) visibility = VISIBLE
             setOnClickListener { ninjaWebView.pageUpWithNoAnimation() }
             setOnLongClickListener { ninjaWebView.jumpToTop(); true }
         }
-        with (touchAreaPageDown) {
+        with(touchAreaPageDown) {
             if (isTouchEnabled) visibility = VISIBLE
             setOnClickListener { ninjaWebView.pageDownWithNoAnimation() }
             setOnLongClickListener { ninjaWebView.jumpToBottom(); true }
@@ -570,8 +568,8 @@ public override fun onActivityResult(requestCode: Int, resultCode: Int, data: In
                 ninjaWebView.pageDownWithNoAnimation()
             }
             R.id.omnibox_vertical_read -> {
-                isVerticalRead = !isVerticalRead
-                if (isVerticalRead) {
+                setVerticalRead(!getVerticalRead())
+                if (getVerticalRead()) {
                     ninjaWebView.applyVerticalRead()
                 } else {
                     ninjaWebView.applyHorizontalRead()
@@ -604,7 +602,7 @@ public override fun onActivityResult(requestCode: Int, resultCode: Int, data: In
                 ninjaWebView.stopLoading()
             }
             R.id.omnibox_bar_setting -> {
-                val intent = Intent( this, Settings_UIActivity::class.java)
+                val intent = Intent(this, Settings_UIActivity::class.java)
                         .putExtra(Constants.ARG_LAUNCH_TOOLBAR_SETTING, true)
                 startActivity(intent)
                 overridePendingTransition(0, 0);
@@ -822,8 +820,7 @@ public override fun onActivityResult(requestCode: Int, resultCode: Int, data: In
         reorderToolbarIcons()
     }
 
-    private val toolbarChangeListener = SharedPreferences.OnSharedPreferenceChangeListener {
-        _, key -> if (key.equals("sp_toolbar_icons")) reorderToolbarIcons()
+    private val toolbarChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key -> if (key.equals("sp_toolbar_icons")) reorderToolbarIcons()
     }
 
     private val toolbarActionViews: List<View> by lazy {
@@ -1191,8 +1188,7 @@ public override fun onActivityResult(requestCode: Int, resultCode: Int, data: In
     }
 
     private fun showFastToggleDialog() {
-        bottomSheetDialog = FastToggleDialog( this, ninjaWebView.title ?: "", ninjaWebView.url ?: "")
-        {
+        FastToggleDialog(this, ninjaWebView.title ?: "", ninjaWebView.url ?: "") {
             if (ninjaWebView != null) {
                 ninjaWebView.initPreferences()
                 ninjaWebView.reload()
@@ -1870,6 +1866,11 @@ public override fun onActivityResult(requestCode: Int, resultCode: Int, data: In
         super.onActionModeFinished(mode)
         mActionMode = null
     }
+
+    private fun getVerticalRead(): Boolean = sp.getBoolean("sp_vertical_read", false)
+
+    private fun setVerticalRead(isEnabled: Boolean) =
+        sp.edit { putBoolean("sp_vertical_read", isEnabled) }
 
 
     private fun hideKeyboard() {
