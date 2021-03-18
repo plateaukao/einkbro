@@ -411,9 +411,14 @@ public class BrowserUnit {
     private static String guessFilename(final String url, final String contentDisposition, final String mimeType) {
         final String prefix = "filename*=utf-8''";
         final String decodedContentDescription = URLDecoder.decode(contentDisposition);
-        if (decodedContentDescription.toLowerCase().contains("filename*=utf-8''")) {
+        if (decodedContentDescription.toLowerCase().contains(prefix)) {
             int index = decodedContentDescription.toLowerCase().indexOf(prefix);
             return decodedContentDescription.substring(index + prefix.length());
+        }
+        final String anotherPrefix = "filename=\"";
+        if (contentDisposition.contains(anotherPrefix)) {
+            int index = contentDisposition.indexOf(anotherPrefix);
+            return contentDisposition.substring(index + anotherPrefix.length(), contentDisposition.length() - 1);
         }
 
         return URLUtil.guessFileName(url, contentDisposition, mimeType);
