@@ -259,7 +259,7 @@ public class RecordAction {
                 null,
                 null,
                 null,
-                RecordUnit.COLUMN_TIME + " asc"
+                RecordUnit.COLUMN_TIME + " desc"
         );
 
         cursor.moveToFirst();
