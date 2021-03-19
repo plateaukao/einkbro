@@ -6,6 +6,7 @@ import android.app.Dialog
 import android.app.DownloadManager
 import android.app.SearchManager
 import android.content.*
+import android.content.Intent.CATEGORY_BROWSABLE
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.database.Cursor
@@ -499,12 +500,7 @@ public override fun onActivityResult(requestCode: Int, resultCode: Int, data: In
                 }
             }
             R.id.menu_sharePDF -> printPDF(true)
-            R.id.menu_openWith -> {
-                val intent = Intent(Intent.ACTION_VIEW)
-                intent.data = Uri.parse(url)
-                val chooser = Intent.createChooser(intent, getString(R.string.menu_open_with))
-                startActivity(chooser)
-            }
+            R.id.menu_openWith -> ninjaWebView.url?.let {  showBrowserChooser(it, getString(R.string.menu_open_with)) }
             R.id.menu_saveScreenshot -> if (Build.VERSION.SDK_INT in 23..28) {
                 val hasWRITE_EXTERNAL_STORAGE = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
@@ -557,6 +553,7 @@ public override fun onActivityResult(requestCode: Int, resultCode: Int, data: In
             R.id.omnibox_tabcount -> showOverview()
             R.id.omnibox_touch -> toggleTouchTurnPageFeature()
             R.id.omnibox_font -> showFontSizeChangeDialog()
+            R.id.omnibox_reader -> ninjaWebView.applyReaderMode()
             R.id.omnibox_back -> if (ninjaWebView.canGoBack()) {
                 ninjaWebView.goBack()
             } else {
@@ -610,6 +607,11 @@ public override fun onActivityResult(requestCode: Int, resultCode: Int, data: In
             else -> {
             }
         }
+    }
+
+    private fun showBrowserChooser(url: String, title: String) {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        startActivity(Intent.createChooser(intent , title))
     }
 
     private fun  toggleTouchTurnPageFeature() {
@@ -1510,10 +1512,7 @@ public override fun onActivityResult(requestCode: Int, resultCode: Int, data: In
             hideBottomSheetDialog()
         }
         dialogView.findViewById<LinearLayout>(R.id.contextLink_openWith).setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW)
-            intent.data = Uri.parse(url)
-            val chooser = Intent.createChooser(intent, getString(R.string.menu_open_with))
-            startActivity(chooser)
+            url?.let { showBrowserChooser(it, getString(R.string.menu_open_with)) }
             hideBottomSheetDialog()
         }
         dialogView.findViewById<LinearLayout>(R.id.contextLink_newTabOpen).setOnClickListener {
@@ -1637,7 +1636,7 @@ public override fun onActivityResult(requestCode: Int, resultCode: Int, data: In
         binding.menuShareClipboard.setOnClickListener {
             hideBottomSheetDialog()
             val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-            val clip = ClipData.newPlainText("text", url)
+            val clip = ClipData.newPlainText("text", ninjaWebView.url)
             Objects.requireNonNull(clipboard).setPrimaryClip(clip)
             NinjaToast.show(this, R.string.toast_copy_successful)
         }
