@@ -6,6 +6,10 @@
 
     <queries>
         <package android:name="info.plateaukao.naverdict" />
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="https" />
+        </intent>
     </queries>
 
     <!-- Permission -->

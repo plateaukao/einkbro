@@ -400,31 +400,44 @@ public class NinjaWebView extends WebView implements AlbumController {
     }
 
     public void applyVerticalRead() {
-        injectJavascript(this, verticalLayoutCss.getBytes());
+        injectCss(verticalLayoutCss.getBytes());
     }
 
     public void applyHorizontalRead() {
-        injectJavascript(this, horizontalLayoutCss.getBytes());
+        injectCss(horizontalLayoutCss.getBytes());
     }
 
-    private void injectScriptFile(WebView view, String scriptFile) {
+    public void applyReaderMode() {
+        injectScriptFile("readability.js");
+    }
+
+    private void injectScriptFile(String scriptFile) {
         InputStream input;
         try {
-            input = view.getContext().getAssets().open(scriptFile);
+            input = getContext().getAssets().open(scriptFile);
             byte[] buffer = new byte[input.available()];
             input.read(buffer);
             input.close();
 
-            injectJavascript(view, buffer);
+            // String-ify the script byte-array using BASE64 encoding !!!
+            String encoded = Base64.encodeToString(buffer, Base64.NO_WRAP);
+            loadUrl("javascript:(function() {" +
+                    "var parent = document.getElementsByTagName('head').item(0);" +
+                    "var script = document.createElement('script');" +
+                    "script.type = 'text/javascript';" +
+                    "script.innerHTML = window.atob('" + encoded + "');" +
+                    "parent.appendChild(script)" +
+                    "})()");
         } catch (IOException e) {
+            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
 
-    private void injectJavascript(WebView view, byte[] bytes) {
+    private void injectCss(byte[] bytes) {
         try {
             String encoded = Base64.encodeToString(bytes, Base64.NO_WRAP);
-            view.loadUrl("javascript:(function() {" +
+            loadUrl("javascript:(function() {" +
                     "var parent = document.getElementsByTagName('head').item(0);" +
                     "var style = document.createElement('style');" +
                     "style.type = 'text/css';" +
