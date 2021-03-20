@@ -44,21 +44,20 @@ var readability = {
      * Defined up here so we don't instantiate them repeatedly in loops.
      **/
     regexps: {
-        unlikelyCandidates:    /combx|comment|community|disqus|extra|foot|header|menu|remark|rss|shoutbox|sidebar|sponsor|ad-break|agegate|pagination|pager|popup|tweet|twitter/i,
-        okMaybeItsACandidate:  /and|article|body|column|main|shadow/i,
-        positive:              /article|body|content|entry|hentry|main|page|pagination|post|text|blog|story/i,
-        negative:              /combx|comment|com-|contact|foot|footer|footnote|masthead|media|meta|outbrain|promo|related|scroll|shoutbox|sidebar|sponsor|shopping|tags|tool|widget/i,
-        extraneous:            /print|archive|comment|discuss|e[\-]?mail|share|reply|all|login|sign|single/i,
-        divToPElements:        /<(a|blockquote|dl|div|img|ol|p|pre|table|ul)/i,
-        replaceBrs:            /(<br[^>]*>[ \n\r\t]*){2,}/gi,
-        replaceFonts:          /<(\/?)font[^>]*>/gi,
-        trim:                  /^\s+|\s+$/g,
-        normalize:             /\s{2,}/g,
-        killBreaks:            /(<br\s*\/?>(\s|&nbsp;?)*){1,}/g,
-        videos:                /http:\/\/(www\.)?(youtube|vimeo)\.com/i,
-        skipFootnoteLink:      /^\s*(\[?[a-z0-9]{1,2}\]?|^|edit|citation needed)\s*$/i,
-        nextLink:              /(next|weiter|continue|>([^\|]|$)|»([^\|]|$))/i, // Match: next, continue, >, >>, » but not >|, »| as those usually mean last.
-        prevLink:              /(prev|earl|old|new|<|«)/i
+        unlikelyCandidatesRe: /combx|modal|comment|disqus|foot|header|menu|meta|nav|rss|shoutbox|sidebar|sponsor|social|teaserlist|time|tweet|twitter/i,
+        okMaybeItsACandidateRe: /and|article|body|column|main|story|entry|^post/im,
+        positiveRe: /article|body|content|entry|hentry|page|pagination|post|section|chapter|description|main|blog|text/i,
+        negativeRe: /combx|comment|contact|foot|footer|footnote|link|media|meta|promo|related|scroll|shoutbox|sponsor|utility|tags|widget/i,
+        divToPElementsRe: /<(a|blockquote|dl|div|img|ol|p|pre|table|ul)/i,
+        replaceBrsRe: /(<br[^>]*>[ \n\r\t]*){2,}/gi,
+        replaceFontsRe: /<(\/?)font[^>]*>/gi,
+        trimRe: /^\s+|\s+$/g,
+        normalizeRe: /\s{2,}/g,
+        killBreaksRe: /(<br\s*\/?>(\s|&nbsp;?)*){1,}/g,
+        videoRe: /http:\/\/(www\.)?(youtube|vimeo|youku|tudou|56|yinyuetai)\.com/i,
+        skipFootnoteLink: /^\s*(\[?[a-z0-9]{1,2}\]?|^|edit|citation needed)\s*$/i,
+        nextLink:  /(next|weiter|continue|>([^\|]|$)|»([^\|]|$))/i, // Match: next, continue, >, >>, » but not >|, »| as those usually mean last.
+        prevLink:  /(prev|earl|old|new|<|«)/i
     },
 
     /**
@@ -115,6 +114,7 @@ var readability = {
         innerDiv.id             = "readInner";
 
         /* Apply user-selected styling */
+        readStyle = "style-athelas";
         document.body.className = readStyle;
         document.dir            = readability.getSuggestedDirection(articleTitle.innerHTML);
 
@@ -225,7 +225,7 @@ var readability = {
             readability.addFootnotes(articleContent);
         }
 
-        readability.fixImageFloats(articleContent);
+        //readability.fixImageFloats(articleContent);
     },
 
     /**
