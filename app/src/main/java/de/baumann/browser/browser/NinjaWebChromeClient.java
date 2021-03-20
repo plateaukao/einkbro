@@ -3,8 +3,10 @@ package de.baumann.browser.browser;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.*;
 
 import de.baumann.browser.unit.HelperUnit;
@@ -21,12 +23,30 @@ public class NinjaWebChromeClient extends WebChromeClient {
 
     @Override
     public boolean onCreateWindow(WebView view, boolean dialog, boolean userGesture, android.os.Message resultMsg) {
+        /*
         WebView.HitTestResult result = view.getHitTestResult();
         String data = result.getExtra();
         Context context = view.getContext();
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(data));
         context.startActivity(browserIntent);
-        return false;
+         */
+        WebView targetWebView = new WebView(view.getContext()); // pass a context
+        targetWebView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                handleWebViewLinks(url); // you can get your target url here
+                super.onPageStarted(view, url, favicon);
+            }
+        });
+        WebView.WebViewTransport transport = (WebView.WebViewTransport) resultMsg.obj;
+        transport.setWebView(targetWebView);
+        resultMsg.sendToTarget();
+
+        return true;
+    }
+
+    private void handleWebViewLinks(String url) {
+        ninjaWebView.loadUrl(url);
     }
 
     @Override

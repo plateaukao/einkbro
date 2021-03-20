@@ -13,7 +13,6 @@ import androidx.preference.PreferenceManager;
 
 import android.util.AttributeSet;
 import android.util.Base64;
-import android.util.Log;
 import android.view.*;
 import android.webkit.CookieManager;
 import android.webkit.WebSettings;
@@ -408,24 +407,26 @@ public class NinjaWebView extends WebView implements AlbumController {
     }
 
     public void applyReaderMode() {
-        injectScriptFile("readability.js");
-    }
-
-    private void injectScriptFile(String scriptFile) {
-        InputStream input;
+        InputStream jsInput, cssInput;
         try {
-            input = getContext().getAssets().open(scriptFile);
-            byte[] buffer = new byte[input.available()];
-            input.read(buffer);
-            input.close();
+            jsInput = getContext().getAssets().open("readability.js");
+            byte[] buffer = new byte[jsInput.available()];
+            jsInput.read(buffer);
+            jsInput.close();
+
+            cssInput = getContext().getAssets().open("readability.css");
+            byte[] cssBuffer = new byte[cssInput.available()];
+            cssInput.read(cssBuffer);
+            cssInput.close();
 
             // String-ify the script byte-array using BASE64 encoding !!!
-            String encoded = Base64.encodeToString(buffer, Base64.NO_WRAP);
+            String encodedJs = Base64.encodeToString(buffer, Base64.NO_WRAP);
+            String encodedCss = Base64.encodeToString(cssBuffer, Base64.NO_WRAP);
             loadUrl("javascript:(function() {" +
                     "var parent = document.getElementsByTagName('head').item(0);" +
                     "var script = document.createElement('script');" +
                     "script.type = 'text/javascript';" +
-                    "script.innerHTML = window.atob('" + encoded + "');" +
+                    "script.innerHTML = window.atob('" + encodedJs + "');" +
                     "parent.appendChild(script)" +
                     "})()");
         } catch (IOException e) {
@@ -433,6 +434,13 @@ public class NinjaWebView extends WebView implements AlbumController {
             e.printStackTrace();
         }
     }
+    /*
+
+                    "var style = document.createElement('style');" +
+                    "style.type = 'text/css';" +
+                    "style.innerHTML = window.atob('" + encodedCss + "');" +
+                    "parent.appendChild(style);" +
+     */
 
     private void injectCss(byte[] bytes) {
         try {
