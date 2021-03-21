@@ -3,23 +3,19 @@ package de.baumann.browser.view.dialog
 import android.app.AlertDialog
 import android.content.Context
 import android.content.SharedPreferences
-import android.os.Bundle
 import android.view.Gravity
 import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.browser.AdBlock
 import de.baumann.browser.browser.Cookie
-import de.baumann.browser.browser.Javascript
 import de.baumann.browser.unit.HelperUnit
 
 class FastToggleDialog(
@@ -98,26 +94,15 @@ class FastToggleDialog(
     }
 
     private fun initButtons() {
-        val javaHosts = Javascript(context)
         val cookieHosts = Cookie(context)
         val adBlock = AdBlock(context)
 
-        val btnJavaScriptWhiteList = view.findViewById<ImageButton>(R.id.imageButton_js) ?: return
         val btnAbWhiteList = view.findViewById<ImageButton>(R.id.imageButton_ab) ?: return
         val btnCookieWhiteList = view.findViewById<ImageButton>(R.id.imageButton_cookie) ?: return
 
-        setImgButtonResource(btnJavaScriptWhiteList, javaHosts.isWhite(url))
         setImgButtonResource(btnCookieWhiteList, cookieHosts.isWhite(url))
         setImgButtonResource(btnAbWhiteList, adBlock.isWhite(url))
 
-        btnJavaScriptWhiteList.setOnClickListener {
-            if (javaHosts.isWhite(url)) {
-                javaHosts.removeDomain(HelperUnit.domain(url))
-            } else {
-                javaHosts.addDomain(HelperUnit.domain(url))
-            }
-            setImgButtonResource(btnJavaScriptWhiteList, javaHosts.isWhite(url))
-        }
         btnCookieWhiteList.setOnClickListener {
             if (cookieHosts.isWhite(url)) {
                 cookieHosts.removeDomain(HelperUnit.domain(url))
@@ -137,14 +122,11 @@ class FastToggleDialog(
     }
 
     private fun initSwitches() {
-        val switchJavascript = view.findViewById<CheckBox>(R.id.switch_js) ?: return
         val switchAdBlock = view.findViewById<CheckBox>(R.id.switch_adBlock) ?: return
         val switchCookie = view.findViewById<CheckBox>(R.id.switch_cookie) ?: return
-        switchJavascript.isChecked = sp.getBoolean(getString(R.string.sp_javascript), true)
         switchAdBlock.isChecked = sp.getBoolean(getString(R.string.sp_ad_block), true)
         switchCookie.isChecked = sp.getBoolean(getString(R.string.sp_cookies), true)
 
-        switchJavascript.setOnCheckedChangeListener { _, isChecked -> sp.edit().putBoolean(getString(R.string.sp_javascript), isChecked).apply() }
         switchAdBlock.setOnCheckedChangeListener { _, isChecked -> sp.edit().putBoolean(getString(R.string.sp_ad_block), isChecked).apply() }
         switchCookie.setOnCheckedChangeListener { _, isChecked -> sp.edit().putBoolean(getString(R.string.sp_cookies), isChecked).apply() }
     }
