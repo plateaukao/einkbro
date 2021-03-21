@@ -83,52 +83,6 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:minHeight="46dp"
-                android:padding="8dp">
-
-                <ImageView
-                    android:id="@+id/jsIcon"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="16dp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/icon_java"/>
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:includeFontPadding="false"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="@string/setting_title_javascript"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="?android:attr/textColorPrimary" />
-
-                <ImageButton
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
-                    android:id="@+id/imageButton_js"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginStart="16dp"
-                    android:background="?attr/actionBarItemBackground"
-                    android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/ic_action_close_red"/>
-
-                <CheckBox
-                    android:id="@+id/switch_js"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:checked="false" />
-
-            </LinearLayout>
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
