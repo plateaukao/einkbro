@@ -3,24 +3,14 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:klyph="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory android:title="@string/setting_title_behavior">
-
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:icon="@drawable/icon_close"
-            android:key="sp_close_tab_confirm"
-            android:title="@string/setting_title_confirm_tab_close"
-            android:summary="@string/setting_summary_confirm_tab_close" />
-
-        <CheckBoxPreference android:key="sp_reopenLastTab"
-            android:icon="@drawable/icon_tab_plus"
-            android:defaultValue="false"
-            android:title="@string/setting_title_reopenLastTab"
-            android:summary="@string/setting_summary_reopenLastTab"/>
-
-    </PreferenceCategory>
-
     <PreferenceCategory android:title="@string/setting_title_theme">
+
+        <de.baumann.browser.preference.IntegerEditTextPreference
+            android:defaultValue="80"
+            android:key="sp_page_turn_left_value"
+            android:title="@string/setting_title_page_left_value"
+            android:summary="@string/setting_summary_page_left_value"
+            android:icon="@drawable/ic_page_height"/>
 
         <ListPreference
             android:icon="@drawable/icon_size"
@@ -46,7 +36,7 @@
         <CheckBoxPreference android:key="sp_desktop"
             android:icon="@drawable/icon_desktop"
             android:defaultValue="false"
-            android:title="Desktop mode"
+            android:title="@string/desktop_mode"
             android:summary="@string/setting_summary_desktop"/>
 
         <CheckBoxPreference android:key="sp_bold_font"
@@ -85,12 +75,6 @@
 
     <PreferenceCategory android:title="@string/setting_overView">
 
-        <CheckBoxPreference android:key="start_tabStart"
-            android:icon="@drawable/icon_refresh"
-            android:defaultValue="false"
-            android:title="@string/setting_overView_onStart_title"
-            android:summary="@string/setting_overView_onStart_summary"/>
-
         <ListPreference
             android:title="@string/setting_overView"
             android:icon="@drawable/icon_preview"
@@ -101,5 +85,23 @@
             android:entryValues="@array/setting_values_tab" />
 
     </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/setting_title_behavior">
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:icon="@drawable/icon_close"
+            android:key="sp_close_tab_confirm"
+            android:title="@string/setting_title_confirm_tab_close"
+            android:summary="@string/setting_summary_confirm_tab_close" />
+
+        <CheckBoxPreference android:key="sp_reopenLastTab"
+            android:icon="@drawable/icon_tab_plus"
+            android:defaultValue="false"
+            android:title="@string/setting_title_reopenLastTab"
+            android:summary="@string/setting_summary_reopenLastTab"/>
+
+    </PreferenceCategory>
+
 
 </PreferenceScreen>

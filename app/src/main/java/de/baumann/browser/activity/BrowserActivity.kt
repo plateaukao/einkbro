@@ -206,9 +206,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         val filter = IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE)
         registerReceiver(downloadReceiver, filter)
         dispatchIntent(intent)
-        if (sp.getBoolean("start_tabStart", false)) {
-            showOverview()
-        }
     }
 
     private fun initTouchArea() {
