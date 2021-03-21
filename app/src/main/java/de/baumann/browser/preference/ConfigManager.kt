@@ -19,4 +19,8 @@ class ConfigManager(private val context: Context) {
     var pageReservedOffset: Int
         get() = sp.getInt("sp_page_turn_left_value", 80)
         set(value) {sp.edit { putInt("sp_page_turn_left_value", value) } }
+
+    companion object {
+        const val K_TOUCH_AREA_TYPE = "sp_touch_area_type"
+    }
 }

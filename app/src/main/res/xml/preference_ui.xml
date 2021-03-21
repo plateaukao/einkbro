@@ -21,6 +21,12 @@
             android:entries="@array/setting_entries_font"
             android:entryValues="@array/setting_values_font"/>
 
+        <Preference
+            android:key="sp_touch_area_type"
+            android:icon="@drawable/gesture_tap"
+            android:title="@string/touch_area"
+            android:summary="@string/setting_summary_touch_area"/>
+
         <de.baumann.browser.view.sortlistpreference.MultiSelectDragListPreference
             android:icon="@drawable/ic_toolbar"
             android:key="sp_toolbar_icons"
