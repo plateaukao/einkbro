@@ -496,8 +496,8 @@ public override fun onActivityResult(requestCode: Int, resultCode: Int, data: In
                     IntentUnit.share(this, title, url)
                 }
             }
-            R.id.menu_sharePDF -> printPDF(true)
-            R.id.menu_openWith -> ninjaWebView.url?.let {  showBrowserChooser(it, getString(R.string.menu_open_with)) }
+            //R.id.menu_sharePDF -> printPDF(true)
+            //R.id.menu_openWith -> ninjaWebView.url?.let {  showBrowserChooser(it, getString(R.string.menu_open_with)) }
             R.id.menu_saveScreenshot -> if (Build.VERSION.SDK_INT in 23..28) {
                 val hasWRITE_EXTERNAL_STORAGE = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
@@ -534,12 +534,6 @@ public override fun onActivityResult(requestCode: Int, resultCode: Int, data: In
             R.id.menu_settings -> {
                 val settings = Intent(this@BrowserActivity, Settings_Activity::class.java)
                 startActivity(settings)
-            }
-            R.id.menu_fileManager -> {
-                val intent2 = Intent(Intent.ACTION_VIEW)
-                intent2.type = "*/*"
-                intent2.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                startActivity(intent2, null)
             }
             R.id.menu_download -> {
                 hideBottomSheetDialog()

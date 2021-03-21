@@ -358,6 +358,6 @@
     <string name="desktop_mode">桌面版網站</string>
     <string name="setting_title_page_left_value">翻頁時保留的畫面長度</string>
     <string name="setting_summary_page_left_value">翻頁時，可保留部分畫面內容，請設定要保留的長度。如不需要可以設為 0</string>
-    <string name="touch_area">Touch Area</string>
+    <string name="touch_area">點擊翻頁區域</string>
     <string name="setting_summary_touch_area">設定點擊畫面何處會翻頁</string>
 </resources>
