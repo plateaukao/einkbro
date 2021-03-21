@@ -6,7 +6,6 @@ import android.app.Dialog
 import android.app.DownloadManager
 import android.app.SearchManager
 import android.content.*
-import android.content.Intent.CATEGORY_BROWSABLE
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.database.Cursor
@@ -48,6 +47,7 @@ import de.baumann.browser.browser.*
 import de.baumann.browser.database.BookmarkList
 import de.baumann.browser.database.Record
 import de.baumann.browser.database.RecordAction
+import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.preference.TouchAreaType
 import de.baumann.browser.service.ClearService
 import de.baumann.browser.task.ScreenshotTask
@@ -109,6 +109,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private var overViewTab: String? = null
     private var downloadReceiver: BroadcastReceiver? = null
     private val sp: SharedPreferences by lazy { PreferenceManager.getDefaultSharedPreferences(this) }
+    private val config: ConfigManager by lazy { ConfigManager(this) }
     private fun prepareRecord(): Boolean {
         val webView = currentAlbumController as NinjaWebView
         val title = webView.title
@@ -228,8 +229,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
 
     private val touchAreaChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
         if (key.equals("sp_touch_area_hint")) {
-            val shouldShowHint = sp.getBoolean("sp_touch_area_hint", false)
-            if (shouldShowHint) {
+            if (config.touchAreaHint) {
                 showTouchAreaHint()
             } else {
                 hideTouchAreaHint()
@@ -652,7 +652,7 @@ public override fun onActivityResult(requestCode: Int, resultCode: Int, data: In
     private fun showTouchAreaHint() {
         touchAreaPageUp.setBackgroundResource(R.drawable.touch_area_border)
         touchAreaPageDown.setBackgroundResource(R.drawable.touch_area_border)
-        if (!sp.getBoolean("sp_touch_area_hint", false)) {
+        if (!config.touchAreaHint) {
             Timer("showTouchAreaHint", false)
                     .schedule(object : TimerTask() {
                         override fun run() {
@@ -1198,6 +1198,7 @@ public override fun onActivityResult(requestCode: Int, resultCode: Int, data: In
         }.apply { show() }
     }
 
+    override fun addNewTab(url: String?) = addAlbum(null, url, true)
 
     @Synchronized
     private fun addAlbum(title: String?, url: String?, foreground: Boolean) {
