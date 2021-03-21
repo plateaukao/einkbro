@@ -42,7 +42,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.ActivityMainBinding
-import de.baumann.browser.Ninja.databinding.DialogMenuBinding
 import de.baumann.browser.browser.*
 import de.baumann.browser.database.BookmarkList
 import de.baumann.browser.database.Record
@@ -50,7 +49,6 @@ import de.baumann.browser.database.RecordAction
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.preference.TouchAreaType
 import de.baumann.browser.service.ClearService
-import de.baumann.browser.task.ScreenshotTask
 import de.baumann.browser.unit.BrowserUnit
 import de.baumann.browser.unit.HelperUnit
 import de.baumann.browser.unit.IntentUnit
@@ -59,6 +57,7 @@ import de.baumann.browser.util.Constants
 import de.baumann.browser.view.*
 import de.baumann.browser.view.adapter.*
 import de.baumann.browser.view.dialog.FastToggleDialog
+import de.baumann.browser.view.dialog.MenuDialog
 import de.baumann.browser.view.dialog.TouchAreaDialog
 import de.baumann.browser.view.toolbaricons.ToolbarAction
 import java.io.File
@@ -280,7 +279,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         }
     }
 
-public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode != INPUT_FILE_REQUEST_CODE || mFilePathCallback == null) {
             super.onActivityResult(requestCode, resultCode, data)
             return
@@ -372,7 +371,7 @@ public override fun onActivityResult(requestCode: Int, resultCode: Int, data: In
                 ninjaWebView.pageUpWithNoAnimation()
                 return true
             }
-            KeyEvent.KEYCODE_MENU -> return showOverflow()
+            KeyEvent.KEYCODE_MENU -> return showMenuDialog()
             KeyEvent.KEYCODE_BACK -> {
                 hideKeyboard()
                 if (overviewView.visibility == VISIBLE) {
@@ -473,72 +472,7 @@ public override fun onActivityResult(requestCode: Int, resultCode: Int, data: In
                 inputBox.requestFocus()
                 showKeyboard()
             }
-            R.id.button_closeTab -> removeAlbum(currentAlbumController!!)
-            R.id.button_quit -> finish()
-            R.id.menu_shareScreenshot -> if (Build.VERSION.SDK_INT in 23..28) {
-                val hasWRITE_EXTERNAL_STORAGE = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
-                    HelperUnit.grantPermissionsStorage(this)
-                } else {
-                    hideBottomSheetDialog()
-                    sp.edit().putInt("screenshot", 1).apply()
-                    ScreenshotTask(this, ninjaWebView).execute()
-                }
-            } else {
-                hideBottomSheetDialog()
-                sp.edit().putInt("screenshot", 1).apply()
-                ScreenshotTask(this, ninjaWebView).execute()
-            }
-            R.id.menu_shareLink -> {
-                if (prepareRecord()) {
-                    NinjaToast.show(this, getString(R.string.toast_share_failed))
-                } else {
-                    IntentUnit.share(this, title, url)
-                }
-            }
-            //R.id.menu_sharePDF -> printPDF(true)
-            //R.id.menu_openWith -> ninjaWebView.url?.let {  showBrowserChooser(it, getString(R.string.menu_open_with)) }
-            R.id.menu_saveScreenshot -> if (Build.VERSION.SDK_INT in 23..28) {
-                val hasWRITE_EXTERNAL_STORAGE = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
-                    HelperUnit.grantPermissionsStorage(this)
-                } else {
-                    hideBottomSheetDialog()
-                    sp.edit().putInt("screenshot", 0).apply()
-                    ScreenshotTask(this, ninjaWebView).execute()
-                }
-            } else {
-                hideBottomSheetDialog()
-                sp.edit().putInt("screenshot", 0).apply()
-                ScreenshotTask(this, ninjaWebView).execute()
-            }
-            R.id.menu_saveBookmark -> {
-                try {
-                    if (bookmarkDB.isExist(url)) {
-                        NinjaToast.show(this, R.string.toast_newTitle)
-                    } else {
-                        bookmarkDB.insert(HelperUnit.secString(ninjaWebView.title), url, "", "", "01")
-                        NinjaToast.show(this, R.string.toast_edit_successful)
-                        initBookmarkList()
-                    }
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    NinjaToast.show(this, R.string.toast_error)
-                }
-            }
-            R.id.menu_searchSite -> {
-                hideKeyboard()
-                showSearchPanel()
-            }
             R.id.contextLink_saveAs -> printPDF(false)
-            R.id.menu_settings -> {
-                val settings = Intent(this@BrowserActivity, Settings_Activity::class.java)
-                startActivity(settings)
-            }
-            R.id.menu_download -> {
-                hideBottomSheetDialog()
-                startActivity(Intent(DownloadManager.ACTION_VIEW_DOWNLOADS))
-            }
 
             // --- tool bar handling
             R.id.omnibox_tabcount -> showOverview()
@@ -597,6 +531,21 @@ public override fun onActivityResult(requestCode: Int, resultCode: Int, data: In
             }
             else -> {
             }
+        }
+    }
+    private fun saveBookmark() {
+        val currentUrl = ninjaWebView.url
+        try {
+            if (bookmarkDB.isExist(currentUrl)) {
+                NinjaToast.show(this, R.string.toast_newTitle)
+            } else {
+                bookmarkDB.insert(HelperUnit.secString(ninjaWebView.title), currentUrl, "", "", "01")
+                NinjaToast.show(this, R.string.toast_edit_successful)
+                initBookmarkList()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            NinjaToast.show(this, R.string.toast_error)
         }
     }
 
@@ -743,7 +692,7 @@ public override fun onActivityResult(requestCode: Int, resultCode: Int, data: In
             showFastToggleDialog()
             false
         }
-        binding.omniboxSetting.setOnClickListener { showOverflow() }
+        binding.omniboxSetting.setOnClickListener { showMenuDialog() }
         if (sp.getBoolean("sp_gestures_use", true)) {
             val onTouchListener = object : SwipeTouchListener(this) {
                 override fun onSwipeTop() = performGesture("setting_gesture_nav_up")
@@ -807,6 +756,7 @@ public override fun onActivityResult(requestCode: Int, resultCode: Int, data: In
         }
 
         binding.omniboxBookmark.setOnClickListener { openBookmarkPage() }
+        binding.omniboxBookmark.setOnLongClickListener { saveBookmark(); true }
 
         sp.registerOnSharedPreferenceChangeListener(toolbarChangeListener)
 
@@ -1620,34 +1570,19 @@ public override fun onActivityResult(requestCode: Int, resultCode: Int, data: In
         searchPanel.visibility = VISIBLE
         omniboxTitle.visibility = GONE
         binding.appBar.visibility = VISIBLE
+        searchBox.requestFocus()
+        showKeyboard()
     }
 
-    private fun showOverflow(): Boolean {
-        bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
-        val binding = DialogMenuBinding.inflate(this.layoutInflater)
-        binding.menuShareClipboard.setOnClickListener {
-            hideBottomSheetDialog()
-            val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-            val clip = ClipData.newPlainText("text", ninjaWebView.url)
-            Objects.requireNonNull(clipboard).setPrimaryClip(clip)
-            NinjaToast.show(this, R.string.toast_copy_successful)
-        }
-        binding.buttonOpenFav.setOnClickListener {
-            hideBottomSheetDialog()
-            updateAlbum(sp.getString("favoriteURL", "https://github.com/plateaukao/browser"))
-        }
-        binding.menuSc.setOnClickListener {
-            hideBottomSheetDialog()
-            ninjaWebView.favicon
-            HelperUnit.createShortcut(this, ninjaWebView.title, ninjaWebView.url, ninjaWebView.favicon)
-        }
-        binding.menuFav.setOnClickListener {
-            hideBottomSheetDialog()
-            HelperUnit.setFavorite(this, ninjaWebView.url)
-        }
-
-        bottomSheetDialog?.setContentView(binding.root)
-        bottomSheetDialog?.show()
+    private fun showMenuDialog(): Boolean {
+        MenuDialog(
+                this,
+                ninjaWebView,
+                { updateAlbum(sp.getString("favoriteURL", "https://github.com/plateaukao/browser")) },
+                { removeAlbum(currentAlbumController!!) },
+                { saveBookmark() },
+                { showSearchPanel() },
+        ).show()
         return true
     }
 
