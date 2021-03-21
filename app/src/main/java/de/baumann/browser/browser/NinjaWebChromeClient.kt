@@ -25,7 +25,7 @@ class NinjaWebChromeClient(private val ninjaWebView: NinjaWebView) : WebChromeCl
         return true
     }
 
-    private fun handleWebViewLinks(url: String) = ninjaWebView.loadUrl(url)
+    private fun handleWebViewLinks(url: String) = ninjaWebView.browserController.addNewTab(url)
 
     override fun onProgressChanged(view: WebView, progress: Int) {
         super.onProgressChanged(view, progress)

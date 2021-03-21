@@ -49,6 +49,12 @@
             android:title="Desktop mode"
             android:summary="@string/setting_summary_desktop"/>
 
+        <CheckBoxPreference android:key="sp_bold_font"
+            android:icon="@drawable/icon_size"
+            android:defaultValue="false"
+            android:title="@string/bold_font"
+            android:summary="@string/setting_summary_bold_font"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/setting_title_toolbar">

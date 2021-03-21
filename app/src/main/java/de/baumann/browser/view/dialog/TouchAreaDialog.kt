@@ -12,10 +12,12 @@ import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import de.baumann.browser.Ninja.R
+import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.preference.TouchAreaType
 
 class TouchAreaDialog(private val context: Context) {
     private val sp: SharedPreferences by lazy { PreferenceManager.getDefaultSharedPreferences(context) }
+    private val config: ConfigManager = ConfigManager(context)
 
     private lateinit var dialog: AlertDialog
 
@@ -65,22 +67,19 @@ class TouchAreaDialog(private val context: Context) {
         val toggleTouchAreaHint = view.findViewById<CheckBox>(R.id.switch_show_touch_area_hint) ?: return
         val showTouchArea = view.findViewById<View>(R.id.show_touch_area) ?: return
 
-        updateViewStatus(toggleTouchAreaHint, sp.getBoolean("sp_touch_area_hint", true))
+        updateViewStatus(toggleTouchAreaHint, config.touchAreaHint)
 
         showTouchArea.setOnClickListener {
-            updateBooleanPref("sp_touch_area_hint")
-            updateViewStatus(toggleTouchAreaHint, sp.getBoolean("sp_touch_area_hint", false))
+            config.touchAreaHint = !config.touchAreaHint
+            updateViewStatus(toggleTouchAreaHint, config.touchAreaHint)
             dialog.dismiss()
         }
         toggleTouchAreaHint.setOnClickListener {
-            updateBooleanPref("sp_touch_area_hint")
-            updateViewStatus(toggleTouchAreaHint, sp.getBoolean("sp_touch_area_hint", false))
+            config.touchAreaHint = !config.touchAreaHint
+            updateViewStatus(toggleTouchAreaHint, config.touchAreaHint)
             dialog.dismiss()
         }
     }
-
-    private fun updateBooleanPref(prefKey: String, defaultValue: Boolean = true) =
-        sp.edit { putBoolean(prefKey, !sp.getBoolean(prefKey, defaultValue)) }
 
     private fun updateViewStatus(checkBox: CheckBox, shouldBeChecked: Boolean) {
         checkBox.isChecked = shouldBeChecked

@@ -9,6 +9,7 @@ import android.webkit.WebChromeClient;
 public interface BrowserController {
     void updateAutoComplete();
     void updateProgress(int progress);
+    void addNewTab(String url);
     void showAlbum(AlbumController albumController);
     void removeAlbum(AlbumController albumController);
     void showFileChooser(ValueCallback<Uri[]> filePathCallback);

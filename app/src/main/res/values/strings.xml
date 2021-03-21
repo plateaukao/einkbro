@@ -454,5 +454,6 @@
     <string name="left_right">left/right</string>
     <string name="touch_left_side">left side</string>
     <string name="touch_right_side">right side</string>
-
+    <string name="bold_font">Bold font</string>
+    <string name="setting_summary_bold_font">Apply bold font style (need to reload current page)</string>
 </resources>
