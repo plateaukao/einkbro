@@ -115,6 +115,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="right"
+        android:layout_weight="1"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -159,29 +160,6 @@
                 android:gravity="center"
                 android:lines="2"
                 android:text="@string/menu_shareClipboard"
-                android:textSize="10sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/menu_shareScreenshot"
-                android:layout_width="@dimen/menu_button_size"
-                android:layout_height="@dimen/menu_button_size"
-                android:gravity="center_vertical"
-                android:onClick="onClick"
-                android:padding="10dp"
-                android:src="@drawable/icon_fullscreen" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:lines="2"
-                android:text="@string/menu_share_screenshot"
                 android:textSize="10sp" />
         </LinearLayout>
 
@@ -306,8 +284,6 @@
                 android:text="@string/menu_save_as"
                 android:textSize="10sp" />
         </LinearLayout>
-
-
 
     </LinearLayout>
 
