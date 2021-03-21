@@ -21,6 +21,7 @@ import android.webkit.WebView;
 import de.baumann.browser.Ninja.BuildConfig;
 import de.baumann.browser.browser.*;
 import de.baumann.browser.Ninja.R;
+import de.baumann.browser.preference.ConfigManager;
 import de.baumann.browser.unit.BrowserUnit;
 import de.baumann.browser.unit.ViewUnit;
 
@@ -73,6 +74,7 @@ public class NinjaWebView extends WebView implements AlbumController {
     }
 
     private SharedPreferences sp;
+    private ConfigManager config;
     private WebSettings webSettings;
 
     private String defaultUserAgent;
@@ -174,6 +176,7 @@ public class NinjaWebView extends WebView implements AlbumController {
 
     public void initPreferences() {
         sp = PreferenceManager.getDefaultSharedPreferences(context);
+        config  = new ConfigManager(context);
         String userAgent = sp.getString("userAgent", "");
         webSettings = getSettings();
         defaultUserAgent = webSettings.getUserAgentString();
@@ -385,7 +388,7 @@ public class NinjaWebView extends WebView implements AlbumController {
         if (getVerticalRead()) {
             return getWidth() - (int) ViewUnit.dpToPixel(getContext(), 40);
         } else {
-            return getHeight() - (int) ViewUnit.dpToPixel(getContext(), 80);
+            return getHeight() - (int) ViewUnit.dpToPixel(getContext(), config.getPageReservedOffset());
         }
     }
 

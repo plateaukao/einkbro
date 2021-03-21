@@ -24,7 +24,7 @@
 
     <CheckBoxPreference android:key="sp_remote"
         android:icon="@drawable/icon_remote"
-        android:defaultValue="false"
+        android:defaultValue="true"
         android:title="@string/setting_title_remote"
         android:summary="@string/setting_summary_remote"/>
 
