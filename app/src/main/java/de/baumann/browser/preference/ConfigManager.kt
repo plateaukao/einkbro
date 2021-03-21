@@ -15,4 +15,8 @@ class ConfigManager(private val context: Context) {
     var boldFontStyle: Boolean
         get() = sp.getBoolean("sp_bold_font", false)
         set(value) {sp.edit { putBoolean("sp_bold_font", value) } }
+
+    var pageReservedOffset: Int
+        get() = sp.getInt("sp_page_turn_left_value", 80)
+        set(value) {sp.edit { putInt("sp_page_turn_left_value", value) } }
 }
