@@ -1,5 +1,7 @@
 package de.baumann.browser.fragment
 
+import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.os.Bundle
@@ -8,13 +10,22 @@ import androidx.fragment.app.DialogFragment
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import de.baumann.browser.Ninja.R
+import de.baumann.browser.activity.Settings_DataActivity
+import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.util.Constants
+import de.baumann.browser.view.dialog.TouchAreaDialog
 import de.baumann.browser.view.sortlistpreference.MultiSelectDragListPreference
 import de.baumann.browser.view.sortlistpreference.MultiSelectDragListPreferenceDialog
 
 class UiSettingsFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeListener {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preference_ui, rootKey)
+
+        findPreference<Preference>(ConfigManager.K_TOUCH_AREA_TYPE)?.onPreferenceClickListener =
+                Preference.OnPreferenceClickListener { _  ->
+                    TouchAreaDialog(activity as Context).show()
+                    true
+                }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

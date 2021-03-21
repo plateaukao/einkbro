@@ -4,6 +4,36 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory
+        android:title="@string/setting_title_app"
+        app:initialExpandedChildrenCount="3">
+
+        <Preference
+            android:key="settings_ui"
+            android:icon="@drawable/icon_ui"
+            android:title="@string/setting_title_ui"
+            android:summary="@string/setting_summary_ui"/>
+
+        <Preference
+            android:key="settings_gesture"
+            android:icon="@drawable/gesture_tap"
+            android:title="@string/setting_gestures"
+            android:summary="@string/setting_gestures_use_summary"/>
+
+        <Preference
+            android:key="settings_data"
+            android:icon="@drawable/icon_backup"
+            android:title="@string/setting_title_data"
+            android:summary="@string/setting_summary_data"/>
+
+        <Preference
+            android:key="settings_appSettings"
+            android:icon="@drawable/icon_settings"
+            android:title="@string/setting_title_appSettings"
+            android:summary="@string/setting_summary_appSettings"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
         android:title="@string/setting_title_browser"
         app:initialExpandedChildrenCount="3">
 
@@ -49,40 +79,7 @@
             android:summary="@string/setting_summary_userAgent"
             android:icon="@drawable/icon_useragent"/>
 
-
     </PreferenceCategory>
-
-
-    <PreferenceCategory
-        android:title="@string/setting_title_app"
-        app:initialExpandedChildrenCount="3">
-
-        <Preference
-            android:key="settings_ui"
-            android:icon="@drawable/icon_ui"
-            android:title="@string/setting_title_ui"
-            android:summary="@string/setting_summary_ui"/>
-
-        <Preference
-            android:key="settings_gesture"
-            android:icon="@drawable/gesture_tap"
-            android:title="@string/setting_gestures"
-            android:summary="@string/setting_gestures_use_summary"/>
-
-        <Preference
-            android:key="settings_data"
-            android:icon="@drawable/icon_backup"
-            android:title="@string/setting_title_data"
-            android:summary="@string/setting_summary_data"/>
-
-        <Preference
-            android:key="settings_appSettings"
-            android:icon="@drawable/icon_settings"
-            android:title="@string/setting_title_appSettings"
-            android:summary="@string/setting_summary_appSettings"/>
-
-    </PreferenceCategory>
-
 
     <PreferenceCategory
         android:title="@string/setting_title_others"
