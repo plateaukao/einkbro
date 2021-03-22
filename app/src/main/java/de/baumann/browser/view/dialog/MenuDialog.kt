@@ -8,6 +8,7 @@ import android.content.*
 import android.content.pm.PackageManager
 import android.os.Build
 import android.print.PrintAttributes
+import android.print.PrintDocumentAdapter
 import android.print.PrintManager
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -142,10 +143,16 @@ class MenuDialog(
 
     private fun printPDF() {
         try {
+            ninjaWebView.applyPageNoMargins()
+
             val title = HelperUnit.fileName(ninjaWebView.url)
             val printManager = context.getSystemService(AppCompatActivity.PRINT_SERVICE) as PrintManager
             val printAdapter = ninjaWebView.createPrintDocumentAdapter(title)
-            printManager.print(title, printAdapter, PrintAttributes.Builder().build())
+            val builder = PrintAttributes
+                    .Builder()
+                    .setMediaSize(config.pdfPaperSize.mediaSize)
+
+            printManager.print(title, printAdapter, builder.build())
             config.pdfCreated = true
         } catch (e: Exception) {
             NinjaToast.show(context, R.string.toast_error)

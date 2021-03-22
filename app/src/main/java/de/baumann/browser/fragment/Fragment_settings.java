@@ -23,6 +23,7 @@ import de.baumann.browser.activity.Settings_StartActivity;
 import de.baumann.browser.activity.Settings_UIActivity;
 import de.baumann.browser.unit.HelperUnit;
 import de.baumann.browser.Ninja.R;
+import de.baumann.browser.view.dialog.PrinterDocumentPaperSizeDialog;
 
 public class Fragment_settings extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -40,6 +41,10 @@ public class Fragment_settings extends PreferenceFragmentCompat implements Share
         findPreference("settings_ui").setOnPreferenceClickListener(preference -> {
             Intent intent = new Intent(getActivity(), Settings_UIActivity.class);
             requireActivity().startActivity(intent);
+            return false;
+        });
+        findPreference("settings_pdf_paper_size").setOnPreferenceClickListener(preference -> {
+            (new PrinterDocumentPaperSizeDialog(getContext())).show();
             return false;
         });
         findPreference("settings_gesture").setOnPreferenceClickListener(preference -> {

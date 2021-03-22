@@ -461,4 +461,6 @@
     <string name="setting_summary_page_left_value">How much height should be reserved when turning to next page</string>
     <string name="touch_area">Touch Area</string>
     <string name="setting_summary_touch_area">Configure touch area for turning pages</string>
+    <string name="setting_title_pdf_paper_size">Printed pdf paper size</string>
+    <string name="setting_summary_pdf_paper_size">When printing to pdf, what paper size would you prefer</string>
 </resources>

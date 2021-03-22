@@ -2,6 +2,7 @@ package de.baumann.browser.preference
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.print.PrintAttributes
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 
@@ -32,7 +33,18 @@ class ConfigManager(private val context: Context) {
         get() = sp.getInt("screenshot", 0)
         set(value) {sp.edit { putInt("screenshot", value) } }
 
+    var pdfPaperSize: PaperSize
+        get() = PaperSize.values()[sp.getInt("pdf_paper_size", PaperSize.ISO_13.ordinal)]
+        set(value) {sp.edit { putInt("pdf_paper_size", value.ordinal) } }
+
     companion object {
         const val K_TOUCH_AREA_TYPE = "sp_touch_area_type"
     }
+}
+
+enum class PaperSize(val sizeString: String, val mediaSize: PrintAttributes.MediaSize) {
+    ISO_13("A4 (13\")", PrintAttributes.MediaSize.ISO_A4),
+    SIZE_10("A5 (10\")", PrintAttributes.MediaSize.ISO_A5),
+    ISO_67("A6 (6.7\")", PrintAttributes.MediaSize.ISO_A6),
+    SIZE_8("C6 (8\")", PrintAttributes.MediaSize.ISO_C6),
 }
