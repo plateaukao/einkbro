@@ -122,6 +122,7 @@
         <item>toolbar</item>
         <item>vertical read (Beta)</item>
         <item>Reader Mode (Beta)</item>
+        <item>Bold Font</item>
     </string-array>
     <integer-array name="setting_ids_toolbar_icons">
         <item>@null</item>
@@ -137,6 +138,7 @@
         <item>@drawable/ic_toolbar</item>
         <item>@drawable/ic_vertical_read</item>
         <item>@drawable/ic_reader</item>
+        <item>@drawable/ic_bold_font</item>
     </integer-array>
 
     <string-array name="setting_values_toolbar_icons">
@@ -153,14 +155,16 @@
         <item>10</item>
         <item>11</item>
         <item>12</item>
+        <item>13</item>
     </string-array>
     <string-array name="default_toolbar_icons">
         <item>0</item>
+        <item>6</item>
+        <item>1</item>
         <item>2</item>
         <item>3</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
+        <item>7</item>
+        <item>13</item>
         <item>8</item>
     </string-array>
 
