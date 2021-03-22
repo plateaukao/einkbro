@@ -26,6 +26,12 @@
             android:summary="@string/setting_summary_data"/>
 
         <Preference
+            android:key="settings_pdf_paper_size"
+            android:icon="@drawable/ic_pdf"
+            android:title="@string/setting_title_pdf_paper_size"
+            android:summary="@string/setting_summary_pdf_paper_size"/>
+
+        <Preference
             android:key="settings_appSettings"
             android:icon="@drawable/icon_settings"
             android:title="@string/setting_title_appSettings"

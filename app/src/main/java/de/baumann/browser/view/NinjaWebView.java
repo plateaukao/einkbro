@@ -42,6 +42,13 @@ public class NinjaWebView extends WebView implements AlbumController {
             "writing-mode: horizontal-tb;\n" +
             "}";
 
+    private static final String pageNoMarginCss = "@page{\n" +
+            "margin-left: 0px;\n" +
+            "margin-right: 0px;\n" +
+            "margin-top: 0px;\n" +
+            "margin-bottom: 0px;\n" +
+            "padding:0px;\n" +
+            "}";
 
     private Context context;
     private int dimen144dp;
@@ -444,6 +451,10 @@ public class NinjaWebView extends WebView implements AlbumController {
                     "style.innerHTML = window.atob('" + encodedCss + "');" +
                     "parent.appendChild(style);" +
      */
+
+    public void applyPageNoMargins() {
+        injectCss(pageNoMarginCss.getBytes());
+    }
 
     private void injectCss(byte[] bytes) {
         try {

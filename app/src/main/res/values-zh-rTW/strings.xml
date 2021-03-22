@@ -360,4 +360,6 @@
     <string name="setting_summary_page_left_value">翻頁時，可保留部分畫面內容，請設定要保留的長度。如不需要可以設為 0</string>
     <string name="touch_area">點擊翻頁區域</string>
     <string name="setting_summary_touch_area">設定點擊畫面何處會翻頁</string>
+    <string name="setting_title_pdf_paper_size">設定列印紙張大小</string>
+    <string name="setting_summary_pdf_paper_size">將網頁輸出成 pdf 時，預設紙張大小</string>
 </resources>
