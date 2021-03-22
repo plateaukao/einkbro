@@ -43,10 +43,10 @@ public class NinjaWebView extends WebView implements AlbumController {
             "}";
 
     private static final String pageNoMarginCss = "@page{\n" +
-            "margin-left: 0px;\n" +
-            "margin-right: 0px;\n" +
-            "margin-top: 0px;\n" +
-            "margin-bottom: 0px;\n" +
+            "margin-left: 10px;\n" +
+            "margin-right: 10px;\n" +
+            "margin-top: 10px;\n" +
+            "margin-bottom: 10px;\n" +
             "padding:0px;\n" +
             "}";
 
