@@ -14,8 +14,8 @@ class ConfigManager(private val context: Context) {
     set(value) {sp.edit { putBoolean("sp_touch_area_hint", value) } }
 
     var boldFontStyle: Boolean
-        get() = sp.getBoolean("sp_bold_font", false)
-        set(value) {sp.edit { putBoolean("sp_bold_font", value) } }
+        get() = sp.getBoolean(K_BOLD_FONT, false)
+        set(value) {sp.edit { putBoolean(K_BOLD_FONT, value) } }
 
     var pdfCreated: Boolean
         get() = sp.getBoolean("pdf_create", false)
@@ -39,6 +39,8 @@ class ConfigManager(private val context: Context) {
 
     companion object {
         const val K_TOUCH_AREA_TYPE = "sp_touch_area_type"
+        const val K_TOOLBAR_ICONS = "sp_toolbar_icons"
+        const val K_BOLD_FONT = "sp_bold_font"
     }
 }
 

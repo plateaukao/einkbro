@@ -57,7 +57,7 @@ class NinjaWebViewClient(private val ninjaWebView: NinjaWebView) : WebViewClient
         }
         // lab: change css
         if (config.boldFontStyle) {
-            view.loadUrl(boldFontCss)
+            ninjaWebView.applyBoldFontStyle()
         }
     }
 
