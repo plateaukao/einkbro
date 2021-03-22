@@ -479,6 +479,10 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             R.id.omnibox_touch -> toggleTouchTurnPageFeature()
             R.id.omnibox_font -> showFontSizeChangeDialog()
             R.id.omnibox_reader -> ninjaWebView.applyReaderMode()
+            R.id.omnibox_bold_font -> {
+                config.boldFontStyle = !config.boldFontStyle
+                ninjaWebView.reload()
+            }
             R.id.omnibox_back -> if (ninjaWebView.canGoBack()) {
                 ninjaWebView.goBack()
             } else {
@@ -612,7 +616,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         val fontArray = resources.getStringArray(R.array.setting_entries_font)
         val valueArray = resources.getStringArray(R.array.setting_values_font)
         val selected = valueArray.indexOf(sp.getString("sp_fontSize", "100")!!)
-        AlertDialog.Builder(this).apply{
+        AlertDialog.Builder(this, R.style.TouchAreaDialog).apply{
             setTitle("Choose Font Size")
             setSingleChoiceItems(fontArray, selected) { dialog, which ->
                 sp.edit().putString("sp_fontSize", valueArray[which]).apply()
@@ -758,12 +762,16 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         binding.omniboxBookmark.setOnClickListener { openBookmarkPage() }
         binding.omniboxBookmark.setOnLongClickListener { saveBookmark(); true }
 
-        sp.registerOnSharedPreferenceChangeListener(toolbarChangeListener)
+        sp.registerOnSharedPreferenceChangeListener(preferenceChangeListener)
 
         reorderToolbarIcons()
     }
 
-    private val toolbarChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key -> if (key.equals("sp_toolbar_icons")) reorderToolbarIcons()
+    private val preferenceChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+        when {
+            key.equals(ConfigManager.K_TOOLBAR_ICONS) -> { reorderToolbarIcons() }
+            key.equals(ConfigManager.K_BOLD_FONT) -> { ninjaWebView.reload() }
+        }
     }
 
     private val toolbarActionViews: List<View> by lazy {
