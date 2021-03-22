@@ -1,6 +1,7 @@
 package de.baumann.browser.view.dialog
 
 import android.content.Context
+import android.print.PrintAttributes
 import androidx.appcompat.app.AlertDialog
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.preference.ConfigManager
@@ -14,7 +15,7 @@ class PrinterDocumentPaperSizeDialog(val context: Context) {
 
         AlertDialog.Builder(context, R.style.TouchAreaDialog).apply {
             setTitle("Choose the default paper size")
-            setItems(paperSizes) { dialog, selectedIndex ->
+            setSingleChoiceItems(paperSizes, config.pdfPaperSize.ordinal) { dialog, selectedIndex ->
                 config.pdfPaperSize = PaperSize.values()[selectedIndex]
                 dialog.dismiss()
             }

@@ -45,6 +45,6 @@ class ConfigManager(private val context: Context) {
 enum class PaperSize(val sizeString: String, val mediaSize: PrintAttributes.MediaSize) {
     ISO_13("A4 (13\")", PrintAttributes.MediaSize.ISO_A4),
     SIZE_10("A5 (10\")", PrintAttributes.MediaSize.ISO_A5),
-    ISO_67("A6 (6.7\")", PrintAttributes.MediaSize.ISO_A6),
+    ISO_67("Hisense A7 (6.7\")", PrintAttributes.MediaSize.PRC_5),
     SIZE_8("C6 (8\")", PrintAttributes.MediaSize.ISO_C6),
 }
