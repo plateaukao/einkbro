@@ -32,15 +32,29 @@ import java.util.HashMap;
 public class NinjaWebView extends WebView implements AlbumController {
 
 
-    private static final String verticalLayoutCss = "body {\n" +
+    private static final String verticalLayoutCss =
+            "body {\n" +
             "-webkit-writing-mode: vertical-rl;\n" +
             "writing-mode: vertical-rl;\n" +
-            "}";
+            "max-height: 95%;\n" +
+            "}\n" +
+            // facebook css styles
+            "._2w79 { display: inline; max-height: 500px;}\n" +
+            "._4o5j ._4o51 { display: none; }\n" +
+            "._24e4 { max-height: none;}\n";
+
+    private static final String notoSansSerifFontCss =
+            "@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400&display=swap');" +
+            "@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400&display=swap');" +
+            "@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400&display=swap');" +
+                    "body {\n" +
+                    "font-family: 'Noto Serif TC', 'Noto Serif JP', 'Noto Serif KR', serif !important;\n" +
+                    "}\n";
 
     private static final String horizontalLayoutCss = "body {\n" +
             "-webkit-writing-mode: horizontal-tb;\n" +
             "writing-mode: horizontal-tb;\n" +
-            "}";
+            "}\n";
 
     private static final String pageNoMarginCss = "@page{\n" +
             "margin-left: 5px;\n" +
@@ -48,7 +62,7 @@ public class NinjaWebView extends WebView implements AlbumController {
             "margin-top: 5px;\n" +
             "margin-bottom: 5px;\n" +
             "padding:0px;\n" +
-            "}";
+            "}\n";
 
     private static final String boldFontCss = "* {\n" +
             "\tcolor: #000000!important;\n" +
@@ -97,7 +111,7 @@ public class NinjaWebView extends WebView implements AlbumController {
             "\tfont-weight:700 !important;\n" +
             "\tbackground: #FFFFFF !important;\n" +
             "\tborder-color: #FFFFFF #FFFFFF #FFFFFF #FFFFFF !important;\n" +
-            "}";
+            "}\n";
 
     private Context context;
     private int dimen144dp;
@@ -163,6 +177,17 @@ public class NinjaWebView extends WebView implements AlbumController {
 
     public void setOnScrollChangeListener(OnScrollChangeListener onScrollChangeListener) {
         this.onScrollChangeListener = onScrollChangeListener;
+    }
+
+    public void applyBoldFontStyle() {
+        injectCss(boldFontCss.getBytes());
+    }
+
+    public void updateCssStyle() {
+        String cssStyle =
+                (config.getBoldFontStyle()? boldFontCss : "") +
+                (config.getFontStyleSerif()? notoSansSerifFontCss : "");
+        injectCss(cssStyle.getBytes());
     }
 
     public interface OnScrollChangeListener {
@@ -503,10 +528,6 @@ public class NinjaWebView extends WebView implements AlbumController {
 
     public void applyPageNoMargins() {
         injectCss(pageNoMarginCss.getBytes());
-    }
-
-    public void applyBoldFontStyle() {
-        injectCss(boldFontCss.getBytes());
     }
 
     private void injectCss(byte[] bytes) {
