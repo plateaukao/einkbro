@@ -481,7 +481,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             R.id.omnibox_reader -> ninjaWebView.applyReaderMode()
             R.id.omnibox_bold_font -> {
                 config.boldFontStyle = !config.boldFontStyle
-                ninjaWebView.reload()
             }
             R.id.omnibox_back -> if (ninjaWebView.canGoBack()) {
                 ninjaWebView.goBack()
@@ -770,7 +769,20 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private val preferenceChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
         when {
             key.equals(ConfigManager.K_TOOLBAR_ICONS) -> { reorderToolbarIcons() }
-            key.equals(ConfigManager.K_BOLD_FONT) -> { ninjaWebView.reload() }
+            key.equals(ConfigManager.K_BOLD_FONT) -> {
+                if (config.boldFontStyle) {
+                    ninjaWebView.updateCssStyle()
+                } else {
+                    ninjaWebView.reload()
+                }
+            }
+            key.equals((ConfigManager.K_FONT_STYLE_SERIF)) -> {
+                if (config.fontStyleSerif) {
+                    ninjaWebView.updateCssStyle()
+                } else {
+                    ninjaWebView.reload()
+                }
+            }
         }
     }
 

@@ -51,6 +51,11 @@
             android:title="@string/bold_font"
             android:summary="@string/setting_summary_bold_font"/>
 
+        <CheckBoxPreference android:key="sp_font_style_serif"
+            android:defaultValue="false"
+            android:title="@string/font_style_serif"
+            android:summary="@string/setting_summary_font_style_serif"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/setting_title_toolbar">

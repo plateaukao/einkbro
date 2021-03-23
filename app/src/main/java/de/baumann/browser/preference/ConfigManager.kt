@@ -21,6 +21,10 @@ class ConfigManager(private val context: Context) {
         get() = sp.getBoolean("pdf_create", false)
         set(value) {sp.edit { putBoolean("pdf_create", value) } }
 
+    var fontStyleSerif: Boolean
+        get() = sp.getBoolean(K_FONT_STYLE_SERIF, false)
+        set(value) {sp.edit { putBoolean(K_FONT_STYLE_SERIF, value) } }
+
     var pageReservedOffset: Int
         get() = sp.getInt("sp_page_turn_left_value", 80)
         set(value) {sp.edit { putInt("sp_page_turn_left_value", value) } }
@@ -41,6 +45,7 @@ class ConfigManager(private val context: Context) {
         const val K_TOUCH_AREA_TYPE = "sp_touch_area_type"
         const val K_TOOLBAR_ICONS = "sp_toolbar_icons"
         const val K_BOLD_FONT = "sp_bold_font"
+        const val K_FONT_STYLE_SERIF = "sp_font_style_serif"
     }
 }
 
