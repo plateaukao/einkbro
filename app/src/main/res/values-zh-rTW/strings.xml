@@ -362,4 +362,6 @@
     <string name="setting_summary_touch_area">設定點擊畫面何處會翻頁</string>
     <string name="setting_title_pdf_paper_size">設定列印紙張大小</string>
     <string name="setting_summary_pdf_paper_size">將網頁輸出成 pdf 時，預設紙張大小</string>
+    <string name="font_style_serif">Font Style: Serif</string>
+    <string name="setting_summary_font_style_serif">Set font style to Noto Sans Serif</string>
 </resources>
