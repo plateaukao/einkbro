@@ -9,8 +9,8 @@ android {
         applicationId "info.plateaukao.einkbro"
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode 112
-        versionName "8.4.2"
+        versionCode 113
+        versionName "8.4.3"
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -49,5 +49,5 @@ dependencies {
     implementation 'androidx.preference:preference-ktx:1.1.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    implementation 'com.google.android:flexbox:2.0.1'
+    //implementation 'com.chimbori.crux:crux:3.0.1'
 }
