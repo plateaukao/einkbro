@@ -659,26 +659,26 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         if ("" == action) {
             Log.i(ContentValues.TAG, "resumed FOSS browser")
         } else if (intent.action != null && intent.action == Intent.ACTION_WEB_SEARCH) {
-            addAlbum(null, intent.getStringExtra(SearchManager.QUERY), true)
+            addAlbum("", intent.getStringExtra(SearchManager.QUERY), true)
         } else if (filePathCallback != null) {
             filePathCallback = null
         } else if ("sc_history" == action) {
-            addAlbum(null, sp.getString("favoriteURL", "https://www.google.com"), true)
+            addAlbum("", sp.getString("favoriteURL", "https://www.google.com"), true)
             showOverview()
             ninjaWebView.postDelayed({ openHistoryPage() }, 250)
         } else if ("sc_bookmark" == action) {
-            addAlbum(null, sp.getString("favoriteURL", "https://www.google.com"), true)
+            addAlbum("", sp.getString("favoriteURL", "https://www.google.com"), true)
             showOverview()
             ninjaWebView.postDelayed({ openBookmarkPage() }, 250)
         } else if ("sc_startPage" == action) {
-            addAlbum(null, sp.getString("favoriteURL", "https://www.google.com"), true)
+            addAlbum("", sp.getString("favoriteURL", "https://www.google.com"), true)
             showOverview()
             ninjaWebView.postDelayed({ btnOpenStartPage.performClick() }, 250)
         } else if (Intent.ACTION_SEND == action) {
-            addAlbum(null, url, true)
+            addAlbum("", url, true)
         } else {
             if (!onPause) {
-                addAlbum(null, sp.getString("favoriteURL", "https://www.google.com"), true)
+                addAlbum("", sp.getString("favoriteURL", "https://www.google.com"), true)
             }
         }
         getIntent().action = ""
@@ -1159,10 +1159,10 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         }.apply { show() }
     }
 
-    override fun addNewTab(url: String?) = addAlbum(null, url, true)
+    override fun addNewTab(url: String?) = addAlbum("", url, true)
 
     @Synchronized
-    private fun addAlbum(title: String?, url: String?, foreground: Boolean) {
+    private fun addAlbum(title: String, url: String?, foreground: Boolean) {
         if (url == null) return
 
         ninjaWebView = NinjaWebView(this)
@@ -1259,21 +1259,23 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     var keepToolbar = false
     private fun scrollChange() {
         if (sp.getBoolean("hideToolbar", true)) {
-            ninjaWebView.setOnScrollChangeListener { scrollY, oldScrollY ->
-                val height = floor(x = ninjaWebView.contentHeight * ninjaWebView.resources.displayMetrics.density.toDouble()).toInt()
-                val webViewHeight = ninjaWebView.height
-                val cutoff = height - webViewHeight - 112 * resources.displayMetrics.density.roundToInt()
-                if (scrollY in (oldScrollY + 1)..cutoff) {
-                    if (!keepToolbar) {
-                        // Daniel
-                        hideOmnibox();
-                    } else {
-                        keepToolbar = false
+            ninjaWebView.setOnScrollChangeListener(object: NinjaWebView.OnScrollChangeListener {
+                override fun onScrollChange(scrollY: Int, oldScrollY: Int) {
+                    val height = floor(x = ninjaWebView.contentHeight * ninjaWebView.resources.displayMetrics.density.toDouble()).toInt()
+                    val webViewHeight = ninjaWebView.height
+                    val cutoff = height - webViewHeight - 112 * resources.displayMetrics.density.roundToInt()
+                    if (scrollY in (oldScrollY + 1)..cutoff) {
+                        if (!keepToolbar) {
+                            // Daniel
+                            hideOmnibox();
+                        } else {
+                            keepToolbar = false
+                        }
+                    } else if (scrollY < oldScrollY) {
+                        //showOmnibox()
                     }
-                } else if (scrollY < oldScrollY) {
-                    //showOmnibox()
                 }
-            }
+            })
         }
     }
 

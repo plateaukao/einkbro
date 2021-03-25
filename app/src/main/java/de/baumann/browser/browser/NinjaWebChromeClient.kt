@@ -60,7 +60,7 @@ class NinjaWebChromeClient(private val ninjaWebView: NinjaWebView) : WebChromeCl
         (ninjaWebView.parent as ViewGroup).removeView(window)
     }
 
-    private fun handleWebViewLinks(url: String) = ninjaWebView.browserController.addNewTab(url)
+    private fun handleWebViewLinks(url: String) = ninjaWebView.browserController?.addNewTab(url)
 
     override fun onProgressChanged(view: WebView, progress: Int) {
         super.onProgressChanged(view, progress)
@@ -73,17 +73,17 @@ class NinjaWebChromeClient(private val ninjaWebView: NinjaWebView) : WebChromeCl
     }
 
     override fun onShowCustomView(view: View, callback: CustomViewCallback) {
-        ninjaWebView.browserController.onShowCustomView(view, callback)
+        ninjaWebView.browserController?.onShowCustomView(view, callback)
         super.onShowCustomView(view, callback)
     }
 
     override fun onHideCustomView() {
-        ninjaWebView.browserController.onHideCustomView()
+        ninjaWebView.browserController?.onHideCustomView()
         super.onHideCustomView()
     }
 
     override fun onShowFileChooser(webView: WebView, filePathCallback: ValueCallback<Array<Uri>>, fileChooserParams: FileChooserParams): Boolean {
-        ninjaWebView.browserController.showFileChooser(filePathCallback)
+        ninjaWebView.browserController?.showFileChooser(filePathCallback)
         return true
     }
 

@@ -1,6 +1,6 @@
 @charset "utf-8";
 /* Document */
-body{font-size:10px;line-height:1;}
+body {font-size: 16px;}
 #readTools a{background-color:transparent!important;background-image:url(http://kerrick.github.com/readability-js/sprite-readability.png)!important;background-repeat:no-repeat!important;}
 #readOverlay{text-rendering:optimizeLegibility;display:block;position:absolute;top:0;left:0;width:100%;}
 #readInner{max-width:800px;margin:1em auto;}
@@ -44,12 +44,12 @@ a.rdbTK-powered span{display:inline-block;height:22px;margin-left:2px;background
 #readTools a:hover,#readTools a:focus{opacity:1;filter:alpha(opacity=100);}
 /* @group User Styles */
 /* Size */
-.size-x-small{font-size:1.1em;line-height:1.5em;}
-.size-small{font-size:1.4em;line-height:1.5em;}
-.size-medium{font-size:1.7em;line-height:1.48em;}
+.size-x-small{font-size:1.2em;line-height:1.5em;}
+.size-small{font-size:1.6em;line-height:1.6em;}
+.size-medium{font-size:1.8em;line-height:1.48em;}
 .size-large{font-size:2em;line-height:1.47em;}
 .size-x-large{font-size:2.5em;line-height:1.43em;}
-.size-x-small h1,.size-small h1,.size-medium h1,.size-large h1{font-size:1.6em;line-height:1.5em;}
+.size-x-small h1,.size-small h1,.size-medium h1,.size-large h1{font-size:1.4em;line-height:1.5em;}
 .size-x-large h1{font-size:1.6em;line-height:1.3em;}
 /* Style */
 .style-newspaper {font-family:Georgia,"Times New Roman", Times, serif;background:#fbfbfb;color:#080000;}
