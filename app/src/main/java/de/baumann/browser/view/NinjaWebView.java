@@ -279,18 +279,25 @@ public class NinjaWebView extends WebView implements AlbumController {
         webSettings = getSettings();
         webSettings.setAppCacheEnabled(true);
         webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);
+
         webSettings.setTextZoom(Integer.parseInt(sp.getString("sp_fontSize", "100")));
+
         webSettings.setAllowFileAccessFromFileURLs(sp.getBoolean(("sp_remote"), true));
         webSettings.setAllowUniversalAccessFromFileURLs(sp.getBoolean(("sp_remote"), true));
         webSettings.setDomStorageEnabled(sp.getBoolean(("sp_remote"), true));
         webSettings.setDatabaseEnabled(true);
+
         webSettings.setBlockNetworkImage(!sp.getBoolean(context.getString(R.string.sp_images), true));
+
         webSettings.setJavaScriptEnabled(sp.getBoolean(context.getString(R.string.sp_javascript), true));
         webSettings.setJavaScriptCanOpenWindowsAutomatically(sp.getBoolean(context.getString(R.string.sp_javascript), true));
+        webSettings.setSupportMultipleWindows(sp.getBoolean(context.getString(R.string.sp_javascript), true));
+
         webSettings.setGeolocationEnabled(sp.getBoolean(context.getString(R.string.sp_location), false));
         webSettings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         CookieManager manager = CookieManager.getInstance();
         manager.setAcceptCookie(sp.getBoolean(context.getString(R.string.sp_cookies), true));
+        manager.setAcceptThirdPartyCookies(this, sp.getBoolean(context.getString(R.string.sp_cookies), true));
     }
 
     private void initAlbum() {
