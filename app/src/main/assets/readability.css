@@ -1,6 +1,6 @@
 @charset "utf-8";
 /* Document */
-body {font-size: 16px;}
+body {font-size: 16px; background-color:#ffffff !important;}
 #readTools a{background-color:transparent!important;background-image:url(http://kerrick.github.com/readability-js/sprite-readability.png)!important;background-repeat:no-repeat!important;}
 #readOverlay{text-rendering:optimizeLegibility;display:block;position:absolute;top:0;left:0;width:100%;}
 #readInner{max-width:800px;margin:1em auto;}
@@ -52,21 +52,21 @@ a.rdbTK-powered span{display:inline-block;height:22px;margin-left:2px;background
 .size-x-small h1,.size-small h1,.size-medium h1,.size-large h1{font-size:1.4em;line-height:1.5em;}
 .size-x-large h1{font-size:1.6em;line-height:1.3em;}
 /* Style */
-.style-newspaper {font-family:Georgia,"Times New Roman", Times, serif;background:#fbfbfb;color:#080000;}
+.style-newspaper {font-family:Georgia,"Times New Roman", Times, serif;background:#ffffff;color:#000000;}
 .style-newspaper h1 {text-transform:capitalize;font-family:Georgia, "Times New Roman", Times, serif;}
-.style-newspaper #readInner a {color:#0924e1;}
-.style-novel {font-family:"Palatino Linotype", "Book Antiqua", Palatino, serif;background:#f4eed9;color:#1d1916;}
-.style-novel #readInner a {color:#1856ba;}
-.style-ebook {font-family:Arial, Helvetica, sans-serif;background:#edebe8;color:#2c2d32;}
-.style-ebook #readInner a {color:#187dc9;}
+.style-newspaper #readInner a {color:#000000;}
+.style-novel {font-family:"Palatino Linotype", "Book Antiqua", Palatino, serif;background:#ffffff;color:#000000;}
+.style-novel #readInner a {color:#000000;}
+.style-ebook {font-family:Arial, Helvetica, sans-serif;background:#ffffff;color:#000000;}
+.style-ebook #readInner a {color:#000000;}
 .style-ebook h1 {font-family:"Arial Black", Gadget, sans-serif;font-weight:400;}
-.style-terminal {font-family:"Lucida Console", Monaco, monospace;background:#1d4e2c;color:#c6ffc6;}
-.style-terminal #readInner a {color:#093;}
+.style-terminal {font-family:"Lucida Console", Monaco, monospace;background:#ffffff;color:#000000;}
+.style-terminal #readInner a {color:#000;}
 /* Typekit */
-.style-apertura{font-family:apertura-1,apertura-2,sans-serif;background-color:#2d2828;color:#eae8e9;}
-.style-apertura #readInner a{color:#58b0ff;}
-.style-athelas{font-family:athelas-1,athelas-2,"Palatino Linotype","Book Antiqua",Palatino,serif;background-color:#f7f7f7;color:#2b373d;}
-.style-athelas #readInner a{color:#1e83cb;}
+.style-apertura{font-family:apertura-1,apertura-2,sans-serif;background-color:#ffffff;color:#000000;}
+.style-apertura #readInner a{color:#000000;}
+.style-athelas{font-family:athelas-1,athelas-2,"Palatino Linotype","Book Antiqua",Palatino,serif;background-color:#ffffff;color:#000000;}
+.style-athelas #readInner a{color:#000000;}
 /* Margin */
 .margin-x-narrow{width:95%;}
 .margin-narrow{width:85%;}
