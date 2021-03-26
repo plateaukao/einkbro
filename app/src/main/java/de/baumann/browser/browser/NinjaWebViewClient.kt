@@ -13,9 +13,7 @@ import android.view.View
 import android.webkit.*
 import android.widget.Button
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.preference.PreferenceManager
-import com.chimbori.crux.articles.ArticleExtractor
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import de.baumann.browser.Ninja.R
@@ -27,8 +25,6 @@ import de.baumann.browser.unit.HelperUnit
 import de.baumann.browser.unit.IntentUnit
 import de.baumann.browser.view.NinjaToast
 import de.baumann.browser.view.NinjaWebView
-import okhttp3.HttpUrl
-import okhttp3.HttpUrl.Companion.toHttpUrl
 import java.io.ByteArrayInputStream
 import java.net.URISyntaxException
 

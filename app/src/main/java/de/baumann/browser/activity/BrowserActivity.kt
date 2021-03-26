@@ -1165,8 +1165,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private fun addAlbum(title: String, url: String?, foreground: Boolean) {
         if (url == null) return
 
-        ninjaWebView = NinjaWebView(this)
-        ninjaWebView.browserController = this
+        ninjaWebView = NinjaWebView(this, this)
         ninjaWebView.albumTitle = title
         ViewUnit.bound(this, ninjaWebView)
         val albumView = ninjaWebView.albumView
