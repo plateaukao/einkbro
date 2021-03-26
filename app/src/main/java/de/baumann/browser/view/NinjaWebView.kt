@@ -350,7 +350,52 @@ class NinjaWebView : WebView, AlbumController {
         injectCss(horizontalLayoutCss.toByteArray())
     }
 
+    private var isReaderModeOn = false
     fun applyReaderMode() {
+        isReaderModeOn = !isReaderModeOn
+        if (isReaderModeOn) {
+            applyMozReaderMode()
+        } else {
+            disableReaderMode()
+        }
+    }
+
+    private fun disableReaderMode() {
+        loadUrl("javascript:(function() {" +
+                "document.body.innerHTML = innerHTMLCache" +
+                "})()")
+    }
+
+    private fun applyMozReaderMode() {
+        try {
+            val jsInput: InputStream = context.assets.open("MozReadability.js")
+            val buffer = ByteArray(jsInput.available())
+            jsInput.read(buffer)
+            jsInput.close()
+
+            // String-ify the script byte-array using BASE64 encoding !!!
+            val encodedJs = Base64.encodeToString(buffer, Base64.NO_WRAP)
+            loadUrl("javascript:(function() {" +
+                    "var parent = document.getElementsByTagName('head').item(0);" +
+                    "var script = document.createElement('script');" +
+                    "script.type = 'text/javascript';" +
+                    "script.innerHTML = window.atob('" + encodedJs + "');" +
+                    "parent.appendChild(script)" +
+                    "})()")
+
+            val cssInput: InputStream = context.assets.open("MozReadability.css")
+            val cssBuffer = ByteArray(cssInput.available())
+            cssInput.read(cssBuffer)
+            cssInput.close()
+            injectCss(cssBuffer)
+        } catch (e: IOException) {
+            // TODO Auto-generated catch block
+            e.printStackTrace()
+        }
+
+    }
+
+    private fun applyArcReaderMode() {
         val jsInput: InputStream
         val cssInput: InputStream
         try {
