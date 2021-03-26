@@ -395,57 +395,7 @@ class NinjaWebView : WebView, AlbumController {
 
     }
 
-    private fun applyArcReaderMode() {
-        val jsInput: InputStream
-        val cssInput: InputStream
-        try {
-            jsInput = context.assets.open("readability.js")
-            val buffer = ByteArray(jsInput.available())
-            jsInput.read(buffer)
-            jsInput.close()
-            cssInput = context.assets.open("readability.css")
-            val cssBuffer = ByteArray(cssInput.available())
-            cssInput.read(cssBuffer)
-            cssInput.close()
-
-            // String-ify the script byte-array using BASE64 encoding !!!
-            val encodedJs = Base64.encodeToString(buffer, Base64.NO_WRAP)
-            val encodedCss = Base64.encodeToString(cssBuffer, Base64.NO_WRAP)
-            loadUrl("javascript:(function() {" +
-                    "var parent = document.getElementsByTagName('head').item(0);" +
-                    "var script = document.createElement('script');" +
-                    "script.type = 'text/javascript';" +
-                    "script.innerHTML = window.atob('" + encodedJs + "');" +
-                    "parent.appendChild(script)" +
-                    "})()")
-            injectCss(cssBuffer)
-        } catch (e: IOException) {
-            // TODO Auto-generated catch block
-            e.printStackTrace()
-        }
-    }
-
     fun applyPageNoMargins() = injectCss(pageNoMarginCss.toByteArray())
-
-    /*
-    fun applyReaderMode1() {
-        addJavascriptInterface(
-                MyJavaScriptInterface(
-                        this.url ?: ""
-                ) { article ->
-                    post {
-                        loadData(article.document.toString(), "text/html",  "utf-8")
-                    }
-                },
-                "HtmlViewer"
-        )
-        loadUrl("javascript:window.HtmlViewer.showHTML('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>');")
-//        evaluateJavascript("(function() { return '<html>' + document.getElementsByTagName('html')[0].innerHTML + '</html>'; })()") {
-//            loadData(ArticleExtractor((this.url ?: "").toHttpUrl(), it).extractContent().article.document.toString(), "text/html",  "utf-8")
-//        }
-    }
-
-     */
 
     private fun injectCss(bytes: ByteArray) {
         try {
@@ -461,21 +411,6 @@ class NinjaWebView : WebView, AlbumController {
             e.printStackTrace()
         }
     }
-
-    /*
-    class MyJavaScriptInterface(
-            private val url: String,
-            private val action: (article: Article) -> Unit
-    ) {
-
-        @JavascriptInterface
-        fun showHTML(html: String) {
-            val article = ArticleExtractor(url.toHttpUrl(), html).extractContent().article
-            action.invoke(article)
-        }
-    }
-
-     */
 
     companion object {
         private const val verticalLayoutCss = "body {\n" +
