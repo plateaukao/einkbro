@@ -14,20 +14,15 @@ import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
 import android.webkit.CookieManager
-import android.webkit.JavascriptInterface
 import android.webkit.WebSettings
 import android.webkit.WebView
-import androidx.appcompat.app.AlertDialog
 import androidx.preference.PreferenceManager
-import com.chimbori.crux.articles.Article
-import com.chimbori.crux.articles.ArticleExtractor
 import de.baumann.browser.Ninja.BuildConfig
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.browser.*
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.unit.BrowserUnit
 import de.baumann.browser.unit.ViewUnit
-import okhttp3.HttpUrl.Companion.toHttpUrl
 import java.io.IOException
 import java.io.InputStream
 import java.util.*
@@ -56,13 +51,22 @@ class NinjaWebView : WebView, AlbumController {
         private get() = sp.getBoolean("sp_vertical_read", false)
 
     var browserController: BrowserController? = null
-        set(value) {
-            album.setBrowserController(value)
-        }
 
-    constructor(context: Context?) : super(context!!)
-    constructor(context: Context?, attrs: AttributeSet?) : super(context!!, attrs)
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context!!, attrs, defStyleAttr)
+    constructor(context: Context?, browserController: BrowserController) : super(context!!) {
+        this.browserController = browserController
+        album = Album(context, this, browserController)
+        initAlbum()
+    }
+
+    constructor(context: Context?, attrs: AttributeSet?) : super(context!!, attrs) {
+        album = Album(context, this, browserController)
+        initAlbum()
+    }
+
+    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context!!, attrs, defStyleAttr) {
+        album = Album(context, this, browserController)
+        initAlbum()
+    }
 
     override fun onScrollChanged(l: Int, t: Int, old_l: Int, old_t: Int) {
         super.onScrollChanged(l, t, old_l, old_t)
@@ -96,14 +100,12 @@ class NinjaWebView : WebView, AlbumController {
         adBlock = AdBlock(context)
         javaHosts = Javascript(context)
         cookieHosts = Cookie(context)
-        album = Album(context, this, browserController)
         webViewClient = NinjaWebViewClient(this)
         webChromeClient = NinjaWebChromeClient(this)
         clickHandler = NinjaClickHandler(this)
         initWebView()
         initWebSettings()
         initPreferences()
-        initAlbum()
     }
 
     private fun initWebView() {
@@ -177,7 +179,6 @@ class NinjaWebView : WebView, AlbumController {
         with(album) {
             setAlbumCover(null)
             albumTitle = context!!.getString(R.string.app_name)
-            setBrowserController(browserController)
         }
     }
 
@@ -226,7 +227,7 @@ class NinjaWebView : WebView, AlbumController {
 
     override fun getAlbumView(): View = album.albumView
 
-    override fun setAlbumCover(bitmap: Bitmap) = album.setAlbumCover(bitmap)
+    override fun setAlbumCover(bitmap: Bitmap?) = album.setAlbumCover(bitmap)
 
     override fun getAlbumTitle(): String = album.albumTitle
 
@@ -381,6 +382,7 @@ class NinjaWebView : WebView, AlbumController {
 
     fun applyPageNoMargins() = injectCss(pageNoMarginCss.toByteArray())
 
+    /*
     fun applyReaderMode1() {
         addJavascriptInterface(
                 MyJavaScriptInterface(
@@ -398,6 +400,8 @@ class NinjaWebView : WebView, AlbumController {
 //        }
     }
 
+     */
+
     private fun injectCss(bytes: ByteArray) {
         try {
             val encoded = Base64.encodeToString(bytes, Base64.NO_WRAP)
@@ -413,6 +417,7 @@ class NinjaWebView : WebView, AlbumController {
         }
     }
 
+    /*
     class MyJavaScriptInterface(
             private val url: String,
             private val action: (article: Article) -> Unit
@@ -424,6 +429,8 @@ class NinjaWebView : WebView, AlbumController {
             action.invoke(article)
         }
     }
+
+     */
 
     companion object {
         private const val verticalLayoutCss = "body {\n" +
