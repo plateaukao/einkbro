@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 .mozac-readerview-body {
-  padding: 5px;
+  padding: 10px;
   transition-property: background-color, color;
   transition-duration: 0.4s;
   max-width: 35em;
@@ -216,7 +216,7 @@
    an optional caption text */
 .mozac-readerview-content .wp-caption,
 .mozac-readerview-content figure {
-  display: block !important;
+  /*display: block !important;*/
   width: 100% !important;
   margin: 0px !important;
   margin-bottom: 32px !important;
@@ -228,7 +228,7 @@
 .mozac-readerview-content p > a:only-child > img:only-child,
 .mozac-readerview-content .wp-caption img,
 .mozac-readerview-content figure img {
-  display: block;
+  /*display: block; */
   margin-left: auto;
   margin-right: auto;
 }
@@ -298,7 +298,7 @@
  * see bug 1399616 for context. */
 .mozac-readerview-content img.wp-smiley,
 .mozac-readerview-content img.emoji {
-  display: inline-block;
+  /*display: inline-block;*/
   border-width: 0;
   /* height: auto is implied from `.mozac-readerview-content *` rule. */
   width: 1em;
