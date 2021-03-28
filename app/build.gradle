@@ -7,6 +7,7 @@ android {
 
     defaultConfig {
         applicationId "info.plateaukao.einkbro"
+        //applicationId "info.plateaukao.einkbro.debug"
         minSdkVersion 23
         targetSdkVersion 30
         versionCode 115
