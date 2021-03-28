@@ -6,7 +6,6 @@
   padding: 10px;
   background-color: #ffffff !important;
   color: #000000 !important;
-  max-width: 35em;
 }
 
 .mozac-readerview-body * {
@@ -25,7 +24,7 @@
 
 .mozac-readerview-body.light > .container > .header > .domain {
   color: #ee7600;
-  border-bottom-color: #d0d0d0;
+  border-left-color: #d0d0d0;
 }
 
 .mozac-readerview-body.light > .container > .header > h1 {
@@ -38,7 +37,7 @@
 
 .mozac-readerview-body.dark > .container > .header > .domain {
   color: #ff9400;
-  border-bottom-color: #777777;
+  border-left-color: #777777;
 }
 
 .mozac-readerview-body.dark > .container > .header > h1 {
@@ -50,11 +49,11 @@
 }
 
 .mozac-readerview-body.sepia > .container > .header > .domain {
-  border-bottom-color: #5b4636 !important;
+  border-left-color: #5b4636 !important;
 }
 
 .mozac-readerview-body.sepia > .container > .footer {
-  background-color: #dedad4 !important;
+  background-color: #ffffff!important;
 }
 
 .mozac-readerview-body.light > .container > .content .caption,
@@ -85,12 +84,12 @@
 
 .mozac-readerview-body > .container > hr {
   margin: 0px;
-  margin-bottom: 10px;
+  margin-left: 10px;
 }
 
 .mozac-readerview-body > .container > .header {
   text-align: start;
-  padding-bottom: 10px;
+  padding-left: 10px;
 }
 
 .mozac-readerview-body > .container > .header > .credits {
@@ -98,15 +97,15 @@
 }
 
 .mozac-readerview-body > .container > .header > .domain {
-  margin-top: 10px;
-  padding-bottom: 10px;
+  margin-right: 10px;
+  padding-left: 10px;
   color: #00acff !important;
   text-decoration: none;
 }
 
 .mozac-readerview-body > .container > .header > .domain-border {
-  margin-top: 15px;
-  border-bottom: 1.5px solid #777777;
+  margin-right: 15px;
+  border-left: 1.5px solid #777777;
   width: 50%;
 }
 
@@ -114,17 +113,17 @@
   font-size: 1.33em;
   font-weight: 700;
   line-height: 1.1em;
-  width: 100%;
+  height: 100%;
   margin: 0px;
-  margin-top: 32px;
-  margin-bottom: 16px;
+  margin-right: 32px;
+  margin-left: 16px;
   padding: 0px;
 }
 
 .mozac-readerview-body > .container > .header > .credits {
   padding: 0px;
   margin: 0px;
-  margin-bottom: 32px;
+  margin-left: 32px;
 }
 
 .mozac-readerview-body > .container > .header > .meta-data {
@@ -133,7 +132,7 @@
 }
 
 .mozac-readerview-body > .container > .content {
-  padding-top: 10px;
+  padding-right: 10px;
   padding-left: 0px;
   padding-right: 0px;
 }
@@ -156,28 +155,28 @@
 }
 
 .mozac-readerview-content h1 {
-  margin-top: 16px;
-  margin-bottom: 16px;
+  margin-right: 16px;
+  margin-left: 16px;
   font-weight: 700;
   font-size: 1.6em;
 }
 
 .mozac-readerview-content h2 {
-  margin-top: 16px;
-  margin-bottom: 16px;
+  margin-right: 16px;
+  margin-left: 16px;
   font-weight: 700;
   font-size: 1.2em;
 }
 
 .mozac-readerview-content h3 {
-  margin-top: 16px;
-  margin-bottom: 16px;
+  margin-right: 16px;
+  margin-left: 16px;
   font-weight: 700;
   font-size: 1em;
 }
 
 .mozac-readerview-content * {
-  max-width: 100% !important;
+  max-height: 100% !important;
   height: auto !important;
 }
 
@@ -185,7 +184,7 @@
   font-size: 1em !important;
   line-height: 1.4em !important;
   margin: 0px !important;
-  margin-bottom: 20px !important;
+  margin-left: 20px !important;
 }
 
 /* Covers all images showing edge-to-edge using a
@@ -193,9 +192,9 @@
 .mozac-readerview-content .wp-caption,
 .mozac-readerview-content figure {
   /*display: block !important;*/
-  width: 100% !important;
+  height: 80% !important;
   margin: 0px !important;
-  margin-bottom: 32px !important;
+  margin-left: 32px !important;
 }
 
 /* Images marked to be shown edge-to-edge with an
@@ -207,14 +206,15 @@
   /*display: block; */
   margin-left: auto;
   margin-right: auto;
+  max-width: 300px !important;
 }
 
 /* Account for body padding to make image full width */
 .mozac-readerview-content img[moz-reader-full-width] {
-  width: calc(100% + 40px);
+  /*height: calc(80% + 40px);*/
   margin-left: -20px;
   margin-right: -20px;
-  max-width: none !important;
+  max-width: 300px !important;
 }
 
 /* Image caption text */
@@ -224,7 +224,7 @@
   font-size: 0.9em;
   font-family: sans-serif;
   margin: 0px !important;
-  padding-top: 4px !important;
+  padding-right: 4px !important;
 }
 
 /* Ensure all pre-formatted code inside the reader content
@@ -232,12 +232,12 @@
 .mozac-readerview-content code,
 .mozac-readerview-content pre {
   white-space: pre-wrap !important;
-  margin-bottom: 20px !important;
+  margin-left: 20px !important;
 }
 
 .mozac-readerview-content blockquote {
   margin: 0px !important;
-  margin-bottom: 20px !important;
+  margin-left: 20px !important;
   padding: 0px !important;
   padding-inline-start: 16px !important;
   border: 0px !important;
@@ -247,7 +247,7 @@
 .mozac-readerview-content ul,
 .mozac-readerview-content ol {
   margin: 0px !important;
-  margin-bottom: 20px !important;
+  margin-left: 20px !important;
   padding: 0px !important;
   line-height: 1.5em;
 }
