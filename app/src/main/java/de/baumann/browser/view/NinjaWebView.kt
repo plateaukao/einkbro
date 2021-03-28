@@ -86,6 +86,12 @@ class NinjaWebView : WebView, AlbumController {
         injectCss(cssStyle.toByteArray())
     }
 
+    override fun reload() {
+        isVerticalRead = false
+        isReaderModeOn = false
+        super.reload()
+    }
+
     interface OnScrollChangeListener {
         fun onScrollChange(scrollY: Int, oldScrollY: Int)
     }

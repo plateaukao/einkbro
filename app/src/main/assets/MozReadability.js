@@ -2283,12 +2283,15 @@ function escapeHTML(text) {
 
 function createHtmlBody(article) {
   const safeTitle = escapeHTML(article.title);
-  //const safeReadingTime = escapeHTML(article.readingTime);
+  const safeReadingTime = escapeHTML(article.readingTime);
   return `
     <body class="mozac-readerview-body">
       <div id="mozac-readerview-container" class="container">
         <div class="header">
           <h1>${safeTitle}</h1>
+        </div>
+        <div>
+          <div>${safeReadingTime}</div>
         </div>
         <hr>
         <div class="content">
@@ -2299,10 +2302,66 @@ function createHtmlBody(article) {
   `
 }
 
+function  getReadingSpeedForLanguage(lang) {
+ const readingSpeed = new Map([
+   [ "en", {cpm: 987,  variance: 118 } ],
+   [ "ar", {cpm: 612,  variance: 88 } ],
+   [ "de", {cpm: 920,  variance: 86 } ],
+   [ "es", {cpm: 1025, variance: 127 } ],
+   [ "fi", {cpm: 1078, variance: 121 } ],
+   [ "fr", {cpm: 998,  variance: 126 } ],
+   [ "he", {cpm: 833,  variance: 130 } ],
+   [ "it", {cpm: 950,  variance: 140 } ],
+   [ "jw", {cpm: 357,  variance: 56 } ],
+   [ "nl", {cpm: 978,  variance: 143 } ],
+   [ "pl", {cpm: 916,  variance: 126 } ],
+   [ "pt", {cpm: 913,  variance: 145 } ],
+   [ "ru", {cpm: 986,  variance: 175 } ],
+   [ "sk", {cpm: 885,  variance: 145 } ],
+   [ "sv", {cpm: 917,  variance: 156 } ],
+   [ "tr", {cpm: 1054, variance: 156 } ],
+   [ "zh", {cpm: 255,  variance: 29 } ],
+ ]);
+
+ return readingSpeed.get(lang) || readingSpeed.get("en");
+}
+
+function  getReadingTime(length, lang = "en") {
+  const readingSpeed = this.getReadingSpeedForLanguage(lang);
+  const charactersPerMinuteLow = readingSpeed.cpm - readingSpeed.variance;
+  const charactersPerMinuteHigh = readingSpeed.cpm + readingSpeed.variance;
+  const readingTimeMinsSlow = Math.ceil(length / charactersPerMinuteLow);
+  const readingTimeMinsFast  = Math.ceil(length / charactersPerMinuteHigh);
+
+  // Construct a localized and "humanized" reading time in minutes.
+  // If we have both a fast and slow reading time we'll show both e.g.
+  // "2 - 4 minutes", otherwise we'll just show "4 minutes".
+  try {
+    var parts = new Intl.RelativeTimeFormat(lang).formatToParts(readingTimeMinsSlow, 'minute');
+    if (parts.length == 3) {
+      // No need to use part[0] which represents the literal "in".
+      var readingTime = parts[1].value; // reading time in minutes
+      var minutesLiteral = parts[2].value; // localized singular or plural literal of 'minute'
+      var readingTimeString = `${readingTime} ${minutesLiteral}`;
+      if (readingTimeMinsSlow != readingTimeMinsFast) {
+        readingTimeString = `${readingTimeMinsFast} - ${readingTimeString}`;
+      }
+      return readingTimeString;
+    }
+  }
+  catch(error) {
+    console.error(`Failed to format reading time: ${error}`);
+  }
+
+  return "";
+}
+
 var documentClone = document.cloneNode(true);
 var article = new Readability(documentClone, {classesToPreserve: preservedClasses}).parse();
 var innerHTMLCache = document.body.innerHTML;
-//document.body.innerHTML = "<h1>" + article.title + "</h1><hr>" + article.content;
+
+article.readingTime = getReadingTime(article.length, document.lang);
+
 document.body.outerHTML = createHtmlBody(article)
 
 // change font type
