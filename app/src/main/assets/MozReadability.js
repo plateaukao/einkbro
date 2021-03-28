@@ -2258,9 +2258,53 @@ if (typeof module === "object") {
   module.exports = Readability;
 }
 
-// apply reader mode, and save current html to innerHTMLCache
+// Daniel modified part
+const preservedClasses = [
+  "caption",
+  "emoji",
+  "hidden",
+  "invisible",
+  "sr-only",
+  "visually-hidden",
+  "visuallyhidden",
+  "wp-caption",
+  "wp-caption-text",
+  "wp-smiley"
+];
+
+function escapeHTML(text) {
+  return text
+    .replace(/\&/g, "&amp;")
+    .replace(/\</g, "&lt;")
+    .replace(/\>/g, "&gt;")
+    .replace(/\"/g, "&quot;")
+    .replace(/\'/g, "&#039;");
+}
+
+function createHtmlBody(article) {
+  const safeTitle = escapeHTML(article.title);
+  //const safeReadingTime = escapeHTML(article.readingTime);
+  return `
+    <body class="mozac-readerview-body">
+      <div id="mozac-readerview-container" class="container">
+        <div class="header">
+          <h1>${safeTitle}</h1>
+        </div>
+        <hr>
+        <div class="content">
+          <div class="mozac-readerview-content">${article.content}</div>
+        </div>
+      </div>
+    </body>
+  `
+}
 
 var documentClone = document.cloneNode(true);
-var article = new Readability(documentClone).parse();
+var article = new Readability(documentClone, {classesToPreserve: preservedClasses}).parse();
 var innerHTMLCache = document.body.innerHTML;
-document.body.innerHTML = article.content;
+//document.body.innerHTML = "<h1>" + article.title + "</h1><hr>" + article.content;
+document.body.outerHTML = createHtmlBody(article)
+
+// change font type
+let bodyClasses = document.body.classList;
+bodyClasses.add("serif");
