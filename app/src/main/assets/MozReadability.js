@@ -2259,7 +2259,7 @@ if (typeof module === "object") {
 }
 
 // Daniel modified part
-const preservedClasses = [
+var preservedClasses = [
   "caption",
   "emoji",
   "hidden",
@@ -2365,5 +2365,5 @@ article.readingTime = getReadingTime(article.length, document.lang);
 document.body.outerHTML = createHtmlBody(article)
 
 // change font type
-let bodyClasses = document.body.classList;
+var bodyClasses = document.body.classList;
 bodyClasses.add("serif");
