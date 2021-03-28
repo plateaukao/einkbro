@@ -367,6 +367,7 @@ class NinjaWebView : WebView, AlbumController {
             "var style = document.createElement('style');" +
                     "style.type = 'text/css';" +
                     "style.innerHTML = \"" + horizontalLayoutCss + "\";" +
+                    "var parent = document.getElementsByTagName('head').item(0);" +
                     "parent.appendChild(style);"
         } else {
             ""
