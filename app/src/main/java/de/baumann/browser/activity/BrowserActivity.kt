@@ -478,7 +478,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             R.id.omnibox_tabcount -> showOverview()
             R.id.omnibox_touch -> toggleTouchTurnPageFeature()
             R.id.omnibox_font -> showFontSizeChangeDialog()
-            R.id.omnibox_reader -> ninjaWebView.applyReaderMode()
+            R.id.omnibox_reader -> ninjaWebView.toggleReaderMode()
             R.id.omnibox_bold_font -> {
                 config.boldFontStyle = !config.boldFontStyle
             }
@@ -492,14 +492,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 keepToolbar = true
                 ninjaWebView.pageDownWithNoAnimation()
             }
-            R.id.omnibox_vertical_read -> {
-                setVerticalRead(!getVerticalRead())
-                if (getVerticalRead()) {
-                    ninjaWebView.applyVerticalRead()
-                } else {
-                    ninjaWebView.applyHorizontalRead()
-                }
-            }
+            R.id.omnibox_vertical_read -> ninjaWebView.toggleVerticalRead()
 
             R.id.omnibox_refresh -> if (url != null && ninjaWebView.isLoadFinish) {
                 if (url?.startsWith("https://") != true) {
@@ -1813,12 +1806,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         super.onActionModeFinished(mode)
         mActionMode = null
     }
-
-    private fun getVerticalRead(): Boolean = sp.getBoolean("sp_vertical_read", false)
-
-    private fun setVerticalRead(isEnabled: Boolean) =
-        sp.edit { putBoolean("sp_vertical_read", isEnabled) }
-
 
     private fun hideKeyboard() {
         val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager

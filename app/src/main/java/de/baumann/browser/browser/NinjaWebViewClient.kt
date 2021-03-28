@@ -52,9 +52,6 @@ class NinjaWebViewClient(private val ninjaWebView: NinjaWebView) : WebViewClient
             }
             action.close()
         }
-        if (sp.getBoolean("sp_vertical_read", false)) {
-            (view as NinjaWebView).applyVerticalRead()
-        }
         // lab: change css
         if (config.boldFontStyle || config.fontStyleSerif) {
             ninjaWebView.updateCssStyle()

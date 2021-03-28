@@ -47,9 +47,6 @@ class NinjaWebView : WebView, AlbumController {
     var isForeground = false
         private set
 
-    private val isVerticalRead: Boolean
-        private get() = sp.getBoolean("sp_vertical_read", false)
-
     var browserController: BrowserController? = null
 
     constructor(context: Context?, browserController: BrowserController) : super(context!!) {
@@ -342,60 +339,93 @@ class NinjaWebView : WebView, AlbumController {
         }
     }
 
-    fun applyVerticalRead() {
-        injectCss(verticalLayoutCss.toByteArray())
-    }
-
-    fun applyHorizontalRead() {
-        injectCss(horizontalLayoutCss.toByteArray())
+    private var isVerticalRead = false
+    fun toggleVerticalRead() {
+        isVerticalRead = !isVerticalRead
+        toggleReaderMode(true)
     }
 
     private var isReaderModeOn = false
-    fun applyReaderMode() {
+    fun toggleReaderMode(isVertical: Boolean = false) {
         isReaderModeOn = !isReaderModeOn
         if (isReaderModeOn) {
-            applyMozReaderMode()
+            applyMozReaderMode(isVertical)
         } else {
-            disableReaderMode()
+            disableReaderMode(isVertical)
         }
+        jumpToTop()
     }
 
-    private fun disableReaderMode() {
+    private fun disableReaderMode(isVertical: Boolean = false) {
+        val verticalCssString = if (isVertical) {
+            "var style = document.createElement('style');" +
+                    "style.type = 'text/css';" +
+                    "style.innerHTML = \"" + horizontalLayoutCss + "\";" +
+                    "parent.appendChild(style);"
+        } else {
+            ""
+        }
+
         loadUrl("javascript:(function() {" +
-                "document.body.innerHTML = innerHTMLCache" +
+                "document.body.innerHTML = innerHTMLCache;" +
+                "document.body.classList.remove(\"mozac-readerview-body\");" +
+                verticalCssString +
                 "})()")
     }
 
-    private fun applyMozReaderMode() {
+    private fun applyMozReaderMode(isVertical: Boolean = false) {
         try {
-            val jsInput: InputStream = context.assets.open("MozReadability.js")
-            val buffer = ByteArray(jsInput.available())
-            jsInput.read(buffer)
-            jsInput.close()
+            val buffer = getByteArrayFromAsset("MozReadability.js")
+            val cssBuffer = getByteArrayFromAsset("readerview.css")
+
+            val verticalCssString = if (isVertical) {
+                "var style = document.createElement('style');" +
+                        "style.type = 'text/css';" +
+                        "style.innerHTML = \"" + verticalLayoutCss + "\";" +
+                        "parent.appendChild(style);"
+            } else {
+                ""
+            }
 
             // String-ify the script byte-array using BASE64 encoding !!!
             val encodedJs = Base64.encodeToString(buffer, Base64.NO_WRAP)
+            val encodedCss = Base64.encodeToString(cssBuffer, Base64.NO_WRAP)
             loadUrl("javascript:(function() {" +
                     "var parent = document.getElementsByTagName('head').item(0);" +
                     "var script = document.createElement('script');" +
                     "script.type = 'text/javascript';" +
                     "script.innerHTML = window.atob('" + encodedJs + "');" +
-                    "parent.appendChild(script)" +
+                    "parent.appendChild(script);" +
+
+                    "var style = document.createElement('style');" +
+                    "style.type = 'text/css';" +
+                    "style.innerHTML = window.atob('" + encodedCss + "');" +
+                    "parent.appendChild(style);" +
+                    verticalCssString +
                     "})()")
 
-            val cssInput: InputStream = context.assets.open("MozReadability.css")
-            val cssBuffer = ByteArray(cssInput.available())
-            cssInput.read(cssBuffer)
-            cssInput.close()
-            injectCss(cssBuffer)
         } catch (e: IOException) {
             // TODO Auto-generated catch block
             e.printStackTrace()
         }
-
     }
 
     fun applyPageNoMargins() = injectCss(pageNoMarginCss.toByteArray())
+
+    private fun getByteArrayFromAsset(fileName: String): ByteArray {
+        return try {
+            val assetInput: InputStream = context.assets.open(fileName)
+            val buffer = ByteArray(assetInput.available())
+            assetInput.read(buffer)
+            assetInput.close()
+
+            buffer
+        } catch (e: IOException) {
+            // TODO Auto-generated catch block
+            e.printStackTrace()
+            ByteArray(0)
+        }
+    }
 
     private fun injectCss(bytes: ByteArray) {
         try {
@@ -416,17 +446,15 @@ class NinjaWebView : WebView, AlbumController {
         private const val verticalLayoutCss = "body {\n" +
                 "-webkit-writing-mode: vertical-rl;\n" +
                 "writing-mode: vertical-rl;\n" +
-                "max-height: 95%;\n" +
-                "}\n" +  // facebook css styles
-                "._2w79 { display: inline; max-height: 500px;}\n" +
-                "._4o5j ._4o51 { display: none; }\n" +
-                "._24e4 { max-height: none;}\n"
+                "}\n";  // facebook css styles
+
         private const val notoSansSerifFontCss = "@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400&display=swap');" +
                 "@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400&display=swap');" +
                 "@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400&display=swap');" +
                 "body {\n" +
                 "font-family: 'Noto Serif TC', 'Noto Serif JP', 'Noto Serif KR', serif !important;\n" +
                 "}\n"
+
         private const val horizontalLayoutCss = "body {\n" +
                 "-webkit-writing-mode: horizontal-tb;\n" +
                 "writing-mode: horizontal-tb;\n" +
