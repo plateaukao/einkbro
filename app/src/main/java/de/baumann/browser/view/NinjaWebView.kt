@@ -383,7 +383,7 @@ class NinjaWebView : WebView, AlbumController {
     private fun applyMozReaderMode(isVertical: Boolean = false) {
         try {
             val buffer = getByteArrayFromAsset("MozReadability.js")
-            val cssBuffer = getByteArrayFromAsset("readerview.css")
+            val cssBuffer = getByteArrayFromAsset(if (isVertical) "verticalReaderview.css" else "readerview.css")
 
             val verticalCssString = if (isVertical) {
                 "var style = document.createElement('style');" +
