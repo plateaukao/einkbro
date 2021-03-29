@@ -792,7 +792,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private fun reorderToolbarIcons() {
         toolbarActionViews.size
 
-        val iconListString = sp.getString("sp_toolbar_icons", "0,2,3,4,5,6,8") ?: return
+        val iconListString = sp.getString("sp_toolbar_icons", "0,6,1,2,3,7,10,8") ?: return
         val iconEnums = iconStringToEnumList(iconListString)
         if (iconEnums.isNotEmpty()) {
             binding.iconBar.removeAllViews()
