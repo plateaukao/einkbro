@@ -56,6 +56,9 @@ class NinjaWebViewClient(private val ninjaWebView: NinjaWebView) : WebViewClient
         if (config.boldFontStyle || config.fontStyleSerif) {
             ninjaWebView.updateCssStyle()
         }
+        if (url.contains("facebook.com")) {
+            ninjaWebView.removeFBSponsoredPosts()
+        }
     }
 
     override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean =

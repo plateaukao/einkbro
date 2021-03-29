@@ -359,7 +359,6 @@ class NinjaWebView : WebView, AlbumController {
         } else {
             disableReaderMode(isVertical)
         }
-        jumpToTop()
     }
 
     private fun disableReaderMode(isVertical: Boolean = false) {
@@ -377,6 +376,7 @@ class NinjaWebView : WebView, AlbumController {
                 "document.body.innerHTML = innerHTMLCache;" +
                 "document.body.classList.remove(\"mozac-readerview-body\");" +
                 verticalCssString +
+                "window.scrollTo(0, 0);" +
                 "})()")
     }
 
@@ -409,12 +409,17 @@ class NinjaWebView : WebView, AlbumController {
                     "style.innerHTML = window.atob('" + encodedCss + "');" +
                     "parent.appendChild(style);" +
                     verticalCssString +
+                    "window.scrollTo(0, 0);" +
                     "})()")
 
         } catch (e: IOException) {
             // TODO Auto-generated catch block
             e.printStackTrace()
         }
+    }
+
+    fun removeFBSponsoredPosts() {
+        injectJavascript(facebookHideSponsoredPostsJs.toByteArray())
     }
 
     fun applyPageNoMargins() = injectCss(pageNoMarginCss.toByteArray())
@@ -434,6 +439,21 @@ class NinjaWebView : WebView, AlbumController {
         }
     }
 
+    private fun injectJavascript(bytes: ByteArray) {
+        try {
+            val encoded = Base64.encodeToString(bytes, Base64.NO_WRAP)
+            loadUrl("javascript:(function() {" +
+                    "var parent = document.getElementsByTagName('head').item(0);" +
+                    "var script = document.createElement('script');" +
+                    "script.type = 'text/javascript';" +
+                    "script.innerHTML = window.atob('" + encoded + "');" +
+                    "parent.appendChild(script)" +
+                    "})()")
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
     private fun injectCss(bytes: ByteArray) {
         try {
             val encoded = Base64.encodeToString(bytes, Base64.NO_WRAP)
@@ -450,10 +470,29 @@ class NinjaWebView : WebView, AlbumController {
     }
 
     companion object {
+        private const val facebookHideSponsoredPostsJs = """
+            javascript:(function() {
+            var posts = [].filter.call(document.getElementsByTagName('article'), el => el.attributes['data-store'].value.indexOf('is_sponsored.1') >= 0); 
+            while(posts.length > 0) { posts.pop().style.display = "none"; }
+            
+            var qcleanObserver = new window.MutationObserver(function(mutation, observer){ 
+               var posts = [].filter.call(document.getElementsByTagName('article'), el => el.attributes['data-store'].value.indexOf('is_sponsored.1') >= 0); 
+               while(posts.length > 0) { posts.pop().style.display = "none"; }
+            });
+            
+            qcleanObserver.observe(document, { subtree: true, childList: true });
+            })()
+        """
+
         private const val verticalLayoutCss = "body {\n" +
                 "-webkit-writing-mode: vertical-rl;\n" +
                 "writing-mode: vertical-rl;\n" +
-                "}\n";  // facebook css styles
+                "}\n"
+
+        private const val horizontalLayoutCss = "body {\n" +
+                "-webkit-writing-mode: horizontal-tb;\n" +
+                "writing-mode: horizontal-tb;\n" +
+                "}\n"
 
         private const val notoSansSerifFontCss = "@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400&display=swap');" +
                 "@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400&display=swap');" +
@@ -462,10 +501,6 @@ class NinjaWebView : WebView, AlbumController {
                 "font-family: 'Noto Serif TC', 'Noto Serif JP', 'Noto Serif KR', serif !important;\n" +
                 "}\n"
 
-        private const val horizontalLayoutCss = "body {\n" +
-                "-webkit-writing-mode: horizontal-tb;\n" +
-                "writing-mode: horizontal-tb;\n" +
-                "}\n"
         private const val pageNoMarginCss = "@page{\n" +
                 "margin-left: 5px;\n" +
                 "margin-right: 5px;\n" +
