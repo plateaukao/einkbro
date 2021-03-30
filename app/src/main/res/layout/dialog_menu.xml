@@ -212,7 +212,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:lines="2"
-                android:text="@string/setting_title_toolbar"
+                android:text="@string/toolbar_setting"
                 android:textSize="10sp" />
         </LinearLayout>
 

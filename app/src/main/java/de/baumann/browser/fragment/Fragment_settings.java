@@ -67,11 +67,6 @@ public class Fragment_settings extends PreferenceFragmentCompat implements Share
             showLicenseDialog(getString(R.string.license_title), getString(R.string.license_dialog));
             return false;
         });
-        findPreference("settings_community").setOnPreferenceClickListener(preference -> {
-            showContributors = true;
-            showLicenseDialog(getString(R.string.setting_title_community), getString(R.string.cont_dialog));
-            return false;
-        });
         findPreference("settings_license").setOnPreferenceClickListener(preference -> {
             showContributors = false;
             showLicenseDialog(getString(R.string.license_title), getString(R.string.license_dialog));

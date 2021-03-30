@@ -365,13 +365,10 @@
 
     <string name="changelog_dialog">
 
-        Your language isn\'t supported yet? You want to translate EinkBro Browser? Or make improvements to existing translations?
-        Feel free to join us on Crowdin: https://crowdin.com/project/foss-browser.&lt;br&gt;&lt;br&gt;
-
         &lt;b>On the following sites you have access to all important information about \"EinkBro Browser\".
         Please read also the help dialog within the app.&lt;/b>&lt;br>&lt;br>
 
-        \u25AA &lt;i>Project site:&lt;/i> https://github.com/scoute-dich/Browser&lt;br>
+        \u25AA &lt;i>Project site:&lt;/i> https://github.com/plateaukao/browser&lt;br>
         \u25AA &lt;i>Changelog:&lt;/i> https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;br>
         \u25AA &lt;i>FAQ:&lt;/i> https://github.com/scoute-dich/browser/blob/master/FAQs.md&lt;br>
         \u25AA &lt;i>License:&lt;/i> https://github.com/scoute-dich/browser/blob/master/LICENSE.md&lt;br>
@@ -382,9 +379,9 @@
 
     <!-- License changelog -->
 
-    <string name="license_title">Copyright © 2017  by Gaukler Faun</string>
+    <string name="license_title">Copyright © 2021 by Daniel Kao, 2017  by Gaukler Faun</string>
     <string name="license_dialog">
-        &lt;i>For more information visit the project site on Github: https://github.com/scoute-dich/Browser&lt;/i>&lt;br>&lt;br>
+        &lt;i>For more information visit the project site on Github: https://github.com/plateaukao/browser&lt;/i>&lt;br>&lt;br>
 
         This program is free software: you can redistribute it and/or modify
         it under the terms of the GNU General Public License as published by
@@ -421,24 +418,11 @@
         translated or helped in any other way. On following sites you can become a active member of this
         great community:&lt;/i>&lt;br>&lt;br>
 
-        &lt;b&gt;Crowdin:&lt;/b&gt;&lt;br&gt;
-        Crowdin is an online plattform to translate applications in other languages. A big thanks to all translators. You can
-        also help.&lt;br&gt;
-        &lt;i&gt;https://crowdin.com/project/foss-browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-
-        &lt;b>XDA-thread:&lt;/b>&lt;br>
-        XDA is a great community for developers and smartphone enthusiasts. Here you can report issues, ask for new features
-        and everything other related to \"EinkBro Browser\".&lt;br>
-        &lt;i>https://forum.xda-developers.com/android/apps-games/app-browser-t3500091&lt;/i>&lt;br>&lt;br>
-
         &lt;b>Github:&lt;/b>&lt;br>
         On Github you can see the source code of \"EinkBro Browser\". This is the more technical solution: open issues, ask for new
         features or even help developing or translating.&lt;br>
-        &lt;i>https://github.com/scoute-dich/browser&lt;/i>&lt;br>&lt;br>&lt;br>
+        &lt;i>https://github.com/plateaukao/browser&lt;/i>&lt;br>&lt;br>&lt;br>
 
-
-        &lt;i>Following people contributed at this project. If I have forgotten anybody, please contact me:&lt;/i>
     </string>
     <string name="setting_title_toolbar_icons">Icons on toolbar</string>
     <string name="setting_summary_toolbar_icons">Decide what icons should be shown on toolbar</string>
@@ -468,4 +452,5 @@
     <string name="vertical_read">vertical</string>
     <string name="reader_mode">reader mode</string>
     <string name="touch_area_setting">touch setting</string>
+    <string name="toolbar_setting">toolbar setting</string>
 </resources>
