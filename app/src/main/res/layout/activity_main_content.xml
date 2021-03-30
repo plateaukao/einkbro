@@ -9,7 +9,9 @@
 
     <FrameLayout android:id="@+id/main_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/color_transparent"
+        >
     </FrameLayout>
     <View android:id="@+id/touch_area_bottom_left"
         android:layout_width="150dp"
