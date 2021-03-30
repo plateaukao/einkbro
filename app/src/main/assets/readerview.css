@@ -6,7 +6,6 @@
   padding: 10px;
   background-color: #ffffff !important;
   color: #000000 !important;
-  max-width: 35em;
 }
 
 .mozac-readerview-body * {
@@ -18,7 +17,7 @@
 }
 
 .mozac-readerview-body.serif * {
-  font-family: serif !important;
+  font-family: 'Noto Serif TC', 'Noto Serif JP', serif !important;
 }
 
 /* Override some controls and content styles based on color scheme */

@@ -10,6 +10,8 @@
     <!-- remove preference activity background color -->
     <style name="PreferenceThemeOverlay.v14">
         <item name="android:background">@android:color/white</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="android:selectableItemBackground">@null</item>
     </style>
 
     <style name="TouchAreaDialog" parent="Theme.MaterialComponents.Light.Dialog.Alert">

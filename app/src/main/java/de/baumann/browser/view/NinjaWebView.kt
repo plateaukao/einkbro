@@ -496,10 +496,20 @@ class NinjaWebView : WebView, AlbumController {
 
         private const val notoSansSerifFontCss = "@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400&display=swap');" +
                 "@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400&display=swap');" +
-                "@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400&display=swap');" +
+                //"@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400&display=swap');" +
                 "body {\n" +
-                "font-family: 'Noto Serif TC', 'Noto Serif JP', 'Noto Serif KR', serif !important;\n" +
+                "font-family: 'Noto Serif TC', 'Noto Serif JP', serif !important;\n" +
                 "}\n"
+
+//        private const val notoSansSerifFontCss = """
+//            @font-face {
+//                 font-family: custom;
+//                 src: url("asset://noto_sans.ttc");
+//            }
+//            * {
+//              font-family: custom, serif !important;
+//            }
+//        """
 
         private const val pageNoMarginCss = "@page{\n" +
                 "margin-left: 5px;\n" +

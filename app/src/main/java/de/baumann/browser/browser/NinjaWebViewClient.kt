@@ -26,7 +26,9 @@ import de.baumann.browser.unit.IntentUnit
 import de.baumann.browser.view.NinjaToast
 import de.baumann.browser.view.NinjaWebView
 import java.io.ByteArrayInputStream
+import java.io.InputStream
 import java.net.URISyntaxException
+
 
 class NinjaWebViewClient(private val ninjaWebView: NinjaWebView) : WebViewClient() {
     private val context: Context = ninjaWebView.context
@@ -52,12 +54,12 @@ class NinjaWebViewClient(private val ninjaWebView: NinjaWebView) : WebViewClient
             }
             action.close()
         }
+        if (url.contains("facebook.com")) {
+            ninjaWebView.removeFBSponsoredPosts()
+        }
         // lab: change css
         if (config.boldFontStyle || config.fontStyleSerif) {
             ninjaWebView.updateCssStyle()
-        }
-        if (url.contains("facebook.com")) {
-            ninjaWebView.removeFBSponsoredPosts()
         }
     }
 
@@ -132,6 +134,24 @@ class NinjaWebViewClient(private val ninjaWebView: NinjaWebView) : WebViewClient
                 manager.setAcceptCookie(false)
             }
         }
+
+        if (url.startsWith("asset")) {
+            val asset: String = url.substring("asset://".length)
+            val statusCode = 200
+            val reasonPhase = "OK"
+            val responseHeaders: MutableMap<String, String> = HashMap()
+            responseHeaders["Access-Control-Allow-Origin"] = "*"
+            val inputStream: InputStream = context.assets.open(asset)
+            return WebResourceResponse(
+                    "font/" + MimeTypeMap.getFileExtensionFromUrl(asset),
+                    "utf-8",
+                    statusCode,
+                    reasonPhase,
+                    responseHeaders,
+                    inputStream
+            )
+        }
+
         return super.shouldInterceptRequest(view, url)
     }
 
@@ -153,6 +173,7 @@ class NinjaWebViewClient(private val ninjaWebView: NinjaWebView) : WebViewClient
                 manager.setAcceptCookie(false)
             }
         }
+
         return super.shouldInterceptRequest(view, request)
     }
 
