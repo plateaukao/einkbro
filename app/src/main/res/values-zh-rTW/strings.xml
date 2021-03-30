@@ -367,4 +367,5 @@
     <string name="vertical_read">直排閱讀</string>
     <string name="reader_mode">閱讀模式</string>
     <string name="touch_area_setting">翻頁設定</string>
+    <string name="toolbar_setting">工具列設定</string>
 </resources>
