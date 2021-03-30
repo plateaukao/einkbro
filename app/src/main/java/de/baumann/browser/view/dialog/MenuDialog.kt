@@ -44,7 +44,7 @@ class MenuDialog(
         val builder = AlertDialog.Builder(context, R.style.TouchAreaDialog).apply { setView(binding.root) }
 
         initViews()
-        dialog = builder.create().apply { window?.setGravity(Gravity.BOTTOM) }
+        dialog = builder.create().apply { window?.setGravity(Gravity.BOTTOM or Gravity.RIGHT) }
         dialog.show()
     }
 
