@@ -13,7 +13,7 @@
         android:layout_height="50dp"
         android:minHeight="50dp">
 
-        <RelativeLayout android:id="@+id/main_omnibox"
+        <RelativeLayout android:id="@+id/main_toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -247,7 +247,7 @@
     <include layout="@layout/dialog_overiew"
         android:id="@+id/layout_overview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:visibility="invisible"
         android:layout_alignParentBottom="true"
         />

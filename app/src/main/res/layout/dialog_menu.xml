@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="right"
     android:orientation="vertical"
+    android:background="@drawable/dialog_border_bg"
     android:padding="5dp">
 
     <LinearLayout

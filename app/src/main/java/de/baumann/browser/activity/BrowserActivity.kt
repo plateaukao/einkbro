@@ -92,7 +92,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private var customView: View? = null
 
     // Layouts
-    private lateinit var omnibox: RelativeLayout
+    private lateinit var mainToolbar: RelativeLayout
     private lateinit var searchPanel: ViewGroup
     private lateinit var mainContentLayout: FrameLayout
     private lateinit var tab_container: LinearLayout
@@ -380,7 +380,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 }
                 if (fullscreenHolder != null || customView != null || videoView != null) {
                     return onHideCustomView()
-                } else if (omnibox.visibility == GONE && sp.getBoolean("sp_toolbarShow", true)) {
+                } else if (mainToolbar.visibility == GONE && sp.getBoolean("sp_toolbarShow", true)) {
                     showOmnibox()
                 } else if (binding.iconBar.visibility == GONE) {
                     inputBox.clearFocus()
@@ -681,7 +681,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
 
     @SuppressLint("ClickableViewAccessibility")
     private fun initOmnibox() {
-        omnibox = findViewById(R.id.main_omnibox)
+        mainToolbar = findViewById(R.id.main_toolbar)
         inputBox = findViewById(R.id.main_omnibox_input)
         omniboxTitle = findViewById(R.id.omnibox_title)
         progressBar = findViewById(R.id.main_progress_bar)
@@ -1554,7 +1554,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         if (!searchOnSite) {
             fabImagebuttonnav.visibility = INVISIBLE
             searchPanel.visibility = GONE
-            omnibox.visibility = VISIBLE
+            mainToolbar.visibility = VISIBLE
             omniboxTitle.visibility = VISIBLE
             binding.appBar.visibility = VISIBLE
             hideKeyboard()
@@ -1566,7 +1566,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         if (!searchOnSite) {
             fabImagebuttonnav.visibility = VISIBLE
             searchPanel.visibility = GONE
-            omnibox.visibility = GONE
+            mainToolbar.visibility = GONE
             omniboxTitle.visibility = GONE
             binding.appBar.visibility = GONE
         }
@@ -1582,7 +1582,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private fun showSearchPanel() {
         searchOnSite = true
         fabImagebuttonnav.visibility = INVISIBLE
-        omnibox.visibility = GONE
+        mainToolbar.visibility = GONE
         searchPanel.visibility = VISIBLE
         omniboxTitle.visibility = GONE
         binding.appBar.visibility = VISIBLE
