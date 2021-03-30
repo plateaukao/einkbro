@@ -18,10 +18,12 @@ import androidx.preference.PreferenceManager
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.DialogMenuBinding
 import de.baumann.browser.activity.Settings_Activity
+import de.baumann.browser.activity.Settings_UIActivity
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.task.ScreenshotTask
 import de.baumann.browser.unit.HelperUnit
 import de.baumann.browser.unit.IntentUnit
+import de.baumann.browser.util.Constants
 import de.baumann.browser.view.NinjaToast
 import de.baumann.browser.view.NinjaWebView
 
@@ -62,6 +64,29 @@ class MenuDialog(
         binding.buttonQuit.setOnClickListener {
             dialog.dismiss()
             (context as Activity).finish()
+        }
+        binding.buttonBold.setOnClickListener {
+            dialog.dismiss()
+            config.boldFontStyle = !config.boldFontStyle
+        }
+        binding.buttonReader.setOnClickListener {
+            dialog.dismiss()
+            ninjaWebView.toggleReaderMode()
+        }
+        binding.buttonVertical.setOnClickListener {
+            dialog.dismiss()
+            ninjaWebView.toggleVerticalRead()
+        }
+        binding.buttonTouch.setOnClickListener {
+            dialog.dismiss()
+            TouchAreaDialog(context).show()
+        }
+        binding.buttonToolbar.setOnClickListener {
+            dialog.dismiss()
+            val intent = Intent(context, Settings_UIActivity::class.java)
+                    .putExtra(Constants.ARG_LAUNCH_TOOLBAR_SETTING, true)
+            context.startActivity(intent)
+            (context as Activity).overridePendingTransition(0, 0);
         }
         binding.menuShareLink.setOnClickListener {
             dialog.dismiss()
