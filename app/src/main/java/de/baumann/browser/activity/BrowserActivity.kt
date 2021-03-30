@@ -519,15 +519,17 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             } else {
                 ninjaWebView.stopLoading()
             }
-            R.id.omnibox_bar_setting -> {
-                val intent = Intent(this, Settings_UIActivity::class.java)
-                        .putExtra(Constants.ARG_LAUNCH_TOOLBAR_SETTING, true)
-                startActivity(intent)
-                overridePendingTransition(0, 0);
-            }
+            R.id.omnibox_bar_setting -> openToolbarSetting()
             else -> {
             }
         }
+    }
+
+    private fun openToolbarSetting() {
+        val intent = Intent(this, Settings_UIActivity::class.java)
+                .putExtra(Constants.ARG_LAUNCH_TOOLBAR_SETTING, true)
+        startActivity(intent)
+        overridePendingTransition(0, 0);
     }
     private fun saveBookmark() {
         val currentUrl = ninjaWebView.url
