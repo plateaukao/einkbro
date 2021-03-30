@@ -353,4 +353,5 @@
     <string name="vertical_read">vertical</string>
     <string name="reader_mode">reader mode</string>
     <string name="touch_area_setting">touch setting</string>
+    <string name="toolbar_setting">toolbar setting</string>
 </resources>

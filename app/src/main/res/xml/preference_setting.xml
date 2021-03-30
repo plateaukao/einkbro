@@ -92,11 +92,6 @@
         app:initialExpandedChildrenCount="0">
 
         <Preference
-            android:key="settings_community"
-            android:icon="@drawable/icon_group"
-            android:title="@string/setting_title_community"/>
-
-        <Preference
             android:key="settings_help"
             android:icon="@drawable/icon_help"
             android:title="@string/menu_other_help"/>
