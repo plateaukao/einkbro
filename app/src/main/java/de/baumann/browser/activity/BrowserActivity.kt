@@ -1252,25 +1252,25 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
 
     var keepToolbar = false
     private fun scrollChange() {
-        if (sp.getBoolean("hideToolbar", true)) {
-            ninjaWebView.setOnScrollChangeListener(object: NinjaWebView.OnScrollChangeListener {
-                override fun onScrollChange(scrollY: Int, oldScrollY: Int) {
-                    val height = floor(x = ninjaWebView.contentHeight * ninjaWebView.resources.displayMetrics.density.toDouble()).toInt()
-                    val webViewHeight = ninjaWebView.height
-                    val cutoff = height - webViewHeight - 112 * resources.displayMetrics.density.roundToInt()
-                    if (scrollY in (oldScrollY + 1)..cutoff) {
-                        if (!keepToolbar) {
-                            // Daniel
-                            hideToolbar();
-                        } else {
-                            keepToolbar = false
-                        }
-                    } else if (scrollY < oldScrollY) {
-                        //showOmnibox()
+        ninjaWebView.setOnScrollChangeListener(object: NinjaWebView.OnScrollChangeListener {
+            override fun onScrollChange(scrollY: Int, oldScrollY: Int) {
+                if (!sp.getBoolean("hideToolbar", true)) return
+
+                val height = floor(x = ninjaWebView.contentHeight * ninjaWebView.resources.displayMetrics.density.toDouble()).toInt()
+                val webViewHeight = ninjaWebView.height
+                val cutoff = height - webViewHeight - 112 * resources.displayMetrics.density.roundToInt()
+                if (scrollY in (oldScrollY + 1)..cutoff) {
+                    if (!keepToolbar) {
+                        // Daniel
+                        hideToolbar();
+                    } else {
+                        keepToolbar = false
                     }
+                } else if (scrollY < oldScrollY) {
+                    //showOmnibox()
                 }
-            })
-        }
+            }
+        })
     }
 
     @Synchronized
