@@ -1,0 +1,32 @@
+It's a lightweight browser to provide powerful features designed for Eink devices.
+
+E-Ink specific features
+* pageUp / pageDown / Back button on toolbar
+* Physical volume keys for pageUp/pageDown
+* Tapping on screen left/right edge for pageUp/Down (finger button on toolbar)
+* Desktop mode feature
+* All icons in high contrast colors
+* Tab count count toolbar
+* Font size change button
+* Bold font button
+* Reader mode
+* Vertical Read mode
+
+Basic UI/Handling:
+* optimized for one hand handling (toolbar at bottom)
+* tab control (switch, open, close unlimited tabs)
+* full material design
+* fullscreen browsing (optional)
+* navigation button in fullscreen mode
+* fast toggle for most important settings
+* advanced gesture control for toolbar and navigation button
+
+Some nice extra features:
+* small size
+* search on site
+* open links in background
+* Websearch (from marked text context menu)
+* screenshots of the whole website
+* share/save as PDF
+* open links in other apps (for example YouTube)
+
