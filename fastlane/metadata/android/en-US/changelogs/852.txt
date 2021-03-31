@@ -1,0 +1,2 @@
+* optimize Reader mode
+* put more icons on menu settings
