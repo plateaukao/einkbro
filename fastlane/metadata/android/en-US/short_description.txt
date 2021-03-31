@@ -1,0 +1,1 @@
+lightweight, fast, but powerful browser designed for Eink devices.
