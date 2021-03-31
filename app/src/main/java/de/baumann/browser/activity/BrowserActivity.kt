@@ -381,7 +381,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 if (fullscreenHolder != null || customView != null || videoView != null) {
                     return onHideCustomView()
                 } else if (mainToolbar.visibility == GONE && sp.getBoolean("sp_toolbarShow", true)) {
-                    showOmnibox()
+                    showToolbar()
                 } else if (binding.iconBar.visibility == GONE) {
                     inputBox.clearFocus()
                 } else {
@@ -714,7 +714,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 return@OnEditorActionListener true
             }
             updateAlbum(query)
-            showOmnibox()
+            showToolbar()
             false
         })
         inputBox.onFocusChangeListener = OnFocusChangeListener { _, _ ->
@@ -749,7 +749,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
 
         // hide bottom bar when refresh button is long pressed.
         binding.omniboxRefresh.setOnLongClickListener {
-            hideOmnibox()
+            hideToolbar()
             true
         }
 
@@ -833,7 +833,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         }
 
         expandViewTouchArea(fabImagebuttonnav, ViewUnit.dpToPixel(this, 20).toInt())
-        fabImagebuttonnav.setOnClickListener { showOmnibox() }
+        fabImagebuttonnav.setOnClickListener { showToolbar() }
         fabImagebuttonnav.setOnLongClickListener {
             showFastToggleDialog()
             false
@@ -1180,7 +1180,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             ninjaWebView.deactivate()
             return
         } else {
-            showOmnibox()
+            showToolbar()
             showAlbum(ninjaWebView)
         }
         if (url.isNotEmpty()) {
@@ -1261,7 +1261,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                     if (scrollY in (oldScrollY + 1)..cutoff) {
                         if (!keepToolbar) {
                             // Daniel
-                            hideOmnibox();
+                            hideToolbar();
                         } else {
                             keepToolbar = false
                         }
@@ -1550,7 +1550,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     }
 
     @SuppressLint("RestrictedApi")
-    private fun showOmnibox() {
+    private fun showToolbar() {
         if (!searchOnSite) {
             fabImagebuttonnav.visibility = INVISIBLE
             searchPanel.visibility = GONE
@@ -1558,25 +1558,31 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             omniboxTitle.visibility = VISIBLE
             binding.appBar.visibility = VISIBLE
             hideKeyboard()
+            showStatusBar()
         }
     }
 
     @SuppressLint("RestrictedApi")
-    private fun hideOmnibox() {
+    private fun hideToolbar() {
         if (!searchOnSite) {
             fabImagebuttonnav.visibility = VISIBLE
             searchPanel.visibility = GONE
             mainToolbar.visibility = GONE
             omniboxTitle.visibility = GONE
             binding.appBar.visibility = GONE
+            hideStatusBar()
         }
     }
 
     private fun hideSearchPanel() {
         searchOnSite = false
         searchBox.setText("")
-        showOmnibox()
+        showToolbar()
     }
+
+    private fun hideStatusBar() = window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+
+    private fun showStatusBar() = window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
 
     @SuppressLint("RestrictedApi")
     private fun showSearchPanel() {
