@@ -69,7 +69,7 @@
 
         <CheckBoxPreference android:key="sp_toolbarShow"
             android:icon="@drawable/icon_show"
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:title="@string/setting_title_toolbarShow"
             android:summary="@string/setting_summary_toolbarShow"/>
 
