@@ -4,6 +4,20 @@ It's from "FOSS Browser", which is fully free/libre (as in freedom) Android app.
 permissions. It's a simple Android browser based on webview. The intention is to provide a simple and light weight but powerful
 browser with a nice looking user interface.
 
+
+### E-Ink specific features
+
+- **reader mode**
+- **vertical reading mode** (for Chinese/Japanese content)
+- pageUp / pageDown / Back button on toolbar
+- physical volume keys for pageUp/pageDown
+- **tapping on screen left/right edge for pageUp/Down** (finger button on toolbar)
+- desktop mode feature
+- all icons in high contrast colors
+- tab count in bottom function bar
+- font size configuration in first layer setting.
+
+
 ### Screenshots
 #### Basic Toolbar
 * webpage title
@@ -21,15 +35,6 @@ browser with a nice looking user interface.
 #### Tab Preview
 <img width="350" alt="image" src="https://user-images.githubusercontent.com/4084738/110947148-bfad8180-837a-11eb-8184-f2f7fdde7ba3.png">
 
-### E-Ink specific features
-
-- Add pageUp / pageDown / Back button on toolbar
-- Support using physical volume keys for pageUp/pageDown
-- Support tapping on screen left/right edge for pageUp/Down (finger button on toolbar)
-- Add desktop mode feature
-- Make all icons in high contrast colors
-- Add WebView count in bottom function bar
-- Add font size configuration in first layer setting.
 
 ### Basic UI/Handling:
 
@@ -51,5 +56,8 @@ browser with a nice looking user interface.
 - screenshots of the whole website
 - share/save as PDF
 - open links in other apps (for example YouTube)
+
+Google Play Store: https://play.google.com/store/apps/details?id=info.plateaukao.einkbro
+
 
 <div>App icon is made by <a href="https://www.flaticon.com/authors/turkkub" title="turkkub">turkkub</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
