@@ -50,5 +50,7 @@ dependencies {
     implementation 'androidx.preference:preference-ktx:1.1.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    //implementation 'com.chimbori.crux:crux:3.0.1'
+    // epublib
+    implementation files('libs/epublib-core-latest.jar')
+    implementation 'org.slf4j:slf4j-api:1.7.30'
 }

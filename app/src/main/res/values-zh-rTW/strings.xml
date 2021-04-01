@@ -368,4 +368,5 @@
     <string name="reader_mode">閱讀模式</string>
     <string name="touch_area_setting">翻頁設定</string>
     <string name="toolbar_setting">工具列設定</string>
+    <string name="menu_save_epub">儲存epub</string>
 </resources>

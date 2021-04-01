@@ -161,7 +161,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/contextLink_saveAs"
+                android:id="@+id/menu_save_pdf"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"

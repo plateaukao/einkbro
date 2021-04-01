@@ -46,6 +46,7 @@ import de.baumann.browser.browser.*
 import de.baumann.browser.database.BookmarkList
 import de.baumann.browser.database.Record
 import de.baumann.browser.database.RecordAction
+import de.baumann.browser.epub.EpubManager
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.preference.TouchAreaType
 import de.baumann.browser.service.ClearService
@@ -60,7 +61,8 @@ import de.baumann.browser.view.dialog.FastToggleDialog
 import de.baumann.browser.view.dialog.MenuDialog
 import de.baumann.browser.view.dialog.TouchAreaDialog
 import de.baumann.browser.view.toolbaricons.ToolbarAction
-import java.io.File
+import nl.siegmann.epublib.domain.Resource
+import java.io.*
 import java.util.*
 import kotlin.math.floor
 import kotlin.math.roundToInt
@@ -131,6 +133,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private lateinit var binding: ActivityMainBinding
 
     private lateinit var bookmarkDB: BookmarkList
+
+    private val epubManager: EpubManager by lazy { EpubManager(this) }
 
     // Classes
     private inner class VideoCompletionListener : OnCompletionListener, MediaPlayer.OnErrorListener {
@@ -280,23 +284,32 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode != INPUT_FILE_REQUEST_CODE || mFilePathCallback == null) {
-            super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == WRITE_EPUB_REQUEST_CODE && resultCode == RESULT_OK) {
+            val nonNullData = data?.data ?: return
+            saveEpub(nonNullData)
+
             return
         }
-        var results: Array<Uri>? = null
-        // Check that the response is a good one
-        if (resultCode == RESULT_OK) {
-            if (data != null) {
-                // If there is not data, then we may have taken a photo
-                val dataString = data.dataString
-                if (dataString != null) {
-                    results = arrayOf(Uri.parse(dataString))
+
+        if (requestCode == INPUT_FILE_REQUEST_CODE && mFilePathCallback != null) {
+            var results: Array<Uri>? = null
+            // Check that the response is a good one
+            if (resultCode == RESULT_OK) {
+                if (data != null) {
+                    // If there is not data, then we may have taken a photo
+                    val dataString = data.dataString
+                    if (dataString != null) {
+                        results = arrayOf(Uri.parse(dataString))
+                    }
                 }
             }
+            mFilePathCallback!!.onReceiveValue(results)
+            mFilePathCallback = null
+            return
         }
-        mFilePathCallback!!.onReceiveValue(results)
-        mFilePathCallback = null
+
+        super.onActivityResult(requestCode, resultCode, data)
+        return
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -472,7 +485,9 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 inputBox.requestFocus()
                 showKeyboard()
             }
-            R.id.contextLink_saveAs -> printPDF(false)
+            R.id.menu_save_pdf -> printPDF(false)
+
+            R.id.menu_save_epub -> showEpubFilePicker()
 
             // --- tool bar handling
             R.id.omnibox_tabcount -> showOverview()
@@ -549,7 +564,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
 
     private fun showBrowserChooser(url: String, title: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-        startActivity(Intent.createChooser(intent , title))
+        startActivity(Intent.createChooser(intent, title))
     }
 
     private fun  toggleTouchTurnPageFeature() {
@@ -631,6 +646,35 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private fun decreaseFontSize() {
         if (ninjaWebView.settings.textZoom <= 20) return
         ninjaWebView.settings.textZoom -= 20
+    }
+
+    private fun showEpubFilePicker() {
+        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
+        intent.type = Constants.MIME_TYPE_EPUB
+        intent.putExtra(Intent.EXTRA_TITLE, "einkbro.epub")
+        startActivityForResult(intent, WRITE_EPUB_REQUEST_CODE)
+    }
+
+    private fun saveEpub(uri: Uri) {
+        ninjaWebView.getRawHtml { rawHtml ->
+            val book = epubManager.createBook("HelloWorld")
+            book.addSection(
+                    ninjaWebView.title ?: "no title",
+                    Resource(rawHtml.byteInputStream(), "chapter1.html")
+            )
+            epubManager.saveBook(book, uri)
+            openFile(uri, Constants.MIME_TYPE_EPUB)
+        }
+    }
+
+    private fun openFile(uri: Uri, mimeType: String) {
+        val intent = Intent().apply {
+            action = Intent.ACTION_VIEW
+            data = uri
+            type = mimeType
+        }
+        startActivity(Intent.createChooser(intent, "Open file with"))
     }
 
     private fun printPDF(share: Boolean) {
@@ -1252,7 +1296,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
 
     var keepToolbar = false
     private fun scrollChange() {
-        ninjaWebView.setOnScrollChangeListener(object: NinjaWebView.OnScrollChangeListener {
+        ninjaWebView.setOnScrollChangeListener(object : NinjaWebView.OnScrollChangeListener {
             override fun onScrollChange(scrollY: Int, oldScrollY: Int) {
                 if (!sp.getBoolean("hideToolbar", true)) return
 
@@ -1477,7 +1521,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             addAlbum(getString(R.string.app_name), url, true)
             hideBottomSheetDialog()
         }
-        dialogView.findViewById<LinearLayout>(R.id.contextLink_saveAs).setOnClickListener {
+        dialogView.findViewById<LinearLayout>(R.id.menu_save_pdf).setOnClickListener {
             try {
                 hideBottomSheetDialog()
                 val builder = AlertDialog.Builder(this@BrowserActivity)
@@ -1604,6 +1648,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 { removeAlbum(currentAlbumController!!) },
                 { saveBookmark() },
                 { showSearchPanel() },
+                { showEpubFilePicker() },
         ).show()
         return true
     }
@@ -1822,5 +1867,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     }
     companion object {
         private const val INPUT_FILE_REQUEST_CODE = 1
+        private const val WRITE_EPUB_REQUEST_CODE = 2
     }
 }
