@@ -19,6 +19,8 @@ import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
 import android.print.PrintAttributes
+import android.print.PrintDocumentAdapter
+import android.print.PrintDocumentAdapter.LayoutResultCallback
 import android.print.PrintManager
 import android.text.Editable
 import android.text.TextWatcher
@@ -657,10 +659,11 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     }
 
     private fun saveEpub(uri: Uri) {
+        val title = ninjaWebView.title ?: ""
         ninjaWebView.getRawHtml { rawHtml ->
-            val book = epubManager.createBook("HelloWorld")
+            val book = epubManager.createBook("einkbro book")
             book.addSection(
-                    ninjaWebView.title ?: "no title",
+                    title,
                     Resource(rawHtml.byteInputStream(), "chapter1.html")
             )
             epubManager.saveBook(book, uri)
@@ -672,7 +675,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         val intent = Intent().apply {
             action = Intent.ACTION_VIEW
             data = uri
-            type = mimeType
+            //type = mimeType
         }
         startActivity(Intent.createChooser(intent, "Open file with"))
     }
@@ -683,7 +686,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             val title = HelperUnit.fileName(ninjaWebView.url)
             val printManager = getSystemService(PRINT_SERVICE) as PrintManager
             val printAdapter = ninjaWebView.createPrintDocumentAdapter(title)
-            Objects.requireNonNull(printManager).print(title, printAdapter, PrintAttributes.Builder().build())
+            printManager.print(title, printAdapter, PrintAttributes.Builder().build())
             sp.edit().putBoolean("pdf_create", true).apply()
         } catch (e: Exception) {
             NinjaToast.show(this, R.string.toast_error)
@@ -696,7 +699,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         val action = intent.action
         val url = intent.getStringExtra(Intent.EXTRA_TEXT)
         if ("" == action) {
-            Log.i(ContentValues.TAG, "resumed FOSS browser")
         } else if (intent.action != null && intent.action == Intent.ACTION_WEB_SEARCH) {
             addAlbum("", intent.getStringExtra(SearchManager.QUERY), true)
         } else if (filePathCallback != null) {
