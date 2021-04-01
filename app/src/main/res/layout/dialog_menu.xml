@@ -373,7 +373,30 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/contextLink_saveAs"
+                android:id="@+id/menu_save_epub"
+                android:layout_width="@dimen/menu_button_size"
+                android:layout_height="@dimen/menu_button_size"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:src="@drawable/ic_book" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:lines="2"
+                android:text="@string/menu_save_epub"
+                android:textSize="10sp" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/menu_save_pdf"
                 android:layout_width="@dimen/menu_button_size"
                 android:layout_height="@dimen/menu_button_size"
                 android:gravity="center_vertical"
@@ -385,7 +408,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:lines="2"
-                android:text="@string/menu_save_as"
+                android:text="@string/menu_save_pdf"
                 android:textSize="10sp" />
         </LinearLayout>
 

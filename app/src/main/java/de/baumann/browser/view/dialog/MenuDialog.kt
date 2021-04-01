@@ -34,6 +34,7 @@ class MenuDialog(
     private val closeTabAction: () -> Unit,
     private val saveBookmarkAction: () -> Unit,
     private val searchSiteAction: () -> Unit,
+    private val saveEpubAction: () -> Unit,
 ) {
     private val config: ConfigManager = ConfigManager(context)
 
@@ -115,7 +116,11 @@ class MenuDialog(
             dialog.dismiss()
             saveScreenshot()
         }
-        binding.contextLinkSaveAs.setOnClickListener {
+        binding.menuSaveEpub.setOnClickListener {
+            dialog.dismiss()
+            saveEpubAction.invoke()
+        }
+        binding.menuSavePdf.setOnClickListener {
             dialog.dismiss()
             printPDF()
         }

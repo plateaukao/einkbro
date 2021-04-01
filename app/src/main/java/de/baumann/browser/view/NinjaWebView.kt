@@ -27,6 +27,7 @@ import java.io.IOException
 import java.io.InputStream
 import java.util.*
 
+
 class NinjaWebView : WebView, AlbumController {
     private var dimen144dp = 0
     private var dimen108dp = 0
@@ -126,7 +127,7 @@ class NinjaWebView : WebView, AlbumController {
 
     @TargetApi(Build.VERSION_CODES.O)
     private fun initWebSettings() {
-        with (settings) {
+        with(settings) {
             builtInZoomControls = true
             displayZoomControls = false
             setSupportZoom(true)
@@ -143,16 +144,16 @@ class NinjaWebView : WebView, AlbumController {
         config = ConfigManager(context)
         val userAgent = sp.getString("userAgent", "") ?: ""
         if (userAgent.isNotEmpty()) {
-            settings.setUserAgentString(userAgent)
+            settings.userAgentString = userAgent
         }
         val isDesktopMode = sp.getBoolean("sp_desktop", false)
         if (isDesktopMode) {
-            settings.setUserAgentString(BrowserUnit.UA_DESKTOP)
+            settings.userAgentString = BrowserUnit.UA_DESKTOP
         } else {
             val defaultUserAgent = settings.userAgentString
-            settings.setUserAgentString(defaultUserAgent.replace("wv", ""))
+            settings.userAgentString = defaultUserAgent.replace("wv", "")
         }
-        with (settings) {
+        with(settings) {
             useWideViewPort = isDesktopMode
             loadWithOverviewMode = isDesktopMode
             setAppCacheEnabled(true)
@@ -327,6 +328,18 @@ class NinjaWebView : WebView, AlbumController {
         }
     }
 
+    fun getRawHtml(action: (String) -> Unit) {
+        evaluateJavascript(
+                "(function() { return ('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>'); })();"
+        ) { html ->
+            val processedHtml = html
+                    .replace("\\u003C", "<")
+                    .replace("\\n", "")
+                    .replace("\\\"", "\"")
+            action.invoke(processedHtml.substring(1, processedHtml.length - 1)) // handle prefix/postfix "
+        }
+    }
+
     private fun shiftOffset(): Int {
         return if (isVerticalRead) {
             width - ViewUnit.dpToPixel(context, 40).toInt()
@@ -467,6 +480,61 @@ class NinjaWebView : WebView, AlbumController {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    private fun unescapeJavaString(st: String): String {
+        val sb = StringBuilder(st.length)
+
+        var i = 0
+        while (i < st.length) {
+            var ch: Char = st[i]
+            if (ch == '\\') {
+                val nextChar = if (i == st.length - 1) '\\' else st[i + 1]
+                // Octal escape?
+                if (nextChar in '0'..'7') {
+                    var code = "" + nextChar
+                    i++
+                    if (i < st.length - 1 && st[i + 1] >= '0' && st[i + 1] <= '7') {
+                        code += st.get(i + 1)
+                        i++
+                        if (i < st.length - 1 && st[i + 1] >= '0' && st[i + 1] <= '7') {
+                            code += st[i + 1]
+                            i++
+                        }
+                    }
+                    sb.append(code.toInt(8).toChar())
+                    i++
+                    continue
+                }
+                when (nextChar) {
+                    '\\' -> ch = '\\'
+                    'b' -> ch = '\b'
+                    //'f' -> ch = 'f'
+                    'n' -> ch = '\n'
+                    'r' -> ch = '\r'
+                    't' -> ch = '\t'
+                    '\"' -> ch = '\"'
+                    '\'' -> ch = '\''
+                    'u' -> {
+                        if (i >= st.length - 5) {
+                            ch = 'u'
+                            break
+                        }
+                        val code =
+                                ("" + st[i + 2] + st[i + 3]
+                                        + st[i + 4] + st[i + 5]).toInt(16)
+                        sb.append(Character.toChars(code))
+                        i += 5
+                        i++
+                        continue
+                    }
+                }
+                i++
+            }
+            sb.append(ch)
+            i++
+        }
+        return sb.toString()
     }
 
     companion object {
