@@ -23,6 +23,7 @@ import de.baumann.browser.browser.*
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.unit.BrowserUnit
 import de.baumann.browser.unit.ViewUnit
+import org.apache.commons.text.StringEscapeUtils
 import java.io.IOException
 import java.io.InputStream
 import java.util.*
@@ -332,10 +333,7 @@ class NinjaWebView : WebView, AlbumController {
         evaluateJavascript(
                 "(function() { return ('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>'); })();"
         ) { html ->
-            val processedHtml = html
-                    .replace("\\u003C", "<")
-                    .replace("\\n", "")
-                    .replace("\\\"", "\"")
+            val processedHtml = StringEscapeUtils.unescapeJava(html)
             action.invoke(processedHtml.substring(1, processedHtml.length - 1)) // handle prefix/postfix "
         }
     }

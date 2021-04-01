@@ -53,4 +53,8 @@ dependencies {
     // epublib
     implementation files('libs/epublib-core-latest.jar')
     implementation 'org.slf4j:slf4j-api:1.7.30'
+
+    // common lang
+    implementation 'org.apache.commons:commons-text:1.7'
+
 }
