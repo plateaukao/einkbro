@@ -17,10 +17,6 @@ class ConfigManager(private val context: Context) {
         get() = sp.getBoolean(K_BOLD_FONT, false)
         set(value) {sp.edit { putBoolean(K_BOLD_FONT, value) } }
 
-    var pdfCreated: Boolean
-        get() = sp.getBoolean("pdf_create", false)
-        set(value) {sp.edit { putBoolean("pdf_create", value) } }
-
     var fontStyleSerif: Boolean
         get() = sp.getBoolean(K_FONT_STYLE_SERIF, false)
         set(value) {sp.edit { putBoolean(K_FONT_STYLE_SERIF, value) } }

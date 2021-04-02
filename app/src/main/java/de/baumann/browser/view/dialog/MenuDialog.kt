@@ -35,6 +35,7 @@ class MenuDialog(
     private val saveBookmarkAction: () -> Unit,
     private val searchSiteAction: () -> Unit,
     private val saveEpubAction: () -> Unit,
+    private val printPdfAction: () -> Unit,
 ) {
     private val config: ConfigManager = ConfigManager(context)
 
@@ -122,7 +123,7 @@ class MenuDialog(
         }
         binding.menuSavePdf.setOnClickListener {
             dialog.dismiss()
-            printPDF()
+            printPdfAction.invoke()
         }
         binding.menuSearchSite.setOnClickListener {
             dialog.dismiss()
@@ -168,26 +169,6 @@ class MenuDialog(
         } else {
             config.screenshot = 1
             ScreenshotTask(context, ninjaWebView).execute()
-        }
-    }
-
-    private fun printPDF() {
-        try {
-            ninjaWebView.applyPageNoMargins()
-
-            val title = HelperUnit.fileName(ninjaWebView.url)
-            val printManager = context.getSystemService(AppCompatActivity.PRINT_SERVICE) as PrintManager
-            val printAdapter = ninjaWebView.createPrintDocumentAdapter(title)
-            val builder = PrintAttributes
-                    .Builder()
-                    .setMediaSize(config.pdfPaperSize.mediaSize)
-
-            printManager.print(title, printAdapter, builder.build())
-            config.pdfCreated = true
-        } catch (e: Exception) {
-            NinjaToast.show(context, R.string.toast_error)
-            config.pdfCreated = false
-            e.printStackTrace()
         }
     }
 }

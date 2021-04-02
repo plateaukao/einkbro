@@ -110,7 +110,7 @@
 }
 
 .mozac-readerview-body > .container > .header > h1 {
-  font-size: 1.33em;
+  font-size: 1.2em;
   font-weight: 700;
   line-height: 1.1em;
   width: 100%;
@@ -139,7 +139,8 @@
 
 /*======= Article content =======*/
 .mozac-readerview-content {
-  font-size: 1em;
+  font-size: 1.1em;
+  line-height: 1.0.em;
 }
 
 .mozac-readerview-content a {
@@ -158,21 +159,21 @@
   margin-top: 16px;
   margin-bottom: 16px;
   font-weight: 700;
-  font-size: 1.6em;
+  font-size: 1.4em !important;
 }
 
 .mozac-readerview-content h2 {
   margin-top: 16px;
   margin-bottom: 16px;
   font-weight: 700;
-  font-size: 1.2em;
+  font-size: 1.2em !important;
 }
 
 .mozac-readerview-content h3 {
   margin-top: 16px;
   margin-bottom: 16px;
   font-weight: 700;
-  font-size: 1em;
+  font-size: 1.1em;
 }
 
 .mozac-readerview-content * {
@@ -181,7 +182,7 @@
 }
 
 .mozac-readerview-content p {
-  font-size: 1em !important;
+  font-size: 1.1em !important;
   line-height: 1.4em !important;
   margin: 0px !important;
   margin-bottom: 20px !important;
