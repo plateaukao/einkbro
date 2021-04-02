@@ -58,6 +58,7 @@ import de.baumann.browser.view.*
 import de.baumann.browser.view.adapter.*
 import de.baumann.browser.view.dialog.FastToggleDialog
 import de.baumann.browser.view.dialog.MenuDialog
+import de.baumann.browser.view.dialog.TextInputDialog
 import de.baumann.browser.view.dialog.TouchAreaDialog
 import de.baumann.browser.view.toolbaricons.ToolbarAction
 import nl.siegmann.epublib.domain.Resource
@@ -668,15 +669,22 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private fun saveEpub(uri: Uri) {
         val title = ninjaWebView.title ?: ""
         val domain = Uri.parse(ninjaWebView.url).host ?: "EinkBro"
-        ninjaWebView.getRawHtml { rawHtml ->
-            val book = if (isNewEpubFile) epubManager.createBook(domain, "einkbro book") else epubManager.openBook(uri)
-            book.addSection(
-                    title,
-                    Resource(rawHtml.byteInputStream(), "chapter${book.tableOfContents.allUniqueResources.size + 1}.html")
-            )
-            epubManager.saveBook(book, uri)
-            openFile(uri, Constants.MIME_TYPE_EPUB)
-        }
+        TextInputDialog(
+                this,
+                getString(R.string.title),
+                getString(R.string.title_in_toc),
+                title,
+        ) { modifiedTitle ->
+            ninjaWebView.getRawHtml { rawHtml ->
+                val book = if (isNewEpubFile) epubManager.createBook(domain, "einkbro book") else epubManager.openBook(uri)
+                book.addSection(
+                        modifiedTitle,
+                        Resource(rawHtml.byteInputStream(), "chapter${book.tableOfContents.allUniqueResources.size + 1}.html")
+                )
+                epubManager.saveBook(book, uri)
+                openFile(uri, Constants.MIME_TYPE_EPUB)
+            }
+        }.show()
     }
 
     private fun openFile(uri: Uri, mimeType: String) {
@@ -1650,10 +1658,10 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
 
     private var isNewEpubFile = false
     private fun showSaveEpubDialog() {
-        val colors = arrayOf("Save to existing Epub", "Create new Epub")
+        val colors = arrayOf(getString(R.string.existing_epub), getString(R.string.a_new_epub))
 
         val builder = AlertDialog.Builder(this)
-        builder.setTitle("Pick a color")
+        builder.setTitle(getString(R.string.save_to))
         builder.setItems(colors) { _, index ->
             when(index) {
                 0 -> isNewEpubFile = false
