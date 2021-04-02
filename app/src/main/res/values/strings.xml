@@ -454,4 +454,9 @@
     <string name="touch_area_setting">touch setting</string>
     <string name="toolbar_setting">toolbar setting</string>
     <string name="menu_save_epub">save epub</string>
+    <string name="save_to">Save to...</string>
+    <string name="existing_epub">existing Epub</string>
+    <string name="a_new_epub">a new Epub</string>
+    <string name="title">Title</string>
+    <string name="title_in_toc">description in Table of Content</string>
 </resources>
