@@ -19,12 +19,9 @@ import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
 import android.print.PrintAttributes
-import android.print.PrintDocumentAdapter
-import android.print.PrintDocumentAdapter.LayoutResultCallback
 import android.print.PrintManager
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.*
 import android.view.View.*
 import android.view.inputmethod.EditorInfo
@@ -160,7 +157,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         WebView.enableSlowWholeDocumentDraw()
 
         sp.edit().putInt("restart_changed", 0).apply()
-        sp.edit().putBoolean("pdf_create", false).apply()
         HelperUnit.applyTheme(this)
         setContentView(binding.root)
         if (sp.getString("saved_key_ok", "no") == "no") {
@@ -293,6 +289,13 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             return
         }
 
+        if (requestCode == WRITE_PDF_REQUEST_CODE && resultCode == RESULT_OK) {
+            val nonNullData = data?.data ?: return
+            printPDF()
+
+            return
+        }
+
         if (requestCode == INPUT_FILE_REQUEST_CODE && mFilePathCallback != null) {
             var results: Array<Uri>? = null
             // Check that the response is a good one
@@ -344,25 +347,20 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         }
         dispatchIntent(intent)
         updateOmnibox()
-        if (sp.getBoolean("pdf_create", false)) {
-            sp.edit().putBoolean("pdf_create", false).apply()
-            if (sp.getBoolean("pdf_share", false)) {
-                sp.edit().putBoolean("pdf_share", false).apply()
-                startActivity(Intent(DownloadManager.ACTION_VIEW_DOWNLOADS))
-            } else {
-                bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
-                val dialogView = View.inflate(this, R.layout.dialog_action, null)
-                dialogView.findViewById<TextView>(R.id.dialog_text).setText(R.string.toast_downloadComplete)
-                dialogView.findViewById<Button>(R.id.action_ok).setOnClickListener {
-                    startActivity(Intent(DownloadManager.ACTION_VIEW_DOWNLOADS))
-                    hideBottomSheetDialog()
-                }
-                dialogView.findViewById<Button>(R.id.action_cancel).setOnClickListener { hideBottomSheetDialog() }
-                bottomSheetDialog?.setContentView(dialogView)
-                bottomSheetDialog?.show()
-            }
-        }
         overridePendingTransition(0, 0)
+    }
+
+    private fun showFileListConfirmDialog() {
+        bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
+        val dialogView = View.inflate(this, R.layout.dialog_action, null)
+        dialogView.findViewById<TextView>(R.id.dialog_text).setText(R.string.toast_downloadComplete)
+        dialogView.findViewById<Button>(R.id.action_ok).setOnClickListener {
+            startActivity(Intent(DownloadManager.ACTION_VIEW_DOWNLOADS))
+            hideBottomSheetDialog()
+        }
+        dialogView.findViewById<Button>(R.id.action_cancel).setOnClickListener { hideBottomSheetDialog() }
+        bottomSheetDialog?.setContentView(dialogView)
+        bottomSheetDialog?.show()
     }
 
     public override fun onDestroy() {
@@ -373,6 +371,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         BrowserContainer.clear()
         IntentUnit.setContext(null)
         unregisterReceiver(downloadReceiver)
+        bookmarkDB.close()
         super.onDestroy()
     }
 
@@ -487,9 +486,9 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 inputBox.requestFocus()
                 showKeyboard()
             }
-            R.id.menu_save_pdf -> printPDF(false)
+            R.id.menu_save_pdf -> showPdfFilePicker()
 
-            R.id.menu_save_epub -> showEpubFilePicker()
+            //R.id.menu_save_epub -> showEpubFilePicker()
 
             // --- tool bar handling
             R.id.omnibox_tabcount -> showOverview()
@@ -658,13 +657,22 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         startActivityForResult(intent, WRITE_EPUB_REQUEST_CODE)
     }
 
+    private fun showPdfFilePicker() {
+        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
+        intent.type = Constants.MIME_TYPE_PDF
+        intent.putExtra(Intent.EXTRA_TITLE, "einkbro.pdf")
+        startActivityForResult(intent, WRITE_PDF_REQUEST_CODE)
+    }
+
     private fun saveEpub(uri: Uri) {
         val title = ninjaWebView.title ?: ""
+        val domain = Uri.parse(ninjaWebView.url).host ?: "EinkBro"
         ninjaWebView.getRawHtml { rawHtml ->
-            val book = epubManager.createBook("einkbro book")
+            val book = if (isNewEpubFile) epubManager.createBook(domain, "einkbro book") else epubManager.openBook(uri)
             book.addSection(
                     title,
-                    Resource(rawHtml.byteInputStream(), "chapter1.html")
+                    Resource(rawHtml.byteInputStream(), "chapter${book.tableOfContents.allUniqueResources.size + 1}.html")
             )
             epubManager.saveBook(book, uri)
             openFile(uri, Constants.MIME_TYPE_EPUB)
@@ -675,22 +683,20 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         val intent = Intent().apply {
             action = Intent.ACTION_VIEW
             data = uri
-            //type = mimeType
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_GRANT_READ_URI_PERMISSION
         }
         startActivity(Intent.createChooser(intent, "Open file with"))
     }
 
-    private fun printPDF(share: Boolean) {
+    private fun printPDF() {
         try {
-            sp.edit().putBoolean("pdf_share", share).apply()
             val title = HelperUnit.fileName(ninjaWebView.url)
             val printManager = getSystemService(PRINT_SERVICE) as PrintManager
-            val printAdapter = ninjaWebView.createPrintDocumentAdapter(title)
+            val printAdapter = ninjaWebView.createPrintDocumentAdapter(title) {
+                showFileListConfirmDialog()
+            }
             printManager.print(title, printAdapter, PrintAttributes.Builder().build())
-            sp.edit().putBoolean("pdf_create", true).apply()
         } catch (e: Exception) {
-            NinjaToast.show(this, R.string.toast_error)
-            sp.edit().putBoolean("pdf_create", false).apply()
             e.printStackTrace()
         }
     }
@@ -1642,6 +1648,22 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         showKeyboard()
     }
 
+    private var isNewEpubFile = false
+    private fun showSaveEpubDialog() {
+        val colors = arrayOf("Save to existing Epub", "Create new Epub")
+
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Pick a color")
+        builder.setItems(colors) { _, index ->
+            when(index) {
+                0 -> isNewEpubFile = false
+                1 -> isNewEpubFile = true
+            }
+            showEpubFilePicker()
+        }
+        builder.show()
+    }
+
     private fun showMenuDialog(): Boolean {
         MenuDialog(
                 this,
@@ -1650,7 +1672,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 { removeAlbum(currentAlbumController!!) },
                 { saveBookmark() },
                 { showSearchPanel() },
-                { showEpubFilePicker() },
+                { showSaveEpubDialog() },
+                { printPDF() },
         ).show()
         return true
     }
@@ -1870,5 +1893,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     companion object {
         private const val INPUT_FILE_REQUEST_CODE = 1
         private const val WRITE_EPUB_REQUEST_CODE = 2
+        private const val WRITE_PDF_REQUEST_CODE = 3
     }
 }
