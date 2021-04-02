@@ -369,4 +369,9 @@
     <string name="touch_area_setting">翻頁設定</string>
     <string name="toolbar_setting">工具列設定</string>
     <string name="menu_save_epub">儲存epub</string>
+    <string name="save_to">儲存至...</string>
+    <string name="existing_epub">既有的 Epub</string>
+    <string name="a_new_epub">新建立的 Epub</string>
+    <string name="title">標題</string>
+    <string name="title_in_toc">電子書目錄中的名稱</string>
 </resources>
