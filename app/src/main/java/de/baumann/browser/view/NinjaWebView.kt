@@ -7,6 +7,7 @@ import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.os.Build
 import android.os.Handler
+import android.print.PrintDocumentAdapter
 import android.util.AttributeSet
 import android.util.Base64
 import android.view.GestureDetector
@@ -23,6 +24,7 @@ import de.baumann.browser.browser.*
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.unit.BrowserUnit
 import de.baumann.browser.unit.ViewUnit
+import de.baumann.browser.util.PdfDocumentAdapter
 import org.apache.commons.text.StringEscapeUtils
 import java.io.IOException
 import java.io.InputStream
@@ -282,6 +284,11 @@ class NinjaWebView : WebView, AlbumController {
         super.destroy()
     }
 
+    fun createPrintDocumentAdapter(documentName: String, onFinish: ()-> Unit): PrintDocumentAdapter {
+        val superAdapter = super.createPrintDocumentAdapter(documentName)
+        return PdfDocumentAdapter(documentName, superAdapter, onFinish)
+    }
+
     val isLoadFinish: Boolean
         get() = progress >= BrowserUnit.PROGRESS_MAX
 
@@ -330,6 +337,8 @@ class NinjaWebView : WebView, AlbumController {
     }
 
     fun getRawHtml(action: (String) -> Unit) {
+        injectJavascript(striptScriptJs.toByteArray())
+
         evaluateJavascript(
                 "(function() { return ('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>'); })();"
         ) { html ->
@@ -536,6 +545,16 @@ class NinjaWebView : WebView, AlbumController {
     }
 
     companion object {
+        private const val striptScriptJs = """
+            javascript:(function() {
+                var r = document.getElementsByTagName('script');
+                for (var i = (r.length-1); i >= 0; i--) {
+                    if(r[i].getAttribute('id') != 'a'){
+                        r[i].parentNode.removeChild(r[i]);
+                    }
+                }
+            })()
+        """
         private const val facebookHideSponsoredPostsJs = """
             javascript:(function() {
             var posts = [].filter.call(document.getElementsByTagName('article'), el => el.attributes['data-store'].value.indexOf('is_sponsored.1') >= 0); 

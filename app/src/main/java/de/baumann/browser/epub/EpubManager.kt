@@ -12,15 +12,20 @@ import java.io.InputStream
 
 class EpubManager(private val context: Context) {
 
-    fun createBook(bookName: String): Book = Book().apply {
+    fun createBook(domain: String, bookName: String): Book = Book().apply {
         metadata.addTitle(bookName)
-        metadata.addAuthor(Author("EinkBro", "App"))
+        metadata.addAuthor(Author(domain, "EinkBro App"))
     }
 
-    fun openBook(filePath: String): Book {
-        val epubInputStream: InputStream = context.assets.open("books/testbook.epub")
+    fun openBook(uri: Uri): Book {
+        try {
+            val epubInputStream: InputStream = context.contentResolver.openInputStream(uri)
+                    ?: return createBook("", "EinkBro")
 
-        return EpubReader().readEpub(epubInputStream)
+            return EpubReader().readEpub(epubInputStream)
+        } catch(e: IOException) {
+            return createBook("", "EinkBro")
+        }
     }
 
     fun saveBook(book: Book, uri: Uri) {

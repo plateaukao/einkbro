@@ -245,6 +245,7 @@ public class RecordAction {
                 cursor.moveToNext();
             }
             cursor.close();
+            db.close();
         }
 
         //add history

@@ -67,6 +67,10 @@ public class BookmarkList {
         sqlDb = dbHelper.getWritableDatabase();
     }
 
+    public void close() {
+        sqlDb.close();
+    }
+
     //insert data
     @SuppressWarnings("SameParameterValue")
     public void insert(String pass_title, String pass_content, String pass_icon, String pass_attachment, String pass_creation) {
