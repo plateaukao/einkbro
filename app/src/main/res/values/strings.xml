@@ -457,6 +457,8 @@
     <string name="save_to">Save to...</string>
     <string name="existing_epub">existing Epub</string>
     <string name="a_new_epub">a new Epub</string>
-    <string name="title">Title</string>
-    <string name="title_in_toc">description in Table of Content</string>
+    <string name="title">Chapter name</string>
+    <string name="title_in_toc">chapter name in Table of Content</string>
+    <string name="book_name">Book Name</string>
+    <string name="book_name_description">Input the book name</string>
 </resources>

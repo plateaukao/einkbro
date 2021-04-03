@@ -29,6 +29,8 @@ import org.apache.commons.text.StringEscapeUtils
 import java.io.IOException
 import java.io.InputStream
 import java.util.*
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 
 class NinjaWebView : WebView, AlbumController {
@@ -336,14 +338,14 @@ class NinjaWebView : WebView, AlbumController {
         }
     }
 
-    fun getRawHtml(action: (String) -> Unit) {
+    suspend fun getRawHtml() =  suspendCoroutine<String> { continuation ->
         injectJavascript(striptScriptJs.toByteArray())
 
         evaluateJavascript(
                 "(function() { return ('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>'); })();"
         ) { html ->
             val processedHtml = StringEscapeUtils.unescapeJava(html)
-            action.invoke(processedHtml.substring(1, processedHtml.length - 1)) // handle prefix/postfix "
+            continuation.resume(processedHtml.substring(1, processedHtml.length - 1)) // handle prefix/postfix "
         }
     }
 
