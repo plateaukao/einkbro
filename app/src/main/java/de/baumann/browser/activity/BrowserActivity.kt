@@ -35,6 +35,7 @@ import android.widget.TextView.OnEditorActionListener
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
+import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -672,7 +673,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private fun saveEpub(uri: Uri) {
         val domain = Uri.parse(ninjaWebView.url).host ?: "EinkBro"
 
-            GlobalScope.launch(Dispatchers.Main) {
+        lifecycleScope.launch(Dispatchers.Main) {
                 val rawHtml = ninjaWebView.getRawHtml()
 
                 val book = if (isNewEpubFile) epubManager.createBook(domain, getBookName()) else epubManager.openBook(uri)
