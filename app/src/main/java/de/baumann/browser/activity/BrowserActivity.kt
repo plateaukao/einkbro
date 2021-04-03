@@ -61,6 +61,9 @@ import de.baumann.browser.view.dialog.MenuDialog
 import de.baumann.browser.view.dialog.TextInputDialog
 import de.baumann.browser.view.dialog.TouchAreaDialog
 import de.baumann.browser.view.toolbaricons.ToolbarAction
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import nl.siegmann.epublib.domain.Resource
 import java.io.*
 import java.util.*
@@ -667,24 +670,43 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     }
 
     private fun saveEpub(uri: Uri) {
-        val title = ninjaWebView.title ?: ""
         val domain = Uri.parse(ninjaWebView.url).host ?: "EinkBro"
-        TextInputDialog(
-                this,
-                getString(R.string.title),
-                getString(R.string.title_in_toc),
-                title,
-        ) { modifiedTitle ->
-            ninjaWebView.getRawHtml { rawHtml ->
-                val book = if (isNewEpubFile) epubManager.createBook(domain, "einkbro book") else epubManager.openBook(uri)
+
+            GlobalScope.launch(Dispatchers.Main) {
+                val rawHtml = ninjaWebView.getRawHtml()
+
+                val book = if (isNewEpubFile) epubManager.createBook(domain, getBookName()) else epubManager.openBook(uri)
+                val chapterFileName = "chapter${book.tableOfContents.allUniqueResources.size + 1}.html"
+
                 book.addSection(
-                        modifiedTitle,
-                        Resource(rawHtml.byteInputStream(), "chapter${book.tableOfContents.allUniqueResources.size + 1}.html")
+                        getChapterName(),
+                        Resource(rawHtml.byteInputStream(), chapterFileName)
                 )
                 epubManager.saveBook(book, uri)
+
                 openFile(uri, Constants.MIME_TYPE_EPUB)
+
+                isNewEpubFile = false
             }
-        }.show()
+    }
+
+    private suspend fun getChapterName(): String {
+        var chapterName = ninjaWebView.title ?: "no title"
+        return TextInputDialog(
+                    this@BrowserActivity,
+                    getString(R.string.title),
+                    getString(R.string.title_in_toc),
+                    chapterName
+            ).show() ?: chapterName
+    }
+
+    private suspend fun getBookName(): String {
+        return TextInputDialog(
+                this@BrowserActivity,
+                getString(R.string.book_name),
+                getString(R.string.book_name_description),
+                "einkbro book"
+        ).show() ?: "einkbro book"
     }
 
     private fun openFile(uri: Uri, mimeType: String) {

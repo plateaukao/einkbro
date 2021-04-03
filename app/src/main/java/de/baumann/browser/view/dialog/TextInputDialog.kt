@@ -4,8 +4,8 @@ import android.app.AlertDialog
 import android.content.Context
 
 import android.widget.EditText
-
-
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 
 class TextInputDialog(
@@ -13,9 +13,8 @@ class TextInputDialog(
    private val title: String,
    private val message: String,
    private val defaultText: String = "",
-   private val action: (String) -> Unit,
 ) {
-    fun show() {
+    suspend fun show() = suspendCoroutine<String?> { continuation ->
         val editText = EditText(context).apply {
             setText(defaultText)
         }
@@ -28,11 +27,11 @@ class TextInputDialog(
                 .setPositiveButton(android.R.string.ok) { dialog, _ ->
                     dialog.dismiss()
                     val text = editText.text.toString()
-                    action.invoke(text)
+                    continuation.resume(text)
                 }
                 .setNegativeButton(android.R.string.cancel) { dialog, _ ->
                     dialog.dismiss()
+                    continuation.resume(null)
                 }.show()
-
     }
 }
