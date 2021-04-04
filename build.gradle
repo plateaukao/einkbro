@@ -16,9 +16,6 @@ allprojects {
     repositories {
         google()
         jcenter()
-        //mavenCentral()
-        maven {
-            url 'https://github.com/psiegman/mvn-repo/raw/master/releases'
-        }
+        mavenCentral()
     }
 }
