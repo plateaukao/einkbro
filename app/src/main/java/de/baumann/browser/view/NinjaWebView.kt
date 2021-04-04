@@ -606,51 +606,25 @@ class NinjaWebView : WebView, AlbumController {
                 "padding:0px;\n" +
                 "}\n"
         private const val boldFontCss = "* {\n" +
-                "\tcolor: #000000!important;\n" +
                 "\tfont-weight:700 !important;\n" +  /*"\tborder-color: #555555 !important;\n" +*/
-                "\tscrollbar-arrow-color: #CCCCCC !important;\n" +
-                "\tscrollbar-base-color: #2266AA !important;\n" +
-                "\tscrollbar-shadow-color: #2266AA !important;\n" +
-                "\tscrollbar-face-color: #333333 !important;\n" +
-                "\tscrollbar-highlight-color: #2266AA !important;\n" +
-                "\tscrollbar-dark-shadow-color: #2266AA !important;\n" +
-                "\tscrollbar-3d-light-color: #2266AA !important;\n" +
-                "\tscrollbar-track-color: #333333 !important;\n" +
                 "}\n" +
                 "a,a * {\n" +
-                "\tcolor: #000000 !important;\n" +
                 "\tfont-weight:700 !important;\n" +
                 "}\n" +
                 "a: visited,a: visited *,a: active,a: active * {\n" +
-                "\tcolor: #000000 !important;\n" +
                 "\tfont-weight:700 !important;\n" +
                 "}\n" +
                 "a: hover,a: hover * {\n" +
-                "\tcolor: #000000 !important;\n" +
-                "\tbackground: #666666 !important;\n" +
                 "\tfont-weight:700 !important;\n" +
                 "}\n" +
                 "input,select,option,button,textarea {\n" +
-                "\tcolor: #000000 !important;\n" +
                 "\tfont-weight:700 !important;\n" +
-                "\tbackground: #FFFFFF !important;\n" +
-                "\tborder: #FFFFFF !important;\n" +
-                "\tborder-color: #FFFFFF #FFFFFF #FFFFFF #FFFFFF !important;\n" +
                 "}\n" +
                 "input: focus,select: focus,option: focus,button: focus,textarea: focus,input: hover,select: hover,option: hover,button: hover,textarea: hover {\n" +
-                "\tcolor: #000000 !important;\n" +
-                "\tbackground: #FFFFFF !important;\n" +
                 "\tfont-weight:700 !important;\n" +
-                "\tborder-color: #FFFFFF #FFFFFF #FFFFFF #FFFFFF !important;\n" +
-                "}\n" +
-                "input[type=button],input[type=submit],input[type=reset],input[type=image] {\n" +
-                "\tborder-color: #FFFFFF #FFFFFF #FFFFFF #FFFFFF !important;\n" +
                 "}\n" +
                 "input[type=button]: focus,input[type=submit]: focus,input[type=reset]: focus,input[type=image]: focus, input[type=button]: hover,input[type=submit]: hover,input[type=reset]: hover,input[type=image]: hover {\n" +
-                "\tcolor: #000000 !important;\n" +
                 "\tfont-weight:700 !important;\n" +
-                "\tbackground: #FFFFFF !important;\n" +
-                "\tborder-color: #FFFFFF #FFFFFF #FFFFFF #FFFFFF !important;\n" +
                 "}\n"
     }
 }
