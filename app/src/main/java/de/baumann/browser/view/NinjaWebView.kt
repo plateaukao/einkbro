@@ -339,7 +339,7 @@ class NinjaWebView : WebView, AlbumController {
     }
 
     suspend fun getRawHtml() =  suspendCoroutine<String> { continuation ->
-        injectJavascript(striptScriptJs.toByteArray())
+        injectJavascript(stripHeaderElementsJs.toByteArray())
 
         evaluateJavascript(
                 "(function() { return ('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>'); })();"
@@ -547,9 +547,21 @@ class NinjaWebView : WebView, AlbumController {
     }
 
     companion object {
-        private const val striptScriptJs = """
+        private const val stripHeaderElementsJs = """
             javascript:(function() {
                 var r = document.getElementsByTagName('script');
+                for (var i = (r.length-1); i >= 0; i--) {
+                    if(r[i].getAttribute('id') != 'a'){
+                        r[i].parentNode.removeChild(r[i]);
+                    }
+                }
+                var r = document.getElementsByTagName('meta');
+                for (var i = (r.length-1); i >= 0; i--) {
+                    if(r[i].getAttribute('id') != 'a'){
+                        r[i].parentNode.removeChild(r[i]);
+                    }
+                }
+                var r = document.getElementsByTagName('link');
                 for (var i = (r.length-1); i >= 0; i--) {
                     if(r[i].getAttribute('id') != 'a'){
                         r[i].parentNode.removeChild(r[i]);
