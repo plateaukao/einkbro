@@ -44,7 +44,7 @@
         app:initialExpandedChildrenCount="3">
 
         <EditTextPreference
-            android:defaultValue="https://www.google.com"
+            android:defaultValue="https://duckduckgo.com/"
             android:key="favoriteURL"
             android:title="@string/setting_title_fav"
             android:summary="@string/setting_summary_fav"

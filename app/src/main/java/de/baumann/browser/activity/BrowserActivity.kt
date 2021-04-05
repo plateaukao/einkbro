@@ -735,28 +735,30 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private fun dispatchIntent(intent: Intent) {
         val action = intent.action
         val url = intent.getStringExtra(Intent.EXTRA_TEXT)
+        val favoriteUrl = sp.getString("favoriteURL", Constants.DEFAULT_HOME_URL)
+
         if ("" == action) {
         } else if (intent.action != null && intent.action == Intent.ACTION_WEB_SEARCH) {
             addAlbum("", intent.getStringExtra(SearchManager.QUERY), true)
         } else if (filePathCallback != null) {
             filePathCallback = null
         } else if ("sc_history" == action) {
-            addAlbum("", sp.getString("favoriteURL", "https://www.google.com"), true)
+            addAlbum("", favoriteUrl, true)
             showOverview()
             ninjaWebView.postDelayed({ openHistoryPage() }, 250)
         } else if ("sc_bookmark" == action) {
-            addAlbum("", sp.getString("favoriteURL", "https://www.google.com"), true)
+            addAlbum("", favoriteUrl,  true)
             showOverview()
             ninjaWebView.postDelayed({ openBookmarkPage() }, 250)
         } else if ("sc_startPage" == action) {
-            addAlbum("", sp.getString("favoriteURL", "https://www.google.com"), true)
+            addAlbum("", favoriteUrl, true)
             showOverview()
             ninjaWebView.postDelayed({ btnOpenStartPage.performClick() }, 250)
         } else if (Intent.ACTION_SEND == action) {
             addAlbum("", url, true)
         } else {
             if (!onPause) {
-                addAlbum("", sp.getString("favoriteURL", "https://www.google.com"), true)
+                addAlbum("", favoriteUrl, true)
             }
         }
         getIntent().action = ""
@@ -971,7 +973,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 showAlbum(controller!!)
             }
             "08" -> showOverview()
-            "09" -> addAlbum(getString(R.string.app_name), sp.getString("favoriteURL", "https://www.google.com"), true)
+            "09" -> addAlbum(getString(R.string.app_name), sp.getString("favoriteURL", Constants.DEFAULT_HOME_URL), true)
             "10" -> removeAlbum(currentAlbumController!!)
             // page up
             "11" -> ninjaWebView.pageUpWithNoAnimation()
