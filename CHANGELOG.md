@@ -1,3 +1,8 @@
+### 8.6.3
+
+- fix save history toggleing default value to true
+- add description of why each permissions are used in full description in fastlane
+
 ### 8.6.2
 
 - fix crash issues
