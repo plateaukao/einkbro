@@ -51,7 +51,7 @@
         android:dividerHeight="0dp"
         android:fastScrollEnabled="true"
         android:gravity="center"
-        android:minHeight="300dp"
+        android:minHeight="100dp"
         android:stackFromBottom="true"
         android:visibility="gone"/>
 
