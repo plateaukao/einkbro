@@ -28,6 +28,7 @@ import de.baumann.browser.view.NinjaWebView
 import java.io.ByteArrayInputStream
 import java.io.InputStream
 import java.net.URISyntaxException
+import kotlin.collections.HashMap
 
 
 class NinjaWebViewClient(private val ninjaWebView: NinjaWebView) : WebViewClient() {
@@ -37,9 +38,9 @@ class NinjaWebViewClient(private val ninjaWebView: NinjaWebView) : WebViewClient
     private val adBlock: AdBlock = ninjaWebView.adBlock
     private val cookie: Cookie = ninjaWebView.cookieHosts
     private val white: Boolean = false
-    private var enable: Boolean = true
+    private var hasAdBlock: Boolean = true
     fun enableAdBlock(enable: Boolean) {
-        this.enable = enable
+        this.hasAdBlock = enable
     }
 
     override fun onPageFinished(view: WebView, url: String) {
@@ -121,7 +122,7 @@ class NinjaWebViewClient(private val ninjaWebView: NinjaWebView) : WebViewClient
     )
 
     override fun shouldInterceptRequest(view: WebView, url: String): WebResourceResponse? {
-        if (enable && !white && adBlock.isAd(url)) {
+        if (hasAdBlock && !white && adBlock.isAd(url)) {
             return webResourceResponse
         }
         if (!sp.getBoolean(context.getString(R.string.sp_cookies), true)) {
@@ -156,13 +157,10 @@ class NinjaWebViewClient(private val ninjaWebView: NinjaWebView) : WebViewClient
     }
 
     override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest): WebResourceResponse? {
-        if (enable && !white && adBlock.isAd(request.url.toString())) {
-            return WebResourceResponse(
-                    BrowserUnit.MIME_TYPE_TEXT_PLAIN,
-                    BrowserUnit.URL_ENCODING,
-                    ByteArrayInputStream("".toByteArray())
-            )
+        if (hasAdBlock && !white && adBlock.isAd(request.url.toString())) {
+            return webResourceResponse
         }
+
         if (!sp.getBoolean(context.getString(R.string.sp_cookies), true)) {
             if (cookie.isWhite(request.url.toString())) {
                 val manager = CookieManager.getInstance()

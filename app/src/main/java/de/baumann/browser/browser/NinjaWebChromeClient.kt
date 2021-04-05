@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.*
 import android.webkit.WebView.WebViewTransport
-import de.baumann.browser.Ninja.R
 import de.baumann.browser.unit.HelperUnit
 import de.baumann.browser.view.NinjaWebView
 

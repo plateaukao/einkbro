@@ -30,3 +30,9 @@ Some nice extra features:
 * share/save as PDF
 * open links in other apps (for example YouTube)
 
+Permissions that may be used
+* INTERNET: it's a browser, so it's expected.
+* READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE: for saving web page as PDF or epub file, and for downloading files.
+* INSTALL_SHORTCUT: to install web shortcuts on Home.
+* ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION: when using some navigation web site, or some web service that needs location, these permissions are needed.
+
