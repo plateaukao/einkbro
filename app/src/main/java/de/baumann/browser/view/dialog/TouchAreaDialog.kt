@@ -3,6 +3,8 @@ package de.baumann.browser.view.dialog
 import android.app.AlertDialog
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.Gravity
 import android.view.View
@@ -14,6 +16,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.preference.TouchAreaType
+import de.baumann.browser.unit.ViewUnit
 
 class TouchAreaDialog(private val context: Context) {
     private val sp: SharedPreferences by lazy { PreferenceManager.getDefaultSharedPreferences(context) }
@@ -28,6 +31,7 @@ class TouchAreaDialog(private val context: Context) {
         initViews(view)
         dialog = builder.create().apply {
             window?.setGravity(Gravity.BOTTOM)
+            window?.setBackgroundDrawableResource(R.drawable.background_with_margin)
         }
         dialog.show()
     }
