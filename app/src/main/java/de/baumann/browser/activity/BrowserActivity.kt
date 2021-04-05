@@ -48,6 +48,7 @@ import de.baumann.browser.database.Record
 import de.baumann.browser.database.RecordAction
 import de.baumann.browser.epub.EpubManager
 import de.baumann.browser.preference.ConfigManager
+import de.baumann.browser.preference.FabPosition
 import de.baumann.browser.preference.TouchAreaType
 import de.baumann.browser.service.ClearService
 import de.baumann.browser.unit.BrowserUnit
@@ -63,7 +64,6 @@ import de.baumann.browser.view.dialog.TextInputDialog
 import de.baumann.browser.view.dialog.TouchAreaDialog
 import de.baumann.browser.view.toolbaricons.ToolbarAction
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import nl.siegmann.epublib.domain.Resource
 import java.io.*
@@ -188,7 +188,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             sp.edit().putBoolean(getString(R.string.sp_location), false).apply()
         }
         mainContentLayout = findViewById(R.id.main_content)
-        initOmnibox()
+        initToolbar()
         initSearchPanel()
         initOverview()
         initTouchArea()
@@ -737,35 +737,38 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         val url = intent.getStringExtra(Intent.EXTRA_TEXT)
         val favoriteUrl = sp.getString("favoriteURL", Constants.DEFAULT_HOME_URL)
 
-        if ("" == action) {
-        } else if (intent.action != null && intent.action == Intent.ACTION_WEB_SEARCH) {
-            addAlbum("", intent.getStringExtra(SearchManager.QUERY), true)
-        } else if (filePathCallback != null) {
-            filePathCallback = null
-        } else if ("sc_history" == action) {
-            addAlbum("", favoriteUrl, true)
-            showOverview()
-            ninjaWebView.postDelayed({ openHistoryPage() }, 250)
-        } else if ("sc_bookmark" == action) {
-            addAlbum("", favoriteUrl,  true)
-            showOverview()
-            ninjaWebView.postDelayed({ openBookmarkPage() }, 250)
-        } else if ("sc_startPage" == action) {
-            addAlbum("", favoriteUrl, true)
-            showOverview()
-            ninjaWebView.postDelayed({ btnOpenStartPage.performClick() }, 250)
-        } else if (Intent.ACTION_SEND == action) {
-            addAlbum("", url, true)
-        } else {
-            if (!onPause) {
+        if (filePathCallback != null) { filePathCallback = null }
+
+        when(action) {
+            "" -> {} //addAlbum("", favoriteUrl, true)
+            Intent.ACTION_WEB_SEARCH -> addAlbum("", intent.getStringExtra(SearchManager.QUERY), true)
+            "sc_history" -> {
                 addAlbum("", favoriteUrl, true)
+                showOverview()
+                ninjaWebView.postDelayed({ openHistoryPage() }, 250)
+            }
+            "sc_bookmark" -> {
+                addAlbum("", favoriteUrl,  true)
+                showOverview()
+                ninjaWebView.postDelayed({ openBookmarkPage() }, 250)
+            }
+            "sc_startPage" -> {
+                addAlbum("", favoriteUrl, true)
+                showOverview()
+                ninjaWebView.postDelayed({ btnOpenStartPage.performClick() }, 250)
+            }
+            Intent.ACTION_SEND -> addAlbum("", url, true)
+            else -> {
+                if (!onPause) {
+                    addAlbum("", favoriteUrl, true)
+                }
             }
         }
         getIntent().action = ""
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private fun initOmnibox() {
+    private fun initToolbar() {
         mainToolbar = findViewById(R.id.main_toolbar)
         inputBox = findViewById(R.id.main_omnibox_input)
         omniboxTitle = findViewById(R.id.omnibox_title)
@@ -898,18 +901,15 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
 
     private fun initFAB() {
         fabImagebuttonnav = findViewById(R.id.fab_imageButtonNav)
-        val navPosition = sp.getString("nav_position", "0")
         val params = RelativeLayout.LayoutParams(fabImagebuttonnav.layoutParams.width, fabImagebuttonnav.layoutParams.height)
-        when (navPosition) {
-            "1" -> {
-                // left
+        when (config.fabPosition) {
+            FabPosition.Left -> {
                 fabImagebuttonnav.layoutParams = params.apply {
                     addRule(RelativeLayout.ALIGN_PARENT_LEFT)
                     addRule(RelativeLayout.ALIGN_BOTTOM, R.id.main_content)
                 }
             }
-            "2" -> {
-                // center
+            FabPosition.Center -> {
                 fabImagebuttonnav.layoutParams = params.apply {
                     addRule(RelativeLayout.CENTER_HORIZONTAL)
                     addRule(RelativeLayout.ALIGN_BOTTOM, R.id.main_content)
