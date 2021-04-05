@@ -140,8 +140,8 @@ public class BrowserUnit {
         }
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        String custom = sp.getString("sp_search_engine_custom", SEARCH_ENGINE_GOOGLE);
-        final int i = Integer.valueOf(Objects.requireNonNull(sp.getString(context.getString(R.string.sp_search_engine), "5")));
+        String custom = sp.getString("sp_search_engine_custom", SEARCH_ENGINE_DUCKDUCKGO);
+        final int i = Integer.valueOf(Objects.requireNonNull(sp.getString(context.getString(R.string.sp_search_engine), "4")));
         switch (i) {
             case 0:
                 return SEARCH_ENGINE_STARTPAGE + query;
@@ -151,8 +151,6 @@ public class BrowserUnit {
                 return SEARCH_ENGINE_BAIDU + query;
             case 3:
                 return SEARCH_ENGINE_BING + query;
-            case 4:
-                return SEARCH_ENGINE_DUCKDUCKGO + query;
             case 6:
                 return SEARCH_ENGINE_SEARX + query;
             case 7:
@@ -162,8 +160,10 @@ public class BrowserUnit {
             case 9:
                 return SEARCH_ENGINE_ECOSIA + query;
             case 5:
-            default:
                 return SEARCH_ENGINE_GOOGLE + query;
+            case 4:
+            default:
+                return SEARCH_ENGINE_DUCKDUCKGO + query;
         }
     }
 
