@@ -29,6 +29,10 @@ class ConfigManager(private val context: Context) {
         get() = sp.getString("sp_fontSize", "100")?.toInt() ?: 100
         set(value) {sp.edit { putString("sp_fontSize", value.toString()) } }
 
+    var fabPosition: FabPosition
+        get() = FabPosition.values()[sp.getString(K_NAV_POSITON, "0")?.toInt() ?: 0]
+        set(value) {sp.edit { putString(K_NAV_POSITON, value.ordinal.toString()) } }
+
     var screenshot: Int
         get() = sp.getInt("screenshot", 0)
         set(value) {sp.edit { putInt("screenshot", value) } }
@@ -42,6 +46,7 @@ class ConfigManager(private val context: Context) {
         const val K_TOOLBAR_ICONS = "sp_toolbar_icons"
         const val K_BOLD_FONT = "sp_bold_font"
         const val K_FONT_STYLE_SERIF = "sp_font_style_serif"
+        const val K_NAV_POSITON = "nav_position"
     }
 }
 
@@ -50,4 +55,8 @@ enum class PaperSize(val sizeString: String, val mediaSize: PrintAttributes.Medi
     SIZE_10("A5 (10\")", PrintAttributes.MediaSize.ISO_A5),
     ISO_67("Hisense A7 (6.7\")", PrintAttributes.MediaSize.PRC_5),
     SIZE_8("C6 (8\")", PrintAttributes.MediaSize.ISO_C6),
+}
+
+enum class FabPosition {
+    Right, Left, Center
 }
