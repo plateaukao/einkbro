@@ -6,6 +6,8 @@ import android.app.AlertDialog
 import android.app.DownloadManager
 import android.content.*
 import android.content.pm.PackageManager
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.print.PrintAttributes
 import android.print.PrintDocumentAdapter
@@ -46,7 +48,10 @@ class MenuDialog(
         val builder = AlertDialog.Builder(context, R.style.TouchAreaDialog).apply { setView(binding.root) }
 
         initViews()
-        dialog = builder.create().apply { window?.setGravity(Gravity.BOTTOM or Gravity.RIGHT) }
+        dialog = builder.create().apply {
+            window?.setGravity(Gravity.BOTTOM or Gravity.RIGHT)
+            window?.setBackgroundDrawableResource(R.drawable.background_with_margin)
+        }
         dialog.show()
     }
 
