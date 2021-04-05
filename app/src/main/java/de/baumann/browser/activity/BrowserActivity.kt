@@ -84,12 +84,12 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private lateinit var inputBox: AutoCompleteTextView
     private lateinit var progressBar: ProgressBar
     private lateinit var searchBox: EditText
-    private lateinit var overviewView: ViewGroup
+    private lateinit var overviewLayout: ViewGroup
     private lateinit var ninjaWebView: NinjaWebView
     private lateinit var recyclerView: RecyclerView
     private lateinit var omniboxTitle: TextView
     private lateinit var tabScrollview: HorizontalScrollView
-    private lateinit var overviewTop: LinearLayout
+    private lateinit var overviewPreview: LinearLayout
     private lateinit var touchAreaPageUp: View
     private lateinit var touchAreaPageDown: View
 
@@ -393,7 +393,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             KeyEvent.KEYCODE_MENU -> return showMenuDialog()
             KeyEvent.KEYCODE_BACK -> {
                 hideKeyboard()
-                if (overviewView.visibility == VISIBLE) {
+                if (overviewLayout.visibility == VISIBLE) {
                     hideOverview()
                     return true
                 }
@@ -456,7 +456,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
 
     private fun showOverview() {
         showCurrentTabInOverview()
-        overviewView.visibility = VISIBLE
+        overviewLayout.visibility = VISIBLE
 
         currentAlbumController?.deactivate()
         currentAlbumController?.activate()
@@ -466,7 +466,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     }
 
     override fun hideOverview() {
-        overviewView.visibility = INVISIBLE
+        overviewLayout.visibility = INVISIBLE
     }
 
     private fun hideBottomSheetDialog() {
@@ -984,20 +984,20 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
 
     @SuppressLint("ClickableViewAccessibility")
     private fun initOverview() {
-        overviewView = findViewById(R.id.layout_overview)
+        overviewLayout = findViewById(R.id.layout_overview)
         btnOpenStartPage = findViewById(R.id.open_newTab_2)
         btnOpenBookmark = findViewById(R.id.open_bookmark_2)
         btnOpenHistory = findViewById(R.id.open_history_2)
         btnOpenMenu = findViewById(R.id.open_menu)
         tab_container = findViewById(R.id.tab_container)
         tabScrollview = findViewById(R.id.tab_ScrollView)
-        overviewTop = findViewById(R.id.overview_top)
+        overviewPreview = findViewById(R.id.overview_preview)
         recyclerView = findViewById(R.id.home_list_2)
         open_startPageView = findViewById(R.id.open_newTabView)
         open_bookmarkView = findViewById(R.id.open_bookmarkView)
         open_historyView = findViewById(R.id.open_historyView)
 
-        overviewView.setOnTouchListener { _, _ ->
+        overviewLayout.setOnTouchListener { _, _ ->
             hideOverview()
             true
         }
@@ -1093,7 +1093,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             bottomSheetDialog?.show()
         }
         btnOpenStartPage.setOnClickListener {
-            overviewTop.visibility = VISIBLE
+            overviewPreview.visibility = VISIBLE
             recyclerView.visibility = GONE
             toggleOverviewFocus(open_startPageView)
             overViewTab = getString(R.string.album_title_home)
@@ -1106,9 +1106,9 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     }
 
     private fun openHistoryPage() {
-        overviewView.visibility = VISIBLE
+        overviewLayout.visibility = VISIBLE
 
-        overviewTop.visibility = INVISIBLE
+        overviewPreview.visibility = INVISIBLE
         recyclerView.visibility = VISIBLE
         toggleOverviewFocus(open_historyView)
 
@@ -1133,9 +1133,9 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     }
 
     private fun openBookmarkPage() {
-        overviewView.visibility = VISIBLE
+        overviewLayout.visibility = VISIBLE
 
-        overviewTop.visibility = INVISIBLE
+        overviewPreview.visibility = INVISIBLE
         recyclerView.visibility = VISIBLE
         toggleOverviewFocus(open_bookmarkView)
         overViewTab = getString(R.string.album_title_bookmarks)

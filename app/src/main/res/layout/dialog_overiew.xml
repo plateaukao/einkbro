@@ -3,12 +3,13 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
     android:orientation="vertical"
     tools:ignore="ContentDescription">
 
     <LinearLayout
-        android:id="@+id/overview_top"
+        android:id="@+id/overview_preview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
