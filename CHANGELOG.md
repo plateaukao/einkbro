@@ -1,13 +1,44 @@
+### 8.6.2
+
+- fix crash issues
+
+### 8.6.0
+
+- Support saving web page to an epub file, either creating a new one, or adding to an existing one.
+- Hide status bar when toolbar is hidden
+
+### 8.5.1
+
+- Use Mozilla readerview for Reader Mode. much better results.
+
+### 8.4.2
+
+- Add page turn reserve height configuration
+- Fix issues
+- Make font bold and more readable (in Settings -> Behavior/UI)
+- Add bold font style to toolbar setting
+- Add options to set default printed pdf paper size
+- Add font style (serif) support from webfont in Settings -> Beavior/UI
+
+
+
+### 8.3.1
+
+- fix crash issue when clicking on some links
+- add reader mode (beta)
+
+### 8.3
+
+- Add touch area configuration for page Up/Down (long press on the finger icon on toolbar)
+- Improve UI for quick toggle setting dialog
 
 ### 8.2
 
-
-    Now toolbar actions can be customized. Go to Settings -> Behavior/UI -> Icons on toolbar and configure.
-    Add touch area hint when turning on page-turn feature by touching on screen. You can also long click on the button to keep area hint always on.
-    Add labels to quick toggle settings for easier knowing what these icons are for
-    Now it's possible to keep playing audio when EinkBro is in the background. (the media should be played in current tab). This can be turned on in quick toggle settings (long click on three dot button on tool bar)
-    Long press on left touch area will scroll the webpage to top. (only work when touch feature turned on)
-
+- Now toolbar actions can be customized. Go to Settings -> Behavior/UI -> Icons on toolbar and configure.
+- Add touch area hint when turning on page-turn feature by touching on screen. You can also long click on the button to keep area hint always on.
+- Add labels to quick toggle settings for easier knowing what these icons are for
+- Now it's possible to keep playing audio when EinkBro is in the background. (the media should be played in current tab). This can be turned on in quick toggle settings (long click on three dot button on tool bar)
+- Long press on left touch area will scroll the webpage to top. (only work when touch feature turned on)
 
 ### 8.1
 - Add Chinese translation
