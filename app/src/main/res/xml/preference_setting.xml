@@ -65,7 +65,7 @@
         <ListPreference
             android:icon="@drawable/icon_search"
             android:key="@string/sp_search_engine"
-            android:defaultValue="5"
+            android:defaultValue="4"
             android:title="@string/setting_title_search_engine"
             android:summary="@string/setting_summary_search_engine"
             android:entries="@array/setting_entries_search_engine"
