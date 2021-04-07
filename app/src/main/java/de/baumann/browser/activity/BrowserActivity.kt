@@ -65,8 +65,13 @@ import de.baumann.browser.view.dialog.TouchAreaDialog
 import de.baumann.browser.view.toolbaricons.ToolbarAction
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import nl.siegmann.epublib.domain.Book
 import nl.siegmann.epublib.domain.Resource
+import org.jsoup.Jsoup
 import java.io.*
+import java.net.HttpURLConnection
+import java.net.URL
 import java.util.*
 import kotlin.math.floor
 import kotlin.math.roundToInt
@@ -670,35 +675,32 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         startActivityForResult(intent, WRITE_PDF_REQUEST_CODE)
     }
 
-    private fun saveEpub(uri: Uri) {
-        val domain = Uri.parse(ninjaWebView.url).host ?: "EinkBro"
-
+    private fun saveEpub(fileUri: Uri) {
         lifecycleScope.launch(Dispatchers.Main) {
-                val rawHtml = ninjaWebView.getRawHtml()
-
-                val book = if (isNewEpubFile) epubManager.createBook(domain, getBookName()) else epubManager.openBook(uri)
-                val chapterFileName = "chapter${book.tableOfContents.allUniqueResources.size + 1}.html"
-
-                book.addSection(
-                        getChapterName(),
-                        Resource(rawHtml.byteInputStream(), chapterFileName)
-                )
-                epubManager.saveBook(book, uri)
-
-                openFile(uri, Constants.MIME_TYPE_EPUB)
-
+            val bookName = if (isNewEpubFile) getBookName() else ""
+            val chapterName = getChapterName()
+            val rawHtml = ninjaWebView.getRawHtml()
+            epubManager.saveEpub(
+                    isNewEpubFile,
+                    fileUri,
+                    rawHtml,
+                    bookName,
+                    chapterName,
+                    ninjaWebView.url ?: "") {
+                openFile(fileUri, Constants.MIME_TYPE_EPUB)
                 isNewEpubFile = false
             }
+        }
     }
 
     private suspend fun getChapterName(): String {
         var chapterName = ninjaWebView.title ?: "no title"
         return TextInputDialog(
-                    this@BrowserActivity,
-                    getString(R.string.title),
-                    getString(R.string.title_in_toc),
-                    chapterName
-            ).show() ?: chapterName
+                this@BrowserActivity,
+                getString(R.string.title),
+                getString(R.string.title_in_toc),
+                chapterName
+        ).show() ?: chapterName
     }
 
     private suspend fun getBookName(): String {
@@ -740,7 +742,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         if (filePathCallback != null) { filePathCallback = null }
 
         when(action) {
-            "" -> {} //addAlbum("", favoriteUrl, true)
+            "" -> {
+            } //addAlbum("", favoriteUrl, true)
             Intent.ACTION_WEB_SEARCH -> addAlbum("", intent.getStringExtra(SearchManager.QUERY), true)
             "sc_history" -> {
                 addAlbum("", favoriteUrl, true)
@@ -748,7 +751,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 ninjaWebView.postDelayed({ openHistoryPage() }, 250)
             }
             "sc_bookmark" -> {
-                addAlbum("", favoriteUrl,  true)
+                addAlbum("", favoriteUrl, true)
                 showOverview()
                 ninjaWebView.postDelayed({ openBookmarkPage() }, 250)
             }

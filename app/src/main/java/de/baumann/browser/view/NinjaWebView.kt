@@ -339,7 +339,7 @@ class NinjaWebView : WebView, AlbumController {
     }
 
     suspend fun getRawHtml() =  suspendCoroutine<String> { continuation ->
-        injectJavascript(stripHeaderElementsJs.toByteArray())
+        //injectJavascript(stripHeaderElementsJs.toByteArray())
 
         evaluateJavascript(
                 "(function() { return ('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>'); })();"
