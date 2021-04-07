@@ -60,4 +60,7 @@ dependencies {
 
     // common lang
     implementation 'org.apache.commons:commons-text:1.7'
+
+    // for epub saving: html processing
+    implementation 'org.jsoup:jsoup:1.13.1'
 }
