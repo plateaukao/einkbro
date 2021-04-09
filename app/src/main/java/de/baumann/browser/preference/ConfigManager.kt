@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.print.PrintAttributes
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
+import de.baumann.browser.util.Constants
 
 class ConfigManager(private val context: Context) {
     private val sp: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
@@ -30,8 +31,8 @@ class ConfigManager(private val context: Context) {
         set(value) {sp.edit { putString("sp_fontSize", value.toString()) } }
 
     var fabPosition: FabPosition
-        get() = FabPosition.values()[sp.getString(K_NAV_POSITON, "0")?.toInt() ?: 0]
-        set(value) {sp.edit { putString(K_NAV_POSITON, value.ordinal.toString()) } }
+        get() = FabPosition.values()[sp.getString(K_NAV_POSITION, "0")?.toInt() ?: 0]
+        set(value) {sp.edit { putString(K_NAV_POSITION, value.ordinal.toString()) } }
 
     var screenshot: Int
         get() = sp.getInt("screenshot", 0)
@@ -41,12 +42,17 @@ class ConfigManager(private val context: Context) {
         get() = PaperSize.values()[sp.getInt("pdf_paper_size", PaperSize.ISO_13.ordinal)]
         set(value) {sp.edit { putInt("pdf_paper_size", value.ordinal) } }
 
+    var favoriteUrl: String
+        get() = sp.getString(K_FAVORITE_URL, Constants.DEFAULT_HOME_URL) ?: Constants.DEFAULT_HOME_URL
+        set(value) { sp.edit { putString(K_FAVORITE_URL, value) } }
+
     companion object {
         const val K_TOUCH_AREA_TYPE = "sp_touch_area_type"
         const val K_TOOLBAR_ICONS = "sp_toolbar_icons"
         const val K_BOLD_FONT = "sp_bold_font"
         const val K_FONT_STYLE_SERIF = "sp_font_style_serif"
-        const val K_NAV_POSITON = "nav_position"
+        const val K_NAV_POSITION = "nav_position"
+        const val K_FAVORITE_URL = "favoriteURL"
     }
 }
 

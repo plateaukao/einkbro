@@ -65,13 +65,7 @@ import de.baumann.browser.view.dialog.TouchAreaDialog
 import de.baumann.browser.view.toolbaricons.ToolbarAction
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import nl.siegmann.epublib.domain.Book
-import nl.siegmann.epublib.domain.Resource
-import org.jsoup.Jsoup
 import java.io.*
-import java.net.HttpURLConnection
-import java.net.URL
 import java.util.*
 import kotlin.math.floor
 import kotlin.math.roundToInt
@@ -134,9 +128,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private var originalOrientation = 0
     private var searchOnSite = false
     private var customViewCallback: CustomViewCallback? = null
-    private var filePathCallback: ValueCallback<Array<Uri>>? = null
     private var currentAlbumController: AlbumController? = null
-    private var mFilePathCallback: ValueCallback<Array<Uri>>? = null
+    private var filePathCallback: ValueCallback<Array<Uri>>? = null
 
     private lateinit var binding: ActivityMainBinding
 
@@ -305,7 +298,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             return
         }
 
-        if (requestCode == INPUT_FILE_REQUEST_CODE && mFilePathCallback != null) {
+        if (requestCode == INPUT_FILE_REQUEST_CODE && filePathCallback != null) {
             var results: Array<Uri>? = null
             // Check that the response is a good one
             if (resultCode == RESULT_OK) {
@@ -317,8 +310,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                     }
                 }
             }
-            mFilePathCallback!!.onReceiveValue(results)
-            mFilePathCallback = null
+            filePathCallback?.onReceiveValue(results)
+            filePathCallback = null
             return
         }
 
@@ -337,6 +330,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             sp.edit().putInt("restart_changed", 0).apply()
             showRestartConfirmDialog()
         }
+
         updateOmnibox()
         overridePendingTransition(0, 0)
     }
@@ -737,25 +731,21 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
 
     private fun dispatchIntent(intent: Intent) {
         val action = intent.action
-        val favoriteUrl = sp.getString("favoriteURL", Constants.DEFAULT_HOME_URL)
-
-        if (filePathCallback != null) { filePathCallback = null }
-
         when(action) {
             Intent.ACTION_MAIN -> { // initial case
-                addAlbum("", favoriteUrl, true)
+                addAlbum("", config.favoriteUrl, true)
             }
             Intent.ACTION_VIEW -> {
                 addAlbum("", intent.data?.toString(), true)
             }
             Intent.ACTION_WEB_SEARCH -> addAlbum("", intent.getStringExtra(SearchManager.QUERY), true)
             "sc_history" -> {
-                addAlbum("", favoriteUrl, true)
+                addAlbum("", config.favoriteUrl, true)
                 showOverview()
                 ninjaWebView.postDelayed({ openHistoryPage() }, 250)
             }
             "sc_bookmark" -> {
-                addAlbum("", favoriteUrl, true)
+                addAlbum("", config.favoriteUrl, true)
                 showOverview()
                 ninjaWebView.postDelayed({ openBookmarkPage() }, 250)
             }
@@ -1393,8 +1383,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     }
 
     override fun showFileChooser(filePathCallback: ValueCallback<Array<Uri>>) {
-        mFilePathCallback?.onReceiveValue(null)
-        mFilePathCallback = filePathCallback
+        this.filePathCallback?.onReceiveValue(null)
+        this.filePathCallback = filePathCallback
         val contentSelectionIntent = Intent(Intent.ACTION_GET_CONTENT)
         contentSelectionIntent.addCategory(Intent.CATEGORY_OPENABLE)
         contentSelectionIntent.type = "*/*"
