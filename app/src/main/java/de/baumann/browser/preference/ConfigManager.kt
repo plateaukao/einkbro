@@ -5,7 +5,9 @@ import android.content.SharedPreferences
 import android.print.PrintAttributes
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
+import de.baumann.browser.Ninja.R
 import de.baumann.browser.util.Constants
+import de.baumann.browser.view.toolbaricons.ToolbarAction
 
 class ConfigManager(private val context: Context) {
     private val sp: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
@@ -45,6 +47,23 @@ class ConfigManager(private val context: Context) {
     var favoriteUrl: String
         get() = sp.getString(K_FAVORITE_URL, Constants.DEFAULT_HOME_URL) ?: Constants.DEFAULT_HOME_URL
         set(value) { sp.edit { putString(K_FAVORITE_URL, value) } }
+
+    val toolbarIcons: List<ToolbarAction>
+        get() {
+            val iconListString = sp.getString(K_TOOLBAR_ICONS, getDefaultIconStrings()) ?: ""
+            return iconStringToEnumList(iconListString)
+        }
+
+    private fun iconStringToEnumList(iconListString: String): List<ToolbarAction> {
+        if (iconListString.isBlank()) return listOf()
+
+        return iconListString.split(",").map{ ToolbarAction.fromOrdinal(it.toInt())}
+    }
+
+    private fun getDefaultIconStrings(): String {
+        val iconArray = context.resources.getStringArray(R.array.default_toolbar_icons)
+        return iconArray.joinToString(",")
+    }
 
     companion object {
         const val K_TOUCH_AREA_TYPE = "sp_touch_area_type"
