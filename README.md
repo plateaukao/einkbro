@@ -19,11 +19,12 @@ This browser is called Einkbro. It's designed to fit Eink devices' needs; no unn
 ### Screenshots
 #### Basic Toolbar
 * webpage title
-* refresh button
+* web tab count
+* go back
+* refresh
 * touch screen edge to turn page buton
-* pageUp button
-* pageDown button
-* tab preview button
+* text size
+* bold font
 * setting button
 <img width="350" alt="image" src="https://user-images.githubusercontent.com/4084738/114192165-c205fa00-997f-11eb-8e3a-6e99949e927e.png">
 
