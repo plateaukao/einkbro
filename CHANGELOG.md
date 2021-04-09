@@ -1,3 +1,7 @@
+### 8.6.4
+
+- fix launch blan screen issue
+
 ### 8.6.3
 
 - fix save history toggleing default value to true
