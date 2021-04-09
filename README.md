@@ -1,16 +1,14 @@
-# Android E-Ink device specific Browser
+# Einkbro: Android E-ink device specific Browser 
 
-It's from "FOSS Browser", which is fully free/libre (as in freedom) Android app. The source code is public. The app also does not need any unnecessary
-permissions. It's a simple Android browser based on webview. The intention is to provide a simple and light weight but powerful
-browser with a nice looking user interface.
-
+This browser is called Einkbro. It's designed to fit Eink devices' needs; no unnecessary UI transitions, clear B&W icons, useful feature for eink reading experience. It's originated from "FOSS Browser", which is fully free/libre (as in freedom) Android app. 
 
 ### E-Ink specific features
 
 - **reader mode**
 - **vertical reading mode** (for Chinese/Japanese content)
+- **export web content to epub file** (better results when used with reader mode)
 - pageUp / pageDown / Back button on toolbar
-- physical volume keys for pageUp/pageDown
+- **physical volume keys for pageUp/pageDown**
 - **tapping on screen left/right edge for pageUp/Down** (finger button on toolbar)
 - desktop mode feature
 - all icons in high contrast colors
@@ -27,13 +25,16 @@ browser with a nice looking user interface.
 * pageDown button
 * tab preview button
 * setting button
-<img width="350" alt="image" src="https://user-images.githubusercontent.com/4084738/110946811-50379200-837a-11eb-8b93-0ae9dc136d82.png">
+<img width="350" alt="image" src="https://user-images.githubusercontent.com/4084738/114192165-c205fa00-997f-11eb-8e3a-6e99949e927e.png">
 
 #### Quick Action Panel
-<img src=https://user-images.githubusercontent.com/4084738/108629000-d9088f80-7498-11eb-888f-c9984f2b2a91.png width=350>
+<img src=https://user-images.githubusercontent.com/4084738/114191898-79e6d780-997f-11eb-83e4-def84610ff19.png width=350>
 
 #### Tab Preview
 <img width="350" alt="image" src="https://user-images.githubusercontent.com/4084738/110947148-bfad8180-837a-11eb-8184-f2f7fdde7ba3.png">
+
+#### Touch pageUp / pageDown configuration
+<img width="350" alt="image" src="https://user-images.githubusercontent.com/4084738/114192361-f8dc1000-997f-11eb-8731-513127b316f6.png">
 
 
 ### Basic UI/Handling:
