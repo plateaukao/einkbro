@@ -133,7 +133,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
 
     private var originalOrientation = 0
     private var searchOnSite = false
-    private var onPause = false
     private var customViewCallback: CustomViewCallback? = null
     private var filePathCallback: ValueCallback<Array<Uri>>? = null
     private var currentAlbumController: AlbumController? = null
@@ -329,35 +328,37 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        setIntent(intent)
-    }
-
-    override fun onPause() {
-        onPause = true
-        super.onPause()
+        dispatchIntent(intent)
     }
 
     public override fun onResume() {
         super.onResume()
         if (sp.getInt("restart_changed", 1) == 1) {
             sp.edit().putInt("restart_changed", 0).apply()
-            val dialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
-            val dialogView = View.inflate(this, R.layout.dialog_action, null)
-            dialogView.findViewById<TextView>(R.id.dialog_text).setText(R.string.toast_restart)
-            dialogView.findViewById<Button>(R.id.action_ok).setOnClickListener {
-                dialog.dismiss()
-
-                finishAffinity(); // Finishes all activities.
-                startActivity(packageManager.getLaunchIntentForPackage(packageName));    // Start the launch activity
-                exitProcess(0)
-            }
-            dialogView.findViewById<Button>(R.id.action_cancel).setOnClickListener { dialog.cancel() }
-            dialog.setContentView(dialogView)
-            dialog.show()
+            showRestartConfirmDialog()
         }
-        dispatchIntent(intent)
         updateOmnibox()
         overridePendingTransition(0, 0)
+    }
+
+    private fun showRestartConfirmDialog() {
+        val dialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
+        val dialogView = View.inflate(this, R.layout.dialog_action, null)
+        dialogView.findViewById<TextView>(R.id.dialog_text).setText(R.string.toast_restart)
+        dialogView.findViewById<Button>(R.id.action_ok).setOnClickListener {
+            dialog.dismiss()
+            restartApp()
+        }
+
+        dialogView.findViewById<Button>(R.id.action_cancel).setOnClickListener { dialog.cancel() }
+        dialog.setContentView(dialogView)
+        dialog.show()
+    }
+
+    private fun restartApp() {
+        finishAffinity(); // Finishes all activities.
+        startActivity(packageManager.getLaunchIntentForPackage(packageName));    // Start the launch activity
+        exitProcess(0)
     }
 
     private fun showFileListConfirmDialog() {
@@ -736,14 +737,17 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
 
     private fun dispatchIntent(intent: Intent) {
         val action = intent.action
-        val url = intent.getStringExtra(Intent.EXTRA_TEXT)
         val favoriteUrl = sp.getString("favoriteURL", Constants.DEFAULT_HOME_URL)
 
         if (filePathCallback != null) { filePathCallback = null }
 
         when(action) {
-            "" -> {
-            } //addAlbum("", favoriteUrl, true)
+            Intent.ACTION_MAIN -> { // initial case
+                addAlbum("", favoriteUrl, true)
+            }
+            Intent.ACTION_VIEW -> {
+                addAlbum("", intent.data?.toString(), true)
+            }
             Intent.ACTION_WEB_SEARCH -> addAlbum("", intent.getStringExtra(SearchManager.QUERY), true)
             "sc_history" -> {
                 addAlbum("", favoriteUrl, true)
@@ -755,17 +759,11 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 showOverview()
                 ninjaWebView.postDelayed({ openBookmarkPage() }, 250)
             }
-            "sc_startPage" -> {
-                addAlbum("", favoriteUrl, true)
-                showOverview()
-                ninjaWebView.postDelayed({ btnOpenStartPage.performClick() }, 250)
+            Intent.ACTION_SEND -> {
+                val url = intent.getStringExtra(Intent.EXTRA_TEXT)
+                addAlbum("", url, true)
             }
-            Intent.ACTION_SEND -> addAlbum("", url, true)
-            else -> {
-                if (!onPause) {
-                    addAlbum("", favoriteUrl, true)
-                }
-            }
+            else -> { }
         }
         getIntent().action = ""
     }

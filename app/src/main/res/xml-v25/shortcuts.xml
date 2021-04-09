@@ -1,20 +1,6 @@
 <shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
 
     <shortcut
-        android:shortcutId="sc_startPage"
-        android:enabled="true"
-        android:icon="@drawable/qc_start"
-        android:shortcutShortLabel="@string/album_title_files"
-        android:shortcutLongLabel="@string/album_title_home"
-        android:shortcutDisabledMessage="@string/album_title_home">
-        <intent
-            android:action="sc_startPage"
-            android:targetPackage="de.baumann.browser"
-            android:targetClass="de.baumann.browser.activity.BrowserActivity" />
-        <categories android:name="android.shortcut.conversation" />
-    </shortcut>
-
-    <shortcut
         android:shortcutId="sc_bookmark"
         android:enabled="true"
         android:icon="@drawable/qc_bookmarks"
@@ -23,7 +9,7 @@
         android:shortcutDisabledMessage="@string/album_title_bookmarks">
         <intent
             android:action="sc_bookmark"
-            android:targetPackage="de.baumann.browser"
+            android:targetPackage="info.plateaukao.einkbro"
             android:targetClass="de.baumann.browser.activity.BrowserActivity" />
         <categories android:name="android.shortcut.conversation" />
     </shortcut>
@@ -37,7 +23,7 @@
         android:shortcutDisabledMessage="@string/album_title_history">
         <intent
             android:action="sc_history"
-            android:targetPackage="de.baumann.browser"
+            android:targetPackage="info.plateaukao.einkbro"
             android:targetClass="de.baumann.browser.activity.BrowserActivity" />
         <categories android:name="android.shortcut.conversation" />
     </shortcut>
