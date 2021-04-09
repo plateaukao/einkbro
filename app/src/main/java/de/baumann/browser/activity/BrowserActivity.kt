@@ -873,8 +873,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private fun reorderToolbarIcons() {
         toolbarActionViews.size
 
-        val iconListString = sp.getString("sp_toolbar_icons", "0,6,1,2,3,7,10,8") ?: return
-        val iconEnums = iconStringToEnumList(iconListString)
+        val iconEnums = config.toolbarIcons
         if (iconEnums.isNotEmpty()) {
             binding.iconBar.removeAllViews()
             iconEnums.forEach { actionEnum ->
@@ -882,12 +881,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             }
             binding.iconBar.requestLayout()
         }
-    }
-
-    private fun iconStringToEnumList(iconListString: String): List<ToolbarAction> {
-        if (iconListString.isBlank()) return listOf()
-
-        return iconListString.split(",").map{ ToolbarAction.fromOrdinal(it.toInt())}
     }
 
     private fun initFAB() {
