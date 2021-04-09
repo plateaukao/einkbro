@@ -22,12 +22,12 @@ import java.net.URL
 
 class EpubManager(private val context: Context) {
 
-    fun createBook(domain: String, bookName: String): Book = Book().apply {
+    private fun createBook(domain: String, bookName: String): Book = Book().apply {
         metadata.addTitle(bookName)
         metadata.addAuthor(Author(domain, "EinkBro App"))
     }
 
-    fun openBook(uri: Uri): Book {
+    private fun openBook(uri: Uri): Book {
         try {
             val epubInputStream: InputStream = context.contentResolver.openInputStream(uri)
                     ?: return createBook("", "EinkBro")
@@ -38,7 +38,7 @@ class EpubManager(private val context: Context) {
         }
     }
 
-    fun saveEpub(
+    suspend fun saveEpub(
             isNew: Boolean,
             fileUri: Uri,
             html: String,
@@ -59,7 +59,9 @@ class EpubManager(private val context: Context) {
 
         book.addSection(chapterName, Resource(processedHtml.byteInputStream(), chapterFileName))
 
-        //epubManager.saveImageResources(book, imageMap)
+        //if(isNew) {
+            //saveImageResources(book, imageMap)
+        //}
 
         saveBook(book, fileUri)
         doneAction.invoke()
@@ -75,7 +77,7 @@ class EpubManager(private val context: Context) {
         }
     }
 
-    fun processHtmlString(html: String, chapterIndex: Int, baseUri: String): Pair<String, Map<String, String>> {
+    private fun processHtmlString(html: String, chapterIndex: Int, baseUri: String): Pair<String, Map<String, String>> {
         val doc = Jsoup.parse(html, baseUri)
         doc.head().allElements.select("link").remove()
         doc.head().allElements.select("meta").remove()
@@ -92,7 +94,7 @@ class EpubManager(private val context: Context) {
         return Pair(doc.toString(), imageKeyUrlMap)
     }
 
-    suspend fun saveImageResources(book: Book, map: Map<String, String>) {
+    private suspend fun saveImageResources(book: Book, map: Map<String, String>) {
         map.entries.forEach { entry ->
             book.addResource(Resource(getResourceFromUrl(entry.value), entry.key))
         }
