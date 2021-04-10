@@ -14,8 +14,6 @@ import android.widget.TextView;
 
 import androidx.preference.PreferenceFragmentCompat;
 
-import java.util.Objects;
-
 import de.baumann.browser.activity.Settings_ClearActivity;
 import de.baumann.browser.activity.Settings_DataActivity;
 import de.baumann.browser.activity.Settings_GestureActivity;
@@ -78,7 +76,7 @@ public class Fragment_settings extends PreferenceFragmentCompat implements Share
             return false;
         });
         findPreference("settings_help").setOnPreferenceClickListener(preference -> {
-            HelperUnit.show_dialogHelp(getActivity());
+            HelperUnit.showDialogHelp(getActivity());
             return false;
         });
         findPreference("settings_appSettings").setOnPreferenceClickListener(preference -> {

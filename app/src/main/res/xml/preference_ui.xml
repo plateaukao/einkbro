@@ -63,7 +63,7 @@
         <CheckBoxPreference
             android:key="hideToolbar"
             android:icon="@drawable/icon_fullscreen"
-            android:defaultValue="true"
+            android:defaultValue="false"
             android:title="@string/setting_title_hideToolbar"
             android:summary="@string/setting_summary_hide"/>
 
