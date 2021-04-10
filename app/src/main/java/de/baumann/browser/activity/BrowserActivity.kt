@@ -732,7 +732,9 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private fun dispatchIntent(intent: Intent) {
         when(intent.action) {
             Intent.ACTION_MAIN -> { // initial case
-                addAlbum("", config.favoriteUrl, true)
+                if (currentAlbumController == null) { // newly opened Activity
+                    addAlbum("", config.favoriteUrl, true)
+                }
             }
             Intent.ACTION_VIEW -> {
                 addAlbum("", intent.data?.toNormalScheme()?.toString(), true)
