@@ -11,26 +11,35 @@ import de.baumann.browser.unit.HelperUnit
 import de.baumann.browser.view.NinjaWebView
 
 class NinjaWebChromeClient(private val ninjaWebView: NinjaWebView) : WebChromeClient() {
+    private lateinit var webviewParent: ViewGroup
+
     override fun onCreateWindow(view: WebView, dialog: Boolean, userGesture: Boolean, resultMsg: Message): Boolean {
             val newWebView = WebView(view.context).apply { initWebView(this) }
         newWebView.webViewClient = object : WebViewClient() {
+            private var isUrlProcessed = false
+
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
                 val urlString = request?.url?.toString() ?: return false
                 return if (urlString.contains("google") || urlString.contains("facebook")) {
                     view?.loadUrl(urlString)
                     true
-                } else {
-                    request.url?.let { handleWebViewLinks(urlString) } // you can get your target url here
+                } else if (!isUrlProcessed) {
+                    request.url?.let {
+                        handleWebViewLinks(urlString)
+                        isUrlProcessed = true
+                    } // you can get your target url here
                     false
-                }
+                } else false
             }
         }
         newWebView.webChromeClient = object : WebChromeClient() {
             override fun onCloseWindow(window: WebView?) {
-                (ninjaWebView.parent as ViewGroup).removeView(window)
+                webviewParent.removeView(window)
             }
         }
-        (ninjaWebView.parent as ViewGroup).addView(newWebView)
+        webviewParent = ninjaWebView.parent as ViewGroup
+        webviewParent.addView(newWebView)
+
         val transport = resultMsg.obj as WebViewTransport
         transport.webView = newWebView
         resultMsg.sendToTarget()
