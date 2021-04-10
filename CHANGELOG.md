@@ -1,3 +1,8 @@
+### 8.6.5
+
+- now shortcut really works, and don't need to choose browser
+- fix launch app, sometimes extra tab is created
+
 ### 8.6.4
 
 - fix launch blan screen issue
