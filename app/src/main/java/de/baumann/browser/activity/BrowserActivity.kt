@@ -53,6 +53,7 @@ import de.baumann.browser.preference.TouchAreaType
 import de.baumann.browser.service.ClearService
 import de.baumann.browser.unit.BrowserUnit
 import de.baumann.browser.unit.HelperUnit
+import de.baumann.browser.unit.HelperUnit.toNormalScheme
 import de.baumann.browser.unit.IntentUnit
 import de.baumann.browser.unit.ViewUnit
 import de.baumann.browser.util.Constants
@@ -62,7 +63,6 @@ import de.baumann.browser.view.dialog.FastToggleDialog
 import de.baumann.browser.view.dialog.MenuDialog
 import de.baumann.browser.view.dialog.TextInputDialog
 import de.baumann.browser.view.dialog.TouchAreaDialog
-import de.baumann.browser.view.toolbaricons.ToolbarAction
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.*
@@ -730,13 +730,12 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     }
 
     private fun dispatchIntent(intent: Intent) {
-        val action = intent.action
-        when(action) {
+        when(intent.action) {
             Intent.ACTION_MAIN -> { // initial case
                 addAlbum("", config.favoriteUrl, true)
             }
             Intent.ACTION_VIEW -> {
-                addAlbum("", intent.data?.toString(), true)
+                addAlbum("", intent.data?.toNormalScheme()?.toString(), true)
             }
             Intent.ACTION_WEB_SEARCH -> addAlbum("", intent.getStringExtra(SearchManager.QUERY), true)
             "sc_history" -> {
@@ -1323,7 +1322,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private fun scrollChange() {
         ninjaWebView.setOnScrollChangeListener(object : NinjaWebView.OnScrollChangeListener {
             override fun onScrollChange(scrollY: Int, oldScrollY: Int) {
-                if (!sp.getBoolean("hideToolbar", true)) return
+                if (!sp.getBoolean("hideToolbar", false)) return
 
                 val height = floor(x = ninjaWebView.contentHeight * ninjaWebView.resources.displayMetrics.density.toDouble()).toInt()
                 val webViewHeight = ninjaWebView.height
@@ -1707,7 +1706,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         }
         dialogView.findViewById<LinearLayout>(R.id.menu_contextList_fav).setOnClickListener {
             hideBottomSheetDialog()
-            HelperUnit.setFavorite(this, url)
+            config.favoriteUrl = url
         }
         dialogView.findViewById<LinearLayout>(R.id.menu_contextLink_sc).setOnClickListener {
             hideBottomSheetDialog()
@@ -1790,7 +1789,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         }
         dialogView.findViewById<LinearLayout>(R.id.menu_contextList_fav).setOnClickListener {
             hideBottomSheetDialog()
-            HelperUnit.setFavorite(this, url)
+            config.favoriteUrl = url
         }
         dialogView.findViewById<LinearLayout>(R.id.menu_contextLink_sc).setOnClickListener {
             hideBottomSheetDialog()

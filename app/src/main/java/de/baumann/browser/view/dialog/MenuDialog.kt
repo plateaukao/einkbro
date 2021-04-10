@@ -112,7 +112,7 @@ class MenuDialog(
         }
         binding.menuFav.setOnClickListener {
             dialog.dismiss()
-            HelperUnit.setFavorite(context, ninjaWebView.url)
+            config.favoriteUrl = ninjaWebView.url ?: "about:blank"
         }
         binding.menuSaveBookmark.setOnClickListener {
             dialog.dismiss()

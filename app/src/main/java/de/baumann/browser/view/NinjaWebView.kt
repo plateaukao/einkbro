@@ -82,10 +82,6 @@ class NinjaWebView : WebView, AlbumController {
         this.onScrollChangeListener = onScrollChangeListener
     }
 
-    fun applyBoldFontStyle() {
-        injectCss(boldFontCss.toByteArray())
-    }
-
     fun updateCssStyle() {
         val cssStyle = (if (config!!.boldFontStyle) boldFontCss else "") +
                 if (config!!.fontStyleSerif) notoSansSerifFontCss else ""

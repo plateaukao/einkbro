@@ -51,6 +51,8 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="http" />
                 <data android:scheme="https" />
+                <data android:scheme="einkbro" />
+                <data android:scheme="einkbros" />
             </intent-filter>
 
             <intent-filter
