@@ -1431,8 +1431,11 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         if (customView == null || customViewCallback == null || currentAlbumController == null) {
             return false
         }
-        val decorView = window.decorView as FrameLayout
-        decorView.removeView(fullscreenHolder)
+
+        // prevent inputBox to get the focus
+        inputBox.isEnabled = false
+
+        (window.decorView as FrameLayout).removeView(fullscreenHolder)
         customView?.keepScreenOn = false
         (currentAlbumController as View).visibility = View.VISIBLE
         setCustomFullscreen(false)
@@ -1444,6 +1447,9 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             videoView = null
         }
         requestedOrientation = originalOrientation
+
+        // re-enable inputBox after fullscreen view is removed.
+        inputBox.isEnabled = true
         return true
     }
 
