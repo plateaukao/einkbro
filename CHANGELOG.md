@@ -1,3 +1,8 @@
+### 8.6.6
+
+- fix saving to existing epub, sometimes images cannot be saved.
+(still, if the image downloading needs authentication, it still can't be saved)
+
 ### 8.6.5
 
 - now shortcut really works, and don't need to choose browser
