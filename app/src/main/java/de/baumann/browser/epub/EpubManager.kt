@@ -10,9 +10,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import nl.siegmann.epublib.domain.Author
 import nl.siegmann.epublib.domain.Book
+import nl.siegmann.epublib.domain.MediaType
 import nl.siegmann.epublib.domain.Resource
 import nl.siegmann.epublib.epub.EpubReader
 import nl.siegmann.epublib.epub.EpubWriter
+import nl.siegmann.epublib.service.MediatypeService
 import org.jsoup.Jsoup
 import java.io.IOException
 import java.io.InputStream
@@ -60,7 +62,7 @@ class EpubManager(private val context: Context) {
         book.addSection(chapterName, Resource(processedHtml.byteInputStream(), chapterFileName))
 
         //if(isNew) {
-            //saveImageResources(book, imageMap)
+            saveImageResources(book, imageMap)
         //}
 
         saveBook(book, fileUri)
@@ -85,7 +87,7 @@ class EpubManager(private val context: Context) {
 
         val imageKeyUrlMap = mutableMapOf<String, String>()
         doc.select("img").forEachIndexed { index, element ->
-            val imgUrl = element.dataset()["src"] as String? ?: ""
+            val imgUrl = element.dataset()["src"] ?: ""
             val newImageIndex = "img_${chapterIndex}_$index"
             element.attr("src", newImageIndex)
             imageKeyUrlMap[newImageIndex] = imgUrl
@@ -96,7 +98,7 @@ class EpubManager(private val context: Context) {
 
     private suspend fun saveImageResources(book: Book, map: Map<String, String>) {
         map.entries.forEach { entry ->
-            book.addResource(Resource(getResourceFromUrl(entry.value), entry.key))
+            book.addResource(Resource(null, getResourceFromUrl(entry.value), entry.key, MediatypeService.JPG))
         }
     }
 
