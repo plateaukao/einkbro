@@ -264,19 +264,6 @@
     </string>
     <string name="dialogHelp_filterText">Pode associar os seus marcadores a filtros. Desta forma, consegue agrupar os separadores facilmente. Assim que o fizer, pode abrir o diálogo com um toque longo no ícone Marcadores. Se ativar uma entrada surge um diálogo, no qual pode editar o nome do filtro.    </string>
     <!-- Dialog changelog -->
-    <string name="changelog_dialog">        A aplicação não está disponível no seu idioma? Quer ajudar a traduzir \"EinkBro Browser\"? Ou talvez melhorar a tradução existente?
-        Junte-se a nós na plataforma Crowdin: https://crowdin.com/project/foss-browser.&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Nos sites indicados abaixo, pode obter mais informações acerca de \"EinkBro Browser\".
-        Também pode consultar o diálogo de ajuda existente na aplicação.&lt;/b&gt;&lt;br&gt;&lt;br&gt;
-
-        \u25AA &lt;i&gt;Site do projeto:&lt;/i&gt; https://github.com/scoute-dich/Browser&lt;br&gt;
-        \u25AA &lt;i&gt;Registo de alterações:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;br&gt;
-        \u25AA &lt;i&gt;FAQ:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/FAQs.md&lt;br&gt;
-        \u25AA &lt;i&gt;Licença:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/LICENSE.md&lt;br&gt;
-        \u25AA &lt;i&gt;Política de privacidade:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/PRIVACY.md
-
-    </string>
     <!-- License changelog -->
     <string name="license_title">Copyright © 2017-2020  by Gaukler Faun</string>
     <string name="license_dialog">        &lt;i&gt;Para obter mais informações, aceda à nossa página Github: https://github.com/scoute-dich/Browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;

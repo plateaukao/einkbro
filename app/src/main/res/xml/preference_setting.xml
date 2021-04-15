@@ -4,8 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory
-        android:title="@string/setting_title_app"
-        app:initialExpandedChildrenCount="3">
+        android:title="@string/setting_title_app">
 
         <Preference
             android:key="settings_ui"
@@ -40,8 +39,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="@string/setting_title_browser"
-        app:initialExpandedChildrenCount="3">
+        android:title="@string/setting_title_browser">
 
         <EditTextPreference
             android:defaultValue="https://duckduckgo.com/"
@@ -88,8 +86,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="@string/setting_title_others"
-        app:initialExpandedChildrenCount="0">
+        android:title="@string/setting_title_others">
 
         <Preference
             android:key="settings_help"

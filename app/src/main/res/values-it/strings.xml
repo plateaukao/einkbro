@@ -276,19 +276,6 @@
         premendo a lungo l\'icona dei segnalibri. Se attivi una voce, una finestra apparirà, dove puoi modificare il nome del filtro.
     </string>
     <!-- Dialog changelog -->
-    <string name="changelog_dialog">        La tua lingua non è ancora supportata? Vuoi tradurre EinkBro Browser? O migliorare traduzioni già esistenti?
-        Sentiti libero di unirti su Crowdin: https://crowdin.com/project/foss-browser.&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Nei prossimi siti ci sono tutte le informazioni importanti su \"EinkBro Browser\".
-        Si prega di leggere il dialogo di aiuto nell\'app.&lt;/b&gt;&lt;br&gt;&lt;br&gt;
-
-        \u25AA &lt;i&gt;Sito del progetto:&lt;/i&gt; https://github.com/scoute-dich/Browser&lt;br&gt;
-        \u25AA &lt;i&gt;Changelog:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;br&gt;
-        \u25AA &lt;i&gt;FAQ:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/FAQs.md&lt;br&gt;
-        \u25AA &lt;i&gt;Licenza:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/LICENSE.md&lt;br&gt;
-        \u25AA &lt;i&gt;Privacy:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/PRIVACY.md
-
-    </string>
     <!-- License changelog -->
     <string name="license_title">Copyright © 2017  di Gaukler Faun</string>
     <string name="license_dialog">        &lt;i&gt;For more information visit the project site on Github: https://github.com/scoute-dich/Browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;

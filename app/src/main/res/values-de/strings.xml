@@ -267,19 +267,6 @@ Hier gibt es drei Teile: die Startseite, deine Lesezeichen und dein Browserverla
     <string name="dialogHelp_filterText">Du kannst deinen Lesezeichen mit Filter markieren. So kannst du deine Lesezeichengruppieren. Den Filterdialog kannst du öffnen durch langes Drücken auf das Lesezeichen-Icon. Wenn du einen Eintrag aktivierst, erscheint ein Dialog, in dem du den Namen des Filters bearbeiten kannst.
     </string>
     <!-- Dialog changelog -->
-    <string name="changelog_dialog">Deine Sprache wird noch nicht unterstützt? Du möchtest EinkBro Browser übersetzen? Oder eine bestehende Übersetzung verbessern?
-Zögere nicht, uns auf Crowdin beizutreten: https://crowdin.com/project/foss-browser&lt;br&gt;&lt;br&gt;
-
-&lt;b&gt;Auf den folgenden Internetseiten findest du alle wichtigen Informationen zu \"EinkBro Browser\".
-Bitte lies auch den Hilfedialog in der Anwendung.&lt;/b&gt;&lt;br&gt;&lt;br&gt;
-
-        \u25AA &lt;i&gt;Projektseite:&lt;/i&gt; https://github.com/scoute-dich/Browser&lt;br&gt;
-        \u25AA &lt;i&gt;Änderungen:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;br&gt;
-        \u25AA &lt;i&gt;FAQ:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/FAQs.md&lt;br&gt;
-        \u25AA &lt;i&gt;Lizenz:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/LICENSE.md&lt;br&gt;
-        \u25AA &lt;i&gt;Datenschutz:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/PRIVACY.md
-
-    </string>
     <!-- License changelog -->
     <string name="license_title">Copyright © 2017  von Gaukler Faun</string>
     <string name="license_dialog">        Besuche für mehr Informationen die Projektseite auf Github: https://github.com/scoute-dich/Browser&lt;br&gt;&lt;br&gt;

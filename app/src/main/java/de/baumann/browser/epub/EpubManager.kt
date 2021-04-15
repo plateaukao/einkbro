@@ -87,7 +87,7 @@ class EpubManager(private val context: Context) {
 
         val imageKeyUrlMap = mutableMapOf<String, String>()
         doc.select("img").forEachIndexed { index, element ->
-            val imgUrl = element.dataset()["src"] ?: ""
+            val imgUrl = element.attributes()["src"] ?: element.dataset()["src"] ?: ""
             val newImageIndex = "img_${chapterIndex}_$index"
             element.attr("src", newImageIndex)
             imageKeyUrlMap[newImageIndex] = imgUrl
