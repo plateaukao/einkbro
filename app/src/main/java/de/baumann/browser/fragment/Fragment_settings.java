@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.preference.PreferenceFragmentCompat;
 
+import de.baumann.browser.Ninja.BuildConfig;
 import de.baumann.browser.activity.Settings_ClearActivity;
 import de.baumann.browser.activity.Settings_DataActivity;
 import de.baumann.browser.activity.Settings_GestureActivity;
@@ -72,7 +73,7 @@ public class Fragment_settings extends PreferenceFragmentCompat implements Share
         });
         findPreference("settings_info").setOnPreferenceClickListener(preference -> {
             showContributors = false;
-            showLicenseDialog(getString(R.string.menu_other_info), getString(R.string.changelog_dialog));
+            showLicenseDialog(getString(R.string.menu_other_info), "v" + BuildConfig.VERSION_NAME + "<br><br>" + getString(R.string.changelog_dialog));
             return false;
         });
         findPreference("settings_help").setOnPreferenceClickListener(preference -> {
