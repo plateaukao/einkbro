@@ -292,19 +292,6 @@
     <string name="dialogHelp_filterText">        Yer imlerinizi filtrelerle etiketleyebilirsiniz. Bu şekilde yer imlerinizi gruplandırabilirsiniz. Filtre iletişim kutusunu yer imleri
         simgesine uzun basarak açabilirsiniz. Bir girişi aktifleştirirseniz, filtrenin adını düzenleyebileceğiniz bir iletişim kutusu görünecektir.    </string>
     <!-- Dialog changelog -->
-    <string name="changelog_dialog">        Diliniz henüz desteklenmiyor mu?  EinkBro Tarayıcısını çevirmek ister misiniz?  Veya mevcut çevirilerde geliştirmeler mi yapmak istiyorsunuz?
-        Crowdin\'de bize katılmaktan çekinmeyin: https://crowdin.com/project/foss-browser.&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Aşağıdaki sitelerde \"EinkBro Tarayıcısı\" ile ilgili tüm önemli bilgilere erişebilirsiniz.
-        Lütfen uygulama içindeki yardım iletişim kutusunu da okuyun.&lt;/b&gt;&lt;br&gt;&lt;br&gt;
-
-        \u25AA &lt;i&gt;Proje sitesi:&lt;/i&gt; https://github.com/scoute-dich/Browser&lt;br&gt;
-        \u25AA &lt;i&gt;Değişiklikler:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;br&gt;
-        \u25AA &lt;i&gt;SSS:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/FAQs.md&lt;br&gt;
-        \u25AA &lt;i&gt;Lisans:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/LICENSE.md&lt;br&gt;
-        \u25AA &lt;i&gt;Gizlilik:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/PRIVACY.md
-
-    </string>
     <!-- License changelog -->
     <string name="license_title">Copyright © 2019  Gaukler Faun tarafından</string>
     <string name="license_dialog">        &lt;i&gt;For more information visit the project site on Github: https://github.com/scoute-dich/Browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;

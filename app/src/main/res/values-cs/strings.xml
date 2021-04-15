@@ -289,19 +289,6 @@ vedle&lt;br&gt;&lt;br&gt;
         dlouhým stisknutím ikony záložky. Pokud aktivujete položku, objeví se dialogové okno, kde můžete upravit název filtru.
     </string>
     <!-- Dialog changelog -->
-    <string name="changelog_dialog">        Váš jazyk zatím není podporován? Chcete přeložit EinkBro Browser? Nebo vylepšit stávající překlady?
-        Neváhejte a připojte se k nám na Crowdinu: https://crowdin.com/project/foss-browser.&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Na následujících stránkách máte přístup ke všem důležitým informacím o aplikaci „EinkBro Browser“.
-        Přečtěte si také dialog nápovědy v aplikaci.&lt;/b&gt;&lt;br&gt;&lt;br&gt;
-
-        \u25AA &lt;i&gt;Stránka projektu:&lt;/i&gt; https://github.com/scoute-dich/Browser&lt;br&gt;
-        \u25AA &lt;i&gt;Seznam změn:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;br&gt;
-        \u25AA &lt;i&gt;FAQ:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/FAQs.md&lt;br&gt;
-        \u25AA &lt;i&gt;Licence:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/LICENSE.md&lt;br&gt;
-        \u25AA &lt;i&gt;Ochrana soukromí:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/PRIVACY.md
-
-    </string>
     <!-- License changelog -->
     <string name="license_title">Copyright © 2017  by Gaukler Faun</string>
     <string name="license_dialog">        &lt;i&gt;For more information visit the project site on Github: https://github.com/scoute-dich/Browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;

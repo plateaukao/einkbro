@@ -271,19 +271,6 @@
         удержанием нажатия на значке закладки. Если Вы активировали ввод, появится диалог, позволяющий изменить имя фильтра.
     </string>
     <!-- Dialog changelog -->
-    <string name="changelog_dialog">        Отсутствует Ваш язык? Вы хотите помочь с переводом EinkBro Browser? Или улучшить существующий перевод?
-        Присединяйтесь к нам на Crowdin: https://crowdin.com/project/foss-browser.&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;На следующих сайтах Вы получите всю важную информацию о \"EinkBro Browser\".
-        Пожалуйста, пользуйтесь также правкой внутри приложения.&lt;/b&gt;&lt;br&gt;&lt;br&gt;
-
-        \u25AA &lt;i&gt;Сайт проекта:&lt;/i&gt; https://github.com/scoute-dich/Browser&lt;br&gt;
-        \u25AA &lt;i&gt;История изменений:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/CHANGELOG.md&lt;br&gt;
-        \u25AA &lt;i&gt;Вопросы и ответы:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/FAQs.md&lt;br&gt;
-        \u25AA &lt;i&gt;Лицензия:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/LICENSE.md&lt;br&gt;
-        \u25AA &lt;i&gt;Конфиденциальность:&lt;/i&gt; https://github.com/scoute-dich/browser/blob/master/PRIVACY.md
-
-    </string>
     <!-- License changelog -->
     <string name="license_title">Copyright © 2017 by Gaukler Faun</string>
     <string name="license_dialog">&lt;i&gt;For more information visit the project site on Github: https://github.com/scoute-dich/Browser&lt;/i&gt;&lt;br&gt;&lt;br&gt; This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program. If not, see http://www.gnu.org/licenses.&lt;br&gt;&lt;br&gt; &lt;i&gt;Following open source libraries or projects are used within this software:&lt;/i&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt; &lt;b&gt;Android Sliding Up Panel&lt;/b&gt;&lt;br&gt; Apache License Version 2.0&lt;br&gt; Umano: News Read To You&lt;br&gt; &lt;i&gt;http://git.io/vUruG&lt;/i&gt;&lt;br&gt;&lt;br&gt; &lt;b&gt;Android Swipe-to-Dismiss&lt;/b&gt;&lt;br&gt; Apache License Version 2.0&lt;br&gt; Roman Nurik&lt;br&gt; &lt;i&gt;http://git.io/vUruO&lt;/i&gt;&lt;br&gt;&lt;br&gt; &lt;b&gt;DynamicGrid&lt;/b&gt;&lt;br&gt; Apache License Version 2.0&lt;br&gt; askerov&lt;br&gt; &lt;i&gt;http://git.io/vTHZH&lt;/i&gt;&lt;br&gt;&lt;br&gt; &lt;b&gt;Lightning Browser&lt;/b&gt;&lt;br&gt; Mozilla Public License Version 2.0&lt;br&gt; Anthony Restaino&lt;br&gt; &lt;i&gt;http://git.io/vUruk&lt;/i&gt;&lt;br&gt;&lt;br&gt; &lt;b&gt;Material Design Icons&lt;/b&gt;&lt;br&gt; SIL Open Font License, Version 1.1.&lt;br&gt; Templarian&lt;br&gt; &lt;i&gt;https://github.com/Templarian/MaterialDesign&lt;/i&gt;&lt;br&gt;&lt;br&gt; &lt;b&gt;Ninja&lt;/b&gt;&lt;br&gt; Apache License Version 2.0&lt;br&gt; Matthew Lee&lt;br&gt; &lt;i&gt;http://git.io/vUrEh&lt;/i&gt;&lt;br&gt;&lt;br&gt; &lt;b&gt;SimpleEncryptionLib&lt;/b&gt;&lt;br&gt; Apache License Version 2.0&lt;br&gt; hummatli&lt;br&gt; &lt;i&gt;https://github.com/hummatli/SimpleEncryptionLib</string>

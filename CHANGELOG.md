@@ -1,3 +1,8 @@
+### 8.6.7
+
+- keep fixing images in epub saving
+- add version info to About dialog
+
 ### 8.6.6
 
 - fix saving to existing epub, sometimes images cannot be saved.
