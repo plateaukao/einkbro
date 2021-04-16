@@ -2288,7 +2288,7 @@ function createHtmlBody(article) {
     <body class="mozac-readerview-body">
       <div id="mozac-readerview-container" class="container">
         <div class="header">
-          <h1>${safeTitle}</h1>
+          <h2>${safeTitle}</h2>
         </div>
         <div>
           <div>${safeReadingTime}</div>
@@ -2356,6 +2356,7 @@ function  getReadingTime(length, lang = "en") {
   return "";
 }
 
+/*
 var documentClone = document.cloneNode(true);
 var article = new Readability(documentClone, {classesToPreserve: preservedClasses}).parse();
 var innerHTMLCache = document.body.innerHTML;
@@ -2367,3 +2368,4 @@ document.body.outerHTML = createHtmlBody(article)
 // change font type
 var bodyClasses = document.body.classList;
 bodyClasses.add("serif");
+*/

@@ -335,13 +335,19 @@ class NinjaWebView : WebView, AlbumController {
     }
 
     suspend fun getRawHtml() =  suspendCoroutine<String> { continuation ->
-        //injectJavascript(stripHeaderElementsJs.toByteArray())
-
-        evaluateJavascript(
-                "(function() { return ('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>'); })();"
-        ) { html ->
-            val processedHtml = StringEscapeUtils.unescapeJava(html)
-            continuation.resume(processedHtml.substring(1, processedHtml.length - 1)) // handle prefix/postfix "
+        if (!isReaderModeOn) {
+            injectMozReaderModeJs(false)
+            evaluateJavascript(getReaderModeBodyJs) { html ->
+                val processedHtml = StringEscapeUtils.unescapeJava(html)
+                continuation.resume(processedHtml.substring(1, processedHtml.length - 1)) // handle prefix/postfix "
+            }
+        } else {
+            evaluateJavascript(
+                    "(function() { return ('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>'); })();"
+            ) { html ->
+                val processedHtml = StringEscapeUtils.unescapeJava(html)
+                continuation.resume(processedHtml.substring(1, processedHtml.length - 1)) // handle prefix/postfix "
+            }
         }
     }
 
@@ -373,7 +379,8 @@ class NinjaWebView : WebView, AlbumController {
     fun toggleReaderMode(isVertical: Boolean = false) {
         isReaderModeOn = !isReaderModeOn
         if (isReaderModeOn) {
-            applyMozReaderMode(isVertical)
+            injectMozReaderModeJs(isVertical)
+            evaluateJavascript("(function() { $replaceWithReaderModeBodyJs })();", null)
         } else {
             disableReaderMode(isVertical)
         }
@@ -391,14 +398,14 @@ class NinjaWebView : WebView, AlbumController {
         }
 
         loadUrl("javascript:(function() {" +
-                "document.body.innerHTML = innerHTMLCache;" +
+                "document.body.innerHTML = document.innerHTMLCache;" +
                 "document.body.classList.remove(\"mozac-readerview-body\");" +
                 verticalCssString +
                 "window.scrollTo(0, 0);" +
                 "})()")
     }
 
-    private fun applyMozReaderMode(isVertical: Boolean = false) {
+    private fun injectMozReaderModeJs(isVertical: Boolean = false) {
         try {
             val buffer = getByteArrayFromAsset("MozReadability.js")
             val cssBuffer = getByteArrayFromAsset(if (isVertical) "verticalReaderview.css" else "readerview.css")
@@ -421,7 +428,6 @@ class NinjaWebView : WebView, AlbumController {
                     "script.type = 'text/javascript';" +
                     "script.innerHTML = window.atob('" + encodedJs + "');" +
                     "parent.appendChild(script);" +
-
                     "var style = document.createElement('style');" +
                     "style.type = 'text/css';" +
                     "style.innerHTML = window.atob('" + encodedCss + "');" +
@@ -439,8 +445,6 @@ class NinjaWebView : WebView, AlbumController {
     fun removeFBSponsoredPosts() {
         injectJavascript(facebookHideSponsoredPostsJs.toByteArray())
     }
-
-    fun applyPageNoMargins() = injectCss(pageNoMarginCss.toByteArray())
 
     private fun getByteArrayFromAsset(fileName: String): ByteArray {
         return try {
@@ -487,77 +491,33 @@ class NinjaWebView : WebView, AlbumController {
         }
     }
 
-    private fun unescapeJavaString(st: String): String {
-        val sb = StringBuilder(st.length)
-
-        var i = 0
-        while (i < st.length) {
-            var ch: Char = st[i]
-            if (ch == '\\') {
-                val nextChar = if (i == st.length - 1) '\\' else st[i + 1]
-                // Octal escape?
-                if (nextChar in '0'..'7') {
-                    var code = "" + nextChar
-                    i++
-                    if (i < st.length - 1 && st[i + 1] >= '0' && st[i + 1] <= '7') {
-                        code += st.get(i + 1)
-                        i++
-                        if (i < st.length - 1 && st[i + 1] >= '0' && st[i + 1] <= '7') {
-                            code += st[i + 1]
-                            i++
-                        }
-                    }
-                    sb.append(code.toInt(8).toChar())
-                    i++
-                    continue
-                }
-                when (nextChar) {
-                    '\\' -> ch = '\\'
-                    'b' -> ch = '\b'
-                    //'f' -> ch = 'f'
-                    'n' -> ch = '\n'
-                    'r' -> ch = '\r'
-                    't' -> ch = '\t'
-                    '\"' -> ch = '\"'
-                    '\'' -> ch = '\''
-                    'u' -> {
-                        if (i >= st.length - 5) {
-                            ch = 'u'
-                            break
-                        }
-                        val code =
-                                ("" + st[i + 2] + st[i + 3]
-                                        + st[i + 4] + st[i + 5]).toInt(16)
-                        sb.append(Character.toChars(code))
-                        i += 5
-                        i++
-                        continue
-                    }
-                }
-                i++
-            }
-            sb.append(ch)
-            i++
-        }
-        return sb.toString()
-    }
 
     companion object {
+        private const val replaceWithReaderModeBodyJs = """
+            var documentClone = document.cloneNode(true);
+            var article = new Readability(documentClone, {classesToPreserve: preservedClasses}).parse();
+            document.innerHTMLCache = document.body.innerHTML;
+
+            article.readingTime = getReadingTime(article.length, document.lang);
+
+            document.body.outerHTML = createHtmlBody(article)
+
+            // change font type
+            var bodyClasses = document.body.classList;
+            bodyClasses.add("serif");
+        """
+        private const val getReaderModeBodyJs = """
+            javascript:(function() {
+                var documentClone = document.cloneNode(true);
+                var article = new Readability(documentClone, {classesToPreserve: preservedClasses}).parse();
+                article.readingTime = getReadingTime(article.length, document.lang);
+                var outerHTML = createHtmlBody(article)
+                return ('<html>'+ outerHTML +'</html>');
+            })()
+        """
         private const val stripHeaderElementsJs = """
             javascript:(function() {
                 var r = document.getElementsByTagName('script');
-                for (var i = (r.length-1); i >= 0; i--) {
-                    if(r[i].getAttribute('id') != 'a'){
-                        r[i].parentNode.removeChild(r[i]);
-                    }
-                }
-                var r = document.getElementsByTagName('meta');
-                for (var i = (r.length-1); i >= 0; i--) {
-                    if(r[i].getAttribute('id') != 'a'){
-                        r[i].parentNode.removeChild(r[i]);
-                    }
-                }
-                var r = document.getElementsByTagName('link');
                 for (var i = (r.length-1); i >= 0; i--) {
                     if(r[i].getAttribute('id') != 'a'){
                         r[i].parentNode.removeChild(r[i]);
@@ -606,13 +566,6 @@ class NinjaWebView : WebView, AlbumController {
 //            }
 //        """
 
-        private const val pageNoMarginCss = "@page{\n" +
-                "margin-left: 5px;\n" +
-                "margin-right: 5px;\n" +
-                "margin-top: 5px;\n" +
-                "margin-bottom: 5px;\n" +
-                "padding:0px;\n" +
-                "}\n"
         private const val boldFontCss = "* {\n" +
                 "\tfont-weight:700 !important;\n" +  /*"\tborder-color: #555555 !important;\n" +*/
                 "}\n" +
