@@ -2355,17 +2355,3 @@ function  getReadingTime(length, lang = "en") {
 
   return "";
 }
-
-/*
-var documentClone = document.cloneNode(true);
-var article = new Readability(documentClone, {classesToPreserve: preservedClasses}).parse();
-var innerHTMLCache = document.body.innerHTML;
-
-article.readingTime = getReadingTime(article.length, document.lang);
-
-document.body.outerHTML = createHtmlBody(article)
-
-// change font type
-var bodyClasses = document.body.classList;
-bodyClasses.add("serif");
-*/
