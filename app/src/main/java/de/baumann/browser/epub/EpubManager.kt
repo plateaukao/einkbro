@@ -2,15 +2,10 @@ package de.baumann.browser.epub
 
 import android.content.Context
 import android.net.Uri
-import androidx.lifecycle.lifecycleScope
-import de.baumann.browser.util.Constants
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import nl.siegmann.epublib.domain.Author
 import nl.siegmann.epublib.domain.Book
-import nl.siegmann.epublib.domain.MediaType
 import nl.siegmann.epublib.domain.Resource
 import nl.siegmann.epublib.epub.EpubReader
 import nl.siegmann.epublib.epub.EpubWriter
@@ -23,22 +18,6 @@ import java.net.URL
 
 
 class EpubManager(private val context: Context) {
-
-    private fun createBook(domain: String, bookName: String): Book = Book().apply {
-        metadata.addTitle(bookName)
-        metadata.addAuthor(Author(domain, "EinkBro App"))
-    }
-
-    private fun openBook(uri: Uri): Book {
-        try {
-            val epubInputStream: InputStream = context.contentResolver.openInputStream(uri)
-                    ?: return createBook("", "EinkBro")
-
-            return EpubReader().readEpub(epubInputStream)
-        } catch(e: IOException) {
-            return createBook("", "EinkBro")
-        }
-    }
 
     suspend fun saveEpub(
             isNew: Boolean,
@@ -61,12 +40,26 @@ class EpubManager(private val context: Context) {
 
         book.addSection(chapterName, Resource(processedHtml.byteInputStream(), chapterFileName))
 
-        //if(isNew) {
-            saveImageResources(book, imageMap)
-        //}
+        saveImageResources(book, imageMap)
 
         saveBook(book, fileUri)
         doneAction.invoke()
+    }
+
+    private fun createBook(domain: String, bookName: String): Book = Book().apply {
+        metadata.addTitle(bookName)
+        metadata.addAuthor(Author(domain, "EinkBro App"))
+    }
+
+    private fun openBook(uri: Uri): Book {
+        try {
+            val epubInputStream: InputStream = context.contentResolver.openInputStream(uri)
+                    ?: return createBook("", "EinkBro")
+
+            return EpubReader().readEpub(epubInputStream)
+        } catch (e: IOException) {
+            return createBook("", "EinkBro")
+        }
     }
 
     private fun saveBook(book: Book, uri: Uri) {
@@ -103,19 +96,27 @@ class EpubManager(private val context: Context) {
     }
 
     private suspend fun getResourceFromUrl(url: String): ByteArray {
-        return withContext(Dispatchers.IO) {
+        var byteArray: ByteArray = "".toByteArray()
+        withContext(Dispatchers.IO) {
             try {
                 val connection: HttpURLConnection = URL(url).openConnection() as HttpURLConnection
-                connection.doInput = true
+                connection.addRequestProperty("User-Agent", "Mozilla/4.76")
                 connection.connect()
-                val bytes = connection.inputStream.readBytes()
-                connection.inputStream.close()
-                bytes
+                if (connection.responseCode != HttpURLConnection.HTTP_OK) {
+                    if (isRedirect(connection.responseCode)) {
+                        val redirectUrl = connection.getHeaderField("Location")
+                        byteArray = getResourceFromUrl(redirectUrl)
+                    }
+                } else {
+                    byteArray = connection.inputStream.readBytes()
+                    connection.inputStream.close()
+                }
             } catch (e: IOException) {
                 e.printStackTrace()
-                "".toByteArray()
             }
         }
+        return byteArray
     }
 
+    private fun isRedirect(responseCode: Int): Boolean = responseCode in 301..399
 }
