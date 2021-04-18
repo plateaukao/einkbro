@@ -31,18 +31,22 @@ class EpubManager(private val context: Context) {
         val webUri = Uri.parse(currentUrl)
         val domain = webUri.host ?: "EinkBro"
 
-        val book = if (isNew) createBook(domain, bookName) else openBook(fileUri)
+        withContext(Dispatchers.IO) {
+            val book = if (isNew) createBook(domain, bookName) else openBook(fileUri)
 
-        val chapterIndex = book.tableOfContents.allUniqueResources.size + 1
-        val chapterFileName = "chapter$chapterIndex.html"
+            val chapterIndex = book.tableOfContents.allUniqueResources.size + 1
+            val chapterFileName = "chapter$chapterIndex.html"
 
-        val (processedHtml, imageMap) = processHtmlString(html, chapterIndex, "${webUri.scheme}://${webUri.host}/")
+            val (processedHtml, imageMap) = processHtmlString(html, chapterIndex, "${webUri.scheme}://${webUri.host}/")
 
-        book.addSection(chapterName, Resource(processedHtml.byteInputStream(), chapterFileName))
+            book.addSection(chapterName, Resource(processedHtml.byteInputStream(), chapterFileName))
 
-        saveImageResources(book, imageMap)
+            saveImageResources(book, imageMap)
 
-        saveBook(book, fileUri)
+            saveBook(book, fileUri)
+
+        }
+
         doneAction.invoke()
     }
 
