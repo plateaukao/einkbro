@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.Context
 
 import android.widget.EditText
+import de.baumann.browser.Ninja.R
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -19,7 +20,7 @@ class TextInputDialog(
             setText(defaultText)
         }
 
-        AlertDialog.Builder(context)
+        AlertDialog.Builder(context, R.style.TouchAreaDialog)
                 .setTitle(title)
                 .setMessage(message)
                 .setView(editText)

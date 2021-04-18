@@ -9,6 +9,7 @@ import android.app.SearchManager
 import android.content.*
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.database.Cursor
 import android.graphics.Color
 import android.graphics.Rect
@@ -673,14 +674,14 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
 
     private fun saveEpub(fileUri: Uri) {
         lifecycleScope.launch(Dispatchers.Main) {
-            val progressDialog = ProgressDialog.show(
-                    this@BrowserActivity,
-                    getString(R.string.saving_epub),
-                    ""
-            )
-
             val bookName = if (isNewEpubFile) getBookName() else ""
             val chapterName = getChapterName()
+
+            val progressDialog = ProgressDialog(this@BrowserActivity, R.style.TouchAreaDialog).apply {
+                setTitle(R.string.saving_epub)
+                show()
+            }
+
             val rawHtml = ninjaWebView.getRawHtml()
             epubManager.saveEpub(
                     isNewEpubFile,
@@ -1684,7 +1685,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private fun showSaveEpubDialog() {
         val colors = arrayOf(getString(R.string.existing_epub), getString(R.string.a_new_epub))
 
-        val builder = AlertDialog.Builder(this)
+        val builder = AlertDialog.Builder(this, R.style.TouchAreaDialog)
         builder.setTitle(getString(R.string.save_to))
         builder.setItems(colors) { _, index ->
             when(index) {
