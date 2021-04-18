@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.app.DownloadManager
+import android.app.ProgressDialog
 import android.app.SearchManager
 import android.content.*
 import android.content.pm.ActivityInfo
@@ -672,6 +673,12 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
 
     private fun saveEpub(fileUri: Uri) {
         lifecycleScope.launch(Dispatchers.Main) {
+            val progressDialog = ProgressDialog.show(
+                    this@BrowserActivity,
+                    getString(R.string.saving_epub),
+                    ""
+            )
+
             val bookName = if (isNewEpubFile) getBookName() else ""
             val chapterName = getChapterName()
             val rawHtml = ninjaWebView.getRawHtml()
@@ -682,6 +689,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                     bookName,
                     chapterName,
                     ninjaWebView.url ?: "") {
+                progressDialog.dismiss()
                 openFile(fileUri, Constants.MIME_TYPE_EPUB)
                 isNewEpubFile = false
             }

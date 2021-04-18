@@ -363,4 +363,5 @@
     <string name="title_in_toc">目錄中的章節名稱</string>
     <string name="book_name">書籍名稱</string>
     <string name="book_name_description">輸入想要的書籍名稱</string>
+    <string name="saving_epub">儲存 Epub 文件中</string>
 </resources>
