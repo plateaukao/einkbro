@@ -341,4 +341,5 @@
     <string name="reader_mode">reader mode</string>
     <string name="touch_area_setting">touch setting</string>
     <string name="toolbar_setting">toolbar setting</string>
+    <string name="saving_epub">Saving Epub</string>
 </resources>
