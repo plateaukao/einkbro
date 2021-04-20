@@ -1,6 +1,6 @@
-# Einkbro: Android E-ink device specific Browser 
+# EinkBro: Android E-ink device specific Browser 
 
-This browser is called Einkbro. It's designed to fit Eink devices' needs; no unnecessary UI transitions, clear B&W icons, useful feature for eink reading experience. It's originated from "FOSS Browser", which is fully free/libre (as in freedom) Android app. 
+This browser is called EinkBro. It's designed to fit Eink devices' needs; no unnecessary UI transitions, clear B&W icons, useful feature for eink reading experience. It's originated from "FOSS Browser", which is fully free/libre (as in freedom) Android app. 
 
 ### E-Ink specific features
 
