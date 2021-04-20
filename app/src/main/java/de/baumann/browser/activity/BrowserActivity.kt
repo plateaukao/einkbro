@@ -750,12 +750,12 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             }
             Intent.ACTION_WEB_SEARCH -> addAlbum("", intent.getStringExtra(SearchManager.QUERY), true)
             "sc_history" -> {
-                addAlbum("", config.favoriteUrl, true)
+                addAlbum("", "about:blank", true)
                 showOverview()
                 ninjaWebView.postDelayed({ openHistoryPage() }, 250)
             }
             "sc_bookmark" -> {
-                addAlbum("", config.favoriteUrl, true)
+                addAlbum("", "about:blank", true)
                 showOverview()
                 ninjaWebView.postDelayed({ openBookmarkPage() }, 250)
             }
