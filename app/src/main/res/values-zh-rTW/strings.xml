@@ -27,13 +27,13 @@
     <string name="main_omnibox_input_hint">搜尋或輸入網址</string>
     <string name="menu_open_with">用其他開啟</string>
     <string name="menu_quit">離開</string>
-    <string name="menu_openFav">開啟最愛</string>
+    <string name="menu_openFav">開啟首頁</string>
     <string name="menu_delete">刪除</string>
     <string name="menu_delete_list">刪除列表</string>
     <string name="menu_edit">編輯</string>
     <string name="menu_closeTab">關閉分頁</string>
     <string name="menu_download">開啟下載</string>
-    <string name="menu_fav">存為最愛</string>
+    <string name="menu_fav">存為首頁</string>
     <string name="menu_sc">建立捷徑</string>
     <string name="menu_sort">排序</string>
     <string name="menu_filter">過濾</string>
@@ -137,7 +137,7 @@
     <string name="setting_filter">過濾書籤</string>
     <string name="setting_filter_summary">To show the filter dialog long press on the bookmark icon in the overview. Decide which
         filters you will use.</string>
-    <string name="setting_title_fav">我的最愛</string>
+    <string name="setting_title_fav">我的首頁</string>
     <string name="setting_summary_fav">設定首頁要開啟的網頁。輸入 \"about:blank\" 會開啟空白頁</string>
     <string name="setting_title_searchEngine">設定搜尋引擎</string>
     <string name="setting_summary_searchEngine">自訂 custom search URL. 請選擇 \"Custom search engine\" 當為搜尋方式</string>
