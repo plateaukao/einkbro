@@ -38,6 +38,7 @@ class MenuDialog(
     private val searchSiteAction: () -> Unit,
     private val saveEpubAction: () -> Unit,
     private val printPdfAction: () -> Unit,
+    private val fontSizeAction: () -> Unit,
 ) {
     private val config: ConfigManager = ConfigManager(context)
 
@@ -62,7 +63,7 @@ class MenuDialog(
         }
         binding.buttonSize.setOnClickListener {
             dialog.dismiss()
-            showFontSizeChangeDialog()
+            fontSizeAction.invoke()
         }
         binding.buttonCloseTab.setOnClickListener {
             dialog.dismiss()
@@ -142,24 +143,6 @@ class MenuDialog(
             dialog.dismiss()
             context.startActivity(Intent(context, Settings_Activity::class.java))
         }
-    }
-
-    private fun showFontSizeChangeDialog() {
-        val fontArray = context.resources.getStringArray(R.array.setting_entries_font)
-        val valueArray = context.resources.getStringArray(R.array.setting_values_font)
-        val selected = valueArray.indexOf(config.fontSize.toString())
-        AlertDialog.Builder(context).apply{
-            setTitle("Choose Font Size")
-            setSingleChoiceItems(fontArray, selected) { d, which ->
-                config.fontSize = valueArray[which].toInt()
-                changeFontSize(config.fontSize)
-                d.dismiss()
-            }
-        }.create().show()
-    }
-
-    private fun changeFontSize(size: Int) {
-        ninjaWebView.settings.textZoom = size
     }
 
     private fun saveScreenshot() {
