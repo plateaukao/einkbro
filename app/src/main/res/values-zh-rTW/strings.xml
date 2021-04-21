@@ -340,6 +340,7 @@
     <string name="left_right">左右側</string>
     <string name="touch_left_side">左側</string>
     <string name="touch_right_side">右側</string>
+    <string name="show_touch_area_hint">顯示可點擊區域</string>
     <string name="bold_font">粗體字型</string>
     <string name="setting_summary_bold_font">加粗字體，提高可讀性(需要重新載入網頁)</string>
     <string name="desktop_mode">桌面版網站</string>

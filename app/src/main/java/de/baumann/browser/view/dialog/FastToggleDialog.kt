@@ -22,7 +22,6 @@ import de.baumann.browser.unit.HelperUnit
 
 class FastToggleDialog(
         private val context: Context,
-        private val title: String,
         private val url: String,
         private val okAction: () -> Unit,
 ) {
@@ -44,16 +43,10 @@ class FastToggleDialog(
     }
 
     private fun initViews() {
-        initTitle()
         initButtons()
         initSwitches()
         initToggles()
         initOkCancelBar()
-    }
-
-    private fun initTitle() {
-        val dialogTitle = view.findViewById<TextView>(R.id.dialog_title) ?: return
-        dialogTitle.text = title
     }
 
     private fun initToggles() {
@@ -97,6 +90,7 @@ class FastToggleDialog(
     }
 
     private fun initButtons() {
+        /*
         val cookieHosts = Cookie(context)
         val adBlock = AdBlock(context)
 
@@ -122,6 +116,7 @@ class FastToggleDialog(
             }
             setImgButtonResource(btnAbWhiteList, adBlock.isWhite(url))
         }
+         */
     }
 
     private fun initSwitches() {
