@@ -10,25 +10,7 @@
     android:gravity="center"
     tools:ignore="ContentDescription" >
 
-    <TextView
-        android:id="@+id/dialog_title"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:includeFontPadding="false"
-        android:padding="8dp"
-        android:ellipsize="end"
-        android:gravity="center_vertical|center_horizontal"
-        android:maxLines="1"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textStyle="bold" />
-
-    <View
-        android:layout_margin="8dp"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="?android:attr/colorButtonNormal" />
-
-    <ScrollView android:layout_width="350dp"
+    <ScrollView android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -63,18 +45,6 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="?android:attr/textColorPrimary" />
 
-                <ImageButton
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
-                    android:id="@+id/imageButton_ab"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginStart="16dp"
-                    android:background="?attr/actionBarItemBackground"
-                    android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/ic_action_close_red" />
-
                 <CheckBox
                     android:id="@+id/switch_adBlock"
                     android:layout_width="wrap_content"
@@ -83,7 +53,7 @@
 
             </LinearLayout>
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
@@ -91,22 +61,19 @@
                 android:layout_marginBottom="8dp">
 
                 <ImageView
-                    android:layout_centerVertical="true"
                     android:id="@+id/cookieIcon"
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_alignParentStart="true"
                     android:layout_marginEnd="16dp"
                     android:scaleType="fitCenter"
                     android:src="@drawable/icon_cookie"/>
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_toEndOf="@+id/cookieIcon"
-                    android:layout_toStartOf="@+id/imageButton_cookie"
+                    android:layout_weight="1"
                     android:includeFontPadding="false"
                     android:gravity="center_vertical"
                     android:text="@string/setting_title_cookie"
@@ -114,27 +81,11 @@
                     android:textColor="?android:attr/textColorPrimary"/>
 
                 <CheckBox
-                    android:layout_centerVertical="true"
                     android:id="@+id/switch_cookie"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_alignParentEnd="true"
                     android:checked="false"/>
-
-                <ImageButton
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
-                    android:id="@+id/imageButton_cookie"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_toStartOf="@+id/switch_cookie"
-                    android:background="?attr/actionBarItemBackground"
-                    android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/ic_action_close_red"/>
-
-            </RelativeLayout>
+            </LinearLayout>
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
@@ -150,8 +101,8 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
-                        android:layout_marginEnd="6dp"
+                        android:layout_marginStart="3dp"
+                        android:layout_marginEnd="3dp"
                         android:orientation="vertical">
 
                         <View
@@ -181,8 +132,8 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
-                        android:layout_marginEnd="6dp"
+                        android:layout_marginStart="3dp"
+                        android:layout_marginEnd="3dp"
                         android:orientation="vertical">
 
                         <View
@@ -212,8 +163,8 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
-                        android:layout_marginEnd="6dp"
+                        android:layout_marginStart="3dp"
+                        android:layout_marginEnd="3dp"
                         android:orientation="vertical">
 
                         <View
@@ -242,8 +193,8 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
-                        android:layout_marginEnd="6dp"
+                        android:layout_marginStart="3dp"
+                        android:layout_marginEnd="3dp"
                         android:orientation="vertical">
 
                         <View
@@ -273,8 +224,8 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
-                        android:layout_marginEnd="6dp"
+                        android:layout_marginStart="3dp"
+                        android:layout_marginEnd="3dp"
                         android:gravity="center"
                         android:orientation="vertical">
 

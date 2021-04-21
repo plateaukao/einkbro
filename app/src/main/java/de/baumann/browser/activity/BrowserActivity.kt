@@ -640,7 +640,10 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 changeFontSize(Integer.parseInt(sp.getString("sp_fontSize", "100") ?: "100"))
                 dialog.dismiss()
             }
-        }.create().show()
+        }.create().also {
+            it.show()
+            it.window?.setLayout(ViewUnit.dpToPixel(this, 200).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
+        }
     }
 
     private fun changeFontSize(size: Int) {
@@ -1224,14 +1227,13 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         recyclerView.adapter = adapter
     }
 
-    private fun showFastToggleDialog() {
-        FastToggleDialog(this, ninjaWebView.title ?: "", ninjaWebView.url ?: "") {
-            if (ninjaWebView != null) {
-                ninjaWebView.initPreferences()
-                ninjaWebView.reload()
-            }
-        }.apply { show() }
-    }
+    private fun showFastToggleDialog() =
+            FastToggleDialog(this, ninjaWebView.url ?: "") {
+                if (ninjaWebView != null) {
+                    ninjaWebView.initPreferences()
+                    ninjaWebView.reload()
+                }
+            }.show()
 
     override fun addNewTab(url: String?) = addAlbum("", url, true)
 
@@ -1707,6 +1709,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 { showSearchPanel() },
                 { showSaveEpubDialog() },
                 { printPDF() },
+                { showFontSizeChangeDialog() },
         ).show()
         return true
     }
