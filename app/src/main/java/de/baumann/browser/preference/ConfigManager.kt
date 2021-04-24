@@ -16,6 +16,10 @@ class ConfigManager(private val context: Context) {
     get() = sp.getBoolean("sp_touch_area_hint", true)
     set(value) {sp.edit { putBoolean("sp_touch_area_hint", value) } }
 
+    var volumePageTurn: Boolean
+        get() = sp.getBoolean(K_VOLUME_PAGE_TURN, true)
+        set(value) {sp.edit { putBoolean(K_VOLUME_PAGE_TURN, value) } }
+
     var boldFontStyle: Boolean
         get() = sp.getBoolean(K_BOLD_FONT, false)
         set(value) {sp.edit { putBoolean(K_BOLD_FONT, value) } }
@@ -73,6 +77,7 @@ class ConfigManager(private val context: Context) {
         const val K_NAV_POSITION = "nav_position"
         const val K_FONT_SIZE = "sp_fontSize"
         const val K_FAVORITE_URL = "favoriteURL"
+        const val K_VOLUME_PAGE_TURN = "volume_page_turn"
     }
 }
 

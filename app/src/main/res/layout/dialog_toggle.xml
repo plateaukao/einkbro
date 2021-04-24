@@ -168,26 +168,27 @@
                         android:orientation="vertical">
 
                         <View
-                            android:id="@+id/toggle_imagesView"
+                            android:id="@+id/toggle_volume_page_turn"
                             android:layout_width="42dp"
                             android:layout_height="2dp"
                             android:background="?android:attr/colorAccent" />
 
                         <ImageButton
-                            android:id="@+id/toggle_images"
+                            android:id="@+id/toggle_volume"
                             android:layout_width="42dp"
                             android:layout_height="42dp"
                             android:layout_gravity="center_vertical|center_horizontal"
                             android:layout_marginStart="2dp"
                             android:layout_marginEnd="2dp"
                             android:background="?attr/actionBarItemBackground"
-                            android:src="@drawable/icon_image" />
+                            android:src="@drawable/ic_volume" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@android:color/black"
-                            android:text="@string/image" />
+                            android:layout_gravity="center"
+                            android:text="@string/volume_page_turn" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -269,17 +270,7 @@
                     android:includeFontPadding="false"
                     android:background="?attr/selectableItemBackground"
                     android:textColor="?android:attr/colorAccent"
-                    android:text="@android:string/ok"/>
-
-                <Button
-                    android:id="@+id/action_ok"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:includeFontPadding="false"
-                    android:background="?attr/selectableItemBackground"
-                    android:textColor="?android:attr/colorAccent"
-                    android:text="@string/dialog_toggle_reload"
-                    android:layout_marginEnd="6dp"/>
+                    android:text="@android:string/cancel"/>
 
             </LinearLayout>
         </LinearLayout>

@@ -461,4 +461,5 @@
     <string name="book_name">Book Name</string>
     <string name="book_name_description">Input the book name</string>
     <string name="saving_epub">Saving Epub</string>
+    <string name="volume_page_turn">page</string>
 </resources>
