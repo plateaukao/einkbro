@@ -95,6 +95,7 @@
         <item>125 %</item>
         <item>150 %</item>
         <item>175 %</item>
+        <item>200 %</item>
     </string-array>
 
     <string-array name="setting_values_font">
@@ -105,6 +106,7 @@
         <item>125</item>
         <item>150</item>
         <item>175</item>
+        <item>200</item>
     </string-array>
 
     <!-- icons on toolbar-->
@@ -123,6 +125,9 @@
         <item>vertical read (Beta)</item>
         <item>Reader Mode (Beta)</item>
         <item>Bold Font</item>
+        <item>Font Size Increase</item>
+        <item>Font Size Decrease</item>
+        <item>Fullscreen</item>
     </string-array>
     <integer-array name="setting_ids_toolbar_icons">
         <item>@null</item>
@@ -139,6 +144,9 @@
         <item>@drawable/ic_vertical_read</item>
         <item>@drawable/ic_reader</item>
         <item>@drawable/ic_bold_font</item>
+        <item>@mipmap/font_size_increase</item>
+        <item>@mipmap/font_size_decrease</item>
+        <item>@drawable/icon_fullscreen</item>
     </integer-array>
 
     <string-array name="setting_values_toolbar_icons">
@@ -156,6 +164,9 @@
         <item>11</item>
         <item>12</item>
         <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
     </string-array>
     <string-array name="default_toolbar_icons">
         <item>0</item>
