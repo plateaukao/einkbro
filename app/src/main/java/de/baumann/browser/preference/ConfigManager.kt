@@ -52,10 +52,13 @@ class ConfigManager(private val context: Context) {
         get() = sp.getString(K_FAVORITE_URL, Constants.DEFAULT_HOME_URL) ?: Constants.DEFAULT_HOME_URL
         set(value) { sp.edit { putString(K_FAVORITE_URL, value) } }
 
-    val toolbarIcons: List<ToolbarAction>
+    var toolbarActions: List<ToolbarAction>
         get() {
             val iconListString = sp.getString(K_TOOLBAR_ICONS, getDefaultIconStrings()) ?: ""
             return iconStringToEnumList(iconListString)
+        }
+        set(value) {
+            sp.edit { putString(K_TOOLBAR_ICONS, value.map{it.ordinal}.joinToString(",")) }
         }
 
     private fun iconStringToEnumList(iconListString: String): List<ToolbarAction> {

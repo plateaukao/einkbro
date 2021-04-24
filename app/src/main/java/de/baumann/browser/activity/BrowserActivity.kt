@@ -60,10 +60,7 @@ import de.baumann.browser.unit.ViewUnit
 import de.baumann.browser.util.Constants
 import de.baumann.browser.view.*
 import de.baumann.browser.view.adapter.*
-import de.baumann.browser.view.dialog.FastToggleDialog
-import de.baumann.browser.view.dialog.MenuDialog
-import de.baumann.browser.view.dialog.TextInputDialog
-import de.baumann.browser.view.dialog.TouchAreaDialog
+import de.baumann.browser.view.dialog.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.*
@@ -545,7 +542,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             } else {
                 ninjaWebView.stopLoading()
             }
-            R.id.omnibox_bar_setting -> openToolbarSetting()
+            R.id.toolbar_setting -> openToolbarSetting()
             R.id.toolbar_increase_font -> increaseFontSize()
             R.id.toolbar_decrease_font-> decreaseFontSize()
             R.id.toolbar_fullscreen -> fullscreen()
@@ -555,11 +552,9 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     }
 
     private fun openToolbarSetting() {
-        val intent = Intent(this, Settings_UIActivity::class.java)
-                .putExtra(Constants.ARG_LAUNCH_TOOLBAR_SETTING, true)
-        startActivity(intent)
-        overridePendingTransition(0, 0);
+        ToolbarConfigDialog(this).show()
     }
+
     private fun saveBookmark() {
         val currentUrl = ninjaWebView.url
         try {
@@ -891,7 +886,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private fun reorderToolbarIcons() {
         toolbarActionViews.size
 
-        val iconEnums = config.toolbarIcons
+        val iconEnums = config.toolbarActions
         if (iconEnums.isNotEmpty()) {
             binding.iconBar.removeAllViews()
             iconEnums.forEach { actionEnum ->
