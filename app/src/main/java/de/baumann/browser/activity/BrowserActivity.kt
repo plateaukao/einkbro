@@ -9,7 +9,6 @@ import android.app.SearchManager
 import android.content.*
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
-import android.content.res.Resources
 import android.database.Cursor
 import android.graphics.Color
 import android.graphics.Rect
@@ -489,7 +488,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             R.id.button_size -> showFontSizeChangeDialog()
             R.id.tab_plus_bottom -> {
                 hideOverview()
-                addAlbum(getString(R.string.app_name), "", true)
+                addAlbum(getString(R.string.app_name), "")
                 inputBox.requestFocus()
                 showKeyboard()
             }
@@ -543,6 +542,9 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 ninjaWebView.stopLoading()
             }
             R.id.omnibox_bar_setting -> openToolbarSetting()
+            R.id.toolbar_increase_font -> increaseFontSize()
+            R.id.toolbar_decrease_font-> decreaseFontSize()
+            R.id.toolbar_fullscreen -> fullscreen()
             else -> {
             }
         }
@@ -632,12 +634,11 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private fun showFontSizeChangeDialog() {
         val fontArray = resources.getStringArray(R.array.setting_entries_font)
         val valueArray = resources.getStringArray(R.array.setting_values_font)
-        val selected = valueArray.indexOf(sp.getString("sp_fontSize", "100")!!)
+        val selected = valueArray.indexOf(config.fontSize.toString())
         AlertDialog.Builder(this, R.style.TouchAreaDialog).apply{
             setTitle("Choose Font Size")
             setSingleChoiceItems(fontArray, selected) { dialog, which ->
-                sp.edit().putString("sp_fontSize", valueArray[which]).apply()
-                changeFontSize(Integer.parseInt(sp.getString("sp_fontSize", "100") ?: "100"))
+                changeFontSize(valueArray[which].toInt())
                 dialog.dismiss()
             }
         }.create().also {
@@ -647,16 +648,16 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     }
 
     private fun changeFontSize(size: Int) {
+        config.fontSize = size
         ninjaWebView.settings.textZoom = size
     }
 
-    private fun increaseFontSize() {
-        ninjaWebView.settings.textZoom += 20
-    }
+    private fun increaseFontSize() = changeFontSize(config.fontSize + 20)
 
     private fun decreaseFontSize() {
-        if (ninjaWebView.settings.textZoom <= 20) return
-        ninjaWebView.settings.textZoom -= 20
+        if (config.fontSize <= 50) return
+
+        changeFontSize(config.fontSize - 20)
     }
 
     private fun showEpubFilePicker() {
@@ -745,26 +746,26 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         when(intent.action) {
             Intent.ACTION_MAIN -> { // initial case
                 if (currentAlbumController == null) { // newly opened Activity
-                    addAlbum("", config.favoriteUrl, true)
+                    addAlbum()
                 }
             }
             Intent.ACTION_VIEW -> {
-                addAlbum("", intent.data?.toNormalScheme()?.toString(), true)
+                addAlbum(url = intent.data?.toNormalScheme()?.toString())
             }
-            Intent.ACTION_WEB_SEARCH -> addAlbum("", intent.getStringExtra(SearchManager.QUERY), true)
+            Intent.ACTION_WEB_SEARCH -> addAlbum(url = intent.getStringExtra(SearchManager.QUERY))
             "sc_history" -> {
-                addAlbum("", "about:blank", true)
+                addAlbum()
                 showOverview()
                 ninjaWebView.postDelayed({ openHistoryPage() }, 250)
             }
             "sc_bookmark" -> {
-                addAlbum("", "about:blank", true)
+                addAlbum()
                 showOverview()
                 ninjaWebView.postDelayed({ openBookmarkPage() }, 250)
             }
             Intent.ACTION_SEND -> {
                 val url = intent.getStringExtra(Intent.EXTRA_TEXT)
-                addAlbum("", url, true)
+                addAlbum(url = url)
             }
             else -> { }
         }
@@ -841,7 +842,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
 
         // hide bottom bar when refresh button is long pressed.
         binding.omniboxRefresh.setOnLongClickListener {
-            hideToolbar()
+            fullscreen()
             true
         }
 
@@ -970,7 +971,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 showAlbum(controller!!)
             }
             "08" -> showOverview()
-            "09" -> addAlbum(getString(R.string.app_name), sp.getString("favoriteURL", Constants.DEFAULT_HOME_URL), true)
+            "09" -> addAlbum(getString(R.string.app_name), sp.getString("favoriteURL", Constants.DEFAULT_HOME_URL))
             "10" -> removeAlbum(currentAlbumController!!)
             // page up
             "11" -> ninjaWebView.pageUpWithNoAnimation()
@@ -1235,10 +1236,10 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 }
             }.show()
 
-    override fun addNewTab(url: String?) = addAlbum("", url, true)
+    override fun addNewTab(url: String?) = addAlbum(url = url)
 
     @Synchronized
-    private fun addAlbum(title: String, url: String?, foreground: Boolean) {
+    private fun addAlbum(title: String = "", url: String? = config.favoriteUrl, foreground: Boolean = true) {
         if (url == null) return
 
         ninjaWebView = NinjaWebView(this, this)
@@ -1343,7 +1344,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 if (scrollY in (oldScrollY + 1)..cutoff) {
                     if (!keepToolbar) {
                         // Daniel
-                        hideToolbar();
+                        fullscreen();
                     } else {
                         keepToolbar = false
                     }
@@ -1561,7 +1562,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             hideBottomSheetDialog()
         }
         dialogView.findViewById<LinearLayout>(R.id.contextLink_newTabOpen).setOnClickListener {
-            addAlbum(getString(R.string.app_name), url, true)
+            addAlbum(getString(R.string.app_name), url)
             hideBottomSheetDialog()
         }
         dialogView.findViewById<LinearLayout>(R.id.menu_save_pdf).setOnClickListener {
@@ -1650,7 +1651,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     }
 
     @SuppressLint("RestrictedApi")
-    private fun hideToolbar() {
+    private fun fullscreen() {
         if (!searchOnSite) {
             fabImagebuttonnav.visibility = VISIBLE
             searchPanel.visibility = GONE
@@ -1738,7 +1739,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             hideBottomSheetDialog()
         }
         dialogView.findViewById<LinearLayout>(R.id.menu_contextList_newTabOpen).setOnClickListener {
-            addAlbum(getString(R.string.app_name), url, true)
+            addAlbum(getString(R.string.app_name), url)
             hideBottomSheetDialog()
             hideOverview()
         }
@@ -1821,7 +1822,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             hideBottomSheetDialog()
         }
         dialogView.findViewById<LinearLayout>(R.id.menu_contextList_newTabOpen).setOnClickListener {
-            addAlbum(getString(R.string.app_name), url, true)
+            addAlbum(getString(R.string.app_name), url)
             hideBottomSheetDialog()
             hideOverview()
         }
