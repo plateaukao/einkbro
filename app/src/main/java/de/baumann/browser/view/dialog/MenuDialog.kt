@@ -91,10 +91,7 @@ class MenuDialog(
         }
         binding.buttonToolbar.setOnClickListener {
             dialog.dismiss()
-            val intent = Intent(context, Settings_UIActivity::class.java)
-                    .putExtra(Constants.ARG_LAUNCH_TOOLBAR_SETTING, true)
-            context.startActivity(intent)
-            (context as Activity).overridePendingTransition(0, 0);
+            ToolbarConfigDialog(context).show()
         }
         binding.menuShareLink.setOnClickListener {
             dialog.dismiss()
