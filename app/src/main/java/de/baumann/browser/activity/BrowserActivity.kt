@@ -384,11 +384,15 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         when (keyCode) {
             KeyEvent.KEYCODE_VOLUME_DOWN -> {
-                ninjaWebView.pageDownWithNoAnimation()
+                if (config.volumePageTurn) {
+                    ninjaWebView.pageDownWithNoAnimation()
+                }
                 return true
             }
             KeyEvent.KEYCODE_VOLUME_UP -> {
-                ninjaWebView.pageUpWithNoAnimation()
+                if (config.volumePageTurn) {
+                    ninjaWebView.pageUpWithNoAnimation()
+                }
                 return true
             }
             KeyEvent.KEYCODE_MENU -> return showMenuDialog()
