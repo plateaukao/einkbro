@@ -143,7 +143,7 @@
                     android:src="@drawable/ic_bookmarks"
                     android:background="@android:color/white"/>
 
-                <ImageButton android:id="@+id/omnibox_bar_setting"
+                <ImageButton android:id="@+id/toolbar_setting"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:padding="10dp"
