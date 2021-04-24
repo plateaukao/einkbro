@@ -21,7 +21,7 @@ class MultiSelectDragListPreferenceDialog(
 ) : PreferenceDialogFragmentCompat() {
     private lateinit var listView: DragSortListView
     private val selectedItems: BooleanArray
-        private get() {
+        get() {
             val entries = preference.entryValues
             val entryCount = entries.size
             val values = preference.getValues()
@@ -68,7 +68,7 @@ class MultiSelectDragListPreferenceDialog(
         val itemInfos = mEntries.mapIndexed { index, entry ->
             PreferenceItemInfo(
                     entry.toString(),
-                    preference.entryIconIds[index]?.toString()?.toInt() ?: 0
+                    preference.entryIconIds[index].toString().toInt()
             )
         }
 

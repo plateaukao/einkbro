@@ -14,7 +14,10 @@ enum class ToolbarAction {
     IconSetting, // 10
     VerticalLayout, // 11
     ReaderMode, // 12
-    BoldFont; // 13
+    BoldFont, // 13
+    IncreaseFont, // 14
+    DecreaseFont, // 15
+    FullScreen;
 
     companion object {
         fun fromOrdinal(value: Int) = values().first { it.ordinal == value }

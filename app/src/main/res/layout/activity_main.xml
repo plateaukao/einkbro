@@ -175,6 +175,30 @@
                     android:onClick="onClick"
                     android:background="@android:color/white"/>
 
+                <ImageButton android:id="@+id/toolbar_increase_font"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:src="@mipmap/font_size_increase"
+                    android:onClick="onClick"
+                    android:background="@android:color/white"/>
+
+                <ImageButton android:id="@+id/toolbar_decrease_font"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:src="@mipmap/font_size_decrease"
+                    android:onClick="onClick"
+                    android:background="@android:color/white"/>
+
+                <ImageButton android:id="@+id/toolbar_fullscreen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:src="@drawable/icon_fullscreen"
+                    android:onClick="onClick"
+                    android:background="@android:color/white"/>
+
             </LinearLayout>
         </RelativeLayout>
 

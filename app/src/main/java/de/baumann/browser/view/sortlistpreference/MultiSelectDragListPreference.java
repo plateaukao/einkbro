@@ -72,7 +72,7 @@ public class MultiSelectDragListPreference extends DialogPreference
             }
 
             String[] splits = resString.split("/");
-            String type = splits[1];
+            String type = splits[1].split("-")[0];
             String name = splits[2].substring(0, splits[2].length()-4);
             int id = getContext().getResources().getIdentifier(name, type, getContext().getPackageName());
             idArray[i] = id;

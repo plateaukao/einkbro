@@ -29,8 +29,8 @@ class ConfigManager(private val context: Context) {
         set(value) {sp.edit { putInt("sp_page_turn_left_value", value) } }
 
     var fontSize: Int
-        get() = sp.getString("sp_fontSize", "100")?.toInt() ?: 100
-        set(value) {sp.edit { putString("sp_fontSize", value.toString()) } }
+        get() = sp.getString(K_FONT_SIZE, "100")?.toInt() ?: 100
+        set(value) {sp.edit { putString(K_FONT_SIZE, value.toString()) } }
 
     var fabPosition: FabPosition
         get() = FabPosition.values()[sp.getString(K_NAV_POSITION, "0")?.toInt() ?: 0]
@@ -71,6 +71,7 @@ class ConfigManager(private val context: Context) {
         const val K_BOLD_FONT = "sp_bold_font"
         const val K_FONT_STYLE_SERIF = "sp_font_style_serif"
         const val K_NAV_POSITION = "nav_position"
+        const val K_FONT_SIZE = "sp_fontSize"
         const val K_FAVORITE_URL = "favoriteURL"
     }
 }
