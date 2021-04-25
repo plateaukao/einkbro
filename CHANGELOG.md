@@ -1,3 +1,22 @@
+### 8.7.3
+
+- add font increase/decrease action to toolbar actions. Add them from toolbar configuration dialog
+- add fullscreen action to toolbar actions.
+- now it's possible to disable volume key turning pages. Long press setting button, and click on Volume icon with label "page"
+- enhance toolbar configuration dialog layout
+
+### 8.7.2
+
+- enhance dialog layout
+
+### 8.7.1
+
+- fix another saving image issue in epub file
+
+### 8.7.0
+
+- fix saving image issue in epub file
+
 ### 8.6.7
 
 - keep fixing images in epub saving
