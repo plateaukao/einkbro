@@ -10,6 +10,7 @@ import android.widget.*
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.DialogToolbarConfigBinding
 import de.baumann.browser.preference.ConfigManager
+import de.baumann.browser.unit.ViewUnit
 import de.baumann.browser.view.sortlistpreference.CheckableMultiSelectLayout
 import de.baumann.browser.view.sortlistpreference.DragSortController
 import de.baumann.browser.view.sortlistpreference.DragSortListView
@@ -33,6 +34,7 @@ class ToolbarConfigDialog(
             window?.setBackgroundDrawableResource(R.drawable.background_with_margin)
         }
         dialog.show()
+        dialog.window?.setLayout(ViewUnit.dpToPixel(context, 300).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
     private fun initViews() {
@@ -46,11 +48,13 @@ class ToolbarConfigDialog(
 
         val orderedList = ArrayList<PreferenceItemInfo>()
         for (toolbarAction in config.toolbarActions) {
-            orderedList.add(PreferenceItemInfo(toolbarAction.ordinal, toolbarAction.title, toolbarAction.iconResId))
+            orderedList.add(toolbarAction.toPreferenceItemInfo())
         }
 
         for (toolbarAction in ToolbarAction.values()) {
-            if (!config.toolbarActions.contains(toolbarAction)) orderedList.add((PreferenceItemInfo(toolbarAction.ordinal, toolbarAction.title, toolbarAction.iconResId)))
+            if (!config.toolbarActions.contains(toolbarAction)) {
+                orderedList.add((toolbarAction.toPreferenceItemInfo()))
+            }
         }
 
         iconListAdapter = createItemAdapter(orderedList)
@@ -61,13 +65,11 @@ class ToolbarConfigDialog(
             floatAlpha = 0.8f
             choiceMode = ListView.CHOICE_MODE_MULTIPLE
 
-            val n = config.toolbarActions.size
-            for (i in 0 until n) {
-                setItemChecked(i, i < config.toolbarActions.size)
+            for (i in config.toolbarActions.indices) {
+                setItemChecked(i, true)
             }
 
             onItemClickListener = AdapterView.OnItemClickListener { _, _, _, _ ->
-                mPreferenceChanged = true
                 refreshNewValues()
             }
         }
@@ -92,14 +94,12 @@ class ToolbarConfigDialog(
     private var newValues: MutableList<ToolbarAction> = mutableListOf()
 
     private lateinit var iconListAdapter: ArrayAdapter<PreferenceItemInfo>
-    private var mPreferenceChanged = false
     private val onDrop = DragSortListView.DropListener { from, to ->
         if (from != to) {
             val item = iconListAdapter.getItem(from)
             iconListAdapter.remove(item)
             iconListAdapter.insert(item, to)
             listView.moveCheckState(from, to)
-            mPreferenceChanged = true
             refreshNewValues()
         }
     }
@@ -136,3 +136,7 @@ class ToolbarConfigDialog(
 }
 
 private class PreferenceItemInfo(val ordinal: Int, val title: String, val iconResId: Int)
+
+private fun ToolbarAction.toPreferenceItemInfo(): PreferenceItemInfo {
+    return PreferenceItemInfo(this.ordinal, this.title, this.iconResId)
+}

@@ -383,14 +383,18 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             KeyEvent.KEYCODE_VOLUME_DOWN -> {
                 if (config.volumePageTurn) {
                     ninjaWebView.pageDownWithNoAnimation()
+                    return true
+                } else {
+                    return false
                 }
-                return true
             }
             KeyEvent.KEYCODE_VOLUME_UP -> {
                 if (config.volumePageTurn) {
                     ninjaWebView.pageUpWithNoAnimation()
+                    return true
+                } else {
+                    return false
                 }
-                return true
             }
             KeyEvent.KEYCODE_MENU -> return showMenuDialog()
             KeyEvent.KEYCODE_BACK -> {
