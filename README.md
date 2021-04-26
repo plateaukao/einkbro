@@ -5,9 +5,7 @@ This browser is called EinkBro. It's designed to fit Eink devices' needs; no unn
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
      alt="Get it on F-Droid"
      height="80">](https://f-droid.org/packages/info.plateaukao.einkbro/)
-[<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png"
-     alt="Get it on Google Play"
-     height="80">](https://play.google.com/store/apps/details?id=info.plateaukao.einkbro)
+
 
 ### E-Ink specific features
 
