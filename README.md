@@ -2,6 +2,13 @@
 
 This browser is called EinkBro. It's designed to fit Eink devices' needs; no unnecessary UI transitions, clear B&W icons, useful feature for eink reading experience. It's originated from "FOSS Browser", which is fully free/libre (as in freedom) Android app. 
 
+[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
+     alt="Get it on F-Droid"
+     height="80">](https://f-droid.org/packages/info.plateaukao.einkbro/)
+[<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png"
+     alt="Get it on Google Play"
+     height="80">](https://play.google.com/store/apps/details?id=info.plateaukao.einkbro)
+
 ### E-Ink specific features
 
 - **reader mode**
@@ -58,8 +65,5 @@ This browser is called EinkBro. It's designed to fit Eink devices' needs; no unn
 - screenshots of the whole website
 - share/save as PDF
 - open links in other apps (for example YouTube)
-
-Google Play Store: https://play.google.com/store/apps/details?id=info.plateaukao.einkbro
-
 
 <div>App icon is made by <a href="https://www.flaticon.com/authors/turkkub" title="turkkub">turkkub</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
