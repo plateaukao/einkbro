@@ -67,10 +67,10 @@ class ConfigManager(private val context: Context) {
         return iconListString.split(",").map{ ToolbarAction.fromOrdinal(it.toInt())}
     }
 
-    private fun getDefaultIconStrings(): String {
-        val iconArray = context.resources.getStringArray(R.array.default_toolbar_icons)
-        return iconArray.joinToString(",")
-    }
+    private fun getDefaultIconStrings(): String =
+            ToolbarAction.defaultActions.joinToString (",") { action ->
+                action.ordinal.toString()
+            }
 
     companion object {
         const val K_TOUCH_AREA_TYPE = "sp_touch_area_type"

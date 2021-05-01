@@ -19,9 +19,20 @@ enum class ToolbarAction(val iconResId: Int = 0, val title: String) {
     BoldFont(iconResId = R.drawable.ic_bold_font, title = "bold font"),
     IncreaseFont(iconResId = R.mipmap.font_size_increase, title = "font size increase"),
     DecreaseFont(iconResId = R.mipmap.font_size_decrease, title = "font size decrease"),
-    FullScreen(iconResId = R.drawable.icon_fullscreen, title = "fullscreen");
+    FullScreen(iconResId = R.drawable.icon_fullscreen, title = "fullscreen"),
+    Forward(iconResId = R.drawable.icon_arrow_right_gest, title = "forward");
 
     companion object {
         fun fromOrdinal(value: Int) = values().first { it.ordinal == value }
+        val defaultActions: List<ToolbarAction> = listOf(
+                Title,
+                TabCount,
+                Back,
+                Refresh,
+                Touch,
+                Font,
+                ReaderMode,
+                Settings,
+        )
     }
 }

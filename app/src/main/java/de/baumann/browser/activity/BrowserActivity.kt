@@ -514,6 +514,9 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             } else {
                 removeAlbum(currentAlbumController!!)
             }
+            R.id.toolbar_forward -> if (ninjaWebView.canGoForward()) {
+                ninjaWebView.goForward()
+            }
             R.id.omnibox_page_up -> ninjaWebView.pageUpWithNoAnimation()
             R.id.omnibox_page_down -> {
                 keepToolbar = true
