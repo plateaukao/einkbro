@@ -179,6 +179,10 @@ public class Fragment_settings_data extends PreferenceFragmentCompat {
             throws IOException {
 
         if (sourceLocation.isDirectory()) {
+            if (sourceLocation.getName().equals("app_webview") || sourceLocation.getName().equals("cache")) {
+                return;
+            }
+
             if (!targetLocation.exists() && !targetLocation.mkdirs()) {
                 throw new IOException("Cannot create dir " + targetLocation.getAbsolutePath());
             }

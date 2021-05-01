@@ -212,7 +212,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private fun initTouchArea() {
         updateTouchAreaType()
         binding.omniboxTouch.setOnLongClickListener {
-            TouchAreaDialog(BrowserActivity@ this).show()
+            TouchAreaDialog(this@BrowserActivity).show()
             true
         }
         sp.registerOnSharedPreferenceChangeListener(touchAreaChangeListener)
@@ -266,7 +266,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 touchAreaPageUp = findViewById(R.id.touch_area_right_1)
                 touchAreaPageDown = findViewById(R.id.touch_area_right_2)
             }
-            }
+            else -> {}
+        }
 
         val isTouchEnabled = sp.getBoolean("sp_enable_touch", false)
         with(touchAreaPageUp) {
@@ -290,8 +291,9 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         }
 
         if (requestCode == WRITE_PDF_REQUEST_CODE && resultCode == RESULT_OK) {
-            val nonNullData = data?.data ?: return
-            printPDF()
+            data?.data?.let {
+                printPDF()
+            }
 
             return
         }
