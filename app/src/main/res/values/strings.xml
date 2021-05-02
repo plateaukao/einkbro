@@ -226,8 +226,8 @@
     <string name="setting_gestures_use_title">Use gestures</string>
     <string name="setting_gestures_use_summary">Use gestures on the toolbar and the \"Navigation button\".</string>
 
-    <string name="setting_title_reopenLastTab">Reopen last tab</string>
-    <string name="setting_summary_reopenLastTab">Reopen a new tab when the last tab is closed instead of exiting the browser.</string>
+    <string name="setting_title_saveTabs">Save tabs</string>
+    <string name="setting_summary_saveTabs">Save tabs so that they can be opened next time.</string>
 
     <!-- gestures -->
     <string name="setting_title_toolbar">Toolbar</string>

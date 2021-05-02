@@ -44,6 +44,7 @@ class NinjaWebViewClient(private val ninjaWebView: NinjaWebView) : WebViewClient
     }
 
     override fun onPageFinished(view: WebView, url: String) {
+        ninjaWebView.albumTitle = view.title ?: ""
         if (sp.getBoolean("saveHistory", true)) {
             val action = RecordAction(context)
             action.open(true)

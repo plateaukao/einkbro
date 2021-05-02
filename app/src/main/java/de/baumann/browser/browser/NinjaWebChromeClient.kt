@@ -101,5 +101,4 @@ class NinjaWebChromeClient(private val ninjaWebView: NinjaWebView) : WebChromeCl
         callback.invoke(origin, true, false)
         super.onGeolocationPermissionsShowPrompt(origin, callback)
     }
-
 }
