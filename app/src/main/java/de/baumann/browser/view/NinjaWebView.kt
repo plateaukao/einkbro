@@ -49,7 +49,7 @@ class NinjaWebView : WebView, AlbumController {
     private val javaHosts: Javascript
 
     private val sp: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-    private var config: ConfigManager? = null
+    private lateinit var config: ConfigManager
     var isForeground = false
         private set
 
@@ -83,8 +83,8 @@ class NinjaWebView : WebView, AlbumController {
     }
 
     fun updateCssStyle() {
-        val cssStyle = (if (config!!.boldFontStyle) boldFontCss else "") +
-                if (config!!.fontStyleSerif) notoSansSerifFontCss else ""
+        val cssStyle = (if (config.boldFontStyle) boldFontCss else "") +
+                if (config.fontStyleSerif) notoSansSerifFontCss else ""
         injectCss(cssStyle.toByteArray())
     }
 
@@ -147,6 +147,7 @@ class NinjaWebView : WebView, AlbumController {
         if (userAgent.isNotEmpty()) {
             settings.userAgentString = userAgent
         }
+
         val isDesktopMode = sp.getBoolean("sp_desktop", false)
         if (isDesktopMode) {
             settings.userAgentString = BrowserUnit.UA_DESKTOP
@@ -154,6 +155,7 @@ class NinjaWebView : WebView, AlbumController {
             val defaultUserAgent = settings.userAgentString
             settings.userAgentString = defaultUserAgent.replace("wv", "")
         }
+
         with(settings) {
             useWideViewPort = isDesktopMode
             loadWithOverviewMode = isDesktopMode
@@ -355,7 +357,7 @@ class NinjaWebView : WebView, AlbumController {
         return if (isVerticalRead) {
             width - ViewUnit.dpToPixel(context, 40).toInt()
         } else {
-            height - ViewUnit.dpToPixel(context, config!!.pageReservedOffset).toInt()
+            height - ViewUnit.dpToPixel(context, config.pageReservedOffset).toInt()
         }
     }
 
