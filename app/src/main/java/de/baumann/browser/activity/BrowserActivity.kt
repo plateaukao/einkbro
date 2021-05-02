@@ -1901,24 +1901,23 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             var isNaverDictExist = false
             mActionMode = mode
             val menu = mode.menu
-            val toBeRemovedList: MutableList<MenuItem> = mutableListOf()
+            val toBeAddedLaterList: MutableList<MenuItem> = mutableListOf()
             for (index in 0 until menu.size()) {
                 val item = menu.getItem(index)
                 if (item.intent?.component?.packageName == "info.plateaukao.naverdict") {
                     isNaverDictExist = true
-                    break
+                    continue
                 }
-                toBeRemovedList.add(item)
+                toBeAddedLaterList.add(item)
             }
-            // only works when naver dict app is installed.
+
             if (isNaverDictExist) {
-                for (item in toBeRemovedList) {
+                for (item in toBeAddedLaterList) {
                     menu.removeItem(item.itemId)
                 }
-                for (item in toBeRemovedList) {
-                    if (item.title == "Copy") {
-                        menu.add(0, item.itemId, Menu.NONE, item.title)
-                    }
+                val subMenu = menu.addSubMenu("Others")
+                for (item in toBeAddedLaterList) {
+                        subMenu.add(item.groupId, item.itemId, Menu.NONE, item.title)
                 }
             }
         }
