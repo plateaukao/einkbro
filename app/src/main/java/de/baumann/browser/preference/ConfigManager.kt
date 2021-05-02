@@ -28,6 +28,10 @@ class ConfigManager(private val context: Context) {
         get() = sp.getBoolean(K_FONT_STYLE_SERIF, false)
         set(value) {sp.edit { putBoolean(K_FONT_STYLE_SERIF, value) } }
 
+    var shouldSaveTabs: Boolean
+        get() = sp.getBoolean(K_SAVE_TABS, false)
+        set(value) {sp.edit { putBoolean(K_SAVE_TABS, value) } }
+
     var pageReservedOffset: Int
         get() = sp.getInt("sp_page_turn_left_value", 80)
         set(value) {sp.edit { putInt("sp_page_turn_left_value", value) } }
@@ -81,6 +85,7 @@ class ConfigManager(private val context: Context) {
         const val K_FONT_SIZE = "sp_fontSize"
         const val K_FAVORITE_URL = "favoriteURL"
         const val K_VOLUME_PAGE_TURN = "volume_page_turn"
+        const val K_SAVE_TABS = "sp_shouldSaveTabs"
     }
 }
 
@@ -94,3 +99,8 @@ enum class PaperSize(val sizeString: String, val mediaSize: PrintAttributes.Medi
 enum class FabPosition {
     Right, Left, Center
 }
+
+data class AlbumInfo(
+    val title: String,
+    val url: String
+)
