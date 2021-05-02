@@ -763,13 +763,11 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             Intent.ACTION_WEB_SEARCH -> addAlbum(url = intent.getStringExtra(SearchManager.QUERY))
             "sc_history" -> {
                 addAlbum()
-                showOverview()
-                ninjaWebView.postDelayed({ openHistoryPage() }, 250)
+                openHistoryPage()
             }
             "sc_bookmark" -> {
                 addAlbum()
-                showOverview()
-                ninjaWebView.postDelayed({ openBookmarkPage() }, 250)
+                openBookmarkPage()
             }
             Intent.ACTION_SEND -> {
                 val url = intent.getStringExtra(Intent.EXTRA_TEXT)
@@ -1309,12 +1307,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     @Synchronized
     override fun removeAlbum(controller: AlbumController) {
         if (BrowserContainer.size() <= 1) {
-            if (!sp.getBoolean("sp_reopenLastTab", false)) {
                 finish()
-            } else {
-                updateAlbum(sp.getString("favoriteURL", "https://github.com/plateaukao/browser"))
-                hideOverview()
-            }
         } else {
             closeTabConfirmation {
                 tab_container.removeView(controller.albumView)
@@ -1917,7 +1910,11 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 }
                 val subMenu = menu.addSubMenu("Others")
                 for (item in toBeAddedLaterList) {
+                    if (item.title.equals("Copy")) {
+                        menu.add(item.groupId, item.itemId, Menu.NONE, item.title)
+                    } else {
                         subMenu.add(item.groupId, item.itemId, Menu.NONE, item.title)
+                    }
                 }
             }
         }
