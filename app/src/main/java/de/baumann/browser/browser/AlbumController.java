@@ -17,4 +17,6 @@ public interface AlbumController {
     void activate();
 
     void deactivate();
+
+    String getAlbumUrl();
 }

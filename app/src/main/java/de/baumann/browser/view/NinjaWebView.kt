@@ -242,6 +242,8 @@ class NinjaWebView : WebView, AlbumController {
         album.albumTitle = title
     }
 
+    override fun getAlbumUrl(): String = url ?: ""
+
     @Synchronized
     override fun activate() {
         requestFocus()

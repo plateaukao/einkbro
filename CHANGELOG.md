@@ -1,3 +1,9 @@
+### 8.7.4
+
+- Add web navigation forward action. You can add it by configure toolbar customization.
+- Add option to save current browsing tabs, so that next time, all the tabs are created automatically (in Setting -> UI, bottom par)
+- Fix Onyx device crash issue when spliting screens.
+
 ### 8.7.3
 
 - add font increase/decrease action to toolbar actions. Add them from toolbar configuration dialog
