@@ -48,6 +48,7 @@ import de.baumann.browser.database.BookmarkList
 import de.baumann.browser.database.Record
 import de.baumann.browser.database.RecordAction
 import de.baumann.browser.epub.EpubManager
+import de.baumann.browser.preference.AlbumInfo
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.preference.FabPosition
 import de.baumann.browser.preference.TouchAreaType
@@ -442,6 +443,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         currentAlbumController = controller
         currentAlbumController?.activate()
         updateOmnibox()
+
+        updateSavedAlbumInfo()
     }
 
     override fun updateAutoComplete() {
@@ -754,7 +757,16 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         when(intent.action) {
             Intent.ACTION_MAIN -> { // initial case
                 if (currentAlbumController == null) { // newly opened Activity
-                    addAlbum()
+                    if (config.shouldSaveTabs && config.savedAlbumInfoList.isNotEmpty()) {
+                        config.savedAlbumInfoList.forEachIndexed { index, albumInfo ->
+                            addAlbum(
+                                    title = albumInfo.title,
+                                    url = albumInfo.url,
+                                    foreground = (index == config.currentAlbumIndex))
+                        }
+                    } else {
+                        addAlbum()
+                    }
                 }
             }
             Intent.ACTION_VIEW -> {
@@ -875,6 +887,13 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                     ninjaWebView.updateCssStyle()
                 } else {
                     ninjaWebView.reload()
+                }
+            }
+            key.equals((ConfigManager.K_SHOULD_SAVE_TABS)) -> {
+                if (config.shouldSaveTabs) {
+                    updateSavedAlbumInfo()
+                } else {
+                    config.savedAlbumInfoList = emptyList()
                 }
             }
         }
@@ -1274,6 +1293,19 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         if (url.isNotEmpty()) {
             ninjaWebView.loadUrl(url)
         }
+
+        updateSavedAlbumInfo()
+    }
+
+    private fun updateSavedAlbumInfo() {
+        if (!config.shouldSaveTabs) return
+
+        val albumControllers = BrowserContainer.list()
+        val albumInfoList = albumControllers
+                .filter { it.albumUrl.isNotBlank() }
+                .map { controller -> AlbumInfo(controller.albumTitle, controller.albumUrl) }
+        config.savedAlbumInfoList = albumInfoList
+        config.currentAlbumIndex = BrowserContainer.indexOf(currentAlbumController)
     }
 
     private fun updateWebViewCount() {
@@ -1285,6 +1317,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         if (url == null) return
         (currentAlbumController as NinjaWebView).loadUrl(url)
         updateOmnibox()
+
+        updateSavedAlbumInfo()
     }
 
     private fun closeTabConfirmation(okAction: () -> Unit) {
@@ -1306,6 +1340,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
 
     @Synchronized
     override fun removeAlbum(controller: AlbumController) {
+        updateSavedAlbumInfo()
+
         if (BrowserContainer.size() <= 1) {
                 finish()
         } else {

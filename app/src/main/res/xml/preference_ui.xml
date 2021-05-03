@@ -100,13 +100,11 @@
             android:title="@string/setting_title_confirm_tab_close"
             android:summary="@string/setting_summary_confirm_tab_close" />
 
-        <!--
         <CheckBoxPreference android:key="sp_shouldSaveTabs"
             android:icon="@drawable/icon_tab_plus"
             android:defaultValue="false"
             android:title="@string/setting_title_saveTabs"
             android:summary="@string/setting_summary_saveTabs"/>
-            -->
 
     </PreferenceCategory>
 

@@ -5,7 +5,6 @@ import android.content.SharedPreferences
 import android.print.PrintAttributes
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
-import de.baumann.browser.Ninja.R
 import de.baumann.browser.util.Constants
 import de.baumann.browser.view.toolbaricons.ToolbarAction
 
@@ -29,8 +28,8 @@ class ConfigManager(private val context: Context) {
         set(value) {sp.edit { putBoolean(K_FONT_STYLE_SERIF, value) } }
 
     var shouldSaveTabs: Boolean
-        get() = sp.getBoolean(K_SAVE_TABS, false)
-        set(value) {sp.edit { putBoolean(K_SAVE_TABS, value) } }
+        get() = sp.getBoolean(K_SHOULD_SAVE_TABS, false)
+        set(value) {sp.edit { putBoolean(K_SHOULD_SAVE_TABS, value) } }
 
     var pageReservedOffset: Int
         get() = sp.getInt("sp_page_turn_left_value", 80)
@@ -65,6 +64,40 @@ class ConfigManager(private val context: Context) {
             sp.edit { putString(K_TOOLBAR_ICONS, value.map{it.ordinal}.joinToString(",")) }
         }
 
+    var savedAlbumInfoList: List<AlbumInfo>
+        get() {
+            val string = sp.getString(K_SAVED_ALBUM_INFO, "") ?: ""
+            if (string.isBlank()) return emptyList()
+
+            return string.split(ALBUM_INFO_SEPARATOR).map { it.toAlbumInfo() }
+        }
+        set(value) {
+            if (value.containsAll(savedAlbumInfoList) && savedAlbumInfoList.containsAll(value)) {
+                return
+            }
+
+            sp.edit(commit = true) {
+                if (value.isEmpty()) {
+                    remove(K_SAVED_ALBUM_INFO)
+                } else {
+                    // check if the new value the same as the old one
+                    putString(
+                            K_SAVED_ALBUM_INFO,
+                            value.joinToString(ALBUM_INFO_SEPARATOR) { it.toSerializedString() }
+                    )
+                }
+            }
+        }
+
+    var currentAlbumIndex: Int
+        get() = sp.getInt(K_SAVED_ALBUM_INDEX, 0)
+        set(value) {
+            if (currentAlbumIndex == value) return
+
+            sp.edit { putInt(K_SAVED_ALBUM_INDEX, value) }
+        }
+
+
     private fun iconStringToEnumList(iconListString: String): List<ToolbarAction> {
         if (iconListString.isBlank()) return listOf()
 
@@ -85,7 +118,11 @@ class ConfigManager(private val context: Context) {
         const val K_FONT_SIZE = "sp_fontSize"
         const val K_FAVORITE_URL = "favoriteURL"
         const val K_VOLUME_PAGE_TURN = "volume_page_turn"
-        const val K_SAVE_TABS = "sp_shouldSaveTabs"
+        const val K_SHOULD_SAVE_TABS = "sp_shouldSaveTabs"
+        const val K_SAVED_ALBUM_INFO = "sp_saved_album_info"
+        const val K_SAVED_ALBUM_INDEX = "sp_saved_album_index"
+
+        private const val ALBUM_INFO_SEPARATOR = "::::"
     }
 }
 
@@ -104,3 +141,10 @@ data class AlbumInfo(
     val title: String,
     val url: String
 )
+
+private fun AlbumInfo.toSerializedString(): String = "$title::$url"
+
+private fun String.toAlbumInfo(): AlbumInfo {
+    val segments = this.split("::")
+    return AlbumInfo(segments[0], segments[1])
+}
