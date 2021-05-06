@@ -71,14 +71,14 @@ import kotlin.math.roundToInt
 import kotlin.system.exitProcess
 
 
-class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickListener {
+class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener {
     private lateinit var adapter: RecordAdapter
 
     private lateinit var btnOpenStartPage: ImageButton
     private lateinit var btnOpenBookmark: ImageButton
     private lateinit var btnOpenHistory: ImageButton
     private lateinit var btnOpenMenu: ImageButton
-    private lateinit var fabImagebuttonnav: ImageButton
+    private lateinit var fabImageButtonNav: ImageButton
     private lateinit var inputBox: AutoCompleteTextView
     private lateinit var progressBar: ProgressBar
     private lateinit var searchBox: EditText
@@ -99,10 +99,10 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     private lateinit var mainToolbar: RelativeLayout
     private lateinit var searchPanel: ViewGroup
     private lateinit var mainContentLayout: FrameLayout
-    private lateinit var tab_container: LinearLayout
-    private lateinit var open_startPageView: View
-    private lateinit var open_bookmarkView: View
-    private lateinit var open_historyView: View
+    private lateinit var tabContainer: LinearLayout
+    private lateinit var openStartPageView: View
+    private lateinit var openBookmarkView: View
+    private lateinit var openHistoryView: View
 
     private var fullscreenHolder: FrameLayout? = null
 
@@ -605,7 +605,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         touchAreaPageUp.visibility = VISIBLE
         touchAreaPageDown.visibility = VISIBLE
 
-        fabImagebuttonnav.setImageResource(R.drawable.ic_touch_enabled)
+        fabImageButtonNav.setImageResource(R.drawable.ic_touch_enabled)
         binding.omniboxTouch.setImageResource(R.drawable.ic_touch_enabled)
         showTouchAreaHint()
     }
@@ -614,7 +614,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         binding.omniboxTouch.alpha = 0.99F
         touchAreaPageUp.visibility = INVISIBLE
         touchAreaPageDown.visibility = INVISIBLE
-        fabImagebuttonnav.setImageResource(R.drawable.icon_overflow_fab)
+        fabImageButtonNav.setImageResource(R.drawable.icon_overflow_fab)
         binding.omniboxTouch.setImageResource(R.drawable.ic_touch_disabled)
     }
 
@@ -809,7 +809,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 override fun onSwipeRight() = performGesture("setting_gesture_nav_right")
                 override fun onSwipeLeft() = performGesture("setting_gesture_nav_left")
             }
-            fabImagebuttonnav.setOnTouchListener(onTouchListener)
+            fabImageButtonNav.setOnTouchListener(onTouchListener)
             binding.omniboxSetting.setOnTouchListener(onTouchListener)
             inputBox.setOnTouchListener(object : SwipeTouchListener(this) {
                 override fun onSwipeTop() = performGesture("setting_gesture_tb_up")
@@ -923,26 +923,26 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     }
 
     private fun initFAB() {
-        fabImagebuttonnav = findViewById(R.id.fab_imageButtonNav)
-        val params = RelativeLayout.LayoutParams(fabImagebuttonnav.layoutParams.width, fabImagebuttonnav.layoutParams.height)
+        fabImageButtonNav = findViewById(R.id.fab_imageButtonNav)
+        val params = RelativeLayout.LayoutParams(fabImageButtonNav.layoutParams.width, fabImageButtonNav.layoutParams.height)
         when (config.fabPosition) {
             FabPosition.Left -> {
-                fabImagebuttonnav.layoutParams = params.apply {
+                fabImageButtonNav.layoutParams = params.apply {
                     addRule(RelativeLayout.ALIGN_PARENT_LEFT)
                     addRule(RelativeLayout.ALIGN_BOTTOM, R.id.main_content)
                 }
             }
             FabPosition.Center -> {
-                fabImagebuttonnav.layoutParams = params.apply {
+                fabImageButtonNav.layoutParams = params.apply {
                     addRule(RelativeLayout.CENTER_HORIZONTAL)
                     addRule(RelativeLayout.ALIGN_BOTTOM, R.id.main_content)
                 }
             }
         }
 
-        expandViewTouchArea(fabImagebuttonnav, ViewUnit.dpToPixel(this, 20).toInt())
-        fabImagebuttonnav.setOnClickListener { showToolbar() }
-        fabImagebuttonnav.setOnLongClickListener {
+        expandViewTouchArea(fabImageButtonNav, ViewUnit.dpToPixel(this, 20).toInt())
+        fabImageButtonNav.setOnClickListener { showToolbar() }
+        fabImageButtonNav.setOnLongClickListener {
             showFastToggleDialog()
             false
         }
@@ -1012,13 +1012,13 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         btnOpenBookmark = findViewById(R.id.open_bookmark_2)
         btnOpenHistory = findViewById(R.id.open_history_2)
         btnOpenMenu = findViewById(R.id.open_menu)
-        tab_container = findViewById(R.id.tab_container)
+        tabContainer = findViewById(R.id.tab_container)
         tabScrollview = findViewById(R.id.tab_ScrollView)
         overviewPreview = findViewById(R.id.overview_preview)
         recyclerView = findViewById(R.id.home_list_2)
-        open_startPageView = findViewById(R.id.open_newTabView)
-        open_bookmarkView = findViewById(R.id.open_bookmarkView)
-        open_historyView = findViewById(R.id.open_historyView)
+        openStartPageView = findViewById(R.id.open_newTabView)
+        openBookmarkView = findViewById(R.id.open_bookmarkView)
+        openHistoryView = findViewById(R.id.open_historyView)
 
         overviewLayout.setOnTouchListener { _, _ ->
             hideOverview()
@@ -1118,7 +1118,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
         btnOpenStartPage.setOnClickListener {
             overviewPreview.visibility = VISIBLE
             recyclerView.visibility = GONE
-            toggleOverviewFocus(open_startPageView)
+            toggleOverviewFocus(openStartPageView)
             overViewTab = getString(R.string.album_title_home)
         }
         btnOpenBookmark.setOnClickListener { openBookmarkPage() }
@@ -1133,7 +1133,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
 
         overviewPreview.visibility = INVISIBLE
         recyclerView.visibility = VISIBLE
-        toggleOverviewFocus(open_historyView)
+        toggleOverviewFocus(openHistoryView)
 
         overViewTab = getString(R.string.album_title_history)
 
@@ -1160,15 +1160,15 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
 
         overviewPreview.visibility = INVISIBLE
         recyclerView.visibility = VISIBLE
-        toggleOverviewFocus(open_bookmarkView)
+        toggleOverviewFocus(openBookmarkView)
         overViewTab = getString(R.string.album_title_bookmarks)
         initBookmarkList()
     }
 
     private fun toggleOverviewFocus(view: View) {
-        open_startPageView.visibility = if (open_startPageView == view) VISIBLE else INVISIBLE
-        open_bookmarkView.visibility = if (open_bookmarkView== view) VISIBLE else INVISIBLE
-        open_historyView.visibility = if (open_historyView== view) VISIBLE else INVISIBLE
+        openStartPageView.visibility = if (openStartPageView == view) VISIBLE else INVISIBLE
+        openBookmarkView.visibility = if (openBookmarkView== view) VISIBLE else INVISIBLE
+        openHistoryView.visibility = if (openHistoryView== view) VISIBLE else INVISIBLE
     }
 
     private fun showCurrentTabInOverview() {
@@ -1275,11 +1275,11 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
             val index = BrowserContainer.indexOf(currentAlbumController) + 1
             BrowserContainer.add(ninjaWebView, index)
             updateWebViewCount()
-            tab_container.addView(albumView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+            tabContainer.addView(albumView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
         } else {
             BrowserContainer.add(ninjaWebView)
             updateWebViewCount()
-            tab_container.addView(albumView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+            tabContainer.addView(albumView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
         }
         if (!foreground) {
             ViewUnit.bound(this, ninjaWebView)
@@ -1346,7 +1346,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
                 finish()
         } else {
             closeTabConfirmation {
-                tab_container.removeView(controller.albumView)
+                tabContainer.removeView(controller.albumView)
                 var index = BrowserContainer.indexOf(controller)
                 BrowserContainer.remove(controller)
                 updateWebViewCount()
@@ -1677,7 +1677,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     @SuppressLint("RestrictedApi")
     private fun showToolbar() {
         if (!searchOnSite) {
-            fabImagebuttonnav.visibility = INVISIBLE
+            fabImageButtonNav.visibility = INVISIBLE
             searchPanel.visibility = GONE
             mainToolbar.visibility = VISIBLE
             omniboxTitle.visibility = VISIBLE
@@ -1690,7 +1690,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     @SuppressLint("RestrictedApi")
     private fun fullscreen() {
         if (!searchOnSite) {
-            fabImagebuttonnav.visibility = VISIBLE
+            fabImageButtonNav.visibility = VISIBLE
             searchPanel.visibility = GONE
             mainToolbar.visibility = GONE
             omniboxTitle.visibility = GONE
@@ -1712,7 +1712,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, View.OnClickList
     @SuppressLint("RestrictedApi")
     private fun showSearchPanel() {
         searchOnSite = true
-        fabImagebuttonnav.visibility = INVISIBLE
+        fabImageButtonNav.visibility = INVISIBLE
         mainToolbar.visibility = GONE
         searchPanel.visibility = VISIBLE
         omniboxTitle.visibility = GONE
