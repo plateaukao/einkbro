@@ -7,6 +7,7 @@ import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.os.Build
 import android.os.Handler
+import android.os.Looper
 import android.print.PrintDocumentAdapter
 import android.util.AttributeSet
 import android.util.Base64
@@ -264,7 +265,15 @@ class NinjaWebView : WebView, AlbumController {
             browserController?.updateProgress(progress)
         }
         if (isLoadFinish) {
-            Handler().postDelayed({ setAlbumCover(ViewUnit.capture(this@NinjaWebView, dimen144dp.toFloat(), dimen108dp.toFloat(), Bitmap.Config.RGB_565)) }, 250)
+            Handler(
+                Looper.getMainLooper()).postDelayed({
+                setAlbumCover(
+                    ViewUnit.capture(this@NinjaWebView, dimen144dp.toFloat(),
+                        dimen108dp.toFloat(),
+                        Bitmap.Config.RGB_565))
+            } ,
+                250
+            )
             if (prepareRecord()) {
                 browserController?.updateAutoComplete()
             }
@@ -274,6 +283,8 @@ class NinjaWebView : WebView, AlbumController {
     @Synchronized
     fun update(title: String?) {
         album.albumTitle = title
+        // so that title on bottom bar can be updated
+        browserController?.updateProgress(BrowserUnit.PROGRESS_MAX)
     }
 
     @Synchronized
