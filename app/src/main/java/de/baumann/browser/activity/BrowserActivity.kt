@@ -9,7 +9,6 @@ import android.app.SearchManager
 import android.content.*
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
-import android.database.Cursor
 import android.graphics.Color
 import android.graphics.Rect
 import android.media.MediaPlayer
@@ -44,10 +43,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.ActivityMainBinding
 import de.baumann.browser.browser.*
-import de.baumann.browser.database.BookmarkList
-import de.baumann.browser.database.BookmarkManger
-import de.baumann.browser.database.Record
-import de.baumann.browser.database.RecordAction
+import de.baumann.browser.database.*
 import de.baumann.browser.epub.EpubManager
 import de.baumann.browser.preference.AlbumInfo
 import de.baumann.browser.preference.ConfigManager
@@ -158,7 +154,10 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
         bookmarkDB = BookmarkList(this).apply { open() }
 
-        bookmarkManager = BookmarkManger(this).apply { migrateOldData() }
+        bookmarkManager = BookmarkManger(this)
+        lifecycleScope.launch {
+            bookmarkManager.migrateOldData()
+        }
 
         WebView.enableSlowWholeDocumentDraw()
 
@@ -383,6 +382,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         IntentUnit.setContext(null)
         unregisterReceiver(downloadReceiver)
         bookmarkDB.close()
+        bookmarkManager.release()
         super.onDestroy()
     }
 
@@ -573,14 +573,16 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
     }
 
     private fun saveBookmark() {
-        val currentUrl = ninjaWebView.url
+        val currentUrl = ninjaWebView.url ?: return
         try {
-            if (bookmarkDB.isExist(currentUrl)) {
-                NinjaToast.show(this, R.string.toast_newTitle)
-            } else {
-                bookmarkDB.insert(HelperUnit.secString(ninjaWebView.title), currentUrl, "", "", "01")
-                NinjaToast.show(this, R.string.toast_edit_successful)
-                initBookmarkList()
+            lifecycleScope.launch {
+                if (bookmarkManager.existsUrl(currentUrl)) {
+                    NinjaToast.show(this@BrowserActivity, R.string.toast_newTitle)
+                } else {
+                    bookmarkManager.insert(HelperUnit.secString(ninjaWebView.title), currentUrl)
+                    NinjaToast.show(this@BrowserActivity, R.string.toast_edit_successful)
+                    initBookmarkList()
+                }
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -1186,36 +1188,15 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
     }
 
     private fun initBookmarkList() {
-        val adapter = object: SimpleCursorRecyclerAdapter(
-                R.layout.list_item_bookmark,
-                bookmarkDB.fetchAllData(this),
-                arrayOf("pass_title"),
-                intArrayOf(R.id.record_item_title)
-        ) {
-            override fun onBindViewHolder(holder: SimpleViewHolder, cursor: Cursor) {
-                super.onBindViewHolder(holder, cursor)
-                holder.itemView.setOnClickListener {
-                    val position = holder.adapterPosition
-                    cursor.moveToPosition(position)
-                    val passContent = cursor.getString(cursor.getColumnIndexOrThrow("pass_content"))
-                    updateAlbum(passContent)
-                    hideOverview()
-                }
-                holder.itemView.setOnLongClickListener {
-                    val position = holder.adapterPosition
-                    cursor.moveToPosition(position)
-                    val id = cursor.getString(cursor.getColumnIndexOrThrow("_id"))
-                    val passTitle = cursor.getString(cursor.getColumnIndexOrThrow("pass_title"))
-                    val passContent = cursor.getString(cursor.getColumnIndexOrThrow("pass_content"))
-                    val passIcon = cursor.getString(cursor.getColumnIndexOrThrow("pass_icon"))
-                    val passAttachment = cursor.getString(cursor.getColumnIndexOrThrow("pass_attachment"))
-                    val passCreation = cursor.getString(cursor.getColumnIndexOrThrow("pass_creation"))
-                    showBookmarkContextMenu(passTitle, passContent, passIcon, passAttachment, id, passCreation)
-                    true
-                }
-            }
+        lifecycleScope.launch {
+            val adapter = BookmarkAdapter(
+                bookmarkManager.getBookmarks(),
+                { updateAlbum(it.url); hideOverview() },
+                { showBookmarkContextMenu(it) ; hideOverview()}
+            )
+
+            recyclerView.adapter = adapter
         }
-        recyclerView.adapter = adapter
     }
 
     private fun showFastToggleDialog() =
@@ -1717,44 +1698,40 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         return true
     }
 
-    private fun showBookmarkContextMenu(title: String, url: String,
-                                        userName: String, userPW: String, _id: String, pass_creation: String?
-    ) {
+    private fun showBookmarkContextMenu(bookmark: Bookmark) {
         bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
-        val dialogView = View.inflate(this, R.layout.dialog_menu_context_list, null)
-        if (overViewTab == getString(R.string.album_title_history)) {
-            dialogView.findViewById<LinearLayout>(R.id.menu_contextList_edit).visibility = View.GONE
-        } else {
-            dialogView.findViewById<LinearLayout>(R.id.menu_contextList_edit).visibility = View.VISIBLE
-        }
+        val dialogView = inflate(this, R.layout.dialog_menu_context_list, null)
+        dialogView.findViewById<LinearLayout>(R.id.menu_contextList_edit).visibility = VISIBLE
         dialogView.findViewById<LinearLayout>(R.id.menu_contextList_fav).setOnClickListener {
             hideBottomSheetDialog()
-            config.favoriteUrl = url
+            config.favoriteUrl = bookmark.url
         }
         dialogView.findViewById<LinearLayout>(R.id.menu_contextLink_sc).setOnClickListener {
             hideBottomSheetDialog()
-            HelperUnit.createShortcut(this, title, url, null)
+            HelperUnit.createShortcut(this, bookmark.title, bookmark.url, null)
         }
         dialogView.findViewById<LinearLayout>(R.id.menu_contextList_newTab).setOnClickListener {
-            addAlbum(getString(R.string.app_name), url, false)
+            addAlbum(getString(R.string.app_name), bookmark.url, false)
             NinjaToast.show(this, getString(R.string.toast_new_tab_successful))
             hideBottomSheetDialog()
         }
         dialogView.findViewById<LinearLayout>(R.id.menu_contextList_newTabOpen).setOnClickListener {
-            addAlbum(getString(R.string.app_name), url)
+            addAlbum(getString(R.string.app_name), bookmark.url)
             hideBottomSheetDialog()
             hideOverview()
         }
         dialogView.findViewById<LinearLayout>(R.id.menu_contextList_delete).setOnClickListener {
             hideBottomSheetDialog()
             bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
-            val menuView = View.inflate(this, R.layout.dialog_action, null)
+            val menuView = inflate(this, R.layout.dialog_action, null)
             val textView = menuView.findViewById<TextView>(R.id.dialog_text)
             textView.setText(R.string.toast_titleConfirm_delete)
 
             menuView.findViewById<Button>(R.id.action_ok).setOnClickListener {
-                bookmarkDB.delete(_id.toInt())
-                initBookmarkList()
+                lifecycleScope.launch {
+                    bookmarkManager.delete(bookmark)
+                    initBookmarkList()
+                }
                 hideBottomSheetDialog()
             }
             menuView.findViewById<Button>(R.id.action_cancel).setOnClickListener { hideBottomSheetDialog() }
@@ -1764,36 +1741,38 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
         dialogView.findViewById<LinearLayout>(R.id.menu_contextList_edit).setOnClickListener {
             hideBottomSheetDialog()
-                try {
-                    bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
-                    val menuView = View.inflate(this, R.layout.dialog_edit_bookmark, null)
-                    val pass_titleET = menuView.findViewById<EditText>(R.id.pass_title)
-                    val pass_URLET = menuView.findViewById<EditText>(R.id.pass_url)
-                    pass_titleET.setText(title)
-                    pass_URLET.setText(url)
-                    menuView.findViewById<Button>(R.id.action_ok).setOnClickListener {
-                        try {
-                            val input_pass_title = pass_titleET.text.toString().trim { it <= ' ' }
-                            val input_pass_url = pass_URLET.text.toString().trim { it <= ' ' }
-                            bookmarkDB.update(_id.toInt(), HelperUnit.secString(input_pass_title), HelperUnit.secString(input_pass_url), "", "", pass_creation)
+            try {
+                bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
+                val menuView = inflate(this, R.layout.dialog_edit_bookmark, null)
+                val titleEditText = menuView.findViewById<EditText>(R.id.pass_title)
+                val urlEditText = menuView.findViewById<EditText>(R.id.pass_url)
+                titleEditText.setText(bookmark.title)
+                urlEditText.setText(bookmark.url)
+                menuView.findViewById<Button>(R.id.action_ok).setOnClickListener {
+                    try {
+                        bookmark.title = titleEditText.text.toString().trim { it <= ' ' }
+                        bookmark.url = urlEditText.text.toString().trim { it <= ' ' }
+                        lifecycleScope.launch {
+                            bookmarkManager.update(bookmark)
                             initBookmarkList()
-                            hideKeyboard()
-                        } catch (e: Exception) {
-                            e.printStackTrace()
-                            NinjaToast.show(this, R.string.toast_error)
                         }
-                        hideBottomSheetDialog()
-                    }
-                    menuView.findViewById<Button>(R.id.action_cancel).setOnClickListener {
                         hideKeyboard()
-                        hideBottomSheetDialog()
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        NinjaToast.show(this, R.string.toast_error)
                     }
-                    bottomSheetDialog?.setContentView(menuView)
-                    bottomSheetDialog?.show()
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    NinjaToast.show(this, R.string.toast_error)
+                    hideBottomSheetDialog()
                 }
+                menuView.findViewById<Button>(R.id.action_cancel).setOnClickListener {
+                    hideKeyboard()
+                    hideBottomSheetDialog()
+                }
+                bottomSheetDialog?.setContentView(menuView)
+                bottomSheetDialog?.show()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                NinjaToast.show(this, R.string.toast_error)
+            }
         }
 
         bottomSheetDialog?.setContentView(dialogView)
