@@ -129,8 +129,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
     private lateinit var binding: ActivityMainBinding
 
-    private lateinit var bookmarkDB: BookmarkList
-
     private lateinit var bookmarkManager: BookmarkManger
 
     private val epubManager: EpubManager by lazy { EpubManager(this) }
@@ -151,8 +149,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
-
-        bookmarkDB = BookmarkList(this).apply { open() }
 
         bookmarkManager = BookmarkManger(this)
         lifecycleScope.launch {
@@ -381,7 +377,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         BrowserContainer.clear()
         IntentUnit.setContext(null)
         unregisterReceiver(downloadReceiver)
-        bookmarkDB.close()
         bookmarkManager.release()
         super.onDestroy()
     }
@@ -581,7 +576,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
                 } else {
                     bookmarkManager.insert(HelperUnit.secString(ninjaWebView.title), currentUrl)
                     NinjaToast.show(this@BrowserActivity, R.string.toast_edit_successful)
-                    initBookmarkList()
                 }
             }
         } catch (e: Exception) {
@@ -1190,9 +1184,9 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
     private fun initBookmarkList() {
         lifecycleScope.launch {
             val adapter = BookmarkAdapter(
-                bookmarkManager.getBookmarks(),
+                bookmarkManager.getBookmarks().toMutableList(),
                 { updateAlbum(it.url); hideOverview() },
-                { showBookmarkContextMenu(it) ; hideOverview()}
+                { showBookmarkContextMenu(it) }
             )
 
             recyclerView.adapter = adapter
@@ -1722,21 +1716,10 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         }
         dialogView.findViewById<LinearLayout>(R.id.menu_contextList_delete).setOnClickListener {
             hideBottomSheetDialog()
-            bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
-            val menuView = inflate(this, R.layout.dialog_action, null)
-            val textView = menuView.findViewById<TextView>(R.id.dialog_text)
-            textView.setText(R.string.toast_titleConfirm_delete)
-
-            menuView.findViewById<Button>(R.id.action_ok).setOnClickListener {
-                lifecycleScope.launch {
-                    bookmarkManager.delete(bookmark)
-                    initBookmarkList()
-                }
-                hideBottomSheetDialog()
+            lifecycleScope.launch {
+                bookmarkManager.delete(bookmark)
+                (recyclerView.adapter as BookmarkAdapter).remove(bookmark)
             }
-            menuView.findViewById<Button>(R.id.action_cancel).setOnClickListener { hideBottomSheetDialog() }
-            bottomSheetDialog?.setContentView(menuView)
-            bottomSheetDialog?.show()
         }
 
         dialogView.findViewById<LinearLayout>(R.id.menu_contextList_edit).setOnClickListener {

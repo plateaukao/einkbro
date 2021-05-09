@@ -9,7 +9,7 @@ import de.baumann.browser.Ninja.R
 import de.baumann.browser.database.Bookmark
 
 class BookmarkAdapter(
-    private val data: List<Bookmark>,
+    private val data: MutableList<Bookmark>,
     private val onItemClick: (Bookmark) -> Unit,
     private val onItemLongClick: (Bookmark) -> Unit,
 ) : RecyclerView.Adapter<BookmarkAdapter.ViewHolder>() {
@@ -39,4 +39,9 @@ class BookmarkAdapter(
     }
 
     override fun getItemCount() = data.size
+
+    fun remove(bookmark: Bookmark) {
+        data.remove(bookmark)
+        notifyDataSetChanged()
+    }
 }
