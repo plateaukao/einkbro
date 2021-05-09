@@ -45,6 +45,7 @@ import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.ActivityMainBinding
 import de.baumann.browser.browser.*
 import de.baumann.browser.database.BookmarkList
+import de.baumann.browser.database.BookmarkManger
 import de.baumann.browser.database.Record
 import de.baumann.browser.database.RecordAction
 import de.baumann.browser.epub.EpubManager
@@ -134,6 +135,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
     private lateinit var bookmarkDB: BookmarkList
 
+    private lateinit var bookmarkManager: BookmarkManger
+
     private val epubManager: EpubManager by lazy { EpubManager(this) }
 
     // Classes
@@ -154,6 +157,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         bookmarkDB = BookmarkList(this).apply { open() }
+
+        bookmarkManager = BookmarkManger(this).apply { migrateOldData() }
 
         WebView.enableSlowWholeDocumentDraw()
 
@@ -1043,46 +1048,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         btnOpenMenu.setOnClickListener {
             bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
             val dialogView = inflate(this, R.layout.dialog_menu_overview, null)
-            val bookmark_sort = dialogView.findViewById<LinearLayout>(R.id.bookmark_sort)
-            when (overViewTab) {
-                getString(R.string.album_title_bookmarks) -> bookmark_sort.visibility = VISIBLE
-                getString(R.string.album_title_home) -> bookmark_sort.visibility = VISIBLE
-                getString(R.string.album_title_history) -> bookmark_sort.visibility = GONE
-            }
-            bookmark_sort.setOnClickListener {
-                hideBottomSheetDialog()
-                bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
-                val sortView = View.inflate(this, R.layout.dialog_bookmark_sort, null)
-                if (overViewTab == getString(R.string.album_title_bookmarks)) {
-                    sortView.findViewById<TextView>(R.id.bookmark_sort_tv).text = resources.getString(R.string.dialog_sortIcon)
-                } else if (overViewTab == getString(R.string.album_title_home)) {
-                    sortView.findViewById<TextView>(R.id.bookmark_sort_tv).text = resources.getString(R.string.dialog_sortDate)
-                }
-                sortView.findViewById<LinearLayout>(R.id.dialog_sortName).setOnClickListener {
-                    if (overViewTab == getString(R.string.album_title_bookmarks)) {
-                        sp.edit().putString("sortDBB", "title").apply()
-                        initBookmarkList()
-                        hideBottomSheetDialog()
-                    } else if (overViewTab == getString(R.string.album_title_home)) {
-                        sp.edit().putString("sort_startSite", "title").apply()
-                        btnOpenStartPage.performClick()
-                        hideBottomSheetDialog()
-                    }
-                }
-                sortView.findViewById<LinearLayout>(R.id.dialog_sortIcon).setOnClickListener {
-                    if (overViewTab == getString(R.string.album_title_bookmarks)) {
-                        sp.edit().putString("sortDBB", "icon").apply()
-                        initBookmarkList()
-                        hideBottomSheetDialog()
-                    } else if (overViewTab == getString(R.string.album_title_home)) {
-                        sp.edit().putString("sort_startSite", "ordinal").apply()
-                        btnOpenStartPage.performClick()
-                        hideBottomSheetDialog()
-                    }
-                }
-                bottomSheetDialog?.setContentView(sortView)
-                bottomSheetDialog?.show()
-            }
             dialogView.findViewById<LinearLayout>(R.id.tv_delete).setOnClickListener {
                 hideBottomSheetDialog()
                 bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)

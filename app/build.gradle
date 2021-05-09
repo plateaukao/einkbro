@@ -1,13 +1,14 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 30
     buildToolsVersion '30.0.3'
 
     defaultConfig {
-        applicationId "info.plateaukao.einkbro"
-        //applicationId "info.plateaukao.einkbro.debug"
+        //applicationId "info.plateaukao.einkbro"
+        applicationId "info.plateaukao.einkbro.debug"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 875
@@ -63,4 +64,12 @@ dependencies {
 
     // for epub saving: html processing
     implementation 'org.jsoup:jsoup:1.13.1'
+
+    def room_version = "2.3.0"
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "org.xerial:sqlite-jdbc:3.34.0"
+    kapt "androidx.room:room-compiler:$room_version"
+
+    // optional - Kotlin Extensions and Coroutines support for Room
+    implementation "androidx.room:room-ktx:$room_version"
 }
