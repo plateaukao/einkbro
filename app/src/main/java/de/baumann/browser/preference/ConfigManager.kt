@@ -97,6 +97,9 @@ class ConfigManager(private val context: Context) {
             sp.edit { putInt(K_SAVED_ALBUM_INDEX, value) }
         }
 
+    var dbVersion: Int
+        get() = sp.getInt(K_DB_VERSION, 0)
+        set(value) = sp.edit { putInt(K_DB_VERSION, value)}
 
     private fun iconStringToEnumList(iconListString: String): List<ToolbarAction> {
         if (iconListString.isBlank()) return listOf()
@@ -121,6 +124,7 @@ class ConfigManager(private val context: Context) {
         const val K_SHOULD_SAVE_TABS = "sp_shouldSaveTabs"
         const val K_SAVED_ALBUM_INFO = "sp_saved_album_info"
         const val K_SAVED_ALBUM_INDEX = "sp_saved_album_index"
+        const val K_DB_VERSION = "sp_db_version"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
     }
