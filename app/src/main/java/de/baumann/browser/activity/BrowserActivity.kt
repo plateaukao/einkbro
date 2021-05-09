@@ -1473,7 +1473,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             }
         }
         customViewCallback = callback
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR
     }
 
     override fun onHideCustomView(): Boolean {
