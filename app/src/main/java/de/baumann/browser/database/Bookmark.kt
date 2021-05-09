@@ -5,10 +5,10 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "bookmarks")
 data class Bookmark(
-    val title: String,
-    val url: String,
-    val isDirectory: Boolean,
-    val parent: Int
+    var title: String,
+    var url: String,
+    val isDirectory: Boolean = false,
+    var parent: Int = 0
 ) {
     @PrimaryKey (autoGenerate = true)
     var id: Int = 0
