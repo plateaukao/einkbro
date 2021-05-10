@@ -7,8 +7,8 @@ android {
     buildToolsVersion '30.0.3'
 
     defaultConfig {
-        //applicationId "info.plateaukao.einkbro"
-        applicationId "info.plateaukao.einkbro.debug"
+        applicationId "info.plateaukao.einkbro"
+        //applicationId "info.plateaukao.einkbro.debug"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 875
