@@ -1056,7 +1056,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             dialogView.tvAddFolder.setOnClickListener {
                 hideBottomSheetDialog()
                 createBookmarkFolder()
-                updateBookmarkList()
             }
 
             dialogView.tvDelete.setOnClickListener {
@@ -1109,6 +1108,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         lifecycleScope.launch {
             val folderName = getFolderName()
             bookmarkManager.insertDirectory(folderName)
+            updateBookmarkList()
         }
     }
 
