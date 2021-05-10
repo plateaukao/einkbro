@@ -10,7 +10,7 @@
 
     <ImageView
         android:id="@+id/ib_icon"
-        android:layout_width="8dp"
+        android:layout_width="20dp"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
         android:contentDescription="@null"
