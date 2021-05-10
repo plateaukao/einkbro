@@ -2,15 +2,15 @@
 <shape
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="oval"
-    android:height="16dp"
-    android:width="16dp" >
+    android:height="8dp"
+    android:width="8dp" >
 
     <solid
         android:color="#f44336"/>
 
     <size
-        android:width="16dp"
-        android:height="16dp"/>
+        android:width="8dp"
+        android:height="8dp"/>
 
     <stroke android:width="4dp"
         android:color="@android:color/transparent"/>

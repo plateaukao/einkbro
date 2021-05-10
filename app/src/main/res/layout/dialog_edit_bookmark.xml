@@ -35,6 +35,7 @@
     </LinearLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/url_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:passwordToggleEnabled="false" >
@@ -48,6 +49,12 @@
             android:hint="@string/dialog_url_hint" />
 
     </com.google.android.material.textfield.TextInputLayout>
+
+    <Spinner
+        android:id="@+id/folder_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+    />
 
     <RelativeLayout
         android:layout_width="wrap_content"

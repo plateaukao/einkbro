@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.room.*
 import de.baumann.browser.preference.ConfigManager
 
-
 @Database(entities = [Bookmark::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun bookmarkDao(): BookmarkDao
@@ -12,8 +11,11 @@ abstract class AppDatabase : RoomDatabase() {
 
 @Dao
 interface BookmarkDao {
-    @Query("SELECT * FROM bookmarks WHERE isDirectory != 1")
+    @Query("SELECT * FROM bookmarks")
     suspend fun getAllBookmarks(): List<Bookmark>
+
+    @Query("SELECT * FROM bookmarks WHERE isDirectory = 1")
+    suspend fun getBookmarkFolders(): List<Bookmark>
 
     @Query("SELECT * FROM bookmarks WHERE parent = :parentId")
     suspend fun getBookmarksByParent(parentId: Int): List<Bookmark>
@@ -31,7 +33,7 @@ interface BookmarkDao {
     suspend fun update(bookmark: Bookmark)
 }
 
-class BookmarkManger(private val context: Context) {
+class BookmarkManager(private val context: Context) {
     val database = Room.databaseBuilder(
         context,
         AppDatabase::class.java, "einkbro_db"
@@ -41,7 +43,7 @@ class BookmarkManger(private val context: Context) {
 
     suspend fun migrateOldData() {
         val config = ConfigManager(context)
-        if (config.dbVersion != 1) return
+        if (config.dbVersion != 0) return
 
         //add bookmarks
         val db = BookmarkList(context).apply { open() }
@@ -60,9 +62,11 @@ class BookmarkManger(private val context: Context) {
         config.dbVersion = 1
     }
 
-    suspend fun getBookmarks(): List<Bookmark> = bookmarkDao.getAllBookmarks()
+    suspend fun getBookmarks(parentId: Int = 0): List<Bookmark> = bookmarkDao.getBookmarksByParent(parentId)
 
     suspend fun getBookmarksByParent(parent: Int) = bookmarkDao.getBookmarksByParent(parent)
+
+    suspend fun getBookmarkFolders(): List<Bookmark> = bookmarkDao.getBookmarkFolders()
 
     suspend fun insert(title: String, url: String) {
         if (existsUrl(url)) return
