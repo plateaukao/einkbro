@@ -32,6 +32,8 @@ class BookmarkAdapter(
         viewHolder.textView.text = bookmark.title
         if (bookmark.isDirectory) {
             viewHolder.iconView.setImageResource(R.drawable.ic_folder)
+        } else {
+            viewHolder.iconView.setImageResource(R.drawable.circle_red_big)
         }
 
         with(viewHolder.itemView) {
