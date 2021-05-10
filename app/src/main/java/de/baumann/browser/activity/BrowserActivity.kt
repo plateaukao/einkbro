@@ -41,7 +41,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import de.baumann.browser.Ninja.R
-import de.baumann.browser.Ninja.databinding.ActivityMainBinding
+import de.baumann.browser.Ninja.databinding.*
 import de.baumann.browser.browser.*
 import de.baumann.browser.database.*
 import de.baumann.browser.epub.EpubManager
@@ -129,7 +129,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
     private lateinit var binding: ActivityMainBinding
 
-    private lateinit var bookmarkManager: BookmarkManger
+    private lateinit var bookmarkManager: BookmarkManager
 
     private val epubManager: EpubManager by lazy { EpubManager(this) }
 
@@ -150,7 +150,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
         binding = ActivityMainBinding.inflate(layoutInflater)
 
-        bookmarkManager = BookmarkManger(this)
+        bookmarkManager = BookmarkManager(this)
         lifecycleScope.launch {
             bookmarkManager.migrateOldData()
         }
@@ -732,6 +732,15 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         ).show() ?: "einkbro book"
     }
 
+    private suspend fun getFolderName(): String {
+        return TextInputDialog(
+            this@BrowserActivity,
+            getString(R.string.folder_name),
+            getString(R.string.folder_name_description),
+            ""
+        ).show() ?: "New Folder"
+    }
+
     private fun openFile(uri: Uri, mimeType: String) {
         val intent = Intent().apply {
             action = Intent.ACTION_VIEW
@@ -1043,13 +1052,19 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         }
         btnOpenMenu.setOnClickListener {
             bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
-            val dialogView = inflate(this, R.layout.dialog_menu_overview, null)
-            dialogView.findViewById<LinearLayout>(R.id.tv_delete).setOnClickListener {
+            val dialogView = DialogMenuOverviewBinding.inflate(layoutInflater)
+            dialogView.tvAddFolder.setOnClickListener {
+                hideBottomSheetDialog()
+                createBookmarkFolder()
+                updateBookmarkList()
+            }
+
+            dialogView.tvDelete.setOnClickListener {
                 hideBottomSheetDialog()
                 bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
-                val dialogView3 = View.inflate(this, R.layout.dialog_action, null)
-                dialogView3.findViewById<TextView>(R.id.dialog_text).setText(R.string.hint_database)
-                dialogView3.findViewById<Button>(R.id.action_ok).setOnClickListener {
+                val actionDialogView = DialogActionBinding.inflate(layoutInflater)
+                actionDialogView.dialogText.setText(R.string.hint_database)
+                actionDialogView.actionOk.setOnClickListener {
                     when (overViewTab) {
                         getString(R.string.album_title_home) -> {
                             BrowserUnit.clearHome(this)
@@ -1069,13 +1084,14 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
                     }
                     hideBottomSheetDialog()
                 }
-                dialogView3.findViewById<Button>(R.id.action_cancel).setOnClickListener { hideBottomSheetDialog() }
-                bottomSheetDialog?.setContentView(dialogView3)
+                actionDialogView.actionCancel.setOnClickListener { hideBottomSheetDialog() }
+                bottomSheetDialog?.setContentView(actionDialogView.root)
                 bottomSheetDialog?.show()
             }
-            bottomSheetDialog?.setContentView(dialogView)
+            bottomSheetDialog?.setContentView(dialogView.root)
             bottomSheetDialog?.show()
         }
+
         btnOpenStartPage.setOnClickListener {
             overviewPreview.visibility = VISIBLE
             recyclerView.visibility = GONE
@@ -1087,6 +1103,13 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
         findViewById<View>(R.id.button_close_overview).setOnClickListener { hideOverview() }
         showCurrentTabInOverview()
+    }
+
+    private fun createBookmarkFolder() {
+        lifecycleScope.launch {
+            val folderName = getFolderName()
+            bookmarkManager.insertDirectory(folderName)
+        }
     }
 
     private fun openHistoryPage() {
@@ -1123,7 +1146,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         recyclerView.visibility = VISIBLE
         toggleOverviewFocus(openBookmarkView)
         overViewTab = getString(R.string.album_title_bookmarks)
-        initBookmarkList()
+        updateBookmarkList()
     }
 
     private fun toggleOverviewFocus(view: View) {
@@ -1181,12 +1204,18 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         findViewById<ImageButton?>(R.id.main_search_cancel).setOnClickListener { hideSearchPanel() }
     }
 
-    private fun initBookmarkList() {
+    private fun updateBookmarkList(bookmarkFolderId: Int = 0) {
         lifecycleScope.launch {
             val adapter = BookmarkAdapter(
-                bookmarkManager.getBookmarks().toMutableList(),
-                { updateAlbum(it.url); hideOverview() },
-                { showBookmarkContextMenu(it) }
+                bookmarkManager.getBookmarks(bookmarkFolderId).toMutableList(),
+                onItemClick = {
+                    if (it.isDirectory) {
+                        updateBookmarkList(it.id)
+                    } else {
+                        updateAlbum(it.url); hideOverview()
+                    }
+                },
+                onItemLongClick = { showBookmarkContextMenu(it) }
             )
 
             recyclerView.adapter = adapter
@@ -1694,27 +1723,27 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
     private fun showBookmarkContextMenu(bookmark: Bookmark) {
         bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
-        val dialogView = inflate(this, R.layout.dialog_menu_context_list, null)
-        dialogView.findViewById<LinearLayout>(R.id.menu_contextList_edit).visibility = VISIBLE
-        dialogView.findViewById<LinearLayout>(R.id.menu_contextList_fav).setOnClickListener {
+        val dialogView = DialogMenuContextListBinding.inflate(layoutInflater)
+        dialogView.menuContextListEdit.visibility = VISIBLE
+        dialogView.menuContextListFav.setOnClickListener {
             hideBottomSheetDialog()
             config.favoriteUrl = bookmark.url
         }
-        dialogView.findViewById<LinearLayout>(R.id.menu_contextLink_sc).setOnClickListener {
+        dialogView.menuContextLinkSc.setOnClickListener {
             hideBottomSheetDialog()
             HelperUnit.createShortcut(this, bookmark.title, bookmark.url, null)
         }
-        dialogView.findViewById<LinearLayout>(R.id.menu_contextList_newTab).setOnClickListener {
+        dialogView.menuContextListNewTab.setOnClickListener {
             addAlbum(getString(R.string.app_name), bookmark.url, false)
             NinjaToast.show(this, getString(R.string.toast_new_tab_successful))
             hideBottomSheetDialog()
         }
-        dialogView.findViewById<LinearLayout>(R.id.menu_contextList_newTabOpen).setOnClickListener {
+        dialogView.menuContextListNewTabOpen.setOnClickListener {
             addAlbum(getString(R.string.app_name), bookmark.url)
             hideBottomSheetDialog()
             hideOverview()
         }
-        dialogView.findViewById<LinearLayout>(R.id.menu_contextList_delete).setOnClickListener {
+        dialogView.menuContextListDelete.setOnClickListener {
             hideBottomSheetDialog()
             lifecycleScope.launch {
                 bookmarkManager.delete(bookmark)
@@ -1722,43 +1751,20 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             }
         }
 
-        dialogView.findViewById<LinearLayout>(R.id.menu_contextList_edit).setOnClickListener {
+        dialogView.menuContextListEdit.setOnClickListener {
             hideBottomSheetDialog()
-            try {
-                bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
-                val menuView = inflate(this, R.layout.dialog_edit_bookmark, null)
-                val titleEditText = menuView.findViewById<EditText>(R.id.pass_title)
-                val urlEditText = menuView.findViewById<EditText>(R.id.pass_url)
-                titleEditText.setText(bookmark.title)
-                urlEditText.setText(bookmark.url)
-                menuView.findViewById<Button>(R.id.action_ok).setOnClickListener {
-                    try {
-                        bookmark.title = titleEditText.text.toString().trim { it <= ' ' }
-                        bookmark.url = urlEditText.text.toString().trim { it <= ' ' }
-                        lifecycleScope.launch {
-                            bookmarkManager.update(bookmark)
-                            initBookmarkList()
-                        }
-                        hideKeyboard()
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                        NinjaToast.show(this, R.string.toast_error)
-                    }
-                    hideBottomSheetDialog()
-                }
-                menuView.findViewById<Button>(R.id.action_cancel).setOnClickListener {
-                    hideKeyboard()
-                    hideBottomSheetDialog()
-                }
-                bottomSheetDialog?.setContentView(menuView)
-                bottomSheetDialog?.show()
-            } catch (e: Exception) {
-                e.printStackTrace()
-                NinjaToast.show(this, R.string.toast_error)
-            }
+            BookmarkEditDialog(
+                this,
+                layoutInflater,
+                lifecycleScope,
+                bookmarkManager,
+                bookmark,
+                { hideKeyboard() ; updateBookmarkList() },
+                { hideKeyboard() }
+            ).show()
         }
 
-        bottomSheetDialog?.setContentView(dialogView)
+        bottomSheetDialog?.setContentView(dialogView.root)
         bottomSheetDialog?.show()
     }
 
