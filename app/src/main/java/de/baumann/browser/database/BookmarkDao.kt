@@ -11,13 +11,13 @@ abstract class AppDatabase : RoomDatabase() {
 
 @Dao
 interface BookmarkDao {
-    @Query("SELECT * FROM bookmarks ORDER BY title ASC")
+    @Query("SELECT * FROM bookmarks ORDER BY title COLLATE NOCASE ASC")
     suspend fun getAllBookmarks(): List<Bookmark>
 
-    @Query("SELECT * FROM bookmarks WHERE isDirectory = 1 ORDER BY title ASC")
+    @Query("SELECT * FROM bookmarks WHERE isDirectory = 1 ORDER BY title COLLATE NOCASE ASC")
     suspend fun getBookmarkFolders(): List<Bookmark>
 
-    @Query("SELECT * FROM bookmarks WHERE parent = :parentId ORDER BY title ASC")
+    @Query("SELECT * FROM bookmarks WHERE parent = :parentId ORDER BY title COLLATE NOCASE ASC")
     suspend fun getBookmarksByParent(parentId: Int): List<Bookmark>
 
     @Query("SELECT COUNT(id) FROM bookmarks WHERE url = :url")
