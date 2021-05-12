@@ -31,6 +31,9 @@ interface BookmarkDao {
 
     @Update
     suspend fun update(bookmark: Bookmark)
+
+    @Query("DELETE FROM bookmarks")
+    suspend fun deleteAll()
 }
 
 class BookmarkManager(private val context: Context) {
@@ -62,17 +65,23 @@ class BookmarkManager(private val context: Context) {
         config.dbVersion = 1
     }
 
+    suspend fun getAllBookmarks(): List<Bookmark> = bookmarkDao.getAllBookmarks()
+
     suspend fun getBookmarks(parentId: Int = 0): List<Bookmark> = bookmarkDao.getBookmarksByParent(parentId)
 
     suspend fun getBookmarksByParent(parent: Int) = bookmarkDao.getBookmarksByParent(parent)
 
     suspend fun getBookmarkFolders(): List<Bookmark> = bookmarkDao.getBookmarkFolders()
 
+    suspend fun insert(bookmark: Bookmark) = bookmarkDao.insert(bookmark)
+
     suspend fun insert(title: String, url: String) {
         if (existsUrl(url)) return
 
         bookmarkDao.insert(Bookmark(title, url))
     }
+
+    suspend fun deleteAll() = bookmarkDao.deleteAll()
 
     suspend fun existsUrl(url: String): Boolean = bookmarkDao.existsUrl(url) > 0
 

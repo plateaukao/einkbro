@@ -368,4 +368,6 @@
     <string name="volume_page_turn">翻頁</string>
     <string name="menu_add_folder">新增書籤目錄</string>
     <string name="folder_name_description">Insert Bookmark folder name</string>
+    <string name="setting_title_export_bookmarks">export bookmarks</string>
+    <string name="setting_title_import_bookmarks">import bookmarks</string>
 </resources>
