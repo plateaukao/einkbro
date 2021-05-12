@@ -14,5 +14,13 @@
             android:key="data_imDB"
             android:icon="@drawable/icon_import"
             android:title="@string/setting_title_import_appData"/>
+        <Preference
+            android:key="data_export_bookmarks"
+            android:icon="@drawable/icon_bookmark"
+            android:title="@string/setting_title_export_bookmarks"/>
+        <Preference
+            android:key="data_import_bookmarks"
+            android:icon="@drawable/icon_bookmark"
+            android:title="@string/setting_title_import_bookmarks"/>
     </PreferenceCategory>
 </PreferenceScreen>

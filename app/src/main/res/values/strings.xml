@@ -465,4 +465,6 @@
     <string name="menu_add_folder">Add bookmark folder</string>
     <string name="folder_name">Bookmark folder name</string>
     <string name="folder_name_description">Insert Bookmark folder name</string>
+    <string name="setting_title_export_bookmarks">export bookmarks</string>
+    <string name="setting_title_import_bookmarks">import bookmarks</string>
 </resources>
