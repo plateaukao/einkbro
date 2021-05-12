@@ -1070,11 +1070,10 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
                             btnOpenStartPage.performClick()
                         }
                         getString(R.string.album_title_bookmarks) -> {
-                            val data = Environment.getDataDirectory()
-                            val bookmarksPath_app = "//data//$packageName//databases//pass_DB_v01.db"
-                            val bookmarkFile_app = File(data, bookmarksPath_app)
-                            BrowserUnit.deleteDir(bookmarkFile_app)
-                            btnOpenBookmark.performClick()
+                            lifecycleScope.launch {
+                                bookmarkManager.deleteAll()
+                                updateBookmarkList()
+                            }
                         }
                         getString(R.string.album_title_history) -> {
                             BrowserUnit.clearHistory(this)
