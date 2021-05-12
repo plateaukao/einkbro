@@ -193,8 +193,10 @@ class DataSettingsFragment : PreferenceFragmentCompat() {
                         }
                     }
                 }
+                Toast.makeText(context, "Bookmarks are imported", Toast.LENGTH_SHORT).show()
             } catch (e: IOException) {
                 e.printStackTrace()
+                Toast.makeText(context, "Bookmarks import failed", Toast.LENGTH_SHORT).show()
             }
             finally {
                 manager.release()
@@ -212,8 +214,10 @@ class DataSettingsFragment : PreferenceFragmentCompat() {
                 context.contentResolver.openOutputStream(uri).use {
                     it?.write(bookmarks.toJsonString().toByteArray())
                 }
+                Toast.makeText(context, "Bookmarks are exported", Toast.LENGTH_SHORT).show()
             } catch (e: IOException) {
                 e.printStackTrace()
+                Toast.makeText(context, "Bookmarks export failed", Toast.LENGTH_SHORT).show()
             } finally {
                 manager.release()
             }
