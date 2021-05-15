@@ -154,15 +154,15 @@ class DataSettingsFragment : PreferenceFragmentCompat() {
     private fun showBookmarkFilePicker() {
         val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
         intent.addCategory(Intent.CATEGORY_OPENABLE)
-        intent.type = Constants.MIME_TYPE_JSON
-        intent.putExtra(Intent.EXTRA_TITLE, "bookmark.json")
+        intent.type = Constants.MIME_TYPE_TEXT
+        intent.putExtra(Intent.EXTRA_TITLE, "bookmark.txt")
         startActivityForResult(intent, EXPORT_BOOKMARKS_REQUEST_CODE)
     }
 
     private fun showImportBookmarkFilePicker() {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
         intent.addCategory(Intent.CATEGORY_OPENABLE)
-        intent.type = Constants.MIME_TYPE_JSON
+        intent.type = Constants.MIME_TYPE_ANY
         startActivityForResult(intent, IMPORT_BOOKMARKS_REQUEST_CODE)
     }
 
