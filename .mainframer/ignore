@@ -1,0 +1,8 @@
+.gradle
+
+.git/*
+.gitmodules
+
+/.idea
+/.mainframer
+/mainframer.sh
