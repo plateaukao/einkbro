@@ -67,7 +67,6 @@ import kotlin.math.floor
 import kotlin.math.roundToInt
 import kotlin.system.exitProcess
 
-
 class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener {
     private lateinit var adapter: RecordAdapter
 
@@ -193,16 +192,10 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         Cookie(this)
         downloadReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
-                bottomSheetDialog = BottomSheetDialog(this@BrowserActivity, R.style.BottomSheetDialog)
-                val dialogView = View.inflate(this@BrowserActivity, R.layout.dialog_action, null)
-                dialogView.findViewById<TextView>(R.id.dialog_text).setText(R.string.toast_downloadComplete)
-                dialogView.findViewById<Button>(R.id.action_ok).setOnClickListener {
-                    startActivity(Intent(DownloadManager.ACTION_VIEW_DOWNLOADS))
-                    hideBottomSheetDialog()
-                }
-                dialogView.findViewById<Button>(R.id.action_cancel).setOnClickListener { hideBottomSheetDialog() }
-                bottomSheetDialog?.setContentView(dialogView)
-                bottomSheetDialog?.show()
+                showOkCancelDialog(
+                    messageResId = R.string.toast_downloadComplete,
+                    okAction = { startActivity(Intent(DownloadManager.ACTION_VIEW_DOWNLOADS)) }
+                )
             }
         }
         val filter = IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE)
@@ -292,9 +285,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         }
 
         if (requestCode == WRITE_PDF_REQUEST_CODE && resultCode == RESULT_OK) {
-            data?.data?.let {
-                printPDF()
-            }
+            data?.data?.let { printPDF() }
 
             return
         }
@@ -337,17 +328,11 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
     }
 
     private fun showRestartConfirmDialog() {
-        val dialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
-        val dialogView = View.inflate(this, R.layout.dialog_action, null)
-        dialogView.findViewById<TextView>(R.id.dialog_text).setText(R.string.toast_restart)
-        dialogView.findViewById<Button>(R.id.action_ok).setOnClickListener {
-            dialog.dismiss()
-            restartApp()
-        }
+        showOkCancelDialog(
+            messageResId = R.string.toast_restart,
+            okAction = { restartApp() }
 
-        dialogView.findViewById<Button>(R.id.action_cancel).setOnClickListener { dialog.cancel() }
-        dialog.setContentView(dialogView)
-        dialog.show()
+        )
     }
 
     private fun restartApp() {
@@ -357,16 +342,10 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
     }
 
     private fun showFileListConfirmDialog() {
-        bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
-        val dialogView = View.inflate(this, R.layout.dialog_action, null)
-        dialogView.findViewById<TextView>(R.id.dialog_text).setText(R.string.toast_downloadComplete)
-        dialogView.findViewById<Button>(R.id.action_ok).setOnClickListener {
-            startActivity(Intent(DownloadManager.ACTION_VIEW_DOWNLOADS))
-            hideBottomSheetDialog()
-        }
-        dialogView.findViewById<Button>(R.id.action_cancel).setOnClickListener { hideBottomSheetDialog() }
-        bottomSheetDialog?.setContentView(dialogView)
-        bottomSheetDialog?.show()
+        showOkCancelDialog(
+            messageResId = R.string.toast_downloadComplete,
+            okAction = { startActivity(Intent(DownloadManager.ACTION_VIEW_DOWNLOADS)) }
+        )
     }
 
     public override fun onDestroy() {
@@ -531,20 +510,11 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
             R.id.omnibox_refresh -> if (url != null && ninjaWebView.isLoadFinish) {
                 if (url?.startsWith("https://") != true) {
-                    bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
-                    val dialogView = View.inflate(this, R.layout.dialog_action, null)
-                    val textView = dialogView.findViewById<TextView>(R.id.dialog_text)
-                    textView.setText(R.string.toast_unsecured)
-                    dialogView.findViewById<Button>(R.id.action_ok).setOnClickListener {
-                        hideBottomSheetDialog()
-                        ninjaWebView.loadUrl(url?.replace("http://", "https://") ?: "")
-                    }
-                    dialogView.findViewById<Button>(R.id.action_cancel).setOnClickListener {
-                        hideBottomSheetDialog()
-                        ninjaWebView.reload()
-                    }
-                    bottomSheetDialog?.setContentView(dialogView)
-                    bottomSheetDialog?.show()
+                    showOkCancelDialog(
+                        messageResId = R.string.toast_unsecured,
+                        okAction = { ninjaWebView.loadUrl(url?.replace("http://", "https://") ?: "") },
+                        cancelAction = { ninjaWebView.reload() }
+                    )
                 } else {
                     ninjaWebView.reload()
                 }
@@ -558,8 +528,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             R.id.toolbar_increase_font -> increaseFontSize()
             R.id.toolbar_decrease_font-> decreaseFontSize()
             R.id.toolbar_fullscreen -> fullscreen()
-            else -> {
-            }
+            else -> { }
         }
     }
 
@@ -1060,31 +1029,27 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
             dialogView.tvDelete.setOnClickListener {
                 hideBottomSheetDialog()
-                bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
-                val actionDialogView = DialogActionBinding.inflate(layoutInflater)
-                actionDialogView.dialogText.setText(R.string.hint_database)
-                actionDialogView.actionOk.setOnClickListener {
-                    when (overViewTab) {
-                        getString(R.string.album_title_home) -> {
-                            BrowserUnit.clearHome(this)
-                            btnOpenStartPage.performClick()
-                        }
-                        getString(R.string.album_title_bookmarks) -> {
-                            lifecycleScope.launch {
-                                bookmarkManager.deleteAll()
-                                updateBookmarkList()
+                showOkCancelDialog(
+                    messageResId = R.string.hint_database,
+                    okAction = {
+                        when (overViewTab) {
+                            getString(R.string.album_title_home) -> {
+                                BrowserUnit.clearHome(this)
+                                btnOpenStartPage.performClick()
+                            }
+                            getString(R.string.album_title_bookmarks) -> {
+                                lifecycleScope.launch {
+                                    bookmarkManager.deleteAll()
+                                    updateBookmarkList()
+                                }
+                            }
+                            getString(R.string.album_title_history) -> {
+                                BrowserUnit.clearHistory(this)
+                                openHistoryPage()
                             }
                         }
-                        getString(R.string.album_title_history) -> {
-                            BrowserUnit.clearHistory(this)
-                            openHistoryPage()
-                        }
                     }
-                    hideBottomSheetDialog()
-                }
-                actionDialogView.actionCancel.setOnClickListener { hideBottomSheetDialog() }
-                bottomSheetDialog?.setContentView(actionDialogView.root)
-                bottomSheetDialog?.show()
+                )
             }
             bottomSheetDialog?.setContentView(dialogView.root)
             bottomSheetDialog?.show()
@@ -1293,16 +1258,10 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         if (!sp.getBoolean("sp_close_tab_confirm", false)) {
             okAction()
         } else {
-            bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
-            val dialogView = View.inflate(this, R.layout.dialog_action, null)
-            dialogView.findViewById<TextView>(R.id.dialog_text).setText(R.string.toast_close_tab)
-            dialogView.findViewById<Button>(R.id.action_ok).setOnClickListener {
-                okAction()
-                hideBottomSheetDialog()
-            }
-            dialogView.findViewById<Button>(R.id.action_cancel).setOnClickListener { hideBottomSheetDialog() }
-            bottomSheetDialog?.setContentView(dialogView)
-            bottomSheetDialog?.show()
+            showOkCancelDialog(
+                messageResId = R.string.toast_close_tab,
+                okAction = okAction,
+            )
         }
     }
 
@@ -1771,55 +1730,48 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
                                        recordList: MutableList<Record>, location: Int
     ) {
         bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
-        val dialogView = View.inflate(this, R.layout.dialog_menu_context_list, null)
-        if (overViewTab == getString(R.string.album_title_history)) {
-            dialogView.findViewById<LinearLayout>(R.id.menu_contextList_edit).visibility = View.GONE
-        } else {
-            dialogView.findViewById<LinearLayout>(R.id.menu_contextList_edit).visibility = View.VISIBLE
-        }
-        dialogView.findViewById<LinearLayout>(R.id.menu_contextList_fav).setOnClickListener {
+        val dialogView = DialogMenuContextListBinding.inflate(layoutInflater)
+        dialogView.menuContextListEdit.visibility = GONE
+        dialogView.menuContextListFav.setOnClickListener {
             hideBottomSheetDialog()
             config.favoriteUrl = url
         }
-        dialogView.findViewById<LinearLayout>(R.id.menu_contextLink_sc).setOnClickListener {
+        dialogView.menuContextLinkSc.setOnClickListener {
             hideBottomSheetDialog()
             HelperUnit.createShortcut(this, title, url, null)
         }
-        dialogView.findViewById<LinearLayout>(R.id.menu_contextList_newTab).setOnClickListener {
+        dialogView.menuContextListNewTab.setOnClickListener {
             addAlbum(getString(R.string.app_name), url, false)
             NinjaToast.show(this, getString(R.string.toast_new_tab_successful))
             hideBottomSheetDialog()
         }
-        dialogView.findViewById<LinearLayout>(R.id.menu_contextList_newTabOpen).setOnClickListener {
+        dialogView.menuContextListNewTabOpen.setOnClickListener {
             addAlbum(getString(R.string.app_name), url)
             hideBottomSheetDialog()
             hideOverview()
         }
-        dialogView.findViewById<LinearLayout>(R.id.menu_contextList_delete).setOnClickListener {
+        dialogView.menuContextListDelete.setOnClickListener {
             hideBottomSheetDialog()
-            bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
-            val dialogView = View.inflate(this, R.layout.dialog_action, null)
-            val textView = dialogView.findViewById<TextView>(R.id.dialog_text)
-            textView.setText(R.string.toast_titleConfirm_delete)
-
-            dialogView.findViewById<Button>(R.id.action_ok).setOnClickListener {
-                val record = recordList[location]
-                val action = RecordAction(this@BrowserActivity)
-                action.open(true)
-                action.deleteHistoryItem(record)
-                action.close()
-                recordList.removeAt(location)
-                recordAdapter.notifyDataSetChanged()
-                updateAutoComplete()
-                hideBottomSheetDialog()
-            }
-            dialogView.findViewById<Button>(R.id.action_cancel).setOnClickListener { hideBottomSheetDialog() }
-            bottomSheetDialog?.setContentView(dialogView)
-            bottomSheetDialog?.show()
+            showOkCancelDialog(
+                messageResId = R.string.toast_titleConfirm_delete,
+                okAction = { deleteHistory(recordList, recordAdapter, location) }
+            )
         }
 
-        bottomSheetDialog?.setContentView(dialogView)
+        bottomSheetDialog?.setContentView(dialogView.root)
         bottomSheetDialog?.show()
+    }
+
+    private fun deleteHistory(recordList: MutableList<Record>, recordAdapter: RecordAdapter, location: Int) {
+        val record = recordList[location]
+        RecordAction(this).apply {
+            open(true)
+            deleteHistoryItem(record)
+            close()
+        }
+        recordList.removeAt(location)
+        recordAdapter.notifyDataSetChanged()
+        updateAutoComplete()
     }
 
     private fun setCustomFullscreen(fullscreen: Boolean) {
@@ -1840,21 +1792,45 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         if (BrowserContainer.size() <= 1) {
             return currentAlbumController
         }
+
         val list = BrowserContainer.list()
         var index = list.indexOf(currentAlbumController)
         if (next) {
             index++
             if (index >= list.size) {
-                index = 0
+                return list.first()
             }
         } else {
             index--
             if (index < 0) {
-                index = list.size - 1
+                return list.last()
             }
         }
         return list[index]
     }
+    private fun showOkCancelDialog(
+        title: String? = null,
+        messageResId:Int,
+        okAction: () -> Unit,
+        cancelAction: (() -> Unit)? = null)
+    {
+        AlertDialog.Builder(this, R.style.TouchAreaDialog)
+            .setMessage(messageResId)
+            .setPositiveButton(android.R.string.ok) { _, _ ->
+                okAction.invoke()
+            }
+            .setNegativeButton(android.R.string.cancel) { _, _ ->
+                cancelAction?.invoke()
+            }.apply {
+                title?.let { title -> setTitle(title) }
+            }
+            .create().apply {
+                window?.setGravity(Gravity.BOTTOM)
+            }
+            .show()
+
+    }
+
 
     private var mActionMode: ActionMode? = null
     override fun onActionModeStarted(mode: ActionMode) {
