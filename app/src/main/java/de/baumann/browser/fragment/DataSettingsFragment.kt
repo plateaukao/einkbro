@@ -14,6 +14,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -21,6 +22,7 @@ import androidx.preference.PreferenceManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import de.baumann.browser.Ninja.R
+import de.baumann.browser.Ninja.databinding.DialogActionBinding
 import de.baumann.browser.database.Bookmark
 import de.baumann.browser.database.BookmarkManager
 import de.baumann.browser.unit.BrowserUnit
@@ -40,39 +42,34 @@ import javax.xml.parsers.DocumentBuilderFactory
 import javax.xml.parsers.ParserConfigurationException
 
 class DataSettingsFragment : PreferenceFragmentCompat() {
-    private var dialog: BottomSheetDialog? = null
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preference_data, rootKey)
         val sd = requireActivity().getExternalFilesDir(null)
         val data = Environment.getDataDirectory()
-        val previewsPath_app = "//data//" + requireActivity().packageName + "//"
-        val previewsPath_backup = "browser_backup//data//"
-        val previewsFolder_app = File(data, previewsPath_app)
-        val previewsFolder_backup = File(sd, previewsPath_backup)
+        val previewspathApp = "//data//" + requireActivity().packageName + "//"
+        val previewspathBackup = "browser_backup//data//"
+        val previewsfolderApp = File(data, previewspathApp)
+        val previewsfolderBackup = File(sd, previewspathBackup)
         findPreference<Preference>("data_exDB")!!.onPreferenceClickListener =
-            Preference.OnPreferenceClickListener { preference: Preference? ->
-                val dialogView: View
-                val textView: TextView
-                val action_ok: Button
-                val action_cancel: Button
-                dialog = BottomSheetDialog(requireActivity())
-                dialogView = View.inflate(activity, R.layout.dialog_action, null)
-                textView = dialogView.findViewById(R.id.dialog_text)
-                textView.setText(R.string.toast_backup)
-                action_ok = dialogView.findViewById(R.id.action_ok)
-                action_ok.setOnClickListener { view: View? ->
-                    dialog!!.cancel()
+            Preference.OnPreferenceClickListener {
+                val activity = activity ?: return@OnPreferenceClickListener false
+                val dialog = BottomSheetDialog(requireActivity())
+                val dialogView = DialogActionBinding.inflate(activity.layoutInflater)
+                dialogView.dialogText.setText(R.string.toast_backup)
+                dialogView.actionOk.setOnClickListener {
+                    dialog.dismiss()
                     try {
                         if (Build.VERSION.SDK_INT in 23..28) {
-                            val hasWRITE_EXTERNAL_STORAGE =
-                                activity!!.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                            if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
-                                grantPermissionsStorage(activity!!)
-                                dialog!!.cancel()
+                            val haswriteExternalStorage =
+                                requireActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                            if (haswriteExternalStorage != PackageManager.PERMISSION_GRANTED) {
+                                grantPermissionsStorage(requireActivity())
+                                dialog.cancel()
                             } else {
                                 makeBackupDir()
-                                BrowserUnit.deleteDir(previewsFolder_backup)
-                                copyDirectory(previewsFolder_app, previewsFolder_backup)
+                                BrowserUnit.deleteDir(previewsfolderBackup)
+                                copyDirectory(previewsfolderApp, previewsfolderBackup)
                                 backupUserPrefs(activity)
                                 NinjaToast.show(
                                     activity,
@@ -81,8 +78,8 @@ class DataSettingsFragment : PreferenceFragmentCompat() {
                             }
                         } else {
                             makeBackupDir()
-                            BrowserUnit.deleteDir(previewsFolder_backup)
-                            copyDirectory(previewsFolder_app, previewsFolder_backup)
+                            BrowserUnit.deleteDir(previewsfolderBackup)
+                            copyDirectory(previewsfolderApp, previewsfolderBackup)
                             backupUserPrefs(activity)
                             NinjaToast.show(activity, getString(R.string.toast_export_successful) + "browser_backup")
                         }
@@ -90,11 +87,10 @@ class DataSettingsFragment : PreferenceFragmentCompat() {
                         e.printStackTrace()
                     }
                 }
-                action_cancel = dialogView.findViewById(R.id.action_cancel)
-                action_cancel.setOnClickListener { view: View? -> dialog!!.cancel() }
-                dialog!!.setContentView(dialogView)
-                dialog!!.show()
-                setBottomSheetBehavior(dialog!!, dialogView, BottomSheetBehavior.STATE_EXPANDED)
+                dialogView.actionCancel.setOnClickListener { dialog.dismiss() }
+                dialog.setContentView(dialogView.root)
+                dialog.show()
+                setBottomSheetBehavior(dialog, dialogView.root, BottomSheetBehavior.STATE_EXPANDED)
                 false
             }
         findPreference<Preference>("data_imDB")!!.onPreferenceClickListener =
@@ -102,29 +98,29 @@ class DataSettingsFragment : PreferenceFragmentCompat() {
                 val textView: TextView
                 val action_ok: Button
                 val action_cancel: Button
-                dialog = BottomSheetDialog(requireActivity())
+                val dialog = BottomSheetDialog(requireActivity())
                 val dialogView: View = View.inflate(activity, R.layout.dialog_action, null)
                 textView = dialogView.findViewById(R.id.dialog_text)
                 textView.setText(R.string.hint_database)
                 action_ok = dialogView.findViewById(R.id.action_ok)
                 action_ok.setOnClickListener { view: View? ->
-                    dialog!!.cancel()
+                    dialog.cancel()
                     try {
-                        if (Build.VERSION.SDK_INT >= 23 && Build.VERSION.SDK_INT < 29) {
+                        if (Build.VERSION.SDK_INT in 23..28) {
                             val hasWRITE_EXTERNAL_STORAGE =
-                                activity!!.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                                requireActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                             if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
-                                grantPermissionsStorage(activity!!)
-                                dialog!!.cancel()
+                                grantPermissionsStorage(requireActivity())
+                                dialog.cancel()
                             } else {
                                 //BrowserUnit.deleteDir(previewsFolder_app);
-                                copyDirectory(previewsFolder_backup, previewsFolder_app)
+                                copyDirectory(previewsfolderBackup, previewsfolderApp)
                                 restoreUserPrefs(activity)
                                 dialogRestart()
                             }
                         } else {
                             //BrowserUnit.deleteDir(previewsFolder_app);
-                            copyDirectory(previewsFolder_backup, previewsFolder_app)
+                            copyDirectory(previewsfolderBackup, previewsfolderApp)
                             restoreUserPrefs(activity)
                             dialogRestart()
                         }
@@ -134,8 +130,8 @@ class DataSettingsFragment : PreferenceFragmentCompat() {
                 }
                 action_cancel = dialogView.findViewById(R.id.action_cancel)
                 action_cancel.setOnClickListener { view: View? -> dialog!!.cancel() }
-                dialog!!.setContentView(dialogView)
-                dialog!!.show()
+                dialog.setContentView(dialogView)
+                dialog.show()
                 setBottomSheetBehavior(dialog!!, dialogView, BottomSheetBehavior.STATE_EXPANDED)
                 false
             }
@@ -224,13 +220,14 @@ class DataSettingsFragment : PreferenceFragmentCompat() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun makeBackupDir() {
         val backupDir = File(requireActivity().getExternalFilesDir(null), "browser_backup//")
         val noMedia = File(backupDir, "//.nomedia")
         val hasWRITE_EXTERNAL_STORAGE =
             requireActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
         if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
-            grantPermissionsStorage(activity!!)
+            grantPermissionsStorage(requireActivity())
         } else {
             if (!backupDir.exists()) {
                 try {
