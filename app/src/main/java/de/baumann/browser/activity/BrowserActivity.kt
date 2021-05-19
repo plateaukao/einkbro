@@ -1045,7 +1045,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
                             }
                             getString(R.string.album_title_history) -> {
                                 BrowserUnit.clearHistory(this)
-                                openHistoryPage()
                             }
                         }
                     }
