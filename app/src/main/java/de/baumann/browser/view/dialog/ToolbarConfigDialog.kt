@@ -126,7 +126,7 @@ class ToolbarConfigDialog(
                 if (iconResId != 0) {
                     imageView.setImageResource(iconResId)
                 } else {
-                    imageView.setImageIcon(null)
+                    imageView.setImageBitmap(null)
                 }
                 view.findViewById<TextView>(R.id.text).text = item?.title ?: ""
                 return view
