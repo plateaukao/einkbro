@@ -17,7 +17,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
-import android.os.Handler
 import android.print.PrintAttributes
 import android.print.PrintManager
 import android.text.Editable
@@ -809,14 +808,9 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         })
         inputBox.onFocusChangeListener = OnFocusChangeListener { _, _ ->
             if (inputBox.hasFocus()) {
-                ninjaWebView.stopLoading()
                 inputBox.setText(ninjaWebView.url)
-                Handler().postDelayed({
-                    toggleIconsOnOmnibox(true)
-                    inputBox.requestFocus()
-                    inputBox.setSelection(0, inputBox.text.toString().length)
-                    showKeyboard()
-                }, 250)
+                inputBox.setSelection(0, inputBox.text.toString().length)
+                toggleIconsOnOmnibox(true)
             } else {
                 toggleIconsOnOmnibox(false)
                 omniboxTitle.text = ninjaWebView.title
