@@ -1,3 +1,17 @@
+### 8.7.6
+
+- Fix crash on Android OS5 when opening toolbar setting dialog
+- When sharing text with EinkBro, it will remove prefix before launching url
+- Export bookmark file as text file, instead of json extension
+- Update strings for zh-rCN
+
+### 8.7.5
+
+- Support creating folder in bookmarks (click on 3 dot when bookmark list is displayed)
+- Support backup and restore bookmark data
+- Support Android OS 5 (SDK level 21)
+
+
 ### 8.7.4
 
 - Add web navigation forward action. You can add it by configure toolbar customization.
