@@ -71,7 +71,8 @@ public class BrowserUnit {
     public static final String URL_SCHEME_ABOUT = "about:";
     public static final String URL_SCHEME_MAIL_TO = "mailto:";
     private static final String URL_SCHEME_FILE = "file://";
-    private static final String URL_SCHEME_HTTP = "https://";
+    private static final String URL_SCHEME_HTTPS = "https://";
+    private static final String URL_SCHEME_HTTP = "http://";
     public static final String URL_SCHEME_INTENT = "intent://";
 
     private static final String URL_PREFIX_GOOGLE_PLAY = "www.google.com/url?q=";
@@ -121,13 +122,24 @@ public class BrowserUnit {
             query = query.substring(start, end);
         }
 
+        // -- start: remove prefix non-url part
+        int foundIndex = query.indexOf(URL_SCHEME_HTTPS);
+        if (foundIndex > 0) {
+            query = query.substring(foundIndex);
+        }
+        foundIndex = query.indexOf(URL_SCHEME_HTTP);
+        if (foundIndex > 0) {
+            query = query.substring(foundIndex);
+        }
+        // -- end: remove prefix non-url part
+
         if (isURL(query)) {
             if (query.startsWith(URL_SCHEME_ABOUT) || query.startsWith(URL_SCHEME_MAIL_TO)) {
                 return query;
             }
 
             if (!query.contains("://")) {
-                query = URL_SCHEME_HTTP + query;
+                query = URL_SCHEME_HTTPS + query;
             }
 
             return query;
