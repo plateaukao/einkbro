@@ -9,6 +9,7 @@ import android.app.SearchManager
 import android.content.*
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.Rect
 import android.media.MediaPlayer
@@ -33,6 +34,7 @@ import android.widget.AdapterView.OnItemClickListener
 import android.widget.TextView.OnEditorActionListener
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.edit
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
@@ -131,6 +133,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
     private val epubManager: EpubManager by lazy { EpubManager(this) }
 
+    private var uiMode = Configuration.UI_MODE_NIGHT_UNDEFINED
+
     // Classes
     private inner class VideoCompletionListener : OnCompletionListener, MediaPlayer.OnErrorListener {
         override fun onError(mp: MediaPlayer, what: Int, extra: Int): Boolean {
@@ -200,6 +204,17 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         val filter = IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE)
         registerReceiver(downloadReceiver, filter)
         dispatchIntent(intent)
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val nightModeFlags = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+            if (nightModeFlags != uiMode) {
+                restartApp()
+            }
+        }
     }
 
     private fun initTouchArea() {
@@ -324,6 +339,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
         updateOmnibox()
         overridePendingTransition(0, 0)
+        uiMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
     }
 
     private fun showRestartConfirmDialog() {
