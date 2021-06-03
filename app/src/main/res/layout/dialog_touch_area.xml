@@ -104,7 +104,6 @@
             android:id="@+id/switch_show_touch_area_hint"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:buttonTint="@android:color/black"
             android:checked="true" />
 
         <TextView

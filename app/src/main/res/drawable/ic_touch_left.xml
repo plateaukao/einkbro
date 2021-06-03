@@ -1,21 +1,21 @@
 <vector android:height="93.414635dp" android:viewportHeight="383"
     android:viewportWidth="246" android:width="60dp" xmlns:android="http://schemas.android.com/apk/res/android">
-    <path android:fillColor="#00000000"
+    <path android:fillColor="@color/color_transparent"
         android:pathData="M2.5,20.5h240v360h-240z"
-        android:strokeColor="#000000" android:strokeWidth="5"/>
-    <path android:fillColor="#00000000"
+        android:strokeColor="?attr/colorControlNormal" android:strokeWidth="5"/>
+    <path android:fillColor="@color/color_transparent"
         android:pathData="M2.5,192.5h60v80h-60z"
-        android:strokeColor="#000000" android:strokeWidth="2"/>
-    <path android:fillColor="#00000000"
+        android:strokeColor="?attr/colorControlNormal" android:strokeWidth="2"/>
+    <path android:fillColor="@color/color_transparent"
         android:pathData="M2.5,272.5h60v76.25h-60z"
-        android:strokeColor="#000000" android:strokeWidth="2"/>
-    <path android:fillColor="#00000000"
+        android:strokeColor="?attr/colorControlNormal" android:strokeWidth="2"/>
+    <path android:fillColor="@color/color_transparent"
         android:pathData="M25.5,264.5L25.5,240.5L15,240.5L32.5,200.5L50,240.5L39.5,240.5L39.5,264.5L32.5,264.5Z"
-        android:strokeColor="#000000" android:strokeWidth="1"/>
-    <path android:fillColor="#00000000"
+        android:strokeColor="?attr/colorControlNormal" android:strokeWidth="1"/>
+    <path android:fillColor="@color/color_transparent"
         android:pathData="M40.2,277.5L40.2,303.76L51.75,303.76L32.5,343.76L13.25,303.76L24.81,303.76L24.81,277.5L32.5,277.5Z"
-        android:strokeColor="#000000" android:strokeWidth="1"/>
-    <path android:fillColor="#00000000"
+        android:strokeColor="?attr/colorControlNormal" android:strokeWidth="1"/>
+    <path android:fillColor="@color/color_transparent"
         android:pathData="M4.42,349.18L242.5,346.66"
-        android:strokeColor="#000000" android:strokeWidth="5"/>
+        android:strokeColor="?attr/colorControlNormal" android:strokeWidth="3"/>
 </vector>
