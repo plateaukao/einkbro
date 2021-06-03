@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.os.Build
 import android.os.Handler
@@ -19,6 +20,8 @@ import android.webkit.CookieManager
 import android.webkit.WebSettings
 import android.webkit.WebView
 import androidx.preference.PreferenceManager
+import androidx.webkit.WebSettingsCompat
+import androidx.webkit.WebViewFeature
 import de.baumann.browser.Ninja.BuildConfig
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.browser.*
@@ -124,6 +127,17 @@ class NinjaWebView : WebView, AlbumController {
         setOnTouchListener { _, motionEvent: MotionEvent? ->
             gestureDetector.onTouchEvent(motionEvent)
             false
+        }
+
+        if(WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK_STRATEGY)) {
+            WebSettingsCompat.setForceDarkStrategy(settings, WebSettingsCompat.DARK_STRATEGY_WEB_THEME_DARKENING_ONLY)
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val nightModeFlags = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+            if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
+                settings.forceDark = WebSettings.FORCE_DARK_ON
+            }
         }
     }
 

@@ -156,7 +156,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginEnd="16dp"
                     android:gravity="center_vertical"
-                    android:src="@drawable/star_grey" />
+                    android:src="@drawable/ic_home" />
 
                 <TextView
                     android:text="@string/menu_fav"
