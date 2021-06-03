@@ -527,7 +527,18 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             R.id.toolbar_increase_font -> increaseFontSize()
             R.id.toolbar_decrease_font-> decreaseFontSize()
             R.id.toolbar_fullscreen -> fullscreen()
+            R.id.toolbar_rotate -> rotateScreen()
             else -> { }
+        }
+    }
+
+    private var isRotated:Boolean = false
+    private fun rotateScreen() {
+        isRotated = !isRotated
+        requestedOrientation = if (!isRotated) {
+            ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+        } else {
+            ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         }
     }
 
