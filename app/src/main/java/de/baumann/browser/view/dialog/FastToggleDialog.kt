@@ -3,23 +3,17 @@ package de.baumann.browser.view.dialog
 import android.app.AlertDialog
 import android.content.Context
 import android.content.SharedPreferences
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
-import android.widget.Button
-import android.widget.CheckBox
 import android.widget.ImageButton
-import android.widget.TextView
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import de.baumann.browser.Ninja.R
-import de.baumann.browser.browser.AdBlock
-import de.baumann.browser.browser.Cookie
+import de.baumann.browser.Ninja.databinding.DialogToggleBinding
 import de.baumann.browser.preference.ConfigManager
-import de.baumann.browser.unit.HelperUnit
 
 class FastToggleDialog(
         private val context: Context,
@@ -29,12 +23,12 @@ class FastToggleDialog(
     private val sp: SharedPreferences by lazy { PreferenceManager.getDefaultSharedPreferences(context) }
     private val config: ConfigManager by lazy { ConfigManager(context) }
     private lateinit var dialog: AlertDialog
-    private lateinit var view: View
+    private lateinit var binding: DialogToggleBinding
 
 
     fun show() {
-        view = View.inflate(context, R.layout.dialog_toggle, null)
-        val builder = AlertDialog.Builder(context, R.style.TouchAreaDialog).apply { setView(view) }
+        binding = DialogToggleBinding.inflate(LayoutInflater.from(context))
+        val builder = AlertDialog.Builder(context, R.style.TouchAreaDialog).apply { setView(binding.root) }
 
         initViews()
         dialog = builder.create().apply {
@@ -52,46 +46,35 @@ class FastToggleDialog(
     }
 
     private fun initToggles() {
-        val toggleHistory = view.findViewById<ImageButton>(R.id.toggle_history) ?: return
-        val toggleHistoryView = view.findViewById<View>(R.id.toggle_historyView) ?: return
-        val toggleLocation = view.findViewById<ImageButton>(R.id.toggle_location) ?: return
-        val toggleLocationView = view.findViewById<View>(R.id.toggle_locationView) ?: return
-        val toggleVolume = view.findViewById<ImageButton>(R.id.toggle_volume) ?: return
-        val toggleVolumeView = view.findViewById<View>(R.id.toggle_volume_page_turn) ?: return
-        val toggleMediaContinue = view.findViewById<ImageButton>(R.id.toggle_media_continue) ?: return
-        val toggleMediaContinueView = view.findViewById<View>(R.id.toggle_media_continue_view) ?: return
-        val toggleDesktop = view.findViewById<ImageButton>(R.id.toggle_desktop) ?: return
-        val toggleDesktopView = view.findViewById<View>(R.id.toggle_desktopView) ?: return
+        updateViewVisibility(binding.toggleHistoryView, sp.getBoolean("saveHistory", true))
+        updateViewVisibility(binding.toggleLocationView, R.string.sp_location)
+        updateViewVisibility(binding.toggleMediaContinueView, sp.getBoolean("sp_media_continue", false))
+        updateViewVisibility(binding.toggleDesktopView, sp.getBoolean("sp_desktop", false))
+        updateViewVisibility(binding.toggleVolumePageTurn, config.volumePageTurn)
 
-        updateViewVisibility(toggleHistoryView, sp.getBoolean("saveHistory", true))
-        updateViewVisibility(toggleLocationView, R.string.sp_location)
-        updateViewVisibility(toggleMediaContinueView, sp.getBoolean("sp_media_continue", false))
-        updateViewVisibility(toggleDesktopView, sp.getBoolean("sp_desktop", false))
-        updateViewVisibility(toggleVolumeView, config.volumePageTurn)
-
-        toggleHistory.setOnClickListener {
+        binding.toggleHistory.setOnClickListener {
             updateBooleanPref("saveHistory")
-            updateViewVisibility(toggleHistoryView, sp.getBoolean("saveHistory", true))
+            updateViewVisibility(binding.toggleHistoryView, sp.getBoolean("saveHistory", true))
             dialog.dismiss()
         }
-        toggleLocation.setOnClickListener {
+        binding.toggleLocation.setOnClickListener {
             updateBooleanPref(getString(R.string.sp_location), false)
-            updateViewVisibility(toggleLocationView, R.string.sp_location)
+            updateViewVisibility(binding.toggleLocationView, R.string.sp_location)
             dialog.dismiss()
         }
-        toggleVolume.setOnClickListener {
+        binding.toggleVolume.setOnClickListener {
             config.volumePageTurn = !config.volumePageTurn
-            updateViewVisibility(toggleVolumeView, config.volumePageTurn)
+            updateViewVisibility(binding.toggleVolumePageTurn, config.volumePageTurn)
             dialog.dismiss()
         }
-        toggleMediaContinue.setOnClickListener {
+        binding.toggleMediaContinue.setOnClickListener {
             updateBooleanPref("sp_media_continue", false)
-            updateViewVisibility(toggleMediaContinueView, sp.getBoolean("sp_media_continue", false))
+            updateViewVisibility(binding.toggleMediaContinueView, sp.getBoolean("sp_media_continue", false))
             dialog.dismiss()
         }
-        toggleDesktop.setOnClickListener {
+        binding.toggleDesktop.setOnClickListener {
             updateBooleanPref("sp_desktop", false)
-            updateViewVisibility(toggleDesktopView, sp.getBoolean("sp_desktop", false))
+            updateViewVisibility(binding.toggleDesktopView, sp.getBoolean("sp_desktop", false))
             dialog.dismiss()
             okAction.invoke()
         }
@@ -128,25 +111,33 @@ class FastToggleDialog(
     }
 
     private fun initSwitches() {
-        val switchAdBlock = view.findViewById<CheckBox>(R.id.switch_adBlock) ?: return
-        val switchCookie = view.findViewById<CheckBox>(R.id.switch_cookie) ?: return
-        switchAdBlock.isChecked = sp.getBoolean(getString(R.string.sp_ad_block), true)
-        switchCookie.isChecked = sp.getBoolean(getString(R.string.sp_cookies), true)
+        binding.switchIncognito.isChecked = config.isIncognitoMode
+        binding.switchAdBlock.isChecked = sp.getBoolean(getString(R.string.sp_ad_block), true)
+        binding.switchCookie.isChecked = sp.getBoolean(getString(R.string.sp_cookies), true)
 
-        switchAdBlock.setOnCheckedChangeListener { _, isChecked ->
-            sp.edit().putBoolean(getString(R.string.sp_ad_block), isChecked).apply()
+        binding.switchIncognito.setOnCheckedChangeListener { _, isChecked ->
+            config.isIncognitoMode = isChecked
+            config.cookies = !config.isIncognitoMode
+            config.saveHistory = !config.isIncognitoMode
+
             okAction.invoke()
             dialog.dismiss()
         }
-        switchCookie.setOnCheckedChangeListener { _, isChecked ->
-            sp.edit().putBoolean(getString(R.string.sp_cookies), isChecked).apply()
+
+        binding.switchAdBlock.setOnCheckedChangeListener { _, isChecked ->
+            config.adBlock = isChecked
+            okAction.invoke()
+            dialog.dismiss()
+        }
+        binding.switchCookie.setOnCheckedChangeListener { _, isChecked ->
+            config.cookies = isChecked
             okAction.invoke()
             dialog.dismiss()
         }
     }
 
     private fun initOkCancelBar() {
-        view.findViewById<Button>(R.id.action_cancel)?.setOnClickListener { dialog.dismiss() }
+        binding.actionCancel.setOnClickListener { dialog.dismiss() }
     }
 
     private fun getString(resId: Int): String = context.getString(resId)

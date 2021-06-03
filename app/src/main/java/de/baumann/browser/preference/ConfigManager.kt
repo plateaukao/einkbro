@@ -31,6 +31,22 @@ class ConfigManager(private val context: Context) {
         get() = sp.getBoolean(K_SHOULD_SAVE_TABS, false)
         set(value) {sp.edit { putBoolean(K_SHOULD_SAVE_TABS, value) } }
 
+    var isIncognitoMode: Boolean
+        get() = sp.getBoolean(K_IS_INCOGNITO_MODE, false)
+        set(value) {sp.edit { putBoolean(K_IS_INCOGNITO_MODE, value) } }
+
+    var adBlock: Boolean
+        get() = sp.getBoolean(K_ADBLOCK, true)
+        set(value) {sp.edit { putBoolean(K_ADBLOCK, value) } }
+
+    var cookies: Boolean
+        get() = sp.getBoolean(K_COOKIES, true)
+        set(value) {sp.edit { putBoolean(K_COOKIES, value) } }
+
+    var saveHistory: Boolean
+        get() = sp.getBoolean(K_SAVE_HISTORY, true)
+        set(value) {sp.edit { putBoolean(K_SAVE_HISTORY, value) } }
+
     var pageReservedOffset: Int
         get() = sp.getInt("sp_page_turn_left_value", 80)
         set(value) {sp.edit { putInt("sp_page_turn_left_value", value) } }
@@ -125,6 +141,10 @@ class ConfigManager(private val context: Context) {
         const val K_SAVED_ALBUM_INFO = "sp_saved_album_info"
         const val K_SAVED_ALBUM_INDEX = "sp_saved_album_index"
         const val K_DB_VERSION = "sp_db_version"
+        const val K_IS_INCOGNITO_MODE = "sp_incognito"
+        const val K_ADBLOCK = "SP_AD_BLOCK_9"
+        const val K_SAVE_HISTORY = "saveHistory"
+        const val K_COOKIES = "SP_COOKIES_9"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
     }

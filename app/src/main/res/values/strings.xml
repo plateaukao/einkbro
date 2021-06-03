@@ -467,4 +467,5 @@
     <string name="folder_name_description">Insert Bookmark folder name</string>
     <string name="setting_title_export_bookmarks">export bookmarks</string>
     <string name="setting_title_import_bookmarks">import bookmarks</string>
+    <string name="setting_title_incognito">Incognito Mode</string>
 </resources>

@@ -367,7 +367,8 @@
     <string name="saving_epub">儲存 Epub 文件中</string>
     <string name="volume_page_turn">翻頁</string>
     <string name="menu_add_folder">新增書籤目錄</string>
-    <string name="folder_name_description">Insert Bookmark folder name</string>
-    <string name="setting_title_export_bookmarks">export bookmarks</string>
-    <string name="setting_title_import_bookmarks">import bookmarks</string>
+    <string name="folder_name_description">輸入書籤目錄名稱</string>
+    <string name="setting_title_export_bookmarks">匯出書籤</string>
+    <string name="setting_title_import_bookmarks">匯入書籤</string>
+    <string name="setting_title_incognito">無痕模式</string>
 </resources>
