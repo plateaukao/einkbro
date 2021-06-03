@@ -20,7 +20,8 @@ enum class ToolbarAction(val iconResId: Int = 0, val title: String) {
     IncreaseFont(iconResId = R.mipmap.font_size_increase, title = "font size increase"),
     DecreaseFont(iconResId = R.mipmap.font_size_decrease, title = "font size decrease"),
     FullScreen(iconResId = R.drawable.icon_fullscreen, title = "fullscreen"),
-    Forward(iconResId = R.drawable.icon_arrow_right_gest, title = "forward");
+    Forward(iconResId = R.drawable.icon_arrow_right_gest, title = "forward"),
+    RotateScreen(iconResId = R.drawable.ic_rotate, title = "rotate");
 
     companion object {
         fun fromOrdinal(value: Int) = values().first { it.ordinal == value }

@@ -206,6 +206,13 @@
                     android:src="@drawable/icon_arrow_right_gest"
                     android:onClick="onClick"
                     android:background="@android:color/white"/>
+                <ImageButton android:id="@+id/toolbar_rotate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_rotate"
+                    android:onClick="onClick"
+                    android:background="@android:color/white"/>
 
             </LinearLayout>
         </RelativeLayout>
