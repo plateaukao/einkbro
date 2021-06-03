@@ -68,6 +68,7 @@ mvconf.uk.cloud.360safe.com
 analytics.modul.ac.at
 acalvet.com
 acbras.com
+s3t3d2y7.ackcdn.net
 graph.accountkit.com
 graph.accountkit.com
 go.ad1data.com

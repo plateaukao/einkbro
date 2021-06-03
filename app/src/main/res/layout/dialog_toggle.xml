@@ -26,6 +26,37 @@
                 android:padding="8dp">
 
                 <ImageView
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="16dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_incognito" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:includeFontPadding="false"
+                    android:gravity="center_vertical"
+                    android:text="@string/setting_title_incognito"
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+                <CheckBox
+                    android:id="@+id/switch_incognito"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:checked="false" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:padding="8dp">
+
+                <ImageView
                     android:id="@+id/abIcon"
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"

@@ -419,4 +419,5 @@
     <string name="menu_add_folder">增加书签文件夹</string>
     <string name="folder_name">书签文件夹名</string>
     <string name="folder_name_description">插入书签文件夹名</string>
+    <string name="setting_title_incognito">Incognito Mode</string>
 </resources>
