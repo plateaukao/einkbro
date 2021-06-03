@@ -11,8 +11,8 @@ android {
         //applicationId "info.plateaukao.einkbro.debug"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 876
-        versionName "8.7.6"
+        versionCode 877
+        versionName "8.7.7"
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -72,4 +72,7 @@ dependencies {
     kapt "androidx.room:room-compiler:$room_version"
 
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
+
+    // for dark mode
+    implementation 'androidx.webkit:webkit:1.4.0'
 }

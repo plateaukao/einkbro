@@ -12,15 +12,15 @@
         android:id="@+id/overview_preview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/white"
         android:layout_gravity="bottom"
         android:layout_marginBottom="56dp"
+        android:background="?attr/colorPrimary"
         android:orientation="vertical">
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@android:color/darker_gray" />
+            android:background="?attr/colorControlNormal" />
 
         <HorizontalScrollView
             android:id="@+id/tab_ScrollView"
@@ -61,7 +61,7 @@
         android:layout_height="56dp"
         android:layout_gravity="bottom"
         android:gravity="center"
-        android:background="@android:color/white"
+        android:background="?attr/colorPrimary"
         android:orientation="horizontal">
 
         <ImageButton

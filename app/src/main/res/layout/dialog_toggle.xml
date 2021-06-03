@@ -42,8 +42,7 @@
                     android:includeFontPadding="false"
                     android:gravity="center_vertical"
                     android:text="@string/setting_title_adblock"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="?android:attr/textColorPrimary" />
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
 
                 <CheckBox
                     android:id="@+id/switch_adBlock"
@@ -77,8 +76,7 @@
                     android:includeFontPadding="false"
                     android:gravity="center_vertical"
                     android:text="@string/setting_title_cookie"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="?android:attr/textColorPrimary"/>
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
 
                 <CheckBox
                     android:id="@+id/switch_cookie"
@@ -124,7 +122,6 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@android:color/black"
                             android:text="@string/history" />
 
                     </LinearLayout>
@@ -155,7 +152,6 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@android:color/black"
                             android:text="@string/location" />
 
                     </LinearLayout>
@@ -186,7 +182,6 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@android:color/black"
                             android:layout_gravity="center"
                             android:text="@string/volume_page_turn" />
                     </LinearLayout>
@@ -217,7 +212,6 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@android:color/black"
                             android:text="@string/media_continue" />
 
                     </LinearLayout>
@@ -249,7 +243,6 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@android:color/black"
                             android:text="@string/desktop" />
 
 
@@ -269,7 +262,6 @@
                     android:layout_height="wrap_content"
                     android:includeFontPadding="false"
                     android:background="?attr/selectableItemBackground"
-                    android:textColor="?android:attr/colorAccent"
                     android:text="@android:string/cancel"/>
 
             </LinearLayout>
