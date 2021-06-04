@@ -1,3 +1,9 @@
+### 8.8.0
+
+- support dark mode (if you want to use EinkBro in normal phones/tablets)
+- add incognito mode in quick toggle dialog (long press 3 dot icon)
+- add rotate screen action in tool bar configuration dialog
+
 ### 8.7.6
 
 - Fix crash on Android OS5 when opening toolbar setting dialog
