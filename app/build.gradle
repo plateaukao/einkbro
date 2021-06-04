@@ -11,8 +11,8 @@ android {
         //applicationId "info.plateaukao.einkbro.debug"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 877
-        versionName "8.7.7"
+        versionCode 880
+        versionName "8.8.0"
         vectorDrawables.useSupportLibrary = true
     }
 
