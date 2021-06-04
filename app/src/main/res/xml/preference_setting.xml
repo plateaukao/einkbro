@@ -46,7 +46,7 @@
             android:key="favoriteURL"
             android:title="@string/setting_title_fav"
             android:summary="@string/setting_summary_fav"
-            android:icon="@drawable/star_grey"/>
+            android:icon="@drawable/ic_home"/>
 
         <Preference
             android:key="settings_start"

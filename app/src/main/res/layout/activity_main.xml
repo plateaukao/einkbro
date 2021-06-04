@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:layout_width="match_parent"
+<RelativeLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:ignore="ContentDescription">
 
     <FrameLayout
@@ -154,6 +154,7 @@
                     android:layout_height="match_parent"
                     android:padding="10dp"
                     android:src="@drawable/ic_vertical_read"
+                    android:background="@color/color_transparent"
                     android:onClick="onClick"/>
 
                 <ImageButton android:id="@+id/omnibox_reader"
@@ -177,7 +178,7 @@
                     android:layout_height="match_parent"
                     android:padding="10dp"
                     android:src="@mipmap/font_size_increase"
-                    android:tint="?attr/colorControlNormal"
+                    app:tint="?attr/colorControlNormal"
                     android:background="@color/color_transparent"
                     android:onClick="onClick"/>
 
@@ -186,7 +187,7 @@
                     android:layout_height="match_parent"
                     android:padding="10dp"
                     android:src="@mipmap/font_size_decrease"
-                    android:tint="?attr/colorControlNormal"
+                    app:tint="?attr/colorControlNormal"
                     android:background="@color/color_transparent"
                     android:onClick="onClick"/>
 

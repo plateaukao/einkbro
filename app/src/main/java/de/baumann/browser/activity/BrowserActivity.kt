@@ -76,7 +76,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
     private lateinit var btnOpenHistory: ImageButton
     private lateinit var btnOpenMenu: ImageButton
     private lateinit var fabImageButtonNav: ImageButton
-    private lateinit var inputBox: AutoCompleteTextView
     private lateinit var progressBar: ProgressBar
     private lateinit var searchBox: EditText
     private lateinit var overviewLayout: ViewGroup
@@ -353,6 +352,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
     private fun restartApp() {
         finishAffinity(); // Finishes all activities.
         startActivity(packageManager.getLaunchIntentForPackage(packageName));    // Start the launch activity
+        overridePendingTransition(0,0)
         exitProcess(0)
     }
 
@@ -405,7 +405,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
                 } else if (mainToolbar.visibility == GONE && sp.getBoolean("sp_toolbarShow", true)) {
                     showToolbar()
                 } else if (binding.iconBar.visibility == GONE) {
-                    inputBox.clearFocus()
+                    binding.mainOmniboxInput.clearFocus()
                 } else {
                     if (ninjaWebView.canGoBack()) {
                         ninjaWebView.goBack()
@@ -417,7 +417,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             }
             // vim bindings
             KeyEvent.KEYCODE_O -> {
-                inputBox.performClick()
+                binding.mainOmniboxInput.performClick()
             }
         }
         return false
@@ -447,12 +447,12 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         val list = action.listEntries(this, true)
         action.close()
         val adapter = CompleteAdapter(this, R.layout.complete_item, list)
-        inputBox.setAdapter(adapter)
+        binding.mainOmniboxInput.setAdapter(adapter)
         adapter.notifyDataSetChanged()
-        inputBox.threshold = 1
-        inputBox.dropDownVerticalOffset = -16
-        inputBox.dropDownWidth = ViewUnit.getWindowWidth(this)
-        inputBox.onItemClickListener = OnItemClickListener { _, view, _, _ ->
+        binding.mainOmniboxInput.threshold = 1
+        binding.mainOmniboxInput.dropDownVerticalOffset = -16
+        binding.mainOmniboxInput.dropDownWidth = ViewUnit.getWindowWidth(this)
+        binding.mainOmniboxInput.onItemClickListener = OnItemClickListener { _, view, _, _ ->
             val url = (view.findViewById<View>(R.id.complete_item_url) as TextView).text.toString()
             updateAlbum(url)
             hideKeyboard()
@@ -493,7 +493,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             R.id.tab_plus_bottom -> {
                 hideOverview()
                 addAlbum(getString(R.string.app_name), "")
-                inputBox.requestFocus()
+                binding.mainOmniboxInput.requestFocus()
                 showKeyboard()
             }
             R.id.menu_save_pdf -> showPdfFilePicker()
@@ -798,7 +798,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
     @SuppressLint("ClickableViewAccessibility")
     private fun initToolbar() {
         mainToolbar = findViewById(R.id.main_toolbar)
-        inputBox = findViewById(R.id.main_omnibox_input)
         omniboxTitle = findViewById(R.id.omnibox_title)
         progressBar = findViewById(R.id.main_progress_bar)
         initFAB()
@@ -816,15 +815,15 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             }
             fabImageButtonNav.setOnTouchListener(onTouchListener)
             binding.omniboxSetting.setOnTouchListener(onTouchListener)
-            inputBox.setOnTouchListener(object : SwipeTouchListener(this) {
+            binding.mainOmniboxInput.setOnTouchListener(object : SwipeTouchListener(this) {
                 override fun onSwipeTop() = performGesture("setting_gesture_tb_up")
                 override fun onSwipeBottom() = performGesture("setting_gesture_tb_down")
                 override fun onSwipeRight() = performGesture("setting_gesture_tb_right")
                 override fun onSwipeLeft() = performGesture("setting_gesture_tb_left")
             })
         }
-        inputBox.setOnEditorActionListener(OnEditorActionListener { _, _, _ ->
-            val query = inputBox.text.toString().trim { it <= ' ' }
+        binding.mainOmniboxInput.setOnEditorActionListener(OnEditorActionListener { _, _, _ ->
+            val query = binding.mainOmniboxInput.text.toString().trim { it <= ' ' }
             if (query.isEmpty()) {
                 NinjaToast.show(this, getString(R.string.toast_input_empty))
                 return@OnEditorActionListener true
@@ -833,10 +832,10 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             showToolbar()
             false
         })
-        inputBox.onFocusChangeListener = OnFocusChangeListener { _, _ ->
-            if (inputBox.hasFocus()) {
-                inputBox.setText(ninjaWebView.url)
-                inputBox.setSelection(0, inputBox.text.toString().length)
+        binding.mainOmniboxInput.onFocusChangeListener = OnFocusChangeListener { _, _ ->
+            if (binding.mainOmniboxInput.hasFocus()) {
+                binding.mainOmniboxInput.setText(ninjaWebView.url)
+                binding.mainOmniboxInput.setSelection(0, binding.mainOmniboxInput.text.toString().length)
                 toggleIconsOnOmnibox(true)
             } else {
                 toggleIconsOnOmnibox(false)
@@ -1429,7 +1428,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         }
 
         // prevent inputBox to get the focus
-        inputBox.isEnabled = false
+        binding.mainOmniboxInput.isEnabled = false
 
         (window.decorView as FrameLayout).removeView(fullscreenHolder)
         customView?.keepScreenOn = false
@@ -1445,7 +1444,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         requestedOrientation = originalOrientation
 
         // re-enable inputBox after fullscreen view is removed.
-        inputBox.isEnabled = true
+        binding.mainOmniboxInput.isEnabled = true
         return true
     }
 
@@ -1476,7 +1475,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
                         decreaseFontSize()
                         previousKeyEvent = null
                     } else {
-                        inputBox.requestFocus()
+                        binding.mainOmniboxInput.requestFocus()
                     }
                 }
                 KeyEvent.KEYCODE_J -> ninjaWebView.pageDownWithNoAnimation()
@@ -1486,7 +1485,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
                 KeyEvent.KEYCODE_D -> removeAlbum(currentAlbumController!!)
                 KeyEvent.KEYCODE_T -> {
                     addAlbum(getString(R.string.app_name), "", true)
-                    inputBox.requestFocus()
+                    binding.mainOmniboxInput.requestFocus()
                 }
                 KeyEvent.KEYCODE_SLASH -> showSearchPanel()
                 KeyEvent.KEYCODE_G -> {
