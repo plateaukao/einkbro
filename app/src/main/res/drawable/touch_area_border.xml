@@ -6,9 +6,9 @@
             android:shape="rectangle" >
             <solid android:color="@android:color/transparent" />
             <stroke
-                android:width="1px"
+                android:width="2px"
                 android:dashWidth="10px"
-                android:dashGap="10px"
+                android:dashGap="10dp"
                 android:color="#e000" />
         </shape>
     </item>
@@ -23,9 +23,9 @@
             android:shape="rectangle" >
             <solid android:color="@android:color/transparent" />
             <stroke
-                android:width="1px"
+                android:width="2px"
                 android:dashWidth="10px"
-                android:dashGap="10px"
+                android:dashGap="10dp"
                 android:color="#efff" />
         </shape>
     </item>

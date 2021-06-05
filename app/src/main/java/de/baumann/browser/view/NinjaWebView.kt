@@ -139,6 +139,9 @@ class NinjaWebView : WebView, AlbumController {
                 settings.forceDark = WebSettings.FORCE_DARK_ON
             }
         }
+
+        // when in dark mode, the default background color will be the activity background
+        setBackgroundColor(context.resources.getColor(R.color.color_transparent))
     }
 
     @TargetApi(Build.VERSION_CODES.O)
