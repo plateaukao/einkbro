@@ -1211,8 +1211,13 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
                     if (it.isDirectory) {
                         updateBookmarkList(it.id)
                     } else {
-                        updateAlbum(it.url); hideOverview()
+                        updateAlbum(it.url)
+                        hideOverview()
                     }
+                },
+                onTabIconClick = {
+                    addAlbum(title = it.title, url = it.url)
+                    hideOverview()
                 },
                 onItemLongClick = { showBookmarkContextMenu(it) }
             )
@@ -1272,7 +1277,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         config.savedAlbumInfoList = albumInfoList
         config.currentAlbumIndex = BrowserContainer.indexOf(currentAlbumController)
         // fix if current album is still with null url
-        if (config.currentAlbumIndex >= albumInfoList.size) {
+        if (albumInfoList.isNotEmpty() && config.currentAlbumIndex >= albumInfoList.size) {
             config.currentAlbumIndex = albumInfoList.size - 1
         }
     }
