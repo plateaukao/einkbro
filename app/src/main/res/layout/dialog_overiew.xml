@@ -27,7 +27,9 @@
             android:id="@+id/tab_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:flexWrap="wrap"/>
+            android:layout_margin="10dp"
+            app:flexWrap="wrap"
+            />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
