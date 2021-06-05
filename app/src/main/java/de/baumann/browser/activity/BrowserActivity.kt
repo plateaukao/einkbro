@@ -35,7 +35,6 @@ import android.widget.AdapterView.OnItemClickListener
 import android.widget.TextView.OnEditorActionListener
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.edit
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
@@ -196,9 +195,12 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         initSearchPanel()
         initOverview()
         initTouchArea()
+        updateWebViewCountUI()
+
         AdBlock(this) // For AdBlock cold boot
         Javascript(this)
         Cookie(this)
+
         downloadReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
                 showOkCancelDialog(
@@ -666,7 +668,9 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         ninjaWebView.settings.textZoom = size
     }
 
-    private fun increaseFontSize() = changeFontSize(config.fontSize + 20)
+    private fun increaseFontSize() {
+        changeFontSize(config.fontSize + 20)
+    }
 
     private fun decreaseFontSize() {
         if (config.fontSize <= 50) return
@@ -864,7 +868,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
         // long click on overview, show bookmark
         binding.omniboxTabcount.setOnLongClickListener {
-            openBookmarkPage()
+            config.isIncognitoMode = !config.isIncognitoMode
             true
         }
 
@@ -898,12 +902,15 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
                     ninjaWebView.reload()
                 }
             }
-            key.equals((ConfigManager.K_FONT_STYLE_SERIF)) -> {
+            key.equals(ConfigManager.K_FONT_STYLE_SERIF) -> {
                 if (config.fontStyleSerif) {
                     ninjaWebView.updateCssStyle()
                 } else {
                     ninjaWebView.reload()
                 }
+            }
+            key.equals(ConfigManager.K_IS_INCOGNITO_MODE) -> {
+                updateWebViewCountUI()
             }
         }
     }
@@ -1273,6 +1280,12 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
     private fun updateWebViewCount() {
         binding.omniboxTabcount.text = BrowserContainer.size().toString()
+    }
+
+    private fun updateWebViewCountUI() {
+        binding.omniboxTabcount.setBackgroundResource(
+            if (config.isIncognitoMode) R.drawable.button_border_bg_dash else R.drawable.button_border_bg
+        )
     }
 
     @Synchronized
