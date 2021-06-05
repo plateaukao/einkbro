@@ -1,65 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="76dp"
-    android:minWidth="76dp"
-    android:layout_height="@dimen/layout_height_108dp"
-    android:background="@drawable/album_shape_transparent"
-    tools:ignore="ContentDescription">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="@dimen/layout_width_144dp"
+    android:layout_height="wrap_content"
+    android:minWidth="@dimen/layout_width_144dp"
+    android:layout_margin="10dp"
+    app:cardUseCompatPadding="true"
+    tools:ignore="PrivateResource">
 
-    <androidx.cardview.widget.CardView
+    <ImageView
+        android:id="@+id/album_cover"
         android:layout_width="@dimen/layout_width_144dp"
+        android:layout_height="@dimen/layout_height_108dp"
+        android:layout_gravity="center"
         android:minWidth="@dimen/layout_width_144dp"
-        android:layout_height="wrap_content"
-        app:cardUseCompatPadding="true"
-        app:elevation="0dp"
-        tools:ignore="PrivateResource">
+        android:scaleType="centerCrop" />
+
+    <RelativeLayout
+        android:layout_width="@dimen/layout_width_144dp"
+        android:layout_height="30dp"
+        android:layout_gravity="end|bottom"
+        android:background="@color/color_shadow"
+        android:minWidth="@dimen/layout_width_144dp">
 
         <ImageView
-            android:id="@+id/album_cover"
+            android:id="@+id/album_close"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:background="?attr/selectableItemBackground"
+            android:padding="4dp"
+            android:src="@drawable/close_circle" />
+
+        <TextView
+            android:id="@+id/album_title"
             android:layout_width="@dimen/layout_width_144dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="8dp"
+            android:layout_toStartOf="@+id/album_close"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:includeFontPadding="false"
+            android:maxLines="1"
             android:minWidth="@dimen/layout_width_144dp"
-            android:layout_height="@dimen/layout_height_108dp"
-            android:layout_gravity="center"
-            android:scaleType="centerCrop"/>
+            android:paddingStart="6dp"
+            android:textColor="?android:attr/colorLongPressedHighlight"
+            tools:ignore="RtlSymmetry" />
 
-        <RelativeLayout
-            android:layout_width="@dimen/layout_width_144dp"
-            android:minWidth="@dimen/layout_width_144dp"
-            android:layout_height="30dp"
-            android:layout_gravity="end|bottom"
-            android:background="@color/color_shadow">
+    </RelativeLayout>
 
-            <ImageView
-                android:id="@+id/album_close"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentEnd="true"
-                android:background="?attr/selectableItemBackground"
-                android:padding="4dp"
-                android:src="@drawable/close_circle" />
-
-            <TextView
-                android:id="@+id/album_title"
-                android:layout_alignParentStart="true"
-                android:layout_toStartOf="@+id/album_close"
-                android:layout_width="@dimen/layout_width_144dp"
-                android:layout_marginStart="8dp"
-                android:includeFontPadding="false"
-                android:minWidth="@dimen/layout_width_144dp"
-                android:layout_height="match_parent"
-                android:paddingStart="6dp"
-                android:gravity="center_vertical"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:textColor="?android:attr/colorLongPressedHighlight"
-                tools:ignore="RtlSymmetry" />
-
-        </RelativeLayout>
-
-    </androidx.cardview.widget.CardView>
-
-</FrameLayout>
+</androidx.cardview.widget.CardView>
