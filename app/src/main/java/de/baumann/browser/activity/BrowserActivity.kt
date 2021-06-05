@@ -1368,7 +1368,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         updateOmnibox()
         updateAutoComplete()
         scrollChange()
-        HelperUnit.initRendering(mainContentLayout)
+        HelperUnit.initRendering(mainContentLayout, config.shouldInvert)
         ninjaWebView.requestFocus()
         if (progress < BrowserUnit.PROGRESS_MAX) {
             updateRefresh(true)
