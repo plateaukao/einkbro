@@ -1253,13 +1253,12 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             ViewUnit.bound(this, ninjaWebView)
             ninjaWebView.loadUrl(url)
             ninjaWebView.deactivate()
-            return
         } else {
             showToolbar()
             showAlbum(ninjaWebView)
-        }
-        if (url.isNotEmpty()) {
-            ninjaWebView.loadUrl(url)
+            if (url.isNotEmpty()) {
+                ninjaWebView.loadUrl(url)
+            }
         }
 
         updateSavedAlbumInfo()
