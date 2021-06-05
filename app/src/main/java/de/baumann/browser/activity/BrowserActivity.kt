@@ -763,11 +763,15 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             Intent.ACTION_MAIN -> { // initial case
                 if (currentAlbumController == null) { // newly opened Activity
                     if (config.shouldSaveTabs && config.savedAlbumInfoList.isNotEmpty()) {
+                        // fix current album index is larger than album size
+                        if (config.currentAlbumIndex >= config.savedAlbumInfoList.size) {
+                            config.currentAlbumIndex = config.savedAlbumInfoList.size -1
+                        }
                         config.savedAlbumInfoList.forEachIndexed { index, albumInfo ->
                             addAlbum(
-                                    title = albumInfo.title,
-                                    url = albumInfo.url,
-                                    foreground = (index == config.currentAlbumIndex))
+                                title = albumInfo.title,
+                                url = albumInfo.url,
+                                foreground = (index == config.currentAlbumIndex))
                         }
                     } else {
                         addAlbum()
@@ -1258,6 +1262,10 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
                 .map { controller -> AlbumInfo(controller.albumTitle, controller.albumUrl) }
         config.savedAlbumInfoList = albumInfoList
         config.currentAlbumIndex = BrowserContainer.indexOf(currentAlbumController)
+        // fix if current album is still with null url
+        if (config.currentAlbumIndex >= albumInfoList.size) {
+            config.currentAlbumIndex = albumInfoList.size - 1
+        }
     }
 
     private fun updateWebViewCount() {
