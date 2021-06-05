@@ -72,4 +72,7 @@ dependencies {
 
     // for dark mode
     implementation 'androidx.webkit:webkit:1.4.0'
+
+    // for tab preview
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
 }

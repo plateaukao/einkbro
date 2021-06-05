@@ -41,6 +41,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.flexbox.FlexboxLayout
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.*
@@ -83,7 +84,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
     private lateinit var ninjaWebView: NinjaWebView
     private lateinit var recyclerView: RecyclerView
     private lateinit var omniboxTitle: TextView
-    private lateinit var tabScrollview: HorizontalScrollView
     private lateinit var overviewPreview: LinearLayout
     private lateinit var touchAreaPageUp: View
     private lateinit var touchAreaPageDown: View
@@ -96,7 +96,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
     private lateinit var mainToolbar: RelativeLayout
     private lateinit var searchPanel: ViewGroup
     private lateinit var mainContentLayout: FrameLayout
-    private lateinit var tabContainer: LinearLayout
+    private lateinit var tabContainer: FlexboxLayout
     private lateinit var openStartPageView: View
     private lateinit var openBookmarkView: View
     private lateinit var openHistoryView: View
@@ -475,9 +475,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
         currentAlbumController?.deactivate()
         currentAlbumController?.activate()
-        binding.root.postDelayed({
-            tabScrollview.scrollTo(currentAlbumController?.albumView?.left ?: 0, 0)
-        }, 250)
     }
 
     override fun hideOverview() {
@@ -1025,7 +1022,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         btnOpenHistory = findViewById(R.id.open_history_2)
         btnOpenMenu = findViewById(R.id.open_menu)
         tabContainer = findViewById(R.id.tab_container)
-        tabScrollview = findViewById(R.id.tab_ScrollView)
         overviewPreview = findViewById(R.id.overview_preview)
         recyclerView = findViewById(R.id.home_list_2)
         openStartPageView = findViewById(R.id.open_newTabView)
