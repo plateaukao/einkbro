@@ -6,7 +6,7 @@ import android.os.Message
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.*
-import android.webkit.WebView.WebViewTransport
+import android.webkit.WebView.*
 import de.baumann.browser.unit.HelperUnit
 import de.baumann.browser.view.NinjaWebView
 
@@ -62,6 +62,9 @@ class NinjaWebChromeClient(private val ninjaWebView: NinjaWebView) : WebChromeCl
         webSettings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
         val manager = CookieManager.getInstance()
         manager.setAcceptThirdPartyCookies(webView, true)
+
+        webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH)
+        webView.setLayerType(LAYER_TYPE_HARDWARE, null)
     }
 
     override fun onCloseWindow(window: WebView?) {
