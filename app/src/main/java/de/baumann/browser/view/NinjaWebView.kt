@@ -119,7 +119,7 @@ class NinjaWebView : WebView, AlbumController {
         }
 
         if(WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK_STRATEGY)) {
-            WebSettingsCompat.setForceDarkStrategy(settings, WebSettingsCompat.DARK_STRATEGY_WEB_THEME_DARKENING_ONLY)
+            WebSettingsCompat.setForceDarkStrategy(settings, WebSettingsCompat.DARK_STRATEGY_PREFER_WEB_THEME_OVER_USER_AGENT_DARKENING)
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -146,6 +146,7 @@ class NinjaWebView : WebView, AlbumController {
                 safeBrowsingEnabled = true
             }
         }
+        setLayerType(View.LAYER_TYPE_HARDWARE, null)
     }
 
     fun initPreferences() {
@@ -167,6 +168,8 @@ class NinjaWebView : WebView, AlbumController {
             useWideViewPort = isDesktopMode
             loadWithOverviewMode = isDesktopMode
             setAppCacheEnabled(true)
+            setAppCachePath("");
+            setAppCacheMaxSize(5*1024*1024)
             cacheMode = WebSettings.LOAD_DEFAULT
             textZoom = sp.getString("sp_fontSize", "100")!!.toInt()
             allowFileAccessFromFileURLs = sp.getBoolean("sp_remote", true)
@@ -180,6 +183,7 @@ class NinjaWebView : WebView, AlbumController {
             setGeolocationEnabled(sp.getBoolean(context!!.getString(R.string.sp_location), false))
             mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
 
+            setRenderPriority(WebSettings.RenderPriority.HIGH)
         }
         webViewClient.enableAdBlock(sp.getBoolean(context!!.getString(R.string.sp_ad_block), true))
 
