@@ -12,12 +12,14 @@ import de.baumann.browser.database.Bookmark
 class BookmarkAdapter(
     private val data: MutableList<Bookmark>,
     private val onItemClick: (Bookmark) -> Unit,
+    private val onTabIconClick: (Bookmark) -> Unit,
     private val onItemLongClick: (Bookmark) -> Unit,
 ) : RecyclerView.Adapter<BookmarkAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val textView: TextView = view.findViewById(R.id.record_item_title)
         val iconView : ImageView = view.findViewById(R.id.ib_icon)
+        val tabView: ImageView = view.findViewById(R.id.icon_tab)
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
@@ -32,16 +34,21 @@ class BookmarkAdapter(
         viewHolder.textView.text = bookmark.title
         if (bookmark.isDirectory) {
             viewHolder.iconView.setImageResource(R.drawable.ic_folder)
+            viewHolder.tabView.visibility = View.INVISIBLE
         } else {
             viewHolder.iconView.setImageResource(R.drawable.circle_red_big)
+            viewHolder.tabView.visibility = View.VISIBLE
         }
 
         with(viewHolder.itemView) {
-            setOnClickListener { onItemClick(data[position]) }
+            setOnClickListener { onItemClick(bookmark) }
             setOnLongClickListener {
-                onItemLongClick(data[position])
+                onItemLongClick(bookmark)
                 true
             }
+        }
+        viewHolder.tabView.setOnClickListener {
+            onTabIconClick(bookmark)
         }
     }
 

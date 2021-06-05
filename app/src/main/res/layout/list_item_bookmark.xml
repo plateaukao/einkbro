@@ -18,7 +18,8 @@
         android:src="@drawable/circle_red_big" />
 
     <TextView android:id="@+id/record_item_title"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
         android:layout_marginStart="16dp"
@@ -26,5 +27,14 @@
         android:textAppearance="?android:attr/textAppearanceListItem"
         android:maxLines="1"
         android:ellipsize="end"/>
+
+    <ImageView
+        android:id="@+id/icon_tab"
+        android:layout_width="20dp"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:contentDescription="@null"
+        android:scaleType="fitCenter"
+        android:src="@drawable/icon_tab_plus" />
 
 </LinearLayout>
