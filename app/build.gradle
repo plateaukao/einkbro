@@ -7,12 +7,12 @@ android {
     buildToolsVersion '30.0.3'
 
     defaultConfig {
-        applicationId "info.plateaukao.einkbro"
-        //applicationId "info.plateaukao.einkbro.debug"
+        //applicationId "info.plateaukao.einkbro"
+        applicationId "info.plateaukao.einkbro.debug"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 880
-        versionName "8.8.0"
+        versionCode 881
+        versionName "8.8.1"
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -55,6 +55,8 @@ dependencies {
         exclude group: 'org.slf4j'
         exclude group: 'xmlpull'
     }
+    implementation 'org.slf4j:slf4j-api:1.7.30'
+    //
 
     // common lang
     implementation 'org.apache.commons:commons-text:1.9'
