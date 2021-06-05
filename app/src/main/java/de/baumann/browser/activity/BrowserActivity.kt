@@ -18,11 +18,11 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
-import android.os.PersistableBundle
 import android.print.PrintAttributes
 import android.print.PrintManager
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.*
 import android.view.View.*
 import android.view.inputmethod.EditorInfo
@@ -784,11 +784,17 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
                         if (config.currentAlbumIndex >= config.savedAlbumInfoList.size) {
                             config.currentAlbumIndex = config.savedAlbumInfoList.size -1
                         }
-                        config.savedAlbumInfoList.forEachIndexed { index, albumInfo ->
+                        val albumList = config.savedAlbumInfoList.toList()
+                        var savedIndex = config.currentAlbumIndex
+                        // fix issue
+                        if (savedIndex == -1) savedIndex = 0
+                        Log.w(TAG, "savedIndex:$savedIndex")
+                        Log.w(TAG, "albumList:$albumList")
+                        albumList.forEachIndexed { index, albumInfo ->
                             addAlbum(
                                 title = albumInfo.title,
                                 url = albumInfo.url,
-                                foreground = (index == config.currentAlbumIndex))
+                                foreground = (index == savedIndex))
                         }
                     } else {
                         addAlbum()
@@ -1338,7 +1344,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         if (this::ninjaWebView.isInitialized && ninjaWebView === currentAlbumController) {
             omniboxTitle.text = ninjaWebView.title
         } else {
-            ninjaWebView = currentAlbumController as NinjaWebView
+            ninjaWebView = currentAlbumController as? NinjaWebView ?: return
             updateProgress(ninjaWebView.progress)
         }
     }
@@ -1744,7 +1750,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             hideBottomSheetDialog()
         }
         dialogView.menuContextListNewTabOpen.setOnClickListener {
-            addAlbum(getString(R.string.app_name), bookmark.url)
+            addAlbum(url = bookmark.url)
             hideBottomSheetDialog()
             hideOverview()
         }
@@ -1923,6 +1929,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
     companion object {
+        private const val TAG = "BrowserActivity"
         private const val INPUT_FILE_REQUEST_CODE = 1
         private const val WRITE_EPUB_REQUEST_CODE = 2
         private const val WRITE_PDF_REQUEST_CODE = 3
