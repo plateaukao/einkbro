@@ -10,7 +10,6 @@ import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.print.PrintDocumentAdapter
-import android.util.AttributeSet
 import android.util.Base64
 import android.view.GestureDetector
 import android.view.KeyEvent
@@ -61,16 +60,6 @@ class NinjaWebView : WebView, AlbumController {
 
     constructor(context: Context?, browserController: BrowserController) : super(context!!) {
         this.browserController = browserController
-        album = Album(context, this, browserController)
-        initAlbum()
-    }
-
-    constructor(context: Context?, attrs: AttributeSet?) : super(context!!, attrs) {
-        album = Album(context, this, browserController)
-        initAlbum()
-    }
-
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context!!, attrs, defStyleAttr) {
         album = Album(context, this, browserController)
         initAlbum()
     }
@@ -299,7 +288,7 @@ class NinjaWebView : WebView, AlbumController {
 
     @Synchronized
     fun update(title: String?) {
-        album.albumTitle = title
+        album.albumTitle = title ?: ""
         // so that title on bottom bar can be updated
         browserController?.updateProgress(BrowserUnit.PROGRESS_MAX)
     }
