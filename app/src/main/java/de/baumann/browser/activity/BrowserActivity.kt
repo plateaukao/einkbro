@@ -18,6 +18,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.os.PersistableBundle
 import android.print.PrintAttributes
 import android.print.PrintManager
 import android.text.Editable
@@ -134,6 +135,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
     private var uiMode = Configuration.UI_MODE_NIGHT_UNDEFINED
 
+    private var shouldLoadTabState: Boolean = false
+
     // Classes
     private inner class VideoCompletionListener : OnCompletionListener, MediaPlayer.OnErrorListener {
         override fun onError(mp: MediaPlayer, what: Int, extra: Int): Boolean {
@@ -154,6 +157,10 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         bookmarkManager = BookmarkManager(this)
         lifecycleScope.launch {
             bookmarkManager.migrateOldData()
+        }
+
+        savedInstanceState?.let {
+            shouldLoadTabState = it.getBoolean(K_SHOULD_LOAD_TAB_STATE)
         }
 
         WebView.enableSlowWholeDocumentDraw()
@@ -203,6 +210,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         val filter = IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE)
         registerReceiver(downloadReceiver, filter)
         dispatchIntent(intent)
+        // after dispatching intent, the value should be reset to false
+        shouldLoadTabState = false
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -211,7 +220,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             val nightModeFlags = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
             if (nightModeFlags != uiMode) {
-                restartApp()
+                //restartApp()
+                recreate()
             }
         }
     }
@@ -758,11 +768,17 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         }
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putBoolean(K_SHOULD_LOAD_TAB_STATE, true)
+        super.onSaveInstanceState(outState)
+    }
+
     private fun dispatchIntent(intent: Intent) {
         when(intent.action) {
-            Intent.ACTION_MAIN -> { // initial case
+            "", Intent.ACTION_MAIN -> { // initial case
                 if (currentAlbumController == null) { // newly opened Activity
-                    if (config.shouldSaveTabs && config.savedAlbumInfoList.isNotEmpty()) {
+                    if ((shouldLoadTabState || config.shouldSaveTabs) &&
+                        config.savedAlbumInfoList.isNotEmpty()) {
                         // fix current album index is larger than album size
                         if (config.currentAlbumIndex >= config.savedAlbumInfoList.size) {
                             config.currentAlbumIndex = config.savedAlbumInfoList.size -1
@@ -890,13 +906,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
                     ninjaWebView.updateCssStyle()
                 } else {
                     ninjaWebView.reload()
-                }
-            }
-            key.equals((ConfigManager.K_SHOULD_SAVE_TABS)) -> {
-                if (config.shouldSaveTabs) {
-                    updateSavedAlbumInfo()
-                } else {
-                    config.savedAlbumInfoList = emptyList()
                 }
             }
         }
@@ -1254,8 +1263,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
     }
 
     private fun updateSavedAlbumInfo() {
-        if (!config.shouldSaveTabs) return
-
         val albumControllers = BrowserContainer.list()
         val albumInfoList = albumControllers
                 .filter { it.albumUrl.isNotBlank() }
@@ -1906,5 +1913,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         private const val INPUT_FILE_REQUEST_CODE = 1
         private const val WRITE_EPUB_REQUEST_CODE = 2
         private const val WRITE_PDF_REQUEST_CODE = 3
+        private const val K_SHOULD_LOAD_TAB_STATE = "k_should_load_tab_state"
     }
 }
