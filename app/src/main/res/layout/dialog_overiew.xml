@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@android:color/transparent"
     android:orientation="vertical"
     tools:ignore="ContentDescription">
@@ -22,22 +23,11 @@
             android:layout_height="1dp"
             android:background="?attr/colorControlNormal" />
 
-        <HorizontalScrollView
-            android:id="@+id/tab_ScrollView"
+        <com.google.android.flexbox.FlexboxLayout
+            android:id="@+id/tab_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingStart="12dp"
-            android:paddingTop="16dp"
-            android:paddingEnd="12dp"
-            android:paddingBottom="16dp"
-            android:scrollbars="none">
-
-            <LinearLayout
-                android:id="@+id/tab_container"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" />
-        </HorizontalScrollView>
+            android:layout_height="match_parent"
+            app:flexWrap="wrap"/>
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
