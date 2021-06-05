@@ -35,6 +35,10 @@ class ConfigManager(private val context: Context) {
         get() = sp.getBoolean(K_IS_INCOGNITO_MODE, false)
         set(value) {sp.edit { putBoolean(K_IS_INCOGNITO_MODE, value) } }
 
+    var shouldInvert: Boolean
+        get() = sp.getBoolean(K_SHOULD_INVERT, false)
+        set(value) {sp.edit { putBoolean(K_SHOULD_INVERT, value) } }
+
     var adBlock: Boolean
         get() = sp.getBoolean(K_ADBLOCK, true)
         set(value) {sp.edit { putBoolean(K_ADBLOCK, value) } }
@@ -145,6 +149,7 @@ class ConfigManager(private val context: Context) {
         const val K_ADBLOCK = "SP_AD_BLOCK_9"
         const val K_SAVE_HISTORY = "saveHistory"
         const val K_COOKIES = "SP_COOKIES_9"
+        const val K_SHOULD_INVERT = "sp_invert"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
     }
