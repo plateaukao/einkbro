@@ -2,7 +2,6 @@
 
 <LinearLayout android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="12dp"
     android:descendantFocusability="blocksDescendants"
     android:orientation="horizontal"
     android:background="@drawable/item_bg_selector"
@@ -11,6 +10,7 @@
     <ImageView
         android:id="@+id/ib_icon"
         android:layout_width="20dp"
+        android:layout_marginHorizontal="10dp"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
         android:contentDescription="@null"
@@ -21,6 +21,7 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
+        android:paddingVertical="15dp"
         android:gravity="center_vertical"
         android:layout_marginStart="16dp"
         android:includeFontPadding="false"
@@ -30,7 +31,8 @@
 
     <ImageView
         android:id="@+id/icon_tab"
-        android:layout_width="20dp"
+        android:layout_width="40dp"
+        android:paddingHorizontal="10dp"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
         android:contentDescription="@null"
