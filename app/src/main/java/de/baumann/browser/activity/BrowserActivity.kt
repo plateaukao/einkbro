@@ -727,7 +727,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             if (text == "null") {
                 NinjaToast.showShort(this@BrowserActivity, "null string")
             } else {
-                enableMultiWindow()
+                toggleMultiWindow(true)
                 try {
                     val intent = Intent().apply {
                         action = "com.onyx.intent.ACTION_DICT_TRANSLATION"
@@ -741,8 +741,10 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         }
     }
 
-    private fun enableMultiWindow() {
-        val intent = Intent().apply { action = "com.onyx.action.START_MULTI_WINDOW" }
+    private fun toggleMultiWindow(isEnabled: Boolean) {
+        val intent = Intent().apply {
+            action = if (isEnabled) "com.onyx.action.START_MULTI_WINDOW" else "com.onyx.action.QUIT_MULTI_WINDOW"
+        }
         sendBroadcast(intent)
     }
 
@@ -919,8 +921,10 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
         binding.omniboxBookmark.setOnClickListener { openBookmarkPage() }
         binding.omniboxBookmark.setOnLongClickListener { saveBookmark(); true }
+        binding.toolbarTranslate.setOnLongClickListener { toggleMultiWindow(false); true }
 
         sp.registerOnSharedPreferenceChangeListener(preferenceChangeListener)
+
 
         reorderToolbarIcons()
     }
@@ -944,6 +948,10 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             }
             key.equals(ConfigManager.K_IS_INCOGNITO_MODE) -> {
                 updateWebViewCountUI()
+                NinjaToast.showShort(
+                    this,
+                    "Incognito mode is " + if (config.isIncognitoMode) "enabled." else "disabled."
+                )
             }
         }
     }
