@@ -6,6 +6,8 @@ import android.os.Build
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.FOCUSABLE_AUTO
+import android.view.View.NOT_FOCUSABLE
 import android.view.ViewGroup
 import android.widget.*
 import de.baumann.browser.Ninja.R
@@ -77,7 +79,12 @@ class ToolbarConfigDialog(
                 setItemChecked(i, true)
             }
 
-            onItemClickListener = AdapterView.OnItemClickListener { _, _, _, _ ->
+            onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
+                // make sure Setting icon cannot be unchecked.
+                if (iconListAdapter.getItem(position)?.ordinal == ToolbarAction.Settings.ordinal) {
+                    setItemChecked(position, true)
+                }
+
                 refreshNewValues()
             }
         }
@@ -127,16 +134,21 @@ class ToolbarConfigDialog(
     private fun createItemAdapter(itemList: List<PreferenceItemInfo>): ArrayAdapter<PreferenceItemInfo> {
         return object: ArrayAdapter<PreferenceItemInfo>(context, R.layout.item_list_preference_multi_drag, R.id.text, itemList) {
             override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-                val item = getItem(position)
+                val preferenceItemInfo = getItem(position)
                 val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.item_list_preference_multi_drag, parent, false) as CheckableMultiSelectLayout
                 val imageView = view.findViewById<ImageView>(R.id.icon)
-                val iconResId = item?.iconResId ?: 0
+                val iconResId = preferenceItemInfo?.iconResId ?: 0
                 if (iconResId != 0) {
                     imageView.setImageResource(iconResId)
                 } else {
                     imageView.setImageBitmap(null)
                 }
-                view.findViewById<TextView>(R.id.text).text = item?.title ?: ""
+
+                val textView = view.findViewById<TextView>(R.id.text)
+                textView.text = preferenceItemInfo?.title ?: ""
+                // show disable state for Setting item
+                textView.isEnabled = preferenceItemInfo?.ordinal != ToolbarAction.Settings.ordinal
+
                 return view
             }
         }
