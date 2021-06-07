@@ -61,6 +61,7 @@ import de.baumann.browser.util.Constants
 import de.baumann.browser.view.*
 import de.baumann.browser.view.adapter.*
 import de.baumann.browser.view.dialog.*
+import de.baumann.browser.view.toolbaricons.ToolbarAction
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.*
@@ -965,6 +966,9 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             binding.iconBar.removeAllViews()
             iconEnums.forEach { actionEnum ->
                 binding.iconBar.addView(toolbarActionViews[actionEnum.ordinal])
+            }
+            if (ToolbarAction.Settings !in iconEnums) {
+                binding.iconBar.addView(toolbarActionViews[ToolbarAction.Settings.ordinal])
             }
             binding.iconBar.requestLayout()
         }
