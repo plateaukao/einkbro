@@ -2,6 +2,7 @@ package de.baumann.browser.view.dialog
 
 import android.app.AlertDialog
 import android.content.*
+import android.os.Build
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -47,11 +48,18 @@ class ToolbarConfigDialog(
         }
 
         val orderedList = ArrayList<PreferenceItemInfo>()
+        // put selected
         for (toolbarAction in config.toolbarActions) {
             orderedList.add(toolbarAction.toPreferenceItemInfo())
         }
 
+        // put unselected
         for (toolbarAction in ToolbarAction.values()) {
+            // translation only supports Onyx devices
+            if (toolbarAction == ToolbarAction.Translation && Build.MANUFACTURER != "ONYX") {
+                continue
+            }
+
             if (!config.toolbarActions.contains(toolbarAction)) {
                 orderedList.add((toolbarAction.toPreferenceItemInfo()))
             }
