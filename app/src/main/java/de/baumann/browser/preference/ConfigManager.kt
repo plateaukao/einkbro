@@ -29,11 +29,15 @@ class ConfigManager(private val context: Context) {
 
     var shouldSaveTabs: Boolean
         get() = sp.getBoolean(K_SHOULD_SAVE_TABS, false)
-        set(value) {sp.edit { putBoolean(K_SHOULD_SAVE_TABS, value) } }
+        set(value) { sp.edit { putBoolean(K_SHOULD_SAVE_TABS, value) } }
 
     var isIncognitoMode: Boolean
         get() = sp.getBoolean(K_IS_INCOGNITO_MODE, false)
-        set(value) {sp.edit { putBoolean(K_IS_INCOGNITO_MODE, value) } }
+        set(value) {
+            cookies = !value
+            saveHistory = !value
+            sp.edit { putBoolean(K_IS_INCOGNITO_MODE, value) }
+        }
 
     var shouldInvert: Boolean
         get() = sp.getBoolean(K_SHOULD_INVERT, false)
