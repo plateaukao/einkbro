@@ -114,7 +114,7 @@
                     android:gravity="center"
                     android:text="1"
                     android:textStyle="bold"
-                    android:textSize="18dp"
+                    android:textSize="16dp"
                     android:padding="5dp"
                     android:onClick="onClick" />
 
@@ -212,6 +212,14 @@
                     android:layout_height="match_parent"
                     android:padding="10dp"
                     android:src="@drawable/ic_rotate"
+                    android:background="@color/color_transparent"
+                    android:onClick="onClick"/>
+
+                <ImageButton android:id="@+id/toolbar_translate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_translate"
                     android:background="@color/color_transparent"
                     android:onClick="onClick"/>
 

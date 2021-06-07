@@ -553,6 +553,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             R.id.toolbar_decrease_font-> decreaseFontSize()
             R.id.toolbar_fullscreen -> fullscreen()
             R.id.toolbar_rotate -> rotateScreen()
+            R.id.toolbar_translate-> showTranslation()
             else -> { }
         }
     }
@@ -717,6 +718,31 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
                 isNewEpubFile = false
             }
         }
+    }
+
+    private fun showTranslation() {
+        lifecycleScope.launch(Dispatchers.Main) {
+            val text = ninjaWebView.getRawText()
+            if (text == "null") {
+                NinjaToast.showShort(this@BrowserActivity, "null string")
+            } else {
+                enableMultiWindow()
+                try {
+                    val intent = Intent().apply {
+                        action = "com.onyx.intent.ACTION_DICT_TRANSLATION"
+                        putExtra("translation", "{\"type\": \"page\", \"content\": \"$text\"}")
+                    }
+                    startActivity(intent)
+                } catch (ignored: ClassNotFoundException) {
+                    Log.e(TAG, "translation activity not found.")
+                }
+            }
+        }
+    }
+
+    private fun enableMultiWindow() {
+        val intent = Intent().apply { action = "com.onyx.action.START_MULTI_WINDOW" }
+        sendBroadcast(intent)
     }
 
     private suspend fun getChapterName(): String {

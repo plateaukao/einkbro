@@ -362,7 +362,7 @@ class NinjaWebView : WebView, AlbumController {
     suspend fun getRawHtml() =  suspendCoroutine<String> { continuation ->
         if (!isReaderModeOn) {
             injectMozReaderModeJs(false)
-            evaluateJavascript(getReaderModeBodyJs) { html ->
+            evaluateJavascript(getReaderModeBodyHtmlJs) { html ->
                 val processedHtml = StringEscapeUtils.unescapeJava(html)
                 continuation.resume(processedHtml.substring(1, processedHtml.length - 1)) // handle prefix/postfix "
             }
@@ -373,6 +373,17 @@ class NinjaWebView : WebView, AlbumController {
                 val processedHtml = StringEscapeUtils.unescapeJava(html)
                 continuation.resume(processedHtml.substring(1, processedHtml.length - 1)) // handle prefix/postfix "
             }
+        }
+    }
+
+    suspend fun getRawText() =  suspendCoroutine<String> { continuation ->
+        if (!isReaderModeOn) {
+            injectMozReaderModeJs(false)
+            evaluateJavascript(getReaderModeBodyTextJs) { text -> continuation.resume(text.substring(1, text.length-2)) }
+        } else {
+            evaluateJavascript(
+                "(function() { return document.getElementsByTagName('html')[0].innerText; })();"
+            ) { text -> continuation.resume(text) }
         }
     }
 
@@ -531,13 +542,20 @@ class NinjaWebView : WebView, AlbumController {
             var bodyClasses = document.body.classList;
             bodyClasses.add("serif");
         """
-        private const val getReaderModeBodyJs = """
+        private const val getReaderModeBodyHtmlJs = """
             javascript:(function() {
                 var documentClone = document.cloneNode(true);
                 var article = new Readability(documentClone, {classesToPreserve: preservedClasses}).parse();
                 article.readingTime = getReadingTime(article.length, document.lang);
                 var outerHTML = createHtmlBody(article)
                 return ('<html>'+ outerHTML +'</html>');
+            })()
+        """
+        private const val getReaderModeBodyTextJs = """
+            javascript:(function() {
+                var documentClone = document.cloneNode(true);
+                var article = new Readability(documentClone, {classesToPreserve: preservedClasses}).parse();
+                return article.textContent;
             })()
         """
         private const val stripHeaderElementsJs = """
