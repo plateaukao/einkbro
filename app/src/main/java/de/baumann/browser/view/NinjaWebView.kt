@@ -383,7 +383,12 @@ class NinjaWebView : WebView, AlbumController {
         } else {
             evaluateJavascript(
                 "(function() { return document.getElementsByTagName('html')[0].innerText; })();"
-            ) { text -> continuation.resume(text) }
+            ) { text ->
+                val processedText = if (text.startsWith("\"") && text.endsWith("\"")) {
+                    text.substring(1, text.length-2)
+                } else text
+                continuation.resume(processedText)
+            }
         }
     }
 
