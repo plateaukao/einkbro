@@ -741,7 +741,17 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         }
     }
 
+    private fun isMultiWindowEnabled(): Boolean {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
+            return false
+        }
+        return isInMultiWindowMode
+    }
+
     private fun toggleMultiWindow(isEnabled: Boolean) {
+        if (isEnabled && isMultiWindowEnabled()) return
+        if (!isEnabled && !isMultiWindowEnabled()) return
+
         val intent = Intent().apply {
             action = if (isEnabled) "com.onyx.action.START_MULTI_WINDOW" else "com.onyx.action.QUIT_MULTI_WINDOW"
         }
