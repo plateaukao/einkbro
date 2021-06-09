@@ -371,4 +371,20 @@
     <string name="setting_title_export_bookmarks">匯出書籤</string>
     <string name="setting_title_import_bookmarks">匯入書籤</string>
     <string name="setting_title_incognito">無痕模式</string>
+    <string name="back">往回</string>
+    <string name="refresh">更新</string>
+    <string name="touch_turn_page">點擊翻頁</string>
+    <string name="tab_preview">分頁預覽</string>
+    <string name="font_size">字型大小</string>
+    <string name="settings">設定</string>
+    <string name="toolbars">工具列設定</string>
+    <string name="font_size_increase">字型加大</string>
+    <string name="font_size_decrease">字型變小</string>
+    <string name="fullscreen">全螢幕</string>
+    <string name="forward">往前</string>
+    <string name="rotate">旋轉畫面</string>
+    <string name="translate">全文翻譯</string>
+    <string name="toolbar_title">網頁標題</string>
+    <string name="page_up">上一頁</string>
+    <string name="page_down">下一頁</string>
 </resources>
