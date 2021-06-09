@@ -30,7 +30,6 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
-            android:background="?attr/selectableItemBackground"
             android:padding="4dp"
             android:src="@drawable/close_circle" />
 
@@ -39,14 +38,13 @@
             android:layout_width="@dimen/layout_width_144dp"
             android:layout_height="match_parent"
             android:layout_alignParentStart="true"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="4dp"
             android:layout_toStartOf="@+id/album_close"
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:includeFontPadding="false"
             android:maxLines="1"
             android:minWidth="@dimen/layout_width_144dp"
-            android:paddingStart="6dp"
             android:textColor="?android:attr/colorLongPressedHighlight"
             tools:ignore="RtlSymmetry" />
 
