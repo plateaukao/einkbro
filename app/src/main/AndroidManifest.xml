@@ -81,44 +81,34 @@
 
         <!-- Settings -->
         <activity android:name="de.baumann.browser.activity.Settings_Activity"
-            android:label="@string/setting_label"
-            android:theme="@style/AppTheme"/>
+            android:label="@string/setting_label"/>
 
         <activity android:name="de.baumann.browser.activity.Whitelist_AdBlock"
-            android:label="@string/setting_title_whitelist"
-            android:theme="@style/AppTheme"/>
+            android:label="@string/setting_title_whitelist"/>
 
         <activity android:name="de.baumann.browser.activity.Whitelist_Javascript"
-            android:label="@string/setting_title_whitelistJS"
-            android:theme="@style/AppTheme"/>
+            android:label="@string/setting_title_whitelistJS"/>
 
         <activity android:name="de.baumann.browser.activity.Whitelist_Cookie"
-            android:label="@string/setting_title_whitelistCookie"
-            android:theme="@style/AppTheme"/>
+            android:label="@string/setting_title_whitelistCookie"/>
 
         <activity android:name="de.baumann.browser.activity.Settings_ClearActivity"
-            android:label="@string/setting_title_clear_control"
-            android:theme="@style/AppTheme"/>
+            android:label="@string/setting_title_clear_control"/>
 
         <activity android:name="de.baumann.browser.activity.Settings_StartActivity"
-            android:label="@string/setting_title_start_control"
-            android:theme="@style/AppTheme"/>
+            android:label="@string/setting_title_start_control"/>
 
         <activity android:name="de.baumann.browser.activity.Settings_DataActivity"
-            android:label="@string/setting_title_data"
-            android:theme="@style/AppTheme"/>
+            android:label="@string/setting_title_data"/>
 
         <activity android:name="de.baumann.browser.activity.Settings_UIActivity"
-            android:label="@string/setting_title_ui"
-            android:theme="@style/AppTheme"/>
+            android:label="@string/setting_title_ui"/>
 
         <activity android:name="de.baumann.browser.activity.Settings_GestureActivity"
-            android:label="@string/setting_gestures"
-            android:theme="@style/AppTheme"/>
+            android:label="@string/setting_gestures"/>
 
         <activity android:name="de.baumann.browser.activity.Settings_FilterActivity"
-            android:label="@string/setting_filter"
-            android:theme="@style/AppTheme"/>
+            android:label="@string/setting_filter"/>
 
         <!-- ClearService | Provider-->
         <service android:name="de.baumann.browser.service.ClearService"
