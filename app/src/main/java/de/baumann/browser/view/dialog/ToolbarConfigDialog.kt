@@ -6,8 +6,6 @@ import android.os.Build
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.FOCUSABLE_AUTO
-import android.view.View.NOT_FOCUSABLE
 import android.view.ViewGroup
 import android.widget.*
 import de.baumann.browser.Ninja.R
@@ -145,7 +143,7 @@ class ToolbarConfigDialog(
                 }
 
                 val textView = view.findViewById<TextView>(R.id.text)
-                textView.text = preferenceItemInfo?.title ?: ""
+                textView.text = context.resources.getString(preferenceItemInfo?.titleResId ?: 0)
                 // show disable state for Setting item
                 textView.isEnabled = preferenceItemInfo?.ordinal != ToolbarAction.Settings.ordinal
 
@@ -155,8 +153,8 @@ class ToolbarConfigDialog(
     }
 }
 
-private class PreferenceItemInfo(val ordinal: Int, val title: String, val iconResId: Int)
+private class PreferenceItemInfo(val ordinal: Int, val titleResId: Int, val iconResId: Int)
 
 private fun ToolbarAction.toPreferenceItemInfo(): PreferenceItemInfo {
-    return PreferenceItemInfo(this.ordinal, this.title, this.iconResId)
+    return PreferenceItemInfo(this.ordinal, this.titleResId, this.iconResId)
 }

@@ -2,27 +2,27 @@ package de.baumann.browser.view.toolbaricons
 
 import de.baumann.browser.Ninja.R
 
-enum class ToolbarAction(val iconResId: Int = 0, val title: String) {
-    Title(iconResId = 0, title = "title"), // 0
-    Back(iconResId = R.drawable.icon_arrow_left_gest, title = "back"),
-    Refresh(iconResId = R.drawable.icon_refresh, title = "refresh"),
-    Touch(iconResId = R.drawable.ic_touch_enabled, title = "touch turn page"),
-    PageUp(iconResId = R.drawable.ic_page_up, title = "page up"),
-    PageDown(iconResId = R.drawable.ic_page_down, title = "page down"),
-    TabCount(iconResId = R.drawable.icon_preview, title = "tab count"),
-    Font(iconResId = R.drawable.icon_size, title = "font size"),
-    Settings(iconResId = R.drawable.icon_settings, title = "settings"),
-    Bookmark(iconResId = R.drawable.ic_bookmarks, title = "bookmarks"),
-    IconSetting(iconResId = R.drawable.ic_toolbar, title = "toolbar"),
-    VerticalLayout(iconResId = R.drawable.ic_vertical_read, title = "vertical read"),
-    ReaderMode(iconResId = R.drawable.ic_reader, title = "reader mode"),
-    BoldFont(iconResId = R.drawable.ic_bold_font, title = "bold font"),
-    IncreaseFont(iconResId = R.mipmap.font_size_increase, title = "font size increase"),
-    DecreaseFont(iconResId = R.mipmap.font_size_decrease, title = "font size decrease"),
-    FullScreen(iconResId = R.drawable.icon_fullscreen, title = "fullscreen"),
-    Forward(iconResId = R.drawable.icon_arrow_right_gest, title = "forward"),
-    RotateScreen(iconResId = R.drawable.ic_rotate, title = "rotate"),
-    Translation(iconResId = R.drawable.ic_translate, title = "translate");
+enum class ToolbarAction(val iconResId: Int = 0, val titleResId: Int) {
+    Title(iconResId = 0, titleResId = R.string.toolbar_title), // 0
+    Back(iconResId = R.drawable.icon_arrow_left_gest, titleResId = R.string.back),
+    Refresh(iconResId = R.drawable.icon_refresh, titleResId = R.string.refresh),
+    Touch(iconResId = R.drawable.ic_touch_enabled, titleResId = R.string.touch_turn_page),
+    PageUp(iconResId = R.drawable.ic_page_up, titleResId = R.string.page_up),
+    PageDown(iconResId = R.drawable.ic_page_down, titleResId = R.string.page_down),
+    TabCount(iconResId = R.drawable.icon_preview, titleResId = R.string.tab_preview),
+    Font(iconResId = R.drawable.icon_size, titleResId = R.string.font_size),
+    Settings(iconResId = R.drawable.icon_settings, titleResId = R.string.settings),
+    Bookmark(iconResId = R.drawable.ic_bookmarks, titleResId = R.string.album_title_bookmarks),
+    IconSetting(iconResId = R.drawable.ic_toolbar, titleResId = R.string.toolbar_setting),
+    VerticalLayout(iconResId = R.drawable.ic_vertical_read, titleResId = R.string.vertical_read),
+    ReaderMode(iconResId = R.drawable.ic_reader, titleResId = R.string.reader_mode),
+    BoldFont(iconResId = R.drawable.ic_bold_font, titleResId = R.string.bold_font),
+    IncreaseFont(iconResId = R.mipmap.font_size_increase, titleResId = R.string.font_size_increase),
+    DecreaseFont(iconResId = R.mipmap.font_size_decrease, titleResId = R.string.font_size_decrease),
+    FullScreen(iconResId = R.drawable.icon_fullscreen, titleResId = R.string.fullscreen),
+    Forward(iconResId = R.drawable.icon_arrow_right_gest, titleResId = R.string.forward),
+    RotateScreen(iconResId = R.drawable.ic_rotate, titleResId = R.string.rotate),
+    Translation(iconResId = R.drawable.ic_translate, titleResId = R.string.translate);
 
     companion object {
         fun fromOrdinal(value: Int) = values().first { it.ordinal == value }
