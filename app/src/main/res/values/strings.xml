@@ -449,12 +449,12 @@
     <string name="font_style_serif">Font Style: Serif</string>
     <string name="setting_summary_font_style_serif">Set font style to Noto Sans Serif</string>
     <string name="vertical_read">vertical</string>
-    <string name="reader_mode">reader mode</string>
-    <string name="touch_area_setting">touch setting</string>
-    <string name="toolbar_setting">toolbar setting</string>
+    <string name="reader_mode">Reader mode</string>
+    <string name="touch_area_setting">Touch setting</string>
+    <string name="toolbar_setting">Toolbar setting</string>
     <string name="menu_save_epub">save epub</string>
     <string name="save_to">Save to...</string>
-    <string name="existing_epub">existing Epub</string>
+    <string name="existing_epub">Existing Epub</string>
     <string name="a_new_epub">a new Epub</string>
     <string name="title">Chapter name</string>
     <string name="title_in_toc">chapter name in Table of Content</string>
@@ -468,4 +468,18 @@
     <string name="setting_title_export_bookmarks">export bookmarks</string>
     <string name="setting_title_import_bookmarks">import bookmarks</string>
     <string name="setting_title_incognito">Incognito Mode</string>
+    <string name="back">back</string>
+    <string name="refresh">refresh</string>
+    <string name="touch_turn_page">Touch turn page</string>
+    <string name="tab_preview">Tab preview</string>
+    <string name="font_size">Font size</string>
+    <string name="settings">Settings</string>
+    <string name="toolbars">Toolbar setting</string>
+    <string name="font_size_increase">Font size increase</string>
+    <string name="font_size_decrease">Font size decrease</string>
+    <string name="fullscreen">Fullscreen</string>
+    <string name="forward">Forward</string>
+    <string name="rotate">Rotate</string>
+    <string name="translate">Translate</string>
+    <string name="toolbar_title">Title</string>
 </resources>
