@@ -57,6 +57,16 @@
         android:orientation="horizontal">
 
         <ImageButton
+            android:id="@+id/tab_plus_incognito"
+            android:layout_width="42dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp"
+            android:background="@android:color/transparent"
+            android:onClick="onClick"
+            android:src="@drawable/ic_incognito" />
+        <ImageButton
             android:id="@+id/tab_plus_bottom"
             android:layout_width="42dp"
             android:layout_height="match_parent"
