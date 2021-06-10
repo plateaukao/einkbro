@@ -418,7 +418,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
                 } else if (mainToolbar.visibility == GONE && sp.getBoolean("sp_toolbarShow", true)) {
                     showToolbar()
                 } else if (binding.iconBar.visibility == GONE) {
-                    binding.mainOmniboxInput.clearFocus()
+                    binding.omniboxInput.clearFocus()
                 } else {
                     if (ninjaWebView.canGoBack()) {
                         ninjaWebView.goBack()
@@ -430,7 +430,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             }
             // vim bindings
             KeyEvent.KEYCODE_O -> {
-                binding.mainOmniboxInput.performClick()
+                binding.omniboxInput.performClick()
             }
         }
         return false
@@ -460,12 +460,12 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         val list = action.listEntries(this, true)
         action.close()
         val adapter = CompleteAdapter(this, R.layout.complete_item, list)
-        binding.mainOmniboxInput.setAdapter(adapter)
+        binding.omniboxInput.setAdapter(adapter)
         adapter.notifyDataSetChanged()
-        binding.mainOmniboxInput.threshold = 1
-        binding.mainOmniboxInput.dropDownVerticalOffset = -16
-        binding.mainOmniboxInput.dropDownWidth = ViewUnit.getWindowWidth(this)
-        binding.mainOmniboxInput.onItemClickListener = OnItemClickListener { _, view, _, _ ->
+        binding.omniboxInput.threshold = 1
+        binding.omniboxInput.dropDownVerticalOffset = -16
+        binding.omniboxInput.dropDownWidth = ViewUnit.getWindowWidth(this)
+        binding.omniboxInput.onItemClickListener = OnItemClickListener { _, view, _, _ ->
             val url = (view.findViewById<View>(R.id.complete_item_url) as TextView).text.toString()
             updateAlbum(url)
             hideKeyboard()
@@ -500,16 +500,24 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         hideBottomSheetDialog()
         when (v.id) {
             R.id.button_size -> showFontSizeChangeDialog()
+            R.id.omnibox_input_clear -> {
+                if (binding.omniboxInput.text.isEmpty()) {
+                    showToolbar()
+                    binding.omniboxInput.clearFocus()
+                } else {
+                    binding.omniboxInput.text.clear()
+                }
+            }
             R.id.tab_plus_incognito -> {
                 hideOverview()
                 addAlbum(getString(R.string.app_name), "", incognito = true)
-                binding.mainOmniboxInput.requestFocus()
+                binding.omniboxInput.requestFocus()
                 showKeyboard()
             }
             R.id.tab_plus_bottom -> {
                 hideOverview()
                 addAlbum(getString(R.string.app_name), "")
-                binding.mainOmniboxInput.requestFocus()
+                binding.omniboxInput.requestFocus()
                 showKeyboard()
             }
             R.id.menu_save_pdf -> showPdfFilePicker()
@@ -887,15 +895,15 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             }
             fabImageButtonNav.setOnTouchListener(onTouchListener)
             binding.omniboxSetting.setOnTouchListener(onTouchListener)
-            binding.mainOmniboxInput.setOnTouchListener(object : SwipeTouchListener(this) {
+            binding.omniboxInput.setOnTouchListener(object : SwipeTouchListener(this) {
                 override fun onSwipeTop() = performGesture("setting_gesture_tb_up")
                 override fun onSwipeBottom() = performGesture("setting_gesture_tb_down")
                 override fun onSwipeRight() = performGesture("setting_gesture_tb_right")
                 override fun onSwipeLeft() = performGesture("setting_gesture_tb_left")
             })
         }
-        binding.mainOmniboxInput.setOnEditorActionListener(OnEditorActionListener { _, _, _ ->
-            val query = binding.mainOmniboxInput.text.toString().trim { it <= ' ' }
+        binding.omniboxInput.setOnEditorActionListener(OnEditorActionListener { _, _, _ ->
+            val query = binding.omniboxInput.text.toString().trim { it <= ' ' }
             if (query.isEmpty()) {
                 NinjaToast.show(this, getString(R.string.toast_input_empty))
                 return@OnEditorActionListener true
@@ -904,10 +912,10 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             showToolbar()
             false
         })
-        binding.mainOmniboxInput.onFocusChangeListener = OnFocusChangeListener { _, _ ->
-            if (binding.mainOmniboxInput.hasFocus()) {
-                binding.mainOmniboxInput.setText(ninjaWebView.url)
-                binding.mainOmniboxInput.setSelection(0, binding.mainOmniboxInput.text.toString().length)
+        binding.omniboxInput.onFocusChangeListener = OnFocusChangeListener { _, _ ->
+            if (binding.omniboxInput.hasFocus()) {
+                binding.omniboxInput.setText(ninjaWebView.url)
+                binding.omniboxInput.setSelection(0, binding.omniboxInput.text.toString().length)
                 toggleIconsOnOmnibox(true)
             } else {
                 toggleIconsOnOmnibox(false)
@@ -1524,7 +1532,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         }
 
         // prevent inputBox to get the focus
-        binding.mainOmniboxInput.isEnabled = false
+        binding.omniboxInput.isEnabled = false
 
         (window.decorView as FrameLayout).removeView(fullscreenHolder)
         customView?.keepScreenOn = false
@@ -1540,7 +1548,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         requestedOrientation = originalOrientation
 
         // re-enable inputBox after fullscreen view is removed.
-        binding.mainOmniboxInput.isEnabled = true
+        binding.omniboxInput.isEnabled = true
         return true
     }
 
@@ -1571,7 +1579,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
                         decreaseFontSize()
                         previousKeyEvent = null
                     } else {
-                        binding.mainOmniboxInput.requestFocus()
+                        binding.omniboxInput.requestFocus()
                     }
                 }
                 KeyEvent.KEYCODE_J -> ninjaWebView.pageDownWithNoAnimation()
@@ -1581,7 +1589,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
                 KeyEvent.KEYCODE_D -> removeAlbum(currentAlbumController!!)
                 KeyEvent.KEYCODE_T -> {
                     addAlbum(getString(R.string.app_name), "", true)
-                    binding.mainOmniboxInput.requestFocus()
+                    binding.omniboxInput.requestFocus()
                 }
                 KeyEvent.KEYCODE_SLASH -> showSearchPanel()
                 KeyEvent.KEYCODE_G -> {

@@ -17,11 +17,23 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <AutoCompleteTextView android:id="@+id/main_omnibox_input"
+            <ImageButton
+                android:id="@+id/omnibox_input_clear"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:padding="8dp"
+                android:src="@drawable/close_circle"
+                android:tint="?attr/colorControlNormal"
+                android:background="@color/color_transparent"
+                android:onClick="onClick"/>
+
+            <AutoCompleteTextView
+                android:id="@+id/omnibox_input"
                 android:layout_width="match_parent"
                 android:layout_alignParentStart="true"
                 android:layout_height="match_parent"
-                android:layout_centerInParent="true"
+                android:layout_toLeftOf="@+id/omnibox_input_clear"
                 android:layout_marginStart="8dp"
                 android:includeFontPadding="false"
                 android:hint="@string/main_omnibox_input_hint"
