@@ -46,15 +46,15 @@ class FastToggleDialog(
     }
 
     private fun initToggles() {
-        updateViewVisibility(binding.toggleHistoryView, sp.getBoolean("saveHistory", true))
+        updateViewVisibility(binding.toggleHistoryView, config.saveHistory)
         updateViewVisibility(binding.toggleLocationView, R.string.sp_location)
         updateViewVisibility(binding.toggleMediaContinueView, sp.getBoolean("sp_media_continue", false))
         updateViewVisibility(binding.toggleDesktopView, sp.getBoolean("sp_desktop", false))
         updateViewVisibility(binding.toggleVolumePageTurn, config.volumePageTurn)
 
         binding.toggleHistory.setOnClickListener {
-            updateBooleanPref("saveHistory")
-            updateViewVisibility(binding.toggleHistoryView, sp.getBoolean("saveHistory", true))
+            config.saveHistory = !config.saveHistory
+            updateViewVisibility(binding.toggleHistoryView, config.saveHistory)
             dialog.dismiss()
         }
         binding.toggleLocation.setOnClickListener {

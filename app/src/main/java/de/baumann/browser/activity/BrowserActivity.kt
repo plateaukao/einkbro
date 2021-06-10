@@ -500,6 +500,12 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         hideBottomSheetDialog()
         when (v.id) {
             R.id.button_size -> showFontSizeChangeDialog()
+            R.id.tab_plus_incognito -> {
+                hideOverview()
+                addAlbum(getString(R.string.app_name), "", incognito = true)
+                binding.mainOmniboxInput.requestFocus()
+                showKeyboard()
+            }
             R.id.tab_plus_bottom -> {
                 hideOverview()
                 addAlbum(getString(R.string.app_name), "")
@@ -1291,11 +1297,17 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
     override fun addNewTab(url: String?) = addAlbum(url = url)
 
     @Synchronized
-    private fun addAlbum(title: String = "", url: String? = config.favoriteUrl, foreground: Boolean = true) {
+    private fun addAlbum(
+        title: String = "",
+        url: String? = config.favoriteUrl,
+        foreground: Boolean = true,
+        incognito: Boolean = false
+    ) {
         if (url == null) return
 
         ninjaWebView = NinjaWebView(this, this)
         ninjaWebView.albumTitle = title
+        ninjaWebView.incognito = incognito
         ViewUnit.bound(this, ninjaWebView)
         val albumView = ninjaWebView.albumView
         if (currentAlbumController != null) {
@@ -1338,11 +1350,13 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
     private fun updateWebViewCount() {
         binding.omniboxTabcount.text = BrowserContainer.size().toString()
+        updateWebViewCountUI()
     }
 
     private fun updateWebViewCountUI() {
         binding.omniboxTabcount.setBackgroundResource(
-            if (config.isIncognitoMode) R.drawable.button_border_bg_dash else R.drawable.button_border_bg
+            if (config.isIncognitoMode
+                || (this::ninjaWebView.isInitialized && ninjaWebView.incognito)) R.drawable.button_border_bg_dash else R.drawable.button_border_bg
         )
     }
 
