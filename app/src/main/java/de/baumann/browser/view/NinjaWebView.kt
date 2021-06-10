@@ -49,10 +49,18 @@ class NinjaWebView : WebView, AlbumController {
 
     val adBlock: AdBlock
     val cookieHosts: Cookie
+
     private val javaHosts: Javascript
 
     private val sp: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
     private lateinit var config: ConfigManager
+
+    var incognito: Boolean = false
+        set(value) {
+            field = value
+            toggleCookieSupport(!incognito)
+        }
+
     var isForeground = false
         private set
 
@@ -187,9 +195,13 @@ class NinjaWebView : WebView, AlbumController {
         }
         webViewClient.enableAdBlock(sp.getBoolean(context!!.getString(R.string.sp_ad_block), true))
 
-        CookieManager.getInstance().apply {
-            setAcceptCookie(sp.getBoolean(context!!.getString(R.string.sp_cookies), true))
-            setAcceptThirdPartyCookies(this@NinjaWebView, sp.getBoolean(context.getString(R.string.sp_cookies), true))
+        toggleCookieSupport(config.cookies)
+    }
+
+    private fun toggleCookieSupport(isEnabled: Boolean) {
+        with(CookieManager.getInstance()) {
+            setAcceptCookie(isEnabled)
+            setAcceptThirdPartyCookies(this@NinjaWebView, isEnabled)
         }
     }
 
