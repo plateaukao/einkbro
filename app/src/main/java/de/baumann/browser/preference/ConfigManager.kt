@@ -3,6 +3,7 @@ package de.baumann.browser.preference
 import android.content.Context
 import android.content.SharedPreferences
 import android.print.PrintAttributes
+import android.util.Log
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import de.baumann.browser.util.Constants
@@ -93,7 +94,8 @@ class ConfigManager(private val context: Context) {
             val string = sp.getString(K_SAVED_ALBUM_INFO, "") ?: ""
             if (string.isBlank()) return emptyList()
 
-            return string.split(ALBUM_INFO_SEPARATOR).map { it.toAlbumInfo() }
+            Log.d("configmanager", "album:info$string")
+            return string.split(ALBUM_INFO_SEPARATOR).mapNotNull { it.toAlbumInfo() }
         }
         set(value) {
             if (value.containsAll(savedAlbumInfoList) && savedAlbumInfoList.containsAll(value)) {
@@ -177,7 +179,8 @@ data class AlbumInfo(
 
 private fun AlbumInfo.toSerializedString(): String = "$title::$url"
 
-private fun String.toAlbumInfo(): AlbumInfo {
-    val segments = this.split("::")
+private fun String.toAlbumInfo(): AlbumInfo? {
+    val segments = this.split("::", limit = 2)
+    if (segments.size != 2) return null
     return AlbumInfo(segments[0], segments[1])
 }
