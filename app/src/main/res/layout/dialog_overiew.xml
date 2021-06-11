@@ -101,7 +101,7 @@
                 android:layout_marginEnd="2dp"
                 android:background="@android:color/transparent"
                 android:onClick="onClick"
-                android:src="@drawable/icon_earth" />
+                android:src="@drawable/icon_tab_plus" />
 
         </LinearLayout>
 
