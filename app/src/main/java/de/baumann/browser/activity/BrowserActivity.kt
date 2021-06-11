@@ -455,20 +455,21 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
     }
 
     override fun updateAutoComplete() {
-        val action = RecordAction(this)
-        action.open(false)
-        val list = action.listEntries(this, true)
-        action.close()
-        val adapter = CompleteAdapter(this, R.layout.complete_item, list)
-        binding.omniboxInput.setAdapter(adapter)
-        adapter.notifyDataSetChanged()
-        binding.omniboxInput.threshold = 1
-        binding.omniboxInput.dropDownVerticalOffset = -16
-        binding.omniboxInput.dropDownWidth = ViewUnit.getWindowWidth(this)
-        binding.omniboxInput.onItemClickListener = OnItemClickListener { _, view, _, _ ->
-            val url = (view.findViewById<View>(R.id.complete_item_url) as TextView).text.toString()
-            updateAlbum(url)
-            hideKeyboard()
+        lifecycleScope.launch {
+            val activity = this@BrowserActivity
+            val action = RecordAction(activity)
+            action.open(false)
+            val list = action.listEntries(activity, true)
+            action.close()
+
+            val adapter = CompleteAdapter(activity, R.layout.complete_item, list) { record ->
+                updateAlbum(record.url)
+                hideKeyboard()
+            }
+            binding.omniboxInput.setAdapter(adapter)
+            binding.omniboxInput.threshold = 1
+            binding.omniboxInput.dropDownVerticalOffset = -16
+            binding.omniboxInput.dropDownWidth = ViewUnit.getWindowWidth(activity)
         }
     }
 
@@ -596,6 +597,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
                 } else {
                     bookmarkManager.insert(HelperUnit.secString(ninjaWebView.title), currentUrl)
                     NinjaToast.show(this@BrowserActivity, R.string.toast_edit_successful)
+                    updateAutoComplete()
                 }
             }
         } catch (e: Exception) {
@@ -1145,10 +1147,12 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
                                 lifecycleScope.launch {
                                     bookmarkManager.deleteAll()
                                     updateBookmarkList()
+                                    updateAutoComplete()
                                 }
                             }
                             getString(R.string.album_title_history) -> {
                                 BrowserUnit.clearHistory(this)
+                                updateAutoComplete()
                             }
                         }
                     }
@@ -1190,19 +1194,26 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
         val action = RecordAction(this)
         action.open(false)
-        val list: MutableList<Record> = action.listEntries(this, false)
-        action.close()
-        adapter = RecordAdapter(
-                list,
+        lifecycleScope.launch {
+            val list = action.listEntries(this@BrowserActivity, false)
+            action.close()
+            adapter = RecordAdapter(
+                list.toMutableList(),
                 { position ->
                     updateAlbum(list[position].url)
                     hideOverview()
                 },
                 { position ->
-                    showHistoryContextMenu(list[position].title, list[position].url, adapter, list, position)
+                    showHistoryContextMenu(
+                        list[position].title ?: "",
+                        list[position].url,
+                        adapter,
+                        position
+                    )
                 }
-        )
-        recyclerView.adapter = adapter
+            )
+            recyclerView.adapter = adapter
+        }
         adapter.notifyDataSetChanged()
     }
 
@@ -1849,8 +1860,11 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         bottomSheetDialog?.show()
     }
 
-    private fun showHistoryContextMenu(title: String, url: String, recordAdapter: RecordAdapter,
-                                       recordList: MutableList<Record>, location: Int
+    private fun showHistoryContextMenu(
+        title: String,
+        url: String,
+        recordAdapter: RecordAdapter,
+        location: Int
     ) {
         bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
         val dialogView = DialogMenuContextListBinding.inflate(layoutInflater)
@@ -1877,7 +1891,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             hideBottomSheetDialog()
             showOkCancelDialog(
                 messageResId = R.string.toast_titleConfirm_delete,
-                okAction = { deleteHistory(recordList, recordAdapter, location) }
+                okAction = { deleteHistory(recordAdapter, location) }
             )
         }
 
@@ -1885,15 +1899,14 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         bottomSheetDialog?.show()
     }
 
-    private fun deleteHistory(recordList: MutableList<Record>, recordAdapter: RecordAdapter, location: Int) {
-        val record = recordList[location]
+    private fun deleteHistory(recordAdapter: RecordAdapter, location: Int) {
+        val record = recordAdapter.getItemAt(location)
         RecordAction(this).apply {
             open(true)
             deleteHistoryItem(record)
             close()
         }
-        recordList.removeAt(location)
-        recordAdapter.notifyDataSetChanged()
+        recordAdapter.removeAt(location)
         updateAutoComplete()
     }
 
