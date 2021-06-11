@@ -14,6 +14,9 @@ interface BookmarkDao {
     @Query("SELECT * FROM bookmarks ORDER BY title COLLATE NOCASE ASC")
     suspend fun getAllBookmarks(): List<Bookmark>
 
+    @Query("SELECT * FROM bookmarks WHERE isDirectory = 0 ORDER BY title COLLATE NOCASE ASC")
+    suspend fun getAllBookmarksOnly(): List<Bookmark>
+
     @Query("SELECT * FROM bookmarks WHERE isDirectory = 1 ORDER BY title COLLATE NOCASE ASC")
     suspend fun getBookmarkFolders(): List<Bookmark>
 
@@ -66,6 +69,8 @@ class BookmarkManager(private val context: Context) {
     }
 
     suspend fun getAllBookmarks(): List<Bookmark> = bookmarkDao.getAllBookmarks()
+
+    suspend fun getAllBookmarksOnly(): List<Bookmark> = bookmarkDao.getAllBookmarks()
 
     suspend fun getBookmarks(parentId: Int = 0): List<Bookmark> = bookmarkDao.getBookmarksByParent(parentId)
 
