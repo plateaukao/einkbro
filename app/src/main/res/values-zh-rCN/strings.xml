@@ -405,7 +405,7 @@
     <string name="vertical_read">横屏模式</string>
     <string name="reader_mode">阅读模式</string>
     <string name="touch_area_setting">触摸设置</string>
-    <string name="toolbar_setting">工具栏设置</string>
+    <string name="toolbar_setting">工具栏\n设置</string>
     <string name="menu_save_epub">另存为 epub</string>
     <string name="save_to">另存为...</string>
     <string name="existing_epub">已有的 Epub</string>

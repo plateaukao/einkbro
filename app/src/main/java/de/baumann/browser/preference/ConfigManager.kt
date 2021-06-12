@@ -2,6 +2,7 @@ package de.baumann.browser.preference
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.os.Build
 import android.print.PrintAttributes
 import android.util.Log
 import androidx.core.content.edit
@@ -127,6 +128,10 @@ class ConfigManager(private val context: Context) {
         get() = sp.getInt(K_DB_VERSION, 0)
         set(value) = sp.edit { putInt(K_DB_VERSION, value)}
 
+    var translationMode: TranslationMode
+        get() = TranslationMode.values()[sp.getInt(K_TRANSLATION_MODE, if (Build.MANUFACTURER == "ONYX") 0 else 1)]
+        set(value) = sp.edit { putInt(K_TRANSLATION_MODE, value.ordinal)}
+
     private fun iconStringToEnumList(iconListString: String): List<ToolbarAction> {
         if (iconListString.isBlank()) return listOf()
 
@@ -156,6 +161,7 @@ class ConfigManager(private val context: Context) {
         const val K_SAVE_HISTORY = "saveHistory"
         const val K_COOKIES = "SP_COOKIES_9"
         const val K_SHOULD_INVERT = "sp_invert"
+        const val K_TRANSLATION_MODE = "sp_translation_mode"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
     }
@@ -170,6 +176,10 @@ enum class PaperSize(val sizeString: String, val mediaSize: PrintAttributes.Medi
 
 enum class FabPosition {
     Right, Left, Center
+}
+
+enum class TranslationMode {
+    ONYX, GOOGLE, PAPAGO
 }
 
 data class AlbumInfo(

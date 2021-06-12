@@ -23,6 +23,7 @@
                 android:id="@+id/button_openFav"
                 android:layout_width="@dimen/menu_button_size"
                 android:layout_height="@dimen/menu_button_size"
+                android:padding="10dp"
                 android:gravity="center_vertical"
                 android:paddingBottom="3dp"
                 android:src="@drawable/ic_home" />

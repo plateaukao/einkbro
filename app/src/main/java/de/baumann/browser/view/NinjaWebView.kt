@@ -25,6 +25,7 @@ import de.baumann.browser.Ninja.BuildConfig
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.browser.*
 import de.baumann.browser.preference.ConfigManager
+import de.baumann.browser.preference.TranslationMode
 import de.baumann.browser.unit.BrowserUnit
 import de.baumann.browser.unit.ViewUnit
 import de.baumann.browser.util.PdfDocumentAdapter
@@ -429,7 +430,7 @@ class NinjaWebView : WebView, AlbumController {
         toggleReaderMode(true)
     }
 
-    private var isReaderModeOn = false
+    var isReaderModeOn = false
     fun toggleReaderMode(isVertical: Boolean = false) {
         isReaderModeOn = !isReaderModeOn
         if (isReaderModeOn) {
@@ -501,7 +502,13 @@ class NinjaWebView : WebView, AlbumController {
     }
 
     fun hideTranslateContext() {
-        evaluateJavascript(hideTranslateContext, null)
+        when (config.translationMode) {
+            TranslationMode.GOOGLE ->
+                evaluateJavascript(hideGTranslateContext, null)
+            TranslationMode.PAPAGO ->
+                evaluateJavascript(hidePTranslateContext, null)
+            else -> Unit
+        }
     }
 
     private fun getByteArrayFromAsset(fileName: String): ByteArray {
@@ -551,7 +558,13 @@ class NinjaWebView : WebView, AlbumController {
 
 
     companion object {
-        private const val hideTranslateContext = """
+        private const val hidePTranslateContext = """
+            javascript:(function() {
+                // document.getElementById("sourceEditArea").style.display="none";
+                document.getElementById("targetEditArea").scrollIntoView();
+            })()
+        """
+        private const val hideGTranslateContext = """
             javascript:(function() {
                 document.querySelector("span[lang]").style.display = "none";
                 document.querySelector("div[data-location]").style.display = "none";

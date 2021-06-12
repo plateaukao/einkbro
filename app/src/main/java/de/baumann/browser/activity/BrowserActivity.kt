@@ -47,10 +47,7 @@ import de.baumann.browser.Ninja.databinding.*
 import de.baumann.browser.browser.*
 import de.baumann.browser.database.*
 import de.baumann.browser.epub.EpubManager
-import de.baumann.browser.preference.AlbumInfo
-import de.baumann.browser.preference.ConfigManager
-import de.baumann.browser.preference.FabPosition
-import de.baumann.browser.preference.TouchAreaType
+import de.baumann.browser.preference.*
 import de.baumann.browser.service.ClearService
 import de.baumann.browser.unit.BrowserUnit
 import de.baumann.browser.unit.HelperUnit
@@ -684,6 +681,33 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         }
     }
 
+    private fun showTranslationConfigDialog() {
+        val enumValues: List<TranslationMode> = if (Build.MANUFACTURER != "ONYX") {
+            TranslationMode.values().toMutableList().apply {  remove(TranslationMode.ONYX) }
+        } else {
+            TranslationMode.values().toList()
+        }
+
+        val translationModeArray = enumValues.map { it.name }.toTypedArray()
+        val valueArray = enumValues.map { it.ordinal }
+        val selected = valueArray.indexOf(config.translationMode.ordinal)
+        val buttonText = if (!isTranslationModeOn()) "Enable" else "Disable"
+        AlertDialog.Builder(this, R.style.TouchAreaDialog).apply{
+            setTitle("Translation Mode")
+            setSingleChoiceItems(translationModeArray, selected) { dialog, which ->
+                config.translationMode = enumValues[which]
+                if (isTranslationModeOn()) showTranslation()
+                dialog.dismiss()
+            }
+        }
+            .setPositiveButton(buttonText) { d, _ -> d.dismiss() ; toggleTranslationWindow(!isTranslationModeOn()) }
+            .setNegativeButton(android.R.string.cancel)  { d, _ -> d.dismiss() }
+            .create().also {
+            it.show()
+            it.window?.setLayout(ViewUnit.dpToPixel(this, 200).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
+        }
+    }
+
     private fun changeFontSize(size: Int) {
         config.fontSize = size
         ninjaWebView.settings.textZoom = size
@@ -742,13 +766,15 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
     private fun showTranslation() {
         lifecycleScope.launch(Dispatchers.Main) {
+            if (!ninjaWebView.isReaderModeOn) {
+                ninjaWebView.toggleReaderMode()
+            }
+
             val text = ninjaWebView.getRawText()
             if (text == "null") {
                 NinjaToast.showShort(this@BrowserActivity, "null string")
             } else {
-                //toggleMultiWindow(true)
                 try {
-                    //launchOnyxDictTranslation(text)
                     launchTranslateWindow(text)
                 } catch (ignored: ClassNotFoundException) {
                     Log.e(TAG, "translation activity not found.")
@@ -757,18 +783,16 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         }
     }
 
-    private val translationTextLength = 1800
     private fun launchTranslateWindow(text: String) {
-        val shortenedText: String = if (text.length > translationTextLength) text.substring(0, translationTextLength) else text
-        val uri = Uri.Builder()
-            .scheme("https")
-            .authority("translate.google.com")
-            .appendQueryParameter("text", shortenedText.replace("\\n", "\n").replace("\\t", "  "))
-            .appendQueryParameter("sl", "auto") // source language
-            .appendQueryParameter("tl", "jp") // target language
-            .build()
+        // onyx case
+        if (config.translationMode == TranslationMode.ONYX) {
+            toggleMultiWindow(true)
+            launchOnyxDictTranslation(text)
+            return
+        }
 
-        val translateWebView = if (subContainer.visibility != VISIBLE) {
+        // webview cases: google, papago
+        val translateWebView = if (!isTranslationModeOn()) {
             val ninjaWebView = NinjaWebView(this, null)
             subContainer.addView(ninjaWebView)
             subContainer.visibility = VISIBLE
@@ -777,7 +801,35 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         } else {
             subContainer[0] as NinjaWebView
         }
-        translateWebView.loadUrl(uri.toString())
+
+        translateWebView.loadUrl(
+            if (config.translationMode == TranslationMode.GOOGLE) buildGTranslateUrl(text)
+            else buildPTranslateUrl(text)
+        )
+    }
+
+    private fun buildPTranslateUrl(text: String): String {
+        val translationTextLength = 1000
+        val shortenedText: String = if (text.length > translationTextLength) text.substring(0, translationTextLength) else text
+        val uri = Uri.Builder()
+            .scheme("https")
+            .authority("papago.naver.com")
+            .appendQueryParameter("st", shortenedText.replace("\\n", "\n").replace("\\t", "  "))
+            .build()
+        return uri.toString()
+    }
+
+    private fun buildGTranslateUrl(text: String): String {
+        val translationTextLength = 1800
+        val shortenedText: String = if (text.length > translationTextLength) text.substring(0, translationTextLength) else text
+        val uri = Uri.Builder()
+            .scheme("https")
+            .authority("translate.google.com")
+            .appendQueryParameter("text", shortenedText.replace("\\n", "\n").replace("\\t", "  "))
+            .appendQueryParameter("sl", "auto") // source language
+            .appendQueryParameter("tl", "jp") // target language
+            .build()
+        return uri.toString()
     }
 
     private fun launchOnyxDictTranslation(text: String) {
@@ -795,13 +847,19 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         return isInMultiWindowMode
     }
 
+    private fun isTranslationModeOn(): Boolean =
+        (config.translationMode == TranslationMode.ONYX && isMultiWindowEnabled()) ||
+                subContainer.visibility == VISIBLE
+
     private fun toggleTranslationWindow(isEnabled: Boolean) {
-//        if (Build.MANUFACTURER == "ONYX") {
-//            toggleMultiWindow(isEnabled)
-//        } else {
-        if (!isEnabled) {
-            subContainer.removeAllViews()
-            subContainer.visibility = GONE
+        if (config.translationMode == TranslationMode.ONYX) {
+            toggleMultiWindow(isEnabled)
+        } else {
+            // all other translation types, should remove sub webviews
+            if (!isEnabled) {
+                subContainer.removeAllViews()
+                subContainer.visibility = GONE
+            }
         }
     }
 
@@ -988,10 +1046,9 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
         binding.omniboxBookmark.setOnClickListener { openBookmarkPage() }
         binding.omniboxBookmark.setOnLongClickListener { saveBookmark(); true }
-        binding.toolbarTranslate.setOnLongClickListener { toggleTranslationWindow(false); true }
+        binding.toolbarTranslate.setOnLongClickListener { showTranslationConfigDialog(); true }
 
         sp.registerOnSharedPreferenceChangeListener(preferenceChangeListener)
-
 
         reorderToolbarIcons()
     }
