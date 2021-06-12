@@ -49,6 +49,7 @@ class NinjaWebView : WebView, AlbumController {
 
     val adBlock: AdBlock
     val cookieHosts: Cookie
+    var shouldHideTranslateContext: Boolean = false
 
     private val javaHosts: Javascript
 
@@ -66,7 +67,7 @@ class NinjaWebView : WebView, AlbumController {
 
     var browserController: BrowserController? = null
 
-    constructor(context: Context?, browserController: BrowserController) : super(context!!) {
+    constructor(context: Context?, browserController: BrowserController?) : super(context!!) {
         this.browserController = browserController
         album = Album(context, this, browserController)
         initAlbum()
@@ -499,6 +500,10 @@ class NinjaWebView : WebView, AlbumController {
         injectJavascript(facebookHideSponsoredPostsJs.toByteArray())
     }
 
+    fun hideTranslateContext() {
+        evaluateJavascript(hideTranslateContext, null)
+    }
+
     private fun getByteArrayFromAsset(fileName: String): ByteArray {
         return try {
             val assetInput: InputStream = context.assets.open(fileName)
@@ -546,6 +551,13 @@ class NinjaWebView : WebView, AlbumController {
 
 
     companion object {
+        private const val hideTranslateContext = """
+            javascript:(function() {
+                document.querySelector("span[lang]").style.display = "none";
+                document.querySelector("div[data-location]").style.display = "none";
+            })()
+            """
+
         private const val replaceWithReaderModeBodyJs = """
             var documentClone = document.cloneNode(true);
             var article = new Readability(documentClone, {classesToPreserve: preservedClasses}).parse();

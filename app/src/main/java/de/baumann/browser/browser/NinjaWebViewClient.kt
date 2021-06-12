@@ -63,6 +63,11 @@ class NinjaWebViewClient(private val ninjaWebView: NinjaWebView) : WebViewClient
         if (config.boldFontStyle || config.fontStyleSerif) {
             ninjaWebView.updateCssStyle()
         }
+        if (ninjaWebView.shouldHideTranslateContext) {
+            ninjaWebView.postDelayed({
+                ninjaWebView.hideTranslateContext()
+            }, 3000)
+        }
     }
 
     override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean =

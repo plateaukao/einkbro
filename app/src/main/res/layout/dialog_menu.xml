@@ -24,13 +24,14 @@
                 android:layout_width="@dimen/menu_button_size"
                 android:layout_height="@dimen/menu_button_size"
                 android:gravity="center_vertical"
-                android:padding="10dp"
+                android:paddingBottom="3dp"
                 android:src="@drawable/ic_home" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:gravity="top|center"
+                android:layout_marginTop="-7dp"
                 android:lines="2"
                 android:text="@string/menu_openFav"
                 android:textSize="10sp" />
@@ -52,7 +53,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:gravity="top|center"
+                android:layout_marginTop="-7dp"
                 android:lines="2"
                 android:text="@string/menu_closeTab"
                 android:textSize="10sp" />
@@ -75,7 +77,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:gravity="top|center"
+                android:layout_marginTop="-7dp"
                 android:lines="2"
                 android:text="@string/menu_quit"
                 android:textSize="10sp" />
@@ -109,7 +112,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:gravity="top|center"
+                android:layout_marginTop="-7dp"
                 android:lines="2"
                 android:text="@string/setting_title_font"
                 android:textSize="10sp" />
@@ -130,7 +134,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:gravity="top|center"
+                android:layout_marginTop="-7dp"
                 android:lines="2"
                 android:text="@string/bold_font"
                 android:textSize="10sp" />
@@ -151,7 +156,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:gravity="top|center"
+                android:layout_marginTop="-7dp"
                 android:lines="2"
                 android:text="@string/vertical_read"
                 android:textSize="10sp" />
@@ -172,7 +178,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:gravity="top|center"
+                android:layout_marginTop="-7dp"
                 android:lines="2"
                 android:text="@string/reader_mode"
                 android:textSize="10sp" />
@@ -193,7 +200,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:gravity="top|center"
+                android:layout_marginTop="-7dp"
                 android:lines="2"
                 android:text="@string/touch_area_setting"
                 android:textSize="10sp" />
@@ -214,7 +222,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:gravity="top|center"
+                android:layout_marginTop="-7dp"
                 android:lines="2"
                 android:text="@string/toolbar_setting"
                 android:textSize="10sp" />
@@ -249,7 +258,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:gravity="top|center"
+                android:layout_marginTop="-7dp"
                 android:lines="2"
                 android:text="@string/menu_share_link"
                 android:textSize="10sp" />
@@ -271,7 +281,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:gravity="top|center"
+                android:layout_marginTop="-7dp"
                 android:lines="2"
                 android:text="@string/menu_shareClipboard"
                 android:textSize="10sp" />
@@ -293,7 +304,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:gravity="top|center"
+                android:layout_marginTop="-7dp"
                 android:lines="2"
                 android:text="@string/menu_sc"
                 android:textSize="10sp" />
@@ -326,7 +338,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:gravity="top|center"
+                android:layout_marginTop="-7dp"
                 android:lines="2"
                 android:text="@string/menu_fav"
                 android:textSize="10sp" />
@@ -349,7 +362,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:gravity="top|center"
+                android:layout_marginTop="-7dp"
                 android:lines="2"
                 android:text="@string/menu_save_bookmark"
                 android:textSize="10sp" />
@@ -371,7 +385,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:gravity="top|center"
+                android:layout_marginTop="-7dp"
                 android:lines="2"
                 android:text="@string/menu_save_screenshot"
                 android:textSize="10sp" />
@@ -393,7 +408,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:gravity="top|center"
+                android:layout_marginTop="-7dp"
                 android:lines="2"
                 android:text="@string/menu_save_epub"
                 android:textSize="10sp" />
@@ -416,7 +432,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:gravity="top|center"
+                android:layout_marginTop="-7dp"
                 android:lines="2"
                 android:text="@string/menu_save_pdf"
                 android:textSize="10sp" />
@@ -449,7 +466,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:gravity="top|center"
+                android:layout_marginTop="-7dp"
                 android:lines="2"
                 android:text="@string/menu_other_searchSite"
                 android:textSize="10sp" />
@@ -471,7 +489,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:gravity="top|center"
+                android:layout_marginTop="-7dp"
                 android:lines="2"
                 android:text="@string/menu_download"
                 android:textSize="10sp" />
@@ -493,7 +512,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
+                android:gravity="top|center"
+                android:layout_marginTop="-7dp"
                 android:lines="2"
                 android:text="@string/setting_label"
                 android:textSize="10sp" />

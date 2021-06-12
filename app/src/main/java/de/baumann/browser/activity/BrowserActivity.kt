@@ -31,11 +31,11 @@ import android.webkit.*
 import android.webkit.WebChromeClient.CustomViewCallback
 import android.webkit.WebView.HitTestResult
 import android.widget.*
-import android.widget.AdapterView.OnItemClickListener
 import android.widget.TextView.OnEditorActionListener
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
+import androidx.core.view.get
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -70,6 +70,7 @@ import kotlin.math.floor
 import kotlin.math.roundToInt
 import kotlin.system.exitProcess
 
+
 class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener {
     private lateinit var adapter: RecordAdapter
 
@@ -96,6 +97,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
     private lateinit var mainToolbar: RelativeLayout
     private lateinit var searchPanel: ViewGroup
     private lateinit var mainContentLayout: FrameLayout
+    private lateinit var subContainer: FrameLayout
     private lateinit var tabContainer: FlexboxLayout
     private lateinit var openStartPageView: View
     private lateinit var openBookmarkView: View
@@ -192,6 +194,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             sp.edit().putBoolean(getString(R.string.sp_location), false).apply()
         }
         mainContentLayout = findViewById(R.id.main_content)
+        subContainer = findViewById(R.id.sub_container)
         initToolbar()
         initSearchPanel()
         initOverview()
@@ -743,13 +746,10 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             if (text == "null") {
                 NinjaToast.showShort(this@BrowserActivity, "null string")
             } else {
-                toggleMultiWindow(true)
+                //toggleMultiWindow(true)
                 try {
-                    val intent = Intent().apply {
-                        action = "com.onyx.intent.ACTION_DICT_TRANSLATION"
-                        putExtra("translation", "{\"type\": \"page\", \"content\": \"$text\"}")
-                    }
-                    startActivity(intent)
+                    //launchOnyxDictTranslation(text)
+                    launchTranslateWindow(text)
                 } catch (ignored: ClassNotFoundException) {
                     Log.e(TAG, "translation activity not found.")
                 }
@@ -757,11 +757,52 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         }
     }
 
+    private val translationTextLength = 1800
+    private fun launchTranslateWindow(text: String) {
+        val shortenedText: String = if (text.length > translationTextLength) text.substring(0, translationTextLength) else text
+        val uri = Uri.Builder()
+            .scheme("https")
+            .authority("translate.google.com")
+            .appendQueryParameter("text", shortenedText.replace("\\n", "\n").replace("\\t", "  "))
+            .appendQueryParameter("sl", "auto") // source language
+            .appendQueryParameter("tl", "jp") // target language
+            .build()
+
+        val translateWebView = if (subContainer.visibility != VISIBLE) {
+            val ninjaWebView = NinjaWebView(this, null)
+            subContainer.addView(ninjaWebView)
+            subContainer.visibility = VISIBLE
+            ninjaWebView.shouldHideTranslateContext = true
+            ninjaWebView
+        } else {
+            subContainer[0] as NinjaWebView
+        }
+        translateWebView.loadUrl(uri.toString())
+    }
+
+    private fun launchOnyxDictTranslation(text: String) {
+        val intent = Intent().apply {
+            action = "com.onyx.intent.ACTION_DICT_TRANSLATION"
+            putExtra("translation", "{\"type\": \"page\", \"content\": \"$text\"}")
+        }
+        startActivity(intent)
+    }
+
     private fun isMultiWindowEnabled(): Boolean {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
             return false
         }
         return isInMultiWindowMode
+    }
+
+    private fun toggleTranslationWindow(isEnabled: Boolean) {
+//        if (Build.MANUFACTURER == "ONYX") {
+//            toggleMultiWindow(isEnabled)
+//        } else {
+        if (!isEnabled) {
+            subContainer.removeAllViews()
+            subContainer.visibility = GONE
+        }
     }
 
     private fun toggleMultiWindow(isEnabled: Boolean) {
@@ -947,7 +988,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
         binding.omniboxBookmark.setOnClickListener { openBookmarkPage() }
         binding.omniboxBookmark.setOnLongClickListener { saveBookmark(); true }
-        binding.toolbarTranslate.setOnLongClickListener { toggleMultiWindow(false); true }
+        binding.toolbarTranslate.setOnLongClickListener { toggleTranslationWindow(false); true }
 
         sp.registerOnSharedPreferenceChangeListener(preferenceChangeListener)
 

@@ -56,9 +56,12 @@ class ToolbarConfigDialog(
         // put unselected
         for (toolbarAction in ToolbarAction.values()) {
             // translation only supports Onyx devices
+                /*
             if (toolbarAction == ToolbarAction.Translation && Build.MANUFACTURER != "ONYX") {
                 continue
             }
+
+                 */
 
             if (!config.toolbarActions.contains(toolbarAction)) {
                 orderedList.add((toolbarAction.toPreferenceItemInfo()))

@@ -94,6 +94,19 @@ public class BrowserUnit {
             return true;
         }
 
+        try {
+            Uri uri = Uri.parse(url);
+            String scheme = uri.getScheme();
+            if (scheme.equals("ftp") || scheme.equals("http") || scheme.equals("https") || scheme.equals("intent")) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception exception) {
+            return false;
+        }
+
+        /*
         String regex = "^((ftp|http|https|intent)?://)"                      // support scheme
                 + "?(([0-9a-z_!~*'().&=+$%-]+: )?[0-9a-z_!~*'().&=+$%-]+@)?" // ftp的user@
                 + "(([0-9]{1,3}\\.){3}[0-9]{1,3}"                            // IP形式的URL -> 199.194.52.184
@@ -107,6 +120,7 @@ public class BrowserUnit {
                 + "(/[0-9a-z_!~*'().;?:@&=+$,%#-]+)+/?)$";
         Pattern pattern = Pattern.compile(regex);
         return pattern.matcher(url).matches();
+         */
     }
 
     public static String queryWrapper(Context context, String query) {
