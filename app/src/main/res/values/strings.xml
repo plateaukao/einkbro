@@ -475,8 +475,8 @@
     <string name="font_size">Font size</string>
     <string name="settings">Settings</string>
     <string name="toolbars">Toolbar setting</string>
-    <string name="font_size_increase">Font size increase</string>
-    <string name="font_size_decrease">Font size decrease</string>
+    <string name="font_size_increase">Font increase</string>
+    <string name="font_size_decrease">Font decrease</string>
     <string name="fullscreen">Fullscreen</string>
     <string name="forward">Forward</string>
     <string name="rotate">Rotate</string>
