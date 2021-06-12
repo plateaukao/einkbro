@@ -13,7 +13,7 @@ import de.baumann.browser.browser.BrowserController
 internal class Album(
     context: Context,
     private val albumController: AlbumController,
-    private var browserController: BrowserController
+    private var browserController: BrowserController?
 ) {
     private val binding: AlbumBinding = AlbumBinding.inflate(LayoutInflater.from(context))
 
@@ -27,17 +27,17 @@ internal class Album(
 
     init {
         binding.root.setOnClickListener {
-            browserController.showAlbum(albumController)
-            browserController.hideOverview()
+            browserController?.showAlbum(albumController)
+            browserController?.hideOverview()
         }
         binding.root.setOnLongClickListener(OnLongClickListener {
-            browserController.removeAlbum(albumController)
+            browserController?.removeAlbum(albumController)
             true
         })
 
         binding.albumTitle.text = context.getString(R.string.app_name)
         binding.albumClose.setOnClickListener {
-            browserController.removeAlbum(
+            browserController?.removeAlbum(
                 albumController
             )
         }
@@ -45,7 +45,7 @@ internal class Album(
 
     fun setAlbumCover(bitmap: Bitmap?) = binding.albumCover.setImageBitmap(bitmap)
 
-    fun setBrowserController(browserController: BrowserController) {
+    fun setBrowserController(browserController: BrowserController?) {
         this.browserController = browserController
     }
 
