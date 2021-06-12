@@ -46,7 +46,7 @@
     <string name="menu_save_pdf">存成 PDF</string>
     <string name="menu_share_pdf">分享 PDF</string>
     <string name="menu_shareClipboard">複製網址</string>
-    <string name="menu_other_searchSite">網頁內搜尋</string>
+    <string name="menu_other_searchSite">網頁內\n搜尋</string>
     <string name="menu_other_fileManager">檔案總管</string>
     <string name="menu_other_info">關於 \"EinkBro 瀏覽器\"</string>
     <string name="menu_other_help">協助</string>
@@ -355,7 +355,7 @@
     <string name="vertical_read">直排閱讀</string>
     <string name="reader_mode">閱讀模式</string>
     <string name="touch_area_setting">翻頁設定</string>
-    <string name="toolbar_setting">工具列設定</string>
+    <string name="toolbar_setting">工具列\n設定</string>
     <string name="menu_save_epub">儲存epub</string>
     <string name="save_to">儲存至...</string>
     <string name="existing_epub">既有的 Epub</string>
