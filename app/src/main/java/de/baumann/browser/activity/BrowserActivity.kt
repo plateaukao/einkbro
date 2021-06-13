@@ -58,7 +58,7 @@ import de.baumann.browser.util.Constants
 import de.baumann.browser.view.*
 import de.baumann.browser.view.adapter.*
 import de.baumann.browser.view.dialog.*
-import de.baumann.browser.view.toolbaricons.ToolbarAction
+import de.baumann.browser.view.viewControllers.ToolbarViewController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.*
@@ -136,6 +136,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
     private var shouldLoadTabState: Boolean = false
 
+    private val toolbarViewController: ToolbarViewController by lazy { ToolbarViewController(this, binding.toolbarScroller) }
+
     // Classes
     private inner class VideoCompletionListener : OnCompletionListener, MediaPlayer.OnErrorListener {
         override fun onError(mp: MediaPlayer, what: Int, extra: Int): Boolean {
@@ -204,7 +206,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
         downloadReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
-                showOkCancelDialog(
+                ViewUnit.showOkCancelDialog(
+                    context = this@BrowserActivity,
                     messageResId = R.string.toast_downloadComplete,
                     okAction = { startActivity(Intent(DownloadManager.ACTION_VIEW_DOWNLOADS)) }
                 )
@@ -355,10 +358,10 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
     }
 
     private fun showRestartConfirmDialog() {
-        showOkCancelDialog(
+        ViewUnit.showOkCancelDialog(
+            context = this,
             messageResId = R.string.toast_restart,
             okAction = { restartApp() }
-
         )
     }
 
@@ -370,7 +373,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
     }
 
     private fun showFileListConfirmDialog() {
-        showOkCancelDialog(
+        ViewUnit.showOkCancelDialog(
+            context = this,
             messageResId = R.string.toast_downloadComplete,
             okAction = { startActivity(Intent(DownloadManager.ACTION_VIEW_DOWNLOADS)) }
         )
@@ -408,7 +412,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             }
             KeyEvent.KEYCODE_MENU -> return showMenuDialog()
             KeyEvent.KEYCODE_BACK -> {
-                hideKeyboard()
+                ViewUnit.hideKeyboard(this@BrowserActivity)
                 if (overviewLayout.visibility == VISIBLE) {
                     hideOverview()
                     return true
@@ -417,8 +421,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
                     return onHideCustomView()
                 } else if (mainToolbar.visibility == GONE && sp.getBoolean("sp_toolbarShow", true)) {
                     showToolbar()
-                } else if (binding.toolbarScroller.visibility == GONE) {
-                    toggleIconsOnOmnibox(false)
+                } else if (!toolbarViewController.isDisplayed()) {
+                    toolbarViewController.show()
                 } else {
                     if (ninjaWebView.canGoBack()) {
                         ninjaWebView.goBack()
@@ -464,7 +468,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
             val adapter = CompleteAdapter(activity, R.layout.complete_item, list) { record ->
                 updateAlbum(record.url)
-                hideKeyboard()
+                ViewUnit.hideKeyboard(this@BrowserActivity)
             }
             binding.omniboxInput.setAdapter(adapter)
             binding.omniboxInput.threshold = 1
@@ -502,9 +506,9 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         when (v.id) {
             R.id.button_size -> showFontSizeChangeDialog()
             R.id.omnibox_title -> {
-                toggleIconsOnOmnibox(true)
+                toolbarViewController.hide()
                 binding.omniboxInput.requestFocus()
-                showKeyboard()
+                ViewUnit.showKeyboard(this@BrowserActivity)
             }
             R.id.omnibox_input_clear -> {
                 if (binding.omniboxInput.text.isEmpty()) {
@@ -517,17 +521,15 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
                 hideOverview()
                 addAlbum(getString(R.string.app_name), "", incognito = true)
                 binding.omniboxInput.requestFocus()
-                showKeyboard()
+                ViewUnit.showKeyboard(this@BrowserActivity)
             }
             R.id.tab_plus_bottom -> {
                 hideOverview()
                 addAlbum(getString(R.string.app_name), "")
                 binding.omniboxInput.requestFocus()
-                showKeyboard()
+                ViewUnit.showKeyboard(this@BrowserActivity)
             }
             R.id.menu_save_pdf -> showPdfFilePicker()
-
-            //R.id.menu_save_epub -> showEpubFilePicker()
 
             // --- tool bar handling
             R.id.omnibox_tabcount -> showOverview()
@@ -554,7 +556,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
             R.id.omnibox_refresh -> if (url != null && ninjaWebView.isLoadFinish) {
                 if (url?.startsWith("https://") != true) {
-                    showOkCancelDialog(
+                    ViewUnit.showOkCancelDialog(
+                        context = this@BrowserActivity,
                         messageResId = R.string.toast_unsecured,
                         okAction = { ninjaWebView.loadUrl(url?.replace("http://", "https://") ?: "") },
                         cancelAction = { ninjaWebView.reload() }
@@ -663,11 +666,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         }
     }
 
-    private fun showKeyboard() {
-        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
-    }
-
     // Methods
     private fun showFontSizeChangeDialog() {
         val fontArray = resources.getStringArray(R.array.setting_entries_font)
@@ -717,22 +715,12 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         ninjaWebView.settings.textZoom = size
     }
 
-    private fun increaseFontSize() {
-        changeFontSize(config.fontSize + 20)
-    }
+    private fun increaseFontSize() = changeFontSize(config.fontSize + 20)
 
     private fun decreaseFontSize() {
         if (config.fontSize <= 50) return
 
         changeFontSize(config.fontSize - 20)
-    }
-
-    private fun showEpubFilePicker() {
-        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
-        intent.addCategory(Intent.CATEGORY_OPENABLE)
-        intent.type = Constants.MIME_TYPE_EPUB
-        intent.putExtra(Intent.EXTRA_TITLE, "einkbro.epub")
-        startActivityForResult(intent, WRITE_EPUB_REQUEST_CODE)
     }
 
     private fun showPdfFilePicker() {
@@ -745,8 +733,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
     private fun saveEpub(fileUri: Uri) {
         lifecycleScope.launch(Dispatchers.Main) {
-            val bookName = if (isNewEpubFile) getBookName() else ""
-            val chapterName = getChapterName()
+            val bookName = if (isNewEpubFile) epubManager.getBookName() else ""
+            val chapterName = epubManager.getChapterName(ninjaWebView.title)
 
             val progressDialog = ProgressDialog(this@BrowserActivity, R.style.TouchAreaDialog).apply {
                 setTitle(R.string.saving_epub)
@@ -762,7 +750,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
                     chapterName,
                     ninjaWebView.url ?: "") {
                 progressDialog.dismiss()
-                openFile(fileUri, Constants.MIME_TYPE_EPUB)
+                HelperUnit.openFile(this@BrowserActivity, fileUri, Constants.MIME_TYPE_EPUB)
                 isNewEpubFile = false
             }
         }
@@ -793,7 +781,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
     private fun launchTranslateWindow(text: String) {
         // onyx case
         if (config.translationMode == TranslationMode.ONYX) {
-            toggleMultiWindow(true)
+            ViewUnit.toggleMultiWindow(this, true)
             launchOnyxDictTranslation(text)
             return
         }
@@ -847,20 +835,13 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         startActivity(intent)
     }
 
-    private fun isMultiWindowEnabled(): Boolean {
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
-            return false
-        }
-        return isInMultiWindowMode
-    }
-
     private fun isTranslationModeOn(): Boolean =
-        (config.translationMode == TranslationMode.ONYX && isMultiWindowEnabled()) ||
+        (config.translationMode == TranslationMode.ONYX && ViewUnit.isMultiWindowEnabled(this)) ||
                 subContainer.visibility == VISIBLE
 
     private fun toggleTranslationWindow(isEnabled: Boolean) {
         if (config.translationMode == TranslationMode.ONYX) {
-            toggleMultiWindow(isEnabled)
+            ViewUnit.toggleMultiWindow(this, isEnabled)
         } else {
             // all other translation types, should remove sub webviews
             if (!isEnabled) {
@@ -868,53 +849,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
                 subContainer.visibility = GONE
             }
         }
-    }
-
-    private fun toggleMultiWindow(isEnabled: Boolean) {
-        if (isEnabled && isMultiWindowEnabled()) return
-        if (!isEnabled && !isMultiWindowEnabled()) return
-
-        val intent = Intent().apply {
-            action = if (isEnabled) "com.onyx.action.START_MULTI_WINDOW" else "com.onyx.action.QUIT_MULTI_WINDOW"
-        }
-        sendBroadcast(intent)
-    }
-
-    private suspend fun getChapterName(): String {
-        var chapterName = ninjaWebView.title ?: "no title"
-        return TextInputDialog(
-                this@BrowserActivity,
-                getString(R.string.title),
-                getString(R.string.title_in_toc),
-                chapterName
-        ).show() ?: chapterName
-    }
-
-    private suspend fun getBookName(): String {
-        return TextInputDialog(
-                this@BrowserActivity,
-                getString(R.string.book_name),
-                getString(R.string.book_name_description),
-                "einkbro book"
-        ).show() ?: "einkbro book"
-    }
-
-    private suspend fun getFolderName(): String {
-        return TextInputDialog(
-            this@BrowserActivity,
-            getString(R.string.folder_name),
-            getString(R.string.folder_name_description),
-            ""
-        ).show() ?: "New Folder"
-    }
-
-    private fun openFile(uri: Uri, mimeType: String) {
-        val intent = Intent().apply {
-            action = Intent.ACTION_VIEW
-            data = uri
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_GRANT_READ_URI_PERMISSION
-        }
-        startActivity(Intent.createChooser(intent, "Open file with"))
     }
 
     private fun printPDF() {
@@ -1003,12 +937,14 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             }
             fabImageButtonNav.setOnTouchListener(onTouchListener)
             binding.omniboxSetting.setOnTouchListener(onTouchListener)
+            /*
             binding.toolbarScroller.setOnTouchListener(object : SwipeTouchListener(this) {
                 override fun onSwipeTop() = performGesture("setting_gesture_tb_up")
                 override fun onSwipeBottom() = performGesture("setting_gesture_tb_down")
-                //override fun onSwipeRight() = performGesture("setting_gesture_tb_right")
-                //override fun onSwipeLeft() = performGesture("setting_gesture_tb_left")
+                override fun onSwipeRight() = performGesture("setting_gesture_tb_right")
+                override fun onSwipeLeft() = performGesture("setting_gesture_tb_left")
             })
+             */
         }
         binding.omniboxInput.setOnEditorActionListener(OnEditorActionListener { _, _, _ ->
             val query = binding.omniboxInput.text.toString().trim { it <= ' ' }
@@ -1024,11 +960,11 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             if (binding.omniboxInput.hasFocus()) {
                 binding.omniboxInput.setText(ninjaWebView.url)
                 binding.omniboxInput.setSelection(0, binding.omniboxInput.text.toString().length)
-                toggleIconsOnOmnibox(true)
+                toolbarViewController.hide()
             } else {
-                toggleIconsOnOmnibox(false)
+                toolbarViewController.show()
                 omniboxTitle.text = ninjaWebView.title
-                hideKeyboard()
+                ViewUnit.hideKeyboard(this@BrowserActivity)
             }
         }
         updateAutoComplete()
@@ -1057,12 +993,12 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
         sp.registerOnSharedPreferenceChangeListener(preferenceChangeListener)
 
-        reorderToolbarIcons()
+        toolbarViewController.reorderIcons()
     }
 
     private val preferenceChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
         when {
-            key.equals(ConfigManager.K_TOOLBAR_ICONS) -> { reorderToolbarIcons() }
+            key.equals(ConfigManager.K_TOOLBAR_ICONS) -> { toolbarViewController.reorderIcons() }
             key.equals(ConfigManager.K_BOLD_FONT) -> {
                 if (config.boldFontStyle) {
                     ninjaWebView.updateCssStyle()
@@ -1087,32 +1023,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         }
     }
 
-    private val toolbarActionViews: List<View> by lazy {
-        val childCount = binding.iconBar.childCount
-        val children = mutableListOf<View>()
-        for (i in 0 until childCount) {
-            children.add(binding.iconBar.getChildAt(i))
-        }
-
-        children
-    }
-
-    private fun reorderToolbarIcons() {
-        toolbarActionViews.size
-
-        val iconEnums = config.toolbarActions
-        if (iconEnums.isNotEmpty()) {
-            binding.iconBar.removeAllViews()
-            iconEnums.forEach { actionEnum ->
-                binding.iconBar.addView(toolbarActionViews[actionEnum.ordinal])
-            }
-            if (ToolbarAction.Settings !in iconEnums) {
-                binding.iconBar.addView(toolbarActionViews[ToolbarAction.Settings.ordinal])
-            }
-            binding.iconBar.requestLayout()
-        }
-    }
-
     private fun initFAB() {
         fabImageButtonNav = findViewById(R.id.fab_imageButtonNav)
         val params = RelativeLayout.LayoutParams(fabImageButtonNav.layoutParams.width, fabImageButtonNav.layoutParams.height)
@@ -1131,31 +1041,12 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             }
         }
 
-        expandViewTouchArea(fabImageButtonNav, ViewUnit.dpToPixel(this, 20).toInt())
+        ViewUnit.expandViewTouchArea(fabImageButtonNav, ViewUnit.dpToPixel(this, 20).toInt())
         fabImageButtonNav.setOnClickListener { showToolbar() }
         fabImageButtonNav.setOnLongClickListener {
             showFastToggleDialog()
             false
         }
-    }
-
-    private fun expandViewTouchArea(view: View, size: Int) {
-        val parent = view.parent as View // button: the view you want to enlarge hit area
-
-        parent.post {
-            val rect = Rect()
-            view.getHitRect(rect)
-            rect.top -= size
-            rect.left -= size
-            rect.bottom += size
-            rect.right += size
-            parent.touchDelegate = TouchDelegate(rect, view)
-        }
-    }
-
-    private fun toggleIconsOnOmnibox(shouldHide: Boolean) {
-        val visibility = if (shouldHide) GONE else VISIBLE
-        binding.toolbarScroller.visibility = visibility
     }
 
     private fun performGesture(gesture: String) {
@@ -1239,7 +1130,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
             dialogView.tvDelete.setOnClickListener {
                 hideBottomSheetDialog()
-                showOkCancelDialog(
+                ViewUnit.showOkCancelDialog(
+                    context = this@BrowserActivity,
                     messageResId = R.string.hint_database,
                     okAction = {
                         when (overViewTab) {
@@ -1281,7 +1173,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
     private fun createBookmarkFolder() {
         lifecycleScope.launch {
-            val folderName = getFolderName()
+            val folderName = epubManager.getFolderName()
             bookmarkManager.insertDirectory(folderName)
             updateBookmarkList()
         }
@@ -1371,7 +1263,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
                 NinjaToast.show(this, getString(R.string.toast_input_empty))
                 return@setOnClickListener
             }
-            hideKeyboard()
+            ViewUnit.hideKeyboard(this@BrowserActivity)
             (currentAlbumController as NinjaWebView).findNext(false)
         }
         findViewById<ImageButton?>(R.id.main_search_down).setOnClickListener {
@@ -1380,7 +1272,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
                 NinjaToast.show(this, getString(R.string.toast_input_empty))
                 return@setOnClickListener
             }
-            hideKeyboard()
+            ViewUnit.hideKeyboard(this@BrowserActivity)
             (currentAlbumController as NinjaWebView).findNext(true)
         }
         findViewById<ImageButton?>(R.id.main_search_cancel).setOnClickListener { hideSearchPanel() }
@@ -1496,7 +1388,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         if (!sp.getBoolean("sp_close_tab_confirm", false)) {
             okAction()
         } else {
-            showOkCancelDialog(
+            ViewUnit.showOkCancelDialog(
+                context = this,
                 messageResId = R.string.toast_close_tab,
                 okAction = okAction,
             )
@@ -1629,7 +1522,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
                 ))
         customView?.keepScreenOn = true
         (currentAlbumController as View?)?.visibility = View.GONE
-        setCustomFullscreen(true)
+        ViewUnit.setCustomFullscreen(window, true)
         if (view is FrameLayout) {
             if (view.focusedChild is VideoView) {
                 videoView = view.focusedChild as VideoView
@@ -1652,7 +1545,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         (window.decorView as FrameLayout).removeView(fullscreenHolder)
         customView?.keepScreenOn = false
         (currentAlbumController as View).visibility = View.VISIBLE
-        setCustomFullscreen(false)
+        ViewUnit.setCustomFullscreen(window, false)
         fullscreenHolder = null
         customView = null
         if (videoView != null) {
@@ -1802,7 +1695,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
                                 request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename)
                                 val dm = (getSystemService(DOWNLOAD_SERVICE) as DownloadManager)
                                 dm.enqueue(request)
-                                hideKeyboard()
+                                ViewUnit.hideKeyboard(this@BrowserActivity)
                             }
                         } else {
                             val source = Uri.parse(url)
@@ -1812,13 +1705,13 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
                             request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename)
                             val dm = (getSystemService(DOWNLOAD_SERVICE) as DownloadManager)
                             dm.enqueue(request)
-                            hideKeyboard()
+                            ViewUnit.hideKeyboard(this@BrowserActivity)
                         }
                     }
                 }
                 builder.setNegativeButton(android.R.string.cancel) { dialog, whichButton ->
                     dialog.cancel()
-                    hideKeyboard()
+                    ViewUnit.hideKeyboard(this@BrowserActivity)
                 }
                 val dialog = builder.create()
                 dialog.show()
@@ -1845,9 +1738,9 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             fabImageButtonNav.visibility = INVISIBLE
             searchPanel.visibility = GONE
             mainToolbar.visibility = VISIBLE
-            binding.toolbarScroller.visibility = VISIBLE
             binding.appBar.visibility = VISIBLE
-            hideKeyboard()
+            toolbarViewController.show()
+            ViewUnit.hideKeyboard(this@BrowserActivity)
             showStatusBar()
         }
     }
@@ -1857,8 +1750,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         if (!searchOnSite) {
             fabImageButtonNav.visibility = VISIBLE
             searchPanel.visibility = GONE
-            mainToolbar.visibility = GONE
-            binding.toolbarScroller.visibility = GONE
             binding.appBar.visibility = GONE
             hideStatusBar()
         }
@@ -1883,7 +1774,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         omniboxTitle.visibility = GONE
         binding.appBar.visibility = VISIBLE
         searchBox.requestFocus()
-        showKeyboard()
+        ViewUnit.showKeyboard(this)
     }
 
     private var isNewEpubFile = false
@@ -1897,7 +1788,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
                 0 -> isNewEpubFile = false
                 1 -> isNewEpubFile = true
             }
-            showEpubFilePicker()
+            epubManager.showEpubFilePicker()
         }
         builder.show()
     }
@@ -1955,8 +1846,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
                 lifecycleScope,
                 bookmarkManager,
                 bookmark,
-                { hideKeyboard() ; updateBookmarkList() },
-                { hideKeyboard() }
+                { ViewUnit.hideKeyboard(this@BrowserActivity) ; updateBookmarkList() },
+                { ViewUnit.hideKeyboard(this@BrowserActivity) }
             ).show()
         }
 
@@ -1993,7 +1884,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         }
         dialogView.menuContextListDelete.setOnClickListener {
             hideBottomSheetDialog()
-            showOkCancelDialog(
+            ViewUnit.showOkCancelDialog(
+                context = this@BrowserActivity,
                 messageResId = R.string.toast_titleConfirm_delete,
                 okAction = { deleteHistory(recordAdapter, location) }
             )
@@ -2012,20 +1904,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         }
         recordAdapter.removeAt(location)
         updateAutoComplete()
-    }
-
-    private fun setCustomFullscreen(fullscreen: Boolean) {
-        val decorView = window.decorView
-        if (fullscreen) {
-            decorView.systemUiVisibility = (SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    or SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    or SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    or SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
-                    or SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
-                    or SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
-        } else {
-            decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_VISIBLE
-        }
     }
 
     private fun nextAlbumController(next: Boolean): AlbumController? {
@@ -2048,29 +1926,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         }
         return list[index]
     }
-    private fun showOkCancelDialog(
-        title: String? = null,
-        messageResId:Int,
-        okAction: () -> Unit,
-        cancelAction: (() -> Unit)? = null)
-    {
-        AlertDialog.Builder(this, R.style.TouchAreaDialog)
-            .setMessage(messageResId)
-            .setPositiveButton(android.R.string.ok) { _, _ ->
-                okAction.invoke()
-            }
-            .setNegativeButton(android.R.string.cancel) { _, _ ->
-                cancelAction?.invoke()
-            }.apply {
-                title?.let { title -> setTitle(title) }
-            }
-            .create().apply {
-                window?.setGravity(Gravity.BOTTOM)
-            }
-            .show()
-
-    }
-
 
     private var mActionMode: ActionMode? = null
     override fun onActionModeStarted(mode: ActionMode) {
@@ -2110,15 +1965,10 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         mActionMode = null
     }
 
-    private fun hideKeyboard() {
-        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        var view = this.currentFocus ?: return
-        imm.hideSoftInputFromWindow(view.windowToken, 0)
-    }
     companion object {
         private const val TAG = "BrowserActivity"
         private const val INPUT_FILE_REQUEST_CODE = 1
-        private const val WRITE_EPUB_REQUEST_CODE = 2
+        const val WRITE_EPUB_REQUEST_CODE = 2
         private const val WRITE_PDF_REQUEST_CODE = 3
         private const val K_SHOULD_LOAD_TAB_STATE = "k_should_load_tab_state"
     }
