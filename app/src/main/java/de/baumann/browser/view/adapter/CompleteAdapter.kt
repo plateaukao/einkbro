@@ -79,7 +79,8 @@ class CompleteAdapter(
         } else {
             holder = view.tag as Holder
         }
-        val (title, url, _, type) = resultList[position]
+        // sometimes the resultList will be refreshed, so the index will be wrong => ignore it by putting dummy Record
+        val (title, url, _, type) = resultList.getOrElse(position) { Record(null, "", 0) }
         with (holder) {
             titleView.text = title
             urlView.text = url
