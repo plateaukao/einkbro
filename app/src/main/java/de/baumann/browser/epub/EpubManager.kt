@@ -1,7 +1,13 @@
 package de.baumann.browser.epub
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
+import de.baumann.browser.Ninja.R
+import de.baumann.browser.activity.BrowserActivity
+import de.baumann.browser.util.Constants
+import de.baumann.browser.view.dialog.TextInputDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import nl.siegmann.epublib.domain.Author
@@ -18,6 +24,42 @@ import java.net.URL
 
 
 class EpubManager(private val context: Context) {
+
+    suspend fun getChapterName(defaultTitle: String?): String {
+        var chapterName = defaultTitle?: "no title"
+        return TextInputDialog(
+            context,
+            context.getString(R.string.title),
+            context.getString(R.string.title_in_toc),
+            chapterName
+        ).show() ?: chapterName
+    }
+
+    suspend fun getBookName(): String {
+        return TextInputDialog(
+            context,
+            context.getString(R.string.book_name),
+            context.getString(R.string.book_name_description),
+            "einkbro book"
+        ).show() ?: "einkbro book"
+    }
+
+    suspend fun getFolderName(): String {
+        return TextInputDialog(
+            context,
+            context.getString(R.string.folder_name),
+            context.getString(R.string.folder_name_description),
+            ""
+        ).show() ?: "New Folder"
+    }
+
+    fun showEpubFilePicker() {
+        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
+        intent.type = Constants.MIME_TYPE_EPUB
+        intent.putExtra(Intent.EXTRA_TITLE, "einkbro.epub")
+        (context as Activity).startActivityForResult(intent, BrowserActivity.WRITE_EPUB_REQUEST_CODE)
+    }
 
     suspend fun saveEpub(
             isNew: Boolean,

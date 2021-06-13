@@ -270,4 +270,14 @@ object HelperUnit {
             view.setLayerType(View.LAYER_TYPE_HARDWARE, null)
         }
     }
+
+    fun openFile(activity: Activity, uri: Uri, mimeType: String) {
+        val intent = Intent().apply {
+            action = Intent.ACTION_VIEW
+            data = uri
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_GRANT_READ_URI_PERMISSION
+        }
+        activity.startActivity(Intent.createChooser(intent, "Open file with"))
+    }
+
 }
