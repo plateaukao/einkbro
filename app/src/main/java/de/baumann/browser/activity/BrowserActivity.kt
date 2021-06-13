@@ -417,8 +417,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
                     return onHideCustomView()
                 } else if (mainToolbar.visibility == GONE && sp.getBoolean("sp_toolbarShow", true)) {
                     showToolbar()
-                } else if (binding.iconBar.visibility == GONE) {
-                    binding.omniboxInput.clearFocus()
+                } else if (binding.toolbarScroller.visibility == GONE) {
+                    toggleIconsOnOmnibox(false)
                 } else {
                     if (ninjaWebView.canGoBack()) {
                         ninjaWebView.goBack()
@@ -501,10 +501,14 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         hideBottomSheetDialog()
         when (v.id) {
             R.id.button_size -> showFontSizeChangeDialog()
+            R.id.omnibox_title -> {
+                toggleIconsOnOmnibox(true)
+                binding.omniboxInput.requestFocus()
+                showKeyboard()
+            }
             R.id.omnibox_input_clear -> {
                 if (binding.omniboxInput.text.isEmpty()) {
                     showToolbar()
-                    binding.omniboxInput.clearFocus()
                 } else {
                     binding.omniboxInput.text.clear()
                 }
@@ -771,6 +775,9 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             }
 
             val text = ninjaWebView.getRawText()
+                .replace("\\u003C", "<")
+                .replace("\\n", "\n")
+                .replace("\\t", "  ")
             if (text == "null") {
                 NinjaToast.showShort(this@BrowserActivity, "null string")
             } else {
@@ -814,7 +821,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         val uri = Uri.Builder()
             .scheme("https")
             .authority("papago.naver.com")
-            .appendQueryParameter("st", shortenedText.replace("\\n", "\n").replace("\\t", "  "))
+            .appendQueryParameter("st", shortenedText)
             .build()
         return uri.toString()
     }
@@ -825,7 +832,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         val uri = Uri.Builder()
             .scheme("https")
             .authority("translate.google.com")
-            .appendQueryParameter("text", shortenedText.replace("\\n", "\n").replace("\\t", "  "))
+            .appendQueryParameter("text", shortenedText)
             .appendQueryParameter("sl", "auto") // source language
             .appendQueryParameter("tl", "jp") // target language
             .build()
@@ -996,11 +1003,11 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             }
             fabImageButtonNav.setOnTouchListener(onTouchListener)
             binding.omniboxSetting.setOnTouchListener(onTouchListener)
-            binding.omniboxInput.setOnTouchListener(object : SwipeTouchListener(this) {
+            binding.toolbarScroller.setOnTouchListener(object : SwipeTouchListener(this) {
                 override fun onSwipeTop() = performGesture("setting_gesture_tb_up")
                 override fun onSwipeBottom() = performGesture("setting_gesture_tb_down")
-                override fun onSwipeRight() = performGesture("setting_gesture_tb_right")
-                override fun onSwipeLeft() = performGesture("setting_gesture_tb_left")
+                //override fun onSwipeRight() = performGesture("setting_gesture_tb_right")
+                //override fun onSwipeLeft() = performGesture("setting_gesture_tb_left")
             })
         }
         binding.omniboxInput.setOnEditorActionListener(OnEditorActionListener { _, _, _ ->
@@ -1148,8 +1155,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
     private fun toggleIconsOnOmnibox(shouldHide: Boolean) {
         val visibility = if (shouldHide) GONE else VISIBLE
-        binding.iconBar.visibility = visibility
-        omniboxTitle.visibility = visibility
+        binding.toolbarScroller.visibility = visibility
     }
 
     private fun performGesture(gesture: String) {
@@ -1839,7 +1845,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             fabImageButtonNav.visibility = INVISIBLE
             searchPanel.visibility = GONE
             mainToolbar.visibility = VISIBLE
-            omniboxTitle.visibility = VISIBLE
+            binding.toolbarScroller.visibility = VISIBLE
             binding.appBar.visibility = VISIBLE
             hideKeyboard()
             showStatusBar()
@@ -1852,7 +1858,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             fabImageButtonNav.visibility = VISIBLE
             searchPanel.visibility = GONE
             mainToolbar.visibility = GONE
-            omniboxTitle.visibility = GONE
+            binding.toolbarScroller.visibility = GONE
             binding.appBar.visibility = GONE
             hideStatusBar()
         }
