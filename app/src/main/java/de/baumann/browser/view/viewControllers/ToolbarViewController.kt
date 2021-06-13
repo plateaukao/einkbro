@@ -5,18 +5,20 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.HorizontalScrollView
+import android.widget.ScrollView
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.view.toolbaricons.ToolbarAction
 
 class ToolbarViewController(
     context: Context,
-    private val toolbarContainer: ViewGroup,
+    private val toolbarScroller: HorizontalScrollView,
 ) {
-    private val iconBar: ViewGroup = toolbarContainer.findViewById(R.id.icon_bar)
+    private val iconBar: ViewGroup = toolbarScroller.findViewById(R.id.icon_bar)
     private val config: ConfigManager by lazy { ConfigManager(context) }
 
-    fun isDisplayed(): Boolean = toolbarContainer.visibility == VISIBLE
+    fun isDisplayed(): Boolean = toolbarScroller.visibility == VISIBLE
 
     fun show() = toggleIconsOnOmnibox(true)
 
@@ -35,11 +37,14 @@ class ToolbarViewController(
                 iconBar.addView(toolbarActionViews[ToolbarAction.Settings.ordinal])
             }
             iconBar.requestLayout()
+            toolbarScroller.post {
+                toolbarScroller.fullScroll(View.FOCUS_RIGHT)
+            }
         }
     }
 
     private fun toggleIconsOnOmnibox(shouldShow: Boolean) {
-        toolbarContainer.visibility = if (shouldShow) VISIBLE else GONE
+        toolbarScroller.visibility = if (shouldShow) VISIBLE else GONE
     }
 
     private val toolbarActionViews: List<View> by lazy {
