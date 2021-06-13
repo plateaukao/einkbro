@@ -280,4 +280,10 @@ object HelperUnit {
         activity.startActivity(Intent.createChooser(intent, "Open file with"))
     }
 
+    fun showBrowserChooser(activity: Activity, url: String?, title: String) {
+        val nonNullUrl = url ?: return
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(nonNullUrl))
+        activity.startActivity(Intent.createChooser(intent, title))
+    }
+
 }
