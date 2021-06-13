@@ -102,7 +102,7 @@ class TranslationViewController(
 
     private fun buildPTranslateUrl(text: String): String {
         val translationTextLength = 1000
-        val shortenedText: String = if (text.length > translationTextLength) text.substring(0, translationTextLength) else text
+        val shortenedText: String = if (text.length > TRANSLATION_TEXT_THRESHOLD) text.substring(0, TRANSLATION_TEXT_THRESHOLD) else text
         val uri = Uri.Builder()
             .scheme("https")
             .authority("papago.naver.com")
@@ -112,8 +112,7 @@ class TranslationViewController(
     }
 
     private fun buildGTranslateUrl(text: String): String {
-        val translationTextLength = 1800
-        val shortenedText: String = if (text.length > translationTextLength) text.substring(0, translationTextLength) else text
+        val shortenedText: String = if (text.length > TRANSLATION_TEXT_THRESHOLD) text.substring(0, TRANSLATION_TEXT_THRESHOLD) else text
         val uri = Uri.Builder()
             .scheme("https")
             .authority("translate.google.com")
@@ -146,5 +145,9 @@ class TranslationViewController(
                 translationViewContainer.visibility = View.GONE
             }
         }
+    }
+
+    companion object {
+        private const val TRANSLATION_TEXT_THRESHOLD = 1000
     }
 }
