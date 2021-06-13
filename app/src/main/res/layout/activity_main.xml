@@ -46,9 +46,14 @@
                 android:maxLines="1"
                 android:ellipsize="end"/>
 
+            <HorizontalScrollView
+                android:id="@+id/toolbar_scroller"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="true">
             <LinearLayout
                 android:id="@+id/icon_bar"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="right"
                 android:background="?attr/backgroundColor">
@@ -58,6 +63,7 @@
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:minWidth="70dp"
                     android:layout_marginStart="8dp"
                     android:includeFontPadding="false"
                     android:paddingTop="10dp"
@@ -66,6 +72,7 @@
                     android:maxLines="1"
                     android:text="@string/app_name"
                     android:textStyle="bold"
+                    android:onClick="onClick"
                     android:gravity="center_vertical"/>
 
                 <ImageButton android:id="@+id/omnibox_back"
@@ -236,6 +243,7 @@
                     android:onClick="onClick"/>
 
             </LinearLayout>
+            </HorizontalScrollView>
         </RelativeLayout>
 
         <LinearLayout android:id="@+id/main_search_panel"
