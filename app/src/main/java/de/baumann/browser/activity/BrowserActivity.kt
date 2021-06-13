@@ -151,6 +151,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         ) { showTranslation() }
     }
 
+    private val dialogManager: DialogManager by lazy { DialogManager(this) }
+
     // Classes
     private inner class VideoCompletionListener : OnCompletionListener, MediaPlayer.OnErrorListener {
         override fun onError(mp: MediaPlayer, what: Int, extra: Int): Boolean {
@@ -578,51 +580,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
     }
 
     // Methods
-    private fun showFontSizeChangeDialog() {
-        val fontArray = resources.getStringArray(R.array.setting_entries_font)
-        val valueArray = resources.getStringArray(R.array.setting_values_font)
-        val selected = valueArray.indexOf(config.fontSize.toString())
-        AlertDialog.Builder(this, R.style.TouchAreaDialog).apply{
-            setTitle("Choose Font Size")
-            setSingleChoiceItems(fontArray, selected) { dialog, which ->
-                changeFontSize(valueArray[which].toInt())
-                dialog.dismiss()
-            }
-        }.create().also {
-            it.show()
-            it.window?.setLayout(ViewUnit.dpToPixel(this, 200).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
-        }
-    }
-
-    private fun showTranslationConfigDialog() {
-        val enumValues: List<TranslationMode> = if (Build.MANUFACTURER != "ONYX") {
-            TranslationMode.values().toMutableList().apply {  remove(TranslationMode.ONYX) }
-        } else {
-            TranslationMode.values().toList()
-        }
-
-        val translationModeArray = enumValues.map { it.name }.toTypedArray()
-        val valueArray = enumValues.map { it.ordinal }
-        val selected = valueArray.indexOf(config.translationMode.ordinal)
-        val buttonText = if (!translateController.isTranslationModeOn()) "Enable" else "Disable"
-        AlertDialog.Builder(this, R.style.TouchAreaDialog).apply{
-            setTitle("Translation Mode")
-            setSingleChoiceItems(translationModeArray, selected) { dialog, which ->
-                config.translationMode = enumValues[which]
-                if (translateController.isTranslationModeOn()) showTranslation()
-                dialog.dismiss()
-            }
-        }
-            .setPositiveButton(buttonText) { d, _ ->
-                d.dismiss()
-                translateController.toggleTranslationWindow(!translateController.isTranslationModeOn())
-            }
-            .setNegativeButton(android.R.string.cancel)  { d, _ -> d.dismiss() }
-            .create().also {
-            it.show()
-            it.window?.setLayout(ViewUnit.dpToPixel(this, 200).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
-        }
-    }
+    private fun showFontSizeChangeDialog() =
+        dialogManager.showFontSizeChangeDialog { changeFontSize(it) }
 
     private fun changeFontSize(size: Int) {
         config.fontSize = size
@@ -814,7 +773,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
         binding.omniboxBookmark.setOnClickListener { openBookmarkPage() }
         binding.omniboxBookmark.setOnLongClickListener { saveBookmark(); true }
-        binding.toolbarTranslate.setOnLongClickListener { showTranslationConfigDialog(); true }
+        binding.toolbarTranslate.setOnLongClickListener { translateController.showTranslationConfigDialog(); true }
 
         sp.registerOnSharedPreferenceChangeListener(preferenceChangeListener)
 
