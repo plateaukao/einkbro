@@ -11,7 +11,6 @@ import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Color
-import android.graphics.Rect
 import android.media.MediaPlayer
 import android.media.MediaPlayer.OnCompletionListener
 import android.net.Uri
@@ -26,7 +25,6 @@ import android.util.Log
 import android.view.*
 import android.view.View.*
 import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
 import android.webkit.*
 import android.webkit.WebChromeClient.CustomViewCallback
 import android.webkit.WebView.HitTestResult
@@ -559,7 +557,11 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
                     ViewUnit.showOkCancelDialog(
                         context = this@BrowserActivity,
                         messageResId = R.string.toast_unsecured,
-                        okAction = { ninjaWebView.loadUrl(url?.replace("http://", "https://") ?: "") },
+                        okAction = {
+                            ninjaWebView.loadUrl(
+                                url?.replace("http://", "https://") ?: ""
+                            )
+                        },
                         cancelAction = { ninjaWebView.reload() }
                     )
                 } else {
@@ -571,13 +573,14 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             } else {
                 ninjaWebView.stopLoading()
             }
-            R.id.toolbar_setting -> openToolbarSetting()
+            R.id.toolbar_setting -> ToolbarConfigDialog(this).show()
             R.id.toolbar_increase_font -> increaseFontSize()
-            R.id.toolbar_decrease_font-> decreaseFontSize()
+            R.id.toolbar_decrease_font -> decreaseFontSize()
             R.id.toolbar_fullscreen -> fullscreen()
             R.id.toolbar_rotate -> rotateScreen()
-            R.id.toolbar_translate-> showTranslation()
-            else -> { }
+            R.id.toolbar_translate -> showTranslation()
+            else -> {
+            }
         }
     }
 
@@ -589,10 +592,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         } else {
             ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         }
-    }
-
-    private fun openToolbarSetting() {
-        ToolbarConfigDialog(this).show()
     }
 
     private fun saveBookmark() {
@@ -611,11 +610,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             e.printStackTrace()
             NinjaToast.show(this, R.string.toast_error)
         }
-    }
-
-    private fun showBrowserChooser(url: String, title: String) {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-        startActivity(Intent.createChooser(intent, title))
     }
 
     private fun  toggleTouchTurnPageFeature() {
@@ -1653,7 +1647,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             hideBottomSheetDialog()
         }
         dialogView.findViewById<LinearLayout>(R.id.contextLink_openWith).setOnClickListener {
-            url?.let { showBrowserChooser(it, getString(R.string.menu_open_with)) }
+            HelperUnit.showBrowserChooser(this@BrowserActivity, url, getString(R.string.menu_open_with))
             hideBottomSheetDialog()
         }
         dialogView.findViewById<LinearLayout>(R.id.contextLink_newTabOpen).setOnClickListener {
