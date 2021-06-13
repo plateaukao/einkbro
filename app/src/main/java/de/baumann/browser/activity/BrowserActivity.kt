@@ -31,7 +31,6 @@ import android.widget.*
 import android.widget.TextView.OnEditorActionListener
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.get
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -56,6 +55,7 @@ import de.baumann.browser.view.adapter.*
 import de.baumann.browser.view.dialog.*
 import de.baumann.browser.view.viewControllers.ToolbarViewController
 import de.baumann.browser.view.viewControllers.TouchAreaViewController
+import de.baumann.browser.view.viewControllers.TranslationViewController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.*
@@ -133,7 +133,24 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
     private val toolbarViewController: ToolbarViewController by lazy { ToolbarViewController(this, binding.toolbarScroller) }
 
-    private lateinit var touchController: TouchAreaViewController
+    private val touchController: TouchAreaViewController by lazy {
+        TouchAreaViewController(
+            context = this,
+            rootView = binding.root,
+            pageUpAction = {ninjaWebView.pageUpWithNoAnimation()},
+            pageTopAction = { ninjaWebView.jumpToTop() },
+            pageDownAction = { ninjaWebView.pageDownWithNoAnimation() },
+            pageBottomAction = { ninjaWebView.jumpToBottom() },
+        )
+    }
+
+    private val translateController: TranslationViewController by lazy {
+        TranslationViewController(
+            this,
+            binding.subContainer
+        ) { showTranslation() }
+    }
+
     // Classes
     private inner class VideoCompletionListener : OnCompletionListener, MediaPlayer.OnErrorListener {
         override fun onError(mp: MediaPlayer, what: Int, extra: Int): Boolean {
@@ -229,15 +246,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
     }
 
     private fun initTouchArea() {
-        touchController = TouchAreaViewController(
-            context = this,
-            rootView = binding.root,
-            pageUpAction = {ninjaWebView.pageUpWithNoAnimation()},
-            pageTopAction = { ninjaWebView.jumpToTop() },
-            pageDownAction = { ninjaWebView.pageDownWithNoAnimation() },
-            pageBottomAction = { ninjaWebView.jumpToBottom() },
-        )
-
         binding.omniboxTouch.setOnLongClickListener {
             TouchAreaDialog(this@BrowserActivity).show()
             true
@@ -596,16 +604,19 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         val translationModeArray = enumValues.map { it.name }.toTypedArray()
         val valueArray = enumValues.map { it.ordinal }
         val selected = valueArray.indexOf(config.translationMode.ordinal)
-        val buttonText = if (!isTranslationModeOn()) "Enable" else "Disable"
+        val buttonText = if (!translateController.isTranslationModeOn()) "Enable" else "Disable"
         AlertDialog.Builder(this, R.style.TouchAreaDialog).apply{
             setTitle("Translation Mode")
             setSingleChoiceItems(translationModeArray, selected) { dialog, which ->
                 config.translationMode = enumValues[which]
-                if (isTranslationModeOn()) showTranslation()
+                if (translateController.isTranslationModeOn()) showTranslation()
                 dialog.dismiss()
             }
         }
-            .setPositiveButton(buttonText) { d, _ -> d.dismiss() ; toggleTranslationWindow(!isTranslationModeOn()) }
+            .setPositiveButton(buttonText) { d, _ ->
+                d.dismiss()
+                translateController.toggleTranslationWindow(!translateController.isTranslationModeOn())
+            }
             .setNegativeButton(android.R.string.cancel)  { d, _ -> d.dismiss() }
             .create().also {
             it.show()
@@ -661,96 +672,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
     private fun showTranslation() {
         lifecycleScope.launch(Dispatchers.Main) {
-            if (!ninjaWebView.isReaderModeOn) {
-                ninjaWebView.toggleReaderMode()
-            }
-
-            val text = ninjaWebView.getRawText()
-                .replace("\\u003C", "<")
-                .replace("\\n", "\n")
-                .replace("\\t", "  ")
-            if (text == "null") {
-                NinjaToast.showShort(this@BrowserActivity, "null string")
-            } else {
-                try {
-                    launchTranslateWindow(text)
-                } catch (ignored: ClassNotFoundException) {
-                    Log.e(TAG, "translation activity not found.")
-                }
-            }
-        }
-    }
-
-    private fun launchTranslateWindow(text: String) {
-        // onyx case
-        if (config.translationMode == TranslationMode.ONYX) {
-            ViewUnit.toggleMultiWindow(this, true)
-            launchOnyxDictTranslation(text)
-            return
-        }
-
-        // webview cases: google, papago
-        val translateWebView = if (!isTranslationModeOn()) {
-            val ninjaWebView = NinjaWebView(this, null)
-            subContainer.addView(ninjaWebView)
-            subContainer.visibility = VISIBLE
-            ninjaWebView.shouldHideTranslateContext = true
-            ninjaWebView
-        } else {
-            subContainer[0] as NinjaWebView
-        }
-
-        translateWebView.loadUrl(
-            if (config.translationMode == TranslationMode.GOOGLE) buildGTranslateUrl(text)
-            else buildPTranslateUrl(text)
-        )
-    }
-
-    private fun buildPTranslateUrl(text: String): String {
-        val translationTextLength = 1000
-        val shortenedText: String = if (text.length > translationTextLength) text.substring(0, translationTextLength) else text
-        val uri = Uri.Builder()
-            .scheme("https")
-            .authority("papago.naver.com")
-            .appendQueryParameter("st", shortenedText)
-            .build()
-        return uri.toString()
-    }
-
-    private fun buildGTranslateUrl(text: String): String {
-        val translationTextLength = 1800
-        val shortenedText: String = if (text.length > translationTextLength) text.substring(0, translationTextLength) else text
-        val uri = Uri.Builder()
-            .scheme("https")
-            .authority("translate.google.com")
-            .appendQueryParameter("text", shortenedText)
-            .appendQueryParameter("sl", "auto") // source language
-            .appendQueryParameter("tl", "jp") // target language
-            .build()
-        return uri.toString()
-    }
-
-    private fun launchOnyxDictTranslation(text: String) {
-        val intent = Intent().apply {
-            action = "com.onyx.intent.ACTION_DICT_TRANSLATION"
-            putExtra("translation", "{\"type\": \"page\", \"content\": \"$text\"}")
-        }
-        startActivity(intent)
-    }
-
-    private fun isTranslationModeOn(): Boolean =
-        (config.translationMode == TranslationMode.ONYX && ViewUnit.isMultiWindowEnabled(this)) ||
-                subContainer.visibility == VISIBLE
-
-    private fun toggleTranslationWindow(isEnabled: Boolean) {
-        if (config.translationMode == TranslationMode.ONYX) {
-            ViewUnit.toggleMultiWindow(this, isEnabled)
-        } else {
-            // all other translation types, should remove sub webviews
-            if (!isEnabled) {
-                subContainer.removeAllViews()
-                subContainer.visibility = GONE
-            }
+            translateController.showTranslation(this@BrowserActivity, ninjaWebView)
         }
     }
 
