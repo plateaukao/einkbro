@@ -90,7 +90,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
     private lateinit var mainToolbar: RelativeLayout
     private lateinit var searchPanel: ViewGroup
     private lateinit var mainContentLayout: FrameLayout
-    private lateinit var subContainer: FrameLayout
+    private lateinit var subContainer: RelativeLayout
     private lateinit var tabContainer: FlexboxLayout
     private lateinit var openStartPageView: View
     private lateinit var openBookmarkView: View
