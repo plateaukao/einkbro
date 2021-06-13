@@ -13,9 +13,13 @@ import de.baumann.browser.view.toolbaricons.ToolbarAction
 class ConfigManager(private val context: Context) {
     private val sp: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
+    fun registerOnSharedPreferenceChangeListener(listener: SharedPreferences.OnSharedPreferenceChangeListener) {
+        sp.registerOnSharedPreferenceChangeListener(listener)
+    }
+
     var touchAreaHint: Boolean
-    get() = sp.getBoolean("sp_touch_area_hint", true)
-    set(value) {sp.edit { putBoolean("sp_touch_area_hint", value) } }
+    get() = sp.getBoolean(K_TOUCH_HINT, true)
+    set(value) {sp.edit { putBoolean(K_TOUCH_HINT, value) } }
 
     var volumePageTurn: Boolean
         get() = sp.getBoolean(K_VOLUME_PAGE_TURN, true)
@@ -57,6 +61,10 @@ class ConfigManager(private val context: Context) {
         get() = sp.getBoolean(K_SAVE_HISTORY, true)
         set(value) {sp.edit { putBoolean(K_SAVE_HISTORY, value) } }
 
+    var enableTouchTurn: Boolean
+        get() = sp.getBoolean(K_ENABLE_TOUCH, false)
+        set(value) {sp.edit { putBoolean(K_ENABLE_TOUCH, value) } }
+
     var pageReservedOffset: Int
         get() = sp.getInt("sp_page_turn_left_value", 80)
         set(value) {sp.edit { putInt("sp_page_turn_left_value", value) } }
@@ -72,6 +80,10 @@ class ConfigManager(private val context: Context) {
     var screenshot: Int
         get() = sp.getInt("screenshot", 0)
         set(value) {sp.edit { putInt("screenshot", value) } }
+
+    var touchAreaType: TouchAreaType
+        get() = TouchAreaType.values()[sp.getInt(K_TOUCH_AREA_TYPE, 0)]
+        set(value) {sp.edit { putInt(K_TOUCH_AREA_TYPE, value.ordinal) } }
 
     var pdfPaperSize: PaperSize
         get() = PaperSize.values()[sp.getInt("pdf_paper_size", PaperSize.ISO_13.ordinal)]
@@ -162,6 +174,8 @@ class ConfigManager(private val context: Context) {
         const val K_COOKIES = "SP_COOKIES_9"
         const val K_SHOULD_INVERT = "sp_invert"
         const val K_TRANSLATION_MODE = "sp_translation_mode"
+        const val K_ENABLE_TOUCH = "sp_enable_touch"
+        const val K_TOUCH_HINT = "sp_touch_area_hint"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
     }
