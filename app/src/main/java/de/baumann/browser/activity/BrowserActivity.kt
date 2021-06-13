@@ -10,7 +10,6 @@ import android.content.*
 import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.content.res.Configuration
-import android.graphics.Color
 import android.media.MediaPlayer
 import android.media.MediaPlayer.OnCompletionListener
 import android.net.Uri
@@ -32,7 +31,6 @@ import android.widget.*
 import android.widget.TextView.OnEditorActionListener
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.edit
 import androidx.core.view.get
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
@@ -57,6 +55,7 @@ import de.baumann.browser.view.*
 import de.baumann.browser.view.adapter.*
 import de.baumann.browser.view.dialog.*
 import de.baumann.browser.view.viewControllers.ToolbarViewController
+import de.baumann.browser.view.viewControllers.TouchAreaViewController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.*
@@ -81,8 +80,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
     private lateinit var recyclerView: RecyclerView
     private lateinit var omniboxTitle: TextView
     private lateinit var overviewPreview: LinearLayout
-    private lateinit var touchAreaPageUp: View
-    private lateinit var touchAreaPageDown: View
 
     private var bottomSheetDialog: Dialog? = null
     private var videoView: VideoView? = null
@@ -136,6 +133,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
     private val toolbarViewController: ToolbarViewController by lazy { ToolbarViewController(this, binding.toolbarScroller) }
 
+    private lateinit var touchController: TouchAreaViewController
     // Classes
     private inner class VideoCompletionListener : OnCompletionListener, MediaPlayer.OnErrorListener {
         override fun onError(mp: MediaPlayer, what: Int, extra: Int): Boolean {
@@ -231,76 +229,21 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
     }
 
     private fun initTouchArea() {
-        updateTouchAreaType()
+        touchController = TouchAreaViewController(
+            context = this,
+            rootView = binding.root,
+            pageUpAction = {ninjaWebView.pageUpWithNoAnimation()},
+            pageTopAction = { ninjaWebView.jumpToTop() },
+            pageDownAction = { ninjaWebView.pageDownWithNoAnimation() },
+            pageBottomAction = { ninjaWebView.jumpToBottom() },
+        )
+
         binding.omniboxTouch.setOnLongClickListener {
             TouchAreaDialog(this@BrowserActivity).show()
             true
         }
-        sp.registerOnSharedPreferenceChangeListener(touchAreaChangeListener)
 
-        val isEnabled = sp.getBoolean("sp_enable_touch", false)
-        if (isEnabled) {
-            enableTouch()
-        } else {
-            disableTouch()
-        }
-    }
-
-    private val touchAreaChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
-        if (key.equals("sp_touch_area_hint")) {
-            if (config.touchAreaHint) {
-                showTouchAreaHint()
-            } else {
-                hideTouchAreaHint()
-            }
-        }
-        if (key.equals("sp_touch_area_type")) {
-            updateTouchAreaType()
-        }
-    }
-
-    private fun updateTouchAreaType() {
-        // hide current one, and reset listener
-        if (this::touchAreaPageUp.isInitialized) {
-            with(touchAreaPageUp) {
-                visibility = INVISIBLE
-                setOnLongClickListener(null)
-                setOnClickListener(null)
-            }
-            with(touchAreaPageDown) {
-                visibility = INVISIBLE
-                setOnLongClickListener(null)
-                setOnClickListener(null)
-            }
-        }
-
-        when(TouchAreaType.values()[sp.getInt("sp_touch_area_type", 0)]) {
-            TouchAreaType.BottomLeftRight -> {
-                touchAreaPageUp = findViewById(R.id.touch_area_bottom_left)
-                touchAreaPageDown = findViewById(R.id.touch_area_bottom_right)
-            }
-            TouchAreaType.Left -> {
-                touchAreaPageUp = findViewById(R.id.touch_area_left_1)
-                touchAreaPageDown = findViewById(R.id.touch_area_left_2)
-            }
-            TouchAreaType.Right -> {
-                touchAreaPageUp = findViewById(R.id.touch_area_right_1)
-                touchAreaPageDown = findViewById(R.id.touch_area_right_2)
-            }
-            else -> {}
-        }
-
-        val isTouchEnabled = sp.getBoolean("sp_enable_touch", false)
-        with(touchAreaPageUp) {
-            if (isTouchEnabled) visibility = VISIBLE
-            setOnClickListener { ninjaWebView.pageUpWithNoAnimation() }
-            setOnLongClickListener { ninjaWebView.jumpToTop(); true }
-        }
-        with(touchAreaPageDown) {
-            if (isTouchEnabled) visibility = VISIBLE
-            setOnClickListener { ninjaWebView.pageDownWithNoAnimation() }
-            setOnLongClickListener { ninjaWebView.jumpToBottom(); true }
-        }
+        updateTouchView()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -613,51 +556,17 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
     }
 
     private fun  toggleTouchTurnPageFeature() {
-        // off: turn on
-        //if (sp.getBoolean("sp_enable_touch", false)) {
-        if(binding.omniboxTouch.alpha != 1.0F) {
-            enableTouch()
-            sp.edit(commit = true) { putBoolean("sp_enable_touch", true) }
-        } else { // turn off
-            disableTouch()
-            sp.edit(commit = true) { putBoolean("sp_enable_touch", false) }
-        }
-    }
-    private fun enableTouch() {
-        binding.omniboxTouch.alpha = 1.0F
-
-        touchAreaPageUp.visibility = VISIBLE
-        touchAreaPageDown.visibility = VISIBLE
-
-        fabImageButtonNav.setImageResource(R.drawable.ic_touch_enabled)
-        binding.omniboxTouch.setImageResource(R.drawable.ic_touch_enabled)
-        showTouchAreaHint()
+        config.enableTouchTurn = !config.enableTouchTurn
+        updateTouchView()
     }
 
-    private fun disableTouch() {
-        binding.omniboxTouch.alpha = 0.99F
-        touchAreaPageUp.visibility = INVISIBLE
-        touchAreaPageDown.visibility = INVISIBLE
-        fabImageButtonNav.setImageResource(R.drawable.icon_overflow_fab)
-        binding.omniboxTouch.setImageResource(R.drawable.ic_touch_disabled)
-    }
+    private fun updateTouchView() {
+        val fabResourceId = if (config.enableTouchTurn) R.drawable.icon_overflow_fab else R.drawable.ic_touch_disabled
+        fabImageButtonNav.setImageResource(fabResourceId)
+        val touchResourceId = if (config.enableTouchTurn) R.drawable.ic_touch_enabled else R.drawable.ic_touch_disabled
+        binding.omniboxTouch.setImageResource(touchResourceId)
 
-    private fun hideTouchAreaHint() {
-        touchAreaPageUp.setBackgroundColor(Color.TRANSPARENT)
-        touchAreaPageDown.setBackgroundColor(Color.TRANSPARENT)
-    }
-
-    private fun showTouchAreaHint() {
-        touchAreaPageUp.setBackgroundResource(R.drawable.touch_area_border)
-        touchAreaPageDown.setBackgroundResource(R.drawable.touch_area_border)
-        if (!config.touchAreaHint) {
-            Timer("showTouchAreaHint", false)
-                    .schedule(object : TimerTask() {
-                        override fun run() {
-                            hideTouchAreaHint()
-                        }
-                    }, 500)
-        }
+        touchController.toggleTouchPageTurn(config.enableTouchTurn)
     }
 
     // Methods

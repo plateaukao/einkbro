@@ -201,6 +201,7 @@ class NinjaWebViewClient(private val ninjaWebView: NinjaWebView) : WebViewClient
     }
 
     override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {
+        /*
         var message = "\"SSL Certificate error.\""
         when (error.primaryError) {
             SslError.SSL_UNTRUSTED -> message = "\"Certificate authority is not trusted.\""
@@ -210,6 +211,7 @@ class NinjaWebViewClient(private val ninjaWebView: NinjaWebView) : WebViewClient
             SslError.SSL_DATE_INVALID -> message = "\"Certificate date is invalid.\""
             SslError.SSL_INVALID -> message = "\"Certificate is invalid.\""
         }
+
         val text = """$message - ${context.getString(R.string.dialog_content_ssl_error)}"""
         val dialog = BottomSheetDialog(context)
         val dialogView = View.inflate(context, R.layout.dialog_action, null)
@@ -225,6 +227,8 @@ class NinjaWebViewClient(private val ninjaWebView: NinjaWebView) : WebViewClient
         }
         dialog.setContentView(dialogView)
         dialog.show()
+
         HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
+         */
     }
 }
