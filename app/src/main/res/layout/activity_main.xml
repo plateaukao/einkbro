@@ -314,82 +314,13 @@
             android:layout_weight="1"
             android:layout_height="match_parent"/>
 
-
-        <RelativeLayout
+        <include layout="@layout/translation_panel"
             android:id="@+id/sub_container"
-            android:visibility="gone"
-            android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:visibility="visible"
-            android:background="@color/color_transparent">
-            <View
-                android:id="@+id/separator"
-                android:layout_width="1px"
-                android:layout_height="match_parent"
-                android:background="?attr/colorControlNormal"/>
-            <HorizontalScrollView
-                android:id="@+id/page_scroller"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true">
-                <LinearLayout
-                    android:id="@+id/page_container"
-                    android:layout_gravity="end"
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:id="@+id/page_1"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:text="1"
-                        android:gravity="center"
-                        android:background="@drawable/dialog_border_bg"
-                        android:textAlignment="center"/>
-                    <TextView
-                        android:id="@+id/page_2"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:text="2"
-                        android:gravity="center"
-                        android:background="@drawable/dialog_border_bg"
-                        android:textAlignment="center"/>
-                    <TextView
-                        android:id="@+id/page_3"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:text="3"
-                        android:gravity="center"
-                        android:background="@drawable/dialog_border_bg"
-                        android:textAlignment="center"/>
-                    <TextView
-                        android:id="@+id/page_4"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:text="4"
-                        android:gravity="center"
-                        android:background="@drawable/dialog_border_bg"
-                        android:textAlignment="center"/>
-                    <TextView
-                        android:id="@+id/page_5"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:text="5"
-                        android:gravity="center"
-                        android:background="@drawable/dialog_border_bg"
-                        android:textAlignment="center"/>
-                    <TextView
-                        android:id="@+id/page_6"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:text="6"
-                        android:gravity="center"
-                        android:background="@drawable/dialog_border_bg"
-                        android:textAlignment="center"/>
-                </LinearLayout>
-            </HorizontalScrollView>
-        </RelativeLayout>
+            android:layout_weight="1"
+            android:visibility="gone"
+            tools:visibility="visible"/>
     </LinearLayout>
 
     <include layout="@layout/dialog_overiew"
