@@ -3,16 +3,22 @@ package de.baumann.browser.view.viewControllers
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.net.LinkAddress
 import android.net.Uri
 import android.os.Build
+import android.view.LayoutInflater
 import android.view.View
 import android.view.View.*
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.children
 import androidx.core.view.size
 import de.baumann.browser.Ninja.R
+import de.baumann.browser.Ninja.databinding.TranslationPageIndexBinding
+import de.baumann.browser.Ninja.databinding.TranslationPanelBinding
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.preference.TranslationMode
 import de.baumann.browser.unit.ViewUnit
@@ -22,7 +28,7 @@ import kotlinx.coroutines.delay
 
 class TranslationViewController(
     private val activity: Activity,
-    private val translationViewContainer: RelativeLayout,
+    private val translationViewBinding: TranslationPanelBinding,
     private val showTranslationAction: () -> Unit
 ) {
     private val config: ConfigManager by lazy { ConfigManager(activity) }
@@ -31,33 +37,22 @@ class TranslationViewController(
             shouldHideTranslateContext = true
         }
     }
-    private val pageContainer: ViewGroup by lazy { translationViewContainer.findViewById(R.id.page_container) }
-
-    private val pageControls: List<TextView> =
-        listOf(
-            translationViewContainer.findViewById(R.id.page_1),
-            translationViewContainer.findViewById(R.id.page_2),
-            translationViewContainer.findViewById(R.id.page_3),
-            translationViewContainer.findViewById(R.id.page_4),
-            translationViewContainer.findViewById(R.id.page_5),
-            translationViewContainer.findViewById(R.id.page_6),
-        )
+    private val pageContainer: ViewGroup = translationViewBinding.pageContainer
 
     private var isWebViewAdded: Boolean = false
 
     private var pageTextList: List<String> = listOf()
 
     init {
-        pageControls.forEachIndexed { index, view ->
-            view.setOnClickListener { translatePage(index) }
+        translationViewBinding.translationClose.setOnClickListener {
+            toggleTranslationWindow(false)
         }
     }
-
     suspend fun showTranslation(context: Context, webView: NinjaWebView) {
         //activity.lifecycleScope.launch(Dispatchers.Main) {
             if (!webView.isReaderModeOn) {
                 webView.toggleReaderMode()
-                delay(500)
+                delay(700)
             }
 
             val text = webView.getRawText()
@@ -90,12 +85,11 @@ class TranslationViewController(
             isWebViewAdded = true
         }
 
-        translationViewContainer.visibility = VISIBLE
+        translationViewBinding.root.visibility = VISIBLE
 
         pageTextList = parseTextToSegments(text)
-        translatePage(0)
-
         updatePageViews(pageTextList.size)
+        translatePage(0)
     }
 
     fun showTranslationConfigDialog() {
@@ -132,18 +126,34 @@ class TranslationViewController(
         }
 
         pageContainer.visibility = VISIBLE
+        pageContainer.removeAllViews()
 
-        (0 until pageContainer.size).forEach {
-            pageControls[it].visibility = if (it < size) VISIBLE else GONE
+        (pageTextList.indices).forEach { index ->
+            val textView = TranslationPageIndexBinding.inflate(LayoutInflater.from(activity)).root
+            textView.text = (index + 1).toString()
+            textView.tag = index
+            val params = LinearLayout.LayoutParams(
+                ViewUnit.dpToPixel(activity, 40).toInt(),
+                ViewUnit.dpToPixel(activity, 40).toInt()
+            )
+            textView.setOnClickListener { translatePage(index) }
+            pageContainer.addView(textView, params)
         }
+        pageContainer.requestLayout()
     }
 
-    private fun translatePage(page: Int) {
-        val text = pageTextList[page]
+    private fun translatePage(selectedPageIndex: Int) {
+        val text = pageTextList[selectedPageIndex]
         webView.loadUrl(
             if (config.translationMode == TranslationMode.GOOGLE) buildGTranslateUrl(text)
             else buildPTranslateUrl(text)
         )
+
+        pageContainer.children.iterator().forEach{ pageIndexView ->
+            pageIndexView.setBackgroundResource(
+                if (selectedPageIndex == pageIndexView.tag) R.drawable.selected_border_bg else R.drawable.dialog_border_bg
+            )
+        }
     }
 
     private fun parseTextToSegments(text: String): List<String> {
@@ -151,14 +161,15 @@ class TranslationViewController(
     }
 
     private fun addWebView(): NinjaWebView {
-        val pageScroller = translationViewContainer.findViewById<View>(R.id.page_scroller)
-        val separator = translationViewContainer.findViewById<View>(R.id.separator)
+        val separator = translationViewBinding.separator
         val params: RelativeLayout.LayoutParams =
             RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT).apply {
-                addRule(RelativeLayout.ABOVE, pageScroller.id)
+                //addRule(RelativeLayout.ABOVE, pageScroller.id)
                 addRule(RelativeLayout.RIGHT_OF, separator.id)
             }
-        translationViewContainer.addView(webView, params)
+        translationViewBinding.root.addView(webView, params)
+        translationViewBinding.pageScroller.bringToFront()
+        translationViewBinding.translationClose.bringToFront()
 
         return webView
     }
@@ -195,7 +206,7 @@ class TranslationViewController(
 
     fun isTranslationModeOn(): Boolean =
         (config.translationMode == TranslationMode.ONYX && ViewUnit.isMultiWindowEnabled(activity)) ||
-                translationViewContainer.visibility == View.VISIBLE
+                translationViewBinding.root.visibility == View.VISIBLE
 
     fun toggleTranslationWindow(isEnabled: Boolean) {
         if (config.translationMode == TranslationMode.ONYX) {
@@ -204,12 +215,12 @@ class TranslationViewController(
             // all other translation types, should remove sub webviews
             if (!isEnabled) {
                 webView.loadUrl("about:blank")
-                translationViewContainer.visibility = View.GONE
+                translationViewBinding.root.visibility = View.GONE
             }
         }
     }
 
     companion object {
-        private const val TRANSLATION_TEXT_THRESHOLD = 700
+        private const val TRANSLATION_TEXT_THRESHOLD = 300
     }
 }
