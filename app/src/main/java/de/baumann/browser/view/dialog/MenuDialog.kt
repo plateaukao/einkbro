@@ -3,29 +3,22 @@ package de.baumann.browser.view.dialog
 import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.Dialog
 import android.app.DownloadManager
 import android.content.*
 import android.content.pm.PackageManager
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Build
-import android.print.PrintAttributes
-import android.print.PrintDocumentAdapter
-import android.print.PrintManager
 import android.view.Gravity
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.PermissionChecker.checkSelfPermission
-import androidx.preference.PreferenceManager
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.DialogMenuBinding
 import de.baumann.browser.activity.Settings_Activity
-import de.baumann.browser.activity.Settings_UIActivity
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.task.ScreenshotTask
 import de.baumann.browser.unit.HelperUnit
 import de.baumann.browser.unit.IntentUnit
-import de.baumann.browser.util.Constants
 import de.baumann.browser.view.NinjaToast
 import de.baumann.browser.view.NinjaWebView
 
@@ -57,88 +50,45 @@ class MenuDialog(
     }
 
     private fun initViews() {
-        binding.buttonOpenFav.setOnClickListener {
-            dialog.dismiss()
-            openFavAction.invoke()
-        }
-        binding.buttonSize.setOnClickListener {
-            dialog.dismiss()
-            fontSizeAction.invoke()
-        }
-        binding.buttonCloseTab.setOnClickListener {
-            dialog.dismiss()
-            closeTabAction.invoke()
-        }
-        binding.buttonQuit.setOnClickListener {
-            dialog.dismiss()
-            (context as Activity).finish()
-        }
-        binding.buttonBold.setOnClickListener {
-            dialog.dismiss()
-            config.boldFontStyle = !config.boldFontStyle
-        }
-        binding.buttonReader.setOnClickListener {
-            dialog.dismiss()
-            ninjaWebView.toggleReaderMode()
-        }
-        binding.buttonVertical.setOnClickListener {
-            dialog.dismiss()
-            ninjaWebView.toggleVerticalRead()
-        }
-        binding.buttonTouch.setOnClickListener {
-            dialog.dismiss()
-            TouchAreaDialog(context).show()
-        }
-        binding.buttonToolbar.setOnClickListener {
-            dialog.dismiss()
-            ToolbarConfigDialog(context).show()
-        }
+        binding.buttonOpenFav.setOnClickListener { dialog.dismissWithAction(openFavAction) }
+        binding.buttonSize.setOnClickListener { dialog.dismissWithAction(fontSizeAction) }
+        binding.buttonCloseTab.setOnClickListener { dialog.dismissWithAction(closeTabAction) }
+        binding.buttonQuit.setOnClickListener { dialog.dismissWithAction { (context as Activity).finish() } }
+        binding.buttonBold.setOnClickListener { dialog.dismissWithAction { config.boldFontStyle = !config.boldFontStyle } }
+        binding.buttonReader.setOnClickListener { dialog.dismissWithAction { ninjaWebView.toggleReaderMode() } }
+        binding.buttonVertical.setOnClickListener { dialog.dismissWithAction { ninjaWebView.toggleVerticalRead() } }
+        binding.buttonTouch.setOnClickListener { dialog.dismissWithAction { TouchAreaDialog(context).show() } }
+        binding.buttonToolbar.setOnClickListener { dialog.dismissWithAction { ToolbarConfigDialog(context).show() } }
+        binding.menuSaveBookmark.setOnClickListener { dialog.dismissWithAction(saveBookmarkAction) }
+        binding.menuSaveScreenshot.setOnClickListener { dialog.dismissWithAction(this::saveScreenshot) }
+        binding.menuSaveEpub.setOnClickListener { dialog.dismissWithAction(saveEpubAction) }
+        binding.menuSavePdf.setOnClickListener { dialog.dismissWithAction(printPdfAction) }
+        binding.menuSearchSite.setOnClickListener { dialog.dismissWithAction(searchSiteAction) }
         binding.menuShareLink.setOnClickListener {
-            dialog.dismiss()
-            IntentUnit.share(context, ninjaWebView.title, ninjaWebView.url)
+            dialog.dismissWithAction { IntentUnit.share(context, ninjaWebView.title, ninjaWebView.url) }
         }
-        binding.menuShareClipboard.setOnClickListener {
-            dialog.dismiss()
-            val clipboard = context.getSystemService(AppCompatActivity.CLIPBOARD_SERVICE) as ClipboardManager
-            val clip = ClipData.newPlainText("text", ninjaWebView.url)
-            clipboard.setPrimaryClip(clip)
-            NinjaToast.show(context, R.string.toast_copy_successful)
+        binding.menuOpenLink.setOnClickListener {
+            dialog.dismissWithAction { HelperUnit.showBrowserChooser( context as Activity, ninjaWebView.url, context.getString(R.string.menu_open_with) ) }
         }
         binding.menuSc.setOnClickListener {
-            dialog.dismiss()
-            HelperUnit.createShortcut(context, ninjaWebView.title, ninjaWebView.url, ninjaWebView.favicon)
+            dialog.dismissWithAction { HelperUnit.createShortcut(context, ninjaWebView.title, ninjaWebView.url, ninjaWebView.favicon) }
         }
         binding.menuFav.setOnClickListener {
-            dialog.dismiss()
-            config.favoriteUrl = ninjaWebView.url ?: "about:blank"
-        }
-        binding.menuSaveBookmark.setOnClickListener {
-            dialog.dismiss()
-            saveBookmarkAction.invoke()
-        }
-        binding.menuSaveScreenshot.setOnClickListener {
-            dialog.dismiss()
-            saveScreenshot()
-        }
-        binding.menuSaveEpub.setOnClickListener {
-            dialog.dismiss()
-            saveEpubAction.invoke()
-        }
-        binding.menuSavePdf.setOnClickListener {
-            dialog.dismiss()
-            printPdfAction.invoke()
-        }
-        binding.menuSearchSite.setOnClickListener {
-            dialog.dismiss()
-            searchSiteAction.invoke()
+            dialog.dismissWithAction { config.favoriteUrl = ninjaWebView.url ?: "about:blank" }
         }
         binding.menuDownload.setOnClickListener {
-            dialog.dismiss()
-            context.startActivity(Intent(DownloadManager.ACTION_VIEW_DOWNLOADS))
+            dialog.dismissWithAction { context.startActivity(Intent(DownloadManager.ACTION_VIEW_DOWNLOADS)) }
         }
         binding.menuSettings.setOnClickListener {
-            dialog.dismiss()
-            context.startActivity(Intent(context, Settings_Activity::class.java))
+            dialog.dismissWithAction { context.startActivity(Intent(context, Settings_Activity::class.java)) }
+        }
+        binding.menuShareClipboard.setOnClickListener {
+            dialog.dismissWithAction {
+                val clipboard = context.getSystemService(AppCompatActivity.CLIPBOARD_SERVICE) as ClipboardManager
+                val clip = ClipData.newPlainText("text", ninjaWebView.url)
+                clipboard.setPrimaryClip(clip)
+                NinjaToast.show(context, R.string.toast_copy_successful)
+            }
         }
     }
 
@@ -156,4 +106,9 @@ class MenuDialog(
             ScreenshotTask(context, ninjaWebView).execute()
         }
     }
+}
+
+private fun Dialog.dismissWithAction(action: ()-> Unit) {
+    dismiss()
+    action()
 }

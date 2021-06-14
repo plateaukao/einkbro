@@ -1417,7 +1417,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
     }
 
-    private fun showContextMenuLink(url: String?) {
+    private fun showContextMenuLinkDialog(url: String?) {
         val dialogView = DialogMenuContextLinkBinding.inflate(layoutInflater)
         val dialog = dialogManager.showOptionDialog(this, dialogView.root)
         dialogView.contextLinkNewTab.setOnClickListener {
@@ -1446,9 +1446,9 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
     override fun onLongPress(url: String?) {
         val result = ninjaWebView.hitTestResult
         if (url != null) {
-            showContextMenuLink(url)
+            showContextMenuLinkDialog(url)
         } else if (result.type == HitTestResult.IMAGE_TYPE || result.type == HitTestResult.SRC_IMAGE_ANCHOR_TYPE || result.type == HitTestResult.SRC_ANCHOR_TYPE) {
-            showContextMenuLink(result.extra)
+            showContextMenuLinkDialog(result.extra)
         }
     }
 
