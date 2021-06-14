@@ -6,13 +6,17 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.HorizontalScrollView
+import android.widget.LinearLayout
 import android.widget.ScrollView
+import android.widget.TextView
+import androidx.core.view.iterator
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.preference.ConfigManager
+import de.baumann.browser.unit.ViewUnit
 import de.baumann.browser.view.toolbaricons.ToolbarAction
 
 class ToolbarViewController(
-    context: Context,
+    private val context: Context,
     private val toolbarScroller: HorizontalScrollView,
 ) {
     private val iconBar: ViewGroup = toolbarScroller.findViewById(R.id.icon_bar)
@@ -38,10 +42,37 @@ class ToolbarViewController(
             }
             iconBar.requestLayout()
             toolbarScroller.post {
+                modifyTitleControlWidth()
                 toolbarScroller.fullScroll(View.FOCUS_RIGHT)
             }
         }
+
     }
+
+    private fun modifyTitleControlWidth() {
+        if (ToolbarAction.Title in config.toolbarActions) {
+            val textView = iconBar.findViewById<TextView>(R.id.omnibox_title)
+            if (isIconsWidthLargerThanScreenWidth()) {
+                val params = LinearLayout.LayoutParams( getRestToolbarWidth(), LinearLayout.LayoutParams.MATCH_PARENT)
+                textView.layoutParams = params
+                textView.minimumWidth = 0
+            } else {
+                val params = LinearLayout.LayoutParams( LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT)
+                textView.layoutParams = params
+                textView.minimumWidth = ViewUnit.dpToPixel(context, 100).toInt()
+            }
+        }
+    }
+
+    private fun isIconsWidthLargerThanScreenWidth(): Boolean = getRestToolbarWidth() >= ViewUnit.dpToPixel(context, 40).toInt()
+
+    private fun getRestToolbarWidth(): Int =
+        ViewUnit.getWindowWidth(context) -
+                iconBar.iterator().asSequence()
+                    .filter { it.id != R.id.omnibox_title }
+                    .map { it.measuredWidth }
+                    .sum()
+
 
     private fun toggleIconsOnOmnibox(shouldShow: Boolean) {
         toolbarScroller.visibility = if (shouldShow) VISIBLE else GONE
@@ -56,6 +87,4 @@ class ToolbarViewController(
 
         children
     }
-
-
 }
