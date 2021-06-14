@@ -1019,44 +1019,53 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
     }
 
     private fun initSearchPanel() {
-        searchPanel = findViewById(R.id.main_search_panel)
-        searchBox = findViewById(R.id.main_search_box)
-        searchBox.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-            override fun afterTextChanged(s: Editable) {
-                (currentAlbumController as NinjaWebView?)?.findAllAsync(s.toString())
-            }
-        })
-        searchBox.setOnEditorActionListener(OnEditorActionListener { _, actionId, _ ->
+        searchPanel = binding.mainSearchPanel
+        searchBox = binding.mainSearchBox
+        searchBox.addTextChangedListener(searchBoxTextChangeListener)
+        searchBox.setOnEditorActionListener(searchBoxEditorActionListener)
+        binding.mainSearchUp.setOnClickListener { searchUp() }
+        binding.mainSearchDown.setOnClickListener { searchDown() }
+        binding.mainSearchCancel.setOnClickListener { hideSearchPanel() }
+    }
+
+    private val searchBoxEditorActionListener = object: OnEditorActionListener {
+        override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
             if (actionId != EditorInfo.IME_ACTION_DONE) {
-                return@OnEditorActionListener false
+                return false
             }
             if (searchBox.text.toString().isEmpty()) {
-                NinjaToast.show(this, getString(R.string.toast_input_empty))
-                return@OnEditorActionListener true
+                NinjaToast.show(this@BrowserActivity, getString(R.string.toast_input_empty))
+                return true
             }
-            false
-        })
-        findViewById<ImageButton?>(R.id.main_search_up).setOnClickListener {
-            val query = searchBox.text.toString()
-            if (query.isEmpty()) {
-                NinjaToast.show(this, getString(R.string.toast_input_empty))
-                return@setOnClickListener
-            }
-            ViewUnit.hideKeyboard(this@BrowserActivity)
-            (currentAlbumController as NinjaWebView).findNext(false)
+            return false
         }
-        findViewById<ImageButton?>(R.id.main_search_down).setOnClickListener {
-            val query = searchBox.text.toString()
-            if (query.isEmpty()) {
-                NinjaToast.show(this, getString(R.string.toast_input_empty))
-                return@setOnClickListener
-            }
-            ViewUnit.hideKeyboard(this@BrowserActivity)
-            (currentAlbumController as NinjaWebView).findNext(true)
+    }
+
+    private val searchBoxTextChangeListener = object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+        override fun afterTextChanged(s: Editable) {
+            (currentAlbumController as NinjaWebView?)?.findAllAsync(s.toString())
         }
-        findViewById<ImageButton?>(R.id.main_search_cancel).setOnClickListener { hideSearchPanel() }
+    }
+
+    private fun searchUp() {
+        val query = searchBox.text.toString()
+        if (query.isEmpty()) {
+            NinjaToast.show(this, getString(R.string.toast_input_empty))
+            return
+        }
+        ViewUnit.hideKeyboard(this)
+        (currentAlbumController as NinjaWebView).findNext(false)
+    }
+    private fun searchDown() {
+        val query = searchBox.text.toString()
+        if (query.isEmpty()) {
+            NinjaToast.show(this, getString(R.string.toast_input_empty))
+            return
+        }
+        ViewUnit.hideKeyboard(this)
+        (currentAlbumController as NinjaWebView).findNext(true)
     }
 
     private fun updateBookmarkList(bookmarkFolderId: Int = 0) {
@@ -1287,20 +1296,16 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         originalOrientation = requestedOrientation
         fullscreenHolder = FrameLayout(this).apply{
             addView(
-                    customView,
-                    FrameLayout.LayoutParams(
-                            FrameLayout.LayoutParams.MATCH_PARENT,
-                            FrameLayout.LayoutParams.MATCH_PARENT
-                    ))
+                customView,
+                FrameLayout.LayoutParams( FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
+            )
 
         }
         val decorView = window.decorView as FrameLayout
         decorView.addView(
-                fullscreenHolder,
-                FrameLayout.LayoutParams(
-                        FrameLayout.LayoutParams.MATCH_PARENT,
-                        FrameLayout.LayoutParams.MATCH_PARENT
-                ))
+            fullscreenHolder,
+            FrameLayout.LayoutParams( FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
+        )
         customView?.keepScreenOn = true
         (currentAlbumController as View?)?.visibility = View.GONE
         ViewUnit.setCustomFullscreen(window, true)
