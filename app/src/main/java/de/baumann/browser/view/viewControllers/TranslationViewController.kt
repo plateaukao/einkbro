@@ -3,19 +3,15 @@ package de.baumann.browser.view.viewControllers
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.net.LinkAddress
 import android.net.Uri
 import android.os.Build
 import android.view.LayoutInflater
-import android.view.View
 import android.view.View.*
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.children
-import androidx.core.view.size
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.TranslationPageIndexBinding
 import de.baumann.browser.Ninja.databinding.TranslationPanelBinding
@@ -102,7 +98,6 @@ class TranslationViewController(
         val translationModeArray = enumValues.map { it.name }.toTypedArray()
         val valueArray = enumValues.map { it.ordinal }
         val selected = valueArray.indexOf(config.translationMode.ordinal)
-        val buttonText = if (!isTranslationModeOn()) "Enable" else "Disable"
         AlertDialog.Builder(activity, R.style.TouchAreaDialog).apply{
             setTitle("Translation Mode")
             setSingleChoiceItems(translationModeArray, selected) { dialog, which ->
@@ -111,8 +106,6 @@ class TranslationViewController(
                 dialog.dismiss()
             }
         }
-            .setPositiveButton(buttonText) { d, _ -> d.dismiss() ; toggleTranslationWindow(!isTranslationModeOn()) }
-            .setNegativeButton(android.R.string.cancel)  { d, _ -> d.dismiss() }
             .create().also {
                 it.show()
                 it.window?.setLayout(ViewUnit.dpToPixel(activity, 200).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
@@ -206,7 +199,7 @@ class TranslationViewController(
 
     fun isTranslationModeOn(): Boolean =
         (config.translationMode == TranslationMode.ONYX && ViewUnit.isMultiWindowEnabled(activity)) ||
-                translationViewBinding.root.visibility == View.VISIBLE
+                translationViewBinding.root.visibility == VISIBLE
 
     fun toggleTranslationWindow(isEnabled: Boolean) {
         if (config.translationMode == TranslationMode.ONYX) {
@@ -215,12 +208,12 @@ class TranslationViewController(
             // all other translation types, should remove sub webviews
             if (!isEnabled) {
                 webView.loadUrl("about:blank")
-                translationViewBinding.root.visibility = View.GONE
+                translationViewBinding.root.visibility = GONE
             }
         }
     }
 
     companion object {
-        private const val TRANSLATION_TEXT_THRESHOLD = 300
+        private const val TRANSLATION_TEXT_THRESHOLD = 800
     }
 }
