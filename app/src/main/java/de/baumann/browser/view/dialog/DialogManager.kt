@@ -104,5 +104,4 @@ class DialogManager(
         dialog.show()
         return dialog
     }
-
 }

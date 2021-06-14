@@ -25,7 +25,7 @@
     <string name="main_menu_new_tab">新增分頁(背景)</string>
     <string name="main_menu_new_tabOpen">新增分頁(前景)</string>
     <string name="main_omnibox_input_hint">搜尋或輸入網址</string>
-    <string name="menu_open_with">用其他開啟</string>
+    <string name="menu_open_with">App開啟</string>
     <string name="menu_quit">離開</string>
     <string name="menu_openFav">開啟首頁</string>
     <string name="menu_delete">刪除</string>
