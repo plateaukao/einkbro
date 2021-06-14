@@ -1567,50 +1567,50 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
     }
 
     private fun showBookmarkContextMenu(bookmark: Bookmark) {
-        bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
         val dialogView = DialogMenuContextListBinding.inflate(layoutInflater)
+        val dialog = dialogManager.showOptionDialog(this, dialogView.root)
+
         dialogView.menuContextListEdit.visibility = VISIBLE
         dialogView.menuContextListFav.setOnClickListener {
-            hideBottomSheetDialog()
-            config.favoriteUrl = bookmark.url
+            dialog.dismissWithAction { config.favoriteUrl = bookmark.url }
         }
         dialogView.menuContextLinkSc.setOnClickListener {
-            hideBottomSheetDialog()
-            HelperUnit.createShortcut(this, bookmark.title, bookmark.url, null)
+            dialog.dismissWithAction { HelperUnit.createShortcut(this, bookmark.title, bookmark.url, null) }
         }
         dialogView.menuContextListNewTab.setOnClickListener {
-            addAlbum(getString(R.string.app_name), bookmark.url, false)
-            NinjaToast.show(this, getString(R.string.toast_new_tab_successful))
-            hideBottomSheetDialog()
+            dialog.dismissWithAction {
+                addAlbum(getString(R.string.app_name), bookmark.url, false)
+                NinjaToast.show(this, getString(R.string.toast_new_tab_successful))
+            }
         }
         dialogView.menuContextListNewTabOpen.setOnClickListener {
-            addAlbum(url = bookmark.url)
-            hideBottomSheetDialog()
-            hideOverview()
+            dialog.dismissWithAction {
+                addAlbum(url = bookmark.url)
+                hideOverview()
+            }
         }
         dialogView.menuContextListDelete.setOnClickListener {
-            hideBottomSheetDialog()
-            lifecycleScope.launch {
-                bookmarkManager.delete(bookmark)
-                (recyclerView.adapter as BookmarkAdapter).remove(bookmark)
+            dialog.dismissWithAction {
+                lifecycleScope.launch {
+                    bookmarkManager.delete(bookmark)
+                    (recyclerView.adapter as BookmarkAdapter).remove(bookmark)
+                }
             }
         }
 
         dialogView.menuContextListEdit.setOnClickListener {
-            hideBottomSheetDialog()
-            BookmarkEditDialog(
-                this,
-                layoutInflater,
-                lifecycleScope,
-                bookmarkManager,
-                bookmark,
-                { ViewUnit.hideKeyboard(this@BrowserActivity) ; updateBookmarkList() },
-                { ViewUnit.hideKeyboard(this@BrowserActivity) }
-            ).show()
+            dialog.dismissWithAction {
+                BookmarkEditDialog(
+                    this,
+                    layoutInflater,
+                    lifecycleScope,
+                    bookmarkManager,
+                    bookmark,
+                    { ViewUnit.hideKeyboard(this@BrowserActivity) ; updateBookmarkList() },
+                    { ViewUnit.hideKeyboard(this@BrowserActivity) }
+                ).show()
+            }
         }
-
-        bottomSheetDialog?.setContentView(dialogView.root)
-        bottomSheetDialog?.show()
     }
 
     private fun showHistoryContextMenu(
@@ -1619,38 +1619,38 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         recordAdapter: RecordAdapter,
         location: Int
     ) {
-        bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
         val dialogView = DialogMenuContextListBinding.inflate(layoutInflater)
+        val dialog = dialogManager.showOptionDialog(this, dialogView.root)
+
         dialogView.menuContextListEdit.visibility = GONE
         dialogView.menuContextListFav.setOnClickListener {
-            hideBottomSheetDialog()
-            config.favoriteUrl = url
+            dialog.dismissWithAction { config.favoriteUrl = url }
         }
         dialogView.menuContextLinkSc.setOnClickListener {
-            hideBottomSheetDialog()
-            HelperUnit.createShortcut(this, title, url, null)
+            dialog.dismissWithAction { HelperUnit.createShortcut(this, title, url, null) }
         }
         dialogView.menuContextListNewTab.setOnClickListener {
-            addAlbum(getString(R.string.app_name), url, false)
-            NinjaToast.show(this, getString(R.string.toast_new_tab_successful))
-            hideBottomSheetDialog()
+            dialog.dismissWithAction {
+                addAlbum(getString(R.string.app_name), url, false)
+                NinjaToast.show(this, getString(R.string.toast_new_tab_successful))
+
+            }
         }
         dialogView.menuContextListNewTabOpen.setOnClickListener {
-            addAlbum(getString(R.string.app_name), url)
-            hideBottomSheetDialog()
-            hideOverview()
+            dialog.dismissWithAction {
+                addAlbum(getString(R.string.app_name), url)
+                hideOverview()
+            }
         }
         dialogView.menuContextListDelete.setOnClickListener {
-            hideBottomSheetDialog()
-            dialogManager.showOkCancelDialog(
-                context = this@BrowserActivity,
-                messageResId = R.string.toast_titleConfirm_delete,
-                okAction = { deleteHistory(recordAdapter, location) }
-            )
+            dialog.dismissWithAction {
+                dialogManager.showOkCancelDialog(
+                    context = this@BrowserActivity,
+                    messageResId = R.string.toast_titleConfirm_delete,
+                    okAction = { deleteHistory(recordAdapter, location) }
+                )
+            }
         }
-
-        bottomSheetDialog?.setContentView(dialogView.root)
-        bottomSheetDialog?.show()
     }
 
     private fun deleteHistory(recordAdapter: RecordAdapter, location: Int) {
