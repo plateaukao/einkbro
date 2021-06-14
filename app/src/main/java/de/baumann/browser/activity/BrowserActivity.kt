@@ -29,7 +29,6 @@ import android.webkit.WebChromeClient.CustomViewCallback
 import android.webkit.WebView.HitTestResult
 import android.widget.*
 import android.widget.TextView.OnEditorActionListener
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -916,14 +915,11 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
     }
 
     private fun openSubMenu() {
-        //val dialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
         val dialogView = DialogMenuOverviewBinding.inflate(layoutInflater)
-        //dialog.setContentView(dialogView.root)
-        //dialog.show()
         val dialog = dialogManager.showOptionDialog(this, dialogView.root)
         with(dialogView ){
-            tvAddFolder.setOnClickListener { dialog.dismiss(); createBookmarkFolder() }
-            tvDelete.setOnClickListener { dialog.dismiss(); deleteAllItems() }
+            tvAddFolder.setOnClickListener { dialog.dismissWithAction {  createBookmarkFolder() } }
+            tvDelete.setOnClickListener { dialog.dismissWithAction { deleteAllItems() } }
         }
     }
 
@@ -1421,99 +1417,71 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
     }
 
-    private fun show_contextMenu_link(url: String?) {
-        bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
-        val dialogView = View.inflate(this, R.layout.dialog_menu_context_link, null)
-        dialogView.findViewById<LinearLayout>(R.id.contextLink_newTab).setOnClickListener {
-            addAlbum(getString(R.string.app_name), url, false)
-            NinjaToast.show(this, getString(R.string.toast_new_tab_successful))
-            hideBottomSheetDialog()
-        }
-        dialogView.findViewById<LinearLayout>(R.id.contextLink__shareLink).setOnClickListener {
-            if (prepareRecord()) {
-                NinjaToast.show(this, getString(R.string.toast_share_failed))
-            } else {
-                IntentUnit.share(this, "", url)
-            }
-            hideBottomSheetDialog()
-        }
-        dialogView.findViewById<LinearLayout>(R.id.contextLink_openWith).setOnClickListener {
-            HelperUnit.showBrowserChooser(this@BrowserActivity, url, getString(R.string.menu_open_with))
-            hideBottomSheetDialog()
-        }
-        dialogView.findViewById<LinearLayout>(R.id.contextLink_newTabOpen).setOnClickListener {
-            addAlbum(getString(R.string.app_name), url)
-            hideBottomSheetDialog()
-        }
-        dialogView.findViewById<LinearLayout>(R.id.menu_save_pdf).setOnClickListener {
-            try {
-                hideBottomSheetDialog()
-                val builder = AlertDialog.Builder(this@BrowserActivity)
-                val menuView = inflate(this, R.layout.dialog_edit_extension, null)
-                val editTitle = menuView.findViewById<EditText>(R.id.dialog_edit)
-                val editExtension = menuView.findViewById<EditText>(R.id.dialog_edit_extension)
-                val filename = URLUtil.guessFileName(url, null, null)
-                editTitle.setHint(R.string.dialog_title_hint)
-                editTitle.setText(HelperUnit.fileName(ninjaWebView.url))
-                val extension = filename.substring(filename.lastIndexOf("."))
-                if (extension.length <= 8) {
-                    editExtension.setText(extension)
-                }
-                builder.setView(menuView)
-                builder.setTitle(R.string.menu_edit)
-                builder.setPositiveButton(android.R.string.ok) { dialog, whichButton ->
-                    val title = editTitle.text.toString().trim { it <= ' ' }
-                    val extension = editExtension.text.toString().trim { it <= ' ' }
-                    val filename = title + extension
-                    if (title.isEmpty() || extension.isEmpty() || !extension.startsWith(".")) {
-                        NinjaToast.show(this, getString(R.string.toast_input_empty))
-                    } else {
-                        if (Build.VERSION.SDK_INT in 23..28) {
-                            val hasWRITE_EXTERNAL_STORAGE = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                            if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
-                                HelperUnit.grantPermissionsStorage(this)
-                            } else {
-                                val source = Uri.parse(url)
-                                val request = DownloadManager.Request(source)
-                                request.addRequestHeader("Cookie", CookieManager.getInstance().getCookie(url))
-                                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED) //Notify client once download is completed!
-                                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename)
-                                val dm = (getSystemService(DOWNLOAD_SERVICE) as DownloadManager)
-                                dm.enqueue(request)
-                                ViewUnit.hideKeyboard(this@BrowserActivity)
-                            }
-                        } else {
-                            val source = Uri.parse(url)
-                            val request = DownloadManager.Request(source)
-                            request.addRequestHeader("Cookie", CookieManager.getInstance().getCookie(url))
-                            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED) //Notify client once download is completed!
-                            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename)
-                            val dm = (getSystemService(DOWNLOAD_SERVICE) as DownloadManager)
-                            dm.enqueue(request)
-                            ViewUnit.hideKeyboard(this@BrowserActivity)
-                        }
-                    }
-                }
-                builder.setNegativeButton(android.R.string.cancel) { dialog, whichButton ->
-                    dialog.cancel()
-                    ViewUnit.hideKeyboard(this@BrowserActivity)
-                }
-                val dialog = builder.create()
-                dialog.show()
-            } catch (e: Exception) {
-                e.printStackTrace()
+    private fun showContextMenuLink(url: String?) {
+        val dialogView = DialogMenuContextLinkBinding.inflate(layoutInflater)
+        val dialog = dialogManager.showOptionDialog(this, dialogView.root)
+        dialogView.contextLinkNewTab.setOnClickListener {
+            dialog.dismissWithAction {
+                addAlbum(getString(R.string.app_name), url, false)
+                NinjaToast.show(this, getString(R.string.toast_new_tab_successful))
             }
         }
-        bottomSheetDialog?.setContentView(dialogView)
-        bottomSheetDialog?.show()
+        dialogView.contextLinkShareLink.setOnClickListener {
+            dialog.dismissWithAction {
+                if (prepareRecord())  NinjaToast.show(this, getString(R.string.toast_share_failed))
+                else IntentUnit.share(this, "", url)
+            }
+        }
+        dialogView.contextLinkOpenWith.setOnClickListener {
+            dialog.dismissWithAction { HelperUnit.showBrowserChooser( this@BrowserActivity, url, getString(R.string.menu_open_with) ) }
+        }
+        dialogView.contextLinkNewTabOpen.setOnClickListener {
+            dialog.dismissWithAction { addAlbum(getString(R.string.app_name), url) }
+        }
+        dialogView.menuSavePdf.setOnClickListener {
+            dialog.dismissWithAction { showSavePdfDialog(url) }
+        }
     }
 
     override fun onLongPress(url: String?) {
         val result = ninjaWebView.hitTestResult
         if (url != null) {
-            show_contextMenu_link(url)
+            showContextMenuLink(url)
         } else if (result.type == HitTestResult.IMAGE_TYPE || result.type == HitTestResult.SRC_IMAGE_ANCHOR_TYPE || result.type == HitTestResult.SRC_ANCHOR_TYPE) {
-            show_contextMenu_link(result.extra)
+            showContextMenuLink(result.extra)
+        }
+    }
+
+    private fun showSavePdfDialog(url: String?) {
+        val url = url ?: return
+
+        dialogManager.showSavePdfDialog(this, url = url, savePdf = { url, fileName -> savePdf(url, fileName) } )
+    }
+
+    private fun savePdf(url: String, fileName: String) {
+        if (Build.VERSION.SDK_INT in 23..28) {
+            val hasWriteExternalStorage = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            if (hasWriteExternalStorage != PackageManager.PERMISSION_GRANTED) {
+                HelperUnit.grantPermissionsStorage(this)
+            } else {
+                val source = Uri.parse(url)
+                val request = DownloadManager.Request(source)
+                request.addRequestHeader("Cookie", CookieManager.getInstance().getCookie(url))
+                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED) //Notify client once download is completed!
+                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
+                val dm = (getSystemService(DOWNLOAD_SERVICE) as DownloadManager)
+                dm.enqueue(request)
+                ViewUnit.hideKeyboard(this)
+            }
+        } else {
+            val source = Uri.parse(url)
+            val request = DownloadManager.Request(source)
+            request.addRequestHeader("Cookie", CookieManager.getInstance().getCookie(url))
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED) //Notify client once download is completed!
+            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
+            val dm = (getSystemService(DOWNLOAD_SERVICE) as DownloadManager)
+            dm.enqueue(request)
+            ViewUnit.hideKeyboard(this)
         }
     }
 
@@ -1525,7 +1493,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             mainToolbar.visibility = VISIBLE
             binding.appBar.visibility = VISIBLE
             toolbarViewController.show()
-            ViewUnit.hideKeyboard(this@BrowserActivity)
+            ViewUnit.hideKeyboard(this)
             showStatusBar()
         }
     }
@@ -1757,4 +1725,9 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         private const val WRITE_PDF_REQUEST_CODE = 3
         private const val K_SHOULD_LOAD_TAB_STATE = "k_should_load_tab_state"
     }
+}
+
+private fun Dialog.dismissWithAction(action: ()-> Unit) {
+    dismiss()
+    action()
 }
