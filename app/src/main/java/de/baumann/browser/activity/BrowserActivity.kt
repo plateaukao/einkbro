@@ -222,7 +222,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
         downloadReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
-                ViewUnit.showOkCancelDialog(
+                dialogManager.showOkCancelDialog(
                     context = this@BrowserActivity,
                     messageResId = R.string.toast_downloadComplete,
                     okAction = { startActivity(Intent(DownloadManager.ACTION_VIEW_DOWNLOADS)) }
@@ -310,7 +310,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
     }
 
     private fun showRestartConfirmDialog() {
-        ViewUnit.showOkCancelDialog(
+        dialogManager.showOkCancelDialog(
             context = this,
             messageResId = R.string.toast_restart,
             okAction = { restartApp() }
@@ -325,7 +325,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
     }
 
     private fun showFileListConfirmDialog() {
-        ViewUnit.showOkCancelDialog(
+        dialogManager.showOkCancelDialog(
             context = this,
             messageResId = R.string.toast_downloadComplete,
             okAction = { startActivity(Intent(DownloadManager.ACTION_VIEW_DOWNLOADS)) }
@@ -508,7 +508,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
             R.id.omnibox_refresh -> if (url != null && ninjaWebView.isLoadFinish) {
                 if (url?.startsWith("https://") != true) {
-                    ViewUnit.showOkCancelDialog(
+                    dialogManager.showOkCancelDialog(
                         context = this@BrowserActivity,
                         messageResId = R.string.toast_unsecured,
                         okAction = {
@@ -905,55 +905,48 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             v.onTouchEvent(event)
             true
         }
-        btnOpenMenu.setOnClickListener {
-            bottomSheetDialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
-            val dialogView = DialogMenuOverviewBinding.inflate(layoutInflater)
-            dialogView.tvAddFolder.setOnClickListener {
-                hideBottomSheetDialog()
-                createBookmarkFolder()
-            }
 
-            dialogView.tvDelete.setOnClickListener {
-                hideBottomSheetDialog()
-                ViewUnit.showOkCancelDialog(
-                    context = this@BrowserActivity,
-                    messageResId = R.string.hint_database,
-                    okAction = {
-                        when (overViewTab) {
-                            getString(R.string.album_title_home) -> {
-                                BrowserUnit.clearHome(this)
-                                btnOpenStartPage.performClick()
-                            }
-                            getString(R.string.album_title_bookmarks) -> {
-                                lifecycleScope.launch {
-                                    bookmarkManager.deleteAll()
-                                    updateBookmarkList()
-                                    updateAutoComplete()
-                                }
-                            }
-                            getString(R.string.album_title_history) -> {
-                                BrowserUnit.clearHistory(this)
-                                updateAutoComplete()
-                            }
-                        }
-                    }
-                )
-            }
-            bottomSheetDialog?.setContentView(dialogView.root)
-            bottomSheetDialog?.show()
-        }
-
-        btnOpenStartPage.setOnClickListener {
-            overviewPreview.visibility = VISIBLE
-            recyclerView.visibility = GONE
-            toggleOverviewFocus(openStartPageView)
-            overViewTab = getString(R.string.album_title_home)
-        }
+        btnOpenMenu.setOnClickListener { openSubMenu() }
+        btnOpenStartPage.setOnClickListener { openHomePage() }
         btnOpenBookmark.setOnClickListener { openBookmarkPage() }
         btnOpenHistory.setOnClickListener { openHistoryPage() }
 
         findViewById<View>(R.id.button_close_overview).setOnClickListener { hideOverview() }
         showCurrentTabInOverview()
+    }
+
+    private fun openSubMenu() {
+        //val dialog = BottomSheetDialog(this, R.style.BottomSheetDialog)
+        val dialogView = DialogMenuOverviewBinding.inflate(layoutInflater)
+        //dialog.setContentView(dialogView.root)
+        //dialog.show()
+        val dialog = dialogManager.showOptionDialog(this, dialogView.root)
+        with(dialogView ){
+            tvAddFolder.setOnClickListener { dialog.dismiss(); createBookmarkFolder() }
+            tvDelete.setOnClickListener { dialog.dismiss(); deleteAllItems() }
+        }
+    }
+
+    private fun deleteAllItems() {
+        dialogManager.showOkCancelDialog(
+            context = this@BrowserActivity,
+            messageResId = R.string.hint_database,
+            okAction = {
+                when (overViewTab) {
+                    getString(R.string.album_title_bookmarks) -> {
+                        lifecycleScope.launch {
+                            bookmarkManager.deleteAll()
+                            updateBookmarkList()
+                            updateAutoComplete()
+                        }
+                    }
+                    getString(R.string.album_title_history) -> {
+                        BrowserUnit.clearHistory(this)
+                        updateAutoComplete()
+                    }
+                }
+            }
+        )
     }
 
     private fun createBookmarkFolder() {
@@ -962,6 +955,13 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             bookmarkManager.insertDirectory(folderName)
             updateBookmarkList()
         }
+    }
+
+    private fun openHomePage() {
+        overviewPreview.visibility = VISIBLE
+        recyclerView.visibility = GONE
+        toggleOverviewFocus(openStartPageView)
+        overViewTab = getString(R.string.album_title_home)
     }
 
     private fun openHistoryPage() {
@@ -1173,7 +1173,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         if (!sp.getBoolean("sp_close_tab_confirm", false)) {
             okAction()
         } else {
-            ViewUnit.showOkCancelDialog(
+            dialogManager.showOkCancelDialog(
                 context = this,
                 messageResId = R.string.toast_close_tab,
                 okAction = okAction,
@@ -1669,7 +1669,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         }
         dialogView.menuContextListDelete.setOnClickListener {
             hideBottomSheetDialog()
-            ViewUnit.showOkCancelDialog(
+            dialogManager.showOkCancelDialog(
                 context = this@BrowserActivity,
                 messageResId = R.string.toast_titleConfirm_delete,
                 okAction = { deleteHistory(recordAdapter, location) }

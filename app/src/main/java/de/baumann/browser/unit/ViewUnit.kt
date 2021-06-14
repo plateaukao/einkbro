@@ -81,29 +81,6 @@ object ViewUnit {
         return dp * (metrics.densityDpi / 160f)
     }
 
-    fun showOkCancelDialog(
-        context: Context,
-        title: String? = null,
-        messageResId:Int,
-        okAction: () -> Unit,
-        cancelAction: (() -> Unit)? = null)
-    {
-        AlertDialog.Builder(context, R.style.TouchAreaDialog)
-            .setMessage(messageResId)
-            .setPositiveButton(android.R.string.ok) { _, _ ->
-                okAction.invoke()
-            }
-            .setNegativeButton(android.R.string.cancel) { _, _ ->
-                cancelAction?.invoke()
-            }.apply {
-                title?.let { title -> setTitle(title) }
-            }
-            .create().apply {
-                window?.setGravity(Gravity.BOTTOM)
-            }
-            .show()
-    }
-
     fun setCustomFullscreen(window: Window, fullscreen: Boolean) {
         val decorView = window.decorView
         if (fullscreen) {
