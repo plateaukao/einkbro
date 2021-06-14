@@ -1,3 +1,32 @@
+### 8.10.0
+
+- Add translation icon in Toolbar configuration
+- Long press translation icon to configure which website to use
+- Pagination design for text translation
+- Toolbar refactoring: when adding too many icons, it can be scrolled horizontally
+- Support for new a incognito tab (from tab preview screen)
+- UI improvement: add separators in Menu, better touch effect in preference settings, clear button in address bar
+
+### 8.9.1
+
+- Fix full text translation issue
+
+### 8.9.0
+
+- Better rendering performance
+- Support web content translation in some Eink devices
+- Setting icon in Toolbar configuration is not changeable now
+
+### 8.8.2
+
+- Fix issues:
+ - fix saving epub crash
+ - fix reopen App crash
+
+- Feature:
+ - modify Tab Preview Layout
+ - long press tab count icon to turn on incognito mode
+
 ### 8.8.0
 
 - support dark mode (if you want to use EinkBro in normal phones/tablets)
