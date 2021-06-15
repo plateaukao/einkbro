@@ -390,20 +390,23 @@ class NinjaWebView : WebView, AlbumController {
         }
     }
 
+    // only works in isReadModeOn
     suspend fun getRawText() =  suspendCoroutine<String> { continuation ->
-        if (!isReaderModeOn) {
-            injectMozReaderModeJs(false)
-            evaluateJavascript(getReaderModeBodyTextJs) { text -> continuation.resume(text.substring(1, text.length-2)) }
-        } else {
-            evaluateJavascript(
-                "(function() { return document.getElementsByTagName('html')[0].innerText; })();"
-            ) { text ->
-                val processedText = if (text.startsWith("\"") && text.endsWith("\"")) {
-                    text.substring(1, text.length-2)
-                } else text
-                continuation.resume(processedText)
-            }
+//        if (!isReaderModeOn) {
+//            injectMozReaderModeJs(false)
+//            evaluateJavascript(getReaderModeBodyTextJs) { text -> continuation.resume(text.substring(1, text.length-2)) }
+//        } else {
+        if (!isReaderModeOn) continuation.resume("")
+
+        evaluateJavascript(
+            "(function() { return document.getElementsByTagName('html')[0].innerText; })();"
+        ) { text ->
+            val processedText = if (text.startsWith("\"") && text.endsWith("\"")) {
+                text.substring(1, text.length-2)
+            } else text
+            continuation.resume(processedText)
         }
+//        }
     }
 
     private fun shiftOffset(): Int {
@@ -431,11 +434,12 @@ class NinjaWebView : WebView, AlbumController {
     }
 
     var isReaderModeOn = false
-    fun toggleReaderMode(isVertical: Boolean = false) {
+    fun toggleReaderMode(isVertical: Boolean = false, getRawTextAction: ((String)->Unit)? = null) {
         isReaderModeOn = !isReaderModeOn
         if (isReaderModeOn) {
             injectMozReaderModeJs(isVertical)
-            evaluateJavascript("(function() { $replaceWithReaderModeBodyJs })();", null)
+            val getRawTextJs = if (getRawTextAction != null) " return document.getElementsByTagName('html')[0].innerText; " else ""
+            evaluateJavascript("(function() { $replaceWithReaderModeBodyJs $getRawTextJs })();", getRawTextAction)
         } else {
             disableReaderMode(isVertical)
         }
