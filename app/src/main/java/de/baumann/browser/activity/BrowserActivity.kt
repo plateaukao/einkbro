@@ -631,7 +631,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
     private fun showTranslation() {
         lifecycleScope.launch(Dispatchers.Main) {
-            translateController.showTranslation(this@BrowserActivity, ninjaWebView)
+            translateController.showTranslation(ninjaWebView)
         }
     }
 

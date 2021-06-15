@@ -20,7 +20,6 @@ import de.baumann.browser.preference.TranslationMode
 import de.baumann.browser.unit.ViewUnit
 import de.baumann.browser.view.NinjaToast
 import de.baumann.browser.view.NinjaWebView
-import kotlinx.coroutines.delay
 
 class TranslationViewController(
     private val activity: Activity,
@@ -31,6 +30,7 @@ class TranslationViewController(
     private val webView: NinjaWebView by lazy {
         NinjaWebView(activity, null).apply {
             shouldHideTranslateContext = true
+            incognito = true
         }
     }
     private val pageContainer: ViewGroup = translationViewBinding.pageContainer
@@ -44,34 +44,26 @@ class TranslationViewController(
             toggleTranslationWindow(false)
         }
     }
-    suspend fun showTranslation(context: Context, webView: NinjaWebView) {
-        //activity.lifecycleScope.launch(Dispatchers.Main) {
-            if (!webView.isReaderModeOn) {
-                webView.toggleReaderMode()
-                delay(700)
-            }
 
-            val text = webView.getRawText()
-                .replace("\\u003C", "<")
-                .replace("\\n", "\n")
-                .replace("\\t", "  ")
-            if (text == "null") {
-                NinjaToast.showShort(context, "null string")
-            } else {
-                try {
-                    launchTranslateWindow(text)
-                } catch (ignored: ClassNotFoundException) {
-                    //Log.e(BrowserActivity.TAG, "translation activity not found.")
-                }
-            }
-        //}
+    suspend fun showTranslation(webView: NinjaWebView) {
+        if (!webView.isReaderModeOn) {
+            webView.toggleReaderMode { launchTranslateWindow(it.purify()) }
+        } else {
+            launchTranslateWindow(webView.getRawText().purify())
+        }
     }
 
     fun launchTranslateWindow(text: String) {
-        // onyx case
+        if (text == "null") {
+            NinjaToast.showShort(activity, "null string")
+            return
+        }
+            // onyx case
         if (config.translationMode == TranslationMode.ONYX) {
             ViewUnit.toggleMultiWindow(activity, true)
-            launchOnyxDictTranslation(text)
+            try {
+                launchOnyxDictTranslation(text)
+            } catch (ignored: ClassNotFoundException) {}
             return
         }
 
@@ -112,6 +104,12 @@ class TranslationViewController(
             }
     }
 
+    private fun String.purify(): String =
+        this.replace("\\u003C", "<")
+            .replace("\\n", "\n")
+            .replace("\\t", "  ")
+            .replace("\\\"", "\"")
+
     private fun updatePageViews(size: Int) {
         if (size == 1) {
             pageContainer.visibility = GONE
@@ -149,9 +147,8 @@ class TranslationViewController(
         }
     }
 
-    private fun parseTextToSegments(text: String): List<String> {
-        return text.chunked(TRANSLATION_TEXT_THRESHOLD).take(6)
-    }
+    private fun parseTextToSegments(text: String): List<String> =
+        text.chunked(TRANSLATION_TEXT_THRESHOLD)
 
     private fun addWebView(): NinjaWebView {
         val separator = translationViewBinding.separator
