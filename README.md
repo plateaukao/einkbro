@@ -22,19 +22,32 @@ This browser is called EinkBro. It's designed to fit Eink devices' needs; no unn
 
 
 ### Screenshots
-#### Basic Toolbar
-* webpage title
-* web tab count
-* go back
-* refresh
-* touch screen edge to turn page buton
-* text size
-* bold font
-* setting button
-<img width="350" alt="image" src="https://user-images.githubusercontent.com/4084738/114192165-c205fa00-997f-11eb-8e3a-6e99949e927e.png">
+#### Customizable Toolbar Icons
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/4084738/122229339-39f62080-ceeb-11eb-8c46-2f6ea270b486.png">
 
-#### Quick Action Panel
-<img src=https://user-images.githubusercontent.com/4084738/114191898-79e6d780-997f-11eb-83e4-def84610ff19.png width=350>
+* web title
+* web tab count
+* bookmarks
+* refresh
+* go backward
+* go forward
+* bold font
+* increase font size
+* decrease font size
+* text size configuration dialog
+* touch screen area to turn page buton
+* page up
+* page down
+* reader mode
+* vertical reader mode
+* fulltext translation
+* setting
+* toolbar configuration dialog
+* rotate screen
+* fullscreen
+
+#### Setting Menu
+<img width="536" alt="image" src="https://user-images.githubusercontent.com/4084738/122230086-e59f7080-ceeb-11eb-9ccc-6a212d7cb9cb.png">
 
 #### Tab Preview
 <img width="350" alt="image" src="https://user-images.githubusercontent.com/4084738/110947148-bfad8180-837a-11eb-8184-f2f7fdde7ba3.png">
