@@ -1197,11 +1197,11 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
                 tabContainer.removeView(controller.albumView)
                 var index = BrowserContainer.indexOf(controller)
                 BrowserContainer.remove(controller)
-                updateWebViewCount()
                 if (index >= BrowserContainer.size()) {
                     index = BrowserContainer.size() - 1
                 }
                 showAlbum(BrowserContainer.get(index))
+                updateWebViewCount()
             }
         }
     }

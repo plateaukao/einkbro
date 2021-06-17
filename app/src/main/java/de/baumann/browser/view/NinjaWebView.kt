@@ -274,6 +274,12 @@ class NinjaWebView : WebView, AlbumController {
         requestFocus()
         isForeground = true
         album.activate()
+        // handle incognito case
+        if (incognito || !config.cookies) {
+           toggleCookieSupport(false)
+        } else {
+            toggleCookieSupport(true)
+        }
     }
 
     @Synchronized
