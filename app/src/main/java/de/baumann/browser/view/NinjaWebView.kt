@@ -298,9 +298,7 @@ class NinjaWebView : WebView, AlbumController {
             Handler(
                 Looper.getMainLooper()).postDelayed({
                 setAlbumCover(
-                    ViewUnit.capture(this@NinjaWebView, dimen144dp.toFloat(),
-                        dimen108dp.toFloat(),
-                        Bitmap.Config.RGB_565))
+                    ViewUnit.capture(this@NinjaWebView, dimen144dp.toFloat(), dimen108dp.toFloat()))
             } ,
                 250
             )
