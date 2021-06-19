@@ -64,7 +64,7 @@ class MenuDialog(
         binding.buttonTouch.setOnClickListener { dialog.dismissWithAction { TouchAreaDialog(context).show() } }
         binding.buttonToolbar.setOnClickListener { dialog.dismissWithAction { ToolbarConfigDialog(context).show() } }
         binding.menuSaveBookmark.setOnClickListener { dialog.dismissWithAction(saveBookmarkAction) }
-        binding.menuSaveScreenshot.setOnClickListener { dialog.dismissWithAction(this::saveScreenshot) }
+        binding.menuSaveScreenshot.setOnClickListener { dialog.dismissWithAction(saveScreenshotAction) }
         binding.menuSaveEpub.setOnClickListener { dialog.dismissWithAction(saveEpubAction) }
         binding.menuSavePdf.setOnClickListener { dialog.dismissWithAction(printPdfAction) }
         binding.menuSearchSite.setOnClickListener { dialog.dismissWithAction(searchSiteAction) }
@@ -94,19 +94,6 @@ class MenuDialog(
                 NinjaToast.show(context, R.string.toast_copy_successful)
             }
         }
-    }
-
-    private fun saveScreenshot() {
-        if (Build.VERSION.SDK_INT in 23..28) {
-            val hasPermission =
-                checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            if (hasPermission != PackageManager.PERMISSION_GRANTED) {
-                HelperUnit.grantPermissionsStorage(context as Activity)
-                return
-            }
-        }
-
-        saveScreenshotAction()
     }
 }
 

@@ -16,6 +16,9 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.webkit.WebView
 import android.widget.ProgressBar
+import androidx.core.content.FileProvider
+import androidx.core.content.FileProvider.getUriForFile
+import androidx.core.content.PermissionChecker.checkSelfPermission
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.unit.HelperUnit.fileName
 import de.baumann.browser.unit.HelperUnit.grantPermissionsStorage
@@ -24,8 +27,10 @@ import de.baumann.browser.unit.ViewUnit.getDensity
 import de.baumann.browser.unit.ViewUnit.getWindowWidth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.apache.commons.lang3.ClassUtils.getPackageName
 import java.io.File
 import java.io.FileOutputStream
+import java.io.IOException
 import java.io.OutputStream
 import java.util.*
 
@@ -34,11 +39,16 @@ class SaveScreenshotTask(
     private val webView: WebView,
 ) {
 
-    private val configManager: ConfigManager = ConfigManager(context)
-
-    @SuppressLint("NewApi")
     suspend fun execute() {
         val url = webView.url ?: return
+
+        if (Build.VERSION.SDK_INT in 23..28) {
+            val hasWriteExternalStorage = checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            if (hasWriteExternalStorage != PackageManager.PERMISSION_GRANTED) {
+                grantPermissionsStorage(context as Activity)
+                return
+            }
+        }
 
         // progress dialog
         val progressDialog = AlertDialog.Builder(context).setView(ProgressBar(context)).show()
@@ -47,15 +57,6 @@ class SaveScreenshotTask(
         val title = fileName(url)
         val windowWidth = getWindowWidth(context).toFloat()
         val contentHeight = webView.contentHeight * getDensity(context)
-
-        if (Build.VERSION.SDK_INT in 23..28) {
-            val hasWriteExternalStorage = context.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            if (hasWriteExternalStorage != PackageManager.PERMISSION_GRANTED) {
-                grantPermissionsStorage(context as Activity)
-                return
-            }
-        }
-
         val uri = captureAndSaveImage(webView, windowWidth, contentHeight, title) ?: return
 
         // post
@@ -68,32 +69,37 @@ class SaveScreenshotTask(
         var uri: Uri? = null
         withContext(Dispatchers.IO) {
             val fos: OutputStream
-            uri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                val contentValues = ContentValues().apply {
-                    put(MediaStore.MediaColumns.DISPLAY_NAME, name)
-                    put(MediaStore.MediaColumns.MIME_TYPE, "image/png")
-                    put(MediaStore.MediaColumns.RELATIVE_PATH, "Pictures/" + "Screenshots/")
-                }
-                val resolver: ContentResolver = context.contentResolver
-                val nonNullUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
-                    ?: return@withContext null
-                fos = resolver.openOutputStream(nonNullUri) ?: return@withContext null
-                nonNullUri
-            } else {
-                val imagesDir = Environment.getExternalStoragePublicDirectory("Screenshots")
-                    .toString() + File.separator
-                val file = File(imagesDir)
-                if (!file.exists()) {
-                    file.mkdir()
-                }
-                val image = File(imagesDir, "$name.jpg")
-                fos = FileOutputStream(image)
-                Uri.fromFile(image)
-            }
+            try {
+                uri = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    val contentValues = ContentValues().apply {
+                        put(MediaStore.MediaColumns.DISPLAY_NAME, name)
+                        put(MediaStore.MediaColumns.MIME_TYPE, "image/png")
+                        put(MediaStore.MediaColumns.RELATIVE_PATH, "Pictures/" + "Screenshots/")
+                    }
+                    val resolver: ContentResolver = context.contentResolver
+                    val nonNullUri =
+                        resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+                            ?: return@withContext null
+                    fos = resolver.openOutputStream(nonNullUri) ?: return@withContext null
+                    nonNullUri
+                } else {
+                    val imagesDir = Environment.getExternalStoragePublicDirectory("Screenshots").toString() + File.separator
+                    val file = File(imagesDir)
+                    if (!file.exists()) { file.mkdir() }
 
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos)
-            Objects.requireNonNull(fos).flush()
-            fos.close()
+                    val image = File(imagesDir, "$name.jpg")
+                    fos = FileOutputStream(image)
+                    if (Build.VERSION.SDK_INT < 24) Uri.fromFile(image)
+                    // something wrong with file://xxxx
+                    else getUriForFile(context.applicationContext, context.packageName + ".fileprovider", image)
+                }
+
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos)
+                fos.flush()
+                fos.close()
+            } catch (exception: IOException) {
+                return@withContext null
+            }
         }
 
         return uri
@@ -103,6 +109,7 @@ class SaveScreenshotTask(
         val intent = Intent().apply {
             action = Intent.ACTION_VIEW
             setDataAndType(uri, "image/*")
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
 
         context.startActivity(intent)
