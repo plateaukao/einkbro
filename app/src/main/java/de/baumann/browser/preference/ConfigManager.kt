@@ -77,10 +77,6 @@ class ConfigManager(private val context: Context) {
         get() = FabPosition.values()[sp.getString(K_NAV_POSITION, "0")?.toInt() ?: 0]
         set(value) {sp.edit { putString(K_NAV_POSITION, value.ordinal.toString()) } }
 
-    var screenshot: Int
-        get() = sp.getInt("screenshot", 0)
-        set(value) {sp.edit { putInt("screenshot", value) } }
-
     var touchAreaType: TouchAreaType
         get() = TouchAreaType.values()[sp.getInt(K_TOUCH_AREA_TYPE, 0)]
         set(value) {sp.edit { putInt(K_TOUCH_AREA_TYPE, value.ordinal) } }
@@ -176,6 +172,7 @@ class ConfigManager(private val context: Context) {
         const val K_TRANSLATION_MODE = "sp_translation_mode"
         const val K_ENABLE_TOUCH = "sp_enable_touch"
         const val K_TOUCH_HINT = "sp_touch_area_hint"
+        const val K_SCREENSHOT = "screenshot"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
     }
