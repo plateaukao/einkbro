@@ -44,6 +44,7 @@ import de.baumann.browser.database.*
 import de.baumann.browser.epub.EpubManager
 import de.baumann.browser.preference.*
 import de.baumann.browser.service.ClearService
+import de.baumann.browser.task.SaveScreenshotTask
 import de.baumann.browser.unit.BrowserUnit
 import de.baumann.browser.unit.HelperUnit
 import de.baumann.browser.unit.HelperUnit.toNormalScheme
@@ -57,6 +58,7 @@ import de.baumann.browser.view.viewControllers.ToolbarViewController
 import de.baumann.browser.view.viewControllers.TouchAreaViewController
 import de.baumann.browser.view.viewControllers.TranslationViewController
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.io.*
 import java.util.*
@@ -1553,17 +1555,24 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
     private fun showMenuDialog(): Boolean {
         MenuDialog(
-                this,
-                ninjaWebView,
-                { updateAlbum(sp.getString("favoriteURL", "https://github.com/plateaukao/browser")) },
-                { removeAlbum(currentAlbumController!!) },
-                { saveBookmark() },
-                { showSearchPanel() },
-                { showSaveEpubDialog() },
-                { printPDF() },
-                { showFontSizeChangeDialog() },
+            this,
+            ninjaWebView,
+            { updateAlbum(sp.getString("favoriteURL", "https://github.com/plateaukao/browser")) },
+            { removeAlbum(currentAlbumController!!) },
+            this::saveBookmark,
+            this::showSearchPanel,
+            this::showSaveEpubDialog,
+            this::printPDF,
+            this::showFontSizeChangeDialog,
+            this::saveScreenshot,
         ).show()
         return true
+    }
+
+    private fun saveScreenshot() {
+        lifecycleScope.launch(Dispatchers.Main) {
+            SaveScreenshotTask(this@BrowserActivity, ninjaWebView).execute()
+        }
     }
 
     private fun showBookmarkContextMenu(bookmark: Bookmark) {

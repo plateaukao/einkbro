@@ -16,11 +16,14 @@ import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.DialogMenuBinding
 import de.baumann.browser.activity.Settings_Activity
 import de.baumann.browser.preference.ConfigManager
-import de.baumann.browser.task.ScreenshotTask
+import de.baumann.browser.task.SaveScreenshotTask
 import de.baumann.browser.unit.HelperUnit
 import de.baumann.browser.unit.IntentUnit
 import de.baumann.browser.view.NinjaToast
 import de.baumann.browser.view.NinjaWebView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class MenuDialog(
     private val context: Context,
@@ -32,6 +35,7 @@ class MenuDialog(
     private val saveEpubAction: () -> Unit,
     private val printPdfAction: () -> Unit,
     private val fontSizeAction: () -> Unit,
+    private val saveScreenshotAction: () -> Unit,
 ) {
     private val config: ConfigManager = ConfigManager(context)
 
@@ -94,17 +98,15 @@ class MenuDialog(
 
     private fun saveScreenshot() {
         if (Build.VERSION.SDK_INT in 23..28) {
-            val hasPermission = checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            val hasPermission =
+                checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
             if (hasPermission != PackageManager.PERMISSION_GRANTED) {
                 HelperUnit.grantPermissionsStorage(context as Activity)
-            } else {
-                config.screenshot = 1
-                ScreenshotTask(context, ninjaWebView).execute()
+                return
             }
-        } else {
-            config.screenshot = 1
-            ScreenshotTask(context, ninjaWebView).execute()
         }
+
+        saveScreenshotAction()
     }
 }
 

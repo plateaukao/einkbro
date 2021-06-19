@@ -5,14 +5,11 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.*
 import android.os.Build
-import android.view.Gravity
 import android.view.TouchDelegate
 import android.view.View
 import android.view.Window
 import android.view.inputmethod.InputMethodManager
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import de.baumann.browser.Ninja.R
 
 object ViewUnit {
     @JvmStatic
@@ -37,9 +34,9 @@ object ViewUnit {
     }
 
     @JvmStatic
-    fun capture(view: View, width: Float, height: Float, config: Bitmap.Config?): Bitmap {
+    fun capture(view: View, width: Float, height: Float): Bitmap {
         view.setLayerType(View.LAYER_TYPE_HARDWARE, null)
-        val bitmap = Bitmap.createBitmap(width.toInt(), height.toInt(), config!!)
+        val bitmap = Bitmap.createBitmap(width.toInt(), height.toInt(), Bitmap.Config.ARGB_8888)
         bitmap.eraseColor(Color.WHITE)
         val canvas = Canvas(bitmap)
         val left = view.left
