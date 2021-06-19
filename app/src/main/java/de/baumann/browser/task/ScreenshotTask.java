@@ -12,10 +12,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
-
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -27,14 +23,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.preference.PreferenceManager;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Objects;
 
-import de.baumann.browser.unit.HelperUnit;
 import de.baumann.browser.Ninja.R;
+import de.baumann.browser.unit.HelperUnit;
 import de.baumann.browser.unit.ViewUnit;
 import de.baumann.browser.view.NinjaToast;
 import de.baumann.browser.view.NinjaWebView;
@@ -96,12 +95,10 @@ public class ScreenshotTask extends AsyncTask<Void, Void, Boolean> {
             uri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
             fos = resolver.openOutputStream(Objects.requireNonNull(uri));
         } else {
-            @SuppressWarnings("deprecation")
-            String imagesDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_SCREENSHOTS).toString() + File.separator;
+            String imagesDir = Environment.getExternalStoragePublicDirectory("Screenshots").toString() + File.separator;
             File file = new File(imagesDir);
 
             if (!file.exists()) {
-                //noinspection ResultOfMethodCallIgnored
                 file.mkdir();
             }
             File image = new File(imagesDir, name + ".jpg");
