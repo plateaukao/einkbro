@@ -15,6 +15,11 @@ object NinjaToast {
     }
 
     @JvmStatic
+    fun showShort(context: Context?, stringResId: Int) {
+        Toast.makeText(context, stringResId, Toast.LENGTH_SHORT).show()
+    }
+
+    @JvmStatic
     fun showShort(context: Context?, text: String?) {
         Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
     }
