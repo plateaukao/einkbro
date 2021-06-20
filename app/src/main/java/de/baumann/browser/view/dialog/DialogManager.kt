@@ -39,12 +39,28 @@ class DialogManager(
         }
     }
 
+    fun showSaveEpubDialog(onNextAction: (Boolean) -> Unit) {
+        val options = arrayOf(
+            activity.resources.getString(R.string.existing_epub),
+            activity.resources.getString(R.string.a_new_epub)
+        )
+
+        val builder = AlertDialog.Builder(activity, R.style.TouchAreaDialog)
+        builder.setTitle(activity.resources.getString(R.string.save_to))
+        builder.setItems(options) { _, index ->
+            when(index) {
+                0 -> onNextAction(false)
+                1 -> onNextAction(true)
+            }
+        }
+        builder.show()
+    }
+
     fun showSavePdfDialog(
-        context: Context,
         url: String,
         savePdf: (String, String) -> Unit,
     ) {
-        val menuView = DialogEditExtensionBinding.inflate(LayoutInflater.from(context))
+        val menuView = DialogEditExtensionBinding.inflate(LayoutInflater.from(activity))
         val editTitle = menuView.dialogEdit.apply {
             setHint(R.string.dialog_title_hint)
             setText(HelperUnit.fileName(url))
@@ -56,32 +72,30 @@ class DialogManager(
             editExtension.setText(extension)
         }
         showOkCancelDialog(
-            context,
-            title = context.getString(R.string.menu_edit),
+            title = activity.getString(R.string.menu_edit),
             view = menuView.root,
             okAction = {
                 val title = editTitle.text.toString().trim { it <= ' ' }
                 val extension = editExtension.text.toString().trim { it <= ' ' }
                 val fileName = title + extension
                 if (url == null || title.isEmpty() || extension.isEmpty() || !extension.startsWith(".")) {
-                    NinjaToast.show(context, context.getString(R.string.toast_input_empty))
+                    NinjaToast.show(activity, activity.getString(R.string.toast_input_empty))
                 } else {
                     savePdf(url, fileName)
                 }
             },
-            cancelAction = { ViewUnit.hideKeyboard(context as Activity) }
+            cancelAction = { ViewUnit.hideKeyboard(activity) }
         )
     }
 
     fun showOkCancelDialog(
-        context: Context,
         title: String? = null,
         messageResId: Int? = null,
         view: View? = null,
         okAction: () -> Unit,
         cancelAction: (() -> Unit)? = null
     ): Dialog {
-        val dialog = AlertDialog.Builder(context, R.style.TouchAreaDialog)
+        val dialog = AlertDialog.Builder(activity, R.style.TouchAreaDialog)
             .setPositiveButton(android.R.string.ok) { _, _ -> okAction() }
             .setNegativeButton(android.R.string.cancel) { _, _ -> cancelAction?.invoke() }
             .apply {
@@ -95,10 +109,9 @@ class DialogManager(
     }
 
     fun showOptionDialog(
-        context: Context,
         view: View
     ): Dialog {
-        val dialog = AlertDialog.Builder(context, R.style.TouchAreaDialog)
+        val dialog = AlertDialog.Builder(activity, R.style.TouchAreaDialog)
             .setView(view)
             .create().apply { window?.setGravity(Gravity.BOTTOM) }
         dialog.show()

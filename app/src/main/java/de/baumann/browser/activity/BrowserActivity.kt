@@ -1,6 +1,5 @@
 package de.baumann.browser.activity
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.app.DownloadManager
@@ -8,7 +7,6 @@ import android.app.ProgressDialog
 import android.app.SearchManager
 import android.content.*
 import android.content.pm.ActivityInfo
-import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.media.MediaPlayer
 import android.media.MediaPlayer.OnCompletionListener
@@ -29,14 +27,12 @@ import android.webkit.WebChromeClient.CustomViewCallback
 import android.webkit.WebView.HitTestResult
 import android.widget.*
 import android.widget.TextView.OnEditorActionListener
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.flexbox.FlexboxLayout
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.*
 import de.baumann.browser.browser.*
@@ -58,7 +54,6 @@ import de.baumann.browser.view.viewControllers.ToolbarViewController
 import de.baumann.browser.view.viewControllers.TouchAreaViewController
 import de.baumann.browser.view.viewControllers.TranslationViewController
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.io.*
 import java.util.*
@@ -224,7 +219,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         downloadReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
                 dialogManager.showOkCancelDialog(
-                    context = this@BrowserActivity,
                     messageResId = R.string.toast_downloadComplete,
                     okAction = { startActivity(Intent(DownloadManager.ACTION_VIEW_DOWNLOADS)) }
                 )
@@ -312,7 +306,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
     private fun showRestartConfirmDialog() {
         dialogManager.showOkCancelDialog(
-            context = this,
             messageResId = R.string.toast_restart,
             okAction = { restartApp() }
         )
@@ -327,7 +320,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
     private fun showFileListConfirmDialog() {
         dialogManager.showOkCancelDialog(
-            context = this,
             messageResId = R.string.toast_downloadComplete,
             okAction = { startActivity(Intent(DownloadManager.ACTION_VIEW_DOWNLOADS)) }
         )
@@ -510,7 +502,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             R.id.omnibox_refresh -> if (url != null && ninjaWebView.isLoadFinish) {
                 if (url?.startsWith("https://") != true) {
                     dialogManager.showOkCancelDialog(
-                        context = this@BrowserActivity,
                         messageResId = R.string.toast_unsecured,
                         okAction = {
                             ninjaWebView.loadUrl(
@@ -918,7 +909,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
     private fun openSubMenu() {
         val dialogView = DialogMenuOverviewBinding.inflate(layoutInflater)
-        val dialog = dialogManager.showOptionDialog(this, dialogView.root)
+        val dialog = dialogManager.showOptionDialog(dialogView.root)
         with(dialogView ){
             tvAddFolder.setOnClickListener { dialog.dismissWithAction {  createBookmarkFolder() } }
             tvDelete.setOnClickListener { dialog.dismissWithAction { deleteAllItems() } }
@@ -927,7 +918,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
     private fun deleteAllItems() {
         dialogManager.showOkCancelDialog(
-            context = this@BrowserActivity,
             messageResId = R.string.hint_database,
             okAction = {
                 when (overViewTab) {
@@ -940,6 +930,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
                     }
                     getString(R.string.album_title_history) -> {
                         BrowserUnit.clearHistory(this)
+                        hideOverview()
                         updateAutoComplete()
                     }
                 }
@@ -1181,7 +1172,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             okAction()
         } else {
             dialogManager.showOkCancelDialog(
-                context = this,
                 messageResId = R.string.toast_close_tab,
                 okAction = okAction,
             )
@@ -1426,7 +1416,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
     private fun showContextMenuLinkDialog(url: String?) {
         val dialogView = DialogMenuContextLinkBinding.inflate(layoutInflater)
-        val dialog = dialogManager.showOptionDialog(this, dialogView.root)
+        val dialog = dialogManager.showOptionDialog(dialogView.root)
         dialogView.contextLinkNewTab.setOnClickListener {
             dialog.dismissWithAction {
                 addAlbum(getString(R.string.app_name), url, false)
@@ -1462,34 +1452,22 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
     private fun showSavePdfDialog(url: String?) {
         val url = url ?: return
 
-        dialogManager.showSavePdfDialog(this, url = url, savePdf = { url, fileName -> savePdf(url, fileName) } )
+        dialogManager.showSavePdfDialog(url = url, savePdf = { url, fileName -> savePdf(url, fileName) } )
     }
 
     private fun savePdf(url: String, fileName: String) {
-        if (Build.VERSION.SDK_INT in 23..28) {
-            val hasWriteExternalStorage = checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            if (hasWriteExternalStorage != PackageManager.PERMISSION_GRANTED) {
-                HelperUnit.grantPermissionsStorage(this)
-            } else {
-                val source = Uri.parse(url)
-                val request = DownloadManager.Request(source)
-                request.addRequestHeader("Cookie", CookieManager.getInstance().getCookie(url))
-                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED) //Notify client once download is completed!
-                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
-                val dm = (getSystemService(DOWNLOAD_SERVICE) as DownloadManager)
-                dm.enqueue(request)
-                ViewUnit.hideKeyboard(this)
-            }
-        } else {
-            val source = Uri.parse(url)
-            val request = DownloadManager.Request(source)
-            request.addRequestHeader("Cookie", CookieManager.getInstance().getCookie(url))
-            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED) //Notify client once download is completed!
-            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
-            val dm = (getSystemService(DOWNLOAD_SERVICE) as DownloadManager)
-            dm.enqueue(request)
-            ViewUnit.hideKeyboard(this)
+        if (HelperUnit.needGrantStoragePermission(this)) { return }
+
+        val source = Uri.parse(url)
+        val request = DownloadManager.Request(source).apply {
+            addRequestHeader("Cookie", CookieManager.getInstance().getCookie(url))
+            setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+            setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
         }
+
+        val dm = (getSystemService(DOWNLOAD_SERVICE) as DownloadManager)
+        dm.enqueue(request)
+        ViewUnit.hideKeyboard(this)
     }
 
     @SuppressLint("RestrictedApi")
@@ -1538,19 +1516,9 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
     }
 
     private var isNewEpubFile = false
-    private fun showSaveEpubDialog() {
-        val colors = arrayOf(getString(R.string.existing_epub), getString(R.string.a_new_epub))
-
-        val builder = AlertDialog.Builder(this, R.style.TouchAreaDialog)
-        builder.setTitle(getString(R.string.save_to))
-        builder.setItems(colors) { _, index ->
-            when(index) {
-                0 -> isNewEpubFile = false
-                1 -> isNewEpubFile = true
-            }
-            epubManager.showEpubFilePicker()
-        }
-        builder.show()
+    private fun showSaveEpubDialog() = dialogManager.showSaveEpubDialog { isNew ->
+        isNewEpubFile = isNew
+        epubManager.showEpubFilePicker()
     }
 
     private fun showMenuDialog(): Boolean {
@@ -1577,7 +1545,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
     private fun showBookmarkContextMenu(bookmark: Bookmark) {
         val dialogView = DialogMenuContextListBinding.inflate(layoutInflater)
-        val dialog = dialogManager.showOptionDialog(this, dialogView.root)
+        val dialog = dialogManager.showOptionDialog(dialogView.root)
 
         dialogView.menuContextListEdit.visibility = VISIBLE
         dialogView.menuContextListFav.setOnClickListener {
@@ -1629,7 +1597,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         location: Int
     ) {
         val dialogView = DialogMenuContextListBinding.inflate(layoutInflater)
-        val dialog = dialogManager.showOptionDialog(this, dialogView.root)
+        val dialog = dialogManager.showOptionDialog(dialogView.root)
 
         dialogView.menuContextListEdit.visibility = GONE
         dialogView.menuContextListFav.setOnClickListener {
@@ -1654,7 +1622,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         dialogView.menuContextListDelete.setOnClickListener {
             dialog.dismissWithAction {
                 dialogManager.showOkCancelDialog(
-                    context = this@BrowserActivity,
                     messageResId = R.string.toast_titleConfirm_delete,
                     okAction = { deleteHistory(recordAdapter, location) }
                 )

@@ -1,14 +1,11 @@
 package de.baumann.browser.task
 
-import android.Manifest
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.ContentResolver
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
@@ -16,18 +13,14 @@ import android.os.Environment
 import android.provider.MediaStore
 import android.webkit.WebView
 import android.widget.ProgressBar
-import androidx.core.content.FileProvider
 import androidx.core.content.FileProvider.getUriForFile
-import androidx.core.content.PermissionChecker.checkSelfPermission
-import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.unit.HelperUnit.fileName
-import de.baumann.browser.unit.HelperUnit.grantPermissionsStorage
+import de.baumann.browser.unit.HelperUnit.needGrantStoragePermission
 import de.baumann.browser.unit.ViewUnit.capture
 import de.baumann.browser.unit.ViewUnit.getDensity
 import de.baumann.browser.unit.ViewUnit.getWindowWidth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.apache.commons.lang3.ClassUtils.getPackageName
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -42,13 +35,7 @@ class SaveScreenshotTask(
     suspend fun execute() {
         val url = webView.url ?: return
 
-        if (Build.VERSION.SDK_INT in 23..28) {
-            val hasWriteExternalStorage = checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            if (hasWriteExternalStorage != PackageManager.PERMISSION_GRANTED) {
-                grantPermissionsStorage(context as Activity)
-                return
-            }
-        }
+        if (needGrantStoragePermission(context as Activity)) return
 
         // progress dialog
         val progressDialog = AlertDialog.Builder(context).setView(ProgressBar(context)).show()

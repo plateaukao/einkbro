@@ -19,6 +19,7 @@
 package de.baumann.browser.unit
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -32,7 +33,6 @@ import android.graphics.Paint
 import android.graphics.drawable.Icon
 import android.net.Uri
 import android.os.Build
-import android.provider.Settings
 import android.text.Html
 import android.text.SpannableString
 import android.text.util.Linkify
@@ -41,70 +41,46 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import de.baumann.browser.Ninja.R
-import de.baumann.browser.Ninja.databinding.DialogActionBinding
 import de.baumann.browser.Ninja.databinding.DialogHelpBinding
+import de.baumann.browser.view.dialog.DialogManager
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 object HelperUnit {
     private const val REQUEST_CODE_ASK_PERMISSIONS = 123
     private const val REQUEST_CODE_ASK_PERMISSIONS_1 = 1234
-    @JvmStatic
-    fun grantPermissionsStorage(activity: Activity) {
-        val hasWriteExternalStorage = activity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        if (hasWriteExternalStorage == PackageManager.PERMISSION_GRANTED) { return }
 
-        if (!activity.shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            val bottomSheetDialog = BottomSheetDialog(activity)
-            val binding = DialogActionBinding.inflate(activity.layoutInflater)
-            binding.dialogText.setText(R.string.toast_permission_sdCard)
-            binding.actionOk.setOnClickListener {
-                activity.requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_CODE_ASK_PERMISSIONS)
-                bottomSheetDialog.dismiss()
+    @JvmStatic
+    // return true if need permissions
+    fun needGrantStoragePermission(activity: Activity): Boolean {
+        @SuppressLint("NewApi")
+        if (Build.VERSION.SDK_INT in 23..28) {
+            val hasWriteExternalStoragePermission = activity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            if (hasWriteExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
+                activity.requestPermissions( arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_CODE_ASK_PERMISSIONS )
+                return true
             }
-            binding.actionCancel.apply {
-                setText(R.string.setting_label)
-                setOnClickListener {
-                    val intent = Intent().apply {
-                        action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-                        data = Uri.fromParts("package", activity.packageName, null)
-                    }
-                    activity.startActivity(intent)
-                    bottomSheetDialog.dismiss()
-                }
-            }
-            bottomSheetDialog.setContentView(binding.root)
-            bottomSheetDialog.show()
-            setBottomSheetBehavior(bottomSheetDialog, binding.root, BottomSheetBehavior.STATE_EXPANDED)
         }
+        return false
     }
 
     @JvmStatic
     fun grantPermissionsLoc(activity: Activity) {
-        val hasAccessFineLocation = activity.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-        if (hasAccessFineLocation == PackageManager.PERMISSION_GRANTED) { return }
-
-        val bottomSheetDialog = BottomSheetDialog(activity)
-        val binding = DialogActionBinding.inflate(activity.layoutInflater)
-        binding.dialogText.setText(R.string.toast_permission_loc)
-        binding.actionOk.setOnClickListener {
-            activity.requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_CODE_ASK_PERMISSIONS_1)
-            bottomSheetDialog.dismiss()
-        }
-        binding.actionCancel.apply {
-            setText(R.string.setting_label)
-            setOnClickListener {
-                val intent = Intent().apply {
-                    action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-                    data = Uri.fromParts("package", activity.packageName, null)
-                }
-                activity.startActivity(intent)
-                bottomSheetDialog.dismiss()
+        if (Build.VERSION.SDK_INT >= 23) {
+            val hasAccessFineLocation = activity.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+            if (hasAccessFineLocation != PackageManager.PERMISSION_GRANTED) {
+                DialogManager(activity).showOkCancelDialog(
+                    messageResId = R.string.setting_summary_location,
+                    okAction = {
+                        activity.requestPermissions(
+                            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                            REQUEST_CODE_ASK_PERMISSIONS_1
+                        )
+                    }
+                )
             }
         }
-        bottomSheetDialog.setContentView(binding.root)
-        bottomSheetDialog.show()
-        setBottomSheetBehavior(bottomSheetDialog, binding.root, BottomSheetBehavior.STATE_EXPANDED)
     }
 
     @JvmStatic

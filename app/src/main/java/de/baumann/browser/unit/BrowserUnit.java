@@ -1,18 +1,15 @@
 package de.baumann.browser.unit;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.content.pm.ShortcutManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
-import androidx.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.webkit.CookieManager;
@@ -20,7 +17,8 @@ import android.webkit.URLUtil;
 import android.webkit.ValueCallback;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.preference.PreferenceManager;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -40,11 +38,11 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
+import de.baumann.browser.Ninja.R;
 import de.baumann.browser.browser.AdBlock;
 import de.baumann.browser.browser.Cookie;
 import de.baumann.browser.browser.Javascript;
 import de.baumann.browser.database.RecordAction;
-import de.baumann.browser.Ninja.R;
 import de.baumann.browser.view.NinjaToast;
 
 public class BrowserUnit {
@@ -220,51 +218,35 @@ public class BrowserUnit {
         final String filename = guessFilename(url, contentDisposition, mimeType);
         //final String filename = URLUtil.guessFileName(url, contentDisposition, mimeType);
         String text = context.getString(R.string.dialog_title_download) + " - " + filename;
+
         final BottomSheetDialog dialog = new BottomSheetDialog(context);
         View dialogView = View.inflate(context, R.layout.dialog_action, null);
         TextView textView = dialogView.findViewById(R.id.dialog_text);
         textView.setText(text);
         Button action_ok = dialogView.findViewById(R.id.action_ok);
-        action_ok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+        action_ok.setOnClickListener(view -> {
+            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
 
-                CookieManager cookieManager = CookieManager.getInstance();
-                String cookie = cookieManager.getCookie(url);
-                request.addRequestHeader("Cookie", cookie);
-                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                request.setTitle(filename);
-                request.setMimeType(mimeType);
-                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
-                //request.setDestinationUri(Uri.fromFile(new File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS) + "/", "1.epub")));
-                DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-                assert manager != null;
+            CookieManager cookieManager = CookieManager.getInstance();
+            String cookie = cookieManager.getCookie(url);
+            request.addRequestHeader("Cookie", cookie);
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+            request.setTitle(filename);
+            request.setMimeType(mimeType);
+            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename);
+            DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
 
-                if (android.os.Build.VERSION.SDK_INT >= 23 && Build.VERSION.SDK_INT < 29) {
-                    int hasWRITE_EXTERNAL_STORAGE = context.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                    if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
-                        Activity activity = (Activity) context;
-                        HelperUnit.grantPermissionsStorage(activity);
-                    } else {
-                        manager.enqueue(request);
-                        try {
-                            NinjaToast.show(context, R.string.toast_start_download);
-                        } catch (Exception e) {
-                            Toast.makeText(context, R.string.toast_start_download, Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                } else {
-                    manager.enqueue(request);
-                    try {
-                        NinjaToast.show(context, R.string.toast_start_download);
-                    } catch (Exception e) {
-                        Toast.makeText(context, R.string.toast_start_download, Toast.LENGTH_SHORT).show();
-                    }
-                }
+            if (HelperUnit.needGrantStoragePermission((Activity) context)) {
                 dialog.cancel();
+                return;
             }
+
+            manager.enqueue(request);
+            NinjaToast.showShort(context, R.string.toast_start_download);
+
+            dialog.cancel();
         });
+
         Button action_cancel = dialogView.findViewById(R.id.action_cancel);
         action_cancel.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -26,7 +26,7 @@ import de.baumann.browser.Ninja.databinding.DialogActionBinding
 import de.baumann.browser.database.Bookmark
 import de.baumann.browser.database.BookmarkManager
 import de.baumann.browser.unit.BrowserUnit
-import de.baumann.browser.unit.HelperUnit.grantPermissionsStorage
+import de.baumann.browser.unit.HelperUnit.needGrantStoragePermission
 import de.baumann.browser.unit.HelperUnit.setBottomSheetBehavior
 import de.baumann.browser.util.Constants
 import de.baumann.browser.view.NinjaToast
@@ -60,23 +60,8 @@ class DataSettingsFragment : PreferenceFragmentCompat() {
                 dialogView.actionOk.setOnClickListener {
                     dialog.dismiss()
                     try {
-                        if (Build.VERSION.SDK_INT in 23..28) {
-                            val haswriteExternalStorage =
-                                requireActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                            if (haswriteExternalStorage != PackageManager.PERMISSION_GRANTED) {
-                                grantPermissionsStorage(requireActivity())
-                                dialog.cancel()
-                            } else {
-                                makeBackupDir()
-                                BrowserUnit.deleteDir(previewsfolderBackup)
-                                copyDirectory(previewsfolderApp, previewsfolderBackup)
-                                backupUserPrefs(activity)
-                                NinjaToast.show(
-                                    activity,
-                                    getString(R.string.toast_export_successful) + "browser_backup"
-                                )
-                            }
-                        } else {
+                        if (!needGrantStoragePermission(requireActivity())) {
+
                             makeBackupDir()
                             BrowserUnit.deleteDir(previewsfolderBackup)
                             copyDirectory(previewsfolderApp, previewsfolderBackup)
@@ -110,7 +95,7 @@ class DataSettingsFragment : PreferenceFragmentCompat() {
                             val hasWRITE_EXTERNAL_STORAGE =
                                 requireActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                             if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
-                                grantPermissionsStorage(requireActivity())
+                                needGrantStoragePermission(requireActivity())
                                 dialog.cancel()
                             } else {
                                 //BrowserUnit.deleteDir(previewsFolder_app);
@@ -224,11 +209,7 @@ class DataSettingsFragment : PreferenceFragmentCompat() {
     private fun makeBackupDir() {
         val backupDir = File(requireActivity().getExternalFilesDir(null), "browser_backup//")
         val noMedia = File(backupDir, "//.nomedia")
-        val hasWRITE_EXTERNAL_STORAGE =
-            requireActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
-            grantPermissionsStorage(requireActivity())
-        } else {
+        if (!needGrantStoragePermission(requireActivity())) {
             if (!backupDir.exists()) {
                 try {
                     backupDir.mkdirs()
