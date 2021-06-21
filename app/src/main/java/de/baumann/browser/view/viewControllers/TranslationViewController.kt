@@ -31,6 +31,7 @@ class TranslationViewController(
         NinjaWebView(activity, null).apply {
             shouldHideTranslateContext = true
             incognito = true
+            settings.textZoom = 70
         }
     }
     private val pageContainer: ViewGroup = translationViewBinding.pageContainer
