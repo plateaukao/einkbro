@@ -674,7 +674,9 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
                 }
             }
             Intent.ACTION_VIEW -> {
-                addAlbum(url = intent.data?.toNormalScheme()?.toString())
+                // if webview for that url already exists, show the original tab, otherwise, create new
+                val url = intent.data?.toNormalScheme()?.toString() ?: return
+                getUrlMatchedBrowser(url)?. let { showAlbum(it) } ?: addAlbum(url = url)
             }
             Intent.ACTION_WEB_SEARCH -> addAlbum(url = intent.getStringExtra(SearchManager.QUERY))
             "sc_history" -> {
@@ -1093,6 +1095,10 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             }.show()
 
     override fun addNewTab(url: String?) = addAlbum(url = url)
+
+    private fun getUrlMatchedBrowser(url: String): NinjaWebView? {
+        return BrowserContainer.list().firstOrNull { it.albumUrl == url } as NinjaWebView?
+    }
 
     @Synchronized
     private fun addAlbum(

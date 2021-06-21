@@ -97,6 +97,12 @@ class NinjaWebView : WebView, AlbumController {
         super.reload()
     }
 
+    override fun goBack() {
+        isVerticalRead = false
+        isReaderModeOn = false
+        super.goBack()
+    }
+
     interface OnScrollChangeListener {
         fun onScrollChange(scrollY: Int, oldScrollY: Int)
     }
@@ -181,7 +187,7 @@ class NinjaWebView : WebView, AlbumController {
             setAppCachePath("");
             setAppCacheMaxSize(5*1024*1024)
             cacheMode = WebSettings.LOAD_DEFAULT
-            textZoom = sp.getString("sp_fontSize", "100")!!.toInt()
+            textZoom = config.fontSize
             allowFileAccessFromFileURLs = sp.getBoolean("sp_remote", true)
             allowUniversalAccessFromFileURLs = sp.getBoolean("sp_remote", true)
             domStorageEnabled = sp.getBoolean("sp_remote", true)

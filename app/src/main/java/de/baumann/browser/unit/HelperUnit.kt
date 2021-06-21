@@ -106,10 +106,10 @@ object HelperUnit {
         val url = url ?: return
         val uri = convertUrlToAppScheme(url)
         try {
-            val intent = Intent().apply {
+            val intent = context.packageManager.getLaunchIntentForPackage(context.packageName)?.apply {
                 action = Intent.ACTION_VIEW
                 data = uri
-            }
+            } ?: return
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) { // code for adding shortcut on pre oreo device
                 val installer = Intent().apply {
@@ -137,7 +137,7 @@ object HelperUnit {
                             .setShortLabel(title!!)
                             .setLongLabel(title)
                             .setIcon(icon)
-                            .setIntent(Intent(Intent.ACTION_VIEW, uri))
+                            .setIntent(intent)
                             .build()
                     shortcutManager.requestPinShortcut(pinShortcutInfo, null)
                 } else {
