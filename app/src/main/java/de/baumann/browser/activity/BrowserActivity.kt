@@ -144,8 +144,10 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
     private val translateController: TranslationViewController by lazy {
         TranslationViewController(
             this,
-            binding.subContainer
-        ) { showTranslation() }
+            binding.subContainer,
+            { showTranslation() },
+            { if (ninjaWebView.isReaderModeOn) ninjaWebView.toggleReaderMode() }
+        )
     }
 
     private val dialogManager: DialogManager by lazy { DialogManager(this) }

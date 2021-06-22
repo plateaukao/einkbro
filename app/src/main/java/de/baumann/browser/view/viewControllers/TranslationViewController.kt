@@ -24,13 +24,13 @@ import de.baumann.browser.view.NinjaWebView
 class TranslationViewController(
     private val activity: Activity,
     private val translationViewBinding: TranslationPanelBinding,
-    private val showTranslationAction: () -> Unit
+    private val showTranslationAction: () -> Unit,
+    private val onTranslationClosed: () -> Unit
 ) {
     private val config: ConfigManager by lazy { ConfigManager(activity) }
     private val webView: NinjaWebView by lazy {
         NinjaWebView(activity, null).apply {
             shouldHideTranslateContext = true
-            incognito = true
             settings.textZoom = 70
         }
     }
@@ -42,7 +42,7 @@ class TranslationViewController(
 
     init {
         translationViewBinding.translationClose.setOnClickListener {
-            toggleTranslationWindow(false)
+            toggleTranslationWindow(false, onTranslationClosed)
         }
     }
 
@@ -199,7 +199,10 @@ class TranslationViewController(
         (config.translationMode == TranslationMode.ONYX && ViewUnit.isMultiWindowEnabled(activity)) ||
                 translationViewBinding.root.visibility == VISIBLE
 
-    fun toggleTranslationWindow(isEnabled: Boolean) {
+    fun toggleTranslationWindow(
+        isEnabled: Boolean,
+        onTranslationClosed: () -> Unit
+    ) {
         if (config.translationMode == TranslationMode.ONYX) {
             ViewUnit.toggleMultiWindow(activity, isEnabled)
         } else {
@@ -208,6 +211,10 @@ class TranslationViewController(
                 webView.loadUrl("about:blank")
                 translationViewBinding.root.visibility = GONE
             }
+        }
+
+        if (!isEnabled) {
+            onTranslationClosed()
         }
     }
 
