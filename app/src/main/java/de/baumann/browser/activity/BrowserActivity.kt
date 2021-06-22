@@ -32,7 +32,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.flexbox.FlexboxLayout
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.*
 import de.baumann.browser.browser.*
