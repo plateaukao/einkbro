@@ -144,8 +144,10 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         TranslationViewController(
             this,
             binding.subContainer,
+            binding.dragHandle,
+            binding.floatingLine,
             { showTranslation() },
-            { if (ninjaWebView.isReaderModeOn) ninjaWebView.toggleReaderMode() }
+            { if (ninjaWebView.isReaderModeOn) ninjaWebView.toggleReaderMode() },
         )
     }
 
@@ -313,8 +315,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
     }
 
     private fun restartApp() {
-        finishAffinity(); // Finishes all activities.
-        startActivity(packageManager.getLaunchIntentForPackage(packageName));    // Start the launch activity
+        finishAffinity() // Finishes all activities.
+        startActivity(packageManager.getLaunchIntentForPackage(packageName))    // Start the launch activity
         overridePendingTransition(0,0)
         exitProcess(0)
     }
