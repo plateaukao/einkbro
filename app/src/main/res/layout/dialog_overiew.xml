@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@android:color/transparent"
     android:orientation="vertical"
     tools:ignore="ContentDescription">
@@ -23,13 +22,12 @@
             android:layout_height="1px"
             android:background="?attr/colorControlNormal" />
 
-        <com.google.android.flexbox.FlexboxLayout
+        <LinearLayout
             android:id="@+id/tab_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="10dp"
-            app:flexWrap="wrap"
-            />
+            android:orientation="vertical"
+            android:layout_margin="3dp" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
