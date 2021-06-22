@@ -49,7 +49,7 @@ internal class Album(
         this.browserController = browserController
     }
 
-    fun activate() = binding.root.setBackgroundResource(R.drawable.album_shape_selected)
+    fun activate() { binding.root.isSelected = true }
 
-    fun deactivate() = binding.root.setBackgroundResource(R.drawable.album_shape_not_selected)
+    fun deactivate() { binding.root.isSelected = false }
 }
