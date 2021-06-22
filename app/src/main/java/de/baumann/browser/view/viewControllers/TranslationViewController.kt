@@ -56,7 +56,7 @@ class TranslationViewController(
 
     fun launchTranslateWindow(text: String) {
         if (text == "null") {
-            NinjaToast.showShort(activity, "null string")
+            NinjaToast.showShort(activity, "Translation does not work for this page.")
             return
         }
             // onyx case
