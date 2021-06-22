@@ -87,7 +87,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
     private lateinit var searchPanel: ViewGroup
     private lateinit var mainContentLayout: FrameLayout
     private lateinit var subContainer: RelativeLayout
-    private lateinit var tabContainer: FlexboxLayout
+    private lateinit var tabContainer: LinearLayout
     private lateinit var openStartPageView: View
     private lateinit var openBookmarkView: View
     private lateinit var openHistoryView: View
@@ -1120,11 +1120,11 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             val index = BrowserContainer.indexOf(currentAlbumController) + 1
             BrowserContainer.add(ninjaWebView, index)
             updateWebViewCount()
-            tabContainer.addView(albumView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+            tabContainer.addView(albumView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
         } else {
             BrowserContainer.add(ninjaWebView)
             updateWebViewCount()
-            tabContainer.addView(albumView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+            tabContainer.addView(albumView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
         }
         if (!foreground) {
             ViewUnit.bound(this, ninjaWebView)

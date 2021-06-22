@@ -303,8 +303,7 @@ class NinjaWebView : WebView, AlbumController {
         if (isLoadFinish) {
             Handler(
                 Looper.getMainLooper()).postDelayed({
-                setAlbumCover(
-                    ViewUnit.capture(this@NinjaWebView, dimen144dp.toFloat(), dimen108dp.toFloat()))
+                favicon?.let { setAlbumCover(it) }
             } ,
                 250
             )
