@@ -1,11 +1,14 @@
 package de.baumann.browser.view.viewControllers
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.view.LayoutInflater
+import android.view.MotionEvent
+import android.view.View
 import android.view.View.*
 import android.view.ViewGroup
 import android.widget.LinearLayout
@@ -24,6 +27,8 @@ import de.baumann.browser.view.NinjaWebView
 class TranslationViewController(
     private val activity: Activity,
     private val translationViewBinding: TranslationPanelBinding,
+    private val dragHandle: View,
+    private val floatingLine: View,
     private val showTranslationAction: () -> Unit,
     private val onTranslationClosed: () -> Unit
 ) {
@@ -44,6 +49,7 @@ class TranslationViewController(
         translationViewBinding.translationClose.setOnClickListener {
             toggleTranslationWindow(false, onTranslationClosed)
         }
+        initDragHandle()
     }
 
     suspend fun showTranslation(webView: NinjaWebView) {
@@ -54,7 +60,50 @@ class TranslationViewController(
         }
     }
 
-    fun launchTranslateWindow(text: String) {
+    private var  dX: Float = 0f
+    private var finalX: Float = 0f
+    @SuppressLint("ClickableViewAccessibility")
+    private fun initDragHandle() {
+        dragHandle.setOnTouchListener { view, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    floatingLine.x = view.x + view.width / 2
+                    floatingLine.visibility = VISIBLE
+                    dragHandle.alpha = 1F
+                    dX = view.x - event.rawX
+                }
+                MotionEvent.ACTION_MOVE -> {
+                    view.animate()
+                        .x(event.rawX + dX)
+                        .setDuration(0)
+                        .start()
+                    finalX = event.rawX + dX + view.width / 2
+                    floatingLine.animate()
+                        .x(event.rawX + dX + view.width / 2)
+                        .setDuration(0)
+                        .start()
+                }
+                MotionEvent.ACTION_UP -> {
+                    floatingLine.visibility = GONE
+                    dragHandle.alpha = 0.3F
+                    adjustTranslationPanelSize((ViewUnit.getWindowWidth(activity) - finalX).toInt())
+                }
+                else -> false
+            }
+            true
+        }
+    }
+
+    private fun adjustTranslationPanelSize(width: Int) {
+        val rootParams: RelativeLayout.LayoutParams =
+            RelativeLayout.LayoutParams(width, RelativeLayout.LayoutParams.MATCH_PARENT).apply {
+                addRule(RelativeLayout.ALIGN_PARENT_END)
+            }
+        translationViewBinding.root.layoutParams = rootParams
+    }
+
+
+    private fun launchTranslateWindow(text: String) {
         if (text == "null") {
             NinjaToast.showShort(activity, "Translation does not work for this page.")
             return
@@ -75,6 +124,7 @@ class TranslationViewController(
         }
 
         translationViewBinding.root.visibility = VISIBLE
+        dragHandle.visibility = VISIBLE
 
         pageTextList = parseTextToSegments(text)
         updatePageViews(pageTextList.size)
@@ -153,6 +203,12 @@ class TranslationViewController(
 
     private fun addWebView(): NinjaWebView {
         val separator = translationViewBinding.separator
+        val rootParams: RelativeLayout.LayoutParams =
+            RelativeLayout.LayoutParams(ViewUnit.getWindowWidth(activity)/2, RelativeLayout.LayoutParams.MATCH_PARENT).apply {
+                addRule(RelativeLayout.ALIGN_PARENT_END)
+            }
+        translationViewBinding.root.layoutParams = rootParams
+
         val params: RelativeLayout.LayoutParams =
             RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT).apply {
                 //addRule(RelativeLayout.ABOVE, pageScroller.id)
@@ -161,6 +217,9 @@ class TranslationViewController(
         translationViewBinding.root.addView(webView, params)
         translationViewBinding.pageScroller.bringToFront()
         translationViewBinding.translationClose.bringToFront()
+
+        dragHandle.x = (ViewUnit.getWindowWidth(activity) /2 - dragHandle.width / 2).toFloat()
+        dragHandle.visibility = VISIBLE
 
         return webView
     }
@@ -195,11 +254,11 @@ class TranslationViewController(
         activity.startActivity(intent)
     }
 
-    fun isTranslationModeOn(): Boolean =
+    private fun isTranslationModeOn(): Boolean =
         (config.translationMode == TranslationMode.ONYX && ViewUnit.isMultiWindowEnabled(activity)) ||
                 translationViewBinding.root.visibility == VISIBLE
 
-    fun toggleTranslationWindow(
+    private fun toggleTranslationWindow(
         isEnabled: Boolean,
         onTranslationClosed: () -> Unit
     ) {
@@ -211,6 +270,8 @@ class TranslationViewController(
                 webView.loadUrl("about:blank")
                 translationViewBinding.root.visibility = GONE
             }
+
+            dragHandle.visibility = if (isEnabled) VISIBLE else GONE
         }
 
         if (!isEnabled) {
