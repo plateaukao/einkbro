@@ -30,12 +30,14 @@
             tools:text="text here"
             tools:ignore="RtlSymmetry" />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/album_close"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_alignParentEnd="true"
+        android:layout_gravity="center"
         android:padding="20dp"
+        android:tint="?attr/colorControlNormal"
+        android:background="@color/color_transparent"
         android:src="@drawable/close_circle" />
 
 
