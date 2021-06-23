@@ -76,9 +76,9 @@ class DialogManager(
             view = menuView.root,
             okAction = {
                 val title = editTitle.text.toString().trim { it <= ' ' }
-                val extension = editExtension.text.toString().trim { it <= ' ' }
-                val fileName = title + extension
-                if (url == null || title.isEmpty() || extension.isEmpty() || !extension.startsWith(".")) {
+                val ext= editExtension.text.toString().trim { it <= ' ' }
+                val fileName = title + ext
+                if (title.isEmpty() || ext.isEmpty() || !extension.startsWith(".")) {
                     NinjaToast.show(activity, activity.getString(R.string.toast_input_empty))
                 } else {
                     savePdf(url, fileName)
