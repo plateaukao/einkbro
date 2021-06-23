@@ -36,7 +36,7 @@ class TranslationViewController(
     private val webView: NinjaWebView by lazy {
         NinjaWebView(activity, null).apply {
             shouldHideTranslateContext = true
-            settings.textZoom = 70
+            settings.textZoom = 90
         }
     }
     private val pageContainer: ViewGroup = translationViewBinding.pageContainer
@@ -49,6 +49,8 @@ class TranslationViewController(
         translationViewBinding.translationClose.setOnClickListener {
             toggleTranslationWindow(false, onTranslationClosed)
         }
+        translationViewBinding.translationFontPlus.setOnClickListener { increaseFontSize() }
+        translationViewBinding.translationFontMinus.setOnClickListener { decreaseFontSize() }
         initDragHandle()
     }
 
@@ -88,7 +90,6 @@ class TranslationViewController(
                     dragHandle.alpha = 0.3F
                     adjustTranslationPanelSize((ViewUnit.getWindowWidth(activity) - finalX).toInt())
                 }
-                else -> false
             }
             true
         }
@@ -214,9 +215,7 @@ class TranslationViewController(
                 //addRule(RelativeLayout.ABOVE, pageScroller.id)
                 addRule(RelativeLayout.RIGHT_OF, separator.id)
             }
-        translationViewBinding.root.addView(webView, params)
-        translationViewBinding.pageScroller.bringToFront()
-        translationViewBinding.translationClose.bringToFront()
+        translationViewBinding.root.addView(webView, 0, params)
 
         dragHandle.x = (ViewUnit.getWindowWidth(activity) /2 - dragHandle.width / 2).toFloat()
         dragHandle.visibility = VISIBLE
@@ -277,6 +276,14 @@ class TranslationViewController(
         if (!isEnabled) {
             onTranslationClosed()
         }
+    }
+
+    private fun increaseFontSize() {
+        webView.settings.textZoom += 20
+    }
+
+    private fun decreaseFontSize() {
+        if (webView.settings.textZoom > 20) webView.settings.textZoom -= 20
     }
 
     companion object {
