@@ -8,6 +8,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.FrameLayout
 import androidx.core.view.children
+import androidx.core.view.doOnLayout
 import de.baumann.browser.Ninja.R
 import java.lang.Exception
 
@@ -23,6 +24,9 @@ class TwoPaneLayout : FrameLayout {
         floatingLine = findViewById(R.id.floating_line)
         dragHandle = findViewById(R.id.drag_handle)
         initDragHandle()
+        this.doOnLayout {
+            initViews()
+        }
     }
 
     private var panel1: View? = null
@@ -35,23 +39,20 @@ class TwoPaneLayout : FrameLayout {
     var shouldShowSecondPane = false
         set(value) {
             field = value
-            if (!field) {
-                hideSecondPane()
-            } else {
-                showSecondPane(finalX.toInt())
-            }
+            updateSecondPane()
         }
+
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        val oldMeasuredHeight = measuredWidth
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+
+        if (measuredWidth != oldMeasuredHeight) {
+            updateSecondPane()
+        }
+    }
 
     private var orientation: Orientation = Orientation.Horizontal
     private var dragResize = false
-
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-
-        post {
-            initViews()
-        }
-    }
 
     private fun initAttributes(attrs: AttributeSet?) {
         attrs ?: return
@@ -71,11 +72,18 @@ class TwoPaneLayout : FrameLayout {
         }
     }
 
-    private var isViewInitialized = false
-    private fun initViews() {
-        if (isViewInitialized) return
-        isViewInitialized = true
+    private fun updateSecondPane() {
+        if (shouldShowSecondPane) {
+            if (finalX > measuredWidth) {
+                finalX = (measuredWidth / 2).toFloat()
+            }
+            showSecondPane(finalX.toInt())
+        } else {
+            hideSecondPane()
+        }
+    }
 
+    private fun initViews() {
         val userAddedViews = children.iterator().asSequence().filter {
             !listOf(separator, floatingLine, dragHandle).contains(it)
         }.toList()
@@ -87,11 +95,7 @@ class TwoPaneLayout : FrameLayout {
         panel1 = userAddedViews[0]
         panel2 = userAddedViews[1]
 
-        if (shouldShowSecondPane) {
-            showSecondPane()
-        } else {
-            hideSecondPane()
-        }
+        updateSecondPane()
 
         finalX = (measuredWidth / 2).toFloat()
     }
