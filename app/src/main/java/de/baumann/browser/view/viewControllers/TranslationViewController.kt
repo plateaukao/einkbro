@@ -23,12 +23,12 @@ import de.baumann.browser.preference.TranslationMode
 import de.baumann.browser.unit.ViewUnit
 import de.baumann.browser.view.NinjaToast
 import de.baumann.browser.view.NinjaWebView
+import de.baumann.browser.view.TwoPaneLayout
 
 class TranslationViewController(
     private val activity: Activity,
     private val translationViewBinding: TranslationPanelBinding,
-    private val dragHandle: View,
-    private val floatingLine: View,
+    private val twoPaneLayout: TwoPaneLayout,
     private val showTranslationAction: () -> Unit,
     private val onTranslationClosed: () -> Unit
 ) {
@@ -51,7 +51,6 @@ class TranslationViewController(
         }
         translationViewBinding.translationFontPlus.setOnClickListener { increaseFontSize() }
         translationViewBinding.translationFontMinus.setOnClickListener { decreaseFontSize() }
-        initDragHandle()
     }
 
     suspend fun showTranslation(webView: NinjaWebView) {
@@ -61,48 +60,6 @@ class TranslationViewController(
             launchTranslateWindow(webView.getRawText().purify())
         }
     }
-
-    private var  dX: Float = 0f
-    private var finalX: Float = 0f
-    @SuppressLint("ClickableViewAccessibility")
-    private fun initDragHandle() {
-        dragHandle.setOnTouchListener { view, event ->
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    floatingLine.x = view.x + view.width / 2
-                    floatingLine.visibility = VISIBLE
-                    dragHandle.alpha = 1F
-                    dX = view.x - event.rawX
-                }
-                MotionEvent.ACTION_MOVE -> {
-                    view.animate()
-                        .x(event.rawX + dX)
-                        .setDuration(0)
-                        .start()
-                    finalX = event.rawX + dX + view.width / 2
-                    floatingLine.animate()
-                        .x(event.rawX + dX + view.width / 2)
-                        .setDuration(0)
-                        .start()
-                }
-                MotionEvent.ACTION_UP -> {
-                    floatingLine.visibility = GONE
-                    dragHandle.alpha = 0.3F
-                    adjustTranslationPanelSize((ViewUnit.getWindowWidth(activity) - finalX).toInt())
-                }
-            }
-            true
-        }
-    }
-
-    private fun adjustTranslationPanelSize(width: Int) {
-        val rootParams: RelativeLayout.LayoutParams =
-            RelativeLayout.LayoutParams(width, RelativeLayout.LayoutParams.MATCH_PARENT).apply {
-                addRule(RelativeLayout.ALIGN_PARENT_END)
-            }
-        translationViewBinding.root.layoutParams = rootParams
-    }
-
 
     private fun launchTranslateWindow(text: String) {
         if (text == "null") {
@@ -124,8 +81,7 @@ class TranslationViewController(
             isWebViewAdded = true
         }
 
-        translationViewBinding.root.visibility = VISIBLE
-        dragHandle.visibility = VISIBLE
+        twoPaneLayout.shouldShowSecondPane = true
 
         pageTextList = parseTextToSegments(text)
         updatePageViews(pageTextList.size)
@@ -203,22 +159,9 @@ class TranslationViewController(
         text.chunked(TRANSLATION_TEXT_THRESHOLD)
 
     private fun addWebView(): NinjaWebView {
-        val separator = translationViewBinding.separator
-        val rootParams: RelativeLayout.LayoutParams =
-            RelativeLayout.LayoutParams(ViewUnit.getWindowWidth(activity)/2, RelativeLayout.LayoutParams.MATCH_PARENT).apply {
-                addRule(RelativeLayout.ALIGN_PARENT_END)
-            }
-        translationViewBinding.root.layoutParams = rootParams
-
         val params: RelativeLayout.LayoutParams =
-            RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT).apply {
-                //addRule(RelativeLayout.ABOVE, pageScroller.id)
-                addRule(RelativeLayout.RIGHT_OF, separator.id)
-            }
+            RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT)
         translationViewBinding.root.addView(webView, 0, params)
-
-        dragHandle.x = (ViewUnit.getWindowWidth(activity) /2 - dragHandle.width / 2).toFloat()
-        dragHandle.visibility = VISIBLE
 
         return webView
     }
@@ -255,7 +198,7 @@ class TranslationViewController(
 
     private fun isTranslationModeOn(): Boolean =
         (config.translationMode == TranslationMode.ONYX && ViewUnit.isMultiWindowEnabled(activity)) ||
-                translationViewBinding.root.visibility == VISIBLE
+                twoPaneLayout.shouldShowSecondPane
 
     private fun toggleTranslationWindow(
         isEnabled: Boolean,
@@ -267,10 +210,8 @@ class TranslationViewController(
             // all other translation types, should remove sub webviews
             if (!isEnabled) {
                 webView.loadUrl("about:blank")
-                translationViewBinding.root.visibility = GONE
+                twoPaneLayout.shouldShowSecondPane = false
             }
-
-            dragHandle.visibility = if (isEnabled) VISIBLE else GONE
         }
 
         if (!isEnabled) {
