@@ -144,8 +144,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         TranslationViewController(
             this,
             binding.subContainer,
-            binding.dragHandle,
-            binding.floatingLine,
+            binding.twoPanelLayout,
             { showTranslation() },
             { if (ninjaWebView.isReaderModeOn) ninjaWebView.toggleReaderMode() },
         )

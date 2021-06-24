@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/separator"
+        android:layout_width="1px"
+        android:layout_height="match_parent"
+        android:background="?attr/colorControlNormal" />
+    <View
+        android:id="@+id/floating_line"
+        android:layout_width="2dp"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:background="?attr/colorControlNormal" />
+    <ImageView
+        android:id="@+id/drag_handle"
+        android:layout_width="12dp"
+        android:layout_height="50dp"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="-6dp"
+        android:layout_marginTop="-25dp"
+        android:paddingHorizontal="12dp"
+        android:visibility="gone"
+        android:alpha="0.3"
+        android:background="?attr/colorControlNormal" />
+        />
+</merge>

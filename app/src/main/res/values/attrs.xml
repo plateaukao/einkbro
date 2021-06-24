@@ -40,4 +40,13 @@
         <attr name="click_remove_id" format="integer" />
         <attr name="use_default_controller" format="boolean" />
     </declare-styleable>
+
+    <declare-styleable name="TwoPaneLayout">
+        <attr name="show_second_pane" format="boolean"/>
+        <attr name="drag_resize" format="boolean"/>
+        <attr name="orientation">
+            <enum name="vertical" value="0" />
+            <enum name="horizontal" value="1" />
+        </attr>
+    </declare-styleable>
 </resources>
