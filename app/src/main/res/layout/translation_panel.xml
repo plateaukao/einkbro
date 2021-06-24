@@ -5,11 +5,6 @@
     android:layout_height="match_parent"
     android:background="@color/color_transparent">
 
-    <View
-        android:id="@+id/separator"
-        android:layout_width="1px"
-        android:layout_height="match_parent"
-        android:background="?attr/colorControlNormal" />
     <HorizontalScrollView
         android:id="@+id/page_scroller"
         android:layout_width="match_parent"

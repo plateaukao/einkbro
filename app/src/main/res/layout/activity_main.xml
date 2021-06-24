@@ -300,42 +300,26 @@
 
     </FrameLayout>
 
-    <RelativeLayout
+    <de.baumann.browser.view.TwoPaneLayout
+        xmlns:pane="http://schemas.android.com/apk/res/info.plateaukao.einkbro"
+        android:id="@+id/two_panel_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/appBar">
+        android:layout_above="@+id/appBar"
+        pane:orientation="horizontal"
+        pane:show_second_pane="false"
+        pane:drag_resize="false"
+        >
+
+        <include layout="@layout/activity_main_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
         <include layout="@layout/translation_panel"
             android:id="@+id/sub_container"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
-            android:visibility="gone"
-            tools:visibility="visible"/>
-
-        <include layout="@layout/activity_main_content"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentStart="true"
-            android:layout_toStartOf="@+id/sub_container"
-            />
-        <View
-            android:id="@+id/floating_line"
-            android:layout_width="2dp"
-            android:layout_height="match_parent"
-            android:visibility="gone"
-            android:background="?attr/colorControlNormal" />
-        <ImageView
-            android:id="@+id/drag_handle"
-            android:layout_width="12dp"
-            android:layout_height="50dp"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="-6dp"
-            android:visibility="gone"
-            android:alpha="0.3"
-            android:background="?attr/colorControlNormal"
-            />
-    </RelativeLayout>
+            android:layout_height="match_parent"/>
+    </de.baumann.browser.view.TwoPaneLayout>
 
     <include layout="@layout/dialog_overiew"
         android:id="@+id/layout_overview"
