@@ -44,15 +44,6 @@ class EpubManager(private val context: Context) {
         ).show() ?: "einkbro book"
     }
 
-    suspend fun getFolderName(): String {
-        return TextInputDialog(
-            context,
-            context.getString(R.string.folder_name),
-            context.getString(R.string.folder_name_description),
-            ""
-        ).show() ?: "New Folder"
-    }
-
     fun showEpubFilePicker() {
         val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
         intent.addCategory(Intent.CATEGORY_OPENABLE)

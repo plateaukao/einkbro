@@ -52,7 +52,7 @@ class TwoPaneLayout : FrameLayout {
     }
 
     private var orientation: Orientation = Orientation.Horizontal
-    private var dragResize = false
+    var dragResize = false
 
     private fun initAttributes(attrs: AttributeSet?) {
         attrs ?: return

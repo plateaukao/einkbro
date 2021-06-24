@@ -30,8 +30,6 @@ import android.widget.TextView.OnEditorActionListener
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.*
 import de.baumann.browser.browser.*
@@ -49,6 +47,7 @@ import de.baumann.browser.util.Constants
 import de.baumann.browser.view.*
 import de.baumann.browser.view.adapter.*
 import de.baumann.browser.view.dialog.*
+import de.baumann.browser.view.viewControllers.OverviewDialogController
 import de.baumann.browser.view.viewControllers.ToolbarViewController
 import de.baumann.browser.view.viewControllers.TouchAreaViewController
 import de.baumann.browser.view.viewControllers.TranslationViewController
@@ -62,20 +61,11 @@ import kotlin.system.exitProcess
 
 
 class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener {
-    private lateinit var adapter: RecordAdapter
-
-    private lateinit var btnOpenStartPage: ImageButton
-    private lateinit var btnOpenBookmark: ImageButton
-    private lateinit var btnOpenHistory: ImageButton
-    private lateinit var btnOpenMenu: ImageButton
     private lateinit var fabImageButtonNav: ImageButton
     private lateinit var progressBar: ProgressBar
     private lateinit var searchBox: EditText
-    private lateinit var overviewLayout: ViewGroup
     private lateinit var ninjaWebView: NinjaWebView
-    private lateinit var recyclerView: RecyclerView
     private lateinit var omniboxTitle: TextView
-    private lateinit var overviewPreview: LinearLayout
 
     private var bottomSheetDialog: Dialog? = null
     private var videoView: VideoView? = null
@@ -86,17 +76,12 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
     private lateinit var searchPanel: ViewGroup
     private lateinit var mainContentLayout: FrameLayout
     private lateinit var subContainer: RelativeLayout
-    private lateinit var tabContainer: LinearLayout
-    private lateinit var openStartPageView: View
-    private lateinit var openBookmarkView: View
-    private lateinit var openHistoryView: View
 
     private var fullscreenHolder: FrameLayout? = null
 
     // Others
     private var title: String? = null
     private var url: String? = null
-    private var overViewTab: String? = null
     private var downloadReceiver: BroadcastReceiver? = null
     private val sp: SharedPreferences by lazy { PreferenceManager.getDefaultSharedPreferences(this) }
     private val config: ConfigManager by lazy { ConfigManager(this) }
@@ -119,7 +104,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
     private lateinit var binding: ActivityMainBinding
 
-    private lateinit var bookmarkManager: BookmarkManager
+    private val bookmarkManager: BookmarkManager by lazy {  BookmarkManager(this) }
 
     private val epubManager: EpubManager by lazy { EpubManager(this) }
 
@@ -128,6 +113,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
     private var shouldLoadTabState: Boolean = false
 
     private val toolbarViewController: ToolbarViewController by lazy { ToolbarViewController(this, binding.toolbarScroller) }
+
+    private lateinit var overviewDialogController: OverviewDialogController
 
     private val touchController: TouchAreaViewController by lazy {
         TouchAreaViewController(
@@ -169,7 +156,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
         binding = ActivityMainBinding.inflate(layoutInflater)
 
-        bookmarkManager = BookmarkManager(this)
         lifecycleScope.launch {
             bookmarkManager.migrateOldData()
         }
@@ -360,7 +346,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             KeyEvent.KEYCODE_MENU -> return showMenuDialog()
             KeyEvent.KEYCODE_BACK -> {
                 ViewUnit.hideKeyboard(this@BrowserActivity)
-                if (overviewLayout.visibility == VISIBLE) {
+                if (overviewDialogController.isVisible()) {
                     hideOverview()
                     return true
                 }
@@ -424,17 +410,9 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         }
     }
 
-    private fun showOverview() {
-        showCurrentTabInOverview()
-        overviewLayout.visibility = VISIBLE
+    private fun showOverview() = overviewDialogController.show()
 
-        currentAlbumController?.deactivate()
-        currentAlbumController?.activate()
-    }
-
-    override fun hideOverview() {
-        overviewLayout.visibility = INVISIBLE
-    }
+    override fun hideOverview() = overviewDialogController.hide()
 
     private fun hideBottomSheetDialog() {
         bottomSheetDialog?.cancel()
@@ -867,153 +845,20 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         }
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     private fun initOverview() {
-        overviewLayout = findViewById(R.id.layout_overview)
-        btnOpenStartPage = findViewById(R.id.open_newTab_2)
-        btnOpenBookmark = findViewById(R.id.open_bookmark_2)
-        btnOpenHistory = findViewById(R.id.open_history_2)
-        btnOpenMenu = findViewById(R.id.open_menu)
-        tabContainer = findViewById(R.id.tab_container)
-        overviewPreview = findViewById(R.id.overview_preview)
-        recyclerView = findViewById(R.id.home_list_2)
-        openStartPageView = findViewById(R.id.open_newTabView)
-        openBookmarkView = findViewById(R.id.open_bookmarkView)
-        openHistoryView = findViewById(R.id.open_historyView)
-
-        overviewLayout.setOnTouchListener { _, _ ->
-            hideOverview()
-            true
-        }
-
-        // allow scrolling in listView without closing the bottomSheetDialog
-        recyclerView.layoutManager = LinearLayoutManager(this).apply {
-            reverseLayout = true
-        }
-        recyclerView.setOnTouchListener { v, event ->
-            val action = event.action
-            if (action == MotionEvent.ACTION_DOWN) { // Disallow NestedScrollView to intercept touch events.
-                if (recyclerView.canScrollVertically(-1)) {
-                    v.parent.requestDisallowInterceptTouchEvent(true)
-                }
-            }
-            // Handle ListView touch events.
-            v.onTouchEvent(event)
-            true
-        }
-
-        btnOpenMenu.setOnClickListener { openSubMenu() }
-        btnOpenStartPage.setOnClickListener { openHomePage() }
-        btnOpenBookmark.setOnClickListener { openBookmarkPage() }
-        btnOpenHistory.setOnClickListener { openHistoryPage() }
-
-        findViewById<View>(R.id.button_close_overview).setOnClickListener { hideOverview() }
-        showCurrentTabInOverview()
-    }
-
-    private fun openSubMenu() {
-        val dialogView = DialogMenuOverviewBinding.inflate(layoutInflater)
-        val dialog = dialogManager.showOptionDialog(dialogView.root)
-        with(dialogView ){
-            tvAddFolder.setOnClickListener { dialog.dismissWithAction {  createBookmarkFolder() } }
-            tvDelete.setOnClickListener { dialog.dismissWithAction { deleteAllItems() } }
-        }
-    }
-
-    private fun deleteAllItems() {
-        dialogManager.showOkCancelDialog(
-            messageResId = R.string.hint_database,
-            okAction = {
-                when (overViewTab) {
-                    getString(R.string.album_title_bookmarks) -> {
-                        lifecycleScope.launch {
-                            bookmarkManager.deleteAll()
-                            updateBookmarkList()
-                            updateAutoComplete()
-                        }
-                    }
-                    getString(R.string.album_title_history) -> {
-                        BrowserUnit.clearHistory(this)
-                        hideOverview()
-                        updateAutoComplete()
-                    }
-                }
-            }
+        overviewDialogController = OverviewDialogController(
+            this,
+            binding.layoutOverview,
+            gotoUrlAction = { url -> updateAlbum(url) },
+            addTabAction = { title, url, isForeground -> addAlbum(title, url, isForeground) },
+            onBookmarksChanged = { updateAutoComplete() },
+            onHistoryChanged = { updateAutoComplete() }
         )
     }
 
-    private fun createBookmarkFolder() {
-        lifecycleScope.launch {
-            val folderName = epubManager.getFolderName()
-            bookmarkManager.insertDirectory(folderName)
-            updateBookmarkList()
-        }
-    }
+    private fun openHistoryPage() = overviewDialogController.openHistoryPage()
 
-    private fun openHomePage() {
-        overviewPreview.visibility = VISIBLE
-        recyclerView.visibility = GONE
-        toggleOverviewFocus(openStartPageView)
-        overViewTab = getString(R.string.album_title_home)
-    }
-
-    private fun openHistoryPage() {
-        overviewLayout.visibility = VISIBLE
-
-        overviewPreview.visibility = INVISIBLE
-        recyclerView.visibility = VISIBLE
-        toggleOverviewFocus(openHistoryView)
-
-        overViewTab = getString(R.string.album_title_history)
-
-        val action = RecordAction(this)
-        action.open(false)
-        lifecycleScope.launch {
-            val list = action.listEntries(this@BrowserActivity, false)
-            action.close()
-            adapter = RecordAdapter(
-                list.toMutableList(),
-                { position ->
-                    updateAlbum(list[position].url)
-                    hideOverview()
-                },
-                { position ->
-                    showHistoryContextMenu(
-                        list[position].title ?: "",
-                        list[position].url,
-                        adapter,
-                        position
-                    )
-                }
-            )
-            recyclerView.adapter = adapter
-        }
-        adapter.notifyDataSetChanged()
-    }
-
-    private fun openBookmarkPage() {
-        overviewLayout.visibility = VISIBLE
-
-        overviewPreview.visibility = INVISIBLE
-        recyclerView.visibility = VISIBLE
-        toggleOverviewFocus(openBookmarkView)
-        overViewTab = getString(R.string.album_title_bookmarks)
-        updateBookmarkList()
-    }
-
-    private fun toggleOverviewFocus(view: View) {
-        openStartPageView.visibility = if (openStartPageView == view) VISIBLE else INVISIBLE
-        openBookmarkView.visibility = if (openBookmarkView== view) VISIBLE else INVISIBLE
-        openHistoryView.visibility = if (openHistoryView== view) VISIBLE else INVISIBLE
-    }
-
-    private fun showCurrentTabInOverview() {
-        when (Objects.requireNonNull(sp.getString("start_tab", "0"))) {
-            "3" -> openBookmarkPage()
-            "4" -> openHistoryPage()
-            else -> btnOpenStartPage.performClick()
-        }
-    }
+    private fun openBookmarkPage() = overviewDialogController.openBookmarkPage()
 
     private fun initSearchPanel() {
         searchPanel = binding.mainSearchPanel
@@ -1065,29 +910,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         (currentAlbumController as NinjaWebView).findNext(true)
     }
 
-    private fun updateBookmarkList(bookmarkFolderId: Int = 0) {
-        lifecycleScope.launch {
-            val adapter = BookmarkAdapter(
-                bookmarkManager.getBookmarks(bookmarkFolderId).toMutableList(),
-                onItemClick = {
-                    if (it.isDirectory) {
-                        updateBookmarkList(it.id)
-                    } else {
-                        updateAlbum(it.url)
-                        hideOverview()
-                    }
-                },
-                onTabIconClick = {
-                    addAlbum(title = it.title, url = it.url)
-                    hideOverview()
-                },
-                onItemLongClick = { showBookmarkContextMenu(it) }
-            )
-
-            recyclerView.adapter = adapter
-        }
-    }
-
     private fun showFastToggleDialog() =
             FastToggleDialog(this, ninjaWebView.url ?: "") {
                 if (ninjaWebView != null) {
@@ -1120,11 +942,13 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             val index = BrowserContainer.indexOf(currentAlbumController) + 1
             BrowserContainer.add(ninjaWebView, index)
             updateWebViewCount()
-            tabContainer.addView(albumView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+            //tabContainer.addView(albumView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+            overviewDialogController.addTabPreview(albumView)
         } else {
             BrowserContainer.add(ninjaWebView)
             updateWebViewCount()
-            tabContainer.addView(albumView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+            //tabContainer.addView(albumView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+            overviewDialogController.addTabPreview(albumView)
         }
         if (!foreground) {
             ViewUnit.bound(this, ninjaWebView)
@@ -1194,7 +1018,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
                 finish()
         } else {
             closeTabConfirmation {
-                tabContainer.removeView(controller.albumView)
+                //tabContainer.removeView(controller.albumView)
+                overviewDialogController.removeTabView(controller.albumView)
                 var index = BrowserContainer.indexOf(controller)
                 BrowserContainer.remove(controller)
                 if (index >= BrowserContainer.size()) {
@@ -1549,103 +1374,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         lifecycleScope.launch(Dispatchers.Main) {
             SaveScreenshotTask(this@BrowserActivity, ninjaWebView).execute()
         }
-    }
-
-    private fun showBookmarkContextMenu(bookmark: Bookmark) {
-        val dialogView = DialogMenuContextListBinding.inflate(layoutInflater)
-        val dialog = dialogManager.showOptionDialog(dialogView.root)
-
-        dialogView.menuContextListEdit.visibility = VISIBLE
-        dialogView.menuContextListFav.setOnClickListener {
-            dialog.dismissWithAction { config.favoriteUrl = bookmark.url }
-        }
-        dialogView.menuContextLinkSc.setOnClickListener {
-            dialog.dismissWithAction { HelperUnit.createShortcut(this, bookmark.title, bookmark.url, null) }
-        }
-        dialogView.menuContextListNewTab.setOnClickListener {
-            dialog.dismissWithAction {
-                addAlbum(getString(R.string.app_name), bookmark.url, false)
-                NinjaToast.show(this, getString(R.string.toast_new_tab_successful))
-            }
-        }
-        dialogView.menuContextListNewTabOpen.setOnClickListener {
-            dialog.dismissWithAction {
-                addAlbum(url = bookmark.url)
-                hideOverview()
-            }
-        }
-        dialogView.menuContextListDelete.setOnClickListener {
-            dialog.dismissWithAction {
-                lifecycleScope.launch {
-                    bookmarkManager.delete(bookmark)
-                    (recyclerView.adapter as BookmarkAdapter).remove(bookmark)
-                }
-            }
-        }
-
-        dialogView.menuContextListEdit.setOnClickListener {
-            dialog.dismissWithAction {
-                BookmarkEditDialog(
-                    this,
-                    layoutInflater,
-                    lifecycleScope,
-                    bookmarkManager,
-                    bookmark,
-                    { ViewUnit.hideKeyboard(this@BrowserActivity) ; updateBookmarkList() },
-                    { ViewUnit.hideKeyboard(this@BrowserActivity) }
-                ).show()
-            }
-        }
-    }
-
-    private fun showHistoryContextMenu(
-        title: String,
-        url: String,
-        recordAdapter: RecordAdapter,
-        location: Int
-    ) {
-        val dialogView = DialogMenuContextListBinding.inflate(layoutInflater)
-        val dialog = dialogManager.showOptionDialog(dialogView.root)
-
-        dialogView.menuContextListEdit.visibility = GONE
-        dialogView.menuContextListFav.setOnClickListener {
-            dialog.dismissWithAction { config.favoriteUrl = url }
-        }
-        dialogView.menuContextLinkSc.setOnClickListener {
-            dialog.dismissWithAction { HelperUnit.createShortcut(this, title, url, null) }
-        }
-        dialogView.menuContextListNewTab.setOnClickListener {
-            dialog.dismissWithAction {
-                addAlbum(getString(R.string.app_name), url, false)
-                NinjaToast.show(this, getString(R.string.toast_new_tab_successful))
-
-            }
-        }
-        dialogView.menuContextListNewTabOpen.setOnClickListener {
-            dialog.dismissWithAction {
-                addAlbum(getString(R.string.app_name), url)
-                hideOverview()
-            }
-        }
-        dialogView.menuContextListDelete.setOnClickListener {
-            dialog.dismissWithAction {
-                dialogManager.showOkCancelDialog(
-                    messageResId = R.string.toast_titleConfirm_delete,
-                    okAction = { deleteHistory(recordAdapter, location) }
-                )
-            }
-        }
-    }
-
-    private fun deleteHistory(recordAdapter: RecordAdapter, location: Int) {
-        val record = recordAdapter.getItemAt(location)
-        RecordAction(this).apply {
-            open(true)
-            deleteHistoryItem(record)
-            close()
-        }
-        recordAdapter.removeAt(location)
-        updateAutoComplete()
     }
 
     private fun nextAlbumController(next: Boolean): AlbumController? {
