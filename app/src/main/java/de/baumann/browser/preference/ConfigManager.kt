@@ -9,6 +9,7 @@ import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import de.baumann.browser.util.Constants
 import de.baumann.browser.view.toolbaricons.ToolbarAction
+import de.baumann.browser.view.viewControllers.OverviewTab
 
 class ConfigManager(private val context: Context) {
     private val sp: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
@@ -84,6 +85,22 @@ class ConfigManager(private val context: Context) {
     var pdfPaperSize: PaperSize
         get() = PaperSize.values()[sp.getInt("pdf_paper_size", PaperSize.ISO_13.ordinal)]
         set(value) {sp.edit { putInt("pdf_paper_size", value.ordinal) } }
+
+    var overviewTab: OverviewTab
+        get() = when (sp.getString(K_START_TAB, "0")) {
+            "0" -> OverviewTab.TabPreview
+            "3" -> OverviewTab.Bookmarks
+            "4" -> OverviewTab.History
+            else -> OverviewTab.TabPreview
+        }
+        set(value) {
+            val tabString = when(value) {
+                OverviewTab.TabPreview -> "0"
+                OverviewTab.Bookmarks -> "3"
+                OverviewTab.History -> "4"
+            }
+            sp.edit { putString(K_START_TAB, tabString) }
+        }
 
     var favoriteUrl: String
         get() = sp.getString(K_FAVORITE_URL, Constants.DEFAULT_HOME_URL) ?: Constants.DEFAULT_HOME_URL
@@ -173,6 +190,7 @@ class ConfigManager(private val context: Context) {
         const val K_ENABLE_TOUCH = "sp_enable_touch"
         const val K_TOUCH_HINT = "sp_touch_area_hint"
         const val K_SCREENSHOT = "screenshot"
+        const val K_START_TAB = "start_tab"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
     }

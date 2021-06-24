@@ -36,6 +36,11 @@ class RecordAdapter(
         notifyDataSetChanged()
     }
 
+    fun clear() {
+        records.clear()
+        notifyDataSetChanged()
+    }
+
     fun getItemAt(position: Int): Record = records[position]
 }
 
