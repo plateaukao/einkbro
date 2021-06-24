@@ -84,14 +84,14 @@
             android:orientation="vertical">
 
             <View
-                android:id="@+id/open_newTabView"
+                android:id="@+id/open_tab_view"
                 android:layout_width="42dp"
                 android:layout_height="2dp"
                 android:background="?android:attr/colorAccent"
                 android:visibility="visible" />
 
             <ImageButton
-                android:id="@+id/open_newTab_2"
+                android:id="@+id/open_tab_button"
                 android:layout_width="42dp"
                 android:layout_height="42dp"
                 android:layout_gravity="center_vertical|center_horizontal"
@@ -112,14 +112,14 @@
             android:orientation="vertical">
 
             <View
-                android:id="@+id/open_bookmarkView"
+                android:id="@+id/open_bookmark_view"
                 android:layout_width="42dp"
                 android:layout_height="2dp"
                 android:background="?android:attr/colorAccent"
                 android:visibility="visible" />
 
             <ImageButton
-                android:id="@+id/open_bookmark_2"
+                android:id="@+id/open_bookmark_button"
                 android:layout_width="42dp"
                 android:layout_height="42dp"
                 android:layout_gravity="center_vertical|center_horizontal"
@@ -140,14 +140,14 @@
             android:orientation="vertical">
 
             <View
-                android:id="@+id/open_historyView"
+                android:id="@+id/open_history_view"
                 android:layout_width="42dp"
                 android:layout_height="2dp"
                 android:background="?android:attr/colorAccent"
                 android:visibility="visible" />
 
             <ImageButton
-                android:id="@+id/open_history_2"
+                android:id="@+id/open_history_button"
                 android:layout_width="42dp"
                 android:layout_height="42dp"
                 android:layout_gravity="center_vertical|center_horizontal"
