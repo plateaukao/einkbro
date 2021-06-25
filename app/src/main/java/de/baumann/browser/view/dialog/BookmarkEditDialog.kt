@@ -65,7 +65,7 @@ class BookmarkEditDialog(
                 bookmark.title = menuView.passTitle.text.toString().trim { it <= ' ' }
                 bookmark.url = menuView.passUrl.text.toString().trim { it <= ' ' }
                 lifecycleScope.launch {
-                    bookmarkManager.update(bookmark)
+                    bookmarkManager.insert(bookmark)
                     okAction.invoke()
                 }
             } catch (e: Exception) {

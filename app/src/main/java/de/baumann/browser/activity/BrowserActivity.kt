@@ -1,10 +1,7 @@
 package de.baumann.browser.activity
 
 import android.annotation.SuppressLint
-import android.app.Dialog
-import android.app.DownloadManager
-import android.app.ProgressDialog
-import android.app.SearchManager
+import android.app.*
 import android.content.*
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
@@ -522,14 +519,24 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
     private fun saveBookmark() {
         val currentUrl = ninjaWebView.url ?: return
+        val title = HelperUnit.secString(ninjaWebView.title)
+        val context = this
         try {
             lifecycleScope.launch {
                 if (bookmarkManager.existsUrl(currentUrl)) {
-                    NinjaToast.show(this@BrowserActivity, R.string.toast_newTitle)
+                    NinjaToast.show(context, R.string.toast_newTitle)
                 } else {
-                    bookmarkManager.insert(HelperUnit.secString(ninjaWebView.title), currentUrl)
-                    NinjaToast.show(this@BrowserActivity, R.string.toast_edit_successful)
-                    updateAutoComplete()
+                    BookmarkEditDialog(
+                        context,
+                        bookmarkManager,
+                        Bookmark(title, currentUrl),
+                        {
+                            ViewUnit.hideKeyboard(context as Activity)
+                            NinjaToast.show(this@BrowserActivity, R.string.toast_edit_successful)
+                            updateAutoComplete()
+                        },
+                        { ViewUnit.hideKeyboard(context as Activity) }
+                    ).show()
                 }
             }
         } catch (e: Exception) {
