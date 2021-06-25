@@ -25,7 +25,6 @@ import de.baumann.browser.unit.ViewUnit
 import de.baumann.browser.view.NinjaToast
 import de.baumann.browser.view.adapter.BookmarkAdapter
 import de.baumann.browser.view.adapter.RecordAdapter
-import de.baumann.browser.view.dialog.BookmarkEditDialog
 import de.baumann.browser.view.dialog.DialogManager
 import de.baumann.browser.view.dialog.TextInputDialog
 import kotlinx.coroutines.launch
@@ -71,10 +70,7 @@ class OverviewDialogController(
 
     private fun initViews() {
 
-        binding.root.setOnClickListener {
-            hideOverview()
-            true
-        }
+        binding.root.setOnClickListener { hideOverview() }
 
         // allow scrolling in listView without closing the bottomSheetDialog
         recyclerView.layoutManager = LinearLayoutManager(context).apply {
@@ -239,7 +235,7 @@ class OverviewDialogController(
         val dialogView = DialogMenuContextListBinding.inflate(LayoutInflater.from(context))
         val dialog = dialogManager.showOptionDialog(dialogView.root)
 
-        dialogView.menuContextListEdit.visibility = View.VISIBLE
+        dialogView.menuContextListEdit.visibility = VISIBLE
         dialogView.menuContextListFav.setOnClickListener {
             dialog.dismissWithAction { config.favoriteUrl = bookmark.url }
         }
@@ -269,13 +265,12 @@ class OverviewDialogController(
 
         dialogView.menuContextListEdit.setOnClickListener {
             dialog.dismissWithAction {
-                BookmarkEditDialog(
-                    context,
+                dialogManager.showBookmarkEditDialog(
                     bookmarkManager,
                     bookmark,
                     { ViewUnit.hideKeyboard(context as Activity) ; updateBookmarkList() },
                     { ViewUnit.hideKeyboard(context as Activity) }
-                ).show()
+                )
             }
         }
     }

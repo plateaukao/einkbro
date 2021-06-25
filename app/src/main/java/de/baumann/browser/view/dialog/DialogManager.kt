@@ -2,19 +2,26 @@ package de.baumann.browser.view.dialog
 
 import android.app.Activity
 import android.app.Dialog
-import android.content.Context
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.URLUtil
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import de.baumann.browser.Ninja.R
+import de.baumann.browser.Ninja.databinding.DialogEditBookmarkBinding
 import de.baumann.browser.Ninja.databinding.DialogEditExtensionBinding
+import de.baumann.browser.database.Bookmark
+import de.baumann.browser.database.BookmarkManager
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.unit.HelperUnit
 import de.baumann.browser.unit.ViewUnit
 import de.baumann.browser.view.NinjaToast
+import kotlinx.coroutines.launch
 
 class DialogManager(
     private val activity: Activity
@@ -88,6 +95,62 @@ class DialogManager(
         )
     }
 
+    fun showBookmarkEditDialog(
+        bookmarkManager: BookmarkManager,
+        bookmark: Bookmark,
+        okAction: () -> Unit,
+        cancelAction: () -> Unit,
+    ) {
+        val lifecycleScope = (activity as LifecycleOwner).lifecycleScope
+
+       val menuView = DialogEditBookmarkBinding.inflate(LayoutInflater.from(activity))
+        menuView.passTitle.setText(bookmark.title)
+        if (bookmark.isDirectory) {
+            menuView.urlContainer.visibility = View.GONE
+        } else {
+            menuView.passUrl.setText(bookmark.url)
+        }
+
+        // load all folders
+        lifecycleScope.launch {
+            val folders = bookmarkManager.getBookmarkFolders().toMutableList().apply {  add(0, Bookmark("Top", "", true)) }
+            if (bookmark.isDirectory) folders.remove(bookmark)
+
+            menuView.folderSpinner.adapter = ArrayAdapter(activity, android.R.layout.simple_spinner_dropdown_item, folders)
+            val selectedIndex = folders.indexOfFirst { it.id == bookmark.parent }
+            menuView.folderSpinner.setSelection(selectedIndex)
+
+            menuView.folderSpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
+                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                    bookmark.parent = folders[position].id
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>?) { }
+            }
+        }
+
+        showOkCancelDialog(
+            title = activity.getString(R.string.menu_save_bookmark),
+            view = menuView.root,
+            okAction = {
+                try {
+                    bookmark.title = menuView.passTitle.text.toString().trim { it <= ' ' }
+                    bookmark.url = menuView.passUrl.text.toString().trim { it <= ' ' }
+                    lifecycleScope.launch {
+                        bookmarkManager.insert(bookmark)
+                        okAction.invoke()
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    NinjaToast.show(activity, R.string.toast_error)
+                }
+            },
+            cancelAction = {
+                cancelAction.invoke()
+            }
+        )
+    }
+
     fun showOkCancelDialog(
         title: String? = null,
         messageResId: Int? = null,
@@ -103,7 +166,10 @@ class DialogManager(
                 view?.let { setView(it) }
                 messageResId?.let { setMessage(messageResId) }
             }
-            .create().apply { window?.setGravity(Gravity.BOTTOM) }
+            .create().apply {
+                window?.setGravity(Gravity.BOTTOM)
+                window?.setBackgroundDrawableResource(R.drawable.background_with_border_margin)
+            }
         dialog.show()
         return dialog
     }
@@ -113,7 +179,10 @@ class DialogManager(
     ): Dialog {
         val dialog = AlertDialog.Builder(activity, R.style.TouchAreaDialog)
             .setView(view)
-            .create().apply { window?.setGravity(Gravity.BOTTOM) }
+            .create().apply {
+                window?.setGravity(Gravity.BOTTOM)
+                window?.setBackgroundDrawableResource(R.drawable.background_with_border_margin)
+            }
         dialog.show()
         return dialog
     }

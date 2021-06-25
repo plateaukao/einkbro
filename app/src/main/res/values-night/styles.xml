@@ -21,7 +21,7 @@
     <style name="TouchAreaDialog" parent="Theme.MaterialComponents.DayNight.Dialog.Alert">
         <item name="android:backgroundDimAmount">0</item>
         <item name="android:windowAnimationStyle">@null</item>
-        <item name="android:windowBackground">@drawable/dialog_border_bg</item>
+        <item name="android:windowBackground">@drawable/backgound_with_border</item>
     </style>
     <style name="BottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="android:backgroundDimAmount">0</item>
