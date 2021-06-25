@@ -1,6 +1,7 @@
 package de.baumann.browser.view.viewControllers
 
 import android.app.Activity
+import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -11,6 +12,8 @@ import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.children
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.TranslationPageIndexBinding
 import de.baumann.browser.Ninja.databinding.TranslationPanelBinding
@@ -20,6 +23,8 @@ import de.baumann.browser.unit.ViewUnit
 import de.baumann.browser.view.NinjaToast
 import de.baumann.browser.view.NinjaWebView
 import de.baumann.browser.view.TwoPaneLayout
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class TranslationViewController(
     private val activity: Activity,
@@ -42,9 +47,8 @@ class TranslationViewController(
     private var pageTextList: List<String> = listOf()
 
     init {
-        translationViewBinding.translationClose.setOnClickListener {
-            toggleTranslationWindow(false, onTranslationClosed)
-        }
+        translationViewBinding.translationClose.setOnClickListener { toggleTranslationWindow(false, onTranslationClosed) }
+        translationViewBinding.translationClose.setOnLongClickListener{ twoPaneLayout.switchPanels() ; true }
         translationViewBinding.translationFontPlus.setOnClickListener { increaseFontSize() }
         translationViewBinding.translationFontMinus.setOnClickListener { decreaseFontSize() }
     }
@@ -64,10 +68,15 @@ class TranslationViewController(
         }
             // onyx case
         if (config.translationMode == TranslationMode.ONYX) {
-            ViewUnit.toggleMultiWindow(activity, true)
-            try {
-                launchOnyxDictTranslation(text)
-            } catch (ignored: ClassNotFoundException) {}
+            (activity as LifecycleOwner).lifecycleScope.launch {
+                if (!ViewUnit.isMultiWindowEnabled(activity)) {
+                    ViewUnit.toggleMultiWindow(activity, true)
+                    delay(2000)
+                }
+                try {
+                    launchOnyxDictTranslation(text)
+                } catch (ignored: ClassNotFoundException) {}
+            }
             return
         }
 
@@ -96,12 +105,14 @@ class TranslationViewController(
         val selected = valueArray.indexOf(config.translationMode.ordinal)
         AlertDialog.Builder(activity, R.style.TouchAreaDialog).apply{
             setTitle("Translation Mode")
-            setSingleChoiceItems(translationModeArray, selected) { dialog, which ->
+            setSingleChoiceItems(translationModeArray, selected) { _, which ->
                 config.translationMode = enumValues[which]
                 if (isTranslationModeOn()) showTranslationAction.invoke()
-                dialog.dismiss()
             }
         }
+            .setPositiveButton(R.string.close) { _, _ ->
+                toggleTranslationWindow(false) { onTranslationClosed() }
+            }
             .create().also {
                 it.show()
                 it.window?.setLayout(ViewUnit.dpToPixel(activity, 200).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
@@ -146,7 +157,7 @@ class TranslationViewController(
 
         pageContainer.children.iterator().forEach{ pageIndexView ->
             pageIndexView.setBackgroundResource(
-                if (selectedPageIndex == pageIndexView.tag) R.drawable.selected_border_bg else R.drawable.dialog_border_bg
+                if (selectedPageIndex == pageIndexView.tag) R.drawable.selected_border_bg else R.drawable.backgound_with_border
             )
         }
     }

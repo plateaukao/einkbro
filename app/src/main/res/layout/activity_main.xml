@@ -300,6 +300,8 @@
 
     </FrameLayout>
 
+<!--    xmlns:pane="http://schemas.android.com/apk/res/info.plateaukao.einkbro"-->
+<!--    xmlns:pane="http://schemas.android.com/apk/res/info.plateaukao.einkbro.debug"-->
     <de.baumann.browser.view.TwoPaneLayout
         xmlns:pane="http://schemas.android.com/apk/res/info.plateaukao.einkbro"
         android:id="@+id/two_panel_layout"

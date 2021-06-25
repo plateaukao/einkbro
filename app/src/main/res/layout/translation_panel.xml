@@ -26,7 +26,7 @@
         android:layout_height="40dp"
         android:src="@mipmap/font_size_increase"
         android:tint="?attr/colorControlNormal"
-        android:background="@drawable/dialog_border_bg"
+        android:background="@drawable/backgound_with_border"
         android:layout_above="@+id/translation_font_minus"
         android:layout_alignParentEnd="true"
         />
@@ -36,7 +36,7 @@
         android:layout_height="40dp"
         android:src="@mipmap/font_size_decrease"
         android:tint="?attr/colorControlNormal"
-        android:background="@drawable/dialog_border_bg"
+        android:background="@drawable/backgound_with_border"
         android:layout_above="@+id/translation_close"
         android:layout_alignParentEnd="true"
         />
@@ -46,7 +46,7 @@
         android:layout_height="40dp"
         android:src="@drawable/icon_close"
         android:tint="?attr/colorControlNormal"
-        android:background="@drawable/dialog_border_bg"
+        android:background="@drawable/backgound_with_border"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         />

@@ -33,7 +33,7 @@ class FastToggleDialog(
         initViews()
         dialog = builder.create().apply {
             window?.setGravity(Gravity.BOTTOM)
-            window?.setBackgroundDrawableResource(R.drawable.background_with_margin)
+            window?.setBackgroundDrawableResource(R.drawable.background_with_border_margin)
         }
         dialog.show()
     }

@@ -526,8 +526,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
                 if (bookmarkManager.existsUrl(currentUrl)) {
                     NinjaToast.show(context, R.string.toast_newTitle)
                 } else {
-                    BookmarkEditDialog(
-                        context,
+                    dialogManager.showBookmarkEditDialog(
                         bookmarkManager,
                         Bookmark(title, currentUrl),
                         {
@@ -536,7 +535,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
                             updateAutoComplete()
                         },
                         { ViewUnit.hideKeyboard(context as Activity) }
-                    ).show()
+                    )
                 }
             }
         } catch (e: Exception) {
@@ -1415,8 +1414,19 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
                 val item = menu.getItem(index)
                 if (item.intent?.component?.packageName == "info.plateaukao.naverdict") {
                     isNaverDictExist = true
+                    break
+                }
+            }
+
+            for (index in 0 until menu.size()) {
+                val item = menu.getItem(index)
+                if (item.intent?.component?.packageName == "info.plateaukao.naverdict") {
                     continue
                 }
+                if (isNaverDictExist && item.intent?.component?.packageName == "com.onyx.dict") {
+                    continue
+                }
+
                 toBeAddedLaterList.add(item)
             }
 
