@@ -1,29 +1,21 @@
 package de.baumann.browser.view.dialog
 
-import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
 import android.app.DownloadManager
 import android.content.*
-import android.content.pm.PackageManager
-import android.os.Build
 import android.view.Gravity
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.PermissionChecker.checkSelfPermission
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.DialogMenuBinding
 import de.baumann.browser.activity.Settings_Activity
 import de.baumann.browser.preference.ConfigManager
-import de.baumann.browser.task.SaveScreenshotTask
 import de.baumann.browser.unit.HelperUnit
 import de.baumann.browser.unit.IntentUnit
 import de.baumann.browser.view.NinjaToast
 import de.baumann.browser.view.NinjaWebView
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 class MenuDialog(
     private val context: Context,
@@ -48,7 +40,7 @@ class MenuDialog(
         initViews()
         dialog = builder.create().apply {
             window?.setGravity(Gravity.BOTTOM or Gravity.RIGHT)
-            window?.setBackgroundDrawableResource(R.drawable.background_with_margin)
+            window?.setBackgroundDrawableResource(R.drawable.background_with_border_margin)
         }
         dialog.show()
     }

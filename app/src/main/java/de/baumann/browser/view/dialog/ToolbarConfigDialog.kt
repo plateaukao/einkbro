@@ -1,8 +1,8 @@
 package de.baumann.browser.view.dialog
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.*
-import android.os.Build
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -23,30 +23,21 @@ class ToolbarConfigDialog(
 ) {
     private val config: ConfigManager = ConfigManager(context)
 
-    private lateinit var dialog: AlertDialog
     private val binding: DialogToolbarConfigBinding = DialogToolbarConfigBinding.inflate(LayoutInflater.from(context))
 
     fun show() {
-        val builder = AlertDialog.Builder(context, R.style.TouchAreaDialog).apply { setView(binding.root) }
-
         initViews()
-        dialog = builder.create().apply {
+        DialogManager(context as Activity).showOkCancelDialog(
+            view = binding.root,
+            okAction = { config.toolbarActions = newValues },
+        ).apply {
             window?.setGravity(Gravity.BOTTOM or Gravity.RIGHT)
-            window?.setBackgroundDrawableResource(R.drawable.background_with_margin)
+            window?.setBackgroundDrawableResource(R.drawable.background_with_border_margin)
+            window?.setLayout(ViewUnit.dpToPixel(context, 300).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
         }
-        dialog.show()
-        dialog.window?.setLayout(ViewUnit.dpToPixel(context, 300).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
     private fun initViews() {
-        binding.actionOk.setOnClickListener {
-            config.toolbarActions = newValues
-            dialog.dismiss()
-        }
-        binding.actionCancel.setOnClickListener {
-            dialog.dismiss()
-        }
-
         val orderedList = ArrayList<PreferenceItemInfo>()
         // put selected
         for (toolbarAction in config.toolbarActions) {
@@ -55,14 +46,6 @@ class ToolbarConfigDialog(
 
         // put unselected
         for (toolbarAction in ToolbarAction.values()) {
-            // translation only supports Onyx devices
-                /*
-            if (toolbarAction == ToolbarAction.Translation && Build.MANUFACTURER != "ONYX") {
-                continue
-            }
-
-                 */
-
             if (!config.toolbarActions.contains(toolbarAction)) {
                 orderedList.add((toolbarAction.toPreferenceItemInfo()))
             }

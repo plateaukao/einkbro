@@ -115,6 +115,8 @@
                  android:label="@string/app_name"
                  android:icon="@mipmap/ic_launcher"/>
 
+<!--        android:authorities="info.plateaukao.einkbro.fileprovider"-->
+<!--        android:authorities="info.plateaukao.einkbro.debug.fileprovider"-->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="info.plateaukao.einkbro.fileprovider"

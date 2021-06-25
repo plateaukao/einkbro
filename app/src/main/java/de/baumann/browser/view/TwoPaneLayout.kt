@@ -10,7 +10,7 @@ import android.widget.FrameLayout
 import androidx.core.view.children
 import androidx.core.view.doOnLayout
 import de.baumann.browser.Ninja.R
-import java.lang.Exception
+
 
 class TwoPaneLayout : FrameLayout {
     @JvmOverloads
