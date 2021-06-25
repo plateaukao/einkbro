@@ -31,6 +31,7 @@ class TwoPaneLayout : FrameLayout {
 
     private var panel1: View? = null
     private var panel2: View? = null
+    private var subPanel: View? = null
 
     private val separator: View
     private val floatingLine: View
@@ -39,15 +40,24 @@ class TwoPaneLayout : FrameLayout {
     var shouldShowSecondPane = false
         set(value) {
             field = value
-            updateSecondPane()
+            updatePanels()
         }
+
+    fun switchPanels() {
+        // replace view position
+        val tempPanel = panel1
+        panel1 = panel2
+        panel2 = tempPanel
+
+        updatePanels()
+    }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val oldMeasuredHeight = measuredWidth
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
 
         if (measuredWidth != oldMeasuredHeight) {
-            updateSecondPane()
+            updatePanels()
         }
     }
 
@@ -72,14 +82,14 @@ class TwoPaneLayout : FrameLayout {
         }
     }
 
-    private fun updateSecondPane() {
+    private fun updatePanels() {
         if (shouldShowSecondPane) {
             if (finalX > measuredWidth) {
                 finalX = (measuredWidth / 2).toFloat()
             }
-            showSecondPane(finalX.toInt())
+            showSubPanel(finalX.toInt())
         } else {
-            hideSecondPane()
+            hideSubPanel()
         }
     }
 
@@ -94,22 +104,25 @@ class TwoPaneLayout : FrameLayout {
 
         panel1 = userAddedViews[0]
         panel2 = userAddedViews[1]
+        subPanel = panel2
 
-        updateSecondPane()
+        updatePanels()
 
         finalX = (measuredWidth / 2).toFloat()
     }
 
-    private fun showSecondPane(resizedX: Int = measuredWidth / 2) {
+    private fun showSubPanel(resizedX: Int = measuredWidth / 2) {
         // panel 1
+        panel1?.visibility = VISIBLE
         val params = LayoutParams(resizedX, LayoutParams.MATCH_PARENT)
         panel1?.layoutParams = params
+        panel1?.x = 0F
 
         // panel 2
+        panel2?.visibility = VISIBLE
         val params2 = LayoutParams(measuredWidth - resizedX, LayoutParams.MATCH_PARENT)
         panel2?.layoutParams = params2
         panel2?.x = resizedX.toFloat()
-        panel2?.visibility = VISIBLE
 
         // accessory views
         separator.x = resizedX.toFloat()
@@ -124,11 +137,15 @@ class TwoPaneLayout : FrameLayout {
         dragHandle.bringToFront()
     }
 
-    private fun hideSecondPane() {
-        val params = LayoutParams(measuredWidth, LayoutParams.MATCH_PARENT)
-        panel1?.layoutParams = params
+    private fun hideSubPanel() {
+        subPanel?.visibility = GONE
 
-        panel2?.visibility = GONE
+        val mainPanel = if (subPanel == panel1) panel2  else panel1
+
+        val params = LayoutParams(measuredWidth, LayoutParams.MATCH_PARENT)
+        mainPanel?.layoutParams = params
+        mainPanel?.x = 0F
+
         dragHandle.visibility = GONE
         separator.visibility = GONE
     }
@@ -169,7 +186,7 @@ class TwoPaneLayout : FrameLayout {
     }
 
     private fun adjustPaneSize(width: Int) {
-        showSecondPane(width)
+        showSubPanel(width)
     }
 }
 
