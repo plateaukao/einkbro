@@ -7,25 +7,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import com.google.android.material.bottomsheet.BottomSheetDialog
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.DialogEditBookmarkBinding
 import de.baumann.browser.database.Bookmark
 import de.baumann.browser.database.BookmarkManager
 import de.baumann.browser.view.NinjaToast
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 class BookmarkEditDialog(
     private val context: Context,
-    layoutInflater: LayoutInflater,
-    private val lifecycleScope: CoroutineScope,
     private val bookmarkManager: BookmarkManager,
     private val bookmark: Bookmark,
     private val okAction: () -> Unit,
     private val cancelAction: () -> Unit,
 ) {
-    val menuView = DialogEditBookmarkBinding.inflate(layoutInflater)
+    private val menuView = DialogEditBookmarkBinding.inflate(LayoutInflater.from(context))
+    private val lifecycleScope = (context as LifecycleOwner).lifecycleScope
 
     init {
         menuView.passTitle.setText(bookmark.title)
@@ -49,6 +48,9 @@ class BookmarkEditDialog(
             if (bookmark.isDirectory) folders.remove(bookmark)
 
             menuView.folderSpinner.adapter = ArrayAdapter(context, android.R.layout.simple_spinner_dropdown_item, folders)
+            val selectedIndex = folders.indexOfFirst { it.id == bookmark.parent }
+            menuView.folderSpinner.setSelection(selectedIndex)
+
             menuView.folderSpinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
                 override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                     bookmark.parent = folders[position].id

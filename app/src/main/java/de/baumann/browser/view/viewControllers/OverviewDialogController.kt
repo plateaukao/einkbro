@@ -229,6 +229,7 @@ class OverviewDialogController(
                         hideOverview()
                         onHistoryChanged()
                     }
+                    else -> {}
                 }
             }
         )
@@ -270,8 +271,6 @@ class OverviewDialogController(
             dialog.dismissWithAction {
                 BookmarkEditDialog(
                     context,
-                    LayoutInflater.from(context),
-                    lifecycleScope,
                     bookmarkManager,
                     bookmark,
                     { ViewUnit.hideKeyboard(context as Activity) ; updateBookmarkList() },
