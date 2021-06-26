@@ -50,7 +50,7 @@
         android:layout_width="fill_parent"
         android:layout_height="56dp"
         android:layout_gravity="bottom"
-        android:gravity="center"
+        android:gravity="end"
         android:background="?attr/colorPrimary"
         android:orientation="horizontal">
 

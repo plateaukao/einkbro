@@ -623,7 +623,7 @@ class NinjaWebView : WebView, AlbumController {
                 }
             })()
         """
-        private const val facebookHideSponsoredPostsJs = """
+        private const val oldFacebookHideSponsoredPostsJs = """
             javascript:(function() {
             var posts = [].filter.call(document.getElementsByTagName('article'), el => el.attributes['data-store'].value.indexOf('is_sponsored.1') >= 0); 
             while(posts.length > 0) { posts.pop().style.display = "none"; }
@@ -631,6 +631,29 @@ class NinjaWebView : WebView, AlbumController {
             var qcleanObserver = new window.MutationObserver(function(mutation, observer){ 
                var posts = [].filter.call(document.getElementsByTagName('article'), el => el.attributes['data-store'].value.indexOf('is_sponsored.1') >= 0); 
                while(posts.length > 0) { posts.pop().style.display = "none"; }
+            });
+            
+            qcleanObserver.observe(document, { subtree: true, childList: true });
+            })()
+        """
+        private const val facebookHideSponsoredPostsJs = """
+            javascript:(function() {
+              var posts = [].filter.call(document.getElementsByTagName('article'), el => el.attributes['data-store'].value.indexOf('is_sponsored.1') >= 0); 
+              while(posts.length > 0) { posts.pop().style.display = "none"; }
+              
+              var ads = Array.from(document.getElementsByClassName("bg-s3")).filter(e => e.innerText.indexOf("Sponsored") != -1);
+              ads.forEach(el => {el.style.display="none"; el.nextSibling.style.display="none";el.nextSibling.nextSibling.style.display="none"});
+              ads.forEach(el => {el.nextSibling.nextSibling.nextSibling.style.display="none"});
+              ads.forEach(el => {el.nextSibling.nextSibling.nextSibling.nextSibling.style.display="none"});
+            
+            var qcleanObserver = new window.MutationObserver(function(mutation, observer){ 
+              var posts = [].filter.call(document.getElementsByTagName('article'), el => el.attributes['data-store'].value.indexOf('is_sponsored.1') >= 0); 
+              while(posts.length > 0) { posts.pop().style.display = "none"; }
+              
+              var ads = Array.from(document.getElementsByClassName("bg-s3")).filter(e => e.innerText.indexOf("Sponsored") != -1);
+              ads.forEach(el => {el.style.display="none"; el.nextSibling.style.display="none";el.nextSibling.nextSibling.style.display="none"});
+              ads.forEach(el => {el.nextSibling.nextSibling.nextSibling.style.display="none"});
+              ads.forEach(el => {el.nextSibling.nextSibling.nextSibling.nextSibling.style.display="none"});
             });
             
             qcleanObserver.observe(document, { subtree: true, childList: true });
