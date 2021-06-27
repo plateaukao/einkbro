@@ -401,21 +401,21 @@ class NinjaWebView : WebView, AlbumController {
 
     // only works in isReadModeOn
     suspend fun getRawText() =  suspendCoroutine<String> { continuation ->
-//        if (!isReaderModeOn) {
-//            injectMozReaderModeJs(false)
-//            evaluateJavascript(getReaderModeBodyTextJs) { text -> continuation.resume(text.substring(1, text.length-2)) }
-//        } else {
-        if (!isReaderModeOn) continuation.resume("")
+        if (!isReaderModeOn) {
+            injectMozReaderModeJs(false)
+            evaluateJavascript(getReaderModeBodyTextJs) { text -> continuation.resume(text.substring(1, text.length-2)) }
+        } else {
+            //if (!isReaderModeOn) continuation.resume("")
 
-        evaluateJavascript(
-            "(function() { return document.getElementsByTagName('html')[0].innerText; })();"
-        ) { text ->
-            val processedText = if (text.startsWith("\"") && text.endsWith("\"")) {
-                text.substring(1, text.length-2)
-            } else text
-            continuation.resume(processedText)
+            evaluateJavascript(
+                "(function() { return document.getElementsByTagName('html')[0].innerText; })();"
+            ) { text ->
+                val processedText = if (text.startsWith("\"") && text.endsWith("\"")) {
+                    text.substring(1, text.length-2)
+                } else text
+                continuation.resume(processedText)
+            }
         }
-//        }
     }
 
     private fun shiftOffset(): Int {
