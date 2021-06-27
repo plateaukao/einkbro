@@ -54,7 +54,7 @@ class TranslationViewController(
     }
 
     suspend fun showTranslation(webView: NinjaWebView) {
-        if (!webView.isReaderModeOn) {
+        if (!webView.isReaderModeOn && config.translationMode != TranslationMode.ONYX) {
             webView.toggleReaderMode { launchTranslateWindow(it.purify()) }
         } else {
             launchTranslateWindow(webView.getRawText().purify())
@@ -68,15 +68,10 @@ class TranslationViewController(
         }
             // onyx case
         if (config.translationMode == TranslationMode.ONYX) {
-            (activity as LifecycleOwner).lifecycleScope.launch {
-                if (!ViewUnit.isMultiWindowEnabled(activity)) {
-                    ViewUnit.toggleMultiWindow(activity, true)
-                    delay(2000)
-                }
-                try {
-                    launchOnyxDictTranslation(text)
-                } catch (ignored: ClassNotFoundException) {}
-            }
+            ViewUnit.toggleMultiWindow(activity, true)
+            try {
+                launchOnyxDictTranslation(text)
+            } catch (ignored: ClassNotFoundException) {}
             return
         }
 
@@ -105,7 +100,8 @@ class TranslationViewController(
         val selected = valueArray.indexOf(config.translationMode.ordinal)
         AlertDialog.Builder(activity, R.style.TouchAreaDialog).apply{
             setTitle("Translation Mode")
-            setSingleChoiceItems(translationModeArray, selected) { _, which ->
+            setSingleChoiceItems(translationModeArray, selected) { dialog, which ->
+                dialog.dismiss()
                 config.translationMode = enumValues[which]
                 if (isTranslationModeOn()) showTranslationAction.invoke()
             }
