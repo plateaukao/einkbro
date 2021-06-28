@@ -7,12 +7,20 @@
     android:layout_height="match_parent"
     tools:showIn="@layout/activity_main">
 
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swipe_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <FrameLayout android:id="@+id/main_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/color_transparent"
         >
     </FrameLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
     <View android:id="@+id/touch_area_bottom_left"
         android:layout_width="150dp"
         android:layout_height="250dp"
@@ -80,7 +88,7 @@
         android:id="@+id/fab_imageButtonNav"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_alignBottom="@+id/main_content"
+        android:layout_alignBottom="@+id/swipe_refresh"
         android:layout_alignParentEnd="true"
         android:visibility="gone"
         app:borderWidth="1dp"

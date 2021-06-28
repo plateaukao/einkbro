@@ -27,6 +27,7 @@ import android.widget.TextView.OnEditorActionListener
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.*
 import de.baumann.browser.browser.*
@@ -51,6 +52,7 @@ import de.baumann.browser.view.viewControllers.TranslationViewController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.*
+import java.lang.reflect.Field
 import java.util.*
 import kotlin.math.floor
 import kotlin.math.roundToInt
@@ -73,6 +75,9 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
     private lateinit var searchPanel: ViewGroup
     private lateinit var mainContentLayout: FrameLayout
     private lateinit var subContainer: RelativeLayout
+    private val swipeRefreshLayout: SwipeRefreshLayout by lazy {
+        binding.activityMainContent.swipeRefresh
+    }
 
     private var fullscreenHolder: FrameLayout? = null
 
@@ -195,6 +200,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         initSearchPanel()
         initOverview()
         initTouchArea()
+        initSwipeRefreshLayout()
         updateWebViewCountUI()
 
         AdBlock(this) // For AdBlock cold boot
@@ -214,6 +220,28 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         dispatchIntent(intent)
         // after dispatching intent, the value should be reset to false
         shouldLoadTabState = false
+    }
+
+    private fun initSwipeRefreshLayout() {
+        // change icon
+        try {
+            val f: Field = swipeRefreshLayout.javaClass.getDeclaredField("mCircleView")
+            f.isAccessible = true
+            val img = f.get(swipeRefreshLayout) as ImageView
+            img.setBackgroundResource(R.mipmap.ic_launcher)
+        } catch (e: NoSuchFieldException) {
+            e.printStackTrace()
+        } catch (e: IllegalAccessException) {
+            e.printStackTrace()
+        }
+
+        swipeRefreshLayout.setOnRefreshListener {
+            ninjaWebView.reload()
+            swipeRefreshLayout.isRefreshing = false
+        }
+        swipeRefreshLayout.viewTreeObserver.addOnScrollChangedListener {
+            swipeRefreshLayout.isEnabled = (ninjaWebView.scrollY === 0)
+        }
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -517,9 +545,9 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         }
     }
 
-    private fun saveBookmark() {
-        val currentUrl = ninjaWebView.url ?: return
-        val title = HelperUnit.secString(ninjaWebView.title)
+    private fun saveBookmark(url: String? = null, title: String? = null) {
+        val currentUrl = url ?: ninjaWebView.url ?: return
+        val title = title ?: HelperUnit.secString(ninjaWebView.title)
         val context = this
         try {
             lifecycleScope.launch {
@@ -1270,6 +1298,9 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         }
         dialogView.contextLinkOpenWith.setOnClickListener {
             dialog.dismissWithAction { HelperUnit.showBrowserChooser( this@BrowserActivity, url, getString(R.string.menu_open_with) ) }
+        }
+        dialogView.contextLinkSaveBookmark.setOnClickListener {
+            dialog.dismissWithAction { saveBookmark(url, title = "") }
         }
         dialogView.contextLinkNewTabOpen.setOnClickListener {
             dialog.dismissWithAction { addAlbum(getString(R.string.app_name), url) }
