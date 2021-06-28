@@ -1,198 +1,193 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:padding="8dp"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:ignore="ContentDescription" >
+    android:padding="8dp"
+    tools:ignore="ContentDescription">
 
-    <TextView
-        android:id="@+id/dialog_title"
+    <LinearLayout
+        android:id="@+id/contextLink_newTabOpen"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:includeFontPadding="false"
-        android:padding="8dp"
-        android:ellipsize="end"
-        android:gravity="center_vertical|center_horizontal"
-        android:maxLines="1"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textStyle="bold" />
+        android:layout_height="46dp"
+        android:background="@drawable/item_bg_selector"
+        android:minHeight="46dp"
+        android:orientation="horizontal"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp">
 
-    <View
-        android:layout_margin="8dp"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="?android:attr/colorButtonNormal" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="16dp"
+            android:gravity="center_vertical"
+            android:src="@drawable/icon_tab_plus" />
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-
-        <LinearLayout
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            tools:ignore="UseCompoundDrawables">
+            android:layout_height="match_parent"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:text="@string/main_menu_new_tabOpen"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="?android:attr/textColorPrimary" />
 
-            <LinearLayout
-                android:id="@+id/contextLink_newTabOpen"
-                android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:minHeight="46dp"
-                android:paddingEnd="8dp"
-                android:paddingStart="8dp"
-                android:background="@drawable/item_bg_selector"
-                android:orientation="horizontal">
+    </LinearLayout>
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="16dp"
-                    android:gravity="center_vertical"
-                    android:src="@drawable/icon_tab_plus" />
+    <LinearLayout
+        android:id="@+id/contextLink_newTab"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:background="@drawable/item_bg_selector"
+        android:minHeight="46dp"
+        android:orientation="horizontal"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp">
 
-                <TextView
-                    android:text="@string/main_menu_new_tabOpen"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:includeFontPadding="false"
-                    android:ellipsize="end"
-                    android:gravity="center_vertical"
-                    android:maxLines="1"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="?android:attr/textColorPrimary" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="16dp"
+            android:gravity="center_vertical"
+            android:src="@drawable/icon_tab_unselected" />
 
-            </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:text="@string/main_menu_new_tab"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="?android:attr/textColorPrimary" />
 
-            <LinearLayout
-                android:id="@+id/contextLink_newTab"
-                android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:minHeight="46dp"
-                android:paddingEnd="8dp"
-                android:paddingStart="8dp"
-                android:background="@drawable/item_bg_selector"
-                android:orientation="horizontal">
+    </LinearLayout>
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="16dp"
-                    android:gravity="center_vertical"
-                    android:src="@drawable/icon_tab_unselected" />
+    <LinearLayout
+        android:id="@+id/contextLink__shareLink"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:background="@drawable/item_bg_selector"
+        android:minHeight="46dp"
+        android:orientation="horizontal"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp">
 
-                <TextView
-                    android:text="@string/main_menu_new_tab"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:includeFontPadding="false"
-                    android:ellipsize="end"
-                    android:gravity="center_vertical"
-                    android:maxLines="1"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="?android:attr/textColorPrimary" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="16dp"
+            android:gravity="center_vertical"
+            android:src="@drawable/icon_menu_share" />
 
-            </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:text="@string/menu_share_link"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="?android:attr/textColorPrimary" />
 
-            <LinearLayout
-                android:id="@+id/contextLink__shareLink"
-                android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:minHeight="46dp"
-                android:paddingEnd="8dp"
-                android:paddingStart="8dp"
-                android:background="@drawable/item_bg_selector"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="16dp"
-                    android:gravity="center_vertical"
-                    android:src="@drawable/icon_menu_share" />
-
-                <TextView
-                    android:text="@string/menu_share_link"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:includeFontPadding="false"
-                    android:ellipsize="end"
-                    android:gravity="center_vertical"
-                    android:maxLines="1"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="?android:attr/textColorPrimary" />
-
-            </LinearLayout>
+    </LinearLayout>
 
 
-            <LinearLayout
-                android:id="@+id/contextLink_openWith"
-                android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:minHeight="46dp"
-                android:paddingEnd="8dp"
-                android:paddingStart="8dp"
-                android:background="@drawable/item_bg_selector"
-                android:orientation="horizontal">
+    <LinearLayout
+        android:id="@+id/contextLink_openWith"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:background="@drawable/item_bg_selector"
+        android:minHeight="46dp"
+        android:orientation="horizontal"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="16dp"
-                    android:gravity="center_vertical"
-                    android:src="@drawable/icon_exit" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="16dp"
+            android:gravity="center_vertical"
+            android:src="@drawable/icon_exit" />
 
-                <TextView
-                    android:text="@string/menu_open_with"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:includeFontPadding="false"
-                    android:ellipsize="end"
-                    android:gravity="center_vertical"
-                    android:maxLines="1"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="?android:attr/textColorPrimary" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:text="@string/menu_open_with"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="?android:attr/textColorPrimary" />
 
-            </LinearLayout>
+    </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/menu_save_pdf"
-                android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:minHeight="46dp"
-                android:paddingEnd="8dp"
-                android:paddingStart="8dp"
-                android:background="@drawable/item_bg_selector"
-                android:orientation="horizontal">
+    <LinearLayout
+        android:id="@+id/contextLink_saveBookmark"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:background="@drawable/item_bg_selector"
+        android:minHeight="46dp"
+        android:orientation="horizontal"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="16dp"
-                    android:gravity="center_vertical"
-                    android:src="@drawable/icon_menu_save" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="16dp"
+            android:gravity="center_vertical"
+            android:src="@drawable/ic_bookmark" />
 
-                <TextView
-                    android:text="@string/menu_save_as"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:includeFontPadding="false"
-                    android:ellipsize="end"
-                    android:gravity="center_vertical"
-                    android:maxLines="1"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="?android:attr/textColorPrimary" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:text="@string/menu_save_bookmark"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="?android:attr/textColorPrimary" />
 
-            </LinearLayout>
+    </LinearLayout>
 
-        </LinearLayout>
+    <LinearLayout
+        android:id="@+id/menu_save_pdf"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:background="@drawable/item_bg_selector"
+        android:minHeight="46dp"
+        android:orientation="horizontal"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp">
 
-    </ScrollView>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="16dp"
+            android:gravity="center_vertical"
+            android:src="@drawable/icon_menu_save" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:text="@string/menu_save_as"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="?android:attr/textColorPrimary" />
+
+    </LinearLayout>
 </LinearLayout>
 
 
