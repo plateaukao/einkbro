@@ -66,6 +66,10 @@ class ConfigManager(private val context: Context) {
         get() = sp.getBoolean(K_ENABLE_TOUCH, false)
         set(value) {sp.edit { putBoolean(K_ENABLE_TOUCH, value) } }
 
+    var keepAwake: Boolean
+        get() = sp.getBoolean(K_KEEP_AWAKE, false)
+        set(value) {sp.edit { putBoolean(K_KEEP_AWAKE, value) } }
+
     var pageReservedOffset: Int
         get() = sp.getInt("sp_page_turn_left_value", 80)
         set(value) {sp.edit { putInt("sp_page_turn_left_value", value) } }
@@ -191,6 +195,7 @@ class ConfigManager(private val context: Context) {
         const val K_TOUCH_HINT = "sp_touch_area_hint"
         const val K_SCREENSHOT = "screenshot"
         const val K_START_TAB = "start_tab"
+        const val K_KEEP_AWAKE = "sp_screen_awake"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
     }
