@@ -220,6 +220,10 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         dispatchIntent(intent)
         // after dispatching intent, the value should be reset to false
         shouldLoadTabState = false
+
+        if (config.keepAwake) {
+            window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        }
     }
 
     private fun initSwipeRefreshLayout() {
@@ -235,12 +239,13 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             e.printStackTrace()
         }
 
+        swipeRefreshLayout.isEnabled = false
         swipeRefreshLayout.setOnRefreshListener {
             ninjaWebView.reload()
             swipeRefreshLayout.isRefreshing = false
         }
         swipeRefreshLayout.viewTreeObserver.addOnScrollChangedListener {
-            swipeRefreshLayout.isEnabled = (ninjaWebView.scrollY === 0)
+            //swipeRefreshLayout.isEnabled = (ninjaWebView.scrollY === 0)
         }
     }
 
@@ -812,6 +817,13 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
                     this,
                     "Incognito mode is " + if (config.isIncognitoMode) "enabled." else "disabled."
                 )
+            }
+            key.equals(ConfigManager.K_KEEP_AWAKE) -> {
+                if (config.keepAwake) {
+                    window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+                } else {
+                    window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+                }
             }
         }
     }

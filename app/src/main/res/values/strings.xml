@@ -482,4 +482,6 @@
     <string name="rotate">Rotate</string>
     <string name="translate">Translate</string>
     <string name="toolbar_title">Title</string>
+    <string name="setting_title_screen_awake">Keep Screen Awake</string>
+    <string name="setting_summary_screen_awake">Keep screen always awake</string>
 </resources>
