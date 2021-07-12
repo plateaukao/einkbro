@@ -95,6 +95,13 @@
 
         <CheckBoxPreference
             android:defaultValue="false"
+            android:icon="@drawable/ic_eye"
+            android:key="sp_screen_awake"
+            android:title="@string/setting_title_screen_awake"
+            android:summary="@string/setting_summary_screen_awake" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
             android:icon="@drawable/icon_close"
             android:key="sp_close_tab_confirm"
             android:title="@string/setting_title_confirm_tab_close"
