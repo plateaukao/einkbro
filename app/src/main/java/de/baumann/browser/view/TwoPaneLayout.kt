@@ -4,38 +4,41 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.RelativeLayout
 import androidx.core.view.children
 import androidx.core.view.doOnLayout
 import de.baumann.browser.Ninja.R
+import de.baumann.browser.Ninja.databinding.TwoPaneLayoutBinding
+import de.baumann.browser.unit.ViewUnit.dp
 
 
 class TwoPaneLayout : FrameLayout {
     @JvmOverloads
     constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : super(context, attrs, defStyleAttr) {
         initAttributes(attrs)
-    }
 
-    init {
-        inflate(context, R.layout.two_pane_layout, this)
-        separator = findViewById(R.id.separator)
-        floatingLine = findViewById(R.id.floating_line)
-        dragHandle = findViewById(R.id.drag_handle)
         initDragHandle()
         this.doOnLayout {
             initViews()
         }
     }
 
+    private val binding: TwoPaneLayoutBinding = TwoPaneLayoutBinding.inflate(LayoutInflater.from(context), this)
+    private val separator: View = binding.separator
+    private val floatingLine: View = binding.floatingLine
+    private val dragHandle: View = binding.dragHandle
+
     private var panel1: View? = null
     private var panel2: View? = null
     private var subPanel: View? = null
 
-    private val separator: View
-    private val floatingLine: View
-    private val dragHandle: View
+    init {
+    }
 
     var shouldShowSecondPane = false
         set(value) {
@@ -52,11 +55,23 @@ class TwoPaneLayout : FrameLayout {
         updatePanels()
     }
 
+    fun setOrientation(orientation: Orientation) {
+        if (this.orientation != orientation) {
+            this.orientation = orientation
+            initDragHandle()
+            binding.root.requestLayout()
+            this.requestLayout()
+            this.doOnLayout { initViews() }
+        }
+    }
+
+    fun getOrientation(): Orientation = orientation
+
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        val oldMeasuredHeight = measuredWidth
+        val oldMeasuredWidth = measuredWidth
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
 
-        if (measuredWidth != oldMeasuredHeight) {
+        if (isHorizontal() && measuredWidth != oldMeasuredWidth) {
             updatePanels()
         }
     }
@@ -84,12 +99,25 @@ class TwoPaneLayout : FrameLayout {
 
     private fun updatePanels() {
         if (shouldShowSecondPane) {
+            updateFinalPosition()
+            val resizedPosition = if (isHorizontal()) finalX.toInt() else finalY.toInt()
+            showSubPanel(resizedPosition)
+        } else {
+            hideSubPanel()
+        }
+    }
+
+    private fun isHorizontal(): Boolean = orientation == Orientation.Horizontal
+
+    private fun updateFinalPosition() {
+        if (isHorizontal()) {
             if (finalX > measuredWidth) {
                 finalX = (measuredWidth / 2).toFloat()
             }
-            showSubPanel(finalX.toInt())
         } else {
-            hideSubPanel()
+            if (finalY > measuredHeight) {
+                finalY = (measuredHeight/ 2).toFloat()
+            }
         }
     }
 
@@ -106,35 +134,71 @@ class TwoPaneLayout : FrameLayout {
         panel2 = userAddedViews[1]
         subPanel = panel2
 
-        updatePanels()
+        if (isHorizontal()) {
+            finalX = (measuredWidth / 2).toFloat()
+            finalY = (measuredHeight / 2).toFloat()
+        } else {
+            finalX = (measuredWidth / 2).toFloat()
+            finalY = (measuredHeight / 2).toFloat()
+        }
 
-        finalX = (measuredWidth / 2).toFloat()
+        updatePanels()
     }
 
-    private fun showSubPanel(resizedX: Int = measuredWidth / 2) {
-        // panel 1
-        panel1?.visibility = VISIBLE
-        val params = LayoutParams(resizedX, LayoutParams.MATCH_PARENT)
-        panel1?.layoutParams = params
-        panel1?.x = 0F
+    private fun showSubPanel(resizedPosition: Int) {
+        if (isHorizontal()) {
+            // panel 1
+            panel1?.visibility = VISIBLE
+            val params = LayoutParams(resizedPosition, LayoutParams.MATCH_PARENT)
+            panel1?.layoutParams = params
+            panel1?.x = 0F
+            panel1?.y = 0F
 
-        // panel 2
-        panel2?.visibility = VISIBLE
-        val params2 = LayoutParams(measuredWidth - resizedX, LayoutParams.MATCH_PARENT)
-        panel2?.layoutParams = params2
-        panel2?.x = resizedX.toFloat()
+            // panel 2
+            panel2?.visibility = VISIBLE
+            val params2 = LayoutParams(measuredWidth - resizedPosition, LayoutParams.MATCH_PARENT)
+            panel2?.layoutParams = params2
+            panel2?.x = resizedPosition.toFloat()
+            panel2?.y = 0F
 
-        // accessory views
-        separator.x = resizedX.toFloat()
-        separator.visibility = VISIBLE
-        separator.bringToFront()
+            // accessory views
+            separator.x = resizedPosition.toFloat()
+            separator.visibility = VISIBLE
+            separator.bringToFront()
 
-        val halfDragHandleWidth = dragHandle.measuredWidth / 2
-        dragHandle.x = (resizedX - halfDragHandleWidth).toFloat()
-        dragHandle.y = (measuredHeight / 2 - dragHandle.measuredHeight / 2).toFloat()
-        dragHandle.setPadding(halfDragHandleWidth, 0, halfDragHandleWidth, 0)
-        dragHandle.visibility = VISIBLE
-        dragHandle.bringToFront()
+            val halfDragHandleWidth = dragHandle.measuredWidth / 2
+            dragHandle.x = (resizedPosition - halfDragHandleWidth).toFloat()
+            dragHandle.y = (measuredHeight / 2 - dragHandle.measuredHeight / 2).toFloat()
+            dragHandle.setPadding(halfDragHandleWidth, 0, halfDragHandleWidth, 0)
+            dragHandle.visibility = VISIBLE
+            dragHandle.bringToFront()
+        } else {
+            // panel 1
+            panel1?.visibility = VISIBLE
+            val params = LayoutParams(LayoutParams.MATCH_PARENT, resizedPosition)
+            panel1?.layoutParams = params
+            panel1?.x = 0F
+            panel1?.y = 0F
+
+            // panel 2
+            panel2?.visibility = VISIBLE
+            val params2 = LayoutParams(LayoutParams.MATCH_PARENT, measuredHeight - resizedPosition)
+            panel2?.layoutParams = params2
+            panel2?.x = 0F
+            panel2?.y = resizedPosition.toFloat()
+
+            // accessory views
+            separator.y = resizedPosition.toFloat()
+            separator.visibility = VISIBLE
+            separator.bringToFront()
+
+            val halfDragHandleHeight = dragHandle.measuredHeight / 2
+            dragHandle.x = (measuredWidth/ 2 - dragHandle.measuredWidth/ 2).toFloat()
+            dragHandle.y = (resizedPosition - halfDragHandleHeight).toFloat()
+            dragHandle.setPadding(0, halfDragHandleHeight, 0, halfDragHandleHeight)
+            dragHandle.visibility = VISIBLE
+            dragHandle.bringToFront()
+        }
     }
 
     private fun hideSubPanel() {
@@ -142,9 +206,15 @@ class TwoPaneLayout : FrameLayout {
 
         val mainPanel = if (subPanel == panel1) panel2  else panel1
 
-        val params = LayoutParams(measuredWidth, LayoutParams.MATCH_PARENT)
-        mainPanel?.layoutParams = params
-        mainPanel?.x = 0F
+        if (isHorizontal()) {
+            val params = LayoutParams(measuredWidth, LayoutParams.MATCH_PARENT)
+            mainPanel?.layoutParams = params
+            mainPanel?.x = 0F
+        } else {
+            val params = LayoutParams(LayoutParams.MATCH_PARENT, measuredHeight)
+            mainPanel?.layoutParams = params
+            mainPanel?.y = 0F
+        }
 
         dragHandle.visibility = GONE
         separator.visibility = GONE
@@ -152,42 +222,101 @@ class TwoPaneLayout : FrameLayout {
 
     private var  dX: Float = 0f
     private var finalX: Float = 0f
+    private var  dY: Float = 0f
+    private var finalY: Float = 0f
     @SuppressLint("ClickableViewAccessibility")
     private fun initDragHandle() {
-        dragHandle.setOnTouchListener { view, event ->
-            when (event.action) {
-                MotionEvent.ACTION_DOWN -> {
-                    floatingLine.x = view.x + view.width / 2
-                    floatingLine.visibility = VISIBLE
-                    floatingLine.bringToFront()
-                    dragHandle.alpha = 1F
-                    dX = view.x - event.rawX
+        if (isHorizontal()) {
+            dY = 0F
+            finalY = (measuredHeight / 2).toFloat()
+
+            val params = LayoutParams(1, LayoutParams.MATCH_PARENT)
+            separator.layoutParams = params
+            separator.y = 0F
+            val floatingLineParams = LayoutParams(2.dp(context), LayoutParams.MATCH_PARENT)
+            floatingLine.layoutParams = floatingLineParams
+            floatingLine.y = 0F
+            val dragParams = LayoutParams(12.dp(context), 50.dp(context))
+            dragHandle.layoutParams = dragParams
+
+            dragHandle.setOnTouchListener { view, event ->
+                when (event.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        floatingLine.x = view.x + view.width / 2
+                        floatingLine.visibility = VISIBLE
+                        floatingLine.bringToFront()
+                        dragHandle.alpha = 1F
+                        dX = view.x - event.rawX
+                    }
+                    MotionEvent.ACTION_MOVE -> {
+                        view.animate()
+                            .x(event.rawX + dX)
+                            .setDuration(0)
+                            .start()
+                        finalX = event.rawX + dX + view.width / 2
+                        floatingLine.animate()
+                            .x(event.rawX + dX + view.width / 2)
+                            .setDuration(0)
+                            .start()
+                        if (dragResize) adjustPaneSize(finalX.toInt())
+                    }
+                    MotionEvent.ACTION_UP -> {
+                        floatingLine.visibility = GONE
+                        dragHandle.alpha = 0.3F
+                        adjustPaneSize(finalX.toInt())
+                    }
                 }
-                MotionEvent.ACTION_MOVE -> {
-                    view.animate()
-                        .x(event.rawX + dX)
-                        .setDuration(0)
-                        .start()
-                    finalX = event.rawX + dX + view.width / 2
-                    floatingLine.animate()
-                        .x(event.rawX + dX + view.width / 2)
-                        .setDuration(0)
-                        .start()
-                    if (dragResize) adjustPaneSize(finalX.toInt())
-                }
-                MotionEvent.ACTION_UP -> {
-                    floatingLine.visibility = GONE
-                    dragHandle.alpha = 0.3F
-                    adjustPaneSize(finalX.toInt())
-                }
+                true
             }
-            true
+        } else {
+            dX = 0F
+            finalX = (measuredWidth / 2).toFloat()
+
+            val params = LayoutParams(LayoutParams.MATCH_PARENT, 1)
+            separator.layoutParams = params
+            separator.x = 0F
+            val floatingLineParams = LayoutParams(LayoutParams.MATCH_PARENT, 2.dp(context))
+            floatingLine.layoutParams = floatingLineParams
+            floatingLine.x = 0F
+            val dragParams = LayoutParams(50.dp(context), 12.dp(context))
+            dragHandle.layoutParams = dragParams
+
+            dragHandle.setOnTouchListener { view, event ->
+                when (event.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        floatingLine.y = view.y + view.height / 2
+                        floatingLine.visibility = VISIBLE
+                        floatingLine.bringToFront()
+                        dragHandle.alpha = 1F
+                        dY = view.y - event.rawY
+                    }
+                    MotionEvent.ACTION_MOVE -> {
+                        view.animate()
+                            .y(event.rawY + dY)
+                            .setDuration(0)
+                            .start()
+                        finalY = event.rawY + dY + view.height / 2
+                        floatingLine.animate()
+                            .y(event.rawY + dY + view.height / 2)
+                            .setDuration(0)
+                            .start()
+                        if (dragResize) adjustPaneSize(finalY.toInt())
+                    }
+                    MotionEvent.ACTION_UP -> {
+                        floatingLine.visibility = GONE
+                        dragHandle.alpha = 0.3F
+                        adjustPaneSize(finalY.toInt())
+                    }
+                }
+                true
+            }
         }
+
     }
 
-    private fun adjustPaneSize(width: Int) {
-        showSubPanel(width)
+    private fun adjustPaneSize(position: Int) {
+        showSubPanel(position)
     }
 }
 
-private enum class Orientation { Vertical, Horizontal }
+enum class Orientation { Vertical, Horizontal }
