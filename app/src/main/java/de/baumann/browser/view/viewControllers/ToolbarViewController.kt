@@ -13,6 +13,7 @@ import androidx.core.view.iterator
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.unit.ViewUnit
+import de.baumann.browser.unit.ViewUnit.dp
 import de.baumann.browser.view.toolbaricons.ToolbarAction
 
 class ToolbarViewController(
@@ -59,12 +60,12 @@ class ToolbarViewController(
             } else {
                 val params = LinearLayout.LayoutParams( LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT)
                 textView.layoutParams = params
-                textView.minimumWidth = ViewUnit.dpToPixel(context, 100).toInt()
+                textView.minimumWidth = 100.dp(context)
             }
         }
     }
 
-    private fun isIconsWidthLargerThanScreenWidth(): Boolean = getRestToolbarWidth() >= ViewUnit.dpToPixel(context, 40).toInt()
+    private fun isIconsWidthLargerThanScreenWidth(): Boolean = getRestToolbarWidth() >= 40.dp(context)
 
     private fun getRestToolbarWidth(): Int =
         ViewUnit.getWindowWidth(context) -
