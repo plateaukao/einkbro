@@ -28,6 +28,7 @@ import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.preference.TranslationMode
 import de.baumann.browser.unit.BrowserUnit
 import de.baumann.browser.unit.ViewUnit
+import de.baumann.browser.unit.ViewUnit.dp
 import de.baumann.browser.util.PdfDocumentAdapter
 import org.apache.commons.text.StringEscapeUtils
 import java.io.IOException
@@ -420,9 +421,9 @@ class NinjaWebView : WebView, AlbumController {
 
     private fun shiftOffset(): Int {
         return if (isVerticalRead) {
-            width - ViewUnit.dpToPixel(context, 40).toInt()
+            width - 40.dp(context)
         } else {
-            height - ViewUnit.dpToPixel(context, config.pageReservedOffset).toInt()
+            height - config.pageReservedOffset.dp(context)
         }
     }
 
