@@ -21,6 +21,16 @@
         </LinearLayout>
     </HorizontalScrollView>
     <ImageButton
+        android:id="@+id/translation_orientation"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_rotate"
+        android:tint="?attr/colorControlNormal"
+        android:background="@drawable/backgound_with_border"
+        android:layout_above="@+id/translation_font_plus"
+        android:layout_alignParentEnd="true"
+        />
+    <ImageButton
         android:id="@+id/translation_font_plus"
         android:layout_width="40dp"
         android:layout_height="40dp"
