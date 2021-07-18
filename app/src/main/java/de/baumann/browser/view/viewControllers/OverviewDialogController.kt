@@ -161,7 +161,7 @@ class OverviewDialogController(
     }
 
     fun openBookmarkPage() {
-        binding.root.visibility = View.VISIBLE
+        binding.root.visibility = VISIBLE
 
         binding.overviewPreview.visibility = View.INVISIBLE
         recyclerView.visibility = View.VISIBLE
@@ -194,7 +194,7 @@ class OverviewDialogController(
     }
 
     private fun openHomePage() {
-        binding.overviewPreview.visibility = View.VISIBLE
+        binding.overviewPreview.visibility = VISIBLE
         recyclerView.visibility = GONE
         toggleOverviewFocus(binding.openTabView)
         overViewTab = OverviewTab.TabPreview
