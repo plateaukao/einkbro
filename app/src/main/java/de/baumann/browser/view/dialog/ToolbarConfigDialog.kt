@@ -12,6 +12,7 @@ import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.DialogToolbarConfigBinding
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.unit.ViewUnit
+import de.baumann.browser.unit.ViewUnit.dp
 import de.baumann.browser.view.sortlistpreference.CheckableMultiSelectLayout
 import de.baumann.browser.view.sortlistpreference.DragSortController
 import de.baumann.browser.view.sortlistpreference.DragSortListView
@@ -33,7 +34,7 @@ class ToolbarConfigDialog(
         ).apply {
             window?.setGravity(Gravity.BOTTOM or Gravity.RIGHT)
             window?.setBackgroundDrawableResource(R.drawable.background_with_border_margin)
-            window?.setLayout(ViewUnit.dpToPixel(context, 300).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
+            window?.setLayout(300.dp(context), ViewGroup.LayoutParams.WRAP_CONTENT)
         }
     }
 

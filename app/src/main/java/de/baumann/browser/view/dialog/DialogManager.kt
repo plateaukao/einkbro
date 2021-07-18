@@ -20,6 +20,7 @@ import de.baumann.browser.database.BookmarkManager
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.unit.HelperUnit
 import de.baumann.browser.unit.ViewUnit
+import de.baumann.browser.unit.ViewUnit.dp
 import de.baumann.browser.view.NinjaToast
 import kotlinx.coroutines.launch
 
@@ -42,7 +43,7 @@ class DialogManager(
             }
         }.create().also {
             it.show()
-            it.window?.setLayout(ViewUnit.dpToPixel(activity, 200).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
+            it.window?.setLayout(200.dp(activity), ViewGroup.LayoutParams.WRAP_CONTENT)
         }
     }
 

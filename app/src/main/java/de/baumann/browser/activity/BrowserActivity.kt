@@ -41,6 +41,7 @@ import de.baumann.browser.unit.HelperUnit
 import de.baumann.browser.unit.HelperUnit.toNormalScheme
 import de.baumann.browser.unit.IntentUnit
 import de.baumann.browser.unit.ViewUnit
+import de.baumann.browser.unit.ViewUnit.dp
 import de.baumann.browser.util.Constants
 import de.baumann.browser.view.*
 import de.baumann.browser.view.adapter.*
@@ -846,7 +847,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             }
         }
 
-        ViewUnit.expandViewTouchArea(fabImageButtonNav, ViewUnit.dpToPixel(this, 20).toInt())
+        ViewUnit.expandViewTouchArea(fabImageButtonNav, 20.dp(this))
         fabImageButtonNav.setOnClickListener { showToolbar() }
         fabImageButtonNav.setOnLongClickListener {
             showFastToggleDialog()

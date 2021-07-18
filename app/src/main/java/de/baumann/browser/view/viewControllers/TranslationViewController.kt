@@ -20,6 +20,7 @@ import de.baumann.browser.Ninja.databinding.TranslationPanelBinding
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.preference.TranslationMode
 import de.baumann.browser.unit.ViewUnit
+import de.baumann.browser.unit.ViewUnit.dp
 import de.baumann.browser.view.NinjaToast
 import de.baumann.browser.view.NinjaWebView
 import de.baumann.browser.view.Orientation
@@ -120,7 +121,7 @@ class TranslationViewController(
             }
             .create().also {
                 it.show()
-                it.window?.setLayout(ViewUnit.dpToPixel(activity, 200).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
+                it.window?.setLayout(200.dp(activity), ViewGroup.LayoutParams.WRAP_CONTENT)
             }
     }
 
@@ -143,10 +144,7 @@ class TranslationViewController(
             val textView = TranslationPageIndexBinding.inflate(LayoutInflater.from(activity)).root
             textView.text = (index + 1).toString()
             textView.tag = index
-            val params = LinearLayout.LayoutParams(
-                ViewUnit.dpToPixel(activity, 40).toInt(),
-                ViewUnit.dpToPixel(activity, 40).toInt()
-            )
+            val params = LinearLayout.LayoutParams(40.dp(activity), 40.dp(activity))
             textView.setOnClickListener { translatePage(index) }
             pageContainer.addView(textView, params)
         }
