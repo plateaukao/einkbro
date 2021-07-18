@@ -407,6 +407,10 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
     @Synchronized
     override fun showAlbum(controller: AlbumController) {
         if (currentAlbumController != null) {
+            if (currentAlbumController == controller) {
+                return
+            }
+
             currentAlbumController?.deactivate()
             val av = controller as View
             mainContentLayout.removeAllViews()
@@ -989,12 +993,10 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             val index = BrowserContainer.indexOf(currentAlbumController) + 1
             BrowserContainer.add(ninjaWebView, index)
             updateWebViewCount()
-            //tabContainer.addView(albumView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
             overviewDialogController.addTabPreview(albumView)
         } else {
             BrowserContainer.add(ninjaWebView)
             updateWebViewCount()
-            //tabContainer.addView(albumView, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
             overviewDialogController.addTabPreview(albumView)
         }
         if (!foreground) {
@@ -1065,14 +1067,17 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
                 finish()
         } else {
             closeTabConfirmation {
-                //tabContainer.removeView(controller.albumView)
                 overviewDialogController.removeTabView(controller.albumView)
                 var index = BrowserContainer.indexOf(controller)
+                val currentIndex = BrowserContainer.indexOf(currentAlbumController)
                 BrowserContainer.remove(controller)
-                if (index >= BrowserContainer.size()) {
-                    index = BrowserContainer.size() - 1
+                // only refresh album when the delete one is current one
+                if (index == currentIndex) {
+                    if (index >= BrowserContainer.size()) {
+                        index = BrowserContainer.size() - 1
+                    }
+                    showAlbum(BrowserContainer.get(index))
                 }
-                showAlbum(BrowserContainer.get(index))
                 updateWebViewCount()
             }
         }
