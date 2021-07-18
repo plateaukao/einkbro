@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:visibility="gone"
         android:background="?attr/colorControlNormal" />
-    <ImageView
+    <View
         android:id="@+id/drag_handle"
         android:layout_width="12dp"
         android:layout_height="50dp"
@@ -25,5 +25,4 @@
         android:visibility="gone"
         android:alpha="0.3"
         android:background="?attr/colorControlNormal" />
-        />
 </merge>

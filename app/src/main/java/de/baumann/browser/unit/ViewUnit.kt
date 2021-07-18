@@ -78,6 +78,11 @@ object ViewUnit {
         return dp * (metrics.densityDpi / 160f)
     }
 
+    fun Int.dp(context: Context): Int {
+        val metrics = context.resources.displayMetrics
+        return (this * (metrics.densityDpi / 160f)).toInt()
+    }
+
     fun setCustomFullscreen(window: Window, fullscreen: Boolean) {
         val decorView = window.decorView
         if (fullscreen) {

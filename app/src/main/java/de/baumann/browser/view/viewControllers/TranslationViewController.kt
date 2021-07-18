@@ -22,6 +22,7 @@ import de.baumann.browser.preference.TranslationMode
 import de.baumann.browser.unit.ViewUnit
 import de.baumann.browser.view.NinjaToast
 import de.baumann.browser.view.NinjaWebView
+import de.baumann.browser.view.Orientation
 import de.baumann.browser.view.TwoPaneLayout
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -51,6 +52,10 @@ class TranslationViewController(
         translationViewBinding.translationClose.setOnLongClickListener{ twoPaneLayout.switchPanels() ; true }
         translationViewBinding.translationFontPlus.setOnClickListener { increaseFontSize() }
         translationViewBinding.translationFontMinus.setOnClickListener { decreaseFontSize() }
+        translationViewBinding.translationOrientation.setOnClickListener {
+            val orientation = if (twoPaneLayout.getOrientation() == Orientation.Vertical) Orientation.Horizontal else Orientation.Vertical
+            twoPaneLayout.setOrientation(orientation)
+        }
     }
 
     suspend fun showTranslation(webView: NinjaWebView) {
@@ -59,6 +64,10 @@ class TranslationViewController(
         } else {
             launchTranslateWindow(webView.getRawText().purify())
         }
+    }
+
+    fun setOrientation(orientation: Orientation) {
+        twoPaneLayout.setOrientation(orientation)
     }
 
     private fun launchTranslateWindow(text: String) {
