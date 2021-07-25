@@ -1496,6 +1496,12 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         super.onActionModeStarted(mode)
     }
 
+    override fun onPause() {
+        super.onPause()
+        mActionMode?.finish()
+        mActionMode = null
+    }
+
     override fun onActionModeFinished(mode: ActionMode?) {
         super.onActionModeFinished(mode)
         mActionMode = null
