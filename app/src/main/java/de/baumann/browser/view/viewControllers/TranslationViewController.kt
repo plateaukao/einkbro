@@ -67,6 +67,8 @@ class TranslationViewController(
         }
     }
 
+    fun showTranslation(text: String) = launchTranslateWindow(text)
+
     fun setOrientation(orientation: Orientation) {
         twoPaneLayout.setOrientation(orientation)
     }

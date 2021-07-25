@@ -310,8 +310,7 @@
         android:layout_above="@+id/appBar"
         pane:orientation="horizontal"
         pane:show_second_pane="false"
-        pane:drag_resize="false"
-        >
+        pane:drag_resize="true" >
 
         <include layout="@layout/activity_main_content"
             android:id="@+id/activity_main_content"
