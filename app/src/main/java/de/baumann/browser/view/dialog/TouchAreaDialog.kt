@@ -42,21 +42,26 @@ class TouchAreaDialog(private val context: Context) {
             0 -> view.findViewById(R.id.touch_left_right)
             1 -> view.findViewById(R.id.touch_area_bottom_left)
             2 -> view.findViewById(R.id.touch_area_bottom_right)
+            3 -> view.findViewById(R.id.touch_middle_left_right)
             else -> view.findViewById(R.id.touch_left_right)
         }
         buttonShouldBeChecked.isChecked = true
 
         // action
         view.findViewById<View>(R.id.layout_left_right).setOnClickListener {
-            sp.edit { putInt("sp_touch_area_type", TouchAreaType.BottomLeftRight.ordinal) }
+            config.touchAreaType = TouchAreaType.BottomLeftRight
             dialog.dismiss()
         }
         view.findViewById<View>(R.id.layout_bottom_left).setOnClickListener {
-            sp.edit { putInt("sp_touch_area_type", TouchAreaType.Left.ordinal) }
+            config.touchAreaType = TouchAreaType.Left
             dialog.dismiss()
         }
         view.findViewById<View>(R.id.layout_bottom_right).setOnClickListener {
-            sp.edit { putInt("sp_touch_area_type", TouchAreaType.Right.ordinal) }
+            config.touchAreaType = TouchAreaType.Right
+            dialog.dismiss()
+        }
+        view.findViewById<View>(R.id.layout_middle_left_right).setOnClickListener {
+            config.touchAreaType = TouchAreaType.MiddleLeftRight
             dialog.dismiss()
         }
     }

@@ -435,8 +435,8 @@
     <string name="show_touch_area_hint">show touch area border</string>
     <string name="close">Close</string>
     <string name="left_right">left/right</string>
-    <string name="touch_left_side">left side</string>
-    <string name="touch_right_side">right side</string>
+    <string name="touch_left_side">left</string>
+    <string name="touch_right_side">right</string>
     <string name="bold_font">Bold font</string>
     <string name="setting_summary_bold_font">Apply bold font style (need to reload current page)</string>
     <string name="desktop_mode">Desktop mode</string>
@@ -484,4 +484,6 @@
     <string name="toolbar_title">Title</string>
     <string name="setting_title_screen_awake">Keep Screen Awake</string>
     <string name="setting_summary_screen_awake">Keep screen always awake</string>
+    <string name="middle">middle</string>
+    <string name="bottom">bottom</string>
 </resources>
