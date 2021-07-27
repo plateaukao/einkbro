@@ -60,6 +60,10 @@ class TouchAreaViewController(
                 touchAreaPageUp = rootView.findViewById(R.id.touch_area_bottom_left)
                 touchAreaPageDown = rootView.findViewById(R.id.touch_area_bottom_right)
             }
+            TouchAreaType.MiddleLeftRight-> {
+                touchAreaPageUp = rootView.findViewById(R.id.touch_area_middle_left)
+                touchAreaPageDown = rootView.findViewById(R.id.touch_area_middle_right)
+            }
             TouchAreaType.Left -> {
                 touchAreaPageUp = rootView.findViewById(R.id.touch_area_left_1)
                 touchAreaPageDown = rootView.findViewById(R.id.touch_area_left_2)

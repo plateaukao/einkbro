@@ -389,4 +389,6 @@
     <string name="page_down">下一頁</string>
     <string name="setting_title_screen_awake">保持不關閉螢幕</string>
     <string name="setting_summary_screen_awake">保持螢幕總是開啟</string>
+    <string name="middle">middle</string>
+    <string name="bottom">bottom</string>
 </resources>
