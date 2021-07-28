@@ -150,7 +150,6 @@ class NinjaWebView : WebView, AlbumController {
         setBackgroundColor(context.resources.getColor(R.color.color_transparent))
     }
 
-    @TargetApi(Build.VERSION_CODES.O)
     private fun initWebSettings() {
         with(settings) {
             builtInZoomControls = true
@@ -159,10 +158,8 @@ class NinjaWebView : WebView, AlbumController {
             setSupportMultipleWindows(true)
             loadWithOverviewMode = true
             useWideViewPort = true
-            if (Build.VERSION.SDK_INT >= 26) {
-                safeBrowsingEnabled = true
-            }
         }
+
         setLayerType(View.LAYER_TYPE_HARDWARE, null)
     }
 
