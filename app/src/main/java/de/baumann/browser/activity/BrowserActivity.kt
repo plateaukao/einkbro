@@ -331,11 +331,11 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         when (keyCode) {
             KeyEvent.KEYCODE_VOLUME_DOWN -> {
-                if (config.volumePageTurn) {
+                return if (config.volumePageTurn) {
                     ninjaWebView.pageDownWithNoAnimation()
-                    return true
+                    true
                 } else {
-                    return false
+                    false
                 }
             }
             KeyEvent.KEYCODE_VOLUME_UP -> {
