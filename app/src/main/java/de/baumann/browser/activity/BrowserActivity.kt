@@ -27,7 +27,6 @@ import android.widget.TextView.OnEditorActionListener
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.*
 import de.baumann.browser.browser.*
@@ -76,9 +75,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
     private lateinit var searchPanel: ViewGroup
     private lateinit var mainContentLayout: FrameLayout
     private lateinit var subContainer: RelativeLayout
-    private val swipeRefreshLayout: SwipeRefreshLayout by lazy {
-        binding.activityMainContent.swipeRefresh
-    }
 
     private var fullscreenHolder: FrameLayout? = null
 
@@ -201,7 +197,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         initSearchPanel()
         initOverview()
         initTouchArea()
-        initSwipeRefreshLayout()
         updateWebViewCountUI()
 
         AdBlock(this) // For AdBlock cold boot
@@ -224,29 +219,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
 
         if (config.keepAwake) {
             window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        }
-    }
-
-    private fun initSwipeRefreshLayout() {
-        // change icon
-        try {
-            val f: Field = swipeRefreshLayout.javaClass.getDeclaredField("mCircleView")
-            f.isAccessible = true
-            val img = f.get(swipeRefreshLayout) as ImageView
-            img.setBackgroundResource(R.mipmap.ic_launcher)
-        } catch (e: NoSuchFieldException) {
-            e.printStackTrace()
-        } catch (e: IllegalAccessException) {
-            e.printStackTrace()
-        }
-
-        swipeRefreshLayout.isEnabled = false
-        swipeRefreshLayout.setOnRefreshListener {
-            ninjaWebView.reload()
-            swipeRefreshLayout.isRefreshing = false
-        }
-        swipeRefreshLayout.viewTreeObserver.addOnScrollChangedListener {
-            //swipeRefreshLayout.isEnabled = (ninjaWebView.scrollY === 0)
         }
     }
 
@@ -740,14 +712,6 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             }
             fabImageButtonNav.setOnTouchListener(onTouchListener)
             binding.omniboxSetting.setOnTouchListener(onTouchListener)
-            /*
-            binding.toolbarScroller.setOnTouchListener(object : SwipeTouchListener(this) {
-                override fun onSwipeTop() = performGesture("setting_gesture_tb_up")
-                override fun onSwipeBottom() = performGesture("setting_gesture_tb_down")
-                override fun onSwipeRight() = performGesture("setting_gesture_tb_right")
-                override fun onSwipeLeft() = performGesture("setting_gesture_tb_left")
-            })
-             */
         }
         binding.omniboxInput.setOnEditorActionListener(OnEditorActionListener { _, _, _ ->
             val query = binding.omniboxInput.text.toString().trim { it <= ' ' }
