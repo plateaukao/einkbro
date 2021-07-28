@@ -1,3 +1,18 @@
+### 8.12.0
+
+- Add keep awake option in settings
+- Add vertical translation option
+- Add download file name edit dialog
+- Add touch area option: middle on two sides
+- Fix preview tab refresh issue
+
+### 8.11.0
+
+- Change tab preview image to list to improve web loading performance
+- Support resizable two pane layout for translation
+- Support font size change in translation panel
+- Show bookmark dialog when saving a new bookmark
+
 ### 8.10.0
 
 - Add translation icon in Toolbar configuration
