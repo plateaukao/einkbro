@@ -108,14 +108,14 @@
         android:id="@+id/fab_imageButtonNav"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_alignBottom="@+id/swipe_refresh"
+        android:layout_alignBottom="@+id/main_content"
         android:layout_alignParentEnd="true"
+        android:background="@drawable/roundcorner"
+        android:elevation="0dp"
+        android:tint="@android:color/darker_gray"
         android:visibility="gone"
         app:borderWidth="1dp"
-        android:background="@drawable/roundcorner"
-        android:tint="@android:color/darker_gray"
-        tools:visibility="visible"
-        android:elevation="0dp"
         app:srcCompat="@drawable/icon_overflow_fab"
-        tools:ignore="RelativeOverlap" />
+        tools:ignore="RelativeOverlap"
+        tools:visibility="visible" />
 </RelativeLayout>
