@@ -273,6 +273,13 @@ class NinjaWebView : WebView, AlbumController {
 
     override fun getAlbumUrl(): String = url ?: ""
 
+    private var keepPlaying = false;
+    override fun setKeepPlaying(keepPlaying: Boolean?) {
+        this.keepPlaying = keepPlaying ?: false
+    }
+
+    override fun keepPlaying(): Boolean = keepPlaying
+
     @Synchronized
     override fun activate() {
         requestFocus()
