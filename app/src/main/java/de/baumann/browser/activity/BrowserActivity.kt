@@ -3,6 +3,7 @@ package de.baumann.browser.activity
 import android.annotation.SuppressLint
 import android.app.*
 import android.content.*
+import android.content.Intent.ACTION_VIEW
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.media.MediaPlayer
@@ -13,6 +14,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.print.PrintAttributes
 import android.print.PrintManager
+import android.provider.Browser
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -59,7 +61,7 @@ import kotlin.math.roundToInt
 import kotlin.system.exitProcess
 
 
-class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener {
+open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener {
     private lateinit var fabImageButtonNav: ImageButton
     private lateinit var progressBar: ProgressBar
     private lateinit var searchBox: EditText
@@ -114,6 +116,8 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
     private val toolbarViewController: ToolbarViewController by lazy { ToolbarViewController(this, binding.toolbarScroller) }
 
     private lateinit var overviewDialogController: OverviewDialogController
+
+    private val browserContainer: BrowserContainer = BrowserContainer()
 
     private val touchController: TouchAreaViewController by lazy {
         TouchAreaViewController(
@@ -321,7 +325,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             val toClearService = Intent(this, ClearService::class.java)
             startService(toClearService)
         }
-        BrowserContainer.clear()
+        browserContainer.clear()
         IntentUnit.setContext(null)
         unregisterReceiver(downloadReceiver)
         bookmarkManager.release()
@@ -455,6 +459,10 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
                 binding.omniboxInput.requestFocus()
                 ViewUnit.showKeyboard(this@BrowserActivity)
             }
+            R.id.new_window -> {
+                hideOverview()
+                launchNewBrowser()
+            }
             R.id.tab_plus_bottom -> {
                 hideOverview()
                 addAlbum(getString(R.string.app_name), "")
@@ -515,6 +523,17 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
             else -> {
             }
         }
+    }
+
+    private fun launchNewBrowser() {
+        val intent = Intent(this, ExtraBrowserActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT)
+            addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK)
+            action = ACTION_VIEW
+            data = Uri.parse(config.favoriteUrl)
+        }
+
+        startActivity(intent)
     }
 
     private var isRotated:Boolean = false
@@ -936,7 +955,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
     override fun addNewTab(url: String?) = addAlbum(url = url)
 
     private fun getUrlMatchedBrowser(url: String): NinjaWebView? {
-        return BrowserContainer.list().firstOrNull { it.albumUrl == url } as NinjaWebView?
+        return browserContainer.list().firstOrNull { it.albumUrl == url } as NinjaWebView?
     }
 
     @Synchronized
@@ -954,12 +973,12 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
         ViewUnit.bound(this, ninjaWebView)
         val albumView = ninjaWebView.albumView
         if (currentAlbumController != null) {
-            val index = BrowserContainer.indexOf(currentAlbumController) + 1
-            BrowserContainer.add(ninjaWebView, index)
+            val index = browserContainer.indexOf(currentAlbumController) + 1
+            browserContainer.add(ninjaWebView, index)
             updateWebViewCount()
             overviewDialogController.addTabPreview(albumView)
         } else {
-            BrowserContainer.add(ninjaWebView)
+            browserContainer.add(ninjaWebView)
             updateWebViewCount()
             overviewDialogController.addTabPreview(albumView)
         }
@@ -979,12 +998,12 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
     }
 
     private fun updateSavedAlbumInfo() {
-        val albumControllers = BrowserContainer.list()
+        val albumControllers = browserContainer.list()
         val albumInfoList = albumControllers
                 .filter { it.albumUrl.isNotBlank() }
                 .map { controller -> AlbumInfo(controller.albumTitle, controller.albumUrl) }
         config.savedAlbumInfoList = albumInfoList
-        config.currentAlbumIndex = BrowserContainer.indexOf(currentAlbumController)
+        config.currentAlbumIndex = browserContainer.indexOf(currentAlbumController)
         // fix if current album is still with null url
         if (albumInfoList.isNotEmpty() && config.currentAlbumIndex >= albumInfoList.size) {
             config.currentAlbumIndex = albumInfoList.size - 1
@@ -992,7 +1011,7 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
     }
 
     private fun updateWebViewCount() {
-        binding.omniboxTabcount.text = BrowserContainer.size().toString()
+        binding.omniboxTabcount.text = browserContainer.size().toString()
         updateWebViewCountUI()
     }
 
@@ -1027,20 +1046,20 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
     override fun removeAlbum(controller: AlbumController) {
         updateSavedAlbumInfo()
 
-        if (BrowserContainer.size() <= 1) {
+        if (browserContainer.size() <= 1) {
                 finish()
         } else {
             closeTabConfirmation {
                 overviewDialogController.removeTabView(controller.albumView)
-                var index = BrowserContainer.indexOf(controller)
-                val currentIndex = BrowserContainer.indexOf(currentAlbumController)
-                BrowserContainer.remove(controller)
+                var index = browserContainer.indexOf(controller)
+                val currentIndex = browserContainer.indexOf(currentAlbumController)
+                browserContainer.remove(controller)
                 // only refresh album when the delete one is current one
                 if (index == currentIndex) {
-                    if (index >= BrowserContainer.size()) {
-                        index = BrowserContainer.size() - 1
+                    if (index >= browserContainer.size()) {
+                        index = browserContainer.size() - 1
                     }
-                    showAlbum(BrowserContainer.get(index))
+                    showAlbum(browserContainer.get(index))
                 }
                 updateWebViewCount()
             }
@@ -1396,11 +1415,11 @@ class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener 
     }
 
     private fun nextAlbumController(next: Boolean): AlbumController? {
-        if (BrowserContainer.size() <= 1) {
+        if (browserContainer.size() <= 1) {
             return currentAlbumController
         }
 
-        val list = BrowserContainer.list()
+        val list = browserContainer.list()
         var index = list.indexOf(currentAlbumController)
         if (next) {
             index++

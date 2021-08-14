@@ -19,4 +19,8 @@ public interface AlbumController {
     void deactivate();
 
     String getAlbumUrl();
+
+    void setKeepPlaying(Boolean keepPlaying);
+
+    Boolean keepPlaying();
 }
