@@ -59,15 +59,22 @@ class TranslationViewController(
         }
     }
 
-    suspend fun showTranslation(webView: NinjaWebView) {
-        if (!webView.isReaderModeOn && config.translationMode != TranslationMode.ONYX) {
-            webView.toggleReaderMode { launchTranslateWindow(it.purify()) }
-        } else {
-            launchTranslateWindow(webView.getRawText().purify())
+    suspend fun showTranslation(webView: NinjaWebView) = when(config.translationMode) {
+        TranslationMode.PAPAGO_DUAL -> webView.loadUrl(buildPUrlTranslateUrl(webView.url.toString()))
+        TranslationMode.PAPAGO_URL,
+        TranslationMode.GOOGLE_URL -> launchTranslateWindow(webView.url.toString())
+        TranslationMode.PAPAGO,
+        TranslationMode.GOOGLE -> {
+            if (!webView.isReaderModeOn) {
+                webView.toggleReaderMode { launchTranslateWindow(it.purify()) }
+            } else {
+                launchTranslateWindow(webView.getRawText().purify())
+            }
         }
+        TranslationMode.ONYX -> launchTranslateWindow(webView.getRawText().purify())
     }
 
-    fun showTranslation(text: String) = launchTranslateWindow(text)
+    //fun showTranslation(text: String) = launchTranslateWindow(text)
 
     fun setOrientation(orientation: Orientation) {
         twoPaneLayout.setOrientation(orientation)
@@ -94,6 +101,15 @@ class TranslationViewController(
         }
 
         twoPaneLayout.shouldShowSecondPane = true
+
+        // handle translate url
+        if (config.translationMode == TranslationMode.PAPAGO_URL) {
+            translateUrl(buildPUrlTranslateUrl(text))
+            return
+        } else if (config.translationMode == TranslationMode.GOOGLE_URL) {
+            translateUrl(buildGUrlTranslateUrl(text))
+            return
+        }
 
         pageTextList = parseTextToSegments(text)
         updatePageViews(pageTextList.size)
@@ -123,7 +139,7 @@ class TranslationViewController(
             }
             .create().also {
                 it.show()
-                it.window?.setLayout(200.dp(activity), ViewGroup.LayoutParams.WRAP_CONTENT)
+                it.window?.setLayout(300.dp(activity), ViewGroup.LayoutParams.WRAP_CONTENT)
             }
     }
 
@@ -153,12 +169,19 @@ class TranslationViewController(
         pageContainer.requestLayout()
     }
 
+    private fun translateUrl(url: String) {
+        webView.loadUrl(url)
+    }
+
     private fun translatePage(selectedPageIndex: Int) {
         val text = pageTextList[selectedPageIndex]
-        webView.loadUrl(
-            if (config.translationMode == TranslationMode.GOOGLE) buildGTranslateUrl(text)
-            else buildPTranslateUrl(text)
-        )
+        val url = when (config.translationMode) {
+            TranslationMode.GOOGLE -> buildGTranslateUrl(text)
+            TranslationMode.PAPAGO -> buildPTranslateUrl(text)
+            else -> ""
+        }
+
+        webView.loadUrl(url)
 
         pageContainer.children.iterator().forEach{ pageIndexView ->
             pageIndexView.setBackgroundResource(
@@ -178,12 +201,37 @@ class TranslationViewController(
         return webView
     }
 
+    private fun buildPUrlTranslateUrl(url: String): String {
+        val uri = Uri.Builder()
+            .scheme("https")
+            .authority("papago.naver.net")
+            .path("website")
+            .appendQueryParameter("locale", "en")
+            .appendQueryParameter("source", "auto")
+            .appendQueryParameter("target", "ja")
+            .appendQueryParameter("url", url)
+            .build()
+        return uri.toString()
+    }
+
     private fun buildPTranslateUrl(text: String): String {
         val shortenedText: String = if (text.length > TRANSLATION_TEXT_THRESHOLD) text.substring(0, TRANSLATION_TEXT_THRESHOLD) else text
         val uri = Uri.Builder()
             .scheme("https")
             .authority("papago.naver.com")
             .appendQueryParameter("st", shortenedText)
+            .build()
+        return uri.toString()
+    }
+
+    private fun buildGUrlTranslateUrl(url: String): String {
+        val uri = Uri.Builder()
+            .scheme("https")
+            .authority("translate.google.com")
+            .appendPath("translate")
+            .appendQueryParameter("u", url)
+            .appendQueryParameter("sl", "auto") // source language
+            .appendQueryParameter("tl", "jp") // target language
             .build()
         return uri.toString()
     }
