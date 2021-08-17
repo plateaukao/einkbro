@@ -86,6 +86,10 @@ class TranslationViewController(
         webView.setScrollChangeListener(listener)
         val drawable = if (isScrollSynced) R.drawable.selected_border_bg else R.drawable.backgound_with_border
         translationViewBinding.syncScroll.setBackgroundResource(drawable)
+
+        if (isScrollSynced && config.translationMode == TranslationMode.GOOGLE_URL) {
+            webView.hideGoogleBar()
+        }
     }
 
     private fun launchTranslateWindow(text: String) {
@@ -178,6 +182,7 @@ class TranslationViewController(
     }
 
     private fun translateUrl(url: String) {
+        isScrollSynced = false
         webView.loadUrl(url)
     }
 
