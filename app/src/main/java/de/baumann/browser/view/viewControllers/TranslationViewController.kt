@@ -1,7 +1,6 @@
 package de.baumann.browser.view.viewControllers
 
 import android.app.Activity
-import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -12,8 +11,6 @@ import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.children
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.lifecycleScope
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.TranslationPageIndexBinding
 import de.baumann.browser.Ninja.databinding.TranslationPanelBinding
@@ -25,21 +22,19 @@ import de.baumann.browser.view.NinjaToast
 import de.baumann.browser.view.NinjaWebView
 import de.baumann.browser.view.Orientation
 import de.baumann.browser.view.TwoPaneLayout
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class TranslationViewController(
     private val activity: Activity,
     private val translationViewBinding: TranslationPanelBinding,
     private val twoPaneLayout: TwoPaneLayout,
     private val showTranslationAction: () -> Unit,
-    private val onTranslationClosed: () -> Unit
+    private val onTranslationClosed: () -> Unit,
+    private val onScrollChangeListener: NinjaWebView.OnScrollChangeListener
 ) {
     private val config: ConfigManager by lazy { ConfigManager(activity) }
     private val webView: NinjaWebView by lazy {
         NinjaWebView(activity, null).apply {
             shouldHideTranslateContext = true
-            settings.textZoom = 90
         }
     }
     private val pageContainer: ViewGroup = translationViewBinding.pageContainer
@@ -47,6 +42,8 @@ class TranslationViewController(
     private var isWebViewAdded: Boolean = false
 
     private var pageTextList: List<String> = listOf()
+
+    private var isScrollSynced = false
 
     init {
         translationViewBinding.translationClose.setOnClickListener { toggleTranslationWindow(false, onTranslationClosed) }
@@ -56,6 +53,9 @@ class TranslationViewController(
         translationViewBinding.translationOrientation.setOnClickListener {
             val orientation = if (twoPaneLayout.getOrientation() == Orientation.Vertical) Orientation.Horizontal else Orientation.Vertical
             twoPaneLayout.setOrientation(orientation)
+        }
+        translationViewBinding.syncScroll.setOnClickListener {
+            toggleSyncScroll(!isScrollSynced)
         }
     }
 
@@ -78,6 +78,14 @@ class TranslationViewController(
 
     fun setOrientation(orientation: Orientation) {
         twoPaneLayout.setOrientation(orientation)
+    }
+
+    private fun toggleSyncScroll(shouldSyncScroll: Boolean = false) {
+        isScrollSynced = shouldSyncScroll
+        val listener = if (isScrollSynced) onScrollChangeListener else null
+        webView.setScrollChangeListener(listener)
+        val drawable = if (isScrollSynced) R.drawable.selected_border_bg else R.drawable.backgound_with_border
+        translationViewBinding.syncScroll.setBackgroundResource(drawable)
     }
 
     private fun launchTranslateWindow(text: String) {
@@ -174,6 +182,9 @@ class TranslationViewController(
     }
 
     private fun translatePage(selectedPageIndex: Int) {
+        // disable scroll sync first
+        toggleSyncScroll(false)
+
         val text = pageTextList[selectedPageIndex]
         val url = when (config.translationMode) {
             TranslationMode.GOOGLE -> buildGTranslateUrl(text)
