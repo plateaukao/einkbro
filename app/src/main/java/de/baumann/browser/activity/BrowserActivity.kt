@@ -137,6 +137,12 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
             binding.twoPanelLayout,
             { showTranslation() },
             { if (ninjaWebView.isReaderModeOn) ninjaWebView.toggleReaderMode() },
+            object : NinjaWebView.OnScrollChangeListener {
+                override fun onScrollChange(scrollY: Int, oldScrollY: Int) {
+                    val offset = scrollY - oldScrollY
+                    ninjaWebView.scrollY += offset
+                }
+            }
         )
     }
 
@@ -1079,7 +1085,7 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
 
     var keepToolbar = false
     private fun scrollChange() {
-        ninjaWebView.setOnScrollChangeListener(object : NinjaWebView.OnScrollChangeListener {
+        ninjaWebView.setScrollChangeListener(object : NinjaWebView.OnScrollChangeListener {
             override fun onScrollChange(scrollY: Int, oldScrollY: Int) {
                 if (!sp.getBoolean("hideToolbar", false)) return
 

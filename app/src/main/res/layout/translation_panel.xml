@@ -27,6 +27,16 @@
         android:src="@drawable/ic_rotate"
         android:tint="?attr/colorControlNormal"
         android:background="@drawable/backgound_with_border"
+        android:layout_above="@+id/sync_scroll"
+        android:layout_alignParentEnd="true"
+        />
+    <ImageButton
+        android:id="@+id/sync_scroll"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_sync_scroll"
+        android:tint="?attr/colorControlNormal"
+        android:background="@drawable/backgound_with_border"
         android:layout_above="@+id/translation_font_plus"
         android:layout_alignParentEnd="true"
         />

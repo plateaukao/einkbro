@@ -77,12 +77,10 @@ class NinjaWebView : WebView, AlbumController {
 
     override fun onScrollChanged(l: Int, t: Int, old_l: Int, old_t: Int) {
         super.onScrollChanged(l, t, old_l, old_t)
-        if (onScrollChangeListener != null) {
-            onScrollChangeListener!!.onScrollChange(t, old_t)
-        }
+        onScrollChangeListener?.onScrollChange(t, old_t)
     }
 
-    fun setOnScrollChangeListener(onScrollChangeListener: OnScrollChangeListener) {
+    fun setScrollChangeListener(onScrollChangeListener: OnScrollChangeListener?) {
         this.onScrollChangeListener = onScrollChangeListener
     }
 
