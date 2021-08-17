@@ -527,6 +527,12 @@ class NinjaWebView : WebView, AlbumController {
         }
     }
 
+    fun hideGoogleBar() {
+        if (config.translationMode == TranslationMode.GOOGLE_URL) {
+            evaluateJavascript(hideGUrlTranslateContext, null)
+        }
+    }
+
     private fun getByteArrayFromAsset(fileName: String): ByteArray {
         return try {
             val assetInput: InputStream = context.assets.open(fileName)
@@ -584,6 +590,15 @@ class NinjaWebView : WebView, AlbumController {
             javascript:(function() {
                 document.querySelector("span[lang]").style.display = "none";
                 document.querySelector("div[data-location]").style.display = "none";
+            })()
+            """
+
+        private const val hideGUrlTranslateContext = """
+            javascript:(function() {
+                document.getElementById("gt-logo").remove();
+                document.getElementById("wtgbr").remove();
+                document.getElementById("gt-c").remove();
+                document.getElementById("contentframe").style="top:0px";
             })()
             """
 
