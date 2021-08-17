@@ -213,7 +213,7 @@ enum class FabPosition {
 }
 
 enum class TranslationMode {
-    ONYX, GOOGLE, PAPAGO
+    ONYX, GOOGLE, PAPAGO, PAPAGO_URL, GOOGLE_URL, PAPAGO_DUAL
 }
 
 data class AlbumInfo(
