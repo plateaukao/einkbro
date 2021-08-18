@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <de.baumann.browser.view.sortlistpreference.CheckableMultiSelectLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="48dp"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:gravity="center_vertical">

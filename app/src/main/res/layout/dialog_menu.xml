@@ -90,9 +90,14 @@
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:background="?attr/colorControlNormal"/>
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="right"
         android:gravity="right"
         android:layout_weight="1"
         android:orientation="horizontal">
@@ -229,8 +234,8 @@
                 android:text="@string/toolbar_setting"
                 android:textSize="10sp" />
         </LinearLayout>
-
     </LinearLayout>
+    </HorizontalScrollView>
 
     <View
         android:layout_width="match_parent"

@@ -588,6 +588,7 @@ class NinjaWebView : WebView, AlbumController {
         """
         private const val hideGTranslateContext = """
             javascript:(function() {
+                document.getElementsByTagName("header")[0].remove();
                 document.querySelector("span[lang]").style.display = "none";
                 document.querySelector("div[data-location]").style.display = "none";
             })()
@@ -595,6 +596,7 @@ class NinjaWebView : WebView, AlbumController {
 
         private const val hideGUrlTranslateContext = """
             javascript:(function() {
+                document.getElementById("gt-nvframe").remove();
                 document.getElementById("gt-logo").remove();
                 document.getElementById("wtgbr").remove();
                 document.getElementById("gt-c").remove();
