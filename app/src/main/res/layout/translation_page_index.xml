@@ -3,7 +3,7 @@
     android:id="@+id/page_6"
     android:layout_width="40dp"
     android:layout_height="40dp"
-    android:background="@drawable/backgound_with_border"
+    android:background="@drawable/background_transparent_with_border"
     android:gravity="center"
     android:text="6"
     android:textAlignment="center" />
