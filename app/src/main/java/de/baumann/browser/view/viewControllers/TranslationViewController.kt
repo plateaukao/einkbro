@@ -84,7 +84,7 @@ class TranslationViewController(
         isScrollSynced = shouldSyncScroll
         val listener = if (isScrollSynced) onScrollChangeListener else null
         webView.setScrollChangeListener(listener)
-        val drawable = if (isScrollSynced) R.drawable.selected_border_bg else R.drawable.backgound_with_border
+        val drawable = if (isScrollSynced) R.drawable.selected_border_bg else R.drawable.background_transparent_with_border
         translationViewBinding.syncScroll.setBackgroundResource(drawable)
 
         if (isScrollSynced && config.translationMode == TranslationMode.GOOGLE_URL) {
@@ -201,7 +201,7 @@ class TranslationViewController(
 
         pageContainer.children.iterator().forEach{ pageIndexView ->
             pageIndexView.setBackgroundResource(
-                if (selectedPageIndex == pageIndexView.tag) R.drawable.selected_border_bg else R.drawable.backgound_with_border
+                if (selectedPageIndex == pageIndexView.tag) R.drawable.selected_border_bg else R.drawable.background_transparent_with_border
             )
         }
     }
