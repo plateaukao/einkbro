@@ -13,14 +13,14 @@
         >
     </FrameLayout>
 
-    <View android:id="@+id/touch_area_middle_left"
+    <View
+        android:id="@+id/touch_area_middle_left"
         android:layout_width="150dp"
         android:layout_height="250dp"
-        android:layout_marginLeft="-1dp"
-        android:visibility="invisible"
-        android:background="@drawable/touch_area_border"
         android:layout_centerVertical="true"
-        />
+        android:layout_marginLeft="-1dp"
+        android:background="@drawable/touch_area_border"
+        android:visibility="invisible" />
     <View android:id="@+id/touch_area_bottom_left"
         android:layout_width="150dp"
         android:layout_height="250dp"

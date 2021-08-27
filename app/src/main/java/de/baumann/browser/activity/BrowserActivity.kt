@@ -27,6 +27,7 @@ import android.webkit.WebView.HitTestResult
 import android.widget.*
 import android.widget.TextView.OnEditorActionListener
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.edit
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
 import de.baumann.browser.Ninja.R
@@ -173,7 +174,9 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
             shouldLoadTabState = it.getBoolean(K_SHOULD_LOAD_TAB_STATE)
         }
 
-        WebView.enableSlowWholeDocumentDraw()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            WebView.enableSlowWholeDocumentDraw()
+        }
 
         sp.edit().putInt("restart_changed", 0).apply()
         HelperUnit.applyTheme(this)
@@ -189,17 +192,19 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
             if (Locale.getDefault().country == "CN") {
                 sp.edit().putString(getString(R.string.sp_search_engine), "2").apply()
             }
-            sp.edit().putString("saved_key", sb.toString()).apply()
-            sp.edit().putString("saved_key_ok", "yes").apply()
-            sp.edit().putString("setting_gesture_tb_up", "08").apply()
-            sp.edit().putString("setting_gesture_tb_down", "01").apply()
-            sp.edit().putString("setting_gesture_tb_left", "07").apply()
-            sp.edit().putString("setting_gesture_tb_right", "06").apply()
-            sp.edit().putString("setting_gesture_nav_up", "04").apply()
-            sp.edit().putString("setting_gesture_nav_down", "05").apply()
-            sp.edit().putString("setting_gesture_nav_left", "03").apply()
-            sp.edit().putString("setting_gesture_nav_right", "02").apply()
-            sp.edit().putBoolean(getString(R.string.sp_location), false).apply()
+            sp.edit {
+                putString("saved_key", sb.toString())
+                putString("saved_key_ok", "yes")
+                putString("setting_gesture_tb_up", "08")
+                putString("setting_gesture_tb_down", "01")
+                putString("setting_gesture_tb_left", "07")
+                putString("setting_gesture_tb_right", "06")
+                putString("setting_gesture_nav_up", "04")
+                putString("setting_gesture_nav_down", "05")
+                putString("setting_gesture_nav_left", "03")
+                putString("setting_gesture_nav_right", "02")
+                putBoolean(getString(R.string.sp_location), false)
+            }
         }
         mainContentLayout = findViewById(R.id.main_content)
         subContainer = findViewById(R.id.sub_container)
@@ -420,10 +425,13 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
                 updateAlbum(record.url)
                 ViewUnit.hideKeyboard(this@BrowserActivity)
             }
-            binding.omniboxInput.setAdapter(adapter)
-            binding.omniboxInput.threshold = 1
-            binding.omniboxInput.dropDownVerticalOffset = -16
-            binding.omniboxInput.dropDownWidth = ViewUnit.getWindowWidth(activity)
+
+            with (binding.omniboxInput) {
+                setAdapter(adapter)
+                threshold = 1
+                dropDownVerticalOffset = -16
+                dropDownWidth = ViewUnit.getWindowWidth(activity)
+            }
         }
     }
 
