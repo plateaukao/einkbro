@@ -174,9 +174,7 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
             shouldLoadTabState = it.getBoolean(K_SHOULD_LOAD_TAB_STATE)
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            WebView.enableSlowWholeDocumentDraw()
-        }
+        WebView.enableSlowWholeDocumentDraw()
 
         sp.edit().putInt("restart_changed", 0).apply()
         HelperUnit.applyTheme(this)
