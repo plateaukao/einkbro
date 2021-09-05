@@ -170,6 +170,7 @@ class RecordAction(context: Context?) {
             cursor.moveToNext()
         }
         cursor.close()
+
         return list
     }
 
