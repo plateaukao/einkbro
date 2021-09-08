@@ -125,7 +125,7 @@ class OverviewDialogController(
         binding.root.visibility = GONE
     }
 
-    fun openHistoryPage() {
+    fun openHistoryPage(amount: Int = 0) {
         binding.root.visibility = VISIBLE
 
         binding.overviewPreview.visibility = View.INVISIBLE
@@ -138,7 +138,7 @@ class OverviewDialogController(
         action.open(false)
         var adapter: RecordAdapter? = null
         lifecycleScope.launch {
-            val list = action.listEntries((context as Activity), false)
+            val list = action.listEntries((context as Activity), false, amount)
             action.close()
             adapter = RecordAdapter(
                 list.toMutableList(),
