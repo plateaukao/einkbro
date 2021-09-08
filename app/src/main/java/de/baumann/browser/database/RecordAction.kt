@@ -139,7 +139,7 @@ class RecordAction(context: Context?) {
         )
     }
 
-    suspend fun listEntries(activity: Activity, listAll: Boolean): List<Record> {
+    suspend fun listEntries(activity: Activity, listAll: Boolean, amount: Int = 0): List<Record> {
         val bookmarkManager = BookmarkManager(activity)
         val list: MutableList<Record> = ArrayList()
         if (listAll) {
@@ -171,7 +171,11 @@ class RecordAction(context: Context?) {
         }
         cursor.close()
 
-        return list
+        return if (amount == 0) {
+            list
+        } else {
+            list.take(amount)
+        }
     }
 
     fun listDomains(table: String?): List<String> {

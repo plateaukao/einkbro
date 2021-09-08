@@ -778,6 +778,8 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
         binding.omniboxBookmark.setOnLongClickListener { saveBookmark(); true }
         binding.toolbarTranslate.setOnLongClickListener { translateController.showTranslationConfigDialog(); true }
 
+        binding.omniboxBack.setOnLongClickListener { openHistoryPage(5); true }
+
         sp.registerOnSharedPreferenceChangeListener(preferenceChangeListener)
 
         toolbarViewController.reorderIcons()
@@ -892,7 +894,7 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
         )
     }
 
-    private fun openHistoryPage() = overviewDialogController.openHistoryPage()
+    private fun openHistoryPage(amount: Int = 0) = overviewDialogController.openHistoryPage(amount)
 
     private fun openBookmarkPage() = overviewDialogController.openBookmarkPage()
 
