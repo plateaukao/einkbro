@@ -814,6 +814,7 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
                     window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
                 }
             }
+            key.equals(ConfigManager.K_DESKTOP) -> ninjaWebView.updateDesktopMode()
         }
     }
 
