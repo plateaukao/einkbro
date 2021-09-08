@@ -459,13 +459,8 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
                 binding.omniboxInput.requestFocus()
                 ViewUnit.showKeyboard(this@BrowserActivity)
             }
-            R.id.omnibox_input_clear -> {
-                if (binding.omniboxInput.text.isEmpty()) {
-                    showToolbar()
-                } else {
-                    binding.omniboxInput.text.clear()
-                }
-            }
+            R.id.omnibox_input_clear -> binding.omniboxInput.text.clear()
+            R.id.omnibox_input_close -> showToolbar()
             R.id.tab_plus_incognito -> {
                 hideOverview()
                 addAlbum(getString(R.string.app_name), "", incognito = true)
