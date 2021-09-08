@@ -49,7 +49,7 @@ class FastToggleDialog(
         updateViewVisibility(binding.toggleHistoryView, config.saveHistory)
         updateViewVisibility(binding.toggleLocationView, R.string.sp_location)
         updateViewVisibility(binding.toggleMediaContinueView, sp.getBoolean("sp_media_continue", false))
-        updateViewVisibility(binding.toggleDesktopView, sp.getBoolean("sp_desktop", false))
+        updateViewVisibility(binding.toggleDesktopView, config.desktop)
         updateViewVisibility(binding.toggleVolumePageTurn, config.volumePageTurn)
 
         binding.toggleHistory.setOnClickListener {

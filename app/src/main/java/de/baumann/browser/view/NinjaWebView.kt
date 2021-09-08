@@ -91,6 +91,7 @@ class NinjaWebView : WebView, AlbumController {
     }
 
     override fun reload() {
+        settings.cacheMode = WebSettings.LOAD_DEFAULT
         isVerticalRead = false
         isReaderModeOn = false
         super.reload()
@@ -181,8 +182,8 @@ class NinjaWebView : WebView, AlbumController {
             loadWithOverviewMode = isDesktopMode
             setAppCacheEnabled(true)
             setAppCachePath("");
-            setAppCacheMaxSize(5*1024*1024)
-            cacheMode = WebSettings.LOAD_DEFAULT
+            setAppCacheMaxSize(30*1024*1024)
+            cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
             textZoom = config.fontSize
             allowFileAccessFromFileURLs = sp.getBoolean("sp_remote", true)
             allowUniversalAccessFromFileURLs = sp.getBoolean("sp_remote", true)
@@ -237,6 +238,7 @@ class NinjaWebView : WebView, AlbumController {
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun loadUrl(url: String) {
+        settings.cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
         if (url.trim { it <= ' ' }.isEmpty()) {
             NinjaToast.show(context, R.string.toast_load_error)
             return
