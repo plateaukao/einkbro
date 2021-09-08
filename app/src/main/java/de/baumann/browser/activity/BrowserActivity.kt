@@ -508,19 +508,7 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
             R.id.omnibox_vertical_read -> ninjaWebView.toggleVerticalRead()
 
             R.id.omnibox_refresh -> if (url != null && ninjaWebView.isLoadFinish) {
-                if (url?.startsWith("https://") != true) {
-                    dialogManager.showOkCancelDialog(
-                        messageResId = R.string.toast_unsecured,
-                        okAction = {
-                            ninjaWebView.loadUrl(
-                                url?.replace("http://", "https://") ?: ""
-                            )
-                        },
-                        cancelAction = { ninjaWebView.reload() }
-                    )
-                } else {
-                    ninjaWebView.reload()
-                }
+                ninjaWebView.reload()
             } else if (url == null) {
                 val text = getString(R.string.toast_load_error) + ": " + url
                 NinjaToast.show(this, text)
