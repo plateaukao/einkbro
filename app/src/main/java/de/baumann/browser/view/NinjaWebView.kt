@@ -1,7 +1,6 @@
 package de.baumann.browser.view
 
 import android.annotation.SuppressLint
-import android.annotation.TargetApi
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Configuration
@@ -27,7 +26,6 @@ import de.baumann.browser.browser.*
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.preference.TranslationMode
 import de.baumann.browser.unit.BrowserUnit
-import de.baumann.browser.unit.ViewUnit
 import de.baumann.browser.unit.ViewUnit.dp
 import de.baumann.browser.util.PdfDocumentAdapter
 import org.apache.commons.text.StringEscapeUtils
@@ -164,22 +162,10 @@ class NinjaWebView : WebView, AlbumController {
 
     fun initPreferences() {
         config = ConfigManager(context)
-        val userAgent = sp.getString("userAgent", "") ?: ""
-        if (userAgent.isNotEmpty()) {
-            settings.userAgentString = userAgent
-        }
 
-        val isDesktopMode = sp.getBoolean("sp_desktop", false)
-        if (isDesktopMode) {
-            settings.userAgentString = BrowserUnit.UA_DESKTOP
-        } else {
-            val defaultUserAgent = settings.userAgentString
-            settings.userAgentString = defaultUserAgent.replace("wv", "")
-        }
+        updateDesktopMode()
 
         with(settings) {
-            useWideViewPort = isDesktopMode
-            loadWithOverviewMode = isDesktopMode
             setAppCacheEnabled(true)
             setAppCachePath("");
             setAppCacheMaxSize(30*1024*1024)
@@ -201,6 +187,18 @@ class NinjaWebView : WebView, AlbumController {
         webViewClient.enableAdBlock(sp.getBoolean(context!!.getString(R.string.sp_ad_block), true))
 
         toggleCookieSupport(config.cookies)
+    }
+
+    fun updateDesktopMode() {
+        val isDesktopMode = config.desktop
+        if (isDesktopMode) {
+            settings.userAgentString = BrowserUnit.UA_DESKTOP
+        } else {
+            settings.userAgentString = WebSettings.getDefaultUserAgent(context).replace("wv", "")
+        }
+
+        settings.useWideViewPort = isDesktopMode
+        settings.loadWithOverviewMode = isDesktopMode
     }
 
     private fun toggleCookieSupport(isEnabled: Boolean) {

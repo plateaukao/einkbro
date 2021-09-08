@@ -73,8 +73,8 @@ class FastToggleDialog(
             dialog.dismiss()
         }
         binding.toggleDesktop.setOnClickListener {
-            updateBooleanPref("sp_desktop", false)
-            updateViewVisibility(binding.toggleDesktopView, sp.getBoolean("sp_desktop", false))
+            config.desktop = !config.desktop
+            updateViewVisibility(binding.toggleDesktopView, config.desktop)
             dialog.dismiss()
             okAction.invoke()
         }
