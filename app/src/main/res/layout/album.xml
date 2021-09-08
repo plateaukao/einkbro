@@ -12,7 +12,7 @@
         android:id="@+id/album_cover"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:padding="10dp"
+        android:padding="5dp"
         android:layout_gravity="center"
         android:scaleType="centerCrop" />
 
@@ -32,13 +32,12 @@
 
     <ImageButton
         android:id="@+id/album_close"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_gravity="center"
-        android:padding="20dp"
+        android:paddingVertical="10dp"
+        android:paddingHorizontal="60dp"
         android:tint="?attr/colorControlNormal"
         android:background="@color/color_transparent"
         android:src="@drawable/close_circle" />
-
-
 </LinearLayout>
