@@ -527,12 +527,6 @@ class NinjaWebView : WebView, AlbumController {
         }
     }
 
-    fun hideGoogleBar() {
-        if (config.translationMode == TranslationMode.GOOGLE_URL) {
-            evaluateJavascript(hideGUrlTranslateContext, null)
-        }
-    }
-
     private fun getByteArrayFromAsset(fileName: String): ByteArray {
         return try {
             val assetInput: InputStream = context.assets.open(fileName)
