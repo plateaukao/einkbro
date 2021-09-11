@@ -21,6 +21,17 @@
         </LinearLayout>
     </HorizontalScrollView>
 
+    <ImageButton
+        android:id="@+id/expanded_button"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/icon_info"
+        android:tint="?attr/colorControlNormal"
+        android:background="@drawable/backgound_with_border"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:visibility="invisible"
+        />
     <LinearLayout
         android:id="@+id/controls_container"
         android:layout_alignParentBottom="true"
@@ -32,7 +43,7 @@
             android:id="@+id/translation_orientation"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:background="@drawable/background_transparent_with_border"
+            android:background="@drawable/backgound_with_border"
             android:src="@drawable/ic_rotate"
             android:tint="?attr/colorControlNormal" />
         <ImageButton
@@ -41,14 +52,14 @@
             android:layout_height="40dp"
             android:src="@drawable/ic_sync_scroll"
             android:tint="?attr/colorControlNormal"
-            android:background="@drawable/background_transparent_with_border"
+            android:background="@drawable/backgound_with_border"
             />
         <TextView
             android:id="@+id/translation_language"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:tint="?attr/colorControlNormal"
-            android:background="@drawable/background_transparent_with_border"
+            android:background="@drawable/backgound_with_border"
             android:textAlignment="center"
             android:gravity="center"
             android:textSize="20sp"
@@ -60,7 +71,7 @@
             android:layout_height="40dp"
             android:src="@mipmap/font_size_increase"
             android:tint="?attr/colorControlNormal"
-            android:background="@drawable/background_transparent_with_border"
+            android:background="@drawable/backgound_with_border"
             />
         <ImageButton
             android:id="@+id/translation_font_minus"
@@ -68,7 +79,7 @@
             android:layout_height="40dp"
             android:src="@mipmap/font_size_decrease"
             android:tint="?attr/colorControlNormal"
-            android:background="@drawable/background_transparent_with_border"
+            android:background="@drawable/backgound_with_border"
             />
         <ImageButton
             android:id="@+id/translation_close"
@@ -76,7 +87,7 @@
             android:layout_height="40dp"
             android:src="@drawable/icon_close"
             android:tint="?attr/colorControlNormal"
-            android:background="@drawable/background_transparent_with_border"
+            android:background="@drawable/backgound_with_border"
             />
     </LinearLayout>
 </RelativeLayout>
