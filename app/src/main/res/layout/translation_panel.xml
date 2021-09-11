@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/color_transparent">
 
     <HorizontalScrollView
@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_toLeftOf="@+id/translation_close"
+        android:layout_toLeftOf="@+id/controls_container"
         android:layout_alignParentBottom="true">
         <LinearLayout
             android:id="@+id/page_container"
@@ -21,53 +21,62 @@
         </LinearLayout>
     </HorizontalScrollView>
 
-    <ImageButton
-        android:id="@+id/translation_orientation"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_above="@+id/sync_scroll"
-        android:layout_alignParentEnd="true"
-        android:background="@drawable/background_transparent_with_border"
-        android:src="@drawable/ic_rotate"
-        android:tint="?attr/colorControlNormal" />
-    <ImageButton
-        android:id="@+id/sync_scroll"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/ic_sync_scroll"
-        android:tint="?attr/colorControlNormal"
-        android:background="@drawable/background_transparent_with_border"
-        android:layout_above="@+id/translation_font_plus"
-        android:layout_alignParentEnd="true"
-        />
-    <ImageButton
-        android:id="@+id/translation_font_plus"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@mipmap/font_size_increase"
-        android:tint="?attr/colorControlNormal"
-        android:background="@drawable/background_transparent_with_border"
-        android:layout_above="@+id/translation_font_minus"
-        android:layout_alignParentEnd="true"
-        />
-    <ImageButton
-        android:id="@+id/translation_font_minus"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@mipmap/font_size_decrease"
-        android:tint="?attr/colorControlNormal"
-        android:background="@drawable/background_transparent_with_border"
-        android:layout_above="@+id/translation_close"
-        android:layout_alignParentEnd="true"
-        />
-    <ImageButton
-        android:id="@+id/translation_close"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/icon_close"
-        android:tint="?attr/colorControlNormal"
-        android:background="@drawable/background_transparent_with_border"
+    <LinearLayout
+        android:id="@+id/controls_container"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        />
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageButton
+            android:id="@+id/translation_orientation"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/background_transparent_with_border"
+            android:src="@drawable/ic_rotate"
+            android:tint="?attr/colorControlNormal" />
+        <ImageButton
+            android:id="@+id/sync_scroll"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_sync_scroll"
+            android:tint="?attr/colorControlNormal"
+            android:background="@drawable/background_transparent_with_border"
+            />
+        <TextView
+            android:id="@+id/translation_language"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:tint="?attr/colorControlNormal"
+            android:background="@drawable/background_transparent_with_border"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:textSize="20sp"
+            tools:text="zh"
+            />
+        <ImageButton
+            android:id="@+id/translation_font_plus"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@mipmap/font_size_increase"
+            android:tint="?attr/colorControlNormal"
+            android:background="@drawable/background_transparent_with_border"
+            />
+        <ImageButton
+            android:id="@+id/translation_font_minus"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@mipmap/font_size_decrease"
+            android:tint="?attr/colorControlNormal"
+            android:background="@drawable/background_transparent_with_border"
+            />
+        <ImageButton
+            android:id="@+id/translation_close"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/icon_close"
+            android:tint="?attr/colorControlNormal"
+            android:background="@drawable/background_transparent_with_border"
+            />
+    </LinearLayout>
 </RelativeLayout>

@@ -8,6 +8,7 @@ import android.util.Log
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import de.baumann.browser.util.Constants
+import de.baumann.browser.util.TranslationLanguage
 import de.baumann.browser.view.toolbaricons.ToolbarAction
 import de.baumann.browser.view.viewControllers.OverviewTab
 
@@ -94,6 +95,10 @@ class ConfigManager(private val context: Context) {
         get() = PaperSize.values()[sp.getInt("pdf_paper_size", PaperSize.ISO_13.ordinal)]
         set(value) {sp.edit { putInt("pdf_paper_size", value.ordinal) } }
 
+    var translationLanguage: TranslationLanguage
+        get() = TranslationLanguage.values()[sp.getInt(K_TRANSLATE_LANGUAGE, getDefaultTranslationLanguage().ordinal)]
+        set(value) {sp.edit { putInt(K_TRANSLATE_LANGUAGE, value.ordinal) } }
+
     var overviewTab: OverviewTab
         get() = when (sp.getString(K_START_TAB, "0")) {
             "0" -> OverviewTab.TabPreview
@@ -171,6 +176,15 @@ class ConfigManager(private val context: Context) {
         return iconListString.split(",").map{ ToolbarAction.fromOrdinal(it.toInt())}
     }
 
+    private fun getDefaultTranslationLanguage(): TranslationLanguage {
+        val locale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            context.resources.configuration.locales.get(0)
+        } else {
+            context.resources.configuration.locale
+        }
+        return TranslationLanguage.findByLanguage(locale.language)
+    }
+
     private fun getDefaultIconStrings(): String =
             ToolbarAction.defaultActions.joinToString (",") { action ->
                 action.ordinal.toString()
@@ -201,6 +215,7 @@ class ConfigManager(private val context: Context) {
         const val K_START_TAB = "start_tab"
         const val K_KEEP_AWAKE = "sp_screen_awake"
         const val K_DESKTOP = "sp_desktop"
+        const val K_TRANSLATE_LANGUAGE = "sp_translate_language"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
     }

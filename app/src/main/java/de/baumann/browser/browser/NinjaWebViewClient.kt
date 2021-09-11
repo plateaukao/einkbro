@@ -45,7 +45,8 @@ class NinjaWebViewClient(private val ninjaWebView: NinjaWebView) : WebViewClient
 
     override fun onPageFinished(view: WebView, url: String) {
         ninjaWebView.albumTitle = view.title ?: ""
-        if (config.saveHistory && !ninjaWebView.incognito) {
+        // skip translation pages
+        if (config.saveHistory && !ninjaWebView.incognito && !isTranslationDomain(url)) {
             val action = RecordAction(context)
             action.open(true)
             if (action.checkHistory(url)) {
@@ -68,6 +69,11 @@ class NinjaWebViewClient(private val ninjaWebView: NinjaWebView) : WebViewClient
                 ninjaWebView.hideTranslateContext()
             }, 3000)
         }
+    }
+
+    private fun isTranslationDomain(url: String): Boolean {
+        return url.contains("translate.goog") || url.contains("papago.naver.net")
+                || url.contains("papago.naver.com") || url.contains("translate.google.com")
     }
 
     override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean =

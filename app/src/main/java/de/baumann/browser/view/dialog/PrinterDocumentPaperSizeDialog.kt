@@ -21,5 +21,4 @@ class PrinterDocumentPaperSizeDialog(val context: Context) {
             }
         }.create().show()
     }
-
 }

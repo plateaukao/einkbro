@@ -18,10 +18,12 @@ import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.preference.TranslationMode
 import de.baumann.browser.unit.ViewUnit
 import de.baumann.browser.unit.ViewUnit.dp
+import de.baumann.browser.util.TranslationLanguage
 import de.baumann.browser.view.NinjaToast
 import de.baumann.browser.view.NinjaWebView
 import de.baumann.browser.view.Orientation
 import de.baumann.browser.view.TwoPaneLayout
+import de.baumann.browser.view.dialog.TranslationLanguageDialog
 
 class TranslationViewController(
     private val activity: Activity,
@@ -57,21 +59,51 @@ class TranslationViewController(
         translationViewBinding.syncScroll.setOnClickListener {
             toggleSyncScroll(!isScrollSynced)
         }
-    }
 
-    suspend fun showTranslation(webView: NinjaWebView) = when(config.translationMode) {
-        TranslationMode.PAPAGO_DUAL -> webView.loadUrl(buildPUrlTranslateUrl(webView.url.toString()))
-        TranslationMode.PAPAGO_URL,
-        TranslationMode.GOOGLE_URL -> launchTranslateWindow(webView.url.toString())
-        TranslationMode.PAPAGO,
-        TranslationMode.GOOGLE -> {
-            if (!webView.isReaderModeOn) {
-                webView.toggleReaderMode { launchTranslateWindow(it.purify()) }
-            } else {
-                launchTranslateWindow(webView.getRawText().purify())
+        translationViewBinding.translationLanguage.text = config.translationLanguage.value
+        translationViewBinding.translationLanguage.setOnClickListener {
+            TranslationLanguageDialog(activity).show { translationLanguage ->
+                translationViewBinding.translationLanguage.text = translationLanguage.value
+                changeTranslationLanguage(translationLanguage)
             }
         }
-        TranslationMode.ONYX -> launchTranslateWindow(webView.getRawText().purify())
+    }
+
+    private fun changeTranslationLanguage(translationLanguage: TranslationLanguage) {
+        val uri = Uri.parse(webView.url)
+        val newUri = uri.removeQueryParam("_x_tr_tl").buildUpon()
+                .appendQueryParameter("_x_tr_tl", translationLanguage.value) // source language
+                .build()
+        webView.loadUrl(newUri.toString())
+    }
+
+    fun Uri.removeQueryParam(key: String): Uri {
+        val builder = buildUpon().clearQuery()
+
+        queryParameterNames.filter { it != key }
+                .onEach { builder.appendQueryParameter(it, getQueryParameter(it)) }
+
+        return builder.build()
+    }
+
+
+
+    suspend fun showTranslation(webView: NinjaWebView) {
+
+        when(config.translationMode) {
+            TranslationMode.PAPAGO_DUAL -> webView.loadUrl(buildPUrlTranslateUrl(webView.url.toString()))
+            TranslationMode.PAPAGO_URL,
+            TranslationMode.GOOGLE_URL -> launchTranslateWindow(webView.url.toString())
+            TranslationMode.PAPAGO,
+            TranslationMode.GOOGLE -> {
+                if (!webView.isReaderModeOn) {
+                    webView.toggleReaderMode { launchTranslateWindow(it.purify()) }
+                } else {
+                    launchTranslateWindow(webView.getRawText().purify())
+                }
+            }
+            TranslationMode.ONYX -> launchTranslateWindow(webView.getRawText().purify())
+        }
     }
 
     //fun showTranslation(text: String) = launchTranslateWindow(text)
@@ -86,10 +118,6 @@ class TranslationViewController(
         webView.setScrollChangeListener(listener)
         val drawable = if (isScrollSynced) R.drawable.selected_border_bg else R.drawable.background_transparent_with_border
         translationViewBinding.syncScroll.setBackgroundResource(drawable)
-
-        if (isScrollSynced && config.translationMode == TranslationMode.GOOGLE_URL) {
-            webView.hideGoogleBar()
-        }
     }
 
     private fun launchTranslateWindow(text: String) {
@@ -111,6 +139,9 @@ class TranslationViewController(
             addWebView()
             isWebViewAdded = true
         }
+
+        translationViewBinding.translationLanguage.visibility =
+                if (config.translationMode == TranslationMode.GOOGLE_URL) VISIBLE else GONE
 
         twoPaneLayout.shouldShowSecondPane = true
 
@@ -241,6 +272,18 @@ class TranslationViewController(
     }
 
     private fun buildGUrlTranslateUrl(url: String): String {
+        val uri = Uri.parse(url)
+        val newUri = uri.buildUpon()
+                .scheme("https")
+                .authority(uri.authority?.replace(".", "-") + ".translate.goog")
+                .appendQueryParameter("_x_tr_sl", "auto")
+                .appendQueryParameter("_x_tr_tl", config.translationLanguage.value) // source language
+                .appendQueryParameter("_x_tr_pto", "ajax,elem") // target language
+                .build()
+        return newUri.toString()
+    }
+
+   private fun oldBuildGUrlTranslateUrl(url: String): String {
         val uri = Uri.Builder()
             .scheme("https")
             .authority("translate.google.com")
@@ -249,8 +292,8 @@ class TranslationViewController(
             .appendQueryParameter("sl", "auto") // source language
             .appendQueryParameter("tl", "jp") // target language
             .build()
-        return uri.toString()
-    }
+       return uri.toString()
+   }
 
     private fun buildGTranslateUrl(text: String): String {
         val shortenedText: String = if (text.length > TRANSLATION_TEXT_THRESHOLD) text.substring(0, TRANSLATION_TEXT_THRESHOLD) else text
