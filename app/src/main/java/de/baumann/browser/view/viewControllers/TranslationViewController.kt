@@ -48,16 +48,31 @@ class TranslationViewController(
     private var isScrollSynced = false
 
     init {
-        translationViewBinding.translationClose.setOnClickListener { toggleTranslationWindow(false, onTranslationClosed) }
-        translationViewBinding.translationClose.setOnLongClickListener{ twoPaneLayout.switchPanels() ; true }
         translationViewBinding.translationFontPlus.setOnClickListener { increaseFontSize() }
         translationViewBinding.translationFontMinus.setOnClickListener { decreaseFontSize() }
+
+        translationViewBinding.translationClose.setOnClickListener { toggleTranslationWindow(false, onTranslationClosed) }
+        translationViewBinding.translationClose.setOnLongClickListener{
+            translationViewBinding.pageScroller.visibility = INVISIBLE
+            translationViewBinding.controlsContainer.visibility = INVISIBLE
+            translationViewBinding.expandedButton.visibility = VISIBLE
+            true
+        }
+
         translationViewBinding.translationOrientation.setOnClickListener {
             val orientation = if (twoPaneLayout.getOrientation() == Orientation.Vertical) Orientation.Horizontal else Orientation.Vertical
             twoPaneLayout.setOrientation(orientation)
         }
+        translationViewBinding.translationOrientation.setOnLongClickListener{ twoPaneLayout.switchPanels() ; true }
+
         translationViewBinding.syncScroll.setOnClickListener {
             toggleSyncScroll(!isScrollSynced)
+        }
+
+        translationViewBinding.expandedButton.setOnClickListener {
+            translationViewBinding.pageScroller.visibility = VISIBLE
+            translationViewBinding.controlsContainer.visibility = VISIBLE
+            translationViewBinding.expandedButton.visibility = INVISIBLE
         }
 
         translationViewBinding.translationLanguage.text = config.translationLanguage.value
@@ -116,7 +131,7 @@ class TranslationViewController(
         isScrollSynced = shouldSyncScroll
         val listener = if (isScrollSynced) onScrollChangeListener else null
         webView.setScrollChangeListener(listener)
-        val drawable = if (isScrollSynced) R.drawable.selected_border_bg else R.drawable.background_transparent_with_border
+        val drawable = if (isScrollSynced) R.drawable.selected_border_bg else R.drawable.backgound_with_border
         translationViewBinding.syncScroll.setBackgroundResource(drawable)
     }
 
@@ -147,9 +162,11 @@ class TranslationViewController(
 
         // handle translate url
         if (config.translationMode == TranslationMode.PAPAGO_URL) {
+            updatePageViews(0)
             translateUrl(buildPUrlTranslateUrl(text))
             return
         } else if (config.translationMode == TranslationMode.GOOGLE_URL) {
+            updatePageViews(0)
             translateUrl(buildGUrlTranslateUrl(text))
             return
         }
@@ -232,7 +249,7 @@ class TranslationViewController(
 
         pageContainer.children.iterator().forEach{ pageIndexView ->
             pageIndexView.setBackgroundResource(
-                if (selectedPageIndex == pageIndexView.tag) R.drawable.selected_border_bg else R.drawable.background_transparent_with_border
+                if (selectedPageIndex == pageIndexView.tag) R.drawable.selected_border_bg else R.drawable.backgound_with_border
             )
         }
     }
