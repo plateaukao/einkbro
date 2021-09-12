@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:paddingBottom="2dp"
+    android:paddingRight="2dp"
     android:background="@color/color_transparent">
 
     <HorizontalScrollView
@@ -44,6 +45,7 @@
             android:id="@+id/translation_orientation"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:layout_margin="0.5dp"
             android:background="@drawable/backgound_with_border"
             android:src="@drawable/ic_rotate"
             android:tint="?attr/colorControlNormal" />
@@ -51,6 +53,7 @@
             android:id="@+id/sync_scroll"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:layout_margin="0.5dp"
             android:src="@drawable/ic_sync_scroll"
             android:tint="?attr/colorControlNormal"
             android:background="@drawable/backgound_with_border"
@@ -59,6 +62,7 @@
             android:id="@+id/translation_language"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:layout_margin="0.5dp"
             android:tint="?attr/colorControlNormal"
             android:background="@drawable/backgound_with_border"
             android:textAlignment="center"
@@ -70,6 +74,7 @@
             android:id="@+id/translation_font_plus"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:layout_margin="0.5dp"
             android:src="@mipmap/font_size_increase"
             android:tint="?attr/colorControlNormal"
             android:background="@drawable/backgound_with_border"
@@ -78,6 +83,7 @@
             android:id="@+id/translation_font_minus"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:layout_margin="0.5dp"
             android:src="@mipmap/font_size_decrease"
             android:tint="?attr/colorControlNormal"
             android:background="@drawable/backgound_with_border"
@@ -86,6 +92,7 @@
             android:id="@+id/translation_close"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:layout_margin="0.5dp"
             android:src="@drawable/icon_close"
             android:tint="?attr/colorControlNormal"
             android:background="@drawable/backgound_with_border"

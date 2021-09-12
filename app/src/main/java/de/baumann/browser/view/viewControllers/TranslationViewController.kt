@@ -77,13 +77,19 @@ class TranslationViewController(
 
         translationViewBinding.expandedButton.setOnClickListener { showControlButtons() }
 
-        translationViewBinding.translationLanguage.text = config.translationLanguage.value
+        updateLanguageLabel(config.translationLanguage)
         translationViewBinding.translationLanguage.setOnClickListener {
             TranslationLanguageDialog(activity).show { translationLanguage ->
-                translationViewBinding.translationLanguage.text = translationLanguage.value
-                changeTranslationLanguage(translationLanguage)
+                updateLanguageLabel(translationLanguage)
+                translateWithNewLanguage(translationLanguage)
             }
         }
+    }
+
+    private fun updateLanguageLabel(translationLanguage: TranslationLanguage) {
+        val languageString = translationLanguage.value
+        val language = languageString.split("-").last()
+        translationViewBinding.translationLanguage.text = language
     }
 
     private fun hideControlButtons() {
@@ -98,7 +104,7 @@ class TranslationViewController(
         translationViewBinding.expandedButton.visibility = INVISIBLE
     }
 
-    private fun changeTranslationLanguage(translationLanguage: TranslationLanguage) {
+    private fun translateWithNewLanguage(translationLanguage: TranslationLanguage) {
         val uri = Uri.parse(webView.url)
         val newUri = uri.removeQueryParam("_x_tr_tl").buildUpon()
                 .appendQueryParameter("_x_tr_tl", translationLanguage.value) // source language
