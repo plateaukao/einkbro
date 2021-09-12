@@ -176,6 +176,10 @@ class ConfigManager(private val context: Context) {
         get() = TranslationMode.values()[sp.getInt(K_TRANSLATION_MODE, if (Build.MANUFACTURER == "ONYX") 0 else 1)]
         set(value) = sp.edit { putInt(K_TRANSLATION_MODE, value.ordinal)}
 
+    var adSites: MutableSet<String>
+        get() = sp.getStringSet(K_ADBLOCK_SITES, mutableSetOf()) ?: mutableSetOf()
+        set(value) = sp.edit { putStringSet(K_ADBLOCK_SITES, value) }
+
     private fun iconStringToEnumList(iconListString: String): List<ToolbarAction> {
         if (iconListString.isBlank()) return listOf()
 
@@ -223,6 +227,7 @@ class ConfigManager(private val context: Context) {
         const val K_DESKTOP = "sp_desktop"
         const val K_TRANSLATE_LANGUAGE = "sp_translate_language"
         const val K_TRANSLATE_ORIENTATION = "sp_translate_orientation"
+        const val K_ADBLOCK_SITES = "sp_adblock_sites"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
     }
