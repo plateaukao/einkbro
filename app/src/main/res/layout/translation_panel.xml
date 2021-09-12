@@ -62,7 +62,7 @@
             android:background="@drawable/backgound_with_border"
             android:textAlignment="center"
             android:gravity="center"
-            android:textSize="20sp"
+            android:textSize="16sp"
             tools:text="zh"
             />
         <ImageButton
