@@ -48,6 +48,8 @@ class TranslationViewController(
     private var isScrollSynced = false
 
     init {
+        twoPaneLayout.setOrientation(config.translationOrientation)
+
         translationViewBinding.translationFontPlus.setOnClickListener { increaseFontSize() }
         translationViewBinding.translationFontMinus.setOnClickListener { decreaseFontSize() }
 
@@ -61,8 +63,9 @@ class TranslationViewController(
 
         translationViewBinding.translationOrientation.setOnClickListener {
             val orientation = if (twoPaneLayout.getOrientation() == Orientation.Vertical) Orientation.Horizontal else Orientation.Vertical
-            twoPaneLayout.setOrientation(orientation)
+            setOrientation(orientation)
         }
+
         translationViewBinding.translationOrientation.setOnLongClickListener{ twoPaneLayout.switchPanels() ; true }
 
         translationViewBinding.syncScroll.setOnClickListener {
@@ -124,6 +127,7 @@ class TranslationViewController(
     //fun showTranslation(text: String) = launchTranslateWindow(text)
 
     fun setOrientation(orientation: Orientation) {
+        config.translationOrientation = orientation
         twoPaneLayout.setOrientation(orientation)
     }
 
