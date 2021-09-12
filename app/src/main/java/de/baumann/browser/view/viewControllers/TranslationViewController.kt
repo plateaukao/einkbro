@@ -21,9 +21,11 @@ import de.baumann.browser.unit.ViewUnit.dp
 import de.baumann.browser.util.TranslationLanguage
 import de.baumann.browser.view.NinjaToast
 import de.baumann.browser.view.NinjaWebView
+import de.baumann.browser.view.NinjaWebView.OnScrollChangeListener
 import de.baumann.browser.view.Orientation
 import de.baumann.browser.view.TwoPaneLayout
 import de.baumann.browser.view.dialog.TranslationLanguageDialog
+import java.lang.Math.abs
 
 class TranslationViewController(
     private val activity: Activity,
@@ -31,12 +33,20 @@ class TranslationViewController(
     private val twoPaneLayout: TwoPaneLayout,
     private val showTranslationAction: () -> Unit,
     private val onTranslationClosed: () -> Unit,
-    private val onScrollChangeListener: NinjaWebView.OnScrollChangeListener
+    private val onScrollChangeListener: OnScrollChangeListener
 ) {
     private val config: ConfigManager by lazy { ConfigManager(activity) }
     private val webView: NinjaWebView by lazy {
         NinjaWebView(activity, null).apply {
             shouldHideTranslateContext = true
+            setScrollChangeListener(object: OnScrollChangeListener {
+                override fun onScrollChange(scrollY: Int, oldScrollY: Int) {
+                    if (isScrollSynced) onScrollChangeListener.onScrollChange(scrollY, oldScrollY)
+                    if (abs(scrollY - oldScrollY) > 10) {
+                        hideControlButtons()
+                    }
+                }
+            })
         }
     }
     private val pageContainer: ViewGroup = translationViewBinding.pageContainer
@@ -54,12 +64,7 @@ class TranslationViewController(
         translationViewBinding.translationFontMinus.setOnClickListener { decreaseFontSize() }
 
         translationViewBinding.translationClose.setOnClickListener { toggleTranslationWindow(false, onTranslationClosed) }
-        translationViewBinding.translationClose.setOnLongClickListener{
-            translationViewBinding.pageScroller.visibility = INVISIBLE
-            translationViewBinding.controlsContainer.visibility = INVISIBLE
-            translationViewBinding.expandedButton.visibility = VISIBLE
-            true
-        }
+        translationViewBinding.translationClose.setOnLongClickListener{ hideControlButtons(); true }
 
         translationViewBinding.translationOrientation.setOnClickListener {
             val orientation = if (twoPaneLayout.getOrientation() == Orientation.Vertical) Orientation.Horizontal else Orientation.Vertical
@@ -68,15 +73,9 @@ class TranslationViewController(
 
         translationViewBinding.translationOrientation.setOnLongClickListener{ twoPaneLayout.switchPanels() ; true }
 
-        translationViewBinding.syncScroll.setOnClickListener {
-            toggleSyncScroll(!isScrollSynced)
-        }
+        translationViewBinding.syncScroll.setOnClickListener { toggleSyncScroll(!isScrollSynced) }
 
-        translationViewBinding.expandedButton.setOnClickListener {
-            translationViewBinding.pageScroller.visibility = VISIBLE
-            translationViewBinding.controlsContainer.visibility = VISIBLE
-            translationViewBinding.expandedButton.visibility = INVISIBLE
-        }
+        translationViewBinding.expandedButton.setOnClickListener { showControlButtons() }
 
         translationViewBinding.translationLanguage.text = config.translationLanguage.value
         translationViewBinding.translationLanguage.setOnClickListener {
@@ -85,6 +84,18 @@ class TranslationViewController(
                 changeTranslationLanguage(translationLanguage)
             }
         }
+    }
+
+    private fun hideControlButtons() {
+        translationViewBinding.pageScroller.visibility = INVISIBLE
+        translationViewBinding.controlsContainer.visibility = INVISIBLE
+        translationViewBinding.expandedButton.visibility = VISIBLE
+    }
+
+    private fun showControlButtons() {
+        translationViewBinding.pageScroller.visibility = VISIBLE
+        translationViewBinding.controlsContainer.visibility = VISIBLE
+        translationViewBinding.expandedButton.visibility = INVISIBLE
     }
 
     private fun changeTranslationLanguage(translationLanguage: TranslationLanguage) {
@@ -133,8 +144,6 @@ class TranslationViewController(
 
     private fun toggleSyncScroll(shouldSyncScroll: Boolean = false) {
         isScrollSynced = shouldSyncScroll
-        val listener = if (isScrollSynced) onScrollChangeListener else null
-        webView.setScrollChangeListener(listener)
         val drawable = if (isScrollSynced) R.drawable.selected_border_bg else R.drawable.backgound_with_border
         translationViewBinding.syncScroll.setBackgroundResource(drawable)
     }
@@ -166,11 +175,11 @@ class TranslationViewController(
 
         // handle translate url
         if (config.translationMode == TranslationMode.PAPAGO_URL) {
-            updatePageViews(0)
+            updatePageViews(1)
             translateUrl(buildPUrlTranslateUrl(text))
             return
         } else if (config.translationMode == TranslationMode.GOOGLE_URL) {
-            updatePageViews(0)
+            updatePageViews(1)
             translateUrl(buildGUrlTranslateUrl(text))
             return
         }

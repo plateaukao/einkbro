@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
+    android:paddingBottom="2dp"
     android:background="@color/color_transparent">
 
     <HorizontalScrollView
