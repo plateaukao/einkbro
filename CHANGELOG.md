@@ -1,3 +1,8 @@
+### 8.15.1
+
+#### issue fixes
+* fix long press on web content, the dialog is popup too even it's text
+
 ### 8.15.0
 #### features
 * long press back button to show recent history

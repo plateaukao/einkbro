@@ -1280,6 +1280,10 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
     }
 
     private fun showContextMenuLinkDialog(url: String?, hitTestResult: HitTestResult) {
+        if (url == null &&
+                !listOf(HitTestResult.IMAGE_TYPE, HitTestResult.IMAGE_ANCHOR_TYPE, HitTestResult.SRC_IMAGE_ANCHOR_TYPE, HitTestResult.ANCHOR_TYPE)
+                        .contains(hitTestResult.type)) return
+
         val url = url ?: hitTestResult.extra ?: ""
         val dialogView = DialogMenuContextLinkBinding.inflate(layoutInflater)
         val dialog = dialogManager.showOptionDialog(dialogView.root)
