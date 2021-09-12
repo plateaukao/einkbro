@@ -67,7 +67,7 @@ class NinjaWebViewClient(private val ninjaWebView: NinjaWebView) : WebViewClient
         if (ninjaWebView.shouldHideTranslateContext) {
             ninjaWebView.postDelayed({
                 ninjaWebView.hideTranslateContext()
-            }, 3000)
+            }, 2000)
         }
     }
 
@@ -128,7 +128,7 @@ class NinjaWebViewClient(private val ninjaWebView: NinjaWebView) : WebViewClient
     }
 
     private val webResourceResponse = WebResourceResponse(
-            BrowserUnit.MIME_TYPE_TEXT_PLAIN,
+            BrowserUnit.MIME_TYPE_IMAGE,
             BrowserUnit.URL_ENCODING,
             ByteArrayInputStream("".toByteArray())
     )

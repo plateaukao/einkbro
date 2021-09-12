@@ -188,6 +188,37 @@
             android:textColor="?android:attr/textColorPrimary" />
 
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/menu_remove_ad"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:background="@drawable/item_bg_selector"
+        android:minHeight="46dp"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="16dp"
+            android:gravity="center_vertical"
+            android:src="@drawable/icon_block" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:text="@string/setting_title_adblock"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="?android:attr/textColorPrimary" />
+
+    </LinearLayout>
 </LinearLayout>
 
 

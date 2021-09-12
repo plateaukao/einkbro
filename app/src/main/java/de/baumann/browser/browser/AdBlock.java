@@ -5,15 +5,20 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.util.Log;
 
-import de.baumann.browser.database.RecordAction;
-import de.baumann.browser.unit.RecordUnit;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
+
+import de.baumann.browser.database.RecordAction;
+import de.baumann.browser.preference.ConfigManager;
+import de.baumann.browser.unit.RecordUnit;
 
 public class AdBlock {
     private static final String FILE = "hosts.txt";
@@ -21,21 +26,20 @@ public class AdBlock {
     private static final List<String> whitelist = new ArrayList<>();
     @SuppressLint("ConstantLocale")
     private static final Locale locale = Locale.getDefault();
+    private static ConfigManager config;
 
     private static void loadHosts(final Context context) {
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                AssetManager manager = context.getAssets();
-                try {
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(manager.open(FILE)));
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        hosts.add(line.toLowerCase(locale));
-                    }
-                } catch (IOException i) {
-                    Log.w("browser", "Error loading hosts", i);
+        config = new ConfigManager(context);
+        Thread thread = new Thread(() -> {
+            AssetManager manager = context.getAssets();
+            try {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(manager.open(FILE)));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    hosts.add(line.toLowerCase(locale));
                 }
+            } catch (IOException i) {
+                Log.w("browser", "Error loading hosts", i);
             }
         });
         thread.start();
@@ -88,11 +92,11 @@ public class AdBlock {
     boolean isAd(String url) {
         String domain;
         try {
-            domain = getDomain(url);
+            domain = getDomain(url).toLowerCase(locale);
         } catch (URISyntaxException u) {
             return false;
         }
-        return hosts.contains(domain.toLowerCase(locale));
+        return hosts.contains(domain) || config.getAdSites().contains(domain);
     }
 
     public synchronized void addDomain(String domain) {
