@@ -9,6 +9,8 @@ import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import de.baumann.browser.util.Constants
 import de.baumann.browser.util.TranslationLanguage
+import de.baumann.browser.view.Orientation
+import de.baumann.browser.view.TwoPaneLayout
 import de.baumann.browser.view.toolbaricons.ToolbarAction
 import de.baumann.browser.view.viewControllers.OverviewTab
 
@@ -98,6 +100,10 @@ class ConfigManager(private val context: Context) {
     var translationLanguage: TranslationLanguage
         get() = TranslationLanguage.values()[sp.getInt(K_TRANSLATE_LANGUAGE, getDefaultTranslationLanguage().ordinal)]
         set(value) {sp.edit { putInt(K_TRANSLATE_LANGUAGE, value.ordinal) } }
+
+    var translationOrientation: Orientation
+        get() = Orientation.values()[sp.getInt(K_TRANSLATE_ORIENTATION, Orientation.Horizontal.ordinal)]
+        set(value) {sp.edit { putInt(K_TRANSLATE_ORIENTATION, value.ordinal) } }
 
     var overviewTab: OverviewTab
         get() = when (sp.getString(K_START_TAB, "0")) {
@@ -216,6 +222,7 @@ class ConfigManager(private val context: Context) {
         const val K_KEEP_AWAKE = "sp_screen_awake"
         const val K_DESKTOP = "sp_desktop"
         const val K_TRANSLATE_LANGUAGE = "sp_translate_language"
+        const val K_TRANSLATE_ORIENTATION = "sp_translate_orientation"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
     }
