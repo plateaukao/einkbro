@@ -14,7 +14,10 @@ class TranslationLanguageDialog(val context: Context) {
 
         AlertDialog.Builder(context, R.style.TouchAreaDialog).apply {
             setTitle("Translation Language")
-            setSingleChoiceItems(languages, config.pdfPaperSize.ordinal) { dialog, selectedIndex ->
+            setSingleChoiceItems(
+                    languages,
+                    config.translationLanguage.ordinal
+            ) { dialog, selectedIndex ->
                 config.translationLanguage = TranslationLanguage.values()[selectedIndex]
                 action(config.translationLanguage)
                 dialog.dismiss()
