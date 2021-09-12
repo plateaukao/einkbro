@@ -1,3 +1,33 @@
+### 8.15.0
+#### features
+* long press back button to show recent history
+* add hide button on url address bar
+* hide translation control buttons when scrolling
+* remember translation orientation
+* support Adblock site addition (long press on Ad images)
+
+#### enhancement
+* Improve web loading performance by using cache
+
+#### issue fixes
+* fix desktop issue
+
+### 8.14.0
+- Much improved the web content loading speed by removing saving screenshot feature.
+
+### 8.13.1
+- fine tune touch area hint dash line
+- make translation buttons transparent so they won't overlap on web content.
+
+### 8.13.0
+- support opening a new Activity, so that original Activity can continue play video or audio.
+- add google and papago translate feature for url format.
+- add scroll sync when scrolling on translation panel (only works in some websites)
+- fix layout issue when larger font is used.
+
+### 8.12.1
+- remove safeBrowsingEnabled since it's enabled by default.
+
 ### 8.12.0
 
 - Add keep awake option in settings
