@@ -243,7 +243,7 @@ class TranslationViewController(
     }
 
     private fun translateUrl(url: String) {
-        isScrollSynced = false
+        toggleSyncScroll(false)
         webView.loadUrl(url)
     }
 
