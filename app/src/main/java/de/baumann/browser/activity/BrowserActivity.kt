@@ -14,7 +14,6 @@ import android.os.Bundle
 import android.os.Environment
 import android.print.PrintAttributes
 import android.print.PrintManager
-import android.provider.Browser
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -55,7 +54,6 @@ import de.baumann.browser.view.viewControllers.TranslationViewController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.*
-import java.lang.reflect.Field
 import java.util.*
 import kotlin.math.floor
 import kotlin.math.roundToInt
@@ -1281,7 +1279,8 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
 
     }
 
-    private fun showContextMenuLinkDialog(url: String?) {
+    private fun showContextMenuLinkDialog(url: String?, hitTestResult: HitTestResult) {
+        val url = url ?: hitTestResult.extra ?: ""
         val dialogView = DialogMenuContextLinkBinding.inflate(layoutInflater)
         val dialog = dialogManager.showOptionDialog(dialogView.root)
         dialogView.contextLinkNewTab.setOnClickListener {
@@ -1292,12 +1291,12 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
         }
         dialogView.contextLinkShareLink.setOnClickListener {
             dialog.dismissWithAction {
-                if (prepareRecord())  NinjaToast.show(this, getString(R.string.toast_share_failed))
+                if (prepareRecord()) NinjaToast.show(this, getString(R.string.toast_share_failed))
                 else IntentUnit.share(this, "", url)
             }
         }
         dialogView.contextLinkOpenWith.setOnClickListener {
-            dialog.dismissWithAction { HelperUnit.showBrowserChooser( this@BrowserActivity, url, getString(R.string.menu_open_with) ) }
+            dialog.dismissWithAction { HelperUnit.showBrowserChooser(this@BrowserActivity, url, getString(R.string.menu_open_with)) }
         }
         dialogView.contextLinkSaveBookmark.setOnClickListener {
             dialog.dismissWithAction { saveBookmark(url, title = "") }
@@ -1308,16 +1307,33 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
         dialogView.menuSavePdf.setOnClickListener {
             dialog.dismissWithAction { showSavePdfDialog(url) }
         }
-    }
 
-    override fun onLongPress(url: String?) {
-        val result = ninjaWebView.hitTestResult
-        if (url != null) {
-            showContextMenuLinkDialog(url)
-        } else if (result.type == HitTestResult.IMAGE_TYPE || result.type == HitTestResult.SRC_IMAGE_ANCHOR_TYPE || result.type == HitTestResult.SRC_ANCHOR_TYPE) {
-            showContextMenuLinkDialog(result.extra)
+        if (hitTestResult.extra != null) {
+            dialogView.menuRemoveAd.visibility = VISIBLE
+            dialogView.menuRemoveAd.setOnClickListener {
+                dialog.dismissWithAction { confirmAdSiteAddition(hitTestResult.extra) }
+            }
         }
     }
+
+    private fun confirmAdSiteAddition(url: String?) {
+        lifecycleScope.launch {
+            val domain = TextInputDialog(
+                    this@BrowserActivity,
+                    "Ad Url to be blocked",
+                    "",
+                    Uri.parse(url).host ?: ""
+            ).show() ?: ""
+
+            if (domain.isNotBlank()) {
+                config.adSites = config.adSites.apply { add(domain) }
+                ninjaWebView.reload()
+            }
+        }
+    }
+
+    override fun onLongPress(url: String?) =
+            showContextMenuLinkDialog(url, ninjaWebView.hitTestResult)
 
     private fun showSavePdfDialog(url: String?) {
         val url = url ?: return

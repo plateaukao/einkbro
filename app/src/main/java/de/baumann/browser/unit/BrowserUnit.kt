@@ -35,6 +35,7 @@ object BrowserUnit {
     const val SUFFIX_PNG = ".png"
     private const val SUFFIX_TXT = ".txt"
     const val MIME_TYPE_TEXT_PLAIN = "text/plain"
+    const val MIME_TYPE_IMAGE = "image/png"
     private const val SEARCH_ENGINE_GOOGLE = "https://www.google.com/search?q="
     private const val SEARCH_ENGINE_DUCKDUCKGO = "https://duckduckgo.com/?q="
     private const val SEARCH_ENGINE_STARTPAGE = "https://startpage.com/do/search?query="
