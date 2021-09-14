@@ -236,6 +236,14 @@ class OverviewDialogController(
         val dialogView = DialogMenuContextListBinding.inflate(LayoutInflater.from(context))
         val dialog = dialogManager.showOptionDialog(dialogView.root)
 
+        if (bookmark.isDirectory) {
+            dialogView.menuContextListFav.visibility = GONE
+            dialogView.menuContextLinkSc.visibility = GONE
+            dialogView.menuContextListNewTab.visibility = GONE
+            dialogView.menuContextListNewTabOpen.visibility = GONE
+            dialogView.menuContextListFav.visibility = GONE
+        }
+
         dialogView.menuContextListEdit.visibility = VISIBLE
         dialogView.menuContextListFav.setOnClickListener {
             dialog.dismissWithAction { config.favoriteUrl = bookmark.url }
