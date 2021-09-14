@@ -408,6 +408,7 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
         updateOmnibox()
 
         updateSavedAlbumInfo()
+        updateWebViewCountUI()
     }
 
     override fun updateAutoComplete() {
