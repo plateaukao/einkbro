@@ -550,16 +550,17 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
                 if (bookmarkManager.existsUrl(currentUrl)) {
                     NinjaToast.show(context, R.string.toast_newTitle)
                 } else {
-                    dialogManager.showBookmarkEditDialog(
-                        bookmarkManager,
-                        Bookmark(title, currentUrl),
-                        {
-                            ViewUnit.hideKeyboard(context as Activity)
-                            NinjaToast.show(this@BrowserActivity, R.string.toast_edit_successful)
-                            updateAutoComplete()
-                        },
-                        { ViewUnit.hideKeyboard(context as Activity) }
-                    )
+                    BookmarkEditDialog(
+                            this@BrowserActivity,
+                            bookmarkManager,
+                            Bookmark(title, currentUrl),
+                            {
+                                ViewUnit.hideKeyboard(context as Activity)
+                                NinjaToast.show(this@BrowserActivity, R.string.toast_edit_successful)
+                                updateAutoComplete()
+                            },
+                            { ViewUnit.hideKeyboard(context as Activity) }
+                    ).show()
                 }
             }
         } catch (e: Exception) {

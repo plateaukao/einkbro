@@ -25,6 +25,7 @@ import de.baumann.browser.unit.ViewUnit
 import de.baumann.browser.view.NinjaToast
 import de.baumann.browser.view.adapter.BookmarkAdapter
 import de.baumann.browser.view.adapter.RecordAdapter
+import de.baumann.browser.view.dialog.BookmarkEditDialog
 import de.baumann.browser.view.dialog.DialogManager
 import de.baumann.browser.view.dialog.TextInputDialog
 import kotlinx.coroutines.launch
@@ -265,12 +266,13 @@ class OverviewDialogController(
 
         dialogView.menuContextListEdit.setOnClickListener {
             dialog.dismissWithAction {
-                dialogManager.showBookmarkEditDialog(
-                    bookmarkManager,
-                    bookmark,
-                    { ViewUnit.hideKeyboard(context as Activity) ; updateBookmarkList() },
-                    { ViewUnit.hideKeyboard(context as Activity) }
-                )
+                BookmarkEditDialog(
+                        context as Activity,
+                        bookmarkManager,
+                        bookmark,
+                        { ViewUnit.hideKeyboard(context as Activity) ; updateBookmarkList() },
+                        { ViewUnit.hideKeyboard(context as Activity) }
+                ).show()
             }
         }
     }
