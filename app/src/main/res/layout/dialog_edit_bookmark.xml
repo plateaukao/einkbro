@@ -49,17 +49,31 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Folder:"
-        android:paddingVertical="5dp"
-        />
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="Folder:"
+            android:layout_weight="1"
+            android:paddingVertical="5dp"
+            />
+        <ImageButton
+            android:id="@+id/button_add_folder"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:background="?attr/selectableItemBackground"
+            android:src="@drawable/ic_add_folder"
+            />
+    </LinearLayout>
 
     <Spinner
         android:id="@+id/folder_spinner"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingVertical="10dp"
+        android:paddingVertical="5dp"
     />
 </LinearLayout>
