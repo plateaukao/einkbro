@@ -796,6 +796,7 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
                 }
             }
             key.equals(ConfigManager.K_IS_INCOGNITO_MODE) -> {
+                ninjaWebView.incognito = config.isIncognitoMode
                 updateWebViewCountUI()
                 NinjaToast.showShort(
                     this,
