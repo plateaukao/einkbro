@@ -129,21 +129,7 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
         )
     }
 
-    private val translateController: TranslationViewController by lazy {
-        TranslationViewController(
-            this,
-            binding.subContainer,
-            binding.twoPanelLayout,
-            { showTranslation() },
-            { if (ninjaWebView.isReaderModeOn) ninjaWebView.toggleReaderMode() },
-            object : NinjaWebView.OnScrollChangeListener {
-                override fun onScrollChange(scrollY: Int, oldScrollY: Int) {
-                    val offset = scrollY - oldScrollY
-                    ninjaWebView.scrollY += offset
-                }
-            }
-        )
-    }
+    private lateinit var translateController: TranslationViewController
 
     private val dialogManager: DialogManager by lazy { DialogManager(this) }
 
@@ -634,8 +620,18 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
     }
 
     private fun showTranslation() {
+        if (!::translateController.isInitialized) {
+            translateController = TranslationViewController(
+                    this,
+                    binding.subContainer,
+                    binding.twoPanelLayout,
+                    { showTranslation() },
+                    { if (ninjaWebView.isReaderModeOn) ninjaWebView.toggleReaderMode() },
+            )
+        }
+
         lifecycleScope.launch(Dispatchers.Main) {
-            translateController.showTranslation(ninjaWebView)
+            translateController?.showTranslation(ninjaWebView)
         }
     }
 
@@ -771,7 +767,7 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
 
         binding.omniboxBookmark.setOnClickListener { openBookmarkPage() }
         binding.omniboxBookmark.setOnLongClickListener { saveBookmark(); true }
-        binding.toolbarTranslate.setOnLongClickListener { translateController.showTranslationConfigDialog(); true }
+        binding.toolbarTranslate.setOnLongClickListener { translateController?.showTranslationConfigDialog(); true }
 
         binding.omniboxBack.setOnLongClickListener { openHistoryPage(5); true }
 
@@ -1082,6 +1078,10 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
     private fun scrollChange() {
         ninjaWebView.setScrollChangeListener(object : NinjaWebView.OnScrollChangeListener {
             override fun onScrollChange(scrollY: Int, oldScrollY: Int) {
+                if (::translateController.isInitialized) {
+                    translateController.scrollChange(scrollY - oldScrollY)
+                }
+
                 if (!sp.getBoolean("hideToolbar", false)) return
 
                 val height = floor(x = ninjaWebView.contentHeight * ninjaWebView.resources.displayMetrics.density.toDouble()).toInt()
