@@ -55,6 +55,7 @@ class NinjaWebViewClient(private val ninjaWebView: NinjaWebView) : WebViewClient
             } else {
                 action.addHistory(Record(ninjaWebView.title, url, System.currentTimeMillis()))
             }
+            action.purgeOldHistoryItem(14)
             action.close()
         }
         if (url.contains("facebook.com")) {

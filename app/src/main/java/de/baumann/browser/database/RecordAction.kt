@@ -96,6 +96,12 @@ class RecordAction(context: Context?) {
         database.execSQL("DELETE FROM " + RecordUnit.TABLE_HISTORY + " WHERE " + RecordUnit.COLUMN_URL + " = " + "\"" + domain.trim { it <= ' ' } + "\"")
     }
 
+    fun purgeOldHistoryItem(days: Int) {
+        val tsBefore = System.currentTimeMillis() - (1000 * 60 * 60 * 24) * days
+        val sql = "DELETE FROM ${RecordUnit.TABLE_HISTORY} WHERE ${RecordUnit.COLUMN_TIME} <= $tsBefore"
+        database.execSQL(sql)
+    }
+
     fun deleteHistoryItem(record: Record?) {
         if (record == null || record.time <= 0) {
             return
