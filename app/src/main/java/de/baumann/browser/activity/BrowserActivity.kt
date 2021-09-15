@@ -970,6 +970,7 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
         ninjaWebView = NinjaWebView(this, this)
         ninjaWebView.albumTitle = title
         ninjaWebView.incognito = incognito
+        ninjaWebView.setLayerType(View.LAYER_TYPE_HARDWARE, null)
         ViewUnit.bound(this, ninjaWebView)
         val albumView = ninjaWebView.albumView
         if (currentAlbumController != null) {
@@ -1105,9 +1106,10 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
         progressBar.progress = progress
         updateOmnibox()
         updateAutoComplete()
-        scrollChange()
-        HelperUnit.initRendering(mainContentLayout, config.shouldInvert)
+        if (progress == 100) { scrollChange() }
+
         ninjaWebView.requestFocus()
+
         if (progress < BrowserUnit.PROGRESS_MAX) {
             updateRefresh(true)
             progressBar.visibility = View.VISIBLE
