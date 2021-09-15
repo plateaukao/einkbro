@@ -742,7 +742,6 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
                 ViewUnit.hideKeyboard(this@BrowserActivity)
             }
         }
-        updateAutoComplete()
 
         // long click on overview, show bookmark
         binding.omniboxTabcount.setOnLongClickListener {
@@ -1116,7 +1115,7 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
     }
 
     // to keep track of whether data is changed for auto completion
-    private var isAutoCompleteOutdated = false
+    private var isAutoCompleteOutdated = true
     private fun focusOnInput() {
         binding.omniboxInput.requestFocus()
         if (isAutoCompleteOutdated) {
