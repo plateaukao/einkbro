@@ -25,7 +25,7 @@ import de.baumann.browser.view.NinjaWebView.OnScrollChangeListener
 import de.baumann.browser.view.Orientation
 import de.baumann.browser.view.TwoPaneLayout
 import de.baumann.browser.view.dialog.TranslationLanguageDialog
-import java.lang.Math.abs
+import java.lang.Math.*
 
 class TranslationViewController(
     private val activity: Activity,
@@ -33,7 +33,6 @@ class TranslationViewController(
     private val twoPaneLayout: TwoPaneLayout,
     private val showTranslationAction: () -> Unit,
     private val onTranslationClosed: () -> Unit,
-    private val onScrollChangeListener: OnScrollChangeListener
 ) {
     private val config: ConfigManager by lazy { ConfigManager(activity) }
     private val webView: NinjaWebView by lazy {
@@ -41,7 +40,6 @@ class TranslationViewController(
             shouldHideTranslateContext = true
             setScrollChangeListener(object: OnScrollChangeListener {
                 override fun onScrollChange(scrollY: Int, oldScrollY: Int) {
-                    if (isScrollSynced) onScrollChangeListener.onScrollChange(scrollY, oldScrollY)
                     if (abs(scrollY - oldScrollY) > 10) {
                         hideControlButtons()
                     }
@@ -49,6 +47,7 @@ class TranslationViewController(
             })
         }
     }
+
     private val pageContainer: ViewGroup = translationViewBinding.pageContainer
 
     private var isWebViewAdded: Boolean = false
@@ -112,7 +111,7 @@ class TranslationViewController(
         webView.loadUrl(newUri.toString())
     }
 
-    fun Uri.removeQueryParam(key: String): Uri {
+    private fun Uri.removeQueryParam(key: String): Uri {
         val builder = buildUpon().clearQuery()
 
         queryParameterNames.filter { it != key }
@@ -121,10 +120,7 @@ class TranslationViewController(
         return builder.build()
     }
 
-
-
     suspend fun showTranslation(webView: NinjaWebView) {
-
         when(config.translationMode) {
             TranslationMode.PAPAGO_DUAL -> webView.loadUrl(buildPUrlTranslateUrl(webView.url.toString()))
             TranslationMode.PAPAGO_URL,
@@ -138,6 +134,13 @@ class TranslationViewController(
                 }
             }
             TranslationMode.ONYX -> launchTranslateWindow(webView.getRawText().purify())
+        }
+    }
+
+    fun scrollChange(offset: Int) {
+        if (isScrollSynced) {
+            webView.scrollBy(0, offset)
+            webView.scrollY = kotlin.math.max(0, webView.scrollY)
         }
     }
 
@@ -249,14 +252,10 @@ class TranslationViewController(
     }
 
     private fun translateUrl(url: String) {
-        toggleSyncScroll(false)
         webView.loadUrl(url)
     }
 
     private fun translatePage(selectedPageIndex: Int) {
-        // disable scroll sync first
-        toggleSyncScroll(false)
-
         val text = pageTextList[selectedPageIndex]
         val url = when (config.translationMode) {
             TranslationMode.GOOGLE -> buildGTranslateUrl(text)
