@@ -1070,7 +1070,7 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
             omniboxTitle.text = ninjaWebView.title
         } else {
             ninjaWebView = currentAlbumController as? NinjaWebView ?: return
-            updateProgress(ninjaWebView.progress)
+            //updateProgress(ninjaWebView.progress)
         }
     }
 
@@ -1105,10 +1105,6 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
     override fun updateProgress(progress: Int) {
         progressBar.progress = progress
         updateOmnibox()
-        updateAutoComplete()
-        if (progress == 100) { scrollChange() }
-
-        ninjaWebView.requestFocus()
 
         if (progress < BrowserUnit.PROGRESS_MAX) {
             updateRefresh(true)
@@ -1116,6 +1112,10 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
         } else {
             updateRefresh(false)
             progressBar.visibility = View.GONE
+
+            scrollChange()
+            updateAutoComplete()
+            ninjaWebView.requestFocus()
         }
     }
 
