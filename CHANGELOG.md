@@ -1,3 +1,15 @@
+### 8.16.0
+#### enhancement
+* much faster web loading performance!!
+* purge histories older than 2 weeks
+
+#### features
+* add folder button in Bookmark edit dialog
+
+#### issue fixes
+* fix translation sync button status
+* fix incognito icon status
+
 ### 8.15.1
 
 #### issue fixes
