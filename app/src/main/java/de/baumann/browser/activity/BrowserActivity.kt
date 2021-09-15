@@ -441,16 +441,14 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
             R.id.button_size -> showFontSizeChangeDialog()
             R.id.omnibox_title -> {
                 toolbarViewController.hide()
-                binding.omniboxInput.requestFocus()
-                ViewUnit.showKeyboard(this@BrowserActivity)
+                focusOnInput()
             }
             R.id.omnibox_input_clear -> binding.omniboxInput.text.clear()
             R.id.omnibox_input_close -> showToolbar()
             R.id.tab_plus_incognito -> {
                 hideOverview()
                 addAlbum(getString(R.string.app_name), "", incognito = true)
-                binding.omniboxInput.requestFocus()
-                ViewUnit.showKeyboard(this@BrowserActivity)
+                focusOnInput()
             }
             R.id.new_window -> {
                 hideOverview()
@@ -459,8 +457,7 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
             R.id.tab_plus_bottom -> {
                 hideOverview()
                 addAlbum(getString(R.string.app_name), "")
-                binding.omniboxInput.requestFocus()
-                ViewUnit.showKeyboard(this@BrowserActivity)
+                focusOnInput()
             }
             R.id.menu_save_pdf -> showPdfFilePicker()
 
@@ -543,7 +540,7 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
                             {
                                 ViewUnit.hideKeyboard(context as Activity)
                                 NinjaToast.show(this@BrowserActivity, R.string.toast_edit_successful)
-                                updateAutoComplete()
+                                isAutoCompleteOutdated = true
                             },
                             { ViewUnit.hideKeyboard(context as Activity) }
                     ).show()
@@ -881,8 +878,8 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
             binding.layoutOverview,
             gotoUrlAction = { url -> updateAlbum(url) },
             addTabAction = { title, url, isForeground -> addAlbum(title, url, isForeground) },
-            onBookmarksChanged = { updateAutoComplete() },
-            onHistoryChanged = { updateAutoComplete() }
+            onBookmarksChanged = { isAutoCompleteOutdated = true },
+            onHistoryChanged = { isAutoCompleteOutdated = true }
         )
     }
 
@@ -1114,9 +1111,19 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
             progressBar.visibility = View.GONE
 
             scrollChange()
-            updateAutoComplete()
             ninjaWebView.requestFocus()
         }
+    }
+
+    // to keep track of whether data is changed for auto completion
+    private var isAutoCompleteOutdated = false
+    private fun focusOnInput() {
+        binding.omniboxInput.requestFocus()
+        if (isAutoCompleteOutdated) {
+            updateAutoComplete()
+            isAutoCompleteOutdated = false
+        }
+        ViewUnit.showKeyboard(this)
     }
 
     private fun updateRefresh(running: Boolean) {
@@ -1235,7 +1242,7 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
                         decreaseFontSize()
                         previousKeyEvent = null
                     } else {
-                        binding.omniboxInput.requestFocus()
+                        focusOnInput()
                     }
                 }
                 KeyEvent.KEYCODE_J -> ninjaWebView.pageDownWithNoAnimation()
@@ -1245,7 +1252,7 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
                 KeyEvent.KEYCODE_D -> removeAlbum(currentAlbumController!!)
                 KeyEvent.KEYCODE_T -> {
                     addAlbum(getString(R.string.app_name), "", true)
-                    binding.omniboxInput.requestFocus()
+                    focusOnInput()
                 }
                 KeyEvent.KEYCODE_SLASH -> showSearchPanel()
                 KeyEvent.KEYCODE_G -> {
