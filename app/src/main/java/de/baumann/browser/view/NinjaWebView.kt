@@ -34,6 +34,8 @@ import java.io.InputStream
 import java.util.*
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
+import kotlin.math.max
+import kotlin.math.min
 
 
 class NinjaWebView : WebView, AlbumController {
@@ -372,16 +374,20 @@ class NinjaWebView : WebView, AlbumController {
     fun pageDownWithNoAnimation() {
         if (isVerticalRead) {
             scrollBy(shiftOffset(), 0)
+            scrollX = max(0, scrollX)
         } else {
             scrollBy(0, shiftOffset())
+            scrollY = max(0, scrollY)
         }
     }
 
     fun pageUpWithNoAnimation() {
         if (isVerticalRead) {
             scrollBy(-shiftOffset(), 0)
+            scrollX = max(0, scrollX)
         } else {
             scrollBy(0, -shiftOffset())
+            scrollY = max(0, scrollY)
         }
     }
 
