@@ -17,7 +17,7 @@ import de.baumann.browser.Ninja.databinding.DialogMenuOverviewBinding
 import de.baumann.browser.Ninja.databinding.DialogOveriewBinding
 import de.baumann.browser.database.Bookmark
 import de.baumann.browser.database.BookmarkManager
-import de.baumann.browser.database.RecordAction
+import de.baumann.browser.database.RecordDb
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.unit.BrowserUnit
 import de.baumann.browser.unit.HelperUnit
@@ -33,6 +33,7 @@ import kotlinx.coroutines.launch
 class OverviewDialogController(
     private val context: Context,
     private val binding: DialogOveriewBinding,
+    private val recordDb: RecordDb,
     private val gotoUrlAction: (String) -> Unit,
     private val addTabAction: (String, String, Boolean) -> Unit,
     private val onBookmarksChanged: () -> Unit,
@@ -135,12 +136,9 @@ class OverviewDialogController(
 
         overViewTab = OverviewTab.History
 
-        val action = RecordAction(context)
-        action.open(false)
         var adapter: RecordAdapter? = null
         lifecycleScope.launch {
-            val list = action.listEntries((context as Activity), false, amount)
-            action.close()
+            val list = recordDb.listEntries((context as Activity), false, amount)
             adapter = RecordAdapter(
                 list.toMutableList(),
                 { position ->
@@ -326,7 +324,7 @@ class OverviewDialogController(
 
     private fun deleteHistory(recordAdapter: RecordAdapter, location: Int) {
         val record = recordAdapter.getItemAt(location)
-        RecordAction(context).apply {
+        RecordDb(context).apply {
             open(true)
             deleteHistoryItem(record)
             close()

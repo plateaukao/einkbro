@@ -114,7 +114,7 @@ class NinjaWebView : WebView, AlbumController {
         adBlock = AdBlock(context)
         javaHosts = Javascript(context)
         cookieHosts = Cookie(context)
-        webViewClient = NinjaWebViewClient(this)
+        webViewClient = NinjaWebViewClient(this) { url -> browserController?.addHistory(url) }
         webChromeClient = NinjaWebChromeClient(this)
         clickHandler = NinjaClickHandler(this)
         initWebView()
