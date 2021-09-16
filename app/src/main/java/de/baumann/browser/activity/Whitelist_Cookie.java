@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Objects;
 
 import de.baumann.browser.browser.Cookie;
-import de.baumann.browser.database.RecordAction;
+import de.baumann.browser.database.RecordDb;
 import de.baumann.browser.Ninja.R;
 import de.baumann.browser.unit.BrowserUnit;
 import de.baumann.browser.unit.HelperUnit;
@@ -42,7 +42,7 @@ public class Whitelist_Cookie extends AppCompatActivity {
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
-        RecordAction action = new RecordAction(this);
+        RecordDb action = new RecordDb(this);
         action.open(false);
         list = action.listDomains(RecordUnit.TABLE_COOKIE);
         action.close();
@@ -65,7 +65,7 @@ public class Whitelist_Cookie extends AppCompatActivity {
                 } else if (!BrowserUnit.isURL(domain)) {
                     NinjaToast.show(Whitelist_Cookie.this, R.string.toast_invalid_domain);
                 } else {
-                    RecordAction action = new RecordAction(Whitelist_Cookie.this);
+                    RecordDb action = new RecordDb(Whitelist_Cookie.this);
                     action.open(true);
                     if (action.checkDomain(domain, RecordUnit.TABLE_COOKIE)) {
                         NinjaToast.show(Whitelist_Cookie.this, R.string.toast_domain_already_exists);

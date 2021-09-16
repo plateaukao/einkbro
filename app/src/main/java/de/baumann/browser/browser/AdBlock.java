@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-import de.baumann.browser.database.RecordAction;
+import de.baumann.browser.database.RecordDb;
 import de.baumann.browser.preference.ConfigManager;
 import de.baumann.browser.unit.RecordUnit;
 
@@ -46,7 +46,7 @@ public class AdBlock {
     }
 
     private synchronized static void loadDomains(Context context) {
-        RecordAction action = new RecordAction(context);
+        RecordDb action = new RecordDb(context);
         action.open(false);
         whitelist.clear();
         whitelist.addAll(action.listDomains(RecordUnit.TABLE_WHITELIST));
@@ -100,7 +100,7 @@ public class AdBlock {
     }
 
     public synchronized void addDomain(String domain) {
-        RecordAction action = new RecordAction(context);
+        RecordDb action = new RecordDb(context);
         action.open(true);
         action.addDomain(domain, RecordUnit.TABLE_WHITELIST);
         action.close();
@@ -108,7 +108,7 @@ public class AdBlock {
     }
 
     public synchronized void removeDomain(String domain) {
-        RecordAction action = new RecordAction(context);
+        RecordDb action = new RecordDb(context);
         action.open(true);
         action.deleteDomain(domain, RecordUnit.TABLE_WHITELIST);
         action.close();
@@ -116,7 +116,7 @@ public class AdBlock {
     }
 
     public synchronized void clearDomains() {
-        RecordAction action = new RecordAction(context);
+        RecordDb action = new RecordDb(context);
         action.open(true);
         action.clearDomains();
         action.close();

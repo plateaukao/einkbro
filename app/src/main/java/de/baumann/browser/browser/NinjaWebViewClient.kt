@@ -18,7 +18,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.database.Record
-import de.baumann.browser.database.RecordAction
+import de.baumann.browser.database.RecordDb
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.unit.BrowserUnit
 import de.baumann.browser.unit.HelperUnit
@@ -31,7 +31,10 @@ import java.net.URISyntaxException
 import kotlin.collections.HashMap
 
 
-class NinjaWebViewClient(private val ninjaWebView: NinjaWebView) : WebViewClient() {
+class NinjaWebViewClient(
+   private val ninjaWebView: NinjaWebView,
+   private val addHistoryAction: (String) -> Unit
+) : WebViewClient() {
     private val context: Context = ninjaWebView.context
     private val sp: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
     private val config: ConfigManager = ConfigManager(context)
@@ -46,16 +49,9 @@ class NinjaWebViewClient(private val ninjaWebView: NinjaWebView) : WebViewClient
     override fun onPageFinished(view: WebView, url: String) {
         // skip translation pages
         if (config.saveHistory && !ninjaWebView.incognito && !isTranslationDomain(url)) {
-            val action = RecordAction(context)
-            action.open(true)
-            if (action.checkHistory(url)) {
-                action.deleteHistoryItemByURL(url)
-            }
-            action.addHistory(Record(ninjaWebView.albumTitle, url, System.currentTimeMillis()))
-
-            action.purgeOldHistoryItem(14)
-            action.close()
+            addHistoryAction(url)
         }
+
         if (url.contains("facebook.com")) {
             ninjaWebView.removeFBSponsoredPosts()
         }
