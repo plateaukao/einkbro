@@ -19,7 +19,7 @@ import de.baumann.browser.Ninja.R
 import de.baumann.browser.browser.AdBlock
 import de.baumann.browser.browser.Cookie
 import de.baumann.browser.browser.Javascript
-import de.baumann.browser.database.RecordAction
+import de.baumann.browser.database.RecordDb
 import de.baumann.browser.unit.HelperUnit.needGrantStoragePermission
 import de.baumann.browser.view.NinjaToast.showShort
 import de.baumann.browser.view.dialog.TextInputDialog
@@ -222,7 +222,7 @@ object BrowserUnit {
 
     @JvmStatic
     fun exportWhitelist(context: Context, i: Int): String? {
-        val action = RecordAction(context)
+        val action = RecordDb(context)
         val list: List<String>
         val filename: String
         action.open(false)
@@ -280,7 +280,7 @@ object BrowserUnit {
             }
             val file =
                 File(context.getExternalFilesDir(null), "browser_backup//$filename$SUFFIX_TXT")
-            val action = RecordAction(context)
+            val action = RecordDb(context)
             action.open(true)
             val reader = BufferedReader(FileReader(file))
             var line: String?
@@ -309,7 +309,7 @@ object BrowserUnit {
     }
 
     fun clearHome(context: Context?) {
-        val action = RecordAction(context)
+        val action = RecordDb(context)
         action.open(true)
         action.clearHome()
         action.close()
@@ -336,7 +336,7 @@ object BrowserUnit {
 
     @JvmStatic
     fun clearHistory(context: Context) {
-        val action = RecordAction(context)
+        val action = RecordDb(context)
         action.open(true)
         action.clearHistory()
         action.close()

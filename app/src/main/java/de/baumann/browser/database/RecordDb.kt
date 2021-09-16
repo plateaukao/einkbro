@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteDatabase
 import de.baumann.browser.unit.RecordUnit
 import java.util.*
 
-class RecordAction(context: Context?) {
+class RecordDb(context: Context?) {
     private lateinit var database: SQLiteDatabase
     private val helper: RecordHelper = RecordHelper(context)
 

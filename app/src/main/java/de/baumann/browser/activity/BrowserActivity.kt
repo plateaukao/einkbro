@@ -133,6 +133,8 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
 
     private val dialogManager: DialogManager by lazy { DialogManager(this) }
 
+    private val recordDb: RecordDb by lazy { RecordDb(this).apply { open(false) } }
+
     // Classes
     private inner class VideoCompletionListener : OnCompletionListener, MediaPlayer.OnErrorListener {
         override fun onError(mp: MediaPlayer, what: Int, extra: Int): Boolean {
@@ -323,6 +325,8 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
         IntentUnit.setContext(null)
         unregisterReceiver(downloadReceiver)
         bookmarkManager.release()
+        recordDb.close()
+
         super.onDestroy()
     }
 
@@ -400,10 +404,7 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
     override fun updateAutoComplete() {
         lifecycleScope.launch {
             val activity = this@BrowserActivity
-            val action = RecordAction(activity)
-            action.open(false)
-            val list = action.listEntries(activity, true)
-            action.close()
+            val list = recordDb.listEntries(activity, true)
 
             val adapter = CompleteAdapter(activity, R.layout.complete_item, list) { record ->
                 updateAlbum(record.url)
@@ -882,12 +883,13 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
 
     private fun initOverview() {
         overviewDialogController = OverviewDialogController(
-            this,
-            binding.layoutOverview,
-            gotoUrlAction = { url -> updateAlbum(url) },
-            addTabAction = { title, url, isForeground -> addAlbum(title, url, isForeground) },
-            onBookmarksChanged = { isAutoCompleteOutdated = true },
-            onHistoryChanged = { isAutoCompleteOutdated = true }
+                this,
+                binding.layoutOverview,
+                recordDb,
+                gotoUrlAction = { url -> updateAlbum(url) },
+                addTabAction = { title, url, isForeground -> addAlbum(title, url, isForeground) },
+                onBookmarksChanged = { isAutoCompleteOutdated = true },
+                onHistoryChanged = { isAutoCompleteOutdated = true }
         )
     }
 
@@ -1104,6 +1106,18 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
     }
 
     override fun updateTitle(title: String?) = updateTitle()
+
+    override fun addHistory(url: String?) {
+        val url = url ?: return
+
+        if (recordDb.checkHistory(url)) {
+            recordDb.deleteHistoryItemByURL(url)
+        }
+
+        recordDb.addHistory(Record(ninjaWebView.albumTitle, url, System.currentTimeMillis()))
+
+        recordDb.purgeOldHistoryItem(14)
+    }
 
     @Synchronized
     override fun updateProgress(progress: Int) {

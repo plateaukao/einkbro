@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-import de.baumann.browser.database.RecordAction;
+import de.baumann.browser.database.RecordDb;
 import de.baumann.browser.unit.RecordUnit;
 
 public class Cookie {
@@ -44,7 +44,7 @@ public class Cookie {
     }
 
     private synchronized static void loadDomains(Context context) {
-        RecordAction action = new RecordAction(context);
+        RecordDb action = new RecordDb(context);
         action.open(false);
         whitelistCookie.clear();
         whitelistCookie.addAll(action.listDomains(RecordUnit.TABLE_COOKIE));
@@ -72,7 +72,7 @@ public class Cookie {
     }
 
     public synchronized void addDomain(String domain) {
-        RecordAction action = new RecordAction(context);
+        RecordDb action = new RecordDb(context);
         action.open(true);
         action.addDomain(domain, RecordUnit.TABLE_COOKIE);
         action.close();
@@ -80,7 +80,7 @@ public class Cookie {
     }
 
     public synchronized void removeDomain(String domain) {
-        RecordAction action = new RecordAction(context);
+        RecordDb action = new RecordDb(context);
         action.open(true);
         action.deleteDomain(domain, RecordUnit.TABLE_COOKIE);
         action.close();
@@ -88,7 +88,7 @@ public class Cookie {
     }
 
     public synchronized void clearDomains() {
-        RecordAction action = new RecordAction(context);
+        RecordDb action = new RecordDb(context);
         action.open(true);
         action.clearDomainsCookie();
         action.close();
