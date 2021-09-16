@@ -1117,7 +1117,6 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
             progressBar.visibility = View.GONE
 
             scrollChange()
-            ninjaWebView.requestFocus()
         }
     }
 
@@ -1132,10 +1131,13 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
         ViewUnit.showKeyboard(this)
     }
 
+    private var isRunning = false
     private fun updateRefresh(running: Boolean) {
-        if (running) {
+        if (!isRunning && running) {
+            isRunning = true
             binding.omniboxRefresh.setImageResource(R.drawable.icon_close)
-        } else {
+        } else if (isRunning && !running){
+            isRunning = false
             binding.omniboxRefresh.setImageResource(R.drawable.icon_refresh)
         }
     }
