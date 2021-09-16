@@ -618,7 +618,7 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
         }
     }
 
-    private fun showTranslation() {
+    private fun maybeInitTranslationController() {
         if (!::translateController.isInitialized) {
             translateController = TranslationViewController(
                     this,
@@ -628,9 +628,13 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
                     { if (ninjaWebView.isReaderModeOn) ninjaWebView.toggleReaderMode() },
             )
         }
+    }
+
+    private fun showTranslation() {
+        maybeInitTranslationController()
 
         lifecycleScope.launch(Dispatchers.Main) {
-            translateController?.showTranslation(ninjaWebView)
+            translateController.showTranslation(ninjaWebView)
         }
     }
 
@@ -765,7 +769,10 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
 
         binding.omniboxBookmark.setOnClickListener { openBookmarkPage() }
         binding.omniboxBookmark.setOnLongClickListener { saveBookmark(); true }
-        binding.toolbarTranslate.setOnLongClickListener { translateController?.showTranslationConfigDialog(); true }
+        binding.toolbarTranslate.setOnLongClickListener {
+            maybeInitTranslationController()
+            translateController.showTranslationConfigDialog(); true
+        }
 
         binding.omniboxBack.setOnLongClickListener { openHistoryPage(5); true }
 
