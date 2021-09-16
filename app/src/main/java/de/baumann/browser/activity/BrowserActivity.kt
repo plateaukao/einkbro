@@ -288,7 +288,7 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
             showRestartConfirmDialog()
         }
 
-        updateOmnibox()
+        updateTitle()
         overridePendingTransition(0, 0)
         uiMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
     }
@@ -391,7 +391,7 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
         }
         currentAlbumController = controller
         currentAlbumController?.activate()
-        updateOmnibox()
+        updateTitle()
 
         updateSavedAlbumInfo()
         updateWebViewCountUI()
@@ -1028,7 +1028,7 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
     private fun updateAlbum(url: String?) {
         if (url == null) return
         (currentAlbumController as NinjaWebView).loadUrl(url)
-        updateOmnibox()
+        updateTitle()
 
         updateSavedAlbumInfo()
     }
@@ -1068,14 +1068,11 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
         }
     }
 
-    private fun updateOmnibox() {
+    private fun updateTitle() {
         if(!this::ninjaWebView.isInitialized) return
 
         if (this::ninjaWebView.isInitialized && ninjaWebView === currentAlbumController) {
             omniboxTitle.text = ninjaWebView.title
-        } else {
-            ninjaWebView = currentAlbumController as? NinjaWebView ?: return
-            //updateProgress(ninjaWebView.progress)
         }
     }
 
@@ -1106,10 +1103,11 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
         })
     }
 
+    override fun updateTitle(title: String?) = updateTitle()
+
     @Synchronized
     override fun updateProgress(progress: Int) {
         progressBar.progress = progress
-        updateOmnibox()
 
         if (progress < BrowserUnit.PROGRESS_MAX) {
             updateRefresh(true)
@@ -1138,15 +1136,7 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
         if (running) {
             binding.omniboxRefresh.setImageResource(R.drawable.icon_close)
         } else {
-            try {
-                if (ninjaWebView.url?.contains("https://") == true) {
-                    binding.omniboxRefresh.setImageResource(R.drawable.icon_refresh)
-                } else {
-                    binding.omniboxRefresh.setImageResource(R.drawable.icon_alert)
-                }
-            } catch (e: Exception) {
-                binding.omniboxRefresh.setImageResource(R.drawable.icon_refresh)
-            }
+            binding.omniboxRefresh.setImageResource(R.drawable.icon_refresh)
         }
     }
 
