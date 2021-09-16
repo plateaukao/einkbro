@@ -44,17 +44,15 @@ class NinjaWebViewClient(private val ninjaWebView: NinjaWebView) : WebViewClient
     }
 
     override fun onPageFinished(view: WebView, url: String) {
-        ninjaWebView.albumTitle = view.title ?: ""
         // skip translation pages
         if (config.saveHistory && !ninjaWebView.incognito && !isTranslationDomain(url)) {
             val action = RecordAction(context)
             action.open(true)
             if (action.checkHistory(url)) {
                 action.deleteHistoryItemByURL(url)
-                action.addHistory(Record(ninjaWebView.title, url, System.currentTimeMillis()))
-            } else {
-                action.addHistory(Record(ninjaWebView.title, url, System.currentTimeMillis()))
             }
+            action.addHistory(Record(ninjaWebView.albumTitle, url, System.currentTimeMillis()))
+
             action.purgeOldHistoryItem(14)
             action.close()
         }

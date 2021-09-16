@@ -322,7 +322,7 @@ class NinjaWebView : WebView, AlbumController {
     fun update(title: String?) {
         album.albumTitle = title ?: ""
         // so that title on bottom bar can be updated
-        browserController?.updateProgress(BrowserUnit.PROGRESS_MAX)
+        browserController?.updateTitle(album.albumTitle)
     }
 
     @Synchronized
