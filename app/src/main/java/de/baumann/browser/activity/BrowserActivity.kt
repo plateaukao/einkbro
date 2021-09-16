@@ -408,6 +408,8 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
             val adapter = CompleteAdapter(activity, R.layout.complete_item, list) { record ->
                 updateAlbum(record.url)
                 ViewUnit.hideKeyboard(this@BrowserActivity)
+                binding.omniboxInput.clearFocus()
+                showToolbar()
             }
 
             with (binding.omniboxInput) {
