@@ -730,14 +730,16 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
             fabImageButtonNav.setOnTouchListener(onTouchListener)
             binding.omniboxSetting.setOnTouchListener(onTouchListener)
         }
-        binding.omniboxInput.setOnEditorActionListener(OnEditorActionListener { _, _, _ ->
-            val query = binding.omniboxInput.text.toString().trim { it <= ' ' }
-            if (query.isEmpty()) {
-                NinjaToast.show(this, getString(R.string.toast_input_empty))
-                return@OnEditorActionListener true
+        binding.omniboxInput.setOnEditorActionListener(OnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                val query = binding.omniboxInput.text.toString().trim { it <= ' ' }
+                if (query.isEmpty()) {
+                    NinjaToast.show(this, getString(R.string.toast_input_empty))
+                    return@OnEditorActionListener true
+                }
+                updateAlbum(query)
+                showToolbar()
             }
-            updateAlbum(query)
-            showToolbar()
             false
         })
         binding.omniboxInput.onFocusChangeListener = OnFocusChangeListener { _, _ ->
