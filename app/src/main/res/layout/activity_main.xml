@@ -52,7 +52,7 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:selectAllOnFocus="true"
                 android:completionThreshold="1"
-                android:imeOptions="actionGo"
+                android:imeOptions="actionDone"
                 android:inputType="textUri"
                 android:maxLines="1"
                 android:ellipsize="end"/>
