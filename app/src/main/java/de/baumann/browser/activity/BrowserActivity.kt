@@ -386,19 +386,21 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
             }
 
             currentAlbumController?.deactivate()
-            val av = controller as View
-            mainContentLayout.removeAllViews()
-            mainContentLayout.addView(av)
-        } else {
-            mainContentLayout.removeAllViews()
-            mainContentLayout.addView(controller as View)
         }
+
+        mainContentLayout.removeAllViews()
+        val av = controller as View
+        mainContentLayout.addView(av)
+
         currentAlbumController = controller
         currentAlbumController?.activate()
         updateTitle()
 
         updateSavedAlbumInfo()
         updateWebViewCountUI()
+
+        progressBar.visibility = GONE
+        ninjaWebView = controller as NinjaWebView
     }
 
     override fun updateAutoComplete() {
@@ -1063,7 +1065,7 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
                     if (index >= browserContainer.size()) {
                         index = browserContainer.size() - 1
                     }
-                    showAlbum(browserContainer.get(index))
+                    showAlbum(browserContainer[index])
                 }
                 updateWebViewCount()
             }
@@ -1125,10 +1127,10 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
 
         if (progress < BrowserUnit.PROGRESS_MAX) {
             updateRefresh(true)
-            progressBar.visibility = View.VISIBLE
+            progressBar.visibility = VISIBLE
         } else {
             updateRefresh(false)
-            progressBar.visibility = View.GONE
+            progressBar.visibility = GONE
 
             scrollChange()
         }
