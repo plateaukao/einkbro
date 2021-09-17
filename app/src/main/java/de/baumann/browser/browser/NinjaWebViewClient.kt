@@ -122,11 +122,12 @@ class NinjaWebViewClient(
         return true //do nothing in other cases
     }
 
-    private val webResourceResponse = WebResourceResponse(
-            BrowserUnit.MIME_TYPE_IMAGE,
-            BrowserUnit.URL_ENCODING,
-            ByteArrayInputStream("".toByteArray())
-    )
+    private val webResourceResponse: WebResourceResponse =
+            WebResourceResponse(
+                    BrowserUnit.MIME_TYPE_TEXT_PLAIN,
+                    BrowserUnit.URL_ENCODING,
+                    ByteArrayInputStream("".toByteArray())
+            )
 
     override fun shouldInterceptRequest(view: WebView, url: String): WebResourceResponse? {
         if (hasAdBlock && !white && adBlock.isAd(url)) {

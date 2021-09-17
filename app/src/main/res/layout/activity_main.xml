@@ -250,6 +250,22 @@
                     android:background="@color/color_transparent"
                     android:onClick="onClick"/>
 
+                <ImageButton android:id="@+id/toolbar_close_tab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:src="@drawable/icon_close"
+                    android:background="@color/color_transparent"
+                    android:onClick="onClick"/>
+
+                <ImageButton android:id="@+id/toolbar_input_url"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_input_url"
+                    android:background="@color/color_transparent"
+                    android:onClick="onClick"/>
+
             </LinearLayout>
             </HorizontalScrollView>
         </RelativeLayout>
