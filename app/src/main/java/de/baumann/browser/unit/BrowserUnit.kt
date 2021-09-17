@@ -35,7 +35,7 @@ object BrowserUnit {
     const val SUFFIX_PNG = ".png"
     private const val SUFFIX_TXT = ".txt"
     const val MIME_TYPE_TEXT_PLAIN = "text/plain"
-    const val MIME_TYPE_IMAGE = "image/gif"
+    const val MIME_TYPE_IMAGE = "image/png"
     private const val SEARCH_ENGINE_GOOGLE = "https://www.google.com/search?q="
     private const val SEARCH_ENGINE_DUCKDUCKGO = "https://duckduckgo.com/?q="
     private const val SEARCH_ENGINE_STARTPAGE = "https://startpage.com/do/search?query="
@@ -46,7 +46,7 @@ object BrowserUnit {
     private const val SEARCH_ENGINE_STARTPAGE_DE =
         "https://startpage.com/do/search?lui=deu&language=deutsch&query="
     private const val SEARCH_ENGINE_SEARX = "https://searx.me/?q="
-    const val URL_ENCODING = "UTF-8"
+    const val URL_ENCODING = "utf-8"
     private const val URL_ABOUT_BLANK = "about:blank"
     const val URL_SCHEME_ABOUT = "about:"
     const val URL_SCHEME_MAIL_TO = "mailto:"
