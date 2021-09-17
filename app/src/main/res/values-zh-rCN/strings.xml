@@ -333,40 +333,6 @@
 
     <!-- License changelog -->
 
-    <string name="license_title">Copyright © 2021 by Daniel Kao, 2017  by Gaukler Faun</string>
-    <string name="license_dialog">
-        &lt;i>For more information visit the project site on Github: https://github.com/plateaukao/browser&lt;/i>&lt;br>&lt;br>
-
-        This program is free software: you can redistribute it and/or modify
-        it under the terms of the GNU General Public License as published by
-        the Free Software Foundation, either version 3 of the License, or
-        (at your option) any later version.
-
-        This program is distributed in the hope that it will be useful,
-        but WITHOUT ANY WARRANTY; without even the implied warranty of
-        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-        GNU General Public License for more details.
-
-        You should have received a copy of the GNU General Public License
-        along with this program.  If not, see http://www.gnu.org/licenses.&lt;br>&lt;br>
-
-        &lt;i>Following open source libraries or projects are used within this software:&lt;/i>&lt;br>&lt;br>&lt;br>
-
-        &lt;b>Material Design Icons&lt;/b>&lt;br>
-        SIL Open Font License, Version 1.1.&lt;br>
-        Templarian&lt;br>
-        &lt;i>https://github.com/Templarian/MaterialDesign&lt;/i>&lt;br>&lt;br>
-
-        &lt;b>Ninja&lt;/b>&lt;br>
-        Apache License Version 2.0&lt;br>
-        Matthew Lee&lt;br>
-        &lt;i>http://git.io/vUrEh&lt;/i>&lt;br>&lt;br>
-
-        &lt;b>SimpleEncryptionLib&lt;/b>&lt;br>
-        Apache License Version 2.0&lt;br>
-        hummatli&lt;br>
-        &lt;i>https://github.com/hummatli/SimpleEncryptionLib</string>
-
     <string name="cont_dialog">
         &lt;i>首先我想要感谢所有不论以何种方式为这个项目作出贡献的人。他们或者提交问题，或者翻译，或者以其他方式给予了帮助。
         在下面的网站中你可以成为这个社区的一个活跃的成员:&lt;/i>&lt;br>&lt;br>

@@ -265,38 +265,6 @@
     <string name="dialogHelp_filterText">Pode associar os seus marcadores a filtros. Desta forma, consegue agrupar os separadores facilmente. Assim que o fizer, pode abrir o diálogo com um toque longo no ícone Marcadores. Se ativar uma entrada surge um diálogo, no qual pode editar o nome do filtro.    </string>
     <!-- Dialog changelog -->
     <!-- License changelog -->
-    <string name="license_title">Copyright © 2017-2020  by Gaukler Faun</string>
-    <string name="license_dialog">        &lt;i&gt;Para obter mais informações, aceda à nossa página Github: https://github.com/scoute-dich/Browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        This program is free software: you can redistribute it and/or modify
-        it under the terms of the GNU General Public License as published by
-        the Free Software Foundation, either version 3 of the License, or
-        (at your option) any later version.
-
-        This program is distributed in the hope that it will be useful,
-        but WITHOUT ANY WARRANTY; without even the implied warranty of
-        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-        GNU General Public License for more details.
-
-        You should have received a copy of the GNU General Public License
-        along with this program.  If not, see http://www.gnu.org/licenses.&lt;br&gt;&lt;br&gt;
-
-        &lt;i&gt;Esta aplicação utiliza as bibliotecas e/ou projetos Open Source abaixo indicados:&lt;/i&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Material Design Icons&lt;/b&gt;&lt;br&gt;
-        SIL Open Font License, Version 1.1.&lt;br&gt;
-        Templarian&lt;br&gt;
-        &lt;i&gt;https://github.com/Templarian/MaterialDesign&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Ninja&lt;/b&gt;&lt;br&gt;
-        Apache License Version 2.0&lt;br&gt;
-        Matthew Lee&lt;br&gt;
-        &lt;i&gt;http://git.io/vUrEh&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;SimpleEncryptionLib&lt;/b&gt;&lt;br&gt;
-        Apache License Version 2.0&lt;br&gt;
-        hummatli&lt;br&gt;
-        &lt;i&gt;https://github.com/hummatli/SimpleEncryptionLib</string>
     <string name="cont_dialog">        &lt;i&gt;Gostaria agradecer a todas as pessoas que, de alguma forma, participaram no desenvolvimento desta aplicação. O meu obrigado às pessoas que comunicaram os erros encontrados, às pessoas que ajudaram a traduzir e a todas as pessoas que de alguma forma ajudaram a tornar esta aplicação melhor. Nos sites indicados abaixo, pode obter informações sobre com se tornar parte ativa deste projeto:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
 
         &lt;b&gt;Crowdin:&lt;/b&gt;&lt;br&gt;

@@ -3,69 +3,58 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory
-        android:title="@string/setting_title_app">
+    <PreferenceCategory>
 
         <Preference
             android:key="settings_ui"
             android:icon="@drawable/icon_ui"
-            android:title="@string/setting_title_ui"
-            android:summary="@string/setting_summary_ui"/>
+            android:title="@string/setting_title_ui"/>
 
         <Preference
             android:key="settings_gesture"
             android:icon="@drawable/gesture_tap"
-            android:title="@string/setting_gestures"
-            android:summary="@string/setting_gestures_use_summary"/>
+            android:title="@string/setting_gestures"/>
 
         <Preference
             android:key="settings_data"
             android:icon="@drawable/icon_backup"
-            android:title="@string/setting_title_data"
-            android:summary="@string/setting_summary_data"/>
+            android:title="@string/setting_title_data"/>
 
         <Preference
             android:key="settings_pdf_paper_size"
             android:icon="@drawable/ic_pdf"
-            android:title="@string/setting_title_pdf_paper_size"
-            android:summary="@string/setting_summary_pdf_paper_size"/>
+            android:title="@string/setting_title_pdf_paper_size"/>
 
         <Preference
             android:key="settings_appSettings"
             android:icon="@drawable/icon_settings"
-            android:title="@string/setting_title_appSettings"
-            android:summary="@string/setting_summary_appSettings"/>
+            android:title="@string/setting_title_appSettings"/>
 
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:title="@string/setting_title_browser">
+    <PreferenceCategory>
 
         <EditTextPreference
             android:defaultValue="https://duckduckgo.com/"
             android:key="favoriteURL"
             android:title="@string/setting_title_fav"
-            android:summary="@string/setting_summary_fav"
             android:icon="@drawable/ic_home"/>
 
         <Preference
             android:key="settings_start"
             android:title="@string/setting_title_start_control"
-            android:summary="@string/setting_summary_start_control"
             android:icon="@drawable/icon_earth"/>
 
         <Preference
             android:key="settings_clear"
             android:title="@string/setting_title_clear_control"
-            android:icon="@drawable/icon_delete"
-            android:summary="@string/setting_summary_clear_control" />
+            android:icon="@drawable/icon_delete"/>
 
         <ListPreference
             android:icon="@drawable/icon_search"
             android:key="@string/sp_search_engine"
             android:defaultValue="4"
             android:title="@string/setting_title_search_engine"
-            android:summary="@string/setting_summary_search_engine"
             android:entries="@array/setting_entries_search_engine"
             android:entryValues="@array/setting_values_search_engine"/>
 
@@ -73,25 +62,22 @@
             android:defaultValue="https://www.google.com/search?q="
             android:key="sp_search_engine_custom"
             android:title="@string/setting_title_searchEngine"
-            android:summary="@string/setting_summary_searchEngine"
             android:icon="@drawable/icon_edit"/>
 
         <EditTextPreference
             android:selectable="true"
             android:key="userAgent"
             android:title="@string/setting_title_userAgent"
-            android:summary="@string/setting_summary_userAgent"
             android:icon="@drawable/icon_useragent"/>
 
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:title="@string/setting_title_others">
+    <PreferenceCategory>
 
-        <Preference
-            android:key="settings_help"
-            android:icon="@drawable/icon_help"
-            android:title="@string/menu_other_help"/>
+<!--        <Preference-->
+<!--            android:key="settings_help"-->
+<!--            android:icon="@drawable/icon_help"-->
+<!--            android:title="@string/menu_other_help"/>-->
 
         <Preference
             android:key="settings_license"

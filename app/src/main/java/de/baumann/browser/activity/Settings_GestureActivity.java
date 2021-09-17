@@ -1,15 +1,16 @@
 package de.baumann.browser.activity;
 
 import android.os.Bundle;
+import android.view.MenuItem;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
-import android.view.MenuItem;
 
 import java.util.Objects;
 
-import de.baumann.browser.fragment.Fragment_settings_Gesture;
 import de.baumann.browser.Ninja.R;
+import de.baumann.browser.fragment.Fragment_settings_Gesture;
 import de.baumann.browser.unit.HelperUnit;
 
 public class Settings_GestureActivity extends AppCompatActivity {
@@ -37,5 +38,12 @@ public class Settings_GestureActivity extends AppCompatActivity {
             finish();
         }
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        overridePendingTransition(0, 0);
     }
 }

@@ -290,38 +290,6 @@ vedle&lt;br&gt;&lt;br&gt;
     </string>
     <!-- Dialog changelog -->
     <!-- License changelog -->
-    <string name="license_title">Copyright © 2017  by Gaukler Faun</string>
-    <string name="license_dialog">        &lt;i&gt;For more information visit the project site on Github: https://github.com/scoute-dich/Browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        This program is free software: you can redistribute it and/or modify
-        it under the terms of the GNU General Public License as published by
-        the Free Software Foundation, either version 3 of the License, or
-        (at your option) any later version.
-
-        This program is distributed in the hope that it will be useful,
-        but WITHOUT ANY WARRANTY; without even the implied warranty of
-        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-        GNU General Public License for more details.
-
-        You should have received a copy of the GNU General Public License
-        along with this program.  If not, see http://www.gnu.org/licenses.&lt;br&gt;&lt;br&gt;
-
-        &lt;i&gt;Following open source libraries or projects are used within this software:&lt;/i&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Material Design Icons&lt;/b&gt;&lt;br&gt;
-        SIL Open Font License, Version 1.1.&lt;br&gt;
-        Templarian&lt;br&gt;
-        &lt;i&gt;https://github.com/Templarian/MaterialDesign&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Ninja&lt;/b&gt;&lt;br&gt;
-        Apache License Version 2.0&lt;br&gt;
-        Matthew Lee&lt;br&gt;
-        &lt;i&gt;http://git.io/vUrEh&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;SimpleEncryptionLib&lt;/b&gt;&lt;br&gt;
-        Apache License Version 2.0&lt;br&gt;
-        hummatli&lt;br&gt;
-        &lt;i&gt;https://github.com/hummatli/SimpleEncryptionLib</string>
     <string name="cont_dialog">        &lt;i&gt;Nejprve bych chtěl poděkovat všem lidem, kteří přispěli jakýmkoli způsobem k tomuto projektu. Byly odeslány otázky,
         přeloženy nebo pomáhaly jakýmkoli jiným způsobem. Na následujících stránkách se můžete stát aktivním členem této
         skvělé komunity:&lt;/i&gt;&lt;br&gt;&lt;br&gt;

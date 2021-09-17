@@ -268,33 +268,6 @@ Hier gibt es drei Teile: die Startseite, deine Lesezeichen und dein Browserverla
     </string>
     <!-- Dialog changelog -->
     <!-- License changelog -->
-    <string name="license_title">Copyright © 2017  von Gaukler Faun</string>
-    <string name="license_dialog">        Besuche für mehr Informationen die Projektseite auf Github: https://github.com/scoute-dich/Browser&lt;br&gt;&lt;br&gt;
-
-        Dieses Programm ist freie Software. Sie können es unter den Bedingungen der GNU General Public License, wie von
-        der Free Software Foundation veröffentlicht, weitergeben und/oder modifizieren, entweder gemäß Version 3 der Lizenz oder
-        (nach Ihrer Option) jeder späteren Version. Die Veröffentlichung dieses Programms erfolgt in der Hoffnung, daß es Ihnen
-        von Nutzen sein wird, aber OHNE IRGENDEINE GARANTIE, sogar ohne die implizite Garantie der MARKTREIFE oder der
-        VERWENDBARKEIT FÜR EINEN BESTIMMTEN ZWECK. Details finden Sie in der GNU General Public License. Sie sollten ein
-        Exemplar der GNU General Public License zusammen mit diesem Programm erhalten haben. Falls nicht,
-        siehe http://www.gnu.org/licenses.&lt;br&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;i&gt;Die folgenden Open Source Bibliotheken oder Projekte werden in dieser Software verwendet:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Material Design Icons&lt;/b&gt;&lt;br&gt;
-        SIL Open Font License, Version 1.1.&lt;br&gt;
-        Templarian&lt;br&gt;
-        &lt;i&gt;https://github.com/Templarian/MaterialDesign&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Ninja&lt;/b&gt;&lt;br&gt;
-        Apache License Version 2.0&lt;br&gt;
-        Matthew Lee&lt;br&gt;
-        &lt;i&gt;http://git.io/vUrEh&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;SimpleEncryptionLib&lt;/b&gt;&lt;br&gt;
-        Apache License Version 2.0&lt;br&gt;
-        hummatli&lt;br&gt;
-        &lt;i&gt;https://github.com/hummatli/SimpleEncryptionLib</string>
     <string name="cont_dialog">        &lt;i&gt;Zuerst möchte ich mich bei allen Leuten bedanken, die in irgendeiner Weise an diesem Projekt mitgewirkt haben. Sie haben Themen eingereicht,
         übersetzt oder anderweitig geholfen. Auf folgenden Seiten können Sie ein aktives Mitglied dieser
         großen Community werden:&lt;/i&gt;&lt;br&gt;&lt;br&gt;

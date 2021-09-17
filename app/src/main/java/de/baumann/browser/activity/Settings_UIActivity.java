@@ -1,14 +1,14 @@
 package de.baumann.browser.activity;
 
 import android.os.Bundle;
+import android.view.MenuItem;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 
-import android.view.MenuItem;
-
-import de.baumann.browser.fragment.UiSettingsFragment;
 import de.baumann.browser.Ninja.R;
+import de.baumann.browser.fragment.UiSettingsFragment;
 import de.baumann.browser.unit.HelperUnit;
 import de.baumann.browser.util.Constants;
 
@@ -44,5 +44,12 @@ public class Settings_UIActivity extends AppCompatActivity {
             finish();
         }
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        overridePendingTransition(0, 0);
     }
 }

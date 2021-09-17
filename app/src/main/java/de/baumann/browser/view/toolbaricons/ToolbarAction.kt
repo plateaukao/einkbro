@@ -22,7 +22,9 @@ enum class ToolbarAction(val iconResId: Int = 0, val titleResId: Int) {
     FullScreen(iconResId = R.drawable.icon_fullscreen, titleResId = R.string.fullscreen),
     Forward(iconResId = R.drawable.icon_arrow_right_gest, titleResId = R.string.forward),
     RotateScreen(iconResId = R.drawable.ic_rotate, titleResId = R.string.rotate),
-    Translation(iconResId = R.drawable.ic_translate, titleResId = R.string.translate);
+    Translation(iconResId = R.drawable.ic_translate, titleResId = R.string.translate),
+    CloseTab(iconResId = R.drawable.icon_close, titleResId = R.string.close_tab),
+    InputUrl(iconResId = R.drawable.ic_input_url, titleResId = R.string.input_url);
 
     companion object {
         fun fromOrdinal(value: Int) = values().first { it.ordinal == value }

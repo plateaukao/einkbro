@@ -293,38 +293,6 @@
     </string>
     <!-- Dialog changelog -->
     <!-- License changelog -->
-    <string name="license_title">Copyright © 2017  by Gaukler Faun</string>
-    <string name="license_dialog">        &lt;i&gt;Pour plus d\'informations, visitez le site du projet sur Github: https://github.com/scoute-dich/Browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        Ce programme est un logiciel libre : vous pouvez le redistribuer et/ou le modifier
-        sous les termes de la Licence Publique Générale GNU telle que publiée par
-        la Free Software Foundation, soit la version 3 de la Licence, soit
-        (à votre choix) toute version ultérieure.
-
-        Ce programme est distribué dans l\'espoir qu\'il sera utile,
-        mais SANS AUCUNE GARANTIE ; sans même la garantie implicite de
-        LA COMMERCIALISATION ou l\'ADÉQUATION À UN OBJECTIF PARTICULIER.  Voir le
-        GNU General Public License pour plus de détails.
-
-        Vous devriez avoir reçu une copie de la Licence Publique Générale GNU
-        avec ce programme.  Si ce n\'est pas le cas, voir http://www.gnu.org/licenses.&lt;br&gt;&lt;br&gt;
-
-        &lt;i&gt;Les bibliothèques ou projets open source suivants sont utilisés dans ce logiciel:&lt;/i&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Material Design Icons&lt;/b&gt;&lt;br&gt;
-        SIL Open Font License, Version 1.1.&lt;br&gt;
-        Templarian&lt;br&gt;
-        &lt;i&gt;https://github.com/Templarian/MaterialDesign&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Ninja&lt;/b&gt;&lt;br&gt;
-        Apache License Version 2.0&lt;br&gt;
-        Matthew Lee&lt;br&gt;
-        &lt;i&gt;http://git.io/vUrEh&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;SimpleEncryptionLib&lt;/b&gt;&lt;br&gt;
-        Apache License Version 2.0&lt;br&gt;
-        hummatli&lt;br&gt;
-        &lt;i&gt;https://github.com/hummatli/SimpleEncryptionLib</string>
     <string name="cont_dialog">        &lt;i&gt;First I would like to thank all people who contributed in any way on this project. They submitted issues,
         translated or helped in any other way. On following sites you can become a active member of this
         great community:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
