@@ -418,7 +418,6 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
             with (binding.omniboxInput) {
                 setAdapter(adapter)
                 threshold = 1
-                dropDownVerticalOffset = -16
                 dropDownWidth = ViewUnit.getWindowWidth(activity)
             }
         }
@@ -732,6 +731,7 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
         }
         binding.omniboxInput.setOnEditorActionListener(OnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
+                binding.omniboxInput.dismissDropDown()
                 val query = binding.omniboxInput.text.toString().trim { it <= ' ' }
                 if (query.isEmpty()) {
                     NinjaToast.show(this, getString(R.string.toast_input_empty))
