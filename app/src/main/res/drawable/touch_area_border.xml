@@ -15,7 +15,7 @@
     <item
         android:top="1.5dp"
         android:right="2dp"
-        android:left="-1.5dp"
+        android:left="1.5dp"
         android:bottom="1.5dp"
         >
         <shape
