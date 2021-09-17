@@ -29,6 +29,10 @@ import java.io.ByteArrayInputStream
 import java.io.InputStream
 import java.net.URISyntaxException
 import kotlin.collections.HashMap
+import android.graphics.BitmapFactory
+
+import android.graphics.Bitmap
+import android.util.Base64
 
 
 class NinjaWebViewClient(
@@ -122,12 +126,17 @@ class NinjaWebViewClient(
         return true //do nothing in other cases
     }
 
-    private val webResourceResponse: WebResourceResponse =
-            WebResourceResponse(
-                    BrowserUnit.MIME_TYPE_TEXT_PLAIN,
-                    BrowserUnit.URL_ENCODING,
-                    ByteArrayInputStream("".toByteArray())
-            )
+    private val webResourceResponse: WebResourceResponse by lazy {
+        val encodedImage = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+        val decodedString: ByteArray = Base64.decode(encodedImage, Base64.DEFAULT)
+        val decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+        WebResourceResponse(
+                BrowserUnit.MIME_TYPE_IMAGE,
+                BrowserUnit.URL_ENCODING,
+                //ByteArrayInputStream("".toByteArray())
+                decodedString.inputStream()
+        )
+    }
 
     override fun shouldInterceptRequest(view: WebView, url: String): WebResourceResponse? {
         if (hasAdBlock && !white && adBlock.isAd(url)) {
