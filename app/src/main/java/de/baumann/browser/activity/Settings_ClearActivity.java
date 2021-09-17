@@ -2,19 +2,21 @@ package de.baumann.browser.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import de.baumann.browser.fragment.Fragment_clear;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.Toolbar;
+
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+
 import de.baumann.browser.Ninja.R;
+import de.baumann.browser.fragment.Fragment_clear;
 import de.baumann.browser.service.ClearService;
 import de.baumann.browser.unit.HelperUnit;
 
@@ -79,5 +81,12 @@ public class Settings_ClearActivity extends AppCompatActivity {
                 break;
         }
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        overridePendingTransition(0, 0);
     }
 }

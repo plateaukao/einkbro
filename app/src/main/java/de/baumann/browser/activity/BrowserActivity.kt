@@ -18,6 +18,8 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.*
+import android.view.KeyEvent.ACTION_DOWN
+import android.view.KeyEvent.KEYCODE_ENTER
 import android.view.View.*
 import android.view.inputmethod.EditorInfo
 import android.webkit.*
@@ -502,6 +504,11 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
             R.id.toolbar_fullscreen -> fullscreen()
             R.id.toolbar_rotate -> rotateScreen()
             R.id.toolbar_translate -> showTranslation()
+            R.id.toolbar_close_tab -> removeAlbum(currentAlbumController!!)
+            R.id.toolbar_input_url -> {
+                toolbarViewController.hide()
+                focusOnInput()
+            }
             else -> {
             }
         }
@@ -729,8 +736,10 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
             fabImageButtonNav.setOnTouchListener(onTouchListener)
             binding.omniboxSetting.setOnTouchListener(onTouchListener)
         }
-        binding.omniboxInput.setOnEditorActionListener(OnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
+        binding.omniboxInput.setOnEditorActionListener(OnEditorActionListener { _, actionId, keyEvent ->
+            if (actionId == EditorInfo.IME_ACTION_DONE ||
+                    (keyEvent.action == ACTION_DOWN && keyEvent.keyCode == KEYCODE_ENTER)
+            ) {
                 binding.omniboxInput.dismissDropDown()
                 val query = binding.omniboxInput.text.toString().trim { it <= ' ' }
                 if (query.isEmpty()) {
@@ -1153,7 +1162,7 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
     private fun updateRefresh(running: Boolean) {
         if (!isRunning && running) {
             isRunning = true
-            binding.omniboxRefresh.setImageResource(R.drawable.icon_close)
+            binding.omniboxRefresh.setImageResource(R.drawable.ic_stop)
         } else if (isRunning && !running){
             isRunning = false
             binding.omniboxRefresh.setImageResource(R.drawable.icon_refresh)

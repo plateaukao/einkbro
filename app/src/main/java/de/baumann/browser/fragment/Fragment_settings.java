@@ -5,23 +5,23 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-
 import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.preference.PreferenceFragmentCompat;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+
 import de.baumann.browser.Ninja.BuildConfig;
+import de.baumann.browser.Ninja.R;
 import de.baumann.browser.activity.Settings_ClearActivity;
 import de.baumann.browser.activity.Settings_DataActivity;
 import de.baumann.browser.activity.Settings_GestureActivity;
 import de.baumann.browser.activity.Settings_StartActivity;
 import de.baumann.browser.activity.Settings_UIActivity;
 import de.baumann.browser.unit.HelperUnit;
-import de.baumann.browser.Ninja.R;
 import de.baumann.browser.view.dialog.PrinterDocumentPaperSizeDialog;
 
 public class Fragment_settings extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -66,20 +66,17 @@ public class Fragment_settings extends PreferenceFragmentCompat implements Share
             showLicenseDialog(getString(R.string.license_title), getString(R.string.license_dialog));
             return false;
         });
-        findPreference("settings_license").setOnPreferenceClickListener(preference -> {
-            showContributors = false;
-            showLicenseDialog(getString(R.string.license_title), getString(R.string.license_dialog));
-            return false;
-        });
         findPreference("settings_info").setOnPreferenceClickListener(preference -> {
             showContributors = false;
             showLicenseDialog(getString(R.string.menu_other_info), "v" + BuildConfig.VERSION_NAME + "<br><br>" + getString(R.string.changelog_dialog));
             return false;
         });
+        /*
         findPreference("settings_help").setOnPreferenceClickListener(preference -> {
             HelperUnit.showDialogHelp(getActivity());
             return false;
         });
+         */
         findPreference("settings_appSettings").setOnPreferenceClickListener(preference -> {
             Intent intent = new Intent();
             intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);

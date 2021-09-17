@@ -485,4 +485,5 @@
     <string name="setting_summary_screen_awake">Keep screen always awake</string>
     <string name="middle">middle</string>
     <string name="bottom">bottom</string>
+    <string name="input_url">input url</string>
 </resources>
