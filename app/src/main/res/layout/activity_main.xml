@@ -55,6 +55,7 @@
                 android:imeOptions="actionDone"
                 android:inputType="textUri"
                 android:maxLines="1"
+                android:popupElevation="0dp"
                 android:ellipsize="end"/>
 
             <HorizontalScrollView
