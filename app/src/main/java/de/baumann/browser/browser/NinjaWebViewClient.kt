@@ -17,22 +17,19 @@ import androidx.preference.PreferenceManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import de.baumann.browser.Ninja.R
-import de.baumann.browser.database.Record
-import de.baumann.browser.database.RecordDb
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.unit.BrowserUnit
 import de.baumann.browser.unit.HelperUnit
 import de.baumann.browser.unit.IntentUnit
 import de.baumann.browser.view.NinjaToast
 import de.baumann.browser.view.NinjaWebView
-import java.io.ByteArrayInputStream
 import java.io.InputStream
 import java.net.URISyntaxException
 import kotlin.collections.HashMap
 import android.graphics.BitmapFactory
 
-import android.graphics.Bitmap
 import android.util.Base64
+import java.io.ByteArrayInputStream
 
 
 class NinjaWebViewClient(
@@ -126,21 +123,35 @@ class NinjaWebViewClient(
         return true //do nothing in other cases
     }
 
-    private val webResourceResponse: WebResourceResponse by lazy {
+    private val adPngResponse: WebResourceResponse by lazy {
         val encodedImage = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
         val decodedString: ByteArray = Base64.decode(encodedImage, Base64.DEFAULT)
-        val decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
         WebResourceResponse(
                 BrowserUnit.MIME_TYPE_IMAGE,
                 BrowserUnit.URL_ENCODING,
-                //ByteArrayInputStream("".toByteArray())
+                decodedString.inputStream()
+        )
+    }
+
+    private val adTxtResponse: WebResourceResponse = WebResourceResponse(
+            BrowserUnit.MIME_TYPE_TEXT_PLAIN,
+            BrowserUnit.URL_ENCODING,
+            ByteArrayInputStream("".toByteArray())
+    )
+
+    private val adGifResponse: WebResourceResponse by lazy {
+        val encodedImage = "R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="
+        val decodedString: ByteArray = Base64.decode(encodedImage, Base64.DEFAULT)
+        WebResourceResponse(
+                "image/gif",
+                BrowserUnit.URL_ENCODING,
                 decodedString.inputStream()
         )
     }
 
     override fun shouldInterceptRequest(view: WebView, url: String): WebResourceResponse? {
         if (hasAdBlock && !white && adBlock.isAd(url)) {
-            return webResourceResponse
+            return adTxtResponse
         }
         if (!sp.getBoolean(context.getString(R.string.sp_cookies), true)) {
             if (cookie.isWhite(url)) {
@@ -175,7 +186,17 @@ class NinjaWebViewClient(
 
     override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest): WebResourceResponse? {
         if (hasAdBlock && !white && adBlock.isAd(request.url.toString())) {
-            return webResourceResponse
+            return adTxtResponse
+            /*
+            val path = request.url.toString()
+            if (path.contains("gif", ignoreCase = true)) {
+                return adGifResponse
+            } else if (path.contains("png", ignoreCase = true)) {
+                return adPngResponse
+            } else {
+                return adGifResponse
+            }
+             */
         }
 
         if (!sp.getBoolean(context.getString(R.string.sp_cookies), true)) {
