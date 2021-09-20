@@ -33,6 +33,7 @@ class TranslationViewController(
     private val twoPaneLayout: TwoPaneLayout,
     private val showTranslationAction: () -> Unit,
     private val onTranslationClosed: () -> Unit,
+    private val loadTranslationUrl: (String) -> Unit
 ) {
     private val config: ConfigManager by lazy { ConfigManager(activity) }
     private val webView: NinjaWebView by lazy {
@@ -63,7 +64,11 @@ class TranslationViewController(
         translationViewBinding.translationFontMinus.setOnClickListener { decreaseFontSize() }
 
         translationViewBinding.translationClose.setOnClickListener { toggleTranslationWindow(false, onTranslationClosed) }
-        translationViewBinding.translationClose.setOnLongClickListener{ hideControlButtons(); true }
+        translationViewBinding.translationClose.setOnLongClickListener{
+            webView.url?.let { loadTranslationUrl(it) }
+            toggleTranslationWindow(false)
+            true
+        }
 
         translationViewBinding.translationOrientation.setOnClickListener {
             val orientation = if (twoPaneLayout.getOrientation() == Orientation.Vertical) Orientation.Horizontal else Orientation.Vertical
@@ -356,7 +361,7 @@ class TranslationViewController(
 
     private fun toggleTranslationWindow(
         isEnabled: Boolean,
-        onTranslationClosed: () -> Unit
+        onTranslationClosed: () -> Unit = {}
     ) {
         if (config.translationMode == TranslationMode.ONYX) {
             ViewUnit.toggleMultiWindow(activity, isEnabled)

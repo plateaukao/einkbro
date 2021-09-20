@@ -632,6 +632,7 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
                     binding.twoPanelLayout,
                     { showTranslation() },
                     { if (ninjaWebView.isReaderModeOn) ninjaWebView.toggleReaderMode() },
+                    { url -> ninjaWebView.loadUrl(url)},
             )
         }
     }
