@@ -29,6 +29,8 @@ import kotlin.collections.HashMap
 import android.graphics.BitmapFactory
 
 import android.util.Base64
+import de.baumann.browser.util.DebugT
+import de.baumann.browser.view.dTLoadUrl
 import java.io.ByteArrayInputStream
 
 
@@ -65,6 +67,8 @@ class NinjaWebViewClient(
                 ninjaWebView.hideTranslateContext()
             }, 2000)
         }
+        dTLoadUrl?.printTime()
+        dTLoadUrl = null
     }
 
     private fun isTranslationDomain(url: String): Boolean {
@@ -80,6 +84,11 @@ class NinjaWebViewClient(
             handleUri(view, request.url)
 
     private fun handleUri(webView: WebView, uri: Uri): Boolean {
+        if (dTLoadUrl != null) {
+            dTLoadUrl?.printPath(uri.toString())
+        } else {
+            dTLoadUrl = DebugT("loadUrl:${uri}")
+        }
         val url = uri.toString()
         val parsedUri = Uri.parse(url)
         val packageManager = context.packageManager

@@ -19,6 +19,7 @@ import java.util.Set;
 import de.baumann.browser.database.RecordDb;
 import de.baumann.browser.preference.ConfigManager;
 import de.baumann.browser.unit.RecordUnit;
+import de.baumann.browser.util.DebugT;
 
 public class AdBlock {
     private static final String FILE = "hosts.txt";
@@ -31,6 +32,7 @@ public class AdBlock {
     private static void loadHosts(final Context context) {
         config = new ConfigManager(context);
         Thread thread = new Thread(() -> {
+            DebugT debugT = new DebugT("loadHosts");
             AssetManager manager = context.getAssets();
             try {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(manager.open(FILE)));
@@ -41,6 +43,7 @@ public class AdBlock {
             } catch (IOException i) {
                 Log.w("browser", "Error loading hosts", i);
             }
+            debugT.printTime();
         });
         thread.start();
     }
