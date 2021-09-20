@@ -20,7 +20,11 @@ class NinjaWebChromeClient(private val ninjaWebView: NinjaWebView) : WebChromeCl
 
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
                 val urlString = request?.url?.toString() ?: return false
-                return if (urlString.contains("google") || urlString.contains("facebook")) {
+
+                // handle login requests
+                return if (urlString.contains("google") ||
+                        (urlString.contains("facebook") && !urlString.contains("story") && !urlString.contains("l.php"))
+                ) {
                     view?.loadUrl(urlString)
                     true
                 } else if (!isUrlProcessed) {

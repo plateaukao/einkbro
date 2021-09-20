@@ -46,6 +46,7 @@ import de.baumann.browser.unit.IntentUnit
 import de.baumann.browser.unit.ViewUnit
 import de.baumann.browser.unit.ViewUnit.dp
 import de.baumann.browser.util.Constants
+import de.baumann.browser.util.DebugT
 import de.baumann.browser.view.*
 import de.baumann.browser.view.adapter.*
 import de.baumann.browser.view.dialog.*
@@ -446,7 +447,6 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
         when (v.id) {
             R.id.button_size -> showFontSizeChangeDialog()
             R.id.omnibox_title -> {
-                toolbarViewController.hide()
                 focusOnInput()
             }
             R.id.omnibox_input_clear -> binding.omniboxInput.text.clear()
@@ -505,10 +505,7 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
             R.id.toolbar_rotate -> rotateScreen()
             R.id.toolbar_translate -> showTranslation()
             R.id.toolbar_close_tab -> removeAlbum(currentAlbumController!!)
-            R.id.toolbar_input_url -> {
-                toolbarViewController.hide()
-                focusOnInput()
-            }
+            R.id.toolbar_input_url -> focusOnInput()
             else -> {
             }
         }
@@ -741,6 +738,8 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
                     (keyEvent.action == ACTION_DOWN && keyEvent.keyCode == KEYCODE_ENTER)
             ) {
                 binding.omniboxInput.dismissDropDown()
+                isAutoCompleteOutdated = true
+
                 val query = binding.omniboxInput.text.toString().trim { it <= ' ' }
                 if (query.isEmpty()) {
                     NinjaToast.show(this, getString(R.string.toast_input_empty))
@@ -1120,20 +1119,12 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
 
     override fun updateTitle(title: String?) = updateTitle()
 
-    override fun addHistory(url: String?) {
-        val url = url ?: return
-
-        if (recordDb.checkHistory(url)) {
-            recordDb.deleteHistoryItemByURL(url)
-        }
-
+    override fun addHistory(url: String) {
         recordDb.addHistory(Record(ninjaWebView.albumTitle, url, System.currentTimeMillis()))
-
-        recordDb.purgeOldHistoryItem(14)
     }
 
-    @Synchronized
     override fun updateProgress(progress: Int) {
+        DebugT("updateProgress:$progress")
         progressBar.progress = progress
 
         if (progress < BrowserUnit.PROGRESS_MAX) {
@@ -1150,7 +1141,10 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
     // to keep track of whether data is changed for auto completion
     private var isAutoCompleteOutdated = true
     private fun focusOnInput() {
+        toolbarViewController.hide()
         binding.omniboxInput.requestFocus()
+        binding.omniboxInput.selectAll()
+
         if (isAutoCompleteOutdated) {
             updateAutoComplete()
             isAutoCompleteOutdated = false
