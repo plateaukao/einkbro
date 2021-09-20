@@ -5,6 +5,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import androidx.core.database.sqlite.transaction
 import de.baumann.browser.unit.RecordUnit
 import java.util.*
 
@@ -20,8 +21,19 @@ class RecordDb(context: Context?) {
         helper.close()
     }
 
-    fun addHistory(record: Record?) {
-        if (record?.title == null || record.title.trim { it <= ' ' }.isEmpty()
+    fun addHistory(record: Record) {
+        database.transaction {
+            if (checkHistory(record.url)) {
+                deleteHistoryItemByURL(record.url)
+            }
+
+            internalAddHistory(record)
+            purgeOldHistoryItem(14)
+        }
+    }
+
+    private fun internalAddHistory(record: Record) {
+        if (record.title == null || record.title.trim { it <= ' ' }.isEmpty()
             || record.url == null || record.url.trim { it <= ' ' }.isEmpty()
             || record.time < 0L
         ) {

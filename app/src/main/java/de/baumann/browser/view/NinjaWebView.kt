@@ -27,6 +27,7 @@ import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.preference.TranslationMode
 import de.baumann.browser.unit.BrowserUnit
 import de.baumann.browser.unit.ViewUnit.dp
+import de.baumann.browser.util.DebugT
 import de.baumann.browser.util.PdfDocumentAdapter
 import org.apache.commons.text.StringEscapeUtils
 import java.io.IOException
@@ -238,6 +239,14 @@ class NinjaWebView : WebView, AlbumController {
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun loadUrl(url: String) {
+        dTLoadUrl = DebugT("loadUrl")
+        albumTitle = ""
+
+        // show progress right away
+        if (url.startsWith("https")) {
+            update(5)
+        }
+
         settings.cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
         if (url.trim { it <= ' ' }.isEmpty()) {
             NinjaToast.show(context, R.string.toast_load_error)
@@ -305,16 +314,13 @@ class NinjaWebView : WebView, AlbumController {
         if (isForeground) {
             browserController?.updateProgress(progress)
         }
+
         if (isLoadFinish) {
-            Handler(
-                Looper.getMainLooper()).postDelayed({
+            Handler(Looper.getMainLooper()).postDelayed({
                 favicon?.let { setAlbumCover(it) }
             } ,
-                250
+                    250
             )
-            if (prepareRecord()) {
-                browserController?.updateAutoComplete()
-            }
         }
     }
 
@@ -731,3 +737,4 @@ class NinjaWebView : WebView, AlbumController {
     }
 }
 
+var dTLoadUrl: DebugT? = null
