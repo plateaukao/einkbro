@@ -19,13 +19,15 @@ import de.baumann.browser.unit.ViewUnit.dp
 
 class TwoPaneLayout : FrameLayout {
     @JvmOverloads
-    constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : super(context, attrs, defStyleAttr) {
+    constructor(
+            context: Context,
+            attrs: AttributeSet? = null,
+            defStyleAttr: Int = 0
+    ) : super(context, attrs, defStyleAttr) {
         initAttributes(attrs)
 
         initDragHandle()
-        this.doOnLayout {
-            initViews()
-        }
+        doOnLayout { initViews() }
     }
 
     private val binding: TwoPaneLayoutBinding = TwoPaneLayoutBinding.inflate(LayoutInflater.from(context), this)
