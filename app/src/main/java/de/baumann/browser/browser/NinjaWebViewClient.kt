@@ -54,7 +54,6 @@ class NinjaWebViewClient(
         if (config.saveHistory && !ninjaWebView.incognito && !isTranslationDomain(url)) {
             addHistoryAction(url)
         }
-
         if (url.contains("facebook.com")) {
             ninjaWebView.removeFBSponsoredPosts()
         }
