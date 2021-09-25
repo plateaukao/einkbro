@@ -22,24 +22,34 @@ class ConfigManager(private val context: Context) {
     }
 
     var touchAreaHint: Boolean
-    get() = sp.getBoolean(K_TOUCH_HINT, true)
-    set(value) {sp.edit { putBoolean(K_TOUCH_HINT, value) } }
+        get() = sp.getBoolean(K_TOUCH_HINT, true)
+        set(value) {
+            sp.edit { putBoolean(K_TOUCH_HINT, value) }
+        }
 
     var volumePageTurn: Boolean
         get() = sp.getBoolean(K_VOLUME_PAGE_TURN, true)
-        set(value) {sp.edit { putBoolean(K_VOLUME_PAGE_TURN, value) } }
+        set(value) {
+            sp.edit { putBoolean(K_VOLUME_PAGE_TURN, value) }
+        }
 
     var boldFontStyle: Boolean
         get() = sp.getBoolean(K_BOLD_FONT, false)
-        set(value) {sp.edit { putBoolean(K_BOLD_FONT, value) } }
+        set(value) {
+            sp.edit { putBoolean(K_BOLD_FONT, value) }
+        }
 
     var fontStyleSerif: Boolean
         get() = sp.getBoolean(K_FONT_STYLE_SERIF, false)
-        set(value) {sp.edit { putBoolean(K_FONT_STYLE_SERIF, value) } }
+        set(value) {
+            sp.edit { putBoolean(K_FONT_STYLE_SERIF, value) }
+        }
 
     var shouldSaveTabs: Boolean
         get() = sp.getBoolean(K_SHOULD_SAVE_TABS, false)
-        set(value) { sp.edit { putBoolean(K_SHOULD_SAVE_TABS, value) } }
+        set(value) {
+            sp.edit { putBoolean(K_SHOULD_SAVE_TABS, value) }
+        }
 
     var isIncognitoMode: Boolean
         get() = sp.getBoolean(K_IS_INCOGNITO_MODE, false)
@@ -51,59 +61,87 @@ class ConfigManager(private val context: Context) {
 
     var shouldInvert: Boolean
         get() = sp.getBoolean(K_SHOULD_INVERT, false)
-        set(value) {sp.edit { putBoolean(K_SHOULD_INVERT, value) } }
+        set(value) {
+            sp.edit { putBoolean(K_SHOULD_INVERT, value) }
+        }
 
     var adBlock: Boolean
         get() = sp.getBoolean(K_ADBLOCK, true)
-        set(value) {sp.edit { putBoolean(K_ADBLOCK, value) } }
+        set(value) {
+            sp.edit { putBoolean(K_ADBLOCK, value) }
+        }
 
     var cookies: Boolean
         get() = sp.getBoolean(K_COOKIES, true)
-        set(value) {sp.edit { putBoolean(K_COOKIES, value) } }
+        set(value) {
+            sp.edit { putBoolean(K_COOKIES, value) }
+        }
 
     var saveHistory: Boolean
         get() = sp.getBoolean(K_SAVE_HISTORY, true)
-        set(value) {sp.edit { putBoolean(K_SAVE_HISTORY, value) } }
+        set(value) {
+            sp.edit { putBoolean(K_SAVE_HISTORY, value) }
+        }
 
     var enableTouchTurn: Boolean
         get() = sp.getBoolean(K_ENABLE_TOUCH, false)
-        set(value) {sp.edit { putBoolean(K_ENABLE_TOUCH, value) } }
+        set(value) {
+            sp.edit { putBoolean(K_ENABLE_TOUCH, value) }
+        }
 
     var keepAwake: Boolean
         get() = sp.getBoolean(K_KEEP_AWAKE, false)
-        set(value) {sp.edit { putBoolean(K_KEEP_AWAKE, value) } }
+        set(value) {
+            sp.edit { putBoolean(K_KEEP_AWAKE, value) }
+        }
 
     var desktop: Boolean
         get() = sp.getBoolean(K_DESKTOP, false)
-        set(value) {sp.edit { putBoolean(K_DESKTOP, value) } }
+        set(value) {
+            sp.edit { putBoolean(K_DESKTOP, value) }
+        }
 
     var pageReservedOffset: Int
         get() = sp.getInt("sp_page_turn_left_value", 80)
-        set(value) {sp.edit { putInt("sp_page_turn_left_value", value) } }
+        set(value) {
+            sp.edit { putInt("sp_page_turn_left_value", value) }
+        }
 
     var fontSize: Int
         get() = sp.getString(K_FONT_SIZE, "100")?.toInt() ?: 100
-        set(value) {sp.edit { putString(K_FONT_SIZE, value.toString()) } }
+        set(value) {
+            sp.edit { putString(K_FONT_SIZE, value.toString()) }
+        }
 
     var fabPosition: FabPosition
         get() = FabPosition.values()[sp.getString(K_NAV_POSITION, "0")?.toInt() ?: 0]
-        set(value) {sp.edit { putString(K_NAV_POSITION, value.ordinal.toString()) } }
+        set(value) {
+            sp.edit { putString(K_NAV_POSITION, value.ordinal.toString()) }
+        }
 
     var touchAreaType: TouchAreaType
         get() = TouchAreaType.values()[sp.getInt(K_TOUCH_AREA_TYPE, 0)]
-        set(value) {sp.edit { putInt(K_TOUCH_AREA_TYPE, value.ordinal) } }
+        set(value) {
+            sp.edit { putInt(K_TOUCH_AREA_TYPE, value.ordinal) }
+        }
 
     var pdfPaperSize: PaperSize
         get() = PaperSize.values()[sp.getInt("pdf_paper_size", PaperSize.ISO_13.ordinal)]
-        set(value) {sp.edit { putInt("pdf_paper_size", value.ordinal) } }
+        set(value) {
+            sp.edit { putInt("pdf_paper_size", value.ordinal) }
+        }
 
     var translationLanguage: TranslationLanguage
         get() = TranslationLanguage.values()[sp.getInt(K_TRANSLATE_LANGUAGE, getDefaultTranslationLanguage().ordinal)]
-        set(value) {sp.edit { putInt(K_TRANSLATE_LANGUAGE, value.ordinal) } }
+        set(value) {
+            sp.edit { putInt(K_TRANSLATE_LANGUAGE, value.ordinal) }
+        }
 
     var translationOrientation: Orientation
         get() = Orientation.values()[sp.getInt(K_TRANSLATE_ORIENTATION, Orientation.Horizontal.ordinal)]
-        set(value) {sp.edit { putInt(K_TRANSLATE_ORIENTATION, value.ordinal) } }
+        set(value) {
+            sp.edit { putInt(K_TRANSLATE_ORIENTATION, value.ordinal) }
+        }
 
     var overviewTab: OverviewTab
         get() = when (sp.getString(K_START_TAB, "0")) {
@@ -113,7 +151,7 @@ class ConfigManager(private val context: Context) {
             else -> OverviewTab.TabPreview
         }
         set(value) {
-            val tabString = when(value) {
+            val tabString = when (value) {
                 OverviewTab.TabPreview -> "0"
                 OverviewTab.Bookmarks -> "3"
                 OverviewTab.History -> "4"
@@ -122,8 +160,11 @@ class ConfigManager(private val context: Context) {
         }
 
     var favoriteUrl: String
-        get() = sp.getString(K_FAVORITE_URL, Constants.DEFAULT_HOME_URL) ?: Constants.DEFAULT_HOME_URL
-        set(value) { sp.edit { putString(K_FAVORITE_URL, value) } }
+        get() = sp.getString(K_FAVORITE_URL, Constants.DEFAULT_HOME_URL)
+                ?: Constants.DEFAULT_HOME_URL
+        set(value) {
+            sp.edit { putString(K_FAVORITE_URL, value) }
+        }
 
     var toolbarActions: List<ToolbarAction>
         get() {
@@ -131,7 +172,7 @@ class ConfigManager(private val context: Context) {
             return iconStringToEnumList(iconListString)
         }
         set(value) {
-            sp.edit { putString(K_TOOLBAR_ICONS, value.map{it.ordinal}.joinToString(",")) }
+            sp.edit { putString(K_TOOLBAR_ICONS, value.map { it.ordinal }.joinToString(",")) }
         }
 
     var savedAlbumInfoList: List<AlbumInfo>
@@ -170,11 +211,11 @@ class ConfigManager(private val context: Context) {
 
     var dbVersion: Int
         get() = sp.getInt(K_DB_VERSION, 0)
-        set(value) = sp.edit { putInt(K_DB_VERSION, value)}
+        set(value) = sp.edit { putInt(K_DB_VERSION, value) }
 
     var translationMode: TranslationMode
         get() = TranslationMode.values()[sp.getInt(K_TRANSLATION_MODE, if (Build.MANUFACTURER == "ONYX") 0 else 1)]
-        set(value) = sp.edit { putInt(K_TRANSLATION_MODE, value.ordinal)}
+        set(value) = sp.edit { putInt(K_TRANSLATION_MODE, value.ordinal) }
 
     var adSites: MutableSet<String>
         get() = sp.getStringSet(K_ADBLOCK_SITES, mutableSetOf()) ?: mutableSetOf()
@@ -183,7 +224,7 @@ class ConfigManager(private val context: Context) {
     private fun iconStringToEnumList(iconListString: String): List<ToolbarAction> {
         if (iconListString.isBlank()) return listOf()
 
-        return iconListString.split(",").map{ ToolbarAction.fromOrdinal(it.toInt())}
+        return iconListString.split(",").map { ToolbarAction.fromOrdinal(it.toInt()) }
     }
 
     private fun getDefaultTranslationLanguage(): TranslationLanguage {
@@ -196,7 +237,7 @@ class ConfigManager(private val context: Context) {
     }
 
     private fun getDefaultIconStrings(): String =
-            ToolbarAction.defaultActions.joinToString (",") { action ->
+            ToolbarAction.defaultActions.joinToString(",") { action ->
                 action.ordinal.toString()
             }
 
@@ -249,8 +290,8 @@ enum class TranslationMode {
 }
 
 data class AlbumInfo(
-    val title: String,
-    val url: String
+        val title: String,
+        val url: String
 )
 
 private fun AlbumInfo.toSerializedString(): String = "$title::$url"
