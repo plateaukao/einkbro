@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
@@ -18,9 +19,9 @@ import android.webkit.CookieManager
 import android.webkit.WebSettings
 import android.webkit.WebView
 import androidx.preference.PreferenceManager
+import androidx.viewbinding.BuildConfig
 import androidx.webkit.WebSettingsCompat
 import androidx.webkit.WebViewFeature
-import de.baumann.browser.Ninja.BuildConfig
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.browser.*
 import de.baumann.browser.preference.ConfigManager
@@ -143,11 +144,10 @@ class NinjaWebView : WebView, AlbumController {
             val nightModeFlags = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
             if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
                 settings.forceDark = WebSettings.FORCE_DARK_ON
+                // when in dark mode, the default background color will be the activity background
+                setBackgroundColor(Color.parseColor("#000000"))
             }
         }
-
-        // when in dark mode, the default background color will be the activity background
-        setBackgroundColor(context.resources.getColor(R.color.color_transparent))
     }
 
     private fun initWebSettings() {
@@ -526,7 +526,7 @@ class NinjaWebView : WebView, AlbumController {
     }
 
     fun removeFBSponsoredPosts() {
-        injectJavascript(facebookHideSponsoredPostsJs.toByteArray())
+        evaluateJavascript(facebookHideSponsoredPostsJs, null)
     }
 
     fun hideTranslateContext() {
@@ -554,6 +554,7 @@ class NinjaWebView : WebView, AlbumController {
         }
     }
 
+    /*
     private fun injectJavascript(bytes: ByteArray) {
         try {
             val encoded = Base64.encodeToString(bytes, Base64.NO_WRAP)
@@ -568,6 +569,7 @@ class NinjaWebView : WebView, AlbumController {
             e.printStackTrace()
         }
     }
+     */
 
     private fun injectCss(bytes: ByteArray) {
         try {
@@ -600,16 +602,6 @@ class NinjaWebView : WebView, AlbumController {
             })()
             """
 
-        private const val hideGUrlTranslateContext = """
-            javascript:(function() {
-                document.getElementById("gt-nvframe").remove();
-                document.getElementById("gt-logo").remove();
-                document.getElementById("wtgbr").remove();
-                document.getElementById("gt-c").remove();
-                document.getElementById("contentframe").style="top:0px";
-            })()
-            """
-
         private const val replaceWithReaderModeBodyJs = """
             var documentClone = document.cloneNode(true);
             var article = new Readability(documentClone, {classesToPreserve: preservedClasses}).parse();
@@ -623,6 +615,7 @@ class NinjaWebView : WebView, AlbumController {
             var bodyClasses = document.body.classList;
             bodyClasses.add("serif");
         """
+
         private const val getReaderModeBodyHtmlJs = """
             javascript:(function() {
                 var documentClone = document.cloneNode(true);
@@ -649,6 +642,7 @@ class NinjaWebView : WebView, AlbumController {
                 }
             })()
         """
+
         private const val oldFacebookHideSponsoredPostsJs = """
             javascript:(function() {
             var posts = [].filter.call(document.getElementsByTagName('article'), el => el.attributes['data-store'].value.indexOf('is_sponsored.1') >= 0); 
@@ -662,6 +656,7 @@ class NinjaWebView : WebView, AlbumController {
             qcleanObserver.observe(document, { subtree: true, childList: true });
             })()
         """
+
         private const val facebookHideSponsoredPostsJs = """
             javascript:(function() {
               var posts = [].filter.call(document.getElementsByTagName('article'), el => el.attributes['data-store'].value.indexOf('is_sponsored.1') >= 0); 
