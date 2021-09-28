@@ -13,9 +13,11 @@ import de.baumann.browser.view.Orientation
 import de.baumann.browser.view.TwoPaneLayout
 import de.baumann.browser.view.toolbaricons.ToolbarAction
 import de.baumann.browser.view.viewControllers.OverviewTab
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-class ConfigManager(private val context: Context) {
-    private val sp: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+class ConfigManager(private val context: Context) : KoinComponent {
+    private val sp: SharedPreferences by inject()
 
     fun registerOnSharedPreferenceChangeListener(listener: SharedPreferences.OnSharedPreferenceChangeListener) {
         sp.registerOnSharedPreferenceChangeListener(listener)

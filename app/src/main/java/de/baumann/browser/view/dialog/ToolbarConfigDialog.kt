@@ -17,20 +17,22 @@ import de.baumann.browser.view.sortlistpreference.CheckableMultiSelectLayout
 import de.baumann.browser.view.sortlistpreference.DragSortController
 import de.baumann.browser.view.sortlistpreference.DragSortListView
 import de.baumann.browser.view.toolbaricons.ToolbarAction
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import java.util.ArrayList
 
 class ToolbarConfigDialog(
-    private val context: Context,
-) {
-    private val config: ConfigManager = ConfigManager(context)
+        private val context: Context,
+) : KoinComponent {
+    private val config: ConfigManager by inject()
 
     private val binding: DialogToolbarConfigBinding = DialogToolbarConfigBinding.inflate(LayoutInflater.from(context))
 
     fun show() {
         initViews()
         DialogManager(context as Activity).showOkCancelDialog(
-            view = binding.root,
-            okAction = { config.toolbarActions = newValues },
+                view = binding.root,
+                okAction = { config.toolbarActions = newValues },
         ).apply {
             window?.setGravity(Gravity.BOTTOM or Gravity.RIGHT)
             window?.setBackgroundDrawableResource(R.drawable.background_with_border_margin)
@@ -117,10 +119,11 @@ class ToolbarConfigDialog(
     }
 
     private fun createItemAdapter(itemList: List<PreferenceItemInfo>): ArrayAdapter<PreferenceItemInfo> {
-        return object: ArrayAdapter<PreferenceItemInfo>(context, R.layout.item_list_preference_multi_drag, R.id.text, itemList) {
+        return object : ArrayAdapter<PreferenceItemInfo>(context, R.layout.item_list_preference_multi_drag, R.id.text, itemList) {
             override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
                 val preferenceItemInfo = getItem(position)
-                val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.item_list_preference_multi_drag, parent, false) as CheckableMultiSelectLayout
+                val view = convertView
+                        ?: LayoutInflater.from(context).inflate(R.layout.item_list_preference_multi_drag, parent, false) as CheckableMultiSelectLayout
                 val imageView = view.findViewById<ImageView>(R.id.icon)
                 val iconResId = preferenceItemInfo?.iconResId ?: 0
                 if (iconResId != 0) {

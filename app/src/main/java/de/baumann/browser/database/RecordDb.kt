@@ -1,17 +1,19 @@
 package de.baumann.browser.database
 
-import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import androidx.core.database.sqlite.transaction
 import de.baumann.browser.unit.RecordUnit
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import java.util.*
 
-class RecordDb(context: Context?) {
+class RecordDb(context: Context?): KoinComponent {
     private lateinit var database: SQLiteDatabase
     private val helper: RecordHelper = RecordHelper(context)
+    private val bookmarkManager: BookmarkManager by inject()
 
     fun open(rw: Boolean) {
         database = if (rw) helper.writableDatabase else helper.readableDatabase
@@ -157,8 +159,7 @@ class RecordDb(context: Context?) {
         )
     }
 
-    suspend fun listEntries(activity: Activity, listAll: Boolean, amount: Int = 0): List<Record> {
-        val bookmarkManager = BookmarkManager(activity)
+    suspend fun listEntries(listAll: Boolean, amount: Int = 0): List<Record> {
         val list: MutableList<Record> = ArrayList()
         if (listAll) {
             //add bookmarks

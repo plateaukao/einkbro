@@ -23,11 +23,13 @@ import de.baumann.browser.unit.ViewUnit
 import de.baumann.browser.unit.ViewUnit.dp
 import de.baumann.browser.view.NinjaToast
 import kotlinx.coroutines.launch
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 class DialogManager(
     private val activity: Activity
-) {
-    private val config: ConfigManager by lazy { ConfigManager(activity) }
+): KoinComponent {
+    private val config: ConfigManager by inject()
 
     fun showFontSizeChangeDialog(
         changeFontSizeAction: (fontSize: Int) -> Unit

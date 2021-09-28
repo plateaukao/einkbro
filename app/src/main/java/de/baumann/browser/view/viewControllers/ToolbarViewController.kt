@@ -15,13 +15,15 @@ import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.unit.ViewUnit
 import de.baumann.browser.unit.ViewUnit.dp
 import de.baumann.browser.view.toolbaricons.ToolbarAction
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 class ToolbarViewController(
     private val context: Context,
     private val toolbarScroller: HorizontalScrollView,
-) {
+): KoinComponent {
     private val iconBar: ViewGroup = toolbarScroller.findViewById(R.id.icon_bar)
-    private val config: ConfigManager by lazy { ConfigManager(context) }
+    private val config: ConfigManager by inject()
 
     fun isDisplayed(): Boolean = toolbarScroller.visibility == VISIBLE
 

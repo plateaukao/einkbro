@@ -16,6 +16,8 @@ import de.baumann.browser.unit.HelperUnit
 import de.baumann.browser.unit.IntentUnit
 import de.baumann.browser.view.NinjaToast
 import de.baumann.browser.view.NinjaWebView
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 class MenuDialog(
     private val context: Context,
@@ -28,8 +30,8 @@ class MenuDialog(
     private val printPdfAction: () -> Unit,
     private val fontSizeAction: () -> Unit,
     private val saveScreenshotAction: () -> Unit,
-) {
-    private val config: ConfigManager = ConfigManager(context)
+): KoinComponent {
+    private val config: ConfigManager by inject()
 
     private lateinit var dialog: AlertDialog
     private val binding: DialogMenuBinding = DialogMenuBinding.inflate(LayoutInflater.from(context))

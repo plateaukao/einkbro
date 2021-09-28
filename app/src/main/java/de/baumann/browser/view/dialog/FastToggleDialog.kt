@@ -14,14 +14,16 @@ import androidx.preference.PreferenceManager
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.DialogToggleBinding
 import de.baumann.browser.preference.ConfigManager
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 class FastToggleDialog(
         private val context: Context,
         private val url: String,
         private val okAction: () -> Unit,
-) {
-    private val sp: SharedPreferences by lazy { PreferenceManager.getDefaultSharedPreferences(context) }
-    private val config: ConfigManager by lazy { ConfigManager(context) }
+) : KoinComponent {
+    private val sp: SharedPreferences by inject()
+    private val config: ConfigManager by inject()
     private lateinit var dialog: AlertDialog
     private lateinit var binding: DialogToggleBinding
 
@@ -148,7 +150,7 @@ class FastToggleDialog(
     }
 
     private fun updateBooleanPref(prefKey: String, defaultValue: Boolean = true) =
-        sp.edit { putBoolean(prefKey, !sp.getBoolean(prefKey, defaultValue)) }
+            sp.edit { putBoolean(prefKey, !sp.getBoolean(prefKey, defaultValue)) }
 
     private fun updateViewVisibility(view: View, shouldBeVisible: Boolean) {
         view.visibility = if (shouldBeVisible) VISIBLE else INVISIBLE

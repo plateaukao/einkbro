@@ -31,6 +31,8 @@ import de.baumann.browser.unit.ViewUnit.dp
 import de.baumann.browser.util.DebugT
 import de.baumann.browser.util.PdfDocumentAdapter
 import org.apache.commons.text.StringEscapeUtils
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import java.io.IOException
 import java.io.InputStream
 import java.util.*
@@ -40,7 +42,7 @@ import kotlin.math.max
 import kotlin.math.min
 
 
-class NinjaWebView : WebView, AlbumController {
+class NinjaWebView : WebView, AlbumController, KoinComponent {
     private var dimen144dp = 0
     private var dimen108dp = 0
     private var onScrollChangeListener: OnScrollChangeListener? = null
@@ -57,8 +59,8 @@ class NinjaWebView : WebView, AlbumController {
 
     private val javaHosts: Javascript
 
-    private val sp: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-    private lateinit var config: ConfigManager
+    private val sp: SharedPreferences by inject()
+    private val config: ConfigManager by inject()
 
     var incognito: Boolean = false
         set(value) {
@@ -136,7 +138,7 @@ class NinjaWebView : WebView, AlbumController {
             false
         }
 
-        if(WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK_STRATEGY)) {
+        if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK_STRATEGY)) {
             WebSettingsCompat.setForceDarkStrategy(settings, WebSettingsCompat.DARK_STRATEGY_PREFER_WEB_THEME_OVER_USER_AGENT_DARKENING)
         }
 
@@ -164,14 +166,13 @@ class NinjaWebView : WebView, AlbumController {
     }
 
     fun initPreferences() {
-        config = ConfigManager(context)
 
         updateDesktopMode()
 
         with(settings) {
             setAppCacheEnabled(true)
             setAppCachePath("");
-            setAppCacheMaxSize(30*1024*1024)
+            setAppCacheMaxSize(30 * 1024 * 1024)
             cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
             textZoom = config.fontSize
             allowFileAccessFromFileURLs = sp.getBoolean("sp_remote", true)
@@ -296,7 +297,7 @@ class NinjaWebView : WebView, AlbumController {
         album.activate()
         // handle incognito case
         if (incognito || !config.cookies) {
-           toggleCookieSupport(false)
+            toggleCookieSupport(false)
         } else {
             toggleCookieSupport(true)
         }
@@ -318,7 +319,7 @@ class NinjaWebView : WebView, AlbumController {
         if (isLoadFinish) {
             Handler(Looper.getMainLooper()).postDelayed({
                 favicon?.let { setAlbumCover(it) }
-            } ,
+            },
                     250
             )
         }
@@ -341,7 +342,7 @@ class NinjaWebView : WebView, AlbumController {
         super.destroy()
     }
 
-    fun createPrintDocumentAdapter(documentName: String, onFinish: ()-> Unit): PrintDocumentAdapter {
+    fun createPrintDocumentAdapter(documentName: String, onFinish: () -> Unit): PrintDocumentAdapter {
         val superAdapter = super.createPrintDocumentAdapter(documentName)
         return PdfDocumentAdapter(documentName, superAdapter, onFinish)
     }
@@ -397,7 +398,7 @@ class NinjaWebView : WebView, AlbumController {
         }
     }
 
-    suspend fun getRawHtml() =  suspendCoroutine<String> { continuation ->
+    suspend fun getRawHtml() = suspendCoroutine<String> { continuation ->
         if (!isReaderModeOn) {
             injectMozReaderModeJs(false)
             evaluateJavascript(getReaderModeBodyHtmlJs) { html ->
@@ -415,18 +416,18 @@ class NinjaWebView : WebView, AlbumController {
     }
 
     // only works in isReadModeOn
-    suspend fun getRawText() =  suspendCoroutine<String> { continuation ->
+    suspend fun getRawText() = suspendCoroutine<String> { continuation ->
         if (!isReaderModeOn) {
             injectMozReaderModeJs(false)
-            evaluateJavascript(getReaderModeBodyTextJs) { text -> continuation.resume(text.substring(1, text.length-2)) }
+            evaluateJavascript(getReaderModeBodyTextJs) { text -> continuation.resume(text.substring(1, text.length - 2)) }
         } else {
             //if (!isReaderModeOn) continuation.resume("")
 
             evaluateJavascript(
-                "(function() { return document.getElementsByTagName('html')[0].innerText; })();"
+                    "(function() { return document.getElementsByTagName('html')[0].innerText; })();"
             ) { text ->
                 val processedText = if (text.startsWith("\"") && text.endsWith("\"")) {
-                    text.substring(1, text.length-2)
+                    text.substring(1, text.length - 2)
                 } else text
                 continuation.resume(processedText)
             }
@@ -458,7 +459,7 @@ class NinjaWebView : WebView, AlbumController {
     }
 
     var isReaderModeOn = false
-    fun toggleReaderMode(isVertical: Boolean = false, getRawTextAction: ((String)->Unit)? = null) {
+    fun toggleReaderMode(isVertical: Boolean = false, getRawTextAction: ((String) -> Unit)? = null) {
         isReaderModeOn = !isReaderModeOn
         if (isReaderModeOn) {
             injectMozReaderModeJs(isVertical)

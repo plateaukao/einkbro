@@ -1,8 +1,11 @@
 package de.baumann.browser.database
 
 import android.content.Context
+import android.graphics.Bitmap
 import androidx.room.*
 import de.baumann.browser.preference.ConfigManager
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 @Database(entities = [Bookmark::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
@@ -39,16 +42,17 @@ interface BookmarkDao {
     suspend fun deleteAll()
 }
 
-class BookmarkManager(private val context: Context) {
+class BookmarkManager(private val context: Context) : KoinComponent {
+    val config: ConfigManager by inject()
+
     val database = Room.databaseBuilder(
-        context,
-        AppDatabase::class.java, "einkbro_db"
+            context,
+            AppDatabase::class.java, "einkbro_db"
     ).build()
 
     val bookmarkDao = database.bookmarkDao()
 
     suspend fun migrateOldData() {
-        val config = ConfigManager(context)
         if (config.dbVersion != 0) return
 
         //add bookmarks
@@ -57,8 +61,8 @@ class BookmarkManager(private val context: Context) {
         cursor.moveToFirst()
         while (!cursor.isAfterLast) {
             insert(
-                title = cursor.getString(1),
-                url = cursor.getString(2),
+                    title = cursor.getString(1),
+                    url = cursor.getString(2),
             )
             cursor.moveToNext()
         }
@@ -92,12 +96,12 @@ class BookmarkManager(private val context: Context) {
 
     suspend fun insertDirectory(title: String, parentId: Int = 0) {
         bookmarkDao.insert(
-            Bookmark(
-                title = title,
-                url = "",
-                isDirectory = true,
-                parent = parentId,
-            )
+                Bookmark(
+                        title = title,
+                        url = "",
+                        isDirectory = true,
+                        parent = parentId,
+                )
         )
     }
 

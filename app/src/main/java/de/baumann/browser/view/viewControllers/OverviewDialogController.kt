@@ -29,19 +29,22 @@ import de.baumann.browser.view.dialog.BookmarkEditDialog
 import de.baumann.browser.view.dialog.DialogManager
 import de.baumann.browser.view.dialog.TextInputDialog
 import kotlinx.coroutines.launch
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
+import org.koin.core.parameter.parametersOf
 
 class OverviewDialogController(
-    private val context: Context,
-    private val binding: DialogOveriewBinding,
-    private val recordDb: RecordDb,
-    private val gotoUrlAction: (String) -> Unit,
-    private val addTabAction: (String, String, Boolean) -> Unit,
-    private val onBookmarksChanged: () -> Unit,
-    private val onHistoryChanged: () -> Unit,
-) {
-    private val config: ConfigManager by lazy { ConfigManager(context) }
-    private val dialogManager: DialogManager by lazy { DialogManager(context as Activity) }
-    private val bookmarkManager: BookmarkManager by lazy {  BookmarkManager(context) }
+        private val context: Context,
+        private val binding: DialogOveriewBinding,
+        private val recordDb: RecordDb,
+        private val gotoUrlAction: (String) -> Unit,
+        private val addTabAction: (String, String, Boolean) -> Unit,
+        private val onBookmarksChanged: () -> Unit,
+        private val onHistoryChanged: () -> Unit,
+) : KoinComponent {
+    private val config: ConfigManager by inject()
+    private val dialogManager: DialogManager by inject { parametersOf(context) }
+    private val bookmarkManager: BookmarkManager by inject()
 
     private val recyclerView = binding.homeList2
 
@@ -92,8 +95,8 @@ class OverviewDialogController(
     private fun openSubMenu() {
         val dialogView = DialogMenuOverviewBinding.inflate(LayoutInflater.from(context))
         val dialog = dialogManager.showOptionDialog(dialogView.root)
-        with(dialogView ){
-            tvAddFolder.setOnClickListener { dialog.dismissWithAction {  createBookmarkFolder() } }
+        with(dialogView) {
+            tvAddFolder.setOnClickListener { dialog.dismissWithAction { createBookmarkFolder() } }
             tvDelete.setOnClickListener { dialog.dismissWithAction { deleteAllItems() } }
         }
     }
@@ -108,15 +111,15 @@ class OverviewDialogController(
 
     private suspend fun getFolderName(): String {
         return TextInputDialog(
-            context,
-            context.getString(R.string.folder_name),
-            context.getString(R.string.folder_name_description),
-            ""
+                context,
+                context.getString(R.string.folder_name),
+                context.getString(R.string.folder_name_description),
+                ""
         ).show() ?: "New Folder"
     }
 
     private fun showCurrentTabInOverview() {
-        when(config.overviewTab) {
+        when (config.overviewTab) {
             OverviewTab.TabPreview -> openHomePage()
             OverviewTab.Bookmarks -> openBookmarkPage()
             OverviewTab.History -> openHistoryPage()
@@ -127,6 +130,7 @@ class OverviewDialogController(
         binding.root.visibility = GONE
     }
 
+    private var adapter: RecordAdapter? = null
     fun openHistoryPage(amount: Int = 0) {
         binding.root.visibility = VISIBLE
 
@@ -136,27 +140,24 @@ class OverviewDialogController(
 
         overViewTab = OverviewTab.History
 
-        var adapter: RecordAdapter? = null
         lifecycleScope.launch {
-            val list = recordDb.listEntries((context as Activity), false, amount)
+            val list = recordDb.listEntries(false, amount)
             adapter = RecordAdapter(
-                list.toMutableList(),
-                { position ->
-                    gotoUrlAction(list[position].url)
-                    hideOverview()
-                },
-                { position ->
-                    showHistoryContextMenu(
-                        list[position].title ?: "",
-                        list[position].url,
-                        adapter!!,
-                        position
-                    )
-                }
+                    list.toMutableList(),
+                    { position ->
+                        gotoUrlAction(list[position].url)
+                        hideOverview()
+                    },
+                    { position ->
+                        showHistoryContextMenu(
+                                list[position].title ?: "",
+                                list[position].url,
+                                position
+                        )
+                    }
             )
             recyclerView.adapter = adapter
         }
-        adapter?.notifyDataSetChanged()
     }
 
     fun openBookmarkPage() {
@@ -172,20 +173,20 @@ class OverviewDialogController(
     private fun updateBookmarkList(bookmarkFolderId: Int = 0) {
         lifecycleScope.launch {
             val adapter = BookmarkAdapter(
-                bookmarkManager.getBookmarks(bookmarkFolderId).toMutableList(),
-                onItemClick = {
-                    if (it.isDirectory) {
-                        updateBookmarkList(it.id)
-                    } else {
-                        gotoUrlAction(it.url)
+                    bookmarkManager.getBookmarks(bookmarkFolderId).toMutableList(),
+                    onItemClick = {
+                        if (it.isDirectory) {
+                            updateBookmarkList(it.id)
+                        } else {
+                            gotoUrlAction(it.url)
+                            hideOverview()
+                        }
+                    },
+                    onTabIconClick = {
+                        addTabAction(it.title, it.url, true)
                         hideOverview()
-                    }
-                },
-                onTabIconClick = {
-                    addTabAction(it.title, it.url, true)
-                    hideOverview()
-                },
-                onItemLongClick = { showBookmarkContextMenu(it) }
+                    },
+                    onItemLongClick = { showBookmarkContextMenu(it) }
             )
 
             recyclerView.adapter = adapter
@@ -208,25 +209,26 @@ class OverviewDialogController(
 
     private fun deleteAllItems() {
         dialogManager.showOkCancelDialog(
-            messageResId = R.string.hint_database,
-            okAction = {
-                when (overViewTab) {
-                    OverviewTab.Bookmarks -> {
-                        lifecycleScope.launch {
-                            bookmarkManager.deleteAll()
-                            updateBookmarkList()
-                            onBookmarksChanged()
+                messageResId = R.string.hint_database,
+                okAction = {
+                    when (overViewTab) {
+                        OverviewTab.Bookmarks -> {
+                            lifecycleScope.launch {
+                                bookmarkManager.deleteAll()
+                                updateBookmarkList()
+                                onBookmarksChanged()
+                            }
+                        }
+                        OverviewTab.History -> {
+                            BrowserUnit.clearHistory(context)
+                            (recyclerView.adapter as RecordAdapter).clear()
+                            hideOverview()
+                            onHistoryChanged()
+                        }
+                        else -> {
                         }
                     }
-                    OverviewTab.History -> {
-                        BrowserUnit.clearHistory(context)
-                        (recyclerView.adapter as RecordAdapter).clear()
-                        hideOverview()
-                        onHistoryChanged()
-                    }
-                    else -> {}
                 }
-            }
         )
     }
 
@@ -276,7 +278,7 @@ class OverviewDialogController(
                         context as Activity,
                         bookmarkManager,
                         bookmark,
-                        { ViewUnit.hideKeyboard(context as Activity) ; updateBookmarkList() },
+                        { ViewUnit.hideKeyboard(context as Activity); updateBookmarkList() },
                         { ViewUnit.hideKeyboard(context as Activity) }
                 ).show()
             }
@@ -284,10 +286,9 @@ class OverviewDialogController(
     }
 
     private fun showHistoryContextMenu(
-        title: String,
-        url: String,
-        recordAdapter: RecordAdapter,
-        location: Int
+            title: String,
+            url: String,
+            location: Int
     ) {
         val dialogView = DialogMenuContextListBinding.inflate(LayoutInflater.from(context))
         val dialog = dialogManager.showOptionDialog(dialogView.root)
@@ -313,28 +314,23 @@ class OverviewDialogController(
             }
         }
         dialogView.menuContextListDelete.setOnClickListener {
-            dialog.dismissWithAction {
-                dialogManager.showOkCancelDialog(
-                    messageResId = R.string.toast_titleConfirm_delete,
-                    okAction = { deleteHistory(recordAdapter, location) }
-                )
-            }
+            dialog.dismissWithAction { deleteHistory(location) }
         }
     }
 
-    private fun deleteHistory(recordAdapter: RecordAdapter, location: Int) {
-        val record = recordAdapter.getItemAt(location)
+    private fun deleteHistory(location: Int) {
+        val record = adapter?.getItemAt(location) ?: return
         RecordDb(context).apply {
             open(true)
             deleteHistoryItem(record)
             close()
         }
-        recordAdapter.removeAt(location)
+        adapter?.removeAt(location)
         onHistoryChanged()
     }
 }
 
-private fun Dialog.dismissWithAction(action: ()-> Unit) {
+private fun Dialog.dismissWithAction(action: () -> Unit) {
     dismiss()
     action()
 }

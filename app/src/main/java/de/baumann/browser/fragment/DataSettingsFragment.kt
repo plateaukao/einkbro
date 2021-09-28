@@ -33,6 +33,9 @@ import de.baumann.browser.view.NinjaToast
 import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONObject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
+import org.koin.java.KoinJavaComponent.inject
 import org.w3c.dom.Element
 import org.w3c.dom.Node
 import org.xml.sax.SAXException
@@ -41,7 +44,9 @@ import java.util.*
 import javax.xml.parsers.DocumentBuilderFactory
 import javax.xml.parsers.ParserConfigurationException
 
-class DataSettingsFragment : PreferenceFragmentCompat() {
+class DataSettingsFragment : PreferenceFragmentCompat(), KoinComponent {
+    private val manager: BookmarkManager by inject()
+
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preference_data, rootKey)
@@ -52,84 +57,84 @@ class DataSettingsFragment : PreferenceFragmentCompat() {
         val previewsfolderApp = File(data, previewspathApp)
         val previewsfolderBackup = File(sd, previewspathBackup)
         findPreference<Preference>("data_exDB")!!.onPreferenceClickListener =
-            Preference.OnPreferenceClickListener {
-                val activity = activity ?: return@OnPreferenceClickListener false
-                val dialog = BottomSheetDialog(requireActivity())
-                val dialogView = DialogActionBinding.inflate(activity.layoutInflater)
-                dialogView.dialogText.setText(R.string.toast_backup)
-                dialogView.actionOk.setOnClickListener {
-                    dialog.dismiss()
-                    try {
-                        if (!needGrantStoragePermission(requireActivity())) {
+                Preference.OnPreferenceClickListener {
+                    val activity = activity ?: return@OnPreferenceClickListener false
+                    val dialog = BottomSheetDialog(requireActivity())
+                    val dialogView = DialogActionBinding.inflate(activity.layoutInflater)
+                    dialogView.dialogText.setText(R.string.toast_backup)
+                    dialogView.actionOk.setOnClickListener {
+                        dialog.dismiss()
+                        try {
+                            if (!needGrantStoragePermission(requireActivity())) {
 
-                            makeBackupDir()
-                            BrowserUnit.deleteDir(previewsfolderBackup)
-                            copyDirectory(previewsfolderApp, previewsfolderBackup)
-                            backupUserPrefs(activity)
-                            NinjaToast.show(activity, getString(R.string.toast_export_successful) + "browser_backup")
+                                makeBackupDir()
+                                BrowserUnit.deleteDir(previewsfolderBackup)
+                                copyDirectory(previewsfolderApp, previewsfolderBackup)
+                                backupUserPrefs(activity)
+                                NinjaToast.show(activity, getString(R.string.toast_export_successful) + "browser_backup")
+                            }
+                        } catch (e: Exception) {
+                            e.printStackTrace()
                         }
-                    } catch (e: Exception) {
-                        e.printStackTrace()
                     }
+                    dialogView.actionCancel.setOnClickListener { dialog.dismiss() }
+                    dialog.setContentView(dialogView.root)
+                    dialog.show()
+                    setBottomSheetBehavior(dialog, dialogView.root, BottomSheetBehavior.STATE_EXPANDED)
+                    false
                 }
-                dialogView.actionCancel.setOnClickListener { dialog.dismiss() }
-                dialog.setContentView(dialogView.root)
-                dialog.show()
-                setBottomSheetBehavior(dialog, dialogView.root, BottomSheetBehavior.STATE_EXPANDED)
-                false
-            }
         findPreference<Preference>("data_imDB")!!.onPreferenceClickListener =
-            Preference.OnPreferenceClickListener { preference: Preference? ->
-                val textView: TextView
-                val action_ok: Button
-                val action_cancel: Button
-                val dialog = BottomSheetDialog(requireActivity())
-                val dialogView: View = View.inflate(activity, R.layout.dialog_action, null)
-                textView = dialogView.findViewById(R.id.dialog_text)
-                textView.setText(R.string.hint_database)
-                action_ok = dialogView.findViewById(R.id.action_ok)
-                action_ok.setOnClickListener { view: View? ->
-                    dialog.cancel()
-                    try {
-                        if (Build.VERSION.SDK_INT in 23..28) {
-                            val hasWRITE_EXTERNAL_STORAGE =
-                                requireActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                            if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
-                                needGrantStoragePermission(requireActivity())
-                                dialog.cancel()
+                Preference.OnPreferenceClickListener { preference: Preference? ->
+                    val textView: TextView
+                    val action_ok: Button
+                    val action_cancel: Button
+                    val dialog = BottomSheetDialog(requireActivity())
+                    val dialogView: View = View.inflate(activity, R.layout.dialog_action, null)
+                    textView = dialogView.findViewById(R.id.dialog_text)
+                    textView.setText(R.string.hint_database)
+                    action_ok = dialogView.findViewById(R.id.action_ok)
+                    action_ok.setOnClickListener { view: View? ->
+                        dialog.cancel()
+                        try {
+                            if (Build.VERSION.SDK_INT in 23..28) {
+                                val hasWRITE_EXTERNAL_STORAGE =
+                                        requireActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                                if (hasWRITE_EXTERNAL_STORAGE != PackageManager.PERMISSION_GRANTED) {
+                                    needGrantStoragePermission(requireActivity())
+                                    dialog.cancel()
+                                } else {
+                                    //BrowserUnit.deleteDir(previewsFolder_app);
+                                    copyDirectory(previewsfolderBackup, previewsfolderApp)
+                                    restoreUserPrefs(activity)
+                                    dialogRestart()
+                                }
                             } else {
                                 //BrowserUnit.deleteDir(previewsFolder_app);
                                 copyDirectory(previewsfolderBackup, previewsfolderApp)
                                 restoreUserPrefs(activity)
                                 dialogRestart()
                             }
-                        } else {
-                            //BrowserUnit.deleteDir(previewsFolder_app);
-                            copyDirectory(previewsfolderBackup, previewsfolderApp)
-                            restoreUserPrefs(activity)
-                            dialogRestart()
+                        } catch (e: Exception) {
+                            e.printStackTrace()
                         }
-                    } catch (e: Exception) {
-                        e.printStackTrace()
                     }
+                    action_cancel = dialogView.findViewById(R.id.action_cancel)
+                    action_cancel.setOnClickListener { view: View? -> dialog!!.cancel() }
+                    dialog.setContentView(dialogView)
+                    dialog.show()
+                    setBottomSheetBehavior(dialog!!, dialogView, BottomSheetBehavior.STATE_EXPANDED)
+                    false
                 }
-                action_cancel = dialogView.findViewById(R.id.action_cancel)
-                action_cancel.setOnClickListener { view: View? -> dialog!!.cancel() }
-                dialog.setContentView(dialogView)
-                dialog.show()
-                setBottomSheetBehavior(dialog!!, dialogView, BottomSheetBehavior.STATE_EXPANDED)
-                false
-            }
         findPreference<Preference>("data_export_bookmarks")?.onPreferenceClickListener =
-            Preference.OnPreferenceClickListener {
-                showBookmarkFilePicker()
-                true
-            }
+                Preference.OnPreferenceClickListener {
+                    showBookmarkFilePicker()
+                    true
+                }
         findPreference<Preference>("data_import_bookmarks")?.onPreferenceClickListener =
-            Preference.OnPreferenceClickListener {
-                showImportBookmarkFilePicker()
-                true
-            }
+                Preference.OnPreferenceClickListener {
+                    showImportBookmarkFilePicker()
+                    true
+                }
     }
 
     private fun showBookmarkFilePicker() {
@@ -160,7 +165,6 @@ class DataSettingsFragment : PreferenceFragmentCompat() {
     private fun importBookmarks(uri: Uri) {
         val context = context ?: return
 
-        val manager = BookmarkManager(context)
         lifecycleScope.launch {
             try {
                 context.contentResolver.openInputStream(uri).use {
@@ -178,8 +182,7 @@ class DataSettingsFragment : PreferenceFragmentCompat() {
             } catch (e: IOException) {
                 e.printStackTrace()
                 Toast.makeText(context, "Bookmarks import failed", Toast.LENGTH_SHORT).show()
-            }
-            finally {
+            } finally {
                 manager.release()
             }
         }
@@ -188,7 +191,6 @@ class DataSettingsFragment : PreferenceFragmentCompat() {
     private fun exportBookmarks(uri: Uri) {
         val context = context ?: return
 
-        val manager = BookmarkManager(context)
         lifecycleScope.launch {
             val bookmarks = manager.getAllBookmarks()
             try {
@@ -239,8 +241,8 @@ class DataSettingsFragment : PreferenceFragmentCompat() {
             val children = sourceLocation.list()
             for (aChildren in Objects.requireNonNull(children)) {
                 copyDirectory(
-                    File(sourceLocation, aChildren),
-                    File(targetLocation, aChildren)
+                        File(sourceLocation, aChildren),
+                        File(targetLocation, aChildren)
                 )
             }
         } else {
@@ -268,8 +270,8 @@ class DataSettingsFragment : PreferenceFragmentCompat() {
         private fun backupUserPrefs(context: Context?) {
             val prefsFile = File(context!!.filesDir, "../shared_prefs/" + context.packageName + "_preferences.xml")
             val backupFile = File(
-                context.getExternalFilesDir(null),
-                "browser_backup/preferenceBackup.xml"
+                    context.getExternalFilesDir(null),
+                    "browser_backup/preferenceBackup.xml"
             )
             try {
                 val src = FileInputStream(prefsFile).channel
@@ -286,8 +288,8 @@ class DataSettingsFragment : PreferenceFragmentCompat() {
         @SuppressLint("ApplySharedPref")
         private fun restoreUserPrefs(context: Context?) {
             val backupFile = File(
-                context!!.getExternalFilesDir(null),
-                "browser_backup/preferenceBackup.xml"
+                    context!!.getExternalFilesDir(null),
+                    "browser_backup/preferenceBackup.xml"
             )
             val error: String
             try {
@@ -331,9 +333,9 @@ class DataSettingsFragment : PreferenceFragmentCompat() {
                 e.printStackTrace()
             }
             Toast.makeText(
-                context,
-                """Failed to restore user prefs from ${backupFile.absolutePath} - $error""",
-                Toast.LENGTH_SHORT
+                    context,
+                    """Failed to restore user prefs from ${backupFile.absolutePath} - $error""",
+                    Toast.LENGTH_SHORT
             ).show()
         }
     }
@@ -341,24 +343,24 @@ class DataSettingsFragment : PreferenceFragmentCompat() {
 
 private fun List<Bookmark>.toJsonString(): String {
     val jsonArrays = JSONArray()
-    this.map { it.toJsonObject() } .forEach { jsonArrays.put(it) }
+    this.map { it.toJsonObject() }.forEach { jsonArrays.put(it) }
 
     return jsonArrays.toString()
 }
 
 private fun Bookmark.toJsonObject(): JSONObject =
-    JSONObject().apply {
-        put("id", id)
-        put("title", title)
-        put("url", url)
-        put("isDirectory", isDirectory)
-        put("parent", parent)
-    }
+        JSONObject().apply {
+            put("id", id)
+            put("title", title)
+            put("url", url)
+            put("isDirectory", isDirectory)
+            put("parent", parent)
+        }
 
 private fun JSONObject.toBookmark(): Bookmark =
-    Bookmark(
-        optString("title"),
-        optString("url"),
-        optBoolean("isDirectory"),
-        optInt("parent")
-    ).apply { id =  optInt("id") }
+        Bookmark(
+                optString("title"),
+                optString("url"),
+                optBoolean("isDirectory"),
+                optInt("parent")
+        ).apply { id = optInt("id") }
