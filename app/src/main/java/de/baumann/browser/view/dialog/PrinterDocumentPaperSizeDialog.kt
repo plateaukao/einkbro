@@ -6,9 +6,11 @@ import androidx.appcompat.app.AlertDialog
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.preference.PaperSize
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-class PrinterDocumentPaperSizeDialog(val context: Context) {
-    private val config: ConfigManager = ConfigManager(context)
+class PrinterDocumentPaperSizeDialog(val context: Context): KoinComponent {
+    private val config: ConfigManager by inject()
 
     fun show() {
         val paperSizes = PaperSize.values().map { it.sizeString }.toTypedArray()

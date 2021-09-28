@@ -25,21 +25,23 @@ import de.baumann.browser.view.NinjaWebView.OnScrollChangeListener
 import de.baumann.browser.view.Orientation
 import de.baumann.browser.view.TwoPaneLayout
 import de.baumann.browser.view.dialog.TranslationLanguageDialog
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import java.lang.Math.*
 
 class TranslationViewController(
-    private val activity: Activity,
-    private val translationViewBinding: TranslationPanelBinding,
-    private val twoPaneLayout: TwoPaneLayout,
-    private val showTranslationAction: () -> Unit,
-    private val onTranslationClosed: () -> Unit,
-    private val loadTranslationUrl: (String) -> Unit
-) {
-    private val config: ConfigManager by lazy { ConfigManager(activity) }
+        private val activity: Activity,
+        private val translationViewBinding: TranslationPanelBinding,
+        private val twoPaneLayout: TwoPaneLayout,
+        private val showTranslationAction: () -> Unit,
+        private val onTranslationClosed: () -> Unit,
+        private val loadTranslationUrl: (String) -> Unit
+) : KoinComponent {
+    private val config: ConfigManager by inject()
     private val webView: NinjaWebView by lazy {
         NinjaWebView(activity, null).apply {
             shouldHideTranslateContext = true
-            setScrollChangeListener(object: OnScrollChangeListener {
+            setScrollChangeListener(object : OnScrollChangeListener {
                 override fun onScrollChange(scrollY: Int, oldScrollY: Int) {
                     if (abs(scrollY - oldScrollY) > 10) {
                         hideControlButtons()
@@ -64,7 +66,7 @@ class TranslationViewController(
         translationViewBinding.translationFontMinus.setOnClickListener { decreaseFontSize() }
 
         translationViewBinding.translationClose.setOnClickListener { toggleTranslationWindow(false, onTranslationClosed) }
-        translationViewBinding.translationClose.setOnLongClickListener{
+        translationViewBinding.translationClose.setOnLongClickListener {
             webView.url?.let { loadTranslationUrl(it) }
             toggleTranslationWindow(false)
             true
@@ -75,7 +77,7 @@ class TranslationViewController(
             setOrientation(orientation)
         }
 
-        translationViewBinding.translationOrientation.setOnLongClickListener{ twoPaneLayout.switchPanels() ; true }
+        translationViewBinding.translationOrientation.setOnLongClickListener { twoPaneLayout.switchPanels(); true }
 
         translationViewBinding.syncScroll.setOnClickListener { toggleSyncScroll(!isScrollSynced) }
 
@@ -126,7 +128,7 @@ class TranslationViewController(
     }
 
     suspend fun showTranslation(webView: NinjaWebView) {
-        when(config.translationMode) {
+        when (config.translationMode) {
             TranslationMode.PAPAGO_DUAL -> webView.loadUrl(buildPUrlTranslateUrl(webView.url.toString()))
             TranslationMode.PAPAGO_URL,
             TranslationMode.GOOGLE_URL -> launchTranslateWindow(webView.url.toString())
@@ -167,12 +169,13 @@ class TranslationViewController(
             NinjaToast.showShort(activity, "Translation does not work for this page.")
             return
         }
-            // onyx case
+        // onyx case
         if (config.translationMode == TranslationMode.ONYX) {
             ViewUnit.toggleMultiWindow(activity, true)
             try {
                 launchOnyxDictTranslation(text)
-            } catch (ignored: ClassNotFoundException) {}
+            } catch (ignored: ClassNotFoundException) {
+            }
             return
         }
 
@@ -205,7 +208,7 @@ class TranslationViewController(
 
     fun showTranslationConfigDialog() {
         val enumValues: List<TranslationMode> = if (Build.MANUFACTURER != "ONYX") {
-            TranslationMode.values().toMutableList().apply {  remove(TranslationMode.ONYX) }
+            TranslationMode.values().toMutableList().apply { remove(TranslationMode.ONYX) }
         } else {
             TranslationMode.values().toList()
         }
@@ -213,7 +216,7 @@ class TranslationViewController(
         val translationModeArray = enumValues.map { it.name }.toTypedArray()
         val valueArray = enumValues.map { it.ordinal }
         val selected = valueArray.indexOf(config.translationMode.ordinal)
-        AlertDialog.Builder(activity, R.style.TouchAreaDialog).apply{
+        AlertDialog.Builder(activity, R.style.TouchAreaDialog).apply {
             setTitle("Translation Mode")
             setSingleChoiceItems(translationModeArray, selected) { dialog, which ->
                 dialog.dismiss()
@@ -221,20 +224,20 @@ class TranslationViewController(
                 if (isTranslationModeOn()) showTranslationAction.invoke()
             }
         }
-            .setPositiveButton(R.string.close) { _, _ ->
-                toggleTranslationWindow(false) { onTranslationClosed() }
-            }
-            .create().also {
-                it.show()
-                it.window?.setLayout(300.dp(activity), ViewGroup.LayoutParams.WRAP_CONTENT)
-            }
+                .setPositiveButton(R.string.close) { _, _ ->
+                    toggleTranslationWindow(false) { onTranslationClosed() }
+                }
+                .create().also {
+                    it.show()
+                    it.window?.setLayout(300.dp(activity), ViewGroup.LayoutParams.WRAP_CONTENT)
+                }
     }
 
     private fun String.purify(): String =
-        this.replace("\\u003C", "<")
-            .replace("\\n", "\n")
-            .replace("\\t", "  ")
-            .replace("\\\"", "\"")
+            this.replace("\\u003C", "<")
+                    .replace("\\n", "\n")
+                    .replace("\\t", "  ")
+                    .replace("\\\"", "\"")
 
     private fun updatePageViews(size: Int) {
         if (size == 1) {
@@ -270,19 +273,19 @@ class TranslationViewController(
 
         webView.loadUrl(url)
 
-        pageContainer.children.iterator().forEach{ pageIndexView ->
+        pageContainer.children.iterator().forEach { pageIndexView ->
             pageIndexView.setBackgroundResource(
-                if (selectedPageIndex == pageIndexView.tag) R.drawable.selected_border_bg else R.drawable.backgound_with_border
+                    if (selectedPageIndex == pageIndexView.tag) R.drawable.selected_border_bg else R.drawable.backgound_with_border
             )
         }
     }
 
     private fun parseTextToSegments(text: String): List<String> =
-        text.chunked(TRANSLATION_TEXT_THRESHOLD)
+            text.chunked(TRANSLATION_TEXT_THRESHOLD)
 
     private fun addWebView(): NinjaWebView {
         val params: RelativeLayout.LayoutParams =
-            RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT)
+                RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT)
         translationViewBinding.root.addView(webView, 0, params)
 
         return webView
@@ -290,24 +293,24 @@ class TranslationViewController(
 
     private fun buildPUrlTranslateUrl(url: String): String {
         val uri = Uri.Builder()
-            .scheme("https")
-            .authority("papago.naver.net")
-            .path("website")
-            .appendQueryParameter("locale", "en")
-            .appendQueryParameter("source", "auto")
-            .appendQueryParameter("target", "ja")
-            .appendQueryParameter("url", url)
-            .build()
+                .scheme("https")
+                .authority("papago.naver.net")
+                .path("website")
+                .appendQueryParameter("locale", "en")
+                .appendQueryParameter("source", "auto")
+                .appendQueryParameter("target", "ja")
+                .appendQueryParameter("url", url)
+                .build()
         return uri.toString()
     }
 
     private fun buildPTranslateUrl(text: String): String {
         val shortenedText: String = if (text.length > TRANSLATION_TEXT_THRESHOLD) text.substring(0, TRANSLATION_TEXT_THRESHOLD) else text
         val uri = Uri.Builder()
-            .scheme("https")
-            .authority("papago.naver.com")
-            .appendQueryParameter("st", shortenedText)
-            .build()
+                .scheme("https")
+                .authority("papago.naver.com")
+                .appendQueryParameter("st", shortenedText)
+                .build()
         return uri.toString()
     }
 
@@ -323,27 +326,27 @@ class TranslationViewController(
         return newUri.toString()
     }
 
-   private fun oldBuildGUrlTranslateUrl(url: String): String {
+    private fun oldBuildGUrlTranslateUrl(url: String): String {
         val uri = Uri.Builder()
-            .scheme("https")
-            .authority("translate.google.com")
-            .appendPath("translate")
-            .appendQueryParameter("u", url)
-            .appendQueryParameter("sl", "auto") // source language
-            .appendQueryParameter("tl", "jp") // target language
-            .build()
-       return uri.toString()
-   }
+                .scheme("https")
+                .authority("translate.google.com")
+                .appendPath("translate")
+                .appendQueryParameter("u", url)
+                .appendQueryParameter("sl", "auto") // source language
+                .appendQueryParameter("tl", "jp") // target language
+                .build()
+        return uri.toString()
+    }
 
     private fun buildGTranslateUrl(text: String): String {
         val shortenedText: String = if (text.length > TRANSLATION_TEXT_THRESHOLD) text.substring(0, TRANSLATION_TEXT_THRESHOLD) else text
         val uri = Uri.Builder()
-            .scheme("https")
-            .authority("translate.google.com")
-            .appendQueryParameter("text", shortenedText)
-            .appendQueryParameter("sl", "auto") // source language
-            .appendQueryParameter("tl", "jp") // target language
-            .build()
+                .scheme("https")
+                .authority("translate.google.com")
+                .appendQueryParameter("text", shortenedText)
+                .appendQueryParameter("sl", "auto") // source language
+                .appendQueryParameter("tl", "jp") // target language
+                .build()
         return uri.toString()
     }
 
@@ -356,12 +359,12 @@ class TranslationViewController(
     }
 
     private fun isTranslationModeOn(): Boolean =
-        (config.translationMode == TranslationMode.ONYX && ViewUnit.isMultiWindowEnabled(activity)) ||
-                twoPaneLayout.shouldShowSecondPane
+            (config.translationMode == TranslationMode.ONYX && ViewUnit.isMultiWindowEnabled(activity)) ||
+                    twoPaneLayout.shouldShowSecondPane
 
     private fun toggleTranslationWindow(
-        isEnabled: Boolean,
-        onTranslationClosed: () -> Unit = {}
+            isEnabled: Boolean,
+            onTranslationClosed: () -> Unit = {}
     ) {
         if (config.translationMode == TranslationMode.ONYX) {
             ViewUnit.toggleMultiWindow(activity, isEnabled)
