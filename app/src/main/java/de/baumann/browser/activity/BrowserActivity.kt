@@ -56,6 +56,8 @@ import de.baumann.browser.view.viewControllers.TouchAreaViewController
 import de.baumann.browser.view.viewControllers.TranslationViewController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
+import org.koin.core.parameter.parametersOf
 import java.io.*
 import java.util.*
 import kotlin.math.floor
@@ -86,8 +88,8 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
     private var title: String? = null
     private var url: String? = null
     private var downloadReceiver: BroadcastReceiver? = null
-    private val sp: SharedPreferences by lazy { PreferenceManager.getDefaultSharedPreferences(this) }
-    private val config: ConfigManager by lazy { ConfigManager(this) }
+    private val sp: SharedPreferences by inject()
+    private val config: ConfigManager by inject()
     private fun prepareRecord(): Boolean {
         val webView = currentAlbumController as NinjaWebView
         val title = webView.title
@@ -107,9 +109,9 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
 
     private lateinit var binding: ActivityMainBinding
 
-    private val bookmarkManager: BookmarkManager by lazy {  BookmarkManager(this) }
+    private val bookmarkManager: BookmarkManager by inject()
 
-    private val epubManager: EpubManager by lazy { EpubManager(this) }
+    private val epubManager: EpubManager by inject { parametersOf(this@BrowserActivity) }
 
     private var uiMode = Configuration.UI_MODE_NIGHT_UNDEFINED
 
@@ -123,18 +125,18 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
 
     private val touchController: TouchAreaViewController by lazy {
         TouchAreaViewController(
-            context = this,
-            rootView = binding.root,
-            pageUpAction = {ninjaWebView.pageUpWithNoAnimation()},
-            pageTopAction = { ninjaWebView.jumpToTop() },
-            pageDownAction = { ninjaWebView.pageDownWithNoAnimation() },
-            pageBottomAction = { ninjaWebView.jumpToBottom() },
+                context = this,
+                rootView = binding.root,
+                pageUpAction = { ninjaWebView.pageUpWithNoAnimation() },
+                pageTopAction = { ninjaWebView.jumpToTop() },
+                pageDownAction = { ninjaWebView.pageDownWithNoAnimation() },
+                pageBottomAction = { ninjaWebView.jumpToBottom() },
         )
     }
 
     private lateinit var translateController: TranslationViewController
 
-    private val dialogManager: DialogManager by lazy { DialogManager(this) }
+    private val dialogManager: DialogManager by inject { parametersOf(this@BrowserActivity) }
 
     private val recordDb: RecordDb by lazy { RecordDb(this).apply { open(false) } }
 
@@ -209,8 +211,8 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
         downloadReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
                 dialogManager.showOkCancelDialog(
-                    messageResId = R.string.toast_downloadComplete,
-                    okAction = { startActivity(Intent(DownloadManager.ACTION_VIEW_DOWNLOADS)) }
+                        messageResId = R.string.toast_downloadComplete,
+                        okAction = { startActivity(Intent(DownloadManager.ACTION_VIEW_DOWNLOADS)) }
                 )
             }
         }
@@ -300,22 +302,22 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
 
     private fun showRestartConfirmDialog() {
         dialogManager.showOkCancelDialog(
-            messageResId = R.string.toast_restart,
-            okAction = { restartApp() }
+                messageResId = R.string.toast_restart,
+                okAction = { restartApp() }
         )
     }
 
     private fun restartApp() {
         finishAffinity() // Finishes all activities.
         startActivity(packageManager.getLaunchIntentForPackage(packageName))    // Start the launch activity
-        overridePendingTransition(0,0)
+        overridePendingTransition(0, 0)
         exitProcess(0)
     }
 
     private fun showFileListConfirmDialog() {
         dialogManager.showOkCancelDialog(
-            messageResId = R.string.toast_downloadComplete,
-            okAction = { startActivity(Intent(DownloadManager.ACTION_VIEW_DOWNLOADS)) }
+                messageResId = R.string.toast_downloadComplete,
+                okAction = { startActivity(Intent(DownloadManager.ACTION_VIEW_DOWNLOADS)) }
         )
     }
 
@@ -409,7 +411,7 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
     override fun updateAutoComplete() {
         lifecycleScope.launch {
             val activity = this@BrowserActivity
-            val list = recordDb.listEntries(activity, true)
+            val list = recordDb.listEntries(true)
 
             val adapter = CompleteAdapter(activity, R.layout.complete_item, list) { record ->
                 updateAlbum(record.url)
@@ -418,7 +420,7 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
                 showToolbar()
             }
 
-            with (binding.omniboxInput) {
+            with(binding.omniboxInput) {
                 setAdapter(adapter)
                 threshold = 1
                 dropDownWidth = ViewUnit.getWindowWidth(activity)
@@ -522,7 +524,7 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
         startActivity(intent)
     }
 
-    private var isRotated:Boolean = false
+    private var isRotated: Boolean = false
     private fun rotateScreen() {
         isRotated = !isRotated
         requestedOrientation = if (!isRotated) {
@@ -560,7 +562,7 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
         }
     }
 
-    private fun  toggleTouchTurnPageFeature() {
+    private fun toggleTouchTurnPageFeature() {
         config.enableTouchTurn = !config.enableTouchTurn
         updateTouchView()
     }
@@ -576,7 +578,7 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
 
     // Methods
     private fun showFontSizeChangeDialog() =
-        dialogManager.showFontSizeChangeDialog { changeFontSize(it) }
+            dialogManager.showFontSizeChangeDialog { changeFontSize(it) }
 
     private fun changeFontSize(size: Int) {
         config.fontSize = size
@@ -632,7 +634,7 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
                     binding.twoPanelLayout,
                     { showTranslation() },
                     { if (ninjaWebView.isReaderModeOn) ninjaWebView.toggleReaderMode() },
-                    { url -> ninjaWebView.loadUrl(url)},
+                    { url -> ninjaWebView.loadUrl(url) },
             )
         }
     }
@@ -664,14 +666,14 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
     }
 
     private fun dispatchIntent(intent: Intent) {
-        when(intent.action) {
+        when (intent.action) {
             "", Intent.ACTION_MAIN -> { // initial case
                 if (currentAlbumController == null) { // newly opened Activity
                     if ((shouldLoadTabState || config.shouldSaveTabs) &&
-                        config.savedAlbumInfoList.isNotEmpty()) {
+                            config.savedAlbumInfoList.isNotEmpty()) {
                         // fix current album index is larger than album size
                         if (config.currentAlbumIndex >= config.savedAlbumInfoList.size) {
-                            config.currentAlbumIndex = config.savedAlbumInfoList.size -1
+                            config.currentAlbumIndex = config.savedAlbumInfoList.size - 1
                         }
                         val albumList = config.savedAlbumInfoList.toList()
                         var savedIndex = config.currentAlbumIndex
@@ -681,9 +683,9 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
                         Log.w(TAG, "albumList:$albumList")
                         albumList.forEachIndexed { index, albumInfo ->
                             addAlbum(
-                                title = albumInfo.title,
-                                url = albumInfo.url,
-                                foreground = (index == savedIndex))
+                                    title = albumInfo.title,
+                                    url = albumInfo.url,
+                                    foreground = (index == savedIndex))
                         }
                     } else {
                         addAlbum()
@@ -693,7 +695,7 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
             Intent.ACTION_VIEW -> {
                 // if webview for that url already exists, show the original tab, otherwise, create new
                 val url = intent.data?.toNormalScheme()?.toString() ?: return
-                getUrlMatchedBrowser(url)?. let { showAlbum(it) } ?: addAlbum(url = url)
+                getUrlMatchedBrowser(url)?.let { showAlbum(it) } ?: addAlbum(url = url)
             }
             Intent.ACTION_WEB_SEARCH -> addAlbum(url = intent.getStringExtra(SearchManager.QUERY))
             "sc_history" -> {
@@ -708,7 +710,8 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
                 val url = intent.getStringExtra(Intent.EXTRA_TEXT)
                 addAlbum(url = url)
             }
-            else -> { }
+            else -> {
+            }
         }
         getIntent().action = ""
     }
@@ -797,7 +800,9 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
 
     private val preferenceChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
         when {
-            key.equals(ConfigManager.K_TOOLBAR_ICONS) -> { toolbarViewController.reorderIcons() }
+            key.equals(ConfigManager.K_TOOLBAR_ICONS) -> {
+                toolbarViewController.reorderIcons()
+            }
             key.equals(ConfigManager.K_BOLD_FONT) -> {
                 if (config.boldFontStyle) {
                     ninjaWebView.updateCssStyle()
@@ -816,8 +821,8 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
                 ninjaWebView.incognito = config.isIncognitoMode
                 updateWebViewCountUI()
                 NinjaToast.showShort(
-                    this,
-                    "Incognito mode is " + if (config.isIncognitoMode) "enabled." else "disabled."
+                        this,
+                        "Incognito mode is " + if (config.isIncognitoMode) "enabled." else "disabled."
                 )
             }
             key.equals(ConfigManager.K_KEEP_AWAKE) -> {
@@ -920,7 +925,7 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
         binding.mainSearchCancel.setOnClickListener { hideSearchPanel() }
     }
 
-    private val searchBoxEditorActionListener = object: OnEditorActionListener {
+    private val searchBoxEditorActionListener = object : OnEditorActionListener {
         override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
             if (actionId != EditorInfo.IME_ACTION_DONE) {
                 return false
@@ -950,6 +955,7 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
         ViewUnit.hideKeyboard(this)
         (currentAlbumController as NinjaWebView).findNext(false)
     }
+
     private fun searchDown() {
         val query = searchBox.text.toString()
         if (query.isEmpty()) {
@@ -976,10 +982,10 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
 
     @Synchronized
     private fun addAlbum(
-        title: String = "",
-        url: String? = config.favoriteUrl,
-        foreground: Boolean = true,
-        incognito: Boolean = false
+            title: String = "",
+            url: String? = config.favoriteUrl,
+            foreground: Boolean = true,
+            incognito: Boolean = false
     ) {
         if (url == null) return
 
@@ -1034,8 +1040,8 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
 
     private fun updateWebViewCountUI() {
         binding.omniboxTabcount.setBackgroundResource(
-            if (config.isIncognitoMode
-                || (this::ninjaWebView.isInitialized && ninjaWebView.incognito)) R.drawable.button_border_bg_dash else R.drawable.button_border_bg
+                if (config.isIncognitoMode
+                        || (this::ninjaWebView.isInitialized && ninjaWebView.incognito)) R.drawable.button_border_bg_dash else R.drawable.button_border_bg
         )
     }
 
@@ -1053,8 +1059,8 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
             okAction()
         } else {
             dialogManager.showOkCancelDialog(
-                messageResId = R.string.toast_close_tab,
-                okAction = okAction,
+                    messageResId = R.string.toast_close_tab,
+                    okAction = okAction,
             )
         }
     }
@@ -1064,7 +1070,7 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
         updateSavedAlbumInfo()
 
         if (browserContainer.size() <= 1) {
-                finish()
+            finish()
         } else {
             closeTabConfirmation {
                 overviewDialogController.removeTabView(controller.albumView)
@@ -1084,7 +1090,7 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
     }
 
     private fun updateTitle() {
-        if(!this::ninjaWebView.isInitialized) return
+        if (!this::ninjaWebView.isInitialized) return
 
         if (this::ninjaWebView.isInitialized && ninjaWebView === currentAlbumController) {
             omniboxTitle.text = ninjaWebView.title
@@ -1158,7 +1164,7 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
         if (!isRunning && running) {
             isRunning = true
             binding.omniboxRefresh.setImageResource(R.drawable.ic_stop)
-        } else if (isRunning && !running){
+        } else if (isRunning && !running) {
             isRunning = false
             binding.omniboxRefresh.setImageResource(R.drawable.icon_refresh)
         }
@@ -1185,17 +1191,17 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
         }
         customView = view
         originalOrientation = requestedOrientation
-        fullscreenHolder = FrameLayout(this).apply{
+        fullscreenHolder = FrameLayout(this).apply {
             addView(
-                customView,
-                FrameLayout.LayoutParams( FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
+                    customView,
+                    FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
             )
 
         }
         val decorView = window.decorView as FrameLayout
         decorView.addView(
-            fullscreenHolder,
-            FrameLayout.LayoutParams( FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
+                fullscreenHolder,
+                FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
         )
         customView?.keepScreenOn = true
         (currentAlbumController as View?)?.visibility = View.GONE
@@ -1376,11 +1382,13 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
     private fun showSavePdfDialog(url: String?) {
         val url = url ?: return
 
-        dialogManager.showSavePdfDialog(url = url, savePdf = { url, fileName -> savePdf(url, fileName) } )
+        dialogManager.showSavePdfDialog(url = url, savePdf = { url, fileName -> savePdf(url, fileName) })
     }
 
     private fun savePdf(url: String, fileName: String) {
-        if (HelperUnit.needGrantStoragePermission(this)) { return }
+        if (HelperUnit.needGrantStoragePermission(this)) {
+            return
+        }
 
         val source = Uri.parse(url)
         val request = DownloadManager.Request(source).apply {
@@ -1447,16 +1455,16 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
 
     private fun showMenuDialog(): Boolean {
         MenuDialog(
-            this,
-            ninjaWebView,
-            { updateAlbum(sp.getString("favoriteURL", "https://github.com/plateaukao/browser")) },
-            { removeAlbum(currentAlbumController!!) },
-            this::saveBookmark,
-            this::showSearchPanel,
-            this::showSaveEpubDialog,
-            this::printPDF,
-            this::showFontSizeChangeDialog,
-            this::saveScreenshot,
+                this,
+                ninjaWebView,
+                { updateAlbum(sp.getString("favoriteURL", "https://github.com/plateaukao/browser")) },
+                { removeAlbum(currentAlbumController!!) },
+                this::saveBookmark,
+                this::showSearchPanel,
+                this::showSaveEpubDialog,
+                this::printPDF,
+                this::showFontSizeChangeDialog,
+                this::saveScreenshot,
         ).show()
         return true
     }
@@ -1552,7 +1560,7 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
     }
 }
 
-private fun Dialog.dismissWithAction(action: ()-> Unit) {
+private fun Dialog.dismissWithAction(action: () -> Unit) {
     dismiss()
     action()
 }

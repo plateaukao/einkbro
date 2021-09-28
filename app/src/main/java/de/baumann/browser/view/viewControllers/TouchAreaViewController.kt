@@ -7,19 +7,21 @@ import android.view.View
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.preference.TouchAreaType
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import java.util.*
 
 class TouchAreaViewController(
-    private val context: Context,
-    private val rootView: View,
-    private val pageUpAction: () -> Unit,
-    private val pageTopAction: () -> Unit,
-    private val pageDownAction: () -> Unit,
-    private val pageBottomAction: () -> Unit,
-) {
+        private val context: Context,
+        private val rootView: View,
+        private val pageUpAction: () -> Unit,
+        private val pageTopAction: () -> Unit,
+        private val pageDownAction: () -> Unit,
+        private val pageBottomAction: () -> Unit,
+) : KoinComponent {
     private lateinit var touchAreaPageUp: View
     private lateinit var touchAreaPageDown: View
-    private val config: ConfigManager by lazy { ConfigManager(context) }
+    private val config: ConfigManager by inject()
 
     private val touchAreaChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
         if (key == ConfigManager.K_TOUCH_HINT) {
@@ -55,12 +57,12 @@ class TouchAreaViewController(
             }
         }
 
-        when(config.touchAreaType) {
+        when (config.touchAreaType) {
             TouchAreaType.BottomLeftRight -> {
                 touchAreaPageUp = rootView.findViewById(R.id.touch_area_bottom_left)
                 touchAreaPageDown = rootView.findViewById(R.id.touch_area_bottom_right)
             }
-            TouchAreaType.MiddleLeftRight-> {
+            TouchAreaType.MiddleLeftRight -> {
                 touchAreaPageUp = rootView.findViewById(R.id.touch_area_middle_left)
                 touchAreaPageDown = rootView.findViewById(R.id.touch_area_middle_right)
             }
@@ -72,7 +74,8 @@ class TouchAreaViewController(
                 touchAreaPageUp = rootView.findViewById(R.id.touch_area_right_1)
                 touchAreaPageDown = rootView.findViewById(R.id.touch_area_right_2)
             }
-            else -> {}
+            else -> {
+            }
         }
 
         val isTouchEnabled = config.enableTouchTurn
@@ -98,11 +101,11 @@ class TouchAreaViewController(
         touchAreaPageDown.setBackgroundResource(R.drawable.touch_area_border)
         if (!config.touchAreaHint) {
             Timer("showTouchAreaHint", false)
-                .schedule(object : TimerTask() {
-                    override fun run() {
-                        hideTouchAreaHint()
-                    }
-                }, 500)
+                    .schedule(object : TimerTask() {
+                        override fun run() {
+                            hideTouchAreaHint()
+                        }
+                    }, 500)
         }
     }
 

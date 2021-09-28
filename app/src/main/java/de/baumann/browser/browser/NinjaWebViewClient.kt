@@ -31,16 +31,18 @@ import android.graphics.BitmapFactory
 import android.util.Base64
 import de.baumann.browser.util.DebugT
 import de.baumann.browser.view.dTLoadUrl
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import java.io.ByteArrayInputStream
 
 
 class NinjaWebViewClient(
-   private val ninjaWebView: NinjaWebView,
-   private val addHistoryAction: (String) -> Unit
-) : WebViewClient() {
+        private val ninjaWebView: NinjaWebView,
+        private val addHistoryAction: (String) -> Unit
+) : WebViewClient(), KoinComponent {
     private val context: Context = ninjaWebView.context
-    private val sp: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-    private val config: ConfigManager = ConfigManager(context)
+    private val sp: SharedPreferences by inject()
+    private val config: ConfigManager by inject()
     private val adBlock: AdBlock = ninjaWebView.adBlock
     private val cookie: Cookie = ninjaWebView.cookieHosts
     private val white: Boolean = false

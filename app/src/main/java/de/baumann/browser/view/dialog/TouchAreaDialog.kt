@@ -11,10 +11,12 @@ import androidx.preference.PreferenceManager
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.preference.TouchAreaType
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-class TouchAreaDialog(private val context: Context) {
-    private val sp: SharedPreferences by lazy { PreferenceManager.getDefaultSharedPreferences(context) }
-    private val config: ConfigManager = ConfigManager(context)
+class TouchAreaDialog(private val context: Context) : KoinComponent {
+    private val sp: SharedPreferences by inject()
+    private val config: ConfigManager by inject()
 
     private lateinit var dialog: AlertDialog
 
@@ -38,7 +40,7 @@ class TouchAreaDialog(private val context: Context) {
 
     private fun initHintTypes(view: View) {
         // UI setup
-        val buttonShouldBeChecked: RadioButton = when(sp.getInt("sp_touch_area_type", 0)) {
+        val buttonShouldBeChecked: RadioButton = when (sp.getInt("sp_touch_area_type", 0)) {
             0 -> view.findViewById(R.id.touch_left_right)
             1 -> view.findViewById(R.id.touch_area_bottom_left)
             2 -> view.findViewById(R.id.touch_area_bottom_right)
@@ -67,7 +69,8 @@ class TouchAreaDialog(private val context: Context) {
     }
 
     private fun initToggles(view: View) {
-        val toggleTouchAreaHint = view.findViewById<CheckBox>(R.id.switch_show_touch_area_hint) ?: return
+        val toggleTouchAreaHint = view.findViewById<CheckBox>(R.id.switch_show_touch_area_hint)
+                ?: return
         val showTouchArea = view.findViewById<View>(R.id.show_touch_area) ?: return
 
         updateViewStatus(toggleTouchAreaHint, config.touchAreaHint)
