@@ -35,7 +35,6 @@ object ViewUnit {
 
     @JvmStatic
     fun capture(view: View, width: Float, height: Float): Bitmap {
-        view.setLayerType(View.LAYER_TYPE_HARDWARE, null)
         val bitmap = Bitmap.createBitmap(width.toInt(), height.toInt(), Bitmap.Config.ARGB_8888)
         bitmap.eraseColor(Color.WHITE)
         val canvas = Canvas(bitmap)

@@ -68,7 +68,6 @@ class NinjaWebChromeClient(private val ninjaWebView: NinjaWebView) : WebChromeCl
         manager.setAcceptThirdPartyCookies(webView, true)
 
         webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH)
-        webView.setLayerType(LAYER_TYPE_HARDWARE, null)
     }
 
     override fun onCloseWindow(window: WebView?) {

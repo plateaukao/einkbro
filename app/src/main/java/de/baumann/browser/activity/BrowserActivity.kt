@@ -30,7 +30,6 @@ import android.widget.TextView.OnEditorActionListener
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import androidx.lifecycle.lifecycleScope
-import androidx.preference.PreferenceManager
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.*
 import de.baumann.browser.browser.*
@@ -992,7 +991,6 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
         ninjaWebView = NinjaWebView(this, this)
         ninjaWebView.albumTitle = title
         ninjaWebView.incognito = incognito
-        ninjaWebView.setLayerType(View.LAYER_TYPE_HARDWARE, null)
         ViewUnit.bound(this, ninjaWebView)
         val albumView = ninjaWebView.albumView
         if (currentAlbumController != null) {
@@ -1355,25 +1353,40 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
         if (hitTestResult.extra != null) {
             dialogView.menuRemoveAd.visibility = VISIBLE
             dialogView.menuRemoveAd.setOnClickListener {
-                dialog.dismissWithAction { confirmAdSiteAddition(hitTestResult.extra) }
+                dialog.dismissWithAction { confirmAdSiteAddition(hitTestResult.extra ?: "") }
             }
         }
     }
 
-    private fun confirmAdSiteAddition(url: String?) {
-        lifecycleScope.launch {
-            val domain = TextInputDialog(
-                    this@BrowserActivity,
-                    "Ad Url to be blocked",
-                    "",
-                    Uri.parse(url).host ?: ""
-            ).show() ?: ""
+    private fun confirmAdSiteAddition(url: String) {
+        val host = Uri.parse(url).host ?: ""
+        if(config.adSites.contains(host)) {
+            confirmRemoveAdSite(host)
+        } else {
+            lifecycleScope.launch {
+                val domain = TextInputDialog(
+                        this@BrowserActivity,
+                        "Ad Url to be blocked",
+                        "",
+                        url,
+                ).show() ?: ""
 
-            if (domain.isNotBlank()) {
-                config.adSites = config.adSites.apply { add(domain) }
-                ninjaWebView.reload()
+                if (domain.isNotBlank()) {
+                    config.adSites = config.adSites.apply { add(domain) }
+                    ninjaWebView.reload()
+                }
             }
         }
+    }
+
+    private fun confirmRemoveAdSite(url: String) {
+        dialogManager.showOkCancelDialog(
+                title = "remove this url from blacklist?",
+                okAction = {
+                    config.adSites = config.adSites.apply { remove(url) }
+                    ninjaWebView.reload()
+                }
+        )
     }
 
     override fun onLongPress(url: String?) =
