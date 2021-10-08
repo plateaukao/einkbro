@@ -229,24 +229,6 @@ object HelperUnit {
     private val NEGATIVE_COLOR = floatArrayOf(
             -1.0f, 0f, 0f, 0f, 255f, 0f, -1.0f, 0f, 0f, 255f, 0f, 0f, -1.0f, 0f, 255f, 0f, 0f, 0f, 1.0f, 0f)
 
-    @JvmStatic
-    fun initRendering(view: View, shouldInvert: Boolean) {
-        if (shouldInvert) {
-            val paint = Paint()
-            val matrix = ColorMatrix()
-            matrix.set(NEGATIVE_COLOR)
-            val gcm = ColorMatrix()
-            gcm.setSaturation(0f)
-            val concat = ColorMatrix()
-            concat.setConcat(matrix, gcm)
-            val filter = ColorMatrixColorFilter(concat)
-            paint.colorFilter = filter
-            view.setLayerType(View.LAYER_TYPE_HARDWARE, paint)
-        } else {
-            view.setLayerType(View.LAYER_TYPE_HARDWARE, null)
-        }
-    }
-
     fun openFile(activity: Activity, uri: Uri, mimeType: String) {
         val intent = Intent().apply {
             action = Intent.ACTION_VIEW
