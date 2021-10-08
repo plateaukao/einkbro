@@ -162,7 +162,6 @@ class NinjaWebView : WebView, AlbumController, KoinComponent {
             useWideViewPort = true
         }
 
-        setLayerType(View.LAYER_TYPE_HARDWARE, null)
     }
 
     fun initPreferences() {
