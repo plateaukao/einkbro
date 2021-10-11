@@ -115,6 +115,9 @@ class ConfigManager(private val context: Context) : KoinComponent {
             sp.edit { putString(K_FONT_SIZE, value.toString()) }
         }
 
+    val customUserAgent: String
+        get() = sp.getString(K_CUSTOM_USER_AGENT,"") ?: ""
+
     var fabPosition: FabPosition
         get() = FabPosition.values()[sp.getString(K_NAV_POSITION, "0")?.toInt() ?: 0]
         set(value) {
@@ -271,6 +274,7 @@ class ConfigManager(private val context: Context) : KoinComponent {
         const val K_TRANSLATE_LANGUAGE = "sp_translate_language"
         const val K_TRANSLATE_ORIENTATION = "sp_translate_orientation"
         const val K_ADBLOCK_SITES = "sp_adblock_sites"
+        const val K_CUSTOM_USER_AGENT = "userAgent"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
     }

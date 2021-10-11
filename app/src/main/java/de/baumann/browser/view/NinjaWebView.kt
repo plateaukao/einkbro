@@ -196,6 +196,8 @@ class NinjaWebView : WebView, AlbumController, KoinComponent {
         val isDesktopMode = config.desktop
         if (isDesktopMode) {
             settings.userAgentString = BrowserUnit.UA_DESKTOP
+        } else if (config.customUserAgent.isNotBlank()) {
+            settings.userAgentString = config.customUserAgent
         } else {
             settings.userAgentString = WebSettings.getDefaultUserAgent(context).replace("wv", "")
         }
