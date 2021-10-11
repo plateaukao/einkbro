@@ -2288,7 +2288,7 @@ function createHtmlBody(article) {
     <body class="mozac-readerview-body">
       <div id="mozac-readerview-container" class="container">
         <div class="header">
-          <h2>${safeTitle}</h2>
+          <h3>${safeTitle}</h3>
         </div>
         <div>
           <div>${safeReadingTime}</div>
