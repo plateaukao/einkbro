@@ -71,12 +71,6 @@ public class Fragment_settings extends PreferenceFragmentCompat implements Share
             showLicenseDialog(getString(R.string.menu_other_info), "v" + BuildConfig.VERSION_NAME + "<br><br>" + getString(R.string.changelog_dialog));
             return false;
         });
-        /*
-        findPreference("settings_help").setOnPreferenceClickListener(preference -> {
-            HelperUnit.showDialogHelp(getActivity());
-            return false;
-        });
-         */
         findPreference("settings_appSettings").setOnPreferenceClickListener(preference -> {
             Intent intent = new Intent();
             intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
@@ -85,6 +79,8 @@ public class Fragment_settings extends PreferenceFragmentCompat implements Share
             getActivity().startActivity(intent);
             return false;
         });
+
+        getPreferenceManager().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
