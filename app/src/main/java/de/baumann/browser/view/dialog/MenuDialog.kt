@@ -53,6 +53,7 @@ class MenuDialog(
         binding.buttonCloseTab.setOnClickListener { dialog.dismissWithAction(closeTabAction) }
         binding.buttonQuit.setOnClickListener { dialog.dismissWithAction { (context as Activity).finish() } }
         binding.buttonBold.setOnClickListener { dialog.dismissWithAction { config.boldFontStyle = !config.boldFontStyle } }
+        binding.buttonWhiteBackground.setOnClickListener { dialog.dismissWithAction { config.whiteBackground = !config.whiteBackground} }
         binding.buttonReader.setOnClickListener { dialog.dismissWithAction { ninjaWebView.toggleReaderMode() } }
         binding.buttonVertical.setOnClickListener { dialog.dismissWithAction { ninjaWebView.toggleVerticalRead() } }
         binding.buttonTouch.setOnClickListener { dialog.dismissWithAction { TouchAreaDialog(context).show() } }

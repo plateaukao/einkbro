@@ -809,6 +809,13 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
                     ninjaWebView.reload()
                 }
             }
+            key.equals(ConfigManager.K_WHITE_BACKGROUND) -> {
+                if (config.whiteBackground) {
+                    ninjaWebView.updateCssStyle()
+                } else {
+                    ninjaWebView.reload()
+                }
+            }
             key.equals(ConfigManager.K_FONT_STYLE_SERIF) -> {
                 if (config.fontStyleSerif) {
                     ninjaWebView.updateCssStyle()

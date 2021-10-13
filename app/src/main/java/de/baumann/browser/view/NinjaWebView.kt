@@ -90,7 +90,8 @@ class NinjaWebView : WebView, AlbumController, KoinComponent {
 
     fun updateCssStyle() {
         val cssStyle = (if (config.boldFontStyle) boldFontCss else "") +
-                if (config.fontStyleSerif) notoSansSerifFontCss else ""
+                if (config.fontStyleSerif) notoSansSerifFontCss else "" +
+                        if (config.whiteBackground) whiteBackgroundCss else ""
         injectCss(cssStyle.toByteArray())
     }
 
@@ -709,6 +710,28 @@ class NinjaWebView : WebView, AlbumController, KoinComponent {
 //              font-family: custom, serif !important;
 //            }
 //        """
+
+        private const val whiteBackgroundCss = """
+* {
+    color: #000000!important;
+    border-color: #555555 !important;
+    background-color: #FFFFFF !important;
+}
+input,select,option,button,textarea {
+	border: #FFFFFF !important;
+	border-color: #FFFFFF #FFFFFF #FFFFFF #FFFFFF !important;
+}
+input: focus,select: focus,option: focus,button: focus,textarea: focus,input: hover,select: hover,option: hover,button: hover,textarea: hover {
+	border-color: #FFFFFF #FFFFFF #FFFFFF #FFFFFF !important;
+}
+input[type=button],input[type=submit],input[type=reset],input[type=image] {
+	border-color: #FFFFFF #FFFFFF #FFFFFF #FFFFFF !important;
+}
+input[type=button]: focus,input[type=submit]: focus,input[type=reset]: focus,input[type=image]: focus, input[type=button]: hover,input[type=submit]: hover,input[type=reset]: hover,input[type=image]: hover {
+	background: #FFFFFF !important;
+	border-color: #FFFFFF #FFFFFF #FFFFFF #FFFFFF !important;
+}
+        """
 
         private const val boldFontCss = "* {\n" +
                 "\tfont-weight:700 !important;\n" +  /*"\tborder-color: #555555 !important;\n" +*/
