@@ -60,7 +60,7 @@ class NinjaWebViewClient(
             ninjaWebView.removeFBSponsoredPosts()
         }
         // lab: change css
-        if (config.boldFontStyle || config.fontStyleSerif) {
+        if (config.boldFontStyle || config.fontStyleSerif || config.whiteBackground) {
             ninjaWebView.updateCssStyle()
         }
         if (ninjaWebView.shouldHideTranslateContext) {

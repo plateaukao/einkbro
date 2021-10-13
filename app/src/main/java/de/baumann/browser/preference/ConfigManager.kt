@@ -23,6 +23,12 @@ class ConfigManager(private val context: Context) : KoinComponent {
         sp.registerOnSharedPreferenceChangeListener(listener)
     }
 
+    var whiteBackground: Boolean
+        get() = sp.getBoolean(K_WHITE_BACKGROUND, false)
+        set(value) {
+            sp.edit { putBoolean(K_WHITE_BACKGROUND, value) }
+        }
+
     var touchAreaHint: Boolean
         get() = sp.getBoolean(K_TOUCH_HINT, true)
         set(value) {
@@ -116,7 +122,7 @@ class ConfigManager(private val context: Context) : KoinComponent {
         }
 
     val customUserAgent: String
-        get() = sp.getString(K_CUSTOM_USER_AGENT,"") ?: ""
+        get() = sp.getString(K_CUSTOM_USER_AGENT, "") ?: ""
 
     var fabPosition: FabPosition
         get() = FabPosition.values()[sp.getString(K_NAV_POSITION, "0")?.toInt() ?: 0]
@@ -275,6 +281,7 @@ class ConfigManager(private val context: Context) : KoinComponent {
         const val K_TRANSLATE_ORIENTATION = "sp_translate_orientation"
         const val K_ADBLOCK_SITES = "sp_adblock_sites"
         const val K_CUSTOM_USER_AGENT = "userAgent"
+        const val K_WHITE_BACKGROUND = "sp_whitebackground"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
     }
