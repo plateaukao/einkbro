@@ -52,21 +52,20 @@ class NinjaWebViewClient(
     }
 
     override fun onPageFinished(view: WebView, url: String) {
-        // skip translation pages
-        if (config.saveHistory && !ninjaWebView.incognito && !isTranslationDomain(url)) {
-            addHistoryAction(url)
+        if (config.boldFontStyle || config.fontStyleSerif || config.whiteBackground) {
+            ninjaWebView.updateCssStyle()
         }
         if (url.contains("facebook.com")) {
             ninjaWebView.removeFBSponsoredPosts()
-        }
-        // lab: change css
-        if (config.boldFontStyle || config.fontStyleSerif || config.whiteBackground) {
-            ninjaWebView.updateCssStyle()
         }
         if (ninjaWebView.shouldHideTranslateContext) {
             ninjaWebView.postDelayed({
                 ninjaWebView.hideTranslateContext()
             }, 2000)
+        }
+        // skip translation pages
+        if (config.saveHistory && !ninjaWebView.incognito && !isTranslationDomain(url)) {
+            addHistoryAction(url)
         }
         dTLoadUrl?.printTime()
         dTLoadUrl = null
