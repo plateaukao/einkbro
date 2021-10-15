@@ -710,6 +710,7 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
                 addAlbum(url = url)
             }
             else -> {
+                addAlbum()
             }
         }
         getIntent().action = ""
