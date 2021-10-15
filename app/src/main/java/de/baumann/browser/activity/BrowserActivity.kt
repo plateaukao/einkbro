@@ -754,6 +754,8 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
             false
         })
         binding.omniboxInput.onFocusChangeListener = OnFocusChangeListener { _, _ ->
+            if (!this::ninjaWebView.isInitialized) return@OnFocusChangeListener
+
             if (binding.omniboxInput.hasFocus()) {
                 binding.omniboxInput.setText(ninjaWebView.url)
                 binding.omniboxInput.setSelection(0, binding.omniboxInput.text.toString().length)
