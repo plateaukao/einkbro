@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import androidx.room.*
 import de.baumann.browser.preference.ConfigManager
+import kotlinx.coroutines.flow.Flow
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -25,6 +26,9 @@ interface BookmarkDao {
 
     @Query("SELECT * FROM bookmarks WHERE parent = :parentId ORDER BY title COLLATE NOCASE ASC")
     suspend fun getBookmarksByParent(parentId: Int): List<Bookmark>
+
+    @Query("SELECT * FROM bookmarks WHERE parent = :parentId ORDER BY title COLLATE NOCASE ASC")
+    fun getBookmarksByParentFlow(parentId: Int): Flow<List<Bookmark>>
 
     @Query("SELECT COUNT(id) FROM bookmarks WHERE url = :url")
     suspend fun existsUrl(url: String): Int
