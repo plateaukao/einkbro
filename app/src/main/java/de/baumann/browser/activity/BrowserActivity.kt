@@ -27,6 +27,7 @@ import android.webkit.WebChromeClient.CustomViewCallback
 import android.webkit.WebView.HitTestResult
 import android.widget.*
 import android.widget.TextView.OnEditorActionListener
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import androidx.lifecycle.lifecycleScope
@@ -53,6 +54,8 @@ import de.baumann.browser.view.viewControllers.OverviewDialogController
 import de.baumann.browser.view.viewControllers.ToolbarViewController
 import de.baumann.browser.view.viewControllers.TouchAreaViewController
 import de.baumann.browser.view.viewControllers.TranslationViewController
+import de.baumann.browser.viewmodel.BookmarkViewModel
+import de.baumann.browser.viewmodel.BookmarkViewModelFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
@@ -908,9 +911,14 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
         }
     }
 
+    private val bookmarkViewModel: BookmarkViewModel by viewModels {
+        BookmarkViewModelFactory(bookmarkManager.bookmarkDao)
+    }
+
     private fun initOverview() {
         overviewDialogController = OverviewDialogController(
                 this,
+                bookmarkViewModel,
                 binding.layoutOverview,
                 recordDb,
                 gotoUrlAction = { url -> updateAlbum(url) },

@@ -28,6 +28,8 @@ import de.baumann.browser.view.adapter.RecordAdapter
 import de.baumann.browser.view.dialog.BookmarkEditDialog
 import de.baumann.browser.view.dialog.DialogManager
 import de.baumann.browser.view.dialog.TextInputDialog
+import de.baumann.browser.viewmodel.BookmarkViewModel
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -35,6 +37,7 @@ import org.koin.core.parameter.parametersOf
 
 class OverviewDialogController(
         private val context: Context,
+        private val bookmarkViewModel: BookmarkViewModel,
         private val binding: DialogOveriewBinding,
         private val recordDb: RecordDb,
         private val gotoUrlAction: (String) -> Unit,
@@ -105,7 +108,6 @@ class OverviewDialogController(
         lifecycleScope.launch {
             val folderName = getFolderName()
             bookmarkManager.insertDirectory(folderName)
-            updateBookmarkList()
         }
     }
 
@@ -167,29 +169,31 @@ class OverviewDialogController(
         recyclerView.visibility = View.VISIBLE
         toggleOverviewFocus(binding.openBookmarkView)
         overViewTab = OverviewTab.Bookmarks
-        updateBookmarkList()
+        setupBookmarkList()
     }
 
-    private fun updateBookmarkList(bookmarkFolderId: Int = 0) {
-        lifecycleScope.launch {
-            val adapter = BookmarkAdapter(
-                    bookmarkManager.getBookmarks(bookmarkFolderId).toMutableList(),
-                    onItemClick = {
-                        if (it.isDirectory) {
-                            updateBookmarkList(it.id)
-                        } else {
-                            gotoUrlAction(it.url)
-                            hideOverview()
-                        }
-                    },
-                    onTabIconClick = {
-                        addTabAction(it.title, it.url, true)
+    private fun setupBookmarkList(bookmarkFolderId: Int = 0) {
+        val adapter = BookmarkAdapter(
+                onItemClick = {
+                    if (it.isDirectory) {
+                        setupBookmarkList(it.id)
+                    } else {
+                        gotoUrlAction(it.url)
                         hideOverview()
-                    },
-                    onItemLongClick = { showBookmarkContextMenu(it) }
-            )
+                    }
+                },
+                onTabIconClick = {
+                    addTabAction(it.title, it.url, true)
+                    hideOverview()
+                },
+                onItemLongClick = { showBookmarkContextMenu(it) }
+        )
+        recyclerView.adapter = adapter
 
-            recyclerView.adapter = adapter
+        lifecycleScope.launch {
+            bookmarkViewModel.bookmarksByParent(bookmarkFolderId).collect {
+                adapter.submitList(it)
+            }
         }
     }
 
@@ -215,7 +219,6 @@ class OverviewDialogController(
                         OverviewTab.Bookmarks -> {
                             lifecycleScope.launch {
                                 bookmarkManager.deleteAll()
-                                updateBookmarkList()
                                 onBookmarksChanged()
                             }
                         }
@@ -267,7 +270,6 @@ class OverviewDialogController(
             dialog.dismissWithAction {
                 lifecycleScope.launch {
                     bookmarkManager.delete(bookmark)
-                    (recyclerView.adapter as BookmarkAdapter).remove(bookmark)
                 }
             }
         }
@@ -278,8 +280,8 @@ class OverviewDialogController(
                         context as Activity,
                         bookmarkManager,
                         bookmark,
-                        { ViewUnit.hideKeyboard(context as Activity); updateBookmarkList() },
-                        { ViewUnit.hideKeyboard(context as Activity) }
+                        { ViewUnit.hideKeyboard(context) },
+                        { ViewUnit.hideKeyboard(context) }
                 ).show()
             }
         }
