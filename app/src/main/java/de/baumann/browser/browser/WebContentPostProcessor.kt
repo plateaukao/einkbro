@@ -5,9 +5,9 @@ import de.baumann.browser.view.NinjaWebView
 class WebContentPostProcessor {
     fun postProcess(ninjaWebView: NinjaWebView, url: String) {
         for (entry in urlScriptMap) {
-            val url = entry.key
+            val entryUrl = entry.key
             val script = entry.value
-            if (url.contains(url)) {
+            if (url.contains(entryUrl)) {
                 ninjaWebView.evaluateJavascript(script, null)
             }
         }
@@ -39,13 +39,24 @@ class WebContentPostProcessor {
         """
 
         private const val zhihuDisablePopupJs = """
-            document.querySelector(".ModalWrap-item:last-child .ModalWrap-itemBtn").click();
             document.querySelector(".ContentItem-expandButton").click();
+            document.querySelector(".ModalWrap-item:last-child .ModalWrap-itemBtn").click();
             document.querySelector(".SkipModal .Button.Button--plain").click();
+            document.querySelector("button.OpenInAppButton").remove();
         """
+
+        private const val jianshuJs = """
+            document.querySelector("button.call-app-btn").remove();
+            document.querySelector(".collapse-tips .close-collapse-btn").click();
+            document.querySelector(".guidance-wrap-item:last-child .wrap-item-btn").click();
+            document.querySelector(".open-app-modal .cancel").click();
+            document.querySelector(".btn-content button.cancel").click();
+        """
+
         val urlScriptMap = mapOf(
                 "facebook.com" to facebookHideSponsoredPostsJs,
-                "zhihu.com" to zhihuDisablePopupJs
+                "zhihu.com" to zhihuDisablePopupJs,
+                "www.jianshu.com" to jianshuJs,
         )
     }
 }
