@@ -46,6 +46,7 @@ class NinjaWebViewClient(
     private val adBlock: AdBlock = ninjaWebView.adBlock
     private val cookie: Cookie = ninjaWebView.cookieHosts
     private val white: Boolean = false
+    private val webContentPostProcessor = WebContentPostProcessor()
     private var hasAdBlock: Boolean = true
     fun enableAdBlock(enable: Boolean) {
         this.hasAdBlock = enable
@@ -55,14 +56,15 @@ class NinjaWebViewClient(
         if (config.boldFontStyle || config.fontStyleSerif || config.whiteBackground) {
             ninjaWebView.updateCssStyle()
         }
-        if (url.contains("facebook.com")) {
-            ninjaWebView.removeFBSponsoredPosts()
-        }
+
+        webContentPostProcessor.postProcess(ninjaWebView, url)
+
         if (ninjaWebView.shouldHideTranslateContext) {
             ninjaWebView.postDelayed({
                 ninjaWebView.hideTranslateContext()
             }, 2000)
         }
+
         // skip translation pages
         if (config.saveHistory && !ninjaWebView.incognito && !isTranslationDomain(url)) {
             addHistoryAction(url)
