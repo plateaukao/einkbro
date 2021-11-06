@@ -32,7 +32,7 @@ class AdBlock(private val context: Context) {
         } catch (u: URISyntaxException) {
             return false
         }
-        return hosts.contains(domain) || isAdExtraSites(domain)
+        return hosts.contains(domain) || isAdExtraSites(url)
     }
 
     private fun isAdExtraSites(url: String): Boolean {
