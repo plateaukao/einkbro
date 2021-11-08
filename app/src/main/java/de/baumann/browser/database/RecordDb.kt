@@ -164,7 +164,6 @@ class RecordDb(context: Context?): KoinComponent {
         if (listAll) {
             //add bookmarks
             bookmarkManager.getAllBookmarksOnly().forEach { list.add(it.toRecord()) }
-            bookmarkManager.release()
         }
 
         //add history
