@@ -27,6 +27,7 @@ import android.webkit.WebChromeClient.CustomViewCallback
 import android.webkit.WebView.HitTestResult
 import android.widget.*
 import android.widget.TextView.OnEditorActionListener
+import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
@@ -67,7 +68,7 @@ import kotlin.math.roundToInt
 import kotlin.system.exitProcess
 
 
-open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickListener {
+open class BrowserActivity : ComponentActivity(), BrowserController, OnClickListener {
     private lateinit var fabImageButtonNav: ImageButton
     private lateinit var progressBar: ProgressBar
     private lateinit var searchBox: EditText
@@ -280,9 +281,6 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
             filePathCallback = null
             return
         }
-
-        super.onActivityResult(requestCode, resultCode, data)
-        return
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -348,11 +346,11 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
                 }
             }
             KeyEvent.KEYCODE_VOLUME_UP -> {
-                if (config.volumePageTurn) {
+                return if (config.volumePageTurn) {
                     ninjaWebView.pageUpWithNoAnimation()
-                    return true
+                    true
                 } else {
-                    return false
+                    false
                 }
             }
             KeyEvent.KEYCODE_MENU -> return showMenuDialog()
@@ -538,7 +536,7 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
 
     private fun saveBookmark(url: String? = null, title: String? = null) {
         val currentUrl = url ?: ninjaWebView.url ?: return
-        val title = title ?: HelperUnit.secString(ninjaWebView.title)
+        val nonNullTitle = title ?: HelperUnit.secString(ninjaWebView.title)
         val context = this
         try {
             lifecycleScope.launch {
@@ -548,7 +546,7 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
                     BookmarkEditDialog(
                             this@BrowserActivity,
                             bookmarkManager,
-                            Bookmark(title, currentUrl),
+                            Bookmark(nonNullTitle, currentUrl),
                             {
                                 ViewUnit.hideKeyboard(context as Activity)
                                 NinjaToast.show(this@BrowserActivity, R.string.toast_edit_successful)
@@ -858,6 +856,12 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
                     addRule(RelativeLayout.ALIGN_BOTTOM, R.id.main_content)
                 }
             }
+            FabPosition.Right-> {
+                fabImageButtonNav.layoutParams = params.apply {
+                    addRule(RelativeLayout.ALIGN_PARENT_RIGHT)
+                    addRule(RelativeLayout.ALIGN_BOTTOM, R.id.main_content)
+                }
+            }
             FabPosition.Center -> {
                 fabImageButtonNav.layoutParams = params.apply {
                     addRule(RelativeLayout.CENTER_HORIZONTAL)
@@ -983,13 +987,14 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
         (currentAlbumController as NinjaWebView).findNext(true)
     }
 
-    private fun showFastToggleDialog() =
-            FastToggleDialog(this, ninjaWebView.url ?: "") {
-                if (ninjaWebView != null) {
-                    ninjaWebView.initPreferences()
-                    ninjaWebView.reload()
-                }
-            }.show()
+    private fun showFastToggleDialog() {
+        if (!this::ninjaWebView.isInitialized) return
+
+        FastToggleDialog(this, ninjaWebView.url ?: "") {
+            ninjaWebView.initPreferences()
+            ninjaWebView.reload()
+        }.show()
+    }
 
     override fun addNewTab(url: String?) = addAlbum(url = url)
 
@@ -1197,7 +1202,7 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
         startActivityForResult(chooserIntent, INPUT_FILE_REQUEST_CODE)
     }
 
-    override fun onShowCustomView(view: View, callback: CustomViewCallback) {
+    override fun onShowCustomView(view: View?, callback: CustomViewCallback?) {
         if (view == null) {
             return
         }
@@ -1300,26 +1305,18 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
                 }
                 KeyEvent.KEYCODE_SLASH -> showSearchPanel()
                 KeyEvent.KEYCODE_G -> {
-                    when {
-                        previousKeyEvent == null -> {
-                            previousKeyEvent = event
-                        }
+                    previousKeyEvent = when {
+                        previousKeyEvent == null -> event
                         previousKeyEvent?.keyCode == KeyEvent.KEYCODE_G -> {
                             // gg
                             ninjaWebView.jumpToTop()
-                            previousKeyEvent = null
+                            null
                         }
-                        else -> {
-                            previousKeyEvent = null
-                        }
+                        else -> null
                     }
                 }
                 KeyEvent.KEYCODE_V -> {
-                    if (previousKeyEvent == null) {
-                        previousKeyEvent = event
-                    } else {
-                        previousKeyEvent = null
-                    }
+                    previousKeyEvent = if (previousKeyEvent == null) event else null
                 }
                 KeyEvent.KEYCODE_I -> {
                     if (previousKeyEvent?.keyCode == KeyEvent.KEYCODE_V) {
@@ -1340,32 +1337,32 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
                 !listOf(HitTestResult.IMAGE_TYPE, HitTestResult.IMAGE_ANCHOR_TYPE, HitTestResult.SRC_IMAGE_ANCHOR_TYPE, HitTestResult.ANCHOR_TYPE)
                         .contains(hitTestResult.type)) return
 
-        val url = url ?: hitTestResult.extra ?: ""
+        val nonNullUrl = url ?: hitTestResult.extra ?: ""
         val dialogView = DialogMenuContextLinkBinding.inflate(layoutInflater)
         val dialog = dialogManager.showOptionDialog(dialogView.root)
         dialogView.contextLinkNewTab.setOnClickListener {
             dialog.dismissWithAction {
-                addAlbum(getString(R.string.app_name), url, false)
+                addAlbum(getString(R.string.app_name), nonNullUrl, false)
                 NinjaToast.show(this, getString(R.string.toast_new_tab_successful))
             }
         }
         dialogView.contextLinkShareLink.setOnClickListener {
             dialog.dismissWithAction {
                 if (prepareRecord()) NinjaToast.show(this, getString(R.string.toast_share_failed))
-                else IntentUnit.share(this, "", url)
+                else IntentUnit.share(this, "", nonNullUrl)
             }
         }
         dialogView.contextLinkOpenWith.setOnClickListener {
-            dialog.dismissWithAction { HelperUnit.showBrowserChooser(this@BrowserActivity, url, getString(R.string.menu_open_with)) }
+            dialog.dismissWithAction { HelperUnit.showBrowserChooser(this@BrowserActivity, nonNullUrl, getString(R.string.menu_open_with)) }
         }
         dialogView.contextLinkSaveBookmark.setOnClickListener {
-            dialog.dismissWithAction { saveBookmark(url, title = "") }
+            dialog.dismissWithAction { saveBookmark(nonNullUrl, title = "") }
         }
         dialogView.contextLinkNewTabOpen.setOnClickListener {
-            dialog.dismissWithAction { addAlbum(getString(R.string.app_name), url) }
+            dialog.dismissWithAction { addAlbum(getString(R.string.app_name), nonNullUrl) }
         }
         dialogView.menuSavePdf.setOnClickListener {
-            dialog.dismissWithAction { showSavePdfDialog(url) }
+            dialog.dismissWithAction { showSavePdfDialog(nonNullUrl) }
         }
 
         if (hitTestResult.extra != null) {
@@ -1410,10 +1407,11 @@ open class BrowserActivity : AppCompatActivity(), BrowserController, OnClickList
     override fun onLongPress(url: String?) =
             showContextMenuLinkDialog(url, ninjaWebView.hitTestResult)
 
-    private fun showSavePdfDialog(url: String?) {
-        val url = url ?: return
-
-        dialogManager.showSavePdfDialog(url = url, savePdf = { url, fileName -> savePdf(url, fileName) })
+    private fun showSavePdfDialog(url: String) {
+        dialogManager.showSavePdfDialog(
+            url = url,
+            savePdf = { pdfUrl, fileName -> savePdf(pdfUrl, fileName) }
+        )
     }
 
     private fun savePdf(url: String, fileName: String) {

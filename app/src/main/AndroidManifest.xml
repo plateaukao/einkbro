@@ -52,6 +52,7 @@
             android:label="@string/app_name"
             android:launchMode="singleInstance"
             android:theme="@style/AppTheme"
+            android:exported="true"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

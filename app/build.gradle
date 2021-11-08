@@ -3,14 +3,14 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion '30.0.3'
+    compileSdkVersion 31
+    buildToolsVersion '31.0.0'
 
     defaultConfig {
         applicationId "info.plateaukao.einkbro"
         //applicationId "info.plateaukao.einkbro.debug"
         minSdkVersion 21
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 81801
         versionName "8.18.1"
         vectorDrawables.useSupportLibrary = true
@@ -45,7 +45,7 @@ android {
 
 dependencies {
     implementation 'com.google.android.material:material:1.4.0'
-    implementation 'androidx.core:core-ktx:1.6.0'
+    implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.preference:preference-ktx:1.1.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
@@ -54,20 +54,20 @@ dependencies {
         exclude group: 'org.slf4j'
         exclude group: 'xmlpull'
     }
-    implementation 'org.slf4j:slf4j-api:1.7.30'
+    implementation 'org.slf4j:slf4j-api:1.7.32'
     //
 
     // common lang
     implementation 'org.apache.commons:commons-text:1.9'
 
     // for epub saving: html processing
-    implementation 'org.jsoup:jsoup:1.13.1'
+    implementation 'org.jsoup:jsoup:1.14.3'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
 
     def room_version = "2.3.0"
     implementation "androidx.room:room-runtime:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
-    kapt "org.xerial:sqlite-jdbc:3.34.0"
+    kapt 'org.xerial:sqlite-jdbc:3.36.0.2'
     kapt "androidx.room:room-compiler:$room_version"
 
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
@@ -83,4 +83,7 @@ dependencies {
     testImplementation "io.insert-koin:koin-test:$koin_version"
     // Android
     implementation "io.insert-koin:koin-android-compat:$koin_version"
+
+
+    implementation 'androidx.activity:activity-ktx:1.4.0'
 }

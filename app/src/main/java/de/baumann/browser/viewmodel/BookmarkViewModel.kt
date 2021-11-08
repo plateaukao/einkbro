@@ -11,7 +11,7 @@ class BookmarkViewModel(private val bookmarkDao: BookmarkDao): ViewModel() {
 }
 
 class BookmarkViewModelFactory(private val bookmarkDao: BookmarkDao) : ViewModelProvider.Factory {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(BookmarkViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
             return BookmarkViewModel(bookmarkDao) as T
