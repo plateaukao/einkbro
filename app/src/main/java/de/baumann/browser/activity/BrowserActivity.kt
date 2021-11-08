@@ -329,7 +329,6 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         browserContainer.clear()
         IntentUnit.setContext(null)
         unregisterReceiver(downloadReceiver)
-        bookmarkManager.release()
         recordDb.close()
 
         super.onDestroy()

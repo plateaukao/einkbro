@@ -112,6 +112,4 @@ class BookmarkManager(private val context: Context) : KoinComponent {
     suspend fun delete(bookmark: Bookmark) = bookmarkDao.delete(bookmark)
 
     suspend fun update(bookmark: Bookmark) = bookmarkDao.update(bookmark)
-
-    fun release() = database.close()
 }

@@ -182,8 +182,6 @@ class DataSettingsFragment : PreferenceFragmentCompat(), KoinComponent {
             } catch (e: IOException) {
                 e.printStackTrace()
                 Toast.makeText(context, "Bookmarks import failed", Toast.LENGTH_SHORT).show()
-            } finally {
-                manager.release()
             }
         }
     }
@@ -201,8 +199,6 @@ class DataSettingsFragment : PreferenceFragmentCompat(), KoinComponent {
             } catch (e: IOException) {
                 e.printStackTrace()
                 Toast.makeText(context, "Bookmarks export failed", Toast.LENGTH_SHORT).show()
-            } finally {
-                manager.release()
             }
         }
     }
