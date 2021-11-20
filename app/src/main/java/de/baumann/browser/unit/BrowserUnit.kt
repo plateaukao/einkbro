@@ -139,12 +139,12 @@ object BrowserUnit {
             Log.w("browser", "Unsupported Encoding Exception")
         }
         val sp = PreferenceManager.getDefaultSharedPreferences(context)
-        val custom = sp.getString("sp_search_engine_custom", SEARCH_ENGINE_DUCKDUCKGO)
+        val custom = sp.getString("sp_search_engine_custom", SEARCH_ENGINE_GOOGLE)
         val i = Integer.valueOf(
             Objects.requireNonNull(
                 sp.getString(
                     context.getString(R.string.sp_search_engine),
-                    "4"
+                    "5"
                 )
             )
         )
@@ -159,7 +159,7 @@ object BrowserUnit {
             9 -> SEARCH_ENGINE_ECOSIA + query
             5 -> SEARCH_ENGINE_GOOGLE + query
             4 -> SEARCH_ENGINE_DUCKDUCKGO + query
-            else -> SEARCH_ENGINE_DUCKDUCKGO + query
+            else -> SEARCH_ENGINE_GOOGLE + query
         }
     }
 
