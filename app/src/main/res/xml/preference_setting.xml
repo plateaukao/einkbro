@@ -35,7 +35,7 @@
     <PreferenceCategory>
 
         <EditTextPreference
-            android:defaultValue="https://duckduckgo.com/"
+            android:defaultValue="https://www.google.com/"
             android:key="favoriteURL"
             android:title="@string/setting_title_fav"
             android:icon="@drawable/ic_home"/>
