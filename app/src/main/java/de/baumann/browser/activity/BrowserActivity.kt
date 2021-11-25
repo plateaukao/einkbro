@@ -664,6 +664,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         super.onSaveInstanceState(outState)
     }
 
+    @SuppressLint("InlinedApi")
     private fun dispatchIntent(intent: Intent) {
         when (intent.action) {
             "", Intent.ACTION_MAIN -> { // initial case
@@ -707,6 +708,15 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
             }
             Intent.ACTION_SEND -> {
                 val url = intent.getStringExtra(Intent.EXTRA_TEXT)
+                addAlbum(url = url)
+            }
+            Intent.ACTION_PROCESS_TEXT -> {
+                val text = intent.getStringExtra(Intent.EXTRA_PROCESS_TEXT) ?: return
+                addAlbum(url = text)
+            }
+            "colordict.intent.action.PICK_RESULT",
+            "colordict.intent.action.SEARCH" -> {
+                val url = intent.getStringExtra("EXTRA_QUERY") ?: return
                 addAlbum(url = url)
             }
             else -> {
