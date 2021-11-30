@@ -45,6 +45,7 @@ class TouchAreaDialog(private val context: Context) : KoinComponent {
             1 -> view.findViewById(R.id.touch_area_bottom_left)
             2 -> view.findViewById(R.id.touch_area_bottom_right)
             3 -> view.findViewById(R.id.touch_middle_left_right)
+            4 -> view.findViewById(R.id.touch_middle_left_right)
             else -> view.findViewById(R.id.touch_left_right)
         }
         buttonShouldBeChecked.isChecked = true
