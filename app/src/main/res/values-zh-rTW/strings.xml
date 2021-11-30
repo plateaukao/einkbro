@@ -361,4 +361,6 @@
     <string name="middle">中間</string>
     <string name="bottom">下面</string>
     <string name="input_url">輸入網址</string>
+    <string name="setting_title_useUpDown">使用方向鍵翻頁</string>
+    <string name="setting_summary_ususeUpDowneUpDown">使用方向鍵翻頁，有些藍牙設備是利用上下鍵翻頁</string>
 </resources>

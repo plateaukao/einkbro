@@ -29,6 +29,12 @@ class ConfigManager(private val context: Context) : KoinComponent {
             sp.edit { putBoolean(K_WHITE_BACKGROUND, value) }
         }
 
+    var useUpDownPageTurn: Boolean
+        get() = sp.getBoolean(K_UPDOWN_PAGE_TURN, false)
+        set(value) {
+            sp.edit { putBoolean(K_UPDOWN_PAGE_TURN, value) }
+        }
+
     var touchAreaHint: Boolean
         get() = sp.getBoolean(K_TOUCH_HINT, true)
         set(value) {
@@ -282,6 +288,7 @@ class ConfigManager(private val context: Context) : KoinComponent {
         const val K_ADBLOCK_SITES = "sp_adblock_sites"
         const val K_CUSTOM_USER_AGENT = "userAgent"
         const val K_WHITE_BACKGROUND = "sp_whitebackground"
+        const val K_UPDOWN_PAGE_TURN = "sp_useUpDownForPageTurn"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
     }

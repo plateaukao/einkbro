@@ -29,7 +29,6 @@ import android.widget.*
 import android.widget.TextView.OnEditorActionListener
 import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import androidx.lifecycle.lifecycleScope
 import de.baumann.browser.Ninja.R
@@ -252,6 +251,8 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
         if (requestCode == WRITE_EPUB_REQUEST_CODE && resultCode == RESULT_OK) {
             val nonNullData = data?.data ?: return
             saveEpub(nonNullData)
@@ -692,7 +693,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
                     }
                 }
             }
-            Intent.ACTION_VIEW -> {
+            ACTION_VIEW -> {
                 // if webview for that url already exists, show the original tab, otherwise, create new
                 val url = intent.data?.toNormalScheme()?.toString() ?: return
                 getUrlMatchedBrowser(url)?.let { showAlbum(it) } ?: addAlbum(url = url)
@@ -1142,13 +1143,10 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
                 val cutoff = height - webViewHeight - 112 * resources.displayMetrics.density.roundToInt()
                 if (scrollY in (oldScrollY + 1)..cutoff) {
                     if (!keepToolbar) {
-                        // Daniel
-                        fullscreen();
+                        fullscreen()
                     } else {
                         keepToolbar = false
                     }
-                } else if (scrollY < oldScrollY) {
-                    //showOmnibox()
                 }
             }
         })
@@ -1234,7 +1232,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
                 FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
         )
         customView?.keepScreenOn = true
-        (currentAlbumController as View?)?.visibility = View.GONE
+        (currentAlbumController as View?)?.visibility = GONE
         ViewUnit.setCustomFullscreen(window, true)
         if (view is FrameLayout) {
             if (view.focusedChild is VideoView) {
@@ -1257,7 +1255,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
 
         (window.decorView as FrameLayout).removeView(fullscreenHolder)
         customView?.keepScreenOn = false
-        (currentAlbumController as View).visibility = View.VISIBLE
+        (currentAlbumController as View).visibility = VISIBLE
         ViewUnit.setCustomFullscreen(window, false)
         fullscreenHolder = null
         customView = null
@@ -1275,7 +1273,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
 
     private var previousKeyEvent: KeyEvent? = null
     override fun handleKeyEvent(event: KeyEvent?): Boolean {
-        if (event?.action != KeyEvent.ACTION_DOWN) return false
+        if (event?.action != ACTION_DOWN) return false
         if (ninjaWebView.hitTestResult.type == HitTestResult.EDIT_TEXT_TYPE) return false
 
         if (event.isShiftPressed) {
@@ -1331,6 +1329,16 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
                     if (previousKeyEvent?.keyCode == KeyEvent.KEYCODE_V) {
                         increaseFontSize()
                         previousKeyEvent = null
+                    }
+                }
+                KeyEvent.KEYCODE_DPAD_DOWN -> {
+                    if (config.useUpDownPageTurn) {
+                        ninjaWebView.pageDownWithNoAnimation()
+                    }
+                }
+                KeyEvent.KEYCODE_DPAD_UP -> {
+                    if (config.useUpDownPageTurn) {
+                        ninjaWebView.pageUpWithNoAnimation()
                     }
                 }
 
