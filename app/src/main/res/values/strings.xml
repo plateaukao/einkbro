@@ -487,4 +487,6 @@
     <string name="middle">middle</string>
     <string name="bottom">bottom</string>
     <string name="input_url">input url</string>
+    <string name="setting_title_useUpDown">Use Up/Down Key</string>
+    <string name="setting_summary_ususeUpDowneUpDown">use Up/Down key to turn pages. Useful for bluetooth devices.</string>
 </resources>
