@@ -57,10 +57,11 @@ class TranslationViewController(
 
     private var pageTextList: List<String> = listOf()
 
-    private var isScrollSynced = false
-
     init {
         twoPaneLayout.setOrientation(config.translationOrientation)
+        if (config.translationPanelSwitched) twoPaneLayout.post {
+            twoPaneLayout.switchPanels()
+        }
 
         translationViewBinding.translationFontPlus.setOnClickListener { increaseFontSize() }
         translationViewBinding.translationFontMinus.setOnClickListener { decreaseFontSize() }
@@ -77,9 +78,16 @@ class TranslationViewController(
             setOrientation(orientation)
         }
 
-        translationViewBinding.translationOrientation.setOnLongClickListener { twoPaneLayout.switchPanels(); true }
+        translationViewBinding.translationOrientation.setOnLongClickListener {
+            config.translationPanelSwitched = !config.translationPanelSwitched
+            twoPaneLayout.switchPanels()
+            true
+        }
 
-        translationViewBinding.syncScroll.setOnClickListener { toggleSyncScroll(!isScrollSynced) }
+        translationViewBinding.syncScroll.setOnClickListener {
+            config.translationScrollSync = !config.translationScrollSync
+            toggleSyncScroll(config.translationScrollSync)
+        }
 
         translationViewBinding.expandedButton.setOnClickListener { showControlButtons() }
 
@@ -145,7 +153,7 @@ class TranslationViewController(
     }
 
     fun scrollChange(offset: Int) {
-        if (isScrollSynced) {
+        if (config.translationScrollSync) {
             webView.scrollBy(0, offset)
             webView.scrollY = kotlin.math.max(0, webView.scrollY)
         }
@@ -159,8 +167,7 @@ class TranslationViewController(
     }
 
     private fun toggleSyncScroll(shouldSyncScroll: Boolean = false) {
-        isScrollSynced = shouldSyncScroll
-        val drawable = if (isScrollSynced) R.drawable.selected_border_bg else R.drawable.backgound_with_border
+        val drawable = if (shouldSyncScroll) R.drawable.selected_border_bg else R.drawable.backgound_with_border
         translationViewBinding.syncScroll.setBackgroundResource(drawable)
     }
 

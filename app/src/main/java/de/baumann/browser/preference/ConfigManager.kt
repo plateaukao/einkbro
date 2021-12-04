@@ -160,6 +160,18 @@ class ConfigManager(private val context: Context) : KoinComponent {
             sp.edit { putInt(K_TRANSLATE_ORIENTATION, value.ordinal) }
         }
 
+    var translationPanelSwitched: Boolean
+        get() = sp.getBoolean(K_TRANSLATE_PANEL_SWITCHED, false)
+        set(value) {
+            sp.edit { putBoolean(K_TRANSLATE_PANEL_SWITCHED, value) }
+        }
+
+    var translationScrollSync: Boolean
+        get() = sp.getBoolean(K_TRANSLATE_SCROLL_SYNC, false)
+        set(value) {
+            sp.edit { putBoolean(K_TRANSLATE_SCROLL_SYNC, value) }
+        }
+
     var overviewTab: OverviewTab
         get() = when (sp.getString(K_START_TAB, "0")) {
             "0" -> OverviewTab.TabPreview
@@ -285,6 +297,8 @@ class ConfigManager(private val context: Context) : KoinComponent {
         const val K_DESKTOP = "sp_desktop"
         const val K_TRANSLATE_LANGUAGE = "sp_translate_language"
         const val K_TRANSLATE_ORIENTATION = "sp_translate_orientation"
+        const val K_TRANSLATE_PANEL_SWITCHED = "sp_translate_panel_switched"
+        const val K_TRANSLATE_SCROLL_SYNC = "sp_translate_scroll_sync"
         const val K_ADBLOCK_SITES = "sp_adblock_sites"
         const val K_CUSTOM_USER_AGENT = "userAgent"
         const val K_WHITE_BACKGROUND = "sp_whitebackground"
