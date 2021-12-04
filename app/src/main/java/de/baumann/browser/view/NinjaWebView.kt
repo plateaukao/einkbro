@@ -532,6 +532,8 @@ class NinjaWebView : WebView, AlbumController, KoinComponent {
         when (config.translationMode) {
             TranslationMode.GOOGLE ->
                 evaluateJavascript(hideGTranslateContext, null)
+            TranslationMode.GOOGLE_URL ->
+                evaluateJavascript(hideGUrlTranslateContext, null)
             TranslationMode.PAPAGO ->
                 evaluateJavascript(hidePTranslateContext, null)
             else -> Unit
@@ -598,6 +600,11 @@ class NinjaWebView : WebView, AlbumController, KoinComponent {
                 document.getElementsByTagName("header")[0].remove();
                 document.querySelector("span[lang]").style.display = "none";
                 document.querySelector("div[data-location]").style.display = "none";
+            })()
+            """
+        private const val hideGUrlTranslateContext = """
+            javascript:(function() {
+                document.querySelector('#gt-nvframe').style = "height:0px";
             })()
             """
 
