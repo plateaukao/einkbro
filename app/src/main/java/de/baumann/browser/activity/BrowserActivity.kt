@@ -1021,30 +1021,31 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
     ) {
         if (url == null) return
 
-        ninjaWebView = NinjaWebView(this, this)
-        ninjaWebView.albumTitle = title
-        ninjaWebView.incognito = incognito
-        ViewUnit.bound(this, ninjaWebView)
-        val albumView = ninjaWebView.albumView
+        val newWebView = NinjaWebView(this, this).apply {
+            this.albumTitle = title
+            this.incognito = incognito
+        }
+        ViewUnit.bound(this, newWebView)
+
+        val albumView = newWebView.albumView
         if (currentAlbumController != null) {
             val index = browserContainer.indexOf(currentAlbumController) + 1
-            browserContainer.add(ninjaWebView, index)
-            updateWebViewCount()
-            overviewDialogController.addTabPreview(albumView)
+            browserContainer.add(newWebView, index)
         } else {
-            browserContainer.add(ninjaWebView)
-            updateWebViewCount()
-            overviewDialogController.addTabPreview(albumView)
+            browserContainer.add(newWebView)
         }
+        updateWebViewCount()
+        overviewDialogController.addTabPreview(albumView)
+
         if (!foreground) {
-            ViewUnit.bound(this, ninjaWebView)
-            ninjaWebView.loadUrl(url)
-            ninjaWebView.deactivate()
+            ViewUnit.bound(this, newWebView)
+            newWebView.loadUrl(url)
+            newWebView.deactivate()
         } else {
             showToolbar()
-            showAlbum(ninjaWebView)
+            showAlbum(newWebView)
             if (url.isNotEmpty()) {
-                ninjaWebView.loadUrl(url)
+                newWebView.loadUrl(url)
             }
         }
 
