@@ -30,6 +30,7 @@ import android.widget.TextView.OnEditorActionListener
 import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
 import androidx.core.content.edit
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.*
@@ -362,7 +363,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
                 }
                 if (fullscreenHolder != null || customView != null || videoView != null) {
                     return onHideCustomView()
-                } else if (mainToolbar.visibility == GONE && sp.getBoolean("sp_toolbarShow", true)) {
+                } else if (!binding.appBar.isVisible && sp.getBoolean("sp_toolbarShow", true)) {
                     showToolbar()
                 } else if (!toolbarViewController.isDisplayed()) {
                     toolbarViewController.show()
@@ -713,12 +714,22 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
             }
             Intent.ACTION_PROCESS_TEXT -> {
                 val text = intent.getStringExtra(Intent.EXTRA_PROCESS_TEXT) ?: return
-                addAlbum(url = text)
+                val url = config.customProcessTextUrl + text
+                if (this::ninjaWebView.isInitialized) {
+                    ninjaWebView.loadUrl(url)
+                } else {
+                    addAlbum(url = url)
+                }
             }
             "colordict.intent.action.PICK_RESULT",
             "colordict.intent.action.SEARCH" -> {
-                val url = intent.getStringExtra("EXTRA_QUERY") ?: return
-                addAlbum(url = url)
+                val text = intent.getStringExtra("EXTRA_QUERY") ?: return
+                val url = config.customProcessTextUrl + text
+                if (this::ninjaWebView.isInitialized) {
+                    ninjaWebView.loadUrl(url)
+                } else {
+                    addAlbum(url = url)
+                }
             }
             else -> {
                 addAlbum()
@@ -1129,7 +1140,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         }
     }
 
-    var keepToolbar = false
+    private var keepToolbar = false
     private fun scrollChange() {
         ninjaWebView.setScrollChangeListener(object : NinjaWebView.OnScrollChangeListener {
             override fun onScrollChange(scrollY: Int, oldScrollY: Int) {
@@ -1465,7 +1476,9 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
     @SuppressLint("RestrictedApi")
     private fun fullscreen() {
         if (!searchOnSite) {
-            fabImageButtonNav.visibility = VISIBLE
+            if (config.fabPosition != FabPosition.NotShow) {
+                fabImageButtonNav.visibility = VISIBLE
+            }
             searchPanel.visibility = GONE
             binding.appBar.visibility = GONE
             hideStatusBar()
