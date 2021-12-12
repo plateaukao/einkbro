@@ -200,11 +200,15 @@ class OverviewDialogController(
                 },
                 onItemLongClick = { showBookmarkContextMenu(it) }
         )
-        recyclerView.adapter = adapter
 
         lifecycleScope.launch {
             bookmarkViewModel.bookmarksByParent(bookmarkFolderId).collect {
                 adapter.submitList(it)
+                // when list is loaded from DB, check if it's necessary to swap the adapter for recyclerview.
+                // this can prevent list from being gone for a short period of time.
+                if (recyclerView.adapter != adapter) {
+                    recyclerView.adapter = adapter
+                }
             }
         }
     }
