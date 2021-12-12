@@ -130,6 +130,9 @@ class ConfigManager(private val context: Context) : KoinComponent {
     val customUserAgent: String
         get() = sp.getString(K_CUSTOM_USER_AGENT, "") ?: ""
 
+    val customProcessTextUrl: String
+        get() = sp.getString(K_CUSTOM_PROCESS_TEXT_URL, "") ?: ""
+
     var fabPosition: FabPosition
         get() = FabPosition.values()[sp.getString(K_NAV_POSITION, "0")?.toInt() ?: 0]
         set(value) {
@@ -303,6 +306,7 @@ class ConfigManager(private val context: Context) : KoinComponent {
         const val K_CUSTOM_USER_AGENT = "userAgent"
         const val K_WHITE_BACKGROUND = "sp_whitebackground"
         const val K_UPDOWN_PAGE_TURN = "sp_useUpDownForPageTurn"
+        const val K_CUSTOM_PROCESS_TEXT_URL = "sp_process_text_custom"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
     }
@@ -316,7 +320,7 @@ enum class PaperSize(val sizeString: String, val mediaSize: PrintAttributes.Medi
 }
 
 enum class FabPosition {
-    Right, Left, Center
+    Right, Left, Center, NotShow
 }
 
 enum class TranslationMode {

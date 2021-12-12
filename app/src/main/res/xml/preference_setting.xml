@@ -65,6 +65,12 @@
             android:icon="@drawable/icon_edit"/>
 
         <EditTextPreference
+            android:defaultValue=""
+            android:key="sp_process_text_custom"
+            android:title="@string/setting_title_process_text"
+            android:icon="@drawable/icon_edit"/>
+
+        <EditTextPreference
             android:selectable="true"
             android:key="userAgent"
             android:title="@string/setting_title_userAgent"

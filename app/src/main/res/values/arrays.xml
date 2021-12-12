@@ -34,12 +34,14 @@
         <item>@string/setting_summary_nav_pos_right</item>
         <item>@string/setting_summary_nav_pos_left</item>
         <item>@string/setting_summary_nav_pos_center</item>
+        <item>@string/setting_summary_nav_pos_not_show</item>
     </string-array>
 
     <string-array name="setting_values_nav_pos">
         <item>0</item>
         <item>1</item>
         <item>2</item>
+        <item>3</item>
     </string-array>
 
     <!-- Gestures -->
