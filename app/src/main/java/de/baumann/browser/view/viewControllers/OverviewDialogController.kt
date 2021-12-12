@@ -160,19 +160,31 @@ class OverviewDialogController(
             )
             recyclerView.adapter = adapter
         }
+
+        // reset bookmark parent Id so next time it can be assigned again
+        currentBookmarkFolderId = -1
     }
 
     fun openBookmarkPage() {
         binding.root.visibility = VISIBLE
 
         binding.overviewPreview.visibility = View.INVISIBLE
-        recyclerView.visibility = View.VISIBLE
         toggleOverviewFocus(binding.openBookmarkView)
         overViewTab = OverviewTab.Bookmarks
         setupBookmarkList()
+
+        recyclerView.visibility = VISIBLE
     }
 
+    // control whether adapter should be reloaded
+    private var currentBookmarkFolderId = -1
     private fun setupBookmarkList(bookmarkFolderId: Int = 0) {
+        if (currentBookmarkFolderId == 0 && bookmarkFolderId == 0) {
+            return
+        } else {
+            currentBookmarkFolderId = bookmarkFolderId
+        }
+
         val adapter = BookmarkAdapter(
                 onItemClick = {
                     if (it.isDirectory) {
