@@ -50,6 +50,15 @@
             android:src="@drawable/ic_rotate"
             android:tint="?attr/colorControlNormal" />
         <ImageButton
+            android:id="@+id/link_here"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="0.5dp"
+            android:src="@drawable/ic_link_here"
+            android:tint="?attr/colorControlNormal"
+            android:background="@drawable/backgound_with_border"
+            />
+        <ImageButton
             android:id="@+id/sync_scroll"
             android:layout_width="40dp"
             android:layout_height="40dp"
