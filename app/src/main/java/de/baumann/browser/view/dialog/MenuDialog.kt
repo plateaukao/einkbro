@@ -30,6 +30,7 @@ class MenuDialog(
     private val printPdfAction: () -> Unit,
     private val fontSizeAction: () -> Unit,
     private val saveScreenshotAction: () -> Unit,
+    private val toggleSplitScreenAction: () -> Unit,
 ): KoinComponent {
     private val config: ConfigManager by inject()
 
@@ -49,7 +50,8 @@ class MenuDialog(
 
     private fun initViews() {
         binding.buttonOpenFav.setOnClickListener { dialog.dismissWithAction(openFavAction) }
-        binding.buttonSize.setOnClickListener { dialog.dismissWithAction(fontSizeAction) }
+        binding.buttonSplitScreen.setOnClickListener { dialog.dismissWithAction(toggleSplitScreenAction) }
+        binding.buttonFontSize.setOnClickListener { dialog.dismissWithAction(fontSizeAction) }
         binding.buttonCloseTab.setOnClickListener { dialog.dismissWithAction(closeTabAction) }
         binding.buttonQuit.setOnClickListener { dialog.dismissWithAction { (context as Activity).finish() } }
         binding.buttonBold.setOnClickListener { dialog.dismissWithAction { config.boldFontStyle = !config.boldFontStyle } }

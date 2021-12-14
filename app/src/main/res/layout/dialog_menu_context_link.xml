@@ -65,7 +65,34 @@
             android:text="@string/main_menu_new_tab"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="?android:attr/textColorPrimary" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/contextLink_splitScreen"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:background="@drawable/item_bg_selector"
+        android:minHeight="46dp"
+        android:orientation="horizontal"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp">
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="16dp"
+            android:gravity="center_vertical"
+            android:src="@drawable/ic_split_screen" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:text="@string/split_screen"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="?android:attr/textColorPrimary" />
     </LinearLayout>
 
     <LinearLayout

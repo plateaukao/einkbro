@@ -29,7 +29,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.lang.Math.*
 
-class TranslationViewController(
+class TwoPaneController(
         private val activity: Activity,
         private val translationViewBinding: TranslationPanelBinding,
         private val twoPaneLayout: TwoPaneLayout,
@@ -134,6 +134,24 @@ class TranslationViewController(
 
         return builder.build()
     }
+
+    fun showSecondPane(url: String) {
+        if (!isWebViewAdded) {
+            addWebView()
+            isWebViewAdded = true
+        }
+
+        translationViewBinding.translationLanguage.visibility = GONE
+        twoPaneLayout.shouldShowSecondPane = true
+
+        webView.loadUrl(url)
+    }
+
+    fun hideSecondPane() {
+        toggleTranslationWindow(false)
+    }
+
+    fun isSecondPaneDisplayed(): Boolean = twoPaneLayout.shouldShowSecondPane
 
     suspend fun showTranslation(webView: NinjaWebView) {
         when (config.translationMode) {
