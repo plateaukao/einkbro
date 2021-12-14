@@ -92,9 +92,8 @@ class NinjaWebViewClient(
             dTLoadUrl = DebugT("loadUrl:${uri}")
         }
         val url = uri.toString()
-        val parsedUri = Uri.parse(url)
         val packageManager = context.packageManager
-        val browseIntent = Intent(Intent.ACTION_VIEW).setData(parsedUri)
+        val browseIntent = Intent(Intent.ACTION_VIEW).setData(uri)
         if (url.startsWith("http")) {
             webView.loadUrl(url, ninjaWebView.requestHeaders)
             return true

@@ -18,7 +18,6 @@ import android.view.View
 import android.webkit.CookieManager
 import android.webkit.WebSettings
 import android.webkit.WebView
-import androidx.preference.PreferenceManager
 import androidx.viewbinding.BuildConfig
 import androidx.webkit.WebSettingsCompat
 import androidx.webkit.WebViewFeature
@@ -39,7 +38,6 @@ import java.util.*
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 import kotlin.math.max
-import kotlin.math.min
 
 
 class NinjaWebView : WebView, AlbumController, KoinComponent {
@@ -245,31 +243,23 @@ class NinjaWebView : WebView, AlbumController, KoinComponent {
         dTLoadUrl = DebugT("loadUrl")
         albumTitle = ""
 
+        if (url.trim { it <= ' ' }.isEmpty()) {
+            NinjaToast.show(context, R.string.toast_load_error)
+            return
+        }
+
         // show progress right away
         if (url.startsWith("https")) {
             update(5)
         }
 
         settings.cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
-        if (url.trim { it <= ' ' }.isEmpty()) {
-            NinjaToast.show(context, R.string.toast_load_error)
-            return
-        }
-        if (!sp.getBoolean(context!!.getString(R.string.sp_javascript), true)) {
-            if (javaHosts.isWhite(url)) {
-                settings.javaScriptCanOpenWindowsAutomatically = true
-                settings.javaScriptEnabled = true
-            } else {
-                settings.javaScriptCanOpenWindowsAutomatically = false
-                settings.javaScriptEnabled = false
-            }
-        }
-
         if (url.startsWith("javascript")) {
             // Daniel
             super.loadUrl(url)
             return
         }
+
         super.loadUrl(BrowserUnit.queryWrapper(context, url.trim { it <= ' ' }), requestHeaders)
     }
 
