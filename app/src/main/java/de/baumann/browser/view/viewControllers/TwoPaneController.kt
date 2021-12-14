@@ -84,10 +84,17 @@ class TwoPaneController(
             true
         }
 
+        translationViewBinding.linkHere.setOnClickListener {
+            config.twoPanelLinkHere = !config.twoPanelLinkHere
+            updateLinkHereView(config.twoPanelLinkHere)
+        }
+        updateLinkHereView(config.twoPanelLinkHere)
+
         translationViewBinding.syncScroll.setOnClickListener {
             config.translationScrollSync = !config.translationScrollSync
-            toggleSyncScroll(config.translationScrollSync)
+            updateSyncScrollView(config.translationScrollSync)
         }
+        updateSyncScrollView(config.translationScrollSync)
 
         translationViewBinding.expandedButton.setOnClickListener { showControlButtons() }
 
@@ -142,6 +149,7 @@ class TwoPaneController(
         }
 
         translationViewBinding.translationLanguage.visibility = GONE
+        translationViewBinding.linkHere.visibility = VISIBLE
         twoPaneLayout.shouldShowSecondPane = true
 
         webView.loadUrl(url)
@@ -184,9 +192,14 @@ class TwoPaneController(
         twoPaneLayout.setOrientation(orientation)
     }
 
-    private fun toggleSyncScroll(shouldSyncScroll: Boolean = false) {
+    private fun updateSyncScrollView(shouldSyncScroll: Boolean = false) {
         val drawable = if (shouldSyncScroll) R.drawable.selected_border_bg else R.drawable.backgound_with_border
         translationViewBinding.syncScroll.setBackgroundResource(drawable)
+    }
+
+    private fun updateLinkHereView(shouldLinkHere: Boolean = false) {
+        val drawable = if (shouldLinkHere) R.drawable.selected_border_bg else R.drawable.backgound_with_border
+        translationViewBinding.linkHere.setBackgroundResource(drawable)
     }
 
     private fun launchTranslateWindow(text: String) {
@@ -210,6 +223,7 @@ class TwoPaneController(
             isWebViewAdded = true
         }
 
+        translationViewBinding.linkHere.visibility = GONE
         translationViewBinding.translationLanguage.visibility =
                 if (config.translationMode == TranslationMode.GOOGLE_URL) VISIBLE else GONE
 

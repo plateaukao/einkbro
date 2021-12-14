@@ -175,6 +175,12 @@ class ConfigManager(private val context: Context) : KoinComponent {
             sp.edit { putBoolean(K_TRANSLATE_SCROLL_SYNC, value) }
         }
 
+    var twoPanelLinkHere: Boolean
+        get() = sp.getBoolean(K_TWO_PANE_LINK_HERE, false)
+        set(value) {
+            sp.edit { putBoolean(K_TWO_PANE_LINK_HERE, value) }
+        }
+
     var overviewTab: OverviewTab
         get() = when (sp.getString(K_START_TAB, "0")) {
             "0" -> OverviewTab.TabPreview
@@ -212,7 +218,6 @@ class ConfigManager(private val context: Context) : KoinComponent {
             val string = sp.getString(K_SAVED_ALBUM_INFO, "") ?: ""
             if (string.isBlank()) return emptyList()
 
-            Log.d("configmanager", "album:info$string")
             return string.split(ALBUM_INFO_SEPARATOR).mapNotNull { it.toAlbumInfo() }
         }
         set(value) {
@@ -220,7 +225,7 @@ class ConfigManager(private val context: Context) : KoinComponent {
                 return
             }
 
-            sp.edit(commit = true) {
+            sp.edit {
                 if (value.isEmpty()) {
                     remove(K_SAVED_ALBUM_INFO)
                 } else {
@@ -307,6 +312,7 @@ class ConfigManager(private val context: Context) : KoinComponent {
         const val K_WHITE_BACKGROUND = "sp_whitebackground"
         const val K_UPDOWN_PAGE_TURN = "sp_useUpDownForPageTurn"
         const val K_CUSTOM_PROCESS_TEXT_URL = "sp_process_text_custom"
+        const val K_TWO_PANE_LINK_HERE = "sp_two_pane_link_here"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
     }

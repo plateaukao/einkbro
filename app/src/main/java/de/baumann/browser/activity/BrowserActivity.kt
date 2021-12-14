@@ -628,7 +628,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
     }
 
     private fun maybeInitTwoPaneController() {
-        if (!::twoPaneController.isInitialized) {
+        if (!isTwoPaneControllerInitialized()) {
             twoPaneController = TwoPaneController(
                     this,
                     binding.subContainer,
@@ -639,6 +639,8 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
             )
         }
     }
+
+    private fun isTwoPaneControllerInitialized(): Boolean = ::twoPaneController.isInitialized
 
     private fun showTranslation() {
         maybeInitTwoPaneController()
