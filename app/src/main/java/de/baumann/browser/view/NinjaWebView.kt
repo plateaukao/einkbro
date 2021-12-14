@@ -238,12 +238,21 @@ class NinjaWebView : WebView, AlbumController, KoinComponent {
         }
     }
 
+    override fun loadUrl(url: String, additionalHttpHeaders: MutableMap<String, String>) {
+        if (browserController?.loadInSecondPane(url) == true) {
+            return
+        }
+
+        super.loadUrl(url, additionalHttpHeaders)
+    }
+
     @SuppressLint("SetJavaScriptEnabled")
     override fun loadUrl(url: String) {
         dTLoadUrl = DebugT("loadUrl")
         albumTitle = ""
 
-        if (url.trim { it <= ' ' }.isEmpty()) {
+        val processedUrl = url.trim { it <= ' ' }
+        if (processedUrl.isEmpty()) {
             NinjaToast.show(context, R.string.toast_load_error)
             return
         }
@@ -260,7 +269,11 @@ class NinjaWebView : WebView, AlbumController, KoinComponent {
             return
         }
 
-        super.loadUrl(BrowserUnit.queryWrapper(context, url.trim { it <= ' ' }), requestHeaders)
+        if (browserController?.loadInSecondPane(processedUrl) == true) {
+            return
+        }
+
+        super.loadUrl(BrowserUnit.queryWrapper(context, processedUrl), requestHeaders)
     }
 
     override fun getAlbumView(): View = album.albumView

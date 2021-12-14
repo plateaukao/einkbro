@@ -1364,6 +1364,17 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
 
     }
 
+    override fun loadInSecondPane(url: String): Boolean =
+            if (config.twoPanelLinkHere &&
+                    isTwoPaneControllerInitialized() &&
+                    twoPaneController.isSecondPaneDisplayed()
+            ) {
+                toggleSplitScreen(url)
+                true
+            } else {
+                false
+            }
+
     private fun showContextMenuLinkDialog(url: String?, hitTestResult: HitTestResult) {
         if (url == null &&
                 !listOf(HitTestResult.IMAGE_TYPE, HitTestResult.IMAGE_ANCHOR_TYPE, HitTestResult.SRC_IMAGE_ANCHOR_TYPE, HitTestResult.ANCHOR_TYPE)
