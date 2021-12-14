@@ -365,4 +365,5 @@
     <string name="setting_title_useUpDown">使用方向鍵翻頁</string>
     <string name="setting_summary_ususeUpDowneUpDown">使用方向鍵翻頁，有些藍牙設備是利用上下鍵翻頁</string>
     <string name="setting_title_process_text">自訂來自外部搜尋時的網址</string>
+    <string name="split_screen">Split screen</string>
 </resources>

@@ -54,7 +54,7 @@ import de.baumann.browser.view.dialog.*
 import de.baumann.browser.view.viewControllers.OverviewDialogController
 import de.baumann.browser.view.viewControllers.ToolbarViewController
 import de.baumann.browser.view.viewControllers.TouchAreaViewController
-import de.baumann.browser.view.viewControllers.TranslationViewController
+import de.baumann.browser.view.viewControllers.TwoPaneController
 import de.baumann.browser.viewmodel.BookmarkViewModel
 import de.baumann.browser.viewmodel.BookmarkViewModelFactory
 import kotlinx.coroutines.Dispatchers
@@ -137,7 +137,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         )
     }
 
-    private lateinit var translateController: TranslationViewController
+    private lateinit var twoPaneController: TwoPaneController
 
     private val dialogManager: DialogManager by inject { parametersOf(this@BrowserActivity) }
 
@@ -448,7 +448,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         }
         hideBottomSheetDialog()
         when (v.id) {
-            R.id.button_size -> showFontSizeChangeDialog()
+            R.id.button_font_size -> showFontSizeChangeDialog()
             R.id.omnibox_title -> {
                 focusOnInput()
             }
@@ -627,9 +627,9 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         }
     }
 
-    private fun maybeInitTranslationController() {
-        if (!::translateController.isInitialized) {
-            translateController = TranslationViewController(
+    private fun maybeInitTwoPaneController() {
+        if (!::twoPaneController.isInitialized) {
+            twoPaneController = TwoPaneController(
                     this,
                     binding.subContainer,
                     binding.twoPanelLayout,
@@ -641,10 +641,10 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
     }
 
     private fun showTranslation() {
-        maybeInitTranslationController()
+        maybeInitTwoPaneController()
 
         lifecycleScope.launch(Dispatchers.Main) {
-            translateController.showTranslation(ninjaWebView)
+            twoPaneController.showTranslation(ninjaWebView)
         }
     }
 
@@ -811,8 +811,8 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         binding.omniboxBookmark.setOnClickListener { openBookmarkPage() }
         binding.omniboxBookmark.setOnLongClickListener { saveBookmark(); true }
         binding.toolbarTranslate.setOnLongClickListener {
-            maybeInitTranslationController()
-            translateController.showTranslationConfigDialog(); true
+            maybeInitTwoPaneController()
+            twoPaneController.showTranslationConfigDialog(); true
         }
 
         binding.omniboxBack.setOnLongClickListener { openHistoryPage(5); true }
@@ -949,7 +949,8 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
                 gotoUrlAction = { url -> updateAlbum(url) },
                 addTabAction = { title, url, isForeground -> addAlbum(title, url, isForeground) },
                 onBookmarksChanged = { isAutoCompleteOutdated = true },
-                onHistoryChanged = { isAutoCompleteOutdated = true }
+                onHistoryChanged = { isAutoCompleteOutdated = true },
+                splitScreenAction = { url -> toggleSplitScreen(url)}
         )
     }
 
@@ -1144,8 +1145,8 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
     private fun scrollChange() {
         ninjaWebView.setScrollChangeListener(object : NinjaWebView.OnScrollChangeListener {
             override fun onScrollChange(scrollY: Int, oldScrollY: Int) {
-                if (::translateController.isInitialized) {
-                    translateController.scrollChange(scrollY - oldScrollY)
+                if (::twoPaneController.isInitialized) {
+                    twoPaneController.scrollChange(scrollY - oldScrollY)
                 }
 
                 if (!sp.getBoolean("hideToolbar", false)) return
@@ -1375,6 +1376,9 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
                 NinjaToast.show(this, getString(R.string.toast_new_tab_successful))
             }
         }
+        dialogView.contextLinkSplitScreen.setOnClickListener {
+            dialog.dismissWithAction { toggleSplitScreen(nonNullUrl) }
+        }
         dialogView.contextLinkShareLink.setOnClickListener {
             dialog.dismissWithAction {
                 if (prepareRecord()) NinjaToast.show(this, getString(R.string.toast_share_failed))
@@ -1525,8 +1529,19 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
                 this::printPDF,
                 this::showFontSizeChangeDialog,
                 this::saveScreenshot,
+                this::toggleSplitScreen,
         ).show()
         return true
+    }
+
+    private fun toggleSplitScreen(url: String? = null) {
+        maybeInitTwoPaneController()
+        if(twoPaneController.isSecondPaneDisplayed() && url == null) {
+            twoPaneController.hideSecondPane()
+            return
+        }
+
+        twoPaneController.showSecondPane(url ?: config.favoriteUrl)
     }
 
     private fun saveScreenshot() {

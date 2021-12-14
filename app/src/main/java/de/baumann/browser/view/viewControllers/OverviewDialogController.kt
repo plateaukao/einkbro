@@ -44,6 +44,7 @@ class OverviewDialogController(
         private val addTabAction: (String, String, Boolean) -> Unit,
         private val onBookmarksChanged: () -> Unit,
         private val onHistoryChanged: () -> Unit,
+        private val splitScreenAction: (String) -> Unit,
 ) : KoinComponent {
     private val config: ConfigManager by inject()
     private val dialogManager: DialogManager by inject { parametersOf(context) }
@@ -261,6 +262,14 @@ class OverviewDialogController(
             dialogView.menuContextListNewTab.visibility = GONE
             dialogView.menuContextListNewTabOpen.visibility = GONE
             dialogView.menuContextListFav.visibility = GONE
+            dialogView.menuContextListSplitScreen.visibility = GONE
+        }
+
+        dialogView.menuContextListSplitScreen.setOnClickListener {
+            dialog.dismissWithAction {
+                splitScreenAction(bookmark.url)
+                hideOverview()
+            }
         }
 
         dialogView.menuContextListEdit.visibility = VISIBLE
@@ -324,6 +333,10 @@ class OverviewDialogController(
                 NinjaToast.show(context, context.getString(R.string.toast_new_tab_successful))
 
             }
+        }
+        dialogView.menuContextListSplitScreen.setOnClickListener {
+            dialog.dismissWithAction { splitScreenAction(url) }
+            hideOverview()
         }
         dialogView.menuContextListNewTabOpen.setOnClickListener {
             dialog.dismissWithAction {
