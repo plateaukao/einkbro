@@ -20,4 +20,5 @@ public interface BrowserController {
     void addHistory(String url);
     boolean onHideCustomView();
     boolean handleKeyEvent(KeyEvent event);
+    boolean loadInSecondPane(String url);
 }
