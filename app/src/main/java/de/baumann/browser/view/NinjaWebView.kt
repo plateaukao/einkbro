@@ -24,6 +24,7 @@ import androidx.webkit.WebViewFeature
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.browser.*
 import de.baumann.browser.preference.ConfigManager
+import de.baumann.browser.preference.DarkMode
 import de.baumann.browser.preference.TranslationMode
 import de.baumann.browser.unit.BrowserUnit
 import de.baumann.browser.unit.ViewUnit.dp
@@ -137,13 +138,26 @@ class NinjaWebView : WebView, AlbumController, KoinComponent {
             false
         }
 
+        updateDarkMode()
+    }
+
+    private fun updateDarkMode() {
+        if (config.darkMode == DarkMode.DISABLED) {
+            return
+        }
+
         if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK_STRATEGY)) {
-            WebSettingsCompat.setForceDarkStrategy(settings, WebSettingsCompat.DARK_STRATEGY_PREFER_WEB_THEME_OVER_USER_AGENT_DARKENING)
+            WebSettingsCompat.setForceDarkStrategy(
+                    settings,
+                    WebSettingsCompat.DARK_STRATEGY_PREFER_WEB_THEME_OVER_USER_AGENT_DARKENING
+            )
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             val nightModeFlags = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-            if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
+            if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES ||
+                    config.darkMode == DarkMode.FORCE_ON
+            ) {
                 settings.forceDark = WebSettings.FORCE_DARK_ON
                 // when in dark mode, the default background color will be the activity background
                 setBackgroundColor(Color.parseColor("#000000"))

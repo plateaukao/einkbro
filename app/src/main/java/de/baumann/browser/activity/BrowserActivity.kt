@@ -29,6 +29,7 @@ import android.widget.*
 import android.widget.TextView.OnEditorActionListener
 import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.edit
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
@@ -42,6 +43,7 @@ import de.baumann.browser.service.ClearService
 import de.baumann.browser.task.SaveScreenshotTask
 import de.baumann.browser.unit.BrowserUnit
 import de.baumann.browser.unit.HelperUnit
+import de.baumann.browser.unit.HelperUnit.applyTheme
 import de.baumann.browser.unit.HelperUnit.toNormalScheme
 import de.baumann.browser.unit.IntentUnit
 import de.baumann.browser.unit.ViewUnit
@@ -228,6 +230,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         if (config.keepAwake) {
             window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         }
+
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -235,7 +238,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             val nightModeFlags = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-            if (nightModeFlags != uiMode) {
+            if (nightModeFlags != uiMode && config.darkMode == DarkMode.SYSTEM) {
                 //restartApp()
                 recreate()
             }
@@ -825,32 +828,32 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
     }
 
     private val preferenceChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
-        when {
-            key.equals(ConfigManager.K_TOOLBAR_ICONS) -> {
+        when(key) {
+            ConfigManager.K_TOOLBAR_ICONS -> {
                 toolbarViewController.reorderIcons()
             }
-            key.equals(ConfigManager.K_BOLD_FONT) -> {
+            ConfigManager.K_BOLD_FONT -> {
                 if (config.boldFontStyle) {
                     ninjaWebView.updateCssStyle()
                 } else {
                     ninjaWebView.reload()
                 }
             }
-            key.equals(ConfigManager.K_WHITE_BACKGROUND) -> {
+            ConfigManager.K_WHITE_BACKGROUND -> {
                 if (config.whiteBackground) {
                     ninjaWebView.updateCssStyle()
                 } else {
                     ninjaWebView.reload()
                 }
             }
-            key.equals(ConfigManager.K_FONT_STYLE_SERIF) -> {
+            ConfigManager.K_FONT_STYLE_SERIF -> {
                 if (config.fontStyleSerif) {
                     ninjaWebView.updateCssStyle()
                 } else {
                     ninjaWebView.reload()
                 }
             }
-            key.equals(ConfigManager.K_IS_INCOGNITO_MODE) -> {
+            ConfigManager.K_IS_INCOGNITO_MODE -> {
                 ninjaWebView.incognito = config.isIncognitoMode
                 updateWebViewCountUI()
                 NinjaToast.showShort(
@@ -858,14 +861,15 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
                         "Incognito mode is " + if (config.isIncognitoMode) "enabled." else "disabled."
                 )
             }
-            key.equals(ConfigManager.K_KEEP_AWAKE) -> {
+            ConfigManager.K_KEEP_AWAKE -> {
                 if (config.keepAwake) {
                     window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
                 } else {
                     window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
                 }
             }
-            key.equals(ConfigManager.K_DESKTOP) -> ninjaWebView.updateDesktopMode()
+            ConfigManager.K_DESKTOP -> ninjaWebView.updateDesktopMode()
+            ConfigManager.K_DARK_MODE -> showRestartConfirmDialog()
         }
     }
 

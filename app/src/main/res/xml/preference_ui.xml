@@ -33,6 +33,15 @@
             android:title="@string/setting_title_toolbar_icons"
             android:summary="@string/setting_summary_toolbar_icons"/>
 
+        <ListPreference
+            android:icon="@drawable/ic_dark_mode"
+            android:key="sp_dark_mode"
+            android:defaultValue="0"
+            android:title="@string/dark_mode"
+            android:summary="@string/setting_summary_dark_mode"
+            android:entries="@array/setting_entries_dark_mode"
+            android:entryValues="@array/setting_values_dark_mode"/>
+
         <CheckBoxPreference android:key="sp_desktop"
             android:icon="@drawable/icon_desktop"
             android:defaultValue="false"

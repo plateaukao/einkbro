@@ -4,20 +4,18 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
 import android.print.PrintAttributes
-import android.util.Log
 import androidx.core.content.edit
-import androidx.preference.PreferenceManager
 import de.baumann.browser.util.Constants
 import de.baumann.browser.util.TranslationLanguage
 import de.baumann.browser.view.Orientation
-import de.baumann.browser.view.TwoPaneLayout
 import de.baumann.browser.view.toolbaricons.ToolbarAction
 import de.baumann.browser.view.viewControllers.OverviewTab
 import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 
-class ConfigManager(private val context: Context) : KoinComponent {
-    private val sp: SharedPreferences by inject()
+class ConfigManager(
+    private val context: Context,
+    private val sp: SharedPreferences
+) : KoinComponent {
 
     fun registerOnSharedPreferenceChangeListener(listener: SharedPreferences.OnSharedPreferenceChangeListener) {
         sp.registerOnSharedPreferenceChangeListener(listener)
@@ -258,6 +256,10 @@ class ConfigManager(private val context: Context) : KoinComponent {
         get() = sp.getStringSet(K_ADBLOCK_SITES, mutableSetOf()) ?: mutableSetOf()
         set(value) = sp.edit { putStringSet(K_ADBLOCK_SITES, value) }
 
+    var darkMode:DarkMode
+        get() = DarkMode.values()[sp.getString(K_DARK_MODE, "0")?.toInt() ?: 0]
+        set(value) = sp.edit { putString(K_DARK_MODE, value.ordinal.toString()) }
+
     private fun iconStringToEnumList(iconListString: String): List<ToolbarAction> {
         if (iconListString.isBlank()) return listOf()
 
@@ -313,6 +315,7 @@ class ConfigManager(private val context: Context) : KoinComponent {
         const val K_UPDOWN_PAGE_TURN = "sp_useUpDownForPageTurn"
         const val K_CUSTOM_PROCESS_TEXT_URL = "sp_process_text_custom"
         const val K_TWO_PANE_LINK_HERE = "sp_two_pane_link_here"
+        const val K_DARK_MODE = "sp_dark_mode"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
     }
@@ -331,6 +334,10 @@ enum class FabPosition {
 
 enum class TranslationMode {
     ONYX, GOOGLE, PAPAGO, PAPAGO_URL, GOOGLE_URL, PAPAGO_DUAL
+}
+
+enum class DarkMode {
+    SYSTEM, FORCE_ON, DISABLED
 }
 
 data class AlbumInfo(

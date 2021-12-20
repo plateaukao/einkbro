@@ -492,4 +492,6 @@
     <string name="setting_summary_ususeUpDowneUpDown">use Up/Down key to turn pages. Useful for bluetooth devices.</string>
     <string name="setting_title_process_text">Custom External Search Url</string>
     <string name="split_screen">Split screen</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="setting_summary_dark_mode">Support dark mode</string>
 </resources>
