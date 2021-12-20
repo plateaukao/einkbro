@@ -8,6 +8,8 @@ import android.content.Context
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.util.DebugT
 import android.util.Log
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -16,7 +18,9 @@ import java.net.URISyntaxException
 import java.util.*
 import kotlin.Throws
 
-class AdBlock(private val context: Context) {
+class AdBlock(private val context: Context): KoinComponent {
+    private val config: ConfigManager by inject()
+
     fun isWhite(url: String?): Boolean {
         for (domain in whitelist) {
             if (url != null && url.contains(domain!!)) {
@@ -36,7 +40,7 @@ class AdBlock(private val context: Context) {
     }
 
     private fun isAdExtraSites(url: String): Boolean {
-        return config!!.adSites.any { url.contains(it, true) }
+        return config.adSites.any { url.contains(it, true) }
     }
 
     @Synchronized
@@ -69,6 +73,25 @@ class AdBlock(private val context: Context) {
         whitelist.clear()
     }
 
+    private fun loadHosts(context: Context) {
+        val thread = Thread {
+            val debugT = DebugT("loadHosts")
+            val manager = context.assets
+            try {
+                val reader = BufferedReader(InputStreamReader(manager.open(FILE)))
+                var line: String?
+                while (reader.readLine().also { line = it } != null) {
+                    line?.let { hosts.add(it.lowercase(locale)) }
+                }
+            } catch (i: IOException) {
+                Log.w("browser", "Error loading hosts", i)
+            }
+            debugT.printTime()
+        }
+        thread.start()
+    }
+
+
     companion object {
         private const val FILE = "hosts.txt"
         private val hosts: MutableSet<String> = HashSet()
@@ -76,26 +99,6 @@ class AdBlock(private val context: Context) {
 
         @SuppressLint("ConstantLocale")
         private val locale = Locale.getDefault()
-        private var config: ConfigManager? = null
-        private fun loadHosts(context: Context) {
-            config = ConfigManager(context)
-            val thread = Thread {
-                val debugT = DebugT("loadHosts")
-                val manager = context.assets
-                try {
-                    val reader = BufferedReader(InputStreamReader(manager.open(FILE)))
-                    var line: String?
-                    while (reader.readLine().also { line = it } != null) {
-                        line?.let { hosts.add(it.lowercase(locale)) }
-                    }
-                } catch (i: IOException) {
-                    Log.w("browser", "Error loading hosts", i)
-                }
-                debugT.printTime()
-            }
-            thread.start()
-        }
-
         @Synchronized
         private fun loadDomains(context: Context) {
             val action = RecordDb(context)
