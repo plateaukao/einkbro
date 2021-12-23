@@ -461,15 +461,12 @@ class NinjaWebView : WebView, AlbumController, KoinComponent {
         }
     }
 
-    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
-        if (browserController == null) return false
-
-        return if (!browserController!!.handleKeyEvent(event)) {
-            super.dispatchKeyEvent(event)
-        } else {
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean =
+        if (browserController?.handleKeyEvent(event) == true) {
             true
+        } else {
+            super.dispatchKeyEvent(event)
         }
-    }
 
     private var isVerticalRead = false
     fun toggleVerticalRead() {
