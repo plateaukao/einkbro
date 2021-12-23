@@ -673,6 +673,10 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
 
     @SuppressLint("InlinedApi")
     private fun dispatchIntent(intent: Intent) {
+        if (overviewDialogController.isVisible()) {
+            overviewDialogController.hide()
+        }
+
         when (intent.action) {
             "", Intent.ACTION_MAIN -> { // initial case
                 if (currentAlbumController == null) { // newly opened Activity
