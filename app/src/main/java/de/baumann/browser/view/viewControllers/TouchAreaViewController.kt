@@ -5,7 +5,6 @@ import android.content.SharedPreferences
 import android.graphics.Color
 import android.view.MotionEvent
 import android.view.View
-import androidx.core.view.doOnLayout
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.preference.TouchAreaType
@@ -122,13 +121,13 @@ class TouchAreaViewController(
         val isTouchEnabled = config.enableTouchTurn
         with(touchAreaPageUp) {
             if (isTouchEnabled) visibility = View.VISIBLE
-            setOnClickListener { pageUpAction.invoke() }
-            setOnLongClickListener { pageTopAction.invoke(); true }
+            setOnClickListener { if (!config.switchTouchAreaAction) pageUpAction() else pageDownAction() }
+            setOnLongClickListener { if (!config.switchTouchAreaAction) pageTopAction() else pageBottomAction(); true }
         }
         with(touchAreaPageDown) {
             if (isTouchEnabled) visibility = View.VISIBLE
-            setOnClickListener { pageDownAction.invoke() }
-            setOnLongClickListener { pageBottomAction.invoke(); true }
+            setOnClickListener { if (!config.switchTouchAreaAction) pageDownAction() else pageUpAction() }
+            setOnLongClickListener { if (!config.switchTouchAreaAction) pageBottomAction() else pageUpAction(); true }
         }
         with(touchAreaDragCustomize) {
             if (isTouchEnabled) visibility = View.VISIBLE
@@ -160,5 +159,32 @@ class TouchAreaViewController(
         touchAreaDragCustomize.visibility = if (enabled) View.VISIBLE else View.INVISIBLE
 
         if (enabled) showTouchAreaHint()
+    }
+
+    fun maybeDisableTemporarily() {
+        if (config.enableTouchTurn && config.touchAreaHint && config.hideTouchAreaWhenInput) {
+            if (this::touchAreaPageUp.isInitialized) {
+                with(touchAreaPageUp) {
+                    visibility = View.INVISIBLE
+                    setOnLongClickListener(null)
+                    setOnClickListener(null)
+                }
+                with(touchAreaPageDown) {
+                    visibility = View.INVISIBLE
+                    setOnLongClickListener(null)
+                    setOnClickListener(null)
+                }
+                with(touchAreaDragCustomize) {
+                    visibility = View.INVISIBLE
+                    setOnTouchListener(null)
+                }
+            }
+        }
+    }
+
+    fun maybeEnableAgain() {
+        if (config.enableTouchTurn && config.touchAreaHint && config.hideTouchAreaWhenInput) {
+            updateTouchAreaType()
+        }
     }
 }
