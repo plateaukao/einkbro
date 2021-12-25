@@ -39,6 +39,9 @@ class TouchAreaViewController(
             // reset offset when type is changed
             config.touchAreaCustomizeY = 0
         }
+        if (key == ConfigManager.K_ENABLE_TOUCH) {
+            toggleTouchPageTurn(config.enableTouchTurn)
+        }
     }
 
     init {

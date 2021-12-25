@@ -586,8 +586,6 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         fabImageButtonNav.setImageResource(fabResourceId)
         val touchResourceId = if (config.enableTouchTurn) R.drawable.ic_touch_enabled else R.drawable.ic_touch_disabled
         binding.omniboxTouch.setImageResource(touchResourceId)
-
-        touchController.toggleTouchPageTurn(config.enableTouchTurn)
     }
 
     // Methods
@@ -1561,6 +1559,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
                 this::showFontSizeChangeDialog,
                 this::saveScreenshot,
                 this::toggleSplitScreen,
+                this::toggleTouchTurnPageFeature
         ).show()
         return true
     }
