@@ -124,6 +124,11 @@ class ConfigManager(
         set(value) {
             sp.edit { putString(K_FONT_SIZE, value.toString()) }
         }
+    var touchAreaCustomizeY: Int
+        get() = sp.getInt(K_TOUCH_AREA_OFFSET, 0)
+        set(value) {
+            sp.edit { putInt(K_TOUCH_AREA_OFFSET, value) }
+        }
 
     val customUserAgent: String
         get() = sp.getString(K_CUSTOM_USER_AGENT, "") ?: ""
@@ -316,6 +321,7 @@ class ConfigManager(
         const val K_CUSTOM_PROCESS_TEXT_URL = "sp_process_text_custom"
         const val K_TWO_PANE_LINK_HERE = "sp_two_pane_link_here"
         const val K_DARK_MODE = "sp_dark_mode"
+        const val K_TOUCH_AREA_OFFSET = "sp_touch_area_offset"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
     }

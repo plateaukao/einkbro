@@ -130,7 +130,6 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
 
     private val touchController: TouchAreaViewController by lazy {
         TouchAreaViewController(
-                context = this,
                 rootView = binding.root,
                 pageUpAction = { ninjaWebView.pageUpWithNoAnimation() },
                 pageTopAction = { ninjaWebView.jumpToTop() },
