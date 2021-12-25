@@ -4,15 +4,18 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import de.baumann.browser.Ninja.R
+import de.baumann.browser.Ninja.databinding.DialogTouchAreaBinding
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.preference.TouchAreaType
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.util.zip.Inflater
 
 class TouchAreaDialog(private val context: Context) : KoinComponent {
     private val sp: SharedPreferences by inject()
@@ -21,10 +24,10 @@ class TouchAreaDialog(private val context: Context) : KoinComponent {
     private lateinit var dialog: AlertDialog
 
     fun show() {
-        val view = View.inflate(context, R.layout.dialog_touch_area, null)
-        val builder = AlertDialog.Builder(context, R.style.TouchAreaDialog).apply { setView(view) }
+        val binding = DialogTouchAreaBinding.inflate(LayoutInflater.from(context))
+        val builder = AlertDialog.Builder(context, R.style.TouchAreaDialog).apply { setView(binding.root) }
 
-        initViews(view)
+        initViews(binding)
         dialog = builder.create().apply {
             window?.setGravity(Gravity.BOTTOM)
             window?.setBackgroundDrawableResource(R.drawable.background_with_border_margin)
@@ -32,58 +35,64 @@ class TouchAreaDialog(private val context: Context) : KoinComponent {
         dialog.show()
     }
 
-    private fun initViews(view: View) {
+    private fun initViews(binding: DialogTouchAreaBinding) {
         // init touch area types
-        initHintTypes(view)
-        initToggles(view)
+        initHintTypes(binding)
+        initToggles(binding)
     }
 
-    private fun initHintTypes(view: View) {
+    private fun initHintTypes(binding: DialogTouchAreaBinding) {
         // UI setup
         val buttonShouldBeChecked: RadioButton = when (sp.getInt("sp_touch_area_type", 0)) {
-            0 -> view.findViewById(R.id.touch_left_right)
-            1 -> view.findViewById(R.id.touch_area_bottom_left)
-            2 -> view.findViewById(R.id.touch_area_bottom_right)
-            3 -> view.findViewById(R.id.touch_middle_left_right)
-            4 -> view.findViewById(R.id.touch_middle_left_right)
-            else -> view.findViewById(R.id.touch_left_right)
+            0 -> binding.touchLeftRight
+            1 -> binding.touchAreaBottomLeft
+            2 -> binding.touchAreaBottomRight
+            3 -> binding.touchMiddleLeftRight
+            4 -> binding.touchMiddleLeftRight
+            else -> binding.touchLeftRight
         }
         buttonShouldBeChecked.isChecked = true
 
         // action
-        view.findViewById<View>(R.id.layout_left_right).setOnClickListener {
+        binding.touchLeftRight.setOnClickListener {
             config.touchAreaType = TouchAreaType.BottomLeftRight
             dialog.dismiss()
         }
-        view.findViewById<View>(R.id.layout_bottom_left).setOnClickListener {
+        binding.touchAreaBottomLeft.setOnClickListener {
             config.touchAreaType = TouchAreaType.Left
             dialog.dismiss()
         }
-        view.findViewById<View>(R.id.layout_bottom_right).setOnClickListener {
+        binding.touchAreaBottomRight.setOnClickListener {
             config.touchAreaType = TouchAreaType.Right
             dialog.dismiss()
         }
-        view.findViewById<View>(R.id.layout_middle_left_right).setOnClickListener {
+        binding.touchMiddleLeftRight.setOnClickListener {
             config.touchAreaType = TouchAreaType.MiddleLeftRight
             dialog.dismiss()
         }
     }
 
-    private fun initToggles(view: View) {
-        val toggleTouchAreaHint = view.findViewById<CheckBox>(R.id.switch_show_touch_area_hint)
-                ?: return
-        val showTouchArea = view.findViewById<View>(R.id.show_touch_area) ?: return
+    private fun initToggles(binding: DialogTouchAreaBinding) {
+        val toggleTouchAreaHint = binding.switchShowTouchAreaHint
+        val showTouchArea = binding.showTouchArea
 
         updateViewStatus(toggleTouchAreaHint, config.touchAreaHint)
+        updateViewStatus(binding.cbHideTouchAreaWhenInput, config.hideTouchAreaWhenInput)
+        updateViewStatus(binding.cbSwitchTouchAreaAction, config.switchTouchAreaAction)
 
         showTouchArea.setOnClickListener {
             config.touchAreaHint = !config.touchAreaHint
             updateViewStatus(toggleTouchAreaHint, config.touchAreaHint)
             dialog.dismiss()
         }
-        toggleTouchAreaHint.setOnClickListener {
-            config.touchAreaHint = !config.touchAreaHint
-            updateViewStatus(toggleTouchAreaHint, config.touchAreaHint)
+        binding.hideTouchAreaWhenInput.setOnClickListener {
+            config.hideTouchAreaWhenInput= !config.hideTouchAreaWhenInput
+            updateViewStatus(binding.cbHideTouchAreaWhenInput, config.hideTouchAreaWhenInput)
+            dialog.dismiss()
+        }
+        binding.switchTouchAreaAction.setOnClickListener {
+            config.switchTouchAreaAction= !config.switchTouchAreaAction
+            updateViewStatus(binding.cbSwitchTouchAreaAction, config.switchTouchAreaAction)
             dialog.dismiss()
         }
     }

@@ -29,7 +29,6 @@ import android.widget.*
 import android.widget.TextView.OnEditorActionListener
 import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.edit
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
@@ -43,7 +42,6 @@ import de.baumann.browser.service.ClearService
 import de.baumann.browser.task.SaveScreenshotTask
 import de.baumann.browser.unit.BrowserUnit
 import de.baumann.browser.unit.HelperUnit
-import de.baumann.browser.unit.HelperUnit.applyTheme
 import de.baumann.browser.unit.HelperUnit.toNormalScheme
 import de.baumann.browser.unit.IntentUnit
 import de.baumann.browser.unit.ViewUnit
@@ -68,6 +66,8 @@ import java.util.*
 import kotlin.math.floor
 import kotlin.math.roundToInt
 import kotlin.system.exitProcess
+import android.view.ViewTreeObserver
+import android.view.ViewTreeObserver.OnGlobalLayoutListener
 
 
 open class BrowserActivity : ComponentActivity(), BrowserController, OnClickListener {
@@ -230,8 +230,19 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
             window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         }
 
+        listenKeyboardShowHide()
     }
 
+    private fun listenKeyboardShowHide() {
+        binding.root.viewTreeObserver.addOnGlobalLayoutListener {
+            val heightDiff: Int = binding.root.rootView.height - binding.root.height
+            if (heightDiff > 300) { // Value should be less than keyboard's height
+                touchController.maybeDisableTemporarily()
+            } else {
+                touchController.maybeEnableAgain()
+            }
+        }
+    }
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
 
@@ -358,7 +369,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
             }
             KeyEvent.KEYCODE_MENU -> return showMenuDialog()
             KeyEvent.KEYCODE_BACK -> {
-                ViewUnit.hideKeyboard(this@BrowserActivity)
+                hideKeyboard()
                 if (overviewDialogController.isVisible()) {
                     hideOverview()
                     return true
@@ -418,7 +429,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
 
             val adapter = CompleteAdapter(activity, R.layout.complete_item, list) { record ->
                 updateAlbum(record.url)
-                ViewUnit.hideKeyboard(this@BrowserActivity)
+                hideKeyboard()
                 binding.omniboxInput.clearFocus()
                 showToolbar()
             }
@@ -551,11 +562,11 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
                             bookmarkManager,
                             Bookmark(nonNullTitle, currentUrl),
                             {
-                                ViewUnit.hideKeyboard(context as Activity)
+                                hideKeyboard()
                                 NinjaToast.show(this@BrowserActivity, R.string.toast_edit_successful)
                                 isAutoCompleteOutdated = true
                             },
-                            { ViewUnit.hideKeyboard(context as Activity) }
+                            { hideKeyboard() }
                     ).show()
                 }
             }
@@ -794,7 +805,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
             } else {
                 toolbarViewController.show()
                 omniboxTitle.text = ninjaWebView.title
-                ViewUnit.hideKeyboard(this@BrowserActivity)
+                hideKeyboard()
             }
         }
 
@@ -1004,7 +1015,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
             NinjaToast.show(this, getString(R.string.toast_input_empty))
             return
         }
-        ViewUnit.hideKeyboard(this)
+        hideKeyboard()
         (currentAlbumController as NinjaWebView).findNext(false)
     }
 
@@ -1014,7 +1025,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
             NinjaToast.show(this, getString(R.string.toast_input_empty))
             return
         }
-        ViewUnit.hideKeyboard(this)
+        hideKeyboard()
         (currentAlbumController as NinjaWebView).findNext(true)
     }
 
@@ -1206,7 +1217,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
             updateAutoComplete()
             isAutoCompleteOutdated = false
         }
-        ViewUnit.showKeyboard(this)
+        showKeyboard()
     }
 
     private var isRunning = false
@@ -1481,7 +1492,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
 
         val dm = (getSystemService(DOWNLOAD_SERVICE) as DownloadManager)
         dm.enqueue(request)
-        ViewUnit.hideKeyboard(this)
+        hideKeyboard()
     }
 
     @SuppressLint("RestrictedApi")
@@ -1492,7 +1503,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
             mainToolbar.visibility = VISIBLE
             binding.appBar.visibility = VISIBLE
             toolbarViewController.show()
-            ViewUnit.hideKeyboard(this)
+            hideKeyboard()
             showStatusBar()
         }
     }
@@ -1528,7 +1539,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         omniboxTitle.visibility = GONE
         binding.appBar.visibility = VISIBLE
         searchBox.requestFocus()
-        ViewUnit.showKeyboard(this)
+        showKeyboard()
     }
 
     private var isNewEpubFile = false
@@ -1589,6 +1600,14 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
             }
         }
         return list[index]
+    }
+
+    private fun showKeyboard() {
+        ViewUnit.showKeyboard(this)
+    }
+
+    private fun hideKeyboard() {
+        ViewUnit.hideKeyboard(this)
     }
 
     private var mActionMode: ActionMode? = null

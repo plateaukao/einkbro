@@ -184,6 +184,18 @@ class ConfigManager(
             sp.edit { putBoolean(K_TWO_PANE_LINK_HERE, value) }
         }
 
+    var switchTouchAreaAction: Boolean
+        get() = sp.getBoolean(K_TOUCH_AREA_ACTION_SWITCH, false)
+        set(value) {
+            sp.edit { putBoolean(K_TOUCH_AREA_ACTION_SWITCH, value) }
+        }
+
+    var hideTouchAreaWhenInput: Boolean
+        get() = sp.getBoolean(K_TOUCH_AREA_HIDE_WHEN_INPUT, false)
+        set(value) {
+            sp.edit { putBoolean(K_TOUCH_AREA_HIDE_WHEN_INPUT, value) }
+        }
+
     var overviewTab: OverviewTab
         get() = when (sp.getString(K_START_TAB, "0")) {
             "0" -> OverviewTab.TabPreview
@@ -322,6 +334,8 @@ class ConfigManager(
         const val K_TWO_PANE_LINK_HERE = "sp_two_pane_link_here"
         const val K_DARK_MODE = "sp_dark_mode"
         const val K_TOUCH_AREA_OFFSET = "sp_touch_area_offset"
+        const val K_TOUCH_AREA_ACTION_SWITCH = "sp_touch_area_action_switch"
+        const val K_TOUCH_AREA_HIDE_WHEN_INPUT = "sp_touch_area_hide_when_input"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
     }
