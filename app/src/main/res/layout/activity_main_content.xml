@@ -40,6 +40,16 @@
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         />
+    <View
+        android:id="@+id/touch_area_middle_drag"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="-20dp"
+        android:layout_marginLeft="-20dp"
+        android:background="@android:color/transparent"
+        android:layout_alignTop="@+id/touch_area_middle_right"
+        android:layout_alignLeft="@+id/touch_area_middle_right"
+        android:visibility="invisible" />
     <View android:id="@+id/touch_area_bottom_right"
         android:layout_alignParentRight="true"
         android:layout_width="150dp"
@@ -50,6 +60,16 @@
         android:background="@drawable/touch_area_border"
         android:layout_alignParentBottom="true"
         />
+    <View
+        android:id="@+id/touch_area_bottom_drag"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="-20dp"
+        android:layout_marginLeft="-20dp"
+        android:background="@android:color/transparent"
+        android:layout_alignTop="@+id/touch_area_bottom_right"
+        android:layout_alignLeft="@+id/touch_area_middle_right"
+        android:visibility="invisible" />
 
     <View
         android:id="@+id/touch_area_right_1"
@@ -71,6 +91,16 @@
         android:background="@drawable/touch_area_border"
         android:layout_alignParentBottom="true"
         />
+    <View
+        android:id="@+id/touch_area_right_drag"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="-20dp"
+        android:layout_marginLeft="-20dp"
+        android:background="@android:color/transparent"
+        android:layout_alignTop="@+id/touch_area_right_1"
+        android:layout_alignLeft="@+id/touch_area_right_1"
+        android:visibility="invisible" />
     <View android:id="@+id/touch_area_left_1"
         android:layout_width="150dp"
         android:layout_height="150dp"
@@ -89,6 +119,16 @@
         android:background="@drawable/touch_area_border"
         android:layout_alignParentBottom="true"
         />
+    <View
+        android:id="@+id/touch_area_left_drag"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="-20dp"
+        android:layout_marginRight="-20dp"
+        android:background="@android:color/transparent"
+        android:layout_alignTop="@+id/touch_area_left_1"
+        android:layout_alignRight="@+id/touch_area_left_1"
+        android:visibility="invisible" />
 
     <ProgressBar
         style="?android:attr/progressBarStyleHorizontal"
