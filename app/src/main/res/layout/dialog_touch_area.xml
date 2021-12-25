@@ -12,7 +12,6 @@
         android:id="@+id/radioGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -20,12 +19,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingVertical="5dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="wrap_content"
+                android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_touch_left" />
 
@@ -44,11 +42,10 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:layout_weight="1"
-            android:paddingVertical="5dp"
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="wrap_content"
+                android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_touch_left_right" />
 
@@ -67,11 +64,10 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:layout_weight="1"
-            android:paddingVertical="5dp"
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="wrap_content"
+                android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_touch_middle_left_right" />
 
@@ -90,11 +86,10 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:layout_weight="1"
-            android:paddingVertical="5dp"
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="wrap_content"
+                android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_touch_right" />
 
@@ -128,6 +123,7 @@
             android:id="@+id/switch_show_touch_area_hint"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:clickable="false"
             android:checked="true" />
 
         <TextView
@@ -136,6 +132,54 @@
             android:gravity="center_vertical"
             android:includeFontPadding="false"
             android:text="@string/show_touch_area_hint"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="?android:attr/textColorPrimary" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/hide_touch_area_when_input"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:background="@android:color/transparent"
+        android:minHeight="46dp"
+        android:padding="8dp">
+
+        <CheckBox
+            android:id="@+id/cb_hide_touch_area_when_input"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:clickable="false"
+            android:checked="false" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:includeFontPadding="false"
+            android:text="@string/hie_touch_area_when_input"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="?android:attr/textColorPrimary" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/switch_touch_area_action"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:background="@android:color/transparent"
+        android:minHeight="46dp"
+        android:padding="8dp">
+
+        <CheckBox
+            android:id="@+id/cb_switch_touch_area_action"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:clickable="false"
+            android:checked="false" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:includeFontPadding="false"
+            android:text="@string/switch_touch_area_action"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="?android:attr/textColorPrimary" />
     </LinearLayout>

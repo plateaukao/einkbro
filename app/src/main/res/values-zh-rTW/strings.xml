@@ -365,7 +365,9 @@
     <string name="setting_title_useUpDown">使用方向鍵翻頁</string>
     <string name="setting_summary_ususeUpDowneUpDown">使用方向鍵翻頁，有些藍牙設備是利用上下鍵翻頁</string>
     <string name="setting_title_process_text">自訂來自外部搜尋時的網址</string>
-    <string name="split_screen">Split screen</string>
-    <string name="dark_mode">Dark Mode</string>
-    <string name="setting_summary_dark_mode">Support dark mode</string>
+    <string name="split_screen">分割畫面</string>
+    <string name="dark_mode">黑暗模式</string>
+    <string name="setting_summary_dark_mode">支援黑暗模式</string>
+    <string name="hie_touch_area_when_input">輸入時隱藏點擊區域</string>
+    <string name="switch_touch_area_action">點擊翻頁功能互換</string>
 </resources>
