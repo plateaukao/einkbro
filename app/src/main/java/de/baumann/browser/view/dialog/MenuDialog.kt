@@ -31,6 +31,7 @@ class MenuDialog(
     private val fontSizeAction: () -> Unit,
     private val saveScreenshotAction: () -> Unit,
     private val toggleSplitScreenAction: () -> Unit,
+    private val toggleTouchAction: () -> Unit,
 ): KoinComponent {
     private val config: ConfigManager by inject()
 
@@ -59,7 +60,7 @@ class MenuDialog(
         binding.buttonReader.setOnClickListener { dialog.dismissWithAction { ninjaWebView.toggleReaderMode() } }
         binding.buttonVertical.setOnClickListener { dialog.dismissWithAction { ninjaWebView.toggleVerticalRead() } }
         binding.buttonTouch.setOnClickListener { dialog.dismissWithAction { TouchAreaDialog(context).show() } }
-        binding.buttonTouch.setOnLongClickListener { dialog.dismissWithAction { config.enableTouchTurn = !config.enableTouchTurn } ; true }
+        binding.buttonTouch.setOnLongClickListener { dialog.dismissWithAction(toggleTouchAction); true }
         binding.buttonToolbar.setOnClickListener { dialog.dismissWithAction { ToolbarConfigDialog(context).show() } }
         binding.menuSaveBookmark.setOnClickListener { dialog.dismissWithAction(saveBookmarkAction) }
         binding.menuSaveScreenshot.setOnClickListener { dialog.dismissWithAction(saveScreenshotAction) }
