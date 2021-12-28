@@ -352,8 +352,14 @@ enum class FabPosition {
     Right, Left, Center, NotShow
 }
 
-enum class TranslationMode {
-    ONYX, GOOGLE, PAPAGO, PAPAGO_URL, GOOGLE_URL, PAPAGO_DUAL
+enum class TranslationMode(val label: String) {
+    ONYX("ONYX"),
+    GOOGLE("Google Text"),
+    PAPAGO("Papago Text"),
+    PAPAGO_URL("Papago Full Page"),
+    GOOGLE_URL("Google Full Page"),
+    PAPAGO_DUAL("Papago Dual Pane"),
+    GOOGLE_IN_PLACE("Google in-Place")
 }
 
 enum class DarkMode {
