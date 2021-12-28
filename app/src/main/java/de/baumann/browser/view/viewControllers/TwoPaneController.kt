@@ -175,6 +175,7 @@ class TwoPaneController(
                 }
             }
             TranslationMode.ONYX -> launchTranslateWindow(webView.getRawText().purify())
+            TranslationMode.GOOGLE_IN_PLACE -> webView.loadUrl(buildGUrlTranslateUrl(webView.url.toString()))
         }
     }
 
@@ -252,7 +253,7 @@ class TwoPaneController(
             TranslationMode.values().toList()
         }
 
-        val translationModeArray = enumValues.map { it.name }.toTypedArray()
+        val translationModeArray = enumValues.map { it.label }.toTypedArray()
         val valueArray = enumValues.map { it.ordinal }
         val selected = valueArray.indexOf(config.translationMode.ordinal)
         AlertDialog.Builder(activity, R.style.TouchAreaDialog).apply {
