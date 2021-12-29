@@ -28,6 +28,18 @@
         <categories android:name="android.shortcut.conversation" />
     </shortcut>
 
+    <shortcut
+        android:shortcutId="sc_home"
+        android:enabled="true"
+        android:shortcutShortLabel="@string/album_title_home"
+        android:shortcutLongLabel="@string/album_title_home"
+        android:shortcutDisabledMessage="@string/album_title_home">
+        <intent
+            android:action="sc_home"
+            android:targetPackage="info.plateaukao.einkbro"
+            android:targetClass="de.baumann.browser.activity.BrowserActivity" />
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
 </shortcuts>
         
 

@@ -721,6 +721,9 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
                 addAlbum()
                 openHistoryPage()
             }
+            "sc_home" -> {
+                addAlbum(config.favoriteUrl)
+            }
             "sc_bookmark" -> {
                 addAlbum()
                 openBookmarkPage()
