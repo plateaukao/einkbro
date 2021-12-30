@@ -602,8 +602,16 @@ class NinjaWebView : WebView, AlbumController, KoinComponent {
         }
     }
 
+    fun addGoogleTranslation() {
+        evaluateJavascript(injectGoogleTranslateV2Js, null)
+    }
+
 
     companion object {
+        private const val secondPart = "setTimeout(function() { var css=document.createElement('style');css.type='text/css';css.charset='UTF-8';css.appendChild(document.createTextNode('.goog-te-combo, .goog-te-banner *, .goog-te-ftab *, .goog-te-menu *, .goog-te-menu2 *, .goog-te-balloon * {font-size: 8pt !important;}'));var teef=document.getElementById(':0.container');if(teef){teef.contentDocument.head.appendChild(css);} }, 1000);"
+        private const val injectGoogleTranslateV2Js =
+                "!function(){!function(){function e(){window.setTimeout(function(){window[t].showBanner(!0)},10)}function n(){return new google.translate.TranslateElement({autoDisplay:!1,floatPosition:0,multilanguagePage:!0,pageLanguage:'auto'})}var t=(document.documentElement.lang,'TE_7777'),o='TECB_7777';if(window[t])e();else if(!window.google||!google.translate||!google.translate.TranslateElement){window[o]||(window[o]=function(){window[t]=n(),e()});var a=document.createElement('script');a.src='https://translate.google.com/translate_a/element.js?cb='+encodeURIComponent(o)+'&client=tee',document.getElementsByTagName('head')[0].appendChild(a);$secondPart}}()}();"
+
         private const val hidePTranslateContext = """
             javascript:(function() {
                 // document.getElementById("sourceEditArea").style.display="none";

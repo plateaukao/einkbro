@@ -359,7 +359,7 @@ enum class TranslationMode(val label: String) {
     PAPAGO_URL("Papago Full Page"),
     GOOGLE_URL("Google Full Page"),
     PAPAGO_DUAL("Papago Dual Pane"),
-    GOOGLE_IN_PLACE("Google in-Place")
+    GOOGLE_IN_PLACE("Google in-Place"),
 }
 
 enum class DarkMode {
