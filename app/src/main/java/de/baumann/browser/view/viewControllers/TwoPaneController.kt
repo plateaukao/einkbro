@@ -175,7 +175,7 @@ class TwoPaneController(
                 }
             }
             TranslationMode.ONYX -> launchTranslateWindow(webView.getRawText().purify())
-            TranslationMode.GOOGLE_IN_PLACE -> webView.loadUrl(buildGUrlTranslateUrl(webView.url.toString()))
+            TranslationMode.GOOGLE_IN_PLACE -> webView.addGoogleTranslation()
         }
     }
 
