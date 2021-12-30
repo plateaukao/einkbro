@@ -20,18 +20,20 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 class MenuDialog(
-    private val context: Context,
-    private val ninjaWebView: NinjaWebView,
-    private val openFavAction: () -> Unit,
-    private val closeTabAction: () -> Unit,
-    private val saveBookmarkAction: () -> Unit,
-    private val searchSiteAction: () -> Unit,
-    private val saveEpubAction: () -> Unit,
-    private val printPdfAction: () -> Unit,
-    private val fontSizeAction: () -> Unit,
-    private val saveScreenshotAction: () -> Unit,
-    private val toggleSplitScreenAction: () -> Unit,
-    private val toggleTouchAction: () -> Unit,
+        private val context: Context,
+        private val ninjaWebView: NinjaWebView,
+        private val openFavAction: () -> Unit,
+        private val closeTabAction: () -> Unit,
+        private val saveBookmarkAction: () -> Unit,
+        private val searchSiteAction: () -> Unit,
+        private val saveEpubAction: () -> Unit,
+        private val printPdfAction: () -> Unit,
+        private val fontSizeAction: () -> Unit,
+        private val saveScreenshotAction: () -> Unit,
+        private val toggleSplitScreenAction: () -> Unit,
+        private val toggleTouchAction: () -> Unit,
+        private val translateAction: () -> Unit,
+        private val longPressTranslateAction: () -> Unit,
 ): KoinComponent {
     private val config: ConfigManager by inject()
 
@@ -58,6 +60,8 @@ class MenuDialog(
         binding.buttonBold.setOnClickListener { dialog.dismissWithAction { config.boldFontStyle = !config.boldFontStyle } }
         binding.buttonWhiteBackground.setOnClickListener { dialog.dismissWithAction { config.whiteBackground = !config.whiteBackground} }
         binding.buttonReader.setOnClickListener { dialog.dismissWithAction { ninjaWebView.toggleReaderMode() } }
+        binding.buttonTranslate.setOnClickListener { dialog.dismissWithAction(translateAction) }
+        binding.buttonTranslate.setOnLongClickListener{ dialog.dismissWithAction(longPressTranslateAction); true }
         binding.buttonVertical.setOnClickListener { dialog.dismissWithAction { ninjaWebView.toggleVerticalRead() } }
         binding.buttonTouch.setOnClickListener { dialog.dismissWithAction { TouchAreaDialog(context).show() } }
         binding.buttonTouch.setOnLongClickListener { dialog.dismissWithAction(toggleTouchAction); true }

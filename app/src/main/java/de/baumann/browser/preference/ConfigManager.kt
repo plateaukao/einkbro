@@ -266,7 +266,7 @@ class ConfigManager(
         set(value) = sp.edit { putInt(K_DB_VERSION, value) }
 
     var translationMode: TranslationMode
-        get() = TranslationMode.values()[sp.getInt(K_TRANSLATION_MODE, if (Build.MANUFACTURER == "ONYX") 0 else 1)]
+        get() = TranslationMode.values()[sp.getInt(K_TRANSLATION_MODE, 6)]
         set(value) = sp.edit { putInt(K_TRANSLATION_MODE, value.ordinal) }
 
     var adSites: MutableSet<String>
