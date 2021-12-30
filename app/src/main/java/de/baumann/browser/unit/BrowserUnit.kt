@@ -32,6 +32,7 @@ import java.util.regex.Pattern
 
 object BrowserUnit {
     const val PROGRESS_MAX = 100
+    const val SUFFIX_PNG = ".png"
     private const val SUFFIX_TXT = ".txt"
     const val MIME_TYPE_TEXT_PLAIN = "text/plain"
     const val MIME_TYPE_IMAGE = "image/png"
@@ -46,29 +47,92 @@ object BrowserUnit {
         "https://startpage.com/do/search?lui=deu&language=deutsch&query="
     private const val SEARCH_ENGINE_SEARX = "https://searx.me/?q="
     const val URL_ENCODING = "utf-8"
+    private const val URL_ABOUT_BLANK = "about:blank"
     const val URL_SCHEME_ABOUT = "about:"
     const val URL_SCHEME_MAIL_TO = "mailto:"
+    private const val URL_SCHEME_FILE = "file://"
     private const val URL_SCHEME_HTTPS = "https://"
+    private const val URL_SCHEME_HTTP = "http://"
     const val URL_SCHEME_INTENT = "intent://"
+    private const val URL_PREFIX_GOOGLE_PLAY = "www.google.com/url?q="
+    private const val URL_SUFFIX_GOOGLE_PLAY = "&sa"
+    private const val URL_PREFIX_GOOGLE_PLUS = "plus.url.google.com/url?q="
+    private const val URL_SUFFIX_GOOGLE_PLUS = "&rct"
     const val UA_DESKTOP =
         "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML like Gecko) Chrome/44.0.2403.155 Safari/537.36"
 
+    @JvmStatic
+    fun isURL(url: String?): Boolean {
+        var url = url
+        if (url == null) {
+            return false
+        }
+        url = url.toLowerCase(Locale.getDefault())
+        if (url.startsWith(URL_ABOUT_BLANK)
+            || url.startsWith(URL_SCHEME_MAIL_TO)
+            || url.startsWith(URL_SCHEME_FILE)
+        ) {
+            return true
+        }
+        val regex = ("^((ftp|http|https|intent)?://)" // support scheme
+                + "?(([0-9a-z_!~*'().&=+$%-]+: )?[0-9a-z_!~*'().&=+$%-]+@)?" // ftp的user@
+                + "(([0-9]{1,3}\\.){3}[0-9]{1,3}" // IP形式的URL -> 199.194.52.184
+                + "|" // 允许IP和DOMAIN（域名）
+                + "(.)*" // 域名 -> www.
+                // + "([0-9a-z_!~*'()-]+\\.)*"                               // 域名 -> www.
+                + "([0-9a-z][0-9a-z-]{0,61})?[0-9a-z]\\." // 二级域名
+                + "[a-z]{2,6})" // first level domain -> .com or .museum
+                + "(:[0-9]{1,4})?" // 端口 -> :80
+                + "((/?)|" // a slash isn't required if there is no file name
+                + "(/[0-9a-z_!~*'().;?:@&=+$,%#-]+)+/?)$")
+        val pattern = Pattern.compile(regex)
+        val isMatch = pattern.matcher(url).matches()
+        return if (isMatch) true else try {
+            val uri = Uri.parse(url)
+            val scheme = uri.scheme
+            if (scheme == "ftp" || scheme == "http" || scheme == "https" || scheme == "intent") {
+                true
+            } else {
+                false
+            }
+        } catch (exception: Exception) {
+            false
+        }
+    }
+
     fun queryWrapper(context: Context, query: String): String {
-        if (URLUtil.isValidUrl(query)) {
-            return query
-        }
-
-        if (query.startsWith(URL_SCHEME_ABOUT) || query.startsWith(URL_SCHEME_MAIL_TO)) {
-            return query
-        }
-
-        val queryWithHttpsPrefix = URL_SCHEME_HTTPS + query
-        if (URLUtil.isValidUrl(queryWithHttpsPrefix) && !query.contains(" ")) {
-            return queryWithHttpsPrefix
-        }
-
         // Use prefix and suffix to process some special links
         var query = query
+        val temp = query.toLowerCase(Locale.getDefault())
+        if (temp.contains(URL_PREFIX_GOOGLE_PLAY) && temp.contains(URL_SUFFIX_GOOGLE_PLAY)) {
+            val start = temp.indexOf(URL_PREFIX_GOOGLE_PLAY) + URL_PREFIX_GOOGLE_PLAY.length
+            val end = temp.indexOf(URL_SUFFIX_GOOGLE_PLAY)
+            query = query.substring(start, end)
+        } else if (temp.contains(URL_PREFIX_GOOGLE_PLUS) && temp.contains(URL_SUFFIX_GOOGLE_PLUS)) {
+            val start = temp.indexOf(URL_PREFIX_GOOGLE_PLUS) + URL_PREFIX_GOOGLE_PLUS.length
+            val end = temp.indexOf(URL_SUFFIX_GOOGLE_PLUS)
+            query = query.substring(start, end)
+        }
+
+        // -- start: remove prefix non-url part
+        var foundIndex = query.indexOf(URL_SCHEME_HTTPS)
+        if (foundIndex > 0) {
+            query = query.substring(foundIndex)
+        }
+        foundIndex = query.indexOf(URL_SCHEME_HTTP)
+        if (foundIndex > 0) {
+            query = query.substring(foundIndex)
+        }
+        // -- end: remove prefix non-url part
+        if (isURL(query)) {
+            if (query.startsWith(URL_SCHEME_ABOUT) || query.startsWith(URL_SCHEME_MAIL_TO)) {
+                return query
+            }
+            if (!query.contains("://")) {
+                query = URL_SCHEME_HTTPS + query
+            }
+            return query
+        }
         try {
             query = URLEncoder.encode(query, URL_ENCODING)
         } catch (u: UnsupportedEncodingException) {
@@ -84,7 +148,6 @@ object BrowserUnit {
                 )
             )
         )
-
         return when (i) {
             0 -> SEARCH_ENGINE_STARTPAGE + query
             1 -> SEARCH_ENGINE_STARTPAGE_DE + query

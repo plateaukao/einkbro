@@ -2,32 +2,30 @@ package de.baumann.browser.activity;
 
 import android.content.Context;
 import android.os.Bundle;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.appcompat.widget.Toolbar;
-
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-
 import java.util.List;
 import java.util.Objects;
 
-import de.baumann.browser.Ninja.R;
 import de.baumann.browser.browser.Cookie;
 import de.baumann.browser.database.RecordDb;
+import de.baumann.browser.Ninja.R;
+import de.baumann.browser.unit.BrowserUnit;
 import de.baumann.browser.unit.HelperUnit;
 import de.baumann.browser.unit.RecordUnit;
-import de.baumann.browser.view.NinjaToast;
 import de.baumann.browser.view.adapter.Adapter_Whitelist;
+import de.baumann.browser.view.NinjaToast;
 
 public class Whitelist_Cookie extends AppCompatActivity {
     private Adapter_Whitelist adapter;
@@ -64,7 +62,7 @@ public class Whitelist_Cookie extends AppCompatActivity {
                 String domain = editText.getText().toString().trim();
                 if (domain.isEmpty()) {
                     NinjaToast.show(Whitelist_Cookie.this, R.string.toast_input_empty);
-                } else if (!URLUtil.isValidUrl(domain)) {
+                } else if (!BrowserUnit.isURL(domain)) {
                     NinjaToast.show(Whitelist_Cookie.this, R.string.toast_invalid_domain);
                 } else {
                     RecordDb action = new RecordDb(Whitelist_Cookie.this);
