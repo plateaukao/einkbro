@@ -33,7 +33,7 @@
     <string name="menu_open_with">Open link with …</string>
 
     <string name="menu_quit">Quit</string>
-    <string name="menu_openFav">Open Favorite</string>
+    <string name="menu_openFav">Open Home</string>
     <string name="menu_delete">Delete</string>
     <string name="menu_delete_list">Delete list</string>
     <string name="menu_edit">Edit</string>
