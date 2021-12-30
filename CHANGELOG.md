@@ -1,3 +1,16 @@
+### 8.25.0
+#### Feature
+* Add configuration to hide touch area dot line when keyboard is displayed (access from touch config dialog)
+* Add configuration to switch touch area actions (page down to page up, and vice versa)
+* Add better translate feature: Google in Place
+* Add shortcut to long press App icon, to launch only favorite url (when sometimes saved tabs have problem)
+* Add Translate button in menu, for easier access
+* 
+#### Fix
+* fix search keyword parsing issue
+* fix bold font feature causes tab preview title becomes blank.
+
+
 ### 8.16.0
 #### enhancement
 * much faster web loading performance!!
