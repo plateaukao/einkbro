@@ -830,16 +830,18 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
 
         binding.omniboxBookmark.setOnClickListener { openBookmarkPage() }
         binding.omniboxBookmark.setOnLongClickListener { saveBookmark(); true }
-        binding.toolbarTranslate.setOnLongClickListener {
-            maybeInitTwoPaneController()
-            twoPaneController.showTranslationConfigDialog(); true
-        }
+        binding.toolbarTranslate.setOnLongClickListener { showTranslationConfigDialog(); true }
 
         binding.omniboxBack.setOnLongClickListener { openHistoryPage(5); true }
 
         sp.registerOnSharedPreferenceChangeListener(preferenceChangeListener)
 
         toolbarViewController.reorderIcons()
+    }
+
+    private fun showTranslationConfigDialog() {
+        maybeInitTwoPaneController()
+        twoPaneController.showTranslationConfigDialog()
     }
 
     private val preferenceChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
@@ -1562,7 +1564,9 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
                 this::showFontSizeChangeDialog,
                 this::saveScreenshot,
                 this::toggleSplitScreen,
-                this::toggleTouchTurnPageFeature
+                this::toggleTouchTurnPageFeature,
+                this::showTranslation,
+                this::showTranslationConfigDialog,
         ).show()
         return true
     }

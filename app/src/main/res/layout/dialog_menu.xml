@@ -127,17 +127,17 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/button_translate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <ImageView
-                    android:id="@+id/button_font_size"
                     android:layout_width="@dimen/menu_button_size"
                     android:layout_height="@dimen/menu_button_size"
                     android:gravity="center_vertical"
                     android:padding="10dp"
-                    android:src="@drawable/icon_size" />
+                    android:src="@drawable/ic_translate" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -145,53 +145,7 @@
                     android:layout_marginTop="-10dp"
                     android:gravity="top|center"
                     android:lines="2"
-                    android:text="@string/setting_title_font"
-                    android:textSize="10sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/button_white_background"
-                    android:layout_width="@dimen/menu_button_size"
-                    android:layout_height="@dimen/menu_button_size"
-                    android:gravity="center_vertical"
-                    android:padding="10dp"
-                    android:src="@drawable/ic_white_background" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="-10dp"
-                    android:gravity="top|center"
-                    android:lines="2"
-                    android:text="@string/white_background"
-                    android:textSize="10sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/button_bold"
-                    android:layout_width="@dimen/menu_button_size"
-                    android:layout_height="@dimen/menu_button_size"
-                    android:gravity="center_vertical"
-                    android:padding="10dp"
-                    android:src="@drawable/ic_bold_font" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="-10dp"
-                    android:gravity="top|center"
-                    android:lines="2"
-                    android:text="@string/bold_font"
+                    android:text="@string/translate"
                     android:textSize="10sp" />
             </LinearLayout>
 
@@ -532,6 +486,81 @@
         android:gravity="right"
         android:orientation="horizontal">
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/button_font_size"
+                android:layout_width="@dimen/menu_button_size"
+                android:layout_height="@dimen/menu_button_size"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:src="@drawable/icon_size" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-10dp"
+                android:gravity="top|center"
+                android:lines="2"
+                android:text="@string/setting_title_font"
+                android:textSize="10sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/button_white_background"
+                android:layout_width="@dimen/menu_button_size"
+                android:layout_height="@dimen/menu_button_size"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:src="@drawable/ic_white_background" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-10dp"
+                android:gravity="top|center"
+                android:lines="2"
+                android:text="@string/white_background"
+                android:textSize="10sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/button_bold"
+                android:layout_width="@dimen/menu_button_size"
+                android:layout_height="@dimen/menu_button_size"
+                android:gravity="center_vertical"
+                android:padding="10dp"
+                android:src="@drawable/ic_bold_font" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-10dp"
+                android:gravity="top|center"
+                android:lines="2"
+                android:text="@string/bold_font"
+                android:textSize="10sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:background="?attr/colorControlNormal"
+            />
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
