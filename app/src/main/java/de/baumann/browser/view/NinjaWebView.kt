@@ -263,7 +263,12 @@ class NinjaWebView : WebView, AlbumController, KoinComponent {
     @SuppressLint("SetJavaScriptEnabled")
     override fun loadUrl(url: String) {
         dTLoadUrl = DebugT("loadUrl")
-        albumTitle = ""
+
+        if (url.startsWith("javascript")) {
+            // Daniel
+            super.loadUrl(url)
+            return
+        }
 
         val processedUrl = url.trim { it <= ' ' }
         if (processedUrl.isEmpty()) {
@@ -271,17 +276,13 @@ class NinjaWebView : WebView, AlbumController, KoinComponent {
             return
         }
 
+        albumTitle = ""
         // show progress right away
         if (url.startsWith("https")) {
             update(5)
         }
 
         settings.cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
-        if (url.startsWith("javascript")) {
-            // Daniel
-            super.loadUrl(url)
-            return
-        }
 
         if (browserController?.loadInSecondPane(processedUrl) == true) {
             return

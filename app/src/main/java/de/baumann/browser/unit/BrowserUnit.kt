@@ -124,7 +124,7 @@ object BrowserUnit {
             query = query.substring(foundIndex)
         }
         // -- end: remove prefix non-url part
-        if (isURL(query)) {
+        if (isURL(query) && !query.contains(" ")) {
             if (query.startsWith(URL_SCHEME_ABOUT) || query.startsWith(URL_SCHEME_MAIL_TO)) {
                 return query
             }
