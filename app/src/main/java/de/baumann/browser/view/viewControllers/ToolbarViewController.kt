@@ -1,5 +1,6 @@
 package de.baumann.browser.view.viewControllers
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.View
 import android.view.View.GONE
@@ -52,11 +53,12 @@ class ToolbarViewController(
 
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun modifyTitleControlWidth() {
         if (ToolbarAction.Title in config.toolbarActions) {
             val textView = iconBar.findViewById<TextView>(R.id.omnibox_title)
-            if (isIconsWidthLargerThanScreenWidth()) {
-                val params = LinearLayout.LayoutParams( getRestToolbarWidth(), LinearLayout.LayoutParams.MATCH_PARENT)
+            if (!isIconsWidthLargerThanScreenWidth()) {
+                val params = LinearLayout.LayoutParams( getRestToolbarWidth() - 5.dp(context), LinearLayout.LayoutParams.MATCH_PARENT)
                 textView.layoutParams = params
                 textView.minimumWidth = 0
             } else {
@@ -67,7 +69,7 @@ class ToolbarViewController(
         }
     }
 
-    private fun isIconsWidthLargerThanScreenWidth(): Boolean = getRestToolbarWidth() >= 40.dp(context)
+    private fun isIconsWidthLargerThanScreenWidth(): Boolean = getRestToolbarWidth() < 0
 
     private fun getRestToolbarWidth(): Int =
         ViewUnit.getWindowWidth(context) -
