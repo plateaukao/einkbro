@@ -66,8 +66,6 @@ import java.util.*
 import kotlin.math.floor
 import kotlin.math.roundToInt
 import kotlin.system.exitProcess
-import android.view.ViewTreeObserver
-import android.view.ViewTreeObserver.OnGlobalLayoutListener
 
 
 open class BrowserActivity : ComponentActivity(), BrowserController, OnClickListener {
@@ -770,14 +768,21 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         }
         binding.omniboxSetting.setOnClickListener { showMenuDialog() }
         if (sp.getBoolean("sp_gestures_use", true)) {
-            val onTouchListener = object : SwipeTouchListener(this) {
+            val onNavButtonTouchListener = object : SwipeTouchListener(this) {
                 override fun onSwipeTop() = performGesture("setting_gesture_nav_up")
                 override fun onSwipeBottom() = performGesture("setting_gesture_nav_down")
                 override fun onSwipeRight() = performGesture("setting_gesture_nav_right")
                 override fun onSwipeLeft() = performGesture("setting_gesture_nav_left")
             }
-            fabImageButtonNav.setOnTouchListener(onTouchListener)
-            binding.omniboxSetting.setOnTouchListener(onTouchListener)
+            fabImageButtonNav.setOnTouchListener(onNavButtonTouchListener)
+            binding.omniboxSetting.setOnTouchListener(onNavButtonTouchListener)
+            val onTitleTouchListener = object : SwipeTouchListener(this) {
+                override fun onSwipeTop() = performGesture("setting_gesture_tb_up")
+                override fun onSwipeBottom() = performGesture("setting_gesture_tb_down")
+                override fun onSwipeRight() = performGesture("setting_gesture_tb_right")
+                override fun onSwipeLeft() = performGesture("setting_gesture_tb_left")
+            }
+            binding.omniboxTitle.setOnTouchListener(onTitleTouchListener)
         }
         binding.omniboxInput.setOnEditorActionListener(OnEditorActionListener { _, actionId, keyEvent ->
             if (actionId == EditorInfo.IME_ACTION_DONE ||
