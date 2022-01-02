@@ -64,7 +64,6 @@ dependencies {
 
     // for epub saving: html processing
     implementation 'org.jsoup:jsoup:1.14.3'
-    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
 
     def room_version = "2.3.0"
     implementation "androidx.room:room-runtime:$room_version"
