@@ -58,8 +58,6 @@ object BrowserUnit: KoinComponent {
     const val URL_SCHEME_INTENT = "intent://"
     private const val URL_PREFIX_GOOGLE_PLAY = "www.google.com/url?q="
     private const val URL_SUFFIX_GOOGLE_PLAY = "&sa"
-    private const val URL_PREFIX_GOOGLE_PLUS = "plus.url.google.com/url?q="
-    private const val URL_SUFFIX_GOOGLE_PLUS = "&rct"
     const val UA_DESKTOP =
         "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML like Gecko) Chrome/44.0.2403.155 Safari/537.36"
 
@@ -94,11 +92,7 @@ object BrowserUnit: KoinComponent {
         return if (isMatch) true else try {
             val uri = Uri.parse(url)
             val scheme = uri.scheme
-            if (scheme == "ftp" || scheme == "http" || scheme == "https" || scheme == "intent") {
-                true
-            } else {
-                false
-            }
+            scheme == "ftp" || scheme == "http" || scheme == "https" || scheme == "intent"
         } catch (exception: Exception) {
             false
         }
@@ -112,10 +106,6 @@ object BrowserUnit: KoinComponent {
             val start = temp.indexOf(URL_PREFIX_GOOGLE_PLAY) + URL_PREFIX_GOOGLE_PLAY.length
             val end = temp.indexOf(URL_SUFFIX_GOOGLE_PLAY)
             query = query.substring(start, end)
-        } else if (temp.contains(URL_PREFIX_GOOGLE_PLUS) && temp.contains(URL_SUFFIX_GOOGLE_PLUS)) {
-            val start = temp.indexOf(URL_PREFIX_GOOGLE_PLUS) + URL_PREFIX_GOOGLE_PLUS.length
-            val end = temp.indexOf(URL_SUFFIX_GOOGLE_PLUS)
-            query = query.substring(start, end)
         }
 
         // -- start: remove prefix non-url part
@@ -128,6 +118,7 @@ object BrowserUnit: KoinComponent {
             query = query.substring(foundIndex)
         }
         // -- end: remove prefix non-url part
+
         if (isURL(query) && !query.contains(" ")) {
             if (query.startsWith(URL_SCHEME_ABOUT) || query.startsWith(URL_SCHEME_MAIL_TO)) {
                 return query
@@ -137,6 +128,7 @@ object BrowserUnit: KoinComponent {
             }
             return query
         }
+
         try {
             query = URLEncoder.encode(query, URL_ENCODING)
         } catch (u: UnsupportedEncodingException) {
