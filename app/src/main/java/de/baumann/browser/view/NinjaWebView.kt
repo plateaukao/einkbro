@@ -53,10 +53,6 @@ class NinjaWebView : WebView, AlbumController, KoinComponent {
 
     var shouldHideTranslateContext: Boolean = false
 
-
-    val adBlock: AdBlock by inject()
-    private val javaHosts: Javascript by inject()
-    val cookieHosts: Cookie by inject()
     private val sp: SharedPreferences by inject()
     private val config: ConfigManager by inject()
 
