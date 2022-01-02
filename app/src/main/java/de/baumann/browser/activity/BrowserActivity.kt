@@ -30,7 +30,6 @@ import android.widget.*
 import android.widget.TextView.OnEditorActionListener
 import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.edit
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
@@ -62,7 +61,6 @@ import de.baumann.browser.viewmodel.BookmarkViewModelFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
-import org.koin.core.parameter.parametersOf
 import java.io.*
 import java.util.*
 import kotlin.math.floor
@@ -1056,6 +1054,8 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         return browserContainer.list().firstOrNull { it.albumUrl == url } as NinjaWebView?
     }
 
+    private var preloadedWebView: NinjaWebView? = null
+
     @Synchronized
     private fun addAlbum(
             title: String = "",
@@ -1065,10 +1065,17 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
     ) {
         if (url == null) return
 
-        val newWebView = NinjaWebView(this, this).apply {
+        val newWebView = (preloadedWebView ?: NinjaWebView(this, this)).apply {
             this.albumTitle = title
             this.incognito = incognito
         }
+        preloadedWebView = null
+        newWebView.postDelayed({
+            if (preloadedWebView == null) {
+                preloadedWebView = NinjaWebView(this, this)
+            }
+        }, 2000)
+
         ViewUnit.bound(this, newWebView)
 
         val albumView = newWebView.albumView
