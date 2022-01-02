@@ -11,8 +11,8 @@ android {
         //applicationId "info.plateaukao.einkbro.debug"
         minSdkVersion 21
         targetSdkVersion 31
-        versionCode 82500
-        versionName "8.25.0"
+        versionCode 82600
+        versionName "8.26.0"
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -85,6 +85,8 @@ dependencies {
     // Android
     implementation "io.insert-koin:koin-android-compat:$koin_version"
 
-
     implementation 'androidx.activity:activity-ktx:1.4.0'
+
+    // memory leak detection
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
 }
