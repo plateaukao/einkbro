@@ -6,6 +6,7 @@ import android.content.*
 import android.content.Intent.ACTION_VIEW
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
+import android.graphics.PorterDuff
 import android.media.MediaPlayer
 import android.media.MediaPlayer.OnCompletionListener
 import android.net.Uri
@@ -29,6 +30,7 @@ import android.widget.*
 import android.widget.TextView.OnEditorActionListener
 import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.edit
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
@@ -114,7 +116,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
 
     private val bookmarkManager: BookmarkManager by inject()
 
-    private val epubManager: EpubManager by inject { parametersOf(this@BrowserActivity) }
+    private val epubManager: EpubManager by lazy { EpubManager(this) }
 
     private var uiMode = Configuration.UI_MODE_NIGHT_UNDEFINED
 
@@ -138,7 +140,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
 
     private lateinit var twoPaneController: TwoPaneController
 
-    private val dialogManager: DialogManager by inject { parametersOf(this@BrowserActivity) }
+    private val dialogManager: DialogManager by lazy { DialogManager(this) }
 
     private val recordDb: RecordDb by lazy { RecordDb(this).apply { open(false) } }
 
@@ -757,6 +759,12 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         mainToolbar = findViewById(R.id.main_toolbar)
         omniboxTitle = findViewById(R.id.omnibox_title)
         progressBar = findViewById(R.id.main_progress_bar)
+        if (config.darkMode == DarkMode.FORCE_ON) {
+            val nightModeFlags: Int = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+            if (nightModeFlags == Configuration.UI_MODE_NIGHT_NO) {
+                progressBar.progressTintMode = PorterDuff.Mode.LIGHTEN
+            }
+        }
         initFAB()
         binding.omniboxSetting.setOnLongClickListener {
             showFastToggleDialog()
@@ -1477,8 +1485,8 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
 
     private fun showSavePdfDialog(url: String) {
         dialogManager.showSavePdfDialog(
-            url = url,
-            savePdf = { pdfUrl, fileName -> savePdf(pdfUrl, fileName) }
+                url = url,
+                savePdf = { pdfUrl, fileName -> savePdf(pdfUrl, fileName) },
         )
     }
 

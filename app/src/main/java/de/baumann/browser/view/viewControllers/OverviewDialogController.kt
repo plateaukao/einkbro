@@ -47,7 +47,7 @@ class OverviewDialogController(
         private val splitScreenAction: (String) -> Unit,
 ) : KoinComponent {
     private val config: ConfigManager by inject()
-    private val dialogManager: DialogManager by inject { parametersOf(context) }
+    private val dialogManager: DialogManager = DialogManager(context as Activity)
     private val bookmarkManager: BookmarkManager by inject()
 
     private val recyclerView = binding.homeList2
