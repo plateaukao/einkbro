@@ -3,6 +3,7 @@ package de.baumann.browser.unit
 import android.app.Activity
 import android.app.DownloadManager
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.pm.ShortcutManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -14,7 +15,6 @@ import android.webkit.CookieManager
 import android.webkit.URLUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
-import androidx.preference.PreferenceManager
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.browser.AdBlock
 import de.baumann.browser.browser.Cookie
@@ -24,13 +24,15 @@ import de.baumann.browser.unit.HelperUnit.needGrantStoragePermission
 import de.baumann.browser.view.NinjaToast.showShort
 import de.baumann.browser.view.dialog.TextInputDialog
 import kotlinx.coroutines.launch
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import java.io.*
 import java.net.URLDecoder
 import java.net.URLEncoder
 import java.util.*
 import java.util.regex.Pattern
 
-object BrowserUnit {
+object BrowserUnit: KoinComponent {
     const val PROGRESS_MAX = 100
     const val SUFFIX_PNG = ".png"
     private const val SUFFIX_TXT = ".txt"
@@ -60,6 +62,8 @@ object BrowserUnit {
     private const val URL_SUFFIX_GOOGLE_PLUS = "&rct"
     const val UA_DESKTOP =
         "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML like Gecko) Chrome/44.0.2403.155 Safari/537.36"
+
+    private val sp: SharedPreferences by inject()
 
     @JvmStatic
     fun isURL(url: String?): Boolean {
@@ -138,7 +142,6 @@ object BrowserUnit {
         } catch (u: UnsupportedEncodingException) {
             Log.w("browser", "Unsupported Encoding Exception")
         }
-        val sp = PreferenceManager.getDefaultSharedPreferences(context)
         val custom = sp.getString("sp_search_engine_custom", SEARCH_ENGINE_GOOGLE)
         val i = Integer.valueOf(
             Objects.requireNonNull(

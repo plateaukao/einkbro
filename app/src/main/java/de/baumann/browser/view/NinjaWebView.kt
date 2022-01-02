@@ -42,8 +42,6 @@ import kotlin.math.max
 
 
 class NinjaWebView : WebView, AlbumController, KoinComponent {
-    private var dimen144dp = 0
-    private var dimen108dp = 0
     private var onScrollChangeListener: OnScrollChangeListener? = null
     private val album: Album
     private val webViewClient: NinjaWebViewClient
@@ -112,8 +110,6 @@ class NinjaWebView : WebView, AlbumController, KoinComponent {
     }
 
     init {
-        dimen144dp = resources.getDimensionPixelSize(R.dimen.layout_width_144dp)
-        dimen108dp = resources.getDimensionPixelSize(R.dimen.layout_height_108dp)
         isForeground = false
         adBlock = AdBlock(context)
         javaHosts = Javascript(context)
@@ -264,7 +260,7 @@ class NinjaWebView : WebView, AlbumController, KoinComponent {
     override fun loadUrl(url: String) {
         dTLoadUrl = DebugT("loadUrl")
 
-        if (url.startsWith("javascript")) {
+        if (url.startsWith("javascript:")) {
             // Daniel
             super.loadUrl(url)
             return
