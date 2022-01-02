@@ -136,7 +136,8 @@
         android:layout_width="match_parent"
         android:layout_height="4dp"
         android:maxHeight="4dp"
-        android:progressTint="?android:attr/colorAccent"
+        android:progressTint="?attr/colorControlNormal"
+        tools:progress="30"
         android:layout_alignParentBottom="true"/>
 
     <View
