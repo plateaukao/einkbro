@@ -9,7 +9,7 @@
                 android:width="2px"
                 android:dashWidth="2dp"
                 android:dashGap="5dp"
-                android:color="#e000" />
+                android:color="#8000" />
         </shape>
     </item>
     <item
@@ -26,7 +26,7 @@
                 android:width="2px"
                 android:dashWidth="2dp"
                 android:dashGap="5dp"
-                android:color="#efff" />
+                android:color="#8fff" />
         </shape>
     </item>
 </layer-list>

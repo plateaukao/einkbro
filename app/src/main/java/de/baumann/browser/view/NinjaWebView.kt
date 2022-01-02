@@ -39,6 +39,7 @@ import java.util.*
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 import kotlin.math.max
+import kotlin.math.min
 
 
 class NinjaWebView : WebView, AlbumController, KoinComponent {
@@ -50,12 +51,12 @@ class NinjaWebView : WebView, AlbumController, KoinComponent {
     private var clickHandler: NinjaClickHandler? = null
     private val gestureDetector: GestureDetector = GestureDetector(context, NinjaGestureListener(this))
 
-    val adBlock: AdBlock
-    val cookieHosts: Cookie
     var shouldHideTranslateContext: Boolean = false
 
-    private val javaHosts: Javascript
 
+    val adBlock: AdBlock by inject()
+    private val javaHosts: Javascript by inject()
+    val cookieHosts: Cookie by inject()
     private val sp: SharedPreferences by inject()
     private val config: ConfigManager by inject()
 
@@ -111,9 +112,6 @@ class NinjaWebView : WebView, AlbumController, KoinComponent {
 
     init {
         isForeground = false
-        adBlock = AdBlock(context)
-        javaHosts = Javascript(context)
-        cookieHosts = Cookie(context)
         webViewClient = NinjaWebViewClient(this) { url -> browserController?.addHistory(url) }
         webChromeClient = NinjaWebChromeClient(this)
         clickHandler = NinjaClickHandler(this)
@@ -397,10 +395,9 @@ class NinjaWebView : WebView, AlbumController, KoinComponent {
     fun pageDownWithNoAnimation() {
         if (isVerticalRead) {
             scrollBy(shiftOffset(), 0)
-            scrollX = max(0, scrollX)
+            scrollX = min(computeHorizontalScrollRange() - width, scrollX)
         } else {
             scrollBy(0, shiftOffset())
-            scrollY = max(0, scrollY)
         }
     }
 
