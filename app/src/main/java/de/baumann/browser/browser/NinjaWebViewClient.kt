@@ -43,8 +43,8 @@ class NinjaWebViewClient(
     private val context: Context = ninjaWebView.context
     private val sp: SharedPreferences by inject()
     private val config: ConfigManager by inject()
-    private val adBlock: AdBlock = ninjaWebView.adBlock
-    private val cookie: Cookie = ninjaWebView.cookieHosts
+    private val adBlock: AdBlock by inject()
+    private val cookie: Cookie by inject()
     private val white: Boolean = false
     private val webContentPostProcessor = WebContentPostProcessor()
     private var hasAdBlock: Boolean = true
