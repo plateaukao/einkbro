@@ -58,7 +58,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="4dp"
-            android:background="@drawable/shadow_below"/>
+            android:background="?attr/colorControlNormal"/>
 
         <ListView android:id="@+id/whitelist"
             android:layout_width="match_parent"
