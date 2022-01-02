@@ -4,16 +4,15 @@ import android.app.Application
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
+import de.baumann.browser.browser.AdBlock
+import de.baumann.browser.browser.Cookie
+import de.baumann.browser.browser.Javascript
 import de.baumann.browser.database.BookmarkManager
 import de.baumann.browser.epub.EpubManager
 import de.baumann.browser.preference.ConfigManager
-import de.baumann.browser.preference.DarkMode
 import de.baumann.browser.view.dialog.DialogManager
-import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
-import org.koin.core.component.KoinComponent
 import org.koin.core.context.GlobalContext.startKoin
-import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
 
 class EinkBroApplication : Application() {
@@ -30,6 +29,9 @@ class EinkBroApplication : Application() {
         single { config }
         single { sp }
         single { BookmarkManager(androidContext()) }
+        single { AdBlock(androidContext())}
+        single { Javascript(androidContext())}
+        single { Cookie(androidContext()) }
 
         single { DialogManager(it[0]) }
         single { EpubManager(it[0]) }

@@ -206,10 +206,6 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         initTouchArea()
         updateWebViewCountUI()
 
-        AdBlock(this) // For AdBlock cold boot
-        Javascript(this)
-        Cookie(this)
-
         downloadReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
                 dialogManager.showOkCancelDialog(

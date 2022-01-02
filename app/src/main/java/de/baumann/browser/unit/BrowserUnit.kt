@@ -62,6 +62,9 @@ object BrowserUnit: KoinComponent {
         "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML like Gecko) Chrome/44.0.2403.155 Safari/537.36"
 
     private val sp: SharedPreferences by inject()
+    private val adBlock: AdBlock by inject()
+    private val js: Javascript by inject()
+    val cookie: Cookie by inject()
 
     @JvmStatic
     fun isURL(url: String?): Boolean {
@@ -256,22 +259,10 @@ object BrowserUnit: KoinComponent {
         var count = 0
         try {
             val filename: String
-            var adBlock: AdBlock? = null
-            var js: Javascript? = null
-            var cookie: Cookie? = null
             when (i) {
-                0 -> {
-                    adBlock = AdBlock(context)
-                    filename = context.getString(R.string.export_whitelistAdBlock)
-                }
-                1 -> {
-                    js = Javascript(context)
-                    filename = context.getString(R.string.export_whitelistJS)
-                }
-                else -> {
-                    cookie = Cookie(context)
-                    filename = context.getString(R.string.export_whitelistAdBlock)
-                }
+                0 -> filename = context.getString(R.string.export_whitelistAdBlock)
+                1 -> filename = context.getString(R.string.export_whitelistJS)
+                else -> filename = context.getString(R.string.export_whitelistAdBlock)
             }
             val file =
                 File(context.getExternalFilesDir(null), "browser_backup//$filename$SUFFIX_TXT")
@@ -282,15 +273,15 @@ object BrowserUnit: KoinComponent {
             while (reader.readLine().also { line = it } != null) {
                 when (i) {
                     0 -> if (!action.checkDomain(line, RecordUnit.TABLE_WHITELIST)) {
-                        adBlock!!.addDomain(line)
+                        adBlock.addDomain(line)
                         count++
                     }
                     1 -> if (!action.checkDomain(line, RecordUnit.TABLE_JAVASCRIPT)) {
-                        js!!.addDomain(line)
+                        js.addDomain(line)
                         count++
                     }
                     else -> if (!action.checkDomain(line, RecordUnit.COLUMN_DOMAIN)) {
-                        cookie!!.addDomain(line)
+                        cookie.addDomain(line)
                         count++
                     }
                 }
