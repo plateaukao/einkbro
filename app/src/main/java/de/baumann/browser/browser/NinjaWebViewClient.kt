@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Bitmap
 import android.net.Uri
 import android.net.http.SslError
 import android.os.Build
@@ -52,7 +53,15 @@ class NinjaWebViewClient(
         this.hasAdBlock = enable
     }
 
+    override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+        super.onPageStarted(view, url, favicon)
+        // to make loading faster, disable loading image first, and then turning it on when page is loaded.
+        ninjaWebView.settings.blockNetworkImage = true
+    }
+
     override fun onPageFinished(view: WebView, url: String) {
+        ninjaWebView.settings.blockNetworkImage = false
+
         if (config.boldFontStyle || config.fontStyleSerif || config.whiteBackground) {
             ninjaWebView.updateCssStyle()
         }
