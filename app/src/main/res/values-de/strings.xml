@@ -255,40 +255,8 @@ Du kannst sie durch Drücken der Zurück-Taste, nach Unten-wischen oder einen Kl
 
 &lt;b&gt;Lang Drücken&lt;/b&gt;&lt;br&gt;
 Wenn du das Menü-Symbol oder die \"Navigationstaste\" lang drückst, wird der \"Schnell-Schalter-Dialog\" angezeigt. Wenn du lang auf das \"Lesezeichen-Icon\" drücken, wird der \"Filter-Dialog\" angezeigt.</string>
-    <string name="dialogHelp_overviewTitle">Übersicht</string>
-    <string name="dialogHelp_overviewText">Die \"Übersicht\" besteht aus zwei Teilen (Tab-Vorschau und persönliche Daten). Sie verfügt über ein eigenes Menü. In den Einstellungen kannst du das Verhalten der Übersicht ändern.&lt;br&gt;&lt;br&gt;
-
-&lt;b&gt;Tab-Vorschau&lt;/b&gt;&lt;br&gt;
-Es ist der obere Teil der \"Übersicht\". Um Tabs zu wechseln, klick einfach auf die Vorschau. Um einen Tab zu schließen, lang die Vorschau lange drücken. Wenn du die \"Tab-Vorschau\" nach oben wischt, öffnet sich dein persönlicher Inhalt.&lt;br&gt;&lt;br&gt;
-
-&lt;b&gt;Persönliche Inhalt&lt;/b&gt;&lt;br&gt;
-Hier gibt es drei Teile: die Startseite, deine Lesezeichen und dein Browserverlauf. Wenn du auf einen Eintrag lang drückst, erscheint ein Menü mit weiteren Möglichkeiten.
-    </string>
     <string name="dialogHelp_filterText">Du kannst deinen Lesezeichen mit Filter markieren. So kannst du deine Lesezeichengruppieren. Den Filterdialog kannst du öffnen durch langes Drücken auf das Lesezeichen-Icon. Wenn du einen Eintrag aktivierst, erscheint ein Dialog, in dem du den Namen des Filters bearbeiten kannst.
     </string>
     <!-- Dialog changelog -->
     <!-- License changelog -->
-    <string name="cont_dialog">        &lt;i&gt;Zuerst möchte ich mich bei allen Leuten bedanken, die in irgendeiner Weise an diesem Projekt mitgewirkt haben. Sie haben Themen eingereicht,
-        übersetzt oder anderweitig geholfen. Auf folgenden Seiten können Sie ein aktives Mitglied dieser
-        großen Community werden:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Crowdin:&lt;/b&gt;&lt;br&gt;
-        Crowdin ist eine Online-Plattform, um Anwendungen in andere Sprachen zu übersetzen. Ein großes Dankeschön an alle Übersetzer. Sie können
-        auch helfen.&lt;br&gt;
-        &lt;i&gt;https://crowdin.com/project/foss-browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-
-        &lt;b&gt;XDA-Thread:&lt;/b&gt;&lt;br&gt;
-        XDA ist eine tolle Community für Entwickler und Smartphone-Enthusiasten. Hier können Sie Probleme melden, nach neuen Funktionen fragen
-        und alles, was mit \"EinkBro Browser\" zusammenhängt.&lt;br&gt;
-        &lt;i&gt;https://forum.xda-developers.com/android/apps-games/app-browser-t3500091&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Github:&lt;/b&gt;&lt;br&gt;
-        Auf Github sehen Sie den Quellcode von \"EinkBro Browser\". Das ist die eher technische Lösung: offene Fragen. Fragen Sie nach neuen
-        Funktionen oder helfen Sie sogar bei der Entwicklung oder Übersetzung.&lt;br&gt;
-        &lt;i&gt;https://github.com/scoute-dich/browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
-
-
-        &lt;i&gt;Folgende Personen haben an diesem Projekt mitgewirkt. Wenn ich jemanden vergessen habe, kontaktieren Sie mich bitte:&lt;/i&gt;
-    </string>
 </resources>
