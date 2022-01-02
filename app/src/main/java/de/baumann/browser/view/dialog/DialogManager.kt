@@ -7,22 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.URLUtil
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.lifecycleScope
 import de.baumann.browser.Ninja.R
-import de.baumann.browser.Ninja.databinding.DialogEditBookmarkBinding
 import de.baumann.browser.Ninja.databinding.DialogEditExtensionBinding
-import de.baumann.browser.database.Bookmark
-import de.baumann.browser.database.BookmarkManager
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.unit.HelperUnit
 import de.baumann.browser.unit.ViewUnit
 import de.baumann.browser.unit.ViewUnit.dp
 import de.baumann.browser.view.NinjaToast
-import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 

@@ -32,9 +32,6 @@ class EinkBroApplication : Application() {
         single { AdBlock(androidContext())}
         single { Javascript(androidContext())}
         single { Cookie(androidContext()) }
-
-        single { DialogManager(it[0]) }
-        single { EpubManager(it[0]) }
     }
 
     override fun onCreate() {
