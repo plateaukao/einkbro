@@ -296,20 +296,6 @@
         长按菜单图标/导航按钮可以打开 \"Fast toggle dialog\"。长按书签图标可以打开 \"Filter dialog\"。
     </string>
 
-    <string name="dialogHelp_overviewTitle">预览</string>
-    <string name="dialogHelp_overviewText">
-        There are two parts in the \"Overview\" (tab preview and personal data). There is an extra menu. In the settings
-        you can change the behavior of the \"Overview\".&lt;br>&lt;br>
-
-        &lt;b>Tab preview&lt;/b>&lt;br>
-        It is the upper part of the \"Overview\". To change tabs just click the preview. To close a tab long press the
-        preview. If you swipe the tab preview up, your personal content will open.&lt;br>&lt;br>
-
-        &lt;b>Personal content&lt;/b>&lt;br>
-        There are three parts: the Startsite, your Bookmarks and your History. If you long click an entry
-        a menu with more options will appear.
-    </string>
-
     <string name="dialogHelp_filterText">
         You can tag your bookmarks with filters. In this way you can group your bookmarks. You can open the filter dialog by
         long pressing the bookmark icon. If you activate an entry a dialog will appear, where you can edit the name of the filter.
@@ -333,16 +319,6 @@
 
     <!-- License changelog -->
 
-    <string name="cont_dialog">
-        &lt;i>首先我想要感谢所有不论以何种方式为这个项目作出贡献的人。他们或者提交问题，或者翻译，或者以其他方式给予了帮助。
-        在下面的网站中你可以成为这个社区的一个活跃的成员:&lt;/i>&lt;br>&lt;br>
-
-        &lt;b>Github:&lt;/b>&lt;br>
-        在 Github 上你能看到 \"EinkBro Browser\"的源码。 This is the more technical solution: open issues, ask for new
-        features or even help developing or translating.&lt;br>
-        &lt;i>https://github.com/plateaukao/browser&lt;/i>&lt;br>&lt;br>&lt;br>
-
-    </string>
     <string name="setting_title_toolbar_icons">工具栏上的图标</string>
     <string name="setting_summary_toolbar_icons">设置工具栏上展示的图标</string>
     <string name="setting_summary_desktop">支持网站桌面模式</string>

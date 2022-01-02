@@ -263,44 +263,9 @@
         If you long press the menu icon or the \"Navigation button\", the \"Fast toggle dialog\" will show. If you long
         press the \"Bookmark icon\", the \"Filter dialog\" will show.
     </string>
-    <string name="dialogHelp_overviewTitle">Wszechgląd</string>
-    <string name="dialogHelp_overviewText">        There are two parts in the \"Overview\" (tab preview and personal data). There is an extra menu. In the settings
-        you can change the behavior of the \"Overview\".&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Tab preview&lt;/b&gt;&lt;br&gt;
-        It is the upper part of the \"Overview\". To change tabs just click the preview. To close a tab long press the
-        preview. If you swipe the tab preview up, your personal content will open.&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Personal content&lt;/b&gt;&lt;br&gt;
-        There are three parts: the Startsite, your Bookmarks and your History. If you long click an entry
-        a menu with more options will appear.
-    </string>
     <string name="dialogHelp_filterText">        You can tag your bookmarks with filters. In this way you can group your bookmarks. You can open the filter dialog by
         long pressing the bookmark icon. If you activate an entry a dialog will appear, where you can edit the name of the filter.
     </string>
     <!-- Dialog changelog -->
     <!-- License changelog -->
-    <string name="cont_dialog">        &lt;i&gt;First I would like to thank all people who contributed in any way on this project. They submitted issues,
-        translated or helped in any other way. On following sites you can become a active member of this
-        great community:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Crowdin:&lt;/b&gt;&lt;br&gt;
-        Crowdin is an online plattform to translate applications in other languages. A big thanks to all translators. You can
-        also help.&lt;br&gt;
-        &lt;i&gt;https://crowdin.com/project/foss-browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-
-        &lt;b&gt;XDA-thread:&lt;/b&gt;&lt;br&gt;
-        XDA is a great community for developers and smartphone enthusiasts. Here you can report issues, ask for new features
-        and everything other related to \"EinkBro Browser\".&lt;br&gt;
-        &lt;i&gt;https://forum.xda-developers.com/android/apps-games/app-browser-t3500091&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Github:&lt;/b&gt;&lt;br&gt;
-        On Github you can see the source code of \"EinkBro Browser\". This is the more technical solution: open issues, ask for new
-        features or even help developing or translating.&lt;br&gt;
-        &lt;i&gt;https://github.com/scoute-dich/browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
-
-
-        &lt;i&gt;Following people contributed at this project. If I have forgotten anybody, please contact me:&lt;/i&gt;
-    </string>
 </resources>

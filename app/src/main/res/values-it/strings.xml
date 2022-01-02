@@ -260,44 +260,9 @@
         Se premi a lungo l\'icona del menu o il pulsante \"Navigazione\", la finestra \"Toggle Veloce\" verrà mostrata. Se tieni premuta l\'
         \"Icona Segnalibri\", verrà mostrata la \"finestra filtro\".
     </string>
-    <string name="dialogHelp_overviewTitle">Panoramica</string>
-    <string name="dialogHelp_overviewText">        There are two parts in the \"Overview\" (tab preview and personal data). There is an extra menu. In the settings
-        you can change the behavior of the \"Overview\".&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Tab preview&lt;/b&gt;&lt;br&gt;
-        It is the upper part of the \"Overview\". To change tabs just click the preview. To close a tab long press the
-        preview. If you swipe the tab preview up, your personal content will open.&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Personal content&lt;/b&gt;&lt;br&gt;
-        There are three parts: the Startsite, your Bookmarks and your History. If you long click an entry
-        a menu with more options will appear.
-    </string>
     <string name="dialogHelp_filterText">Puoi segnare i tuoi segnalibri con dei filtri. In questo modo puoi raggruppare i tuoi segnalibri. Puoi aprire la finestra dei filtri
         premendo a lungo l\'icona dei segnalibri. Se attivi una voce, una finestra apparirà, dove puoi modificare il nome del filtro.
     </string>
     <!-- Dialog changelog -->
     <!-- License changelog -->
-    <string name="cont_dialog">        &lt;i&gt;Prima di tutto vorrei ringraziare tutte le persone che hanno contribuito in vari modi al progetto. Hanno sottomesso problemi,
-        tradotto o aiutato in molti modi. Nei seguenti siti puoi diventare un membro attivo di questa
-        grande comunità:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Crowdin:&lt;/b&gt;&lt;br&gt;
-        Crowdin è una piattaforma online per tradurre applicazioni in diverse lingue. Un grande grazie a tutti i traduttori. Anche tu 
-        puoi aiutare.&lt;br&gt;
-        &lt;i&gt;https://crowdin.com/project/foss-browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-
-        &lt;b&gt;XDA-thread:&lt;/b&gt;&lt;br&gt;
-        XDA è una grande comunità di sviluppatori e appassionati di smartphone. Qui puoi riportare bug, chiedere nuove funzioni
-        e qualunque altra cosa riguardante \"EinkBro Browser\".&lt;br&gt;
-        &lt;i&gt;https://forum.xda-developers.com/android/apps-games/app-browser-t3500091&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Github:&lt;/b&gt;&lt;br&gt;
-        Su Github puoi vedere il codice sorgente di \"EinkBro Browser\". Questa è una soluzione più tecnica: aprire \"Issue\", chiedere nuove
-        funzioni o anche aiutare a sviluppare e tradurre.&lt;br&gt;
-        &lt;i&gt;https://github.com/scoute-dich/browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
-
-
-        &lt;i&gt;Le seguenti persone hanno contribuito al progetto. Se ho dimenticato qualcuno, mi si contatti:&lt;/i&gt;
-    </string>
 </resources>

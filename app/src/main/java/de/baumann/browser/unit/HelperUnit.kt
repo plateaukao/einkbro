@@ -169,29 +169,6 @@ object HelperUnit {
     }
 
     @JvmStatic
-    fun showDialogHelp(activity: Activity) {
-        val bottomSheetDialog = BottomSheetDialog(activity)
-        val binding = DialogHelpBinding.inflate(activity.layoutInflater)
-        binding.dialogHelpTitle.text = textSpannable(activity.resources.getString(R.string.dialogHelp_tipTitle))
-        binding.dialogHelpTv.text = textSpannable(activity.resources.getString(R.string.dialogHelp_tipText))
-        binding.dialogHelpTip.setOnClickListener {
-            binding.dialogHelpTipView.visibility = View.VISIBLE
-            binding.dialogHelpOverviewView.visibility = View.GONE
-            binding.dialogHelpTitle.text = textSpannable(activity.resources.getString(R.string.dialogHelp_tipTitle))
-            binding.dialogHelpTv.text = textSpannable(activity.resources.getString(R.string.dialogHelp_tipText))
-        }
-        binding.dialogHelpOverview.setOnClickListener {
-            binding.dialogHelpTipView.visibility = View.GONE
-            binding.dialogHelpOverviewView.visibility = View.VISIBLE
-            binding.dialogHelpTitle.text = textSpannable(activity.resources.getString(R.string.dialogHelp_overviewTitle))
-            binding.dialogHelpTv.text = textSpannable(activity.resources.getString(R.string.dialogHelp_overviewText))
-        }
-        bottomSheetDialog.setContentView(binding.root)
-        bottomSheetDialog.show()
-        setBottomSheetBehavior(bottomSheetDialog, binding.root, BottomSheetBehavior.STATE_EXPANDED)
-    }
-
-    @JvmStatic
     fun fileName(url: String?): String {
         val sdf = SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.getDefault())
         val currentTime = sdf.format(Date())
