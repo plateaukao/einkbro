@@ -277,43 +277,8 @@
         Menü simgesine veya \"Gezinme düğmesi\"ne uzun basarsanız, \"Hızlı aç/kapa iletişim kutusu\" görünecektir.
         \"Yer imi simgesi\"ne uzun basarsanız, \"Filtre iletişim kutusu\" görünecektir.
     </string>
-    <string name="dialogHelp_overviewTitle">Genel Bakış</string>
-    <string name="dialogHelp_overviewText">        There are two parts in the \"Overview\" (tab preview and personal data). There is an extra menu. In the settings
-        you can change the behavior of the \"Overview\".&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Tab preview&lt;/b&gt;&lt;br&gt;
-        It is the upper part of the \"Overview\". To change tabs just click the preview. To close a tab long press the
-        preview. If you swipe the tab preview up, your personal content will open.&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Personal content&lt;/b&gt;&lt;br&gt;
-        There are three parts: the Startsite, your Bookmarks and your History. If you long click an entry
-        a menu with more options will appear.
-    </string>
     <string name="dialogHelp_filterText">        Yer imlerinizi filtrelerle etiketleyebilirsiniz. Bu şekilde yer imlerinizi gruplandırabilirsiniz. Filtre iletişim kutusunu yer imleri
         simgesine uzun basarak açabilirsiniz. Bir girişi aktifleştirirseniz, filtrenin adını düzenleyebileceğiniz bir iletişim kutusu görünecektir.    </string>
     <!-- Dialog changelog -->
     <!-- License changelog -->
-    <string name="cont_dialog">        &lt;i&gt;Öncelikle bu projeye herhangi bir şekilde katkıda bulunan herkese teşekkür etmek istiyorum. Sorunlar bildirdiler,
-        çeviri yaptılar ya da herhangi bir şekilde yardımcı oldular. Aşağıdaki sitelerde bu harika topluluğun aktif bir
-        üyesi olabilirsiniz:&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Crowdin:&lt;/b&gt;&lt;br&gt;
-        Crowdin, uygulamaları diğer dillere tercüme etmek için kullanılan online bir platformdur. Tüm çevirmenlere kocaman teşekkürler.
-        Siz de yardımcı olabilirsiniz.&lt;br&gt;
-        &lt;i&gt;https://crowdin.com/project/foss-browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-
-        &lt;b&gt;XDA-konusu:&lt;/b&gt;&lt;br&gt;
-        XDA, geliştiriciler ve akıllı telefon meraklıları için harika bir topluluktur. Burada sorunlar bildirebilir, yeni özelliklerle ve
-        \"EinkBro Browser\" ile ilgili diğer her şeyle ilgili istekte bulunabilirsiniz.&lt;br&gt;
-        &lt;i&gt;https://forum.xda-developers.com/android/apps-games/app-browser-t3500091&lt;/i&gt;&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Github:&lt;/b&gt;&lt;br&gt;
-        Github\'da \"EinkBro Browser\" kaynak kodunu görebilirsiniz. Bu daha teknik bir çözümdür: sorunlar bildirin, yeni özellik
-        isteğinde bulunun ya da hatta geliştirme veya çevirilere yardım edin.&lt;br&gt;
-        &lt;i&gt;https://github.com/scoute-dich/browser&lt;/i&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
-
-
-        &lt;i&gt;Aşağıdaki kişiler bu projeye katkıda bulundular. Eğer herhangi bir kişiyi unuttuysam, lütfen benimle irtibata geçin:&lt;/i&gt;
-    </string>
 </resources>
