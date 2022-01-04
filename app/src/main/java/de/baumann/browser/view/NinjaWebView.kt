@@ -300,7 +300,6 @@ class NinjaWebView : WebView, AlbumController, KoinComponent {
 
     override fun keepPlaying(): Boolean = keepPlaying
 
-    @Synchronized
     override fun activate() {
         requestFocus()
         isForeground = true
@@ -313,14 +312,12 @@ class NinjaWebView : WebView, AlbumController, KoinComponent {
         }
     }
 
-    @Synchronized
     override fun deactivate() {
         clearFocus()
         isForeground = false
         album.deactivate()
     }
 
-    @Synchronized
     fun update(progress: Int) {
         if (isForeground) {
             browserController?.updateProgress(progress)
@@ -335,14 +332,12 @@ class NinjaWebView : WebView, AlbumController, KoinComponent {
         }
     }
 
-    @Synchronized
     fun update(title: String?) {
         album.albumTitle = title ?: ""
         // so that title on bottom bar can be updated
         browserController?.updateTitle(album.albumTitle)
     }
 
-    @Synchronized
     override fun destroy() {
         stopLoading()
         onPause()

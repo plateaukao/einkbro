@@ -56,7 +56,7 @@ class MenuDialog(
         binding.buttonSplitScreen.setOnClickListener { dialog.dismissWithAction(toggleSplitScreenAction) }
         binding.buttonFontSize.setOnClickListener { dialog.dismissWithAction(fontSizeAction) }
         binding.buttonCloseTab.setOnClickListener { dialog.dismissWithAction(closeTabAction) }
-        binding.buttonQuit.setOnClickListener { dialog.dismissWithAction { (context as Activity).finish() } }
+        binding.buttonQuit.setOnClickListener { dialog.dismissWithAction { (context as Activity).finishAndRemoveTask() } }
         binding.buttonBold.setOnClickListener { dialog.dismissWithAction { config.boldFontStyle = !config.boldFontStyle } }
         binding.buttonWhiteBackground.setOnClickListener { dialog.dismissWithAction { config.whiteBackground = !config.whiteBackground} }
         binding.buttonReader.setOnClickListener { dialog.dismissWithAction { ninjaWebView.toggleReaderMode() } }

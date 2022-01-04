@@ -161,7 +161,7 @@ class NinjaWebViewClient(
     }
 
     override fun shouldInterceptRequest(view: WebView, url: String): WebResourceResponse? {
-        if (hasAdBlock && !white && adBlock.isAd(url)) {
+        if (hasAdBlock && !white && adBlock.isAd(url))  {
             return adTxtResponse
         }
         if (!sp.getBoolean(context.getString(R.string.sp_cookies), true)) {
