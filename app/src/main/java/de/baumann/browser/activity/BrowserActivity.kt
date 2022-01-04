@@ -407,13 +407,14 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
 
         currentAlbumController = controller
         currentAlbumController?.activate()
-        updateTitle()
 
         updateSavedAlbumInfo()
         updateWebViewCountUI()
 
         progressBar.visibility = GONE
         ninjaWebView = controller as NinjaWebView
+
+        updateTitle()
     }
 
     override fun updateAutoComplete() {
