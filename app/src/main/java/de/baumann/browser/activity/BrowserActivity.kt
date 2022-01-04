@@ -391,7 +391,6 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         return false
     }
 
-    @Synchronized
     override fun showAlbum(controller: AlbumController) {
         if (currentAlbumController != null) {
             if (currentAlbumController == controller) {
@@ -1057,7 +1056,6 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
 
     private var preloadedWebView: NinjaWebView? = null
 
-    @Synchronized
     private fun addAlbum(
             title: String = "",
             url: String? = config.favoriteUrl,
@@ -1129,7 +1127,6 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         )
     }
 
-    @Synchronized
     private fun updateAlbum(url: String?) {
         if (url == null) return
         (currentAlbumController as NinjaWebView).loadUrl(url)
@@ -1149,7 +1146,6 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         }
     }
 
-    @Synchronized
     override fun removeAlbum(controller: AlbumController) {
         updateSavedAlbumInfo()
 

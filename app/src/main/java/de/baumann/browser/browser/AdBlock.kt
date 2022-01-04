@@ -43,7 +43,6 @@ class AdBlock(private val context: Context): KoinComponent {
         return config.adSites.any { url.contains(it, true) }
     }
 
-    @Synchronized
     fun addDomain(domain: String?) {
         with(RecordDb(context)) {
             open(true)
@@ -53,7 +52,6 @@ class AdBlock(private val context: Context): KoinComponent {
         whitelist.add(domain)
     }
 
-    @Synchronized
     fun removeDomain(domain: String?) {
         with(RecordDb(context)) {
             open(true)
@@ -63,7 +61,6 @@ class AdBlock(private val context: Context): KoinComponent {
         whitelist.remove(domain)
     }
 
-    @Synchronized
     fun clearDomains() {
         with(RecordDb(context)) {
             open(true)
