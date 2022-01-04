@@ -1,6 +1,5 @@
 package de.baumann.browser.browser
 
-import kotlin.jvm.Synchronized
 import de.baumann.browser.view.NinjaWebView
 import java.util.*
 
@@ -10,13 +9,10 @@ class BrowserContainer {
         return list[index]
     }
 
-    @Synchronized
     fun add(controller: AlbumController) = list.add(controller)
 
-    @Synchronized
     fun add(controller: AlbumController, index: Int) = list.add(index, controller)
 
-    @Synchronized
     fun remove(controller: AlbumController) {
         (controller as NinjaWebView).destroy()
         list.remove(controller)
@@ -28,7 +24,6 @@ class BrowserContainer {
 
     fun size(): Int = list.size
 
-    @Synchronized
     fun clear() {
         for (albumController in list) {
             (albumController as NinjaWebView).destroy()
