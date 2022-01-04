@@ -53,15 +53,7 @@ class NinjaWebViewClient(
         this.hasAdBlock = enable
     }
 
-    override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-        super.onPageStarted(view, url, favicon)
-        // to make loading faster, disable loading image first, and then turning it on when page is loaded.
-        ninjaWebView.settings.blockNetworkImage = true
-    }
-
     override fun onPageFinished(view: WebView, url: String) {
-        ninjaWebView.settings.blockNetworkImage = false
-
         if (config.boldFontStyle || config.fontStyleSerif || config.whiteBackground) {
             ninjaWebView.updateCssStyle()
         }
