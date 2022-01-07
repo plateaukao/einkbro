@@ -488,7 +488,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
             R.id.omnibox_back -> if (ninjaWebView.canGoBack()) {
                 ninjaWebView.goBack()
             } else {
-                removeAlbum(currentAlbumController!!)
+                NinjaToast.show(this, getString(R.string.no_previous_page))
             }
             R.id.toolbar_forward -> if (ninjaWebView.canGoForward()) {
                 ninjaWebView.goForward()
@@ -944,7 +944,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
             "03" -> if (ninjaWebView.canGoBack()) {
                 ninjaWebView.goBack()
             } else {
-                removeAlbum(currentAlbumController!!)
+                NinjaToast.show(this, getString(R.string.no_previous_page))
             }
             "04" -> ninjaWebView.jumpToTop()
             "05" -> ninjaWebView.pageDownWithNoAnimation()
