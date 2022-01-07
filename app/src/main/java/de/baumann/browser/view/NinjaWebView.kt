@@ -361,16 +361,6 @@ class NinjaWebView : WebView, AlbumController, KoinComponent {
         requestFocusNodeHref(click)
     }
 
-    private fun prepareRecord(): Boolean {
-        val title = title
-        val url = url
-        return !(title == null || title.isEmpty()
-                || url == null || url.isEmpty()
-                || url.startsWith(BrowserUnit.URL_SCHEME_ABOUT)
-                || url.startsWith(BrowserUnit.URL_SCHEME_MAIL_TO)
-                || url.startsWith(BrowserUnit.URL_SCHEME_INTENT))
-    }
-
     fun jumpToTop() {
         scrollTo(0, 0)
     }
