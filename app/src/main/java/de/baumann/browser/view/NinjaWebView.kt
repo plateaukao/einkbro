@@ -269,7 +269,7 @@ class NinjaWebView : WebView, AlbumController, KoinComponent {
         albumTitle = ""
         // show progress right away
         if (url.startsWith("https")) {
-            update(5)
+            postDelayed( { if (progress < FAKE_PRE_PROGRESS) update(FAKE_PRE_PROGRESS) }, 200)
         }
 
         settings.cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
@@ -582,6 +582,8 @@ class NinjaWebView : WebView, AlbumController, KoinComponent {
 
 
     companion object {
+        private const val FAKE_PRE_PROGRESS = 5
+
         private const val secondPart =
                 """setTimeout(
                     function() { 

@@ -90,6 +90,9 @@ class EpubManager(private val context: Context) {
 
     private fun openBook(uri: Uri): Book {
         try {
+            val takeFlags: Int = (Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+            context.contentResolver.takePersistableUriPermission(uri, takeFlags)
+
             val epubInputStream: InputStream = context.contentResolver.openInputStream(uri)
                     ?: return createBook("", "EinkBro")
 
