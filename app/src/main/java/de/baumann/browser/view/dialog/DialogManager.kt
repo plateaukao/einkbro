@@ -41,21 +41,31 @@ class DialogManager(
         }
     }
 
-    fun showSaveEpubDialog(onNextAction: (Boolean) -> Unit) {
+    fun showSaveEpubDialog(chooseFromPicker: (Boolean) -> Unit) {
         val options = arrayOf(
-            activity.resources.getString(R.string.existing_epub),
-            activity.resources.getString(R.string.a_new_epub)
+            activity.resources.getString(R.string.select_saved_epub),
+            activity.resources.getString(R.string.new_epub_or_from_picker)
         )
 
         val builder = AlertDialog.Builder(activity, R.style.TouchAreaDialog)
         builder.setTitle(activity.resources.getString(R.string.save_to))
         builder.setItems(options) { _, index ->
             when(index) {
-                0 -> onNextAction(false)
-                1 -> onNextAction(true)
+                0 -> chooseFromPicker(false)
+                1 -> chooseFromPicker(true)
             }
         }
         builder.show()
+    }
+
+    fun showSelectSavedEpubDialog(onNextAction: (String) -> Unit) {
+        val options = config.savedEpubFileInfos.map { it.title }.toTypedArray()
+        val uris = config.savedEpubFileInfos.map { it.uri }
+
+        AlertDialog.Builder(activity, R.style.TouchAreaDialog).apply {
+            setTitle(activity.resources.getString(R.string.save_to))
+            setItems(options) { _, index -> onNextAction(uris[index]) }
+        }.show()
     }
 
     fun showSavePdfDialog(

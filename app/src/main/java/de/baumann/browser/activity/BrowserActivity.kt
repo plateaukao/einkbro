@@ -31,12 +31,15 @@ import android.widget.TextView.OnEditorActionListener
 import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
 import androidx.core.content.edit
+import androidx.core.net.toUri
 import androidx.core.view.isVisible
+import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.lifecycleScope
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.*
 import de.baumann.browser.browser.*
 import de.baumann.browser.database.*
+import de.baumann.browser.epub.EpubFileInfo
 import de.baumann.browser.epub.EpubManager
 import de.baumann.browser.preference.*
 import de.baumann.browser.service.ClearService
@@ -609,7 +612,9 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
 
     private fun saveEpub(fileUri: Uri) {
         lifecycleScope.launch(Dispatchers.Main) {
-            val bookName = if (isNewEpubFile) epubManager.getBookName() else ""
+            val isNewFile = (DocumentFile.fromSingleUri(this@BrowserActivity, fileUri)?.length() ?: 0).toInt() == 0
+
+            val bookName = if (isNewFile) epubManager.getBookName() else ""
             val chapterName = epubManager.getChapterName(ninjaWebView.title)
 
             val progressDialog = ProgressDialog(this@BrowserActivity, R.style.TouchAreaDialog).apply {
@@ -619,15 +624,20 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
 
             val rawHtml = ninjaWebView.getRawHtml()
             epubManager.saveEpub(
-                    isNewEpubFile,
+                    isNewFile,
                     fileUri,
                     rawHtml,
                     bookName,
                     chapterName,
-                    ninjaWebView.url ?: "") {
+                    ninjaWebView.url ?: "") { savedBookName ->
                 progressDialog.dismiss()
                 HelperUnit.openFile(this@BrowserActivity, fileUri, Constants.MIME_TYPE_EPUB)
-                isNewEpubFile = false
+
+                // save epub file info to preference
+                val bookUri = fileUri.toString()
+                if (config.savedEpubFileInfos.none { it.uri == bookUri }) {
+                    config.savedEpubFileInfos = config.savedEpubFileInfos + EpubFileInfo(savedBookName, bookUri)
+                }
             }
         }
     }
@@ -1559,9 +1569,17 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
     }
 
     private var isNewEpubFile = false
-    private fun showSaveEpubDialog() = dialogManager.showSaveEpubDialog { isNew ->
-        isNewEpubFile = isNew
-        epubManager.showEpubFilePicker()
+    private fun showSaveEpubDialog() = dialogManager.showSaveEpubDialog { chooseFromPicker ->
+        if (chooseFromPicker) {
+            epubManager.showEpubFilePicker()
+        } else {
+            if (config.savedEpubFileInfos.isEmpty()) {
+                NinjaToast.show(this@BrowserActivity, "No saved epubs")
+                epubManager.showEpubFilePicker()
+            } else {
+                dialogManager.showSelectSavedEpubDialog { saveEpub(it.toUri()) }
+            }
+        }
     }
 
     private fun showMenuDialog(): Boolean {

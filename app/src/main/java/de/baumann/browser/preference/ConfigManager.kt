@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.os.Build
 import android.print.PrintAttributes
 import androidx.core.content.edit
+import de.baumann.browser.epub.EpubFileInfo
 import de.baumann.browser.util.Constants
 import de.baumann.browser.util.TranslationLanguage
 import de.baumann.browser.view.Orientation
@@ -273,6 +274,10 @@ class ConfigManager(
         get() = sp.getStringSet(K_ADBLOCK_SITES, mutableSetOf()) ?: mutableSetOf()
         set(value) = sp.edit { putStringSet(K_ADBLOCK_SITES, value) }
 
+    var savedEpubFileInfos: List<EpubFileInfo>
+        get() = sp.getString(K_SAVED_EPUBS, "")?.toEpubFileInfoList() ?: mutableListOf()
+        set(value) = sp.edit { putString(K_SAVED_EPUBS, toEpubFileInfosString(value))}
+
     var darkMode:DarkMode
         get() = DarkMode.values()[sp.getString(K_DARK_MODE, "0")?.toInt() ?: 0]
         set(value) = sp.edit { putString(K_DARK_MODE, value.ordinal.toString()) }
@@ -336,9 +341,20 @@ class ConfigManager(
         const val K_TOUCH_AREA_OFFSET = "sp_touch_area_offset"
         const val K_TOUCH_AREA_ACTION_SWITCH = "sp_touch_area_action_switch"
         const val K_TOUCH_AREA_HIDE_WHEN_INPUT = "sp_touch_area_hide_when_input"
+        const val K_SAVED_EPUBS = "sp_saved_epubs"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
+        private const val EPUB_FILE_INFO_SEPARATOR = "::::"
     }
+
+    private fun String.toEpubFileInfoList(): MutableList<EpubFileInfo> =
+            if (this.isEmpty() || this == EPUB_FILE_INFO_SEPARATOR) mutableListOf()
+            else this.split(EPUB_FILE_INFO_SEPARATOR).map { fileString ->
+                EpubFileInfo.fromString(fileString)
+            }.toMutableList()
+
+    private fun toEpubFileInfosString(list: List<EpubFileInfo>): String =
+            list.joinToString(separator = EPUB_FILE_INFO_SEPARATOR) { it.toPrefString() }
 }
 
 enum class PaperSize(val sizeString: String, val mediaSize: PrintAttributes.MediaSize) {
