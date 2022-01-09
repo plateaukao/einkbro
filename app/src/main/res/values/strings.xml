@@ -426,8 +426,8 @@
     <string name="toolbar_setting">Toolbar setting</string>
     <string name="menu_save_epub">save epub</string>
     <string name="save_to">Save to...</string>
-    <string name="existing_epub">Existing Epub</string>
-    <string name="a_new_epub">a new Epub</string>
+    <string name="select_saved_epub">Select Saved Epub</string>
+    <string name="new_epub_or_from_picker">new Epub or from picker</string>
     <string name="title">Chapter name</string>
     <string name="title_in_toc">chapter name in Table of Content</string>
     <string name="book_name">Book Name</string>

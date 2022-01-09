@@ -293,8 +293,8 @@
     <string name="toolbar_setting">工具列\n設定</string>
     <string name="menu_save_epub">儲存epub</string>
     <string name="save_to">儲存至...</string>
-    <string name="existing_epub">既有的 Epub</string>
-    <string name="a_new_epub">新建立的 Epub</string>
+    <string name="select_saved_epub">選擇之前儲存的 Epub</string>
+    <string name="new_epub_or_from_picker">新 Epub或開啟 Picker</string>
     <string name="title">章節標題</string>
     <string name="title_in_toc">目錄中的章節名稱</string>
     <string name="book_name">書籍名稱</string>
