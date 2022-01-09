@@ -59,7 +59,7 @@ class EpubManager(private val context: Context) {
             bookName: String,
             chapterName: String,
             currentUrl: String,
-            doneAction: () -> Unit
+            doneAction: (String) -> Unit
     ) {
         val webUri = Uri.parse(currentUrl)
         val domain = webUri.host ?: "EinkBro"
@@ -78,9 +78,8 @@ class EpubManager(private val context: Context) {
 
             saveBook(book, fileUri)
 
+            doneAction.invoke(book.title)
         }
-
-        doneAction.invoke()
     }
 
     private fun createBook(domain: String, bookName: String): Book = Book().apply {
