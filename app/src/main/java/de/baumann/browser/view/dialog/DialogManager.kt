@@ -10,6 +10,8 @@ import android.webkit.URLUtil
 import androidx.appcompat.app.AlertDialog
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.DialogEditExtensionBinding
+import de.baumann.browser.Ninja.databinding.DialogSavedEpubListBinding
+import de.baumann.browser.Ninja.databinding.ListItemEpubFileBinding
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.unit.HelperUnit
 import de.baumann.browser.unit.ViewUnit
@@ -22,6 +24,7 @@ class DialogManager(
     private val activity: Activity
 ): KoinComponent {
     private val config: ConfigManager by inject()
+    private val inflater = LayoutInflater.from(activity)
 
     fun showFontSizeChangeDialog(
         changeFontSizeAction: (fontSize: Int) -> Unit
@@ -59,20 +62,42 @@ class DialogManager(
     }
 
     fun showSelectSavedEpubDialog(onNextAction: (String) -> Unit) {
-        val options = config.savedEpubFileInfos.map { it.title }.toTypedArray()
-        val uris = config.savedEpubFileInfos.map { it.uri }
+        val binding = DialogSavedEpubListBinding.inflate(inflater)
+        val dialog = AlertDialog.Builder(activity, R.style.TouchAreaDialog)
+                .apply { setView(binding.root) }
+                .show()
 
-        AlertDialog.Builder(activity, R.style.TouchAreaDialog).apply {
-            setTitle(activity.resources.getString(R.string.save_to))
-            setItems(options) { _, index -> onNextAction(uris[index]) }
-        }.show()
+        setupSavedEpubFileList(binding , dialog, onNextAction)
+    }
+
+    private fun setupSavedEpubFileList(
+       binding: DialogSavedEpubListBinding,
+       dialog:Dialog,
+       onNextAction: (String) -> Unit
+    ) {
+        config.savedEpubFileInfos.forEach { epubFileInfo ->
+            val itemBinding = ListItemEpubFileBinding.inflate(inflater)
+            with (itemBinding.epubTitle) {
+                text = epubFileInfo.title
+                setOnClickListener {
+                    onNextAction(epubFileInfo.uri)
+                    dialog.dismiss()
+                }
+            }
+            itemBinding.buttonHide.setOnClickListener {
+                config.removeSavedEpubFile(epubFileInfo)
+                binding.epubInfoContainer.removeView(itemBinding.root)
+            }
+
+            binding.epubInfoContainer.addView(itemBinding.root)
+        }
     }
 
     fun showSavePdfDialog(
         url: String,
         savePdf: (String, String) -> Unit,
     ) {
-        val menuView = DialogEditExtensionBinding.inflate(LayoutInflater.from(activity))
+        val menuView = DialogEditExtensionBinding.inflate(inflater)
         val editTitle = menuView.dialogEdit.apply {
             setHint(R.string.dialog_title_hint)
             setText(HelperUnit.fileName(url))
