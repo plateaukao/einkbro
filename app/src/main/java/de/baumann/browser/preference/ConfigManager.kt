@@ -355,6 +355,14 @@ class ConfigManager(
 
     private fun toEpubFileInfosString(list: List<EpubFileInfo>): String =
             list.joinToString(separator = EPUB_FILE_INFO_SEPARATOR) { it.toPrefString() }
+
+    fun addSavedEpubFile(epubFileInfo: EpubFileInfo) {
+        savedEpubFileInfos = savedEpubFileInfos.toMutableList().apply { add(epubFileInfo) }
+    }
+
+    fun removeSavedEpubFile(epubFileInfo: EpubFileInfo) {
+        savedEpubFileInfos = savedEpubFileInfos.toMutableList().apply { remove(epubFileInfo) }
+    }
 }
 
 enum class PaperSize(val sizeString: String, val mediaSize: PrintAttributes.MediaSize) {

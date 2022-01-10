@@ -25,23 +25,23 @@ import java.net.URL
 
 class EpubManager(private val context: Context) {
 
-    suspend fun getChapterName(defaultTitle: String?): String {
+    suspend fun getChapterName(defaultTitle: String?): String? {
         var chapterName = defaultTitle?: "no title"
         return TextInputDialog(
             context,
             context.getString(R.string.title),
             context.getString(R.string.title_in_toc),
             chapterName
-        ).show() ?: chapterName
+        ).show()
     }
 
-    suspend fun getBookName(): String {
+    suspend fun getBookName(): String? {
         return TextInputDialog(
             context,
             context.getString(R.string.book_name),
             context.getString(R.string.book_name_description),
             "einkbro book"
-        ).show() ?: "einkbro book"
+        ).show()
     }
 
     fun showEpubFilePicker() {

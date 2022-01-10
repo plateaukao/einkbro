@@ -62,6 +62,7 @@ import de.baumann.browser.view.viewControllers.TwoPaneController
 import de.baumann.browser.viewmodel.BookmarkViewModel
 import de.baumann.browser.viewmodel.BookmarkViewModelFactory
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import java.io.*
@@ -617,26 +618,29 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
             val bookName = if (isNewFile) epubManager.getBookName() else ""
             val chapterName = epubManager.getChapterName(ninjaWebView.title)
 
-            val progressDialog = ProgressDialog(this@BrowserActivity, R.style.TouchAreaDialog).apply {
-                setTitle(R.string.saving_epub)
-                show()
-            }
+            if (bookName != null && chapterName != null) {
 
-            val rawHtml = ninjaWebView.getRawHtml()
-            epubManager.saveEpub(
-                    isNewFile,
-                    fileUri,
-                    rawHtml,
-                    bookName,
-                    chapterName,
-                    ninjaWebView.url ?: "") { savedBookName ->
-                progressDialog.dismiss()
-                HelperUnit.openFile(this@BrowserActivity, fileUri, Constants.MIME_TYPE_EPUB)
+                val progressDialog = ProgressDialog(this@BrowserActivity, R.style.TouchAreaDialog).apply {
+                    setTitle(R.string.saving_epub)
+                    show()
+                }
 
-                // save epub file info to preference
-                val bookUri = fileUri.toString()
-                if (config.savedEpubFileInfos.none { it.uri == bookUri }) {
-                    config.savedEpubFileInfos = config.savedEpubFileInfos + EpubFileInfo(savedBookName, bookUri)
+                val rawHtml = ninjaWebView.getRawHtml()
+                epubManager.saveEpub(
+                        isNewFile,
+                        fileUri,
+                        rawHtml,
+                        bookName,
+                        chapterName,
+                        ninjaWebView.url ?: "") { savedBookName ->
+                    progressDialog.dismiss()
+                    HelperUnit.openFile(this@BrowserActivity, fileUri, Constants.MIME_TYPE_EPUB)
+
+                    // save epub file info to preference
+                    val bookUri = fileUri.toString()
+                    if (config.savedEpubFileInfos.none { it.uri == bookUri }) {
+                        config.addSavedEpubFile(EpubFileInfo(savedBookName, bookUri))
+                    }
                 }
             }
         }
