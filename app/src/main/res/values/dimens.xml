@@ -2,12 +2,6 @@
 
 <resources>
 
-    <dimen name="layout_width_156dp">156dp</dimen>
-    <dimen name="layout_width_144dp">144dp</dimen>
-
-    <dimen name="layout_height_117dp">117dp</dimen>
-    <dimen name="layout_height_108dp">108dp</dimen>
-
     <dimen name="layout_margin_56dp">56dp</dimen>
     <dimen name="layout_margin_16dp">16dp</dimen>
     <dimen name="layout_margin_12dp">12dp</dimen>

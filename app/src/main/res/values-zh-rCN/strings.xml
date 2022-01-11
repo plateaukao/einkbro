@@ -9,7 +9,6 @@
     <string name="album_title_bookmarks">书签</string>
     <string name="album_title_history">历史</string>
     <string name="album_title_home">首页</string>
-    <string name="album_title_files">档案</string>
     <string name="search_hint">搜索</string>
 
     <string name="color_red">红</string>
@@ -24,7 +23,6 @@
     <string name="color_brown">咖啡</string>
     <string name="color_grey">灰</string>
     <!-- Menu -->
-    <string name="main_menu_tabPreview">开启标签页列表</string>
     <string name="main_menu_new_tab">新增标签页(背景)</string>
     <string name="main_menu_new_tabOpen">新增标签页(前景)</string>
     <string name="main_omnibox_input_hint">搜索或输入网址</string>
@@ -39,46 +37,30 @@
     <string name="menu_download">下载</string>
     <string name="menu_fav">设定为主页</string>
     <string name="menu_sc">保存到主屏幕</string>
-    <string name="menu_sort">排序</string>
-    <string name="menu_filter">过滤</string>
 
-    <string name="menu_share_screenshot">分享截图</string>
     <string name="menu_share_link">分享网址</string>
 
     <string name="menu_save_screenshot">截图</string>
-    <string name="menu_save_home">存为首页</string>
     <string name="menu_save_bookmark">加入书签</string>
     <string name="menu_save_as">储存 PDF</string>
     <string name="menu_save_pdf">另存为 PDF</string>
-    <string name="menu_share_pdf">分享 PDF</string>
     <string name="menu_shareClipboard">复制网址</string>
 
     <string name="menu_other_searchSite">页面中查找</string>
-    <string name="menu_other_fileManager">文件管理器</string>
     <string name="menu_other_info">关于 \"EinkBro 浏览器\"</string>
-    <string name="menu_other_help">帮助</string>
 
     <!-- Dialog -->
-    <string name="dialog_toggle_reload">重新载入</string>
     <string name="dialog_title_hint">标题:</string>
     <string name="dialog_url_hint">网址:</string>
     <string name="dialog_extension_hint">扩展名 (例如: \".jpg\"):</string>
     <string name="dialog_title_download">你想下载文件吗？</string>
     <string name="dialog_content_resubmission">想要重新发送数据吗？</string>
-    <string name="dialog_content_ssl_error">该网站的证书不可靠。继续前往？</string>
-    <string name="dialog_sortName">按名称排序</string>
-    <string name="dialog_sortIcon">按图标排序</string>
-    <string name="dialog_sortDate">按日期排序</string>
     <!-- Settings -->
     <string name="setting_label">设置</string>
     <!-- browser setting -->
-    <string name="setting_title_browser">浏览器设置</string>
     <string name="setting_title_clear_control">数据控制</string>
     <string name="setting_title_start_control">启动设置</string>
-    <string name="setting_summary_clear_control">清除浏览器数据或是当离开应用时决定要清除什么数据</string>
-    <string name="setting_summary_start_control">决定当启动时那些组件被启用</string>
     <string name="setting_title_search_engine">搜索引擎</string>
-    <string name="setting_summary_search_engine">选择你想要使用的搜索引擎</string>
     <string name="setting_summary_search_engine_google">Google</string>
     <string name="setting_summary_search_engine_duckduckgo">DuckDuckGo</string>
     <string name="setting_summary_search_engine_startpage">StartPage</string>
@@ -89,8 +71,6 @@
     <string name="setting_summary_search_engine_qwant">Qwant</string>
     <string name="setting_summary_search_engine_ecosia">Ecosia</string>
 
-    <string name="setting_title_inverted">反转颜色</string>
-    <string name="setting_summary_inverted">如果开启，网页内容会以相反的颜色呈现，有点类似于 Dark Mode</string>
     <string name="setting_title_font">字体大小</string>
     <string name="setting_summary_font">改变网页的字体大小</string>
     <string name="setting_title_remote">远程内容</string>
@@ -126,7 +106,6 @@
     <!-- browser clear -->
     <string name="data_summary">所有的文件都会被导出到SD卡下的目录：\"Android/data/de.baumann.browser/files/browser_backup/\"。
         如果你卸载 \"EinkBro Browser\"，这个目录会被删除掉。因此最好将文件备份到安全的地方。</string>
-    <string name="clear_menu_done_all">全部完成</string>
     <string name="clear_title_quit">退出应用时清除</string>
     <string name="clear_summary_quit">每次你退出 \"EinkBro Browser\"， 所有上面选中的数据都会被删除.</string>
     <string name="clear_title_cache">清除缓存</string>
@@ -138,31 +117,19 @@
     <string name="clear_summary_deleteDatabase">删除整個数据库(起始页, 书签, 历史记录以及所有的白名单).</string>
 
     <!-- App setting -->
-    <string name="setting_title_app">应用设置</string>
     <string name="setting_title_ui">操作行为/界面</string>
     <string name="setting_title_data">备份</string>
-    <string name="setting_summary_ui">改变操作行为或界面，让它更符合你的使用习惯</string>
-    <string name="setting_summary_data">导入和导出应用数据 (白名单, 书签).</string>
 
     <string name="setting_filter">过滤书签</string>
-    <string name="setting_filter_summary">长按预览中的书签图标以显示过滤窗口。选择需要的过滤器。</string>
     <string name="setting_title_fav">我的主页</string>
-    <string name="setting_summary_fav">设置首页要开启的网页。输入 \"about:blank\" 会开启空白页</string>
 
     <string name="setting_title_searchEngine">设置搜索引擎</string>
-    <string name="setting_summary_searchEngine">自定义搜索 URL. 请选择 \"Custom search engine\" 为当前搜索方式</string>
 
     <string name="setting_title_userAgent">自定义 User Agent</string>
-    <string name="setting_summary_userAgent">输入自定义的 User Agent。留空会使用默认值。</string>
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">隐藏工具栏</string>
     <string name="setting_summary_hide">当上下滚动浏览页面时，隐藏工具栏使用整个屏幕显示页面内容。如果你几点后退按钮会退出全屏模式。</string>
 
-    <string name="setting_theme">主题</string>
-    <string name="setting_theme_summary">设置应用主题。</string>
-    <string name="setting_theme_system">系统主题</string>
-    <string name="setting_theme_light">亮色主题</string>
-    <string name="setting_theme_dark">暗色主题</string>
     <string name="setting_title_theme">界面</string>
     <string name="setting_title_behavior">行为</string>
     <string name="setting_summary_toolbarShow">点击后退按钮时，在回退到上一个浏览记录之前，工具栏会出现。</string>
@@ -179,10 +146,6 @@
     <string name="setting_title_confirm_tab_close">确认关闭标签页</string>
     <string name="setting_summary_confirm_tab_close">关闭标签页时的确认话框</string>
     <string name="setting_overView">画面预览</string>
-    <string name="setting_overView_onStart_title">启动时展示的内容</string>
-    <string name="setting_overView_onStart_summary">每次启动应用时都展示画面预览</string>
-    <string name="setting_overView_hide_title">隐藏标签页预览</string>
-    <string name="setting_overView_hide_summary">在展开的预览页面中，标签页的预览会被隐藏。这样你会有更多的书签空间。</string>
 
     <string name="setting_gestures">手势</string>
     <string name="setting_gestures_use_title">使用手势</string>
@@ -212,16 +175,10 @@
 
     <!-- Data -->
 
-    <string name="setting_title_export_whitelist">导出 AdBlock 白名单</string>
-    <string name="setting_title_import_whitelist">导入 AdBlock 白名单</string>
     <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
 
-    <string name="setting_title_export_whitelistJS">Export JavaScript whitelist</string>
-    <string name="setting_title_import_whitelistJS">Import JavaScript whitelist</string>
     <string name="export_whitelistJS">export_whitelist_Javascript</string>
 
-    <string name="setting_title_export_whitelistCookie">Export Cookie whitelist</string>
-    <string name="setting_title_import_whitelistCookie">Import Cookie whitelist</string>
     <string name="export_whitelistCookie">export_whitelist_Cookie</string>
 
     <string name="setting_title_export_appData">导出应用数据</string>
@@ -232,18 +189,11 @@
     <string name="hint_database">删除你当前所有的设置和数据，继续？</string>
 
     <!-- Others setting -->
-    <string name="setting_title_others">其他</string>
     <string name="setting_title_license">License</string>
     <string name="setting_title_appSettings">应用设置</string>
-    <string name="setting_summary_appSettings">打开\"EinkBro Browser\"的系统设置。
-        根据安卓版本，你可以设置应用权限，清除应用数据等。</string>
-    <string name="setting_title_community">Contributing</string>
 
     <!-- Toast -->
-    <string name="toast_add_to_home_successful">加入到主页成功</string>
-    <string name="toast_add_to_home_failed">加入到主页失败</string>
     <string name="toast_add_whitelist_successful">Successfully added Domain</string>
-    <string name="toast_already_exist_in_home">Already exist in home</string>
     <string name="toast_copy_successful">复制成功</string>
     <string name="toast_delete_successful">删除成功</string>
     <string name="toast_domain_already_exists">域名已存在</string>
@@ -258,22 +208,13 @@
     <string name="toast_share_failed">该页面无法被分享</string>
     <string name="toast_start_download">开始下载</string>
     <string name="toast_wait_a_minute">稍等</string>
-    <string name="toast_titleConfirm_delete">确认删除该项？</string>
-    <string name="toast_titleConfirm_paste">拷贝数据到粘贴板？</string>
-    <string name="toast_titleConfirm_pasteUN">用户名</string>
-    <string name="toast_titleConfirm_pastePW">密码</string>
     <string name="toast_error">哦豁. 出错了.</string>
     <string name="toast_newTitle">该项已存在. 请重新输入.</string>
     <string name="toast_edit_successful">保存成功</string>
     <string name="toast_webview_forward">无法加载下一个页面</string>
-    <string name="toast_clear">确认清除？</string>
-    <string name="toast_permission_sdCard">\"EinkBro Browser\" 需要 \"read and write on your storage\" 权限。下载文件、截屏以及数据备份都需要该权限。</string>
-    <string name="toast_permission_loc">\"EinkBro Browser\" 需要 \"access your location\" 权限。有些网站会请求这个权限，例如导航网站。</string>
     <string name="toast_restart">退出 \"EinkBro Browser\" 以应用更改。立刻退出？</string>
-    <string name="toast_quit">退出 \"EinkBro Browser\"？</string>
     <string name="toast_close_tab">是否关闭当前标签页？</string>
     <string name="toast_downloadComplete">下载完成。打开文件管理器？</string>
-    <string name="toast_unsecured">网站使用非安全的连接 (\"http\"). 是否想试试安全的连接 (\"https\")?</string>
     <string name="toast_backup">备份数据？老的数据备份会被覆盖。</string>
 
 
@@ -285,16 +226,6 @@
 
 
     <!-- Dialog help -->
-
-    <string name="dialogHelp_tipTitle">建议</string>
-    <string name="dialogHelp_tipText">
-        &lt;b>菜单和对话框&lt;/b>&lt;br>
-        所有的菜单和对话框都是在屏幕底部被打开的。如果对话框过大，你将会先看到它的上面部分。上滑可以显示其余部分。&lt;br>
-        你可以通过点击后退按钮、下滑、点击对话框以外的地方来关闭他们&lt;br>&lt;br>
-
-        &lt;b>长按&lt;/b>&lt;br>
-        长按菜单图标/导航按钮可以打开 \"Fast toggle dialog\"。长按书签图标可以打开 \"Filter dialog\"。
-    </string>
 
     <string name="dialogHelp_filterText">
         You can tag your bookmarks with filters. In this way you can group your bookmarks. You can open the filter dialog by
@@ -324,13 +255,10 @@
     <string name="setting_summary_desktop">支持网站桌面模式</string>
     <string name="history">历史</string>
     <string name="location">位置</string>
-    <string name="image">图片</string>
     <string name="desktop">桌面</string>
-    <string name="remote">远程</string>
     <string name="media_continue">继续</string>
     <string name="show_touch_area_hint">显示触控区域边缘</string>
     <string name="close">关闭</string>
-    <string name="left_right">左/右</string>
     <string name="touch_left_side">左边</string>
     <string name="touch_right_side">右边</string>
     <string name="bold_font">字体加粗</string>
@@ -341,7 +269,6 @@
     <string name="touch_area">触控区域</string>
     <string name="setting_summary_touch_area">配置翻页触控区域</string>
     <string name="setting_title_pdf_paper_size">打印PDF纸张大小</string>
-    <string name="setting_summary_pdf_paper_size">设置将页面打印为PDF时需要的纸张尺寸</string>
     <string name="font_style_serif">字体样式: Serif</string>
     <string name="setting_summary_font_style_serif">设置字体样式为： Noto Sans Serif</string>
     <string name="vertical_read">横屏模式</string>
@@ -349,8 +276,6 @@
     <string name="touch_area_setting">触摸设置</string>
     <string name="toolbar_setting">工具栏\n设置</string>
     <string name="menu_save_epub">另存为 epub</string>
-    <string name="save_to">另存为...</string>
-    <string name="select_saved_epub">已存的 Epub</string>
     <string name="new_epub_or_from_picker">新 Epub 或開啟 Picker</string>
     <string name="title">章节名</string>
     <string name="title_in_toc">目录里的章节名</string>
