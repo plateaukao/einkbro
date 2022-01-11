@@ -7,7 +7,6 @@
     <string name="album_title_bookmarks">Záložky</string>
     <string name="album_title_history">Historie</string>
     <string name="album_title_home">Plocha</string>
-    <string name="album_title_files">Soubory</string>
     <string name="search_hint">Hledat</string>
     <string name="color_red">Červená</string>
     <string name="color_pink">Růžová</string>
@@ -21,7 +20,6 @@
     <string name="color_brown">Hnědá</string>
     <string name="color_grey">Šedá</string>
     <!-- Menu -->
-    <string name="main_menu_tabPreview">Otevřít náhled karty</string>
     <string name="main_menu_new_tab">Nová karta (pozadí)</string>
     <string name="main_menu_new_tabOpen">Nová karta (popředí)</string>
     <string name="main_omnibox_input_hint">Vyhledejte nebo zadejte adresu URL</string>
@@ -35,43 +33,26 @@
     <string name="menu_download">Otevřít stažené</string>
     <string name="menu_fav">Uložit jako oblíbené</string>
     <string name="menu_sc">Zkratka na ploše</string>
-    <string name="menu_sort">Třídit podle …</string>
-    <string name="menu_filter">Filtrovat podle …</string>
-    <string name="menu_share_screenshot">Sdílet snímek obrazovky</string>
     <string name="menu_share_link">Sdílet odkaz</string>
     <string name="menu_save_screenshot">Uložit snímek obrazovky</string>
-    <string name="menu_save_home">Uložit na plochu</string>
     <string name="menu_save_bookmark">Uložit jako záložku</string>
     <string name="menu_save_as">Uložit jako …</string>
     <string name="menu_save_pdf">Uložit jako PDF</string>
-    <string name="menu_share_pdf">Sdílet PDF</string>
     <string name="menu_shareClipboard">Kopírovat do schránky</string>
     <string name="menu_other_searchSite">Hledat na stránce</string>
-    <string name="menu_other_fileManager">Otevřít správce souborů</string>
     <string name="menu_other_info">O aplikaci \"EinkBro Browser\"</string>
-    <string name="menu_other_help">Nápověda</string>
     <!-- Dialog -->
-    <string name="dialog_toggle_reload">Obnovit</string>
     <string name="dialog_title_hint">Název:</string>
     <string name="dialog_url_hint">URL:</string>
     <string name="dialog_extension_hint">Přípona (například: \".jpg\"):</string>
     <string name="dialog_title_download">Chcete stáhnout soubor?</string>
     <string name="dialog_content_resubmission">Chcete znovu odeslat data?</string>
-    <string name="dialog_content_ssl_error">Certifikát webové stránky není důvěryhodný. Přesto pokračovat?</string>
-    <string name="dialog_sortName">Řadit podle názvu</string>
-    <string name="dialog_sortIcon">Řadit podle ikony</string>
-    <string name="dialog_sortDate">Řadit podle data</string>
     <!-- Settings -->
     <string name="setting_label">Nastavení</string>
     <!-- browser setting -->
-    <string name="setting_title_browser">Nastavení prohlížeče</string>
     <string name="setting_title_clear_control">Nastavení dat</string>
     <string name="setting_title_start_control">Spustit nastavení</string>
-    <string name="setting_summary_clear_control">Vymažte data prohlížeče nebo se rozhodněte, která data budou vymazána, když opustíte
-     aplikaci.</string>
-    <string name="setting_summary_start_control">Rozhodněte, které komponenty prohlížeče budou při spuštění povoleny.</string>
     <string name="setting_title_search_engine">Vyhledávač</string>
-    <string name="setting_summary_search_engine">Zde můžete zvolit oblíbený vyhledávač nebo nastavit vlastní.</string>
     <string name="setting_summary_search_engine_google">Google</string>
     <string name="setting_summary_search_engine_duckduckgo">DuckDuckGo</string>
     <string name="setting_summary_search_engine_startpage">StartPage</string>
@@ -81,9 +62,6 @@
     <string name="setting_summary_search_engine_searx">Searx</string>
     <string name="setting_summary_search_engine_qwant">Qwant</string>
     <string name="setting_summary_search_engine_ecosia">Ecosia</string>
-    <string name="setting_title_inverted">Převrácené barvy</string>
-    <string name="setting_summary_inverted">Pokud je zaškrtnuto, bude obsah vykreslen v režimu převrácené stupnice šedi. Toto
-    je druh „nočního režimu“.</string>
     <string name="setting_title_font">Velikost písma</string>
     <string name="setting_summary_font">Změna velikost písma pro zobrazování webových stránek.</string>
     <string name="setting_title_remote">Vzdálený obsah</string>
@@ -118,7 +96,6 @@
     <string name="data_summary">Všechny soubory budou exportovány do adresáře „Android/data/de.baumann.browser/files/browser_backup/“
         na vaší SD kartě. Tento adresář bude SMAZÁN, když odinstalujetel „EinkBro Browser“. Proto si vytvořte zálohu na bezpečném
         místě.</string>
-    <string name="clear_menu_done_all">Vše hotovo</string>
     <string name="clear_title_quit">Vymazat při ukončení aplikace</string>
     <string name="clear_summary_quit">Při každém ukončení aplikace „EinkBro Browser“ budou všechna výše uvedená data smazána.</string>
     <string name="clear_title_cache">Vymazat mezipaměť</string>
@@ -128,30 +105,16 @@
     <string name="clear_title_deleteDatabase">Vymazat databázi</string>
     <string name="clear_summary_deleteDatabase">Vymazat celou databázi (úvodní stránku, záložky, historii a všechny seznamy povolených).</string>
     <!-- App setting -->
-    <string name="setting_title_app">Nastavení aplikace</string>
     <string name="setting_title_ui">Chování/UI</string>
     <string name="setting_title_data">Záloha</string>
-    <string name="setting_summary_ui">Změňte chování a UI aplikace podle svých představ.</string>
-    <string name="setting_summary_data">Importovat a exportovat některá data aplikace (seznamy povolených, záložky).</string>
     <string name="setting_filter">Filtr záložek</string>
-    <string name="setting_filter_summary">Chcete-li zobrazit dialogové okno filtru, stiskněte v přehledu ikonu záložek. Rozhodněte, které
-        filtry použijete.</string>
     <string name="setting_title_fav">Oblíbené</string>
-    <string name="setting_summary_fav">Zde můžete změnit výchozí webovou stránku, která se načte při spuštění aplikace „EinkBro Browser“.
-    Zadáním „about:blank“ zobrazíte prázdnou úvodní stránku.</string>
     <string name="setting_title_searchEngine">Vlastní vyhledávač</string>
-    <string name="setting_summary_searchEngine">Zde můžete zadat vlastní adresu URL pro vyhledávání. Taky zvolit „Vlastní vyhledávač“ jako poskytovatele vyhledávání.</string>
     <string name="setting_title_userAgent">Vlastní uživatelský agent</string>
-    <string name="setting_summary_userAgent">Zde můžete zadat vlastní uživatelský agent. Ponechte prázdné pro použití výchozího.</string>
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">Skrýt Panel nástrojů</string>
     <string name="setting_summary_hide">Při procházení webovými stránkami použít celou obrazovku. Pokud stisknete tlačítko Zpět,
     opustíte režim celé obrazovky.</string>
-    <string name="setting_theme">Motiv</string>
-    <string name="setting_theme_summary">Nastavte motiv aplikace.</string>
-    <string name="setting_theme_system">Motiv systému</string>
-    <string name="setting_theme_light">Světlý motiv</string>
-    <string name="setting_theme_dark">Tmavý motiv</string>
     <string name="setting_title_theme">UI</string>
     <string name="setting_title_behavior">Chování</string>
     <string name="setting_summary_toolbarShow">Stisknutím tlačítka Zpět se Panel nástrojů zviditelní před návratem do historie.</string>
@@ -163,21 +126,12 @@
     <string name="setting_summary_nav_pos_left">Vlevo</string>
     <string name="setting_summary_nav_pos_center">Uprostřed</string>
     <string name="setting_summary_tab">Co by mělo být uvedeno při spuštění „Přehledu“? Úvodní stránka, vaše záložky, …</string>
-    <string name="setting_title_confirm_exit">Potvrdit ukončení prohlížeče</string>
-    <string name="setting_summary_confirm_exit">Okno potvrzení při ukončení prohlížeče.</string>
     <string name="setting_title_confirm_tab_close">Potvrdit zavření karty</string>
     <string name="setting_summary_confirm_tab_close">Okno potvrzení při zavření karty.</string>
     <string name="setting_overView">Přehled</string>
-    <string name="setting_overView_onStart_title">Zobrazit při spuštění</string>
-    <string name="setting_overView_onStart_summary">Otevře „Přehled“ při každém spuštění aplikace.</string>
-    <string name="setting_overView_hide_title">Skrýt náhledy karty</string>
-    <string name="setting_overView_hide_summary">V rozšířeném přehledu se náhled karty skryje. Pak budete mít více místa pro vaše
-    záložky.</string>
     <string name="setting_gestures">Gesta</string>
     <string name="setting_gestures_use_title">Použít gesta</string>
     <string name="setting_gestures_use_summary">Použijte gesta na Panelu nástrojů a „Navigační tlačítka“.</string>
-    <string name="setting_title_reopenLastTab">Znovu otevřít poslední kartu</string>
-    <string name="setting_summary_reopenLastTab">Znovu otevřít novou kartu po zavření poslední karty namísto ukončení prohlížeče.</string>
     <!-- gestures -->
     <string name="setting_title_toolbar">Panel nástrojů</string>
     <string name="setting_gesture_up">Přejetí nahoru</string>
@@ -195,14 +149,8 @@
     <string name="open_new_tab">Otevřít novou kartu</string>
     <string name="close_tab">Zavřít kartu</string>
     <!-- Data -->
-    <string name="setting_title_export_whitelist">Exportovat seznam povolených - AdBlock</string>
-    <string name="setting_title_import_whitelist">Importovat seznam povolených - AdBlock</string>
     <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
-    <string name="setting_title_export_whitelistJS">Exportovat seznam povolených - JavaScript</string>
-    <string name="setting_title_import_whitelistJS">Importovat seznam povolených - JavaScript</string>
     <string name="export_whitelistJS">export_whitelist_Javascript</string>
-    <string name="setting_title_export_whitelistCookie">Exportovat seznam povolených - Cookies</string>
-    <string name="setting_title_import_whitelistCookie">Importovat seznam povolených - Cookies</string>
     <string name="export_whitelistCookie">export_whitelist_Cookie</string>
     <string name="setting_title_export_appData">Exportovat data aplikace</string>
     <string name="setting_title_import_appData">Importovat data aplikace</string>
@@ -211,17 +159,10 @@
     <string name="title_appData">Data aplikace</string>
     <string name="hint_database">Toto vymaže všechna vaše aktuální nastavení a data. Chcete pokračovat?</string>
     <!-- Others setting -->
-    <string name="setting_title_others">Další</string>
     <string name="setting_title_license">Licence</string>
     <string name="setting_title_appSettings">Nastavení aplikace</string>
-    <string name="setting_summary_appSettings">Otevřete systémová nastavení pro „EinkBro Browser“. Tam můžete
-        v závislosti na vaší verzi Android udělit oprávnění, vymazat data aplikace atd.</string>
-    <string name="setting_title_community">Přispívání</string>
     <!-- Toast -->
-    <string name="toast_add_to_home_successful">Úspěšně přidáno na plochu</string>
-    <string name="toast_add_to_home_failed">Přidání na plochu se nezdařilo</string>
     <string name="toast_add_whitelist_successful">Doména byla úspěšně přidána</string>
-    <string name="toast_already_exist_in_home">Na ploše již existuje</string>
     <string name="toast_copy_successful">Úspěšně zkopírováno</string>
     <string name="toast_delete_successful">Úspěšně smazáno</string>
     <string name="toast_domain_already_exists">Doména již existuje</string>
@@ -236,43 +177,19 @@
     <string name="toast_share_failed">Nelze sdílet tuto stránku</string>
     <string name="toast_start_download">Zahajování stahování</string>
     <string name="toast_wait_a_minute">Prosím, počkejte chvilku</string>
-    <string name="toast_titleConfirm_delete">Opravdu chcete odstranit položku?</string>
-    <string name="toast_titleConfirm_paste">Kopírovat data do schránky?</string>
-    <string name="toast_titleConfirm_pasteUN">Uživatelské jméno</string>
-    <string name="toast_titleConfirm_pastePW">Heslo</string>
     <string name="toast_error">Jejda. Něco se pokazilo.</string>
     <string name="toast_newTitle">Položka již existuje. Zadejte prosím nový název.</string>
     <string name="toast_edit_successful">Úspěšně uloženo</string>
     <string name="toast_webview_forward">Nelze načíst další stránku</string>
-    <string name="toast_clear">Opravdu chcete odstranit?</string>
-    <string name="toast_permission_sdCard">„EinkBro Browser“ vyžaduje oprávnění „čtení a zápis do vašeho úložiště“. Toto
-        je zapotřebí ke stahování souborů, pořizování snímků obrazovky a vytváření záloh vašich dat.</string>
-    <string name="toast_permission_loc">„EinkBro Browser“ vyžaduje oprávnění k „přístupu k vaší poloze“. To je vyžadováno od některých
-        webových stránek. Například, když nabízejí nějaký druh navigace.</string>
     <string name="toast_restart">Pro provedení změn musíte restartovat aplikaci „EinkBro Browser“. Ukončit nyní?</string>
-    <string name="toast_quit">Opravdu chcete ukončit aplikaci „EinkBro Browser“?</string>
     <string name="toast_close_tab">Opravdu chcete zavřít aktuální kartu?</string>
     <string name="toast_downloadComplete">Stahování dokončeno. Otevřít správce souborů?</string>
-    <string name="toast_unsecured">Tato stránka používá nezabezpečené připojení („http“). Chcete zkusit zabezpečné
-        připojení („https“)?</string>
     <string name="toast_backup">Zálohovat data? Tato akce přepíše starou zálohu.</string>
-    <string name="toast_fav">Úspěšně nastaveno jako oblíbené.</string>
     <!-- Whitelist -->
     <string name="whitelist_menu_clear">Vymazat</string>
     <string name="whitelist_edit_hint">Doména</string>
     <string name="whitelist_add">Přidat</string>
     <!-- Dialog help -->
-    <string name="dialogHelp_tipTitle">Tipy</string>
-    <string name="dialogHelp_tipText">        &lt;b&gt;Nabídky a dialogy&lt;/b&gt;&lt;br&gt;
-        Všechny nabídky a dialogy jsou otevřeny ve spodní části obrazovky. Pokud je dialog velký, uvidíte nejprve pouze
-        horní část. Pokud potáhnete nahoru, zbytek se zviditelní.&lt;br&gt;
-        Můžete je zavřít stisknutím tlačítka Zpět, potáhnutím dolů nebo klepnutím
-vedle&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Long press&lt;/b&gt;&lt;br&gt;
-        Pokud dlouze stisknete ikonu nabídky nebo „Navigační tlačítko“, zobrazí se „Rychlý přepínač dialogu“. Pokud dlouze
-        stisknete „ikonu Záložky“, zobrazí se „Filtr dialogu“.
-    </string>
     <string name="dialogHelp_filterText">        Záložky můžete označit filtry. Tímto způsobem můžete seskupovat své záložky. Můžete otevřít dialogové okno filtru
         dlouhým stisknutím ikony záložky. Pokud aktivujete položku, objeví se dialogové okno, kde můžete upravit název filtru.
     </string>

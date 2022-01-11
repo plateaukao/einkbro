@@ -7,7 +7,6 @@
     <string name="album_title_bookmarks">Yer imleri</string>
     <string name="album_title_history">Geçmiş</string>
     <string name="album_title_home">Ana sayfa</string>
-    <string name="album_title_files">Dosyalar</string>
     <string name="search_hint">Ara</string>
     <string name="color_red">Kırmızı</string>
     <string name="color_pink">Pembe</string>
@@ -21,7 +20,6 @@
     <string name="color_brown">Kahverengi</string>
     <string name="color_grey">Gri</string>
     <!-- Menu -->
-    <string name="main_menu_tabPreview">Sekme önizlemesini aç</string>
     <string name="main_menu_new_tab">Yeni sekme (arka plan)</string>
     <string name="main_menu_new_tabOpen">Yeni sekme (ön plan)</string>
     <string name="main_omnibox_input_hint">Arayın veya URL girin</string>
@@ -35,43 +33,26 @@
     <string name="menu_download">İndirmeleri aç</string>
     <string name="menu_fav">Başlangıç sitesi olarak ayarla</string>
     <string name="menu_sc">Ana ekranda kısayol</string>
-    <string name="menu_sort">Sırala …</string>
-    <string name="menu_filter">Renge göre filtrele…</string>
-    <string name="menu_share_screenshot">Ekran görüntüsünü paylaş</string>
     <string name="menu_share_link">Bağlantıyı paylaş</string>
     <string name="menu_save_screenshot">Ekran görüntüsünü kaydet</string>
-    <string name="menu_save_home">Başlangıca kaydet</string>
     <string name="menu_save_bookmark">Yer imi olarak kaydet</string>
     <string name="menu_save_as">Kaydet…</string>
     <string name="menu_save_pdf">PDF olarak kaydet</string>
-    <string name="menu_share_pdf">PDF paylaş</string>
     <string name="menu_shareClipboard">Panoya kopyala</string>
     <string name="menu_other_searchSite">Sitede ara</string>
-    <string name="menu_other_fileManager">Dosya yöneticisini aç</string>
     <string name="menu_other_info">\"Foss Browser\" hakkında</string>
-    <string name="menu_other_help">Yardım</string>
     <!-- Dialog -->
-    <string name="dialog_toggle_reload">Yeniden yükle</string>
     <string name="dialog_title_hint">Başlık:</string>
     <string name="dialog_url_hint">URL:</string>
     <string name="dialog_extension_hint">Uzantı (örneğin: \".jpg\"):</string>
     <string name="dialog_title_download">Dosyayı indirmek ister misiniz?</string>
     <string name="dialog_content_resubmission">Verilerinizi yeniden göndermek ister misiniz?</string>
-    <string name="dialog_content_ssl_error">Sitenin sertifikası güvenilir değil. Yine de devam edilsin mi?</string>
-    <string name="dialog_sortName">İsme göre sırala</string>
-    <string name="dialog_sortIcon">Simgeye göre sırala</string>
-    <string name="dialog_sortDate">Tarihe göre sırala</string>
     <!-- Settings -->
     <string name="setting_label">Ayarlar</string>
     <!-- browser setting -->
-    <string name="setting_title_browser">Tarayıcı Ayarları</string>
     <string name="setting_title_clear_control">Veri Denetimi</string>
     <string name="setting_title_start_control">Başlangıç Denetimi</string>
-    <string name="setting_summary_clear_control">Tarayıcı verilerinizi temizleyin veya uygulamadan ayrıldığınızda
-	hangi verilerin silineceğine karar verin.</string>
-    <string name="setting_summary_start_control">Tarayıcının hangi bileşenlerinin başlangıçta etkinleştirileceğine karar verin.</string>
     <string name="setting_title_search_engine">Arama Motoru</string>
-    <string name="setting_summary_search_engine">Buradan tercih ettiğiniz arama motorunu seçebilir veya özel bir tane ayarlayabilirsiniz.</string>
     <string name="setting_summary_search_engine_google">Google</string>
     <string name="setting_summary_search_engine_duckduckgo">DuckDuckGo</string>
     <string name="setting_summary_search_engine_startpage">StartPage</string>
@@ -81,9 +62,6 @@
     <string name="setting_summary_search_engine_searx">Searx</string>
     <string name="setting_summary_search_engine_qwant">Qwant</string>
     <string name="setting_summary_search_engine_ecosia">Ecosia</string>
-    <string name="setting_title_inverted">Ters renkler</string>
-    <string name="setting_summary_inverted">İşaretlenirse, içerik ters çevrilmiş gri tonlama modunda oluşturulur. Bu
-    bir tür \"gece modudur\".</string>
     <string name="setting_title_font">Yazı boyutu</string>
     <string name="setting_summary_font">Web sitelerini görüntülemek için yazı tipi boyutunu değiştirin.</string>
     <string name="setting_title_remote">Uzaktan içerik</string>
@@ -122,7 +100,6 @@
     <string name="data_summary">Tüm dosyalar SD kartınızın \"Android/data/de.baumann.browser/files/browser_backup/\"
         dizinine aktarılacaktır. Eğer \"EinkBro Browser\"ı kaldırırsanız dizin SİLİNECEKTİR. Bu yüzden düzenli olarak bir yere yedekleme
         alın.</string>
-    <string name="clear_menu_done_all">Hepsi bitti</string>
     <string name="clear_title_quit">Uygulamadan çıkışta temizle</string>
     <string name="clear_summary_quit">\"EinkBro Tarayıcısı\"ndan her çıkışta  yukarıdaki tüm kontrol edilen veriler silinecektir.</string>
     <string name="clear_title_cache">Önbelleği Temizle</string>
@@ -132,31 +109,16 @@
     <string name="clear_title_deleteDatabase">Veritabanını sil</string>
     <string name="clear_summary_deleteDatabase">Veritabanının tamamını (Başlangıç sayfası, yer imleri, geçmiş ve tüm beyaz listeler) silin.</string>
     <!-- App setting -->
-    <string name="setting_title_app">Uygulama Ayarları</string>
     <string name="setting_title_ui">Davranış/Arayüz</string>
     <string name="setting_title_data">Yedekleme</string>
-    <string name="setting_summary_ui">Tercihlerinize uygun olarak uygulamanın davranışını ve arayüzünü değiştirin.</string>
-    <string name="setting_summary_data">Birkaç uygulama verisini (beyaz listeler, yer imleri) içe ve dışa aktarın.</string>
     <string name="setting_filter">Yer imi süzgeci</string>
-    <string name="setting_filter_summary">Süzgeç iletişim kutusunu göstermek için genel bakıştaki yer imi simgesine uzun basın.  Hangi süzgeçleri kullanacağınıza 
-          karar verin.</string>
     <string name="setting_title_fav">Başlangıç sitesi</string>
-    <string name="setting_summary_fav">Buradan \"EinkBro Browser\" başlatıldığında yüklenen varsayılan websitesini değiştirebilirsiniz.
-    Boş bir başlangıç sitesi için \"about:blank\" girin.</string>
     <string name="setting_title_searchEngine">Özel arama motoru</string>
-    <string name="setting_summary_searchEngine">Buradan özel arama URL\'si girebilirsiniz. Ayrıca arama sağlayıcısı olarak \"Özel arama motoru\"nu
-    seçin.</string>
     <string name="setting_title_userAgent">Özel kullanıcı aracısı</string>
-    <string name="setting_summary_userAgent">Burada özel bir kullanıcı aracısı girebilirsiniz. Varsayılanı kullanmak için boş bırakın.</string>
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">Araç çubuğunu gizle</string>
     <string name="setting_summary_hide">Web siteleri arasında gezinirken tüm ekranı kullanın. Eğer Geri düğmesine basarsanız
 	tam ekran modundan çıkılacaktır.</string>
-    <string name="setting_theme">Tema</string>
-    <string name="setting_theme_summary">Uygulamanın temasını ayarlayın.</string>
-    <string name="setting_theme_system">Sistem teması</string>
-    <string name="setting_theme_light">Açık tema</string>
-    <string name="setting_theme_dark">Karanlık tema</string>
     <string name="setting_title_theme">Arayüz</string>
     <string name="setting_title_behavior">Davranış</string>
     <string name="setting_summary_toolbarShow">Geri basmak, geçmişe geri dönmeden önce araç çubuğunu görünür kılar.</string>
@@ -168,21 +130,12 @@
     <string name="setting_summary_nav_pos_left">Sol</string>
     <string name="setting_summary_nav_pos_center">Orta</string>
     <string name="setting_summary_tab">\"Genel Bakış\" başlangıcında ne gösterilmelidir? Başlangıç sayfası, Yer imleriniz, …</string>
-    <string name="setting_title_confirm_exit">Tarayıcı çıkışını onayla</string>
-    <string name="setting_summary_confirm_exit">Tarayıcıyı kapatırken onay iletişim kutusu gösterilir.</string>
     <string name="setting_title_confirm_tab_close">Sekme kapatmayı onayla</string>
     <string name="setting_summary_confirm_tab_close">Bir sekmeyi kapatırken onay iletişim kutusu gösterilir.</string>
     <string name="setting_overView">Genel Bakış</string>
-    <string name="setting_overView_onStart_title">Başlangıçta göster</string>
-    <string name="setting_overView_onStart_summary">Her uygulama başlangıcında \"Genel Bakış\" açılır.</string>
-    <string name="setting_overView_hide_title">Sekme önizlemelerini gizle</string>
-    <string name="setting_overView_hide_summary">Genişletilmiş bakışta, sekme önizlemesi gizlenir.  O zaman yer imleriniz için daha fazla
-    yeriniz olur.</string>
     <string name="setting_gestures">Hareketler</string>
     <string name="setting_gestures_use_title">Hareketleri kullan</string>
     <string name="setting_gestures_use_summary">Araç çubuğunda ve \"Gezinme düğmesi\" üzerinde hareketleri kullanın.</string>
-    <string name="setting_title_reopenLastTab">Son sekmeyi yeniden aç</string>
-    <string name="setting_summary_reopenLastTab">Tarayıcıdan çıkmak yerine son sekme kapatıldığında yeni bir sekmeyi yeniden açın.</string>
     <!-- gestures -->
     <string name="setting_title_toolbar">Araç çubuğu</string>
     <string name="setting_gesture_up">Yukarı kaydır</string>
@@ -200,14 +153,8 @@
     <string name="open_new_tab">Yeni sekme aç</string>
     <string name="close_tab">Sekmeyi kapat</string>
     <!-- Data -->
-    <string name="setting_title_export_whitelist">Reklam Engelleyici beyaz listesini dışa aktar</string>
-    <string name="setting_title_import_whitelist">Reklam Engelleyici beyaz listesini içe aktar</string>
     <string name="export_whitelistAdBlock">AdBlock_beyazliste_aktarim</string>
-    <string name="setting_title_export_whitelistJS">JavaScript beyaz listesini dışa aktar</string>
-    <string name="setting_title_import_whitelistJS">JavaScript beyaz listesini içe aktar</string>
     <string name="export_whitelistJS">Javascript_beyazliste_aktarim</string>
-    <string name="setting_title_export_whitelistCookie">Çerez beyaz listesini dışa aktar</string>
-    <string name="setting_title_import_whitelistCookie">Çerez beyaz listesini içe aktar</string>
     <string name="export_whitelistCookie">Cerez_beyazliste_aktarim</string>
     <string name="setting_title_export_appData">Uygulama verilerini dışa aktar</string>
     <string name="setting_title_import_appData">Uygulama verilerini içe aktar</string>
@@ -216,17 +163,10 @@
     <string name="title_appData">Uygulama verileri</string>
     <string name="hint_database">Bu, mevcut tüm ayarlarınızı ve verilerinizi silecektir. Devam edilsin mi?</string>
     <!-- Others setting -->
-    <string name="setting_title_others">Diğer</string>
     <string name="setting_title_license">Lisans</string>
     <string name="setting_title_appSettings">Uygulama ayarları</string>
-    <string name="setting_summary_appSettings">\"EinkBro Tarayıcı\" için sistem uygulama ayarlarını açın. Burada Android
-	sürümü izin verme izninize bağlı olarak, uygulama verilerini temizleyebilirsiniz.</string>
-    <string name="setting_title_community">Katkıda Bulunanlar</string>
     <!-- Toast -->
-    <string name="toast_add_to_home_successful">Başarıyla ana sayfaya eklendi</string>
-    <string name="toast_add_to_home_failed">Ana sayfaya eklenemedi</string>
     <string name="toast_add_whitelist_successful">Başarıyla etki alanı eklendi</string>
-    <string name="toast_already_exist_in_home">Ana sayfada zaten mevcut</string>
     <string name="toast_copy_successful">Başarıyla kopyalandı</string>
     <string name="toast_delete_successful">Başarıyla silindi</string>
     <string name="toast_domain_already_exists">Etki alanı zaten mevcut</string>
@@ -241,42 +181,19 @@
     <string name="toast_share_failed">Bu sayfa paylaşılamıyor</string>
     <string name="toast_start_download">İndirmeye başla</string>
     <string name="toast_wait_a_minute">Lütfen biraz bekleyin</string>
-    <string name="toast_titleConfirm_delete">Girişi gerçekten silmek istiyor musunuz?</string>
-    <string name="toast_titleConfirm_paste">Veriler panoya kopyalansın mı?</string>
-    <string name="toast_titleConfirm_pasteUN">Kullanıcı adı</string>
-    <string name="toast_titleConfirm_pastePW">Şifre</string>
     <string name="toast_error">Hata. Bir şeyler yanlış gitti.</string>
     <string name="toast_newTitle">Giriş zaten mevcut. Lütfen yeni bir başlık girin.</string>
     <string name="toast_edit_successful">Başarıyla kaydedildi</string>
     <string name="toast_webview_forward">Bir sonraki site yüklenemiyor</string>
-    <string name="toast_clear">Gerçekten temizlemek istiyor musunuz?</string>
-    <string name="toast_permission_sdCard">\"EinkBro Tarayıcı\" \"depolama alanınızı okuma ve yazma\" iznine ihtiyaç duyar. Bu, dosyaları
-	indirmek, dosya yöneticisi oluşturmak ve ekran görüntüleri almak için gereklidir. Henüz izin vermediyseniz, daha sonra ayarlardan yapabilirsiniz.</string>
-    <string name="toast_permission_loc">\"EinkBro Tarayıcı\" \"konumunuza erişim\" iznine ihtiyaç duyar. Bu, bazı web sitelerinden,
-	örneğin bir çeşit navigasyon sunduklarında istenir. Henüz izin vermediyseniz, daha sonra ayarlardan yapabilirsiniz.</string>
     <string name="toast_restart">Değişiklikleri uygulamak için \"EinkBro Tarayıcı\"sını yeniden başlatmanız gerekir. Şimdi kapatılsın mı?</string>
-    <string name="toast_quit">\"EinkBro Tarayıcı\"sından çıkmak istiyor musunuz?</string>
     <string name="toast_close_tab">Geçerli sekmeyi kapatmak istiyor musunuz?</string>
     <string name="toast_downloadComplete">İndirme tamamlandı. Dosya yöneticisi açılsın mı?</string>
-    <string name="toast_unsecured">Bu web sitesi güvenli olmayan bir bağlantı kullanıyor (\"http\"). Güvenli bir bağlantı
-	denemek ister misiniz (\"https\")?</string>
     <string name="toast_backup">Veri yedeklensin mi? Bu eski yedeklemenin üzerine yazacaktır.</string>
-    <string name="toast_fav">Başarıyla başlangıç sitesi olarak ayarlandı.</string>
     <!-- Whitelist -->
     <string name="whitelist_menu_clear">Temzile</string>
     <string name="whitelist_edit_hint">Etki alanı</string>
     <string name="whitelist_add">Ekle</string>
     <!-- Dialog help -->
-    <string name="dialogHelp_tipTitle">İpuçları</string>
-    <string name="dialogHelp_tipText">        &lt;b&gt;Menüler ve iletişim kutuları&lt;/b&gt;&lt;br&gt;
-        Tüm menüler ve iletişim kutuları ekranın altında açılır. Eğer iletişim kutusu büyükse önce sadece üst
-        kısmını görürsünüz. Yukarı kaydırdığınızda geri kalanı da görünecektir.&lt;br&gt;
-        Geri düğmesine basarak, aşağı kaydırarak veya dışarısına tıklayarak kapatabilirsiniz.&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Uzun basma&lt;/b&gt;&lt;br&gt;
-        Menü simgesine veya \"Gezinme düğmesi\"ne uzun basarsanız, \"Hızlı aç/kapa iletişim kutusu\" görünecektir.
-        \"Yer imi simgesi\"ne uzun basarsanız, \"Filtre iletişim kutusu\" görünecektir.
-    </string>
     <string name="dialogHelp_filterText">        Yer imlerinizi filtrelerle etiketleyebilirsiniz. Bu şekilde yer imlerinizi gruplandırabilirsiniz. Filtre iletişim kutusunu yer imleri
         simgesine uzun basarak açabilirsiniz. Bir girişi aktifleştirirseniz, filtrenin adını düzenleyebileceğiniz bir iletişim kutusu görünecektir.    </string>
     <!-- Dialog changelog -->

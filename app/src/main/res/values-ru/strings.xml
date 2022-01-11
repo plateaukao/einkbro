@@ -6,7 +6,6 @@
     <string name="album_title_bookmarks">Закладки</string>
     <string name="album_title_history">История</string>
     <string name="album_title_home">Главная</string>
-    <string name="album_title_files">Файлы</string>
     <string name="search_hint">Поиск</string>
     <string name="color_red">Красный</string>
     <string name="color_pink">Розовый</string>
@@ -20,7 +19,6 @@
     <string name="color_brown">Коричневый</string>
     <string name="color_grey">Серый</string>
     <!-- Menu -->
-    <string name="main_menu_tabPreview">Предпросмотр вкладок</string>
     <string name="main_menu_new_tab">Новая вкладка (фон)</string>
     <string name="main_menu_new_tabOpen">Новая вкладка</string>
     <string name="main_omnibox_input_hint">Поиск или ввод URL-адреса</string>
@@ -34,42 +32,26 @@
     <string name="menu_download">Открытые загрузки</string>
     <string name="menu_fav">Сохранить как стартовую страницу</string>
     <string name="menu_sc">Ярлык на главном экране</string>
-    <string name="menu_sort">Сортировка по…</string>
-    <string name="menu_filter">Фильтр по …</string>
-    <string name="menu_share_screenshot">Поделиться скриншотом</string>
     <string name="menu_share_link">Поделиться ссылкой</string>
     <string name="menu_save_screenshot">Сохранить скриншот</string>
-    <string name="menu_save_home">Сохранить на главной</string>
     <string name="menu_save_bookmark">Сохранить как закладку</string>
     <string name="menu_save_as">Сохранить как …</string>
     <string name="menu_save_pdf">Сохранить в PDF</string>
-    <string name="menu_share_pdf">Поделиться PDF</string>
     <string name="menu_shareClipboard">Копировать в буфер</string>
     <string name="menu_other_searchSite">Поиск по сайту</string>
-    <string name="menu_other_fileManager">Открыть файловый менеджер</string>
     <string name="menu_other_info">О программе \"EinkBro Browser\"</string>
-    <string name="menu_other_help">Помощь</string>
     <!-- Dialog -->
-    <string name="dialog_toggle_reload">Перезагрузить</string>
     <string name="dialog_title_hint">Заголовок:</string>
     <string name="dialog_url_hint">Url:</string>
     <string name="dialog_extension_hint">Расширение (например: \".jpg\"):</string>
     <string name="dialog_title_download">Хотите загрузить файл?</string>
     <string name="dialog_content_resubmission">Хотите повторно отправить свои данные?</string>
-    <string name="dialog_content_ssl_error">Сертификат сайта не является доверенным. Всё равно продолжить?</string>
-    <string name="dialog_sortName">Сортировать по названию</string>
-    <string name="dialog_sortIcon">Сортировать по значку</string>
-    <string name="dialog_sortDate">Сортировать по дате</string>
     <!-- Settings -->
     <string name="setting_label">Настройки</string>
     <!-- browser setting -->
-    <string name="setting_title_browser">Настройки браузера</string>
     <string name="setting_title_clear_control">Контроль данных</string>
     <string name="setting_title_start_control">Управление запуском</string>
-    <string name="setting_summary_clear_control">Очистите данные своего браузера или определите, какие данные будут удалены при выходе из приложения.</string>
-    <string name="setting_summary_start_control">Определите, какие компоненты браузера будут включены при запуске.</string>
     <string name="setting_title_search_engine">Поисковая система</string>
-    <string name="setting_summary_search_engine">Здесь вы можете выбрать предпочтительную поисковую систему или установить свою.</string>
     <string name="setting_summary_search_engine_google">Google</string>
     <string name="setting_summary_search_engine_duckduckgo">DuckDuckGo</string>
     <string name="setting_summary_search_engine_startpage">Стартовая страница</string>
@@ -79,8 +61,6 @@
     <string name="setting_summary_search_engine_searx">Searx</string>
     <string name="setting_summary_search_engine_qwant">Qwant</string>
     <string name="setting_summary_search_engine_ecosia">Ecosia</string>
-    <string name="setting_title_inverted">Инвертированные цвета</string>
-    <string name="setting_summary_inverted">Если флажок установлен, содержимое будет отображаться в режиме инвертированной серой шкалы. Это своего рода \"ночной режим\".</string>
     <string name="setting_title_font">Размер шрифта</string>
     <string name="setting_summary_font">Измените размер шрифта для отображения веб-сайтов.</string>
     <string name="setting_title_remote">Удаленный контент</string>
@@ -110,7 +90,6 @@
     <!-- browser clear -->
     <string name="data_summary">Все файлы будут экспортированы в каталог Вашей SD-карты: Android/data/de.baumann.browser/files/browser_backup/\".
 Этот каталог будет УДАЛЕН, если Вы удалите \"EinkBro Browser\". Поэтому регулярно делайте резервные копии..</string>
-    <string name="clear_menu_done_all">Всё сделано</string>
     <string name="clear_title_quit">Очистить при выходе из приложения</string>
     <string name="clear_summary_quit">Каждый раз при выходе из \"EinkBro Browser\" все вышеперечисленные проверенные данные будут удаляться.</string>
     <string name="clear_title_cache">Очистить кэш</string>
@@ -120,28 +99,15 @@
     <string name="clear_title_deleteDatabase">Удалить базу данных</string>
     <string name="clear_summary_deleteDatabase">Удалить всю базу данных (стартовую страницу, закладки, историю и все белые списки).</string>
     <!-- App setting -->
-    <string name="setting_title_app">Настройки</string>
     <string name="setting_title_ui">Поведение и интерфейс</string>
     <string name="setting_title_data">Резервное копирование</string>
-    <string name="setting_summary_ui">Измените поведение и интерфейс приложения в соответствии с вашими предпочтениями.</string>
-    <string name="setting_summary_data">Импортируйте и экспортируйте данные приложения (белые списки, закладки).</string>
     <string name="setting_filter">Фильтр закладок</string>
-    <string name="setting_filter_summary">Чтобы отобразить диалоговое окно фильтра, удерживайте нажатие на значке закладок в окне. Определите, какие фильтры Вы будете использовать.</string>
     <string name="setting_title_fav">Избранное</string>
-    <string name="setting_summary_fav">Здесь Вы можете изменить веб-сайт по умолчанию, который загружается при запуске \"EinkBro Browser\".
-    Введите \"about:blank\", чтобы открывалась пуcтая вкладка.</string>
     <string name="setting_title_searchEngine">Пользовательская поисковая система</string>
-    <string name="setting_summary_searchEngine">Здесь Вы можете ввести свой адрес для поиска. Также можно выбрать \"Пользовательская поисковая система\" для поиска по умолчанию.</string>
     <string name="setting_title_userAgent">Произвольный юзер-агент</string>
-    <string name="setting_summary_userAgent">Здесь вы можете ввести произвольный юзер-агент. Пустое значение для использования юзер-агента по умолчанию.</string>
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">Скрыть панель инструментов</string>
     <string name="setting_summary_hide">Используйте весь экран при прокрутке сайтов. Если вы нажмете кнопку Назад, то покинете полноэкранный режим.</string>
-    <string name="setting_theme">Тема</string>
-    <string name="setting_theme_summary">Установить тему приложения.</string>
-    <string name="setting_theme_system">Системная тема</string>
-    <string name="setting_theme_light">Светлая тема</string>
-    <string name="setting_theme_dark">Темная тема</string>
     <string name="setting_title_theme">Интерфейс</string>
     <string name="setting_title_behavior">Поведение</string>
     <string name="setting_summary_toolbarShow">Нажатие назад сделает панель инструментов видимой, прежде чем вернуться в историю.</string>
@@ -153,20 +119,12 @@
     <string name="setting_summary_nav_pos_left">Cлева</string>
     <string name="setting_summary_nav_pos_center">По центру</string>
     <string name="setting_summary_tab">Что должно отображаться при запуске \"EinkBro Browser\"? Начальная страница, закладки, …</string>
-    <string name="setting_title_confirm_exit">Подтвердить выход из браузера</string>
-    <string name="setting_summary_confirm_exit">Диалоговое окно подтверждения при закрытии браузера.</string>
     <string name="setting_title_confirm_tab_close">Подтвердить закрытие вкладки</string>
     <string name="setting_summary_confirm_tab_close">Диалоговое окно подтверждения при закрытии вкладки.</string>
     <string name="setting_overView">Обзор</string>
-    <string name="setting_overView_onStart_title">Показывать при запуске</string>
-    <string name="setting_overView_onStart_summary">Открывать \"Обзор\" при каждом запуске приложения.</string>
-    <string name="setting_overView_hide_title">Скрыть предпросмотр вкладки</string>
-    <string name="setting_overView_hide_summary">В расширенном обзоре предварительный просмотр вкладки будет скрыт. Будет доступно больше места для Ваших закладок.</string>
     <string name="setting_gestures">Жесты</string>
     <string name="setting_gestures_use_title">Использовать жесты</string>
     <string name="setting_gestures_use_summary">Использовать жесты в панели инструментов и на кнопке навигации.</string>
-    <string name="setting_title_reopenLastTab">Открыть последнюю вкладку</string>
-    <string name="setting_summary_reopenLastTab">Открыть новую вкладку при закрытии последней вкладки вместо выхода из браузера.</string>
     <!-- gestures -->
     <string name="setting_title_toolbar">Панель инструментов</string>
     <string name="setting_gesture_up">Свайп вверх</string>
@@ -184,14 +142,8 @@
     <string name="open_new_tab">Открыть новую вкладку</string>
     <string name="close_tab">Закрыть вкладку</string>
     <!-- Data -->
-    <string name="setting_title_export_whitelist">Экспорт белого списка AdBlock</string>
-    <string name="setting_title_import_whitelist">Импорт белого списка AdBlock</string>
     <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
-    <string name="setting_title_export_whitelistJS">Экспорт белого списка JavaScript</string>
-    <string name="setting_title_import_whitelistJS">Импорт белого списка JavaScript</string>
     <string name="export_whitelistJS">export_whitelist_Javascript</string>
-    <string name="setting_title_export_whitelistCookie">Экспорт белого списка куки</string>
-    <string name="setting_title_import_whitelistCookie">Импорт белого списка куки</string>
     <string name="export_whitelistCookie">export_whitelist_Cookie</string>
     <string name="setting_title_export_appData">Экспорт данных</string>
     <string name="setting_title_import_appData">Импорт данных</string>
@@ -200,16 +152,10 @@
     <string name="title_appData">Данные приложения</string>
     <string name="hint_database">Это приведет к удалению всех текущих настроек и данных. Продолжить?</string>
     <!-- Others setting -->
-    <string name="setting_title_others">Другие</string>
     <string name="setting_title_license">Лицензия</string>
     <string name="setting_title_appSettings">Настройки</string>
-    <string name="setting_summary_appSettings">Откройте системные настройки \"EinkBro Browser\". Там вы можете предоставить разрешения, очистить данные приложения и так далее.</string>
-    <string name="setting_title_community">Поддержка</string>
     <!-- Toast -->
-    <string name="toast_add_to_home_successful">Успешно добавлено на главную</string>
-    <string name="toast_add_to_home_failed">Не удалось добавить на главную</string>
     <string name="toast_add_whitelist_successful">Успешно добавлен домен</string>
-    <string name="toast_already_exist_in_home">Уже существует на главной</string>
     <string name="toast_copy_successful">Успешно скопировано</string>
     <string name="toast_delete_successful">Успешно удалено</string>
     <string name="toast_domain_already_exists">Домен уже существует</string>
@@ -224,37 +170,19 @@
     <string name="toast_share_failed">Не удаётся поделиться этой страницей</string>
     <string name="toast_start_download">Начало загрузки</string>
     <string name="toast_wait_a_minute">Подождите минутку</string>
-    <string name="toast_titleConfirm_delete">Хотите удалить запись?</string>
-    <string name="toast_titleConfirm_paste">Копировать данные в буфер обмена?</string>
-    <string name="toast_titleConfirm_pasteUN">Имя пользователя</string>
-    <string name="toast_titleConfirm_pastePW">Пароль</string>
     <string name="toast_error">Что-то пошло не так.</string>
     <string name="toast_newTitle">Запись уже существует. Введите новое название.</string>
     <string name="toast_edit_successful">Успешно сохранено</string>
     <string name="toast_webview_forward">Не удается загрузить следующий сайт</string>
-    <string name="toast_clear">Действительно хотите очистить?</string>
-    <string name="toast_permission_sdCard">\"EinkBro Browser\" нуждается в разрешении на \"чтение и запись\". Это необходимо для загрузки файлов, сборки в файловый менеджер и снятия скриншотов. Если вы еще не предоставили разрешение, можете сделайте это позже в настройках. </string>
-    <string name="toast_permission_loc">\"EinkBro Browser\" нуждается в разрешении получения \"доступа к вашему местоположению\". Это необходимо для некоторых веб-сайтов, например, когда они предлагают какую-то навигацию. Если вы еще не предоставили разрешение, можете сделать это позже в настройках. </string>
     <string name="toast_restart">Чтобы применить изменения, необходимо перезапустить \"EinkBro Browser\". Закрыть сейчас?</string>
-    <string name="toast_quit">Хотите выйти из \"EinkBro Browser\"?</string>
     <string name="toast_close_tab">Хотите закрыть текущую вкладку?</string>
     <string name="toast_downloadComplete">Загрузка завершена. Открыть файловый менеджер?</string>
-    <string name="toast_unsecured">Сайт использует незащищенное соединение (\"http\"). Хотите попробовать безопасное соединение (\"https\")?</string>
     <string name="toast_backup">Сохранить данные? Это перезапишет старую резервную копию.</string>
-    <string name="toast_fav">Успешно добавлено в избранное.</string>
     <!-- Whitelist -->
     <string name="whitelist_menu_clear">Очистить</string>
     <string name="whitelist_edit_hint">Домен</string>
     <string name="whitelist_add">Добавить</string>
     <!-- Dialog help -->
-    <string name="dialogHelp_tipTitle">Подсказки</string>
-    <string name="dialogHelp_tipText">        &lt;b&gt;Меню и диалоги&lt;/b&gt;&lt;br&gt;
-       Все меню и диалоги открываются внизу экрана. Если диалог большой, сперва Вы увидите верхнюю часть.Если Вы прокрутите её, будет видна оставшаяся часть.&lt;br&gt;
-       Закрытие производится кнопкой Назад, свайпом вниз или кликом на пустом месте&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Удержание нажатия&lt;/b&gt;&lt;br&gt;
-        Длительное удержание на значке меню или на кнопке навигации вызывает бытрый диалог переключения, удержание значка закладки вызывает диалог фильтров.
-    </string>
     <string name="dialogHelp_filterText">        Вы можете присвоить своим закладкам фильтры. Так можно создавать группы закладок. Можно открыть диалог фильтров
         удержанием нажатия на значке закладки. Если Вы активировали ввод, появится диалог, позволяющий изменить имя фильтра.
     </string>

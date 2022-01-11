@@ -6,7 +6,6 @@
     <string name="album_title_bookmarks">Marcadores</string>
     <string name="album_title_history">Historial</string>
     <string name="album_title_home">Inicio</string>
-    <string name="album_title_files">Archivos</string>
     <string name="search_hint">Búsqueda</string>
     <string name="color_red">Rojo</string>
     <string name="color_pink">Rosa</string>
@@ -20,7 +19,6 @@
     <string name="color_brown">Marrón</string>
     <string name="color_grey">Gris</string>
     <!-- Menu -->
-    <string name="main_menu_tabPreview">Abrir previsualización de pestañas</string>
     <string name="main_menu_new_tab">Nueva pestaña (de fondo)</string>
     <string name="main_menu_new_tabOpen">Nueva pestaña (primer plano)</string>
     <string name="main_omnibox_input_hint">Buscar o escribir URL</string>
@@ -34,42 +32,26 @@
     <string name="menu_download">Abrir descargas</string>
     <string name="menu_fav">Guardar como página de inicio</string>
     <string name="menu_sc">Agregar a la pantalla principal</string>
-    <string name="menu_sort">Ordenar por …</string>
-    <string name="menu_filter">Filtrar por …</string>
-    <string name="menu_share_screenshot">Compartir captura</string>
     <string name="menu_share_link">Compartir enlace</string>
     <string name="menu_save_screenshot">Guardar captura</string>
-    <string name="menu_save_home">Guardar en inicio</string>
     <string name="menu_save_bookmark">Guardar como marcador</string>
     <string name="menu_save_as">Guardar como …</string>
     <string name="menu_save_pdf">Guardar como PDF</string>
-    <string name="menu_share_pdf">Compartir PDF</string>
     <string name="menu_shareClipboard">Copiar al portapapeles</string>
     <string name="menu_other_searchSite">Buscar en sitio web</string>
-    <string name="menu_other_fileManager">Abrir gestor de archivos</string>
     <string name="menu_other_info">Acerca de \"Navegador EinkBro\"</string>
-    <string name="menu_other_help">Ayuda</string>
     <!-- Dialog -->
-    <string name="dialog_toggle_reload">Recargar</string>
     <string name="dialog_title_hint">Título de entrada</string>
     <string name="dialog_url_hint">URL:</string>
     <string name="dialog_extension_hint">Extensión (por ejemplo: \".jpg\"):</string>
     <string name="dialog_title_download">¿Desea descargar el archivo?</string>
     <string name="dialog_content_resubmission">¿Desea reenviar sus datos?</string>
-    <string name="dialog_content_ssl_error">El certificado del sitio no es seguro. ¿Continuar de todos modos?</string>
-    <string name="dialog_sortName">Ordenar por nombre</string>
-    <string name="dialog_sortIcon">Ordenar por icono</string>
-    <string name="dialog_sortDate">Ordenar por fecha</string>
     <!-- Settings -->
     <string name="setting_label">Configuración</string>
     <!-- browser setting -->
-    <string name="setting_title_browser">Configuración del navegador</string>
     <string name="setting_title_clear_control">Control de datos</string>
     <string name="setting_title_start_control">Control del inicio</string>
-    <string name="setting_summary_clear_control">Borre los datos de navegación o decida qué datos se borrarán al salir de la aplicación.</string>
-    <string name="setting_summary_start_control">Decida qué componentes del navegador se habilitarán al inicio.</string>
     <string name="setting_title_search_engine">Motor de búsqueda</string>
-    <string name="setting_summary_search_engine">Aquí puede elegir su motor de búsqueda preferido o establecer uno personalizado.</string>
     <string name="setting_summary_search_engine_google">Google</string>
     <string name="setting_summary_search_engine_duckduckgo">DuckDuckGo</string>
     <string name="setting_summary_search_engine_startpage">Página de Inicio</string>
@@ -79,8 +61,6 @@
     <string name="setting_summary_search_engine_searx">Searx</string>
     <string name="setting_summary_search_engine_qwant">Qwant</string>
     <string name="setting_summary_search_engine_ecosia">Ecosia</string>
-    <string name="setting_title_inverted">Colores invertidos</string>
-    <string name="setting_summary_inverted">De activarlo, el contenido se mostrará en un modo de escala gris invertido. Es una especie de \"modo nocturno\".</string>
     <string name="setting_title_font">Tamaño de fuente</string>
     <string name="setting_summary_font">Ajustar el tamaño del texto en sitios web.</string>
     <string name="setting_title_remote">Contenido remoto</string>
@@ -110,7 +90,6 @@
     <!-- browser clear -->
     <string name="data_summary">Todos los archivos se exportarán al directorio \"Android/data/de.baumann.browser/files/browser_backup/\".
 Si desinstala la aplicación, el mismo será eliminado. Por tanto se recomienda realizar copias de seguridad de este directorio.</string>
-    <string name="clear_menu_done_all">Todo listo</string>
     <string name="clear_title_quit">Limpiar al salir de la aplicación</string>
     <string name="clear_summary_quit">Cada vez quesalga del \"Navegador EinkBro\", se borrarán todos los ítems tildados anteriormente.</string>
     <string name="clear_title_cache">Borrar caché</string>
@@ -120,28 +99,15 @@ Si desinstala la aplicación, el mismo será eliminado. Por tanto se recomienda 
     <string name="clear_title_deleteDatabase">Borrar base de datos</string>
     <string name="clear_summary_deleteDatabase">Elimine todos los datos del navegador (página de inicio, marcadores, historial y todas las listas blancas).</string>
     <!-- App setting -->
-    <string name="setting_title_app">Configuración de la aplicación</string>
     <string name="setting_title_ui">Comportamiento/IU</string>
     <string name="setting_title_data">Respaldos</string>
-    <string name="setting_summary_ui">Cambie el comportamiento de la interfaz de usuario de la aplicación para adaptarse a sus preferencias.</string>
-    <string name="setting_summary_data">Importar y exportar varios datos (listas blancas, marcadores, etc.).</string>
     <string name="setting_filter">Filtro de marcadores</string>
-    <string name="setting_filter_summary">Para mostrar el diálogo realiza una pulsación larga en el icono de marcadores en la vista general. Decida qué filtros usará.</string>
     <string name="setting_title_fav">Favorito</string>
-    <string name="setting_summary_fav">Aquí puede cambiar el sitio web a cargar en el inicio de la aplicación.
-Puede disponer una página en blanco escribiendo \"about:blank\".</string>
     <string name="setting_title_searchEngine">Motor de búsqueda personalizado</string>
-    <string name="setting_summary_searchEngine">Aquí puede ingresar la URL de un motor de búsqueda personalizado. Para aplicarlo, elija \"Motor de búsqueda personalizado\" como proveedor de búsquedas.</string>
     <string name="setting_title_userAgent">Agente de usuario personalizado</string>
-    <string name="setting_summary_userAgent">Aquí puede introducir un agente de usuario personalizado. Dejar en blanco para usar el valor por defecto.</string>
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">Ocultar barra de herramientas</string>
     <string name="setting_summary_hide">Utilice la pantalla completa al desplazarse por sitios web. Si pulsa el botón \"volver\", dejará el modo de pantalla completa.</string>
-    <string name="setting_theme">Tema</string>
-    <string name="setting_theme_summary">Elija el tema de la aplicación.</string>
-    <string name="setting_theme_system">Tema del sistema</string>
-    <string name="setting_theme_light">Tema claro</string>
-    <string name="setting_theme_dark">Tema oscuro</string>
     <string name="setting_title_theme">Interfaz de usuario</string>
     <string name="setting_title_behavior">Comportamiento</string>
     <string name="setting_summary_toolbarShow">Presionar \"volver\" hará visible la barra de herramientas, antes de retroceder en el historial.</string>
@@ -153,20 +119,12 @@ Puede disponer una página en blanco escribiendo \"about:blank\".</string>
     <string name="setting_summary_nav_pos_left">Izquierda</string>
     <string name="setting_summary_nav_pos_center">Centro</string>
     <string name="setting_summary_tab">Lo que debe mostrarse en la vista general. La página de inicio, los marcadores, …</string>
-    <string name="setting_title_confirm_exit">Confirmar salida del navegador</string>
-    <string name="setting_summary_confirm_exit">Mostrar un diálogo de confirmación al cerrar el navegador.</string>
     <string name="setting_title_confirm_tab_close">Confirmar cerrado de pestañas</string>
     <string name="setting_summary_confirm_tab_close">Mostrar un diálogo de confirmación al cerrar pestañas.</string>
     <string name="setting_overView">Vista general</string>
-    <string name="setting_overView_onStart_title">Mostrar al inicio</string>
-    <string name="setting_overView_onStart_summary">Abrir la vista general en cada inicio de la aplicación.</string>
-    <string name="setting_overView_hide_title">Ocultar previsualización de pestañas</string>
-    <string name="setting_overView_hide_summary">En la vista general ampliada, se ocultará la previsualización de pestañas. Lo cual genera más espacio para sus marcadores.</string>
     <string name="setting_gestures">Gestos</string>
     <string name="setting_gestures_use_title">Usar gestos</string>
     <string name="setting_gestures_use_summary">Usar gestos en la barra de herramientas y en el \"botón de navegación\".</string>
-    <string name="setting_title_reopenLastTab">Reabrir última pestaña</string>
-    <string name="setting_summary_reopenLastTab">Abrir una nueva pestaña cuando se cierre la última, en lugar de salir del navegador.</string>
     <!-- gestures -->
     <string name="setting_title_toolbar">Barra de herramientas</string>
     <string name="setting_gesture_up">Deslizar hacia arriba</string>
@@ -184,14 +142,8 @@ Puede disponer una página en blanco escribiendo \"about:blank\".</string>
     <string name="open_new_tab">Abrir nueva pestaña</string>
     <string name="close_tab">Cerrar pestaña</string>
     <!-- Data -->
-    <string name="setting_title_export_whitelist">Exportar lista blanca de anuncios</string>
-    <string name="setting_title_import_whitelist">Importar lista blanca de anuncios</string>
     <string name="export_whitelistAdBlock">exportar_listablanca_anuncios</string>
-    <string name="setting_title_export_whitelistJS">Exportar lista blanca de JavaScript</string>
-    <string name="setting_title_import_whitelistJS">Importar lista blanca de JavaScript</string>
     <string name="export_whitelistJS">exportar_listablanca_javascript</string>
-    <string name="setting_title_export_whitelistCookie">Exportar lista blanca de cookies</string>
-    <string name="setting_title_import_whitelistCookie">Importar lista blanca de cookies</string>
     <string name="export_whitelistCookie">exportar_listablanca_cookies</string>
     <string name="setting_title_export_appData">Exportar datos de la aplicación</string>
     <string name="setting_title_import_appData">Importar datos de la aplicación</string>
@@ -199,16 +151,10 @@ Puede disponer una página en blanco escribiendo \"about:blank\".</string>
     <string name="title_appData">Datos de la aplicación</string>
     <string name="hint_database">Esto borrará todas sus configuraciones y datos actuales. ¿Quiere proceder?</string>
     <!-- Others setting -->
-    <string name="setting_title_others">Otros</string>
     <string name="setting_title_license">Licencia</string>
     <string name="setting_title_appSettings">Configuración de la aplicación</string>
-    <string name="setting_summary_appSettings">Abrir la configuración de la aplicación del sistema para \"Navegador EinkBro\". Allí puede, dependiendo de su versión de Android, conceder permisos o borrar los datos de la aplicación entre otros.</string>
-    <string name="setting_title_community">Contribuyentes</string>
     <!-- Toast -->
-    <string name="toast_add_to_home_successful">Agregado a la página principal</string>
-    <string name="toast_add_to_home_failed">No se pudo agregar a la página principal</string>
     <string name="toast_add_whitelist_successful">Dominio agregado con éxito</string>
-    <string name="toast_already_exist_in_home">Ya existe en el inicio</string>
     <string name="toast_copy_successful">Copiado con éxito</string>
     <string name="toast_delete_successful">Eliminado con éxito</string>
     <string name="toast_domain_already_exists">El dominio ya existe</string>
@@ -223,39 +169,19 @@ Puede disponer una página en blanco escribiendo \"about:blank\".</string>
     <string name="toast_share_failed">No se puede compartir esta página</string>
     <string name="toast_start_download">Iniciando descarga</string>
     <string name="toast_wait_a_minute">Por favor, espere un momento</string>
-    <string name="toast_titleConfirm_delete">¿Realmente desea eliminar?</string>
-    <string name="toast_titleConfirm_paste">¿Copiar datos en el portapapeles?</string>
-    <string name="toast_titleConfirm_pasteUN">Usuario</string>
-    <string name="toast_titleConfirm_pastePW">Contraseña</string>
     <string name="toast_error">Uuups. Algo salió mal.</string>
     <string name="toast_newTitle">La entrada ya existe. Por favor ingrese un nuevo título.</string>
     <string name="toast_edit_successful">Guardado con éxito</string>
     <string name="toast_webview_forward">No se puede cargar el sitio</string>
-    <string name="toast_clear">¿Está seguro de querer borrar?</string>
-    <string name="toast_permission_sdCard">\"Navegador EinkBro\" necesita permisos para \"leer y escribir en almacenamiento\". Esto es necesario para descargar archivos, capturas de pantalla y realizar respaldos.</string>
-    <string name="toast_permission_loc">\"Navegador EinkBro\" necesita permisos para \"acceder a su ubicación\". Esto se solicita desde algunos sitios web, cuando por ej. ofrecen algún servicio de navegación.</string>
     <string name="toast_restart">Debe reiniciar \"Navegador EinkBro\" para aplicar cambios. ¿Cerrar ahora?</string>
-    <string name="toast_quit">¿Desea salir de \"Navegador EinkBro\"?</string>
     <string name="toast_close_tab">¿Desea cerrar la pestaña actual?</string>
     <string name="toast_downloadComplete">Descarga completa. ¿Abrir el gestor de archivos?</string>
-    <string name="toast_unsecured">Este sitio web utiliza una conexión no segura (\"http\"). ¿Desea intentar una conexión segura (\"https\")?</string>
     <string name="toast_backup">¿Respaldar datos? Esto sobrescribirá el respaldo anterior.</string>
-    <string name="toast_fav">Agregado como sitio de inicio.</string>
     <!-- Whitelist -->
     <string name="whitelist_menu_clear">Limpiar</string>
     <string name="whitelist_edit_hint">Dominio</string>
     <string name="whitelist_add">Añadir</string>
     <!-- Dialog help -->
-    <string name="dialogHelp_tipTitle">Sugerencias</string>
-    <string name="dialogHelp_tipText">        &lt;b&gt;Menus and dialogs&lt;/b&gt;&lt;br&gt;
-        All menus and dialogs are opened at the bottom of the screen. If the dialog is large you will first see only
-        the upper part. If you swipe it up, the rest will get visible.&lt;br&gt;
-        You can close them by pressing the back button, swiping them down or by clicking outside&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Long press&lt;/b&gt;&lt;br&gt;
-        If you long press the menu icon or the \"Navigation button\", the \"Fast toggle dialog\" will show. If you long
-        press the \"Bookmark icon\", the \"Filter dialog\" will show.
-    </string>
     <string name="dialogHelp_filterText">        You can tag your bookmarks with filters. In this way you can group your bookmarks. You can open the filter dialog by
         long pressing the bookmark icon. If you activate an entry a dialog will appear, where you can edit the name of the filter.
     </string>

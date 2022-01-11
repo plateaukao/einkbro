@@ -7,7 +7,6 @@
     <string name="album_title_bookmarks">書籤</string>
     <string name="album_title_history">歷史</string>
     <string name="album_title_home">首頁</string>
-    <string name="album_title_files">檔案</string>
     <string name="search_hint">搜尋</string>
     <string name="color_red">紅</string>
     <string name="color_pink">粉紅</string>
@@ -21,7 +20,6 @@
     <string name="color_brown">咖啡</string>
     <string name="color_grey">灰</string>
     <!-- Menu -->
-    <string name="main_menu_tabPreview">開啟分頁列表</string>
     <string name="main_menu_new_tab">新增分頁(背景)</string>
     <string name="main_menu_new_tabOpen">新增分頁(前景)</string>
     <string name="main_omnibox_input_hint">搜尋或輸入網址</string>
@@ -35,42 +33,26 @@
     <string name="menu_download">開啟下載</string>
     <string name="menu_fav">存為首頁</string>
     <string name="menu_sc">建立捷徑</string>
-    <string name="menu_sort">排序</string>
-    <string name="menu_filter">過濾</string>
-    <string name="menu_share_screenshot">分享截圖</string>
     <string name="menu_share_link">分享網址</string>
     <string name="menu_save_screenshot">儲存截圖</string>
-    <string name="menu_save_home">存為首頁</string>
     <string name="menu_save_bookmark">加入書籤</string>
     <string name="menu_save_as">儲存為...</string>
     <string name="menu_save_pdf">存成 PDF</string>
-    <string name="menu_share_pdf">分享 PDF</string>
     <string name="menu_shareClipboard">複製網址</string>
     <string name="menu_other_searchSite">網頁內\n搜尋</string>
-    <string name="menu_other_fileManager">檔案總管</string>
     <string name="menu_other_info">關於 \"EinkBro 瀏覽器\"</string>
-    <string name="menu_other_help">協助</string>
     <!-- Dialog -->
-    <string name="dialog_toggle_reload">重新載入</string>
     <string name="dialog_title_hint">標題:</string>
     <string name="dialog_url_hint">網址:</string>
     <string name="dialog_extension_hint">Extension (例如: \".jpg\"):</string>
     <string name="dialog_title_download">你想下載檔案嗎?</string>
     <string name="dialog_content_resubmission">想要重新送出資料嗎?</string>
-    <string name="dialog_content_ssl_error">該網站的憑證不可信任，要繼續前往嗎?</string>
-    <string name="dialog_sortName">依名稱排序</string>
-    <string name="dialog_sortIcon">依圖案排序</string>
-    <string name="dialog_sortDate">依日期</string>
     <!-- Settings -->
     <string name="setting_label">設定</string>
     <!-- browser setting -->
-    <string name="setting_title_browser">瀏覽設定</string>
     <string name="setting_title_clear_control">資料控制</string>
     <string name="setting_title_start_control">啟動設定</string>
-    <string name="setting_summary_clear_control">清除瀏覽器資料或是當離開程式時決定要清除什麼資料</string>
-    <string name="setting_summary_start_control">決定當啟動時哪些元件被開啟</string>
     <string name="setting_title_search_engine">搜尋服務</string>
-    <string name="setting_summary_search_engine">設定你想要使用的搜尋服務</string>
     <string name="setting_summary_search_engine_google">Google</string>
     <string name="setting_summary_search_engine_duckduckgo">DuckDuckGo</string>
     <string name="setting_summary_search_engine_startpage">StartPage</string>
@@ -80,8 +62,6 @@
     <string name="setting_summary_search_engine_searx">Searx</string>
     <string name="setting_summary_search_engine_qwant">Qwant</string>
     <string name="setting_summary_search_engine_ecosia">Ecosia</string>
-    <string name="setting_title_inverted">反轉顏色</string>
-    <string name="setting_summary_inverted">如果開啟，網頁內容會以相反的顏色呈現，有點類似 Dark Mode</string>
     <string name="setting_title_font">字型大小</string>
     <string name="setting_summary_font">改變網頁的字型大小</string>
     <string name="setting_title_remote">Remote content</string>
@@ -119,7 +99,6 @@
     <string name="data_summary">All files will be exported to the \"Android/data/de.baumann.browser/files/browser_backup/\"
         directory of your sd-card. This directory will be DELETED, if you uninstall \"EinkBro Browser\". So make a backup regularly on a save
         place.</string>
-    <string name="clear_menu_done_all">Done all</string>
     <string name="clear_title_quit">Clear when application exits</string>
     <string name="clear_summary_quit">Every time you quit \"EinkBro Browser\" all above checked data will be deleted.</string>
     <string name="clear_title_cache">清除快取</string>
@@ -129,20 +108,12 @@
     <string name="clear_title_deleteDatabase">刪除 database</string>
     <string name="clear_summary_deleteDatabase">刪除整個資料庫(Startpage, bookmarks, history and all whitelists).</string>
     <!-- App setting -->
-    <string name="setting_title_app">應用設定</string>
     <string name="setting_title_ui">操作行為/介面</string>
     <string name="setting_title_data">備份</string>
-    <string name="setting_summary_ui">改為操作行為或介面，讓它更符合你的使用習慣</string>
-    <string name="setting_summary_data">Import and export several app data (whitelists, bookmarks).</string>
     <string name="setting_filter">過濾書籤</string>
-    <string name="setting_filter_summary">To show the filter dialog long press on the bookmark icon in the overview. Decide which
-        filters you will use.</string>
     <string name="setting_title_fav">我的首頁</string>
-    <string name="setting_summary_fav">設定首頁要開啟的網頁。輸入 \"about:blank\" 會開啟空白頁</string>
     <string name="setting_title_searchEngine">設定搜尋引擎</string>
-    <string name="setting_summary_searchEngine">自訂 custom search URL. 請選擇 \"Custom search engine\" 當為搜尋方式</string>
     <string name="setting_title_userAgent">自訂 user agent</string>
-    <string name="setting_summary_userAgent">Here you can enter a custom user agent. Let empty to use default one.</string>
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">隱藏工具列</string>
     <string name="setting_summary_hide">Use the whole screen when scrolling through websites. If you press the back button you will
@@ -162,16 +133,9 @@
     <string name="setting_title_confirm_tab_close">確認關閉分頁</string>
     <string name="setting_summary_confirm_tab_close">關閉分頁前，顯示對話框</string>
     <string name="setting_overView">畫面預覽</string>
-    <string name="setting_overView_onStart_title">程式啟動時即顯示</string>
-    <string name="setting_overView_onStart_summary">每次啟動 App 時都顯示畫面預覽</string>
-    <string name="setting_overView_hide_title">隱藏分頁預覽</string>
-    <string name="setting_overView_hide_summary">In expanded overview the tab preview will hide. Then you have more place for your
-    bookmarks.</string>
     <string name="setting_gestures">手勢</string>
     <string name="setting_gestures_use_title">使用手勢</string>
     <string name="setting_gestures_use_summary">在工具列或浮動按鈕上使用手勢</string>
-    <string name="setting_title_reopenLastTab">重新開啟最後一個分頁</string>
-    <string name="setting_summary_reopenLastTab">Reopen a new tab when the last tab is closed instead of exiting the browser.</string>
     <!-- gestures -->
     <string name="setting_title_toolbar">工具列</string>
     <string name="setting_gesture_up">往上滑</string>
@@ -189,14 +153,8 @@
     <string name="open_new_tab">新增分頁</string>
     <string name="close_tab">關閉分頁</string>
     <!-- Data -->
-    <string name="setting_title_export_whitelist">Export AdBlock whitelist</string>
-    <string name="setting_title_import_whitelist">Import AdBlock whitelist</string>
     <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
-    <string name="setting_title_export_whitelistJS">Export JavaScript whitelist</string>
-    <string name="setting_title_import_whitelistJS">Import JavaScript whitelist</string>
     <string name="export_whitelistJS">export_whitelist_Javascript</string>
-    <string name="setting_title_export_whitelistCookie">Export Cookie whitelist</string>
-    <string name="setting_title_import_whitelistCookie">Import Cookie whitelist</string>
     <string name="export_whitelistCookie">export_whitelist_Cookie</string>
     <string name="setting_title_export_appData">Export app data</string>
     <string name="setting_title_import_appData">Import app data</string>
@@ -205,17 +163,10 @@
     <string name="title_appData">App data</string>
     <string name="hint_database">This will delete all your current settings and data. Will you proceed?</string>
     <!-- Others setting -->
-    <string name="setting_title_others">Others</string>
     <string name="setting_title_license">License</string>
     <string name="setting_title_appSettings">App 的系統設定</string>
-    <string name="setting_summary_appSettings">Open the system app settings for \"EinkBro Browser\". There you can,
-        depending on your Android version grant permissions, clear the app data and so on.</string>
-    <string name="setting_title_community">Contributing</string>
     <!-- Toast -->
-    <string name="toast_add_to_home_successful">Successfully added to Home</string>
-    <string name="toast_add_to_home_failed">Failed to add to Home</string>
     <string name="toast_add_whitelist_successful">Successfully added Domain</string>
-    <string name="toast_already_exist_in_home">Already exist in home</string>
     <string name="toast_copy_successful">Successfully copied</string>
     <string name="toast_delete_successful">Successfully deleted</string>
     <string name="toast_domain_already_exists">Domain already exists</string>
@@ -230,48 +181,24 @@
     <string name="toast_share_failed">Can\'t share this page</string>
     <string name="toast_start_download">Starting download</string>
     <string name="toast_wait_a_minute">Please wait for a moment</string>
-    <string name="toast_titleConfirm_delete">Do you really want to delete the entry?</string>
-    <string name="toast_titleConfirm_paste">Copy data to clipboard?</string>
-    <string name="toast_titleConfirm_pasteUN">Username</string>
-    <string name="toast_titleConfirm_pastePW">Password</string>
     <string name="toast_error">Uuups. Something went wrong.</string>
     <string name="toast_newTitle">Entry already exists. Please enter new title.</string>
     <string name="toast_edit_successful">Successfully saved</string>
     <string name="toast_webview_forward">Can\'t load next site</string>
-    <string name="toast_clear">Do you really want to clear?</string>
-    <string name="toast_permission_sdCard">\"EinkBro Browser\" needs the permission to \"read and write on your storage\". This
-        is needed to download files, taking screenshots and making backups of your data.</string>
-    <string name="toast_permission_loc">\"EinkBro Browser\" needs the permission to \"access your location\". This is requested from some
-        websites for example when they offer some kind of navigation.</string>
     <string name="toast_restart">You must restart \"EinkBro Browser\" to apply changes. Close now?</string>
-    <string name="toast_quit">Do you want to quit \"EinkBro Browser\"?</string>
     <string name="toast_close_tab">Do you want to close current tab?</string>
     <string name="toast_downloadComplete">Download complete. Open file manager?</string>
-    <string name="toast_unsecured">This website uses an unsecured connection (\"http\"). Do you want to try a secure
-        connection (\"https\")?</string>
     <string name="toast_backup">Backup data? This will overwrite the old backup.</string>
-    <string name="toast_fav">Successfully set as favorite.</string>
     <!-- Whitelist -->
     <string name="whitelist_menu_clear">Clear</string>
     <string name="whitelist_edit_hint">Domain</string>
     <string name="whitelist_add">Add</string>
     <!-- Dialog help -->
-    <string name="dialogHelp_tipTitle">Tips</string>
-    <string name="dialogHelp_tipText">        &lt;b&gt;Menus and dialogs&lt;/b&gt;&lt;br&gt;
-        All menus and dialogs are opened at the bottom of the screen. If the dialog is large you will first see only
-        the upper part. If you swipe it up, the rest will get visible.&lt;br&gt;
-        You can close them by pressing the back button, swiping them down or by clicking outside&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Long press&lt;/b&gt;&lt;br&gt;
-        If you long press the menu icon or the \"Navigation button\", the \"Fast toggle dialog\" will show. If you long
-        press the \"Bookmark icon\", the \"Filter dialog\" will show.
-    </string>
     <string name="dialogHelp_filterText">        You can tag your bookmarks with filters. In this way you can group your bookmarks. You can open the filter dialog by
         long pressing the bookmark icon. If you activate an entry a dialog will appear, where you can edit the name of the filter.
     </string>
     <!-- Dialog changelog -->
     <!-- License changelog -->
-    <string name="left_right">左右側</string>
     <string name="touch_left_side">左側</string>
     <string name="touch_right_side">右側</string>
     <string name="show_touch_area_hint">顯示可點擊區域</string>
@@ -284,7 +211,6 @@
     <string name="touch_area">點擊翻頁區域</string>
     <string name="setting_summary_touch_area">設定點擊畫面何處會翻頁</string>
     <string name="setting_title_pdf_paper_size">設定PDF紙張大小</string>
-    <string name="setting_summary_pdf_paper_size">將網頁輸出成 pdf 時，預設紙張大小</string>
     <string name="font_style_serif">字型: Serif</string>
     <string name="setting_summary_font_style_serif">將字型設為 Noto Sans Serif</string>
     <string name="vertical_read">直排閱讀</string>
@@ -292,8 +218,6 @@
     <string name="touch_area_setting">翻頁設定</string>
     <string name="toolbar_setting">工具列\n設定</string>
     <string name="menu_save_epub">儲存epub</string>
-    <string name="save_to">儲存至...</string>
-    <string name="select_saved_epub">選擇之前儲存的 Epub</string>
     <string name="new_epub_or_from_picker">新 Epub或開啟 Picker</string>
     <string name="title">章節標題</string>
     <string name="title_in_toc">目錄中的章節名稱</string>
