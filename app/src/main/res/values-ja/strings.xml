@@ -6,7 +6,6 @@
     <string name="album_title_bookmarks">ブックマーク</string>
     <string name="album_title_history">履歴</string>
     <string name="album_title_home">ホーム</string>
-    <string name="album_title_files">ファイル</string>
     <string name="search_hint">検索</string>
     <string name="color_red">赤</string>
     <string name="color_pink">ピンク</string>
@@ -20,7 +19,6 @@
     <string name="color_brown">茶</string>
     <string name="color_grey">灰</string>
     <!-- Menu -->
-    <string name="main_menu_tabPreview">タブプレビューを開く</string>
     <string name="main_menu_new_tab">新規タブ (裏)</string>
     <string name="main_menu_new_tabOpen">新規タブ (前)</string>
     <string name="main_omnibox_input_hint">検索または URL を入力</string>
@@ -34,43 +32,26 @@
     <string name="menu_download">ダウンロードを開く</string>
     <string name="menu_fav">お気に入りに保存</string>
     <string name="menu_sc">ホーム画面のショートカット</string>
-    <string name="menu_sort">ソート…</string>
-    <string name="menu_filter">フィルタ…</string>
-    <string name="menu_share_screenshot">スクリーンショットを共有</string>
     <string name="menu_share_link">リンクを共有</string>
     <string name="menu_save_screenshot">スクリーンショットを保存</string>
-    <string name="menu_save_home">ホームに保存</string>
     <string name="menu_save_bookmark">ブックマークに保存</string>
     <string name="menu_save_as">名前を付けて保存</string>
     <string name="menu_save_pdf">PDF として保存</string>
-    <string name="menu_share_pdf">PDF を共有</string>
     <string name="menu_shareClipboard">クリップボードにコピー</string>
     <string name="menu_other_searchSite">サイト上の検索</string>
-    <string name="menu_other_fileManager">ファイルマネージャーを開く</string>
     <string name="menu_other_info">EinkBro ブラウザについて</string>
-    <string name="menu_other_help">ヘルプ</string>
     <!-- Dialog -->
-    <string name="dialog_toggle_reload">再読込</string>
     <string name="dialog_title_hint">タイトル:</string>
     <string name="dialog_url_hint">URL:</string>
     <string name="dialog_extension_hint">Extension (for example: \".jpg\"):</string>
     <string name="dialog_title_download">ファイルをダウンロードしますか?</string>
     <string name="dialog_content_resubmission">データを再送信しますか?</string>
-    <string name="dialog_content_ssl_error">このサーバーの証明書は信頼されていません、続行しますか?</string>
-    <string name="dialog_sortName">名前順</string>
-    <string name="dialog_sortIcon">アイコン順</string>
-    <string name="dialog_sortDate">日付順</string>
     <!-- Settings -->
     <string name="setting_label">設定</string>
     <!-- browser setting -->
-    <string name="setting_title_browser">ブラウザ設定</string>
     <string name="setting_title_clear_control">Data Control</string>
     <string name="setting_title_start_control">Start Control</string>
-    <string name="setting_summary_clear_control">Clear your browser data or decide what data will be cleared when you leave
-    the application.</string>
-    <string name="setting_summary_start_control">Decide which components of the browser will be enabled on start.</string>
     <string name="setting_title_search_engine">Search Engine</string>
-    <string name="setting_summary_search_engine">Here you can choose your preferred search engine or set a custom one.</string>
     <string name="setting_summary_search_engine_google">Google</string>
     <string name="setting_summary_search_engine_duckduckgo">DuckDuckGo</string>
     <string name="setting_summary_search_engine_startpage">StartPage</string>
@@ -80,9 +61,6 @@
     <string name="setting_summary_search_engine_searx">Searx</string>
     <string name="setting_summary_search_engine_qwant">Qwant</string>
     <string name="setting_summary_search_engine_ecosia">Ecosia</string>
-    <string name="setting_title_inverted">Inverted colors</string>
-    <string name="setting_summary_inverted">If checked, content will be rendered in a inverted grey scale mode. This
-    is a kind of \"night mode\".</string>
     <string name="setting_title_font">フォントサイズ</string>
     <string name="setting_summary_font">Change the font size for displaying websites.</string>
     <string name="setting_title_remote">Remote content</string>
@@ -120,7 +98,6 @@
     <string name="data_summary">All files will be exported to the \"Android/data/de.baumann.browser/files/browser_backup/\"
         directory of your sd-card. This directory will be DELETED, if you uninstall \"EinkBro Browser\". So make a backup regularly on a save
         place.</string>
-    <string name="clear_menu_done_all">全て完了</string>
     <string name="clear_title_quit">アプリ終了時に消去</string>
     <string name="clear_summary_quit">Every time you quit \"EinkBro Browser\" all above checked data will be deleted.</string>
     <string name="clear_title_cache">キャッシュを削除</string>
@@ -130,31 +107,16 @@
     <string name="clear_title_deleteDatabase">データベースを削除</string>
     <string name="clear_summary_deleteDatabase">Delete the whole database (Startpage, bookmarks, history and all whitelists).</string>
     <!-- App setting -->
-    <string name="setting_title_app">アプリの設定</string>
     <string name="setting_title_ui">動作/UI</string>
     <string name="setting_title_data">バックアップ</string>
-    <string name="setting_summary_ui">Change the behavior and ui of the app to suit your preferences.</string>
-    <string name="setting_summary_data">Import and export several app data (whitelists, bookmarks).</string>
     <string name="setting_filter">ブックマークフィルタ</string>
-    <string name="setting_filter_summary">To show the filter dialog long press on the bookmark icon in the overview. Decide which
-        filters you will use.</string>
     <string name="setting_title_fav">お気に入り</string>
-    <string name="setting_summary_fav">Here you can change the default website which loads on start of \"EinkBro Browser\".
-    Enter \"about:blank\" to get an emty start site.</string>
     <string name="setting_title_searchEngine">カスタム検索エンジン</string>
-    <string name="setting_summary_searchEngine">Here you can enter a custom search URL. Also choose \"Custom search engine\" as search
-    provider.</string>
     <string name="setting_title_userAgent">カスタムユーザーエージェント</string>
-    <string name="setting_summary_userAgent">Here you can enter a custom user agent. Let empty to use default one.</string>
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">ツールバーを非表示</string>
     <string name="setting_summary_hide">Use the whole screen when scrolling through websites. If you press the back button you will
     leave fullscreen mode.</string>
-    <string name="setting_theme">テーマ</string>
-    <string name="setting_theme_summary">アプリのテーマを設定する</string>
-    <string name="setting_theme_system">システムテーマ</string>
-    <string name="setting_theme_light">明るいテーマ</string>
-    <string name="setting_theme_dark">暗いテーマ</string>
     <string name="setting_title_theme">UI</string>
     <string name="setting_title_behavior">動作</string>
     <string name="setting_summary_toolbarShow">Pressing back will make the toolbar visible, before going back in history.</string>
@@ -166,21 +128,12 @@
     <string name="setting_summary_nav_pos_left">左</string>
     <string name="setting_summary_nav_pos_center">中央</string>
     <string name="setting_summary_tab">What should be shown at the start of the \"Overview\"? The Start Page, you bookmarks, …</string>
-    <string name="setting_title_confirm_exit">ブラウザ終了の確認</string>
-    <string name="setting_summary_confirm_exit">Confirmation dialog when closing browser.</string>
     <string name="setting_title_confirm_tab_close">タブ削除の確認</string>
     <string name="setting_summary_confirm_tab_close">Confirmation dialog when closing a tab.</string>
     <string name="setting_overView">概観</string>
-    <string name="setting_overView_onStart_title">Show on start</string>
-    <string name="setting_overView_onStart_summary">Open the \"Overview\" on every app start.</string>
-    <string name="setting_overView_hide_title">Hide tab previews</string>
-    <string name="setting_overView_hide_summary">In expanded overview the tab preview will hide. Then you have more place for your
-    bookmarks.</string>
     <string name="setting_gestures">Gestures</string>
     <string name="setting_gestures_use_title">Use gestures</string>
     <string name="setting_gestures_use_summary">Use gestures on the toolbar and the \"Navigation button\".</string>
-    <string name="setting_title_reopenLastTab">Reopen last tab</string>
-    <string name="setting_summary_reopenLastTab">Reopen a new tab when the last tab is closed instead of exiting the browser.</string>
     <!-- gestures -->
     <string name="setting_title_toolbar">ツールバー</string>
     <string name="setting_gesture_up">上スワイプ</string>
@@ -198,14 +151,8 @@
     <string name="open_new_tab">新しいタブを開く</string>
     <string name="close_tab">タブを閉じる</string>
     <!-- Data -->
-    <string name="setting_title_export_whitelist">Export AdBlock whitelist</string>
-    <string name="setting_title_import_whitelist">Import AdBlock whitelist</string>
     <string name="export_whitelistAdBlock">export_whitelist_AdBlock</string>
-    <string name="setting_title_export_whitelistJS">Export JavaScript whitelist</string>
-    <string name="setting_title_import_whitelistJS">Import JavaScript whitelist</string>
     <string name="export_whitelistJS">export_whitelist_Javascript</string>
-    <string name="setting_title_export_whitelistCookie">Export Cookie whitelist</string>
-    <string name="setting_title_import_whitelistCookie">Import Cookie whitelist</string>
     <string name="export_whitelistCookie">export_whitelist_Cookie</string>
     <string name="setting_title_export_appData">Export app data</string>
     <string name="setting_title_import_appData">アプリデータのインポート</string>
@@ -214,17 +161,10 @@
     <string name="title_appData">アプリデータ</string>
     <string name="hint_database">This will delete all your current settings and data. Will you proceed?</string>
     <!-- Others setting -->
-    <string name="setting_title_others">その他</string>
     <string name="setting_title_license">ライセンス</string>
     <string name="setting_title_appSettings">アプリ設定</string>
-    <string name="setting_summary_appSettings">Open the system app settings for \"EinkBro Browser\". There you can,
-        depending on your Android version grant permissions, clear the app data and so on.</string>
-    <string name="setting_title_community">開発に協力</string>
     <!-- Toast -->
-    <string name="toast_add_to_home_successful">Successfully added to Home</string>
-    <string name="toast_add_to_home_failed">Failed to add to Home</string>
     <string name="toast_add_whitelist_successful">Successfully added Domain</string>
-    <string name="toast_already_exist_in_home">Already exist in home</string>
     <string name="toast_copy_successful">Successfully copied</string>
     <string name="toast_delete_successful">Successfully deleted</string>
     <string name="toast_domain_already_exists">Domain already exists</string>
@@ -239,42 +179,19 @@
     <string name="toast_share_failed">Can\'t share this page</string>
     <string name="toast_start_download">ダウンロード開始中…</string>
     <string name="toast_wait_a_minute">少々お待ちください</string>
-    <string name="toast_titleConfirm_delete">このエントリを削除してもよろしいですか?</string>
-    <string name="toast_titleConfirm_paste">クリップボードにコピーしますか?</string>
-    <string name="toast_titleConfirm_pasteUN">ユーザー名</string>
-    <string name="toast_titleConfirm_pastePW">パスワード</string>
     <string name="toast_error">Uuups. Something went wrong.</string>
     <string name="toast_newTitle">Entry already exists. Please enter new title.</string>
     <string name="toast_edit_successful">正常に保存されました</string>
     <string name="toast_webview_forward">Can\'t load next site</string>
-    <string name="toast_clear">Do you really want to clear?</string>
-    <string name="toast_permission_sdCard">\"EinkBro Browser\" needs the permission to \"read and write on your storage\". This
-        is needed to download files, taking screenshots and making backups of your data.</string>
-    <string name="toast_permission_loc">\"EinkBro Browser\" needs the permission to \"access your location\". This is requested from some
-        websites for example when they offer some kind of navigation.</string>
     <string name="toast_restart">You must restart \"EinkBro Browser\" to apply changes. Close now?</string>
-    <string name="toast_quit">Do you want to quit \"EinkBro Browser\"?</string>
     <string name="toast_close_tab">Do you want to close current tab?</string>
     <string name="toast_downloadComplete">Download complete. Open file manager?</string>
-    <string name="toast_unsecured">This website uses an unsecured connection (\"http\"). Do you want to try a secure
-        connection (\"https\")?</string>
     <string name="toast_backup">Backup data? This will overwrite the old backup.</string>
-    <string name="toast_fav">お気に入りに保存しました</string>
     <!-- Whitelist -->
     <string name="whitelist_menu_clear">消去</string>
     <string name="whitelist_edit_hint">ドメイン</string>
     <string name="whitelist_add">追加</string>
     <!-- Dialog help -->
-    <string name="dialogHelp_tipTitle">ヒント</string>
-    <string name="dialogHelp_tipText">        &lt;b&gt;Menus and dialogs&lt;/b&gt;&lt;br&gt;
-        All menus and dialogs are opened at the bottom of the screen. If the dialog is large you will first see only
-        the upper part. If you swipe it up, the rest will get visible.&lt;br&gt;
-        You can close them by pressing the back button, swiping them down or by clicking outside&lt;br&gt;&lt;br&gt;
-
-        &lt;b&gt;Long press&lt;/b&gt;&lt;br&gt;
-        If you long press the menu icon or the \"Navigation button\", the \"Fast toggle dialog\" will show. If you long
-        press the \"Bookmark icon\", the \"Filter dialog\" will show.
-    </string>
     <string name="dialogHelp_filterText">        You can tag your bookmarks with filters. In this way you can group your bookmarks. You can open the filter dialog by
         long pressing the bookmark icon. If you activate an entry a dialog will appear, where you can edit the name of the filter.
     </string>
