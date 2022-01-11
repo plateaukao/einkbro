@@ -31,7 +31,6 @@ import android.widget.TextView.OnEditorActionListener
 import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
 import androidx.core.content.edit
-import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.lifecycleScope
@@ -62,7 +61,6 @@ import de.baumann.browser.view.viewControllers.TwoPaneController
 import de.baumann.browser.viewmodel.BookmarkViewModel
 import de.baumann.browser.viewmodel.BookmarkViewModelFactory
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import java.io.*
@@ -1573,16 +1571,11 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
     }
 
     private var isNewEpubFile = false
-    private fun showSaveEpubDialog() = dialogManager.showSaveEpubDialog { chooseFromPicker ->
-        if (chooseFromPicker) {
+    private fun showSaveEpubDialog() = dialogManager.showSaveEpubDialog { uri ->
+        if (uri == null) {
             epubManager.showEpubFilePicker()
         } else {
-            if (config.savedEpubFileInfos.isEmpty()) {
-                NinjaToast.show(this@BrowserActivity, "No saved epubs")
-                epubManager.showEpubFilePicker()
-            } else {
-                dialogManager.showSelectSavedEpubDialog { saveEpub(it.toUri()) }
-            }
+            saveEpub(uri)
         }
     }
 

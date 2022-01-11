@@ -2,12 +2,14 @@ package de.baumann.browser.view.dialog
 
 import android.app.Activity
 import android.app.Dialog
+import android.net.Uri
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.URLUtil
 import androidx.appcompat.app.AlertDialog
+import androidx.core.net.toUri
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.DialogEditExtensionBinding
 import de.baumann.browser.Ninja.databinding.DialogSavedEpubListBinding
@@ -44,24 +46,7 @@ class DialogManager(
         }
     }
 
-    fun showSaveEpubDialog(chooseFromPicker: (Boolean) -> Unit) {
-        val options = arrayOf(
-            activity.resources.getString(R.string.select_saved_epub),
-            activity.resources.getString(R.string.new_epub_or_from_picker)
-        )
-
-        val builder = AlertDialog.Builder(activity, R.style.TouchAreaDialog)
-        builder.setTitle(activity.resources.getString(R.string.save_to))
-        builder.setItems(options) { _, index ->
-            when(index) {
-                0 -> chooseFromPicker(false)
-                1 -> chooseFromPicker(true)
-            }
-        }
-        builder.show()
-    }
-
-    fun showSelectSavedEpubDialog(onNextAction: (String) -> Unit) {
+    fun showSaveEpubDialog(onNextAction: (Uri?) -> Unit) {
         val binding = DialogSavedEpubListBinding.inflate(inflater)
         val dialog = AlertDialog.Builder(activity, R.style.TouchAreaDialog)
                 .apply { setView(binding.root) }
@@ -73,14 +58,26 @@ class DialogManager(
     private fun setupSavedEpubFileList(
        binding: DialogSavedEpubListBinding,
        dialog:Dialog,
-       onNextAction: (String) -> Unit
+       onNextAction: (Uri?) -> Unit
     ) {
-        config.savedEpubFileInfos.forEach { epubFileInfo ->
+        // add first item to handle picker case
+        val firstItemBinding = ListItemEpubFileBinding.inflate(inflater).apply {
+            buttonHide.visibility = View.GONE
+            epubTitle.setText(R.string.new_epub_or_from_picker)
+            root.setOnClickListener {
+                onNextAction(null)
+                dialog.dismiss()
+            }
+        }
+
+        binding.epubInfoContainer.addView(firstItemBinding.root)
+
+        config.savedEpubFileInfos.reversed().forEach { epubFileInfo ->
             val itemBinding = ListItemEpubFileBinding.inflate(inflater)
             with (itemBinding.epubTitle) {
                 text = epubFileInfo.title
                 setOnClickListener {
-                    onNextAction(epubFileInfo.uri)
+                    onNextAction(epubFileInfo.uri.toUri())
                     dialog.dismiss()
                 }
             }
