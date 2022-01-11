@@ -41,7 +41,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import de.baumann.browser.Ninja.R
-import de.baumann.browser.Ninja.databinding.DialogHelpBinding
 import de.baumann.browser.view.dialog.DialogManager
 import java.text.SimpleDateFormat
 import java.util.*
