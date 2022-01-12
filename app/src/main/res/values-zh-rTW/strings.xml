@@ -260,4 +260,5 @@
     <string name="hie_touch_area_when_input">輸入時隱藏點擊區域</string>
     <string name="switch_touch_area_action">點擊翻頁功能互換</string>
     <string name="no_previous_page">沒有前一頁</string>
+    <string name="menu_open_epub">開啟已存 epub</string>
 </resources>
