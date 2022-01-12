@@ -66,6 +66,7 @@ import org.koin.android.ext.android.inject
 import java.io.*
 import java.util.*
 import kotlin.math.floor
+import kotlin.math.max
 import kotlin.math.roundToInt
 import kotlin.system.exitProcess
 
@@ -1093,11 +1094,12 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         if (currentAlbumController != null) {
             val index = browserContainer.indexOf(currentAlbumController) + 1
             browserContainer.add(newWebView, index)
+            overviewDialogController.addTabPreview(albumView, index)
         } else {
             browserContainer.add(newWebView)
+            overviewDialogController.addTabPreview(albumView, browserContainer.size() - 1)
         }
         updateWebViewCount()
-        overviewDialogController.addTabPreview(albumView)
 
         if (!foreground) {
             ViewUnit.bound(this, newWebView)
@@ -1166,15 +1168,13 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         } else {
             closeTabConfirmation {
                 overviewDialogController.removeTabView(controller.albumView)
-                var index = browserContainer.indexOf(controller)
+                val removeIndex = browserContainer.indexOf(controller)
                 val currentIndex = browserContainer.indexOf(currentAlbumController)
                 browserContainer.remove(controller)
                 // only refresh album when the delete one is current one
-                if (index == currentIndex) {
-                    if (index >= browserContainer.size()) {
-                        index = browserContainer.size() - 1
-                    }
-                    showAlbum(browserContainer[index])
+                if (removeIndex == currentIndex) {
+                    val newIndex = max(0, removeIndex - 1)
+                    showAlbum(browserContainer[newIndex])
                 }
                 updateWebViewCount()
             }
