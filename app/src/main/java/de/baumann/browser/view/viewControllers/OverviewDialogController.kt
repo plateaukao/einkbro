@@ -60,8 +60,14 @@ class OverviewDialogController(
         initViews()
     }
 
-    fun addTabPreview(view: View) {
-        binding.tabContainer.addView(view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+    fun addTabPreview(view: View, index: Int) {
+        binding.tabContainer.addView(
+                view,
+                index,
+                LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT)
+        )
     }
 
     fun removeTabView(view: View) {
