@@ -374,4 +374,5 @@
     <string name="hie_touch_area_when_input">hide touch area when typing</string>
     <string name="switch_touch_area_action">switch touch area action</string>
     <string name="no_previous_page">no previous page!</string>
+    <string name="menu_open_epub">open epub</string>
 </resources>
