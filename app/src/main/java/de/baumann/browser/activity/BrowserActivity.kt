@@ -45,6 +45,7 @@ import de.baumann.browser.service.ClearService
 import de.baumann.browser.task.SaveScreenshotTask
 import de.baumann.browser.unit.BrowserUnit
 import de.baumann.browser.unit.HelperUnit
+import de.baumann.browser.unit.HelperUnit.openUri
 import de.baumann.browser.unit.HelperUnit.toNormalScheme
 import de.baumann.browser.unit.IntentUnit
 import de.baumann.browser.unit.ViewUnit
@@ -240,6 +241,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
             }
         }
     }
+
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
 
@@ -612,7 +614,8 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
 
     private fun saveEpub(fileUri: Uri) {
         lifecycleScope.launch(Dispatchers.Main) {
-            val isNewFile = (DocumentFile.fromSingleUri(this@BrowserActivity, fileUri)?.length() ?: 0).toInt() == 0
+            val isNewFile = (DocumentFile.fromSingleUri(this@BrowserActivity, fileUri)?.length()
+                    ?: 0).toInt() == 0
 
             val bookName = if (isNewFile) epubManager.getBookName() else ""
             val chapterName = epubManager.getChapterName(ninjaWebView.title)
@@ -865,7 +868,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
     }
 
     private val preferenceChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
-        when(key) {
+        when (key) {
             ConfigManager.K_TOOLBAR_ICONS -> {
                 toolbarViewController.reorderIcons()
             }
@@ -920,7 +923,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
                     addRule(RelativeLayout.ALIGN_BOTTOM, R.id.main_content)
                 }
             }
-            FabPosition.Right-> {
+            FabPosition.Right -> {
                 fabImageButtonNav.layoutParams = params.apply {
                     addRule(RelativeLayout.ALIGN_PARENT_RIGHT)
                     addRule(RelativeLayout.ALIGN_BOTTOM, R.id.main_content)
@@ -993,7 +996,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
                 addTabAction = { title, url, isForeground -> addAlbum(title, url, isForeground) },
                 onBookmarksChanged = { isAutoCompleteOutdated = true },
                 onHistoryChanged = { isAutoCompleteOutdated = true },
-                splitScreenAction = { url -> toggleSplitScreen(url)}
+                splitScreenAction = { url -> toggleSplitScreen(url) }
         )
     }
 
@@ -1467,7 +1470,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
 
     private fun confirmAdSiteAddition(url: String) {
         val host = Uri.parse(url).host ?: ""
-        if(config.adSites.contains(host)) {
+        if (config.adSites.contains(host)) {
             confirmRemoveAdSite(host)
         } else {
             lifecycleScope.launch {
@@ -1570,12 +1573,19 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         showKeyboard()
     }
 
-    private var isNewEpubFile = false
     private fun showSaveEpubDialog() = dialogManager.showSaveEpubDialog { uri ->
         if (uri == null) {
             epubManager.showEpubFilePicker()
         } else {
             saveEpub(uri)
+        }
+    }
+
+    private fun openSavedEpub() = if (config.savedEpubFileInfos.isEmpty()) {
+        NinjaToast.show(this, "no saved epub!")
+    } else {
+        dialogManager.showSaveEpubDialog(shouldAddNewEpub = false) {
+            openUri(this@BrowserActivity, it)
         }
     }
 
@@ -1588,6 +1598,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
                 this::saveBookmark,
                 this::showSearchPanel,
                 this::showSaveEpubDialog,
+                this::openSavedEpub,
                 this::printPDF,
                 this::showFontSizeChangeDialog,
                 this::saveScreenshot,

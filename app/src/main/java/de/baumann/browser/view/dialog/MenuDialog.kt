@@ -27,6 +27,7 @@ class MenuDialog(
         private val saveBookmarkAction: () -> Unit,
         private val searchSiteAction: () -> Unit,
         private val saveEpubAction: () -> Unit,
+        private val openEpubAction: () -> Unit,
         private val printPdfAction: () -> Unit,
         private val fontSizeAction: () -> Unit,
         private val saveScreenshotAction: () -> Unit,
@@ -69,6 +70,7 @@ class MenuDialog(
         binding.menuSaveBookmark.setOnClickListener { dialog.dismissWithAction(saveBookmarkAction) }
         binding.menuSaveScreenshot.setOnClickListener { dialog.dismissWithAction(saveScreenshotAction) }
         binding.menuSaveEpub.setOnClickListener { dialog.dismissWithAction(saveEpubAction) }
+        binding.menuOpenEpub.setOnClickListener { dialog.dismissWithAction(openEpubAction) }
         binding.menuSavePdf.setOnClickListener { dialog.dismissWithAction(printPdfAction) }
         binding.menuSearchSite.setOnClickListener { dialog.dismissWithAction(searchSiteAction) }
         binding.menuShareLink.setOnClickListener {

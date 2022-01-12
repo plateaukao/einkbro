@@ -46,31 +46,33 @@ class DialogManager(
         }
     }
 
-    fun showSaveEpubDialog(onNextAction: (Uri?) -> Unit) {
+    fun showSaveEpubDialog(shouldAddNewEpub: Boolean = true, onNextAction: (Uri?) -> Unit) {
         val binding = DialogSavedEpubListBinding.inflate(inflater)
         val dialog = AlertDialog.Builder(activity, R.style.TouchAreaDialog)
                 .apply { setView(binding.root) }
                 .show()
 
-        setupSavedEpubFileList(binding , dialog, onNextAction)
+        setupSavedEpubFileList(binding , dialog, shouldAddNewEpub, onNextAction)
     }
 
     private fun setupSavedEpubFileList(
        binding: DialogSavedEpubListBinding,
        dialog:Dialog,
+       shouldAddNewEpub: Boolean = true,
        onNextAction: (Uri?) -> Unit
     ) {
-        // add first item to handle picker case
-        val firstItemBinding = ListItemEpubFileBinding.inflate(inflater).apply {
-            buttonHide.visibility = View.GONE
-            epubTitle.setText(R.string.new_epub_or_from_picker)
-            root.setOnClickListener {
-                onNextAction(null)
-                dialog.dismiss()
+        if (shouldAddNewEpub) {
+            // add first item to handle picker case
+            val firstItemBinding = ListItemEpubFileBinding.inflate(inflater).apply {
+                buttonHide.visibility = View.GONE
+                epubTitle.setText(R.string.new_epub_or_from_picker)
+                root.setOnClickListener {
+                    onNextAction(null)
+                    dialog.dismiss()
+                }
             }
+            binding.epubInfoContainer.addView(firstItemBinding.root)
         }
-
-        binding.epubInfoContainer.addView(firstItemBinding.root)
 
         config.savedEpubFileInfos.reversed().forEach { epubFileInfo ->
             val itemBinding = ListItemEpubFileBinding.inflate(inflater)
