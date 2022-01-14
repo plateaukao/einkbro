@@ -397,7 +397,6 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         return false
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     override fun showAlbum(controller: AlbumController) {
         if (currentAlbumController != null) {
             if (currentAlbumController == controller) {
@@ -421,17 +420,6 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         ninjaWebView = controller as NinjaWebView
 
         updateTitle()
-
-        if (config.isMultitouchEnabled) {
-            ninjaWebView.setOnTouchListener(multiTouchTouchListener)
-        }
-    }
-
-    private val multiTouchTouchListener = object : MultitouchListener() {
-        override fun onSwipeTop() = performGesture("setting_multitouch_up")
-        override fun onSwipeBottom() = performGesture("setting_multitouch_down")
-        override fun onSwipeRight() = performGesture("setting_multitouch_right")
-        override fun onSwipeLeft() = performGesture("setting_multitouch_left")
     }
 
     override fun updateAutoComplete() {
@@ -1085,6 +1073,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
 
     private var preloadedWebView: NinjaWebView? = null
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun addAlbum(
             title: String = "",
             url: String? = config.favoriteUrl,
@@ -1116,6 +1105,17 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
             overviewDialogController.addTabPreview(albumView, browserContainer.size() - 1)
         }
         updateWebViewCount()
+
+        if (config.isMultitouchEnabled) {
+            val multiTouchTouchListener = object: MultitouchListener(this@BrowserActivity, newWebView) {
+                override fun onSwipeTop() = performGesture("setting_multitouch_up")
+                override fun onSwipeBottom() = performGesture("setting_multitouch_down")
+                override fun onSwipeRight() = performGesture("setting_multitouch_right")
+                override fun onSwipeLeft() = performGesture("setting_multitouch_left")
+            }
+
+            newWebView.setOnTouchListener(multiTouchTouchListener)
+        }
 
         if (!foreground) {
             ViewUnit.bound(this, newWebView)

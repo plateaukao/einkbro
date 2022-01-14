@@ -11,8 +11,8 @@ android {
         //applicationId "info.plateaukao.einkbro.debug"
         minSdkVersion 21
         targetSdkVersion 31
-        versionCode 82700
-        versionName "8.27.0"
+        versionCode 82701
+        versionName "8.27.1"
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -20,7 +20,7 @@ android {
         release {
             //debuggable true
             //minifyEnabled false
-            minifyEnabled true
+            //minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
