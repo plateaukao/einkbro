@@ -66,15 +66,11 @@ public class SwipeTouchListener implements OnTouchListener {
     }
 
     // ↓ do not remove, needed for swipe listener of the "navigation button"
-    public void onSwipeRight() {
-    }
+    public void onSwipeRight() { }
 
-    public void onSwipeLeft() {
-    }
+    public void onSwipeLeft() { }
 
-    public void onSwipeTop() {
-    }
+    public void onSwipeTop() { }
 
-    public void onSwipeBottom() {
-    }
+    public void onSwipeBottom() { }
 }

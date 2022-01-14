@@ -22,6 +22,12 @@ class ConfigManager(
         sp.registerOnSharedPreferenceChangeListener(listener)
     }
 
+    var isMultitouchEnabled: Boolean
+        get() = sp.getBoolean(K_MULTITOUCH, false)
+        set(value) {
+            sp.edit { putBoolean(K_MULTITOUCH, value) }
+        }
+
     var whiteBackground: Boolean
         get() = sp.getBoolean(K_WHITE_BACKGROUND, false)
         set(value) {
@@ -342,6 +348,7 @@ class ConfigManager(
         const val K_TOUCH_AREA_ACTION_SWITCH = "sp_touch_area_action_switch"
         const val K_TOUCH_AREA_HIDE_WHEN_INPUT = "sp_touch_area_hide_when_input"
         const val K_SAVED_EPUBS = "sp_saved_epubs"
+        const val K_MULTITOUCH = "sp_multitouch"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
         private const val EPUB_FILE_INFO_SEPARATOR = "::::"
