@@ -1,26 +1,33 @@
 package de.baumann.browser.view
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.Point
 import android.util.Log
+import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
+import de.baumann.browser.browser.NinjaGestureListener
 import kotlin.math.abs
 import kotlin.math.max
 
 open class MultitouchListener(
+    context: Context,
+    webView: NinjaWebView,
     private val touchCount: Int = 2
 ) : View.OnTouchListener {
 
-    var startPoint0: Point = Point(0, 0)
-    var startPoint1: Point = Point(0, 0)
-    var endPoint0: Point = Point(0, 0)
-    var endPoint1: Point = Point(0, 0)
-    var inSwipe = false
+    private var startPoint0: Point = Point(0, 0)
+    private var startPoint1: Point = Point(0, 0)
+    private var endPoint0: Point = Point(0, 0)
+    private var endPoint1: Point = Point(0, 0)
+    private var inSwipe = false
+
+    private val gestureDetector: GestureDetector = GestureDetector(context, NinjaGestureListener(webView))
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouch(view: View, event: MotionEvent): Boolean {
-        if (event.pointerCount != touchCount) return false
+        if (event.pointerCount != touchCount) return gestureDetector.onTouchEvent(event)
 
         when (event.action and MotionEvent.ACTION_MASK) {
             MotionEvent.ACTION_POINTER_DOWN -> {
@@ -46,6 +53,7 @@ open class MultitouchListener(
                         }
                         inSwipe = false
                     }
+                    return true
                 }
             }
             MotionEvent.ACTION_MOVE -> {
@@ -55,7 +63,7 @@ open class MultitouchListener(
                 }
             }
         }
-        return false
+        return gestureDetector.onTouchEvent(event)
     }
 
     private fun isValidSwipe(offSetX: Int, offSetY: Int) =
