@@ -1,3 +1,19 @@
+### 8.27.0
+#### enhancement
+* improve save epub process: now you can select previously saved epub file easily.
+* remove unused resources: now EinkBro is even smaller!
+* add open epub button in menu: possible to open previously saved epub
+* two finger swipe gesture is supported now! Find it in Setting -> Gestures
+
+### 8.26.0
+#### issue fix
+* tab preview title would be correct even if bold font is set.
+* fix memory leak
+* fix back button behavior: don't close tab if there's no previous page
+
+#### enhancement
+* improve new tab loading performance (preload webview)
+
 ### 8.25.0
 #### Feature
 * Add configuration to hide touch area dot line when keyboard is displayed (access from touch config dialog)
