@@ -53,6 +53,7 @@ import de.baumann.browser.unit.ViewUnit.dp
 import de.baumann.browser.util.Constants
 import de.baumann.browser.util.DebugT
 import de.baumann.browser.view.*
+import de.baumann.browser.view.GestureType.*
 import de.baumann.browser.view.adapter.*
 import de.baumann.browser.view.dialog.*
 import de.baumann.browser.view.viewControllers.OverviewDialogController
@@ -396,6 +397,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         return false
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun showAlbum(controller: AlbumController) {
         if (currentAlbumController != null) {
             if (currentAlbumController == controller) {
@@ -419,6 +421,17 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         ninjaWebView = controller as NinjaWebView
 
         updateTitle()
+
+        if (config.isMultitouchEnabled) {
+            ninjaWebView.setOnTouchListener(multiTouchTouchListener)
+        }
+    }
+
+    private val multiTouchTouchListener = object : MultitouchListener() {
+        override fun onSwipeTop() = performGesture("setting_multitouch_up")
+        override fun onSwipeBottom() = performGesture("setting_multitouch_down")
+        override fun onSwipeRight() = performGesture("setting_multitouch_right")
+        override fun onSwipeLeft() = performGesture("setting_multitouch_left")
     }
 
     override fun updateAutoComplete() {
@@ -945,40 +958,40 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         }
     }
 
-    private fun performGesture(gesture: String) {
-        val gestureAction = Objects.requireNonNull(sp.getString(gesture, "0"))
+    private fun performGesture(gestureString: String) {
+        val gesture = GestureType.from(sp.getString(gestureString, "01") ?: "01")
         val controller: AlbumController?
         ninjaWebView = currentAlbumController as NinjaWebView
-        when (gestureAction) {
-            "01" -> {
-            }
-            "02" -> if (ninjaWebView.canGoForward()) {
+        when (gesture) {
+            NothingHappen -> Unit
+            Forward -> if (ninjaWebView.canGoForward()) {
                 ninjaWebView.goForward()
             } else {
                 NinjaToast.show(this, R.string.toast_webview_forward)
             }
-            "03" -> if (ninjaWebView.canGoBack()) {
+            Backward -> if (ninjaWebView.canGoBack()) {
                 ninjaWebView.goBack()
             } else {
                 NinjaToast.show(this, getString(R.string.no_previous_page))
             }
-            "04" -> ninjaWebView.jumpToTop()
-            "05" -> ninjaWebView.pageDownWithNoAnimation()
-            "06" -> {
+            ScrollToTop -> ninjaWebView.jumpToTop()
+            ScrollToBottom -> ninjaWebView.pageDownWithNoAnimation()
+            ToLeftTab -> {
                 controller = nextAlbumController(false)
                 showAlbum(controller!!)
             }
-            "07" -> {
+            ToRightTab -> {
                 controller = nextAlbumController(true)
                 showAlbum(controller!!)
             }
-            "08" -> showOverview()
-            "09" -> addAlbum(getString(R.string.app_name), sp.getString("favoriteURL", Constants.DEFAULT_HOME_URL))
-            "10" -> removeAlbum(currentAlbumController!!)
-            // page up
-            "11" -> ninjaWebView.pageUpWithNoAnimation()
-            // page down
-            "12" -> ninjaWebView.pageDownWithNoAnimation()
+            Overview -> showOverview()
+            OpenNewTab -> {
+                addAlbum(getString(R.string.app_name), "", true)
+                focusOnInput()
+            }
+            CloseTab -> removeAlbum(currentAlbumController!!)
+            PageUp -> ninjaWebView.pageUpWithNoAnimation()
+            PageDown -> ninjaWebView.pageDownWithNoAnimation()
         }
     }
 
@@ -1214,6 +1227,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
                 }
             }
         })
+
     }
 
     override fun updateTitle(title: String?) = updateTitle()

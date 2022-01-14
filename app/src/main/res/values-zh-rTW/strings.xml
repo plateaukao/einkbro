@@ -261,4 +261,7 @@
     <string name="switch_touch_area_action">點擊翻頁功能互換</string>
     <string name="no_previous_page">沒有前一頁</string>
     <string name="menu_open_epub">開啟已存 epub</string>
+    <string name="setting_multitouch_use_title">使用兩指手勢</string>
+    <string name="setting_multitouch_use_summary">兩指在畫面上滑動啟用相關功能</string>
+    <string name="setting_title_two_finger_swipe">兩指滑動</string>
 </resources>
