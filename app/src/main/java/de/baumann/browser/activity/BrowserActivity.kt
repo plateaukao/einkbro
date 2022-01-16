@@ -873,6 +873,13 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
             ConfigManager.K_TOOLBAR_ICONS -> {
                 toolbarViewController.reorderIcons()
             }
+            ConfigManager.K_CUSTOM_FONT_ENABLE -> {
+                if(config.enableCustomFont) {
+                    ninjaWebView.updateCssStyle()
+                } else {
+                    ninjaWebView.reload()
+                }
+            }
             ConfigManager.K_BOLD_FONT -> {
                 if (config.boldFontStyle) {
                     ninjaWebView.updateCssStyle()

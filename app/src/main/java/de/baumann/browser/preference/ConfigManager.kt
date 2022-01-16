@@ -235,6 +235,14 @@ class ConfigManager(
             sp.edit { putString(K_TOOLBAR_ICONS, value.map { it.ordinal }.joinToString(",")) }
         }
 
+    var enableCustomFont: Boolean
+        get() = sp.getBoolean(K_CUSTOM_FONT_ENABLE, false)
+        set(value) = sp.edit { putBoolean(K_CUSTOM_FONT_ENABLE, value) }
+
+    var customFontInfo: CustomFontInfo?
+        get() = sp.getString(K_CUSTOM_FONT, "")?.toCustomFontInfo()
+        set(value) { sp.edit { putString(K_CUSTOM_FONT, value?.toSerializedString() ?: "") } }
+
     var savedAlbumInfoList: List<AlbumInfo>
         get() {
             val string = sp.getString(K_SAVED_ALBUM_INFO, "") ?: ""
@@ -349,6 +357,8 @@ class ConfigManager(
         const val K_TOUCH_AREA_HIDE_WHEN_INPUT = "sp_touch_area_hide_when_input"
         const val K_SAVED_EPUBS = "sp_saved_epubs"
         const val K_MULTITOUCH = "sp_multitouch"
+        const val K_CUSTOM_FONT = "sp_custom_font"
+        const val K_CUSTOM_FONT_ENABLE = "sp_font_custom_enabled"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
         private const val EPUB_FILE_INFO_SEPARATOR = "::::"
@@ -398,14 +408,27 @@ enum class DarkMode {
 }
 
 data class AlbumInfo(
-        val title: String,
-        val url: String
-)
+    val title: String,
+    val url: String
+) {
+    fun toSerializedString(): String = "$title::$url"
+}
 
-private fun AlbumInfo.toSerializedString(): String = "$title::$url"
+data class CustomFontInfo(
+    val name: String,
+    val url: String
+) {
+    fun toSerializedString(): String = "$name::$url"
+}
 
 private fun String.toAlbumInfo(): AlbumInfo? {
     val segments = this.split("::", limit = 2)
     if (segments.size != 2) return null
     return AlbumInfo(segments[0], segments[1])
+}
+
+private fun String.toCustomFontInfo(): CustomFontInfo? {
+    val segments = this.split("::", limit = 2)
+    if (segments.size != 2) return null
+    return CustomFontInfo(segments[0], segments[1])
 }

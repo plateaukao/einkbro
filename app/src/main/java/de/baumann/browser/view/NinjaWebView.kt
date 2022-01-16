@@ -84,8 +84,9 @@ class NinjaWebView : WebView, AlbumController, KoinComponent {
 
     fun updateCssStyle() {
         val cssStyle = (if (config.boldFontStyle) boldFontCss else "") +
-                if (config.fontStyleSerif) notoSansSerifFontCss else "" +
-                        if (config.whiteBackground) whiteBackgroundCss else ""
+                (if (config.fontStyleSerif) notoSansSerifFontCss else "") +
+                (if (config.whiteBackground) whiteBackgroundCss else "") +
+                (if (config.enableCustomFont) customFontCss else "")
         injectCss(cssStyle.toByteArray())
     }
 
@@ -686,22 +687,26 @@ class NinjaWebView : WebView, AlbumController, KoinComponent {
                 "writing-mode: horizontal-tb;\n" +
                 "}\n"
 
-        private const val notoSansSerifFontCss = "@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400&display=swap');" +
+        private const val notoSansSerifFontCss =
+                "@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400&display=swap');" +
                 "@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400&display=swap');" +
-                //"@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400&display=swap');" +
+                "@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400&display=swap');" +
+                "@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400&display=swap');" +
                 "body {\n" +
-                "font-family: 'Noto Serif TC', 'Noto Serif JP', serif !important;\n" +
+                "font-family: 'Noto Serif TC', 'Noto Serif JP', 'Noto Serif KR', 'Noto Serif SC', serif !important;\n" +
+                //"font-family: serif !important;\n" +
                 "}\n"
 
-//        private const val notoSansSerifFontCss = """
-//            @font-face {
-//                 font-family: custom;
-//                 src: url("asset://noto_sans.ttc");
-//            }
-//            * {
-//              font-family: custom, serif !important;
-//            }
-//        """
+        private const val customFontCss = """
+            
+            @font-face {
+                 font-family: customfont;
+                 src: url('mycustomfont');
+            }
+            body {
+              font-family: customfont !important;
+            }
+        """
 
         private const val whiteBackgroundCss = """
 * {
