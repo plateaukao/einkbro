@@ -378,4 +378,7 @@
     <string name="setting_multitouch_use_title">Use two finger swipe</string>
     <string name="setting_multitouch_use_summary">Use two finger swipe on web content to trigger actions</string>
     <string name="setting_title_two_finger_swipe">two finger swipe</string>
+    <string name="font_custom">Select custom font file</string>
+    <string name="font_custom_enable">Enable Custom Font</string>
+    <string name="setting_summary_font_custom_enable">Use font file in external storage</string>
 </resources>

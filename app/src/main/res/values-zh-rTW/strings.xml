@@ -264,4 +264,7 @@
     <string name="setting_multitouch_use_title">使用兩指手勢</string>
     <string name="setting_multitouch_use_summary">兩指在畫面上滑動啟用相關功能</string>
     <string name="setting_title_two_finger_swipe">兩指滑動</string>
+    <string name="font_custom">Select font (in sdcard /fonts folder)</string>
+    <string name="font_custom_enable">Enable Custom Font</string>
+    <string name="setting_summary_font_custom_enable">Use font file in external storage</string>
 </resources>

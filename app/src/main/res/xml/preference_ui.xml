@@ -59,6 +59,15 @@
             android:title="@string/font_style_serif"
             android:summary="@string/setting_summary_font_style_serif"/>
 
+        <CheckBoxPreference android:key="sp_font_custom_enabled"
+            android:defaultValue="false"
+            android:title="@string/font_custom_enable"
+            android:summary="@string/setting_summary_font_custom_enable"/>
+
+        <Preference android:key="sp_custom_font"
+            android:defaultValue=""
+            android:title="@string/font_custom"/>
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/setting_title_toolbar">

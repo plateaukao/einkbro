@@ -27,14 +27,20 @@ import de.baumann.browser.view.NinjaWebView
 import java.io.InputStream
 import java.net.URISyntaxException
 import kotlin.collections.HashMap
-import android.graphics.BitmapFactory
 
 import android.util.Base64
+import android.util.Log
+import androidx.core.net.toUri
 import de.baumann.browser.util.DebugT
 import de.baumann.browser.view.dTLoadUrl
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.ByteArrayInputStream
+import java.io.IOException
+import android.webkit.WebResourceResponse
+
+
+
 
 
 class NinjaWebViewClient(
@@ -164,6 +170,7 @@ class NinjaWebViewClient(
         if (hasAdBlock && !white && adBlock.isAd(url))  {
             return adTxtResponse
         }
+
         if (!sp.getBoolean(context.getString(R.string.sp_cookies), true)) {
             if (cookie.isWhite(url)) {
                 val manager = CookieManager.getInstance()
@@ -221,6 +228,25 @@ class NinjaWebViewClient(
             }
         }
 
+        Log.i("font", "request url: ${request.url.path}")
+        if (request.url.path?.contains("mycustomfont") == true) {
+            val uri = config.customFontInfo?.url?.toUri() ?: return super.shouldInterceptRequest(view, request)
+            //if (fontWebRequest!= null && customFontUrl == uri) return fontWebRequest
+
+
+            try {
+                val inputStream= context.contentResolver.openInputStream(uri)
+                //fontWebRequest = WebResourceResponse("application/x-font-ttf", "UTF-8", inputStream)
+                //customFontUrl = uri
+                //return fontWebRequest
+                return WebResourceResponse("application/x-font-ttf", "UTF-8", inputStream)
+            } catch (e: IOException) {
+                e.printStackTrace()
+            } catch (e: SecurityException) {
+                e.printStackTrace()
+            }
+        }
+
         return super.shouldInterceptRequest(view, request)
     }
 
@@ -273,5 +299,10 @@ class NinjaWebViewClient(
 
         HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
          */
+    }
+
+    companion object {
+        private var customFontUrl: Uri? = null
+        private var fontWebRequest: WebResourceResponse? = null
     }
 }
