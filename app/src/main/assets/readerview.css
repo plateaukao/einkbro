@@ -13,11 +13,11 @@
 }
 
 .mozac-readerview-body.sans-serif * {
-  font-family: sans-serif !important;
+  font-family: 'customfont', sans-serif !important;
 }
 
 .mozac-readerview-body.serif * {
-  font-family: 'Noto Serif TC', 'Noto Serif JP', serif !important;
+  font-family: 'customfont', 'Noto Serif TC', 'Noto Serif JP', serif !important;
 }
 
 /* Override some controls and content styles based on color scheme */
