@@ -60,7 +60,7 @@ class NinjaWebViewClient(
     }
 
     override fun onPageFinished(view: WebView, url: String) {
-        if (config.boldFontStyle || config.fontStyleSerif || config.whiteBackground) {
+        if (config.boldFontStyle || config.fontStyleSerif || config.whiteBackground || config.enableCustomFont) {
             ninjaWebView.updateCssStyle()
         }
 
