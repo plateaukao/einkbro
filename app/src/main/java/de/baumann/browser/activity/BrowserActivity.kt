@@ -901,6 +901,11 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
                     ninjaWebView.reload()
                 }
             }
+            ConfigManager.K_CUSTOM_FONT -> {
+                if (config.enableCustomFont) {
+                    ninjaWebView.updateCssStyle()
+                }
+            }
             ConfigManager.K_IS_INCOGNITO_MODE -> {
                 ninjaWebView.incognito = config.isIncognitoMode
                 updateWebViewCountUI()
