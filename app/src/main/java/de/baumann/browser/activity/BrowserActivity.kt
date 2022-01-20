@@ -38,6 +38,7 @@ import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.*
 import de.baumann.browser.browser.*
 import de.baumann.browser.database.*
+import de.baumann.browser.database.Bookmark
 import de.baumann.browser.epub.EpubFileInfo
 import de.baumann.browser.epub.EpubManager
 import de.baumann.browser.preference.*
@@ -522,6 +523,10 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
             R.id.toolbar_translate -> showTranslation()
             R.id.toolbar_close_tab -> removeAlbum(currentAlbumController!!)
             R.id.toolbar_input_url -> focusOnInput()
+            R.id.toolbar_new_tab -> {
+                addAlbum(getString(R.string.app_name), "", true)
+                focusOnInput()
+            }
             else -> {
             }
         }
@@ -992,6 +997,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
             CloseTab -> removeAlbum(currentAlbumController!!)
             PageUp -> ninjaWebView.pageUpWithNoAnimation()
             PageDown -> ninjaWebView.pageDownWithNoAnimation()
+            GestureType.Bookmark -> openBookmarkPage()
         }
     }
 
