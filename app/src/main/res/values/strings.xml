@@ -381,4 +381,5 @@
     <string name="font_custom">Select custom font file</string>
     <string name="font_custom_enable">Enable Custom Font</string>
     <string name="setting_summary_font_custom_enable">Use font file in external storage</string>
+    <string name="translation_mode">Translation Mode</string>
 </resources>

@@ -256,16 +256,14 @@ class TwoPaneController(
         val translationModeArray = enumValues.map { it.label }.toTypedArray()
         val valueArray = enumValues.map { it.ordinal }
         val selected = valueArray.indexOf(config.translationMode.ordinal)
-        AlertDialog.Builder(activity, R.style.TouchAreaDialog).apply {
-            setTitle("Translation Mode")
-            setSingleChoiceItems(translationModeArray, selected) { dialog, which ->
-                dialog.dismiss()
-                config.translationMode = enumValues[which]
-                if (isTranslationModeOn()) showTranslationAction.invoke()
-            }
-        }
-                .setPositiveButton(R.string.close) { _, _ ->
-                    toggleTranslationWindow(false) { onTranslationClosed() }
+        AlertDialog.Builder(activity, R.style.TouchAreaDialog)
+                .apply {
+                    setTitle(context.getString(R.string.translation_mode))
+                    setSingleChoiceItems(translationModeArray, selected) { dialog, which ->
+                        dialog.dismiss()
+                        config.translationMode = enumValues[which]
+                        showTranslationAction.invoke()
+                    }
                 }
                 .create().also {
                     it.show()
