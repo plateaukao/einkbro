@@ -12,7 +12,8 @@ enum class GestureType(val value: String) {
     OpenNewTab("09"),
     CloseTab("10"),
     PageUp("11"),
-    PageDown("12");
+    PageDown("12"),
+    Bookmark("13");
 
     companion object {
         fun from(value: String): GestureType = values().firstOrNull { it.value == value } ?: NothingHappen
