@@ -24,7 +24,8 @@ enum class ToolbarAction(val iconResId: Int = 0, val titleResId: Int) {
     RotateScreen(iconResId = R.drawable.ic_rotate, titleResId = R.string.rotate),
     Translation(iconResId = R.drawable.ic_translate, titleResId = R.string.translate),
     CloseTab(iconResId = R.drawable.icon_close, titleResId = R.string.close_tab),
-    InputUrl(iconResId = R.drawable.ic_input_url, titleResId = R.string.input_url);
+    InputUrl(iconResId = R.drawable.ic_input_url, titleResId = R.string.input_url),
+    NewTab(iconResId = R.drawable.icon_plus, titleResId = R.string.open_new_tab);
 
     companion object {
         fun fromOrdinal(value: Int) = values().first { it.ordinal == value }
