@@ -3,6 +3,7 @@ package de.baumann.browser.unit
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.*
 import android.os.Build
 import android.view.TouchDelegate
@@ -55,6 +56,10 @@ object ViewUnit {
         canvas.setBitmap(null)
         return bitmap
     }
+
+    @JvmStatic
+    fun isLandscape(context: Context): Boolean =
+            context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
     @JvmStatic
     fun getDensity(context: Context): Float {

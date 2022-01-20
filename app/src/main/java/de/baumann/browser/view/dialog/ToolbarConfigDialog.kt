@@ -1,7 +1,6 @@
 package de.baumann.browser.view.dialog
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.*
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -11,7 +10,6 @@ import android.widget.*
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.DialogToolbarConfigBinding
 import de.baumann.browser.preference.ConfigManager
-import de.baumann.browser.unit.ViewUnit
 import de.baumann.browser.unit.ViewUnit.dp
 import de.baumann.browser.view.sortlistpreference.CheckableMultiSelectLayout
 import de.baumann.browser.view.sortlistpreference.DragSortController
