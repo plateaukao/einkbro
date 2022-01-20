@@ -6,6 +6,7 @@ import android.os.Build
 import android.print.PrintAttributes
 import androidx.core.content.edit
 import de.baumann.browser.epub.EpubFileInfo
+import de.baumann.browser.unit.ViewUnit
 import de.baumann.browser.util.Constants
 import de.baumann.browser.util.TranslationLanguage
 import de.baumann.browser.view.Orientation
@@ -228,11 +229,15 @@ class ConfigManager(
 
     var toolbarActions: List<ToolbarAction>
         get() {
-            val iconListString = sp.getString(K_TOOLBAR_ICONS, getDefaultIconStrings()) ?: ""
+            val key = if (ViewUnit.isLandscape(context)) K_TOOLBAR_ICONS_FOR_LARGE else K_TOOLBAR_ICONS
+            val iconListString = sp.getString(key, getDefaultIconStrings()) ?: ""
             return iconStringToEnumList(iconListString)
         }
         set(value) {
-            sp.edit { putString(K_TOOLBAR_ICONS, value.map { it.ordinal }.joinToString(",")) }
+            sp.edit {
+                val key = if (ViewUnit.isLandscape(context)) K_TOOLBAR_ICONS_FOR_LARGE else K_TOOLBAR_ICONS
+                putString(key, value.map { it.ordinal }.joinToString(","))
+            }
         }
 
     var enableCustomFont: Boolean
@@ -319,6 +324,7 @@ class ConfigManager(
     companion object {
         const val K_TOUCH_AREA_TYPE = "sp_touch_area_type"
         const val K_TOOLBAR_ICONS = "sp_toolbar_icons"
+        const val K_TOOLBAR_ICONS_FOR_LARGE = "sp_toolbar_icons_for_large"
         const val K_BOLD_FONT = "sp_bold_font"
         const val K_FONT_STYLE_SERIF = "sp_font_style_serif"
         const val K_NAV_POSITION = "nav_position"

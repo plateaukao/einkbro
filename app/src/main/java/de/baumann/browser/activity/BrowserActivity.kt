@@ -231,6 +231,8 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         }
 
         listenKeyboardShowHide()
+
+        orientation = resources.configuration.orientation
     }
 
     private fun listenKeyboardShowHide() {
@@ -244,6 +246,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         }
     }
 
+    private var orientation: Int = 0
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
 
@@ -253,6 +256,10 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
                 //restartApp()
                 recreate()
             }
+        }
+        if (newConfig.orientation != orientation) {
+            toolbarViewController.reorderIcons()
+            orientation = newConfig.orientation
         }
     }
 
@@ -875,6 +882,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
 
     private val preferenceChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
         when (key) {
+            ConfigManager.K_TOOLBAR_ICONS_FOR_LARGE,
             ConfigManager.K_TOOLBAR_ICONS -> {
                 toolbarViewController.reorderIcons()
             }
