@@ -51,6 +51,7 @@ import de.baumann.browser.unit.HelperUnit.toNormalScheme
 import de.baumann.browser.unit.IntentUnit
 import de.baumann.browser.unit.ViewUnit
 import de.baumann.browser.unit.ViewUnit.dp
+import de.baumann.browser.unit.ViewUnit.dpToPixel
 import de.baumann.browser.util.Constants
 import de.baumann.browser.util.DebugT
 import de.baumann.browser.view.*
@@ -1597,9 +1598,25 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         showToolbar()
     }
 
-    private fun hideStatusBar() = window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+    private fun getStatusBarHeight(): Int =
+            resources.getIdentifier("status_bar_height", "dimen", "android")
 
-    private fun showStatusBar() = window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+    private fun hideStatusBar() {
+        window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.insetsController?.hide(WindowInsets.Type.statusBars())
+            window.setDecorFitsSystemWindows(false)
+            binding.root.setPadding(0, 0, 0, 0)
+        }
+    }
+
+    private fun showStatusBar() {
+        window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.setDecorFitsSystemWindows(true)
+            window.insetsController?.show(WindowInsets.Type.statusBars())
+        }
+    }
 
     @SuppressLint("RestrictedApi")
     private fun showSearchPanel() {
