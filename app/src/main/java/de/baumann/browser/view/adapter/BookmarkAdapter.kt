@@ -34,10 +34,11 @@ class BookmarkAdapter(
         val bookmark = getItem(viewHolder.adapterPosition)
         viewHolder.textView.text = bookmark.title
         if (bookmark.isDirectory) {
+            viewHolder.iconView.visibility = View.VISIBLE
             viewHolder.iconView.setImageResource(R.drawable.ic_folder)
-            viewHolder.tabView.visibility = View.INVISIBLE
+            viewHolder.tabView.visibility = View.GONE
         } else {
-            viewHolder.iconView.setImageResource(R.drawable.circle_red_big)
+            viewHolder.iconView.visibility = View.GONE
             viewHolder.tabView.visibility = View.VISIBLE
         }
 

@@ -10,6 +10,7 @@ import android.view.View.VISIBLE
 import android.widget.LinearLayout
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.DialogMenuContextListBinding
@@ -56,6 +57,14 @@ class OverviewDialogController(
 
     private val lifecycleScope = (context as LifecycleOwner).lifecycleScope
 
+    private val narrowLayoutManager = LinearLayoutManager(context).apply {
+        reverseLayout = true
+    }
+
+    private val wideLayoutManager = GridLayoutManager(context, 2).apply {
+        reverseLayout = true
+    }
+
     init {
         initViews()
     }
@@ -88,9 +97,7 @@ class OverviewDialogController(
         binding.root.setOnClickListener { hideOverview() }
 
         // allow scrolling in listView without closing the bottomSheetDialog
-        recyclerView.layoutManager = LinearLayoutManager(context).apply {
-            reverseLayout = true
-        }
+        recyclerView.layoutManager = narrowLayoutManager
 
         binding.openMenu.setOnClickListener { openSubMenu() }
         binding.openTabButton.setOnClickListener { openHomePage() }
@@ -174,6 +181,7 @@ class OverviewDialogController(
 
     fun openBookmarkPage() {
         binding.root.visibility = VISIBLE
+        recyclerView.layoutManager = if (shouldShowWidList()) wideLayoutManager else narrowLayoutManager
 
         binding.overviewPreview.visibility = View.INVISIBLE
         toggleOverviewFocus(binding.openBookmarkView)
@@ -220,9 +228,13 @@ class OverviewDialogController(
         }
     }
 
+    private fun shouldShowWidList(): Boolean =
+            ViewUnit.isLandscape(context) || ViewUnit.isTablet(context)
+
     private fun openHomePage() {
         binding.overviewPreview.visibility = VISIBLE
         recyclerView.visibility = GONE
+        recyclerView.layoutManager = if (shouldShowWidList()) wideLayoutManager else narrowLayoutManager
         toggleOverviewFocus(binding.openTabView)
         overViewTab = OverviewTab.TabPreview
     }

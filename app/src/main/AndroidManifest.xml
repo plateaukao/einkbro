@@ -131,9 +131,6 @@
         <activity
             android:name="de.baumann.browser.activity.Settings_GestureActivity"
             android:label="@string/setting_gestures" />
-        <activity
-            android:name="de.baumann.browser.activity.Settings_FilterActivity"
-            android:label="@string/setting_filter" /> <!-- ClearService | Provider -->
         <service
             android:name="de.baumann.browser.service.ClearService"
             android:icon="@mipmap/ic_launcher"

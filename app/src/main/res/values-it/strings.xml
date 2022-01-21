@@ -8,17 +8,6 @@
     <string name="album_title_history">Cronologia</string>
     <string name="album_title_home">Pagina principale</string>
     <string name="search_hint">Cerca</string>
-    <string name="color_red">Rosso</string>
-    <string name="color_pink">Rosa</string>
-    <string name="color_purple">Viola</string>
-    <string name="color_blue">Blu</string>
-    <string name="color_teal">Verde acqua</string>
-    <string name="color_green">Verde</string>
-    <string name="color_lime">Lime</string>
-    <string name="color_yellow">Giallo</string>
-    <string name="color_orange">Arancione</string>
-    <string name="color_brown">Marrone</string>
-    <string name="color_grey">Grigio</string>
     <!-- Menu -->
     <string name="main_menu_new_tab">Nuova scheda (secondo piano)</string>
     <string name="main_menu_new_tabOpen">Nuova scheda (primo piano)</string>

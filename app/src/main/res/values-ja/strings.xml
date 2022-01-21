@@ -7,17 +7,6 @@
     <string name="album_title_history">履歴</string>
     <string name="album_title_home">ホーム</string>
     <string name="search_hint">検索</string>
-    <string name="color_red">赤</string>
-    <string name="color_pink">ピンク</string>
-    <string name="color_purple">紫</string>
-    <string name="color_blue">青</string>
-    <string name="color_teal">青緑</string>
-    <string name="color_green">緑</string>
-    <string name="color_lime">黄緑</string>
-    <string name="color_yellow">黄</string>
-    <string name="color_orange">オレンジ</string>
-    <string name="color_brown">茶</string>
-    <string name="color_grey">灰</string>
     <!-- Menu -->
     <string name="main_menu_new_tab">新規タブ (裏)</string>
     <string name="main_menu_new_tabOpen">新規タブ (前)</string>

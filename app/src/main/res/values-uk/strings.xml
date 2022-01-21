@@ -8,17 +8,6 @@
     <string name="album_title_history">Історія</string>
     <string name="album_title_home">Головна</string>
     <string name="search_hint">Пошук</string>
-    <string name="color_red">Червоний</string>
-    <string name="color_pink">Рожевий</string>
-    <string name="color_purple">Фіолетовий</string>
-    <string name="color_blue">Синій</string>
-    <string name="color_teal">Бірюзовий</string>
-    <string name="color_green">Зелений</string>
-    <string name="color_lime">Лайм</string>
-    <string name="color_yellow">Жовтий</string>
-    <string name="color_orange">Помаранчевий</string>
-    <string name="color_brown">Коричневий</string>
-    <string name="color_grey">Grey</string>
     <!-- Menu -->
     <string name="main_menu_new_tab">Нова вкладка (фон)</string>
     <string name="main_menu_new_tabOpen">Нова вкладка</string>

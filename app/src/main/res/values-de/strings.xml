@@ -8,17 +8,6 @@
     <string name="album_title_history">Verlauf</string>
     <string name="album_title_home">Startseite</string>
     <string name="search_hint">Suche</string>
-    <string name="color_red">Rot</string>
-    <string name="color_pink">Pink</string>
-    <string name="color_purple">Lila</string>
-    <string name="color_blue">Blau</string>
-    <string name="color_teal">Petrol</string>
-    <string name="color_green">Grün</string>
-    <string name="color_lime">Lindgrün</string>
-    <string name="color_yellow">Gelb</string>
-    <string name="color_orange">Orange</string>
-    <string name="color_brown">Braun</string>
-    <string name="color_grey">Grau</string>
     <!-- Menu -->
     <string name="main_menu_new_tab">Neuer Tab (Hintergrund)</string>
     <string name="main_menu_new_tabOpen">Neuer Tab (Vordergrund)</string>
