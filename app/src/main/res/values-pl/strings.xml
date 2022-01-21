@@ -8,17 +8,6 @@
     <string name="album_title_history">Historia</string>
     <string name="album_title_home">Witryny</string>
     <string name="search_hint">Wyszukaj</string>
-    <string name="color_red">Czerwień</string>
-    <string name="color_pink">Róż</string>
-    <string name="color_purple">Fiolet</string>
-    <string name="color_blue">Błękit</string>
-    <string name="color_teal">Turkus</string>
-    <string name="color_green">Zieleń</string>
-    <string name="color_lime">Limonka</string>
-    <string name="color_yellow">Żółć</string>
-    <string name="color_orange">Pomarańcz</string>
-    <string name="color_brown">Brąz</string>
-    <string name="color_grey">Grey</string>
     <!-- Menu -->
     <string name="main_menu_new_tab">Nowa karta w tle</string>
     <string name="main_menu_new_tabOpen">Nowa karta priorytetowa</string>

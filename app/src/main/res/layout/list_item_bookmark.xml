@@ -8,6 +8,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ImageView
+        android:id="@+id/icon_tab"
+        android:layout_width="40dp"
+        android:paddingHorizontal="10dp"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:contentDescription="@null"
+        android:scaleType="fitCenter"
+        android:src="@drawable/icon_plus" />
+
+    <ImageView
         android:id="@+id/ib_icon"
         android:layout_width="20dp"
         android:layout_marginHorizontal="10dp"
@@ -15,7 +25,7 @@
         android:gravity="center_vertical"
         android:contentDescription="@null"
         android:scaleType="fitCenter"
-        android:src="@drawable/circle_red_big" />
+        android:src="@drawable/ic_folder" />
 
     <TextView android:id="@+id/record_item_title"
         android:layout_width="0dp"
@@ -28,15 +38,5 @@
         android:textAppearance="?android:attr/textAppearanceListItem"
         android:maxLines="1"
         android:ellipsize="end"/>
-
-    <ImageView
-        android:id="@+id/icon_tab"
-        android:layout_width="40dp"
-        android:paddingHorizontal="10dp"
-        android:layout_height="match_parent"
-        android:gravity="center_vertical"
-        android:contentDescription="@null"
-        android:scaleType="fitCenter"
-        android:src="@drawable/icon_tab_plus" />
 
 </LinearLayout>

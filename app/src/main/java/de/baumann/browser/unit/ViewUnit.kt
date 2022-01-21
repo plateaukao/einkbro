@@ -62,6 +62,11 @@ object ViewUnit {
             context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
     @JvmStatic
+    fun isTablet(context: Context): Boolean =
+            (context.resources.configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK) >=
+                    Configuration.SCREENLAYOUT_SIZE_LARGE
+
+    @JvmStatic
     fun getDensity(context: Context): Float {
         return context.resources.displayMetrics.density
     }
