@@ -230,7 +230,7 @@ class ConfigManager(
     var toolbarActions: List<ToolbarAction>
         get() {
             val key = if (ViewUnit.isLandscape(context)) K_TOOLBAR_ICONS_FOR_LARGE else K_TOOLBAR_ICONS
-            val iconListString = sp.getString(key, getDefaultIconStrings()) ?: ""
+            val iconListString = sp.getString(key, sp.getString(K_TOOLBAR_ICONS, getDefaultIconStrings())) ?: ""
             return iconStringToEnumList(iconListString)
         }
         set(value) {
