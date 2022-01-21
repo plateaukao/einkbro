@@ -12,7 +12,7 @@ enum class ToolbarAction(val iconResId: Int = 0, val titleResId: Int) {
     TabCount(iconResId = R.drawable.icon_preview, titleResId = R.string.tab_preview),
     Font(iconResId = R.drawable.icon_size, titleResId = R.string.font_size),
     Settings(iconResId = R.drawable.icon_settings, titleResId = R.string.settings),
-    Bookmark(iconResId = R.drawable.ic_bookmarks, titleResId = R.string.album_title_bookmarks),
+    Bookmark(iconResId = R.drawable.ic_bookmarks, titleResId = R.string.bookmarks),
     IconSetting(iconResId = R.drawable.ic_toolbar, titleResId = R.string.toolbars),
     VerticalLayout(iconResId = R.drawable.ic_vertical_read, titleResId = R.string.vertical_read),
     ReaderMode(iconResId = R.drawable.ic_reader, titleResId = R.string.reader_mode),

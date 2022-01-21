@@ -10,7 +10,7 @@ import androidx.appcompat.widget.Toolbar;
 import java.util.Objects;
 
 import de.baumann.browser.Ninja.R;
-import de.baumann.browser.fragment.Fragment_settings_Gesture;
+import de.baumann.browser.fragment.FragmentSettingsGesture;
 import de.baumann.browser.unit.HelperUnit;
 
 public class Settings_GestureActivity extends AppCompatActivity {
@@ -28,7 +28,7 @@ public class Settings_GestureActivity extends AppCompatActivity {
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.content_frame, new Fragment_settings_Gesture())
+                .replace(R.id.content_frame, new FragmentSettingsGesture())
                 .commit();
     }
 

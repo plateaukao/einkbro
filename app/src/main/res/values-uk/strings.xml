@@ -4,7 +4,7 @@
     <!-- App -->
     <string name="app_name">EinkBro</string>
     <string name="list_empty">Поточний список порожній</string>
-    <string name="album_title_bookmarks">Закладка</string>
+    <string name="bookmarks">Закладка</string>
     <string name="album_title_history">Історія</string>
     <string name="album_title_home">Головна</string>
     <string name="search_hint">Пошук</string>

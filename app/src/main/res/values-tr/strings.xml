@@ -4,7 +4,7 @@
     <!-- App -->
     <string name="app_name">EinkBro</string>
     <string name="list_empty">Geçerli liste boş</string>
-    <string name="album_title_bookmarks">Yer imleri</string>
+    <string name="bookmarks">Yer imleri</string>
     <string name="album_title_history">Geçmiş</string>
     <string name="album_title_home">Ana sayfa</string>
     <string name="search_hint">Ara</string>
