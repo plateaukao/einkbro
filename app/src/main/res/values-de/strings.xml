@@ -4,7 +4,7 @@
     <!-- App -->
     <string name="app_name">EinkBro</string>
     <string name="list_empty">Aktuelle Liste ist leer</string>
-    <string name="album_title_bookmarks">Lesezeichen</string>
+    <string name="bookmarks">Lesezeichen</string>
     <string name="album_title_history">Verlauf</string>
     <string name="album_title_home">Startseite</string>
     <string name="search_hint">Suche</string>

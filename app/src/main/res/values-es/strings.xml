@@ -3,7 +3,7 @@
     <!-- App -->
     <string name="app_name">Navegador EinkBro</string>
     <string name="list_empty">La lista actual está vacía</string>
-    <string name="album_title_bookmarks">Marcadores</string>
+    <string name="bookmarks">Marcadores</string>
     <string name="album_title_history">Historial</string>
     <string name="album_title_home">Inicio</string>
     <string name="search_hint">Búsqueda</string>

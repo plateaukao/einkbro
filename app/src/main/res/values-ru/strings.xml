@@ -3,7 +3,7 @@
     <!-- App -->
     <string name="app_name">Браузер EinkBro</string>
     <string name="list_empty">Текущий список пуст</string>
-    <string name="album_title_bookmarks">Закладки</string>
+    <string name="bookmarks">Закладки</string>
     <string name="album_title_history">История</string>
     <string name="album_title_home">Главная</string>
     <string name="search_hint">Поиск</string>

@@ -4,7 +4,7 @@
     <!-- App -->
     <string name="app_name">Browserul EinkBro</string>
     <string name="list_empty">Actuala listă este lipsită de conținut</string>
-    <string name="album_title_bookmarks">Marcaje</string>
+    <string name="bookmarks">Marcaje</string>
     <string name="album_title_history">Istoric</string>
     <string name="album_title_home">Pagină de pornire</string>
     <string name="search_hint">Căutare</string>

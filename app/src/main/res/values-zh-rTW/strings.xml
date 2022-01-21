@@ -4,7 +4,7 @@
     <!-- App -->
     <string name="app_name">EinkBro</string>
     <string name="list_empty">目前清單是空的</string>
-    <string name="album_title_bookmarks">書籤</string>
+    <string name="bookmarks">書籤</string>
     <string name="album_title_history">歷史</string>
     <string name="album_title_home">首頁</string>
     <string name="search_hint">搜尋</string>

@@ -6,7 +6,7 @@
     <!-- App -->
     <string name="app_name">EinkBro</string>
     <string name="list_empty">目前清单是空的</string>
-    <string name="album_title_bookmarks">书签</string>
+    <string name="bookmarks">书签</string>
     <string name="album_title_history">历史</string>
     <string name="album_title_home">首页</string>
     <string name="search_hint">搜索</string>
