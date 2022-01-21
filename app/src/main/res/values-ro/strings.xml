@@ -8,17 +8,6 @@
     <string name="album_title_history">Istoric</string>
     <string name="album_title_home">Pagină de pornire</string>
     <string name="search_hint">Căutare</string>
-    <string name="color_red">Roșu</string>
-    <string name="color_pink">Roz</string>
-    <string name="color_purple">Violet</string>
-    <string name="color_blue">Albastru</string>
-    <string name="color_teal">Verde-albăstrui</string>
-    <string name="color_green">Verde</string>
-    <string name="color_lime">Lămâie verde</string>
-    <string name="color_yellow">Galben</string>
-    <string name="color_orange">Portocaliu</string>
-    <string name="color_brown">Maro</string>
-    <string name="color_grey">Gri</string>
     <!-- Menu -->
     <string name="main_menu_new_tab">Fereastră nouă (în fundal)</string>
     <string name="main_menu_new_tabOpen">Fereastră nouă (vizualizare)</string>
