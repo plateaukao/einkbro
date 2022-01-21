@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,8 +10,10 @@
     <FrameLayout
         android:id="@+id/appBar"
         android:layout_width="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:minHeight="50dp">
 
         <RelativeLayout
@@ -367,9 +370,12 @@
     <!--    xmlns:pane="http://schemas.android.com/apk/res/info.plateaukao.einkbro.debug"-->
     <de.baumann.browser.view.TwoPaneLayout xmlns:pane="http://schemas.android.com/apk/res/info.plateaukao.einkbro"
         android:id="@+id/two_panel_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/appBar"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/appBar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         pane:drag_resize="false"
         pane:orientation="horizontal"
         pane:show_second_pane="false">
@@ -390,8 +396,12 @@
     <include
         android:id="@+id/layout_overview"
         layout="@layout/dialog_overiew"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:visibility="invisible" />
-</RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

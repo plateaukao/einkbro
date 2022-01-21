@@ -9,9 +9,7 @@
     <FrameLayout android:id="@+id/main_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/backgroundColor"
-        >
-    </FrameLayout>
+        android:background="?attr/backgroundColor"/>
 
     <View
         android:id="@+id/touch_area_middle_left"
