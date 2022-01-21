@@ -3,7 +3,7 @@
     <!-- App -->
     <string name="app_name">EinkBro ブラウザ</string>
     <string name="list_empty">現在のリストは空です</string>
-    <string name="album_title_bookmarks">ブックマーク</string>
+    <string name="bookmarks">ブックマーク</string>
     <string name="album_title_history">履歴</string>
     <string name="album_title_home">ホーム</string>
     <string name="search_hint">検索</string>

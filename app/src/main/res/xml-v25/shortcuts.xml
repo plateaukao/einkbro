@@ -4,9 +4,9 @@
         android:shortcutId="sc_bookmark"
         android:enabled="true"
         android:icon="@drawable/qc_bookmarks"
-        android:shortcutShortLabel="@string/album_title_bookmarks"
-        android:shortcutLongLabel="@string/album_title_bookmarks"
-        android:shortcutDisabledMessage="@string/album_title_bookmarks">
+        android:shortcutShortLabel="@string/bookmarks"
+        android:shortcutLongLabel="@string/bookmarks"
+        android:shortcutDisabledMessage="@string/bookmarks">
         <intent
             android:action="sc_bookmark"
             android:targetPackage="info.plateaukao.einkbro"
