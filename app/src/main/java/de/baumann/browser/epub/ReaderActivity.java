@@ -50,11 +50,11 @@ public class ReaderActivity extends AppCompatActivity {
         select_search = findViewById(R.id.select_search);
         select_share = findViewById(R.id.select_share);
         select_exit = findViewById(R.id.select_exit);
-        ePubReader.OpenEpubFile(epub_location);
+        //ePubReader.openEpubFile(epub_location);
         ePubReader.GotoPosition(0,(float)0);
-        ePubReader.setEpubReaderListener(new EpubReaderView.EpubReaderListener() {
+        ePubReader.setEpubReaderListener(new EpubReaderListener() {
             @Override
-            public void OnTextSelectionModeChangeListner(Boolean mode) {
+            public void onTextSelectionModeChangeListner(Boolean mode) {
                 Log.d("EpubReader","TextSelectionMode"+mode+" ");
                 if(mode){
                     bottom_contextual_bar.setVisibility(View.VISIBLE);
@@ -63,36 +63,36 @@ public class ReaderActivity extends AppCompatActivity {
                 }
             }
             @Override
-            public void OnPageChangeListener(int ChapterNumber,int PageNumber, float ProgressStart,float ProgressEnd) {
+            public void onPageChangeListener(int ChapterNumber, int PageNumber, float ProgressStart, float ProgressEnd) {
                 Log.d("EpubReader","PageChange: Chapter:"+ChapterNumber+" PageNumber:"+PageNumber);
             }
             @Override
-            public void OnChapterChangeListener(int ChapterNumber) {
+            public void onChapterChangeListener(int ChapterNumber) {
                 Log.d("EpubReader","ChapterChange"+ChapterNumber+" ");
             }
             @Override
-            public void OnLinkClicked(String url) {
+            public void onLinkClicked(String url) {
                 Log.d("EpubReader","LinkClicked:"+url+" ");
             }
             @Override
-            public void OnBookStartReached() {
+            public void onBookStartReached() {
                 //Use this method to go to previous book
                 //When user slides previous when opened the first page of the book
                 Log.d("EpubReader","StartReached");
             }
             @Override
-            public void OnBookEndReached() {
+            public void onBookEndReached() {
                 //Use this method to go to next book
                 //When user slides next when opened the last page of the book
                 Log.d("EpubReader","EndReached");
             }
 
             @Override
-            public void OnSingleTap() {
+            public void onSingleTap() {
                 Log.d("EpubReader","PageTapped");
             }
         });
-        show_toc.setOnClickListener(v -> ePubReader.ListChaptersDialog(ePubReader.GetTheme()));
+        show_toc.setOnClickListener(v -> ePubReader.showTocDialog());
         read_aloud.setOnClickListener(v -> Toast.makeText(context,"TODO: Read Aloud : "+ePubReader.GetChapterContent(),Toast.LENGTH_LONG).show());
         change_theme.setOnClickListener(v -> {
             if(ePubReader.GetTheme()==ePubReader.THEME_LIGHT) {

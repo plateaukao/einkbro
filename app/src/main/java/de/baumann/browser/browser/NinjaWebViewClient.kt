@@ -73,7 +73,10 @@ class NinjaWebViewClient(
         }
 
         // skip translation pages
-        if (config.saveHistory && !ninjaWebView.incognito && !isTranslationDomain(url)) {
+        if (config.saveHistory &&
+                !ninjaWebView.incognito &&
+                !isTranslationDomain(url) &&
+                url != BrowserUnit.URL_ABOUT_BLANK) {
             addHistoryAction(url)
         }
         dTLoadUrl?.printTime()

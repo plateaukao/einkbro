@@ -16,6 +16,7 @@ import de.baumann.browser.Ninja.databinding.TranslationPageIndexBinding
 import de.baumann.browser.Ninja.databinding.TranslationPanelBinding
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.preference.TranslationMode
+import de.baumann.browser.unit.BrowserUnit
 import de.baumann.browser.unit.ViewUnit
 import de.baumann.browser.unit.ViewUnit.dp
 import de.baumann.browser.util.TranslationLanguage
@@ -409,7 +410,7 @@ class TwoPaneController(
         } else {
             // all other translation types, should remove sub webviews
             if (!isEnabled) {
-                webView.loadUrl("about:blank")
+                webView.loadUrl(BrowserUnit.URL_ABOUT_BLANK)
                 twoPaneLayout.shouldShowSecondPane = false
             }
         }

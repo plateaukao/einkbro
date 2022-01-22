@@ -9,39 +9,38 @@ import nl.siegmann.epublib.service.MediatypeService
 import nl.siegmann.epublib.epub.EpubReader
 import nl.siegmann.epublib.domain.TOCReference
 import nl.siegmann.epublib.domain.Spine
-import android.webkit.WebViewClient
-import android.webkit.WebView
-import android.annotation.TargetApi
-import android.webkit.WebResourceRequest
 import de.baumann.browser.Ninja.R
 import android.animation.ObjectAnimator
+import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
-import android.os.Handler
-import android.util.AttributeSet
 import android.util.Log
 import android.util.TypedValue
 import android.view.*
 import androidx.appcompat.app.AlertDialog
 import de.baumann.browser.browser.BrowserController
-import de.baumann.browser.view.Album
 import de.baumann.browser.view.NinjaWebView
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.withContext
 import nl.siegmann.epublib.domain.Book
 import nl.siegmann.epublib.domain.Resource
 import java.io.*
 import java.lang.Exception
 import java.lang.StringBuilder
 import java.util.ArrayList
+import kotlin.math.roundToInt
 
 /**
  * Created by Avinash on 25-05-2017.
  */
+@SuppressLint("ClickableViewAccessibility")
 class EpubReaderView(
     context: Context,
     browserController: BrowserController?
 ) : NinjaWebView(context, browserController) {
     private lateinit var book: Book
-    var ChapterList: ArrayList<Chapter?> = ArrayList()
+    var ChapterList: ArrayList<Chapter> = ArrayList()
     private var ChapterNumber = 0
     private var Progress = 0f
     private var PageNumber = 0
@@ -54,7 +53,7 @@ class EpubReaderView(
     var selectedText = ""
         private set
     private var loading = false
-    private var listener: EpubReaderListener? = null
+    lateinit var listener: EpubReaderListener
     @JvmField
     var THEME_LIGHT = 1
     @JvmField
@@ -68,17 +67,7 @@ class EpubReaderView(
     private var current_theme = 1 //Light
     private var textSelectionMode = false
 
-    interface EpubReaderListener {
-        fun OnPageChangeListener(ChapterNumber: Int, PageNumber: Int, ProgressStart: Float, ProgressEnd: Float)
-        fun OnChapterChangeListener(ChapterNumber: Int)
-        fun OnTextSelectionModeChangeListner(mode: Boolean?)
-        fun OnLinkClicked(url: String?)
-        fun OnBookStartReached()
-        fun OnBookEndReached()
-        fun OnSingleTap()
-    }
-
-    fun setEpubReaderListener(listener: EpubReaderListener?) {
+    fun setEpubReaderListener(listener: EpubReaderListener) {
         this.listener = listener
     }
 
@@ -88,7 +77,7 @@ class EpubReaderView(
             Log.d("onCreateActionMode", "triggered")
             mActionMode = mode
             textSelectionMode = true
-            listener!!.OnTextSelectionModeChangeListner(true)
+            listener.onTextSelectionModeChangeListner(true)
             return true
         }
 
@@ -104,7 +93,7 @@ class EpubReaderView(
 
         override fun onDestroyActionMode(mode: ActionMode) {
             Log.d("onDestroyActionMode", "triggered")
-            listener!!.OnTextSelectionModeChangeListner(false)
+            listener.onTextSelectionModeChangeListner(false)
             textSelectionMode = false
         }
     }
@@ -125,15 +114,11 @@ class EpubReaderView(
         return parent.startActionModeForChild(this, actionModeCallback)
     }
 
-    private fun init(context: Context) {
-        val settings = this.settings
-        settings.javaScriptEnabled = true
-        settings.defaultTextEncodingName = "UTF-8"
-        if (Build.VERSION.SDK_INT <= 19) addJavascriptInterface(JavaScriptInterface(), "js")
-        setOnTouchListener(OnTouchListener { v, event ->
-            val action = event.action
-            when (action) {
-                MotionEvent.ACTION_MOVE -> return@OnTouchListener if (Build.VERSION.SDK_INT <= 19 && textSelectionMode) false else true
+    init {
+        //if (Build.VERSION.SDK_INT <= 19) addJavascriptInterface(JavaScriptInterface(), "js")
+        setOnTouchListener(OnTouchListener { _, event ->
+            when (event.action) {
+                MotionEvent.ACTION_MOVE -> return@OnTouchListener true
                 MotionEvent.ACTION_DOWN -> {
                     touchX = event.rawX
                     touchY = event.rawY
@@ -151,8 +136,8 @@ class EpubReaderView(
                     } else if (y - touchY > ConvertIntoPixel(100) && System.currentTimeMillis() - touchTime < 500) {
                         PreviousPage()
                     } else if (Math.abs(y - touchY) < ConvertIntoPixel(10) && Math.abs(touchX - x) < ConvertIntoPixel(10) && System.currentTimeMillis() - touchTime < 250) {
-                        Log.d("Tap Details", Math.abs(y - touchY).toString() + " " + Math.abs(touchX - x) + " " + (System.currentTimeMillis() - touchTime))
-                        listener!!.OnSingleTap()
+                        //Log.d("Tap Details", Math.abs(y - touchY).toString() + " " + Math.abs(touchX - x) + " " + (System.currentTimeMillis() - touchTime))
+                        listener.onSingleTap()
                     }
                 }
             }
@@ -373,43 +358,41 @@ elements[i].style.color='white';
         }
     }
 
-    fun OpenEpubFile(epub_location: String?) {
-        var epubInputStream: InputStream? = null
-        try {
-            epubInputStream = context!!.contentResolver.openInputStream(Uri.parse(epub_location))
-            //epubInputStream = new BufferedInputStream(new FileInputStream(epub_location));
-            this.book = EpubReader().readEpub(epubInputStream)
-            val book = this.book
-            val epub_temp_extraction_location = context!!.cacheDir.toString() + "/tempfiles"
-            deleteFiles(File(epub_temp_extraction_location))
-            if (!File(epub_temp_extraction_location).exists()) File(epub_temp_extraction_location).mkdirs()
+    suspend fun openEpubFile(uri: Uri) {
+        withContext(IO) {
             try {
-                DownloadResource(epub_temp_extraction_location)
-            } catch (e: Exception) {
-                Log.e("Exception", e.message!!)
-            }
-            val dir1 = File(epub_temp_extraction_location + File.separator + "OEBPS")
-            val resource_folder = book.getOpfResource().href.replace("content.opf", "").replace("/", "")
-            val dir2 = File(epub_temp_extraction_location + File.separator + resource_folder)
-            ResourceLocation = if (dir1.exists() && dir1.isDirectory) {
-                "file://" + epub_temp_extraction_location + File.separator + "OEBPS" + File.separator
-            } else if (dir2.exists() && dir2.isDirectory && resource_folder != "") {
-                "file://" + epub_temp_extraction_location + File.separator + resource_folder + File.separator
-            } else {
-                "file://" + epub_temp_extraction_location + File.separator
-            }
-            ChapterList.clear()
-            if (ResourceLocation.contains("OEPBS") && book.getTableOfContents().tocReferences.size > 1) ProcessChaptersByTOC(book.getTableOfContents().tocReferences) else if (book.getTableOfContents().tocReferences.size > 1) {
-                ProcessChaptersByTOC(book.getTableOfContents().tocReferences)
-            } else ProcessChaptersBySpline(book.getSpine())
-        } catch (e: Exception) {
-        } finally {
-            if (epubInputStream != null) {
-                try {
-                    epubInputStream.close()
-                } catch (e: IOException) {
-                    // ignore
+                context.contentResolver.openInputStream(uri).use { epubInputStream ->
+                    //epubInputStream = new BufferedInputStream(new FileInputStream(epub_location));
+                    this@EpubReaderView.book = EpubReader().readEpub(epubInputStream)
+                    val book = this@EpubReaderView.book
+                    val epub_temp_extraction_location = context.cacheDir.toString() + "/tempfiles"
+                    deleteFiles(File(epub_temp_extraction_location))
+                    if (!File(epub_temp_extraction_location).exists()) File(epub_temp_extraction_location).mkdirs()
+                    try {
+                        DownloadResource(epub_temp_extraction_location)
+                    } catch (e: Exception) {
+                        Log.e("Exception", e.message!!)
+                    }
+                    val dir1 = File(epub_temp_extraction_location + File.separator + "OEBPS")
+                    val resourceFolder = book.opfResource.href.replace("content.opf", "").replace("/", "")
+                    val dir2 = File(epub_temp_extraction_location + File.separator + resourceFolder)
+                    ResourceLocation = if (dir1.exists() && dir1.isDirectory) {
+                        "file://" + epub_temp_extraction_location + File.separator + "OEBPS" + File.separator
+                    } else if (dir2.exists() && dir2.isDirectory && resourceFolder != "") {
+                        "file://" + epub_temp_extraction_location + File.separator + resourceFolder + File.separator
+                    } else {
+                        "file://" + epub_temp_extraction_location + File.separator
+                    }
+                    ChapterList.clear()
+
+                    if (ResourceLocation.contains("OEPBS") && book.tableOfContents.tocReferences.size > 1)
+                        ProcessChaptersByTOC(book.tableOfContents.tocReferences)
+                    else if (book.tableOfContents.tocReferences.size > 1) {
+                        ProcessChaptersByTOC(book.tableOfContents.tocReferences)
+                    } else ProcessChaptersBySpline(book.spine)
                 }
+            } catch (e: Exception) {
+                Log.e("EpubReaderView", e.toString())
             }
         }
     }
@@ -448,7 +431,7 @@ elements[i].style.color='white';
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
-                ChapterList.add(Chapter(if (spine.getResource(i).title != null) spine.getResource(i).title else ChapterNumber.toString() + "", builder.toString(), spine.getResource(i).href))
+                ChapterList.add(Chapter(if (spine.getResource(i).title != null) spine.getResource(i).title else ChapterNumber.toString(), builder.toString(), spine.getResource(i).href))
                 ChapterNumber++
             }
         } else {
@@ -467,48 +450,41 @@ elements[i].style.color='white';
             this.ChapterNumber = ChapterNumber
             this.Progress = Progress
         }
-        loadDataWithBaseURL(ResourceLocation, ChapterList[this.ChapterNumber]!!.content.replace("href=\"http".toRegex(), "hreflink=\"http").replace("<a href=\"[^\"]*".toRegex(), "<a ").replace("hreflink=\"http".toRegex(), "href=\"http"), "text/html", "utf-8", null)
-        webViewClient = object : WebViewClient() {
-            override fun onPageFinished(view: WebView, url: String) {
-                SetTheme(current_theme)
-                val handler = Handler()
-                handler.postDelayed({
-                    val TotalHeight = GetTotalContentHeight()
-                    scrollTo(0, (TotalHeight * Progress).toInt())
-                }, 500)
-            }
-
-            override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
-                listener!!.OnLinkClicked(url)
-                return true
-            }
-
-            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-            override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
-                listener!!.OnLinkClicked(request.url.toString())
-                return true
-            }
-        }
+        loadDataWithBaseURL(ResourceLocation, ChapterList[this.ChapterNumber].content, "text/html", "utf-8", null)
+//        webViewClient = object : WebViewClient() {
+//            override fun onPageFinished(view: WebView, url: String) {
+//                SetTheme(current_theme)
+//                val handler = Handler()
+//                handler.postDelayed({
+//                    val TotalHeight = GetTotalContentHeight()
+//                    scrollTo(0, (TotalHeight * Progress).toInt())
+//                }, 500)
+//            }
+//
+//            override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
+//                listener.onLinkClicked(url)
+//                return true
+//            }
+//
+//            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+//            override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
+//                listener.onLinkClicked(request.url.toString())
+//                return true
+//            }
+//        }
     }
 
-    fun ListChaptersDialog(theme: Int) {
+    fun showTocDialog() {
         try {
-            val ChapterListString = ArrayList<String>()
-            for (i in ChapterList.indices) {
-                ChapterListString.add(ChapterList[i]!!.name)
-            }
-            val items = ChapterListString.toTypedArray()
-            val alertbuilder: AlertDialog.Builder
-            alertbuilder = if (theme == THEME_DARK) AlertDialog.Builder(context!!, R.style.TouchAreaDialog) else AlertDialog.Builder(context!!, R.style.TouchAreaDialog)
-            alertbuilder.setTitle("Select the Chapter")
-            alertbuilder.setItems(items) { dialog, item ->
-                GotoPosition(item, 0f)
-                listener!!.OnChapterChangeListener(item)
-            }
-            val alert = alertbuilder.create()
-            alert.show()
-        } catch (e: Exception) {
-        }
+            val items = ChapterList.map { it.name }.toTypedArray()
+            AlertDialog.Builder(context, R.style.TouchAreaDialog)
+                    .setTitle("Select the Chapter")
+                    .setItems(items) { _, item ->
+                        GotoPosition(item, 0f)
+                        listener.onChapterChangeListener(item)
+                    }.create()
+                    .show()
+        } catch (e: Exception) { }
     }
 
     fun NextPage() {
@@ -523,7 +499,7 @@ elements[i].style.color='white';
                         (PageNumber - 1) * pageHeight, PageNumber * pageHeight)
                 anim.duration = 400
                 anim.start()
-                listener!!.OnPageChangeListener(GetChapterNumber(), GetPageNumber(), GetProgressStart(), GetProgressEnd())
+                listener.onPageChangeListener(GetChapterNumber(), GetPageNumber(), GetProgressStart(), GetProgressEnd())
                 Log.d("EpubReaderProgress", Progress.toString() + " " + pageHeight + " " + this.scrollY + " " + TotalHeight)
                 loading = false
             } else {
@@ -544,7 +520,7 @@ elements[i].style.color='white';
                         ((PageNumber + 1) * pageHeight), (PageNumber * pageHeight))
                 anim.duration = 400
                 anim.start()
-                listener!!.OnPageChangeListener(GetChapterNumber(), GetPageNumber(), GetProgressStart(), GetProgressEnd())
+                listener.onPageChangeListener(GetChapterNumber(), GetPageNumber(), GetProgressStart(), GetProgressEnd())
                 loading = false
             } else if (this.scrollY > 0) {
                 loading = true
@@ -554,7 +530,7 @@ elements[i].style.color='white';
                         ((PageNumber + 1) * pageHeight), (PageNumber * pageHeight))
                 anim.duration = 400
                 anim.start()
-                listener!!.OnPageChangeListener(GetChapterNumber(), GetPageNumber(), GetProgressStart(), GetProgressEnd())
+                listener.onPageChangeListener(GetChapterNumber(), GetPageNumber(), GetProgressStart(), GetProgressEnd())
                 loading = false
             } else {
                 PreviousChapter()
@@ -566,11 +542,11 @@ elements[i].style.color='white';
         if (ChapterList.size > ChapterNumber + 1 && !loading) {
             loading = true
             GotoPosition(ChapterNumber + 1, 0f)
-            listener!!.OnChapterChangeListener(ChapterNumber)
-            listener!!.OnPageChangeListener(GetChapterNumber(), GetPageNumber(), GetProgressStart(), GetProgressEnd())
+            listener.onChapterChangeListener(ChapterNumber)
+            listener.onPageChangeListener(GetChapterNumber(), GetPageNumber(), GetProgressStart(), GetProgressEnd())
             loading = false
         } else if (ChapterList.size <= ChapterNumber + 1) {
-            listener!!.OnBookEndReached()
+            listener.onBookEndReached()
         }
     }
 
@@ -578,16 +554,16 @@ elements[i].style.color='white';
         if (ChapterNumber - 1 >= 0 && !loading) {
             loading = true
             GotoPosition(ChapterNumber - 1, 1f)
-            listener!!.OnChapterChangeListener(ChapterNumber)
-            listener!!.OnPageChangeListener(GetChapterNumber(), GetPageNumber(), GetProgressStart(), GetProgressEnd())
+            listener.onChapterChangeListener(ChapterNumber)
+            listener.onPageChangeListener(GetChapterNumber(), GetPageNumber(), GetProgressStart(), GetProgressEnd())
             loading = false
         } else if (ChapterNumber - 1 < 0) {
-            listener!!.OnBookStartReached()
+            listener.onBookStartReached()
         }
     }
 
     fun GetChapterContent(): String {
-        return ChapterList[ChapterNumber]!!.content
+        return ChapterList[ChapterNumber].content
     }
 
     private fun GetTotalContentHeight(): Int {
@@ -619,10 +595,11 @@ elements[i].style.color='white';
         return PageNumber
     }
 
-    private fun ConvertIntoPixel(dp: Int): Int {
-        val r = context!!.resources
-        return Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp.toFloat(), r.displayMetrics))
-    }
+    private fun ConvertIntoPixel(dp: Int): Int = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            dp.toFloat(),
+            context.resources.displayMetrics
+    ).roundToInt()
 
     companion object {
         private fun deleteFiles(file: File) {
