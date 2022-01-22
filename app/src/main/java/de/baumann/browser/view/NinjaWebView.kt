@@ -42,7 +42,7 @@ import kotlin.math.max
 import kotlin.math.min
 
 
-class NinjaWebView : WebView, AlbumController, KoinComponent {
+open class NinjaWebView : WebView, AlbumController, KoinComponent {
     private var onScrollChangeListener: OnScrollChangeListener? = null
     private val album: Album
     private val webViewClient: NinjaWebViewClient
