@@ -46,12 +46,10 @@ import de.baumann.browser.service.ClearService
 import de.baumann.browser.task.SaveScreenshotTask
 import de.baumann.browser.unit.BrowserUnit
 import de.baumann.browser.unit.HelperUnit
-import de.baumann.browser.unit.HelperUnit.openUri
 import de.baumann.browser.unit.HelperUnit.toNormalScheme
 import de.baumann.browser.unit.IntentUnit
 import de.baumann.browser.unit.ViewUnit
 import de.baumann.browser.unit.ViewUnit.dp
-import de.baumann.browser.unit.ViewUnit.dpToPixel
 import de.baumann.browser.util.Constants
 import de.baumann.browser.util.DebugT
 import de.baumann.browser.view.*
@@ -1642,7 +1640,8 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         NinjaToast.show(this, "no saved epub!")
     } else {
         dialogManager.showSaveEpubDialog(shouldAddNewEpub = false) {
-            openUri(this@BrowserActivity, it)
+            val uri = it ?: return@showSaveEpubDialog
+            HelperUnit.openFile(this@BrowserActivity, uri, Constants.MIME_TYPE_EPUB)
         }
     }
 

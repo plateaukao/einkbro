@@ -64,14 +64,6 @@ object HelperUnit {
         return false
     }
 
-    fun openUri(activity: Activity, uri: Uri?) {
-        uri ?: return
-        val browseIntent = Intent(Intent.ACTION_VIEW).setData(uri)
-        if (browseIntent.resolveActivity(activity.packageManager) != null) {
-            activity.startActivity(browseIntent)
-        }
-    }
-
     @JvmStatic
     fun grantPermissionsLoc(activity: Activity) {
         if (Build.VERSION.SDK_INT >= 23) {
