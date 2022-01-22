@@ -49,7 +49,7 @@ object BrowserUnit: KoinComponent {
         "https://startpage.com/do/search?lui=deu&language=deutsch&query="
     private const val SEARCH_ENGINE_SEARX = "https://searx.me/?q="
     const val URL_ENCODING = "utf-8"
-    private const val URL_ABOUT_BLANK = "about:blank"
+    const val URL_ABOUT_BLANK = "about:blank"
     const val URL_SCHEME_ABOUT = "about:"
     const val URL_SCHEME_MAIL_TO = "mailto:"
     private const val URL_SCHEME_FILE = "file://"
