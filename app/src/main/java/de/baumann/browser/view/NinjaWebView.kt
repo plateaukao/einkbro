@@ -701,6 +701,8 @@ class NinjaWebView : WebView, AlbumController, KoinComponent {
             
             @font-face {
                  font-family: customfont;
+                 font-weight: 400;
+                 font-display: swap;
                  src: url('mycustomfont');
             }
             body {

@@ -1711,61 +1711,6 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         ViewUnit.hideKeyboard(this)
     }
 
-    private var mActionMode: ActionMode? = null
-    override fun onActionModeStarted(mode: ActionMode) {
-        if (mActionMode == null) {
-            var isNaverDictExist = false
-            mActionMode = mode
-            val menu = mode.menu
-            val toBeAddedLaterList: MutableList<MenuItem> = mutableListOf()
-            for (index in 0 until menu.size()) {
-                val item = menu.getItem(index)
-                if (item.intent?.component?.packageName == "info.plateaukao.naverdict") {
-                    isNaverDictExist = true
-                    break
-                }
-            }
-
-            for (index in 0 until menu.size()) {
-                val item = menu.getItem(index)
-                if (item.intent?.component?.packageName == "info.plateaukao.naverdict") {
-                    continue
-                }
-                if (isNaverDictExist && item.intent?.component?.packageName == "com.onyx.dict") {
-                    continue
-                }
-
-                toBeAddedLaterList.add(item)
-            }
-
-            if (isNaverDictExist) {
-                for (item in toBeAddedLaterList) {
-                    menu.removeItem(item.itemId)
-                }
-                val subMenu = menu.addSubMenu("Others")
-                for (item in toBeAddedLaterList) {
-                    if (item.title.equals("Copy")) {
-                        menu.add(item.groupId, item.itemId, Menu.NONE, item.title)
-                    } else {
-                        subMenu.add(item.groupId, item.itemId, Menu.NONE, item.title)
-                    }
-                }
-            }
-        }
-        super.onActionModeStarted(mode)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        mActionMode?.finish()
-        mActionMode = null
-    }
-
-    override fun onActionModeFinished(mode: ActionMode?) {
-        super.onActionModeFinished(mode)
-        mActionMode = null
-    }
-
     companion object {
         private const val TAG = "BrowserActivity"
         private const val INPUT_FILE_REQUEST_CODE = 1
