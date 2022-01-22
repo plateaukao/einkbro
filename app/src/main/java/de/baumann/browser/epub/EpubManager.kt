@@ -6,6 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.activity.BrowserActivity
+import de.baumann.browser.activity.EpubReaderActivity
 import de.baumann.browser.util.Constants
 import de.baumann.browser.view.dialog.TextInputDialog
 import kotlinx.coroutines.Dispatchers
@@ -80,6 +81,14 @@ class EpubManager(private val context: Context) {
 
             doneAction.invoke(book.title)
         }
+    }
+
+    fun showEpubReader(uri: Uri) {
+        //val intent = Intent(context, ReaderActivity::class.java).apply {
+        val intent = Intent(context, EpubReaderActivity::class.java).apply {
+            putExtra("epub_location", uri.toString())
+        }
+        context.startActivity(intent)
     }
 
     private fun createBook(domain: String, bookName: String): Book = Book().apply {

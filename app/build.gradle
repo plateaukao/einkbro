@@ -37,10 +37,10 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
+        jvmTarget = '1.8'
     }
+
 
     return void
 }
@@ -64,6 +64,8 @@ dependencies {
 
     // for epub saving: html processing
     implementation 'org.jsoup:jsoup:1.14.3'
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
 
     def room_version = "2.3.0"
     implementation "androidx.room:room-runtime:$room_version"
