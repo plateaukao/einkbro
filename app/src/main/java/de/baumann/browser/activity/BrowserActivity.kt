@@ -77,7 +77,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
     private lateinit var fabImageButtonNav: ImageButton
     private lateinit var progressBar: ProgressBar
     private lateinit var searchBox: EditText
-    private lateinit var ninjaWebView: NinjaWebView
+    protected lateinit var ninjaWebView: NinjaWebView
     private lateinit var omniboxTitle: TextView
 
     private var bottomSheetDialog: Dialog? = null
@@ -213,6 +213,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
 
         downloadReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
+                if (this@BrowserActivity.isFinishing) return
                 dialogManager.showOkCancelDialog(
                         messageResId = R.string.toast_downloadComplete,
                         okAction = { startActivity(Intent(DownloadManager.ACTION_VIEW_DOWNLOADS)) }
@@ -702,7 +703,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
     }
 
     @SuppressLint("InlinedApi")
-    private fun dispatchIntent(intent: Intent) {
+    open fun dispatchIntent(intent: Intent) {
         if (overviewDialogController.isVisible()) {
             overviewDialogController.hide()
         }
@@ -1098,8 +1099,10 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
 
     private var preloadedWebView: NinjaWebView? = null
 
+    open fun createNinjaWebView(): NinjaWebView = NinjaWebView(this, this)
+
     @SuppressLint("ClickableViewAccessibility")
-    private fun addAlbum(
+    protected fun addAlbum(
             title: String = "",
             url: String? = config.favoriteUrl,
             foreground: Boolean = true,
@@ -1107,14 +1110,14 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
     ) {
         if (url == null) return
 
-        val newWebView = (preloadedWebView ?: NinjaWebView(this, this)).apply {
+        val newWebView = (preloadedWebView ?: createNinjaWebView()).apply {
             this.albumTitle = title
             this.incognito = incognito
         }
         preloadedWebView = null
         newWebView.postDelayed({
             if (preloadedWebView == null) {
-                preloadedWebView = NinjaWebView(this, this)
+                preloadedWebView = createNinjaWebView()
             }
         }, 2000)
 
@@ -1596,9 +1599,6 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         showToolbar()
     }
 
-    private fun getStatusBarHeight(): Int =
-            resources.getIdentifier("status_bar_height", "dimen", "android")
-
     private fun hideStatusBar() {
         window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -1641,7 +1641,8 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
     } else {
         dialogManager.showSaveEpubDialog(shouldAddNewEpub = false) {
             val uri = it ?: return@showSaveEpubDialog
-            HelperUnit.openFile(this@BrowserActivity, uri, Constants.MIME_TYPE_EPUB)
+            //HelperUnit.openFile(this@BrowserActivity, uri, Constants.MIME_TYPE_EPUB)
+            epubManager.showEpubReader(uri)
         }
     }
 
