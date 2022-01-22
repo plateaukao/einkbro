@@ -205,16 +205,6 @@ class NinjaWebViewClient(
     override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest): WebResourceResponse? {
         if (hasAdBlock && !white && adBlock.isAd(request.url.toString())) {
             return adTxtResponse
-            /*
-            val path = request.url.toString()
-            if (path.contains("gif", ignoreCase = true)) {
-                return adGifResponse
-            } else if (path.contains("png", ignoreCase = true)) {
-                return adPngResponse
-            } else {
-                return adGifResponse
-            }
-             */
         }
 
         if (!sp.getBoolean(context.getString(R.string.sp_cookies), true)) {
@@ -228,17 +218,12 @@ class NinjaWebViewClient(
             }
         }
 
-        Log.i("font", "request url: ${request.url.path}")
         if (request.url.path?.contains("mycustomfont") == true) {
             val uri = config.customFontInfo?.url?.toUri() ?: return super.shouldInterceptRequest(view, request)
-            //if (fontWebRequest!= null && customFontUrl == uri) return fontWebRequest
 
 
             try {
                 val inputStream= context.contentResolver.openInputStream(uri)
-                //fontWebRequest = WebResourceResponse("application/x-font-ttf", "UTF-8", inputStream)
-                //customFontUrl = uri
-                //return fontWebRequest
                 return WebResourceResponse("application/x-font-ttf", "UTF-8", inputStream)
             } catch (e: IOException) {
                 e.printStackTrace()
@@ -299,10 +284,5 @@ class NinjaWebViewClient(
 
         HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
          */
-    }
-
-    companion object {
-        private var customFontUrl: Uri? = null
-        private var fontWebRequest: WebResourceResponse? = null
     }
 }
