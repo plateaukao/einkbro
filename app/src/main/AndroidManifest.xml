@@ -109,7 +109,24 @@
         </activity>
         <activity
             android:name="de.baumann.browser.activity.EpubReaderActivity"
-            android:theme="@style/AppTheme" />
+            android:exported="true"
+            android:theme="@style/AppTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:scheme="file"
+                    android:pathPattern=".*\\.epub"
+                    android:mimeType="*/*"
+                    />
+                <data
+                    android:scheme="content"
+                    android:pathPattern=".*\\.epub"
+                    android:mimeType="*/*"
+                    />
+            </intent-filter>
+        </activity>
         <activity
             android:name="de.baumann.browser.epub.ReaderActivity"
             android:theme="@style/AppTheme" /> <!-- Settings -->

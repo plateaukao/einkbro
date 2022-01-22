@@ -36,11 +36,16 @@ import android.os.Build
 import android.text.Html
 import android.text.SpannableString
 import android.text.util.Linkify
+import android.util.Log
 import android.view.View
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import de.baumann.browser.Ninja.R
+import de.baumann.browser.activity.BrowserActivity
+import de.baumann.browser.fragment.UiSettingsFragment
+import de.baumann.browser.util.Constants
+import de.baumann.browser.view.NinjaToast
 import de.baumann.browser.view.dialog.DialogManager
 import java.text.SimpleDateFormat
 import java.util.*
@@ -202,16 +207,23 @@ object HelperUnit {
         return s
     }
 
-    private val NEGATIVE_COLOR = floatArrayOf(
-            -1.0f, 0f, 0f, 0f, 255f, 0f, -1.0f, 0f, 0f, 255f, 0f, 0f, -1.0f, 0f, 255f, 0f, 0f, 0f, 1.0f, 0f)
-
     fun openFile(activity: Activity, uri: Uri, mimeType: String) {
         val intent = Intent().apply {
             action = Intent.ACTION_VIEW
             data = uri
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_GRANT_READ_URI_PERMISSION
         }
-        activity.startActivity(Intent.createChooser(intent, "Open file with"))
+        try {
+            activity.startActivity(Intent.createChooser(intent, "Open file with"))
+        } catch (exception: SecurityException) {
+            NinjaToast.show(activity, "open file failed, re-select the file again.")
+            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+            intent.addCategory(Intent.CATEGORY_OPENABLE)
+            intent.type = Constants.MIME_TYPE_ANY
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            intent.putExtra("android.provider.extra.INITIAL_URI", uri);
+            activity.startActivityForResult(intent, BrowserActivity.GRANT_PERMISSION_REQUEST_CODE)
+        }
     }
 
     fun showBrowserChooser(activity: Activity, url: String?, title: String) {

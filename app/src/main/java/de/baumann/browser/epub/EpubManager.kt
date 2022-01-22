@@ -50,6 +50,8 @@ class EpubManager(private val context: Context) {
         intent.addCategory(Intent.CATEGORY_OPENABLE)
         intent.type = Constants.MIME_TYPE_EPUB
         intent.putExtra(Intent.EXTRA_TITLE, "einkbro.epub")
+        intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         (context as Activity).startActivityForResult(intent, BrowserActivity.WRITE_EPUB_REQUEST_CODE)
     }
 
@@ -86,7 +88,7 @@ class EpubManager(private val context: Context) {
     fun showEpubReader(uri: Uri) {
         //val intent = Intent(context, ReaderActivity::class.java).apply {
         val intent = Intent(context, EpubReaderActivity::class.java).apply {
-            putExtra("epub_location", uri.toString())
+            data = uri
         }
         context.startActivity(intent)
     }

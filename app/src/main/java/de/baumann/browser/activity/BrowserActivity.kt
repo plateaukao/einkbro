@@ -115,7 +115,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
     private var currentAlbumController: AlbumController? = null
     private var filePathCallback: ValueCallback<Array<Uri>>? = null
 
-    private lateinit var binding: ActivityMainBinding
+    protected lateinit var binding: ActivityMainBinding
 
     private val bookmarkManager: BookmarkManager by inject()
 
@@ -276,8 +276,10 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == WRITE_EPUB_REQUEST_CODE && resultCode == RESULT_OK) {
-            val nonNullData = data?.data ?: return
-            saveEpub(nonNullData)
+            val uri = data?.data ?: return
+            val takeFlags: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION
+            contentResolver.takePersistableUriPermission(uri, takeFlags)
+            saveEpub(uri)
 
             return
         }
@@ -285,6 +287,14 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         if (requestCode == WRITE_PDF_REQUEST_CODE && resultCode == RESULT_OK) {
             data?.data?.let { printPDF() }
 
+            return
+        }
+        if (requestCode == GRANT_PERMISSION_REQUEST_CODE && resultCode == RESULT_OK) {
+            val uri = data?.data ?: return
+            val takeFlags: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION
+            contentResolver.takePersistableUriPermission(uri, takeFlags)
+
+            HelperUnit.openFile(this@BrowserActivity, uri, Constants.MIME_TYPE_EPUB)
             return
         }
 
@@ -736,8 +746,14 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
             }
             ACTION_VIEW -> {
                 // if webview for that url already exists, show the original tab, otherwise, create new
-                val url = intent.data?.toNormalScheme()?.toString() ?: return
-                getUrlMatchedBrowser(url)?.let { showAlbum(it) } ?: addAlbum(url = url)
+                val viewUri = intent.data?.toNormalScheme() ?: return
+                if (viewUri.scheme == "content") {
+                    epubManager.showEpubReader(viewUri)
+                    finish()
+                } else {
+                    val url = viewUri.toString()
+                    getUrlMatchedBrowser(url)?.let { showAlbum(it) } ?: addAlbum(url = url)
+                }
             }
             Intent.ACTION_WEB_SEARCH -> addAlbum(url = intent.getStringExtra(SearchManager.QUERY))
             "sc_history" -> {
@@ -870,9 +886,12 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
 
         binding.omniboxBack.setOnLongClickListener { openHistoryPage(5); true }
 
-        sp.registerOnSharedPreferenceChangeListener(preferenceChangeListener)
 
         toolbarViewController.reorderIcons()
+        // strange crash on my device. register later
+        runOnUiThread {
+            sp.registerOnSharedPreferenceChangeListener(preferenceChangeListener)
+        }
     }
 
     private fun showTranslationConfigDialog() {
@@ -1106,7 +1125,8 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
             title: String = "",
             url: String? = config.favoriteUrl,
             foreground: Boolean = true,
-            incognito: Boolean = false
+            incognito: Boolean = false,
+            enablePreloadWebView: Boolean = true
     ) {
         if (url == null) return
 
@@ -1115,11 +1135,13 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
             this.incognito = incognito
         }
         preloadedWebView = null
-        newWebView.postDelayed({
-            if (preloadedWebView == null) {
-                preloadedWebView = createNinjaWebView()
-            }
-        }, 2000)
+        if (enablePreloadWebView) {
+            newWebView.postDelayed({
+                if (preloadedWebView == null) {
+                    preloadedWebView = createNinjaWebView()
+                }
+            }, 2000)
+        }
 
         ViewUnit.bound(this, newWebView)
 
@@ -1152,7 +1174,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         } else {
             showToolbar()
             showAlbum(newWebView)
-            if (url.isNotEmpty()) {
+            if (url.isNotEmpty() && url != BrowserUnit.URL_ABOUT_BLANK) {
                 newWebView.loadUrl(url)
             }
         }
@@ -1163,7 +1185,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
     private fun updateSavedAlbumInfo() {
         val albumControllers = browserContainer.list()
         val albumInfoList = albumControllers
-                .filter { it.albumUrl.isNotBlank() }
+                .filter { it.albumUrl.isNotBlank() && it.albumUrl != BrowserUnit.URL_ABOUT_BLANK }
                 .map { controller -> AlbumInfo(controller.albumTitle, controller.albumUrl) }
         config.savedAlbumInfoList = albumInfoList
         config.currentAlbumIndex = browserContainer.indexOf(currentAlbumController)
@@ -1641,8 +1663,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
     } else {
         dialogManager.showSaveEpubDialog(shouldAddNewEpub = false) {
             val uri = it ?: return@showSaveEpubDialog
-            //HelperUnit.openFile(this@BrowserActivity, uri, Constants.MIME_TYPE_EPUB)
-            epubManager.showEpubReader(uri)
+            HelperUnit.openFile(this@BrowserActivity, uri, Constants.MIME_TYPE_EPUB)
         }
     }
 
@@ -1717,6 +1738,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         private const val INPUT_FILE_REQUEST_CODE = 1
         const val WRITE_EPUB_REQUEST_CODE = 2
         private const val WRITE_PDF_REQUEST_CODE = 3
+        const val GRANT_PERMISSION_REQUEST_CODE = 4
         private const val K_SHOULD_LOAD_TAB_STATE = "k_should_load_tab_state"
     }
 }
