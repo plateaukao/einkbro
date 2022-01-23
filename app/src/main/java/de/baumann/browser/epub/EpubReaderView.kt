@@ -5,31 +5,28 @@ import android.view.View.OnTouchListener
 import android.webkit.ValueCallback
 import org.json.JSONObject
 import android.webkit.JavascriptInterface
-import nl.siegmann.epublib.service.MediatypeService
 import nl.siegmann.epublib.epub.EpubReader
 import nl.siegmann.epublib.domain.TOCReference
 import nl.siegmann.epublib.domain.Spine
 import de.baumann.browser.Ninja.R
-import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.net.Uri
 import android.util.Log
 import android.util.TypedValue
 import android.view.*
 import androidx.appcompat.app.AlertDialog
 import de.baumann.browser.browser.BrowserController
-import de.baumann.browser.browser.NinjaWebViewClient
 import de.baumann.browser.view.NinjaWebView
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 import nl.siegmann.epublib.domain.Book
-import nl.siegmann.epublib.domain.Resource
 import java.io.*
 import java.lang.Exception
 import java.lang.StringBuilder
 import java.util.ArrayList
+import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.roundToInt
 
 /**
@@ -117,33 +114,38 @@ class EpubReaderView(
 
     init {
         //if (Build.VERSION.SDK_INT <= 19) addJavascriptInterface(JavaScriptInterface(), "js")
-        setOnTouchListener(OnTouchListener { _, event ->
-            when (event.action) {
-                MotionEvent.ACTION_MOVE -> return@OnTouchListener true
-                MotionEvent.ACTION_DOWN -> {
-                    touchX = event.rawX
-                    touchY = event.rawY
-                    touchTime = System.currentTimeMillis()
-                }
-                MotionEvent.ACTION_UP -> {
-                    val x = event.rawX
-                    val y = event.rawY
-                    if (touchX - x > ConvertIntoPixel(100) && System.currentTimeMillis() - touchTime < 500) {
-                        NextPage()
-                    } else if (x - touchX > ConvertIntoPixel(100) && System.currentTimeMillis() - touchTime < 500) {
-                        PreviousPage()
-                    } else if (touchY - y > ConvertIntoPixel(100) && System.currentTimeMillis() - touchTime < 500) {
-                        NextPage()
-                    } else if (y - touchY > ConvertIntoPixel(100) && System.currentTimeMillis() - touchTime < 500) {
-                        PreviousPage()
-                    } else if (Math.abs(y - touchY) < ConvertIntoPixel(10) && Math.abs(touchX - x) < ConvertIntoPixel(10) && System.currentTimeMillis() - touchTime < 250) {
-                        //Log.d("Tap Details", Math.abs(y - touchY).toString() + " " + Math.abs(touchX - x) + " " + (System.currentTimeMillis() - touchTime))
-                        listener.onSingleTap()
-                    }
-                }
-            }
-            false
-        })
+//        setOnTouchListener(OnTouchListener { _, event ->
+//            when (event.action) {
+//                MotionEvent.ACTION_MOVE -> return@OnTouchListener true
+//                MotionEvent.ACTION_DOWN -> {
+//                    touchX = event.rawX
+//                    touchY = event.rawY
+//                    touchTime = System.currentTimeMillis()
+//                }
+//                MotionEvent.ACTION_UP -> {
+//                    val x = event.rawX
+//                    val y = event.rawY
+//                    if (touchX - x > dpToPixel(100) && System.currentTimeMillis() - touchTime < 500) {
+//                        nextPage()
+//                    } else if (x - touchX > dpToPixel(100) && System.currentTimeMillis() - touchTime < 500) {
+//                        previousPage()
+//                    } else if (touchY - y > dpToPixel(100) && System.currentTimeMillis() - touchTime < 500) {
+//                        nextPage()
+//                    } else if (y - touchY > dpToPixel(100) && System.currentTimeMillis() - touchTime < 500) {
+//                        previousPage()
+//                    } else if (Math.abs(y - touchY) < dpToPixel(10) && Math.abs(touchX - x) < dpToPixel(10) && System.currentTimeMillis() - touchTime < 250) {
+//                        //Log.d("Tap Details", Math.abs(y - touchY).toString() + " " + Math.abs(touchX - x) + " " + (System.currentTimeMillis() - touchTime))
+//                        listener.onSingleTap()
+//                    }
+//                }
+//            }
+//            false
+//        })
+
+        with(settings) {
+            allowContentAccess = true
+            allowFileAccess = true
+        }
     }
 
     fun GetTheme(): Int {
@@ -344,7 +346,6 @@ elements[i].style.color='white';
                     webViewClient.book = book // for loading image resources
 
                     val epub_temp_extraction_location = context.cacheDir.toString() + "/tempfiles"
-                    deleteFiles(File(epub_temp_extraction_location))
                     if (!File(epub_temp_extraction_location).exists()) File(epub_temp_extraction_location).mkdirs()
                     val dir1 = File(epub_temp_extraction_location + File.separator + "OEBPS")
                     val resourceFolder = book.opfResource.href.replace("content.opf", "").replace("/", "")
@@ -430,27 +431,16 @@ elements[i].style.color='white';
             this.Progress = Progress
         }
         loadDataWithBaseURL(ResourceLocation, ChapterList[this.ChapterNumber].content, "text/html", "utf-8", null)
-//        webViewClient = object : WebViewClient() {
-//            override fun onPageFinished(view: WebView, url: String) {
-//                SetTheme(current_theme)
-//                val handler = Handler()
-//                handler.postDelayed({
-//                    val TotalHeight = GetTotalContentHeight()
-//                    scrollTo(0, (TotalHeight * Progress).toInt())
-//                }, 500)
-//            }
-//
-//            override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
-//                listener.onLinkClicked(url)
-//                return true
-//            }
-//
-//            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-//            override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
-//                listener.onLinkClicked(request.url.toString())
-//                return true
-//            }
-//        }
+        isVerticalRead = false
+        isReaderModeOn = false
+
+        if (Progress == 0F) {
+            scrollY = 0
+        } else {
+            val totalHeight = getTotalContentHeight()
+            scrollY = totalHeight
+
+        }
     }
 
     fun showTocDialog() {
@@ -466,58 +456,97 @@ elements[i].style.color='white';
         } catch (e: Exception) { }
     }
 
-    fun NextPage() {
-        if (!loading) {
+    override fun pageDownWithNoAnimation() {
+        if (loading) return
+
+        if (isVerticalRead) {
+            val pageWidth = shiftOffset()
+            val totalWidth = computeHorizontalScrollRange()
+            when {
+                totalWidth > scrollX + pageWidth -> scrollBy(shiftOffset(), 0)
+                else -> previousChapter()
+            }
+            scrollX = min(computeHorizontalScrollRange() - width, scrollX)
+        } else {
+            val pageHeight = shiftOffset()
+            val totalHeight = getTotalContentHeight()
+            when {
+                totalHeight > scrollY + height -> scrollBy(0, pageHeight)
+                else -> nextChapter()
+            }
+        }
+        loading = false
+    }
+
+    override fun pageUpWithNoAnimation() {
+        if (loading) return
+
+        if (isVerticalRead) {
+            val pageWidth = shiftOffset()
+            when {
+                scrollX - pageWidth >= 0 -> scrollBy(-shiftOffset(), 0)
+                scrollX > 0 -> scrollX = 0
+                else -> nextChapter()
+            }
+            scrollBy(-shiftOffset(), 0)
+            scrollX = max(0, scrollX)
+        } else {
+            val pageHeight = shiftOffset()
+            when {
+                scrollY - pageHeight >= 0 -> scrollBy(0, -shiftOffset())
+                scrollY > 0 -> scrollY = 0
+                else -> previousChapter()
+            }
+        }
+        loading = false
+    }
+
+
+    fun nextPage() {
+        if (loading) return
             val pageHeight = this.height - 50
-            val TotalHeight = GetTotalContentHeight()
-            if (TotalHeight > this.scrollY + this.height) {
+            val totalHeight = getTotalContentHeight()
+            if (totalHeight > this.scrollY + this.height) {
                 loading = true
-                Progress = (this.scrollY + pageHeight).toFloat() / TotalHeight
+                Progress = (this.scrollY + pageHeight).toFloat() / totalHeight
                 PageNumber = ((this.scrollY + pageHeight) / pageHeight)
-                val anim = ObjectAnimator.ofInt(this, "scrollY",
-                        (PageNumber - 1) * pageHeight, PageNumber * pageHeight)
-                anim.duration = 400
-                anim.start()
+                scrollY = PageNumber * pageHeight
+//                val anim = ObjectAnimator.ofInt(this, "scrollY",
+//                        (PageNumber - 1) * pageHeight, PageNumber * pageHeight)
+//                anim.duration = 400
+//                anim.start()
                 listener.onPageChangeListener(GetChapterNumber(), GetPageNumber(), GetProgressStart(), GetProgressEnd())
-                Log.d("EpubReaderProgress", Progress.toString() + " " + pageHeight + " " + this.scrollY + " " + TotalHeight)
+                Log.d("EpubReaderProgress", Progress.toString() + " " + pageHeight + " " + this.scrollY + " " + totalHeight)
                 loading = false
             } else {
-                NextChapter()
+                nextChapter()
             }
+    }
+
+    fun previousPage() {
+        if (loading) return
+        val pageHeight = this.height - 50
+        val totalHeight = getTotalContentHeight()
+        if (this.scrollY - pageHeight >= 0) {
+            loading = true
+            Progress = (this.scrollY - pageHeight).toFloat() / totalHeight
+            PageNumber = ((this.scrollY - pageHeight) / pageHeight)
+            scrollY = PageNumber * pageHeight
+            listener.onPageChangeListener(GetChapterNumber(), GetPageNumber(), GetProgressStart(), GetProgressEnd())
+            loading = false
+        } else if (this.scrollY > 0) {
+            loading = true
+            Progress = 0f
+            PageNumber = 0
+            scrollY = PageNumber * pageHeight
+            listener.onPageChangeListener(GetChapterNumber(), GetPageNumber(), GetProgressStart(), GetProgressEnd())
+            loading = false
+        } else {
+            previousChapter()
         }
     }
 
-    fun PreviousPage() {
-        if (!loading) {
-            val pageHeight = this.height - 50
-            val TotalHeight = GetTotalContentHeight()
-            if (this.scrollY - pageHeight >= 0) {
-                loading = true
-                Progress = (this.scrollY - pageHeight).toFloat() / TotalHeight
-                PageNumber = ((this.scrollY - pageHeight) / pageHeight)
-                val anim = ObjectAnimator.ofInt(this, "scrollY",
-                        ((PageNumber + 1) * pageHeight), (PageNumber * pageHeight))
-                anim.duration = 400
-                anim.start()
-                listener.onPageChangeListener(GetChapterNumber(), GetPageNumber(), GetProgressStart(), GetProgressEnd())
-                loading = false
-            } else if (this.scrollY > 0) {
-                loading = true
-                Progress = 0f
-                PageNumber = 0
-                val anim = ObjectAnimator.ofInt(this, "scrollY",
-                        ((PageNumber + 1) * pageHeight), (PageNumber * pageHeight))
-                anim.duration = 400
-                anim.start()
-                listener.onPageChangeListener(GetChapterNumber(), GetPageNumber(), GetProgressStart(), GetProgressEnd())
-                loading = false
-            } else {
-                PreviousChapter()
-            }
-        }
-    }
-
-    fun NextChapter() {
+    fun nextChapter() {
         if (ChapterList.size > ChapterNumber + 1 && !loading) {
             loading = true
             GotoPosition(ChapterNumber + 1, 0f)
@@ -529,7 +558,7 @@ elements[i].style.color='white';
         }
     }
 
-    fun PreviousChapter() {
+    fun previousChapter() {
         if (ChapterNumber - 1 >= 0 && !loading) {
             loading = true
             GotoPosition(ChapterNumber - 1, 1f)
@@ -545,7 +574,7 @@ elements[i].style.color='white';
         return ChapterList[ChapterNumber].content
     }
 
-    private fun GetTotalContentHeight(): Int {
+    private fun getTotalContentHeight(): Int {
         return (this.contentHeight * resources.displayMetrics.density).toInt()
     }
 
@@ -558,9 +587,9 @@ elements[i].style.color='white';
     }
 
     fun GetProgressEnd(): Float {
-        val value: Float = Progress + GetPageHeight() / GetTotalContentHeight()
+        val value: Float = Progress + GetPageHeight() / getTotalContentHeight()
         return when {
-            GetTotalContentHeight() <= 0 -> Progress
+            getTotalContentHeight() <= 0 -> Progress
             value < 1 -> value
             else -> 1.0F
         }
@@ -574,23 +603,9 @@ elements[i].style.color='white';
         return PageNumber
     }
 
-    private fun ConvertIntoPixel(dp: Int): Int = TypedValue.applyDimension(
+    private fun dpToPixel(dp: Int): Int = TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
             dp.toFloat(),
             context.resources.displayMetrics
     ).roundToInt()
-
-    companion object {
-        private fun deleteFiles(file: File) {
-            if (file.isDirectory) {
-                val files = file.listFiles() //All files and sub folders
-                var x = 0
-                while (files != null && x < files.size) {
-                    deleteFiles(files[x])
-                    x++
-                }
-                file.delete()
-            } else file.delete()
-        }
-    }
 }

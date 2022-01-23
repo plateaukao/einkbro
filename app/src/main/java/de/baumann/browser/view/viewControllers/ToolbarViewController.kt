@@ -35,10 +35,11 @@ class ToolbarViewController(
     private val readerToolbarActions: List<ToolbarAction> = listOf(
             ToolbarAction.RotateScreen,
             ToolbarAction.FullScreen,
-            ToolbarAction.VerticalLayout,
             ToolbarAction.BoldFont,
             ToolbarAction.Font,
+            ToolbarAction.Touch,
             ToolbarAction.TabCount,
+            ToolbarAction.Settings,
             ToolbarAction.CloseTab,
     )
 
