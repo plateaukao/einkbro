@@ -125,7 +125,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
 
     private var shouldLoadTabState: Boolean = false
 
-    private val toolbarViewController: ToolbarViewController by lazy { ToolbarViewController(this, binding.toolbarScroller) }
+    protected val toolbarViewController: ToolbarViewController by lazy { ToolbarViewController(this, binding.toolbarScroller) }
 
     private lateinit var overviewDialogController: OverviewDialogController
 
@@ -1624,7 +1624,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
     private fun hideStatusBar() {
         window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.insetsController?.hide(WindowInsets.Type.statusBars())
+            window.insetsController?.hide(WindowInsets.Type.systemBars())
             window.setDecorFitsSystemWindows(false)
             binding.root.setPadding(0, 0, 0, 0)
         }
@@ -1634,7 +1634,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.setDecorFitsSystemWindows(true)
-            window.insetsController?.show(WindowInsets.Type.statusBars())
+            window.insetsController?.show(WindowInsets.Type.systemBars())
         }
     }
 

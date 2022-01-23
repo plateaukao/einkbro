@@ -27,9 +27,8 @@ class EpubReaderActivity: BrowserActivity() {
             setBackgroundResource(R.drawable.ic_toc)
             setOnClickListener { epubReader.showTocDialog() }
         }
-        binding.omniboxBack.visibility = GONE
-        binding.toolbarInputUrl.visibility = GONE
-        binding.omniboxInput.onItemClickListener = null
+
+        toolbarViewController.setEpubReaderMode()
     }
 
     override fun dispatchIntent(intent: Intent) {
