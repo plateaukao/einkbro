@@ -20,6 +20,7 @@ import android.util.TypedValue
 import android.view.*
 import androidx.appcompat.app.AlertDialog
 import de.baumann.browser.browser.BrowserController
+import de.baumann.browser.browser.NinjaWebViewClient
 import de.baumann.browser.view.NinjaWebView
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
@@ -334,45 +335,17 @@ elements[i].style.color='white';
         }
     }
 
-    private fun DownloadResource(directory: String) {
-        //Log.d("epubResourcePath", directory);
-        try {
-            val rst = book.resources
-            val clrst = rst.all
-            val itr: Iterator<Resource> = clrst.iterator()
-            while (itr.hasNext()) {
-                val rs = itr.next()
-                if (rs.mediaType === MediatypeService.JPG || rs.mediaType === MediatypeService.PNG || rs.mediaType === MediatypeService.GIF || rs.mediaType === MediatypeService.CSS) {
-                    val oppath1 = File(directory + File.separator + rs.href)
-                    val dir = File(oppath1.absolutePath.substring(0, oppath1.absolutePath.lastIndexOf("/")))
-                    if (!dir.exists()) dir.mkdirs()
-                    oppath1.createNewFile()
-                    val fos1 = FileOutputStream(oppath1)
-                    fos1.write(rs.data)
-                    fos1.close()
-                }
-            }
-        } catch (e: IOException) {
-            e.printStackTrace()
-            Log.e("error", e.message!!)
-        }
-    }
-
     suspend fun openEpubFile(uri: Uri) {
         withContext(IO) {
             try {
                 context.contentResolver.openInputStream(uri).use { epubInputStream ->
-                    //epubInputStream = new BufferedInputStream(new FileInputStream(epub_location));
                     this@EpubReaderView.book = EpubReader().readEpub(epubInputStream)
                     val book = this@EpubReaderView.book
+                    webViewClient.book = book // for loading image resources
+
                     val epub_temp_extraction_location = context.cacheDir.toString() + "/tempfiles"
                     deleteFiles(File(epub_temp_extraction_location))
                     if (!File(epub_temp_extraction_location).exists()) File(epub_temp_extraction_location).mkdirs()
-                    try {
-                        DownloadResource(epub_temp_extraction_location)
-                    } catch (e: Exception) {
-                        Log.e("Exception", e.message!!)
-                    }
                     val dir1 = File(epub_temp_extraction_location + File.separator + "OEBPS")
                     val resourceFolder = book.opfResource.href.replace("content.opf", "").replace("/", "")
                     val dir2 = File(epub_temp_extraction_location + File.separator + resourceFolder)
@@ -426,12 +399,18 @@ elements[i].style.color='white';
                     val r = BufferedReader(InputStreamReader(spine.getResource(i).inputStream))
                     var aux: String? = ""
                     while (r.readLine().also { aux = it } != null) {
+                        aux = aux?.replace("""src="img""", """src="img://img""")
                         builder.append(aux)
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
-                ChapterList.add(Chapter(if (spine.getResource(i).title != null) spine.getResource(i).title else ChapterNumber.toString(), builder.toString(), spine.getResource(i).href))
+                ChapterList.add(
+                        Chapter(
+                                if (spine.getResource(i).title != null) spine.getResource(i).title else ChapterNumber.toString(),
+                                builder.toString(),
+                                spine.getResource(i).href)
+                )
                 ChapterNumber++
             }
         } else {

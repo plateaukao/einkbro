@@ -32,10 +32,24 @@ class ToolbarViewController(
 
     fun hide() = toggleIconsOnOmnibox(false)
 
-    fun reorderIcons() {
+    private val readerToolbarActions: List<ToolbarAction> = listOf(
+            ToolbarAction.RotateScreen,
+            ToolbarAction.FullScreen,
+            ToolbarAction.VerticalLayout,
+            ToolbarAction.BoldFont,
+            ToolbarAction.Font,
+            ToolbarAction.TabCount,
+            ToolbarAction.CloseTab,
+    )
+
+    fun setEpubReaderMode() {
+        reorderIcons(readerToolbarActions)
+    }
+
+    fun reorderIcons(list: List<ToolbarAction>? = null) {
         toolbarActionViews.size
 
-        val iconEnums = config.toolbarActions
+        val iconEnums = list ?: config.toolbarActions
         if (iconEnums.isNotEmpty()) {
             iconBar.removeAllViews()
             iconEnums.forEach { actionEnum ->
@@ -45,9 +59,11 @@ class ToolbarViewController(
                 iconBar.addView(toolbarActionViews[ToolbarAction.Settings.ordinal])
             }
             iconBar.requestLayout()
-            toolbarScroller.post {
-                modifyTitleControlWidth()
-                toolbarScroller.fullScroll(View.FOCUS_RIGHT)
+            if (ToolbarAction.Title in iconEnums) {
+                toolbarScroller.post {
+                    modifyTitleControlWidth()
+                    toolbarScroller.fullScroll(View.FOCUS_RIGHT)
+                }
             }
         }
 
@@ -55,17 +71,15 @@ class ToolbarViewController(
 
     @SuppressLint("ClickableViewAccessibility")
     private fun modifyTitleControlWidth() {
-        if (ToolbarAction.Title in config.toolbarActions) {
-            val textView = iconBar.findViewById<TextView>(R.id.omnibox_title)
-            if (!isIconsWidthLargerThanScreenWidth()) {
-                val params = LinearLayout.LayoutParams( getRestToolbarWidth() - 5.dp(context), LinearLayout.LayoutParams.MATCH_PARENT)
-                textView.layoutParams = params
-                textView.minimumWidth = 0
-            } else {
-                val params = LinearLayout.LayoutParams( LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT)
-                textView.layoutParams = params
-                textView.minimumWidth = 100.dp(context)
-            }
+        val textView = iconBar.findViewById<TextView>(R.id.omnibox_title) ?: return
+        if (!isIconsWidthLargerThanScreenWidth()) {
+            val params = LinearLayout.LayoutParams( getRestToolbarWidth() - 5.dp(context), LinearLayout.LayoutParams.MATCH_PARENT)
+            textView.layoutParams = params
+            textView.minimumWidth = 0
+        } else {
+            val params = LinearLayout.LayoutParams( LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT)
+            textView.layoutParams = params
+            textView.minimumWidth = 100.dp(context)
         }
     }
 

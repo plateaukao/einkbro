@@ -5,7 +5,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.Bitmap
 import android.net.Uri
 import android.net.http.SslError
 import android.os.Build
@@ -14,7 +13,6 @@ import android.view.View
 import android.webkit.*
 import android.widget.Button
 import android.widget.TextView
-import androidx.preference.PreferenceManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import de.baumann.browser.Ninja.R
@@ -29,7 +27,6 @@ import java.net.URISyntaxException
 import kotlin.collections.HashMap
 
 import android.util.Base64
-import android.util.Log
 import androidx.core.net.toUri
 import de.baumann.browser.util.DebugT
 import de.baumann.browser.view.dTLoadUrl
@@ -38,10 +35,7 @@ import org.koin.core.component.inject
 import java.io.ByteArrayInputStream
 import java.io.IOException
 import android.webkit.WebResourceResponse
-
-
-
-
+import nl.siegmann.epublib.domain.Book
 
 class NinjaWebViewClient(
         private val ninjaWebView: NinjaWebView,
@@ -55,6 +49,8 @@ class NinjaWebViewClient(
     private val white: Boolean = false
     private val webContentPostProcessor = WebContentPostProcessor()
     private var hasAdBlock: Boolean = true
+    var book: Book? = null
+
     fun enableAdBlock(enable: Boolean) {
         this.hasAdBlock = enable
     }
@@ -185,22 +181,8 @@ class NinjaWebViewClient(
             }
         }
 
-        if (url.startsWith("asset")) {
-            val asset: String = url.substring("asset://".length)
-            val statusCode = 200
-            val reasonPhase = "OK"
-            val responseHeaders: MutableMap<String, String> = HashMap()
-            responseHeaders["Access-Control-Allow-Origin"] = "*"
-            val inputStream: InputStream = context.assets.open(asset)
-            return WebResourceResponse(
-                    "font/" + MimeTypeMap.getFileExtensionFromUrl(asset),
-                    "utf-8",
-                    statusCode,
-                    reasonPhase,
-                    responseHeaders,
-                    inputStream
-            )
-        }
+        val fontResponse = processCustomFontRequest(Uri.parse(url))
+        if (fontResponse != null) return fontResponse
 
         return super.shouldInterceptRequest(view, url)
     }
@@ -221,9 +203,25 @@ class NinjaWebViewClient(
             }
         }
 
-        if (request.url.path?.contains("mycustomfont") == true) {
-            val uri = config.customFontInfo?.url?.toUri() ?: return super.shouldInterceptRequest(view, request)
+        processBookResource(request)?.let { return it }
+        processCustomFontRequest(request.url)?.let { return it }
 
+        return super.shouldInterceptRequest(view, request)
+    }
+
+    private fun processBookResource(request: WebResourceRequest): WebResourceResponse? {
+        val currentBook = book ?: return null
+
+        if (request.url.scheme == "img") {
+            val resource = currentBook.resources.getByHref(request.url.host.toString())
+            return WebResourceResponse(resource.mediaType.name, "UTF-8", ByteArrayInputStream(resource.data))
+        }
+        return null
+    }
+
+    private fun processCustomFontRequest(uri: Uri): WebResourceResponse? {
+        if (uri.path?.contains("mycustomfont") == true) {
+            val uri = config.customFontInfo?.url?.toUri() ?: return null
 
             try {
                 val inputStream= context.contentResolver.openInputStream(uri)
@@ -234,8 +232,7 @@ class NinjaWebViewClient(
                 e.printStackTrace()
             }
         }
-
-        return super.shouldInterceptRequest(view, request)
+        return null
     }
 
     override fun onFormResubmission(view: WebView, doNotResend: Message, resend: Message) {

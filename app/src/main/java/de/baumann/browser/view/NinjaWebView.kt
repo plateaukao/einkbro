@@ -45,7 +45,7 @@ import kotlin.math.min
 open class NinjaWebView : WebView, AlbumController, KoinComponent {
     private var onScrollChangeListener: OnScrollChangeListener? = null
     private val album: Album
-    private val webViewClient: NinjaWebViewClient
+    protected val webViewClient: NinjaWebViewClient
     private val webChromeClient: NinjaWebChromeClient
     private val downloadListener: NinjaDownloadListener = NinjaDownloadListener(context)
     private var clickHandler: NinjaClickHandler? = null
