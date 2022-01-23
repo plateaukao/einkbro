@@ -52,6 +52,7 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
     private val gestureDetector: GestureDetector = GestureDetector(context, NinjaGestureListener(this))
 
     var shouldHideTranslateContext: Boolean = false
+    protected var isEpubReaderMode = false
 
     private val sp: SharedPreferences by inject()
     private val config: ConfigManager by inject()
@@ -86,7 +87,9 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
         val cssStyle = (if (config.boldFontStyle) boldFontCss else "") +
                 (if (config.fontStyleSerif) notoSansSerifFontCss else "") +
                 (if (config.whiteBackground) whiteBackgroundCss else "") +
-                (if (config.enableCustomFont) customFontCss else "")
+                (if (config.enableCustomFont) customFontCss else "") +
+                // all css are purgsed by epublib. need to add it back if it's epub reader mode
+                if (isEpubReaderMode) String(getByteArrayFromAsset("readerview.css"), Charsets.UTF_8) else ""
         injectCss(cssStyle.toByteArray())
     }
 
@@ -697,7 +700,6 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
                 "}\n"
 
         private const val customFontCss = """
-            
             @font-face {
                  font-family: customfont;
                  font-weight: 400;

@@ -1,7 +1,6 @@
 package de.baumann.browser.epub
 
 import android.os.Build
-import android.view.View.OnTouchListener
 import android.webkit.ValueCallback
 import org.json.JSONObject
 import android.webkit.JavascriptInterface
@@ -146,6 +145,7 @@ class EpubReaderView(
             allowContentAccess = true
             allowFileAccess = true
         }
+        isEpubReaderMode = true
     }
 
     fun GetTheme(): Int {
@@ -379,6 +379,7 @@ elements[i].style.color='white';
                     val r = BufferedReader(InputStreamReader(TOC.resource.inputStream))
                     var aux: String? = ""
                     while (r.readLine().also { aux = it } != null) {
+                        aux = aux?.replace("""src="img""", """src="img://img""")
                         builder.append(aux)
                     }
                 } catch (e: Exception) {
