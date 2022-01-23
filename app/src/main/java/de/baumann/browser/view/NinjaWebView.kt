@@ -189,7 +189,6 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
             setSupportMultipleWindows(sp.getBoolean(context!!.getString(R.string.sp_javascript), true))
             setGeolocationEnabled(sp.getBoolean(context!!.getString(R.string.sp_location), false))
             mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
-
             setRenderPriority(WebSettings.RenderPriority.HIGH)
         }
         webViewClient.enableAdBlock(sp.getBoolean(context!!.getString(R.string.sp_ad_block), true))
@@ -375,7 +374,7 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
         }
     }
 
-    fun pageDownWithNoAnimation() {
+    open fun pageDownWithNoAnimation() {
         if (isVerticalRead) {
             scrollBy(shiftOffset(), 0)
             scrollX = min(computeHorizontalScrollRange() - width, scrollX)
@@ -384,7 +383,7 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
         }
     }
 
-    fun pageUpWithNoAnimation() {
+    open fun pageUpWithNoAnimation() {
         if (isVerticalRead) {
             scrollBy(-shiftOffset(), 0)
             scrollX = max(0, scrollX)
@@ -430,7 +429,7 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
         }
     }
 
-    private fun shiftOffset(): Int {
+    protected fun shiftOffset(): Int {
         return if (isVerticalRead) {
             width - 40.dp(context)
         } else {
@@ -445,7 +444,7 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
             super.dispatchKeyEvent(event)
         }
 
-    private var isVerticalRead = false
+    protected var isVerticalRead = false
     fun toggleVerticalRead() {
         isVerticalRead = !isVerticalRead
         toggleReaderMode(true)
