@@ -1,6 +1,7 @@
 package de.baumann.browser.browser
 
 import android.app.Activity
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Message
 import android.view.View
@@ -106,5 +107,9 @@ class NinjaWebChromeClient(private val ninjaWebView: NinjaWebView) : WebChromeCl
         HelperUnit.grantPermissionsLoc(activity)
         callback.invoke(origin, true, false)
         super.onGeolocationPermissionsShowPrompt(origin, callback)
+    }
+
+    override fun getDefaultVideoPoster(): Bitmap? {
+        return Bitmap.createBitmap(1, 1, Bitmap.Config.RGB_565)
     }
 }
