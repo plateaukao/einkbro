@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.os.Build
 import android.print.PrintAttributes
 import androidx.core.content.edit
+import de.baumann.browser.Ninja.R
 import de.baumann.browser.epub.EpubFileInfo
 import de.baumann.browser.unit.ViewUnit
 import de.baumann.browser.util.Constants
@@ -57,12 +58,6 @@ class ConfigManager(
         get() = sp.getBoolean(K_BOLD_FONT, false)
         set(value) {
             sp.edit { putBoolean(K_BOLD_FONT, value) }
-        }
-
-    var fontStyleSerif: Boolean
-        get() = sp.getBoolean(K_FONT_STYLE_SERIF, false)
-        set(value) {
-            sp.edit { putBoolean(K_FONT_STYLE_SERIF, value) }
         }
 
     var shouldSaveTabs: Boolean
@@ -240,10 +235,6 @@ class ConfigManager(
             }
         }
 
-    var enableCustomFont: Boolean
-        get() = sp.getBoolean(K_CUSTOM_FONT_ENABLE, false)
-        set(value) = sp.edit { putBoolean(K_CUSTOM_FONT_ENABLE, value) }
-
     var customFontInfo: CustomFontInfo?
         get() = sp.getString(K_CUSTOM_FONT, "")?.toCustomFontInfo()
         set(value) { sp.edit { putString(K_CUSTOM_FONT, value?.toSerializedString() ?: "") } }
@@ -284,6 +275,10 @@ class ConfigManager(
     var dbVersion: Int
         get() = sp.getInt(K_DB_VERSION, 0)
         set(value) = sp.edit { putInt(K_DB_VERSION, value) }
+
+    var fontType: FontType
+        get() = FontType.values()[sp.getInt(K_FONT_TYPE, 0)]
+        set(value) = sp.edit { putInt(K_FONT_TYPE, value.ordinal) }
 
     var translationMode: TranslationMode
         get() = TranslationMode.values()[sp.getInt(K_TRANSLATION_MODE, 6)]
@@ -364,7 +359,7 @@ class ConfigManager(
         const val K_SAVED_EPUBS = "sp_saved_epubs"
         const val K_MULTITOUCH = "sp_multitouch"
         const val K_CUSTOM_FONT = "sp_custom_font"
-        const val K_CUSTOM_FONT_ENABLE = "sp_font_custom_enabled"
+        const val K_FONT_TYPE = "sp_font_type"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
         private const val EPUB_FILE_INFO_SEPARATOR = "::::"
@@ -407,6 +402,13 @@ enum class TranslationMode(val label: String) {
     GOOGLE_URL("Google Full Page"),
     PAPAGO_DUAL("Papago Dual Pane"),
     GOOGLE_IN_PLACE("Google in-Place"),
+}
+
+enum class FontType(val resId: Int) {
+    SYSTEM_DEFAULT(R.string.system_default),
+    SERIF(R.string.serif),
+    GOOGLE_SERIF(R.string.googleserif),
+    CUSTOM(R.string.custom_font)
 }
 
 enum class DarkMode {

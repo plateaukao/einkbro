@@ -35,6 +35,7 @@ import org.koin.core.component.inject
 import java.io.ByteArrayInputStream
 import java.io.IOException
 import android.webkit.WebResourceResponse
+import de.baumann.browser.preference.FontType
 import nl.siegmann.epublib.domain.Book
 
 class NinjaWebViewClient(
@@ -56,7 +57,9 @@ class NinjaWebViewClient(
     }
 
     override fun onPageFinished(view: WebView, url: String) {
-        if (config.boldFontStyle || config.fontStyleSerif || config.whiteBackground || config.enableCustomFont) {
+        if (config.boldFontStyle ||
+                config.fontType != FontType.SYSTEM_DEFAULT ||
+                config.whiteBackground) {
             ninjaWebView.updateCssStyle()
         }
 

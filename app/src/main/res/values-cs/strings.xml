@@ -51,8 +51,8 @@
     <string name="setting_summary_search_engine_searx">Searx</string>
     <string name="setting_summary_search_engine_qwant">Qwant</string>
     <string name="setting_summary_search_engine_ecosia">Ecosia</string>
-    <string name="setting_title_font">Velikost písma</string>
-    <string name="setting_summary_font">Změna velikost písma pro zobrazování webových stránek.</string>
+    <string name="setting_title_font_size">Velikost písma</string>
+    <string name="setting_summary_font_size">Změna velikost písma pro zobrazování webových stránek.</string>
     <string name="setting_title_remote">Vzdálený obsah</string>
     <string name="setting_summary_remote">Povolte vzdálený obsah, který není přímo z navštívené webové stránky..
         Zakázání je bezpečnější, rychlejší a šetří spotřebu dat. Určitý obsah se však již nebude nadále zobrazovat.</string>

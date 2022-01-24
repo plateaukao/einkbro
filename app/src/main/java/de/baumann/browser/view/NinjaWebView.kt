@@ -25,6 +25,7 @@ import de.baumann.browser.Ninja.R
 import de.baumann.browser.browser.*
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.preference.DarkMode
+import de.baumann.browser.preference.FontType
 import de.baumann.browser.preference.TranslationMode
 import de.baumann.browser.unit.BrowserUnit
 import de.baumann.browser.unit.ViewUnit.dp
@@ -85,9 +86,9 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
 
     fun updateCssStyle() {
         val cssStyle = (if (config.boldFontStyle) boldFontCss else "") +
-                (if (config.fontStyleSerif) notoSansSerifFontCss else "") +
+                (if (config.fontType == FontType.GOOGLE_SERIF) notoSansSerifFontCss else "") +
                 (if (config.whiteBackground) whiteBackgroundCss else "") +
-                (if (config.enableCustomFont) customFontCss else "") +
+                (if (config.fontType == FontType.CUSTOM) customFontCss else "") +
                 // all css are purgsed by epublib. need to add it back if it's epub reader mode
                 if (isEpubReaderMode) String(getByteArrayFromAsset("readerview.css"), Charsets.UTF_8) else ""
         injectCss(cssStyle.toByteArray())

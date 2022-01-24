@@ -51,8 +51,8 @@
     <string name="setting_summary_search_engine_searx">Searx</string>
     <string name="setting_summary_search_engine_qwant">Qwant</string>
     <string name="setting_summary_search_engine_ecosia">Ecosia</string>
-    <string name="setting_title_font">Lettertypegrootte</string>
-    <string name="setting_summary_font">Wijzig de lettertypegrootte die gebruikt wordt bij het tonen van websites.</string>
+    <string name="setting_title_font_size">Lettertypegrootte</string>
+    <string name="setting_summary_font_size">Wijzig de lettertypegrootte die gebruikt wordt bij het tonen van websites.</string>
     <string name="setting_title_remote">Externe inhoud</string>
     <string name="setting_summary_remote">Schakel externe inhoud in. Dit is inhoud die niet direct afkomstig is van de website die je bezoekt.
         Uitschakelen is veiliger, sneller en bespaart mobiele gegevens, maar sommige inhoud wordt hierdoor niet meer getoond.</string>
