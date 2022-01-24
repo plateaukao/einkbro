@@ -1,6 +1,5 @@
 package de.baumann.browser.fragment
 
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
@@ -13,8 +12,6 @@ import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.preference.CustomFontInfo
 import de.baumann.browser.util.Constants
 import de.baumann.browser.view.dialog.DialogManager
-import de.baumann.browser.view.dialog.ToolbarConfigDialog
-import de.baumann.browser.view.dialog.TouchAreaDialog
 import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
 import java.io.File
