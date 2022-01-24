@@ -17,10 +17,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import de.baumann.browser.Ninja.BuildConfig;
 import de.baumann.browser.Ninja.R;
 import de.baumann.browser.activity.Settings_ClearActivity;
-import de.baumann.browser.activity.Settings_DataActivity;
-import de.baumann.browser.activity.Settings_GestureActivity;
-import de.baumann.browser.activity.Settings_StartActivity;
-import de.baumann.browser.activity.Settings_UIActivity;
 import de.baumann.browser.unit.HelperUnit;
 import de.baumann.browser.view.dialog.PrinterDocumentPaperSizeDialog;
 
@@ -33,13 +29,27 @@ public class Fragment_settings extends PreferenceFragmentCompat implements Share
         setPreferencesFromResource(R.xml.preference_setting, rootKey);
 
         findPreference("settings_data").setOnPreferenceClickListener(preference -> {
-            Intent intent = new Intent(getActivity(), Settings_DataActivity.class);
-            requireActivity().startActivity(intent);
+            getParentFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.content_frame, new DataSettingsFragment(), "data")
+                    .addToBackStack(null)
+                    .commit();
             return false;
         });
         findPreference("settings_ui").setOnPreferenceClickListener(preference -> {
-            Intent intent = new Intent(getActivity(), Settings_UIActivity.class);
-            requireActivity().startActivity(intent);
+            getParentFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.content_frame, new UiSettingsFragment(), "ui")
+                    .addToBackStack(null)
+                    .commit();
+            return false;
+        });
+        findPreference("settings_font").setOnPreferenceClickListener(preference -> {
+            getParentFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.content_frame, new FontSettingsFragment(), "font")
+                    .addToBackStack(null)
+                    .commit();
             return false;
         });
         findPreference("settings_pdf_paper_size").setOnPreferenceClickListener(preference -> {
@@ -47,13 +57,19 @@ public class Fragment_settings extends PreferenceFragmentCompat implements Share
             return false;
         });
         findPreference("settings_gesture").setOnPreferenceClickListener(preference -> {
-            Intent intent = new Intent(getActivity(), Settings_GestureActivity.class);
-            requireActivity().startActivity(intent);
+            getParentFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.content_frame, new FragmentSettingsGesture(), "gesture")
+                    .addToBackStack(null)
+                    .commit();
             return false;
         });
         findPreference("settings_start").setOnPreferenceClickListener(preference -> {
-            Intent intent = new Intent(getActivity(), Settings_StartActivity.class);
-            requireActivity().startActivity(intent);
+            getParentFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.content_frame, new Fragment_settings_start(), "start")
+                    .addToBackStack(null)
+                    .commit();
             return false;
         });
         findPreference("settings_clear").setOnPreferenceClickListener(preference -> {
@@ -85,7 +101,10 @@ public class Fragment_settings extends PreferenceFragmentCompat implements Share
 
     @Override
     public void onSharedPreferenceChanged(final SharedPreferences sp, String key) {
-        if (key.equals("userAgent") || key.equals("sp_search_engine_custom") || key.equals("@string/sp_search_engine")) {
+        if (key.equals("userAgent") ||
+                key.equals("sp_search_engine_custom") ||
+                key.equals("@string/sp_search_engine")
+        ) {
             sp.edit().putInt("restart_changed", 1).apply();
         }
     }
@@ -95,126 +114,124 @@ public class Fragment_settings extends PreferenceFragmentCompat implements Share
         final BottomSheetDialog dialog = new BottomSheetDialog(requireActivity());
         View dialogView = View.inflate(getActivity(), R.layout.dialog_text, null);
 
-        TextView dialog_title = dialogView.findViewById(R.id.dialog_title);
-        dialog_title.setText(title);
+        dialogView.<TextView>findViewById(R.id.dialog_title).setText(title);
 
-        TextView dialog_text = dialogView.findViewById(R.id.dialog_text);
-        dialog_text.setText(HelperUnit.textSpannable(text));
+        dialogView.<TextView>findViewById(R.id.dialog_text).setText(HelperUnit.textSpannable(text));
 
         if (showContributors) {
-            dialog_text.append("\n\nGaukler Faun\n" +
+            dialogView.<TextView>findViewById(R.id.dialog_text).append("\n\nGaukler Faun\n" +
                     "\u25AA Main developer and initiator of this project\n" +
                     "https://github.com/scoute-dich");
 
-            dialog_text.append("\n\nAli Demirtas\n" +
+            dialogView.<TextView>findViewById(R.id.dialog_text).append("\n\nAli Demirtas\n" +
                     "\u25AA Turkish Translation\n" +
                     "https://github.com/ali-demirtas");
 
-            dialog_text.append("\n\nCGSLURP LLC\n" +
+            dialogView.<TextView>findViewById(R.id.dialog_text).append("\n\nCGSLURP LLC\n" +
                     "\u25AA Russian translation\n" +
                     "https://crowdin.com/profile/gaich");
 
-            dialog_text.append("\n\nDmitry Gaich\n" +
+            dialogView.<TextView>findViewById(R.id.dialog_text).append("\n\nDmitry Gaich\n" +
                     "\u25AA Helped to implement AdBlock and \"request desktop site\" in the previous version of \"EinkBro Browser\".\n" +
                     "https://github.com/futrDevelopment");
 
-            dialog_text.append("\n\nelement54\n" +
+            dialogView.<TextView>findViewById(R.id.dialog_text).append("\n\nelement54\n" +
                     "\u25AA fix: keyboard problems (issue #105)\n" +
                     "\u25AA new: option to disable confirmation dialogs on exit\n" +
                     "https://github.com/element54");
 
-            dialog_text.append("\n\nelmru\n" +
+            dialogView.<TextView>findViewById(R.id.dialog_text).append("\n\nelmru\n" +
                     "\u25AA Taiwan Trad. Chinese Translation\n" +
                     "https://github.com/kogiokka");
 
-            dialog_text.append("\n\nEnrico Monese\n" +
+            dialogView.<TextView>findViewById(R.id.dialog_text).append("\n\nEnrico Monese\n" +
                     "\u25AA Italian Translation\n" +
                     "https://github.com/EnricoMonese");
 
-            dialog_text.append("\n\nFrancois\n" +
+            dialogView.<TextView>findViewById(R.id.dialog_text).append("\n\nFrancois\n" +
                     "\u25AA French Translation\n" +
                     "https://github.com/franco27");
 
-            dialog_text.append("\n\ngh-pmjm\n" +
+            dialogView.<TextView>findViewById(R.id.dialog_text).append("\n\ngh-pmjm\n" +
                     "\u25AA Polish translation\n" +
                     "https://github.com/gh-pmjm");
 
-            dialog_text.append("\n\ngr1sh\n" +
+            dialogView.<TextView>findViewById(R.id.dialog_text).append("\n\ngr1sh\n" +
                     "\u25AA fix: some German strings (issues #124, #131)\n" +
                     "https://github.com/gr1sh");
 
-            dialog_text.append("\n\nHarry Heights\n" +
+            dialogView.<TextView>findViewById(R.id.dialog_text).append("\n\nHarry Heights\n" +
                     "\u25AA Documentation of EinkBro Browser\n" +
                     " https://github.com/HarryHeights");
 
-            dialog_text.append("\n\nHeimen Stoffels\n" +
+            dialogView.<TextView>findViewById(R.id.dialog_text).append("\n\nHeimen Stoffels\n" +
                     " \u25AA Dutch translation\n" +
                     "https://github.com/Vistaus");
 
-            dialog_text.append("\n\nHellohat\n" +
+            dialogView.<TextView>findViewById(R.id.dialog_text).append("\n\nHellohat\n" +
                     "\u25AA French translation\n" +
                     "https://github.com/Hellohat");
 
-            dialog_text.append("\n\nHerman Nunez\n" +
+            dialogView.<TextView>findViewById(R.id.dialog_text).append("\n\nHerman Nunez\n" +
                     "\u25AA Spanish translation\n" +
                     "https://github.com/junior012");
 
-            dialog_text.append("\n\nJumping Yang\n" +
+            dialogView.<TextView>findViewById(R.id.dialog_text).append("\n\nJumping Yang\n" +
                     "\u25AA Chinese translation in the previous version of \"EinkBro Browser\"\n" +
                     "https://github.com/JumpingYang001");
 
-            dialog_text.append("\n\nlishoujun\n" +
+            dialogView.<TextView>findViewById(R.id.dialog_text).append("\n\nlishoujun\n" +
                     "\u25AA Chinese translation\n" +
                     "\u25AA bug hunting\n" +
                     "https://github.com/lishoujun");
 
-            dialog_text.append("\n\nLukas Novotny\n" +
+            dialogView.<TextView>findViewById(R.id.dialog_text).append("\n\nLukas Novotny\n" +
                     "\u25AA Czech translation\n" +
                     "https://crowdin.com/profile/novas78");
 
-            dialog_text.append("\n\nOguz Ersen\n" +
+            dialogView.<TextView>findViewById(R.id.dialog_text).append("\n\nOguz Ersen\n" +
                     "\u25AA Turkish translation\n" +
                     "https://crowdin.com/profile/oersen");
 
-            dialog_text.append("\n\nPeter Bui\n" +
+            dialogView.<TextView>findViewById(R.id.dialog_text).append("\n\nPeter Bui\n" +
                     "\u25AA more font sizes to choose\n" +
                     "https://github.com/pbui");
 
-            dialog_text.append("\n\nRodolfoCandidoB\n" +
+            dialogView.<TextView>findViewById(R.id.dialog_text).append("\n\nRodolfoCandidoB\n" +
                     "\u25AA Portuguese, Brazilian translation\n" +
                     "https://crowdin.com/profile/RodolfoCandidoB");
 
-            dialog_text.append("\n\nSecangkir Kopi\n" +
+            dialogView.<TextView>findViewById(R.id.dialog_text).append("\n\nSecangkir Kopi\n" +
                     "\u25AA Indonesian translation\n" +
                     "https://github.com/Secangkir-Kopi");
 
-            dialog_text.append("\n\nSérgio Marques\n" +
+            dialogView.<TextView>findViewById(R.id.dialog_text).append("\n\nSérgio Marques\n" +
                     "\u25AA Portuguese translation\n" +
                     "https://github.com/smarquespt");
 
-            dialog_text.append("\n\nsplinet\n" +
+            dialogView.<TextView>findViewById(R.id.dialog_text).append("\n\nsplinet\n" +
                     "\u25AA Russian translation in the previous version of \"EinkBro Browser\"\n" +
                     "https://github.com/splinet");
 
-            dialog_text.append("\n\nSkewedZeppelin\n" +
+            dialogView.<TextView>findViewById(R.id.dialog_text).append("\n\nSkewedZeppelin\n" +
                     "\u25AA Add option to enable Save-Data header\n" +
                     "https://github.com/SkewedZeppelin");
 
-            dialog_text.append("\n\nTobiplayer\n" +
+            dialogView.<TextView>findViewById(R.id.dialog_text).append("\n\nTobiplayer\n" +
                     "\u25AA added Qwant search engine\n" +
                     "\u25AA option to open new tab instead of exiting\n" +
                     "https://github.com/Tobiplayer");
 
-            dialog_text.append("\n\nVladimir Kosolapov\n" +
+            dialogView.<TextView>findViewById(R.id.dialog_text).append("\n\nVladimir Kosolapov\n" +
                     "\u25AA Russian translation\n" +
                     "https://github.com/0x264f");
 
-            dialog_text.append("\n\nYC L\n" +
+            dialogView.<TextView>findViewById(R.id.dialog_text).append("\n\nYC L\n" +
                     "\u25AA Chinese Translation\n" +
                     "https://github.com/smallg0at");
         }
 
-        dialog_text.setMovementMethod(LinkMovementMethod.getInstance());
+        dialogView.<TextView>findViewById(R.id.dialog_text).setMovementMethod(LinkMovementMethod.getInstance());
         dialog.setContentView(dialogView);
         dialog.show();
         HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED);

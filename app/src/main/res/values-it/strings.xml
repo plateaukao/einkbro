@@ -51,8 +51,8 @@
     <string name="setting_summary_search_engine_searx">Searx</string>
     <string name="setting_summary_search_engine_qwant">Qwant</string>
     <string name="setting_summary_search_engine_ecosia">Ecosia</string>
-    <string name="setting_title_font">Dimensione testo</string>
-    <string name="setting_summary_font">Modificare la dimensione dei caratteri per la visualizzazione dei siti Web.</string>
+    <string name="setting_title_font_size">Dimensione testo</string>
+    <string name="setting_summary_font_size">Modificare la dimensione dei caratteri per la visualizzazione dei siti Web.</string>
     <string name="setting_title_remote">Contenuti remoti</string>
     <string name="setting_summary_remote">Abilita i contenuti remoti, che non provengono direttamente dal sito web che stai visitando. La disattivazione è più sicura, più rapida e consente di risparmiare volume di dati. Ma alcuni contenuti non saranno più visualizzati.</string>
     <string name="setting_title_save_data">Richiedi \'Salva dati\'</string>

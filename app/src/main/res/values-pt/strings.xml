@@ -51,8 +51,8 @@
     <string name="setting_summary_search_engine_searx">Searx</string>
     <string name="setting_summary_search_engine_qwant">Qwant</string>
     <string name="setting_summary_search_engine_ecosia">Ecosia</string>
-    <string name="setting_title_font">Tamanho da letra</string>
-    <string name="setting_summary_font">Alterar o tamanho do tipo de letra nos sites.</string>
+    <string name="setting_title_font_size">Tamanho da letra</string>
+    <string name="setting_summary_font_size">Alterar o tamanho do tipo de letra nos sites.</string>
     <string name="setting_title_remote">Conteúdo remoto</string>
     <string name="setting_summary_remote">Ativa o conteúdo remoto que não está diretamente relacionado com o site visitado. Se desativar a opção, pode estar mais seguros, navegar mais rápido e poupar dados. Mas é possível que algum conteúdo não seja mostrado.</string>
     <string name="setting_title_save_data">Solicitar \'Save Data\'</string>
