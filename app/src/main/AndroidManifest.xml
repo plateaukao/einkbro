@@ -131,7 +131,7 @@
             android:name="de.baumann.browser.epub.ReaderActivity"
             android:theme="@style/AppTheme" /> <!-- Settings -->
         <activity
-            android:name="de.baumann.browser.activity.Settings_Activity"
+            android:name="de.baumann.browser.activity.SettingsActivity"
             android:label="@string/setting_label" />
         <activity
             android:name="de.baumann.browser.activity.Whitelist_AdBlock"

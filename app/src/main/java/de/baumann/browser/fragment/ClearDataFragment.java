@@ -2,21 +2,19 @@ package de.baumann.browser.fragment;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.preference.PreferenceFragmentCompat;
 
-import java.util.Objects;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import de.baumann.browser.Ninja.R;
 import de.baumann.browser.unit.HelperUnit;
 
-public class Fragment_clear extends PreferenceFragmentCompat {
+public class ClearDataFragment extends PreferenceFragmentCompat {
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {

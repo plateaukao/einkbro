@@ -29,11 +29,6 @@
             android:icon="@drawable/ic_pdf"
             android:title="@string/setting_title_pdf_paper_size"/>
 
-        <Preference
-            android:key="settings_appSettings"
-            android:icon="@drawable/icon_settings"
-            android:title="@string/setting_title_appSettings"/>
-
     </PreferenceCategory>
 
     <PreferenceCategory>
@@ -83,11 +78,10 @@
     </PreferenceCategory>
 
     <PreferenceCategory>
-
-<!--        <Preference-->
-<!--            android:key="settings_help"-->
-<!--            android:icon="@drawable/icon_help"-->
-<!--            android:title="@string/menu_other_help"/>-->
+        <Preference
+            android:key="settings_appSettings"
+            android:icon="@drawable/icon_settings"
+            android:title="@string/setting_title_appSettings"/>
 
         <Preference
             android:key="settings_license"

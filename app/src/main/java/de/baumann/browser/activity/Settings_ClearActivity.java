@@ -16,7 +16,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import de.baumann.browser.Ninja.R;
-import de.baumann.browser.fragment.Fragment_clear;
+import de.baumann.browser.fragment.ClearDataFragment;
 import de.baumann.browser.service.ClearService;
 import de.baumann.browser.unit.HelperUnit;
 
@@ -36,7 +36,7 @@ public class Settings_ClearActivity extends AppCompatActivity {
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.content_frame, new Fragment_clear())
+                .replace(R.id.content_frame, new ClearDataFragment())
                 .commit();
     }
 

@@ -1,13 +1,8 @@
 package de.baumann.browser.view.sortlistpreference;
 
 import android.content.Context;
-import android.view.Gravity;
 import android.view.View;
-import android.view.View.MeasureSpec;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.Checkable;
-import android.util.Log;
 
 /**
  * Lightweight ViewGroup that wraps list items obtained from user's

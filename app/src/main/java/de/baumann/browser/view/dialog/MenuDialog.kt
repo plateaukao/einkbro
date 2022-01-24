@@ -10,7 +10,7 @@ import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.DialogMenuBinding
-import de.baumann.browser.activity.Settings_Activity
+import de.baumann.browser.activity.SettingsActivity
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.unit.HelperUnit
 import de.baumann.browser.unit.IntentUnit
@@ -89,7 +89,7 @@ class MenuDialog(
             dialog.dismissWithAction { context.startActivity(Intent(DownloadManager.ACTION_VIEW_DOWNLOADS)) }
         }
         binding.menuSettings.setOnClickListener {
-            dialog.dismissWithAction { context.startActivity(Intent(context, Settings_Activity::class.java)) }
+            dialog.dismissWithAction { context.startActivity(Intent(context, SettingsActivity::class.java)) }
         }
         binding.menuShareClipboard.setOnClickListener {
             dialog.dismissWithAction {
