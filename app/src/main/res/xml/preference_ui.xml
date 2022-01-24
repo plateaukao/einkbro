@@ -12,15 +12,6 @@
             android:summary="@string/setting_summary_page_left_value"
             android:icon="@drawable/ic_page_height"/>
 
-        <ListPreference
-            android:icon="@drawable/icon_size"
-            android:key="sp_fontSize"
-            android:defaultValue="100"
-            android:title="@string/setting_title_font"
-            android:summary="@string/setting_summary_font"
-            android:entries="@array/setting_entries_font"
-            android:entryValues="@array/setting_values_font"/>
-
         <Preference
             android:key="sp_touch_area_type"
             android:icon="@drawable/gesture_tap"
@@ -29,7 +20,7 @@
 
         <Preference
             android:key="sp_toolbar_icons"
-            android:icon="@drawable/gesture_tap"
+            android:icon="@drawable/ic_toolbar"
             android:title="@string/setting_title_toolbar_icons"
             android:summary="@string/setting_summary_toolbar_icons"/>
 
@@ -47,24 +38,30 @@
             android:defaultValue="false"
             android:title="@string/desktop_mode"
             android:summary="@string/setting_summary_desktop"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/setting_title_font">
+
+        <ListPreference
+            android:icon="@drawable/icon_size"
+            android:key="sp_fontSize"
+            android:defaultValue="100"
+            android:title="@string/setting_title_font_size"
+            android:summary="@string/setting_summary_font_size"
+            android:entries="@array/setting_entries_font"
+            android:entryValues="@array/setting_values_font"/>
 
         <CheckBoxPreference android:key="sp_bold_font"
-            android:icon="@drawable/icon_size"
+            android:icon="@drawable/ic_bold_font"
             android:defaultValue="false"
             android:title="@string/bold_font"
             android:summary="@string/setting_summary_bold_font"/>
 
-        <CheckBoxPreference android:key="sp_font_style_serif"
-            android:defaultValue="false"
-            android:title="@string/font_style_serif"
-            android:summary="@string/setting_summary_font_style_serif"/>
-
-        <CheckBoxPreference android:key="sp_font_custom_enabled"
-            android:defaultValue="false"
-            android:title="@string/font_custom_enable"
-            android:summary="@string/setting_summary_font_custom_enable"/>
+        <Preference android:key="settings_font_type"
+            android:title="@string/font_type" />
 
         <Preference android:key="sp_custom_font"
+            android:icon="@drawable/icon_info"
             android:defaultValue=""
             android:title="@string/font_custom"/>
 

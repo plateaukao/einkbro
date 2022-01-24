@@ -51,8 +51,8 @@
     <string name="setting_summary_search_engine_searx">Searx</string>
     <string name="setting_summary_search_engine_qwant">Qwant</string>
     <string name="setting_summary_search_engine_ecosia">Ecosia</string>
-    <string name="setting_title_font">Rozmiar czcionki</string>
-    <string name="setting_summary_font">Zmień podstawowy rozmiar czcionek wyświetlanych na stronach.</string>
+    <string name="setting_title_font_size">Rozmiar czcionki</string>
+    <string name="setting_summary_font_size">Zmień podstawowy rozmiar czcionek wyświetlanych na stronach.</string>
     <string name="setting_title_remote">Zawartość zdalna</string>
     <string name="setting_summary_remote">Pozwól na ładowanie zawartości zdalnej, która nie pochodzi bezpośrednio z odwiedzanych witryn. 
         Wyłączenie tej opcji poprawi bezpieczeństwo, prędkość ładowania i zaoszczędzi dane, jednak niektóre elementy mogą nie wyświetlać się poprawnie.</string>

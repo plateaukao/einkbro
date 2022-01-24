@@ -145,18 +145,6 @@
         <activity
             android:name="de.baumann.browser.activity.Settings_ClearActivity"
             android:label="@string/setting_title_clear_control" />
-        <activity
-            android:name="de.baumann.browser.activity.Settings_StartActivity"
-            android:label="@string/setting_title_start_control" />
-        <activity
-            android:name="de.baumann.browser.activity.Settings_DataActivity"
-            android:label="@string/setting_title_data" />
-        <activity
-            android:name="de.baumann.browser.activity.Settings_UIActivity"
-            android:label="@string/setting_title_ui" />
-        <activity
-            android:name="de.baumann.browser.activity.Settings_GestureActivity"
-            android:label="@string/setting_gestures" />
 
         <service
             android:name="de.baumann.browser.service.ClearService"

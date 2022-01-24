@@ -51,8 +51,8 @@
     <string name="setting_summary_search_engine_searx">Searx</string>
     <string name="setting_summary_search_engine_qwant">Qwant</string>
     <string name="setting_summary_search_engine_ecosia">Ecosia</string>
-    <string name="setting_title_font">字型大小</string>
-    <string name="setting_summary_font">改變網頁的字型大小</string>
+    <string name="setting_title_font_size">字型大小</string>
+    <string name="setting_summary_font_size">改變網頁的字型大小</string>
     <string name="setting_title_remote">Remote content</string>
     <string name="setting_summary_remote">Enable remote content, which is not directly from the website you are visiting.
         Disabling this is more secure, faster and saves data volume. But some content will not be displayed anymore.</string>
@@ -257,4 +257,8 @@
     <string name="font_custom_enable">Enable Custom Font</string>
     <string name="setting_summary_font_custom_enable">Use font file in external storage</string>
     <string name="translation_mode">Translation Mode</string>
+    <string name="system_default">default</string>
+    <string name="custom_font">custom font</string>
+    <string name="setting_title_font">Font</string>
+    <string name="font_type">Font Type</string>
 </resources>

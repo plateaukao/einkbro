@@ -51,8 +51,8 @@
     <string name="setting_summary_search_engine_searx">Searx</string>
     <string name="setting_summary_search_engine_qwant">Qwant</string>
     <string name="setting_summary_search_engine_ecosia">Ecosia</string>
-    <string name="setting_title_font">Taille de la police</string>
-    <string name="setting_summary_font">Modifier la taille de la police pour l’affichage des sites Web.</string>
+    <string name="setting_title_font_size">Taille de la police</string>
+    <string name="setting_summary_font_size">Modifier la taille de la police pour l’affichage des sites Web.</string>
     <string name="setting_title_remote">Contenu à distance</string>
     <string name="setting_summary_remote">Activer le contenu distant, qui ne provient pas directement du site Web que vous visitez.
         Désactiver cela est plus sécurisé, plus rapide et enregistre le volume de données. Mais certains contenus ne seront plus affichés.</string>

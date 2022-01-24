@@ -51,8 +51,8 @@
     <string name="setting_summary_search_engine_searx">Searx</string>
     <string name="setting_summary_search_engine_qwant">Qwant</string>
     <string name="setting_summary_search_engine_ecosia">Ecosia</string>
-    <string name="setting_title_font">Розмір шрифту</string>
-    <string name="setting_summary_font">Змініть розмір шрифту для відображення веб-сайтів.</string>
+    <string name="setting_title_font_size">Розмір шрифту</string>
+    <string name="setting_summary_font_size">Змініть розмір шрифту для відображення веб-сайтів.</string>
     <string name="setting_title_remote">Віддалений контент</string>
     <string name="setting_summary_remote">Увімкніть віддалений вміст, який не знаходиться безпосередньо на веб-сайті, який ви відвідуєте. Відключення цього є більш безпечним і економить обсяг даних. Але деякий вміст більше не буде відображатися.</string>
     <string name="setting_title_save_data">Request \'Save Data\'</string>

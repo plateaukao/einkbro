@@ -11,6 +11,10 @@
             android:title="@string/setting_title_ui"/>
 
         <Preference
+            android:key="settings_font"
+            android:icon="@drawable/icon_size"
+            android:title="@string/setting_title_font"/>
+        <Preference
             android:key="settings_gesture"
             android:icon="@drawable/gesture_tap"
             android:title="@string/setting_gestures"/>

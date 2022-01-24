@@ -60,8 +60,8 @@
     <string name="setting_summary_search_engine_qwant">Qwant</string>
     <string name="setting_summary_search_engine_ecosia">Ecosia</string>
 
-    <string name="setting_title_font">字体大小</string>
-    <string name="setting_summary_font">改变网页的字体大小</string>
+    <string name="setting_title_font_size">字体大小</string>
+    <string name="setting_summary_font_size">改变网页的字体大小</string>
     <string name="setting_title_remote">远程内容</string>
     <string name="setting_summary_remote">启用远程内容，远程内容不是直接来自于你访问的网站。
         禁用这个特性使访问更加安全快捷同时节省数据存储。但是页面中有些内容将不再被展示。</string>

@@ -7,8 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 
-import java.util.Objects;
-
 import de.baumann.browser.Ninja.R;
 import de.baumann.browser.fragment.Fragment_settings;
 import de.baumann.browser.unit.HelperUnit;
@@ -24,7 +22,6 @@ public class Settings_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         getSupportFragmentManager()
                 .beginTransaction()

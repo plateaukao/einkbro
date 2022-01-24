@@ -51,8 +51,8 @@
     <string name="setting_summary_search_engine_searx">Searx</string>
     <string name="setting_summary_search_engine_qwant">Qwant</string>
     <string name="setting_summary_search_engine_ecosia">Ecosia</string>
-    <string name="setting_title_font">Yazı boyutu</string>
-    <string name="setting_summary_font">Web sitelerini görüntülemek için yazı tipi boyutunu değiştirin.</string>
+    <string name="setting_title_font_size">Yazı boyutu</string>
+    <string name="setting_summary_font_size">Web sitelerini görüntülemek için yazı tipi boyutunu değiştirin.</string>
     <string name="setting_title_remote">Uzaktan içerik</string>
     <string name="setting_summary_remote">Doğrudan ziyaret ettiğiniz web sitesinde olmayan uzak içeriği etkinleştirin.
         Bunu devre dışı bırakmak daha güvenli, daha hızlı ve veri hacminden tasarruf sağlar. Ancak bazı içerikler artık görüntülenmeyecektir.</string>

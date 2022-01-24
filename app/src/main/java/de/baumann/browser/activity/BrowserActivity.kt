@@ -612,11 +612,10 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
 
     // Methods
     private fun showFontSizeChangeDialog() =
-            dialogManager.showFontSizeChangeDialog { changeFontSize(it) }
+            dialogManager.showFontSizeChangeDialog()
 
     private fun changeFontSize(size: Int) {
         config.fontSize = size
-        ninjaWebView.settings.textZoom = size
     }
 
     private fun increaseFontSize() = changeFontSize(config.fontSize + 20)
@@ -905,12 +904,15 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
             ConfigManager.K_TOOLBAR_ICONS -> {
                 toolbarViewController.reorderIcons()
             }
-            ConfigManager.K_CUSTOM_FONT_ENABLE -> {
-                if(config.enableCustomFont) {
-                    ninjaWebView.updateCssStyle()
-                } else {
+            ConfigManager.K_FONT_TYPE -> {
+                if (config.fontType == FontType.SYSTEM_DEFAULT) {
                     ninjaWebView.reload()
+                } else {
+                    ninjaWebView.updateCssStyle()
                 }
+            }
+            ConfigManager.K_FONT_SIZE -> {
+                ninjaWebView.settings.textZoom = config.fontSize
             }
             ConfigManager.K_BOLD_FONT -> {
                 if (config.boldFontStyle) {
@@ -926,15 +928,8 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
                     ninjaWebView.reload()
                 }
             }
-            ConfigManager.K_FONT_STYLE_SERIF -> {
-                if (config.fontStyleSerif) {
-                    ninjaWebView.updateCssStyle()
-                } else {
-                    ninjaWebView.reload()
-                }
-            }
             ConfigManager.K_CUSTOM_FONT -> {
-                if (config.enableCustomFont) {
+                if (config.fontType == FontType.CUSTOM) {
                     ninjaWebView.updateCssStyle()
                 }
             }

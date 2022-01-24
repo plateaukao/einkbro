@@ -528,7 +528,7 @@
                 android:layout_marginTop="-10dp"
                 android:gravity="center"
                 android:lines="2"
-                android:text="@string/setting_title_font"
+                android:text="@string/setting_title_font_size"
                 android:textSize="10sp" />
         </LinearLayout>
 
