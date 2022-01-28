@@ -146,6 +146,8 @@ class EpubReaderView(
             allowFileAccess = true
         }
         isEpubReaderMode = true
+        isVerticalRead = false
+        isReaderModeOn = false
     }
 
     fun GetTheme(): Int {
@@ -432,8 +434,6 @@ elements[i].style.color='white';
             this.Progress = Progress
         }
         loadDataWithBaseURL(ResourceLocation, ChapterList[this.ChapterNumber].content, "text/html", "utf-8", null)
-        isVerticalRead = false
-        isReaderModeOn = false
 
         if (Progress == 0F) {
             scrollY = 0
