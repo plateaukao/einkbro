@@ -75,7 +75,7 @@ class FontSettingsFragment : PreferenceFragmentCompat(), OnSharedPreferenceChang
     override fun onSharedPreferenceChanged(sp: SharedPreferences, key: String) {
         when (key) {
             ConfigManager.K_CUSTOM_FONT ->
-                findPreference<Preference>(ConfigManager.K_CUSTOM_FONT)?.apply {
+                findPreference<Preference>("settings_font_type")?.apply {
                     summary = config.customFontInfo?.name ?: "not configured"
                 }
             ConfigManager.K_FONT_TYPE ->
