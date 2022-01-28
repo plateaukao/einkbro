@@ -238,7 +238,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
     private fun listenKeyboardShowHide() {
         binding.root.viewTreeObserver.addOnGlobalLayoutListener {
             val heightDiff: Int = binding.root.rootView.height - binding.root.height
-            if (heightDiff > 300) { // Value should be less than keyboard's height
+            if (heightDiff > 200) { // Value should be less than keyboard's height
                 touchController.maybeDisableTemporarily()
             } else {
                 touchController.maybeEnableAgain()

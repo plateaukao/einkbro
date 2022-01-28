@@ -87,6 +87,7 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
     fun updateCssStyle() {
         val cssStyle = (if (config.boldFontStyle) boldFontCss else "") +
                 (if (config.fontType == FontType.GOOGLE_SERIF) notoSansSerifFontCss else "") +
+                (if (config.fontType == FontType.SERIF) serifFontCss else "") +
                 (if (config.whiteBackground) whiteBackgroundCss else "") +
                 (if (config.fontType == FontType.CUSTOM) customFontCss else "") +
                 // all css are purgsed by epublib. need to add it back if it's epub reader mode
@@ -699,6 +700,10 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
                 "font-family: 'Noto Serif TC', 'Noto Serif JP', 'Noto Serif KR', 'Noto Serif SC', serif !important;\n" +
                 //"font-family: serif !important;\n" +
                 "}\n"
+        private const val serifFontCss =
+                        "body {\n" +
+                        "font-family: serif !important;\n" +
+                        "}\n"
 
         private const val customFontCss = """
             @font-face {
