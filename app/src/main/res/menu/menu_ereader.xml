@@ -13,7 +13,7 @@
         android:icon="@drawable/icon_edit"
         app:showAsAction="always">
     </item>
-    <item android:id="@+id/menu_highlight_2"
+    <item android:id="@+id/menu_underline"
         android:title="underline"
         android:icon="@drawable/icon_edit"
         app:showAsAction="always">
