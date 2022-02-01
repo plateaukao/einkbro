@@ -3,14 +3,12 @@ package de.baumann.browser.activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.View.GONE
-import androidx.core.view.setPadding
+import android.view.Window
 import androidx.lifecycle.lifecycleScope
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.epub.EpubReaderListener
 import de.baumann.browser.epub.EpubReaderView
 import de.baumann.browser.unit.BrowserUnit
-import de.baumann.browser.unit.ViewUnit
 import de.baumann.browser.view.NinjaWebView
 import kotlinx.coroutines.launch
 
@@ -39,7 +37,7 @@ class EpubReaderActivity: BrowserActivity() {
         lifecycleScope.launch {
             with(ninjaWebView as EpubReaderView) {
                 openEpubFile(epubUri)
-                GotoPosition(0, 0F)
+                gotoPosition(0, 0F)
             }
         }
     }
@@ -53,7 +51,7 @@ class EpubReaderActivity: BrowserActivity() {
         ninjaWebView = epubReader
 
         epubReader.setEpubReaderListener(object : EpubReaderListener {
-            override fun onTextSelectionModeChangeListner(mode: Boolean?) {
+            override fun onTextSelectionModeChangeListener(mode: Boolean?) {
                 /*
                 if (mode!!) {
                     bottom_contextual_bar.setVisibility(View.VISIBLE)
