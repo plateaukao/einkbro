@@ -22,7 +22,6 @@
         <item name="android:backgroundDimAmount">0</item>
         <item name="android:windowAnimationStyle">@null</item>
         <item name="android:windowBackground">@drawable/backgound_with_border</item>
-
     </style>
 
 </resources>

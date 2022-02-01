@@ -1,29 +1,28 @@
 package de.baumann.browser.epub
 
-import android.os.Build
-import android.webkit.ValueCallback
-import org.json.JSONObject
-import android.webkit.JavascriptInterface
-import nl.siegmann.epublib.epub.EpubReader
-import nl.siegmann.epublib.domain.TOCReference
-import nl.siegmann.epublib.domain.Spine
-import de.baumann.browser.Ninja.R
 import android.annotation.SuppressLint
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.net.Uri
+import android.os.Handler
 import android.util.Log
 import android.util.TypedValue
 import android.view.*
+import android.webkit.JavascriptInterface
 import androidx.appcompat.app.AlertDialog
+import de.baumann.browser.Ninja.R
 import de.baumann.browser.browser.BrowserController
+import de.baumann.browser.view.NinjaToast
 import de.baumann.browser.view.NinjaWebView
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 import nl.siegmann.epublib.domain.Book
+import nl.siegmann.epublib.domain.Spine
+import nl.siegmann.epublib.domain.TOCReference
+import nl.siegmann.epublib.epub.EpubReader
+import org.json.JSONObject
 import java.io.*
-import java.lang.Exception
-import java.lang.StringBuilder
-import java.util.ArrayList
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
@@ -31,81 +30,123 @@ import kotlin.math.roundToInt
 /**
  * Created by Avinash on 25-05-2017.
  */
-@SuppressLint("ClickableViewAccessibility")
 class EpubReaderView(
     context: Context,
     browserController: BrowserController?
 ) : NinjaWebView(context, browserController) {
     private lateinit var book: Book
-    var ChapterList: ArrayList<Chapter> = ArrayList()
-    private var ChapterNumber = 0
-    private var Progress = 0f
-    private var PageNumber = 0
+    private val chapterList: ArrayList<Chapter> = ArrayList()
+    var chapterNumber = 0
+    var progress = 0f
+    var pageNumber = 0
     private var touchX = 0f
     private var touchY = 0f
     private var touchTime: Long = 0
-    private var ResourceLocation = ""
-    private var mActionMode: ActionMode? = null
+    private var resourceLocation = ""
+    private var actionMode: ActionMode? = null
     private var actionModeCallback: SelectActionModeCallback? = null
     var selectedText = ""
         private set
+    var selectedTextInfo: SelectedTextInfo? = null
+
     private var loading = false
     lateinit var listener: EpubReaderListener
-    @JvmField
-    var THEME_LIGHT = 1
-    @JvmField
-    var THEME_DARK = 2
-    @JvmField
-    var METHOD_HIGHLIGHT = 1
-    @JvmField
-    var METHOD_UNDERLINE = 2
-    @JvmField
-    var METHOD_STRIKETHROUGH = 3
-    private var current_theme = 1 //Light
+    private val myHandler = Handler(context.mainLooper)
+
+    var webTheme: WebThemeType = WebThemeType.LIGHT
+        set(value) {
+            field = value
+            if (webTheme == WebThemeType.LIGHT) {
+                processJavascript("""var elements = document.getElementsByTagName('*');
+for (var i = 0; i < elements.length; i++) {
+ if(elements[i].tagName!="SPAN")
+  elements[i].style.backgroundColor='white';
+ elements[i].style.color='black';
+}""")
+            } else {
+                processJavascript("""var elements = document.getElementsByTagName('*');
+for (var i = 0; i < elements.length; i++) {
+ if(elements[i].tagName!="SPAN")
+  elements[i].style.backgroundColor='black';
+elements[i].style.color='white';
+}""")
+            }
+        }
+
     private var textSelectionMode = false
 
     fun setEpubReaderListener(listener: EpubReaderListener) {
         this.listener = listener
     }
 
-    inner class Chapter(var name: String, var content: String, var href: String)
+    inner class Chapter(val name: String, val content: String, val href: String)
     inner class SelectActionModeCallback : ActionMode.Callback {
         override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
-            Log.d("onCreateActionMode", "triggered")
-            mActionMode = mode
+            actionMode = mode
+            mode.menuInflater.inflate(R.menu.menu_ereader, menu);
             textSelectionMode = true
-            listener.onTextSelectionModeChangeListner(true)
+            listener.onTextSelectionModeChangeListener(true)
             return true
         }
 
         override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean {
-            Log.d("onPrepareActionMode", "triggered")
-            return false
+            return true
         }
 
         override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
-            Log.d("onActionItemClicked", "triggered")
+            when(item.itemId) {
+                R.id.menu_copy -> {
+                    copySelection()
+                }
+                R.id.menu_highlight -> {
+                    highlightSelection()
+                    return true
+                }
+                R.id.menu_highlight_2 -> {}
+            }
             return false
         }
 
         override fun onDestroyActionMode(mode: ActionMode) {
-            Log.d("onDestroyActionMode", "triggered")
-            listener.onTextSelectionModeChangeListner(false)
+            listener.onTextSelectionModeChangeListener(false)
             textSelectionMode = false
         }
     }
 
-    //For >5.0 Android Version
-    override fun startActionMode(callback: ActionMode.Callback, ModeType: Int): ActionMode? {
-        Log.d("startActionMode", "triggered")
-        val parent = parent ?: return null
-        actionModeCallback = SelectActionModeCallback()
-        return parent.startActionModeForChild(this, actionModeCallback)
+    private fun copySelection() {
+        processTextSelection()
+        myHandler.postDelayed({
+            val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clip = ClipData.newPlainText("Copied Text", selectedText)
+            clipboard.setPrimaryClip(clip)
+            NinjaToast.showShort(context, "text s copied")
+        }, 200)
     }
 
-    //For <=5.0 Android Version
-    override fun startActionMode(callback: ActionMode.Callback): ActionMode? {
-        Log.d("startActionMode", "triggered")
+    private fun highlightSelection() {
+        processTextSelection()
+        myHandler.postDelayed({
+            var selectedText = ""
+            var chapterNumber = -1
+            var dataString = ""
+            try {
+                val response = JSONObject(this.selectedText)
+                selectedText = response.getString("SelectedText")
+                chapterNumber = response.getInt("ChapterNumber")
+                dataString = response.getString("DataString")
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            if (chapterNumber >= 0 && selectedText != "" && dataString != "") {
+                //Save ChapterNumber,DataString,Color,AnnotateMethod,BookLocation etc in database/Server to recreate highlight
+                if (chapterNumber == this.chapterNumber) //Verify ChanpterNumber and BookLocation before suing highlight
+                    annotate(dataString, METHOD_HIGHLIGHT, "#ef9a9a")
+            }
+            exitSelectionMode()
+        }, 100)
+    }
+
+    override fun startActionMode(callback: ActionMode.Callback, ModeType: Int): ActionMode? {
         val parent = parent ?: return null
         actionModeCallback = SelectActionModeCallback()
         return parent.startActionModeForChild(this, actionModeCallback)
@@ -150,44 +191,14 @@ class EpubReaderView(
         isReaderModeOn = false
     }
 
-    fun GetTheme(): Int {
-        return current_theme
-    }
-
-    private fun ProcessJavascript(js: String, callbackFunction: String) {
-        //Log.d("EpubReader",callbackFunction+" Called");
-        if (Build.VERSION.SDK_INT > 19) {
+    private fun processJavascript(js: String) {
             evaluateJavascript("(function(){$js})()") { }
-        } else {
-            this.loadUrl("javascript:js.$callbackFunction((function(){$js})())")
-        }
     }
 
-    fun SetTheme(theme: Int) {
-        if (theme == THEME_LIGHT) {
-            current_theme = THEME_LIGHT
-            ProcessJavascript("""var elements = document.getElementsByTagName('*');
-for (var i = 0; i < elements.length; i++) {
- if(elements[i].tagName!="SPAN")
-  elements[i].style.backgroundColor='white';
- elements[i].style.color='black';
-}""", "changeTheme")
-        } else {
-            current_theme = THEME_DARK
-            ProcessJavascript("""var elements = document.getElementsByTagName('*');
-for (var i = 0; i < elements.length; i++) {
- if(elements[i].tagName!="SPAN")
-  elements[i].style.backgroundColor='black';
-elements[i].style.color='white';
-}""", "changeTheme")
-        }
-    }
-
-    fun Annotate(jsonData: String, selectionMethod: Int, hashcolor: String) {
-        var js = ""
-        js = if (Build.VERSION.SDK_INT <= 19) """	var data = JSON.parse('${jsonData.replace("'", "\\'").replace("\"", "\\\"")}');
-""" else "\tvar data = JSON.parse($jsonData);\n"
-        js = """$js	var selectedText = data['selectedText'];
+    fun annotate(jsonData: String, selectionMethod: Int, hashcolor: String) {
+        var js = """
+    var data = JSON.parse($jsonData);
+    var selectedText = data['selectedText'];
 	var startOffset = data['startOffset'];
 	var endOffset = data['endOffset'];
 	var startNodeData = data['startNodeData'];
@@ -235,16 +246,16 @@ elements[i].style.color='white';
 	document.designMode = "off";
 	return "{\"status\":1}";
 """
-        ProcessJavascript(js, "annotate")
+        processJavascript(js)
     }
 
-    fun ExitSelectionMode() {
-        mActionMode!!.finish()
+    fun exitSelectionMode() {
+        actionMode!!.finish()
         val js = "window.getSelection().removeAllRanges();"
-        ProcessJavascript(js, "deselect")
+        processJavascript(js)
     }
 
-    fun ProcessTextSelection() {
+    fun processTextSelection() {
         val js = """	var sel = window.getSelection();
 	var jsonData ={};
 	if(!sel.isCollapsed) {
@@ -265,37 +276,26 @@ elements[i].style.color='white';
 		jsonData['status'] = 0;
 	}
 	return (JSON.stringify(jsonData));"""
-        if (Build.VERSION.SDK_INT > 19) {
-            evaluateJavascript("(function(){$js})()",
-                    object : ValueCallback<String> {
-                        override fun onReceiveValue(value: String) {
-                            //Log.v("EpubReader", "SELECTION>19:" + value);
-                            //Log.v("EpubReader", "SELECTION_P>19:" +  value.substring(1,value.length()-1).replaceAll("\\\\\"","\""));
-                            //Log.v("EpubReader", "SELECTION_P>19:" +  value.substring(1,value.length()-1).replaceAll("\\\\\"","\"").replaceAll("\\\\\\\\\"","\\\\\"").replaceAll("\\\\\\\"","\\\\\"").replaceAll("\\\\\\\\\\\"","\\\\\""));
-                            var text = ""
-                            try {
-                                val parse_json = value.substring(1, value.length - 1).replace("\\\\\"".toRegex(), "\"").replace("\\\\\\\\\"".toRegex(), "\\\\\"").replace("\\\\\\\"".toRegex(), "\\\\\"").replace("\\\\\\\\\\\"".toRegex(), "\\\\\"")
-                                val `object` = JSONObject(parse_json)
-                                text = `object`.getString("selectedText")
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                            }
-                            val selectedTextJson = JSONObject()
-                            try {
-                                selectedTextJson.put("DataString", value)
-                                selectedTextJson.put("ChapterNumber", ChapterNumber)
-                                selectedTextJson.put("SelectedText", text)
-                            } catch (e: Exception) {
-                                selectedText = ""
-                            }
-                            selectedText = selectedTextJson.toString()
-                        }
-                    })
-        } else {
-            this.loadUrl("javascript:js.selection((function(){$js})())")
-            //this.loadUrl("javascript:js.selection2((function(){window.getSelection().toString()})())");
-            //this.loadUrl("javascript:js.selection2((function(){document.getSelection().toString()})())");
-            //this.loadUrl("javascript:js.selection2((function(){document.selection.createRange().text})())");
+        evaluateJavascript("(function(){$js})()" ) { value ->
+            //Log.v("EpubReader", "SELECTION>19:" + value);
+            //Log.v("EpubReader", "SELECTION_P>19:" +  value.substring(1,value.length()-1).replaceAll("\\\\\"","\""));
+            //Log.v("EpubReader", "SELECTION_P>19:" +  value.substring(1,value.length()-1).replaceAll("\\\\\"","\"").replaceAll("\\\\\\\\\"","\\\\\"").replaceAll("\\\\\\\"","\\\\\"").replaceAll("\\\\\\\\\\\"","\\\\\""));
+            var text = ""
+            try {
+                val parseJson = value.substring(1, value.length - 1).replace("\\\\\"".toRegex(), "\"").replace("\\\\\\\\\"".toRegex(), "\\\\\"").replace("\\\\\\\"".toRegex(), "\\\\\"").replace("\\\\\\\\\\\"".toRegex(), "\\\\\"")
+                text = JSONObject(parseJson).getString("selectedText")
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            val selectedTextJson = JSONObject()
+            try {
+                selectedTextJson.put("DataString", value)
+                selectedTextJson.put("ChapterNumber", chapterNumber)
+                selectedTextJson.put("SelectedText", text)
+            } catch (e: Exception) {
+                selectedText = ""
+            }
+            selectedText = selectedTextJson.toString()
         }
     }
 
@@ -305,9 +305,9 @@ elements[i].style.color='white';
             //Log.v("EpubReader", "SELECTION<=19:" + value);
             var text = ""
             try {
-                val `object` = JSONObject(value //.substring(1,value.length()-1).replaceAll("\\\\\\\"","\\\"").replaceAll("\\\"","\"");
+                val obj = JSONObject(value //.substring(1,value.length()-1).replaceAll("\\\\\\\"","\\\"").replaceAll("\\\"","\"");
                 )
-                if (`object`.has("selectedText")) text = `object`.getString("selectedText")
+                if (obj.has("selectedText")) text = obj.getString("selectedText")
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -315,7 +315,7 @@ elements[i].style.color='white';
                 val selectedTextJson = JSONObject()
                 try {
                     selectedTextJson.put("DataString", value)
-                    selectedTextJson.put("ChapterNumber", ChapterNumber)
+                    selectedTextJson.put("ChapterNumber", chapterNumber)
                     selectedTextJson.put("SelectedText", text)
                 } catch (e: Exception) {
                     selectedText = ""
@@ -347,25 +347,25 @@ elements[i].style.color='white';
                     val book = this@EpubReaderView.book
                     webViewClient.book = book // for loading image resources
 
-                    val epub_temp_extraction_location = context.cacheDir.toString() + "/tempfiles"
-                    if (!File(epub_temp_extraction_location).exists()) File(epub_temp_extraction_location).mkdirs()
-                    val dir1 = File(epub_temp_extraction_location + File.separator + "OEBPS")
+                    val epubTempExtractionLocation = context.cacheDir.toString() + "/tempfiles"
+                    if (!File(epubTempExtractionLocation).exists()) File(epubTempExtractionLocation).mkdirs()
+                    val dir1 = File(epubTempExtractionLocation + File.separator + "OEBPS")
                     val resourceFolder = book.opfResource.href.replace("content.opf", "").replace("/", "")
-                    val dir2 = File(epub_temp_extraction_location + File.separator + resourceFolder)
-                    ResourceLocation = if (dir1.exists() && dir1.isDirectory) {
-                        "file://" + epub_temp_extraction_location + File.separator + "OEBPS" + File.separator
+                    val dir2 = File(epubTempExtractionLocation + File.separator + resourceFolder)
+                    resourceLocation = if (dir1.exists() && dir1.isDirectory) {
+                        "file://" + epubTempExtractionLocation + File.separator + "OEBPS" + File.separator
                     } else if (dir2.exists() && dir2.isDirectory && resourceFolder != "") {
-                        "file://" + epub_temp_extraction_location + File.separator + resourceFolder + File.separator
+                        "file://" + epubTempExtractionLocation + File.separator + resourceFolder + File.separator
                     } else {
-                        "file://" + epub_temp_extraction_location + File.separator
+                        "file://" + epubTempExtractionLocation + File.separator
                     }
-                    ChapterList.clear()
+                    chapterList.clear()
 
-                    if (ResourceLocation.contains("OEPBS") && book.tableOfContents.tocReferences.size > 1)
-                        ProcessChaptersByTOC(book.tableOfContents.tocReferences)
+                    if (resourceLocation.contains("OEPBS") && book.tableOfContents.tocReferences.size > 1)
+                        processChaptersByTOC(book.tableOfContents.tocReferences)
                     else if (book.tableOfContents.tocReferences.size > 1) {
-                        ProcessChaptersByTOC(book.tableOfContents.tocReferences)
-                    } else ProcessChaptersBySpline(book.spine)
+                        processChaptersByTOC(book.tableOfContents.tocReferences)
+                    } else processChaptersBySpline(book.spine)
                 }
             } catch (e: Exception) {
                 Log.e("EpubReaderView", e.toString())
@@ -373,29 +373,27 @@ elements[i].style.color='white';
         }
     }
 
-    private fun ProcessChaptersByTOC(tocReferences: List<TOCReference>) {
-        if (tocReferences.size > 0) {
-            for (TOC in tocReferences) {
-                val builder = StringBuilder()
-                try {
-                    val r = BufferedReader(InputStreamReader(TOC.resource.inputStream))
-                    var aux: String? = ""
-                    while (r.readLine().also { aux = it } != null) {
-                        aux = aux?.replace("""src="img""", """src="img://img""")
-                        builder.append(aux)
-                    }
-                } catch (e: Exception) {
+    private fun processChaptersByTOC(tocReferences: List<TOCReference>) {
+        for (TOC in tocReferences) {
+            val builder = StringBuilder()
+            try {
+                val r = BufferedReader(InputStreamReader(TOC.resource.inputStream))
+                var aux: String? = ""
+                while (r.readLine().also { aux = it } != null) {
+                    aux = aux?.replace("""src="img""", """src="img://img""")
+                    builder.append(aux)
                 }
-                ChapterList.add(Chapter(TOC.title, builder.toString(), TOC.completeHref))
-                if (TOC.children.size > 0) {
-                    ProcessChaptersByTOC(TOC.children)
-                }
+            } catch (e: Exception) {
+            }
+            chapterList.add(Chapter(TOC.title, builder.toString(), TOC.completeHref))
+            if (TOC.children.size > 0) {
+                processChaptersByTOC(TOC.children)
             }
         }
     }
 
-    private fun ProcessChaptersBySpline(spine: Spine?) {
-        var ChapterNumber = 1
+    private fun processChaptersBySpline(spine: Spine?) {
+        var chapterNumber = 1
         if (spine != null) {
             for (i in 0 until spine.size()) {
                 val builder = StringBuilder()
@@ -409,31 +407,31 @@ elements[i].style.color='white';
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
-                ChapterList.add(
+                chapterList.add(
                         Chapter(
-                                if (spine.getResource(i).title != null) spine.getResource(i).title else ChapterNumber.toString(),
+                                if (spine.getResource(i).title != null) spine.getResource(i).title else chapterNumber.toString(),
                                 builder.toString(),
                                 spine.getResource(i).href)
                 )
-                ChapterNumber++
+                chapterNumber++
             }
         } else {
             Log.d("EpubReader", "spline is null")
         }
     }
 
-    fun GotoPosition(ChapterNumber: Int, Progress: Float) {
+    fun gotoPosition(ChapterNumber: Int, Progress: Float) {
         if (ChapterNumber < 0) {
-            this.ChapterNumber = 0
-            this.Progress = 0f
-        } else if (ChapterNumber >= ChapterList.size) {
-            this.ChapterNumber = ChapterList.size - 1
-            this.Progress = 1f
+            this.chapterNumber = 0
+            this.progress = 0f
+        } else if (ChapterNumber >= chapterList.size) {
+            this.chapterNumber = chapterList.size - 1
+            this.progress = 1f
         } else {
-            this.ChapterNumber = ChapterNumber
-            this.Progress = Progress
+            this.chapterNumber = ChapterNumber
+            this.progress = Progress
         }
-        loadDataWithBaseURL(ResourceLocation, ChapterList[this.ChapterNumber].content, "text/html", "utf-8", null)
+        loadDataWithBaseURL(resourceLocation, chapterList[this.chapterNumber].content, "text/html", "utf-8", null)
 
         if (Progress == 0F) {
             scrollY = 0
@@ -446,11 +444,11 @@ elements[i].style.color='white';
 
     fun showTocDialog() {
         try {
-            val items = ChapterList.map { it.name }.toTypedArray()
+            val items = chapterList.map { it.name }.toTypedArray()
             AlertDialog.Builder(context, R.style.TouchAreaDialog)
                     .setTitle("Select the Chapter")
                     .setItems(items) { _, item ->
-                        GotoPosition(item, 0f)
+                        gotoPosition(item, 0f)
                         listener.onChapterChangeListener(item)
                     }.create()
                     .show()
@@ -502,22 +500,17 @@ elements[i].style.color='white';
         loading = false
     }
 
-
     fun nextPage() {
         if (loading) return
             val pageHeight = this.height - 50
             val totalHeight = getTotalContentHeight()
             if (totalHeight > this.scrollY + this.height) {
                 loading = true
-                Progress = (this.scrollY + pageHeight).toFloat() / totalHeight
-                PageNumber = ((this.scrollY + pageHeight) / pageHeight)
-                scrollY = PageNumber * pageHeight
-//                val anim = ObjectAnimator.ofInt(this, "scrollY",
-//                        (PageNumber - 1) * pageHeight, PageNumber * pageHeight)
-//                anim.duration = 400
-//                anim.start()
-                listener.onPageChangeListener(GetChapterNumber(), GetPageNumber(), GetProgressStart(), GetProgressEnd())
-                Log.d("EpubReaderProgress", Progress.toString() + " " + pageHeight + " " + this.scrollY + " " + totalHeight)
+                progress = (this.scrollY + pageHeight).toFloat() / totalHeight
+                pageNumber = ((this.scrollY + pageHeight) / pageHeight)
+                scrollY = pageNumber * pageHeight
+                listener.onPageChangeListener(this.chapterNumber, this.pageNumber, getProgressStart(), getProgressEnd())
+                Log.d("EpubReaderProgress", progress.toString() + " " + pageHeight + " " + this.scrollY + " " + totalHeight)
                 loading = false
             } else {
                 nextChapter()
@@ -530,17 +523,17 @@ elements[i].style.color='white';
         val totalHeight = getTotalContentHeight()
         if (this.scrollY - pageHeight >= 0) {
             loading = true
-            Progress = (this.scrollY - pageHeight).toFloat() / totalHeight
-            PageNumber = ((this.scrollY - pageHeight) / pageHeight)
-            scrollY = PageNumber * pageHeight
-            listener.onPageChangeListener(GetChapterNumber(), GetPageNumber(), GetProgressStart(), GetProgressEnd())
+            progress = (this.scrollY - pageHeight).toFloat() / totalHeight
+            pageNumber = ((this.scrollY - pageHeight) / pageHeight)
+            scrollY = pageNumber * pageHeight
+            listener.onPageChangeListener(this.chapterNumber, this.pageNumber, getProgressStart(), getProgressEnd())
             loading = false
         } else if (this.scrollY > 0) {
             loading = true
-            Progress = 0f
-            PageNumber = 0
-            scrollY = PageNumber * pageHeight
-            listener.onPageChangeListener(GetChapterNumber(), GetPageNumber(), GetProgressStart(), GetProgressEnd())
+            progress = 0f
+            pageNumber = 0
+            scrollY = pageNumber * pageHeight
+            listener.onPageChangeListener(this.chapterNumber, this.pageNumber, getProgressStart(), getProgressEnd())
             loading = false
         } else {
             previousChapter()
@@ -548,60 +541,45 @@ elements[i].style.color='white';
     }
 
     fun nextChapter() {
-        if (ChapterList.size > ChapterNumber + 1 && !loading) {
+        if (chapterList.size > chapterNumber + 1 && !loading) {
             loading = true
-            GotoPosition(ChapterNumber + 1, 0f)
-            listener.onChapterChangeListener(ChapterNumber)
-            listener.onPageChangeListener(GetChapterNumber(), GetPageNumber(), GetProgressStart(), GetProgressEnd())
+            gotoPosition(chapterNumber + 1, 0f)
+            listener.onChapterChangeListener(chapterNumber)
+            listener.onPageChangeListener(this.chapterNumber, this.pageNumber, getProgressStart(), getProgressEnd())
             loading = false
-        } else if (ChapterList.size <= ChapterNumber + 1) {
+        } else if (chapterList.size <= chapterNumber + 1) {
             listener.onBookEndReached()
         }
     }
 
     fun previousChapter() {
-        if (ChapterNumber - 1 >= 0 && !loading) {
+        if (chapterNumber - 1 >= 0 && !loading) {
             loading = true
-            GotoPosition(ChapterNumber - 1, 1f)
-            listener.onChapterChangeListener(ChapterNumber)
-            listener.onPageChangeListener(GetChapterNumber(), GetPageNumber(), GetProgressStart(), GetProgressEnd())
+            gotoPosition(chapterNumber - 1, 1f)
+            listener.onChapterChangeListener(chapterNumber)
+            listener.onPageChangeListener(chapterNumber, pageNumber, getProgressStart(), getProgressEnd())
             loading = false
-        } else if (ChapterNumber - 1 < 0) {
+        } else if (chapterNumber - 1 < 0) {
             listener.onBookStartReached()
         }
     }
 
-    fun GetChapterContent(): String {
-        return ChapterList[ChapterNumber].content
-    }
+    fun getChapterContent(): String = chapterList[chapterNumber].content
 
-    private fun getTotalContentHeight(): Int {
-        return (this.contentHeight * resources.displayMetrics.density).toInt()
-    }
+    private fun getTotalContentHeight(): Int =
+            (this.contentHeight * resources.displayMetrics.density).toInt()
 
-    fun GetPageHeight(): Int {
-        return this.height - 50
-    }
+    fun getPageHeight(): Int = height - 50
 
-    fun GetProgressStart(): Float {
-        return Progress
-    }
+    fun getProgressStart(): Float = progress
 
-    fun GetProgressEnd(): Float {
-        val value: Float = Progress + GetPageHeight() / getTotalContentHeight()
+    fun getProgressEnd(): Float {
+        val value: Float = progress + getPageHeight() / getTotalContentHeight()
         return when {
-            getTotalContentHeight() <= 0 -> Progress
+            getTotalContentHeight() <= 0 -> progress
             value < 1 -> value
             else -> 1.0F
         }
-    }
-
-    fun GetChapterNumber(): Int {
-        return ChapterNumber
-    }
-
-    fun GetPageNumber(): Int {
-        return PageNumber
     }
 
     private fun dpToPixel(dp: Int): Int = TypedValue.applyDimension(
@@ -609,4 +587,14 @@ elements[i].style.color='white';
             dp.toFloat(),
             context.resources.displayMetrics
     ).roundToInt()
+
+    companion object {
+        const val METHOD_HIGHLIGHT = 1
+        const val METHOD_UNDERLINE = 2
+        const val METHOD_STRIKETHROUGH = 3
+    }
 }
+
+enum class WebThemeType { LIGHT, DARK }
+
+enum class AnnotateType { HIGHTLIGHT, UNDERLINE, STRIKETHROUGH }

@@ -86,7 +86,6 @@ class EpubManager(private val context: Context) {
     }
 
     fun showEpubReader(uri: Uri) {
-        //val intent = Intent(context, ReaderActivity::class.java).apply {
         val intent = Intent(context, EpubReaderActivity::class.java).apply {
             data = uri
         }

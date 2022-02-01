@@ -161,7 +161,6 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
     // Overrides
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         lifecycleScope.launch {
