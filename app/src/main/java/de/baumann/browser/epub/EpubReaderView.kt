@@ -1,6 +1,5 @@
 package de.baumann.browser.epub
 
-import android.annotation.SuppressLint
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -9,7 +8,6 @@ import android.os.Handler
 import android.util.Log
 import android.util.TypedValue
 import android.view.*
-import android.webkit.JavascriptInterface
 import androidx.appcompat.app.AlertDialog
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.browser.BrowserController
@@ -21,7 +19,6 @@ import nl.siegmann.epublib.domain.Book
 import nl.siegmann.epublib.domain.Spine
 import nl.siegmann.epublib.domain.TOCReference
 import nl.siegmann.epublib.epub.EpubReader
-import org.json.JSONObject
 import java.io.*
 import kotlin.math.max
 import kotlin.math.min
@@ -95,16 +92,12 @@ elements[i].style.color='white';
 
         override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
             when(item.itemId) {
-                R.id.menu_copy -> {
-                    copySelection()
-                }
-                R.id.menu_highlight -> {
-                    highlightSelection()
-                    return true
-                }
-                R.id.menu_highlight_2 -> {}
+                R.id.menu_copy -> copySelection()
+                R.id.menu_highlight -> annotateSelection(AnnotateType.HIGHTLIGHT)
+                R.id.menu_underline -> annotateSelection(AnnotateType.UNDERLINE)
+                R.id.menu_strike -> annotateSelection(AnnotateType.STRIKETHROUGH)
             }
-            return false
+            return true
         }
 
         override fun onDestroyActionMode(mode: ActionMode) {
@@ -114,36 +107,23 @@ elements[i].style.color='white';
     }
 
     private fun copySelection() {
-        processTextSelection()
-        myHandler.postDelayed({
-            val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-            val clip = ClipData.newPlainText("Copied Text", selectedText)
-            clipboard.setPrimaryClip(clip)
+        processTextSelection {
+            val text = selectedTextInfo?.text ?: return@processTextSelection
+            val clip = ClipData.newPlainText("Copied Text", text)
+            (context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(clip)
+
             NinjaToast.showShort(context, "text s copied")
-        }, 200)
+        }
     }
 
-    private fun highlightSelection() {
-        processTextSelection()
-        myHandler.postDelayed({
-            var selectedText = ""
-            var chapterNumber = -1
-            var dataString = ""
-            try {
-                val response = JSONObject(this.selectedText)
-                selectedText = response.getString("SelectedText")
-                chapterNumber = response.getInt("ChapterNumber")
-                dataString = response.getString("DataString")
-            } catch (e: Exception) {
-                e.printStackTrace()
+    private fun annotateSelection(annotateType: AnnotateType) {
+        processTextSelection {
+            val info = selectedTextInfo ?: return@processTextSelection
+            if (info.chapterNumber >= 0 && info.chapterNumber == this.chapterNumber && info.dataString.isNotBlank()) {
+                // TODO: Save ChapterNumber,DataString,Color,AnnotateMethod,BookLocation etc in database/Server to recreate highlight
+                annotate(info.dataString, annotateType, "#ef9a9a")
             }
-            if (chapterNumber >= 0 && selectedText != "" && dataString != "") {
-                //Save ChapterNumber,DataString,Color,AnnotateMethod,BookLocation etc in database/Server to recreate highlight
-                if (chapterNumber == this.chapterNumber) //Verify ChanpterNumber and BookLocation before suing highlight
-                    annotate(dataString, METHOD_HIGHLIGHT, "#ef9a9a")
-            }
-            exitSelectionMode()
-        }, 100)
+        }
     }
 
     override fun startActionMode(callback: ActionMode.Callback, ModeType: Int): ActionMode? {
@@ -153,7 +133,6 @@ elements[i].style.color='white';
     }
 
     init {
-        //if (Build.VERSION.SDK_INT <= 19) addJavascriptInterface(JavaScriptInterface(), "js")
 //        setOnTouchListener(OnTouchListener { _, event ->
 //            when (event.action) {
 //                MotionEvent.ACTION_MOVE -> return@OnTouchListener true
@@ -195,7 +174,7 @@ elements[i].style.color='white';
             evaluateJavascript("(function(){$js})()") { }
     }
 
-    fun annotate(jsonData: String, selectionMethod: Int, hashcolor: String) {
+    fun annotate(jsonData: String, annotateType: AnnotateType, hashcolor: String) {
         var js = """
     var data = JSON.parse($jsonData);
     var selectedText = data['selectedText'];
@@ -239,10 +218,12 @@ elements[i].style.color='white';
 	document.designMode = "on";
 	sel.addRange(range);
 """
-        if (selectionMethod == METHOD_HIGHLIGHT) js = "$js\tdocument.execCommand(\"HiliteColor\", false, \"$hashcolor\");\n"
-        if (selectionMethod == METHOD_UNDERLINE) js = "$js\tdocument.execCommand(\"underline\");\n"
-        if (selectionMethod == METHOD_STRIKETHROUGH) js = "$js\tdocument.execCommand(\"strikeThrough\");\n"
-        js = """$js	sel.removeAllRanges();
+        js += when (annotateType) {
+            AnnotateType.HIGHTLIGHT -> "\tdocument.execCommand(\"HiliteColor\", false, \"$hashcolor\");\n"
+            AnnotateType.UNDERLINE -> "\tdocument.execCommand(\"underline\");\n"
+            AnnotateType.STRIKETHROUGH -> "\tdocument.execCommand(\"strikeThrough\");\n"
+        }
+        js += """ sel.removeAllRanges();
 	document.designMode = "off";
 	return "{\"status\":1}";
 """
@@ -255,7 +236,7 @@ elements[i].style.color='white';
         processJavascript(js)
     }
 
-    fun processTextSelection() {
+    fun processTextSelection(postAction: (()->Unit)?) {
         val js = """	var sel = window.getSelection();
 	var jsonData ={};
 	if(!sel.isCollapsed) {
@@ -277,65 +258,14 @@ elements[i].style.color='white';
 	}
 	return (JSON.stringify(jsonData));"""
         evaluateJavascript("(function(){$js})()" ) { value ->
-            //Log.v("EpubReader", "SELECTION>19:" + value);
-            //Log.v("EpubReader", "SELECTION_P>19:" +  value.substring(1,value.length()-1).replaceAll("\\\\\"","\""));
-            //Log.v("EpubReader", "SELECTION_P>19:" +  value.substring(1,value.length()-1).replaceAll("\\\\\"","\"").replaceAll("\\\\\\\\\"","\\\\\"").replaceAll("\\\\\\\"","\\\\\"").replaceAll("\\\\\\\\\\\"","\\\\\""));
-            var text = ""
-            try {
-                val parseJson = value.substring(1, value.length - 1).replace("\\\\\"".toRegex(), "\"").replace("\\\\\\\\\"".toRegex(), "\\\\\"").replace("\\\\\\\"".toRegex(), "\\\\\"").replace("\\\\\\\\\\\"".toRegex(), "\\\\\"")
-                text = JSONObject(parseJson).getString("selectedText")
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-            val selectedTextJson = JSONObject()
-            try {
-                selectedTextJson.put("DataString", value)
-                selectedTextJson.put("ChapterNumber", chapterNumber)
-                selectedTextJson.put("SelectedText", text)
-            } catch (e: Exception) {
-                selectedText = ""
-            }
-            selectedText = selectedTextJson.toString()
-        }
-    }
-
-    inner class JavaScriptInterface {
-        @JavascriptInterface
-        fun selection(value: String) {
-            //Log.v("EpubReader", "SELECTION<=19:" + value);
-            var text = ""
-            try {
-                val obj = JSONObject(value //.substring(1,value.length()-1).replaceAll("\\\\\\\"","\\\"").replaceAll("\\\"","\"");
-                )
-                if (obj.has("selectedText")) text = obj.getString("selectedText")
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-            if (text != "") {
-                val selectedTextJson = JSONObject()
-                try {
-                    selectedTextJson.put("DataString", value)
-                    selectedTextJson.put("ChapterNumber", chapterNumber)
-                    selectedTextJson.put("SelectedText", text)
-                } catch (e: Exception) {
-                    selectedText = ""
-                }
-                selectedText = selectedTextJson.toString()
-            }
-        }
-
-        fun selection2(value: String?) {
-            //Log.v("EpubReader", "SELECTION2<=19:" + value);
-        }
-
-        @JavascriptInterface
-        fun annotate(response: String?) {
-            //Log.v("EpubReader","annotate<=19 "+response);
-        }
-
-        @JavascriptInterface
-        fun deselect(response: String?) {
-            //Log.v("EpubReader","Deselect<=19 "+response);
+            val parseJson = value.substring(1, value.length - 1)
+                    .replace("\\\\\"".toRegex(), "\"")
+                    .replace("\\\\\\\\\"".toRegex(), "\\\\\"")
+                    .replace("\\\\\\\"".toRegex(), "\\\\\"")
+                    .replace("\\\\\\\\\\\"".toRegex(), "\\\\\"")
+            selectedTextInfo = SelectedTextInfo.from(parseJson, chapterNumber, value) ?: return@evaluateJavascript // TODO: show error
+            postAction?.invoke()
+            exitSelectionMode()
         }
     }
 

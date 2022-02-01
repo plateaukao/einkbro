@@ -14,6 +14,7 @@ data class SelectedTextInfo(
     val endNodeTagName: String,
     val isCollapsed: Boolean,
     val chapterNumber: Int,
+    val dataString: String,
 ) {
     fun toJSONObject(): JSONObject = JSONObject().apply {
         put("selectedText", text)
@@ -27,10 +28,11 @@ data class SelectedTextInfo(
         put("endNodeTagName", endNodeTagName)
         put("status", isCollapsed)
         put("chapterNumber", chapterNumber)
+        put("dataString", dataString)
     }
 
     companion object {
-        fun from(jsonString: String): SelectedTextInfo? {
+        fun from(jsonString: String, chapterNumber: Int, dataString: String): SelectedTextInfo? {
             try {
                 val obj = JSONObject(jsonString)
                 return SelectedTextInfo(
@@ -44,7 +46,8 @@ data class SelectedTextInfo(
                         obj.getString("endNodeHTML"),
                         obj.getString("endNodeTagName"),
                         obj.getInt("status") == 1,
-                        obj.getInt("chapterNumber"),
+                        chapterNumber,
+                        dataString,
                 )
             } catch (e: Exception) {
                 e.printStackTrace()
