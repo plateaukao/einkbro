@@ -93,7 +93,7 @@ elements[i].style.color='white';
         override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
             when(item.itemId) {
                 R.id.menu_copy -> copySelection()
-                R.id.menu_highlight -> annotateSelection(AnnotateType.HIGHTLIGHT)
+                R.id.menu_highlight -> annotateSelection(AnnotateType.HIGHLIGHT)
                 R.id.menu_underline -> annotateSelection(AnnotateType.UNDERLINE)
                 R.id.menu_strike -> annotateSelection(AnnotateType.STRIKETHROUGH)
             }
@@ -219,7 +219,7 @@ elements[i].style.color='white';
 	sel.addRange(range);
 """
         js += when (annotateType) {
-            AnnotateType.HIGHTLIGHT -> "\tdocument.execCommand(\"HiliteColor\", false, \"$hashcolor\");\n"
+            AnnotateType.HIGHLIGHT -> "\tdocument.execCommand(\"HiliteColor\", false, \"$hashcolor\");\n"
             AnnotateType.UNDERLINE -> "\tdocument.execCommand(\"underline\");\n"
             AnnotateType.STRIKETHROUGH -> "\tdocument.execCommand(\"strikeThrough\");\n"
         }
@@ -527,4 +527,4 @@ elements[i].style.color='white';
 
 enum class WebThemeType { LIGHT, DARK }
 
-enum class AnnotateType { HIGHTLIGHT, UNDERLINE, STRIKETHROUGH }
+enum class AnnotateType { HIGHLIGHT, UNDERLINE, STRIKETHROUGH }
