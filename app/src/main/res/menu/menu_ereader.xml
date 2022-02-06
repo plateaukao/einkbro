@@ -8,13 +8,13 @@
           android:icon="@drawable/ic_copy"
           app:showAsAction="always">
     </item>
-    <item android:id="@+id/menu_highlight"
-        android:title="highlight"
+    <item android:id="@+id/menu_underline"
+        android:title="underline"
         android:icon="@drawable/icon_edit"
         app:showAsAction="always">
     </item>
-    <item android:id="@+id/menu_underline"
-        android:title="underline"
+    <item android:id="@+id/menu_highlight"
+        android:title="highlight"
         android:icon="@drawable/icon_edit"
         app:showAsAction="always">
     </item>

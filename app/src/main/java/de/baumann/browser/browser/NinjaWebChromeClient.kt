@@ -2,6 +2,7 @@ package de.baumann.browser.browser
 
 import android.app.Activity
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.net.Uri
 import android.os.Message
 import android.view.View
@@ -109,7 +110,8 @@ class NinjaWebChromeClient(private val ninjaWebView: NinjaWebView) : WebChromeCl
         super.onGeolocationPermissionsShowPrompt(origin, callback)
     }
 
-    override fun getDefaultVideoPoster(): Bitmap? {
-        return Bitmap.createBitmap(1, 1, Bitmap.Config.RGB_565)
-    }
+    private val posterBitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
+            .apply { setPixel(0, 0, Color.argb(0, 255, 255, 255)) }
+
+    override fun getDefaultVideoPoster(): Bitmap? = posterBitmap
 }
