@@ -846,6 +846,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
             }
             false
         })
+
         binding.omniboxInput.onFocusChangeListener = OnFocusChangeListener { _, _ ->
             if (!this::ninjaWebView.isInitialized) return@OnFocusChangeListener
 
@@ -1200,6 +1201,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         val separator = "⁄"
         return "${superScripts[superScript - 1]}$separator${subScripts[subScript - 1]}"
     }
+
     private fun updateWebViewCount() {
         val subScript = browserContainer.size()
         val superScript = browserContainer.indexOf(currentAlbumController) + 1
