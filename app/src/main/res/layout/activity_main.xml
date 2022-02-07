@@ -145,13 +145,13 @@
 
                     <TextView
                         android:id="@+id/omnibox_tabcount"
-                        android:layout_width="40dp"
-                        android:layout_height="match_parent"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:layout_gravity="center"
                         android:background="@drawable/button_border_bg"
                         android:gravity="center"
                         android:onClick="onClick"
-                        android:padding="5dp"
-                        android:text="1"
+                        android:text="⁴⁄₄"
                         android:textSize="16dp"
                         android:textStyle="bold" />
 
