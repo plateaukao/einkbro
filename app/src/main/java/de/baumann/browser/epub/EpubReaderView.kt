@@ -3,6 +3,8 @@ package de.baumann.browser.epub
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Handler
 import android.util.Log
@@ -376,11 +378,18 @@ elements[i].style.color='white';
         try {
             val items = chapterList.map { it.name }.toTypedArray()
             AlertDialog.Builder(context, R.style.TouchAreaDialog)
-                    .setTitle("Select the Chapter")
+                    .setTitle("Select Chapter")
                     .setItems(items) { _, item ->
                         gotoPosition(item, 0f)
                         listener.onChapterChangeListener(item)
-                    }.create()
+                    }.create().apply {
+                        with(listView) {
+                            divider = ColorDrawable(Color.GRAY)
+                            dividerHeight = 1
+                            setFooterDividersEnabled(false)
+                            overscrollFooter = ColorDrawable(Color.TRANSPARENT)
+                        }
+                    }
                     .show()
         } catch (e: Exception) { }
     }
