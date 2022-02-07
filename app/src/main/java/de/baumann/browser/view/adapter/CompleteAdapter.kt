@@ -20,14 +20,12 @@ class CompleteAdapter(
         override fun performFiltering(prefix: CharSequence?): FilterResults {
             if (prefix != null) {
                 resultList.clear()
-                originalList
-                    .filter { item ->
-                        item.title?.contains(
+                originalList.filter { item ->
+                    item.title?.contains(
                             prefix,
                             ignoreCase = true
-                        ) == true || item.url.contains(prefix, ignoreCase = true)
-                    }
-                    .forEach { item -> resultList.add(item) }
+                    ) == true || item.url.contains(prefix, ignoreCase = true)
+                }.forEach { item -> resultList.add(item) }
             }
 
             return FilterResults().apply {

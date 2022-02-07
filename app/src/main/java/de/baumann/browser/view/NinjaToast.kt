@@ -6,12 +6,12 @@ import android.widget.Toast
 object NinjaToast {
     @JvmStatic
     fun show(context: Context?, stringResId: Int) {
-        Toast.makeText(context, stringResId, Toast.LENGTH_LONG).show()
+        Toast.makeText(context, stringResId, Toast.LENGTH_SHORT).show()
     }
 
     @JvmStatic
     fun show(context: Context?, text: String?) {
-        Toast.makeText(context, text, Toast.LENGTH_LONG).show()
+        Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
     }
 
     @JvmStatic
