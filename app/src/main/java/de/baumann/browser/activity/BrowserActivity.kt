@@ -431,7 +431,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         currentAlbumController?.activate()
 
         updateSavedAlbumInfo()
-        updateWebViewCountUI()
+        updateWebViewCount()
 
         progressBar.visibility = GONE
         ninjaWebView = controller as NinjaWebView
@@ -1189,8 +1189,20 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         }
     }
 
+    private fun createWebViewCountString(superScript: Int, subScript: Int): String {
+        if (subScript == 0 || superScript == 0) return "1"
+
+        if (subScript == superScript) return subScript.toString()
+
+        val superScripts = listOf("¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹")
+        val subScripts = listOf("₁", "₂", "₃", "₄", "₅", "₆", "₇", "₈", "₉")
+        val separator = "⁄"
+        return "${superScripts[superScript - 1]}$separator${subScripts[subScript - 1]}"
+    }
     private fun updateWebViewCount() {
-        binding.omniboxTabcount.text = browserContainer.size().toString()
+        val subScript = browserContainer.size()
+        val superScript = browserContainer.indexOf(currentAlbumController) + 1
+        binding.omniboxTabcount.text = createWebViewCountString(superScript, subScript)
         updateWebViewCountUI()
     }
 
