@@ -7,6 +7,7 @@ import android.content.Intent.ACTION_VIEW
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.graphics.PorterDuff
+import android.graphics.Typeface
 import android.media.MediaPlayer
 import android.media.MediaPlayer.OnCompletionListener
 import android.net.Uri
@@ -65,7 +66,6 @@ import de.baumann.browser.viewmodel.BookmarkViewModelFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
-import java.io.*
 import java.util.*
 import kotlin.math.floor
 import kotlin.math.max
@@ -1191,6 +1191,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
 
     private fun createWebViewCountString(superScript: Int, subScript: Int): String {
         if (subScript == 0 || superScript == 0) return "1"
+        if (subScript >= 10) return subScript.toString()
 
         if (subScript == superScript) return subScript.toString()
 
@@ -1203,6 +1204,8 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         val subScript = browserContainer.size()
         val superScript = browserContainer.indexOf(currentAlbumController) + 1
         binding.omniboxTabcount.text = createWebViewCountString(superScript, subScript)
+        binding.omniboxTabcount.typeface =
+        if (binding.omniboxTabcount.text.length == 1) Typeface.DEFAULT_BOLD else Typeface.DEFAULT
         updateWebViewCountUI()
     }
 
