@@ -33,10 +33,21 @@
                 android:tint="?attr/colorControlNormal" />
 
             <ImageButton
-                android:id="@+id/omnibox_input_clear"
+                android:id="@+id/omnibox_input_paste"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_toLeftOf="@+id/omnibox_input_close"
+                android:background="@color/color_transparent"
+                android:onClick="onClick"
+                android:padding="8dp"
+                android:src="@drawable/ic_paste"
+                android:tint="?attr/colorControlNormal" />
+
+            <ImageButton
+                android:id="@+id/omnibox_input_clear"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@+id/omnibox_input_paste"
                 android:background="@color/color_transparent"
                 android:onClick="onClick"
                 android:padding="8dp"
@@ -57,6 +68,7 @@
                 android:includeFontPadding="false"
                 android:inputType="textUri"
                 android:maxLines="1"
+                android:textColorHint="@color/lightGray"
                 android:popupElevation="0dp"
                 android:selectAllOnFocus="true"
                 android:textAppearance="?android:attr/textAppearanceMedium"
