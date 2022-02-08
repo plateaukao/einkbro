@@ -483,6 +483,11 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
                 focusOnInput()
             }
             R.id.omnibox_input_clear -> binding.omniboxInput.text.clear()
+            R.id.omnibox_input_paste -> {
+                val copiedString = getClipboardText()
+                binding.omniboxInput.setText(copiedString)
+                binding.omniboxInput.setSelection(copiedString.length)
+            }
             R.id.omnibox_input_close -> showToolbar()
             R.id.tab_plus_incognito -> {
                 hideOverview()
@@ -1318,12 +1323,21 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         toolbarViewController.hide()
         binding.omniboxInput.requestFocus()
         binding.omniboxInput.selectAll()
+        updatePasteTextIcon()
 
         if (isAutoCompleteOutdated) {
             updateAutoComplete()
             isAutoCompleteOutdated = false
         }
         showKeyboard()
+    }
+
+    private fun getClipboardText(): String =
+            (getSystemService(CLIPBOARD_SERVICE) as ClipboardManager)
+                .primaryClip?.getItemAt(0)?.text?.toString() ?: ""
+
+    private fun updatePasteTextIcon() {
+        binding.omniboxInputPaste.visibility = if (getClipboardText().isEmpty()) GONE else VISIBLE
     }
 
     private var isRunning = false
