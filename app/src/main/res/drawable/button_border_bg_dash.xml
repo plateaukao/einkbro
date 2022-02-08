@@ -3,15 +3,15 @@
     <item
         android:left="9dp"
         android:right="9dp"
-        android:top="14dp"
-        android:bottom="14dp">
+        android:top="9dp"
+        android:bottom="9dp">
 
         <shape xmlns:android="http://schemas.android.com/apk/res/android"
             android:shape="rectangle" >
             <corners android:radius="4dp" />
             <solid android:color="@android:color/transparent" />
             <stroke
-                android:width="2dp"
+                android:width="1dp"
                 android:dashWidth="2px"
                 android:dashGap="2dp"
                 android:color="?attr/colorControlNormal" />
