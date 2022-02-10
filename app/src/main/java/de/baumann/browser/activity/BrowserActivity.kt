@@ -354,6 +354,8 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
     }
 
     public override fun onDestroy() {
+        updateSavedAlbumInfo()
+
         if (sp.getBoolean(getString(R.string.sp_clear_quit), false)) {
             val toClearService = Intent(this, ClearService::class.java)
             startService(toClearService)
