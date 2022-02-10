@@ -121,20 +121,22 @@ class TouchAreaViewController(
             }
         }
 
-        val isTouchEnabled = config.enableTouchTurn
-        with(touchAreaPageUp) {
-            if (isTouchEnabled) visibility = View.VISIBLE
-            setOnClickListener { if (!config.switchTouchAreaAction) pageUpAction() else pageDownAction() }
-            setOnLongClickListener { if (!config.switchTouchAreaAction) pageTopAction() else pageBottomAction(); true }
-        }
-        with(touchAreaPageDown) {
-            if (isTouchEnabled) visibility = View.VISIBLE
-            setOnClickListener { if (!config.switchTouchAreaAction) pageDownAction() else pageUpAction() }
-            setOnLongClickListener { if (!config.switchTouchAreaAction) pageBottomAction() else pageUpAction(); true }
-        }
-        with(touchAreaDragCustomize) {
-            if (isTouchEnabled) visibility = View.VISIBLE
-            setOnTouchListener { view, event -> customOnTouch(view, event) }
+        if (config.enableTouchTurn) {
+            with(touchAreaPageUp) {
+                visibility = View.VISIBLE
+                setOnClickListener { if (!config.switchTouchAreaAction) pageUpAction() else pageDownAction() }
+                setOnLongClickListener { if (!config.switchTouchAreaAction) pageTopAction() else pageBottomAction(); true }
+            }
+            with(touchAreaPageDown) {
+                visibility = View.VISIBLE
+                setOnClickListener { if (!config.switchTouchAreaAction) pageDownAction() else pageUpAction() }
+                setOnLongClickListener { if (!config.switchTouchAreaAction) pageBottomAction() else pageUpAction(); true }
+            }
+            with(touchAreaDragCustomize) {
+                visibility = View.VISIBLE
+                setOnTouchListener { view, event -> customOnTouch(view, event) }
+            }
+            showTouchAreaHint()
         }
     }
 
