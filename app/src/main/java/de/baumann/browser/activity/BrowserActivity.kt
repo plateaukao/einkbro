@@ -1458,6 +1458,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
                 KeyEvent.KEYCODE_K -> ninjaWebView.pageUpWithNoAnimation()
                 KeyEvent.KEYCODE_H -> ninjaWebView.goBack()
                 KeyEvent.KEYCODE_L -> ninjaWebView.goForward()
+                KeyEvent.KEYCODE_R -> showTranslation()
                 KeyEvent.KEYCODE_D -> removeAlbum(currentAlbumController!!)
                 KeyEvent.KEYCODE_T -> {
                     addAlbum(getString(R.string.app_name), "", true)
