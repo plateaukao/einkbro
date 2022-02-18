@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingBottom="2dp"
     android:paddingRight="2dp"
     android:background="@color/color_transparent">
@@ -28,7 +29,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:src="@drawable/icon_info"
-        android:tint="?attr/colorControlNormal"
+        app:tint="?attr/colorControlNormal"
         android:background="@drawable/backgound_with_border"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
@@ -48,14 +49,14 @@
             android:layout_margin="0.5dp"
             android:background="@drawable/backgound_with_border"
             android:src="@drawable/ic_rotate"
-            android:tint="?attr/colorControlNormal" />
+            app:tint="?attr/colorControlNormal"/>
         <ImageButton
             android:id="@+id/link_here"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_margin="0.5dp"
             android:src="@drawable/ic_link_here"
-            android:tint="?attr/colorControlNormal"
+            app:tint="?attr/colorControlNormal"
             android:background="@drawable/backgound_with_border"
             />
         <ImageButton
@@ -64,7 +65,7 @@
             android:layout_height="40dp"
             android:layout_margin="0.5dp"
             android:src="@drawable/ic_sync_scroll"
-            android:tint="?attr/colorControlNormal"
+            app:tint="?attr/colorControlNormal"
             android:background="@drawable/backgound_with_border"
             />
         <TextView
@@ -84,8 +85,8 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_margin="0.5dp"
-            android:src="@mipmap/font_size_increase"
-            android:tint="?attr/colorControlNormal"
+            android:src="@drawable/ic_font_increase"
+            app:tint="?attr/colorControlNormal"
             android:background="@drawable/backgound_with_border"
             />
         <ImageButton
@@ -93,8 +94,8 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_margin="0.5dp"
-            android:src="@mipmap/font_size_decrease"
-            android:tint="?attr/colorControlNormal"
+            android:src="@drawable/ic_font_decrease"
+            app:tint="?attr/colorControlNormal"
             android:background="@drawable/backgound_with_border"
             />
         <ImageButton
@@ -103,7 +104,7 @@
             android:layout_height="40dp"
             android:layout_margin="0.5dp"
             android:src="@drawable/icon_close"
-            android:tint="?attr/colorControlNormal"
+            app:tint="?attr/colorControlNormal"
             android:background="@drawable/backgound_with_border"
             />
     </LinearLayout>

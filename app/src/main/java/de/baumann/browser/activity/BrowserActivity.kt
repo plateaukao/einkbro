@@ -125,7 +125,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
 
     private var shouldLoadTabState: Boolean = false
 
-    protected val toolbarViewController: ToolbarViewController by lazy { ToolbarViewController(this, binding.toolbarScroller) }
+    protected val toolbarViewController: ToolbarViewController by lazy { ToolbarViewController(binding.iconBar) }
 
     private lateinit var overviewDialogController: OverviewDialogController
 
@@ -579,24 +579,19 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
     private fun saveBookmark(url: String? = null, title: String? = null) {
         val currentUrl = url ?: ninjaWebView.url ?: return
         val nonNullTitle = title ?: HelperUnit.secString(ninjaWebView.title)
-        val context = this
         try {
             lifecycleScope.launch {
-                if (bookmarkManager.existsUrl(currentUrl)) {
-                    NinjaToast.show(context, R.string.toast_newTitle)
-                } else {
-                    BookmarkEditDialog(
-                            this@BrowserActivity,
-                            bookmarkManager,
-                            Bookmark(nonNullTitle, currentUrl),
-                            {
-                                hideKeyboard()
-                                NinjaToast.show(this@BrowserActivity, R.string.toast_edit_successful)
-                                isAutoCompleteOutdated = true
-                            },
-                            { hideKeyboard() }
-                    ).show()
-                }
+                BookmarkEditDialog(
+                        this@BrowserActivity,
+                        bookmarkManager,
+                        Bookmark(nonNullTitle, currentUrl),
+                        {
+                            hideKeyboard()
+                            NinjaToast.show(this@BrowserActivity, R.string.toast_edit_successful)
+                            isAutoCompleteOutdated = true
+                        },
+                        { hideKeyboard() }
+                ).show()
             }
         } catch (e: Exception) {
             e.printStackTrace()

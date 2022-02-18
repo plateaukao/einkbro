@@ -74,25 +74,21 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textCursorDrawable="@null" />
 
-            <HorizontalScrollView
-                android:id="@+id/toolbar_scroller"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fillViewport="true">
-
                 <LinearLayout
                     android:id="@+id/icon_bar"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="?attr/backgroundColor"
                     android:gravity="right">
 
                     <TextView
                         android:id="@+id/omnibox_title"
-                        android:layout_width="40dp"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:minWidth="50dp"
                         android:ellipsize="end"
-                        android:gravity="left|center_vertical"
+                        android:gravity="center_vertical"
                         android:includeFontPadding="false"
                         android:maxLines="1"
                         android:onClick="onClick"
@@ -237,7 +233,7 @@
                         android:background="@color/color_transparent"
                         android:onClick="onClick"
                         android:padding="10dp"
-                        android:src="@mipmap/font_size_increase"
+                        android:src="@drawable/ic_font_increase"
                         app:tint="?attr/colorControlNormal" />
 
                     <ImageButton
@@ -247,7 +243,7 @@
                         android:background="@color/color_transparent"
                         android:onClick="onClick"
                         android:padding="10dp"
-                        android:src="@mipmap/font_size_decrease"
+                        android:src="@drawable/ic_font_decrease"
                         app:tint="?attr/colorControlNormal" />
 
                     <ImageButton
@@ -314,7 +310,6 @@
                         android:src="@drawable/icon_plus" />
 
                 </LinearLayout>
-            </HorizontalScrollView>
         </RelativeLayout>
 
         <LinearLayout
