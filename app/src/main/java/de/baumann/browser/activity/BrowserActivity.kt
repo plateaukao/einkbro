@@ -1130,7 +1130,9 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         val newWebView = (preloadedWebView ?: createNinjaWebView()).apply {
             this.albumTitle = title
             this.incognito = incognito
+            setOnTouchListener(createMultiTouchTouchListener(this))
         }
+
         preloadedWebView = null
         if (enablePreloadWebView) {
             newWebView.postDelayed({
@@ -1153,17 +1155,6 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         }
         updateWebViewCount()
 
-        if (config.isMultitouchEnabled) {
-            val multiTouchTouchListener = object: MultitouchListener(this@BrowserActivity, newWebView) {
-                override fun onSwipeTop() = performGesture("setting_multitouch_up")
-                override fun onSwipeBottom() = performGesture("setting_multitouch_down")
-                override fun onSwipeRight() = performGesture("setting_multitouch_right")
-                override fun onSwipeLeft() = performGesture("setting_multitouch_left")
-            }
-
-            newWebView.setOnTouchListener(multiTouchTouchListener)
-        }
-
         if (!foreground) {
             ViewUnit.bound(this, newWebView)
             newWebView.loadUrl(url)
@@ -1178,6 +1169,14 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
 
         updateSavedAlbumInfo()
     }
+
+    private fun createMultiTouchTouchListener(ninjaWebView: NinjaWebView): MultitouchListener =
+            object: MultitouchListener(this@BrowserActivity, ninjaWebView) {
+                override fun onSwipeTop() = performGesture("setting_multitouch_up")
+                override fun onSwipeBottom() = performGesture("setting_multitouch_down")
+                override fun onSwipeRight() = performGesture("setting_multitouch_right")
+                override fun onSwipeLeft() = performGesture("setting_multitouch_left")
+            }
 
     private fun updateSavedAlbumInfo() {
         val albumControllers = browserContainer.list()
