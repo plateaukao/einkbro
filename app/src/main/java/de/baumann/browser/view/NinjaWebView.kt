@@ -11,9 +11,7 @@ import android.os.Handler
 import android.os.Looper
 import android.print.PrintDocumentAdapter
 import android.util.Base64
-import android.view.GestureDetector
 import android.view.KeyEvent
-import android.view.MotionEvent
 import android.view.View
 import android.webkit.CookieManager
 import android.webkit.WebSettings
@@ -50,7 +48,6 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
     private val webChromeClient: NinjaWebChromeClient
     private val downloadListener: NinjaDownloadListener = NinjaDownloadListener(context)
     private var clickHandler: NinjaClickHandler? = null
-    private val gestureDetector: GestureDetector = GestureDetector(context, NinjaGestureListener(this))
 
     var shouldHideTranslateContext: Boolean = false
     protected var isEpubReaderMode = false
@@ -130,10 +127,6 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
         setWebViewClient(webViewClient)
         setWebChromeClient(webChromeClient)
         setDownloadListener(downloadListener)
-        setOnTouchListener { _, motionEvent: MotionEvent? ->
-            gestureDetector.onTouchEvent(motionEvent)
-            false
-        }
 
         updateDarkMode()
     }

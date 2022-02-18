@@ -8,6 +8,9 @@ import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
 import de.baumann.browser.browser.NinjaGestureListener
+import de.baumann.browser.preference.ConfigManager
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import kotlin.math.abs
 import kotlin.math.max
 
@@ -15,7 +18,7 @@ open class MultitouchListener(
     context: Context,
     webView: NinjaWebView,
     private val touchCount: Int = 2
-) : View.OnTouchListener {
+) : View.OnTouchListener, KoinComponent {
 
     private var startPoint0: Point = Point(0, 0)
     private var startPoint1: Point = Point(0, 0)
@@ -23,10 +26,14 @@ open class MultitouchListener(
     private var endPoint1: Point = Point(0, 0)
     private var inSwipe = false
 
+    private val config: ConfigManager by inject()
+
     private val gestureDetector: GestureDetector = GestureDetector(context, NinjaGestureListener(webView))
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouch(view: View, event: MotionEvent): Boolean {
+        if (!config.isMultitouchEnabled) return gestureDetector.onTouchEvent(event)
+
         if (event.pointerCount != touchCount) return gestureDetector.onTouchEvent(event)
 
         when (event.action and MotionEvent.ACTION_MASK) {
