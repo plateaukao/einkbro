@@ -6,7 +6,6 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
-import android.os.Handler
 import android.util.Log
 import android.util.TypedValue
 import android.view.*
@@ -50,7 +49,6 @@ class EpubReaderView(
 
     private var loading = false
     lateinit var listener: EpubReaderListener
-    private val myHandler = Handler(context.mainLooper)
 
     var webTheme: WebThemeType = WebThemeType.LIGHT
         set(value) {
@@ -352,25 +350,27 @@ elements[i].style.color='white';
         }
     }
 
-    fun gotoPosition(ChapterNumber: Int, Progress: Float) {
-        if (ChapterNumber < 0) {
+    fun gotoPosition(chapterNumber: Int, progress: Float) {
+        if (chapterList.isEmpty()) return
+
+        if (chapterNumber < 0) {
             this.chapterNumber = 0
             this.progress = 0f
-        } else if (ChapterNumber >= chapterList.size) {
+        } else if (chapterNumber >= chapterList.size) {
             this.chapterNumber = chapterList.size - 1
             this.progress = 1f
         } else {
-            this.chapterNumber = ChapterNumber
-            this.progress = Progress
+            this.chapterNumber = chapterNumber
+            this.progress = progress
         }
         loadDataWithBaseURL(resourceLocation, chapterList[this.chapterNumber].content, "text/html", "utf-8", null)
 
-        if (Progress == 0F) {
+        if (progress == 0F) {
             scrollY = 0
         } else {
-            val totalHeight = getTotalContentHeight()
-            scrollY = totalHeight
-
+            this.postDelayed({
+                scrollY = (getTotalContentHeight() * progress).toInt()
+            }, 500) // wait for onPageFinished
         }
     }
 
