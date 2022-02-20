@@ -24,10 +24,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
-    lintOptions {
-        checkReleaseBuilds false
-        disable 'MissingTranslation'
-    }
 
     buildFeatures {
         viewBinding true
@@ -39,6 +35,10 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+    lint {
+        checkReleaseBuilds false
+        disable 'MissingTranslation'
     }
 
 

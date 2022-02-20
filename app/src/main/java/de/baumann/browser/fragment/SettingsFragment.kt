@@ -1,11 +1,17 @@
 package de.baumann.browser.fragment
 
 import android.content.Intent
+import android.content.Intent.ACTION_VIEW
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.text.Layout
+import android.text.Spannable
 import android.text.method.LinkMovementMethod
+import android.text.method.MovementMethod
+import android.text.style.URLSpan
+import android.view.MotionEvent
 import android.view.View
 import android.widget.TextView
 import androidx.preference.Preference
@@ -14,9 +20,11 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import de.baumann.browser.Ninja.BuildConfig
 import de.baumann.browser.Ninja.R
+import de.baumann.browser.activity.BrowserActivity
 import de.baumann.browser.activity.Settings_ClearActivity
 import de.baumann.browser.unit.HelperUnit
 import de.baumann.browser.view.dialog.PrinterDocumentPaperSizeDialog
+
 
 class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
     private var showContributors = false
@@ -38,13 +46,13 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
             false
         }
         findPreference<Preference>("settings_license")?.setOnPreferenceClickListener {
-            showContributors = false
+            showContributors = true
             showLicenseDialog(getString(R.string.license_title), getString(R.string.license_dialog))
             false
         }
         findPreference<Preference>("settings_info")?.setOnPreferenceClickListener {
             showContributors = false
-            showLicenseDialog(getString(R.string.menu_other_info), "v" + BuildConfig.VERSION_NAME.toString() + "<br><br>" + getString(R.string.changelog_dialog))
+            showLicenseDialog(getString(R.string.menu_other_info), getString(R.string.changelog_dialog))
             false
         }
         findPreference<Preference>("settings_appSettings")?.setOnPreferenceClickListener {
@@ -54,6 +62,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
             activity?.startActivity(intent)
             false
         }
+        findPreference<Preference>("settings_version")?.title = "Daniel Kao, v" + BuildConfig.VERSION_NAME.toString()
         preferenceManager.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
     }
 
@@ -75,10 +84,11 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
     }
 
     private fun showLicenseDialog(title: String, text: String) {
-        val dialog = BottomSheetDialog(requireActivity())
-        val dialogView = View.inflate(requireActivity(), R.layout.dialog_text, null)
-        dialogView.findViewById<TextView>(R.id.dialog_title).text = title
-        dialogView.findViewById<TextView>(R.id.dialog_text).text = HelperUnit.textSpannable(text)
+        val dialogView = View.inflate(requireActivity(), R.layout.dialog_text, null).apply {
+            findViewById<TextView>(R.id.dialog_title).text = title
+            findViewById<TextView>(R.id.dialog_text).text = HelperUnit.textSpannable(text)
+            findViewById<TextView>(R.id.dialog_text).movementMethod = LinkMovementMethod.getInstance()
+        }
         if (showContributors) {
             dialogView.findViewById<TextView>(R.id.dialog_text).append("""
     
@@ -267,9 +277,65 @@ https://github.com/Vistaus""")
     https://github.com/smallg0at
     """.trimIndent())
         }
-        dialogView.findViewById<TextView>(R.id.dialog_text).movementMethod = LinkMovementMethod.getInstance()
-        dialog.setContentView(dialogView)
-        dialog.show()
+        val dialog = BottomSheetDialog(requireActivity()).apply {
+            setContentView(dialogView)
+            show()
+        }
         HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
+    }
+}
+
+class MyLinkMovementMethod() : LinkMovementMethod() {
+    override fun onTouchEvent(textView: TextView, buffer: Spannable, event: MotionEvent): Boolean {
+        // Get the event action
+        var action = event.action
+
+        // If action has finished
+        if (action == MotionEvent.ACTION_UP) {
+            // Locate the area that was pressed
+            var x = event.x.toInt()
+            var y = event.y.toInt()
+            x -= textView.totalPaddingLeft
+            y -= textView.totalPaddingTop
+            x += textView.scrollX
+            y += textView.scrollY
+
+            // Locate the URL text
+            val layout: Layout = textView.layout
+            val line: Int = layout.getLineForVertical(y)
+            val off: Int = layout.getOffsetForHorizontal(line, x.toFloat())
+
+            // Find the URL that was pressed
+            val link = buffer.getSpans(off, off, URLSpan::class.java)
+            // If we've found a URL
+            if (link.isNotEmpty()) {
+                // Find the URL
+                val url = link[0].url
+                // If it's a valid URL
+                if (url.contains("https") or
+                        url.contains("tel") or
+                        url.contains("mailto") or
+                        url.contains("http") or
+                        url.contains("https") or
+                        url.contains("www")
+                ) {
+                    val intent = Intent(textView.context, BrowserActivity::class.java).apply {
+                        data = Uri.parse(url)
+                    }
+                    intent.action = ACTION_VIEW
+                    textView.context.startActivity(intent)
+                }
+                return true
+            }
+        }
+        return super.onTouchEvent(textView, buffer, event)
+    }
+
+    companion object {
+        // A new LinkMovementMethod
+        private val myLinkMovementMethod = MyLinkMovementMethod()
+        fun getInstance(): MovementMethod {
+            return myLinkMovementMethod
+        }
     }
 }
