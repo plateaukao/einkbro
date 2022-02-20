@@ -101,12 +101,13 @@ class NinjaWebViewClient(
             dTLoadUrl = DebugT("loadUrl:${uri}")
         }
         val url = uri.toString()
-        val packageManager = context.packageManager
-        val browseIntent = Intent(Intent.ACTION_VIEW).setData(uri)
         if (url.startsWith("http")) {
             webView.loadUrl(url, ninjaWebView.requestHeaders)
             return true
         }
+
+        val packageManager = context.packageManager
+        val browseIntent = Intent(Intent.ACTION_VIEW).setData(uri)
         if (browseIntent.resolveActivity(packageManager) != null) {
             context.startActivity(browseIntent)
             return true
@@ -128,17 +129,22 @@ class NinjaWebViewClient(
                     webView.loadUrl(fallbackUrl)
                     return true
                 }
-                //invite to install
-                val marketIntent = Intent(Intent.ACTION_VIEW).setData(Uri.parse("market://details?id=" + intent.getPackage()))
-                if (marketIntent.resolveActivity(packageManager) != null) {
-                    context.startActivity(marketIntent)
-                    return true
-                }
+
+                context.startActivity(intent)
+                return true
             } catch (e: URISyntaxException) {
                 //not an intent uri
                 return false
             }
         }
+
+        // handle rest scenarios: something like abc://, xyz://
+        try {
+            context.startActivity(browseIntent)
+        } catch (e: Exception) {
+            // ignore
+        }
+
         return true //do nothing in other cases
     }
 
