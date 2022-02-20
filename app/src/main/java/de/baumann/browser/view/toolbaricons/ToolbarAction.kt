@@ -31,6 +31,7 @@ enum class ToolbarAction(val iconResId: Int = 0, val titleResId: Int) {
         fun fromOrdinal(value: Int) = values().first { it.ordinal == value }
         val defaultActions: List<ToolbarAction> = listOf(
                 Title,
+                Bookmark,
                 TabCount,
                 Back,
                 Refresh,
