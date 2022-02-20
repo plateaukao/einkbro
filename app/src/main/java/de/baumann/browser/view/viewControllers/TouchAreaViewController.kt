@@ -121,21 +121,22 @@ class TouchAreaViewController(
             }
         }
 
+        with(touchAreaPageUp) {
+            setOnClickListener { if (!config.switchTouchAreaAction) pageUpAction() else pageDownAction() }
+            setOnLongClickListener { if (!config.switchTouchAreaAction) pageTopAction() else pageBottomAction(); true }
+        }
+        with(touchAreaPageDown) {
+            setOnClickListener { if (!config.switchTouchAreaAction) pageDownAction() else pageUpAction() }
+            setOnLongClickListener { if (!config.switchTouchAreaAction) pageBottomAction() else pageUpAction(); true }
+        }
+        with(touchAreaDragCustomize) {
+            setOnTouchListener { view, event -> customOnTouch(view, event) }
+        }
+
         if (config.enableTouchTurn) {
-            with(touchAreaPageUp) {
-                visibility = View.VISIBLE
-                setOnClickListener { if (!config.switchTouchAreaAction) pageUpAction() else pageDownAction() }
-                setOnLongClickListener { if (!config.switchTouchAreaAction) pageTopAction() else pageBottomAction(); true }
-            }
-            with(touchAreaPageDown) {
-                visibility = View.VISIBLE
-                setOnClickListener { if (!config.switchTouchAreaAction) pageDownAction() else pageUpAction() }
-                setOnLongClickListener { if (!config.switchTouchAreaAction) pageBottomAction() else pageUpAction(); true }
-            }
-            with(touchAreaDragCustomize) {
-                visibility = View.VISIBLE
-                setOnTouchListener { view, event -> customOnTouch(view, event) }
-            }
+            touchAreaPageUp.visibility = View.VISIBLE
+            touchAreaPageDown.visibility = View.VISIBLE
+            touchAreaDragCustomize.visibility = View.VISIBLE
             showTouchAreaHint()
         }
     }
