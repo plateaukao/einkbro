@@ -271,7 +271,7 @@
     <string name="book_name">书名</string>
     <string name="book_name_description">输入书名</string>
     <string name="saving_epub">另存为 EPUB</string>
-    <string name="volume_page_turn">page</string>
+    <string name="volume_page_turn">翻頁</string>
     <string name="menu_add_folder">增加书签文件夹</string>
     <string name="folder_name">书签文件夹名</string>
     <string name="folder_name_description">插入书签文件夹名</string>
