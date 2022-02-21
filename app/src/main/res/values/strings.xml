@@ -297,10 +297,10 @@
     <string name="setting_title_toolbar_icons">Icons on toolbar</string>
     <string name="setting_summary_toolbar_icons">Decide what icons should be shown on toolbar</string>
     <string name="setting_summary_desktop">Support desktop mode of web site</string>
-    <string name="history">history</string>
-    <string name="location">location</string>
-    <string name="desktop">desktop</string>
-    <string name="media_continue">continue</string>
+    <string name="history">History</string>
+    <string name="location">Location</string>
+    <string name="desktop">Desktop\nMode</string>
+    <string name="media_continue">Bckgnd\nPlay</string>
     <string name="show_touch_area_hint">show touch area border</string>
     <string name="close">Close</string>
     <string name="touch_left_side">left</string>
@@ -327,7 +327,7 @@
     <string name="book_name">Book Name</string>
     <string name="book_name_description">Input the book name</string>
     <string name="saving_epub">Saving Epub</string>
-    <string name="volume_page_turn">page</string>
+    <string name="volume_page_turn">Volume\nTurn</string>
     <string name="menu_add_folder">Add bookmark folder</string>
     <string name="folder_name">Bookmark folder name</string>
     <string name="folder_name_description">Insert Bookmark folder name</string>
@@ -383,4 +383,5 @@
     <string name="custom_font">custom font</string>
     <string name="setting_title_font">Font</string>
     <string name="font_type">Font Type</string>
+    <string name="menu_quickToggle">Quick Toggle</string>
 </resources>

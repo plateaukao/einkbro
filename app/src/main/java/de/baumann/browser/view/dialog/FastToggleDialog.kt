@@ -82,35 +82,7 @@ class FastToggleDialog(
         }
     }
 
-    private fun initButtons() {
-        /*
-        val cookieHosts = Cookie(context)
-        val adBlock = AdBlock(context)
-
-        val btnAbWhiteList = view.findViewById<ImageButton>(R.id.imageButton_ab) ?: return
-        val btnCookieWhiteList = view.findViewById<ImageButton>(R.id.imageButton_cookie) ?: return
-
-        setImgButtonResource(btnCookieWhiteList, cookieHosts.isWhite(url))
-        setImgButtonResource(btnAbWhiteList, adBlock.isWhite(url))
-
-        btnCookieWhiteList.setOnClickListener {
-            if (cookieHosts.isWhite(url)) {
-                cookieHosts.removeDomain(HelperUnit.domain(url))
-            } else {
-                cookieHosts.addDomain(HelperUnit.domain(url))
-            }
-            setImgButtonResource(btnCookieWhiteList, cookieHosts.isWhite(url))
-        }
-        btnAbWhiteList.setOnClickListener {
-            if (adBlock.isWhite(url)) {
-                adBlock.removeDomain(HelperUnit.domain(url))
-            } else {
-                adBlock.addDomain(HelperUnit.domain(url))
-            }
-            setImgButtonResource(btnAbWhiteList, adBlock.isWhite(url))
-        }
-         */
-    }
+    private fun initButtons() { }
 
     private fun initSwitches() {
         binding.switchIncognito.isChecked = config.isIncognitoMode

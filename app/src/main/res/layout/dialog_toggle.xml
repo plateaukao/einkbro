@@ -152,6 +152,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:text="@string/history" />
 
                     </LinearLayout>
@@ -182,6 +183,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:text="@string/location" />
 
                     </LinearLayout>
@@ -213,6 +215,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:gravity="center"
                             android:text="@string/volume_page_turn" />
                     </LinearLayout>
 
@@ -242,6 +245,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
                             android:text="@string/media_continue" />
 
                     </LinearLayout>
@@ -273,6 +278,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:gravity="center"
                             android:text="@string/desktop" />
 
 

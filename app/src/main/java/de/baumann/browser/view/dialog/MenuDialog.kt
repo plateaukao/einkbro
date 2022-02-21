@@ -22,6 +22,7 @@ import org.koin.core.component.inject
 class MenuDialog(
         private val context: Context,
         private val ninjaWebView: NinjaWebView,
+        private val showQuickToggleAction: () -> Unit,
         private val openFavAction: () -> Unit,
         private val closeTabAction: () -> Unit,
         private val saveBookmarkAction: () -> Unit,
@@ -53,6 +54,7 @@ class MenuDialog(
     }
 
     private fun initViews() {
+        binding.buttonQuickToggle.setOnClickListener { dialog.dismissWithAction(showQuickToggleAction) }
         binding.buttonOpenFav.setOnClickListener { dialog.dismissWithAction(openFavAction) }
         binding.buttonSplitScreen.setOnClickListener { dialog.dismissWithAction(toggleSplitScreenAction) }
         binding.buttonFontSize.setOnClickListener { dialog.dismissWithAction(fontSizeAction) }
