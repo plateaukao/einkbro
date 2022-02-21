@@ -75,7 +75,7 @@
     <string name="setting_title_whitelistJS">JavaScript whitelist</string>
     <string name="setting_summary_whitelistJS">If you disable JavaScript, you can use this whitelist to allow sites you
         trust to use javascript.</string>
-    <string name="setting_title_adblock">AdBlock</string>
+    <string name="setting_title_adblock">阻擋廣告</string>
     <string name="setting_summary_adblock">Enable AdBlock to block annoying ads. Sites also load faster when enabled.</string>
     <string name="setting_title_whitelist">AdBlock whitelist</string>
     <string name="setting_summary_whitelist">Allow these sites to show ads. Some sites do not work, when AdBlock is enabled.</string>
@@ -213,7 +213,11 @@
     <string name="book_name">書籍名稱</string>
     <string name="book_name_description">輸入想要的書籍名稱</string>
     <string name="saving_epub">儲存 Epub 文件中</string>
-    <string name="volume_page_turn">翻頁</string>
+    <string name="volume_page_turn">音量鍵\n翻頁</string>
+    <string name="history">瀏覽\n記錄</string>
+    <string name="location">地點</string>
+    <string name="desktop">桌面\n模式</string>
+    <string name="media_continue">背景\n播放</string>
     <string name="menu_add_folder">新增書籤目錄</string>
     <string name="folder_name_description">輸入書籤目錄名稱</string>
     <string name="setting_title_export_bookmarks">匯出書籤</string>
@@ -259,4 +263,5 @@
     <string name="custom_font">自訂字型</string>
     <string name="setting_title_font">字型</string>
     <string name="font_type">字型</string>
+    <string name="menu_quickToggle">快速切換</string>
 </resources>

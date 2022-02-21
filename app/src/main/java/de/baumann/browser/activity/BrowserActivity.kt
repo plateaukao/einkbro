@@ -1693,6 +1693,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         MenuDialog(
                 this,
                 ninjaWebView,
+                this::showFastToggleDialog,
                 { updateAlbum(sp.getString("favoriteURL", "https://github.com/plateaukao/browser")) },
                 { removeAlbum(currentAlbumController!!) },
                 this::saveBookmark,
