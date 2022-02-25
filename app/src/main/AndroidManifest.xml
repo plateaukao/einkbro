@@ -35,6 +35,7 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:usesCleartextTraffic="true"
+        android:theme="@style/AppTheme"
         tools:ignore="UnusedAttribute" >
         <activity
             android:name="de.baumann.browser.activity.ExtraBrowserActivity"

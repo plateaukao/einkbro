@@ -12,18 +12,6 @@
             android:summary="@string/setting_summary_page_left_value"
             android:icon="@drawable/ic_page_height"/>
 
-        <Preference
-            android:key="sp_touch_area_type"
-            android:icon="@drawable/gesture_tap"
-            android:title="@string/touch_area"
-            android:summary="@string/setting_summary_touch_area"/>
-
-        <Preference
-            android:key="sp_toolbar_icons"
-            android:icon="@drawable/ic_toolbar"
-            android:title="@string/setting_title_toolbar_icons"
-            android:summary="@string/setting_summary_toolbar_icons"/>
-
         <ListPreference
             android:icon="@drawable/ic_dark_mode"
             android:key="sp_dark_mode"
@@ -38,33 +26,6 @@
             android:defaultValue="false"
             android:title="@string/desktop_mode"
             android:summary="@string/setting_summary_desktop"/>
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="@string/setting_title_font">
-
-        <ListPreference
-            android:icon="@drawable/icon_size"
-            android:key="sp_fontSize"
-            android:defaultValue="100"
-            android:title="@string/setting_title_font_size"
-            android:summary="@string/setting_summary_font_size"
-            android:entries="@array/setting_entries_font"
-            android:entryValues="@array/setting_values_font"/>
-
-        <CheckBoxPreference android:key="sp_bold_font"
-            android:icon="@drawable/ic_bold_font"
-            android:defaultValue="false"
-            android:title="@string/bold_font"
-            android:summary="@string/setting_summary_bold_font"/>
-
-        <Preference android:key="settings_font_type"
-            android:title="@string/font_type" />
-
-        <Preference android:key="sp_custom_font"
-            android:icon="@drawable/icon_info"
-            android:defaultValue=""
-            android:title="@string/font_custom"/>
-
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/setting_title_toolbar">
