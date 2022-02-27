@@ -54,7 +54,7 @@ class MenuDialog(
     }
 
     private fun initViews() {
-        binding.buttonBold.setImageResource(if (config.boldFontStyle) R.drawable.ic_bold_font_active else R.drawable.ic_bold_font)
+        updateButtonBoldIcon()
 
         binding.buttonQuickToggle.setOnClickListener { dialog.dismissWithAction(showQuickToggleAction) }
         binding.buttonOpenFav.setOnClickListener { dialog.dismissWithAction(openFavAction) }

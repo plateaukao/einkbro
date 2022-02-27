@@ -512,9 +512,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
             R.id.omnibox_touch -> toggleTouchTurnPageFeature()
             R.id.omnibox_font -> showFontSizeChangeDialog()
             R.id.omnibox_reader -> ninjaWebView.toggleReaderMode()
-            R.id.omnibox_bold_font -> {
-                config.boldFontStyle = !config.boldFontStyle
-            }
+            R.id.omnibox_bold_font -> { config.boldFontStyle = !config.boldFontStyle }
             R.id.omnibox_back -> if (ninjaWebView.canGoBack()) {
                 ninjaWebView.goBack()
             } else {
@@ -553,6 +551,10 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
             else -> {
             }
         }
+    }
+
+    private fun updateButtonBoldIcon() {
+        binding.omniboxBoldFont.setImageResource(if (config.boldFontStyle) R.drawable.ic_bold_font_active else R.drawable.ic_bold_font)
     }
 
     private fun launchNewBrowser() {
@@ -884,9 +886,9 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         binding.omniboxBookmark.setOnClickListener { openBookmarkPage() }
         binding.omniboxBookmark.setOnLongClickListener { saveBookmark(); true }
         binding.toolbarTranslate.setOnLongClickListener { showTranslationConfigDialog(); true }
-
         binding.omniboxBack.setOnLongClickListener { openHistoryPage(5); true }
 
+        updateButtonBoldIcon()
 
         toolbarViewController.reorderIcons()
         // strange crash on my device. register later
@@ -917,6 +919,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
                 ninjaWebView.settings.textZoom = config.fontSize
             }
             ConfigManager.K_BOLD_FONT -> {
+                updateButtonBoldIcon()
                 if (config.boldFontStyle) {
                     ninjaWebView.updateCssStyle()
                 } else {
