@@ -115,7 +115,7 @@ class NinjaWebViewClient(
         if (url.startsWith("intent:")) {
             try {
                 val intent = Intent.parseUri(url, Intent.URI_INTENT_SCHEME)
-                if (intent.resolveActivity(context.packageManager) != null) {
+                if (intent.resolveActivity(context.packageManager) != null || intent.data?.scheme == "market") {
                     try {
                         context.startActivity(intent)
                     } catch (e: Exception) {
@@ -123,12 +123,8 @@ class NinjaWebViewClient(
                     }
                     return true
                 }
-                //try to find fallback url
-                val fallbackUrl = intent.getStringExtra("browser_fallback_url")
-                if (fallbackUrl != null) {
-                    webView.loadUrl(fallbackUrl)
-                    return true
-                }
+
+                if (maybeHandleFallbackUrl(webView, intent)) return true
 
                 context.startActivity(intent)
                 return true
@@ -148,14 +144,20 @@ class NinjaWebViewClient(
         return true //do nothing in other cases
     }
 
-    private val adPngResponse: WebResourceResponse by lazy {
-        val encodedImage = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
-        val decodedString: ByteArray = Base64.decode(encodedImage, Base64.DEFAULT)
-        WebResourceResponse(
-                BrowserUnit.MIME_TYPE_IMAGE,
-                BrowserUnit.URL_ENCODING,
-                decodedString.inputStream()
-        )
+    private fun maybeHandleFallbackUrl(webView: WebView, intent: Intent): Boolean {
+        val fallbackUrl = intent.getStringExtra("browser_fallback_url") ?: return false
+        if (fallbackUrl.startsWith("market://")) {
+            val intent = Intent.parseUri(fallbackUrl, Intent.URI_INTENT_SCHEME)
+            try {
+                context.startActivity(intent)
+            } catch (e: Exception) {
+                NinjaToast.show(context, R.string.toast_load_error)
+            }
+            return true
+        }
+
+        webView.loadUrl(fallbackUrl)
+        return true
     }
 
     private val adTxtResponse: WebResourceResponse = WebResourceResponse(
@@ -163,16 +165,6 @@ class NinjaWebViewClient(
             BrowserUnit.URL_ENCODING,
             ByteArrayInputStream("".toByteArray())
     )
-
-    private val adGifResponse: WebResourceResponse by lazy {
-        val encodedImage = "R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="
-        val decodedString: ByteArray = Base64.decode(encodedImage, Base64.DEFAULT)
-        WebResourceResponse(
-                "image/gif",
-                BrowserUnit.URL_ENCODING,
-                decodedString.inputStream()
-        )
-    }
 
     override fun shouldInterceptRequest(view: WebView, url: String): WebResourceResponse? {
         if (hasAdBlock && !white && adBlock.isAd(url))  {
