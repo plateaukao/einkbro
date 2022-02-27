@@ -24,9 +24,7 @@ class NinjaWebChromeClient(private val ninjaWebView: NinjaWebView) : WebChromeCl
                 val urlString = request?.url?.toString() ?: return false
 
                 // handle login requests
-                return if (urlString.contains("google") ||
-                        (urlString.contains("facebook") && !urlString.contains("story") && !urlString.contains("l.php"))
-                ) {
+                return if (isGoogleLoginUrl(urlString) || isFacebookLoginUrl(urlString)) {
                     view?.loadUrl(urlString)
                     true
                 } else if (!isUrlProcessed) {
@@ -50,6 +48,14 @@ class NinjaWebChromeClient(private val ninjaWebView: NinjaWebView) : WebChromeCl
         transport.webView = newWebView
         resultMsg.sendToTarget()
         return true
+    }
+
+    private fun isGoogleLoginUrl(url: String): Boolean {
+        return url.contains("accounts.google.com");
+    }
+
+    private fun isFacebookLoginUrl(url: String): Boolean {
+        return url.contains("facebook") && !url.contains("story") && !url.contains("l.php")
     }
 
     private fun initWebView(webView: WebView)  {
