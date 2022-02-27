@@ -54,6 +54,8 @@ class MenuDialog(
     }
 
     private fun initViews() {
+        binding.buttonBold.setImageResource(if (config.boldFontStyle) R.drawable.ic_bold_font_active else R.drawable.ic_bold_font)
+
         binding.buttonQuickToggle.setOnClickListener { dialog.dismissWithAction(showQuickToggleAction) }
         binding.buttonOpenFav.setOnClickListener { dialog.dismissWithAction(openFavAction) }
         binding.buttonSplitScreen.setOnClickListener { dialog.dismissWithAction(toggleSplitScreenAction) }
@@ -101,6 +103,10 @@ class MenuDialog(
                 NinjaToast.show(context, R.string.toast_copy_successful)
             }
         }
+    }
+
+    private fun updateButtonBoldIcon() {
+        binding.buttonBold.setImageResource(if (config.boldFontStyle) R.drawable.ic_bold_font_active else R.drawable.ic_bold_font)
     }
 }
 
