@@ -55,6 +55,7 @@ class MenuDialog(
 
     private fun initViews() {
         updateButtonBoldIcon()
+        updateButtonWhiteBckndIcon()
 
         binding.buttonQuickToggle.setOnClickListener { dialog.dismissWithAction(showQuickToggleAction) }
         binding.buttonOpenFav.setOnClickListener { dialog.dismissWithAction(openFavAction) }
@@ -107,6 +108,10 @@ class MenuDialog(
 
     private fun updateButtonBoldIcon() {
         binding.buttonBold.setImageResource(if (config.boldFontStyle) R.drawable.ic_bold_font_active else R.drawable.ic_bold_font)
+    }
+
+    private fun updateButtonWhiteBckndIcon() {
+        binding.buttonWhiteBackground.setImageResource(if (config.whiteBackground) R.drawable.ic_white_background_active else R.drawable.ic_white_background)
     }
 }
 
