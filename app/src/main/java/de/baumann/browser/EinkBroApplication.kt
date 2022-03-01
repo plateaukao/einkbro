@@ -8,9 +8,7 @@ import de.baumann.browser.browser.AdBlock
 import de.baumann.browser.browser.Cookie
 import de.baumann.browser.browser.Javascript
 import de.baumann.browser.database.BookmarkManager
-import de.baumann.browser.epub.EpubManager
 import de.baumann.browser.preference.ConfigManager
-import de.baumann.browser.view.dialog.DialogManager
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext.startKoin
 import org.koin.dsl.module
