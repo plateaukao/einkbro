@@ -1592,6 +1592,11 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
             showContextMenuLinkDialog(url, ninjaWebView.hitTestResult)
 
     private fun showSavePdfDialog(url: String) {
+        if (url.startsWith("data:")) {
+            NinjaToast.showShort(this, "Not supported for data:image urld")
+            return
+        }
+
         dialogManager.showSavePdfDialog(
                 url = url,
                 savePdf = { pdfUrl, fileName -> savePdf(pdfUrl, fileName) },
