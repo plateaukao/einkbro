@@ -29,6 +29,7 @@ class EpubReaderActivity: BrowserActivity() {
         }
 
         toolbarViewController.setEpubReaderMode()
+        hideOverview()
     }
 
     override fun dispatchIntent(intent: Intent) {
