@@ -6,6 +6,8 @@ import android.graphics.Point
 import android.util.Log
 import android.view.GestureDetector
 import android.view.MotionEvent
+import android.view.ScaleGestureDetector
+import android.view.ScaleGestureDetector.SimpleOnScaleGestureListener
 import android.view.View
 import de.baumann.browser.browser.NinjaGestureListener
 import de.baumann.browser.preference.ConfigManager
@@ -29,15 +31,20 @@ open class MultitouchListener(
     private val config: ConfigManager by inject()
 
     private val gestureDetector: GestureDetector = GestureDetector(context, NinjaGestureListener(webView))
+    // https://android-developers.googleblog.com/2010/06/making-sense-of-multitouch.html
+    private val scaleGestureDetector: ScaleGestureDetector = ScaleGestureDetector(context, ScaleListener())
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouch(view: View, event: MotionEvent): Boolean {
+        scaleGestureDetector.onTouchEvent(event);
+
         if (!config.isMultitouchEnabled) return gestureDetector.onTouchEvent(event)
 
         if (event.pointerCount != touchCount) return gestureDetector.onTouchEvent(event)
 
         when (event.action and MotionEvent.ACTION_MASK) {
             MotionEvent.ACTION_POINTER_DOWN -> {
+                scaleFactor = 1.0f
                 startPoint0 = Point(event.getX(0).toInt(), event.getY(0).toInt())
                 startPoint1 = Point(event.getX(1).toInt(), event.getY(1).toInt())
                 inSwipe = true
@@ -47,6 +54,7 @@ open class MultitouchListener(
                     val offSetX = endPoint1.x - startPoint1.x
                     val offSetY = endPoint1.y - startPoint1.y
                     Log.i("SWIPE", "offsetX: $offSetX, offsetY: $offSetY")
+                    Log.i("ZOOM", "scaleFactor: $scaleFactor")
 
                     if (isValidSwipe(offSetX, offSetY)) {
                         if (abs(offSetX) > abs(offSetY)) {
@@ -74,7 +82,9 @@ open class MultitouchListener(
     }
 
     private fun isValidSwipe(offSetX: Int, offSetY: Int) =
-            max(abs(offSetX), abs(offSetY)) > SWIPE_THRESHOLD
+            max(abs(offSetX), abs(offSetY)) > SWIPE_THRESHOLD && !isScaling()
+
+    private fun isScaling(): Boolean = abs(1 - scaleFactor) > SCALE_THRESHOLD
 
     private fun isSameXDirection(): Boolean {
         val point0Diff = endPoint0.x - startPoint0.x
@@ -98,5 +108,15 @@ open class MultitouchListener(
 
     companion object {
         private const val SWIPE_THRESHOLD = 100
+        private const val SCALE_THRESHOLD = 0.1f
+    }
+}
+
+private var scaleFactor = 1f
+private class ScaleListener : SimpleOnScaleGestureListener() {
+    override fun onScale(detector: ScaleGestureDetector): Boolean {
+        scaleFactor *= detector.scaleFactor
+
+        return true
     }
 }
