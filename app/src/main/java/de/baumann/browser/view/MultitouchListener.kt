@@ -45,8 +45,8 @@ open class MultitouchListener(
         when (event.action and MotionEvent.ACTION_MASK) {
             MotionEvent.ACTION_POINTER_DOWN -> {
                 scaleFactor = 1.0f
-                startPoint0 = Point(event.getX(0).toInt(), event.getY(0).toInt())
-                startPoint1 = Point(event.getX(1).toInt(), event.getY(1).toInt())
+                startPoint0 = event.getPoint(0)
+                startPoint1 = event.getPoint(1)
                 inSwipe = true
             }
             MotionEvent.ACTION_POINTER_UP -> {
@@ -73,8 +73,8 @@ open class MultitouchListener(
             }
             MotionEvent.ACTION_MOVE -> {
                 if (inSwipe) {
-                    endPoint0 = Point(event.getX(0).toInt(), event.getY(0).toInt())
-                    endPoint1 = Point(event.getX(1).toInt(), event.getY(1).toInt())
+                    endPoint0 = event.getPoint(0)
+                    endPoint1 = event.getPoint(1)
                 }
             }
         }
@@ -110,12 +110,19 @@ open class MultitouchListener(
         private const val SWIPE_THRESHOLD = 100
         private const val SCALE_THRESHOLD = 0.1f
     }
+
+    private fun MotionEvent.getPoint(index: Int): Point =
+            Point(getX(index).toInt(), getY(index).toInt())
 }
 
 private var scaleFactor = 1f
 private class ScaleListener : SimpleOnScaleGestureListener() {
     override fun onScale(detector: ScaleGestureDetector): Boolean {
-        scaleFactor *= detector.scaleFactor
+        val newScaleFactor = scaleFactor * detector.scaleFactor
+        // only keep the largest scale factor
+        if (abs(1 - newScaleFactor) > abs (1 - scaleFactor)) {
+            scaleFactor = newScaleFactor
+        }
 
         return true
     }
