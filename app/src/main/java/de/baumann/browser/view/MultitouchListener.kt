@@ -40,7 +40,9 @@ open class MultitouchListener(
 
         if (!config.isMultitouchEnabled) return gestureDetector.onTouchEvent(event)
 
-        if (event.pointerCount != touchCount) return gestureDetector.onTouchEvent(event)
+        if (!inSwipe && event.pointerCount != touchCount) {
+            return gestureDetector.onTouchEvent(event)
+        }
 
         when (event.action and MotionEvent.ACTION_MASK) {
             MotionEvent.ACTION_POINTER_DOWN -> {
@@ -53,8 +55,7 @@ open class MultitouchListener(
                 if (inSwipe) {
                     val offSetX = endPoint1.x - startPoint1.x
                     val offSetY = endPoint1.y - startPoint1.y
-                    Log.i("SWIPE", "offsetX: $offSetX, offsetY: $offSetY")
-                    Log.i("ZOOM", "scaleFactor: $scaleFactor")
+                    //Log.i("SWIPE", "offsetX: $offSetX, offsetY: $offSetY")
 
                     if (isValidSwipe(offSetX, offSetY)) {
                         if (abs(offSetX) > abs(offSetY)) {
@@ -66,9 +67,8 @@ open class MultitouchListener(
                                 if (offSetY > 0) onSwipeBottom() else onSwipeTop()
                             }
                         }
-                        inSwipe = false
                     }
-                    return true
+                    inSwipe = false
                 }
             }
             MotionEvent.ACTION_MOVE -> {
@@ -108,7 +108,7 @@ open class MultitouchListener(
 
     companion object {
         private const val SWIPE_THRESHOLD = 100
-        private const val SCALE_THRESHOLD = 0.1f
+        private const val SCALE_THRESHOLD = 0.03f
     }
 
     private fun MotionEvent.getPoint(index: Int): Point =
