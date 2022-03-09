@@ -78,7 +78,6 @@ class FastToggleDialog(
             config.desktop = !config.desktop
             updateViewVisibility(binding.toggleDesktopView, config.desktop)
             dialog.dismiss()
-            okAction.invoke()
         }
     }
 
