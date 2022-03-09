@@ -548,6 +548,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
                 addAlbum(getString(R.string.app_name), "", true)
                 focusOnInput()
             }
+            R.id.toolbar_desktop -> config.desktop = !config.desktop
             else -> {
             }
         }
@@ -555,6 +556,10 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
 
     private fun updateButtonBoldIcon() {
         binding.omniboxBoldFont.setImageResource(if (config.boldFontStyle) R.drawable.ic_bold_font_active else R.drawable.ic_bold_font)
+    }
+
+    private fun updateDesktopIcon() {
+        binding.toolbarDesktop.setImageResource(if (config.desktop) R.drawable.icon_desktop_activate else R.drawable.icon_desktop)
     }
 
     private fun launchNewBrowser() {
@@ -889,6 +894,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         binding.omniboxBack.setOnLongClickListener { openHistoryPage(5); true }
 
         updateButtonBoldIcon()
+        updateDesktopIcon()
 
         toolbarViewController.reorderIcons()
         // strange crash on my device. register later
@@ -953,7 +959,11 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
                     window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
                 }
             }
-            ConfigManager.K_DESKTOP -> ninjaWebView.updateDesktopMode()
+            ConfigManager.K_DESKTOP -> {
+                ninjaWebView.updateDesktopMode()
+                ninjaWebView.reload()
+                updateDesktopIcon()
+            }
             ConfigManager.K_DARK_MODE -> showRestartConfirmDialog()
         }
     }

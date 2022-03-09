@@ -309,6 +309,15 @@
                         android:padding="10dp"
                         android:src="@drawable/icon_plus" />
 
+                    <ImageButton
+                        android:id="@+id/toolbar_desktop"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@color/color_transparent"
+                        android:onClick="onClick"
+                        android:padding="10dp"
+                        android:src="@drawable/icon_desktop" />
+
                 </LinearLayout>
         </RelativeLayout>
 
