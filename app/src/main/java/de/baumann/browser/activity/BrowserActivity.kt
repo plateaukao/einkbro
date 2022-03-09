@@ -1764,6 +1764,27 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         ViewUnit.hideKeyboard(this)
     }
 
+    // - action mode handling
+    private var mActionMode: ActionMode? = null
+    override fun onActionModeStarted(mode: ActionMode) {
+        super.onActionModeStarted(mode)
+        if (mActionMode == null) {
+            mActionMode = mode
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        mActionMode?.finish()
+        mActionMode = null
+    }
+
+    override fun onActionModeFinished(mode: ActionMode?) {
+        super.onActionModeFinished(mode)
+        mActionMode = null
+    }
+    // - action mode handling
+
     companion object {
         private const val TAG = "BrowserActivity"
         private const val INPUT_FILE_REQUEST_CODE = 1
