@@ -14,6 +14,7 @@ import de.baumann.browser.activity.SettingsActivity
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.unit.HelperUnit
 import de.baumann.browser.unit.IntentUnit
+import de.baumann.browser.unit.ViewUnit.dp
 import de.baumann.browser.view.NinjaToast
 import de.baumann.browser.view.NinjaWebView
 import org.koin.core.component.KoinComponent
@@ -47,7 +48,7 @@ class MenuDialog(
 
         initViews()
         dialog = builder.create().apply {
-            window?.setGravity(Gravity.BOTTOM or Gravity.RIGHT)
+            window?.setGravity(if (config.isToolbarOnTop) Gravity.TOP else Gravity.BOTTOM or Gravity.RIGHT)
             window?.setBackgroundDrawableResource(R.drawable.background_with_border_margin)
         }
         dialog.show()

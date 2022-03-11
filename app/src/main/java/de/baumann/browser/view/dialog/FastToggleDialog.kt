@@ -34,7 +34,7 @@ class FastToggleDialog(
 
         initViews()
         dialog = builder.create().apply {
-            window?.setGravity(Gravity.BOTTOM)
+            window?.setGravity(if (config.isToolbarOnTop) Gravity.CENTER else Gravity.BOTTOM)
             window?.setBackgroundDrawableResource(R.drawable.background_with_border_margin)
         }
         dialog.show()

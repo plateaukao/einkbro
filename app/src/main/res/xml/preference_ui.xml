@@ -31,6 +31,13 @@
     <PreferenceCategory android:title="@string/setting_title_toolbar">
 
         <CheckBoxPreference
+            android:key="sp_toolbar_top"
+            android:icon="@drawable/ic_page_height"
+            android:defaultValue="false"
+            android:title="@string/setting_title_toolbar_top"
+            android:summary="@string/setting_summary_toolbar_top"/>
+
+        <CheckBoxPreference
             android:key="hideToolbar"
             android:icon="@drawable/icon_fullscreen"
             android:defaultValue="false"

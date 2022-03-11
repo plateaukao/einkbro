@@ -129,20 +129,14 @@
         android:visibility="invisible" />
 
     <ProgressBar
-        style="?android:attr/progressBarStyleHorizontal"
         android:id="@+id/main_progress_bar"
+        style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="4dp"
+        android:layout_alignParentBottom="true"
         android:maxHeight="4dp"
         android:progressTint="?attr/colorControlNormal"
-        tools:progress="30"
-        android:layout_alignParentBottom="true"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@android:color/darker_gray"
-        android:layout_alignParentBottom="true"/>
+        tools:progress="30" />
 
     <ImageButton
         android:id="@+id/fab_imageButtonNav"

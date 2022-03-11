@@ -24,6 +24,12 @@ class ConfigManager(
         sp.registerOnSharedPreferenceChangeListener(listener)
     }
 
+    var isToolbarOnTop: Boolean
+        get() = sp.getBoolean(K_TOOLBAR_TOP, false)
+        set(value) {
+            sp.edit { putBoolean(K_TOOLBAR_TOP, value) }
+        }
+
     var isMultitouchEnabled: Boolean
         get() = sp.getBoolean(K_MULTITOUCH, false)
         set(value) {
@@ -360,6 +366,7 @@ class ConfigManager(
         const val K_MULTITOUCH = "sp_multitouch"
         const val K_CUSTOM_FONT = "sp_custom_font"
         const val K_FONT_TYPE = "sp_font_type"
+        const val K_TOOLBAR_TOP = "sp_toolbar_top"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
         private const val EPUB_FILE_INFO_SEPARATOR = "::::"

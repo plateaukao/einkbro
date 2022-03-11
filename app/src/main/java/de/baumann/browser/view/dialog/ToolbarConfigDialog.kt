@@ -32,7 +32,7 @@ class ToolbarConfigDialog(
                 view = binding.root,
                 okAction = { config.toolbarActions = newValues },
         ).apply {
-            window?.setGravity(Gravity.BOTTOM or Gravity.RIGHT)
+            window?.setGravity(if (config.isToolbarOnTop) Gravity.TOP else Gravity.BOTTOM or Gravity.RIGHT)
             window?.setBackgroundDrawableResource(R.drawable.background_with_border_margin)
             window?.setLayout(300.dp(context), ViewGroup.LayoutParams.WRAP_CONTENT)
         }
