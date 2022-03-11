@@ -31,11 +31,9 @@ import android.widget.*
 import android.widget.TextView.OnEditorActionListener
 import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.edit
 import androidx.core.view.isVisible
-import androidx.core.view.updateLayoutParams
 import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.lifecycleScope
 import de.baumann.browser.Ninja.R
@@ -207,7 +205,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         }
         mainContentLayout = findViewById(R.id.main_content)
         subContainer = findViewById(R.id.sub_container)
-        initAppbar()
+        updateAppbarPosition()
         initToolbar()
         initSearchPanel()
         initOverview()
@@ -808,32 +806,39 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         getIntent().action = ""
     }
 
-    private fun initAppbar() {
+    private fun updateAppbarPosition() {
         if (config.isToolbarOnTop) {
-            val constraintSet = ConstraintSet().apply {
-                clone(binding.root)
-                clear(binding.appBar.id, ConstraintSet.BOTTOM)
-
-                connect(binding.twoPanelLayout.id, ConstraintSet.TOP, binding.appBar.id, ConstraintSet.BOTTOM)
-                connect(binding.twoPanelLayout.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
-
-                clear(binding.contentSeparator.id, ConstraintSet.BOTTOM)
-                connect(binding.contentSeparator.id, ConstraintSet.TOP, binding.appBar.id, ConstraintSet.BOTTOM)
-            }
-            constraintSet.applyTo(binding.root)
+            moveAppbarToTop()
         } else {
-            val constraintSet = ConstraintSet().apply {
-                clone(binding.root)
-                connect(binding.appBar.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, 0)
-                connect(binding.twoPanelLayout.id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
-                connect(binding.twoPanelLayout.id, ConstraintSet.BOTTOM, binding.appBar.id, ConstraintSet.TOP)
-
-                clear(binding.contentSeparator.id, ConstraintSet.TOP)
-                connect(binding.contentSeparator.id, ConstraintSet.BOTTOM, binding.appBar.id, ConstraintSet.TOP)
-            }
-            constraintSet.applyTo(binding.root)
-
+            moveAppbarToBottom()
         }
+    }
+
+    private fun moveAppbarToBottom() {
+        val constraintSet = ConstraintSet().apply {
+            clone(binding.root)
+            connect(binding.appBar.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, 0)
+            connect(binding.twoPanelLayout.id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
+            connect(binding.twoPanelLayout.id, ConstraintSet.BOTTOM, binding.appBar.id, ConstraintSet.TOP)
+
+            clear(binding.contentSeparator.id, ConstraintSet.TOP)
+            connect(binding.contentSeparator.id, ConstraintSet.BOTTOM, binding.appBar.id, ConstraintSet.TOP)
+        }
+        constraintSet.applyTo(binding.root)
+    }
+
+    private fun moveAppbarToTop() {
+        val constraintSet = ConstraintSet().apply {
+            clone(binding.root)
+            clear(binding.appBar.id, ConstraintSet.BOTTOM)
+
+            connect(binding.twoPanelLayout.id, ConstraintSet.TOP, binding.appBar.id, ConstraintSet.BOTTOM)
+            connect(binding.twoPanelLayout.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
+
+            clear(binding.contentSeparator.id, ConstraintSet.BOTTOM)
+            connect(binding.contentSeparator.id, ConstraintSet.TOP, binding.appBar.id, ConstraintSet.BOTTOM)
+        }
+        constraintSet.applyTo(binding.root)
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -997,6 +1002,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
                 updateDesktopIcon()
             }
             ConfigManager.K_DARK_MODE -> showRestartConfirmDialog()
+            ConfigManager.K_TOOLBAR_TOP -> updateAppbarPosition()
         }
     }
 
