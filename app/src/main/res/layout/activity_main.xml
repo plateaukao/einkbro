@@ -10,9 +10,7 @@
     <FrameLayout
         android:id="@+id/appBar"
         android:layout_width="match_parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_height="50dp"
+        android:layout_height="@dimen/appbar_height"
         app:layout_constraintBottom_toBottomOf="parent"
         android:minHeight="50dp">
 
@@ -409,6 +407,13 @@
             android:layout_width="0dp"
             android:layout_height="match_parent" />
     </de.baumann.browser.view.TwoPaneLayout>
+
+    <View
+        android:id="@+id/content_separator"
+        android:layout_width="match_parent"
+        app:layout_constraintBottom_toTopOf="@+id/appBar"
+        android:layout_height="1px"
+        android:background="@android:color/darker_gray" />
 
     <include
         android:id="@+id/layout_overview"
