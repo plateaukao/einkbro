@@ -264,6 +264,6 @@
     <string name="setting_title_font">字型</string>
     <string name="font_type">字型</string>
     <string name="menu_quickToggle">快速切換</string>
-    <string name="setting_title_toolbar_top">Toolbar position</string>
-    <string name="setting_summary_toolbar_top">Show toolbar on top of screen.</string>
+    <string name="setting_title_toolbar_top">工具列置頂</string>
+    <string name="setting_summary_toolbar_top">將工具列顯示於畫面上方</string>
 </resources>

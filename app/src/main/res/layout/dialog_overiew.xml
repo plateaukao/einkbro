@@ -44,7 +44,6 @@
         android:divider="@null"
         android:dividerHeight="0dp"
         android:fastScrollEnabled="true"
-        android:gravity="center"
         android:stackFromBottom="true"
         android:visibility="gone" />
 
