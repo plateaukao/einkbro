@@ -8,6 +8,7 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.LinearLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
@@ -34,7 +35,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import org.koin.core.parameter.parametersOf
+
 
 class OverviewDialogController(
         private val context: Context,
@@ -84,17 +85,63 @@ class OverviewDialogController(
     }
 
     fun isVisible() = binding.root.visibility == VISIBLE
-    fun show() = showOverview()
-    fun hide() = hideOverview()
-
-    private fun showOverview() {
+    fun show() {
+        updateLayout()
         binding.root.visibility = VISIBLE
         openHomePage()
     }
 
+    private fun updateLayout() {
+        if (config.isToolbarOnTop) {
+            binding.overviewPreview.moveToBelowButtons()
+            binding.homeList2.moveToBelowButtons()
+            binding.homeButtons.moveToTop()
+        } else {
+            binding.overviewPreview.moveToAboveButtons()
+            binding.homeList2.moveToAboveButtons()
+            binding.homeButtons.moveToBottom()
+        }
+    }
+
+    private fun View.moveToTop() {
+        val constraintSet = ConstraintSet().apply {
+            clone(binding.root)
+            clear(id, ConstraintSet.BOTTOM)
+            connect(id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
+        }
+        constraintSet.applyTo(binding.root)
+    }
+
+    private fun View.moveToBelowButtons() {
+        val constraintSet = ConstraintSet().apply {
+            clone(binding.root)
+            clear(id, ConstraintSet.BOTTOM)
+            connect(id, ConstraintSet.TOP, binding.homeButtons.id, ConstraintSet.BOTTOM)
+        }
+        constraintSet.applyTo(binding.root)
+    }
+
+    private fun View.moveToAboveButtons() {
+        val constraintSet = ConstraintSet().apply {
+            clone(binding.root)
+            clear(id, ConstraintSet.TOP)
+            connect(id, ConstraintSet.BOTTOM, binding.homeButtons.id, ConstraintSet.TOP)
+        }
+        constraintSet.applyTo(binding.root)
+    }
+
+    private fun View.moveToBottom() {
+        val constraintSet = ConstraintSet().apply {
+            clone(binding.root)
+            clear(id, ConstraintSet.TOP)
+            connect(id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
+        }
+        constraintSet.applyTo(binding.root)
+    }
+
     private fun initViews() {
 
-        binding.root.setOnClickListener { hideOverview() }
+        binding.root.setOnClickListener { hide() }
 
         // allow scrolling in listView without closing the bottomSheetDialog
         recyclerView.layoutManager = narrowLayoutManager
@@ -104,7 +151,7 @@ class OverviewDialogController(
         binding.openBookmarkButton.setOnClickListener { openBookmarkPage() }
         binding.openHistoryButton.setOnClickListener { openHistoryPage() }
 
-        binding.buttonCloseOverview.setOnClickListener { hideOverview() }
+        binding.buttonCloseOverview.setOnClickListener { hide() }
         showCurrentTabInOverview()
 
     }
@@ -142,7 +189,7 @@ class OverviewDialogController(
         }
     }
 
-    private fun hideOverview() {
+    fun hide() {
         binding.root.visibility = GONE
     }
 
@@ -162,7 +209,7 @@ class OverviewDialogController(
                     list.toMutableList(),
                     { position ->
                         gotoUrlAction(list[position].url)
-                        hideOverview()
+                        hide()
                     },
                     { position ->
                         showHistoryContextMenu(
@@ -206,12 +253,12 @@ class OverviewDialogController(
                         setupBookmarkList(it.id)
                     } else {
                         gotoUrlAction(it.url)
-                        hideOverview()
+                        hide()
                     }
                 },
                 onTabIconClick = {
                     addTabAction(it.title, it.url, true)
-                    hideOverview()
+                    hide()
                 },
                 onItemLongClick = { showBookmarkContextMenu(it) }
         )
@@ -260,7 +307,7 @@ class OverviewDialogController(
                         OverviewTab.History -> {
                             BrowserUnit.clearHistory(context)
                             (recyclerView.adapter as RecordAdapter).clear()
-                            hideOverview()
+                            hide()
                             onHistoryChanged()
                         }
                         else -> {
@@ -286,7 +333,7 @@ class OverviewDialogController(
         dialogView.menuContextListSplitScreen.setOnClickListener {
             dialog.dismissWithAction {
                 splitScreenAction(bookmark.url)
-                hideOverview()
+                hide()
             }
         }
 
@@ -306,7 +353,7 @@ class OverviewDialogController(
         dialogView.menuContextListNewTabOpen.setOnClickListener {
             dialog.dismissWithAction {
                 addTabAction(bookmark.title, bookmark.url, true)
-                hideOverview()
+                hide()
             }
         }
         dialogView.menuContextListDelete.setOnClickListener {
@@ -354,12 +401,12 @@ class OverviewDialogController(
         }
         dialogView.menuContextListSplitScreen.setOnClickListener {
             dialog.dismissWithAction { splitScreenAction(url) }
-            hideOverview()
+            hide()
         }
         dialogView.menuContextListNewTabOpen.setOnClickListener {
             dialog.dismissWithAction {
                 addTabAction(context.getString(R.string.app_name), url, true)
-                hideOverview()
+                hide()
             }
         }
         dialogView.menuContextListDelete.setOnClickListener {
