@@ -195,6 +195,7 @@ class OverviewDialogController(
 
     private var adapter: RecordAdapter? = null
     fun openHistoryPage(amount: Int = 0) {
+        updateLayout()
         binding.root.visibility = VISIBLE
 
         binding.overviewPreview.visibility = View.INVISIBLE
@@ -227,6 +228,7 @@ class OverviewDialogController(
     }
 
     fun openBookmarkPage() {
+        updateLayout()
         binding.root.visibility = VISIBLE
         recyclerView.layoutManager = if (shouldShowWidList()) wideLayoutManager else narrowLayoutManager
 
@@ -279,6 +281,7 @@ class OverviewDialogController(
             ViewUnit.isLandscape(context) || ViewUnit.isTablet(context)
 
     private fun openHomePage() {
+        updateLayout()
         binding.overviewPreview.visibility = VISIBLE
         recyclerView.visibility = GONE
         recyclerView.layoutManager = if (shouldShowWidList()) wideLayoutManager else narrowLayoutManager
