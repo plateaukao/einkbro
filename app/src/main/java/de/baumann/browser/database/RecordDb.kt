@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import androidx.core.database.sqlite.transaction
+import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.unit.RecordUnit
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -14,6 +15,7 @@ class RecordDb(context: Context?): KoinComponent {
     private lateinit var database: SQLiteDatabase
     private val helper: RecordHelper = RecordHelper(context)
     private val bookmarkManager: BookmarkManager by inject()
+    private val config: ConfigManager by inject()
 
     fun open(rw: Boolean) {
         database = if (rw) helper.writableDatabase else helper.readableDatabase
@@ -177,7 +179,7 @@ class RecordDb(context: Context?): KoinComponent {
             null,
             null,
             null,
-            RecordUnit.COLUMN_TIME + " desc"
+            RecordUnit.COLUMN_TIME + (if (config.isToolbarOnTop) " asc" else " desc")
         )
         cursor.moveToFirst()
         while (!cursor.isAfterLast) {
