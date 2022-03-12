@@ -93,14 +93,16 @@ class OverviewDialogController(
 
     private fun updateLayout() {
         if (config.isToolbarOnTop) {
+            binding.homeButtons.moveToTop()
             binding.overviewPreview.moveToBelowButtons()
             binding.homeList2.moveToBelowButtons()
-            binding.homeButtons.moveToTop()
         } else {
+            binding.homeButtons.moveToBottom()
             binding.overviewPreview.moveToAboveButtons()
             binding.homeList2.moveToAboveButtons()
-            binding.homeButtons.moveToBottom()
         }
+        narrowLayoutManager.reverseLayout = !config.isToolbarOnTop
+        wideLayoutManager.reverseLayout = !config.isToolbarOnTop
     }
 
     private fun View.moveToTop() {
@@ -230,7 +232,7 @@ class OverviewDialogController(
     fun openBookmarkPage() {
         updateLayout()
         binding.root.visibility = VISIBLE
-        recyclerView.layoutManager = if (shouldShowWidList()) wideLayoutManager else narrowLayoutManager
+        recyclerView.layoutManager = if (shouldShowWideList()) wideLayoutManager else narrowLayoutManager
 
         binding.overviewPreview.visibility = View.INVISIBLE
         toggleOverviewFocus(binding.openBookmarkView)
@@ -277,14 +279,14 @@ class OverviewDialogController(
         }
     }
 
-    private fun shouldShowWidList(): Boolean =
+    private fun shouldShowWideList(): Boolean =
             ViewUnit.isLandscape(context) || ViewUnit.isTablet(context)
 
     private fun openHomePage() {
         updateLayout()
         binding.overviewPreview.visibility = VISIBLE
         recyclerView.visibility = GONE
-        recyclerView.layoutManager = if (shouldShowWidList()) wideLayoutManager else narrowLayoutManager
+        recyclerView.layoutManager = if (shouldShowWideList()) wideLayoutManager else narrowLayoutManager
         toggleOverviewFocus(binding.openTabView)
         overViewTab = OverviewTab.TabPreview
     }
