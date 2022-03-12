@@ -260,6 +260,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         }
         if (newConfig.orientation != orientation) {
             toolbarViewController.reorderIcons()
+            //binding.activityMainContent.root.requestLayout()
             orientation = newConfig.orientation
         }
     }
@@ -428,8 +429,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         }
 
         mainContentLayout.removeAllViews()
-        val av = controller as View
-        mainContentLayout.addView(av)
+        mainContentLayout.addView(controller as View)
 
         currentAlbumController = controller
         currentAlbumController?.activate()

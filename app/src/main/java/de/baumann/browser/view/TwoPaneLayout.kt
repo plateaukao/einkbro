@@ -209,11 +209,11 @@ class TwoPaneLayout : FrameLayout {
         val mainPanel = if (subPanel == panel1) panel2  else panel1
 
         if (isHorizontal()) {
-            val params = LayoutParams(measuredWidth, LayoutParams.MATCH_PARENT)
+            val params = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
             mainPanel?.layoutParams = params
             mainPanel?.x = 0F
         } else {
-            val params = LayoutParams(LayoutParams.MATCH_PARENT, measuredHeight)
+            val params = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
             mainPanel?.layoutParams = params
             mainPanel?.y = 0F
         }
