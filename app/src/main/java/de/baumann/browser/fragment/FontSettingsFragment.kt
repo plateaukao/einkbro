@@ -37,20 +37,22 @@ class FontSettingsFragment : PreferenceFragmentCompat(), OnSharedPreferenceChang
                 true
             }
         }
-    }
 
-    override fun onResume() {
-        super.onResume()
-        preferenceScreen.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        preferenceScreen.sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
+        config.registerOnSharedPreferenceChangeListener { _, key ->
+            when (key) {
+//                ConfigManager.K_CUSTOM_FONT ->
+//                    findPreference<Preference>(ConfigManager.K_CUSTOM_FONT)?.apply {
+//                        summary = config.customFontInfo?.name ?: "not configured"
+//                    }
+                ConfigManager.K_FONT_TYPE ->
+                    findPreference<Preference>("settings_font_type")?.apply {
+                        summary = getString(config.fontType.resId)
+                    }
+            }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == FONT_PICKER_REQUEST_CODE && resultCode == ComponentActivity.RESULT_OK) {
             val uri = data?.data ?: return
@@ -61,6 +63,8 @@ class FontSettingsFragment : PreferenceFragmentCompat(), OnSharedPreferenceChang
             config.customFontInfo = CustomFontInfo(file.name, uri.toString())
 
             return
+        } else {
+            super.onActivityResult(requestCode, resultCode, data)
         }
     }
 
@@ -73,16 +77,6 @@ class FontSettingsFragment : PreferenceFragmentCompat(), OnSharedPreferenceChang
     }
 
     override fun onSharedPreferenceChanged(sp: SharedPreferences, key: String) {
-        when (key) {
-            ConfigManager.K_CUSTOM_FONT ->
-                findPreference<Preference>("settings_font_type")?.apply {
-                    summary = config.customFontInfo?.name ?: "not configured"
-                }
-            ConfigManager.K_FONT_TYPE ->
-                findPreference<Preference>("settings_font_type")?.apply {
-                    summary = getString(config.fontType.resId)
-                }
-        }
     }
 
     companion object {
