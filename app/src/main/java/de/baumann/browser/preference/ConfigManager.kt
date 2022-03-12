@@ -30,6 +30,12 @@ class ConfigManager(
             sp.edit { putBoolean(K_TOOLBAR_TOP, value) }
         }
 
+    var enableViBinding: Boolean
+        get() = sp.getBoolean(K_VI_BINDING, false)
+        set(value) {
+            sp.edit { putBoolean(K_VI_BINDING, value) }
+        }
+
     var isMultitouchEnabled: Boolean
         get() = sp.getBoolean(K_MULTITOUCH, false)
         set(value) {
@@ -367,6 +373,7 @@ class ConfigManager(
         const val K_CUSTOM_FONT = "sp_custom_font"
         const val K_FONT_TYPE = "sp_font_type"
         const val K_TOOLBAR_TOP = "sp_toolbar_top"
+        const val K_VI_BINDING = "sp_enable_vi_binding"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
         private const val EPUB_FILE_INFO_SEPARATOR = "::::"

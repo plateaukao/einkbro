@@ -96,6 +96,12 @@
             android:title="@string/setting_title_saveTabs"
             android:summary="@string/setting_summary_saveTabs"/>
 
+        <CheckBoxPreference android:key="sp_enable_vi_binding"
+            android:icon="@drawable/ic_keyboard"
+            android:defaultValue="false"
+            android:title="@string/setting_title_vi_binding"
+            android:summary="@string/setting_summary_vi_binding"/>
+
         <CheckBoxPreference android:key="sp_useUpDownForPageTurn"
             android:icon="@drawable/ic_page_down"
             android:defaultValue="false"

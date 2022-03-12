@@ -936,7 +936,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         toolbarViewController.reorderIcons()
         // strange crash on my device. register later
         runOnUiThread {
-            sp.registerOnSharedPreferenceChangeListener(preferenceChangeListener)
+            config.registerOnSharedPreferenceChangeListener(preferenceChangeListener)
         }
     }
 
@@ -1475,6 +1475,8 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
     override fun handleKeyEvent(event: KeyEvent?): Boolean {
         if (event?.action != ACTION_DOWN) return false
         if (ninjaWebView.hitTestResult.type == HitTestResult.EDIT_TEXT_TYPE) return false
+
+        if (!config.enableViBinding) return false
 
         if (event.isShiftPressed) {
             when (event.keyCode) {
