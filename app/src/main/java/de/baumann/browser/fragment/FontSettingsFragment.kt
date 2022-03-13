@@ -40,10 +40,10 @@ class FontSettingsFragment : PreferenceFragmentCompat(), OnSharedPreferenceChang
 
         config.registerOnSharedPreferenceChangeListener { _, key ->
             when (key) {
-//                ConfigManager.K_CUSTOM_FONT ->
-//                    findPreference<Preference>(ConfigManager.K_CUSTOM_FONT)?.apply {
-//                        summary = config.customFontInfo?.name ?: "not configured"
-//                    }
+                ConfigManager.K_CUSTOM_FONT ->
+                    findPreference<Preference>(ConfigManager.K_CUSTOM_FONT)?.apply {
+                        summary = config.customFontInfo?.name ?: "not configured"
+                    }
                 ConfigManager.K_FONT_TYPE ->
                     findPreference<Preference>("settings_font_type")?.apply {
                         summary = getString(config.fontType.resId)
@@ -63,8 +63,6 @@ class FontSettingsFragment : PreferenceFragmentCompat(), OnSharedPreferenceChang
             config.customFontInfo = CustomFontInfo(file.name, uri.toString())
 
             return
-        } else {
-            super.onActivityResult(requestCode, resultCode, data)
         }
     }
 
@@ -76,8 +74,7 @@ class FontSettingsFragment : PreferenceFragmentCompat(), OnSharedPreferenceChang
         startActivityForResult(intent, FONT_PICKER_REQUEST_CODE)
     }
 
-    override fun onSharedPreferenceChanged(sp: SharedPreferences, key: String) {
-    }
+    override fun onSharedPreferenceChanged(sp: SharedPreferences, key: String) { }
 
     companion object {
         const val FONT_PICKER_REQUEST_CODE = 4
