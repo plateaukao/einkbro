@@ -5,63 +5,63 @@
 
     <!-- App -->
     <string name="app_name">EinkBro</string>
-    <string name="list_empty">目前清单是空的</string>
+    <string name="list_empty">当前列表为空</string>
     <string name="bookmarks">书签</string>
     <string name="album_title_history">历史</string>
     <string name="album_title_home">首页</string>
     <string name="search_hint">搜索</string>
 
     <!-- Menu -->
-    <string name="main_menu_new_tab">新增标签页(背景)</string>
-    <string name="main_menu_new_tabOpen">新增标签页(前景)</string>
+    <string name="main_menu_new_tab">新建标签页 (后台)</string>
+    <string name="main_menu_new_tabOpen">新建标签页 (前台)</string>
     <string name="main_omnibox_input_hint">搜索或输入网址</string>
-    <string name="menu_open_with">用其他开启</string>
+    <string name="menu_open_with">打开链接…</string>
 
     <string name="menu_quit">退出</string>
-    <string name="menu_openFav">主页</string>
+    <string name="menu_openFav">打开收藏夹</string>
     <string name="menu_delete">删除</string>
     <string name="menu_delete_list">删除列表</string>
     <string name="menu_edit">编辑</string>
     <string name="menu_closeTab">关闭标签页</string>
     <string name="menu_download">下载</string>
-    <string name="menu_fav">设定为主页</string>
-    <string name="menu_sc">保存到主屏幕</string>
+    <string name="menu_fav">设为主页</string>
+    <string name="menu_sc">发送快捷方式到主屏幕</string>
 
-    <string name="menu_share_link">分享网址</string>
+    <string name="menu_share_link">分享链接</string>
 
-    <string name="menu_save_screenshot">截图</string>
-    <string name="menu_save_bookmark">加入书签</string>
-    <string name="menu_save_as">储存 PDF</string>
-    <string name="menu_save_pdf">另存为 PDF</string>
-    <string name="menu_shareClipboard">复制网址</string>
+    <string name="menu_save_screenshot">保存截图</string>
+    <string name="menu_save_bookmark">另存为书签</string>
+    <string name="menu_save_as">另存为…</string>
+    <string name="menu_save_pdf">另存为PDF</string>
+    <string name="menu_shareClipboard">复制到剪贴板</string>
 
-    <string name="menu_other_searchSite">页面中查找</string>
+    <string name="menu_other_searchSite">页面中搜索</string>
     <string name="menu_other_info">关于 \"EinkBro 浏览器\"</string>
 
     <!-- Dialog -->
     <string name="dialog_title_hint">标题:</string>
-    <string name="dialog_url_hint">网址:</string>
+    <string name="dialog_url_hint">Url:</string>
     <string name="dialog_extension_hint">扩展名 (例如: \".jpg\"):</string>
-    <string name="dialog_title_download">你想下载文件吗？</string>
-    <string name="dialog_content_resubmission">想要重新发送数据吗？</string>
+    <string name="dialog_title_download">您想下载该文件吗？</string>
+    <string name="dialog_content_resubmission">您想重新提交数据吗？</string>
     <!-- Settings -->
     <string name="setting_label">设置</string>
     <!-- browser setting -->
     <string name="setting_title_clear_control">数据控制</string>
     <string name="setting_title_start_control">启动设置</string>
     <string name="setting_title_search_engine">搜索引擎</string>
-    <string name="setting_summary_search_engine_google">Google</string>
+    <string name="setting_summary_search_engine_google">谷歌</string>
     <string name="setting_summary_search_engine_duckduckgo">DuckDuckGo</string>
     <string name="setting_summary_search_engine_startpage">StartPage</string>
-    <string name="setting_summary_search_engine_bing">Bing</string>
-    <string name="setting_summary_search_engine_baidu">Baidu</string>
+    <string name="setting_summary_search_engine_bing">必应</string>
+    <string name="setting_summary_search_engine_baidu">百度</string>
     <string name="setting_summary_search_engine_startpage_de">StartPage (de)</string>
     <string name="setting_summary_search_engine_searx">Searx</string>
     <string name="setting_summary_search_engine_qwant">Qwant</string>
     <string name="setting_summary_search_engine_ecosia">Ecosia</string>
 
-    <string name="setting_title_font_size">字体大小</string>
-    <string name="setting_summary_font_size">改变网页的字体大小</string>
+    <string name="setting_title_font_size">字号</string>
+    <string name="setting_summary_font_size">更改网页的字号。</string>
     <string name="setting_title_remote">远程内容</string>
     <string name="setting_summary_remote">启用远程内容，远程内容不是直接来自于你访问的网站。
         禁用这个特性使访问更加安全快捷同时节省数据存储。但是页面中有些内容将不再被展示。</string>
@@ -112,9 +112,9 @@
     <string name="setting_filter">过滤书签</string>
     <string name="setting_title_fav">我的主页</string>
 
-    <string name="setting_title_searchEngine">设置搜索引擎</string>
+    <string name="setting_title_searchEngine">自定义搜索引擎</string>
 
-    <string name="setting_title_userAgent">自定义 User Agent</string>
+    <string name="setting_title_userAgent">自定义用户代理 </string>
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">隐藏工具栏</string>
     <string name="setting_summary_hide">当上下滚动浏览页面时，隐藏工具栏使用整个屏幕显示页面内容。如果你几点后退按钮会退出全屏模式。</string>
@@ -126,10 +126,10 @@
     
     <string name="setting_title_nav">导航按钮</string>
     <string name="setting_title_nav_pos">位置</string>
-    <string name="setting_summary_nav_pos">设置浮动按键出现的位置</string>
-    <string name="setting_summary_nav_pos_right">靠右</string>
-    <string name="setting_summary_nav_pos_left">靠左</string>
-    <string name="setting_summary_nav_pos_center">居中</string>
+    <string name="setting_summary_nav_pos">选定 \"导航按钮\" 的位置。</string>
+    <string name="setting_summary_nav_pos_right">右对齐</string>
+    <string name="setting_summary_nav_pos_left">左对齐</string>
+    <string name="setting_summary_nav_pos_center">居中对齐</string>
 
     <string name="setting_summary_tab">设置启动时展示的页面。启动页，书签等等。</string>
     <string name="setting_title_confirm_tab_close">确认关闭标签页</string>
