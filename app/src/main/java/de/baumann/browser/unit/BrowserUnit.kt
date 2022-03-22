@@ -58,8 +58,8 @@ object BrowserUnit: KoinComponent {
     const val URL_SCHEME_INTENT = "intent://"
     private const val URL_PREFIX_GOOGLE_PLAY = "www.google.com/url?q="
     private const val URL_SUFFIX_GOOGLE_PLAY = "&sa"
-    const val UA_DESKTOP =
-        "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML like Gecko) Chrome/44.0.2403.155 Safari/537.36"
+    val UA_DESKTOP_PREFIX = "Mozilla/5.0 (X11; Linux "+ System.getProperty("os.arch") +")"
+    val UA_MOBILE_PREFIX = "Mozilla/5.0 (Linux; Android "+ Build.VERSION.RELEASE + ")"
 
     private val sp: SharedPreferences by inject()
     private val adBlock: AdBlock by inject()
@@ -68,10 +68,7 @@ object BrowserUnit: KoinComponent {
 
     @JvmStatic
     fun isURL(url: String?): Boolean {
-        var url = url
-        if (url == null) {
-            return false
-        }
+        var url = url ?: return false
         url = url.toLowerCase(Locale.getDefault())
         if (url.startsWith(URL_ABOUT_BLANK)
             || url.startsWith(URL_SCHEME_MAIL_TO)

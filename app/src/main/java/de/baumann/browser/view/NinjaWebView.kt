@@ -195,16 +195,22 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
     }
 
     fun updateDesktopMode() {
-        val isDesktopMode = config.desktop
-        if (isDesktopMode) {
-            settings.userAgentString = BrowserUnit.UA_DESKTOP
-        } else if (config.customUserAgent.isNotBlank()) {
-            settings.userAgentString = config.customUserAgent
-        } else {
-            settings.userAgentString = WebSettings.getDefaultUserAgent(context).replace("wv", "")
-        }
+        val defaultUserAgentString = WebSettings.getDefaultUserAgent(context).replace("wv", "")
+        val prefix: String = defaultUserAgentString.substring(0, defaultUserAgentString.indexOf(")") + 1)
 
-        settings.useWideViewPort = isDesktopMode
+        val isDesktopMode = config.desktop
+        try {
+            when {
+                isDesktopMode ->
+                    settings.userAgentString = defaultUserAgentString.replace(prefix, BrowserUnit.UA_DESKTOP_PREFIX)
+                config.customUserAgent.isNotBlank() ->
+                    settings.userAgentString = config.customUserAgent
+                else ->
+                    settings.userAgentString = defaultUserAgentString.replace(prefix, BrowserUnit.UA_MOBILE_PREFIX)
+            }
+        } catch (e: Exception) { }
+
+            settings.useWideViewPort = isDesktopMode
         settings.loadWithOverviewMode = isDesktopMode
     }
 
