@@ -8,47 +8,51 @@
     <string name="list_empty">当前列表为空</string>
     <string name="bookmarks">书签</string>
     <string name="album_title_history">历史</string>
-    <string name="album_title_home">首页</string>
+    <string name="album_title_home">主页</string>
     <string name="search_hint">搜索</string>
 
+
     <!-- Menu -->
-    <string name="main_menu_new_tab">新建标签页 (后台)</string>
-    <string name="main_menu_new_tabOpen">新建标签页 (前台)</string>
+    <string name="main_menu_new_tab">新建标签页 (后)</string>
+    <string name="main_menu_new_tabOpen">新建标签页 (前)</string>
     <string name="main_omnibox_input_hint">搜索或输入网址</string>
     <string name="menu_open_with">打开链接…</string>
 
     <string name="menu_quit">退出</string>
-    <string name="menu_openFav">打开收藏夹</string>
+    <string name="menu_openFav">打开主页</string>
     <string name="menu_delete">删除</string>
     <string name="menu_delete_list">删除列表</string>
     <string name="menu_edit">编辑</string>
     <string name="menu_closeTab">关闭标签页</string>
-    <string name="menu_download">下载</string>
-    <string name="menu_fav">设为主页</string>
-    <string name="menu_sc">发送快捷方式到主屏幕</string>
+    <string name="menu_download">打开下载管理</string>
+    <string name="menu_fav">另存为主页</string>
+    <string name="menu_sc">添加到主屏幕</string>
 
     <string name="menu_share_link">分享链接</string>
 
-    <string name="menu_save_screenshot">保存截图</string>
+    <string name="menu_save_screenshot">保存屏幕截图</string>
     <string name="menu_save_bookmark">另存为书签</string>
     <string name="menu_save_as">另存为…</string>
     <string name="menu_save_pdf">另存为PDF</string>
     <string name="menu_shareClipboard">复制到剪贴板</string>
 
     <string name="menu_other_searchSite">页面中搜索</string>
-    <string name="menu_other_info">关于 \"EinkBro 浏览器\"</string>
+    <string name="menu_other_info">关于 \"EinkBro浏览器\"</string>
 
     <!-- Dialog -->
     <string name="dialog_title_hint">标题:</string>
-    <string name="dialog_url_hint">Url:</string>
+    <string name="dialog_url_hint">网址:</string>
     <string name="dialog_extension_hint">扩展名 (例如: \".jpg\"):</string>
-    <string name="dialog_title_download">您想下载该文件吗？</string>
-    <string name="dialog_content_resubmission">您想重新提交数据吗？</string>
+    <string name="dialog_title_download">是否下载该文件?</string>
+    <string name="dialog_content_resubmission">是否重新提交数据?</string>
+
     <!-- Settings -->
     <string name="setting_label">设置</string>
+
     <!-- browser setting -->
     <string name="setting_title_clear_control">数据控制</string>
-    <string name="setting_title_start_control">启动设置</string>
+    <string name="setting_title_start_control">启动控制</string>
+
     <string name="setting_title_search_engine">搜索引擎</string>
     <string name="setting_summary_search_engine_google">谷歌</string>
     <string name="setting_summary_search_engine_duckduckgo">DuckDuckGo</string>
@@ -61,102 +65,113 @@
     <string name="setting_summary_search_engine_ecosia">Ecosia</string>
 
     <string name="setting_title_font_size">字号</string>
-    <string name="setting_summary_font_size">更改网页的字号。</string>
+    <string name="setting_summary_font_size">更改显示网站页面的字体大小。</string>
+
     <string name="setting_title_remote">远程内容</string>
-    <string name="setting_summary_remote">启用远程内容，远程内容不是直接来自于你访问的网站。
-        禁用这个特性使访问更加安全快捷同时节省数据存储。但是页面中有些内容将不再被展示。</string>
-    <string name="setting_title_save_data">请求 \'存储数据\'</string>
-    <string name="setting_summary_save_data">告诉网站你倾向于储存数据。下次可能会载入得比较快</string>
+    <string name="setting_summary_remote">启用并非直接来自您正在访问网站的远程内容。
+        禁用此功能访问网站时更安全、更快并节省数据流量，但有些内容将不再显示</string>
+
+    <string name="setting_title_save_data">请求 \'保存数据\'</string>
+    <string name="setting_summary_save_data">告诉网站您希望保存数据，受支持的网站下次访问加载速度更快。</string>
+
+
     <!-- browser start -->
     <string name="setting_title_images">图片</string>
-    <string name="setting_summary_images">支持网页图片。如果关闭，可以节省网络流量，网页载入也会比较快</string>
-    <string name="setting_title_cookie">Cookies</string>
-    <string name="setting_summary_cookie_delete">打开它会清除所有网站的Cookies（包含被信任的网站）.</string>
-    <string name="setting_summary_cookie">开启 Cookies. Cookies 是存在你设备上小的文本文件。网站用他们来完成一些功能，例如存储用户设置（例如搜索设置）。
-        但是他们也可能诶用来搜集用户个人信息。第三方的 Cookies（搜集用户信息为广告服务）总是被禁用的。</string>
-    <string name="setting_title_whitelistCookie">Cookie 白名单</string>
-    <string name="setting_summary_whitelistCookie">如果你禁用 Cookies，可以使用白名单来允许你信任的网站使用保存的 cookies.</string>
-    <string name="setting_title_javascript">JavaScript 设置</string>
-    <string name="setting_summary_javascript">启用 JavaScript. 许多网站需要 JavaScript 来达成一些功能(菜单,
-        载入以及显示图片, …). 但启用 Javascript 可能会引入一些潜在风险</string>
-    <string name="setting_title_whitelistJS">JavaScript 白名单</string>
-    <string name="setting_summary_whitelistJS">如果你禁用 JavaScript，可以使用白名单来允许你信任的网站使用 javascript.</string>
+    <string name="setting_summary_images">启用网络图片，禁用可能有助于节省网络流量和更快加载网页。</string>
+    <string name="setting_title_cookie">Cookie</string>
+    <string name="setting_summary_cookie_delete">如果启用，将删除所有网站的Cookie，包括可信任网站。</string>
+    <string name="setting_summary_cookie">启用Cookie。Cookie是存储在设备上的小型文本文件，网站使用它们来存储用户设置 (例如搜索设置)，但也可以用来收集个人信息等用户数据。第三方Cookie (收集用户数据用于广告服务) 始终处于禁用状态。</string>
+    <string name="setting_title_whitelistCookie">Cookie白名单</string>
+    <string name="setting_summary_whitelistCookie">如果禁用Cookie，可以使用此白名单允许您访问的网站信任使用保存Cookie数据。</string>
+
+    <string name="setting_title_javascript">JavaScript</string>
+    <string name="setting_summary_javascript">启用JavaScript。许多网站需要使用JavaScript的功能 (菜单、加载和显示图片等)，但启用可能会引入一些潜在风险。</string>
+    <string name="setting_title_whitelistJS">JavaScript白名单</string>
+    <string name="setting_summary_whitelistJS">如果禁用JavaScript，可以使用此白名单允许您信任的网站使用JavaScript。</string>
+
     <string name="setting_title_adblock">AdBlock</string>
-    <string name="setting_summary_adblock">开启 AdBlock 以过滤烦人的广告，同时页面加载也会更快。</string>
-    <string name="setting_title_whitelist">AdBlock 白名单</string>
-    <string name="setting_summary_whitelist">允许部分页面显示广告。有些页面在过滤了广告后会出现异常。</string>
+    <string name="setting_summary_adblock">启用AdBlock可阻止烦人的广告，同时网页的加载速度也会更快。</string>
+    <string name="setting_title_whitelist">AdBlock白名单</string>
+    <string name="setting_summary_whitelist">允许这些网站的页面显示广告。启用AdBlock后，某些网站可能无法运行。</string>
+
     <string name="setting_title_location">位置</string>
-    <string name="setting_summary_location">允许网站访问你的位置信息。有些网站（如何谷歌导航）需要这个功能。</string>
+    <string name="setting_summary_location">允许网站访问您的位置，某些网站 (例如用于导航的谷歌地图) 需要启用此功能。</string>
 
     <string name="setting_title_history">历史</string>
-    <string name="setting_summary_history">保存浏览历史记录。</string>
+    <string name="setting_summary_history">保存已访问网站的历史记录。</string>
 
 
     <!-- browser clear -->
-    <string name="data_summary">所有的文件都会被导出到SD卡下的目录：\"Android/data/de.baumann.browser/files/browser_backup/\"。
-        如果你卸载 \"EinkBro Browser\"，这个目录会被删除掉。因此最好将文件备份到安全的地方。</string>
-    <string name="clear_title_quit">退出应用时清除</string>
-    <string name="clear_summary_quit">每次你退出 \"EinkBro Browser\"， 所有上面选中的数据都会被删除.</string>
+    <string name="data_summary">所有文件都将导出到您的SD卡目录: \"Android/data/de.baumann.browser/files/browser_backup/\" 如果您卸载 \"EinkBro浏览器\"，此目录将被删除。所以最好将文件备份到安全的地方。</string>
+    <string name="clear_title_quit">应用程序退出时进行清除</string>
+    <string name="clear_summary_quit">每次退出 \"EinkBro浏览器\" 时，上述所有勾选的数据都将被删除。</string>
     <string name="clear_title_cache">清除缓存</string>
-    <string name="clear_title_cookie">清除 Cookies</string>
+    <string name="clear_title_cookie">清除Cookie</string>
     <string name="clear_title_history">清除历史记录</string>
-    <string name="clear_title_indexedDB">清除 \"indexed databases\" 以及 \"local webview storage\"</string>
+    <string name="clear_title_indexedDB">清除 \"索引数据库\" 和 \"本地网页视图存储\"</string>
 
-    <string name="clear_title_deleteDatabase">删除数据库</string>
-    <string name="clear_summary_deleteDatabase">删除整個数据库(起始页, 书签, 历史记录以及所有的白名单).</string>
+    <string name="clear_title_deleteDatabase">Delete database</string>
+    <string name="clear_summary_deleteDatabase">Delete the whole database (Startpage, bookmarks, history and all whitelists).</string>
+
 
     <!-- App setting -->
-    <string name="setting_title_ui">操作行为/界面</string>
+    <string name="setting_title_ui">操作习惯或用户界面</string>
     <string name="setting_title_data">备份</string>
 
-    <string name="setting_filter">过滤书签</string>
-    <string name="setting_title_fav">我的主页</string>
+    <string name="setting_filter">书签过滤</string>
+
+    <string name="setting_title_fav">特别喜欢的页面</string>
 
     <string name="setting_title_searchEngine">自定义搜索引擎</string>
 
-    <string name="setting_title_userAgent">自定义用户代理 </string>
+    <string name="setting_title_userAgent">自定义用户代理</string>
+
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">隐藏工具栏</string>
-    <string name="setting_summary_hide">当上下滚动浏览页面时，隐藏工具栏使用整个屏幕显示页面内容。如果你几点后退按钮会退出全屏模式。</string>
+    <string name="setting_summary_hide">在浏览网站时使用整个屏幕。如果您按下返回按钮，将离开全屏模式。</string>
 
-    <string name="setting_title_theme">界面</string>
-    <string name="setting_title_behavior">行为</string>
-    <string name="setting_summary_toolbarShow">点击后退按钮时，在回退到上一个浏览记录之前，工具栏会出现。</string>
-    <string name="setting_title_toolbarShow">回退显示工具栏</string>
-    
+    <string name="setting_title_theme">用户界面</string>
+    <string name="setting_title_behavior">行为习惯</string>
+
+    <string name="setting_summary_toolbarShow">在返回历史记录之前，按返回按钮将使工具栏可见。</string>
+    <string name="setting_title_toolbarShow">第一个工具栏 </string>
+
     <string name="setting_title_nav">导航按钮</string>
     <string name="setting_title_nav_pos">位置</string>
-    <string name="setting_summary_nav_pos">选定 \"导航按钮\" 的位置。</string>
+    <string name="setting_summary_nav_pos">设置 \"导航按钮\" 的位置。</string>
     <string name="setting_summary_nav_pos_right">右对齐</string>
     <string name="setting_summary_nav_pos_left">左对齐</string>
-    <string name="setting_summary_nav_pos_center">居中对齐</string>
+    <string name="setting_summary_nav_pos_center">居中</string>
+    <string name="setting_summary_nav_pos_not_show">不显示</string>
 
-    <string name="setting_summary_tab">设置启动时展示的页面。启动页，书签等等。</string>
+    <string name="setting_summary_tab">设置 \"概览\" 启动时应显示的内容，包括开始页、您的书签等</string>
+
     <string name="setting_title_confirm_tab_close">确认关闭标签页</string>
-    <string name="setting_summary_confirm_tab_close">关闭标签页时的确认话框</string>
-    <string name="setting_overView">画面预览</string>
+    <string name="setting_summary_confirm_tab_close">关闭标签页时的确认对话框。</string>
+
+    <string name="setting_overView">概览</string>
 
     <string name="setting_gestures">手势</string>
     <string name="setting_gestures_use_title">使用手势</string>
-    <string name="setting_gestures_use_summary">在工具栏或浮动按钮上使用手势</string>
+    <string name="setting_gestures_use_summary">在工具栏和 \"导航按钮\" 上使用手势。</string>
 
     <string name="setting_title_saveTabs">保存标签页</string>
-    <string name="setting_summary_saveTabs">保存标签页以便下次可以重新打开。</string>
+    <string name="setting_summary_saveTabs">保存标签页，便于下次使用浏览器时重新打开保存的网页。</string>
 
     <!-- gestures -->
     <string name="setting_title_toolbar">工具栏</string>
-    <string name="setting_gesture_up">往上滑</string>
-    <string name="setting_gesture_down">往下滑</string>
-    <string name="setting_gesture_left">往左滑</string>
-    <string name="setting_gesture_right">往右滑</string>
+    <string name="setting_gesture_up">上滑</string>
+    <string name="setting_gesture_down">下滑</string>
+    <string name="setting_gesture_left">左滑</string>
+    <string name="setting_gesture_right">右滑</string>
     <string name="nothing">无</string>
-    <string name="forward_in_history">前一个浏览记录</string>
+    <string name="forward_in_history">上一个浏览记录</string>
     <string name="back_in_history">下一个浏览记录</string>
-    <string name="scroll_to_top">跳到网页最上方</string>
-    <string name="scroll_to_bottom">跳到网页最下方</string>
-    <string name="switch_to_left_tab">切换到上一个标签页</string>
-    <string name="switch_to_right_tab">切换到下一个标签页</string>
-    <string name="show_overview">开启预览</string>
+    <string name="scroll_to_top">回到顶部</string>
+    <string name="scroll_to_bottom">滚动至底部</string>
+    <string name="switch_to_left_tab">切换到左标签页</string>
+    <string name="switch_to_right_tab">切换到右标签页</string>
+    <string name="show_overview">显示概览 </string>
     <string name="open_new_tab">打开新标签页</string>
     <string name="close_tab">关闭标签页</string>
     <string name="page_up">上一页</string>
@@ -170,48 +185,47 @@
 
     <string name="export_whitelistCookie">export_whitelist_Cookie</string>
 
-    <string name="setting_title_export_appData">导出应用数据</string>
-    <string name="setting_title_import_appData">导入应用数据</string>
-    <string name="setting_summary_export_appData">导出应用数据 (起始页 + previews, 历史记录, 书签)
-        以及你所有的个人设置.</string>
-    <string name="title_appData">应用数据</string>
-    <string name="hint_database">删除你当前所有的设置和数据，继续？</string>
+    <string name="setting_title_export_appData">导出应用程序数据</string>
+    <string name="setting_title_import_appData">导入应用程序数据</string>
+    <string name="setting_summary_export_appData">导出应用程序数据 (起始页 + 预览、历史记录、书签) 以及你的个人设置。</string>
+    <string name="title_appData">应用程序数据</string>
+    <string name="hint_database">这将删除当前的所有设置和数据，是否继续？</string>
+
 
     <!-- Others setting -->
-    <string name="setting_title_license">License</string>
-    <string name="setting_title_appSettings">应用设置</string>
+    <string name="setting_title_license">许可信息</string>
+    <string name="setting_title_appSettings">应用设置信息</string>
 
     <!-- Toast -->
-    <string name="toast_add_whitelist_successful">Successfully added Domain</string>
-    <string name="toast_copy_successful">复制成功</string>
-    <string name="toast_delete_successful">删除成功</string>
-    <string name="toast_domain_already_exists">域名已存在</string>
+    <string name="toast_add_whitelist_successful">已成功添加域</string>
+    <string name="toast_copy_successful">成功复制</string>
+    <string name="toast_delete_successful">成功删除</string>
+    <string name="toast_domain_already_exists">域已存在</string>
     <string name="toast_export_successful">导出为:&#160;</string>
     <string name="toast_export_failed">导出失败</string>
-    <string name="toast_import_successful">导入数量:&#160;</string>
+    <string name="toast_import_successful">导入为:&#160;</string>
     <string name="toast_import_failed">导入失败</string>
-    <string name="toast_input_empty">你还没有输入任何数据</string>
-    <string name="toast_invalid_domain">域名无效</string>
-    <string name="toast_load_error">无法加载该URL</string>
-    <string name="toast_new_tab_successful">在标签页中打开成功</string>
-    <string name="toast_share_failed">该页面无法被分享</string>
+    <string name="toast_input_empty">您还未输入任何数据</string>
+    <string name="toast_invalid_domain">域无效</string>
+    <string name="toast_load_error">无法加载此网址</string>
+    <string name="toast_new_tab_successful">在新标签页成功打开</string>
+    <string name="toast_share_failed">无法分享此页面</string>
     <string name="toast_start_download">开始下载</string>
-    <string name="toast_wait_a_minute">稍等</string>
-    <string name="toast_error">哦豁. 出错了.</string>
-    <string name="toast_newTitle">该项已存在. 请重新输入.</string>
-    <string name="toast_edit_successful">保存成功</string>
-    <string name="toast_webview_forward">无法加载下一个页面</string>
-    <string name="toast_restart">退出 \"EinkBro Browser\" 以应用更改。立刻退出？</string>
+    <string name="toast_wait_a_minute">请稍等</string>
+    <string name="toast_error">哦豁，出错了！</string>
+    <string name="toast_newTitle">标题已存在，请重新输入。</string>
+    <string name="toast_edit_successful">已成功保存</string>
+    <string name="toast_webview_forward">无法加载下一页面</string>
+    <string name="toast_restart">必须重新启动 \"EinkBro浏览器\" 才能应用更改，确定现在重启吗？</string>
     <string name="toast_close_tab">是否关闭当前标签页？</string>
-    <string name="toast_downloadComplete">下载完成。打开文件管理器？</string>
-    <string name="toast_backup">备份数据？老的数据备份会被覆盖。</string>
+    <string name="toast_downloadComplete">下载完毕，是否打开文件管理器？</string>
+    <string name="toast_backup">是否备份数据？这将覆写已有旧备份。</string>
 
 
     <!-- Whitelist -->
     <string name="whitelist_menu_clear">清除</string>
-    <string name="whitelist_edit_hint">域名</string>
+    <string name="whitelist_edit_hint">域</string>
     <string name="whitelist_add">添加</string>
-
 
 
     <!-- Dialog help -->
@@ -226,56 +240,141 @@
 
     <string name="changelog_dialog">
 
-        &lt;b>On the following sites you have access to all important information about \"EinkBro Browser\".
-        Please read also the help dialog within the app.&lt;/b>&lt;br>&lt;br>
+        &lt;b>在以下网站您可以访问相关方面的所有重要信息 \"EinkBro Browser\".
+        &lt;br>&lt;br>
 
-        \u25AA &lt;i>Project site:&lt;/i> https://github.com/plateaukao/browser&lt;br>
-        \u25AA &lt;i>Changelog:&lt;/i> https://github.com/plateaukao/browser/blob/main/CHANGELOG.md&lt;br>
-        \u25AA &lt;i>License:&lt;/i> https://github.com/plateaukao/browser/blob/main/LICENSE.md&lt;br>
-        \u25AA &lt;i>Privacy:&lt;/i> https://github.com/plateaukao/browser/blob/main/PRIVACY.md
-
+        \u25AA &lt;i>新版本:&lt;/i> https://github.com/plateaukao/browser/releases&lt;br>&lt;br>
+        \u25AA &lt;i>项目站点:&lt;/i> https://github.com/plateaukao/browser&lt;br>&lt;br>
+        \u25AA &lt;i>Facebook页:&lt;/i> https://www.facebook.com/einkbro&lt;br>&lt;br>
+        \u25AA &lt;i>更新日志:&lt;/i> https://github.com/plateaukao/browser/blob/main/CHANGELOG.md&lt;br>&lt;br>
     </string>
 
 
     <!-- License changelog -->
 
-    <string name="setting_title_toolbar_icons">工具栏上的图标</string>
-    <string name="setting_summary_toolbar_icons">设置工具栏上展示的图标</string>
+    <string name="license_title">版权所有 © 2021 by Daniel Kao, <br/> 2017  by Gaukler Faun</string>
+    <string name="license_dialog"><![CDATA[
+        <i>For more information visit the project site on Github: https://github.com/plateaukao/browser</i><br><br>
+
+        This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with this program.  If not, see http://www.gnu.org/licenses.<br><br>
+
+        <i>Following open source libraries or projects are used within this software:</i><br><br><br>
+
+        <b>Material Design Icons</b><br>
+        SIL Open Font License, Version 1.1.<br>
+        Templarian<br>
+        <i>https://github.com/Templarian/MaterialDesign</i><br><br>
+
+        <b>Ninja</b><br>
+        Apache License Version 2.0<br>
+        Matthew Lee<br>
+        <i>http://git.io/vUrEh</i><br><br>
+
+    ]]>
+    </string>
+    <string name="setting_title_toolbar_icons">工具栏图标</string>
+    <string name="setting_summary_toolbar_icons">设置工具栏上应该显示的图标</string>
     <string name="setting_summary_desktop">支持网站桌面模式</string>
     <string name="history">历史</string>
     <string name="location">位置</string>
-    <string name="desktop">桌面</string>
-    <string name="media_continue">继续</string>
-    <string name="show_touch_area_hint">显示触控区域边缘</string>
+    <string name="desktop">Desktop\nMode</string>
+    <string name="media_continue">Bckgnd\nPlay</string>
+    <string name="show_touch_area_hint">显示触控感应区边界</string>
     <string name="close">关闭</string>
-    <string name="touch_left_side">左边</string>
-    <string name="touch_right_side">右边</string>
-    <string name="bold_font">字体加粗</string>
-    <string name="setting_summary_bold_font">设置字体加粗样式（需要重载当前页面）</string>
+    <string name="touch_left_side">左</string>
+    <string name="touch_right_side">右</string>
+    <string name="bold_font">粗体</string>
+    <string name="white_background">白色背景</string>
+    <string name="setting_summary_bold_font">应用加粗字体样式 (需要重新加载当前页面)</string>
     <string name="desktop_mode">桌面模式</string>
-    <string name="setting_title_page_left_value">预留页面高度</string>
-    <string name="setting_summary_page_left_value">当翻到下一页是预留的页面高度</string>
-    <string name="touch_area">触控区域</string>
-    <string name="setting_summary_touch_area">配置翻页触控区域</string>
-    <string name="setting_title_pdf_paper_size">打印PDF纸张大小</string>
+    <string name="setting_title_page_left_value">页面预留高度</string>
+    <string name="setting_summary_page_left_value">翻到下一页时预留的页面高度</string>
+    <string name="touch_area">触控感应区</string>
+    <string name="setting_summary_touch_area">配置翻页的触控感应区</string>
+    <string name="setting_title_pdf_paper_size">输出PDF纸张大小</string>
     <string name="font_style_serif">字体样式: Serif</string>
-    <string name="setting_summary_font_style_serif">设置字体样式为： Noto Sans Serif</string>
+    <string name="setting_summary_font_style_serif">设置字体样式为: Noto Sans Serif</string>
     <string name="vertical_read">横屏模式</string>
     <string name="reader_mode">阅读模式</string>
-    <string name="touch_area_setting">触摸设置</string>
-    <string name="toolbar_setting">工具栏\n设置</string>
-    <string name="menu_save_epub">另存为 epub</string>
-    <string name="new_epub_or_from_picker">新 Epub 或開啟 Picker</string>
-    <string name="title">章节名</string>
-    <string name="title_in_toc">目录里的章节名</string>
-    <string name="book_name">书名</string>
-    <string name="book_name_description">输入书名</string>
-    <string name="saving_epub">另存为 EPUB</string>
-    <string name="volume_page_turn">翻頁</string>
-    <string name="menu_add_folder">增加书签文件夹</string>
-    <string name="folder_name">书签文件夹名</string>
-    <string name="folder_name_description">插入书签文件夹名</string>
-    <string name="setting_title_incognito">Incognito Mode</string>
-    <string name="middle">middle</string>
-    <string name="bottom">bottom</string>
+    <string name="touch_area_setting">触控设置</string>
+    <string name="toolbar_setting">工具栏设置</string>
+    <string name="menu_save_epub">保存Epub</string>
+    <string name="new_epub_or_from_picker">新建Epub或来自选择器</string>
+    <string name="title">章节名称</string>
+    <string name="title_in_toc">目录中的章节名称</string>
+    <string name="book_name">图书名称</string>
+    <string name="book_name_description">输入图书名称</string>
+    <string name="saving_epub">正在保存Epub</string>
+    <string name="volume_page_turn">Volume\nKey</string>
+    <string name="menu_add_folder">添加书签文件夹</string>
+    <string name="folder_name">书签文件夹名称</string>
+    <string name="folder_name_description">插入书签文件夹名称</string>
+    <string name="setting_title_export_bookmarks">导出书签</string>
+    <string name="setting_title_import_bookmarks">导入书签</string>
+    <string name="setting_title_incognito">隐身模式</string>
+    <string name="back">返回</string>
+    <string name="refresh">刷新</string>
+    <string name="touch_turn_page">触摸翻页</string>
+    <string name="tab_preview">标签页预览</string>
+    <string name="font_size">字号</string>
+    <string name="settings">设置</string>
+    <string name="toolbars">工具栏设置</string>
+    <string name="font_size_increase">增大字号</string>
+    <string name="font_size_decrease">减小字号</string>
+    <string name="fullscreen">全屏浏览</string>
+    <string name="forward">向前</string>
+    <string name="rotate">旋转</string>
+    <string name="translate">翻译</string>
+    <string name="toolbar_title">标题</string>
+    <string name="setting_title_screen_awake">保持屏幕唤醒状态</string>
+    <string name="setting_summary_screen_awake">保持屏幕始终处于唤醒状态</string>
+    <string name="middle">中间</string>
+    <string name="bottom">底部</string>
+    <string name="input_url">输入网址</string>
+    <string name="setting_title_useUpDown">使用向上/向下方向键</string>
+    <string name="setting_summary_ususeUpDowneUpDown">使用向上/向下方向键翻页，适用于蓝牙设备。</string>
+    <string name="setting_title_process_text">自定义外部搜索网址</string>
+    <string name="split_screen">分屏</string>
+    <string name="dark_mode">夜间模式</string>
+    <string name="setting_summary_dark_mode">支持夜间模式</string>
+    <string name="hie_touch_area_when_input">打字时隐藏触控感应区</string>
+    <string name="switch_touch_area_action">切换触控感应区动作</string>
+    <string name="no_previous_page">没有上一页!</string>
+    <string name="menu_open_epub">打开Epub</string>
+    <string name="setting_multitouch_use_title">使用两指滑动</string>
+    <string name="setting_multitouch_use_summary">使用两指在网页内容上滑动来触发动作</string>
+    <string name="setting_title_two_finger_swipe">两指滑动</string>
+    <string name="font_custom">选择自定义字体文件</string>
+    <string name="translation_mode">翻译模式</string>
+    <string name="title_activity_epub_reader">Epub阅读活动</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">第一片段</string>
+    <string name="second_fragment_label">第二片段</string>
+    <string name="next">下一页</string>
+    <string name="previous">上一页</string>
+
+    <string name="hello_first_fragment">您好第一片段</string>
+    <string name="hello_second_fragment">您好第二片段. Arg: %1$s</string>
+    <string name="system_default">默认值</string>
+    <string name="serif">serif</string>
+    <string name="googleserif">谷歌Serif</string>
+    <string name="custom_font">自定义字体</string>
+    <string name="setting_title_font">字体</string>
+    <string name="font_type">字体类型</string>
+    <string name="menu_quickToggle">快速切换</string>
+    <string name="setting_title_toolbar_top">工具栏位置</string>
+    <string name="setting_summary_toolbar_top">在屏幕顶部显示工具栏。</string>
+    <string name="setting_title_vi_binding">VI键值绑定</string>
+    <string name="setting_summary_vi_binding">启用VI键值绑定以简化键盘导航。</string>
 </resources>
