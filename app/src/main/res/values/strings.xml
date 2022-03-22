@@ -377,10 +377,10 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="system_default">default</string>
-    <string name="serif">serif</string>
+    <string name="system_default">Default</string>
+    <string name="serif">Serif</string>
     <string name="googleserif">Google Serif</string>
-    <string name="custom_font">custom font</string>
+    <string name="custom_font">Custom font</string>
     <string name="setting_title_font">Font</string>
     <string name="font_type">Font Type</string>
     <string name="menu_quickToggle">Quick Toggle</string>

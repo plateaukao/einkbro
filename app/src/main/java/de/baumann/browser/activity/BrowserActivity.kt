@@ -857,6 +857,10 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
             showFastToggleDialog()
             false
         }
+        binding.omniboxFont.setOnLongClickListener {
+            dialogManager.showFontTypeDialog()
+            false
+        }
         binding.omniboxSetting.setOnClickListener { showMenuDialog() }
         if (sp.getBoolean("sp_gestures_use", true)) {
             val onNavButtonTouchListener = object : SwipeTouchListener(this) {
