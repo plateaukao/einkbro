@@ -13,14 +13,6 @@
   background-color: #ffffff !important;
 }
 
-.mozac-readerview-body.sans-serif * {
-  font-family: customfont, sans-serif !important;
-}
-
-.mozac-readerview-body.serif * {
-  font-family: customfont, 'Noto Serif TC', 'Noto Serif JP', serif !important;
-}
-
 /* Override some controls and content styles based on color scheme */
 
 .mozac-readerview-body.light > .container > .header > .domain {

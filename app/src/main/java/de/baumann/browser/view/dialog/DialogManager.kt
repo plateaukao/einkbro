@@ -35,7 +35,7 @@ class DialogManager(
         val selected = valueArray.indexOf(config.fontSize.toString())
 
         AlertDialog.Builder(activity, R.style.TouchAreaDialog).apply{
-            setTitle("Choose Font Size")
+            setTitle("Font Size")
             setSingleChoiceItems(fontArray, selected) { dialog, which ->
                 config.fontSize = valueArray[which].toInt()
                 dialog.dismiss()
