@@ -1005,7 +1005,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
                 ninjaWebView.reload()
                 updateDesktopIcon()
             }
-            ConfigManager.K_DARK_MODE -> showRestartConfirmDialog()
+            ConfigManager.K_DARK_MODE -> sp.edit().putInt("restart_changed", 1).apply()
             ConfigManager.K_TOOLBAR_TOP -> updateAppbarPosition()
         }
     }
