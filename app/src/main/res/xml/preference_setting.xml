@@ -79,11 +79,6 @@
 
     <PreferenceCategory>
         <Preference
-            android:key="settings_appSettings"
-            android:icon="@drawable/icon_settings"
-            android:title="@string/setting_title_appSettings"/>
-
-        <Preference
             android:key="settings_license"
             android:icon="@drawable/icon_copyright"
             android:title="@string/setting_title_license"/>
