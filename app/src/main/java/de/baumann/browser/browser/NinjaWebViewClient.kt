@@ -109,8 +109,10 @@ class NinjaWebViewClient(
         val packageManager = context.packageManager
         val browseIntent = Intent(Intent.ACTION_VIEW).setData(uri)
         if (browseIntent.resolveActivity(packageManager) != null) {
-            context.startActivity(browseIntent)
-            return true
+            try {
+                context.startActivity(browseIntent)
+                return true
+            } catch(e: Exception) { }
         }
         if (url.startsWith("intent:")) {
             try {
@@ -128,7 +130,7 @@ class NinjaWebViewClient(
 
                 context.startActivity(intent)
                 return true
-            } catch (e: URISyntaxException) {
+            } catch (e: Exception) {
                 //not an intent uri
                 return false
             }
