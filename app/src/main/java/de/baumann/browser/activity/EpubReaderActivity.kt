@@ -34,11 +34,17 @@ class EpubReaderActivity: BrowserActivity() {
 
     override fun dispatchIntent(intent: Intent) {
         val epubUri= intent.data ?: return
+        val shouldGotoLastChapter = intent.getBooleanExtra(ARG_TO_LAST_CHAPTER, false)
+
         addAlbum(url = BrowserUnit.URL_ABOUT_BLANK, enablePreloadWebView = false) // so that it won't miss the preload webview
         lifecycleScope.launch {
             with(ninjaWebView as EpubReaderView) {
                 openEpubFile(epubUri)
-                gotoPosition(0, 0F)
+                if (shouldGotoLastChapter) {
+                    gotoLastChapter()
+                } else {
+                    gotoPosition(0, 0F)
+                }
             }
         }
     }
@@ -92,5 +98,9 @@ class EpubReaderActivity: BrowserActivity() {
         })
 
         return epubReader
+    }
+
+    companion object {
+        const val ARG_TO_LAST_CHAPTER = "arg_to_last_chapter"
     }
 }

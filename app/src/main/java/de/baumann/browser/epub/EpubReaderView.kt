@@ -350,6 +350,12 @@ elements[i].style.color='white';
         }
     }
 
+    fun gotoLastChapter() {
+        if (chapterList.isEmpty()) return
+
+        gotoPosition(chapterList.size - 1, 0F)
+    }
+
     fun gotoPosition(chapterNumber: Int, progress: Float) {
         if (chapterList.isEmpty()) return
 
