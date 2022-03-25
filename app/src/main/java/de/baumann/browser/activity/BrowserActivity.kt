@@ -296,7 +296,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
             val takeFlags: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION
             contentResolver.takePersistableUriPermission(uri, takeFlags)
 
-            HelperUnit.openFile(this@BrowserActivity, uri, Constants.MIME_TYPE_EPUB)
+            HelperUnit.openFile(this@BrowserActivity, uri)
             return
         }
 
@@ -668,7 +668,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
                         chapterName,
                         ninjaWebView.url ?: "") { savedBookName ->
                     progressDialog.dismiss()
-                    HelperUnit.openFile(this@BrowserActivity, fileUri, Constants.MIME_TYPE_EPUB)
+                    HelperUnit.openEpubToLastChapter(this@BrowserActivity, fileUri)
 
                     // save epub file info to preference
                     val bookUri = fileUri.toString()
@@ -1747,7 +1747,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
     } else {
         dialogManager.showSaveEpubDialog(shouldAddNewEpub = false) {
             val uri = it ?: return@showSaveEpubDialog
-            HelperUnit.openFile(this@BrowserActivity, uri, Constants.MIME_TYPE_EPUB)
+            HelperUnit.openFile(this@BrowserActivity, uri)
         }
     }
 

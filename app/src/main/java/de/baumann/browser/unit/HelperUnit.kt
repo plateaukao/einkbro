@@ -43,6 +43,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCa
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.activity.BrowserActivity
+import de.baumann.browser.activity.EpubReaderActivity
 import de.baumann.browser.fragment.UiSettingsFragment
 import de.baumann.browser.util.Constants
 import de.baumann.browser.view.NinjaToast
@@ -207,12 +208,21 @@ object HelperUnit {
         return s
     }
 
-    fun openFile(activity: Activity, uri: Uri, mimeType: String) {
+    fun openEpubToLastChapter(activity: Activity, uri: Uri) {
+        openFile(activity, uri, true)
+    }
+
+    fun openFile(activity: Activity, uri: Uri, shouldGoToEnd: Boolean = false) {
         val intent = Intent().apply {
             action = Intent.ACTION_VIEW
             data = uri
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_GRANT_READ_URI_PERMISSION
         }
+
+        if (shouldGoToEnd) {
+            intent.putExtra(EpubReaderActivity.ARG_TO_LAST_CHAPTER, true)
+        }
+
         try {
             activity.startActivity(Intent.createChooser(intent, "Open file with"))
         } catch (exception: SecurityException) {
