@@ -110,17 +110,17 @@
     <string name="clear_title_history">清除历史记录</string>
     <string name="clear_title_indexedDB">清除 \"索引数据库\" 和 \"本地网页视图存储\"</string>
 
-    <string name="clear_title_deleteDatabase">Delete database</string>
-    <string name="clear_summary_deleteDatabase">Delete the whole database (Startpage, bookmarks, history and all whitelists).</string>
+    <string name="clear_title_deleteDatabase">删除数据库</string>
+    <string name="clear_summary_deleteDatabase">删除整个数据库 (包括起始页、书签、历史记录和所有白名单内容)。</string>
 
 
     <!-- App setting -->
-    <string name="setting_title_ui">操作习惯或用户界面</string>
+    <string name="setting_title_ui">操作习惯或用户界面设置</string>
     <string name="setting_title_data">备份</string>
 
     <string name="setting_filter">书签过滤</string>
 
-    <string name="setting_title_fav">特别喜欢的页面</string>
+    <string name="setting_title_fav">我的主页</string>
 
     <string name="setting_title_searchEngine">自定义搜索引擎</string>
 
@@ -131,7 +131,7 @@
     <string name="setting_summary_hide">在浏览网站时使用整个屏幕。如果您按下返回按钮，将离开全屏模式。</string>
 
     <string name="setting_title_theme">用户界面</string>
-    <string name="setting_title_behavior">行为习惯</string>
+    <string name="setting_title_behavior">操作习惯</string>
 
     <string name="setting_summary_toolbarShow">在返回历史记录之前，按返回按钮将使工具栏可见。</string>
     <string name="setting_title_toolbarShow">第一个工具栏 </string>
@@ -156,7 +156,7 @@
     <string name="setting_gestures_use_summary">在工具栏和 \"导航按钮\" 上使用手势。</string>
 
     <string name="setting_title_saveTabs">保存标签页</string>
-    <string name="setting_summary_saveTabs">保存标签页，便于下次使用浏览器时重新打开保存的网页。</string>
+    <string name="setting_summary_saveTabs">保存标签页，便于下次使用浏览器时重新打开保存的网址。</string>
 
     <!-- gestures -->
     <string name="setting_title_toolbar">工具栏</string>
@@ -187,7 +187,7 @@
 
     <string name="setting_title_export_appData">导出应用程序数据</string>
     <string name="setting_title_import_appData">导入应用程序数据</string>
-    <string name="setting_summary_export_appData">导出应用程序数据 (起始页 + 预览、历史记录、书签) 以及你的个人设置。</string>
+    <string name="setting_summary_export_appData">导出应用程序数据 (起始页 + 预览、历史记录、书签) 以及您的个人设置。</string>
     <string name="title_appData">应用程序数据</string>
     <string name="hint_database">这将删除当前的所有设置和数据，是否继续？</string>
 
@@ -197,22 +197,22 @@
     <string name="setting_title_appSettings">应用设置信息</string>
 
     <!-- Toast -->
-    <string name="toast_add_whitelist_successful">已成功添加域</string>
+    <string name="toast_add_whitelist_successful">已成功添加域名</string>
     <string name="toast_copy_successful">成功复制</string>
     <string name="toast_delete_successful">成功删除</string>
-    <string name="toast_domain_already_exists">域已存在</string>
+    <string name="toast_domain_already_exists">域名已存在</string>
     <string name="toast_export_successful">导出为:&#160;</string>
     <string name="toast_export_failed">导出失败</string>
     <string name="toast_import_successful">导入为:&#160;</string>
     <string name="toast_import_failed">导入失败</string>
     <string name="toast_input_empty">您还未输入任何数据</string>
-    <string name="toast_invalid_domain">域无效</string>
+    <string name="toast_invalid_domain">域名无效</string>
     <string name="toast_load_error">无法加载此网址</string>
     <string name="toast_new_tab_successful">在新标签页成功打开</string>
     <string name="toast_share_failed">无法分享此页面</string>
     <string name="toast_start_download">开始下载</string>
     <string name="toast_wait_a_minute">请稍等</string>
-    <string name="toast_error">哦豁，出错了！</string>
+    <string name="toast_error">哎，出错了！</string>
     <string name="toast_newTitle">标题已存在，请重新输入。</string>
     <string name="toast_edit_successful">已成功保存</string>
     <string name="toast_webview_forward">无法加载下一页面</string>
@@ -224,15 +224,15 @@
 
     <!-- Whitelist -->
     <string name="whitelist_menu_clear">清除</string>
-    <string name="whitelist_edit_hint">域</string>
+    <string name="whitelist_edit_hint">域名</string>
     <string name="whitelist_add">添加</string>
 
 
     <!-- Dialog help -->
 
     <string name="dialogHelp_filterText">
-        You can tag your bookmarks with filters. In this way you can group your bookmarks. You can open the filter dialog by
-        long pressing the bookmark icon. If you activate an entry a dialog will appear, where you can edit the name of the filter.
+        可以使用过滤标记您的书签。通过这种方式，可以对书签进行分组。通过以下方式打开过滤对话框
+        长按书签图标。如果您激活条目，将出现一个对话框，可以在其中编辑过滤名称。 
     </string>
 
 
@@ -245,7 +245,7 @@
 
         \u25AA &lt;i>新版本:&lt;/i> https://github.com/plateaukao/browser/releases&lt;br>&lt;br>
         \u25AA &lt;i>项目站点:&lt;/i> https://github.com/plateaukao/browser&lt;br>&lt;br>
-        \u25AA &lt;i>Facebook页:&lt;/i> https://www.facebook.com/einkbro&lt;br>&lt;br>
+        \u25AA &lt;i>脸书页:&lt;/i> https://www.facebook.com/einkbro&lt;br>&lt;br>
         \u25AA &lt;i>更新日志:&lt;/i> https://github.com/plateaukao/browser/blob/main/CHANGELOG.md&lt;br>&lt;br>
     </string>
 
@@ -303,9 +303,9 @@
     <string name="touch_area">触控感应区</string>
     <string name="setting_summary_touch_area">配置翻页的触控感应区</string>
     <string name="setting_title_pdf_paper_size">输出PDF纸张大小</string>
-    <string name="font_style_serif">字体样式: Serif</string>
-    <string name="setting_summary_font_style_serif">设置字体样式为: Noto Sans Serif</string>
-    <string name="vertical_read">横屏模式</string>
+    <string name="font_style_serif">字体样式: 衬线</string>
+    <string name="setting_summary_font_style_serif">设置字体样式为: 谷歌无衬线</string>
+    <string name="vertical_read">垂直阅读</string>
     <string name="reader_mode">阅读模式</string>
     <string name="touch_area_setting">触控设置</string>
     <string name="toolbar_setting">工具栏设置</string>
@@ -367,8 +367,8 @@
     <string name="hello_first_fragment">您好第一片段</string>
     <string name="hello_second_fragment">您好第二片段. Arg: %1$s</string>
     <string name="system_default">默认值</string>
-    <string name="serif">serif</string>
-    <string name="googleserif">谷歌Serif</string>
+    <string name="serif">衬线</string>
+    <string name="googleserif">谷歌衬线</string>
     <string name="custom_font">自定义字体</string>
     <string name="setting_title_font">字体</string>
     <string name="font_type">字体类型</string>
