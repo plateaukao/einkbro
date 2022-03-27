@@ -23,20 +23,20 @@
     <string name="menu_delete">删除</string>
     <string name="menu_delete_list">删除列表</string>
     <string name="menu_edit">编辑</string>
-    <string name="menu_closeTab">关闭标签页</string>
-    <string name="menu_download">打开下载管理</string>
-    <string name="menu_fav">另存为主页</string>
-    <string name="menu_sc">添加到主屏幕</string>
+    <string name="menu_closeTab">关闭\n标签页</string>
+    <string name="menu_download">打开下\n载管理</string>
+    <string name="menu_fav">另存为\n主页</string>
+    <string name="menu_sc">添加到\n主屏幕</string>
 
     <string name="menu_share_link">分享链接</string>
 
     <string name="menu_save_screenshot">保存屏幕截图</string>
-    <string name="menu_save_bookmark">另存为书签</string>
+    <string name="menu_save_bookmark">另存为\n书签</string>
     <string name="menu_save_as">另存为…</string>
     <string name="menu_save_pdf">另存为PDF</string>
-    <string name="menu_shareClipboard">复制到剪贴板</string>
+    <string name="menu_shareClipboard">复制到\n剪贴板</string>
 
-    <string name="menu_other_searchSite">页面中搜索</string>
+    <string name="menu_other_searchSite">页面中\n搜索</string>
     <string name="menu_other_info">关于 \"EinkBro浏览器\"</string>
 
     <!-- Dialog -->
@@ -115,7 +115,7 @@
 
 
     <!-- App setting -->
-    <string name="setting_title_ui">操作习惯或用户界面设置</string>
+    <string name="setting_title_ui">用户界面/操作习惯</string>
     <string name="setting_title_data">备份</string>
 
     <string name="setting_filter">书签过滤</string>
@@ -243,9 +243,9 @@
         &lt;b>在以下网站您可以访问相关方面的所有重要信息 \"EinkBro Browser\".
         &lt;br>&lt;br>
 
-        \u25AA &lt;i>新版本:&lt;/i> https://github.com/plateaukao/browser/releases&lt;br>&lt;br>
+        \u25AA &lt;i>最新版本:&lt;/i> https://github.com/plateaukao/browser/releases&lt;br>&lt;br>
         \u25AA &lt;i>项目站点:&lt;/i> https://github.com/plateaukao/browser&lt;br>&lt;br>
-        \u25AA &lt;i>脸书页:&lt;/i> https://www.facebook.com/einkbro&lt;br>&lt;br>
+        \u25AA &lt;i>脸书页面:&lt;/i> https://www.facebook.com/einkbro&lt;br>&lt;br>
         \u25AA &lt;i>更新日志:&lt;/i> https://github.com/plateaukao/browser/blob/main/CHANGELOG.md&lt;br>&lt;br>
     </string>
 
@@ -288,8 +288,8 @@
     <string name="setting_summary_desktop">支持网站桌面模式</string>
     <string name="history">历史</string>
     <string name="location">位置</string>
-    <string name="desktop">Desktop\nMode</string>
-    <string name="media_continue">Bckgnd\nPlay</string>
+    <string name="desktop">桌面\n模式</string>
+    <string name="media_continue">后台\n播放</string>
     <string name="show_touch_area_hint">显示触控感应区边界</string>
     <string name="close">关闭</string>
     <string name="touch_left_side">左</string>
@@ -305,7 +305,7 @@
     <string name="setting_title_pdf_paper_size">输出PDF纸张大小</string>
     <string name="font_style_serif">字体样式: 衬线</string>
     <string name="setting_summary_font_style_serif">设置字体样式为: 谷歌无衬线</string>
-    <string name="vertical_read">垂直阅读</string>
+    <string name="vertical_read">竖排文本</string>
     <string name="reader_mode">阅读模式</string>
     <string name="touch_area_setting">触控设置</string>
     <string name="toolbar_setting">工具栏设置</string>
@@ -316,7 +316,7 @@
     <string name="book_name">图书名称</string>
     <string name="book_name_description">输入图书名称</string>
     <string name="saving_epub">正在保存Epub</string>
-    <string name="volume_page_turn">Volume\nKey</string>
+    <string name="volume_page_turn">音量\n键</string>
     <string name="menu_add_folder">添加书签文件夹</string>
     <string name="folder_name">书签文件夹名称</string>
     <string name="folder_name_description">插入书签文件夹名称</string>
