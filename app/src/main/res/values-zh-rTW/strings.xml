@@ -269,4 +269,5 @@
     <string name="setting_title_vi_binding">VI key binding</string>
     <string name="setting_summary_vi_binding">enable VI key bindings for eaiser keyboard navigation.</string>
     <string name="edit_custom_font">設定自訂定型</string>
+    <string name="reload_font_change">重新載入網頁以更新字型</string>
 </resources>
