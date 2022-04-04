@@ -14,8 +14,10 @@ import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.DialogEditExtensionBinding
 import de.baumann.browser.Ninja.databinding.DialogSavedEpubListBinding
 import de.baumann.browser.Ninja.databinding.ListItemEpubFileBinding
+import de.baumann.browser.activity.BrowserActivity
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.preference.FontType
+import de.baumann.browser.unit.BrowserUnit
 import de.baumann.browser.unit.HelperUnit
 import de.baumann.browser.unit.ViewUnit
 import de.baumann.browser.unit.ViewUnit.dp
@@ -57,9 +59,14 @@ class DialogManager(
                 config.fontType = FontType.values()[which]
                 dialog.dismiss()
             }
+            setPositiveButton(android.R.string.cancel) { dialog, _-> dialog.dismiss() }
+            setNegativeButton(context.getString(R.string.edit_custom_font)) { dialog, _ ->
+                (activity as? BrowserActivity)?.openFilePicker()
+                dialog.dismiss()
+            }
         }.create().also {
             it.show()
-            it.window?.setLayout(200.dp(activity), ViewGroup.LayoutParams.WRAP_CONTENT)
+            it.window?.setLayout(350.dp(activity), ViewGroup.LayoutParams.WRAP_CONTENT)
         }
     }
 
@@ -176,4 +183,9 @@ class DialogManager(
         dialog.show()
         return dialog
     }
+}
+
+fun Dialog.dismissWithAction(action: () -> Unit) {
+    dismiss()
+    action()
 }

@@ -30,6 +30,7 @@ import android.webkit.WebView.HitTestResult
 import android.widget.*
 import android.widget.TextView.OnEditorActionListener
 import androidx.activity.ComponentActivity
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.viewModels
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.edit
@@ -148,6 +149,8 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
 
     private val recordDb: RecordDb by lazy { RecordDb(this).apply { open(false) } }
 
+    private lateinit var customFontResultLauncher: ActivityResultLauncher<Intent>
+
     // Classes
     private inner class VideoCompletionListener : OnCompletionListener, MediaPlayer.OnErrorListener {
         override fun onError(mp: MediaPlayer, what: Int, extra: Int): Boolean {
@@ -160,7 +163,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
     }
 
     // Overrides
-    public override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
 
@@ -234,6 +237,22 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         listenKeyboardShowHide()
 
         orientation = resources.configuration.orientation
+
+        customFontResultLauncher = BrowserUnit.registerCustomFontSelectionResult(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (!config.continueMedia) {
+            browserContainer.pauseAll()
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (!config.continueMedia) {
+            browserContainer.resumeAll()
+        }
     }
 
     private fun listenKeyboardShowHide() {
@@ -323,7 +342,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         dispatchIntent(intent)
     }
 
-    public override fun onResume() {
+    override fun onResume() {
         super.onResume()
         if (sp.getInt("restart_changed", 1) == 1) {
             sp.edit().putInt("restart_changed", 0).apply()
@@ -356,7 +375,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         )
     }
 
-    public override fun onDestroy() {
+    override fun onDestroy() {
         updateSavedAlbumInfo()
 
         if (sp.getBoolean(getString(R.string.sp_clear_quit), false)) {
@@ -364,7 +383,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
             startService(toClearService)
         }
         browserContainer.clear()
-        IntentUnit.setContext(null)
+        IntentUnit.context = null
         unregisterReceiver(downloadReceiver)
         recordDb.close()
 
@@ -461,6 +480,10 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
                 dropDownWidth = ViewUnit.getWindowWidth(activity)
             }
         }
+    }
+
+    fun openFilePicker() {
+        BrowserUnit.openFontFilePicker(customFontResultLauncher)
     }
 
     private fun showOverview() = overviewDialogController.show()
@@ -1810,13 +1833,9 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         return list[index]
     }
 
-    private fun showKeyboard() {
-        ViewUnit.showKeyboard(this)
-    }
+    private fun showKeyboard() = ViewUnit.showKeyboard(this)
 
-    private fun hideKeyboard() {
-        ViewUnit.hideKeyboard(this)
-    }
+    private fun hideKeyboard() = ViewUnit.hideKeyboard(this)
 
     // - action mode handling
     private var mActionMode: ActionMode? = null
@@ -1847,9 +1866,4 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         const val GRANT_PERMISSION_REQUEST_CODE = 4
         private const val K_SHOULD_LOAD_TAB_STATE = "k_should_load_tab_state"
     }
-}
-
-private fun Dialog.dismissWithAction(action: () -> Unit) {
-    dismiss()
-    action()
 }

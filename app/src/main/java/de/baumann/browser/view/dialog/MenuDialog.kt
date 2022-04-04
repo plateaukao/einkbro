@@ -115,8 +115,3 @@ class MenuDialog(
         binding.buttonWhiteBackground.setImageResource(if (config.whiteBackground) R.drawable.ic_white_background_active else R.drawable.ic_white_background)
     }
 }
-
-private fun Dialog.dismissWithAction(action: ()-> Unit) {
-    dismiss()
-    action()
-}

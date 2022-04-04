@@ -240,7 +240,7 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
 
     /* continue playing if preference is set */
     override fun onWindowVisibilityChanged(visibility: Int) {
-        if (sp.getBoolean("sp_media_continue", false)) {
+        if (config.continueMedia) {
             if (visibility != GONE && visibility != INVISIBLE) super.onWindowVisibilityChanged(VISIBLE)
         } else {
             super.onWindowVisibilityChanged(visibility)
@@ -298,13 +298,6 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
 
     override fun getAlbumUrl(): String = url ?: ""
 
-    private var keepPlaying = false;
-    override fun setKeepPlaying(keepPlaying: Boolean?) {
-        this.keepPlaying = keepPlaying ?: false
-    }
-
-    override fun keepPlaying(): Boolean = keepPlaying
-
     override fun activate() {
         requestFocus()
         isForeground = true
@@ -322,6 +315,10 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
         isForeground = false
         album.deactivate()
     }
+
+    override fun pauseWebView() = onPause()
+
+    override fun resumeWebView() = onResume()
 
     fun update(progress: Int) {
         if (isForeground) {

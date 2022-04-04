@@ -3,6 +3,7 @@ package de.baumann.browser.unit
 import android.app.Activity
 import android.app.DownloadManager
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.ShortcutManager
 import android.graphics.Bitmap
@@ -13,6 +14,11 @@ import android.os.Environment
 import android.util.Log
 import android.webkit.CookieManager
 import android.webkit.URLUtil
+import androidx.activity.ComponentActivity
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import de.baumann.browser.Ninja.R
@@ -20,7 +26,10 @@ import de.baumann.browser.browser.AdBlock
 import de.baumann.browser.browser.Cookie
 import de.baumann.browser.browser.Javascript
 import de.baumann.browser.database.RecordDb
+import de.baumann.browser.preference.ConfigManager
+import de.baumann.browser.preference.CustomFontInfo
 import de.baumann.browser.unit.HelperUnit.needGrantStoragePermission
+import de.baumann.browser.util.Constants
 import de.baumann.browser.view.NinjaToast.showShort
 import de.baumann.browser.view.dialog.TextInputDialog
 import kotlinx.coroutines.launch
@@ -64,6 +73,8 @@ object BrowserUnit: KoinComponent {
     private val sp: SharedPreferences by inject()
     private val adBlock: AdBlock by inject()
     private val js: Javascript by inject()
+    private val config: ConfigManager by inject()
+
     val cookie: Cookie by inject()
 
     @JvmStatic
@@ -376,5 +387,36 @@ object BrowserUnit: KoinComponent {
             )
         }
         return URLUtil.guessFileName(url, contentDisposition, mimeType)
+    }
+
+
+    fun openFontFilePicker(resultLauncher: ActivityResultLauncher<Intent>) {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
+        intent.type = Constants.MIME_TYPE_ANY
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+
+        resultLauncher.launch(intent)
+    }
+
+    fun registerCustomFontSelectionResult(fragment: Fragment): ActivityResultLauncher<Intent> =
+            fragment.registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+                handleFontSelectionResult(fragment.requireContext(), it)
+            }
+
+    fun registerCustomFontSelectionResult(activity: ComponentActivity): ActivityResultLauncher<Intent> =
+            activity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                handleFontSelectionResult(activity, it)
+            }
+
+    private fun handleFontSelectionResult(context: Context, activityResult: ActivityResult) {
+        if (activityResult.data == null) return
+        val uri = activityResult.data?.data ?: return
+
+        val takeFlags: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION
+        context.contentResolver?.takePersistableUriPermission(uri, takeFlags)
+
+        val file = File(uri.path)
+        config.customFontInfo = CustomFontInfo(file.name, uri.toString())
     }
 }
