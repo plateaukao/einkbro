@@ -50,7 +50,7 @@ class FastToggleDialog(
     private fun initToggles() {
         updateViewVisibility(binding.toggleHistoryView, config.saveHistory)
         updateViewVisibility(binding.toggleLocationView, R.string.sp_location)
-        updateViewVisibility(binding.toggleMediaContinueView, sp.getBoolean("sp_media_continue", false))
+        updateViewVisibility(binding.toggleMediaContinueView, config.continueMedia)
         updateViewVisibility(binding.toggleDesktopView, config.desktop)
         updateViewVisibility(binding.toggleVolumePageTurn, config.volumePageTurn)
 
@@ -70,8 +70,8 @@ class FastToggleDialog(
             dialog.dismiss()
         }
         binding.toggleMediaContinue.setOnClickListener {
-            updateBooleanPref("sp_media_continue", false)
-            updateViewVisibility(binding.toggleMediaContinueView, sp.getBoolean("sp_media_continue", false))
+            config.continueMedia = !config.continueMedia
+            updateViewVisibility(binding.toggleMediaContinueView, config.continueMedia)
             dialog.dismiss()
         }
         binding.toggleDesktop.setOnClickListener {
