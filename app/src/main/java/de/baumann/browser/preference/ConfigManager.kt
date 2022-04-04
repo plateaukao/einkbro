@@ -217,6 +217,12 @@ class ConfigManager(
             sp.edit { putBoolean(K_TOUCH_AREA_HIDE_WHEN_INPUT, value) }
         }
 
+    var customFontChanged: Boolean
+        get() = sp.getBoolean(K_CUSTOM_FONT_CHANGED, false)
+        set(value) {
+            sp.edit { putBoolean(K_CUSTOM_FONT_CHANGED, value) }
+        }
+
     var overviewTab: OverviewTab
         get() = when (sp.getString(K_START_TAB, "0")) {
             "0" -> OverviewTab.TabPreview
@@ -255,7 +261,12 @@ class ConfigManager(
 
     var customFontInfo: CustomFontInfo?
         get() = sp.getString(K_CUSTOM_FONT, "")?.toCustomFontInfo()
-        set(value) { sp.edit { putString(K_CUSTOM_FONT, value?.toSerializedString() ?: "") } }
+        set(value) {
+            sp.edit { putString(K_CUSTOM_FONT, value?.toSerializedString() ?: "") }
+            if (fontType == FontType.CUSTOM) {
+                customFontChanged = true
+            }
+        }
 
     var savedAlbumInfoList: List<AlbumInfo>
         get() {
@@ -377,6 +388,7 @@ class ConfigManager(
         const val K_SAVED_EPUBS = "sp_saved_epubs"
         const val K_MULTITOUCH = "sp_multitouch"
         const val K_CUSTOM_FONT = "sp_custom_font"
+        const val K_CUSTOM_FONT_CHANGED = "sp_custom_font_changed"
         const val K_FONT_TYPE = "sp_font_type"
         const val K_TOOLBAR_TOP = "sp_toolbar_top"
         const val K_VI_BINDING = "sp_enable_vi_binding"

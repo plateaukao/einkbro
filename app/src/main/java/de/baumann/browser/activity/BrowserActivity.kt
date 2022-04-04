@@ -255,6 +255,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         }
     }
 
+
     private fun listenKeyboardShowHide() {
         binding.root.viewTreeObserver.addOnGlobalLayoutListener {
             val heightDiff: Int = binding.root.rootView.height - binding.root.height
@@ -352,6 +353,14 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         updateTitle()
         overridePendingTransition(0, 0)
         uiMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+
+        if (config.customFontChanged) {
+            dialogManager.showOkCancelDialog(
+                    title = getString(R.string.reload_font_change),
+                    okAction = { ninjaWebView.reload() }
+            )
+            config.customFontChanged = false
+        }
     }
 
     private fun showRestartConfirmDialog() {
