@@ -268,4 +268,5 @@
     <string name="setting_summary_toolbar_top">將工具列顯示於畫面上方</string>
     <string name="setting_title_vi_binding">VI key binding</string>
     <string name="setting_summary_vi_binding">enable VI key bindings for eaiser keyboard navigation.</string>
+    <string name="edit_custom_font">設定自訂定型</string>
 </resources>

@@ -20,7 +20,7 @@ public interface AlbumController {
 
     String getAlbumUrl();
 
-    void setKeepPlaying(Boolean keepPlaying);
+    void pauseWebView();
 
-    Boolean keepPlaying();
+    void resumeWebView();
 }

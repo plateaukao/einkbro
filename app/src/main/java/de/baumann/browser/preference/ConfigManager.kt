@@ -128,6 +128,12 @@ class ConfigManager(
             sp.edit { putBoolean(K_DESKTOP, value) }
         }
 
+    var continueMedia: Boolean
+        get() = sp.getBoolean(K_MEDIA_CONTINUE, false)
+        set(value) {
+            sp.edit { putBoolean(K_MEDIA_CONTINUE, value) }
+        }
+
     var pageReservedOffset: Int
         get() = sp.getInt("sp_page_turn_left_value", 80)
         set(value) {
@@ -374,6 +380,7 @@ class ConfigManager(
         const val K_FONT_TYPE = "sp_font_type"
         const val K_TOOLBAR_TOP = "sp_toolbar_top"
         const val K_VI_BINDING = "sp_enable_vi_binding"
+        const val K_MEDIA_CONTINUE = "sp_media_continue"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
         private const val EPUB_FILE_INFO_SEPARATOR = "::::"

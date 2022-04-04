@@ -30,4 +30,8 @@ class BrowserContainer {
         }
         list.clear()
     }
+
+    fun pauseAll() = list.forEach { it.pauseWebView() }
+
+    fun resumeAll() = list.forEach { it.resumeWebView() }
 }

@@ -239,7 +239,7 @@ class NinjaWebViewClient(
     }
 
     override fun onFormResubmission(view: WebView, doNotResend: Message, resend: Message) {
-        val holder = IntentUnit.getContext() as? Activity ?: return
+        val holder = IntentUnit.context as? Activity ?: return
         val dialog = BottomSheetDialog(holder)
         val dialogView = View.inflate(holder, R.layout.dialog_action, null)
 
