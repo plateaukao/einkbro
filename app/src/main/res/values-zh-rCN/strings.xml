@@ -25,16 +25,16 @@
     <string name="menu_edit">编辑</string>
     <string name="menu_closeTab">关闭\n标签页</string>
     <string name="menu_download">打开下\n载管理</string>
-    <string name="menu_fav">另存为\n主页</string>
-    <string name="menu_sc">添加到\n主屏幕</string>
+    <string name="menu_fav">另存为主页</string>
+    <string name="menu_sc">添加到主屏幕</string>
 
     <string name="menu_share_link">分享链接</string>
 
     <string name="menu_save_screenshot">保存屏幕截图</string>
-    <string name="menu_save_bookmark">另存为\n书签</string>
+    <string name="menu_save_bookmark">另存为书签</string>
     <string name="menu_save_as">另存为…</string>
     <string name="menu_save_pdf">另存为PDF</string>
-    <string name="menu_shareClipboard">复制到\n剪贴板</string>
+    <string name="menu_shareClipboard">复制到剪贴板</string>
 
     <string name="menu_other_searchSite">页面中\n搜索</string>
     <string name="menu_other_info">关于 \"EinkBro浏览器\"</string>
@@ -316,7 +316,7 @@
     <string name="book_name">图书名称</string>
     <string name="book_name_description">输入图书名称</string>
     <string name="saving_epub">正在保存Epub</string>
-    <string name="volume_page_turn">音量\n键</string>
+    <string name="volume_page_turn">音量键\n切换</string>
     <string name="menu_add_folder">添加书签文件夹</string>
     <string name="folder_name">书签文件夹名称</string>
     <string name="folder_name_description">插入书签文件夹名称</string>
