@@ -255,7 +255,6 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         }
     }
 
-
     private fun listenKeyboardShowHide() {
         binding.root.viewTreeObserver.addOnGlobalLayoutListener {
             val heightDiff: Int = binding.root.rootView.height - binding.root.height

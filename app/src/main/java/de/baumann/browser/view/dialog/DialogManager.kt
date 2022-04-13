@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.webkit.URLUtil
 import androidx.appcompat.app.AlertDialog
 import androidx.core.net.toUri
+import androidx.documentfile.provider.DocumentFile
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.DialogEditExtensionBinding
 import de.baumann.browser.Ninja.databinding.DialogSavedEpubListBinding
@@ -101,7 +102,7 @@ class DialogManager(
         config.savedEpubFileInfos.reversed().forEach { epubFileInfo ->
             val itemBinding = ListItemEpubFileBinding.inflate(inflater)
             with (itemBinding.epubTitle) {
-                text = epubFileInfo.title
+                text = "${epubFileInfo.title} (${getFileSizeString(epubFileInfo.uri)})"
                 setOnClickListener {
                     onNextAction(epubFileInfo.uri.toUri())
                     dialog.dismiss()
@@ -114,6 +115,13 @@ class DialogManager(
 
             binding.epubInfoContainer.addView(itemBinding.root)
         }
+    }
+
+    private fun getFileSizeString(uri: String): String {
+        val sizeInBytes = DocumentFile.fromSingleUri(activity, Uri.parse(uri))?.length() ?: 0
+        val sizeInKB = sizeInBytes / 1024
+        val sizeInMB = sizeInKB / 1024F
+        return if (sizeInMB > 1) "%.1fMB".format(sizeInMB) else "${sizeInKB}KB"
     }
 
     fun showSavePdfDialog(
