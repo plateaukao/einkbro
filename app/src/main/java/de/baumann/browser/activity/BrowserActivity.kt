@@ -697,16 +697,19 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
                         rawHtml,
                         bookName,
                         chapterName,
-                        ninjaWebView.url ?: "") { savedBookName ->
-                    progressDialog.dismiss()
-                    HelperUnit.openEpubToLastChapter(this@BrowserActivity, fileUri)
+                        ninjaWebView.url ?: "",
+                        { savedBookName ->
+                            progressDialog.dismiss()
+                            HelperUnit.openEpubToLastChapter(this@BrowserActivity, fileUri)
 
-                    // save epub file info to preference
-                    val bookUri = fileUri.toString()
-                    if (config.savedEpubFileInfos.none { it.uri == bookUri }) {
-                        config.addSavedEpubFile(EpubFileInfo(savedBookName, bookUri))
-                    }
-                }
+                            // save epub file info to preference
+                            val bookUri = fileUri.toString()
+                            if (config.savedEpubFileInfos.none { it.uri == bookUri }) {
+                                config.addSavedEpubFile(EpubFileInfo(savedBookName, bookUri))
+                            }
+                        },
+                        { progressDialog.dismiss() }
+                )
             }
         }
     }

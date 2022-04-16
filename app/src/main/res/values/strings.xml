@@ -390,4 +390,5 @@
     <string name="setting_summary_vi_binding">enable VI key bindings for eaiser keyboard navigation.</string>
     <string name="edit_custom_font">Edit Custom Font</string>
     <string name="reload_font_change">Reload to take effect of font change</string>
+    <string name="cannot_open_file">File can\'t be opened. Please re-open it from file picker.</string>
 </resources>

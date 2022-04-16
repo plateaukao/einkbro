@@ -270,4 +270,5 @@
     <string name="setting_summary_vi_binding">enable VI key bindings for eaiser keyboard navigation.</string>
     <string name="edit_custom_font">設定自訂定型</string>
     <string name="reload_font_change">重新載入網頁以更新字型</string>
+    <string name="cannot_open_file">無法開啟文件。請重新在文件管理器中選擇。</string>
 </resources>
