@@ -5,23 +5,30 @@ This browser is called EinkBro. It's designed to fit Eink devices' needs; no unn
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
      alt="Get it on F-Droid"
      height="80">](https://f-droid.org/packages/info.plateaukao.einkbro/)
+[<img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
+     alt="Get it on Google Play"
+     height="80">](https://play.google.com/store/apps/details?id=info.plateaukao.einkbro)     
 
+|Main Screen|Menu Items|Toolbar Configuration|
+|----|----|----|
+|<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1_1.png" width="200"/>|<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1_3.png" width="200"/>|<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1_4.png" width="200"/>|
+|Touch Setting|Settings|Vertical Read|
+|<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1_5.png" width="200"/>|<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1_6.png" width="200"/>|<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/7.png" width="200"/>|
 
 ### E-Ink specific features
 
+- **tapping on screen left/right edge for pageUp/Down** (finger button on toolbar)
 - **reader mode**
 - **vertical reading mode** (for Chinese/Japanese content)
 - **export web content to epub file** (better results when used with reader mode)
 - pageUp / pageDown / Back button on toolbar
 - **physical volume keys for pageUp/pageDown**
-- **tapping on screen left/right edge for pageUp/Down** (finger button on toolbar)
 - desktop mode feature
 - all icons in high contrast colors
 - tab count in bottom function bar
 - font size configuration in first layer setting.
 
 
-### Screenshots
 #### Customizable Toolbar Icons
 <img width="800" alt="image" src="https://user-images.githubusercontent.com/4084738/122229339-39f62080-ceeb-11eb-8c46-2f6ea270b486.png">
 
@@ -45,16 +52,6 @@ This browser is called EinkBro. It's designed to fit Eink devices' needs; no unn
 * toolbar configuration dialog
 * rotate screen
 * fullscreen
-
-#### Setting Menu
-<img width="536" alt="image" src="https://user-images.githubusercontent.com/4084738/122230086-e59f7080-ceeb-11eb-9ccc-6a212d7cb9cb.png">
-
-#### Tab Preview
-<img width="350" alt="image" src="https://user-images.githubusercontent.com/4084738/110947148-bfad8180-837a-11eb-8184-f2f7fdde7ba3.png">
-
-#### Touch pageUp / pageDown configuration
-<img width="350" alt="image" src="https://user-images.githubusercontent.com/4084738/114192361-f8dc1000-997f-11eb-8731-513127b316f6.png">
-
 
 ### Basic UI/Handling:
 
