@@ -8,6 +8,7 @@ import de.baumann.browser.Ninja.R
 import de.baumann.browser.activity.BrowserActivity
 import de.baumann.browser.activity.EpubReaderActivity
 import de.baumann.browser.util.Constants
+import de.baumann.browser.view.dialog.DialogManager
 import de.baumann.browser.view.dialog.TextInputDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -18,13 +19,15 @@ import nl.siegmann.epublib.epub.EpubReader
 import nl.siegmann.epublib.epub.EpubWriter
 import nl.siegmann.epublib.service.MediatypeService
 import org.jsoup.Jsoup
+import org.koin.core.component.KoinComponent
 import java.io.IOException
 import java.io.InputStream
 import java.net.HttpURLConnection
 import java.net.URL
 
 
-class EpubManager(private val context: Context) {
+class EpubManager(private val context: Context): KoinComponent {
+    private val dialogManager: DialogManager by lazy { DialogManager(context as Activity) }
 
     suspend fun getChapterName(defaultTitle: String?): String? {
         var chapterName = defaultTitle?: "no title"
@@ -62,30 +65,46 @@ class EpubManager(private val context: Context) {
             bookName: String,
             chapterName: String,
             currentUrl: String,
-            doneAction: (String) -> Unit
+            doneAction: (String) -> Unit,
+            errorAction: () -> Unit
     ) {
         val webUri = Uri.parse(currentUrl)
         val domain = webUri.host ?: "EinkBro"
+        var hasSavedSuccess = false
 
         withContext(Dispatchers.IO) {
             val book = if (isNew) createBook(domain, bookName) else openBook(fileUri)
+            if (book != null) {
 
-            val chapterIndex = book.tableOfContents.allUniqueResources.size + 1
-            val chapterFileName = "chapter$chapterIndex.html"
+                val chapterIndex = book.tableOfContents.allUniqueResources.size + 1
+                val chapterFileName = "chapter$chapterIndex.html"
 
-            val (processedHtml, imageMap) = processHtmlString(html, chapterIndex, "${webUri.scheme}://${webUri.host}/")
+                val (processedHtml, imageMap) = processHtmlString(html, chapterIndex, "${webUri.scheme}://${webUri.host}/")
 
-            book.addSection(chapterName, Resource(processedHtml.byteInputStream(), chapterFileName))
+                book.addSection(chapterName, Resource(processedHtml.byteInputStream(), chapterFileName))
 
-            saveImageResources(book, imageMap)
+                saveImageResources(book, imageMap)
 
-            saveBook(book, fileUri)
+                saveBook(book, fileUri)
 
-            doneAction.invoke(book.title)
+                doneAction.invoke(book.title)
+
+                hasSavedSuccess = true
+            }
+        }
+
+        if (!hasSavedSuccess) {
+            errorAction()
+            dialogManager.showOkCancelDialog(
+                    messageResId = R.string.cannot_open_file,
+                    okAction = {},
+                    showInCenter = true,
+                    showNegativeButton = false,
+            )
         }
     }
 
-    fun showEpubReader(uri: Uri) {
+fun showEpubReader(uri: Uri) {
         val intent = Intent(context, EpubReaderActivity::class.java).apply {
             data = uri
         }
@@ -97,7 +116,7 @@ class EpubManager(private val context: Context) {
         metadata.addAuthor(Author(domain, "EinkBro App"))
     }
 
-    private fun openBook(uri: Uri): Book {
+    private fun openBook(uri: Uri): Book? {
         try {
             val takeFlags: Int = (Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
             context.contentResolver.takePersistableUriPermission(uri, takeFlags)
@@ -108,6 +127,8 @@ class EpubManager(private val context: Context) {
             return EpubReader().readEpub(epubInputStream)
         } catch (e: IOException) {
             return createBook("", "EinkBro")
+        } catch (e: SecurityException) {
+            return null
         }
     }
 

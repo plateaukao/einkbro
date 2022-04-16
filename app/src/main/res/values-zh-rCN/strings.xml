@@ -379,4 +379,5 @@
     <string name="setting_summary_vi_binding">启用VI键值绑定以简化键盘导航。</string>
     <string name="edit_custom_font">选择自定义字体</string>
     <string name="reload_font_change">刷新切换字体</string>
+    <string name="cannot_open_file">File can\'t be opened. Please re-open it from file picker.</string>
 </resources>

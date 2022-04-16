@@ -161,20 +161,24 @@ class DialogManager(
         messageResId: Int? = null,
         view: View? = null,
         okAction: () -> Unit,
-        cancelAction: (() -> Unit)? = null
+        cancelAction: (() -> Unit)? = null,
+        showInCenter: Boolean = false,
+        showNegativeButton: Boolean = true
     ): Dialog {
         val dialog = AlertDialog.Builder(activity, R.style.TouchAreaDialog)
-            .setPositiveButton(android.R.string.ok) { _, _ -> okAction() }
-            .setNegativeButton(android.R.string.cancel) { _, _ -> cancelAction?.invoke() }
-            .apply {
-                title?.let { title -> setTitle(title) }
-                view?.let { setView(it) }
-                messageResId?.let { setMessage(messageResId) }
-            }
-            .create().apply {
-                window?.setGravity(if (config.isToolbarOnTop) Gravity.CENTER else Gravity.BOTTOM)
-                window?.setBackgroundDrawableResource(R.drawable.background_with_border_margin)
-            }
+                .setPositiveButton(android.R.string.ok) { _, _ -> okAction() }
+                .apply {
+                    title?.let { title -> setTitle(title) }
+                    view?.let { setView(it) }
+                    messageResId?.let { setMessage(messageResId) }
+                    if (showNegativeButton) {
+                        setNegativeButton(android.R.string.cancel) { _, _ -> cancelAction?.invoke() }
+                    }
+                }
+                .create().apply {
+                    window?.setGravity(if (config.isToolbarOnTop || showInCenter) Gravity.CENTER else Gravity.BOTTOM)
+                    window?.setBackgroundDrawableResource(R.drawable.background_with_border_margin)
+                }
         dialog.show()
         return dialog
     }
