@@ -16,6 +16,7 @@ class UiSettingsFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeL
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preference_ui, rootKey)
+        setHasOptionsMenu(true)
 
         val supportDarkMode = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
         findPreference<ListPreference>("sp_dark_mode")?.isVisible = supportDarkMode
