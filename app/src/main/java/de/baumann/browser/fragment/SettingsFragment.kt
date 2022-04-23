@@ -73,11 +73,10 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
     }
 
     private fun setupPreference(prefName: String, fragment: PreferenceFragmentCompat, tag: String) {
-        findPreference<Preference>(prefName)?.setOnPreferenceClickListener { _ ->
+        findPreference<Preference>(prefName)?.setOnPreferenceClickListener { pref ->
             parentFragmentManager
                     .beginTransaction()
                     .replace(R.id.content_frame, fragment, "data")
-                    .addToBackStack(null)
                     .commit()
             false
         }

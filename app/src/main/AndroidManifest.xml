@@ -131,6 +131,7 @@
         <!-- Settings -->
         <activity
             android:name="de.baumann.browser.activity.SettingsActivity"
+            android:parentActivityName="de.baumann.browser.activity.BrowserActivity"
             android:label="@string/setting_label" />
         <activity
             android:name="de.baumann.browser.activity.Whitelist_AdBlock"
