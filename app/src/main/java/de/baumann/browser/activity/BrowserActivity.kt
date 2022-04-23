@@ -400,6 +400,16 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         when (keyCode) {
+            KeyEvent.KEYCODE_DPAD_DOWN -> {
+                if (config.useUpDownPageTurn) {
+                    ninjaWebView.pageDownWithNoAnimation()
+                }
+            }
+            KeyEvent.KEYCODE_DPAD_UP -> {
+                if (config.useUpDownPageTurn) {
+                    ninjaWebView.pageUpWithNoAnimation()
+                }
+            }
             KeyEvent.KEYCODE_VOLUME_DOWN -> {
                 return if (config.volumePageTurn) {
                     ninjaWebView.pageDownWithNoAnimation()
@@ -437,10 +447,6 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
                     }
                 }
                 return true
-            }
-            // vim bindings
-            KeyEvent.KEYCODE_O -> {
-                binding.omniboxInput.performClick()
             }
         }
         return false
@@ -1514,8 +1520,22 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         if (event?.action != ACTION_DOWN) return false
         if (ninjaWebView.hitTestResult.type == HitTestResult.EDIT_TEXT_TYPE) return false
 
-        if (!config.enableViBinding) return false
+        // process dpad navigation
+        if (config.useUpDownPageTurn) {
+            when (event.keyCode) {
+                KeyEvent.KEYCODE_DPAD_DOWN -> {
+                    ninjaWebView.pageDownWithNoAnimation()
+                    return true
+                }
+                KeyEvent.KEYCODE_DPAD_UP -> {
+                    ninjaWebView.pageUpWithNoAnimation()
+                    return true
+                }
+            }
+        }
 
+        if (!config.enableViBinding) return false
+        // vim bindings
         if (event.isShiftPressed) {
             when (event.keyCode) {
                 KeyEvent.KEYCODE_J -> {
@@ -1531,7 +1551,9 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
             }
         } else { // non-capital
             when (event.keyCode) {
-                // vim bindings
+                KeyEvent.KEYCODE_O -> {
+                    binding.omniboxInput.performClick()
+                }
                 KeyEvent.KEYCODE_B -> openBookmarkPage()
                 KeyEvent.KEYCODE_O -> {
                     if (previousKeyEvent?.keyCode == KeyEvent.KEYCODE_V) {
@@ -1572,22 +1594,10 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
                         previousKeyEvent = null
                     }
                 }
-                KeyEvent.KEYCODE_DPAD_DOWN -> {
-                    if (config.useUpDownPageTurn) {
-                        ninjaWebView.pageDownWithNoAnimation()
-                    }
-                }
-                KeyEvent.KEYCODE_DPAD_UP -> {
-                    if (config.useUpDownPageTurn) {
-                        ninjaWebView.pageUpWithNoAnimation()
-                    }
-                }
-
                 else -> return false
             }
         }
         return true
-
     }
 
     override fun loadInSecondPane(url: String): Boolean =
