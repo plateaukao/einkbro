@@ -804,7 +804,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
                     getUrlMatchedBrowser(url)?.let { showAlbum(it) } ?: addAlbum(url = url)
                 }
             }
-            Intent.ACTION_WEB_SEARCH -> addAlbum(url = intent.getStringExtra(SearchManager.QUERY))
+            Intent.ACTION_WEB_SEARCH -> addAlbum(url = intent.getStringExtra(SearchManager.QUERY) ?: "")
             "sc_history" -> {
                 addAlbum()
                 openHistoryPage()
@@ -817,7 +817,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
                 openBookmarkPage()
             }
             Intent.ACTION_SEND -> {
-                val url = intent.getStringExtra(Intent.EXTRA_TEXT)
+                val url = intent.getStringExtra(Intent.EXTRA_TEXT) ?: ""
                 addAlbum(url = url)
             }
             Intent.ACTION_PROCESS_TEXT -> {
@@ -1202,7 +1202,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         }.show()
     }
 
-    override fun addNewTab(url: String?) = addAlbum(url = url)
+    override fun addNewTab(url: String) = addAlbum(url = url)
 
     private fun getUrlMatchedBrowser(url: String): NinjaWebView? {
         return browserContainer.list().firstOrNull { it.albumUrl == url } as NinjaWebView?
@@ -1215,7 +1215,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
     @SuppressLint("ClickableViewAccessibility")
     protected fun addAlbum(
             title: String = "",
-            url: String? = config.favoriteUrl,
+            url: String = config.favoriteUrl,
             foreground: Boolean = true,
             incognito: Boolean = false,
             enablePreloadWebView: Boolean = true
