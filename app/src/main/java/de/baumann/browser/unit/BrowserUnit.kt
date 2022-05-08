@@ -419,4 +419,16 @@ object BrowserUnit: KoinComponent {
         val file = File(uri.path)
         config.customFontInfo = CustomFontInfo(file.name, uri.toString())
     }
+
+    fun getRecentBookmarksContent(): String {
+        if (config.recentBookmarks.isEmpty()) return ""
+        val content = config.recentBookmarks.joinToString(separator = "<br/>") { """<a href="${it.url}">${it.name}</a><br/> """ }
+        return """
+            <html>
+            <body>
+                $content
+            </body>
+            </html>
+        """.trimIndent()
+    }
 }

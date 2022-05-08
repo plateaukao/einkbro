@@ -83,6 +83,7 @@ class DataSettingsFragment : PreferenceFragmentCompat(), KoinComponent {
                     setBottomSheetBehavior(dialog, dialogView.root, BottomSheetBehavior.STATE_EXPANDED)
                     false
                 }
+
         findPreference<Preference>("data_imDB")!!.onPreferenceClickListener =
                 Preference.OnPreferenceClickListener { preference: Preference? ->
                     val textView: TextView

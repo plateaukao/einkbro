@@ -271,4 +271,9 @@
     <string name="edit_custom_font">設定自訂定型</string>
     <string name="reload_font_change">重新載入網頁以更新字型</string>
     <string name="cannot_open_file">無法開啟文件。請重新在文件管理器中選擇。</string>
+    <string name="setting_recent_bookmarks">Show recently used bookmarks</string>
+    <string name="setting_summary_recent_bookmarks">Show recently used bookmarks when opening a new tab</string>
+    <string name="setting_clear_recent_bookmarks">Clear recent bookmark list</string>
+    <string name="setting_summary_clear_recent_bookmarks">Clear recently used bookmark list</string>
+    <string name="recently_used_bookmarks">Recently Used Bookmarks</string>
 </resources>
