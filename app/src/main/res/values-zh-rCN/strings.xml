@@ -379,10 +379,10 @@
     <string name="setting_summary_vi_binding">启用VI键值绑定以简化键盘导航。</string>
     <string name="edit_custom_font">选择自定义字体</string>
     <string name="reload_font_change">刷新切换字体</string>
-    <string name="cannot_open_file">File can\'t be opened. Please re-open it from file picker.</string>
-    <string name="setting_recent_bookmarks">Show recently used bookmarks</string>
-    <string name="setting_summary_recent_bookmarks">Show recently used bookmarks when opening a new tab</string>
-    <string name="setting_clear_recent_bookmarks">Clear recent bookmark list</string>
-    <string name="setting_summary_clear_recent_bookmarks">Clear recently used bookmark list</string>
-    <string name="recently_used_bookmarks">Recently Used Bookmarks</string>
+    <string name="cannot_open_file">无法打开文件，请从文件选择器重新打开。</string>
+    <string name="setting_recent_bookmarks">显示最近使用的书签</string>
+    <string name="setting_summary_recent_bookmarks">打开新标签页时显示最近使用的书签</string>
+    <string name="setting_clear_recent_bookmarks">清除最近的书签列表</string>
+    <string name="setting_summary_clear_recent_bookmarks">清除最近使用的书签列表</string>
+    <string name="recently_used_bookmarks">最近使用的书签</string>
 </resources>
