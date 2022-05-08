@@ -91,7 +91,10 @@ class NinjaWebChromeClient(private val ninjaWebView: NinjaWebView) : WebChromeCl
 
     override fun onReceivedTitle(view: WebView, title: String) {
         super.onReceivedTitle(view, title)
-        ninjaWebView.update(title)
+        // prevent setting title for data: contents
+        if (!title.startsWith("data:text")) {
+            ninjaWebView.update(title)
+        }
     }
 
     override fun onShowCustomView(view: View, callback: CustomViewCallback) {

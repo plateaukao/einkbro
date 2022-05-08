@@ -33,6 +33,9 @@ interface BookmarkDao {
     @Query("SELECT COUNT(id) FROM bookmarks WHERE url = :url")
     suspend fun existsUrl(url: String): Int
 
+    @Query("SELECT * FROM bookmarks WHERE url = :url")
+    suspend fun findBy(url: String): List<Bookmark>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(bookmark: Bookmark)
 
@@ -97,6 +100,8 @@ class BookmarkManager(private val context: Context) : KoinComponent {
     suspend fun deleteAll() = bookmarkDao.deleteAll()
 
     suspend fun existsUrl(url: String): Boolean = bookmarkDao.existsUrl(url) > 0
+
+    suspend fun findBy(url: String): List<Bookmark> = bookmarkDao.findBy(url)
 
     suspend fun insertDirectory(title: String, parentId: Int = 0) {
         bookmarkDao.insert(

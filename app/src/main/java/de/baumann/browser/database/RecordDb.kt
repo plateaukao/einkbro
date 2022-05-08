@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase
 import androidx.core.database.sqlite.transaction
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.unit.RecordUnit
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.util.*
@@ -25,7 +27,14 @@ class RecordDb(context: Context?): KoinComponent {
         helper.close()
     }
 
-    fun addHistory(record: Record) {
+    suspend fun addHistory(record: Record) {
+        if (record.url.startsWith("data:")) return
+
+        val bookmarks = bookmarkManager.findBy(record.url)
+        if (bookmarks.isNotEmpty()) {
+            config.addRecentBookmark(bookmarks.first())
+        }
+
         database.transaction {
             if (checkHistory(record.url)) {
                 deleteHistoryItemByURL(record.url)

@@ -941,8 +941,12 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
             if (!this::ninjaWebView.isInitialized) return@OnFocusChangeListener
 
             if (binding.omniboxInput.hasFocus()) {
-                binding.omniboxInput.setText(ninjaWebView.url)
-                binding.omniboxInput.setSelection(0, binding.omniboxInput.text.toString().length)
+                if (ninjaWebView.url?.startsWith("data:") != true) {
+                    binding.omniboxInput.setText(ninjaWebView.url)
+                    binding.omniboxInput.setSelection(0, binding.omniboxInput.text.toString().length)
+                } else {
+                    binding.omniboxInput.setText("")
+                }
                 toolbarViewController.hide()
             } else {
                 toolbarViewController.show()
@@ -1259,10 +1263,20 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
             showAlbum(newWebView)
             if (url.isNotEmpty() && url != BrowserUnit.URL_ABOUT_BLANK) {
                 newWebView.loadUrl(url)
+            } else if (config.showRecentBookmarks){
+                showRecentlyUsedBookmarks(newWebView)
             }
         }
 
         updateSavedAlbumInfo()
+    }
+
+    private fun showRecentlyUsedBookmarks(webView: NinjaWebView) {
+        val html = BrowserUnit.getRecentBookmarksContent()
+        if (html.isNotBlank()) {
+            webView.loadData(BrowserUnit.getRecentBookmarksContent(), null, null)
+            webView.albumTitle = getString(R.string.recently_used_bookmarks)
+        }
     }
 
     private fun createMultiTouchTouchListener(ninjaWebView: NinjaWebView): MultitouchListener =
@@ -1390,7 +1404,9 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
     override fun updateTitle(title: String?) = updateTitle()
 
     override fun addHistory(url: String) {
-        recordDb.addHistory(Record(ninjaWebView.albumTitle, url, System.currentTimeMillis()))
+        lifecycleScope.launch {
+            recordDb.addHistory(Record(ninjaWebView.albumTitle, url, System.currentTimeMillis()))
+        }
     }
 
     override fun updateProgress(progress: Int) {

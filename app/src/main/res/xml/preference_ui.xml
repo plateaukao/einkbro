@@ -26,6 +26,17 @@
             android:defaultValue="false"
             android:title="@string/desktop_mode"
             android:summary="@string/setting_summary_desktop"/>
+
+        <CheckBoxPreference android:key="sp_new_tab_recent_bookmarks"
+            android:icon="@drawable/ic_bookmarks"
+            android:defaultValue="false"
+            android:title="@string/setting_recent_bookmarks"
+            android:summary="@string/setting_summary_recent_bookmarks"/>
+        <Preference
+            android:key="sp_clear_recent_bookmarks"
+            android:icon="@drawable/ic_bookmarks"
+            android:title="@string/setting_clear_recent_bookmarks"
+            android:summary="@string/setting_summary_clear_recent_bookmarks"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/setting_title_toolbar">
