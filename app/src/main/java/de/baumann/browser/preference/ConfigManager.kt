@@ -6,6 +6,7 @@ import android.os.Build
 import android.print.PrintAttributes
 import androidx.core.content.edit
 import de.baumann.browser.Ninja.R
+import de.baumann.browser.database.Bookmark
 import de.baumann.browser.epub.EpubFileInfo
 import de.baumann.browser.unit.ViewUnit
 import de.baumann.browser.util.Constants
@@ -223,6 +224,12 @@ class ConfigManager(
             sp.edit { putBoolean(K_CUSTOM_FONT_CHANGED, value) }
         }
 
+    var showRecentBookmarks: Boolean
+        get() = sp.getBoolean(K_SHOW_RECENT_BOOKMARKS, false)
+        set(value) {
+            sp.edit { putBoolean(K_SHOW_RECENT_BOOKMARKS, value) }
+        }
+
     var overviewTab: OverviewTab
         get() = when (sp.getString(K_START_TAB, "0")) {
             "0" -> OverviewTab.TabPreview
@@ -267,6 +274,53 @@ class ConfigManager(
                 customFontChanged = true
             }
         }
+
+    var recentBookmarks: List<RecentBookmark>
+        get() {
+            val string = sp.getString(K_RECENT_BOOKMARKS, "") ?: ""
+            if (string.isBlank()) return emptyList()
+
+            return string.split(RECENT_BOOKMARKS_SEPARATOR)
+                    .mapNotNull { it.toRecentBookmark() }
+                    .sortedByDescending { it.count }
+        }
+        set(value) {
+            if (value.containsAll(recentBookmarks) && recentBookmarks.containsAll(value)) {
+                return
+            }
+
+            sp.edit {
+                if (value.isEmpty()) {
+                    remove(K_RECENT_BOOKMARKS)
+                } else {
+                    // check if the new value the same as the old one
+                    putString(
+                            K_RECENT_BOOKMARKS,
+                            value.joinToString(RECENT_BOOKMARKS_SEPARATOR) { it.toSerializedString() }
+                    )
+                }
+            }
+        }
+
+    fun addRecentBookmark(bookmark: Bookmark) {
+        var newList = recentBookmarks.toMutableList()
+        val sameItem = newList.firstOrNull { it.url == bookmark.url }
+        if (sameItem != null) {
+            sameItem.count ++
+        } else {
+            newList.add(RecentBookmark(bookmark.title, bookmark.url, 1))
+        }
+
+        recentBookmarks = if (newList.size > RECENT_BOOKMARK_LIST_SIZE) {
+            newList.sortedByDescending { it.count }.subList(0, RECENT_BOOKMARK_LIST_SIZE - 1)
+        } else {
+            newList.sortedByDescending { it.count }
+        }
+    }
+
+    fun clearRecentBookmarks() {
+        recentBookmarks = emptyList()
+    }
 
     var savedAlbumInfoList: List<AlbumInfo>
         get() {
@@ -393,9 +447,14 @@ class ConfigManager(
         const val K_TOOLBAR_TOP = "sp_toolbar_top"
         const val K_VI_BINDING = "sp_enable_vi_binding"
         const val K_MEDIA_CONTINUE = "sp_media_continue"
+        const val K_RECENT_BOOKMARKS = "sp_recent_bookmarks"
+        const val K_SHOW_RECENT_BOOKMARKS = "sp_new_tab_recent_bookmarks"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
+        private const val RECENT_BOOKMARKS_SEPARATOR = "::::"
         private const val EPUB_FILE_INFO_SEPARATOR = "::::"
+
+        private const val RECENT_BOOKMARK_LIST_SIZE = 10
     }
 
     private fun String.toEpubFileInfoList(): MutableList<EpubFileInfo> =
@@ -460,6 +519,16 @@ data class CustomFontInfo(
     val url: String
 ) {
     fun toSerializedString(): String = "$name::$url"
+}
+
+data class RecentBookmark(val name: String, val url: String, var count: Int) {
+    fun toSerializedString(): String = "$name::$url::$count"
+}
+
+private fun String.toRecentBookmark(): RecentBookmark? {
+    val segments = this.split("::", limit = 3)
+    if (segments.size != 3) return null
+    return RecentBookmark(segments[0], segments[1], segments[2].toInt())
 }
 
 private fun String.toAlbumInfo(): AlbumInfo? {

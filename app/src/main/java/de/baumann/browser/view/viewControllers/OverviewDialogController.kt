@@ -17,9 +17,7 @@ import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.DialogMenuContextListBinding
 import de.baumann.browser.Ninja.databinding.DialogMenuOverviewBinding
 import de.baumann.browser.Ninja.databinding.DialogOveriewBinding
-import de.baumann.browser.database.Bookmark
-import de.baumann.browser.database.BookmarkManager
-import de.baumann.browser.database.RecordDb
+import de.baumann.browser.database.*
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.unit.BrowserUnit
 import de.baumann.browser.unit.HelperUnit
@@ -211,7 +209,11 @@ class OverviewDialogController(
             adapter = RecordAdapter(
                     list.toMutableList(),
                     { position ->
-                        gotoUrlAction(list[position].url)
+                        val record = list[position]
+                        gotoUrlAction(record.url)
+                        if (record.type == RecordType.Bookmark) {
+                            config.addRecentBookmark(Bookmark(record.title?:"no title", record.url))
+                        }
                         hide()
                     },
                     { position ->
@@ -257,6 +259,7 @@ class OverviewDialogController(
                         setupBookmarkList(it.id)
                     } else {
                         gotoUrlAction(it.url)
+                        config.addRecentBookmark(it)
                         hide()
                     }
                 },
