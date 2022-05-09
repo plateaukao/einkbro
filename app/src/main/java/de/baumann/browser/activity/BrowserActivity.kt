@@ -1,7 +1,10 @@
 package de.baumann.browser.activity
 
 import android.annotation.SuppressLint
-import android.app.*
+import android.app.Dialog
+import android.app.DownloadManager
+import android.app.ProgressDialog
+import android.app.SearchManager
 import android.content.*
 import android.content.Intent.ACTION_VIEW
 import android.content.pm.ActivityInfo
@@ -24,7 +27,8 @@ import android.view.KeyEvent.ACTION_DOWN
 import android.view.KeyEvent.KEYCODE_ENTER
 import android.view.View.*
 import android.view.inputmethod.EditorInfo
-import android.webkit.*
+import android.webkit.CookieManager
+import android.webkit.ValueCallback
 import android.webkit.WebChromeClient.CustomViewCallback
 import android.webkit.WebView.HitTestResult
 import android.widget.*
@@ -38,16 +42,22 @@ import androidx.core.view.isVisible
 import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.lifecycleScope
 import de.baumann.browser.Ninja.R
-import de.baumann.browser.Ninja.databinding.*
-import de.baumann.browser.browser.*
-import de.baumann.browser.database.*
+import de.baumann.browser.Ninja.databinding.ActivityMainBinding
+import de.baumann.browser.Ninja.databinding.DialogMenuContextLinkBinding
+import de.baumann.browser.browser.AlbumController
+import de.baumann.browser.browser.BrowserContainer
+import de.baumann.browser.browser.BrowserController
 import de.baumann.browser.database.Bookmark
+import de.baumann.browser.database.BookmarkManager
+import de.baumann.browser.database.Record
+import de.baumann.browser.database.RecordDb
 import de.baumann.browser.epub.EpubFileInfo
 import de.baumann.browser.epub.EpubManager
 import de.baumann.browser.preference.*
 import de.baumann.browser.service.ClearService
 import de.baumann.browser.task.SaveScreenshotTask
 import de.baumann.browser.unit.BrowserUnit
+import de.baumann.browser.unit.BrowserUnit.downloadFileId
 import de.baumann.browser.unit.HelperUnit
 import de.baumann.browser.unit.HelperUnit.toNormalScheme
 import de.baumann.browser.unit.IntentUnit
@@ -57,7 +67,7 @@ import de.baumann.browser.util.Constants
 import de.baumann.browser.util.DebugT
 import de.baumann.browser.view.*
 import de.baumann.browser.view.GestureType.*
-import de.baumann.browser.view.adapter.*
+import de.baumann.browser.view.adapter.CompleteAdapter
 import de.baumann.browser.view.dialog.*
 import de.baumann.browser.view.viewControllers.OverviewDialogController
 import de.baumann.browser.view.viewControllers.ToolbarViewController
@@ -217,15 +227,24 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
 
         downloadReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
-                if (this@BrowserActivity.isFinishing) return
+                if (this@BrowserActivity.isFinishing || downloadFileId == -1L) return
+
+                val downloadManager = getSystemService(DOWNLOAD_SERVICE) as DownloadManager
+                val mostRecentDownload: Uri = downloadManager.getUriForDownloadedFile(downloadFileId)
+                val mimeType: String = downloadManager.getMimeTypeForDownloadedFile(downloadFileId)
+                val fileIntent = Intent(ACTION_VIEW).apply {
+                    setDataAndType(mostRecentDownload, mimeType)
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                }
+                downloadFileId = -1L
                 dialogManager.showOkCancelDialog(
                         messageResId = R.string.toast_downloadComplete,
-                        okAction = { startActivity(Intent(DownloadManager.ACTION_VIEW_DOWNLOADS)) }
+                        okAction = { startActivity(fileIntent) }
                 )
             }
         }
-        val filter = IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE)
-        registerReceiver(downloadReceiver, filter)
+
+        registerReceiver(downloadReceiver, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
         dispatchIntent(intent)
         // after dispatching intent, the value should be reset to false
         shouldLoadTabState = false
