@@ -212,6 +212,7 @@ object BrowserUnit: KoinComponent {
         }
     }
 
+    var downloadFileId = -1L
     private fun internalDownload(activity: Activity, url: String, mimeType: String, filename: String) {
         val cookie = CookieManager.getInstance().getCookie(url)
         val request = DownloadManager.Request(Uri.parse(url)).apply {
@@ -222,7 +223,7 @@ object BrowserUnit: KoinComponent {
             setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, filename)
         }
         val manager = activity.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-        manager.enqueue(request)
+        downloadFileId = manager.enqueue(request)
         showShort(activity, R.string.toast_start_download)
     }
 

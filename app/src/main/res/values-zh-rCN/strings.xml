@@ -218,7 +218,7 @@
     <string name="toast_webview_forward">无法加载下一页面</string>
     <string name="toast_restart">必须重新启动 \"EinkBro浏览器\" 才能应用更改，确定现在重启吗？</string>
     <string name="toast_close_tab">是否关闭当前标签页？</string>
-    <string name="toast_downloadComplete">下载完毕，是否打开文件管理器？</string>
+    <string name="toast_downloadComplete">下载完毕，是否打开文件？</string>
     <string name="toast_backup">是否备份数据？这将覆写已有旧备份。</string>
 
 
