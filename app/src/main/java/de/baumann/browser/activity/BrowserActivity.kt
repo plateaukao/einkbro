@@ -209,7 +209,8 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
                 val mimeType: String = downloadManager.getMimeTypeForDownloadedFile(downloadFileId)
                 val fileIntent = Intent(ACTION_VIEW).apply {
                     setDataAndType(mostRecentDownload, mimeType)
-                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 }
                 downloadFileId = -1L
                 dialogManager.showOkCancelDialog(
