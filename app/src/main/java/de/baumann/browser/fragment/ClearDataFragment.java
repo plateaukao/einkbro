@@ -33,7 +33,7 @@ public class ClearDataFragment extends PreferenceFragmentCompat {
                     dialog.cancel();
                     getActivity().deleteDatabase("Ninja4.db");
                     getActivity().deleteDatabase("pass_DB_v01.db");
-                    sp.edit().putInt("restart_changed", 1).apply();
+                    sp.edit().putBoolean("restart_changed", true).apply();
                     getActivity().finish();
                 }
             });

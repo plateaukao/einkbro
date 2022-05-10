@@ -40,7 +40,7 @@ class FragmentSettingsGesture : PreferenceFragmentCompat(), OnSharedPreferenceCh
 
     override fun onSharedPreferenceChanged(sp: SharedPreferences, key: String) {
         if (key == "sp_gestures_use" || key == "sp_gesture_action") {
-            sp.edit().putInt("restart_changed", 1).apply()
+            sp.edit().putBoolean("restart_changed", true).apply()
         }
     }
 

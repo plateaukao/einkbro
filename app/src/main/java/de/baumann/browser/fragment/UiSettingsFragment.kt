@@ -52,8 +52,7 @@ class UiSettingsFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeL
 
     override fun onSharedPreferenceChanged(sp: SharedPreferences, key: String) {
         when (key) {
-            "nav_position", "start_tab" ->
-                sp.edit().putInt("restart_changed", 1).apply()
+            "nav_position", "start_tab" -> config.restartChanged = true
         }
     }
 }
