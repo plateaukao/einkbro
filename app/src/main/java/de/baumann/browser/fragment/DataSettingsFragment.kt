@@ -35,7 +35,6 @@ import org.json.JSONArray
 import org.json.JSONObject
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import org.koin.java.KoinJavaComponent.inject
 import org.w3c.dom.Element
 import org.w3c.dom.Node
 import org.xml.sax.SAXException
@@ -222,7 +221,7 @@ class DataSettingsFragment : PreferenceFragmentCompat(), KoinComponent {
 
     private fun dialogRestart() {
         val sp = preferenceScreen.sharedPreferences
-        sp.edit().putInt("restart_changed", 1).apply()
+        sp.edit().putBoolean("restart_changed", true).apply()
     }
 
     // If targetLocation does not exist, it will be created.
