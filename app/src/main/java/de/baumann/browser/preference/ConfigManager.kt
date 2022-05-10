@@ -15,6 +15,7 @@ import de.baumann.browser.view.Orientation
 import de.baumann.browser.view.toolbaricons.ToolbarAction
 import de.baumann.browser.view.viewControllers.OverviewTab
 import org.koin.core.component.KoinComponent
+import java.util.*
 
 class ConfigManager(
     private val context: Context,
@@ -134,6 +135,33 @@ class ConfigManager(
         set(value) {
             sp.edit { putBoolean(K_MEDIA_CONTINUE, value) }
         }
+
+    var restartChanged: Boolean
+        get() = sp.getBoolean(K_RESTART_CHANGED, false)
+        set(value) {
+            sp.edit { putBoolean(K_RESTART_CHANGED, value) }
+        }
+
+    fun maybeInitPreference() {
+        if (sp.getString("saved_key_ok", "no") == "no") {
+            if (Locale.getDefault().country == "CN") {
+                sp.edit().putString("SP_SEARCH_ENGINE_9", "2").apply()
+            }
+            sp.edit {
+                putString("saved_key_ok", "yes")
+                putString("setting_gesture_tb_up", "08")
+                putString("setting_gesture_tb_down", "01")
+                putString("setting_gesture_tb_left", "07")
+                putString("setting_gesture_tb_right", "06")
+                putString("setting_gesture_nav_up", "04")
+                putString("setting_gesture_nav_down", "05")
+                putString("setting_gesture_nav_left", "03")
+                putString("setting_gesture_nav_right", "02")
+                putBoolean("SP_LOCATION_9", false)
+            }
+        }
+
+    }
 
     var pageReservedOffset: Int
         get() = sp.getInt("sp_page_turn_left_value", 80)
@@ -449,6 +477,7 @@ class ConfigManager(
         const val K_MEDIA_CONTINUE = "sp_media_continue"
         const val K_RECENT_BOOKMARKS = "sp_recent_bookmarks"
         const val K_SHOW_RECENT_BOOKMARKS = "sp_new_tab_recent_bookmarks"
+        const val K_RESTART_CHANGED = "restart_changed"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
         private const val RECENT_BOOKMARKS_SEPARATOR = "::::"

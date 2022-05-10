@@ -37,7 +37,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.viewModels
 import androidx.constraintlayout.widget.ConstraintSet
-import androidx.core.content.edit
 import androidx.core.view.isVisible
 import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.lifecycleScope
@@ -78,7 +77,6 @@ import de.baumann.browser.viewmodel.BookmarkViewModelFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
-import java.util.*
 import kotlin.math.floor
 import kotlin.math.max
 import kotlin.math.roundToInt
@@ -188,34 +186,11 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         // root cause of slow drawing
         //WebView.enableSlowWholeDocumentDraw()
 
-        sp.edit().putInt("restart_changed", 0).apply()
+        config.restartChanged = false
         HelperUnit.applyTheme(this)
         setContentView(binding.root)
-        if (sp.getString("saved_key_ok", "no") == "no") {
-            val chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!§$%&/()=?;:_-.,+#*<>".toCharArray()
-            val sb = StringBuilder()
-            val random = Random()
-            for (i in 0..24) {
-                val c = chars[random.nextInt(chars.size)]
-                sb.append(c)
-            }
-            if (Locale.getDefault().country == "CN") {
-                sp.edit().putString(getString(R.string.sp_search_engine), "2").apply()
-            }
-            sp.edit {
-                putString("saved_key", sb.toString())
-                putString("saved_key_ok", "yes")
-                putString("setting_gesture_tb_up", "08")
-                putString("setting_gesture_tb_down", "01")
-                putString("setting_gesture_tb_left", "07")
-                putString("setting_gesture_tb_right", "06")
-                putString("setting_gesture_nav_up", "04")
-                putString("setting_gesture_nav_down", "05")
-                putString("setting_gesture_nav_left", "03")
-                putString("setting_gesture_nav_right", "02")
-                putBoolean(getString(R.string.sp_location), false)
-            }
-        }
+        config.maybeInitPreference()
+
         mainContentLayout = findViewById(R.id.main_content)
         subContainer = findViewById(R.id.sub_container)
         updateAppbarPosition()
@@ -363,8 +338,8 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
 
     override fun onResume() {
         super.onResume()
-        if (sp.getInt("restart_changed", 1) == 1) {
-            sp.edit().putInt("restart_changed", 0).apply()
+        if (config.restartChanged) {
+            config.restartChanged = false
             showRestartConfirmDialog()
         }
 
@@ -398,7 +373,13 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
     private fun showFileListConfirmDialog() {
         dialogManager.showOkCancelDialog(
                 messageResId = R.string.toast_downloadComplete,
-                okAction = { startActivity(Intent(DownloadManager.ACTION_VIEW_DOWNLOADS)) }
+                okAction = {
+                    startActivity(
+                            Intent(DownloadManager.ACTION_VIEW_DOWNLOADS).apply {
+                                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                            }
+                    )
+                }
         )
     }
 
@@ -515,9 +496,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         }
     }
 
-    fun openFilePicker() {
-        BrowserUnit.openFontFilePicker(customFontResultLauncher)
-    }
+    fun openFilePicker() = BrowserUnit.openFontFilePicker(customFontResultLauncher)
 
     private fun showOverview() = overviewDialogController.show()
 
@@ -677,8 +656,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
     }
 
     // Methods
-    private fun showFontSizeChangeDialog() =
-            dialogManager.showFontSizeChangeDialog()
+    private fun showFontSizeChangeDialog() = dialogManager.showFontSizeChangeDialog()
 
     private fun changeFontSize(size: Int) {
         config.fontSize = size
@@ -687,16 +665,15 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
     private fun increaseFontSize() = changeFontSize(config.fontSize + 20)
 
     private fun decreaseFontSize() {
-        if (config.fontSize <= 50) return
-
-        changeFontSize(config.fontSize - 20)
+        if (config.fontSize > 50) changeFontSize(config.fontSize - 20)
     }
 
     private fun showPdfFilePicker() {
-        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
-        intent.addCategory(Intent.CATEGORY_OPENABLE)
-        intent.type = Constants.MIME_TYPE_PDF
-        intent.putExtra(Intent.EXTRA_TITLE, "einkbro.pdf")
+        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = Constants.MIME_TYPE_PDF
+            putExtra(Intent.EXTRA_TITLE, "einkbro.pdf")
+        }
         startActivityForResult(intent, WRITE_PDF_REQUEST_CODE)
     }
 
@@ -709,7 +686,6 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
             val chapterName = epubManager.getChapterName(ninjaWebView.title)
 
             if (bookName != null && chapterName != null) {
-
                 val progressDialog = ProgressDialog(this@BrowserActivity, R.style.TouchAreaDialog).apply {
                     setTitle(R.string.saving_epub)
                     show()
@@ -824,21 +800,10 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
                 }
             }
             Intent.ACTION_WEB_SEARCH -> addAlbum(url = intent.getStringExtra(SearchManager.QUERY) ?: "")
-            "sc_history" -> {
-                addAlbum()
-                openHistoryPage()
-            }
-            "sc_home" -> {
-                addAlbum(config.favoriteUrl)
-            }
-            "sc_bookmark" -> {
-                addAlbum()
-                openBookmarkPage()
-            }
-            Intent.ACTION_SEND -> {
-                val url = intent.getStringExtra(Intent.EXTRA_TEXT) ?: ""
-                addAlbum(url = url)
-            }
+            "sc_history" -> { addAlbum(); openHistoryPage() }
+            "sc_home" -> { addAlbum(config.favoriteUrl) }
+            "sc_bookmark" -> { addAlbum(); openBookmarkPage() }
+            Intent.ACTION_SEND -> { addAlbum(url = intent.getStringExtra(Intent.EXTRA_TEXT) ?: "") }
             Intent.ACTION_PROCESS_TEXT -> {
                 val text = intent.getStringExtra(Intent.EXTRA_PROCESS_TEXT) ?: return
                 val url = config.customProcessTextUrl + text
@@ -858,9 +823,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
                     addAlbum(url = url)
                 }
             }
-            else -> {
-                addAlbum()
-            }
+            else -> { addAlbum() }
         }
         getIntent().action = ""
     }
@@ -1068,7 +1031,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
                 ninjaWebView.reload()
                 updateDesktopIcon()
             }
-            ConfigManager.K_DARK_MODE -> sp.edit().putInt("restart_changed", 1).apply()
+            ConfigManager.K_DARK_MODE -> config.restartChanged = true
             ConfigManager.K_TOOLBAR_TOP -> updateAppbarPosition()
         }
     }
@@ -1737,9 +1700,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
     }
 
     private fun savePdf(url: String, fileName: String) {
-        if (HelperUnit.needGrantStoragePermission(this)) {
-            return
-        }
+        if (HelperUnit.needGrantStoragePermission(this)) { return }
 
         val source = Uri.parse(url)
         val request = DownloadManager.Request(source).apply {
@@ -1769,9 +1730,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
     @SuppressLint("RestrictedApi")
     private fun fullscreen() {
         if (!searchOnSite) {
-            if (config.fabPosition != FabPosition.NotShow) {
-                fabImageButtonNav.visibility = VISIBLE
-            }
+            if (config.fabPosition != FabPosition.NotShow) { fabImageButtonNav.visibility = VISIBLE }
             searchPanel.visibility = GONE
             binding.appBar.visibility = GONE
             hideStatusBar()
@@ -1824,9 +1783,8 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
     private fun openSavedEpub() = if (config.savedEpubFileInfos.isEmpty()) {
         NinjaToast.show(this, "no saved epub!")
     } else {
-        dialogManager.showSaveEpubDialog(shouldAddNewEpub = false) {
-            val uri = it ?: return@showSaveEpubDialog
-            HelperUnit.openFile(this@BrowserActivity, uri)
+        dialogManager.showSaveEpubDialog(shouldAddNewEpub = false) { uri ->
+            HelperUnit.openFile(this@BrowserActivity, uri ?: return@showSaveEpubDialog)
         }
     }
 
@@ -1869,22 +1827,16 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
     }
 
     private fun nextAlbumController(next: Boolean): AlbumController? {
-        if (browserContainer.size() <= 1) {
-            return currentAlbumController
-        }
+        if (browserContainer.size() <= 1) { return currentAlbumController }
 
         val list = browserContainer.list()
         var index = list.indexOf(currentAlbumController)
         if (next) {
             index++
-            if (index >= list.size) {
-                return list.first()
-            }
+            if (index >= list.size) { return list.first() }
         } else {
             index--
-            if (index < 0) {
-                return list.last()
-            }
+            if (index < 0) { return list.last() }
         }
         return list[index]
     }
@@ -1897,9 +1849,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
     private var mActionMode: ActionMode? = null
     override fun onActionModeStarted(mode: ActionMode) {
         super.onActionModeStarted(mode)
-        if (mActionMode == null) {
-            mActionMode = mode
-        }
+        if (mActionMode == null) { mActionMode = mode }
     }
 
     override fun onPause() {

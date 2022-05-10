@@ -68,7 +68,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
 
     override fun onSharedPreferenceChanged(sp: SharedPreferences, key: String) {
         if (key == "userAgent" || key == "sp_search_engine_custom" || key == "@string/sp_search_engine") {
-            sp.edit().putInt("restart_changed", 1).apply()
+            sp.edit().putBoolean("restart_changed", true).apply()
         }
     }
 
