@@ -197,7 +197,7 @@ object BrowserUnit: KoinComponent {
             return
         }
 
-        var filename = guessFilename(url, contentDisposition, mimeType)
+        var filename = Uri.decode(guessFilename(url, contentDisposition, mimeType))
         val title = context.getString(R.string.dialog_title_download)
 
         (activity as LifecycleOwner).lifecycleScope.launch {
