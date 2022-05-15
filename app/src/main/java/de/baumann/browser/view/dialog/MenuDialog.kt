@@ -2,19 +2,19 @@ package de.baumann.browser.view.dialog
 
 import android.app.Activity
 import android.app.AlertDialog
-import android.app.Dialog
 import android.app.DownloadManager
 import android.content.*
 import android.view.Gravity
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LifecycleCoroutineScope
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.DialogMenuBinding
 import de.baumann.browser.activity.SettingsActivity
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.unit.HelperUnit
 import de.baumann.browser.unit.IntentUnit
-import de.baumann.browser.unit.ViewUnit.dp
+import de.baumann.browser.unit.ShareUtil
 import de.baumann.browser.view.NinjaToast
 import de.baumann.browser.view.NinjaWebView
 import org.koin.core.component.KoinComponent
@@ -22,6 +22,7 @@ import org.koin.core.component.inject
 
 class MenuDialog(
         private val context: Context,
+        private val lifecycleCoroutineScope: LifecycleCoroutineScope,
         private val ninjaWebView: NinjaWebView,
         private val showQuickToggleAction: () -> Unit,
         private val openFavAction: () -> Unit,
@@ -79,6 +80,21 @@ class MenuDialog(
         binding.menuOpenEpub.setOnClickListener { dialog.dismissWithAction(openEpubAction) }
         binding.menuSavePdf.setOnClickListener { dialog.dismissWithAction(printPdfAction) }
         binding.menuSearchSite.setOnClickListener { dialog.dismissWithAction(searchSiteAction) }
+        binding.menuReceive.setOnClickListener {
+            dialog.dismissWithAction {
+                ReceiveDataDialog(context, lifecycleCoroutineScope).show { text ->
+                    if (text.startsWith("http")) ninjaWebView.loadUrl(text)
+                    else {
+                        val clip = ClipData.newPlainText("Copied Text", text)
+                        (context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(clip)
+                        NinjaToast.show(context, "String is Copied!")
+                    }
+                }
+            }
+        }
+        binding.menuSendLink.setOnClickListener {
+            dialog.dismissWithAction { SendLinkDialog(context, lifecycleCoroutineScope).show(ninjaWebView.url ?: "") }
+        }
         binding.menuShareLink.setOnClickListener {
             dialog.dismissWithAction { IntentUnit.share(context, ninjaWebView.title, ninjaWebView.url) }
         }

@@ -1183,7 +1183,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
     private fun showFastToggleDialog() {
         if (!this::ninjaWebView.isInitialized) return
 
-        FastToggleDialog(this, ninjaWebView.url ?: "") {
+        FastToggleDialog(this) {
             ninjaWebView.initPreferences()
             ninjaWebView.reload()
         }.show()
@@ -1792,6 +1792,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
     private fun showMenuDialog(): Boolean {
         MenuDialog(
                 this,
+                lifecycleScope,
                 ninjaWebView,
                 this::showFastToggleDialog,
                 { updateAlbum(sp.getString("favoriteURL", "https://github.com/plateaukao/browser")) },
