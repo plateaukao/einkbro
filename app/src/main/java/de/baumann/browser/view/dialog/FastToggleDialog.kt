@@ -19,7 +19,6 @@ import org.koin.core.component.inject
 
 class FastToggleDialog(
         private val context: Context,
-        private val url: String,
         private val okAction: () -> Unit,
 ) : KoinComponent {
     private val sp: SharedPreferences by inject()
