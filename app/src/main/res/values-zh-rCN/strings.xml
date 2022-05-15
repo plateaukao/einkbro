@@ -385,4 +385,7 @@
     <string name="setting_clear_recent_bookmarks">Clear recent bookmark list</string>
     <string name="setting_summary_clear_recent_bookmarks">Clear recently used bookmark list</string>
     <string name="recently_used_bookmarks">Recently Used Bookmarks</string>
+    <string name="menu_send_link">Send link</string>
+    <string name="done">Done</string>
+    <string name="menu_receive">receive data</string>
 </resources>
