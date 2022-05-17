@@ -16,7 +16,7 @@ class SendLinkDialog(
         ShareUtil.startBroadcastingUrl(lifecycleCoroutineScope, url)
         AlertDialog.Builder(context, R.style.TouchAreaDialog).apply {
             setView(ProgressBar(context))
-            setPositiveButton(R.string.done) { _, _ -> ShareUtil.stopBroadcast() }
+            setNeutralButton(R.string.done) { _, _ -> ShareUtil.stopBroadcast() }
             setTitle(R.string.menu_send_link)
         }.show()
     }
