@@ -6,10 +6,7 @@ import org.json.JSONObject
 import org.koin.core.component.KoinComponent
 import java.io.BufferedReader
 import java.io.InputStreamReader
-import java.net.DatagramPacket
-import java.net.InetAddress
-import java.net.MulticastSocket
-import java.net.URL
+import java.net.*
 
 object ShareUtil: KoinComponent {
     private const val multicastIp = "239.10.10.100"
@@ -43,21 +40,28 @@ object ShareUtil: KoinComponent {
         val receivePacket = DatagramPacket(receiveData, receiveData.size)
         broadcastJob = lifecycleCoroutineScope.launch(Dispatchers.IO) {
             socket = MulticastSocket(multicastPort).apply { joinGroup(group) }
-            socket?.receive(receivePacket)
+            try {
+                socket?.receive(receivePacket)
+            } catch (exception: SocketException) {
+                // closed before receiving data
+                return@launch
+            }
             val receivedString = String(receivePacket.data, 0, receivePacket.length)
             val processedString = if (receivedString.startsWith("http")) {
                 receivedString // EinkBro case
             } else {
-                handleSharikScenario(receivePacket.address.toString(), receivedString.toInt())
+                handleSharikScenario(receivePacket.address.toString(), receivedString)
             }
             afterAction(processedString)
             stopBroadcast()
         }
     }
 
-    private fun handleSharikScenario(address: String, port: Int): String {
-        val jsonObject = JSONObject(fetchHttpJson(address, port))
-        return when (jsonObject.getString("type")) {
+    private fun handleSharikScenario(address: String, jsonString: String): String {
+        val jsonObject = JSONObject(jsonString)
+        val type = jsonObject.getString("type")
+        val port = jsonObject.getString("port")
+        return when (type) {
             "file", "app" -> "http:/$address:$port/"
             else -> jsonObject.getString("name")
         }

@@ -398,5 +398,5 @@
     <string name="recently_used_bookmarks">Recently Used Bookmarks</string>
     <string name="menu_send_link">Send link</string>
     <string name="done">Close when transfer is done</string>
-    <string name="menu_receive">receive data</string>
+    <string name="menu_receive">Receive data</string>
 </resources>
