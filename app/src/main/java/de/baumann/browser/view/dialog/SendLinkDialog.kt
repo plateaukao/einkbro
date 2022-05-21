@@ -11,7 +11,6 @@ class SendLinkDialog(
     private val context: Context,
     private val lifecycleCoroutineScope: LifecycleCoroutineScope,
 ) {
-
     fun show(url: String) {
         ShareUtil.startBroadcastingUrl(lifecycleCoroutineScope, url)
         AlertDialog.Builder(context, R.style.TouchAreaDialog).apply {
