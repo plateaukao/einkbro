@@ -86,7 +86,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
         val dialogView = View.inflate(requireActivity(), R.layout.dialog_text, null).apply {
             findViewById<TextView>(R.id.dialog_title).text = title
             findViewById<TextView>(R.id.dialog_text).text = HelperUnit.textSpannable(text)
-            findViewById<TextView>(R.id.dialog_text).movementMethod = LinkMovementMethod.getInstance()
+            findViewById<TextView>(R.id.dialog_text).movementMethod = MyLinkMovementMethod.getInstance()
         }
         if (showContributors) {
             dialogView.findViewById<TextView>(R.id.dialog_text).append("""
