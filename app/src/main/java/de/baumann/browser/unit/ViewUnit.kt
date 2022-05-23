@@ -108,13 +108,17 @@ object ViewUnit {
 
     fun hideKeyboard(activity: Activity) {
         val imm = activity.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
-        var view = activity.currentFocus ?: return
-        imm.hideSoftInputFromWindow(view.windowToken, 0)
+        val view = activity.currentFocus ?: return
+        view.post {
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
+        }
     }
 
     fun showKeyboard(activity: Activity) {
         val imm = activity.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
+        activity.runOnUiThread {
+            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
+        }
     }
 
     fun expandViewTouchArea(view: View, size: Int) {
