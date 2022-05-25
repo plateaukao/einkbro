@@ -1,16 +1,25 @@
 package de.baumann.browser.epub
 
 import android.app.Activity
+import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import androidx.activity.ComponentActivity
+import androidx.documentfile.provider.DocumentFile
+import androidx.lifecycle.LifecycleCoroutineScope
+import androidx.lifecycle.lifecycleScope
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.activity.BrowserActivity
 import de.baumann.browser.activity.EpubReaderActivity
+import de.baumann.browser.preference.ConfigManager
+import de.baumann.browser.unit.HelperUnit
 import de.baumann.browser.util.Constants
+import de.baumann.browser.view.NinjaWebView
 import de.baumann.browser.view.dialog.DialogManager
 import de.baumann.browser.view.dialog.TextInputDialog
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import nl.siegmann.epublib.domain.Author
 import nl.siegmann.epublib.domain.Book
@@ -19,7 +28,9 @@ import nl.siegmann.epublib.epub.EpubReader
 import nl.siegmann.epublib.epub.EpubWriter
 import nl.siegmann.epublib.service.MediatypeService
 import org.jsoup.Jsoup
+import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import java.io.IOException
 import java.io.InputStream
 import java.net.HttpURLConnection
@@ -28,6 +39,48 @@ import java.net.URL
 
 class EpubManager(private val context: Context): KoinComponent {
     private val dialogManager: DialogManager by lazy { DialogManager(context as Activity) }
+    private val config: ConfigManager by inject()
+
+    fun saveEpub(
+        activity: ComponentActivity,
+        fileUri: Uri,
+        ninjaWebView: NinjaWebView,
+    ) {
+        activity.lifecycleScope.launch(Dispatchers.Main) {
+            val isNewFile = (DocumentFile.fromSingleUri(activity, fileUri)?.length() ?: 0).toInt() == 0
+
+            val bookName = if (isNewFile) getBookName() else ""
+            val chapterName = getChapterName(ninjaWebView.title)
+
+            if (bookName != null && chapterName != null) {
+                val progressDialog = ProgressDialog(activity, R.style.TouchAreaDialog).apply {
+                    setTitle(R.string.saving_epub)
+                    show()
+                }
+
+                val rawHtml = ninjaWebView.getRawHtml()
+                internalSaveEpub(
+                        isNewFile,
+                        fileUri,
+                        rawHtml,
+                        bookName,
+                        chapterName,
+                        ninjaWebView.url ?: "",
+                        { savedBookName ->
+                            progressDialog.dismiss()
+                            HelperUnit.openEpubToLastChapter(activity, fileUri)
+
+                            // save epub file info to preference
+                            val bookUri = fileUri.toString()
+                            if (config.savedEpubFileInfos.none { it.uri == bookUri }) {
+                                config.addSavedEpubFile(EpubFileInfo(savedBookName, bookUri))
+                            }
+                        },
+                        { progressDialog.dismiss() }
+                )
+            }
+        }
+    }
 
     suspend fun getChapterName(defaultTitle: String?): String? {
         var chapterName = defaultTitle?: "no title"
@@ -58,7 +111,7 @@ class EpubManager(private val context: Context): KoinComponent {
         (context as Activity).startActivityForResult(intent, BrowserActivity.WRITE_EPUB_REQUEST_CODE)
     }
 
-    suspend fun saveEpub(
+    suspend fun internalSaveEpub(
             isNew: Boolean,
             fileUri: Uri,
             html: String,
@@ -104,7 +157,7 @@ class EpubManager(private val context: Context): KoinComponent {
         }
     }
 
-fun showEpubReader(uri: Uri) {
+    fun showEpubReader(uri: Uri) {
         val intent = Intent(context, EpubReaderActivity::class.java).apply {
             data = uri
         }

@@ -3,7 +3,6 @@ package de.baumann.browser.activity
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.app.DownloadManager
-import android.app.ProgressDialog
 import android.app.SearchManager
 import android.content.*
 import android.content.Intent.ACTION_VIEW
@@ -38,7 +37,6 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.viewModels
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.isVisible
-import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.lifecycleScope
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.ActivityMainBinding
@@ -183,9 +181,6 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
             shouldLoadTabState = it.getBoolean(K_SHOULD_LOAD_TAB_STATE)
         }
 
-        // root cause of slow drawing
-        //WebView.enableSlowWholeDocumentDraw()
-
         config.restartChanged = false
         HelperUnit.applyTheme(this)
         setContentView(binding.root)
@@ -295,7 +290,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
             val uri = data?.data ?: return
             val takeFlags: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION
             contentResolver.takePersistableUriPermission(uri, takeFlags)
-            saveEpub(uri)
+            epubManager.saveEpub(this, uri, ninjaWebView)
 
             return
         }
@@ -676,44 +671,6 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
             putExtra(Intent.EXTRA_TITLE, "einkbro.pdf")
         }
         startActivityForResult(intent, WRITE_PDF_REQUEST_CODE)
-    }
-
-    private fun saveEpub(fileUri: Uri) {
-        lifecycleScope.launch(Dispatchers.Main) {
-            val isNewFile = (DocumentFile.fromSingleUri(this@BrowserActivity, fileUri)?.length()
-                    ?: 0).toInt() == 0
-
-            val bookName = if (isNewFile) epubManager.getBookName() else ""
-            val chapterName = epubManager.getChapterName(ninjaWebView.title)
-
-            if (bookName != null && chapterName != null) {
-                val progressDialog = ProgressDialog(this@BrowserActivity, R.style.TouchAreaDialog).apply {
-                    setTitle(R.string.saving_epub)
-                    show()
-                }
-
-                val rawHtml = ninjaWebView.getRawHtml()
-                epubManager.saveEpub(
-                        isNewFile,
-                        fileUri,
-                        rawHtml,
-                        bookName,
-                        chapterName,
-                        ninjaWebView.url ?: "",
-                        { savedBookName ->
-                            progressDialog.dismiss()
-                            HelperUnit.openEpubToLastChapter(this@BrowserActivity, fileUri)
-
-                            // save epub file info to preference
-                            val bookUri = fileUri.toString()
-                            if (config.savedEpubFileInfos.none { it.uri == bookUri }) {
-                                config.addSavedEpubFile(EpubFileInfo(savedBookName, bookUri))
-                            }
-                        },
-                        { progressDialog.dismiss() }
-                )
-            }
-        }
     }
 
     private fun maybeInitTwoPaneController() {
@@ -1777,7 +1734,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         if (uri == null) {
             epubManager.showEpubFilePicker()
         } else {
-            saveEpub(uri)
+            epubManager.saveEpub(this, uri, ninjaWebView)
         }
     }
 
