@@ -155,35 +155,6 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/open_bookmark_layout"
-            android:layout_width="42dp"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:paddingStart="6dp"
-            android:paddingEnd="6dp">
-
-            <View
-                android:id="@+id/open_bookmark_view"
-                android:layout_width="42dp"
-                android:layout_height="2dp"
-                android:background="?android:attr/colorAccent"
-                android:visibility="visible" />
-
-            <ImageButton
-                android:id="@+id/open_bookmark_button"
-                android:layout_width="42dp"
-                android:layout_height="42dp"
-                android:layout_gravity="center_vertical|center_horizontal"
-                android:layout_marginStart="2dp"
-                android:layout_marginEnd="2dp"
-                android:background="@android:color/transparent"
-                android:tooltipText="@string/bookmarks"
-                android:onClick="onClick"
-                android:src="@drawable/ic_bookmarks" />
-
-        </LinearLayout>
 
         <ImageButton
             android:id="@+id/tab_plus_bottom"
