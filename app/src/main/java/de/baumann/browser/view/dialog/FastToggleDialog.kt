@@ -86,6 +86,13 @@ class FastToggleDialog(
         binding.switchIncognito.isChecked = config.isIncognitoMode
         binding.switchAdBlock.isChecked = sp.getBoolean(getString(R.string.sp_ad_block), true)
         binding.switchCookie.isChecked = sp.getBoolean(getString(R.string.sp_cookies), true)
+        binding.switchJavascript.isChecked = config.enableJavascript
+
+        binding.switchJavascript.setOnCheckedChangeListener {  _, isChecked ->
+            config.enableJavascript = isChecked
+            okAction.invoke()
+            dialog.dismiss()
+        }
 
         binding.switchIncognito.setOnCheckedChangeListener { _, isChecked ->
             config.isIncognitoMode = isChecked

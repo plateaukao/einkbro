@@ -39,10 +39,11 @@ class WebContentPostProcessor {
         """
 
         private const val zhihuDisablePopupJs = """
-            document.querySelector(".ContentItem-expandButton").click();
-            document.querySelector(".ModalWrap-item:last-child .ModalWrap-itemBtn").click();
-            document.querySelector(".SkipModal .Button.Button--plain").click();
-            document.querySelector("button.OpenInAppButton").remove();
+            javascript:(function() {
+                document.querySelector(".OpenInAppButton").remove();
+                document.querySelector(".ContentItem-expandButton").click();
+                document.querySelector(".ModalWrap-item:last-child .ModalWrap-itemBtn").click();
+            })()
         """
 
         private const val jianshuJs = """
@@ -56,7 +57,7 @@ class WebContentPostProcessor {
         val urlScriptMap = mapOf(
                 "facebook.com" to facebookHideSponsoredPostsJs,
                 "zhihu.com" to zhihuDisablePopupJs,
-                "www.jianshu.com" to jianshuJs,
+                "jianshu.com" to jianshuJs,
         )
     }
 }
