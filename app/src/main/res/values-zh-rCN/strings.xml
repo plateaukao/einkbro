@@ -388,4 +388,5 @@
     <string name="menu_send_link">Send link</string>
     <string name="done">Done</string>
     <string name="menu_receive">receive data</string>
+    <string name="new_instance">New Window</string>
 </resources>
