@@ -267,14 +267,12 @@ class ConfigManager(
     var overviewTab: OverviewTab
         get() = when (sp.getString(K_START_TAB, "0")) {
             "0" -> OverviewTab.TabPreview
-            "3" -> OverviewTab.Bookmarks
             "4" -> OverviewTab.History
             else -> OverviewTab.TabPreview
         }
         set(value) {
             val tabString = when (value) {
                 OverviewTab.TabPreview -> "0"
-                OverviewTab.Bookmarks -> "3"
                 OverviewTab.History -> "4"
             }
             sp.edit { putString(K_START_TAB, tabString) }
