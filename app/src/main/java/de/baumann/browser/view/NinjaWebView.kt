@@ -121,6 +121,7 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun initWebView() {
+        setWebContentsDebuggingEnabled(true)
         if (BuildConfig.DEBUG) {
             setWebContentsDebuggingEnabled(true)
         }

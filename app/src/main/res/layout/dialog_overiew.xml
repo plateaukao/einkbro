@@ -79,6 +79,7 @@
             android:layout_marginStart="2dp"
             android:layout_marginEnd="2dp"
             android:background="@android:color/transparent"
+            android:tooltipText="@string/new_instance"
             android:onClick="onClick"
             android:src="@drawable/ic_new_window" />
 
@@ -90,6 +91,7 @@
             android:layout_marginStart="2dp"
             android:layout_marginEnd="2dp"
             android:background="@android:color/transparent"
+            android:tooltipText="@string/setting_title_incognito"
             android:onClick="onClick"
             android:src="@drawable/ic_incognito" />
 
@@ -117,8 +119,9 @@
                 android:layout_marginStart="2dp"
                 android:layout_marginEnd="2dp"
                 android:background="@android:color/transparent"
+                android:tooltipText="@string/history"
                 android:onClick="onClick"
-                android:src="@drawable/ic_action_history" />
+                android:src="@drawable/ic_history" />
 
         </LinearLayout>
 
@@ -146,6 +149,7 @@
                 android:layout_marginStart="2dp"
                 android:layout_marginEnd="2dp"
                 android:background="@android:color/transparent"
+                android:tooltipText="@string/tab_preview"
                 android:onClick="onClick"
                 android:src="@drawable/icon_tab_plus" />
 
@@ -175,6 +179,7 @@
                 android:layout_marginStart="2dp"
                 android:layout_marginEnd="2dp"
                 android:background="@android:color/transparent"
+                android:tooltipText="@string/bookmarks"
                 android:onClick="onClick"
                 android:src="@drawable/ic_bookmarks" />
 
@@ -188,19 +193,21 @@
             android:layout_marginStart="2dp"
             android:layout_marginEnd="2dp"
             android:background="@android:color/transparent"
+            android:tooltipText="@string/open_new_tab"
             android:onClick="onClick"
             android:src="@drawable/icon_plus" />
 
-            <ImageButton
-                android:id="@+id/button_close_overview"
-                android:layout_width="42dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical|center_horizontal"
-                android:layout_marginStart="2dp"
-                android:layout_marginEnd="2dp"
-                android:background="@android:color/transparent"
-                android:onClick="onClick"
-                android:src="@drawable/icon_arrow_down_gest" />
+        <ImageButton
+            android:id="@+id/button_close_overview"
+            android:layout_width="42dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp"
+            android:background="@android:color/transparent"
+            android:onClick="onClick"
+            android:tooltipText="@string/close_tab"
+            android:src="@drawable/icon_arrow_down_gest" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
