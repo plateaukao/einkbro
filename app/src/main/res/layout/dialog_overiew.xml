@@ -36,10 +36,12 @@
         android:id="@+id/home_list_2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:layout_constrainedHeight="true"
         app:layout_constraintBottom_toTopOf="@id/home_buttons"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:background="@drawable/top_border_bg"
+        android:paddingTop="56dp"
         android:divider="@null"
         android:dividerHeight="0dp"
         android:fastScrollEnabled="true"
@@ -92,6 +94,7 @@
             android:src="@drawable/ic_incognito" />
 
         <LinearLayout
+            android:id="@+id/open_history_layout"
             android:layout_width="42dp"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -120,6 +123,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/open_tab_layout"
             android:layout_width="42dp"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -148,6 +152,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/open_bookmark_layout"
             android:layout_width="42dp"
             android:layout_height="match_parent"
             android:gravity="center"

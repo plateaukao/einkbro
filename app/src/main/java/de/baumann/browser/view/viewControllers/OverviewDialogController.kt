@@ -5,8 +5,7 @@ import android.app.Dialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
+import android.view.View.*
 import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.lifecycle.LifecycleOwner
@@ -18,6 +17,7 @@ import de.baumann.browser.Ninja.databinding.DialogMenuContextListBinding
 import de.baumann.browser.Ninja.databinding.DialogMenuOverviewBinding
 import de.baumann.browser.Ninja.databinding.DialogOveriewBinding
 import de.baumann.browser.database.*
+import de.baumann.browser.database.BookmarkManager.Companion.BOOKMARK_ROOT_FOLDER_ID
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.unit.BrowserUnit
 import de.baumann.browser.unit.HelperUnit
@@ -246,8 +246,8 @@ class OverviewDialogController(
 
     // control whether adapter should be reloaded
     private var currentBookmarkFolderId = -1
-    private fun setupBookmarkList(bookmarkFolderId: Int = 0) {
-        if (currentBookmarkFolderId == 0 && bookmarkFolderId == 0) {
+    private fun setupBookmarkList(bookmarkFolderId: Int = BOOKMARK_ROOT_FOLDER_ID) {
+        if (currentBookmarkFolderId == BOOKMARK_ROOT_FOLDER_ID && bookmarkFolderId == BOOKMARK_ROOT_FOLDER_ID) {
             return
         } else {
             currentBookmarkFolderId = bookmarkFolderId
@@ -272,18 +272,27 @@ class OverviewDialogController(
 
         lifecycleScope.launch {
             bookmarkViewModel.bookmarksByParent(bookmarkFolderId).collect {
-                adapter.submitList(it)
-                // when list is loaded from DB, check if it's necessary to swap the adapter for recyclerview.
-                // this can prevent list from being gone for a short period of time.
-                if (recyclerView.adapter != adapter) {
-                    recyclerView.adapter = adapter
+                if (isBookmarksEmpty(it)) {
+                    NinjaToast.show(context, "You don't have any bookmarks!")
+                    currentBookmarkFolderId = - 1
+                    hide()
+                } else {
+                    adapter.submitList(it)
+                    // when list is loaded from DB, check if it's necessary to swap the adapter for recyclerview.
+                    // this can prevent list from being gone for a short period of time.
+                    if (recyclerView.adapter != adapter) {
+                        recyclerView.adapter = adapter
+                    }
                 }
             }
         }
     }
 
+    private fun isBookmarksEmpty(it: List<Bookmark>) =
+        it.isEmpty() && currentBookmarkFolderId == BOOKMARK_ROOT_FOLDER_ID
+
     private fun shouldShowWideList(): Boolean =
-            ViewUnit.isLandscape(context) || ViewUnit.isTablet(context)
+        ViewUnit.isLandscape(context) || ViewUnit.isTablet(context)
 
     private fun openHomePage() {
         updateLayout()
@@ -295,6 +304,34 @@ class OverviewDialogController(
     }
 
     private fun toggleOverviewFocus(view: View) {
+        when(view) {
+            binding.openTabView -> {
+                binding.openTabLayout.visibility = VISIBLE
+                binding.openTabView.visibility = VISIBLE
+
+                binding.openBookmarkLayout.visibility = GONE
+                binding.openHistoryLayout.visibility = VISIBLE
+                binding.newWindow.visibility = VISIBLE
+                binding.tabPlusIncognito.visibility = VISIBLE
+                binding.tabPlusBottom.visibility = VISIBLE
+            }
+            binding.openBookmarkView -> {
+                binding.openBookmarkLayout.visibility = VISIBLE
+                binding.openHistoryLayout.visibility = GONE
+                binding.openTabLayout.visibility = GONE
+                binding.newWindow.visibility = GONE
+                binding.tabPlusIncognito.visibility = GONE
+                binding.tabPlusBottom.visibility = GONE
+            }
+            binding.openHistoryView -> {
+                binding.openBookmarkLayout.visibility = GONE
+                binding.openHistoryLayout.visibility = VISIBLE
+                binding.openHistoryView.visibility = VISIBLE
+                binding.newWindow.visibility = GONE
+                binding.tabPlusIncognito.visibility = GONE
+                binding.tabPlusBottom.visibility = GONE
+            }
+        }
         binding.openTabView.visibility = if (binding.openTabView == view) VISIBLE else View.INVISIBLE
         binding.openBookmarkView.visibility = if (binding.openBookmarkView == view) VISIBLE else View.INVISIBLE
         binding.openHistoryView.visibility = if (binding.openHistoryView == view) VISIBLE else View.INVISIBLE
@@ -309,6 +346,7 @@ class OverviewDialogController(
                         OverviewTab.Bookmarks -> {
                             lifecycleScope.launch {
                                 bookmarkManager.deleteAll()
+                                (recyclerView.adapter as BookmarkAdapter).notifyDataSetChanged()
                                 onBookmarksChanged()
                             }
                         }
