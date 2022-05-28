@@ -236,7 +236,7 @@ class OverviewDialogController(
         binding.root.visibility = VISIBLE
         recyclerView.layoutManager = if (shouldShowWideList()) wideLayoutManager else narrowLayoutManager
 
-        binding.overviewPreview.visibility = View.INVISIBLE
+        binding.overviewPreview.visibility = INVISIBLE
         toggleOverviewFocus(binding.openBookmarkView)
         overViewTab = OverviewTab.Bookmarks
         setupBookmarkList()
