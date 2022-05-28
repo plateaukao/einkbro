@@ -117,4 +117,9 @@ class BookmarkManager(private val context: Context) : KoinComponent {
     suspend fun delete(bookmark: Bookmark) = bookmarkDao.delete(bookmark)
 
     suspend fun update(bookmark: Bookmark) = bookmarkDao.update(bookmark)
+
+    companion object {
+        const val BOOKMARK_ROOT_FOLDER_ID = 0
+    }
+
 }
