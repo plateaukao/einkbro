@@ -220,8 +220,7 @@ class DataSettingsFragment : PreferenceFragmentCompat(), KoinComponent {
     }
 
     private fun dialogRestart() {
-        val sp = preferenceScreen.sharedPreferences
-        sp.edit().putBoolean("restart_changed", true).apply()
+        preferenceScreen.sharedPreferences?.edit()?.putBoolean("restart_changed", true)?.apply()
     }
 
     // If targetLocation does not exist, it will be created.

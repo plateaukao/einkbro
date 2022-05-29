@@ -288,8 +288,8 @@
     <string name="setting_summary_desktop">支持网站桌面模式</string>
     <string name="history">历史</string>
     <string name="location">位置</string>
-    <string name="desktop">桌面\n模式</string>
-    <string name="media_continue">后台\n播放</string>
+    <string name="desktop">桌面模式</string>
+    <string name="media_continue">后台播放</string>
     <string name="show_touch_area_hint">显示触控感应区边界</string>
     <string name="close">关闭</string>
     <string name="touch_left_side">左</string>
@@ -316,7 +316,7 @@
     <string name="book_name">图书名称</string>
     <string name="book_name_description">输入图书名称</string>
     <string name="saving_epub">正在保存Epub</string>
-    <string name="volume_page_turn">音量键\n切换</string>
+    <string name="volume_page_turn">音量键切换</string>
     <string name="menu_add_folder">添加书签文件夹</string>
     <string name="folder_name">书签文件夹名称</string>
     <string name="folder_name_description">插入书签文件夹名称</string>

@@ -213,11 +213,11 @@
     <string name="book_name">書籍名稱</string>
     <string name="book_name_description">輸入想要的書籍名稱</string>
     <string name="saving_epub">儲存 Epub 文件中</string>
-    <string name="volume_page_turn">音量鍵\n翻頁</string>
-    <string name="history">瀏覽\n記錄</string>
+    <string name="volume_page_turn">音量鍵翻頁</string>
+    <string name="history">瀏覽記錄</string>
     <string name="location">位置</string>
-    <string name="desktop">桌面\n模式</string>
-    <string name="media_continue">背景\n播放</string>
+    <string name="desktop">桌面模式</string>
+    <string name="media_continue">背景播放</string>
     <string name="menu_add_folder">新增書籤目錄</string>
     <string name="folder_name_description">輸入書籤目錄名稱</string>
     <string name="setting_title_export_bookmarks">匯出書籤</string>
