@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.net.Uri
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
@@ -21,6 +22,8 @@ import androidx.webkit.WebSettingsCompat
 import androidx.webkit.WebViewFeature
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.browser.*
+import de.baumann.browser.database.BookmarkManager
+import de.baumann.browser.database.FaviconInfo
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.preference.DarkMode
 import de.baumann.browser.preference.FontType
@@ -29,9 +32,13 @@ import de.baumann.browser.unit.BrowserUnit
 import de.baumann.browser.unit.ViewUnit.dp
 import de.baumann.browser.util.DebugT
 import de.baumann.browser.util.PdfDocumentAdapter
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.apache.commons.text.StringEscapeUtils
+import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.io.InputStream
 import java.util.*
@@ -54,6 +61,7 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
 
     private val sp: SharedPreferences by inject()
     private val config: ConfigManager by inject()
+    private val bookmarkManager: BookmarkManager by inject()
 
     var incognito: Boolean = false
         set(value) {
@@ -112,7 +120,7 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
     init {
         isForeground = false
         webViewClient = NinjaWebViewClient(this) { url -> browserController?.addHistory(url) }
-        webChromeClient = NinjaWebChromeClient(this)
+        webChromeClient = NinjaWebChromeClient(this) { setAlbumCover(it) }
         clickHandler = NinjaClickHandler(this)
         initWebView()
         initWebSettings()
@@ -288,7 +296,21 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
 
     override fun getAlbumView(): View = album.albumView
 
-    override fun setAlbumCover(bitmap: Bitmap?) = album.setAlbumCover(bitmap)
+    override fun setAlbumCover(bitmap: Bitmap) {
+        album.setAlbumCover(bitmap)
+        if (bitmap!= null) {
+            val host = Uri.parse(originalUrl).host ?: return
+            GlobalScope.launch {
+                bookmarkManager.insertFavicon(FaviconInfo(domain = host, bitmap.convertBytes()))
+            }
+        }
+    }
+
+    private fun Bitmap.convertBytes(): ByteArray {
+        val stream = ByteArrayOutputStream()
+        this.compress(Bitmap.CompressFormat.PNG, 0, stream)
+        return stream.toByteArray()
+    }
 
     override fun getAlbumTitle(): String = album.albumTitle
 
@@ -323,14 +345,6 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
     fun update(progress: Int) {
         if (isForeground) {
             browserController?.updateProgress(progress)
-        }
-
-        if (isLoadFinish) {
-            Handler(Looper.getMainLooper()).postDelayed({
-                favicon?.let { setAlbumCover(it) }
-            },
-                    250
-            )
         }
     }
 

@@ -61,12 +61,15 @@ class BookmarkListDialog(
 
         folderStack.push(Bookmark(context.getString(R.string.bookmarks), ""))
         updateBookmarksContent {
+            // handle when create folder dialog is popup, this will cause loop for postAction
+            if (this::dialog.isInitialized) return@updateBookmarksContent
+
             dialog = builder.create().apply {
                 window?.setGravity(if (config.isToolbarOnTop) Gravity.CENTER else Gravity.BOTTOM)
                 window?.setBackgroundDrawableResource(R.drawable.background_with_border_margin)
                 setOnDismissListener { updateContentJob?.cancel() }
                 show()
-                window?.setLayout((getScreenWidth() * .9).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
+                //window?.setLayout((getScreenWidth() * .9).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
             }
         }
     }
