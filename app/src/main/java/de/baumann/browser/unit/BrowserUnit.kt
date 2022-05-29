@@ -423,13 +423,16 @@ object BrowserUnit: KoinComponent {
 
     fun getRecentBookmarksContent(): String {
         if (config.recentBookmarks.isEmpty()) return ""
-        val content = config.recentBookmarks.joinToString(separator = "<br/>") {
-            """<button><a href="${it.url}">${it.name}</a></button><br/> """
+        val content = config.recentBookmarks.joinToString(separator = " ") {
+            """<button><a href="${it.url}">${it.name}</a></button> """
         }
         return """
             <html>
             <head>
                 <style>
+                body {
+                flex-wrap: wrap;
+                }
                 a{
                   text-decoration:none;  
                 }
