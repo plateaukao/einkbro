@@ -42,7 +42,18 @@ class WebContentPostProcessor {
 
         private const val zhihuDisablePopupJs = """
             javascript:(function() {
-                document.querySelector(".OpenInAppButton").style.display = "none";
+                const style = document.createElement("style");
+                style.innerHTML = "html{overflow: auto !important}.Modal-wrapper{display:none !important}.OpenInAppButton {display:none !important}";
+                document.head.appendChild(style);
+                
+                var mutationObserver = new window.MutationObserver(function(mutation, observer){ 
+                    if (document.querySelector('.signFlowModal')) {
+                        let button = document.querySelector('.Button.Modal-closeButton.Button--plain');
+                        if (button) button.click();
+                    }
+                })
+                mutationObserver.observe(document, { subtree: true, childList: true });
+                
                 document.querySelector(".ContentItem-expandButton").click();
                 document.querySelector(".ModalWrap-item:last-child .ModalWrap-itemBtn").click();
             })()

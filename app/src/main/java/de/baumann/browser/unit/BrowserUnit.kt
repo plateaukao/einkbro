@@ -424,17 +424,34 @@ object BrowserUnit: KoinComponent {
     fun getRecentBookmarksContent(): String {
         if (config.recentBookmarks.isEmpty()) return ""
         val content = config.recentBookmarks.joinToString(separator = "<br/>") {
-            """<a href="${it.url}">${it.name}</a><br/> """
+            """<button><a href="${it.url}">${it.name}</a></button><br/> """
         }
         return """
             <html>
             <head>
                 <style>
-                
+                a{
+                  text-decoration:none;  
+                }
+                button {
+                  border: 2px solid black;
+                  background-color: white;
+                  color: black;
+                  padding: 14px 28px;
+                  font-size: 16px;
+                  cursor: pointer;
+                  border-color: #2196F3;
+                  color: dodgerblue;
+                  border-radius: 12px;
+                }
+                button:hover {
+                  background: #2196F3;
+                  color: white;
+                }
                 </style>
             </head>
             <body>
-                $content
+                <center> $content </center>
             </body>
             </html>
         """.trimIndent()
