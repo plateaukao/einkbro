@@ -9,10 +9,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.*
 import android.webkit.WebView.*
+import de.baumann.browser.database.FaviconInfo
 import de.baumann.browser.unit.HelperUnit
 import de.baumann.browser.view.NinjaWebView
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
-class NinjaWebChromeClient(private val ninjaWebView: NinjaWebView) : WebChromeClient() {
+class NinjaWebChromeClient(
+    private val ninjaWebView: NinjaWebView,
+    private val onReceiveFavicon: (Bitmap) -> Unit
+) : WebChromeClient() {
     private lateinit var webviewParent: ViewGroup
 
     override fun onCreateWindow(view: WebView, dialog: Boolean, userGesture: Boolean, resultMsg: Message): Boolean {
@@ -123,4 +129,10 @@ class NinjaWebChromeClient(private val ninjaWebView: NinjaWebView) : WebChromeCl
             .apply { setPixel(0, 0, Color.argb(0, 255, 255, 255)) }
 
     override fun getDefaultVideoPoster(): Bitmap? = posterBitmap
+
+    override fun onReceivedIcon(view: WebView?, icon: Bitmap?) {
+        super.onReceivedIcon(view, icon)
+        val bitmap = icon ?: return
+        onReceiveFavicon(bitmap)
+    }
 }

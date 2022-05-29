@@ -1,5 +1,6 @@
 package de.baumann.browser.view.adapter
 
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,12 +11,20 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.database.Bookmark
+import de.baumann.browser.database.BookmarkManager
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 class BookmarkAdapter(
     private val onItemClick: (Bookmark) -> Unit,
     private val onTabIconClick: (Bookmark) -> Unit,
     private val onItemLongClick: (Bookmark) -> Unit,
-) : ListAdapter<Bookmark, BookmarkAdapter.BookmarkViewHolder>(DiffCallback) {
+) : ListAdapter<Bookmark, BookmarkAdapter.BookmarkViewHolder>(DiffCallback), KoinComponent {
+    private val bookmarkManager: BookmarkManager by inject()
 
     class BookmarkViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val textView: TextView = view.findViewById(R.id.record_item_title)
@@ -34,12 +43,9 @@ class BookmarkAdapter(
         val bookmark = getItem(viewHolder.adapterPosition)
         viewHolder.textView.text = bookmark.title
         if (bookmark.isDirectory) {
-            viewHolder.iconView.visibility = View.VISIBLE
-            viewHolder.iconView.setImageResource(R.drawable.ic_folder)
-            viewHolder.tabView.visibility = View.GONE
+            updateBookmarkFolderIcons(viewHolder)
         } else {
-            viewHolder.iconView.visibility = View.GONE
-            viewHolder.tabView.visibility = View.VISIBLE
+            updateBookmarkIcons(viewHolder, bookmark)
         }
 
         with(viewHolder.itemView) {
@@ -51,6 +57,28 @@ class BookmarkAdapter(
         }
         viewHolder.tabView.setOnClickListener {
             onTabIconClick(bookmark)
+        }
+    }
+
+    private fun updateBookmarkFolderIcons(viewHolder: BookmarkViewHolder) {
+        viewHolder.iconView.visibility = View.VISIBLE
+        viewHolder.iconView.setImageResource(R.drawable.ic_folder)
+        viewHolder.tabView.visibility = View.GONE
+    }
+
+    private fun updateBookmarkIcons(viewHolder: BookmarkViewHolder, bookmark: Bookmark) {
+        viewHolder.tabView.visibility = View.VISIBLE
+        viewHolder.iconView.visibility = View.GONE
+        GlobalScope.launch {
+            viewHolder.tabView.setImageResource(R.drawable.icon_plus)
+            val host = Uri.parse(bookmark.url).host ?: return@launch
+            val favicons = bookmarkManager.findFaviconBy(host)
+            if (favicons.isNotEmpty()) {
+                val bitmap = favicons.first().getBitmap() ?: return@launch
+                withContext(Dispatchers.Main) {
+                    viewHolder.tabView.setImageBitmap(bitmap)
+                }
+            }
         }
     }
 
