@@ -26,6 +26,7 @@ import de.baumann.browser.view.NinjaToast
 import de.baumann.browser.view.adapter.BookmarkAdapter
 import de.baumann.browser.viewmodel.BookmarkViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -63,6 +64,7 @@ class BookmarkListDialog(
             dialog = builder.create().apply {
                 window?.setGravity(if (config.isToolbarOnTop) Gravity.CENTER else Gravity.BOTTOM)
                 window?.setBackgroundDrawableResource(R.drawable.background_with_border_margin)
+                setOnDismissListener { updateContentJob?.cancel() }
                 show()
                 window?.setLayout((getScreenWidth() * .9).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
             }
@@ -106,6 +108,7 @@ class BookmarkListDialog(
         }
     }
 
+    private var updateContentJob: Job? = null
     private val folderStack: Stack<Bookmark> = Stack()
     private fun updateBookmarksContent(postAction: (()->Unit)? = null) {
         val currentFolder = folderStack.peek()
@@ -117,7 +120,7 @@ class BookmarkListDialog(
             binding.buttonUpFolder.visibility = VISIBLE
         }
 
-        lifecycleScope.launch {
+        updateContentJob = lifecycleScope.launch {
             bookmarkViewModel.bookmarksByParent(currentFolder.id).collect {
                 recyclerView.visibility = if (it.isEmpty()) INVISIBLE else VISIBLE
                 binding.emptyView.visibility = if (it.isEmpty()) VISIBLE else INVISIBLE
