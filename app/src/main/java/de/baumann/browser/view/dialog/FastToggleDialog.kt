@@ -5,12 +5,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.view.Gravity
 import android.view.LayoutInflater
-import android.view.View
-import android.view.View.INVISIBLE
-import android.view.View.VISIBLE
-import android.widget.ImageButton
 import androidx.core.content.edit
-import androidx.preference.PreferenceManager
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.DialogToggleBinding
 import de.baumann.browser.preference.ConfigManager
@@ -26,7 +21,6 @@ class FastToggleDialog(
     private lateinit var dialog: AlertDialog
     private lateinit var binding: DialogToggleBinding
 
-
     fun show() {
         binding = DialogToggleBinding.inflate(LayoutInflater.from(context))
         val builder = AlertDialog.Builder(context, R.style.TouchAreaDialog).apply { setView(binding.root) }
@@ -40,76 +34,74 @@ class FastToggleDialog(
     }
 
     private fun initViews() {
-        initButtons()
-        initSwitches()
         initToggles()
         initOkCancelBar()
     }
 
     private fun initToggles() {
-        updateViewVisibility(binding.toggleHistoryView, config.saveHistory)
-        updateViewVisibility(binding.toggleLocationView, R.string.sp_location)
-        updateViewVisibility(binding.toggleMediaContinueView, config.continueMedia)
-        updateViewVisibility(binding.toggleDesktopView, config.desktop)
-        updateViewVisibility(binding.toggleVolumePageTurn, config.volumePageTurn)
+        binding.switchHistory.isChecked = config.saveHistory
+        binding.switchLocation.isChecked = sp.getBoolean("SP_LOCATION_9", false)
+        binding.switchMediaContinue.isChecked = config.continueMedia
+        binding.switchDesktop.isChecked = config.desktop
+        binding.switchVolume.isChecked = config.volumePageTurn
 
-        binding.toggleHistory.setOnClickListener {
+        binding.toggleHistoryContainer.setOnClickListener {
             config.saveHistory = !config.saveHistory
-            updateViewVisibility(binding.toggleHistoryView, config.saveHistory)
+            binding.switchHistory.isChecked = config.saveHistory
             dialog.dismiss()
         }
-        binding.toggleLocation.setOnClickListener {
-            updateBooleanPref(getString(R.string.sp_location), false)
-            updateViewVisibility(binding.toggleLocationView, R.string.sp_location)
+        binding.toggleLocationContainer.setOnClickListener {
+            updateBooleanPref("SP_LOCATION_9", false)
+            binding.switchLocation.isChecked = sp.getBoolean("SP_LOCATION_9", false)
             dialog.dismiss()
         }
-        binding.toggleVolume.setOnClickListener {
+        binding.toggleVolumeContainer.setOnClickListener {
             config.volumePageTurn = !config.volumePageTurn
-            updateViewVisibility(binding.toggleVolumePageTurn, config.volumePageTurn)
+            binding.switchVolume.isChecked = config.volumePageTurn
             dialog.dismiss()
         }
-        binding.toggleMediaContinue.setOnClickListener {
+        binding.toggleBackgroundPlayContainer.setOnClickListener {
             config.continueMedia = !config.continueMedia
-            updateViewVisibility(binding.toggleMediaContinueView, config.continueMedia)
+            binding.switchMediaContinue.isChecked = config.continueMedia
             dialog.dismiss()
         }
-        binding.toggleDesktop.setOnClickListener {
+        binding.toggleDesktopContainer.setOnClickListener {
             config.desktop = !config.desktop
-            updateViewVisibility(binding.toggleDesktopView, config.desktop)
+            binding.switchDesktop.isChecked = config.desktop
             dialog.dismiss()
         }
-    }
 
-    private fun initButtons() { }
-
-    private fun initSwitches() {
         binding.switchIncognito.isChecked = config.isIncognitoMode
         binding.switchAdBlock.isChecked = sp.getBoolean(getString(R.string.sp_ad_block), true)
         binding.switchCookie.isChecked = sp.getBoolean(getString(R.string.sp_cookies), true)
         binding.switchJavascript.isChecked = config.enableJavascript
 
-        binding.switchJavascript.setOnCheckedChangeListener {  _, isChecked ->
-            config.enableJavascript = isChecked
+        binding.toggleJavascriptContainer.setOnClickListener {
+            config.enableJavascript = !config.enableJavascript
+            binding.switchJavascript.isChecked = config.enableJavascript
             okAction.invoke()
             dialog.dismiss()
         }
 
-        binding.switchIncognito.setOnCheckedChangeListener { _, isChecked ->
-            config.isIncognitoMode = isChecked
+        binding.toggleIncognitoContainer.setOnClickListener {
+            config.isIncognitoMode = !config.isIncognitoMode
             config.cookies = !config.isIncognitoMode
             config.saveHistory = !config.isIncognitoMode
+            binding.switchIncognito.isChecked = config.isIncognitoMode
 
             okAction.invoke()
             dialog.dismiss()
         }
 
-        binding.switchAdBlock.setOnCheckedChangeListener { _, isChecked ->
-            config.adBlock = isChecked
+        binding.toggleAdblockContainer.setOnClickListener {
+            updateBooleanPref("SP_AD_BLOCK_9", true)
+            binding.switchAdBlock.isChecked = sp.getBoolean(getString(R.string.sp_ad_block), true)
             okAction.invoke()
             dialog.dismiss()
         }
-        binding.switchCookie.setOnCheckedChangeListener { _, isChecked ->
-            config.cookies = isChecked
+        binding.toggleCookiesContainer.setOnClickListener {
+            updateBooleanPref("SP_AD_COOKIES_9", true)
+            binding.switchCookie.isChecked = sp.getBoolean(getString(R.string.sp_cookies), true)
             okAction.invoke()
             dialog.dismiss()
         }
@@ -121,20 +113,6 @@ class FastToggleDialog(
 
     private fun getString(resId: Int): String = context.getString(resId)
 
-    private fun setImgButtonResource(imgButton: ImageButton, isEnabled: Boolean) {
-        val resId = if (isEnabled) R.drawable.check_green else R.drawable.ic_action_close_red
-        imgButton.setImageResource(resId)
-    }
-
     private fun updateBooleanPref(prefKey: String, defaultValue: Boolean = true) =
             sp.edit { putBoolean(prefKey, !sp.getBoolean(prefKey, defaultValue)) }
-
-    private fun updateViewVisibility(view: View, shouldBeVisible: Boolean) {
-        view.visibility = if (shouldBeVisible) VISIBLE else INVISIBLE
-    }
-
-    private fun updateViewVisibility(view: View, stringResId: Int) {
-        val shouldBeVisible = sp.getBoolean(getString(stringResId), false)
-        updateViewVisibility(view, shouldBeVisible)
-    }
 }

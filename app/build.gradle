@@ -43,14 +43,13 @@ android {
         disable 'MissingTranslation'
     }
 
-
     return void
 }
 
 dependencies {
-    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'com.google.android.material:material:1.6.0'
     implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.preference:preference-ktx:1.1.1'
+    implementation 'androidx.preference:preference-ktx:1.2.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     // epublib
@@ -67,7 +66,7 @@ dependencies {
     // for epub saving: html processing
     implementation 'org.jsoup:jsoup:1.14.3'
     implementation 'androidx.appcompat:appcompat:1.4.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
     def room_version = "2.3.0"
     implementation "androidx.room:room-runtime:$room_version"
@@ -75,8 +74,8 @@ dependencies {
     kapt 'org.xerial:sqlite-jdbc:3.36.0.2'
     kapt "androidx.room:room-compiler:$room_version"
 
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1'
 
     // for dark mode
     implementation 'androidx.webkit:webkit:1.4.0'

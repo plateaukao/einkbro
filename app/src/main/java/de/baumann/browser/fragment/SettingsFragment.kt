@@ -63,7 +63,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
             false
         }
         findPreference<Preference>("settings_version")?.title = "Daniel Kao, v" + BuildConfig.VERSION_NAME.toString()
-        preferenceManager.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+        preferenceManager.sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
     }
 
     override fun onSharedPreferenceChanged(sp: SharedPreferences, key: String) {

@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
     android:orientation="vertical"
-    android:gravity="center"
-    tools:ignore="ContentDescription" >
+    tools:ignore="ContentDescription">
 
-    <ScrollView android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/button_bar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <LinearLayout
             android:orientation="vertical"
@@ -19,6 +23,7 @@
             android:layout_height="wrap_content" >
 
             <LinearLayout
+                android:id="@+id/toggle_incognito_container"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
@@ -46,10 +51,12 @@
                     android:id="@+id/switch_incognito"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:clickable="false"
                     android:checked="false" />
 
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/toggle_adblock_container"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
@@ -78,11 +85,13 @@
                     android:id="@+id/switch_adBlock"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:clickable="false"
                     android:checked="false" />
 
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/toggle_javascript_container"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
@@ -111,10 +120,12 @@
                     android:id="@+id/switch_javascript"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:clickable="false"
                     android:checked="false"/>
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/toggle_cookies_container"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:minHeight="46dp"
@@ -144,198 +155,201 @@
                     android:id="@+id/switch_cookie"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:clickable="false"
                     android:checked="false"/>
             </LinearLayout>
 
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="8dp">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_gravity="center_horizontal">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="3dp"
-                        android:layout_marginEnd="3dp"
-                        android:orientation="vertical">
-
-                        <View
-                            android:id="@+id/toggle_historyView"
-                            android:layout_width="42dp"
-                            android:layout_height="2dp"
-                            android:background="?android:attr/colorAccent" />
-
-                        <ImageButton
-                            android:id="@+id/toggle_history"
-                            android:layout_width="42dp"
-                            android:layout_height="42dp"
-                            android:layout_gravity="center_vertical|center_horizontal"
-                            android:layout_marginStart="2dp"
-                            android:layout_marginEnd="2dp"
-                            android:background="?attr/actionBarItemBackground"
-                            android:src="@drawable/icon_history" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="@string/history" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="3dp"
-                        android:layout_marginEnd="3dp"
-                        android:orientation="vertical">
-
-                        <View
-                            android:id="@+id/toggle_locationView"
-                            android:layout_width="42dp"
-                            android:layout_height="2dp"
-                            android:background="?android:attr/colorAccent" />
-
-                        <ImageButton
-                            android:id="@+id/toggle_location"
-                            android:layout_width="42dp"
-                            android:layout_height="42dp"
-                            android:layout_gravity="center_vertical|center_horizontal"
-                            android:layout_marginStart="2dp"
-                            android:layout_marginEnd="2dp"
-                            android:background="?attr/actionBarItemBackground"
-                            android:src="@drawable/icon_location" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="@string/location" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="3dp"
-                        android:layout_marginEnd="3dp"
-                        android:orientation="vertical">
-
-                        <View
-                            android:id="@+id/toggle_volume_page_turn"
-                            android:layout_width="42dp"
-                            android:layout_height="2dp"
-                            android:background="?android:attr/colorAccent" />
-
-                        <ImageButton
-                            android:id="@+id/toggle_volume"
-                            android:layout_width="42dp"
-                            android:layout_height="42dp"
-                            android:layout_gravity="center_vertical|center_horizontal"
-                            android:layout_marginStart="2dp"
-                            android:layout_marginEnd="2dp"
-                            android:background="?attr/actionBarItemBackground"
-                            android:src="@drawable/ic_volume" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:text="@string/volume_page_turn" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="3dp"
-                        android:layout_marginEnd="3dp"
-                        android:orientation="vertical">
-
-                        <View
-                            android:id="@+id/toggle_media_continue_view"
-                            android:layout_width="42dp"
-                            android:layout_height="2dp"
-                            android:background="?android:attr/colorAccent" />
-
-                        <ImageButton
-                            android:id="@+id/toggle_media_continue"
-                            android:layout_width="42dp"
-                            android:layout_height="42dp"
-                            android:layout_gravity="center_vertical|center_horizontal"
-                            android:layout_marginStart="2dp"
-                            android:layout_marginEnd="2dp"
-                            android:background="?attr/actionBarItemBackground"
-                            android:src="@drawable/ic_media_continue" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:text="@string/media_continue" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="3dp"
-                        android:layout_marginEnd="3dp"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <View
-                            android:id="@+id/toggle_desktopView"
-                            android:layout_width="42dp"
-                            android:layout_height="2dp"
-                            android:background="?android:attr/colorAccent" />
-
-                        <ImageButton
-                            android:id="@+id/toggle_desktop"
-                            android:layout_width="42dp"
-                            android:layout_height="42dp"
-                            android:layout_gravity="center_vertical|center_horizontal"
-                            android:layout_marginStart="2dp"
-                            android:layout_marginEnd="2dp"
-                            android:background="?attr/actionBarItemBackground"
-                            android:src="@drawable/icon_desktop" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="@string/desktop" />
-
-
-                    </LinearLayout>
-                </LinearLayout>
-
-            </HorizontalScrollView>
-
             <LinearLayout
+                android:id="@+id/toggle_history_container"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
-                android:gravity="right"
-                android:minHeight="46dp">
+                android:minHeight="46dp"
+                android:padding="8dp"
+                android:layout_marginBottom="8dp">
 
-                <Button android:id="@+id/action_cancel"
+                <ImageView
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:includeFontPadding="false"
-                    android:background="?attr/selectableItemBackground"
-                    android:text="@android:string/cancel"/>
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="16dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_history"/>
 
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:includeFontPadding="false"
+                    android:gravity="center_vertical"
+                    android:text="@string/history"
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+                <CheckBox
+                    android:id="@+id/switch_history"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:clickable="false"
+                    android:checked="false"/>
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?attr/colorControlNormal" />
+
+            <LinearLayout
+                android:id="@+id/toggle_location_container"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:padding="8dp"
+                android:layout_marginBottom="8dp">
+
+                <ImageView
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="16dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/icon_cookie"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:includeFontPadding="false"
+                    android:gravity="center_vertical"
+                    android:text="@string/location"
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+                <CheckBox
+                    android:id="@+id/switch_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:clickable="false"
+                    android:checked="false"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/toggle_volume_container"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:padding="8dp"
+                android:layout_marginBottom="8dp">
+
+                <ImageView
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="16dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_volume"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:includeFontPadding="false"
+                    android:gravity="center_vertical"
+                    android:text="@string/volume_page_turn"
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+                <CheckBox
+                    android:id="@+id/switch_volume"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:clickable="false"
+                    android:checked="false"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/toggle_background_play_container"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:padding="8dp"
+                android:layout_marginBottom="8dp">
+
+                <ImageView
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="16dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_media_continue"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:includeFontPadding="false"
+                    android:gravity="center_vertical"
+                    android:text="@string/media_continue"
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+                <CheckBox
+                    android:id="@+id/switch_media_continue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:clickable="false"
+                    android:checked="false"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/toggle_desktop_container"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:minHeight="46dp"
+                android:padding="8dp"
+                android:layout_marginBottom="8dp">
+
+                <ImageView
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="16dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/icon_desktop"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:includeFontPadding="false"
+                    android:gravity="center_vertical"
+                    android:text="@string/desktop_mode"
+                    android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+                <CheckBox
+                    android:id="@+id/switch_desktop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:clickable="false"
+                    android:checked="false"/>
+            </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
+    <LinearLayout
+        android:id="@+id/button_bar"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:gravity="right"
+        android:minHeight="46dp">
 
-</LinearLayout>
+        <Button android:id="@+id/action_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:includeFontPadding="false"
+            android:background="?attr/selectableItemBackground"
+            android:text="@android:string/cancel"/>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
 
 
