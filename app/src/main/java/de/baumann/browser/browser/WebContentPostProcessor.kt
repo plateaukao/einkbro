@@ -4,6 +4,8 @@ import de.baumann.browser.view.NinjaWebView
 
 class WebContentPostProcessor {
     fun postProcess(ninjaWebView: NinjaWebView, url: String) {
+        if (url.startsWith("data:text/html")) return
+
         for (entry in urlScriptMap) {
             val entryUrl = entry.key
             val script = entry.value
@@ -40,7 +42,7 @@ class WebContentPostProcessor {
 
         private const val zhihuDisablePopupJs = """
             javascript:(function() {
-                document.querySelector(".OpenInAppButton").remove();
+                document.querySelector(".OpenInAppButton").style.display = "none";
                 document.querySelector(".ContentItem-expandButton").click();
                 document.querySelector(".ModalWrap-item:last-child .ModalWrap-itemBtn").click();
             })()
