@@ -32,6 +32,8 @@ class TouchAreaViewController(
             } else {
                 hideTouchAreaHint()
             }
+            // for configuring custom drag area
+            updateTouchAreaType()
         }
 
         if (key == ConfigManager.K_TOUCH_AREA_TYPE) {
@@ -136,7 +138,7 @@ class TouchAreaViewController(
         if (config.enableTouchTurn) {
             touchAreaPageUp.visibility = View.VISIBLE
             touchAreaPageDown.visibility = View.VISIBLE
-            touchAreaDragCustomize.visibility = View.VISIBLE
+            touchAreaDragCustomize.visibility = if (config.touchAreaHint) View.VISIBLE else View.GONE
             showTouchAreaHint()
         }
     }
