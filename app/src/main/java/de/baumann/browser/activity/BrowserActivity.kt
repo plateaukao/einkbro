@@ -1220,7 +1220,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
     private fun showRecentlyUsedBookmarks(webView: NinjaWebView) {
         val html = BrowserUnit.getRecentBookmarksContent()
         if (html.isNotBlank()) {
-            webView.loadData(BrowserUnit.getRecentBookmarksContent(), null, null)
+            webView.loadDataWithBaseURL(null, BrowserUnit.getRecentBookmarksContent(), "text/html", "utf-8", null)
             webView.albumTitle = getString(R.string.recently_used_bookmarks)
         }
     }

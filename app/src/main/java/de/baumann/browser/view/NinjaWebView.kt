@@ -121,7 +121,6 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun initWebView() {
-        setWebContentsDebuggingEnabled(true)
         if (BuildConfig.DEBUG) {
             setWebContentsDebuggingEnabled(true)
         }
@@ -582,7 +581,6 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
     fun addGoogleTranslation() {
         evaluateJavascript(injectGoogleTranslateV2Js, null)
     }
-
 
     companion object {
         private const val FAKE_PRE_PROGRESS = 5
