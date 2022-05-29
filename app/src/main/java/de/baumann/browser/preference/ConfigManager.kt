@@ -15,6 +15,7 @@ import de.baumann.browser.view.Orientation
 import de.baumann.browser.view.toolbaricons.ToolbarAction
 import de.baumann.browser.view.viewControllers.OverviewTab
 import org.koin.core.component.KoinComponent
+import java.lang.Exception
 import java.util.*
 
 class ConfigManager(
@@ -312,9 +313,14 @@ class ConfigManager(
             val string = sp.getString(K_RECENT_BOOKMARKS, "") ?: ""
             if (string.isBlank()) return emptyList()
 
-            return string.split(RECENT_BOOKMARKS_SEPARATOR)
-                    .mapNotNull { it.toRecentBookmark() }
-                    .sortedByDescending { it.count }
+            return try {
+                string.split(RECENT_BOOKMARKS_SEPARATOR)
+                        .mapNotNull { it.toRecentBookmark() }
+                        .sortedByDescending { it.count }
+            } catch (exception: Exception) {
+                sp.edit { remove(K_RECENT_BOOKMARKS) }
+                emptyList()
+            }
         }
         set(value) {
             if (value.containsAll(recentBookmarks) && recentBookmarks.containsAll(value)) {
@@ -359,7 +365,12 @@ class ConfigManager(
             val string = sp.getString(K_SAVED_ALBUM_INFO, "") ?: ""
             if (string.isBlank()) return emptyList()
 
-            return string.split(ALBUM_INFO_SEPARATOR).mapNotNull { it.toAlbumInfo() }
+            return try {
+                string.split(ALBUM_INFO_SEPARATOR).mapNotNull { it.toAlbumInfo() }
+            } catch (exception: Exception) {
+                sp.edit { remove(K_SAVED_ALBUM_INFO) }
+                emptyList()
+            }
         }
         set(value) {
             if (value.containsAll(savedAlbumInfoList) && savedAlbumInfoList.containsAll(value)) {

@@ -5,10 +5,12 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.view.Gravity
 import android.view.LayoutInflater
+import android.view.ViewGroup
 import androidx.core.content.edit
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.DialogToggleBinding
 import de.baumann.browser.preference.ConfigManager
+import de.baumann.browser.unit.ViewUnit.dp
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -31,6 +33,7 @@ class FastToggleDialog(
             window?.setBackgroundDrawableResource(R.drawable.background_with_border_margin)
         }
         dialog.show()
+        dialog.window?.setLayout(350.dp(context), ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
     private fun initViews() {

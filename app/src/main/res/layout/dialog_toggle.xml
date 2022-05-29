@@ -11,15 +11,15 @@
     tools:ignore="ContentDescription">
 
     <ScrollView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/button_bar"
+        app:layout_constraintBottom_toTopOf="@+id/action_cancel"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
 
             <LinearLayout
@@ -28,6 +28,13 @@
                 android:layout_height="46dp"
                 android:minHeight="46dp"
                 android:padding="8dp">
+
+                <CheckBox
+                    android:id="@+id/switch_incognito"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:clickable="false"
+                    android:checked="false" />
 
                 <ImageView
                     android:paddingTop="6dp"
@@ -47,13 +54,6 @@
                     android:text="@string/setting_title_incognito"
                     android:textAppearance="?android:attr/textAppearanceMedium"/>
 
-                <CheckBox
-                    android:id="@+id/switch_incognito"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:clickable="false"
-                    android:checked="false" />
-
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/toggle_adblock_container"
@@ -61,6 +61,13 @@
                 android:layout_height="46dp"
                 android:minHeight="46dp"
                 android:padding="8dp">
+
+                <CheckBox
+                    android:id="@+id/switch_adBlock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:clickable="false"
+                    android:checked="false" />
 
                 <ImageView
                     android:id="@+id/abIcon"
@@ -81,13 +88,6 @@
                     android:text="@string/setting_title_adblock"
                     android:textAppearance="?android:attr/textAppearanceMedium"/>
 
-                <CheckBox
-                    android:id="@+id/switch_adBlock"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:clickable="false"
-                    android:checked="false" />
-
             </LinearLayout>
 
             <LinearLayout
@@ -97,6 +97,13 @@
                 android:minHeight="46dp"
                 android:padding="8dp"
                 android:layout_marginBottom="8dp">
+
+                <CheckBox
+                    android:id="@+id/switch_javascript"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:clickable="false"
+                    android:checked="false"/>
 
                 <ImageView
                     android:paddingTop="6dp"
@@ -116,12 +123,6 @@
                     android:text="@string/setting_title_javascript"
                     android:textAppearance="?android:attr/textAppearanceMedium"/>
 
-                <CheckBox
-                    android:id="@+id/switch_javascript"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:clickable="false"
-                    android:checked="false"/>
             </LinearLayout>
 
             <LinearLayout
@@ -131,6 +132,13 @@
                 android:minHeight="46dp"
                 android:padding="8dp"
                 android:layout_marginBottom="8dp">
+
+                <CheckBox
+                    android:id="@+id/switch_cookie"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:clickable="false"
+                    android:checked="false"/>
 
                 <ImageView
                     android:id="@+id/cookieIcon"
@@ -150,13 +158,6 @@
                     android:gravity="center_vertical"
                     android:text="@string/setting_title_cookie"
                     android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-                <CheckBox
-                    android:id="@+id/switch_cookie"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:clickable="false"
-                    android:checked="false"/>
             </LinearLayout>
 
             <LinearLayout
@@ -166,6 +167,13 @@
                 android:minHeight="46dp"
                 android:padding="8dp"
                 android:layout_marginBottom="8dp">
+
+                <CheckBox
+                    android:id="@+id/switch_history"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:clickable="false"
+                    android:checked="false"/>
 
                 <ImageView
                     android:paddingTop="6dp"
@@ -185,12 +193,6 @@
                     android:text="@string/history"
                     android:textAppearance="?android:attr/textAppearanceMedium"/>
 
-                <CheckBox
-                    android:id="@+id/switch_history"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:clickable="false"
-                    android:checked="false"/>
             </LinearLayout>
 
             <View
@@ -206,6 +208,13 @@
                 android:padding="8dp"
                 android:layout_marginBottom="8dp">
 
+                <CheckBox
+                    android:id="@+id/switch_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:clickable="false"
+                    android:checked="false"/>
+
                 <ImageView
                     android:paddingTop="6dp"
                     android:paddingBottom="6dp"
@@ -213,7 +222,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginEnd="16dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/icon_cookie"/>
+                    android:src="@drawable/icon_location"/>
 
                 <TextView
                     android:layout_width="0dp"
@@ -223,13 +232,6 @@
                     android:gravity="center_vertical"
                     android:text="@string/location"
                     android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-                <CheckBox
-                    android:id="@+id/switch_location"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:clickable="false"
-                    android:checked="false"/>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/toggle_volume_container"
@@ -238,6 +240,13 @@
                 android:minHeight="46dp"
                 android:padding="8dp"
                 android:layout_marginBottom="8dp">
+
+                <CheckBox
+                    android:id="@+id/switch_volume"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:clickable="false"
+                    android:checked="false"/>
 
                 <ImageView
                     android:paddingTop="6dp"
@@ -256,13 +265,6 @@
                     android:gravity="center_vertical"
                     android:text="@string/volume_page_turn"
                     android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-                <CheckBox
-                    android:id="@+id/switch_volume"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:clickable="false"
-                    android:checked="false"/>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/toggle_background_play_container"
@@ -271,6 +273,13 @@
                 android:minHeight="46dp"
                 android:padding="8dp"
                 android:layout_marginBottom="8dp">
+
+                <CheckBox
+                    android:id="@+id/switch_media_continue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:clickable="false"
+                    android:checked="false"/>
 
                 <ImageView
                     android:paddingTop="6dp"
@@ -289,13 +298,6 @@
                     android:gravity="center_vertical"
                     android:text="@string/media_continue"
                     android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-                <CheckBox
-                    android:id="@+id/switch_media_continue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:clickable="false"
-                    android:checked="false"/>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/toggle_desktop_container"
@@ -304,6 +306,13 @@
                 android:minHeight="46dp"
                 android:padding="8dp"
                 android:layout_marginBottom="8dp">
+
+                <CheckBox
+                    android:id="@+id/switch_desktop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:clickable="false"
+                    android:checked="false"/>
 
                 <ImageView
                     android:paddingTop="6dp"
@@ -322,34 +331,19 @@
                     android:gravity="center_vertical"
                     android:text="@string/desktop_mode"
                     android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-                <CheckBox
-                    android:id="@+id/switch_desktop"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:clickable="false"
-                    android:checked="false"/>
             </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
-    <LinearLayout
-        android:id="@+id/button_bar"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:gravity="right"
-        android:minHeight="46dp">
-
         <Button android:id="@+id/action_cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
             android:includeFontPadding="false"
             android:background="?attr/selectableItemBackground"
             android:text="@android:string/cancel"/>
-    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
