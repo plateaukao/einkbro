@@ -144,8 +144,10 @@ class TouchAreaViewController(
     }
 
     fun hideTouchAreaHint() {
-        touchAreaPageUp.setBackgroundColor(Color.TRANSPARENT)
-        touchAreaPageDown.setBackgroundColor(Color.TRANSPARENT)
+        rootView.post {
+            touchAreaPageUp.setBackgroundColor(Color.TRANSPARENT)
+            touchAreaPageDown.setBackgroundColor(Color.TRANSPARENT)
+        }
     }
 
     fun showTouchAreaHint() {

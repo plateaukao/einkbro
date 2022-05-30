@@ -88,11 +88,11 @@ class OverviewDialogController(
     private fun updateLayout() {
         if (config.isToolbarOnTop) {
             binding.homeButtons.moveToTop()
-            binding.overviewPreview.moveToBelowButtons()
+            binding.overviewPreviewContainer.moveToBelowButtons()
             binding.homeList2.moveToBelowButtons()
         } else {
             binding.homeButtons.moveToBottom()
-            binding.overviewPreview.moveToAboveButtons()
+            binding.overviewPreviewContainer.moveToAboveButtons()
             binding.homeList2.moveToAboveButtons()
         }
         narrowLayoutManager.reverseLayout = !config.isToolbarOnTop
@@ -177,7 +177,7 @@ class OverviewDialogController(
         updateLayout()
         binding.root.visibility = VISIBLE
 
-        binding.overviewPreview.visibility = View.INVISIBLE
+        binding.overviewPreview.visibility = INVISIBLE
         recyclerView.visibility = VISIBLE
         toggleOverviewFocus(binding.openHistoryView)
 

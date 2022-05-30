@@ -10,28 +10,37 @@
     android:orientation="vertical"
     tools:ignore="ContentDescription">
 
-    <LinearLayout
-        android:id="@+id/overview_preview"
-        android:layout_width="0dp"
+    <ScrollView
+        android:id="@+id/overview_preview_container"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/home_buttons"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="?attr/colorPrimary"
-        android:orientation="vertical">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="?attr/colorControlNormal" />
-
+        >
         <LinearLayout
-            android:id="@+id/tab_container"
+            android:id="@+id/overview_preview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" />
-    </LinearLayout>
+            app:layout_constraintBottom_toTopOf="@id/home_buttons"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="?attr/colorPrimary"
+            android:orientation="vertical">
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="?attr/colorControlNormal" />
+
+            <LinearLayout
+                android:id="@+id/tab_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </LinearLayout>
+    </ScrollView>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/home_list_2"
         android:layout_width="0dp"
