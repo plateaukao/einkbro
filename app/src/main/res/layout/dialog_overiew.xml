@@ -72,18 +72,6 @@
             android:src="@drawable/icon_dots" />
 
         <ImageButton
-            android:id="@+id/new_window"
-            android:layout_width="42dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:layout_marginStart="2dp"
-            android:layout_marginEnd="2dp"
-            android:background="@android:color/transparent"
-            android:tooltipText="@string/new_instance"
-            android:onClick="onClick"
-            android:src="@drawable/ic_new_window" />
-
-        <ImageButton
             android:id="@+id/tab_plus_incognito"
             android:layout_width="42dp"
             android:layout_height="match_parent"

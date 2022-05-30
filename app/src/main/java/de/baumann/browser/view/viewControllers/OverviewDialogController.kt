@@ -3,6 +3,8 @@ package de.baumann.browser.view.viewControllers
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.*
@@ -16,6 +18,7 @@ import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.DialogMenuContextListBinding
 import de.baumann.browser.Ninja.databinding.DialogMenuOverviewBinding
 import de.baumann.browser.Ninja.databinding.DialogOveriewBinding
+import de.baumann.browser.activity.ExtraBrowserActivity
 import de.baumann.browser.database.*
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.unit.BrowserUnit
@@ -38,6 +41,7 @@ class OverviewDialogController(
         private val addTabAction: (String, String, Boolean) -> Unit,
         private val onHistoryChanged: () -> Unit,
         private val splitScreenAction: (String) -> Unit,
+        private val addEmptyTabAction: () -> Unit,
 ) : KoinComponent {
     private val config: ConfigManager by inject()
     private val dialogManager: DialogManager = DialogManager(context as Activity)
@@ -141,6 +145,8 @@ class OverviewDialogController(
         binding.openMenu.setOnClickListener { openSubMenu() }
         binding.openTabButton.setOnClickListener { openHomePage() }
         binding.openHistoryButton.setOnClickListener { openHistoryPage() }
+        binding.tabPlusBottom.setOnClickListener { addEmptyTabAction() ; hide() }
+        binding.tabPlusBottom.setOnLongClickListener{ launchNewBrowser() ; hide() ; true}
 
         binding.buttonCloseOverview.setOnClickListener { hide() }
         showCurrentTabInOverview()
@@ -153,15 +159,6 @@ class OverviewDialogController(
         with(dialogView) {
             tvDelete.setOnClickListener { dialog.dismissWithAction { deleteAllItems() } }
         }
-    }
-
-    private suspend fun getFolderName(): String {
-        return TextInputDialog(
-                context,
-                context.getString(R.string.folder_name),
-                context.getString(R.string.folder_name_description),
-                ""
-        ).show() ?: "New Folder"
     }
 
     private fun showCurrentTabInOverview() {
@@ -229,16 +226,16 @@ class OverviewDialogController(
                 binding.openTabView.visibility = VISIBLE
 
                 binding.openHistoryLayout.visibility = VISIBLE
-                binding.newWindow.visibility = VISIBLE
                 binding.tabPlusIncognito.visibility = VISIBLE
                 binding.tabPlusBottom.visibility = VISIBLE
+                binding.openMenu.visibility = INVISIBLE
             }
             binding.openHistoryView -> {
                 binding.openHistoryLayout.visibility = VISIBLE
                 binding.openHistoryView.visibility = VISIBLE
-                binding.newWindow.visibility = GONE
                 binding.tabPlusIncognito.visibility = GONE
                 binding.tabPlusBottom.visibility = GONE
+                binding.openMenu.visibility = VISIBLE
             }
         }
         binding.openTabView.visibility = if (binding.openTabView == view) VISIBLE else View.INVISIBLE
@@ -310,6 +307,18 @@ class OverviewDialogController(
         adapter?.removeAt(location)
         onHistoryChanged()
     }
+
+    private fun launchNewBrowser() {
+        val intent = Intent(context, ExtraBrowserActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT)
+            addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK)
+            action = Intent.ACTION_VIEW
+            data = Uri.parse(config.favoriteUrl)
+        }
+
+        context.startActivity(intent)
+    }
+
 }
 
 private fun Dialog.dismissWithAction(action: () -> Unit) {

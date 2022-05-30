@@ -83,15 +83,16 @@ class BookmarkListDialog(
     private fun initViews(binding: DialogBookmarksBinding) {
         recyclerView.layoutManager = if (shouldShowWideList()) wideLayoutManager else narrowLayoutManager
         binding.buttonCloseOverview.setOnClickListener { dialog.dismiss() }
-        binding.buttonAddFolder.setOnClickListener {
-            createBookmarkFolder()
-        }
-        binding.buttonUpFolder.setOnClickListener {
-            if (folderStack.size > 1) {
-                folderStack.pop()
-                adapterStack.pop()
-                updateBookmarksContent()
-            }
+        binding.buttonAddFolder.setOnClickListener { createBookmarkFolder() }
+        binding.folderTitle.setOnClickListener { gotoTopFolder() }
+        binding.buttonUpFolder.setOnClickListener { gotoTopFolder() }
+    }
+
+    private fun gotoTopFolder() {
+        if (folderStack.size > 1) {
+            folderStack.pop()
+            adapterStack.pop()
+            updateBookmarksContent()
         }
     }
 

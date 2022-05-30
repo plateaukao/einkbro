@@ -530,15 +530,6 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
                 addAlbum(getString(R.string.app_name), "", incognito = true)
                 focusOnInput()
             }
-            R.id.new_window -> {
-                hideOverview()
-                launchNewBrowser()
-            }
-            R.id.tab_plus_bottom -> {
-                hideOverview()
-                addAlbum(getString(R.string.app_name), "")
-                focusOnInput()
-            }
             R.id.menu_save_pdf -> showPdfFilePicker()
 
             // --- tool bar handling
@@ -1077,7 +1068,8 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
                 gotoUrlAction = { url -> updateAlbum(url) },
                 addTabAction = { title, url, isForeground -> addAlbum(title, url, isForeground) },
                 onHistoryChanged = { isAutoCompleteOutdated = true },
-                splitScreenAction = { url -> toggleSplitScreen(url) }
+                splitScreenAction = { url -> toggleSplitScreen(url) },
+                addEmptyTabAction = { addAlbum(getString(R.string.app_name), "") ; focusOnInput() }
         )
     }
 
