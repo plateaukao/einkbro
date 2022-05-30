@@ -1,5 +1,6 @@
 package de.baumann.browser.view.adapter
 
+import android.graphics.Bitmap
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
@@ -12,10 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.database.Bookmark
 import de.baumann.browser.database.BookmarkManager
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -28,8 +26,8 @@ class BookmarkAdapter(
 
     class BookmarkViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val textView: TextView = view.findViewById(R.id.record_item_title)
-        val iconView : ImageView = view.findViewById(R.id.ib_icon)
         val tabView: ImageView = view.findViewById(R.id.icon_tab)
+        var job: Job? = null
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): BookmarkViewHolder {
@@ -55,26 +53,34 @@ class BookmarkAdapter(
                 true
             }
         }
-        viewHolder.tabView.setOnClickListener {
-            onTabIconClick(bookmark)
-        }
+
+        viewHolder.tabView.setOnClickListener { onTabIconClick(bookmark) }
+    }
+
+    override fun onViewRecycled(holder: BookmarkViewHolder) {
+        super.onViewRecycled(holder)
+        holder.job?.cancel()
+        holder.job = null
     }
 
     private fun updateBookmarkFolderIcons(viewHolder: BookmarkViewHolder) {
-        viewHolder.iconView.visibility = View.VISIBLE
-        viewHolder.iconView.setImageResource(R.drawable.ic_folder)
-        viewHolder.tabView.visibility = View.GONE
+        viewHolder.tabView.setImageResource(R.drawable.ic_folder)
     }
 
     private fun updateBookmarkIcons(viewHolder: BookmarkViewHolder, bookmark: Bookmark) {
-        viewHolder.tabView.visibility = View.VISIBLE
-        viewHolder.iconView.visibility = View.GONE
-        GlobalScope.launch {
-            viewHolder.tabView.setImageResource(R.drawable.icon_plus)
-            val host = Uri.parse(bookmark.url).host ?: return@launch
+        viewHolder.tabView.setImageResource(R.drawable.icon_plus)
+        val host = Uri.parse(bookmark.url).host ?: return
+
+        // take from memory cache
+        val bitmap = urlBitmapMap.filter { it.key == host }[host]
+        bitmap?.let { viewHolder.tabView.setImageBitmap(it) }
+
+        // take from db
+        viewHolder.job = GlobalScope.launch {
             val favicons = bookmarkManager.findFaviconBy(host)
             if (favicons.isNotEmpty()) {
                 val bitmap = favicons.first().getBitmap() ?: return@launch
+                urlBitmapMap[host] = bitmap
                 withContext(Dispatchers.Main) {
                     viewHolder.tabView.setImageBitmap(bitmap)
                 }
@@ -83,6 +89,7 @@ class BookmarkAdapter(
     }
 
     companion object {
+        private val urlBitmapMap = mutableMapOf<String, Bitmap>()
         private val DiffCallback = object : DiffUtil.ItemCallback<Bookmark>() {
             override fun areItemsTheSame(oldItem: Bookmark, newItem: Bookmark): Boolean {
                 return oldItem.id == newItem.id

@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
-import android.view.ViewGroup
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -67,7 +66,7 @@ class BookmarkListDialog(
             dialog = builder.create().apply {
                 window?.setGravity(if (config.isToolbarOnTop) Gravity.CENTER else Gravity.BOTTOM)
                 window?.setBackgroundDrawableResource(R.drawable.background_with_border_margin)
-                setOnDismissListener { updateContentJob?.cancel() }
+                setOnDismissListener { updateContentJob?.cancel() ; updateContentJob = null }
                 show()
                 //window?.setLayout((getScreenWidth() * .9).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
             }
@@ -90,6 +89,7 @@ class BookmarkListDialog(
         binding.buttonUpFolder.setOnClickListener {
             if (folderStack.size > 1) {
                 folderStack.pop()
+                adapterStack.pop()
                 updateBookmarksContent()
             }
         }
@@ -113,6 +113,7 @@ class BookmarkListDialog(
 
     private var updateContentJob: Job? = null
     private val folderStack: Stack<Bookmark> = Stack()
+    private val adapterStack: Stack<Pair<Int, BookmarkAdapter>> = Stack()
     private fun updateBookmarksContent(postAction: (()->Unit)? = null) {
         val currentFolder = folderStack.peek()
         binding.folderTitle.text = currentFolder.title
@@ -123,18 +124,26 @@ class BookmarkListDialog(
             binding.buttonUpFolder.visibility = VISIBLE
         }
 
+        updateContentJob?.cancel()
         updateContentJob = lifecycleScope.launch {
             bookmarkViewModel.bookmarksByParent(currentFolder.id).collect {
                 recyclerView.visibility = if (it.isEmpty()) INVISIBLE else VISIBLE
                 binding.emptyView.visibility = if (it.isEmpty()) VISIBLE else INVISIBLE
 
-                if (recyclerView.adapter == null) {
-                    recyclerView.adapter = createBookmarkAdapter()
+                val existingAdapter = adapterStack.firstOrNull { pair -> pair.first == currentFolder.id }?.second
+                recyclerView.adapter = if (existingAdapter != null) {
+                    existingAdapter
+                } else {
+                    val newAdapter = createBookmarkAdapter()
+                    adapterStack.push(Pair(currentFolder.id, newAdapter))
+                    newAdapter
                 }
 
                 (recyclerView.adapter as BookmarkAdapter).submitList(it)
+
                 withContext(Dispatchers.Main) {
                     postAction?.invoke()
+                    recyclerView.scrollToPosition(0)
                 }
             }
         }
