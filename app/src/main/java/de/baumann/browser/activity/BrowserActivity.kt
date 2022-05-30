@@ -229,6 +229,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         orientation = resources.configuration.orientation
 
         customFontResultLauncher = BrowserUnit.registerCustomFontSelectionResult(this)
+        bookmarkManager.init()
     }
 
     override fun onStop() {

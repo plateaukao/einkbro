@@ -6,7 +6,10 @@ import androidx.room.*
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import de.baumann.browser.preference.ConfigManager
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -105,11 +108,26 @@ class BookmarkManager(private val context: Context) : KoinComponent {
         config.dbVersion = 1
     }
 
+    private var isInitialized: Boolean = false
+    fun init() {
+        GlobalScope.launch(Dispatchers.IO) {
+            faviconInfos.addAll(getAllFavicons())
+            isInitialized = true
+        }
+    }
+
+    private val faviconInfos: MutableList<FaviconInfo> = mutableListOf()
+
     suspend fun getAllFavicons(): List<FaviconInfo> = faviconDao.getAllFavicons()
 
-    suspend fun insertFavicon(faviconInfo: FaviconInfo) = faviconDao.insert(faviconInfo)
+    suspend fun insertFavicon(faviconInfo: FaviconInfo) {
+        faviconDao.insert(faviconInfo)
+        faviconInfos.add(faviconInfo)
+    }
 
-    suspend fun findFaviconBy(url: String): List<FaviconInfo> = faviconDao.findBy(url)
+    fun findFaviconBy(url: String): FaviconInfo? {
+        return faviconInfos.firstOrNull { it.domain == url }
+    }
 
     suspend fun deleteFavicon(faviconInfo: FaviconInfo) = faviconDao.delete(faviconInfo)
 

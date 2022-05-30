@@ -27,7 +27,6 @@ class BookmarkAdapter(
     class BookmarkViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val textView: TextView = view.findViewById(R.id.record_item_title)
         val tabView: ImageView = view.findViewById(R.id.icon_tab)
-        var job: Job? = null
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): BookmarkViewHolder {
@@ -57,12 +56,6 @@ class BookmarkAdapter(
         viewHolder.tabView.setOnClickListener { onTabIconClick(bookmark) }
     }
 
-    override fun onViewRecycled(holder: BookmarkViewHolder) {
-        super.onViewRecycled(holder)
-        holder.job?.cancel()
-        holder.job = null
-    }
-
     private fun updateBookmarkFolderIcons(viewHolder: BookmarkViewHolder) {
         viewHolder.tabView.setImageResource(R.drawable.ic_folder)
     }
@@ -71,25 +64,12 @@ class BookmarkAdapter(
         viewHolder.tabView.setImageResource(R.drawable.icon_plus)
         val host = Uri.parse(bookmark.url).host ?: return
 
-        // take from memory cache
-        val bitmap = urlBitmapMap.filter { it.key == host }[host]
-        bitmap?.let { viewHolder.tabView.setImageBitmap(it) }
-
-        // take from db
-        viewHolder.job = GlobalScope.launch {
-            val favicons = bookmarkManager.findFaviconBy(host)
-            if (favicons.isNotEmpty()) {
-                val bitmap = favicons.first().getBitmap() ?: return@launch
-                urlBitmapMap[host] = bitmap
-                withContext(Dispatchers.Main) {
-                    viewHolder.tabView.setImageBitmap(bitmap)
-                }
-            }
+        bookmarkManager.findFaviconBy(host)?.let { faviconInfo ->
+            faviconInfo.getBitmap()?.let { viewHolder.tabView.setImageBitmap(it) }
         }
     }
 
     companion object {
-        private val urlBitmapMap = mutableMapOf<String, Bitmap>()
         private val DiffCallback = object : DiffUtil.ItemCallback<Bookmark>() {
             override fun areItemsTheSame(oldItem: Bookmark, newItem: Bookmark): Boolean {
                 return oldItem.id == newItem.id
