@@ -33,7 +33,7 @@ class TwoPaneLayout : FrameLayout {
     private val binding: TwoPaneLayoutBinding = TwoPaneLayoutBinding.inflate(LayoutInflater.from(context), this)
     private val separator: View = binding.separator
     private val floatingLine: View = binding.floatingLine
-    private val dragHandle: View = binding.dragHandle
+    private val dragHandle: View = binding.middleDragHandle
 
     private var panel1: View? = null
     private var panel2: View? = null

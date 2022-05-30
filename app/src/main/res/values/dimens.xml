@@ -7,9 +7,7 @@
     <dimen name="layout_margin_12dp">12dp</dimen>
     <dimen name="layout_margin_8dp">8dp</dimen>
     <dimen name="menu_button_size">50dp</dimen>
-    <dimen name="fab_margin">16dp</dimen>
     <dimen name="appbar_height">50dp</dimen>
-    <dimen name="dialog_margin">55dp</dimen>
 
 
 </resources>

@@ -272,12 +272,6 @@ class OverviewDialogController(
 
         with (dialogView) {
             menuContextListEdit.visibility = GONE
-            menuContextListFav.setOnClickListener {
-                dialog.dismissWithAction { config.favoriteUrl = url }
-            }
-            menuContextLinkSc.setOnClickListener {
-                dialog.dismissWithAction { HelperUnit.createShortcut(context, title, url, null) }
-            }
             menuContextListNewTab.setOnClickListener {
                 dialog.dismissWithAction {
                     addTabAction(context.getString(R.string.app_name), url, false)

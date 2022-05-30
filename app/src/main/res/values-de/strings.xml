@@ -91,7 +91,6 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <!-- App setting -->
     <string name="setting_title_ui">Verhalten/Oberfläche</string>
     <string name="setting_title_data">Sicherung</string>
-    <string name="setting_filter">Lesezeichen-Filter</string>
     <string name="setting_title_fav">Favorit</string>
     <string name="setting_title_searchEngine">Nutzerdefinierte Suchmaschine</string>
     <string name="setting_title_userAgent">Eigener Useragent</string>
@@ -142,7 +141,6 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="hint_database">Dies löscht alle aktuellen Einstellungen und Daten. Willst du fortfahren?</string>
     <!-- Others setting -->
     <string name="setting_title_license">Lizenz</string>
-    <string name="setting_title_appSettings">App-Einstellungen</string>
     <!-- Toast -->
     <string name="toast_add_whitelist_successful">Domain erfolgreich hinzugefügt</string>
     <string name="toast_copy_successful">Erfolgreich kopiert</string>
@@ -160,7 +158,6 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="toast_start_download">Starte Download</string>
     <string name="toast_wait_a_minute">Bitte einen Moment warten</string>
     <string name="toast_error">Uuups. Etwas ist schief gelaufen. :-(</string>
-    <string name="toast_newTitle">Eintrag existiert schon. Bitte gib einen neuen Titel ein.</string>
     <string name="toast_edit_successful">Erfolgreich gespeichert</string>
     <string name="toast_webview_forward">Kann die nächste Seite nicht laden</string>
     <string name="toast_restart">Du musst \"EinkBro Browser\" neustarten, damit die Änderungen wirksam werden. Jetzt beenden?</string>
@@ -172,8 +169,6 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="whitelist_edit_hint">Domain</string>
     <string name="whitelist_add">Hinzufügen</string>
     <!-- Dialog help -->
-    <string name="dialogHelp_filterText">Du kannst deinen Lesezeichen mit Filter markieren. So kannst du deine Lesezeichengruppieren. Den Filterdialog kannst du öffnen durch langes Drücken auf das Lesezeichen-Icon. Wenn du einen Eintrag aktivierst, erscheint ein Dialog, in dem du den Namen des Filters bearbeiten kannst.
-    </string>
     <!-- Dialog changelog -->
     <!-- License changelog -->
 </resources>

@@ -90,7 +90,6 @@
     <!-- App setting -->
     <string name="setting_title_ui">Comportamento/Interface</string>
     <string name="setting_title_data">Backup</string>
-    <string name="setting_filter">Filtro de marcadores</string>
     <string name="setting_title_fav">Favorito</string>
     <string name="setting_title_searchEngine">Motor de pesquisa personalizado</string>
     <string name="setting_title_userAgent">Agente personalizado</string>
@@ -141,7 +140,6 @@
     <string name="hint_database">Está prestes a apagar todos os dados da aplicação. Tem a certeza?</string>
     <!-- Others setting -->
     <string name="setting_title_license">Licença</string>
-    <string name="setting_title_appSettings">Definições da aplicação</string>
     <!-- Toast -->
     <string name="toast_add_whitelist_successful">Domínio adicionado com sucesso</string>
     <string name="toast_copy_successful">Copiado com sucesso</string>
@@ -159,7 +157,6 @@
     <string name="toast_start_download">Descarga iniciada</string>
     <string name="toast_wait_a_minute">Aguarde um pouco</string>
     <string name="toast_error">Algo errado aconteceu.</string>
-    <string name="toast_newTitle">Entrada existente. Escolha outro título.</string>
     <string name="toast_edit_successful">Adicionado com sucesso</string>
     <string name="toast_webview_forward">Não foi possível carregar o site</string>
     <string name="toast_restart">Tem que reiniciar a aplicação para aplicar as alterações. Fechar agora?</string>
@@ -171,7 +168,6 @@
     <string name="whitelist_edit_hint">Domínio</string>
     <string name="whitelist_add">Adicionar</string>
     <!-- Dialog help -->
-    <string name="dialogHelp_filterText">Pode associar os seus marcadores a filtros. Desta forma, consegue agrupar os separadores facilmente. Assim que o fizer, pode abrir o diálogo com um toque longo no ícone Marcadores. Se ativar uma entrada surge um diálogo, no qual pode editar o nome do filtro.    </string>
     <!-- Dialog changelog -->
     <!-- License changelog -->
 </resources>

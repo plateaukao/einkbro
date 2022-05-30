@@ -99,7 +99,6 @@
     <!-- App setting -->
     <string name="setting_title_ui">Gedrag/Uiterlijk</string>
     <string name="setting_title_data">Back-up</string>
-    <string name="setting_filter">Bookmark filter</string>
     <string name="setting_title_fav">Favorite</string>
     <string name="setting_title_searchEngine">Custom search engine</string>
     <string name="setting_title_userAgent">Custom user agent</string>
@@ -152,7 +151,6 @@
     <string name="hint_database">Dit verwijdert al je huidige instellingen en gegevens. Wil je doorgaan?</string>
     <!-- Others setting -->
     <string name="setting_title_license">Licentie</string>
-    <string name="setting_title_appSettings">App-instellingen</string>
     <!-- Toast -->
     <string name="toast_add_whitelist_successful">Domein toegevoegd</string>
     <string name="toast_copy_successful">Gekopieerd</string>
@@ -170,7 +168,6 @@
     <string name="toast_start_download">Bezig met starten van download…</string>
     <string name="toast_wait_a_minute">Even geduld…</string>
     <string name="toast_error">Oeps, er is iets misgegaan.</string>
-    <string name="toast_newTitle">Het item bestaat al; voer een nieuwe titel in.</string>
     <string name="toast_edit_successful">Opgeslagen</string>
     <string name="toast_webview_forward">Volgende site kan niet worden geladen</string>
     <string name="toast_restart">\"EinkBro-browser\" moet worden herstart om de wijzigingen toe te passen. Wil je nu afsluiten?</string>
@@ -182,9 +179,6 @@
     <string name="whitelist_edit_hint">Domein</string>
     <string name="whitelist_add">Toevoegen</string>
     <!-- Dialog help -->
-    <string name="dialogHelp_filterText">        You can tag your bookmarks with filters. In this way you can group your bookmarks. You can open the filter dialog by
-        long pressing the bookmark icon. If you activate an entry a dialog will appear, where you can edit the name of the filter.
-    </string>
     <!-- Dialog changelog -->
     <!-- License changelog -->
 </resources>

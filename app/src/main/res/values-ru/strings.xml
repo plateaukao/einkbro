@@ -90,7 +90,6 @@
     <!-- App setting -->
     <string name="setting_title_ui">Поведение и интерфейс</string>
     <string name="setting_title_data">Резервное копирование</string>
-    <string name="setting_filter">Фильтр закладок</string>
     <string name="setting_title_fav">Избранное</string>
     <string name="setting_title_searchEngine">Пользовательская поисковая система</string>
     <string name="setting_title_userAgent">Произвольный юзер-агент</string>
@@ -142,7 +141,6 @@
     <string name="hint_database">Это приведет к удалению всех текущих настроек и данных. Продолжить?</string>
     <!-- Others setting -->
     <string name="setting_title_license">Лицензия</string>
-    <string name="setting_title_appSettings">Настройки</string>
     <!-- Toast -->
     <string name="toast_add_whitelist_successful">Успешно добавлен домен</string>
     <string name="toast_copy_successful">Успешно скопировано</string>
@@ -160,7 +158,6 @@
     <string name="toast_start_download">Начало загрузки</string>
     <string name="toast_wait_a_minute">Подождите минутку</string>
     <string name="toast_error">Что-то пошло не так.</string>
-    <string name="toast_newTitle">Запись уже существует. Введите новое название.</string>
     <string name="toast_edit_successful">Успешно сохранено</string>
     <string name="toast_webview_forward">Не удается загрузить следующий сайт</string>
     <string name="toast_restart">Чтобы применить изменения, необходимо перезапустить \"EinkBro Browser\". Закрыть сейчас?</string>
@@ -172,9 +169,6 @@
     <string name="whitelist_edit_hint">Домен</string>
     <string name="whitelist_add">Добавить</string>
     <!-- Dialog help -->
-    <string name="dialogHelp_filterText">        Вы можете присвоить своим закладкам фильтры. Так можно создавать группы закладок. Можно открыть диалог фильтров
-        удержанием нажатия на значке закладки. Если Вы активировали ввод, появится диалог, позволяющий изменить имя фильтра.
-    </string>
     <!-- Dialog changelog -->
     <!-- License changelog -->
 </resources>

@@ -93,7 +93,6 @@
     <!-- App setting -->
     <string name="setting_title_ui">Zachowanie i wygląd</string>
     <string name="setting_title_data">Kopia zapasowa</string>
-    <string name="setting_filter">Bookmark filter</string>
     <string name="setting_title_fav">Favorite</string>
     <string name="setting_title_searchEngine">Custom search engine</string>
     <string name="setting_title_userAgent">Custom user agent</string>
@@ -145,7 +144,6 @@
     <string name="hint_database">Ta opcja wymaże twoje aktualne ustawienia i dane. Kontynuować?</string>
     <!-- Others setting -->
     <string name="setting_title_license">Licencja</string>
-    <string name="setting_title_appSettings">Ustawienia aplikacji</string>
     <!-- Toast -->
     <string name="toast_add_whitelist_successful">Poprawnie dodano adres witryny</string>
     <string name="toast_copy_successful">Kopiowanie zakończone</string>
@@ -163,7 +161,6 @@
     <string name="toast_start_download">Rozpoczynanie pobierania</string>
     <string name="toast_wait_a_minute">Zaczekaj chwilę</string>
     <string name="toast_error">Ups, coś poszło nie tak.</string>
-    <string name="toast_newTitle">Ten wpis już istnieje. Wprowadź nowy tytuł.</string>
     <string name="toast_edit_successful">Zapisano</string>
     <string name="toast_webview_forward">Nie można załadować kolejnej strony</string>
     <string name="toast_restart">Musisz uruchomić ponownie \"EinkBro Browser\”, aby zachować te zmiany. Zamknąć teraz?</string>
@@ -175,9 +172,6 @@
     <string name="whitelist_edit_hint">Adres</string>
     <string name="whitelist_add">Dodaj</string>
     <!-- Dialog help -->
-    <string name="dialogHelp_filterText">        You can tag your bookmarks with filters. In this way you can group your bookmarks. You can open the filter dialog by
-        long pressing the bookmark icon. If you activate an entry a dialog will appear, where you can edit the name of the filter.
-    </string>
     <!-- Dialog changelog -->
     <!-- License changelog -->
 </resources>

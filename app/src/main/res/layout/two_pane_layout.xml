@@ -15,7 +15,7 @@
         android:visibility="gone"
         android:background="?attr/colorControlNormal" />
     <View
-        android:id="@+id/drag_handle"
+        android:id="@+id/middle_drag_handle"
         android:layout_width="12dp"
         android:layout_height="50dp"
         android:layout_centerVertical="true"

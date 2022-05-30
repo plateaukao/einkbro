@@ -118,8 +118,6 @@
     <string name="setting_title_ui">用户界面/操作习惯</string>
     <string name="setting_title_data">备份</string>
 
-    <string name="setting_filter">书签过滤</string>
-
     <string name="setting_title_fav">我的主页</string>
 
     <string name="setting_title_searchEngine">自定义搜索引擎</string>
@@ -194,7 +192,6 @@
 
     <!-- Others setting -->
     <string name="setting_title_license">许可信息</string>
-    <string name="setting_title_appSettings">应用设置信息</string>
 
     <!-- Toast -->
     <string name="toast_add_whitelist_successful">已成功添加域名</string>
@@ -213,7 +210,6 @@
     <string name="toast_start_download">开始下载</string>
     <string name="toast_wait_a_minute">请稍等</string>
     <string name="toast_error">哎，出错了！</string>
-    <string name="toast_newTitle">标题已存在，请重新输入。</string>
     <string name="toast_edit_successful">已成功保存</string>
     <string name="toast_webview_forward">无法加载下一页面</string>
     <string name="toast_restart">必须重新启动 \"EinkBro浏览器\" 才能应用更改，确定现在重启吗？</string>
@@ -229,11 +225,6 @@
 
 
     <!-- Dialog help -->
-
-    <string name="dialogHelp_filterText">
-        可以使用过滤标记您的书签。通过这种方式，可以对书签进行分组。通过以下方式打开过滤对话框
-        长按书签图标。如果您激活条目，将出现一个对话框，可以在其中编辑过滤名称。 
-    </string>
 
 
     <!-- Dialog changelog -->
@@ -283,15 +274,11 @@
 
     ]]>
     </string>
-    <string name="setting_title_toolbar_icons">工具栏图标</string>
-    <string name="setting_summary_toolbar_icons">设置工具栏上应该显示的图标</string>
     <string name="setting_summary_desktop">支持网站桌面模式</string>
     <string name="history">历史</string>
     <string name="location">位置</string>
-    <string name="desktop">桌面模式</string>
     <string name="media_continue">后台播放</string>
     <string name="show_touch_area_hint">显示触控感应区边界</string>
-    <string name="close">关闭</string>
     <string name="touch_left_side">左</string>
     <string name="touch_right_side">右</string>
     <string name="bold_font">粗体</string>
@@ -300,11 +287,7 @@
     <string name="desktop_mode">桌面模式</string>
     <string name="setting_title_page_left_value">页面预留高度</string>
     <string name="setting_summary_page_left_value">翻到下一页时预留的页面高度</string>
-    <string name="touch_area">触控感应区</string>
-    <string name="setting_summary_touch_area">配置翻页的触控感应区</string>
     <string name="setting_title_pdf_paper_size">输出PDF纸张大小</string>
-    <string name="font_style_serif">字体样式: 衬线</string>
-    <string name="setting_summary_font_style_serif">设置字体样式为: 谷歌无衬线</string>
     <string name="vertical_read">竖排文本</string>
     <string name="reader_mode">阅读模式</string>
     <string name="touch_area_setting">触控设置</string>
@@ -317,7 +300,6 @@
     <string name="book_name_description">输入图书名称</string>
     <string name="saving_epub">正在保存Epub</string>
     <string name="volume_page_turn">音量键切换</string>
-    <string name="menu_add_folder">添加书签文件夹</string>
     <string name="folder_name">书签文件夹名称</string>
     <string name="folder_name_description">插入书签文件夹名称</string>
     <string name="setting_title_export_bookmarks">导出书签</string>
@@ -357,15 +339,8 @@
     <string name="setting_title_two_finger_swipe">两指滑动</string>
     <string name="font_custom">选择自定义字体文件</string>
     <string name="translation_mode">翻译模式</string>
-    <string name="title_activity_epub_reader">Epub阅读活动</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">第一片段</string>
-    <string name="second_fragment_label">第二片段</string>
-    <string name="next">下一页</string>
-    <string name="previous">上一页</string>
 
-    <string name="hello_first_fragment">您好第一片段</string>
-    <string name="hello_second_fragment">您好第二片段. Arg: %1$s</string>
     <string name="system_default">默认值</string>
     <string name="serif">衬线</string>
     <string name="googleserif">谷歌衬线</string>
@@ -388,5 +363,4 @@
     <string name="menu_send_link">Send link</string>
     <string name="done">Done</string>
     <string name="menu_receive">receive data</string>
-    <string name="new_instance">New Window</string>
 </resources>

@@ -92,7 +92,6 @@
     <!-- App setting -->
     <string name="setting_title_ui">Поведінка та інтерфейс</string>
     <string name="setting_title_data">Резервне копіювання</string>
-    <string name="setting_filter">Bookmark filter</string>
     <string name="setting_title_fav">Favorite</string>
     <string name="setting_title_searchEngine">Custom search engine</string>
     <string name="setting_title_userAgent">Custom user agent</string>
@@ -144,7 +143,6 @@
     <string name="hint_database">Це призведе до видалення всіх поточних налаштувань і даних. Продовжити?</string>
     <!-- Others setting -->
     <string name="setting_title_license">Ліцензія</string>
-    <string name="setting_title_appSettings">Налаштування</string>
     <!-- Toast -->
     <string name="toast_add_whitelist_successful">Успішно додано домен</string>
     <string name="toast_copy_successful">Успішно скопійовано</string>
@@ -162,7 +160,6 @@
     <string name="toast_start_download">Початок завантаження</string>
     <string name="toast_wait_a_minute">Будь ласка, зачекайте</string>
     <string name="toast_error">Щось пішло не так.</string>
-    <string name="toast_newTitle">Запис вже існує. Введіть нову назву.</string>
     <string name="toast_edit_successful">Успішно збережено</string>
     <string name="toast_webview_forward">Не вдається завантажити наступний сайт</string>
     <string name="toast_restart">Щоб застосувати зміни, необхідно перезапустити \"EinkBro Browser\". Закрити зараз?</string>
@@ -174,9 +171,6 @@
     <string name="whitelist_edit_hint">Домен</string>
     <string name="whitelist_add">Додати</string>
     <!-- Dialog help -->
-    <string name="dialogHelp_filterText">        You can tag your bookmarks with filters. In this way you can group your bookmarks. You can open the filter dialog by
-        long pressing the bookmark icon. If you activate an entry a dialog will appear, where you can edit the name of the filter.
-    </string>
     <!-- Dialog changelog -->
     <!-- License changelog -->
 </resources>

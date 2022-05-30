@@ -75,7 +75,7 @@ class ToolbarConfigDialog(
         }
 
         val controller = DragSortController(listView).apply {
-            setDragHandleId(R.id.drag_handle)
+            setDragHandleId(R.id.middle_drag_handle)
             isRemoveEnabled = false
             isSortEnabled = true
             setBackgroundColor(0xFFFFFF)

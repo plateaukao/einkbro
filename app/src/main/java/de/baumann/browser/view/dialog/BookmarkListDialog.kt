@@ -2,6 +2,7 @@ package de.baumann.browser.view.dialog
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Context
 import android.graphics.Point
 import android.view.Gravity
@@ -19,7 +20,6 @@ import de.baumann.browser.Ninja.databinding.DialogMenuContextListBinding
 import de.baumann.browser.database.Bookmark
 import de.baumann.browser.database.BookmarkManager
 import de.baumann.browser.preference.ConfigManager
-import de.baumann.browser.unit.HelperUnit
 import de.baumann.browser.unit.ViewUnit
 import de.baumann.browser.view.NinjaToast
 import de.baumann.browser.view.adapter.BookmarkAdapter
@@ -96,18 +96,9 @@ class BookmarkListDialog(
         }
     }
 
-    private suspend fun getFolderName(): String? {
-        return TextInputDialog(
-                context,
-                context.getString(R.string.folder_name),
-                context.getString(R.string.folder_name_description),
-                ""
-        ).show()
-    }
-
     private fun createBookmarkFolder() {
         lifecycleScope.launch {
-            val folderName = getFolderName()
+            val folderName = dialogManager.getBookmarkFolderName()
             folderName?.let { bookmarkManager.insertDirectory(it) }
         }
     }
@@ -174,61 +165,48 @@ class BookmarkListDialog(
 
     private fun showBookmarkContextMenu(bookmark: Bookmark) {
         val dialogView = DialogMenuContextListBinding.inflate(LayoutInflater.from(context))
-        val dialog = dialogManager.showOptionDialog(dialogView.root)
+        val optionDialog = dialogManager.showOptionDialog(dialogView.root)
 
         if (bookmark.isDirectory) {
-            dialogView.menuContextListFav.visibility = View.GONE
-            dialogView.menuContextLinkSc.visibility = View.GONE
             dialogView.menuContextListNewTab.visibility = View.GONE
             dialogView.menuContextListNewTabOpen.visibility = View.GONE
-            dialogView.menuContextListFav.visibility = View.GONE
             dialogView.menuContextListSplitScreen.visibility = View.GONE
         }
 
         dialogView.menuContextListSplitScreen.setOnClickListener {
-            dialog.dismissWithAction {
-                splitScreenAction(bookmark.url)
-                dialog.dismiss()
-            }
+            optionDialog.dismissWithAction { splitScreenAction(bookmark.url) }
         }
 
-        dialogView.menuContextListEdit.visibility = View.VISIBLE
-        dialogView.menuContextListFav.setOnClickListener {
-            dialog.dismissWithAction { config.favoriteUrl = bookmark.url }
-        }
-        dialogView.menuContextLinkSc.setOnClickListener {
-            dialog.dismissWithAction { HelperUnit.createShortcut(context, bookmark.title, bookmark.url, null) }
-        }
+        dialogView.menuContextListEdit.visibility = VISIBLE
         dialogView.menuContextListNewTab.setOnClickListener {
-            dialog.dismissWithAction {
+            optionDialog.dismissWithAction {
                 addTabAction(context.getString(R.string.app_name), bookmark.url, false)
                 NinjaToast.show(context, context.getString(R.string.toast_new_tab_successful))
             }
         }
         dialogView.menuContextListNewTabOpen.setOnClickListener {
-            dialog.dismissWithAction {
-                addTabAction(bookmark.title, bookmark.url, true)
-                dialog.dismiss()
-            }
+            optionDialog.dismissWithAction { addTabAction(bookmark.title, bookmark.url, true) }
         }
         dialogView.menuContextListDelete.setOnClickListener {
-            dialog.dismissWithAction {
-                lifecycleScope.launch {
-                    bookmarkManager.delete(bookmark)
-                }
-            }
+            lifecycleScope.launch { bookmarkManager.delete(bookmark) }
+            optionDialog.dismiss()
         }
 
         dialogView.menuContextListEdit.setOnClickListener {
-            dialog.dismissWithAction {
-                BookmarkEditDialog(
-                        context as Activity,
-                        bookmarkManager,
-                        bookmark,
-                        { ViewUnit.hideKeyboard(context) },
-                        { ViewUnit.hideKeyboard(context) }
-                ).show()
-            }
+            BookmarkEditDialog(
+                    context as Activity,
+                    bookmarkManager,
+                    bookmark,
+                    { ViewUnit.hideKeyboard(context) },
+                    { ViewUnit.hideKeyboard(context) }
+            ).show()
+            optionDialog.dismiss()
         }
+    }
+
+    private fun Dialog.dismissWithAction(action: () -> Unit) {
+        dismiss()
+        dialog.dismiss()
+        action()
     }
 }

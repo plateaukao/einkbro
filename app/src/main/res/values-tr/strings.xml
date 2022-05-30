@@ -100,7 +100,6 @@
     <!-- App setting -->
     <string name="setting_title_ui">Davranış/Arayüz</string>
     <string name="setting_title_data">Yedekleme</string>
-    <string name="setting_filter">Yer imi süzgeci</string>
     <string name="setting_title_fav">Başlangıç sitesi</string>
     <string name="setting_title_searchEngine">Özel arama motoru</string>
     <string name="setting_title_userAgent">Özel kullanıcı aracısı</string>
@@ -153,7 +152,6 @@
     <string name="hint_database">Bu, mevcut tüm ayarlarınızı ve verilerinizi silecektir. Devam edilsin mi?</string>
     <!-- Others setting -->
     <string name="setting_title_license">Lisans</string>
-    <string name="setting_title_appSettings">Uygulama ayarları</string>
     <!-- Toast -->
     <string name="toast_add_whitelist_successful">Başarıyla etki alanı eklendi</string>
     <string name="toast_copy_successful">Başarıyla kopyalandı</string>
@@ -171,7 +169,6 @@
     <string name="toast_start_download">İndirmeye başla</string>
     <string name="toast_wait_a_minute">Lütfen biraz bekleyin</string>
     <string name="toast_error">Hata. Bir şeyler yanlış gitti.</string>
-    <string name="toast_newTitle">Giriş zaten mevcut. Lütfen yeni bir başlık girin.</string>
     <string name="toast_edit_successful">Başarıyla kaydedildi</string>
     <string name="toast_webview_forward">Bir sonraki site yüklenemiyor</string>
     <string name="toast_restart">Değişiklikleri uygulamak için \"EinkBro Tarayıcı\"sını yeniden başlatmanız gerekir. Şimdi kapatılsın mı?</string>
@@ -183,8 +180,6 @@
     <string name="whitelist_edit_hint">Etki alanı</string>
     <string name="whitelist_add">Ekle</string>
     <!-- Dialog help -->
-    <string name="dialogHelp_filterText">        Yer imlerinizi filtrelerle etiketleyebilirsiniz. Bu şekilde yer imlerinizi gruplandırabilirsiniz. Filtre iletişim kutusunu yer imleri
-        simgesine uzun basarak açabilirsiniz. Bir girişi aktifleştirirseniz, filtrenin adını düzenleyebileceğiniz bir iletişim kutusu görünecektir.    </string>
     <!-- Dialog changelog -->
     <!-- License changelog -->
 </resources>
