@@ -10,8 +10,8 @@ android {
         applicationId "info.plateaukao.einkbro"
         minSdkVersion 21
         targetSdkVersion 32
-        versionCode 83600
-        versionName "8.36.0"
+        versionCode 90000
+        versionName "9.0.0"
         vectorDrawables.useSupportLibrary = true
 
         javaCompileOptions {
@@ -24,6 +24,7 @@ android {
     buildTypes {
         release {
             minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
         releaseDebuggable {
