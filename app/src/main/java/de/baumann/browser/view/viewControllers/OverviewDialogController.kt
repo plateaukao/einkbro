@@ -220,26 +220,28 @@ class OverviewDialogController(
     }
 
     private fun toggleOverviewFocus(view: View) {
-        when(view) {
-            binding.openTabView -> {
-                binding.openTabLayout.visibility = VISIBLE
-                binding.openTabView.visibility = VISIBLE
+        with(binding) {
+            when(view) {
+                openTabView -> {
+                    openTabLayout.visibility = VISIBLE
+                    openTabView.visibility = VISIBLE
 
-                binding.openHistoryLayout.visibility = VISIBLE
-                binding.tabPlusIncognito.visibility = VISIBLE
-                binding.tabPlusBottom.visibility = VISIBLE
-                binding.openMenu.visibility = INVISIBLE
+                    openHistoryLayout.visibility = VISIBLE
+                    tabPlusIncognito.visibility = VISIBLE
+                    tabPlusBottom.visibility = VISIBLE
+                    openMenu.visibility = INVISIBLE
+                }
+                openHistoryView -> {
+                    openHistoryLayout.visibility = VISIBLE
+                    openHistoryView.visibility = VISIBLE
+                    tabPlusIncognito.visibility = GONE
+                    tabPlusBottom.visibility = GONE
+                    openMenu.visibility = VISIBLE
+                }
             }
-            binding.openHistoryView -> {
-                binding.openHistoryLayout.visibility = VISIBLE
-                binding.openHistoryView.visibility = VISIBLE
-                binding.tabPlusIncognito.visibility = GONE
-                binding.tabPlusBottom.visibility = GONE
-                binding.openMenu.visibility = VISIBLE
-            }
+            openTabView.visibility = if (binding.openTabView == view) VISIBLE else INVISIBLE
+            openHistoryView.visibility = if (binding.openHistoryView == view) VISIBLE else INVISIBLE
         }
-        binding.openTabView.visibility = if (binding.openTabView == view) VISIBLE else View.INVISIBLE
-        binding.openHistoryView.visibility = if (binding.openHistoryView == view) VISIBLE else View.INVISIBLE
     }
 
 
@@ -268,32 +270,33 @@ class OverviewDialogController(
         val dialogView = DialogMenuContextListBinding.inflate(LayoutInflater.from(context))
         val dialog = dialogManager.showOptionDialog(dialogView.root)
 
-        dialogView.menuContextListEdit.visibility = GONE
-        dialogView.menuContextListFav.setOnClickListener {
-            dialog.dismissWithAction { config.favoriteUrl = url }
-        }
-        dialogView.menuContextLinkSc.setOnClickListener {
-            dialog.dismissWithAction { HelperUnit.createShortcut(context, title, url, null) }
-        }
-        dialogView.menuContextListNewTab.setOnClickListener {
-            dialog.dismissWithAction {
-                addTabAction(context.getString(R.string.app_name), url, false)
-                NinjaToast.show(context, context.getString(R.string.toast_new_tab_successful))
-
+        with (dialogView) {
+            menuContextListEdit.visibility = GONE
+            menuContextListFav.setOnClickListener {
+                dialog.dismissWithAction { config.favoriteUrl = url }
             }
-        }
-        dialogView.menuContextListSplitScreen.setOnClickListener {
-            dialog.dismissWithAction { splitScreenAction(url) }
-            hide()
-        }
-        dialogView.menuContextListNewTabOpen.setOnClickListener {
-            dialog.dismissWithAction {
-                addTabAction(context.getString(R.string.app_name), url, true)
+            menuContextLinkSc.setOnClickListener {
+                dialog.dismissWithAction { HelperUnit.createShortcut(context, title, url, null) }
+            }
+            menuContextListNewTab.setOnClickListener {
+                dialog.dismissWithAction {
+                    addTabAction(context.getString(R.string.app_name), url, false)
+                    NinjaToast.show(context, context.getString(R.string.toast_new_tab_successful))
+                }
+            }
+            menuContextListSplitScreen.setOnClickListener {
+                dialog.dismissWithAction { splitScreenAction(url) }
                 hide()
             }
-        }
-        dialogView.menuContextListDelete.setOnClickListener {
-            dialog.dismissWithAction { deleteHistory(location) }
+            menuContextListNewTabOpen.setOnClickListener {
+                dialog.dismissWithAction {
+                    addTabAction(context.getString(R.string.app_name), url, true)
+                    hide()
+                }
+            }
+            menuContextListDelete.setOnClickListener {
+                dialog.dismissWithAction { deleteHistory(location) }
+            }
         }
     }
 
