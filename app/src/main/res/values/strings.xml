@@ -127,8 +127,6 @@
     <string name="setting_title_ui">Behavior/UI</string>
     <string name="setting_title_data">Backup</string>
 
-    <string name="setting_filter">Bookmark filter</string>
-
     <string name="setting_title_fav">Favorite</string>
 
     <string name="setting_title_searchEngine">Custom search engine</string>
@@ -205,7 +203,6 @@
 
     <!-- Others setting -->
     <string name="setting_title_license">License</string>
-    <string name="setting_title_appSettings">App settings</string>
 
     <!-- Toast -->
     <string name="toast_add_whitelist_successful">Successfully added Domain</string>
@@ -224,7 +221,6 @@
     <string name="toast_start_download">Starting download</string>
     <string name="toast_wait_a_minute">Please wait for a moment</string>
     <string name="toast_error">Uuups. Something went wrong.</string>
-    <string name="toast_newTitle">Entry already exists. Please enter new title.</string>
     <string name="toast_edit_successful">Successfully saved</string>
     <string name="toast_webview_forward">Can\'t load next site</string>
     <string name="toast_restart">You must restart \"EinkBro Browser\" to apply changes. Close now?</string>
@@ -240,11 +236,6 @@
 
 
     <!-- Dialog help -->
-
-    <string name="dialogHelp_filterText">
-        You can tag your bookmarks with filters. In this way you can group your bookmarks. You can open the filter dialog by
-        long pressing the bookmark icon. If you activate an entry a dialog will appear, where you can edit the name of the filter.
-    </string>
 
 
     <!-- Dialog changelog -->
@@ -294,15 +285,11 @@
 
     ]]>
     </string>
-    <string name="setting_title_toolbar_icons">Icons on toolbar</string>
-    <string name="setting_summary_toolbar_icons">Decide what icons should be shown on toolbar</string>
     <string name="setting_summary_desktop">Support desktop mode of web site</string>
     <string name="history">History</string>
     <string name="location">Location</string>
-    <string name="desktop">Desktop Mode</string>
     <string name="media_continue">Bckgnd Play</string>
     <string name="show_touch_area_hint">show touch area border</string>
-    <string name="close">Close</string>
     <string name="touch_left_side">left</string>
     <string name="touch_right_side">right</string>
     <string name="bold_font">Bold font</string>
@@ -311,11 +298,7 @@
     <string name="desktop_mode">Desktop mode</string>
     <string name="setting_title_page_left_value">Page Reserved Height</string>
     <string name="setting_summary_page_left_value">How much height should be reserved when turning to next page</string>
-    <string name="touch_area">Touch Area</string>
-    <string name="setting_summary_touch_area">Configure touch area for turning pages</string>
     <string name="setting_title_pdf_paper_size">Printed pdf paper size</string>
-    <string name="font_style_serif">Font Style: Serif</string>
-    <string name="setting_summary_font_style_serif">Set font style to Noto Sans Serif</string>
     <string name="vertical_read">vertical</string>
     <string name="reader_mode">Reader mode</string>
     <string name="touch_area_setting">Touch setting</string>
@@ -328,7 +311,6 @@
     <string name="book_name_description">Input the book name</string>
     <string name="saving_epub">Saving Epub</string>
     <string name="volume_page_turn">Volume Key</string>
-    <string name="menu_add_folder">Add bookmark folder</string>
     <string name="folder_name">Bookmark folder name</string>
     <string name="folder_name_description">Insert Bookmark folder name</string>
     <string name="setting_title_export_bookmarks">export bookmarks</string>
@@ -368,15 +350,8 @@
     <string name="setting_title_two_finger_swipe">two finger swipe</string>
     <string name="font_custom">Select custom font file</string>
     <string name="translation_mode">Translation Mode</string>
-    <string name="title_activity_epub_reader">EpubReaderActivity</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="system_default">Default</string>
     <string name="serif">Serif</string>
     <string name="googleserif">Google Serif</string>
@@ -399,5 +374,4 @@
     <string name="menu_send_link">Send link</string>
     <string name="done">Close when transfer is done</string>
     <string name="menu_receive">Receive data</string>
-    <string name="new_instance">New Window</string>
 </resources>

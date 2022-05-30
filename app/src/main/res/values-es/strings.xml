@@ -90,7 +90,6 @@ Si desinstala la aplicación, el mismo será eliminado. Por tanto se recomienda 
     <!-- App setting -->
     <string name="setting_title_ui">Comportamiento/IU</string>
     <string name="setting_title_data">Respaldos</string>
-    <string name="setting_filter">Filtro de marcadores</string>
     <string name="setting_title_fav">Favorito</string>
     <string name="setting_title_searchEngine">Motor de búsqueda personalizado</string>
     <string name="setting_title_userAgent">Agente de usuario personalizado</string>
@@ -141,7 +140,6 @@ Si desinstala la aplicación, el mismo será eliminado. Por tanto se recomienda 
     <string name="hint_database">Esto borrará todas sus configuraciones y datos actuales. ¿Quiere proceder?</string>
     <!-- Others setting -->
     <string name="setting_title_license">Licencia</string>
-    <string name="setting_title_appSettings">Configuración de la aplicación</string>
     <!-- Toast -->
     <string name="toast_add_whitelist_successful">Dominio agregado con éxito</string>
     <string name="toast_copy_successful">Copiado con éxito</string>
@@ -159,7 +157,6 @@ Si desinstala la aplicación, el mismo será eliminado. Por tanto se recomienda 
     <string name="toast_start_download">Iniciando descarga</string>
     <string name="toast_wait_a_minute">Por favor, espere un momento</string>
     <string name="toast_error">Uuups. Algo salió mal.</string>
-    <string name="toast_newTitle">La entrada ya existe. Por favor ingrese un nuevo título.</string>
     <string name="toast_edit_successful">Guardado con éxito</string>
     <string name="toast_webview_forward">No se puede cargar el sitio</string>
     <string name="toast_restart">Debe reiniciar \"Navegador EinkBro\" para aplicar cambios. ¿Cerrar ahora?</string>
@@ -171,9 +168,6 @@ Si desinstala la aplicación, el mismo será eliminado. Por tanto se recomienda 
     <string name="whitelist_edit_hint">Dominio</string>
     <string name="whitelist_add">Añadir</string>
     <!-- Dialog help -->
-    <string name="dialogHelp_filterText">        You can tag your bookmarks with filters. In this way you can group your bookmarks. You can open the filter dialog by
-        long pressing the bookmark icon. If you activate an entry a dialog will appear, where you can edit the name of the filter.
-    </string>
     <!-- Dialog changelog -->
     <!-- License changelog -->
 </resources>

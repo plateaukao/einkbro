@@ -99,7 +99,6 @@
     <!-- App setting -->
     <string name="setting_title_ui">操作行為/介面</string>
     <string name="setting_title_data">備份</string>
-    <string name="setting_filter">過濾書籤</string>
     <string name="setting_title_fav">我的首頁</string>
     <string name="setting_title_searchEngine">設定搜尋引擎</string>
     <string name="setting_title_userAgent">自訂 user agent</string>
@@ -153,7 +152,6 @@
     <string name="hint_database">This will delete all your current settings and data. Will you proceed?</string>
     <!-- Others setting -->
     <string name="setting_title_license">License</string>
-    <string name="setting_title_appSettings">App 的系統設定</string>
     <!-- Toast -->
     <string name="toast_add_whitelist_successful">Successfully added Domain</string>
     <string name="toast_copy_successful">Successfully copied</string>
@@ -171,7 +169,6 @@
     <string name="toast_start_download">Starting download</string>
     <string name="toast_wait_a_minute">Please wait for a moment</string>
     <string name="toast_error">Uuups. Something went wrong.</string>
-    <string name="toast_newTitle">Entry already exists. Please enter new title.</string>
     <string name="toast_edit_successful">Successfully saved</string>
     <string name="toast_webview_forward">Can\'t load next site</string>
     <string name="toast_restart">You must restart \"EinkBro Browser\" to apply changes. Close now?</string>
@@ -183,9 +180,6 @@
     <string name="whitelist_edit_hint">Domain</string>
     <string name="whitelist_add">Add</string>
     <!-- Dialog help -->
-    <string name="dialogHelp_filterText">        You can tag your bookmarks with filters. In this way you can group your bookmarks. You can open the filter dialog by
-        long pressing the bookmark icon. If you activate an entry a dialog will appear, where you can edit the name of the filter.
-    </string>
     <!-- Dialog changelog -->
     <!-- License changelog -->
     <string name="touch_left_side">左側</string>
@@ -197,11 +191,7 @@
     <string name="desktop_mode">桌面版網站</string>
     <string name="setting_title_page_left_value">翻頁時保留的畫面長度</string>
     <string name="setting_summary_page_left_value">翻頁時，可保留部分畫面內容，請設定要保留的長度。如不需要可以設為 0</string>
-    <string name="touch_area">點擊翻頁區域</string>
-    <string name="setting_summary_touch_area">設定點擊畫面何處會翻頁</string>
     <string name="setting_title_pdf_paper_size">設定PDF紙張大小</string>
-    <string name="font_style_serif">字型: Serif</string>
-    <string name="setting_summary_font_style_serif">將字型設為 Noto Sans Serif</string>
     <string name="vertical_read">直排閱讀</string>
     <string name="reader_mode">閱讀模式</string>
     <string name="touch_area_setting">翻頁設定</string>
@@ -216,9 +206,7 @@
     <string name="volume_page_turn">音量鍵翻頁</string>
     <string name="history">瀏覽記錄</string>
     <string name="location">位置</string>
-    <string name="desktop">桌面模式</string>
     <string name="media_continue">背景播放</string>
-    <string name="menu_add_folder">新增書籤目錄</string>
     <string name="folder_name_description">輸入書籤目錄名稱</string>
     <string name="setting_title_export_bookmarks">匯出書籤</string>
     <string name="setting_title_import_bookmarks">匯入書籤</string>
@@ -279,5 +267,4 @@
     <string name="menu_send_link">傳送網址</string>
     <string name="done">傳送完成時按此關閉</string>
     <string name="menu_receive">接收資料</string>
-    <string name="new_instance">New Window</string>
 </resources>
