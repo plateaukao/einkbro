@@ -195,6 +195,14 @@ class DialogManager(
         dialog.show()
         return dialog
     }
+
+    suspend fun getBookmarkFolderName(): String? =
+            TextInputDialog(
+                    activity,
+                    activity.getString(R.string.folder_name),
+                    activity.getString(R.string.folder_name_description),
+                    ""
+            ).show()
 }
 
 fun Dialog.dismissWithAction(action: () -> Unit) {

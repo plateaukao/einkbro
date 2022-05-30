@@ -92,7 +92,6 @@
     <!-- App setting -->
     <string name="setting_title_ui">Comportamento/UI</string>
     <string name="setting_title_data">Backup</string>
-    <string name="setting_filter">Filtro dei segnalibri</string>
     <string name="setting_title_fav">Preferito</string>
     <string name="setting_title_searchEngine">Motore di ricerca personalizzato</string>
     <string name="setting_title_userAgent">Custom user agent</string>
@@ -144,7 +143,6 @@
     <string name="hint_database">In questo modo verranno eliminate tutte le impostazioni e i dati correnti. Continuare?</string>
     <!-- Others setting -->
     <string name="setting_title_license">Licenza</string>
-    <string name="setting_title_appSettings">Impostazioni App</string>
     <!-- Toast -->
     <string name="toast_add_whitelist_successful">Dominio aggiunto con successo</string>
     <string name="toast_copy_successful">Copiato con successo</string>
@@ -162,7 +160,6 @@
     <string name="toast_start_download">Avvio del download</string>
     <string name="toast_wait_a_minute">Attendere un momento</string>
     <string name="toast_error">Uuups. Qualcosa è andato storto</string>
-    <string name="toast_newTitle">La voce esiste già. Per favore inserisci un nuovo titolo.</string>
     <string name="toast_edit_successful">Salvato con successo</string>
     <string name="toast_webview_forward">Non è possibile caricare il sito successivo</string>
     <string name="toast_restart">Per applicare le modifiche è necessario riavviare \"EinkBro Browser\". Chiudere ora?</string>
@@ -174,9 +171,6 @@
     <string name="whitelist_edit_hint">Dominio</string>
     <string name="whitelist_add">Aggiungi</string>
     <!-- Dialog help -->
-    <string name="dialogHelp_filterText">Puoi segnare i tuoi segnalibri con dei filtri. In questo modo puoi raggruppare i tuoi segnalibri. Puoi aprire la finestra dei filtri
-        premendo a lungo l\'icona dei segnalibri. Se attivi una voce, una finestra apparirà, dove puoi modificare il nome del filtro.
-    </string>
     <!-- Dialog changelog -->
     <!-- License changelog -->
 </resources>

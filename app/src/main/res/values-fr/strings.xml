@@ -100,7 +100,6 @@
     <!-- App setting -->
     <string name="setting_title_ui">Comportement/UI</string>
     <string name="setting_title_data">Sauvegarde</string>
-    <string name="setting_filter">Bookmark filter</string>
     <string name="setting_title_fav">Favorite</string>
     <string name="setting_title_searchEngine">Custom search engine</string>
     <string name="setting_title_userAgent">Custom user agent</string>
@@ -153,7 +152,6 @@
     <string name="hint_database">Cela supprimera tous vos paramètres et données actuels. Allez-vous procéder?</string>
     <!-- Others setting -->
     <string name="setting_title_license">Licence</string>
-    <string name="setting_title_appSettings">Paramètres</string>
     <!-- Toast -->
     <string name="toast_add_whitelist_successful">Domaine ajouté avec succès</string>
     <string name="toast_copy_successful">Copié avec succès</string>
@@ -171,7 +169,6 @@
     <string name="toast_start_download">Démarrage du téléchargement</string>
     <string name="toast_wait_a_minute">SVP attendez un moment</string>
     <string name="toast_error">Oups. Quelque chose a mal tourné.</string>
-    <string name="toast_newTitle">L\'entrée existe déjà. Veuillez entrer un nouveau titre.</string>
     <string name="toast_edit_successful">Enregistré avec succès</string>
     <string name="toast_webview_forward">Impossible de charger le site</string>
     <string name="toast_restart">Vous devez redémarrer \"EinkBro Browser\" pour appliquer les modifications. Fermer maintenant?</string>
@@ -183,9 +180,6 @@
     <string name="whitelist_edit_hint">Domaine</string>
     <string name="whitelist_add">Ajouté</string>
     <!-- Dialog help -->
-    <string name="dialogHelp_filterText">        You can tag your bookmarks with filters. In this way you can group your bookmarks. You can open the filter dialog by
-        long pressing the bookmark icon. If you activate an entry a dialog will appear, where you can edit the name of the filter.
-    </string>
     <!-- Dialog changelog -->
     <!-- License changelog -->
 </resources>

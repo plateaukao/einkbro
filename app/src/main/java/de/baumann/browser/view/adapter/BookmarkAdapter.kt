@@ -1,6 +1,5 @@
 package de.baumann.browser.view.adapter
 
-import android.graphics.Bitmap
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.database.Bookmark
 import de.baumann.browser.database.BookmarkManager
-import kotlinx.coroutines.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 

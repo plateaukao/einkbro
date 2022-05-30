@@ -100,7 +100,6 @@
     <!-- App setting -->
     <string name="setting_title_ui">Behavior/UI</string>
     <string name="setting_title_data">Backup</string>
-    <string name="setting_filter">Bookmark filter</string>
     <string name="setting_title_fav">Favorite</string>
     <string name="setting_title_searchEngine">Custom search engine</string>
     <string name="setting_title_userAgent">Custom user agent</string>
@@ -153,7 +152,6 @@
     <string name="hint_database">This will delete all your current settings and data. Will you proceed?</string>
     <!-- Others setting -->
     <string name="setting_title_license">License</string>
-    <string name="setting_title_appSettings">App settings</string>
     <!-- Toast -->
     <string name="toast_add_whitelist_successful">Successfully added Domain</string>
     <string name="toast_copy_successful">Successfully copied</string>
@@ -171,7 +169,6 @@
     <string name="toast_start_download">Starting download</string>
     <string name="toast_wait_a_minute">Please wait for a moment</string>
     <string name="toast_error">Uuups. Something went wrong.</string>
-    <string name="toast_newTitle">Entry already exists. Please enter new title.</string>
     <string name="toast_edit_successful">Successfully saved</string>
     <string name="toast_webview_forward">Can\'t load next site</string>
     <string name="toast_restart">You must restart \"EinkBro Browser\" to apply changes. Close now?</string>
@@ -183,9 +180,6 @@
     <string name="whitelist_edit_hint">Domain</string>
     <string name="whitelist_add">Add</string>
     <!-- Dialog help -->
-    <string name="dialogHelp_filterText">        You can tag your bookmarks with filters. In this way you can group your bookmarks. You can open the filter dialog by
-        long pressing the bookmark icon. If you activate an entry a dialog will appear, where you can edit the name of the filter.
-    </string>
     <!-- Dialog changelog -->
     <!-- License changelog -->
 </resources>

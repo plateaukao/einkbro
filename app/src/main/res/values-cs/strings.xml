@@ -96,7 +96,6 @@
     <!-- App setting -->
     <string name="setting_title_ui">Chování/UI</string>
     <string name="setting_title_data">Záloha</string>
-    <string name="setting_filter">Filtr záložek</string>
     <string name="setting_title_fav">Oblíbené</string>
     <string name="setting_title_searchEngine">Vlastní vyhledávač</string>
     <string name="setting_title_userAgent">Vlastní uživatelský agent</string>
@@ -149,7 +148,6 @@
     <string name="hint_database">Toto vymaže všechna vaše aktuální nastavení a data. Chcete pokračovat?</string>
     <!-- Others setting -->
     <string name="setting_title_license">Licence</string>
-    <string name="setting_title_appSettings">Nastavení aplikace</string>
     <!-- Toast -->
     <string name="toast_add_whitelist_successful">Doména byla úspěšně přidána</string>
     <string name="toast_copy_successful">Úspěšně zkopírováno</string>
@@ -167,7 +165,6 @@
     <string name="toast_start_download">Zahajování stahování</string>
     <string name="toast_wait_a_minute">Prosím, počkejte chvilku</string>
     <string name="toast_error">Jejda. Něco se pokazilo.</string>
-    <string name="toast_newTitle">Položka již existuje. Zadejte prosím nový název.</string>
     <string name="toast_edit_successful">Úspěšně uloženo</string>
     <string name="toast_webview_forward">Nelze načíst další stránku</string>
     <string name="toast_restart">Pro provedení změn musíte restartovat aplikaci „EinkBro Browser“. Ukončit nyní?</string>
@@ -179,9 +176,6 @@
     <string name="whitelist_edit_hint">Doména</string>
     <string name="whitelist_add">Přidat</string>
     <!-- Dialog help -->
-    <string name="dialogHelp_filterText">        Záložky můžete označit filtry. Tímto způsobem můžete seskupovat své záložky. Můžete otevřít dialogové okno filtru
-        dlouhým stisknutím ikony záložky. Pokud aktivujete položku, objeví se dialogové okno, kde můžete upravit název filtru.
-    </string>
     <!-- Dialog changelog -->
     <!-- License changelog -->
 </resources>

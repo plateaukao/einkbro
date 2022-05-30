@@ -98,7 +98,6 @@
     <!-- App setting -->
     <string name="setting_title_ui">動作/UI</string>
     <string name="setting_title_data">バックアップ</string>
-    <string name="setting_filter">ブックマークフィルタ</string>
     <string name="setting_title_fav">お気に入り</string>
     <string name="setting_title_searchEngine">カスタム検索エンジン</string>
     <string name="setting_title_userAgent">カスタムユーザーエージェント</string>
@@ -151,7 +150,6 @@
     <string name="hint_database">This will delete all your current settings and data. Will you proceed?</string>
     <!-- Others setting -->
     <string name="setting_title_license">ライセンス</string>
-    <string name="setting_title_appSettings">アプリ設定</string>
     <!-- Toast -->
     <string name="toast_add_whitelist_successful">Successfully added Domain</string>
     <string name="toast_copy_successful">Successfully copied</string>
@@ -169,7 +167,6 @@
     <string name="toast_start_download">ダウンロード開始中…</string>
     <string name="toast_wait_a_minute">少々お待ちください</string>
     <string name="toast_error">Uuups. Something went wrong.</string>
-    <string name="toast_newTitle">Entry already exists. Please enter new title.</string>
     <string name="toast_edit_successful">正常に保存されました</string>
     <string name="toast_webview_forward">Can\'t load next site</string>
     <string name="toast_restart">You must restart \"EinkBro Browser\" to apply changes. Close now?</string>
@@ -181,9 +178,6 @@
     <string name="whitelist_edit_hint">ドメイン</string>
     <string name="whitelist_add">追加</string>
     <!-- Dialog help -->
-    <string name="dialogHelp_filterText">        You can tag your bookmarks with filters. In this way you can group your bookmarks. You can open the filter dialog by
-        long pressing the bookmark icon. If you activate an entry a dialog will appear, where you can edit the name of the filter.
-    </string>
     <!-- Dialog changelog -->
     <!-- License changelog -->
 </resources>

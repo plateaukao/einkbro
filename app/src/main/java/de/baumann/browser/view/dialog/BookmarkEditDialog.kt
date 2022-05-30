@@ -16,6 +16,7 @@ import de.baumann.browser.database.Bookmark
 import de.baumann.browser.database.BookmarkManager
 import de.baumann.browser.view.NinjaToast
 import kotlinx.coroutines.launch
+import org.koin.core.component.KoinComponent
 
 class BookmarkEditDialog(
         private val activity: Activity,
@@ -24,6 +25,8 @@ class BookmarkEditDialog(
         private val okAction: () -> Unit,
         private val cancelAction: () -> Unit,
 ) {
+    private val dialogManager: DialogManager = DialogManager(activity)
+
     fun show() {
         val lifecycleScope = (activity as LifecycleOwner).lifecycleScope
 
@@ -49,7 +52,7 @@ class BookmarkEditDialog(
 
     private fun addFolder(lifecycleScope: LifecycleCoroutineScope, binding: DialogEditBookmarkBinding) {
         lifecycleScope.launch {
-            val folderName = getFolderName()
+            val folderName = dialogManager.getBookmarkFolderName() ?: return@launch
             bookmarkManager.insertDirectory(folderName)
             updateFolderSpinner(binding, folderName)
         }
@@ -92,15 +95,4 @@ class BookmarkEditDialog(
             NinjaToast.show(activity, de.baumann.browser.Ninja.R.string.toast_error)
         }
     }
-
-    private suspend fun getFolderName(): String {
-        val context: Context = activity
-        return TextInputDialog(
-                context,
-                context.getString(de.baumann.browser.Ninja.R.string.folder_name),
-                context.getString(de.baumann.browser.Ninja.R.string.folder_name_description),
-                ""
-        ).show() ?: "New Folder"
-    }
-
 }
