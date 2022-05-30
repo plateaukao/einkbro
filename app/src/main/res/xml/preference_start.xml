@@ -29,7 +29,7 @@
         android:summary="@string/setting_summary_remote"/>
 
     <CheckBoxPreference android:key="@string/sp_location"
-        android:icon="@drawable/icon_location"
+        android:icon="@drawable/ic_location"
         android:defaultValue="false"
         android:title="@string/setting_title_location"
         android:summary="@string/setting_summary_location"/>

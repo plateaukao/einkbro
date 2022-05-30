@@ -112,7 +112,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginEnd="16dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/icon_cookie"/>
+                    android:src="@drawable/icon_java"/>
 
                 <TextView
                     android:layout_width="0dp"
@@ -222,7 +222,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginEnd="16dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/icon_location"/>
+                    android:src="@drawable/ic_location"/>
 
                 <TextView
                     android:layout_width="0dp"
