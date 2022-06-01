@@ -1008,6 +1008,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
                     addRule(RelativeLayout.ALIGN_BOTTOM, R.id.main_content)
                 }
             }
+            FabPosition.NotShow -> {}
         }
 
         ViewUnit.expandViewTouchArea(fabImageButtonNav, 20.dp(this))

@@ -121,6 +121,7 @@ class TouchAreaViewController(
                 touchAreaPageDown = rootView.findViewById(R.id.touch_area_right_2)
                 touchAreaDragCustomize = rootView.findViewById(R.id.touch_area_right_drag)
             }
+            TouchAreaType.LongLeftRight -> {}
         }
 
         with(touchAreaPageUp) {
