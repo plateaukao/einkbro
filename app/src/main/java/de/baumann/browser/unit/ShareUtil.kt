@@ -1,6 +1,12 @@
 package de.baumann.browser.unit
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleCoroutineScope
+import de.baumann.browser.Ninja.R
+import de.baumann.browser.view.NinjaToast
 import kotlinx.coroutines.*
 import org.json.JSONObject
 import org.koin.core.component.KoinComponent
@@ -15,6 +21,13 @@ object ShareUtil: KoinComponent {
     private val group = InetAddress.getByName(multicastIp)
     private var broadcastJob: Job? = null
     private var socket: MulticastSocket? = null
+
+    fun copyToClipboard(context: Context, url: String) {
+        val clipboard = context.getSystemService(AppCompatActivity.CLIPBOARD_SERVICE) as ClipboardManager
+        val clip = ClipData.newPlainText("text", url)
+        clipboard.setPrimaryClip(clip)
+        NinjaToast.show(context, R.string.toast_copy_successful)
+    }
 
     fun startBroadcastingUrl(lifecycleCoroutineScope: LifecycleCoroutineScope, url: String) {
         broadcastJob = lifecycleCoroutineScope.launch(Dispatchers.IO) {
@@ -66,12 +79,4 @@ object ShareUtil: KoinComponent {
             else -> jsonObject.getString("name")
         }
     }
-
-    private fun fetchHttpJson(address: String, port: Int): String {
-        val stream = URL("http", address, port, "sharik.json").openStream()
-        val jsonString = BufferedReader(InputStreamReader(stream)).readText()
-        stream.close()
-        return jsonString
-    }
-
 }
