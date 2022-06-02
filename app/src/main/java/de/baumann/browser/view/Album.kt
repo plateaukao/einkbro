@@ -17,6 +17,8 @@ internal class Album(
 ) {
     private val binding: AlbumBinding = AlbumBinding.inflate(LayoutInflater.from(context))
 
+    var isLoaded = false
+
     val albumView: View
         get() = binding.root
     var albumTitle: String

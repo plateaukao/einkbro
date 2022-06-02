@@ -363,4 +363,6 @@
     <string name="menu_send_link">Send link</string>
     <string name="done">Done</string>
     <string name="menu_receive">receive data</string>
+    <string name="setting_title_background_loading">Loading non-active tabs</string>
+    <string name="setting_summary_background_loading">When tab is not activated, still loading the cotent in background</string>
 </resources>
