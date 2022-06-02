@@ -175,6 +175,7 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
 
     }
 
+    @Suppress("DEPRECATION")
     fun initPreferences() {
 
         updateDesktopMode()
@@ -265,6 +266,7 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun loadUrl(url: String) {
+        album.isLoaded = true
         dTLoadUrl = DebugT("loadUrl")
 
         if (url.startsWith("javascript:")) {
@@ -316,31 +318,47 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
 
     override fun setAlbumTitle(title: String) {
         album.albumTitle = title
+        update(title)
     }
 
     override fun getAlbumUrl(): String = url ?: ""
 
+    var initAlbumUrl: String = ""
     override fun activate() {
         requestFocus()
         isForeground = true
         album.activate()
+
         // handle incognito case
         if (incognito || !config.cookies) {
             toggleCookieSupport(false)
         } else {
             toggleCookieSupport(true)
         }
+
+        if (!album.isLoaded){
+            loadUrl(initAlbumUrl)
+        }
+
+        resumeWebView()
     }
 
     override fun deactivate() {
         clearFocus()
         isForeground = false
         album.deactivate()
+        if (!config.enableWebBkgndLoad) pauseWebView()
     }
 
-    override fun pauseWebView() = onPause()
+    override fun pauseWebView() {
+        onPause()
+        pauseTimers()
+    }
 
-    override fun resumeWebView() = onResume()
+    override fun resumeWebView() {
+        onResume()
+        resumeTimers()
+    }
 
     fun update(progress: Int) {
         if (isForeground) {

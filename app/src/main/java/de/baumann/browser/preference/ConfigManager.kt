@@ -27,6 +27,12 @@ class ConfigManager(
         sp.registerOnSharedPreferenceChangeListener(listener)
     }
 
+    var enableWebBkgndLoad: Boolean
+        get() = sp.getBoolean(K_BKGND_LOAD, true)
+        set(value) {
+            sp.edit { putBoolean(K_BKGND_LOAD, value)}
+        }
+
     var enableJavascript: Boolean
         get() = sp.getBoolean(K_JAVASCRIPT, false)
         set(value) {
@@ -494,6 +500,7 @@ class ConfigManager(
         const val K_SHOW_RECENT_BOOKMARKS = "sp_new_tab_recent_bookmarks"
         const val K_RESTART_CHANGED = "restart_changed"
         const val K_JAVASCRIPT = "SP_JAVASCRIPT_9"
+        const val K_BKGND_LOAD = "sp_background_loading"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
         private const val RECENT_BOOKMARKS_SEPARATOR = "::::"

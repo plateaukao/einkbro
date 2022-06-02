@@ -375,4 +375,6 @@
     <string name="done">Close when transfer is done</string>
     <string name="menu_receive">Receive data</string>
     <string name="copy_link">Copy link</string>
+    <string name="setting_title_background_loading">Loading non-active tabs</string>
+    <string name="setting_summary_background_loading">When tab is not activated, still loading the cotent in background</string>
 </resources>
