@@ -114,12 +114,7 @@ class MenuDialog(
             dialog.dismissWithAction { context.startActivity(Intent(context, SettingsActivity::class.java)) }
         }
         binding.menuShareClipboard.setOnClickListener {
-            dialog.dismissWithAction {
-                val clipboard = context.getSystemService(AppCompatActivity.CLIPBOARD_SERVICE) as ClipboardManager
-                val clip = ClipData.newPlainText("text", ninjaWebView.url)
-                clipboard.setPrimaryClip(clip)
-                NinjaToast.show(context, R.string.toast_copy_successful)
-            }
+            dialog.dismissWithAction { ShareUtil.copyToClipboard(context, ninjaWebView.url ?: "") }
         }
     }
 

@@ -53,12 +53,9 @@ import de.baumann.browser.epub.EpubManager
 import de.baumann.browser.preference.*
 import de.baumann.browser.service.ClearService
 import de.baumann.browser.task.SaveScreenshotTask
-import de.baumann.browser.unit.BrowserUnit
+import de.baumann.browser.unit.*
 import de.baumann.browser.unit.BrowserUnit.downloadFileId
-import de.baumann.browser.unit.HelperUnit
 import de.baumann.browser.unit.HelperUnit.toNormalScheme
-import de.baumann.browser.unit.IntentUnit
-import de.baumann.browser.unit.ViewUnit
 import de.baumann.browser.unit.ViewUnit.dp
 import de.baumann.browser.util.Constants
 import de.baumann.browser.util.DebugT
@@ -1589,6 +1586,9 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
                 if (prepareRecord()) NinjaToast.show(this, getString(R.string.toast_share_failed))
                 else IntentUnit.share(this, "", nonNullUrl)
             }
+        }
+        dialogView.contextLinkCopyLink.setOnClickListener {
+            dialog.dismissWithAction { ShareUtil.copyToClipboard(this, nonNullUrl) }
         }
         dialogView.contextLinkOpenWith.setOnClickListener {
             dialog.dismissWithAction { HelperUnit.showBrowserChooser(this@BrowserActivity, nonNullUrl, getString(R.string.menu_open_with)) }

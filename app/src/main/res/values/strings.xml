@@ -374,4 +374,5 @@
     <string name="menu_send_link">Send link</string>
     <string name="done">Close when transfer is done</string>
     <string name="menu_receive">Receive data</string>
+    <string name="copy_link">Copy link</string>
 </resources>
