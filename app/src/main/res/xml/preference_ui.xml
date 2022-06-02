@@ -87,6 +87,18 @@
 
     <PreferenceCategory android:title="@string/setting_title_behavior">
 
+        <CheckBoxPreference android:key="sp_shouldSaveTabs"
+            android:icon="@drawable/icon_tab_plus"
+            android:defaultValue="false"
+            android:title="@string/setting_title_saveTabs"
+            android:summary="@string/setting_summary_saveTabs"/>
+
+        <CheckBoxPreference android:key="sp_background_loading"
+            android:icon="@drawable/icon_tab_plus"
+            android:defaultValue="true"
+            android:title="@string/setting_title_background_loading"
+            android:summary="@string/setting_summary_background_loading"/>
+
         <CheckBoxPreference
             android:defaultValue="false"
             android:icon="@drawable/ic_eye"
@@ -100,12 +112,6 @@
             android:key="sp_close_tab_confirm"
             android:title="@string/setting_title_confirm_tab_close"
             android:summary="@string/setting_summary_confirm_tab_close" />
-
-        <CheckBoxPreference android:key="sp_shouldSaveTabs"
-            android:icon="@drawable/icon_tab_plus"
-            android:defaultValue="false"
-            android:title="@string/setting_title_saveTabs"
-            android:summary="@string/setting_summary_saveTabs"/>
 
         <CheckBoxPreference android:key="sp_enable_vi_binding"
             android:icon="@drawable/ic_keyboard"

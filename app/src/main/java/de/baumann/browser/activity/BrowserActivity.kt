@@ -48,7 +48,6 @@ import de.baumann.browser.database.Bookmark
 import de.baumann.browser.database.BookmarkManager
 import de.baumann.browser.database.Record
 import de.baumann.browser.database.RecordDb
-import de.baumann.browser.epub.EpubFileInfo
 import de.baumann.browser.epub.EpubManager
 import de.baumann.browser.preference.*
 import de.baumann.browser.service.ClearService
@@ -227,20 +226,6 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
 
         customFontResultLauncher = BrowserUnit.registerCustomFontSelectionResult(this)
         bookmarkManager.init()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        if (!config.continueMedia) {
-            browserContainer.pauseAll()
-        }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        if (!config.continueMedia) {
-            browserContainer.resumeAll()
-        }
     }
 
     private fun listenKeyboardShowHide() {
@@ -1169,6 +1154,19 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
             setOnTouchListener(createMultiTouchTouchListener(this))
         }
 
+        maybeCreateNewPreloadWebView(enablePreloadWebView, newWebView)
+
+        ViewUnit.bound(this, newWebView)
+
+        updateTabPreview(newWebView)
+        updateWebViewCount()
+
+        loadUrlInWebView(foreground, newWebView, url)
+
+        updateSavedAlbumInfo()
+    }
+
+    private fun maybeCreateNewPreloadWebView(enablePreloadWebView: Boolean, newWebView: NinjaWebView) {
         preloadedWebView = null
         if (enablePreloadWebView) {
             newWebView.postDelayed({
@@ -1177,9 +1175,9 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
                 }
             }, 2000)
         }
+    }
 
-        ViewUnit.bound(this, newWebView)
-
+    private fun updateTabPreview(newWebView: NinjaWebView) {
         val albumView = newWebView.albumView
         if (currentAlbumController != null) {
             val index = browserContainer.indexOf(currentAlbumController) + 1
@@ -1189,23 +1187,26 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
             browserContainer.add(newWebView)
             overviewDialogController.addTabPreview(albumView, browserContainer.size() - 1)
         }
-        updateWebViewCount()
+    }
 
+    private fun loadUrlInWebView(foreground: Boolean, webView: NinjaWebView, url: String) {
         if (!foreground) {
-            ViewUnit.bound(this, newWebView)
-            newWebView.loadUrl(url)
-            newWebView.deactivate()
+            ViewUnit.bound(this, webView)
+            webView.deactivate()
+            if (config.enableWebBkgndLoad) {
+                webView.loadUrl(url)
+            } else {
+                webView.initAlbumUrl = url
+            }
         } else {
             showToolbar()
-            showAlbum(newWebView)
+            showAlbum(webView)
             if (url.isNotEmpty() && url != BrowserUnit.URL_ABOUT_BLANK) {
-                newWebView.loadUrl(url)
-            } else if (config.showRecentBookmarks){
-                showRecentlyUsedBookmarks(newWebView)
+                webView.loadUrl(url)
+            } else if (config.showRecentBookmarks) {
+                showRecentlyUsedBookmarks(webView)
             }
         }
-
-        updateSavedAlbumInfo()
     }
 
     private fun showRecentlyUsedBookmarks(webView: NinjaWebView) {

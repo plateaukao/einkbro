@@ -267,4 +267,6 @@
     <string name="menu_send_link">傳送網址</string>
     <string name="done">傳送完成時按此關閉</string>
     <string name="menu_receive">接收資料</string>
+    <string name="setting_title_background_loading">載入其他分頁內容</string>
+    <string name="setting_summary_background_loading">分頁未顯示時，依然在背景載入</string>
 </resources>
