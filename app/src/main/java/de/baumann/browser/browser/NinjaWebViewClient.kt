@@ -40,7 +40,7 @@ import nl.siegmann.epublib.domain.Book
 
 class NinjaWebViewClient(
         private val ninjaWebView: NinjaWebView,
-        private val addHistoryAction: (String) -> Unit
+        private val addHistoryAction: (String, String) -> Unit
 ) : WebViewClient(), KoinComponent {
     private val context: Context = ninjaWebView.context
     private val sp: SharedPreferences by inject()
@@ -76,7 +76,7 @@ class NinjaWebViewClient(
                 !ninjaWebView.incognito &&
                 !isTranslationDomain(url) &&
                 url != BrowserUnit.URL_ABOUT_BLANK) {
-            addHistoryAction(url)
+            addHistoryAction(ninjaWebView.albumTitle, url)
         }
         dTLoadUrl?.printTime()
         dTLoadUrl = null
