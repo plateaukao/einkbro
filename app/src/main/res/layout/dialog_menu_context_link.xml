@@ -217,7 +217,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/menu_save_pdf"
+        android:id="@+id/menu_save_file"
         android:layout_width="match_parent"
         android:layout_height="46dp"
         android:background="@drawable/item_bg_selector"

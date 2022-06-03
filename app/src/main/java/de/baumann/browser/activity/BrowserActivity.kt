@@ -40,7 +40,6 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.ActivityMainBinding
-import de.baumann.browser.Ninja.databinding.DialogMenuContextLinkBinding
 import de.baumann.browser.browser.AlbumController
 import de.baumann.browser.browser.BrowserContainer
 import de.baumann.browser.browser.BrowserController
@@ -512,7 +511,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
                 addAlbum(getString(R.string.app_name), "", incognito = true)
                 focusOnInput()
             }
-            R.id.menu_save_pdf -> showPdfFilePicker()
+            R.id.menu_save_file -> showPdfFilePicker()
 
             // --- tool bar handling
             R.id.omnibox_tabcount -> showOverview()
@@ -1565,52 +1564,6 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
                 false
             }
 
-    private fun showContextMenuLinkDialog(url: String?, hitTestResult: HitTestResult) {
-        if (url == null &&
-                !listOf(HitTestResult.IMAGE_TYPE, HitTestResult.IMAGE_ANCHOR_TYPE, HitTestResult.SRC_IMAGE_ANCHOR_TYPE, HitTestResult.ANCHOR_TYPE)
-                        .contains(hitTestResult.type)) return
-
-        val nonNullUrl = url ?: hitTestResult.extra ?: ""
-        val dialogView = DialogMenuContextLinkBinding.inflate(layoutInflater)
-        val dialog = dialogManager.showOptionDialog(dialogView.root)
-        dialogView.contextLinkNewTab.setOnClickListener {
-            dialog.dismissWithAction {
-                addAlbum(getString(R.string.app_name), nonNullUrl, false)
-            }
-        }
-        dialogView.contextLinkSplitScreen.setOnClickListener {
-            dialog.dismissWithAction { toggleSplitScreen(nonNullUrl) }
-        }
-        dialogView.contextLinkShareLink.setOnClickListener {
-            dialog.dismissWithAction {
-                if (prepareRecord()) NinjaToast.show(this, getString(R.string.toast_share_failed))
-                else IntentUnit.share(this, "", nonNullUrl)
-            }
-        }
-        dialogView.contextLinkCopyLink.setOnClickListener {
-            dialog.dismissWithAction { ShareUtil.copyToClipboard(this, nonNullUrl) }
-        }
-        dialogView.contextLinkOpenWith.setOnClickListener {
-            dialog.dismissWithAction { HelperUnit.showBrowserChooser(this@BrowserActivity, nonNullUrl, getString(R.string.menu_open_with)) }
-        }
-        dialogView.contextLinkSaveBookmark.setOnClickListener {
-            dialog.dismissWithAction { saveBookmark(nonNullUrl, title = "") }
-        }
-        dialogView.contextLinkNewTabOpen.setOnClickListener {
-            dialog.dismissWithAction { addAlbum(getString(R.string.app_name), nonNullUrl) }
-        }
-        dialogView.menuSavePdf.setOnClickListener {
-            dialog.dismissWithAction { showSavePdfDialog(nonNullUrl) }
-        }
-
-        if (hitTestResult.extra != null) {
-            dialogView.menuRemoveAd.visibility = VISIBLE
-            dialogView.menuRemoveAd.setOnClickListener {
-                dialog.dismissWithAction { confirmAdSiteAddition(hitTestResult.extra ?: "") }
-            }
-        }
-    }
-
     private fun confirmAdSiteAddition(url: String) {
         val host = Uri.parse(url).host ?: ""
         if (config.adSites.contains(host)) {
@@ -1642,22 +1595,27 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         )
     }
 
-    override fun onLongPress(url: String?) =
-            showContextMenuLinkDialog(url, ninjaWebView.hitTestResult)
+    override fun onLongPress(url: String?) {
+        val nonNullUrl = url ?: return
+        val hitTestResult = ninjaWebView.hitTestResult
 
-    private fun showSavePdfDialog(url: String) {
-        if (url.startsWith("data:")) {
-            NinjaToast.showShort(this, "Not supported for data:image urld")
-            return
-        }
-
-        dialogManager.showSavePdfDialog(
-                url = url,
-                savePdf = { pdfUrl, fileName -> savePdf(pdfUrl, fileName) },
-        )
+        dialogManager.showContextMenuLinkDialog(
+           nonNullUrl,
+           hitTestResult,
+           newTabInBkndAction = { addAlbum(getString(R.string.app_name), nonNullUrl, false) },
+           splitScreenAction = { toggleSplitScreen(nonNullUrl) },
+           shareAction = {
+               if (prepareRecord()) NinjaToast.show(this, getString(R.string.toast_share_failed))
+               else IntentUnit.share(this, "", url)
+           },
+           saveBookmarkAction = { saveBookmark(nonNullUrl, title = "")},
+           newTabAction = { addAlbum(getString(R.string.app_name), nonNullUrl) },
+           safeFileAction = { url, fileName -> saveFile(url, fileName) },
+           confirmAdSiteAddition = { confirmAdSiteAddition(hitTestResult.extra ?: "") }
+       )
     }
 
-    private fun savePdf(url: String, fileName: String) {
+    private fun saveFile(url: String, fileName: String) {
         if (HelperUnit.needGrantStoragePermission(this)) { return }
 
         val source = Uri.parse(url)

@@ -8,19 +8,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.URLUtil
+import android.webkit.WebView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.DialogEditExtensionBinding
+import de.baumann.browser.Ninja.databinding.DialogMenuContextLinkBinding
 import de.baumann.browser.Ninja.databinding.DialogSavedEpubListBinding
 import de.baumann.browser.Ninja.databinding.ListItemEpubFileBinding
 import de.baumann.browser.activity.BrowserActivity
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.preference.FontType
-import de.baumann.browser.unit.BrowserUnit
-import de.baumann.browser.unit.HelperUnit
-import de.baumann.browser.unit.ViewUnit
+import de.baumann.browser.unit.*
 import de.baumann.browser.unit.ViewUnit.dp
 import de.baumann.browser.view.NinjaToast
 import org.koin.core.component.KoinComponent
@@ -154,6 +154,52 @@ class DialogManager(
             },
             cancelAction = { ViewUnit.hideKeyboard(activity) }
         )
+    }
+
+    fun showContextMenuLinkDialog(
+        url: String,
+        hitTestResult: WebView.HitTestResult,
+        newTabInBkndAction: () -> Unit,
+        splitScreenAction: () -> Unit,
+        shareAction: () -> Unit,
+        saveBookmarkAction: () -> Unit,
+        newTabAction: () -> Unit,
+        safeFileAction: (String, String) -> Unit,
+        confirmAdSiteAddition: () -> Unit
+    ) {
+        if (!listOf(WebView.HitTestResult.IMAGE_TYPE,
+                WebView.HitTestResult.IMAGE_ANCHOR_TYPE,
+                WebView.HitTestResult.SRC_ANCHOR_TYPE,
+                WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE,
+                WebView.HitTestResult.ANCHOR_TYPE)
+                .contains(hitTestResult.type)) return
+
+        val dialogView = DialogMenuContextLinkBinding.inflate(activity.layoutInflater)
+        val dialog = showOptionDialog(dialogView.root)
+        dialogView.contextLinkNewTab.setOnClickListener { dialog.dismissWithAction { newTabInBkndAction() } }
+        dialogView.contextLinkSplitScreen.setOnClickListener { dialog.dismissWithAction { splitScreenAction() } }
+        dialogView.contextLinkShareLink.setOnClickListener { dialog.dismissWithAction { shareAction() } }
+        dialogView.contextLinkCopyLink.setOnClickListener { dialog.dismissWithAction { ShareUtil.copyToClipboard(activity, url) } }
+        dialogView.contextLinkOpenWith.setOnClickListener { dialog.dismissWithAction { HelperUnit.showBrowserChooser(activity, url, activity.getString(R.string.menu_open_with)) } }
+        dialogView.contextLinkSaveBookmark.setOnClickListener { dialog.dismissWithAction { saveBookmarkAction() } }
+        dialogView.contextLinkNewTabOpen.setOnClickListener { dialog.dismissWithAction { newTabAction() } }
+        dialogView.menuSaveFile.setOnClickListener {
+            dialog.dismissWithAction {
+                if (url.startsWith("data:")) {
+                    NinjaToast.showShort(activity, "Not supported for data:image urld")
+                } else {
+                    showSavePdfDialog(url = url, savePdf = safeFileAction)
+                }
+            }
+        }
+
+        if (hitTestResult.extra != null) {
+            dialogView.menuRemoveAd.visibility = View.VISIBLE
+            dialogView.menuRemoveAd.setOnClickListener {
+                dialog.dismissWithAction { confirmAdSiteAddition() }
+            }
+        }
+
     }
 
     fun showOkCancelDialog(
