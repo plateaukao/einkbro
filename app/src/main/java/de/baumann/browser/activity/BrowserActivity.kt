@@ -1341,9 +1341,9 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
 
     override fun updateTitle(title: String?) = updateTitle()
 
-    override fun addHistory(url: String) {
+    override fun addHistory(title: String, url: String) {
         lifecycleScope.launch {
-            recordDb.addHistory(Record(ninjaWebView.albumTitle, url, System.currentTimeMillis()))
+            recordDb.addHistory(Record(title, url, System.currentTimeMillis()))
         }
     }
 
@@ -1576,7 +1576,6 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         dialogView.contextLinkNewTab.setOnClickListener {
             dialog.dismissWithAction {
                 addAlbum(getString(R.string.app_name), nonNullUrl, false)
-                NinjaToast.show(this, getString(R.string.toast_new_tab_successful))
             }
         }
         dialogView.contextLinkSplitScreen.setOnClickListener {

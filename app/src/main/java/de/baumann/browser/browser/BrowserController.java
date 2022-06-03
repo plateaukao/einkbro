@@ -17,7 +17,7 @@ public interface BrowserController {
     void onShowCustomView(View view, WebChromeClient.CustomViewCallback callback);
     void onLongPress(String url);
     void hideOverview ();
-    void addHistory(String url);
+    void addHistory(String title, String url);
     boolean onHideCustomView();
     boolean handleKeyEvent(KeyEvent event);
     boolean loadInSecondPane(String url);

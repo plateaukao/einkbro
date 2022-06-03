@@ -49,7 +49,7 @@ class EpubReaderActivity: BrowserActivity() {
         }
     }
 
-    override fun addHistory(url: String) {
+    override fun addHistory(title: String, url: String) {
         // don't need it, since it's not normal web page
     }
 
