@@ -119,7 +119,7 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
 
     init {
         isForeground = false
-        webViewClient = NinjaWebViewClient(this) { url -> browserController?.addHistory(url) }
+        webViewClient = NinjaWebViewClient(this) { title, url -> browserController?.addHistory(title, url) }
         webChromeClient = NinjaWebChromeClient(this) { setAlbumCover(it) }
         clickHandler = NinjaClickHandler(this)
         initWebView()
@@ -336,7 +336,7 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
             toggleCookieSupport(true)
         }
 
-        if (!album.isLoaded){
+        if (!album.isLoaded && initAlbumUrl.isNotEmpty()){
             loadUrl(initAlbumUrl)
         }
 
