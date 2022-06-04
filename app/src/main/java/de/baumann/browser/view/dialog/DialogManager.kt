@@ -176,6 +176,7 @@ class DialogManager(
 
         val dialogView = DialogMenuContextLinkBinding.inflate(activity.layoutInflater)
         val dialog = showOptionDialog(dialogView.root)
+        dialogView.contextLinkUrl.text = url
         dialogView.contextLinkNewTab.setOnClickListener { dialog.dismissWithAction { newTabInBkndAction() } }
         dialogView.contextLinkSplitScreen.setOnClickListener { dialog.dismissWithAction { splitScreenAction() } }
         dialogView.contextLinkShareLink.setOnClickListener { dialog.dismissWithAction { shareAction() } }
