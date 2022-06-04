@@ -10,8 +10,6 @@ import de.baumann.browser.view.NinjaToast
 import kotlinx.coroutines.*
 import org.json.JSONObject
 import org.koin.core.component.KoinComponent
-import java.io.BufferedReader
-import java.io.InputStreamReader
 import java.net.*
 
 object ShareUtil: KoinComponent {
@@ -48,7 +46,7 @@ object ShareUtil: KoinComponent {
         broadcastJob = null
     }
 
-    fun startReceiving(lifecycleCoroutineScope: LifecycleCoroutineScope, afterAction: (String) -> Unit) {
+    fun startReceiving(lifecycleCoroutineScope: LifecycleCoroutineScope, receivedAction: (String) -> Unit) {
         val receiveData = ByteArray(4096)
         val receivePacket = DatagramPacket(receiveData, receiveData.size)
         broadcastJob = lifecycleCoroutineScope.launch(Dispatchers.IO) {
@@ -65,7 +63,7 @@ object ShareUtil: KoinComponent {
             } else {
                 handleSharikScenario(receivePacket.address.toString(), receivedString)
             }
-            afterAction(processedString)
+            receivedAction(processedString)
             stopBroadcast()
         }
     }
