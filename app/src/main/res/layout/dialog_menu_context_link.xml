@@ -8,6 +8,15 @@
     android:padding="8dp"
     tools:ignore="ContentDescription">
 
+    <TextView
+        android:id="@+id/contextLink_url"
+        android:layout_width="match_parent"
+        android:layout_height="23dp"
+        android:lines="1"
+        android:singleLine="true"
+        android:gravity="center_vertical"
+        android:textSize="16sp"
+        android:ellipsize="end"/>
     <LinearLayout
         android:id="@+id/contextLink_newTabOpen"
         android:layout_width="match_parent"
