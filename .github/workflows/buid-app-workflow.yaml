@@ -13,3 +13,8 @@ jobs:
             encodedString: ${{ secrets.KEYSTORE }}
       - name: Build the app
         run: ./gradlew assembleRelease -Pandroid.injected.signing.store.file=keystore/browser.keystore -Pandroid.injected.signing.store.password=${{ secrets.PASSWORD }} -Pandroid.injected.signing.key.alias=${{ secrets.ALIAS }}
+      - name: Upload
+        uses: actions/upload-artifact@v2
+        with:
+            name: Build Artifacts
+            path: app/build/outputs/
