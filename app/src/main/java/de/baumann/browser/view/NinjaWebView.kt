@@ -8,8 +8,6 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
-import android.os.Handler
-import android.os.Looper
 import android.print.PrintDocumentAdapter
 import android.util.Base64
 import android.view.KeyEvent
@@ -35,7 +33,6 @@ import de.baumann.browser.util.PdfDocumentAdapter
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.apache.commons.text.StringEscapeUtils
-import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.ByteArrayOutputStream
@@ -120,7 +117,7 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
     init {
         isForeground = false
         webViewClient = NinjaWebViewClient(this) { title, url -> browserController?.addHistory(title, url) }
-        webChromeClient = NinjaWebChromeClient(this) { setAlbumCover(it) }
+        webChromeClient = NinjaWebChromeClient(this) { setAlbumCoverAndSyncDb(it) }
         clickHandler = NinjaClickHandler(this)
         initWebView()
         initWebSettings()
@@ -231,10 +228,7 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
     }
 
     private fun initAlbum() {
-        with(album) {
-            setAlbumCover(null)
-            albumTitle = context!!.getString(R.string.app_name)
-        }
+        album.albumTitle = context!!.getString(R.string.app_name)
     }
 
     val requestHeaders: HashMap<String, String>
@@ -298,13 +292,14 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
 
     override fun getAlbumView(): View = album.albumView
 
-    override fun setAlbumCover(bitmap: Bitmap) {
-        album.setAlbumCover(bitmap)
-        if (bitmap!= null) {
-            val host = Uri.parse(originalUrl).host ?: return
-            GlobalScope.launch {
-                bookmarkManager.insertFavicon(FaviconInfo(domain = host, bitmap.convertBytes()))
-            }
+    fun setAlbumCover(bitmap: Bitmap) = album.setAlbumCover(bitmap)
+    fun setAlbumCoverAndSyncDb(bitmap: Bitmap) {
+        setAlbumCover(bitmap)
+
+        if (originalUrl == null) return
+        val host = Uri.parse(originalUrl).host ?: return
+        GlobalScope.launch {
+            bookmarkManager.insertFavicon(FaviconInfo(domain = host, bitmap.convertBytes()))
         }
     }
 

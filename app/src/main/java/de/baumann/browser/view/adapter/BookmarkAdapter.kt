@@ -37,12 +37,12 @@ class BookmarkAdapter(
     override fun onBindViewHolder(viewHolder: BookmarkViewHolder, position: Int) {
         val bookmark = getItem(viewHolder.adapterPosition)
         viewHolder.textView.text = bookmark.title
-        if (bookmark.isDirectory) {
-            setupBookmarkFolder(viewHolder)
-        } else {
-            setupBookmark(viewHolder, bookmark)
-        }
 
+        setupIcon(viewHolder, bookmark)
+        setupItem(viewHolder, bookmark)
+    }
+
+    private fun setupItem(viewHolder: BookmarkViewHolder, bookmark: Bookmark) {
         with(viewHolder.itemView) {
             setOnClickListener { onItemClick(bookmark) }
             setOnLongClickListener {
@@ -52,18 +52,17 @@ class BookmarkAdapter(
         }
     }
 
-    private fun setupBookmarkFolder(viewHolder: BookmarkViewHolder) {
-        viewHolder.tabView.setOnClickListener(null)
-        viewHolder.tabView.setImageResource(R.drawable.ic_folder)
-    }
+    private fun setupIcon(viewHolder: BookmarkViewHolder, bookmark: Bookmark) {
+        if (bookmark.isDirectory) {
+            viewHolder.tabView.setOnClickListener { onItemClick(bookmark) }
+            viewHolder.tabView.setImageResource(R.drawable.ic_folder)
+        } else {
+            viewHolder.tabView.setOnClickListener { onTabIconClick(bookmark) }
+            viewHolder.tabView.setImageResource(R.drawable.icon_plus)
 
-    private fun setupBookmark(viewHolder: BookmarkViewHolder, bookmark: Bookmark) {
-        viewHolder.tabView.setOnClickListener { onTabIconClick(bookmark) }
-        viewHolder.tabView.setImageResource(R.drawable.icon_plus)
-        val host = Uri.parse(bookmark.url).host ?: return
-
-        bookmarkManager.findFaviconBy(host)?.let { faviconInfo ->
-            faviconInfo.getBitmap()?.let { viewHolder.tabView.setImageBitmap(it) }
+            bookmarkManager.findFaviconBy(bookmark.url)?.getBitmap()?.let {
+                viewHolder.tabView.setImageBitmap(it)
+            }
         }
     }
 

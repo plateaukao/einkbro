@@ -184,7 +184,7 @@ class DialogManager(
         val message = Message().apply {
             target = object : Handler(Looper.getMainLooper()) {
                 override fun handleMessage(msg: Message) {
-                    titleText = (msg.data.getString("title") ?: "").replace("\n", "").trim()
+                    titleText = (msg.data.getString("title") ?: url).replace("\n", "").trim()
                 }
             }
         }

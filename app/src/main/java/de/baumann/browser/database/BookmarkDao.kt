@@ -1,7 +1,7 @@
 package de.baumann.browser.database
 
 import android.content.Context
-import android.graphics.Bitmap
+import android.net.Uri
 import androidx.room.*
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
@@ -126,7 +126,8 @@ class BookmarkManager(private val context: Context) : KoinComponent {
     }
 
     fun findFaviconBy(url: String): FaviconInfo? {
-        return faviconInfos.firstOrNull { it.domain == url }
+        val host = Uri.parse(url).host ?: return null
+        return faviconInfos.firstOrNull { it.domain == host}
     }
 
     suspend fun deleteFavicon(faviconInfo: FaviconInfo) = faviconDao.delete(faviconInfo)

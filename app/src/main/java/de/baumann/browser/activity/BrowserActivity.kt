@@ -1145,8 +1145,6 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
             incognito: Boolean = false,
             enablePreloadWebView: Boolean = true
     ) {
-        if (url == null) return
-
         val newWebView = (preloadedWebView ?: createNinjaWebView()).apply {
             this.albumTitle = title
             this.incognito = incognito
@@ -1157,7 +1155,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
 
         ViewUnit.bound(this, newWebView)
 
-        updateTabPreview(newWebView)
+        updateTabPreview(newWebView, url)
         updateWebViewCount()
 
         loadUrlInWebView(foreground, newWebView, url)
@@ -1176,7 +1174,11 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         }
     }
 
-    private fun updateTabPreview(newWebView: NinjaWebView) {
+    private fun updateTabPreview(newWebView: NinjaWebView, url: String) {
+        bookmarkManager.findFaviconBy(url)?.getBitmap()?.let {
+            newWebView.setAlbumCover(it)
+        }
+
         val albumView = newWebView.albumView
         if (currentAlbumController != null) {
             val index = browserContainer.indexOf(currentAlbumController) + 1

@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnLongClickListener
+import android.widget.ImageView
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.AlbumBinding
 import de.baumann.browser.browser.AlbumController
