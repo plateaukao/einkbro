@@ -3,6 +3,9 @@ package de.baumann.browser.view.dialog
 import android.app.Activity
 import android.app.Dialog
 import android.net.Uri
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -23,8 +26,10 @@ import de.baumann.browser.preference.FontType
 import de.baumann.browser.unit.*
 import de.baumann.browser.unit.ViewUnit.dp
 import de.baumann.browser.view.NinjaToast
+import de.baumann.browser.view.NinjaWebView
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+
 
 class DialogManager(
     private val activity: Activity
@@ -157,13 +162,14 @@ class DialogManager(
     }
 
     fun showContextMenuLinkDialog(
+        webView: NinjaWebView,
         url: String,
         hitTestResult: WebView.HitTestResult,
-        newTabInBkndAction: () -> Unit,
+        newTabInBkndAction: (String) -> Unit, // title
         splitScreenAction: () -> Unit,
         shareAction: () -> Unit,
-        saveBookmarkAction: () -> Unit,
-        newTabAction: () -> Unit,
+        saveBookmarkAction: (String) -> Unit, // title
+        newTabAction: (String) -> Unit, // title
         safeFileAction: (String, String) -> Unit,
         confirmAdSiteAddition: () -> Unit
     ) {
@@ -174,16 +180,26 @@ class DialogManager(
                 WebView.HitTestResult.ANCHOR_TYPE)
                 .contains(hitTestResult.type)) return
 
+        var titleText = ""
+        val message = Message().apply {
+            target = object : Handler(Looper.getMainLooper()) {
+                override fun handleMessage(msg: Message) {
+                    titleText = (msg.data.getString("title") ?: "").replace("\n", "").trim()
+                }
+            }
+        }
+        webView.requestFocusNodeHref(message)
+
         val dialogView = DialogMenuContextLinkBinding.inflate(activity.layoutInflater)
         val dialog = showOptionDialog(dialogView.root)
         dialogView.contextLinkUrl.text = url
-        dialogView.contextLinkNewTab.setOnClickListener { dialog.dismissWithAction { newTabInBkndAction() } }
+        dialogView.contextLinkNewTab.setOnClickListener { dialog.dismissWithAction { newTabInBkndAction(titleText) } }
         dialogView.contextLinkSplitScreen.setOnClickListener { dialog.dismissWithAction { splitScreenAction() } }
         dialogView.contextLinkShareLink.setOnClickListener { dialog.dismissWithAction { shareAction() } }
         dialogView.contextLinkCopyLink.setOnClickListener { dialog.dismissWithAction { ShareUtil.copyToClipboard(activity, url) } }
         dialogView.contextLinkOpenWith.setOnClickListener { dialog.dismissWithAction { HelperUnit.showBrowserChooser(activity, url, activity.getString(R.string.menu_open_with)) } }
-        dialogView.contextLinkSaveBookmark.setOnClickListener { dialog.dismissWithAction { saveBookmarkAction() } }
-        dialogView.contextLinkNewTabOpen.setOnClickListener { dialog.dismissWithAction { newTabAction() } }
+        dialogView.contextLinkSaveBookmark.setOnClickListener { dialog.dismissWithAction { saveBookmarkAction(titleText) } }
+        dialogView.contextLinkNewTabOpen.setOnClickListener { dialog.dismissWithAction { newTabAction(titleText) } }
         dialogView.menuSaveFile.setOnClickListener {
             dialog.dismissWithAction {
                 if (url.startsWith("data:")) {
@@ -200,7 +216,6 @@ class DialogManager(
                 dialog.dismissWithAction { confirmAdSiteAddition() }
             }
         }
-
     }
 
     fun showOkCancelDialog(

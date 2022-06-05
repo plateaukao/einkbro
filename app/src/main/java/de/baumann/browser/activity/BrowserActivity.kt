@@ -1600,16 +1600,17 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         val hitTestResult = ninjaWebView.hitTestResult
 
         dialogManager.showContextMenuLinkDialog(
+           ninjaWebView,
            nonNullUrl,
            hitTestResult,
-           newTabInBkndAction = { addAlbum(getString(R.string.app_name), nonNullUrl, false) },
+           newTabInBkndAction = { title -> addAlbum(title, nonNullUrl, false) },
            splitScreenAction = { toggleSplitScreen(nonNullUrl) },
            shareAction = {
                if (prepareRecord()) NinjaToast.show(this, getString(R.string.toast_share_failed))
                else IntentUnit.share(this, "", url)
            },
-           saveBookmarkAction = { saveBookmark(nonNullUrl, title = "")},
-           newTabAction = { addAlbum(getString(R.string.app_name), nonNullUrl) },
+           saveBookmarkAction = { title -> saveBookmark(nonNullUrl, title = title)},
+           newTabAction = { title -> addAlbum(title, nonNullUrl) },
            safeFileAction = { url, fileName -> saveFile(url, fileName) },
            confirmAdSiteAddition = { confirmAdSiteAddition(hitTestResult.extra ?: "") }
        )
