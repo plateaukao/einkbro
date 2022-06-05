@@ -38,9 +38,9 @@ class BookmarkAdapter(
         val bookmark = getItem(viewHolder.adapterPosition)
         viewHolder.textView.text = bookmark.title
         if (bookmark.isDirectory) {
-            updateBookmarkFolderIcons(viewHolder)
+            setupBookmarkFolder(viewHolder)
         } else {
-            updateBookmarkIcons(viewHolder, bookmark)
+            setupBookmark(viewHolder, bookmark)
         }
 
         with(viewHolder.itemView) {
@@ -50,15 +50,15 @@ class BookmarkAdapter(
                 true
             }
         }
-
-        viewHolder.tabView.setOnClickListener { onTabIconClick(bookmark) }
     }
 
-    private fun updateBookmarkFolderIcons(viewHolder: BookmarkViewHolder) {
+    private fun setupBookmarkFolder(viewHolder: BookmarkViewHolder) {
+        viewHolder.tabView.setOnClickListener(null)
         viewHolder.tabView.setImageResource(R.drawable.ic_folder)
     }
 
-    private fun updateBookmarkIcons(viewHolder: BookmarkViewHolder, bookmark: Bookmark) {
+    private fun setupBookmark(viewHolder: BookmarkViewHolder, bookmark: Bookmark) {
+        viewHolder.tabView.setOnClickListener { onTabIconClick(bookmark) }
         viewHolder.tabView.setImageResource(R.drawable.icon_plus)
         val host = Uri.parse(bookmark.url).host ?: return
 
