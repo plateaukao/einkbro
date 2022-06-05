@@ -12,9 +12,9 @@ jobs:
             fileName: 'keystore/browser.keystore'
             encodedString: ${{ secrets.KEYSTORE }}
       - name: Build the app
-        run: ./gradlew assembleRelease -Pandroid.injected.signing.store.file=keystore/browser.keystore -Pandroid.injected.signing.store.password=${{ secrets.PASSWORD }} -Pandroid.injected.signing.key.alias=${{ secrets.ALIAS }}
+        run: ./gradlew assembleRelease -Pandroid.injected.signing.store.file=keystore/browser.keystore -Pandroid.injected.signing.store.password=${{ secrets.PASSWORD }} -Pandroid.injected.signing.key.alias=${{ secrets.ALIAS }} -Pandroid.injected.signing.key.password=${{ secrets.PASSWORD }}
       - name: Upload
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
             name: app-release.apk
             path: app/build/outputs/apk/release/app-release.apk
