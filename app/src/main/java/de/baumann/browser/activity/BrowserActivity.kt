@@ -496,9 +496,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
         hideBottomSheetDialog()
         when (v.id) {
             R.id.button_font_size -> showFontSizeChangeDialog()
-            R.id.omnibox_title -> {
-                focusOnInput()
-            }
+            R.id.omnibox_title -> focusOnInput()
             R.id.omnibox_input_clear -> binding.omniboxInput.text.clear()
             R.id.omnibox_input_paste -> {
                 val copiedString = getClipboardText()
@@ -555,8 +553,7 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
                 focusOnInput()
             }
             R.id.toolbar_desktop -> config.desktop = !config.desktop
-            else -> {
-            }
+            else -> { }
         }
     }
 
@@ -1506,9 +1503,6 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
             }
         } else { // non-capital
             when (event.keyCode) {
-                KeyEvent.KEYCODE_O -> {
-                    binding.omniboxInput.performClick()
-                }
                 KeyEvent.KEYCODE_B -> openBookmarkPage()
                 KeyEvent.KEYCODE_O -> {
                     if (previousKeyEvent?.keyCode == KeyEvent.KEYCODE_V) {
