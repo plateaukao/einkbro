@@ -17,6 +17,7 @@ import de.baumann.browser.view.viewControllers.OverviewTab
 import org.koin.core.component.KoinComponent
 import java.lang.Exception
 import java.util.*
+import kotlin.reflect.KMutableProperty0
 
 class ConfigManager(
     private val context: Context,
@@ -123,6 +124,12 @@ class ConfigManager(
         get() = sp.getBoolean(K_SAVE_HISTORY, true)
         set(value) {
             sp.edit { putBoolean(K_SAVE_HISTORY, value) }
+        }
+
+    var shareLocation: Boolean
+        get() = sp.getBoolean(K_SHARE_LOCATION, false)
+        set(value) {
+            sp.edit { putBoolean(K_SHARE_LOCATION, value) }
         }
 
     var enableTouchTurn: Boolean
@@ -501,6 +508,7 @@ class ConfigManager(
         const val K_RESTART_CHANGED = "restart_changed"
         const val K_JAVASCRIPT = "SP_JAVASCRIPT_9"
         const val K_BKGND_LOAD = "sp_background_loading"
+        const val K_SHARE_LOCATION = "SP_LOCATION_9"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
         private const val RECENT_BOOKMARKS_SEPARATOR = "::::"
@@ -594,3 +602,5 @@ private fun String.toCustomFontInfo(): CustomFontInfo? {
     if (segments.size != 2) return null
     return CustomFontInfo(segments[0], segments[1])
 }
+
+fun KMutableProperty0<Boolean>.toggle(): Boolean = get().not().apply(setter)

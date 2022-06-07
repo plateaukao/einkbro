@@ -36,28 +36,39 @@ android {
 
     buildFeatures {
         viewBinding true
+        // Enables Jetpack Compose
+        compose true
     }
 
-//    compileOptions {
-//        sourceCompatibility JavaVersion.VERSION_1_8
-//        targetCompatibility JavaVersion.VERSION_1_8
-//    }
-//    kotlinOptions {
-//        jvmTarget = '1.8'
-//    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    packagingOptions {
+        pickFirst 'META-INF/AL2.0'
+        pickFirst 'META-INF/LGPL2.1'
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion '1.1.1'
+        kotlinCompilerVersion '1.6.0'
+    }
+
     lint {
         checkReleaseBuilds false
         disable 'MissingTranslation'
     }
-
-    return void
 }
 
 dependencies {
-    implementation 'com.google.android.material:material:1.6.0'
-    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'com.google.android.material:material:1.6.1'
+    implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.preference:preference-ktx:1.2.0'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.10"
 
     // epublib
     implementation("com.positiondev.epublib:epublib-core:3.1") {
@@ -72,7 +83,7 @@ dependencies {
 
     // for epub saving: html processing
     implementation 'org.jsoup:jsoup:1.14.3'
-    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'androidx.appcompat:appcompat:1.4.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
     implementation "androidx.room:room-runtime:2.4.2"
@@ -98,4 +109,20 @@ dependencies {
 
     // memory leak detection
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
+
+    // compose
+    // Integration with activities
+    implementation 'androidx.activity:activity-compose:1.4.0'
+    // Compose Material Design
+    implementation 'androidx.compose.material:material:1.1.1'
+    // Animations
+    implementation 'androidx.compose.animation:animation:1.1.1'
+    // Tooling support (Previews, etc.)
+    implementation 'androidx.compose.ui:ui-tooling:1.1.1'
+    // Integration with ViewModels
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1'
+    // UI Tests
+    androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.1.1'
+    // When using a AppCompat theme
+    implementation "com.google.accompanist:accompanist-appcompat-theme:0.16.0"
 }

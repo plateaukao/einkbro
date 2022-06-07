@@ -37,6 +37,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.viewModels
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.isVisible
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.ActivityMainBinding
@@ -61,6 +62,7 @@ import de.baumann.browser.view.*
 import de.baumann.browser.view.GestureType.*
 import de.baumann.browser.view.adapter.CompleteAdapter
 import de.baumann.browser.view.dialog.*
+import de.baumann.browser.view.dialog.compose.FastToggleDialogFragment
 import de.baumann.browser.view.viewControllers.OverviewDialogController
 import de.baumann.browser.view.viewControllers.ToolbarViewController
 import de.baumann.browser.view.viewControllers.TouchAreaViewController
@@ -76,7 +78,7 @@ import kotlin.math.roundToInt
 import kotlin.system.exitProcess
 
 
-open class BrowserActivity : ComponentActivity(), BrowserController, OnClickListener {
+open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListener {
     private lateinit var fabImageButtonNav: ImageButton
     private lateinit var progressBar: ProgressBar
     private lateinit var searchBox: EditText
@@ -1118,10 +1120,11 @@ open class BrowserActivity : ComponentActivity(), BrowserController, OnClickList
     private fun showFastToggleDialog() {
         if (!this::ninjaWebView.isInitialized) return
 
-        FastToggleDialog(this) {
-            ninjaWebView.initPreferences()
-            ninjaWebView.reload()
-        }.show()
+        FastToggleDialogFragment().show(supportFragmentManager, "fastToggle")
+//        FastToggleDialog(this) {
+//            ninjaWebView.initPreferences()
+//            ninjaWebView.reload()
+//        }.show()
     }
 
     override fun addNewTab(url: String) = addAlbum(url = url)
