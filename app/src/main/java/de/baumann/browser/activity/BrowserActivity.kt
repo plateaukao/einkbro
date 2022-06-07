@@ -1120,11 +1120,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
     private fun showFastToggleDialog() {
         if (!this::ninjaWebView.isInitialized) return
 
-        FastToggleDialogFragment().show(supportFragmentManager, "fastToggle")
-//        FastToggleDialog(this) {
-//            ninjaWebView.initPreferences()
-//            ninjaWebView.reload()
-//        }.show()
+        FastToggleDialogFragment {
+            ninjaWebView.initPreferences()
+            ninjaWebView.reload()
+        }.show(supportFragmentManager, "fast_toggle_dialog")
     }
 
     override fun addNewTab(url: String) = addAlbum(url = url)

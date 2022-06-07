@@ -22,12 +22,14 @@ import de.baumann.browser.preference.ConfigManager
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class FastToggleDialogFragment: DialogFragment(), KoinComponent {
+class FastToggleDialogFragment(
+    val okAction: () -> Unit
+): DialogFragment(), KoinComponent {
     private val config: ConfigManager by inject()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        setStyle(STYLE_NO_TITLE, R.style.TouchAreaDialog);
         dialog?.apply {
+            setStyle(STYLE_NO_TITLE, R.style.TouchAreaDialog)
             requestWindowFeature(Window.FEATURE_NO_TITLE)
             window?.setGravity(if (config.isToolbarOnTop) Gravity.CENTER else Gravity.BOTTOM)
             window?.setBackgroundDrawableResource(R.drawable.background_with_border_margin)
@@ -36,9 +38,7 @@ class FastToggleDialogFragment: DialogFragment(), KoinComponent {
         return ComposeView(requireContext()).apply {
             setContent {
                 AppCompatTheme {
-                    Column {
-                        FastToggleItemList(config, dialog)
-                    }
+                    FastToggleItemList(config, dialog, okAction)
                 }
             }
         }
@@ -46,27 +46,38 @@ class FastToggleDialogFragment: DialogFragment(), KoinComponent {
 }
 
 @Composable
-fun FastToggleItemList(config: ConfigManager? = null, dialog: Dialog? = null) {
+fun FastToggleItemList(config: ConfigManager? = null, dialog: Dialog? = null, onClicked: (() -> Unit)) {
     Column {
         FastToggleItem(state = config?.isIncognitoMode ?: false, titleResId = R.string.setting_title_incognito, iconResId=R.drawable.ic_incognito) {
-            config ?: return@FastToggleItem ;  config.isIncognitoMode = config.isIncognitoMode.not() ; dialog?.dismiss()
+            config ?: return@FastToggleItem
+            config.isIncognitoMode = config.isIncognitoMode.not()
+            onClicked.invoke()
+            dialog?.dismiss()
         }
         FastToggleItem(state = config?.adBlock ?: false, titleResId = R.string.setting_title_adblock, iconResId=R.drawable.icon_block) {
-            config ?: return@FastToggleItem ;  config.adBlock = config.adBlock.not() ; dialog?.dismiss()
+            config ?: return@FastToggleItem
+            config.adBlock = config.adBlock.not()
+            onClicked.invoke()
+            dialog?.dismiss()
         }
         FastToggleItem(state = config?.enableJavascript ?: false, titleResId = R.string.setting_title_javascript, iconResId=R.drawable.icon_java) {
-            config ?: return@FastToggleItem ;   config.enableJavascript= config.enableJavascript.not() ; dialog?.dismiss()
+            config ?: return@FastToggleItem
+            config.enableJavascript= config.enableJavascript.not()
+            onClicked.invoke()
+            dialog?.dismiss()
         }
         FastToggleItem(state = config?.cookies ?: false, titleResId = R.string.setting_title_cookie, iconResId=R.drawable.icon_cookie) {
-            config ?: return@FastToggleItem ;   config.cookies= config.cookies.not() ; dialog?.dismiss()
+            config ?: return@FastToggleItem
+            config.cookies= config.cookies.not()
+            onClicked.invoke()
+            dialog?.dismiss()
         }
         FastToggleItem(state = config?.saveHistory ?: false, titleResId = R.string.history, iconResId=R.drawable.ic_history) {
             config ?: return@FastToggleItem ;   config.saveHistory= config.saveHistory.not() ; dialog?.dismiss()
         }
-        Spacer(modifier = Modifier
-            .height(1.dp)
-            .fillMaxWidth()
-            .background(color = MaterialTheme.colors.onPrimary))
+
+        Spacer(modifier = Modifier.height(1.dp).fillMaxWidth().background(color = MaterialTheme.colors.onPrimary))
+
         FastToggleItem(state = config?.shareLocation ?: false, titleResId = R.string.location, iconResId=R.drawable.ic_location) {
             config ?: return@FastToggleItem ;   config.shareLocation= config.shareLocation.not() ; dialog?.dismiss()
         }
@@ -110,9 +121,7 @@ fun FastToggleItem(
                 .fillMaxHeight(),
             tint = MaterialTheme.colors.onBackground
         )
-        Spacer(modifier = Modifier
-            .width(6.dp)
-            .fillMaxHeight())
+        Spacer(modifier = Modifier.width(6.dp).fillMaxHeight())
         Text(
             text = stringResource(id = titleResId),
             fontSize = 18.sp,
@@ -133,6 +142,6 @@ fun previewItem() {
 @Composable
 fun previewItemList() {
     AppCompatTheme {
-        FastToggleItemList()
+        FastToggleItemList(onClicked = {})
     }
 }
