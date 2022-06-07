@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.compose.ui.platform.ComposeView
 import androidx.core.content.edit
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.DialogToggleBinding
@@ -43,7 +44,7 @@ class FastToggleDialog(
 
     private fun initToggles() {
         binding.switchHistory.isChecked = config.saveHistory
-        binding.switchLocation.isChecked = sp.getBoolean("SP_LOCATION_9", false)
+        binding.switchLocation.isChecked = config.shareLocation
         binding.switchMediaContinue.isChecked = config.continueMedia
         binding.switchDesktop.isChecked = config.desktop
         binding.switchVolume.isChecked = config.volumePageTurn
@@ -54,8 +55,8 @@ class FastToggleDialog(
             dialog.dismiss()
         }
         binding.toggleLocationContainer.setOnClickListener {
-            updateBooleanPref("SP_LOCATION_9", false)
-            binding.switchLocation.isChecked = sp.getBoolean("SP_LOCATION_9", false)
+            config.shareLocation = !config.shareLocation
+            binding.switchLocation.isChecked = config.shareLocation
             dialog.dismiss()
         }
         binding.toggleVolumeContainer.setOnClickListener {
