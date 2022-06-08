@@ -41,8 +41,20 @@ class ToolbarConfigDialogFragment(
             setContent {
                 AppCompatTheme {
                     Column {
-                        ToolbarList(config.toolbarActions)
-                        DialogButtonBar()
+                        val actionInfoList = ToolbarAction.values().map { ToolbarActionItemInfo(it, config.toolbarActions.contains(it))}.sortedBy { !it.isOn }
+                        var rememberList by remember { mutableStateOf(actionInfoList) }
+                        ToolbarList(Modifier.weight(1f), rememberList) { action ->
+                            val actionInfos = rememberList.toMutableList()
+                            val actionInfo = actionInfos.first { it.toolbarAction == action }
+                            actionInfo.isOn = !actionInfo.isOn
+                            rememberList = actionInfos
+                        }
+                        DialogButtonBar(
+                            dismissAction = { dialog?.dismiss() },
+                            okAction = {
+                                config.toolbarActions = rememberList.filter { it.isOn }.map { it.toolbarAction }
+                            }
+                        )
                     }
                 }
             }
@@ -51,51 +63,57 @@ class ToolbarConfigDialogFragment(
 }
 
 @Composable
-private fun ToolbarList(onActions: List<ToolbarAction>) {
-    val offActions = ToolbarAction.values().filterNot { onActions.contains(it) }
-    val data = remember { mutableStateOf(onActions + offActions) }
-
-    LazyColumn {
-        items(data.value) { tac ->
-            val isChecked = onActions.contains(tac)
+private fun ToolbarList(
+    modifier: Modifier,
+    toolbarActionItemInfos: List<ToolbarActionItemInfo>,
+    onClicked: (ToolbarAction)->Unit
+) {
+    LazyColumn(
+        modifier = modifier
+    ) {
+        items(toolbarActionItemInfos) { info ->
             ToggleItem(
-                state = isChecked,
-                titleResId = tac.titleResId,
-                iconResId = tac.iconResId,
-                onClicked = {}
+                state = info.isOn,
+                titleResId = info.toolbarAction.titleResId,
+                iconResId = info.toolbarAction.iconResId,
+                onClicked = { onClicked(info.toolbarAction) }
             )
         }
     }
 }
 
 @Composable
-fun DialogButtonBar() {
-    Row(modifier = Modifier.fillMaxWidth()) {
+fun DialogButtonBar(dismissAction: ()->Unit, okAction: ()->Unit) {
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .wrapContentHeight()
+    ) {
         TextButton(
             modifier = Modifier.weight(1f),
-            onClick = {}) {
-            Text("Cancel")
+            onClick = dismissAction) {
+            Text("Cancel", color = MaterialTheme.colors.onBackground)
         }
         TextButton(
             modifier = Modifier.weight(1f),
-            onClick = {}) {
-            Text("OK")
+            onClick = { dismissAction(); okAction() }) {
+            Text("OK", color = MaterialTheme.colors.onBackground)
         }
     }
 }
+
+class ToolbarActionItemInfo(val toolbarAction: ToolbarAction, var isOn: Boolean)
 
 @Preview
 @Composable
 private fun previewToolBar() {
     AppCompatTheme {
-        ToolbarList(listOf(ToolbarAction.Back, ToolbarAction.Touch, ToolbarAction.Bookmark))
-    }
-}
-
-@Preview
-@Composable
-private fun previewBar() {
-    AppCompatTheme {
-        DialogButtonBar()
+        Column {
+            ToolbarList(
+                Modifier.weight(1f),
+                ToolbarAction.values().map { ToolbarActionItemInfo(it, true) },
+                {}
+            )
+            DialogButtonBar({}, {})
+        }
     }
 }
