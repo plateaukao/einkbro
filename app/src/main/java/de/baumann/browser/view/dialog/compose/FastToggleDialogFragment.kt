@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.os.Bundle
 import android.view.*
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -23,7 +24,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 class FastToggleDialogFragment(
-    val okAction: () -> Unit
+    val extraAction: () -> Unit
 ): DialogFragment(), KoinComponent {
     private val config: ConfigManager by inject()
 
@@ -38,7 +39,10 @@ class FastToggleDialogFragment(
         return ComposeView(requireContext()).apply {
             setContent {
                 AppCompatTheme {
-                    FastToggleItemList(config, dialog, okAction)
+                    FastToggleItemList(config) { needExtraAction ->
+                        if (needExtraAction) extraAction()
+                        dialog?.dismiss()
+                    }
                 }
             }
         }
@@ -46,51 +50,54 @@ class FastToggleDialogFragment(
 }
 
 @Composable
-fun FastToggleItemList(config: ConfigManager? = null, dialog: Dialog? = null, onClicked: (() -> Unit)) {
+fun FastToggleItemList(config: ConfigManager? = null, onClicked: ((Boolean) -> Unit)) {
     Column {
         FastToggleItem(state = config?.isIncognitoMode ?: false, titleResId = R.string.setting_title_incognito, iconResId=R.drawable.ic_incognito) {
-            config ?: return@FastToggleItem
-            config.isIncognitoMode = config.isIncognitoMode.not()
-            onClicked.invoke()
-            dialog?.dismiss()
+            config?.let { it.isIncognitoMode = it.isIncognitoMode.not() }
+            onClicked(true)
         }
         FastToggleItem(state = config?.adBlock ?: false, titleResId = R.string.setting_title_adblock, iconResId=R.drawable.icon_block) {
-            config ?: return@FastToggleItem
-            config.adBlock = config.adBlock.not()
-            onClicked.invoke()
-            dialog?.dismiss()
+            config?.let { it.adBlock = it.adBlock.not() }
+            onClicked(true)
         }
         FastToggleItem(state = config?.enableJavascript ?: false, titleResId = R.string.setting_title_javascript, iconResId=R.drawable.icon_java) {
-            config ?: return@FastToggleItem
-            config.enableJavascript= config.enableJavascript.not()
-            onClicked.invoke()
-            dialog?.dismiss()
+            config?.let { it.enableJavascript= it.enableJavascript.not() }
+            onClicked(true)
         }
         FastToggleItem(state = config?.cookies ?: false, titleResId = R.string.setting_title_cookie, iconResId=R.drawable.icon_cookie) {
-            config ?: return@FastToggleItem
-            config.cookies= config.cookies.not()
-            onClicked.invoke()
-            dialog?.dismiss()
+            config?.let { it.cookies = it.cookies.not() }
+            onClicked(true)
         }
         FastToggleItem(state = config?.saveHistory ?: false, titleResId = R.string.history, iconResId=R.drawable.ic_history) {
-            config ?: return@FastToggleItem ;   config.saveHistory= config.saveHistory.not() ; dialog?.dismiss()
+            config?.let { it.saveHistory= it.saveHistory.not() }
+            onClicked(false)
         }
 
         Spacer(modifier = Modifier.height(1.dp).fillMaxWidth().background(color = MaterialTheme.colors.onPrimary))
 
         FastToggleItem(state = config?.shareLocation ?: false, titleResId = R.string.location, iconResId=R.drawable.ic_location) {
-            config ?: return@FastToggleItem ;   config.shareLocation= config.shareLocation.not() ; dialog?.dismiss()
+            config?.let { it.shareLocation= it.shareLocation.not() }
+            onClicked(false)
         }
         FastToggleItem(state = config?.volumePageTurn ?: false, titleResId = R.string.volume_page_turn, iconResId=R.drawable.ic_volume) {
-            config ?: return@FastToggleItem ;   config.volumePageTurn= config.volumePageTurn.not() ; dialog?.dismiss()
+            config?.let { it.volumePageTurn= it.volumePageTurn.not() }
+            onClicked(false)
         }
         FastToggleItem(state = config?.continueMedia ?: false, titleResId = R.string.media_continue, iconResId=R.drawable.ic_media_continue) {
-            config ?: return@FastToggleItem ;   config.continueMedia= config.continueMedia.not() ; dialog?.dismiss()
+            config?.let { it.continueMedia= it.continueMedia.not() }
+            onClicked(false)
         }
         FastToggleItem(state = config?.desktop ?: false, titleResId = R.string.desktop_mode, iconResId=R.drawable.icon_desktop) {
-            config ?: return@FastToggleItem ;   config.desktop= config.desktop.not() ; dialog?.dismiss()
+            config?.let { it.desktop= it.desktop.not() }
+            onClicked(false)
         }
     }
+}
+
+private fun Dialog.runClickAndDismiss(config: ConfigManager?, action: ()-> Unit) {
+    config ?: return
+    action()
+    dismiss()
 }
 
 @Composable
@@ -100,18 +107,22 @@ fun FastToggleItem(
     iconResId: Int,
     onClicked: (Boolean)-> Unit
 ) {
-    var currentState by remember { mutableStateOf(state)}
+    var currentState by remember { mutableStateOf(state) }
 
     Row(
         modifier = Modifier
             .wrapContentWidth()
             .height(46.dp)
-            .padding(8.dp),
+            .padding(8.dp)
+            .clickable {
+                currentState = !currentState
+                onClicked(currentState)
+            },
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Checkbox(checked = currentState, onCheckedChange = { boolean ->
-            currentState = boolean
-            onClicked(boolean)
+        Checkbox(checked = currentState, onCheckedChange = { _ ->
+            currentState = !currentState
+            onClicked(currentState)
         })
 
         Icon(
@@ -123,6 +134,7 @@ fun FastToggleItem(
         )
         Spacer(modifier = Modifier.width(6.dp).fillMaxHeight())
         Text(
+            modifier = Modifier.fillMaxWidth(),
             text = stringResource(id = titleResId),
             fontSize = 18.sp,
             color = MaterialTheme.colors.onBackground
