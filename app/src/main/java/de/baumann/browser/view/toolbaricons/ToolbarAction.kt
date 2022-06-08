@@ -3,7 +3,7 @@ package de.baumann.browser.view.toolbaricons
 import de.baumann.browser.Ninja.R
 
 enum class ToolbarAction(val iconResId: Int = 0, val titleResId: Int) {
-    Title(iconResId = 0, titleResId = R.string.toolbar_title), // 0
+    Title(iconResId = R.drawable.icon_info, titleResId = R.string.toolbar_title), // 0
     Back(iconResId = R.drawable.icon_arrow_left_gest, titleResId = R.string.back),
     Refresh(iconResId = R.drawable.icon_refresh, titleResId = R.string.refresh),
     Touch(iconResId = R.drawable.ic_touch_enabled, titleResId = R.string.touch_turn_page),
