@@ -63,6 +63,7 @@ import de.baumann.browser.view.GestureType.*
 import de.baumann.browser.view.adapter.CompleteAdapter
 import de.baumann.browser.view.dialog.*
 import de.baumann.browser.view.dialog.compose.FastToggleDialogFragment
+import de.baumann.browser.view.dialog.compose.ToolbarConfigDialogFragment
 import de.baumann.browser.view.viewControllers.OverviewDialogController
 import de.baumann.browser.view.viewControllers.ToolbarViewController
 import de.baumann.browser.view.viewControllers.TouchAreaViewController
@@ -542,7 +543,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
             } else {
                 ninjaWebView.stopLoading()
             }
-            R.id.toolbar_setting -> ToolbarConfigDialog(this).show()
+//            R.id.toolbar_setting -> ToolbarConfigDialog(this).show()
+            R.id.toolbar_setting -> ToolbarConfigDialogFragment({}).show(supportFragmentManager, "toolbar_config")
             R.id.toolbar_increase_font -> increaseFontSize()
             R.id.toolbar_decrease_font -> decreaseFontSize()
             R.id.toolbar_fullscreen -> fullscreen()
