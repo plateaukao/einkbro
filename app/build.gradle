@@ -54,8 +54,8 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion '1.1.1'
-        kotlinCompilerVersion '1.6.0'
+        kotlinCompilerExtensionVersion '1.2.0-beta02'
+        kotlinCompilerVersion '1.6.21'
     }
 
     lint {
@@ -114,19 +114,23 @@ dependencies {
     // Integration with activities
     implementation 'androidx.activity:activity-compose:1.4.0'
     // Compose Material Design
-    implementation 'androidx.compose.material:material:1.1.1'
+    implementation 'androidx.compose.material:material:1.2.0-beta02'
     // Animations
-    implementation 'androidx.compose.animation:animation:1.1.1'
+    implementation 'androidx.compose.animation:animation:1.2.0-beta02'
     // Tooling support (Previews, etc.)
-    implementation 'androidx.compose.ui:ui-tooling:1.1.1'
+    implementation 'androidx.compose.ui:ui-tooling:1.2.0-beta02'
     // Integration with ViewModels
     implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1'
     // UI Tests
-    androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.1.1'
+    androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.2.0-beta02'
     // When using a AppCompat theme
     implementation "com.google.accompanist:accompanist-appcompat-theme:0.16.0"
     //
 
     // reorder lazylist
     implementation "org.burnoutcrew.composereorderable:reorderable:0.9.0"
+    implementation("androidx.navigation:navigation-compose:2.5.0-rc01")
+    implementation("androidx.compose.runtime:runtime:1.2.0-beta02")
+//    implementation("com.google.android.material:material:1.6.1")
+//    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
 }
