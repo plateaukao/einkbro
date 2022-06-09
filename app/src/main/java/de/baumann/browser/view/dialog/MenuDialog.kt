@@ -7,6 +7,7 @@ import android.content.*
 import android.view.Gravity
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleCoroutineScope
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.DialogMenuBinding
@@ -17,6 +18,7 @@ import de.baumann.browser.unit.IntentUnit
 import de.baumann.browser.unit.ShareUtil
 import de.baumann.browser.view.NinjaToast
 import de.baumann.browser.view.NinjaWebView
+import de.baumann.browser.view.dialog.compose.ToolbarConfigDialogFragment
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -73,7 +75,9 @@ class MenuDialog(
         binding.buttonVertical.setOnClickListener { dialog.dismissWithAction { ninjaWebView.toggleVerticalRead() } }
         binding.buttonTouch.setOnClickListener { dialog.dismissWithAction { TouchAreaDialog(context).show() } }
         binding.buttonTouch.setOnLongClickListener { dialog.dismissWithAction(toggleTouchAction); true }
-        binding.buttonToolbar.setOnClickListener { dialog.dismissWithAction { ToolbarConfigDialog(context).show() } }
+        binding.buttonToolbar.setOnClickListener { dialog.dismissWithAction {
+            ToolbarConfigDialogFragment().show((context as FragmentActivity).supportFragmentManager, "toolbar_config")
+        } }
         binding.menuSaveBookmark.setOnClickListener { dialog.dismissWithAction(saveBookmarkAction) }
         binding.menuSaveScreenshot.setOnClickListener { dialog.dismissWithAction(saveScreenshotAction) }
         binding.menuSaveEpub.setOnClickListener { dialog.dismissWithAction(saveEpubAction) }
