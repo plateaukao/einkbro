@@ -23,9 +23,7 @@ import org.burnoutcrew.reorderable.rememberReorderableLazyListState
 import org.burnoutcrew.reorderable.reorderable
 import org.intellij.lang.annotations.JdkConstants
 
-class ToolbarConfigDialogFragment(
-    val extraAction: () -> Unit
-): ComposeDialogFragment(){
+class ToolbarConfigDialogFragment(): ComposeDialogFragment(){
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         setupDialog()
 

@@ -544,7 +544,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
                 ninjaWebView.stopLoading()
             }
 //            R.id.toolbar_setting -> ToolbarConfigDialog(this).show()
-            R.id.toolbar_setting -> ToolbarConfigDialogFragment({}).show(supportFragmentManager, "toolbar_config")
+            R.id.toolbar_setting -> ToolbarConfigDialogFragment().show(supportFragmentManager, "toolbar_config")
             R.id.toolbar_increase_font -> increaseFontSize()
             R.id.toolbar_decrease_font -> decreaseFontSize()
             R.id.toolbar_fullscreen -> fullscreen()
