@@ -1,35 +1,26 @@
 package de.baumann.browser.view.dialog.compose
 
-import android.app.Dialog
 import android.os.Bundle
 import android.view.*
-import androidx.compose.animation.core.withInfiniteAnimationFrameMillis
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.fragment.app.DialogFragment
 import com.google.accompanist.appcompattheme.AppCompatTheme
-import de.baumann.browser.Ninja.R
-import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.view.toolbaricons.ToolbarAction
 import org.burnoutcrew.reorderable.ReorderableItem
 import org.burnoutcrew.reorderable.detectReorderAfterLongPress
 import org.burnoutcrew.reorderable.rememberReorderableLazyListState
 import org.burnoutcrew.reorderable.reorderable
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 
 class ToolbarConfigDialogFragment(
     val extraAction: () -> Unit
@@ -68,16 +59,36 @@ private fun ToolbarList(
     toolbarActionItemInfos: List<ToolbarActionItemInfo>,
     onClicked: (ToolbarAction)->Unit
 ) {
+    val data = remember { mutableStateOf(toolbarActionItemInfos) }
+    val state = rememberReorderableLazyListState(onMove = { from, to ->
+        data.value = data.value.toMutableList().apply {
+            add(to.index, removeAt(from.index))
+        }
+    })
+
+    state.listState.layoutInfo
     LazyColumn(
+        state = state.listState,
         modifier = modifier
+            .reorderable(state)
+            .detectReorderAfterLongPress(state)
     ) {
-        items(toolbarActionItemInfos) { info ->
-            ToggleItem(
-                state = info.isOn,
-                titleResId = info.toolbarAction.titleResId,
-                iconResId = info.toolbarAction.iconResId,
-                onClicked = { onClicked(info.toolbarAction) }
-            )
+        items(data.value, { it.hashCode() }) { info ->
+            ReorderableItem(state, key = info.hashCode()) { isDragging ->
+                val elevation = animateDpAsState(if (isDragging) 16.dp else 0.dp)
+                Column(
+                    modifier = Modifier
+                        .shadow(elevation.value)
+                        .background(MaterialTheme.colors.surface)
+                ) {
+                    ToggleItem(
+                        state = info.isOn,
+                        titleResId = info.toolbarAction.titleResId,
+                        iconResId = info.toolbarAction.iconResId,
+                        onClicked = { onClicked(info.toolbarAction) }
+                    )
+                }
+            }
         }
     }
 }
