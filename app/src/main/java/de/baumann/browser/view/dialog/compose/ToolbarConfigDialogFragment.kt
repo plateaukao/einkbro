@@ -9,10 +9,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.appcompattheme.AppCompatTheme
@@ -21,6 +21,7 @@ import org.burnoutcrew.reorderable.ReorderableItem
 import org.burnoutcrew.reorderable.detectReorderAfterLongPress
 import org.burnoutcrew.reorderable.rememberReorderableLazyListState
 import org.burnoutcrew.reorderable.reorderable
+import org.intellij.lang.annotations.JdkConstants
 
 class ToolbarConfigDialogFragment(
     val extraAction: () -> Unit
@@ -34,12 +35,23 @@ class ToolbarConfigDialogFragment(
                     Column {
                         val actionInfoList = ToolbarAction.values().map { ToolbarActionItemInfo(it, config.toolbarActions.contains(it))}.sortedBy { !it.isOn }
                         var rememberList by remember { mutableStateOf(actionInfoList) }
-                        ToolbarList(Modifier.weight(1f), rememberList) { action ->
-                            val actionInfos = rememberList.toMutableList()
-                            val actionInfo = actionInfos.first { it.toolbarAction == action }
-                            actionInfo.isOn = !actionInfo.isOn
-                            rememberList = actionInfos
-                        }
+
+                        ToolbarList(
+                            Modifier
+                                .weight(1f)
+                                .padding(2.dp), // for round corner spaces
+                            rememberList,
+                            onItemClicked = { action ->
+                                val actionInfos = rememberList.toMutableList()
+                                val actionInfo = actionInfos.first { it.toolbarAction == action }
+                                actionInfo.isOn = !actionInfo.isOn
+                                rememberList = actionInfos
+                            },
+                            onItemMoved = { from, to ->
+                                rememberList = rememberList.toMutableList().apply { add(to, removeAt(from)) }
+                            }
+                        )
+                        HorizontalSeparator()
                         DialogButtonBar(
                             dismissAction = { dialog?.dismiss() },
                             okAction = {
@@ -54,26 +66,43 @@ class ToolbarConfigDialogFragment(
 }
 
 @Composable
+fun HorizontalSeparator() {
+    Spacer(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(1.dp)
+            .background(color = MaterialTheme.colors.onBackground)
+    )
+}
+
+@Composable
+fun VerticalSeparator() {
+    Spacer(
+        modifier = Modifier
+            .width(1.dp)
+            .height(30.dp)
+            .background(color = MaterialTheme.colors.onBackground)
+    )
+}
+
+@Composable
 private fun ToolbarList(
     modifier: Modifier,
-    toolbarActionItemInfos: List<ToolbarActionItemInfo>,
-    onClicked: (ToolbarAction)->Unit
+    infos: List<ToolbarActionItemInfo>,
+    onItemClicked: (ToolbarAction)->Unit,
+    onItemMoved: (Int, Int)->Unit
 ) {
-    val data = remember { mutableStateOf(toolbarActionItemInfos) }
     val state = rememberReorderableLazyListState(onMove = { from, to ->
-        data.value = data.value.toMutableList().apply {
-            add(to.index, removeAt(from.index))
-        }
+        onItemMoved(from.index, to.index)
     })
 
-    state.listState.layoutInfo
     LazyColumn(
         state = state.listState,
         modifier = modifier
             .reorderable(state)
             .detectReorderAfterLongPress(state)
     ) {
-        items(data.value, { it.hashCode() }) { info ->
+        items(infos, { it.hashCode() }) { info ->
             ReorderableItem(state, key = info.hashCode()) { isDragging ->
                 val elevation = animateDpAsState(if (isDragging) 16.dp else 0.dp)
                 Column(
@@ -81,12 +110,7 @@ private fun ToolbarList(
                         .shadow(elevation.value)
                         .background(MaterialTheme.colors.surface)
                 ) {
-                    ToggleItem(
-                        state = info.isOn,
-                        titleResId = info.toolbarAction.titleResId,
-                        iconResId = info.toolbarAction.iconResId,
-                        onClicked = { onClicked(info.toolbarAction) }
-                    )
+                    ToolbarToggleItem(info = info, onClicked = onItemClicked)
                 }
             }
         }
@@ -94,16 +118,28 @@ private fun ToolbarList(
 }
 
 @Composable
+fun ToolbarToggleItem(info: ToolbarActionItemInfo, onClicked: (ToolbarAction)->Unit) {
+    ToggleItem(
+        state = info.isOn,
+        titleResId = info.toolbarAction.titleResId,
+        iconResId = info.toolbarAction.iconResId,
+        onClicked = { onClicked(info.toolbarAction) }
+    )
+}
+
+@Composable
 fun DialogButtonBar(dismissAction: ()->Unit, okAction: ()->Unit) {
     Row(modifier = Modifier
         .fillMaxWidth()
-        .wrapContentHeight()
+        .wrapContentHeight(),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         TextButton(
             modifier = Modifier.weight(1f),
             onClick = dismissAction) {
             Text("Cancel", color = MaterialTheme.colors.onBackground)
         }
+        VerticalSeparator()
         TextButton(
             modifier = Modifier.weight(1f),
             onClick = { dismissAction(); okAction() }) {
@@ -122,7 +158,8 @@ private fun previewToolBar() {
             ToolbarList(
                 Modifier.weight(1f),
                 ToolbarAction.values().map { ToolbarActionItemInfo(it, true) },
-                {}
+                {},
+                {_, _-> }
             )
             DialogButtonBar({}, {})
         }
