@@ -84,12 +84,6 @@ fun FastToggleItemList(config: ConfigManager? = null, onClicked: ((Boolean) -> U
     }
 }
 
-private fun Dialog.runClickAndDismiss(config: ConfigManager?, action: ()-> Unit) {
-    config ?: return
-    action()
-    dismiss()
-}
-
 @Composable
 fun ToggleItem(
     state: Boolean,

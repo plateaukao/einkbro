@@ -64,26 +64,6 @@ class ToolbarConfigDialogFragment(): ComposeDialogFragment(){
 }
 
 @Composable
-fun HorizontalSeparator() {
-    Spacer(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(1.dp)
-            .background(color = MaterialTheme.colors.onBackground)
-    )
-}
-
-@Composable
-fun VerticalSeparator() {
-    Spacer(
-        modifier = Modifier
-            .width(1.dp)
-            .height(30.dp)
-            .background(color = MaterialTheme.colors.onBackground)
-    )
-}
-
-@Composable
 private fun ToolbarList(
     modifier: Modifier,
     infos: List<ToolbarActionItemInfo>,
