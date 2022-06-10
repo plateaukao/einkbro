@@ -55,7 +55,6 @@ android {
 
     composeOptions {
         kotlinCompilerExtensionVersion '1.2.0-beta02'
-        kotlinCompilerVersion '1.6.21'
     }
 
     lint {
@@ -88,6 +87,7 @@ dependencies {
 
     implementation "androidx.room:room-runtime:2.4.2"
     implementation "androidx.room:room-ktx:2.4.2"
+    implementation 'com.google.android.gms:play-services-tasks:18.0.1'
     kapt 'org.xerial:sqlite-jdbc:3.36.0.2'
     kapt "androidx.room:room-compiler:2.4.2"
 

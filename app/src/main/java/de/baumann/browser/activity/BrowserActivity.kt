@@ -1,8 +1,10 @@
 package de.baumann.browser.activity
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.Dialog
 import android.app.DownloadManager
+import android.app.DownloadManager.*
 import android.app.SearchManager
 import android.content.*
 import android.content.Intent.ACTION_VIEW
@@ -60,10 +62,13 @@ import de.baumann.browser.util.Constants
 import de.baumann.browser.util.DebugT
 import de.baumann.browser.view.*
 import de.baumann.browser.view.GestureType.*
+import de.baumann.browser.view.GestureType.CloseTab
 import de.baumann.browser.view.adapter.CompleteAdapter
 import de.baumann.browser.view.dialog.*
 import de.baumann.browser.view.dialog.compose.FastToggleDialogFragment
 import de.baumann.browser.view.dialog.compose.MenuDialogFragment
+import de.baumann.browser.view.dialog.compose.MenuItemType
+import de.baumann.browser.view.dialog.compose.MenuItemType.*
 import de.baumann.browser.view.dialog.compose.ToolbarConfigDialogFragment
 import de.baumann.browser.view.viewControllers.OverviewDialogController
 import de.baumann.browser.view.viewControllers.ToolbarViewController
@@ -74,6 +79,7 @@ import de.baumann.browser.viewmodel.BookmarkViewModelFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
+import org.koin.core.component.getScopeName
 import kotlin.math.floor
 import kotlin.math.max
 import kotlin.math.roundToInt
@@ -214,7 +220,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
             }
         }
 
-        registerReceiver(downloadReceiver, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
+        registerReceiver(downloadReceiver, IntentFilter(ACTION_DOWNLOAD_COMPLETE))
         dispatchIntent(intent)
         // after dispatching intent, the value should be reset to false
         shouldLoadTabState = false
@@ -357,7 +363,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
                 messageResId = R.string.toast_downloadComplete,
                 okAction = {
                     startActivity(
-                            Intent(DownloadManager.ACTION_VIEW_DOWNLOADS).apply {
+                            Intent(ACTION_VIEW_DOWNLOADS).apply {
                                 flags = Intent.FLAG_ACTIVITY_NEW_TASK
                             }
                     )
@@ -408,7 +414,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
                     false
                 }
             }
-            KeyEvent.KEYCODE_MENU -> return showMenuDialog()
+            KeyEvent.KEYCODE_MENU -> { showMenuDialog() ; return true }
             KeyEvent.KEYCODE_BACK -> {
                 hideKeyboard()
                 if (overviewDialogController.isVisible()) {
@@ -499,7 +505,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
         }
         hideBottomSheetDialog()
         when (v.id) {
-            R.id.button_font_size -> showFontSizeChangeDialog()
             R.id.omnibox_title -> focusOnInput()
             R.id.omnibox_input_clear -> binding.omniboxInput.text.clear()
             R.id.omnibox_input_paste -> {
@@ -1621,9 +1626,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
         if (HelperUnit.needGrantStoragePermission(this)) { return }
 
         val source = Uri.parse(url)
-        val request = DownloadManager.Request(source).apply {
+        val request = Request(source).apply {
             addRequestHeader("Cookie", CookieManager.getInstance().getCookie(url))
-            setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+            setNotificationVisibility(Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
             setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
         }
 
@@ -1706,29 +1711,55 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
         }
     }
 
-    private fun showMenuDialog(): Boolean {
-        MenuDialogFragment().show(supportFragmentManager, "menu_dialog")
-        //MenuComposableDialog(this).show()
-//        MenuDialog(
-//                this,
-//                lifecycleScope,
-//                ninjaWebView,
-//                this::showFastToggleDialog,
-//                { updateAlbum(sp.getString("favoriteURL", "https://github.com/plateaukao/browser")) },
-//                { removeAlbum(currentAlbumController!!) },
-//                this::saveBookmark,
-//                this::showSearchPanel,
-//                this::showSaveEpubDialog,
-//                this::openSavedEpub,
-//                this::printPDF,
-//                this::showFontSizeChangeDialog,
-//                this::saveScreenshot,
-//                this::toggleSplitScreen,
-//                this::toggleTouchTurnPageFeature,
-//                this::showTranslation,
-//                this::showTranslationConfigDialog,
-//        ).show()
-        return true
+    private fun showMenuDialog() {
+        MenuDialogFragment { handleMenuItem(it) }.show(supportFragmentManager, "menu_dialog")
+    }
+
+   private fun handleMenuItem(menuItemType: MenuItemType) {
+       when(menuItemType) {
+           QuickToggle -> showFastToggleDialog()
+           OpenHome -> updateAlbum(sp.getString("favoriteURL", "https://github.com/plateaukao/browser"))
+           MenuItemType.CloseTab -> currentAlbumController?.let { removeAlbum(it) }
+           Quit -> finishAndRemoveTask()
+
+           SplitScreen -> toggleSplitScreen()
+           Translate -> showTranslation()
+           VerticalRead -> ninjaWebView.toggleVerticalRead()
+           ReaderMode -> ninjaWebView.toggleReaderMode()
+           TouchSetting -> TouchAreaDialog(this).show()
+           ToolbarSetting -> ToolbarConfigDialogFragment().show(supportFragmentManager, "toolbar_config")
+
+           ReceiveData -> showReceiveDataDialog()
+           SendLink -> SendLinkDialog(this, lifecycleScope).show(ninjaWebView.url.orEmpty())
+           ShareLink -> IntentUnit.share(this, ninjaWebView.title, ninjaWebView.url)
+           OpenWith -> HelperUnit.showBrowserChooser(this, ninjaWebView.url, getString(R.string.menu_open_with) )
+           CopyLink -> ShareUtil.copyToClipboard(this, ninjaWebView.url ?: "")
+           Shortcut -> HelperUnit.createShortcut(this, ninjaWebView.title, ninjaWebView.url, ninjaWebView.favicon)
+
+           SetHome -> config.favoriteUrl = ninjaWebView.url.orEmpty()
+           SaveBookmark -> saveBookmark()
+           OpenEpub -> openSavedEpub()
+           SaveEpub -> showSaveEpubDialog()
+           SavePdf -> printPDF()
+
+           FontSize -> showFontSizeChangeDialog()
+           WhiteBknd -> config.whiteBackground = !config.whiteBackground
+           BoldFont -> config.boldFontStyle = !config.boldFontStyle
+           Search -> showSearchPanel()
+           Download -> startActivity(Intent(ACTION_VIEW_DOWNLOADS))
+           Settings -> startActivity(Intent(this,  SettingsActivity::class.java))
+       }
+   }
+
+    private fun showReceiveDataDialog() {
+        ReceiveDataDialog(this, lifecycleScope).show { text ->
+            if (text.startsWith("http")) ninjaWebView.loadUrl(text)
+            else {
+                val clip = ClipData.newPlainText("Copied Text", text)
+                (getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(clip)
+                NinjaToast.show(this, "String is Copied!")
+            }
+        }
     }
 
     private fun toggleSplitScreen(url: String? = null) {
