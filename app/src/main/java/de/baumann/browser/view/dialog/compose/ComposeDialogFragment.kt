@@ -24,7 +24,7 @@ open class ComposeDialogFragment(): DialogFragment(), KoinComponent {
 
     protected fun setupDialog() {
         dialog?.apply {
-            setStyle(STYLE_NO_TITLE, R.style.TouchAreaDialog)
+            setStyle(STYLE_NO_TITLE, R.style.ComposeDialog)
             requestWindowFeature(Window.FEATURE_NO_TITLE)
             window?.setGravity(if (config.isToolbarOnTop) Gravity.CENTER else Gravity.BOTTOM)
             window?.setBackgroundDrawableResource(R.drawable.background_with_border_margin)
