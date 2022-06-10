@@ -63,6 +63,7 @@ import de.baumann.browser.view.GestureType.*
 import de.baumann.browser.view.adapter.CompleteAdapter
 import de.baumann.browser.view.dialog.*
 import de.baumann.browser.view.dialog.compose.FastToggleDialogFragment
+import de.baumann.browser.view.dialog.compose.MenuDialogFragment
 import de.baumann.browser.view.dialog.compose.ToolbarConfigDialogFragment
 import de.baumann.browser.view.viewControllers.OverviewDialogController
 import de.baumann.browser.view.viewControllers.ToolbarViewController
@@ -1706,25 +1707,27 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
     }
 
     private fun showMenuDialog(): Boolean {
-        MenuDialog(
-                this,
-                lifecycleScope,
-                ninjaWebView,
-                this::showFastToggleDialog,
-                { updateAlbum(sp.getString("favoriteURL", "https://github.com/plateaukao/browser")) },
-                { removeAlbum(currentAlbumController!!) },
-                this::saveBookmark,
-                this::showSearchPanel,
-                this::showSaveEpubDialog,
-                this::openSavedEpub,
-                this::printPDF,
-                this::showFontSizeChangeDialog,
-                this::saveScreenshot,
-                this::toggleSplitScreen,
-                this::toggleTouchTurnPageFeature,
-                this::showTranslation,
-                this::showTranslationConfigDialog,
-        ).show()
+        MenuDialogFragment().show(supportFragmentManager, "menu_dialog")
+        //MenuComposableDialog(this).show()
+//        MenuDialog(
+//                this,
+//                lifecycleScope,
+//                ninjaWebView,
+//                this::showFastToggleDialog,
+//                { updateAlbum(sp.getString("favoriteURL", "https://github.com/plateaukao/browser")) },
+//                { removeAlbum(currentAlbumController!!) },
+//                this::saveBookmark,
+//                this::showSearchPanel,
+//                this::showSaveEpubDialog,
+//                this::openSavedEpub,
+//                this::printPDF,
+//                this::showFontSizeChangeDialog,
+//                this::saveScreenshot,
+//                this::toggleSplitScreen,
+//                this::toggleTouchTurnPageFeature,
+//                this::showTranslation,
+//                this::showTranslationConfigDialog,
+//        ).show()
         return true
     }
 

@@ -17,9 +17,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.fragment.app.FragmentManager
 import com.google.accompanist.appcompattheme.AppCompatTheme
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.preference.ConfigManager
+import de.baumann.browser.unit.ViewUnit.dp
 
 class MenuDialogFragment(): ComposeDialogFragment(){
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -28,7 +30,7 @@ class MenuDialogFragment(): ComposeDialogFragment(){
         return ComposeView(requireContext()).apply {
             setContent {
                 AppCompatTheme {
-                    MenuItems()
+                    MenuItems(config.whiteBackground, config.boldFontStyle)
                 }
             }
         }
@@ -36,10 +38,9 @@ class MenuDialogFragment(): ComposeDialogFragment(){
 }
 
 @Composable
-fun MenuItems() {
+private fun MenuItems(hasWhiteBkd: Boolean, boldFont: Boolean) {
     Column (
-        modifier = Modifier
-            .wrapContentHeight()
+        modifier = Modifier.wrapContentHeight()
    ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -91,8 +92,10 @@ fun MenuItems() {
             horizontalArrangement = Arrangement.End
         ) {
             MenuItem(titleResId = R.string.font_size, iconResId = R.drawable.icon_size, onClicked = {})
-            MenuItem(titleResId = R.string.white_background, iconResId = R.drawable.ic_white_background, onClicked = {})
-            MenuItem(titleResId = R.string.bold_font, iconResId = R.drawable.ic_bold_font, onClicked = {})
+            val whiteRes = if (hasWhiteBkd) R.drawable.ic_white_background_active else R.drawable.ic_white_background
+            MenuItem(titleResId = R.string.white_background, iconResId = whiteRes, onClicked = {})
+            val boldRes = if (boldFont) R.drawable.ic_bold_font_active else R.drawable.ic_bold_font
+            MenuItem(titleResId = R.string.bold_font, iconResId = boldRes, onClicked = {})
             MenuItem(titleResId = R.string.menu_other_searchSite, iconResId = R.drawable.icon_search, onClicked = {})
             MenuItem(titleResId = R.string.menu_download, iconResId = R.drawable.icon_download, onClicked = {})
             MenuItem(titleResId = R.string.settings, iconResId = R.drawable.icon_settings, onClicked = {})
@@ -101,20 +104,16 @@ fun MenuItems() {
 }
 
 @Composable
-private fun firstRow() {
-
-}
-@Composable
-fun MenuItem(
+private fun MenuItem(
     titleResId: Int,
     iconResId: Int,
     onClicked: ()-> Unit
 ) {
     Column(
         modifier = Modifier
-            .width(60.dp)
+            .width(46.dp)
             .wrapContentHeight()
-            .padding(5.dp)
+            .padding(vertical = 3.dp)
             .clickable {
                 onClicked()
             },
@@ -122,15 +121,12 @@ fun MenuItem(
         Icon(
             painter = painterResource(id = iconResId), contentDescription = null,
             modifier = Modifier
-                .width(50.dp)
-                .height(50.dp)
-                .padding(5.dp)
+                .width(46.dp)
+                .height(46.dp)
+                .padding(top = 2.dp, start=8.dp, end=8.dp)
                 .fillMaxHeight(),
             tint = MaterialTheme.colors.onBackground
         )
-        Spacer(modifier = Modifier
-            .height(2.dp)
-            .width(0.dp))
         Text(
             modifier = Modifier
                 .fillMaxWidth()
@@ -138,7 +134,7 @@ fun MenuItem(
             text = stringResource(id = titleResId),
             textAlign = TextAlign.Center,
             maxLines = 2,
-            fontSize = 10.sp,
+            fontSize = 8.sp,
             color = MaterialTheme.colors.onBackground
         )
     }
@@ -148,7 +144,10 @@ fun MenuItem(
 @Composable
 private fun previewItem() {
     AppCompatTheme {
-        MenuItem(R.string.title, R.drawable.ic_location) {}
+        Column {
+            MenuItem(R.string.title_appData, R.drawable.ic_copy) {}
+            MenuItem(R.string.title, R.drawable.ic_location) {}
+        }
     }
 }
 
@@ -156,6 +155,6 @@ private fun previewItem() {
 @Composable
 private fun previewMenuItems() {
     AppCompatTheme {
-        MenuItems()
+        MenuItems(hasWhiteBkd = false, boldFont = false)
     }
 }
