@@ -19,26 +19,48 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.FragmentManager
 import com.google.accompanist.appcompattheme.AppCompatTheme
+import com.google.android.gms.tasks.Continuation
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.unit.ViewUnit.dp
+import de.baumann.browser.view.dialog.compose.MenuItemType.*
+import java.io.Reader
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
-class MenuDialogFragment(): ComposeDialogFragment(){
+class MenuDialogFragment(
+    private val itemClicked: (MenuItemType) -> Unit
+): ComposeDialogFragment(){
+    private var clickedItem = Canceled
+
+    lateinit var composeView: ComposeView
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         setupDialog()
 
         return ComposeView(requireContext()).apply {
             setContent {
                 AppCompatTheme {
-                    MenuItems(config.whiteBackground, config.boldFontStyle)
+                    MenuItems(config.whiteBackground, config.boldFontStyle) { item ->
+                        dialog?.dismiss()
+                        itemClicked(item)
+                    }
                 }
             }
         }
     }
 }
 
+enum class MenuItemType {
+    Canceled,
+    QuickToggle, OpenHome, CloseTab, Quit,
+    SplitScreen, Translate, VerticalRead, ReaderMode, TouchSetting, ToolbarSetting,
+    ReceiveData, SendLink, ShareLink, OpenWith, CopyLink, Shortcut,
+    SetHome, SaveBookmark, OpenEpub, SaveEpub, SavePdf,
+    FontSize, WhiteBknd, BoldFont, Search, Download, Settings
+}
+
 @Composable
-private fun MenuItems(hasWhiteBkd: Boolean, boldFont: Boolean) {
+private fun MenuItems(hasWhiteBkd: Boolean, boldFont: Boolean, onClicked: (MenuItemType)-> Unit) {
     Column (
         modifier = Modifier.wrapContentHeight()
    ) {
@@ -46,59 +68,59 @@ private fun MenuItems(hasWhiteBkd: Boolean, boldFont: Boolean) {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.End
         ) {
-            MenuItem(titleResId = R.string.menu_quickToggle, iconResId = R.drawable.ic_quick_toggle, onClicked = {})
-            MenuItem(titleResId = R.string.menu_openFav, iconResId = R.drawable.ic_home, onClicked = {})
-            MenuItem(titleResId = R.string.menu_closeTab, iconResId = R.drawable.icon_close, onClicked = {})
-            MenuItem(titleResId = R.string.menu_quit, iconResId = R.drawable.icon_exit, onClicked = {})
+            MenuItem(R.string.menu_quickToggle, R.drawable.ic_quick_toggle) { onClicked (QuickToggle) }
+            MenuItem(R.string.menu_openFav, R.drawable.ic_home) { onClicked(OpenHome) }
+            MenuItem(R.string.menu_closeTab, R.drawable.icon_close) { onClicked(CloseTab) }
+            MenuItem(R.string.menu_quit, R.drawable.icon_exit) { onClicked(Quit) }
         }
         HorizontalSeparator()
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.End
         ) {
-            MenuItem(titleResId = R.string.split_screen, iconResId = R.drawable.ic_split_screen, onClicked = {})
-            MenuItem(titleResId = R.string.translate, iconResId = R.drawable.ic_translate, onClicked = {})
-            MenuItem(titleResId = R.string.vertical_read, iconResId = R.drawable.ic_vertical_read, onClicked = {})
-            MenuItem(titleResId = R.string.reader_mode, iconResId = R.drawable.ic_reader, onClicked = {})
-            MenuItem(titleResId = R.string.touch_area_setting, iconResId = R.drawable.ic_touch_disabled, onClicked = {})
-            MenuItem(titleResId = R.string.toolbar_setting, iconResId = R.drawable.ic_toolbar, onClicked = {})
+            MenuItem(R.string.split_screen, R.drawable.ic_split_screen) { onClicked(SplitScreen) }
+            MenuItem(R.string.translate, R.drawable.ic_translate) { onClicked(Translate) }
+            MenuItem(R.string.vertical_read, R.drawable.ic_vertical_read) { onClicked(VerticalRead) }
+            MenuItem(R.string.reader_mode, R.drawable.ic_reader) { onClicked(ReaderMode) }
+            MenuItem(R.string.touch_area_setting, R.drawable.ic_touch_disabled) { onClicked(TouchSetting) }
+            MenuItem(R.string.toolbar_setting, R.drawable.ic_toolbar) { onClicked(ToolbarSetting) }
         }
         HorizontalSeparator()
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.End
         ) {
-            MenuItem(titleResId = R.string.menu_receive, iconResId = R.drawable.ic_receive, onClicked = {})
-            MenuItem(titleResId = R.string.menu_send_link, iconResId = R.drawable.ic_send, onClicked = {})
-            MenuItem(titleResId = R.string.menu_share_link, iconResId = R.drawable.icon_menu_share, onClicked = {})
-            MenuItem(titleResId = R.string.menu_open_with, iconResId = R.drawable.icon_exit, onClicked = {})
-            MenuItem(titleResId = R.string.copy_link, iconResId = R.drawable.ic_copy, onClicked = {})
-            MenuItem(titleResId = R.string.menu_sc, iconResId = R.drawable.link_plus, onClicked = {})
+            MenuItem(R.string.menu_receive, R.drawable.ic_receive) { onClicked(ReceiveData) }
+            MenuItem(R.string.menu_send_link, R.drawable.ic_send) { onClicked(SendLink) }
+            MenuItem(R.string.menu_share_link, R.drawable.icon_menu_share) { onClicked(ShareLink) }
+            MenuItem(R.string.menu_open_with, R.drawable.icon_exit) { onClicked(OpenWith) }
+            MenuItem(R.string.copy_link, R.drawable.ic_copy) { onClicked(CopyLink) }
+            MenuItem(R.string.menu_sc, R.drawable.link_plus) { onClicked(Shortcut) }
         }
         HorizontalSeparator()
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.End
         ) {
-            MenuItem(titleResId = R.string.menu_fav, iconResId = R.drawable.ic_home, onClicked = {})
-            MenuItem(titleResId = R.string.menu_save_bookmark, iconResId = R.drawable.ic_bookmark, onClicked = {})
-            MenuItem(titleResId = R.string.menu_open_epub, iconResId = R.drawable.ic_open_epub, onClicked = {})
-            MenuItem(titleResId = R.string.menu_save_epub, iconResId = R.drawable.ic_book, onClicked = {})
-            MenuItem(titleResId = R.string.menu_save_pdf, iconResId = R.drawable.ic_pdf, onClicked = {})
+            MenuItem(R.string.menu_fav, R.drawable.ic_home) { onClicked(SetHome) }
+            MenuItem(R.string.menu_save_bookmark, R.drawable.ic_bookmark) { onClicked(SaveBookmark) }
+            MenuItem(R.string.menu_open_epub, R.drawable.ic_open_epub) { onClicked(OpenEpub) }
+            MenuItem(R.string.menu_save_epub, R.drawable.ic_book) { onClicked(SaveEpub) }
+            MenuItem(R.string.menu_save_pdf, R.drawable.ic_pdf) { onClicked(SavePdf) }
         }
         HorizontalSeparator()
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.End
         ) {
-            MenuItem(titleResId = R.string.font_size, iconResId = R.drawable.icon_size, onClicked = {})
+            MenuItem(R.string.font_size, R.drawable.icon_size) { onClicked(FontSize) }
             val whiteRes = if (hasWhiteBkd) R.drawable.ic_white_background_active else R.drawable.ic_white_background
-            MenuItem(titleResId = R.string.white_background, iconResId = whiteRes, onClicked = {})
+            MenuItem(R.string.white_background, whiteRes) { onClicked(WhiteBknd) }
             val boldRes = if (boldFont) R.drawable.ic_bold_font_active else R.drawable.ic_bold_font
-            MenuItem(titleResId = R.string.bold_font, iconResId = boldRes, onClicked = {})
-            MenuItem(titleResId = R.string.menu_other_searchSite, iconResId = R.drawable.icon_search, onClicked = {})
-            MenuItem(titleResId = R.string.menu_download, iconResId = R.drawable.icon_download, onClicked = {})
-            MenuItem(titleResId = R.string.settings, iconResId = R.drawable.icon_settings, onClicked = {})
+            MenuItem(R.string.bold_font, boldRes) { onClicked(BoldFont) }
+            MenuItem(R.string.menu_other_searchSite, R.drawable.icon_search) { onClicked(Search) }
+            MenuItem(R.string.menu_download, R.drawable.icon_download) { onClicked(Download) }
+            MenuItem(R.string.settings, R.drawable.icon_settings) { onClicked(Settings) }
         }
     }
 }
@@ -155,6 +177,6 @@ private fun previewItem() {
 @Composable
 private fun previewMenuItems() {
     AppCompatTheme {
-        MenuItems(hasWhiteBkd = false, boldFont = false)
+        MenuItems(hasWhiteBkd = false, boldFont = false, {})
     }
 }
