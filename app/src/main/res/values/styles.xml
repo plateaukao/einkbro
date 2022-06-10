@@ -24,4 +24,9 @@
         <item name="android:windowBackground">@drawable/backgound_with_border</item>
     </style>
 
+    <style name="ComposeDialog" parent="TouchAreaDialog">
+        <item name="android:windowMinWidthMajor">100%</item>
+        <item name="android:windowMinWidthMinor">100%</item>
+    </style>
+
 </resources>
