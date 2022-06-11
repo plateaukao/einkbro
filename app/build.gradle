@@ -67,7 +67,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.preference:preference-ktx:1.2.0'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.10"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.21"
 
     // epublib
     implementation("com.positiondev.epublib:epublib-core:3.1") {
@@ -82,7 +82,7 @@ dependencies {
 
     // for epub saving: html processing
     implementation 'org.jsoup:jsoup:1.14.3'
-    implementation 'androidx.appcompat:appcompat:1.4.0'
+    implementation 'androidx.appcompat:appcompat:1.4.2'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
     implementation "androidx.room:room-runtime:2.4.2"
@@ -130,8 +130,4 @@ dependencies {
 
     // reorder lazylist
     implementation "org.burnoutcrew.composereorderable:reorderable:0.9.0"
-    implementation("androidx.navigation:navigation-compose:2.5.0-rc01")
-    implementation("androidx.compose.runtime:runtime:1.2.0-beta02")
-//    implementation("com.google.android.material:material:1.6.1")
-//    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
 }
