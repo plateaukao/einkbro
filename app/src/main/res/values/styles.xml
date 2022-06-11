@@ -7,6 +7,7 @@
         <item name="preferenceTheme">@style/preferenceTheme</item>
         <item name="dragIcon">@drawable/ic_drag</item>
         <item name="android:textColor">@android:color/black</item>
+        <item name="android:textColorPrimary">@android:color/black</item>
         <item name="colorControlNormal">@android:color/black</item>
         <item name="android:colorAccent">@android:color/black</item>
         <item name="backgroundColor">@android:color/white</item>

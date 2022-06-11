@@ -1,7 +1,6 @@
 package de.baumann.browser.activity
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.Dialog
 import android.app.DownloadManager
 import android.app.DownloadManager.*
@@ -11,7 +10,6 @@ import android.content.Intent.ACTION_VIEW
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.graphics.PorterDuff
-import android.graphics.Typeface
 import android.media.MediaPlayer
 import android.media.MediaPlayer.OnCompletionListener
 import android.net.Uri
@@ -34,10 +32,8 @@ import android.webkit.WebChromeClient.CustomViewCallback
 import android.webkit.WebView.HitTestResult
 import android.widget.*
 import android.widget.TextView.OnEditorActionListener
-import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.viewModels
-import androidx.compose.ui.platform.ComposeView
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentActivity
@@ -75,7 +71,6 @@ import de.baumann.browser.viewmodel.BookmarkViewModelFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
-import org.koin.core.component.getScopeName
 import kotlin.math.floor
 import kotlin.math.max
 import kotlin.math.roundToInt
@@ -87,7 +82,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
     private lateinit var progressBar: ProgressBar
     private lateinit var searchBox: EditText
     protected lateinit var ninjaWebView: NinjaWebView
-    private lateinit var omniboxTitle: TextView
 
     private var bottomSheetDialog: Dialog? = null
     private var videoView: VideoView? = null
@@ -134,7 +128,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
 
     private var shouldLoadTabState: Boolean = false
 
-    protected val toolbarViewController: ToolbarViewController by lazy { ToolbarViewController(binding.iconBar) }
     protected val composeToolbarViewController: ComposeToolbarViewController by lazy {
         ComposeToolbarViewController(
             binding.composeIconBar,
@@ -144,35 +137,68 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
     }
 
     private fun onToolActionLongClick(toolbarAction: ToolbarAction) {
-        TODO("Not yet implemented")
+        when(toolbarAction) {
+            ToolbarAction.Back -> openHistoryPage(5)
+            ToolbarAction.Refresh -> fullscreen()
+            ToolbarAction.Touch -> TouchAreaDialog(this).show()
+            ToolbarAction.PageUp -> ninjaWebView.jumpToTop()
+            ToolbarAction.PageDown -> ninjaWebView.jumpToBottom()
+            ToolbarAction.TabCount -> config.isIncognitoMode = !config.isIncognitoMode
+            ToolbarAction.Font -> dialogManager.showFontTypeDialog()
+            ToolbarAction.Settings -> showFastToggleDialog()
+            ToolbarAction.Bookmark -> saveBookmark()
+            ToolbarAction.Translation -> showTranslationConfigDialog()
+            else -> {}
+        }
     }
 
     private fun onToolActionClick(toolbarAction: ToolbarAction) {
         when(toolbarAction) {
-            ToolbarAction.Title -> TODO()
-            ToolbarAction.Back -> TODO()
-            ToolbarAction.Refresh -> TODO()
-            ToolbarAction.Touch -> TODO()
-            ToolbarAction.PageUp -> TODO()
-            ToolbarAction.PageDown -> TODO()
-            ToolbarAction.TabCount -> TODO()
-            ToolbarAction.Font -> TODO()
-            ToolbarAction.Settings -> TODO()
-            ToolbarAction.Bookmark -> TODO()
-            ToolbarAction.IconSetting -> TODO()
-            ToolbarAction.VerticalLayout -> TODO()
-            ToolbarAction.ReaderMode -> TODO()
-            ToolbarAction.BoldFont -> TODO()
-            ToolbarAction.IncreaseFont -> TODO()
-            ToolbarAction.DecreaseFont -> TODO()
-            ToolbarAction.FullScreen -> TODO()
-            ToolbarAction.Forward -> TODO()
-            ToolbarAction.RotateScreen -> TODO()
-            ToolbarAction.Translation -> TODO()
-            ToolbarAction.CloseTab -> TODO()
-            ToolbarAction.InputUrl -> TODO()
-            ToolbarAction.NewTab -> TODO()
-            ToolbarAction.Desktop -> TODO()
+            ToolbarAction.Title -> focusOnInput()
+            ToolbarAction.Back -> if (ninjaWebView.canGoBack()) {
+                ninjaWebView.goBack()
+            } else {
+                NinjaToast.show(this, getString(R.string.no_previous_page))
+            }
+            ToolbarAction.Refresh -> refreshAction()
+            ToolbarAction.Touch -> toggleTouchTurnPageFeature()
+            ToolbarAction.PageUp -> ninjaWebView.pageUpWithNoAnimation()
+            ToolbarAction.PageDown ->  {
+                keepToolbar = true
+                ninjaWebView.pageDownWithNoAnimation()
+            }
+            ToolbarAction.TabCount -> showOverview()
+            ToolbarAction.Font -> showFontSizeChangeDialog()
+            ToolbarAction.Settings -> showMenuDialog()
+            ToolbarAction.Bookmark -> openBookmarkPage()
+            ToolbarAction.IconSetting -> ToolbarConfigDialogFragment().show(supportFragmentManager, "toolbar_config")
+            ToolbarAction.VerticalLayout -> ninjaWebView.toggleVerticalRead()
+            ToolbarAction.ReaderMode -> ninjaWebView.toggleReaderMode()
+            ToolbarAction.BoldFont -> config.boldFontStyle = !config.boldFontStyle
+            ToolbarAction.IncreaseFont -> increaseFontSize()
+            ToolbarAction.DecreaseFont -> decreaseFontSize()
+            ToolbarAction.FullScreen -> fullscreen()
+            ToolbarAction.Forward -> if (ninjaWebView.canGoForward()) ninjaWebView.goForward()
+            ToolbarAction.RotateScreen -> rotateScreen()
+            ToolbarAction.Translation -> showTranslation()
+            ToolbarAction.CloseTab -> removeAlbum(currentAlbumController!!)
+            ToolbarAction.InputUrl -> focusOnInput()
+            ToolbarAction.NewTab -> {
+                addAlbum(getString(R.string.app_name), "", true)
+                focusOnInput()
+            }
+            ToolbarAction.Desktop -> config.desktop = !config.desktop
+        }
+    }
+
+    private fun refreshAction() {
+        if (ninjaWebView.isLoadFinish && ninjaWebView.url?.isNotEmpty() == true) {
+            ninjaWebView.reload()
+        } else if (url == null) {
+            val text = getString(R.string.toast_load_error) + ": " + url
+            NinjaToast.show(this, text)
+        } else {
+            ninjaWebView.stopLoading()
         }
     }
 
@@ -234,7 +260,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
         initSearchPanel()
         initOverview()
         initTouchArea()
-        updateWebViewCountUI()
 
         downloadReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
@@ -296,18 +321,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
             }
         }
         if (newConfig.orientation != orientation) {
-            toolbarViewController.reorderIcons()
-            //binding.activityMainContent.root.requestLayout()
+            composeToolbarViewController.updateIcons()
             orientation = newConfig.orientation
         }
     }
 
     private fun initTouchArea() {
-        binding.omniboxTouch.setOnLongClickListener {
-            TouchAreaDialog(this@BrowserActivity).show()
-            true
-        }
-
         updateTouchView()
     }
 
@@ -461,8 +480,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
                     return onHideCustomView()
                 } else if (!binding.appBar.isVisible && sp.getBoolean("sp_toolbarShow", true)) {
                     showToolbar()
-                } else if (!toolbarViewController.isDisplayed()) {
-                    toolbarViewController.show()
+                } else if (!composeToolbarViewController.isDisplayed()) {
+                    composeToolbarViewController.show()
                 } else {
                     if (ninjaWebView.canGoBack()) {
                         ninjaWebView.goBack()
@@ -541,7 +560,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
         }
         hideBottomSheetDialog()
         when (v.id) {
-            R.id.omnibox_title -> focusOnInput()
             R.id.omnibox_input_clear -> binding.omniboxInput.text.clear()
             R.id.omnibox_input_paste -> {
                 val copiedString = getClipboardText()
@@ -556,59 +574,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
             }
             R.id.menu_save_file -> showPdfFilePicker()
 
-            // --- tool bar handling
-            R.id.omnibox_tabcount -> showOverview()
-            R.id.omnibox_touch -> toggleTouchTurnPageFeature()
-            R.id.omnibox_font -> showFontSizeChangeDialog()
-            R.id.omnibox_reader -> ninjaWebView.toggleReaderMode()
-            R.id.omnibox_bold_font -> { config.boldFontStyle = !config.boldFontStyle }
-            R.id.omnibox_back -> if (ninjaWebView.canGoBack()) {
-                ninjaWebView.goBack()
-            } else {
-                NinjaToast.show(this, getString(R.string.no_previous_page))
-            }
-            R.id.toolbar_forward -> if (ninjaWebView.canGoForward()) {
-                ninjaWebView.goForward()
-            }
-            R.id.omnibox_page_up -> ninjaWebView.pageUpWithNoAnimation()
-            R.id.omnibox_page_down -> {
-                keepToolbar = true
-                ninjaWebView.pageDownWithNoAnimation()
-            }
-            R.id.omnibox_vertical_read -> ninjaWebView.toggleVerticalRead()
-
-            R.id.omnibox_refresh -> if (url != null && ninjaWebView.isLoadFinish) {
-                ninjaWebView.reload()
-            } else if (url == null) {
-                val text = getString(R.string.toast_load_error) + ": " + url
-                NinjaToast.show(this, text)
-            } else {
-                ninjaWebView.stopLoading()
-            }
-//            R.id.toolbar_setting -> ToolbarConfigDialog(this).show()
-            R.id.toolbar_setting -> ToolbarConfigDialogFragment().show(supportFragmentManager, "toolbar_config")
-            R.id.toolbar_increase_font -> increaseFontSize()
-            R.id.toolbar_decrease_font -> decreaseFontSize()
-            R.id.toolbar_fullscreen -> fullscreen()
-            R.id.toolbar_rotate -> rotateScreen()
-            R.id.toolbar_translate -> showTranslation()
-            R.id.toolbar_close_tab -> removeAlbum(currentAlbumController!!)
-            R.id.toolbar_input_url -> focusOnInput()
-            R.id.toolbar_new_tab -> {
-                addAlbum(getString(R.string.app_name), "", true)
-                focusOnInput()
-            }
-            R.id.toolbar_desktop -> config.desktop = !config.desktop
             else -> { }
         }
-    }
-
-    private fun updateButtonBoldIcon() {
-        binding.omniboxBoldFont.setImageResource(if (config.boldFontStyle) R.drawable.ic_bold_font_active else R.drawable.ic_bold_font)
-    }
-
-    private fun updateDesktopIcon() {
-        binding.toolbarDesktop.setImageResource(if (config.desktop) R.drawable.icon_desktop_activate else R.drawable.icon_desktop)
     }
 
     private fun launchNewBrowser() {
@@ -663,8 +630,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
     private fun updateTouchView() {
         val fabResourceId = if (config.enableTouchTurn) R.drawable.icon_overflow_fab else R.drawable.ic_touch_disabled
         fabImageButtonNav.setImageResource(fabResourceId)
-        val touchResourceId = if (config.enableTouchTurn) R.drawable.ic_touch_enabled else R.drawable.ic_touch_disabled
-        binding.omniboxTouch.setImageResource(touchResourceId)
+        composeToolbarViewController.updateIcons()
+//        val touchResourceId = if (config.enableTouchTurn) R.drawable.ic_touch_enabled else R.drawable.ic_touch_disabled
+//        binding.omniboxTouch.setImageResource(touchResourceId)
     }
 
     // Methods
@@ -840,7 +808,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
     @SuppressLint("ClickableViewAccessibility")
     private fun initToolbar() {
         mainToolbar = findViewById(R.id.main_toolbar)
-        omniboxTitle = findViewById(R.id.omnibox_title)
         progressBar = findViewById(R.id.main_progress_bar)
         if (config.darkMode == DarkMode.FORCE_ON) {
             val nightModeFlags: Int = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
@@ -849,15 +816,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
             }
         }
         initFAB()
-        binding.omniboxSetting.setOnLongClickListener {
-            showFastToggleDialog()
-            false
-        }
-        binding.omniboxFont.setOnLongClickListener {
-            dialogManager.showFontTypeDialog()
-            false
-        }
-        binding.omniboxSetting.setOnClickListener { showMenuDialog() }
         if (sp.getBoolean("sp_gestures_use", true)) {
             val onNavButtonTouchListener = object : SwipeTouchListener(this) {
                 override fun onSwipeTop() = performGesture("setting_gesture_nav_up")
@@ -866,14 +824,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
                 override fun onSwipeLeft() = performGesture("setting_gesture_nav_left")
             }
             fabImageButtonNav.setOnTouchListener(onNavButtonTouchListener)
-            binding.omniboxSetting.setOnTouchListener(onNavButtonTouchListener)
-            val onTitleTouchListener = object : SwipeTouchListener(this) {
-                override fun onSwipeTop() = performGesture("setting_gesture_tb_up")
-                override fun onSwipeBottom() = performGesture("setting_gesture_tb_down")
-                override fun onSwipeRight() = performGesture("setting_gesture_tb_right")
-                override fun onSwipeLeft() = performGesture("setting_gesture_tb_left")
-            }
-            binding.omniboxTitle.setOnTouchListener(onTitleTouchListener)
         }
         binding.omniboxInput.setOnEditorActionListener(OnEditorActionListener { _, actionId, keyEvent ->
             if (actionId == EditorInfo.IME_ACTION_DONE ||
@@ -903,42 +853,15 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
                 } else {
                     binding.omniboxInput.setText("")
                 }
-                toolbarViewController.hide()
+                composeToolbarViewController.hide()
             } else {
-                toolbarViewController.show()
-                omniboxTitle.text = ninjaWebView.title
+                composeToolbarViewController.show()
+                composeToolbarViewController.updateTitle(ninjaWebView.title.orEmpty())
                 hideKeyboard()
             }
         }
 
-        // long click on overview, show bookmark
-        binding.omniboxTabcount.setOnLongClickListener {
-            config.isIncognitoMode = !config.isIncognitoMode
-            true
-        }
-
-        // scroll to top
-        binding.omniboxPageUp.setOnLongClickListener {
-            ninjaWebView.jumpToTop()
-            true
-        }
-
-        // hide bottom bar when refresh button is long pressed.
-        binding.omniboxRefresh.setOnLongClickListener {
-            fullscreen()
-            true
-        }
-
-        binding.omniboxBookmark.setOnClickListener { openBookmarkPage() }
-        binding.omniboxBookmark.setOnLongClickListener { saveBookmark(); true }
-        binding.toolbarTranslate.setOnLongClickListener { showTranslationConfigDialog(); true }
-        binding.omniboxBack.setOnLongClickListener { openHistoryPage(5); true }
-
-        updateButtonBoldIcon()
-        updateDesktopIcon()
-
-        toolbarViewController.reorderIcons()
-        composeToolbarViewController.reorderIcons()
+        composeToolbarViewController.updateIcons()
         // strange crash on my device. register later
         runOnUiThread {
             config.registerOnSharedPreferenceChangeListener(preferenceChangeListener)
@@ -954,7 +877,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
         when (key) {
             ConfigManager.K_TOOLBAR_ICONS_FOR_LARGE,
             ConfigManager.K_TOOLBAR_ICONS -> {
-                toolbarViewController.reorderIcons()
+                composeToolbarViewController.updateIcons()
             }
             ConfigManager.K_FONT_TYPE -> {
                 if (config.fontType == FontType.SYSTEM_DEFAULT) {
@@ -967,7 +890,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
                 ninjaWebView.settings.textZoom = config.fontSize
             }
             ConfigManager.K_BOLD_FONT -> {
-                updateButtonBoldIcon()
+                composeToolbarViewController.updateIcons()
                 if (config.boldFontStyle) {
                     ninjaWebView.updateCssStyle()
                 } else {
@@ -988,7 +911,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
             }
             ConfigManager.K_IS_INCOGNITO_MODE -> {
                 ninjaWebView.incognito = config.isIncognitoMode
-                updateWebViewCountUI()
+                composeToolbarViewController.updateIcons()
                 NinjaToast.showShort(
                         this,
                         "Incognito mode is " + if (config.isIncognitoMode) "enabled." else "disabled."
@@ -1004,7 +927,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
             ConfigManager.K_DESKTOP -> {
                 ninjaWebView.updateDesktopMode()
                 ninjaWebView.reload()
-                updateDesktopIcon()
+                composeToolbarViewController.updateIcons()
             }
             ConfigManager.K_DARK_MODE -> config.restartChanged = true
             ConfigManager.K_TOOLBAR_TOP -> updateAppbarPosition()
@@ -1302,17 +1225,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
     private fun updateWebViewCount() {
         val subScript = browserContainer.size()
         val superScript = browserContainer.indexOf(currentAlbumController) + 1
-        binding.omniboxTabcount.text = createWebViewCountString(superScript, subScript)
-        binding.omniboxTabcount.typeface =
-        if (binding.omniboxTabcount.text.length == 1) Typeface.DEFAULT_BOLD else Typeface.DEFAULT
-        updateWebViewCountUI()
-    }
-
-    private fun updateWebViewCountUI() {
-        binding.omniboxTabcount.setBackgroundResource(
-                if (config.isIncognitoMode
-                        || (this::ninjaWebView.isInitialized && ninjaWebView.incognito)) R.drawable.button_border_bg_dash else R.drawable.button_border_bg
-        )
+        composeToolbarViewController.updateTabCount(createWebViewCountString(superScript, subScript))
+        composeToolbarViewController.updateIcons()
     }
 
     private fun updateAlbum(url: String?) {
@@ -1359,7 +1273,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
         if (!this::ninjaWebView.isInitialized) return
 
         if (this::ninjaWebView.isInitialized && ninjaWebView === currentAlbumController) {
-            omniboxTitle.text = ninjaWebView.title
+            composeToolbarViewController.updateTitle(ninjaWebView.title.orEmpty())
         }
     }
 
@@ -1414,7 +1328,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
     // to keep track of whether data is changed for auto completion
     private var isAutoCompleteOutdated = true
     private fun focusOnInput() {
-        toolbarViewController.hide()
+        composeToolbarViewController.hide()
         binding.omniboxInput.requestFocus()
         binding.omniboxInput.selectAll()
         updatePasteTextIcon()
@@ -1438,11 +1352,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
     private fun updateRefresh(running: Boolean) {
         if (!isRunning && running) {
             isRunning = true
-            binding.omniboxRefresh.setImageResource(R.drawable.ic_stop)
         } else if (isRunning && !running) {
             isRunning = false
-            binding.omniboxRefresh.setImageResource(R.drawable.icon_refresh)
         }
+        composeToolbarViewController.updateRefresh(isRunning)
     }
 
     override fun showFileChooser(filePathCallback: ValueCallback<Array<Uri>>) {
@@ -1685,7 +1598,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
             searchPanel.visibility = GONE
             mainToolbar.visibility = VISIBLE
             binding.appBar.visibility = VISIBLE
-            toolbarViewController.show()
+            composeToolbarViewController.show()
             hideKeyboard()
             showStatusBar()
         }
@@ -1730,7 +1643,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
         fabImageButtonNav.visibility = INVISIBLE
         mainToolbar.visibility = GONE
         searchPanel.visibility = VISIBLE
-        omniboxTitle.visibility = GONE
         binding.appBar.visibility = VISIBLE
         searchBox.requestFocus()
         showKeyboard()

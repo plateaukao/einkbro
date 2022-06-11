@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.view.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -62,11 +64,11 @@ enum class MenuItemType {
 @Composable
 private fun MenuItems(hasWhiteBkd: Boolean, boldFont: Boolean, onClicked: (MenuItemType)-> Unit) {
     Column (
-        modifier = Modifier.wrapContentHeight().width(IntrinsicSize.Max).padding(10.dp),
+        modifier = Modifier.wrapContentHeight().width(IntrinsicSize.Max),
         horizontalAlignment = Alignment.End
    ) {
         Row(
-            modifier = Modifier.wrapContentWidth(),
+            modifier = Modifier.width(IntrinsicSize.Max).horizontalScroll(rememberScrollState()),
             horizontalArrangement = Arrangement.End
         ) {
             MenuItem(R.string.menu_quickToggle, R.drawable.ic_quick_toggle) { onClicked (QuickToggle) }
@@ -76,7 +78,7 @@ private fun MenuItems(hasWhiteBkd: Boolean, boldFont: Boolean, onClicked: (MenuI
         }
         HorizontalSeparator()
         Row(
-            modifier = Modifier.wrapContentWidth(),
+            modifier = Modifier.wrapContentWidth().horizontalScroll(rememberScrollState()),
             horizontalArrangement = Arrangement.End
         ) {
             MenuItem(R.string.split_screen, R.drawable.ic_split_screen) { onClicked(SplitScreen) }
@@ -88,7 +90,7 @@ private fun MenuItems(hasWhiteBkd: Boolean, boldFont: Boolean, onClicked: (MenuI
         }
         HorizontalSeparator()
         Row(
-            modifier = Modifier.wrapContentWidth(),
+            modifier = Modifier.wrapContentWidth().horizontalScroll(rememberScrollState()),
             horizontalArrangement = Arrangement.End
         ) {
             MenuItem(R.string.menu_receive, R.drawable.ic_receive) { onClicked(ReceiveData) }
@@ -100,7 +102,7 @@ private fun MenuItems(hasWhiteBkd: Boolean, boldFont: Boolean, onClicked: (MenuI
         }
         HorizontalSeparator()
         Row(
-            modifier = Modifier.wrapContentWidth(),
+            modifier = Modifier.wrapContentWidth().horizontalScroll(rememberScrollState()),
             horizontalArrangement = Arrangement.End
         ) {
             MenuItem(R.string.menu_fav, R.drawable.ic_home) { onClicked(SetHome) }
@@ -111,7 +113,7 @@ private fun MenuItems(hasWhiteBkd: Boolean, boldFont: Boolean, onClicked: (MenuI
         }
         HorizontalSeparator()
         Row(
-            modifier = Modifier.wrapContentWidth(),
+            modifier = Modifier.wrapContentWidth().horizontalScroll(rememberScrollState()),
             horizontalArrangement = Arrangement.End
         ) {
             MenuItem(R.string.font_size, R.drawable.icon_size) { onClicked(FontSize) }
@@ -134,26 +136,27 @@ private fun MenuItem(
 ) {
     Column(
         modifier = Modifier
-            .width(50.dp)
-            .wrapContentHeight()
+            .width(45.dp)
+            .height(68.dp)
             .clickable { onClicked() },
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Icon(
             painter = painterResource(id = iconResId), contentDescription = null,
             modifier = Modifier
-                .width(50.dp)
-                .height(50.dp)
-                .padding(top = 2.dp, start=8.dp, end=8.dp),
+                .width(40.dp)
+                .height(40.dp)
+                .padding(top = 5.dp, start=8.dp, end=8.dp),
             tint = MaterialTheme.colors.onBackground
         )
         Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(26.dp),
+                .height(30.dp).padding(2.dp),
             text = stringResource(id = titleResId),
             textAlign = TextAlign.Center,
             maxLines = 2,
-            fontSize = 10.sp,
+            fontSize = 8.sp,
             color = MaterialTheme.colors.onBackground
         )
     }

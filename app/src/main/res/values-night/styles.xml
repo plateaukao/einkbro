@@ -6,6 +6,7 @@
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14</item>
         <item name="dragIcon">@drawable/ic_drag</item>
         <item name="android:textColor">@color/lightGray</item>
+        <item name="android:textColorPrimary">@android:color/darker_gray</item>
         <item name="android:colorAccent">@color/lightGray</item>
         <item name="colorControlNormal">@color/lightGray</item>
         <item name="backgroundColor">@android:color/black</item>

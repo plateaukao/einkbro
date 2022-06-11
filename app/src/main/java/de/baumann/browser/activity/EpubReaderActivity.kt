@@ -3,9 +3,7 @@ package de.baumann.browser.activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.Window
 import androidx.lifecycle.lifecycleScope
-import de.baumann.browser.Ninja.R
 import de.baumann.browser.epub.EpubReaderListener
 import de.baumann.browser.epub.EpubReaderView
 import de.baumann.browser.unit.BrowserUnit
@@ -22,13 +20,14 @@ class EpubReaderActivity: BrowserActivity() {
     }
 
     private fun initUI() {
-        with (binding.omniboxTabcount) {
-            text = ""
-            setBackgroundResource(R.drawable.ic_toc)
-            setOnClickListener { epubReader.showTocDialog() }
-        }
+        // TODO: compose
+//        with (binding.omniboxTabcount) {
+//            text = ""
+//            setBackgroundResource(R.drawable.ic_toc)
+//            setOnClickListener { epubReader.showTocDialog() }
+//        }
 
-        toolbarViewController.setEpubReaderMode()
+        composeToolbarViewController.setEpubReaderMode()
         hideOverview()
     }
 
