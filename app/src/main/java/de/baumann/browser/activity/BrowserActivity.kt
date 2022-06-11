@@ -68,10 +68,8 @@ import de.baumann.browser.view.adapter.CompleteAdapter
 import de.baumann.browser.view.dialog.*
 import de.baumann.browser.view.dialog.compose.*
 import de.baumann.browser.view.dialog.compose.MenuItemType.*
-import de.baumann.browser.view.viewControllers.OverviewDialogController
-import de.baumann.browser.view.viewControllers.ToolbarViewController
-import de.baumann.browser.view.viewControllers.TouchAreaViewController
-import de.baumann.browser.view.viewControllers.TwoPaneController
+import de.baumann.browser.view.toolbaricons.ToolbarAction
+import de.baumann.browser.view.viewControllers.*
 import de.baumann.browser.viewmodel.BookmarkViewModel
 import de.baumann.browser.viewmodel.BookmarkViewModelFactory
 import kotlinx.coroutines.Dispatchers
@@ -137,6 +135,46 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
     private var shouldLoadTabState: Boolean = false
 
     protected val toolbarViewController: ToolbarViewController by lazy { ToolbarViewController(binding.iconBar) }
+    protected val composeToolbarViewController: ComposeToolbarViewController by lazy {
+        ComposeToolbarViewController(
+            binding.composeIconBar,
+            this::onToolActionClick,
+            this::onToolActionLongClick
+        )
+    }
+
+    private fun onToolActionLongClick(toolbarAction: ToolbarAction) {
+        TODO("Not yet implemented")
+    }
+
+    private fun onToolActionClick(toolbarAction: ToolbarAction) {
+        when(toolbarAction) {
+            ToolbarAction.Title -> TODO()
+            ToolbarAction.Back -> TODO()
+            ToolbarAction.Refresh -> TODO()
+            ToolbarAction.Touch -> TODO()
+            ToolbarAction.PageUp -> TODO()
+            ToolbarAction.PageDown -> TODO()
+            ToolbarAction.TabCount -> TODO()
+            ToolbarAction.Font -> TODO()
+            ToolbarAction.Settings -> TODO()
+            ToolbarAction.Bookmark -> TODO()
+            ToolbarAction.IconSetting -> TODO()
+            ToolbarAction.VerticalLayout -> TODO()
+            ToolbarAction.ReaderMode -> TODO()
+            ToolbarAction.BoldFont -> TODO()
+            ToolbarAction.IncreaseFont -> TODO()
+            ToolbarAction.DecreaseFont -> TODO()
+            ToolbarAction.FullScreen -> TODO()
+            ToolbarAction.Forward -> TODO()
+            ToolbarAction.RotateScreen -> TODO()
+            ToolbarAction.Translation -> TODO()
+            ToolbarAction.CloseTab -> TODO()
+            ToolbarAction.InputUrl -> TODO()
+            ToolbarAction.NewTab -> TODO()
+            ToolbarAction.Desktop -> TODO()
+        }
+    }
 
     private lateinit var overviewDialogController: OverviewDialogController
 
@@ -900,6 +938,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
         updateDesktopIcon()
 
         toolbarViewController.reorderIcons()
+        composeToolbarViewController.reorderIcons()
         // strange crash on my device. register later
         runOnUiThread {
             config.registerOnSharedPreferenceChangeListener(preferenceChangeListener)
