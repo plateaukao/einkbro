@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.view.Gravity
 import android.view.Window
 import android.view.WindowManager
+import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,14 +20,14 @@ import de.baumann.browser.preference.ConfigManager
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-open class ComposeDialogFragment(): DialogFragment(), KoinComponent {
+open class ComposeDialogFragment: AppCompatDialogFragment(), KoinComponent {
     protected val config: ConfigManager by inject()
 
     protected fun setupDialog() {
         dialog?.apply {
             setStyle(STYLE_NO_TITLE, R.style.ComposeDialog)
             requestWindowFeature(Window.FEATURE_NO_TITLE)
-            window?.setGravity(if (config.isToolbarOnTop) Gravity.CENTER else Gravity.BOTTOM)
+            window?.setGravity((if (config.isToolbarOnTop) Gravity.CENTER else Gravity.BOTTOM) or Gravity.RIGHT)
             window?.setBackgroundDrawableResource(R.drawable.background_with_border_margin)
             window?.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
         }
@@ -44,7 +45,7 @@ fun HorizontalSeparator() {
     Spacer(
         modifier = Modifier
             .fillMaxWidth()
-            .height(1.dp)
+            .height(0.5.dp)
             .background(color = MaterialTheme.colors.onBackground)
     )
 }

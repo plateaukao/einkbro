@@ -37,6 +37,7 @@ import android.widget.TextView.OnEditorActionListener
 import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.viewModels
+import androidx.compose.ui.platform.ComposeView
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentActivity
@@ -65,11 +66,8 @@ import de.baumann.browser.view.GestureType.*
 import de.baumann.browser.view.GestureType.CloseTab
 import de.baumann.browser.view.adapter.CompleteAdapter
 import de.baumann.browser.view.dialog.*
-import de.baumann.browser.view.dialog.compose.FastToggleDialogFragment
-import de.baumann.browser.view.dialog.compose.MenuDialogFragment
-import de.baumann.browser.view.dialog.compose.MenuItemType
+import de.baumann.browser.view.dialog.compose.*
 import de.baumann.browser.view.dialog.compose.MenuItemType.*
-import de.baumann.browser.view.dialog.compose.ToolbarConfigDialogFragment
 import de.baumann.browser.view.viewControllers.OverviewDialogController
 import de.baumann.browser.view.viewControllers.ToolbarViewController
 import de.baumann.browser.view.viewControllers.TouchAreaViewController
@@ -1128,6 +1126,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
     private fun showFastToggleDialog() {
         if (!this::ninjaWebView.isInitialized) return
 
+//        FastToggleDialog(this ) {
+//            ninjaWebView.initPreferences()
+//            ninjaWebView.reload()
+//        }.show()
         FastToggleDialogFragment {
             ninjaWebView.initPreferences()
             ninjaWebView.reload()

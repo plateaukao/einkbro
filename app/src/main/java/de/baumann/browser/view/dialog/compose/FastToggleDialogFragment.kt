@@ -1,12 +1,16 @@
 package de.baumann.browser.view.dialog.compose
 
-import android.app.Dialog
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material.Checkbox
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,6 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.fragment.app.FragmentManager
 import com.google.accompanist.appcompattheme.AppCompatTheme
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.preference.ConfigManager
@@ -37,11 +42,15 @@ class FastToggleDialogFragment(
             }
         }
     }
+
+    override fun show(manager: FragmentManager, tag: String?) {
+        super.show(manager, tag)
+    }
 }
 
 @Composable
 fun FastToggleItemList(config: ConfigManager? = null, onClicked: ((Boolean) -> Unit)) {
-    Column {
+    Column(modifier = Modifier.width(IntrinsicSize.Max)) {
         ToggleItem(state = config?.isIncognitoMode ?: false, titleResId = R.string.setting_title_incognito, iconResId=R.drawable.ic_incognito) {
             config?.let { it.isIncognitoMode = it.isIncognitoMode.not() }
             onClicked(true)
@@ -95,7 +104,7 @@ fun ToggleItem(
 
     Row(
         modifier = Modifier
-            .wrapContentWidth()
+            .width(IntrinsicSize.Max)
             .height(46.dp)
             .padding(8.dp)
             .clickable {
@@ -118,7 +127,7 @@ fun ToggleItem(
         )
         Spacer(modifier = Modifier.width(6.dp).fillMaxHeight())
         Text(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.wrapContentWidth(),
             text = stringResource(id = titleResId),
             fontSize = 18.sp,
             color = MaterialTheme.colors.onBackground

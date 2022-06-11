@@ -62,10 +62,11 @@ enum class MenuItemType {
 @Composable
 private fun MenuItems(hasWhiteBkd: Boolean, boldFont: Boolean, onClicked: (MenuItemType)-> Unit) {
     Column (
-        modifier = Modifier.wrapContentHeight()
+        modifier = Modifier.wrapContentHeight().width(IntrinsicSize.Max).padding(10.dp),
+        horizontalAlignment = Alignment.End
    ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.wrapContentWidth(),
             horizontalArrangement = Arrangement.End
         ) {
             MenuItem(R.string.menu_quickToggle, R.drawable.ic_quick_toggle) { onClicked (QuickToggle) }
@@ -75,7 +76,7 @@ private fun MenuItems(hasWhiteBkd: Boolean, boldFont: Boolean, onClicked: (MenuI
         }
         HorizontalSeparator()
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.wrapContentWidth(),
             horizontalArrangement = Arrangement.End
         ) {
             MenuItem(R.string.split_screen, R.drawable.ic_split_screen) { onClicked(SplitScreen) }
@@ -87,7 +88,7 @@ private fun MenuItems(hasWhiteBkd: Boolean, boldFont: Boolean, onClicked: (MenuI
         }
         HorizontalSeparator()
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.wrapContentWidth(),
             horizontalArrangement = Arrangement.End
         ) {
             MenuItem(R.string.menu_receive, R.drawable.ic_receive) { onClicked(ReceiveData) }
@@ -99,7 +100,7 @@ private fun MenuItems(hasWhiteBkd: Boolean, boldFont: Boolean, onClicked: (MenuI
         }
         HorizontalSeparator()
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.wrapContentWidth(),
             horizontalArrangement = Arrangement.End
         ) {
             MenuItem(R.string.menu_fav, R.drawable.ic_home) { onClicked(SetHome) }
@@ -110,7 +111,7 @@ private fun MenuItems(hasWhiteBkd: Boolean, boldFont: Boolean, onClicked: (MenuI
         }
         HorizontalSeparator()
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.wrapContentWidth(),
             horizontalArrangement = Arrangement.End
         ) {
             MenuItem(R.string.font_size, R.drawable.icon_size) { onClicked(FontSize) }
@@ -133,30 +134,26 @@ private fun MenuItem(
 ) {
     Column(
         modifier = Modifier
-            .width(46.dp)
+            .width(50.dp)
             .wrapContentHeight()
-            .padding(vertical = 3.dp)
-            .clickable {
-                onClicked()
-            },
+            .clickable { onClicked() },
     ) {
         Icon(
             painter = painterResource(id = iconResId), contentDescription = null,
             modifier = Modifier
-                .width(46.dp)
-                .height(46.dp)
-                .padding(top = 2.dp, start=8.dp, end=8.dp)
-                .fillMaxHeight(),
+                .width(50.dp)
+                .height(50.dp)
+                .padding(top = 2.dp, start=8.dp, end=8.dp),
             tint = MaterialTheme.colors.onBackground
         )
         Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .wrapContentHeight(),
+                .height(26.dp),
             text = stringResource(id = titleResId),
             textAlign = TextAlign.Center,
             maxLines = 2,
-            fontSize = 8.sp,
+            fontSize = 10.sp,
             color = MaterialTheme.colors.onBackground
         )
     }
