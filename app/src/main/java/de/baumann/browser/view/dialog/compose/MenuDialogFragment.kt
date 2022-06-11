@@ -13,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -134,9 +135,12 @@ private fun MenuItem(
     iconResId: Int,
     onClicked: ()-> Unit
 ) {
+    val configuration = LocalConfiguration.current
+    val width = if (configuration.screenWidthDp > 500) 55.dp else 45.dp
+    val fontSize = if (configuration.screenWidthDp > 500) 10.dp else 8.dp
     Column(
         modifier = Modifier
-            .width(45.dp)
+            .width(width)
             .height(68.dp)
             .clickable { onClicked() },
         horizontalAlignment = Alignment.CenterHorizontally
