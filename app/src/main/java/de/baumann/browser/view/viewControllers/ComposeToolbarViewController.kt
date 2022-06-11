@@ -3,6 +3,7 @@ package de.baumann.browser.view.viewControllers
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.compose.ui.platform.ComposeView
+import com.google.accompanist.appcompattheme.AppCompatTheme
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.view.compose.ComposedToolbar
 import de.baumann.browser.view.toolbaricons.ToolbarAction
@@ -16,11 +17,25 @@ class ComposeToolbarViewController(
 ): KoinComponent {
     private val config: ConfigManager by inject()
 
+    private var title: String = ""
+
+    private var tabCount: String = ""
+
+    private var isLoading: Boolean = false
+
     fun isDisplayed(): Boolean = composeView.visibility == VISIBLE
 
     fun show() = toggleIconsOnOmnibox(true)
 
     fun hide() = toggleIconsOnOmnibox(false)
+
+    fun updateTabCount(text: String) {
+        tabCount = text
+    }
+
+    fun updateRefresh(isLoadingWeb: Boolean) {
+        isLoading = isLoadingWeb
+    }
 
     private val readerToolbarActions: List<ToolbarAction> = listOf(
             ToolbarAction.RotateScreen,
@@ -34,17 +49,25 @@ class ComposeToolbarViewController(
     )
 
     fun setEpubReaderMode() {
-        reorderIcons(readerToolbarActions)
+        updateIcons(readerToolbarActions)
     }
 
-    fun reorderIcons(list: List<ToolbarAction>? = null) {
-
+    fun updateIcons(list: List<ToolbarAction>? = null) {
         val iconEnums = list ?: config.toolbarActions
-        if (iconEnums.isNotEmpty()) {
-            composeView.setContent {
-                ComposedToolbar(iconEnums, "Hi, title",
-                    onClick = {},
-                    onLongClick = {}
+        if (iconEnums.isNullOrEmpty()) return
+
+        composeView.setContent {
+            AppCompatTheme {
+                ComposedToolbar(iconEnums,
+                    title = title,
+                    tabCount = tabCount,
+                    enableTouch =  config.enableTouchTurn,
+                    isIncognito = config.isIncognitoMode,
+                    isDesktopMode = config.desktop,
+                    isBoldFont = config.boldFontStyle,
+                    isLoading = isLoading,
+                    onClick = onItemClick,
+                    onLongClick = onItemLongClick
                 )
             }
         }
@@ -52,5 +75,10 @@ class ComposeToolbarViewController(
 
     private fun toggleIconsOnOmnibox(shouldShow: Boolean) {
         composeView.visibility = if (shouldShow) VISIBLE else GONE
+    }
+
+    fun updateTitle(title: String) {
+        this.title = title
+        updateIcons()
     }
 }
