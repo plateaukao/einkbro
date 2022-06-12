@@ -1,3 +1,123 @@
+### 9.0.0
+#### Feature
+* Add javascript toggle in Quick Toggle setting screen
+* Enhance Quick Toggle setting screen
+* Add favicon to Bookmark list
+* Enhance Tab Preview bottom bar
+* Enhance Bookmark list UI
+
+### 8.36.0
+#### Enhancement
+* Support Sharing link between two EinkBro App in different devices
+
+#### Issue fix
+* Crash when loading a long web page
+
+### Feature
+* **Receive data** and **Send link**
+!(https://user-images.githubusercontent.com/4084738/169814052-6de1f7c4-7c86-4ce9-8eec-9f4449e1b9f9.png)
+Receive data can receive data from another EinkBro or Sharik APP on another device that is also refactored by me https://github.com/plateaukao/sharik
+
+### 8.35.0
+#### Enhancement
+* Add recently used bookmark items in new tab (can be enabled in Settings)
+* Support installing app after downloading apk file
+
+### 8.34.1
+#### Issue fix
+Fixed bluetooth up/down key page navigation fail issue
+
+#### Feature
+* Add navigation back icon on Setting screen
+
+### 8.34.0
+#### Issue fix
+* Crash when epub file cannot be opened
+
+#### Feat: 
+* Add file size to epub list in open save epub dialogs
+
+## something wrong with previous app-release.apk, so I re-compiled it and uploaded again.
+
+### 8.33.0
+#### Enhancement
+* Long press font size button to configure font type
+* Update string translation
+* Pause WebView logic when App is not in foreground
+
+### 8.32.0
+#### Translation
+* Update Chinese translations (Thanks to @xBcai)
+
+#### Enhancement
+* Update user-agent handlings to have newer browser version
+* Hide dark mode configuration for lower version
+* Open last article when opening an epub file that's just saved a new article
+* Long press on font size button on toolbar to configure font type
+
+#### Contributors
+!(https://avatars.githubusercontent.com/u/66826351?s=64&v=4) xBcai
+
+### 8.31.0
+#### Feature
+* Support toolbar on top (option in Settings -> Behavior/UI)
+* Enable VI key bindings (option in Settings -> Bhavior/UI)
+
+### 8.30.1
+#### Enhancement
+* Hand made white background active icon
+* Two finger gesture co-work with zooming feature
+
+#### Issue fix
+* Hide toolbar when reading an epub file
+
+#### Feature
+* Add desktop mode button in toolbar
+
+### 8.30.0
+#### Feature
+* Support non http/https url to be opened by system
+* Add quick toggle icon in menu
+
+#### Enhancement
+* Enhance bold font icon
+* Enhance white background icon
+
+### 8.29.2
+#### Issue fixing
+* Fix sometimes touch area not working
+* Fix crash when epub file can't be opened sometimes
+
+#### Enhancement
+* Put bookmark list icon in default toolbar actions
+* Now multi-touch gesture can work after configure it in Settings
+
+### 8.29.1
+#### Issue fix
+* Long press on link, no pupup window is displayed.
+
+### 8.29.0
+#### Feature
+* Better tab count button UI
+* Finetune epub reader TOC list UI
+
+#### Issue fixing
+
+* Fix touch area hint always displayed when changing configuration
+* Fix saved tab list does not have up-to-date url
+
+### 8.28.0
+#### Feature
+* Add local font support in Setting -> Font -> Font Type
+* Add **show bookmark** action in gesture
+* Fine tune translation dialog logic
+* Separate toolbar configuration for portrait and landscape
+* Open epub file in EinkBro
+
+### 8.27.1
+#### Fix
+* Long press click not working, when two finger touch is enabled...
+
 ### 8.27.0
 #### enhancement
 * improve save epub process: now you can select previously saved epub file easily.
@@ -21,7 +141,7 @@
 * Add better translate feature: Google in Place
 * Add shortcut to long press App icon, to launch only favorite url (when sometimes saved tabs have problem)
 * Add Translate button in menu, for easier access
-* 
+
 #### Fix
 * fix search keyword parsing issue
 * fix bold font feature causes tab preview title becomes blank.
