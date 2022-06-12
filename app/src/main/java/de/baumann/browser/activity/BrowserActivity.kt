@@ -631,8 +631,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
         val fabResourceId = if (config.enableTouchTurn) R.drawable.icon_overflow_fab else R.drawable.ic_touch_disabled
         fabImageButtonNav.setImageResource(fabResourceId)
         composeToolbarViewController.updateIcons()
-//        val touchResourceId = if (config.enableTouchTurn) R.drawable.ic_touch_enabled else R.drawable.ic_touch_disabled
-//        binding.omniboxTouch.setImageResource(touchResourceId)
     }
 
     // Methods
@@ -1024,7 +1022,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
 
     private fun openHistoryPage(amount: Int = 0) = overviewDialogController.openHistoryPage(amount)
 
-    //private fun openBookmarkPage() = overviewDialogController.openBookmarkPage()
     private fun openBookmarkPage() = BookmarkListDialog(
             this,
             lifecycleScope,
@@ -1088,10 +1085,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
     private fun showFastToggleDialog() {
         if (!this::ninjaWebView.isInitialized) return
 
-//        FastToggleDialog(this ) {
-//            ninjaWebView.initPreferences()
-//            ninjaWebView.reload()
-//        }.show()
         FastToggleDialogFragment {
             ninjaWebView.initPreferences()
             ninjaWebView.reload()
