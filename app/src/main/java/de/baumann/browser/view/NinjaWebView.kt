@@ -482,7 +482,8 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
     fun toggleReaderMode(isVertical: Boolean = false, getRawTextAction: ((String) -> Unit)? = null) {
         isReaderModeOn = !isReaderModeOn
         if (isReaderModeOn) {
-            injectMozReaderModeJs(isVertical)
+            //injectMozReaderModeJs(isVertical)
+            evaluateMozReaderModeJs(isVertical)
             val getRawTextJs = if (getRawTextAction != null) " return document.getElementsByTagName('html')[0].innerText; " else ""
             evaluateJavascript("(function() { $replaceWithReaderModeBodyJs $getRawTextJs })();", getRawTextAction)
         } else {
@@ -501,12 +502,23 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
             ""
         }
 
-        loadUrl("javascript:(function() {" +
+        evaluateJavascript("javascript:(function() {" +
                 "document.body.innerHTML = document.innerHTMLCache;" +
                 "document.body.classList.remove(\"mozac-readerview-body\");" +
                 verticalCssString +
                 "window.scrollTo(0, 0);" +
-                "})()")
+                "})()", null)
+    }
+
+    private fun evaluateMozReaderModeJs(isVertical: Boolean = false) {
+        val cssByteArray = getByteArrayFromAsset(if (isVertical) "verticalReaderview.css" else "readerview.css")
+        injectCss(cssByteArray)
+        if (isVertical) injectCss(verticalLayoutCss.toByteArray())
+
+        val jsString = getStringFromAsset("MozReadability.js")
+        evaluateJavascript(jsString) {
+            evaluateJavascript("javascript:(function() { window.scrollTo(0, 0); })()", null)
+        }
     }
 
     private fun injectMozReaderModeJs(isVertical: Boolean = false) {
@@ -523,10 +535,11 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
                 ""
             }
 
+
             // String-ify the script byte-array using BASE64 encoding !!!
             val encodedJs = Base64.encodeToString(buffer, Base64.NO_WRAP)
             val encodedCss = Base64.encodeToString(cssBuffer, Base64.NO_WRAP)
-            loadUrl("javascript:(function() {" +
+            evaluateJavascript("javascript:(function() {" +
                     "var parent = document.getElementsByTagName('head').item(0);" +
                     "var script = document.createElement('script');" +
                     "script.type = 'text/javascript';" +
@@ -538,7 +551,7 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
                     "parent.appendChild(style);" +
                     verticalCssString +
                     "window.scrollTo(0, 0);" +
-                    "})()")
+                    "})()", null)
 
         } catch (e: IOException) {
             // TODO Auto-generated catch block
@@ -573,22 +586,8 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
         }
     }
 
-    /*
-    private fun injectJavascript(bytes: ByteArray) {
-        try {
-            val encoded = Base64.encodeToString(bytes, Base64.NO_WRAP)
-            loadUrl("javascript:(function() {" +
-                    "var parent = document.getElementsByTagName('head').item(0);" +
-                    "var script = document.createElement('script');" +
-                    "script.type = 'text/javascript';" +
-                    "script.innerHTML = window.atob('" + encoded + "');" +
-                    "parent.appendChild(script)" +
-                    "})()")
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-     */
+    private fun getStringFromAsset(fileName: String): String =
+        context.assets.open(fileName).bufferedReader().use { it.readText() }
 
     private fun injectCss(bytes: ByteArray) {
         try {
