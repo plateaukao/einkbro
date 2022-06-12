@@ -1,9 +1,7 @@
 package de.baumann.browser.view.dialog.compose
 
-import android.app.Dialog
 import android.os.Bundle
 import android.view.*
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
@@ -20,22 +18,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.fragment.app.FragmentManager
 import com.google.accompanist.appcompattheme.AppCompatTheme
-import com.google.android.gms.tasks.Continuation
 import de.baumann.browser.Ninja.R
-import de.baumann.browser.preference.ConfigManager
-import de.baumann.browser.unit.ViewUnit.dp
 import de.baumann.browser.view.dialog.compose.MenuItemType.*
-import java.io.Reader
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 class MenuDialogFragment(
     private val itemClicked: (MenuItemType) -> Unit
 ): ComposeDialogFragment(){
-    private var clickedItem = Canceled
-
     lateinit var composeView: ComposeView
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         setupDialog()
@@ -137,7 +126,7 @@ private fun MenuItem(
 ) {
     val configuration = LocalConfiguration.current
     val width = if (configuration.screenWidthDp > 500) 55.dp else 45.dp
-    val fontSize = if (configuration.screenWidthDp > 500) 10.dp else 8.dp
+    val fontSize = if (configuration.screenWidthDp > 500) 10.sp else 8.sp
     Column(
         modifier = Modifier
             .width(width)
@@ -148,19 +137,21 @@ private fun MenuItem(
         Icon(
             painter = painterResource(id = iconResId), contentDescription = null,
             modifier = Modifier
-                .width(40.dp)
-                .height(40.dp)
-                .padding(top = 5.dp, start=8.dp, end=8.dp),
+                .width(44.dp)
+                .height(44.dp)
+                .padding(horizontal = 6.dp),
             tint = MaterialTheme.colors.onBackground
         )
         Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(30.dp).padding(2.dp),
+                .height(32.dp)
+                .padding(2.dp)
+                .offset(y = (-5).dp),
             text = stringResource(id = titleResId),
             textAlign = TextAlign.Center,
             maxLines = 2,
-            fontSize = 8.sp,
+            fontSize = fontSize,
             color = MaterialTheme.colors.onBackground
         )
     }
