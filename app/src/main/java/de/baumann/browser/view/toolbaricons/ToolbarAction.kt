@@ -2,11 +2,15 @@ package de.baumann.browser.view.toolbaricons
 
 import de.baumann.browser.Ninja.R
 
-enum class ToolbarAction(val iconResId: Int = 0, val titleResId: Int) {
+enum class ToolbarAction(
+    val iconResId: Int = 0,
+    val titleResId: Int,
+    val iconActiveInfo: IconActiveInfo = IconActiveInfo(isActivable = false),
+) {
     Title(iconResId = R.drawable.icon_info, titleResId = R.string.toolbar_title), // 0
     Back(iconResId = R.drawable.icon_arrow_left_gest, titleResId = R.string.back),
-    Refresh(iconResId = R.drawable.icon_refresh, titleResId = R.string.refresh),
-    Touch(iconResId = R.drawable.ic_touch_enabled, titleResId = R.string.touch_turn_page),
+    Refresh(iconResId = R.drawable.icon_refresh, titleResId = R.string.refresh, iconActiveInfo = IconActiveInfo(true, R.drawable.ic_stop, R.drawable.icon_refresh)),
+    Touch(iconResId = R.drawable.ic_touch_enabled, titleResId = R.string.touch_turn_page,  iconActiveInfo = IconActiveInfo(true,  R.drawable.ic_touch_enabled,  R.drawable.ic_touch_disabled)),
     PageUp(iconResId = R.drawable.ic_page_up, titleResId = R.string.page_up),
     PageDown(iconResId = R.drawable.ic_page_down, titleResId = R.string.page_down),
     TabCount(iconResId = R.drawable.icon_preview, titleResId = R.string.tab_preview),
@@ -16,7 +20,7 @@ enum class ToolbarAction(val iconResId: Int = 0, val titleResId: Int) {
     IconSetting(iconResId = R.drawable.ic_toolbar, titleResId = R.string.toolbars),
     VerticalLayout(iconResId = R.drawable.ic_vertical_read, titleResId = R.string.vertical_read),
     ReaderMode(iconResId = R.drawable.ic_reader, titleResId = R.string.reader_mode),
-    BoldFont(iconResId = R.drawable.ic_bold_font, titleResId = R.string.bold_font),
+    BoldFont(iconResId = R.drawable.ic_bold_font, titleResId = R.string.bold_font, iconActiveInfo = IconActiveInfo(true, R.drawable.ic_bold_font_active,  R.drawable.ic_bold_font)),
     IncreaseFont(iconResId = R.drawable.ic_font_increase, titleResId = R.string.font_size_increase),
     DecreaseFont(iconResId = R.drawable.ic_font_decrease, titleResId = R.string.font_size_decrease),
     FullScreen(iconResId = R.drawable.icon_fullscreen, titleResId = R.string.fullscreen),
@@ -26,7 +30,7 @@ enum class ToolbarAction(val iconResId: Int = 0, val titleResId: Int) {
     CloseTab(iconResId = R.drawable.icon_close, titleResId = R.string.close_tab),
     InputUrl(iconResId = R.drawable.ic_input_url, titleResId = R.string.input_url),
     NewTab(iconResId = R.drawable.icon_plus, titleResId = R.string.open_new_tab),
-    Desktop(iconResId = R.drawable.icon_desktop, titleResId = R.string.desktop_mode);
+    Desktop(iconResId = R.drawable.icon_desktop, titleResId = R.string.desktop_mode, iconActiveInfo = IconActiveInfo(true,  R.drawable.icon_desktop_activate,  R.drawable.icon_desktop));
 
     companion object {
         fun fromOrdinal(value: Int) = values().first { it.ordinal == value }
@@ -42,4 +46,25 @@ enum class ToolbarAction(val iconResId: Int = 0, val titleResId: Int) {
                 Settings,
         )
     }
+
+    fun getCurrentResId(state: Boolean): Int =
+        if (iconActiveInfo.isActivable) {
+            if (state) iconActiveInfo.activeResId else iconActiveInfo.inactiveResId
+        } else {
+            iconResId
+        }
+}
+
+data class IconActiveInfo(
+    val isActivable: Boolean = false,
+    val activeResId: Int = 0,
+    val inactiveResId: Int =0,
+)
+
+// a data class to wrap a state in it
+class ToolbarActionInfo(
+    val toolbarAction: ToolbarAction,
+    var state: Boolean = false
+) {
+    fun getCurrentResId(): Int = toolbarAction.getCurrentResId(state)
 }

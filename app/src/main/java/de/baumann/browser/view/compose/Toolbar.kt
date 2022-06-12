@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalFoundationApi::class, ExperimentalFoundationApi::class)
+@file:OptIn(ExperimentalFoundationApi::class)
 
 package de.baumann.browser.view.compose
 
@@ -21,18 +21,15 @@ import com.google.accompanist.appcompattheme.AppCompatTheme
 import de.baumann.browser.view.toolbaricons.ToolbarAction
 import de.baumann.browser.view.toolbaricons.ToolbarAction.*
 import de.baumann.browser.Ninja.R
+import de.baumann.browser.view.toolbaricons.ToolbarActionInfo
 
 
 @Composable
 fun ComposedToolbar(
-    toolbarActions: List<ToolbarAction>,
+    toolbarActionInfos: List<ToolbarActionInfo>,
     title: String,
     tabCount: String,
-    enableTouch: Boolean,
     isIncognito: Boolean,
-    isDesktopMode: Boolean,
-    isBoldFont: Boolean,
-    isLoading: Boolean,
     isReader: Boolean,
     onClick: (ToolbarAction)->Unit,
     onLongClick:((ToolbarAction)->Unit)? = null,
@@ -44,8 +41,8 @@ fun ComposedToolbar(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.End
     ) {
-        toolbarActions.forEach { toolbarAction ->
-            when(toolbarAction) {
+        toolbarActionInfos.forEach { toolbarActionInfo ->
+            when(val toolbarAction = toolbarActionInfo.toolbarAction) {
                 Title ->
                     Text(
                         modifier = Modifier
@@ -54,91 +51,36 @@ fun ComposedToolbar(
                             .clickable { onClick(toolbarAction) },
                         text = title
                     )
-                BoldFont ->
-                    ActivableIcon(
-                        isActivated = isBoldFont,
-                        onResId = R.drawable.ic_bold_font_active,
-                        offResId = R.drawable.ic_bold_font,
-                        onClick = { onClick(toolbarAction) },
-                        onLongClick = { onLongClick?.invoke(toolbarAction) }
-                    )
-                Refresh ->
-                    ActivableIcon(
-                        isActivated = isLoading,
-                        onResId = R.drawable.ic_stop,
-                        offResId = toolbarAction.iconResId,
-                        onClick = { onClick(toolbarAction) },
-                        onLongClick = { onLongClick?.invoke(toolbarAction) }
-                    )
-                Desktop ->
-                    ActivableIcon(
-                        isActivated = isDesktopMode,
-                        onResId = R.drawable.icon_desktop_activate,
-                        offResId = toolbarAction.iconResId,
-                        onClick = { onClick(toolbarAction) },
-                        onLongClick = { onLongClick?.invoke(toolbarAction) }
-                    )
-                Touch ->
-                    ActivableIcon(
-                        isActivated = enableTouch,
-                        onResId = R.drawable.ic_touch_enabled,
-                        offResId = R.drawable.ic_touch_disabled,
-                        onClick = { onClick(toolbarAction) },
-                        onLongClick = { onLongClick?.invoke(toolbarAction) }
-                    )
                 TabCount ->
-                    if (!isReader)
-                    TabCountIcon(
+                    if (!isReader) TabCountIcon(
                         isIncognito = isIncognito,
                         count = tabCount,
                         onClick = { onClick(toolbarAction) },
                         onLongClick = { onLongClick?.invoke(toolbarAction) }
-                    )
-                    else
-                        ToolbarIcon(
-                            iconResId = R.drawable.ic_toc,
-                            onClick = { onClick(toolbarAction) },
-                            onLongClick = { onLongClick?.invoke(toolbarAction) }
-                        )
-                else ->
-                    ToolbarIcon(
-                        iconResId = toolbarAction.iconResId,
-                        onClick = { onClick(toolbarAction) },
-                        onLongClick = { onLongClick?.invoke(toolbarAction) }
-                    )
+                    ) else ToolbarIcon(toolbarActionInfo, onClick, onLongClick)
+                else -> ToolbarIcon(toolbarActionInfo, onClick, onLongClick)
             }
         }
     }
 }
 
 @Composable
-fun ActivableIcon(
-    isActivated: Boolean,
-    onResId: Int,
-    offResId: Int,
-    onClick: ()->Unit,
-    onLongClick:(()->Unit)? = null,
-) {
-    val resId = if (isActivated) onResId else offResId
-    ToolbarIcon(iconResId = resId, onClick = onClick, onLongClick = onLongClick)
-}
-
-@Composable
 fun ToolbarIcon(
-    iconResId: Int,
-    onClick: ()->Unit,
-    onLongClick:(()->Unit)? = null,
+    toolbarActionInfo: ToolbarActionInfo,
+    onClick: (ToolbarAction)->Unit,
+    onLongClick:((ToolbarAction)->Unit)? = null,
 ) {
+    val toolbarAction = toolbarActionInfo.toolbarAction
     Icon(
         modifier = Modifier
             .fillMaxHeight()
             .width(46.dp)
             .combinedClickable(
-                onClick = onClick,
-                onLongClick = onLongClick
+                onClick = { onClick(toolbarAction) },
+                onLongClick = { onLongClick?.invoke(toolbarAction) }
             )
             .padding(12.dp),
-        painter = painterResource(id = iconResId),
+        painter = painterResource(id = toolbarActionInfo.getCurrentResId()),
         contentDescription = null,
         tint = MaterialTheme.colors.onSurface
     )
@@ -162,14 +104,14 @@ private fun TabCountIcon(
     ) {
         Text(
             modifier = Modifier
-                .height(30.dp)
-                .width(30.dp)
+                .height(28.dp)
+                .width(28.dp)
                 .border(
                     width = thickness,
                     color = MaterialTheme.colors.onBackground,
                     RoundedCornerShape(7.dp)
                 )
-                .padding(top = 3.dp),
+                .padding(top = 2.dp),
             text = count,
             textAlign = TextAlign.Center,
             fontSize = 16.sp,
@@ -191,14 +133,10 @@ fun previewTabCount() {
 fun previewToolbar() {
     AppCompatTheme {
         ComposedToolbar(
-            toolbarActions = values().toList(),
+            toolbarActionInfos = ToolbarAction.values().map {ToolbarActionInfo(it, false)},
             "hihi",
             tabCount = "1",
-            enableTouch =  true,
             isIncognito = true,
-            isDesktopMode = true,
-            isBoldFont = true,
-            isLoading = false,
             isReader = true,
             { },
         )

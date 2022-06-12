@@ -3,11 +3,15 @@ package de.baumann.browser.view.viewControllers
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.platform.ComposeView
 import com.google.accompanist.appcompattheme.AppCompatTheme
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.view.compose.ComposedToolbar
 import de.baumann.browser.view.toolbaricons.ToolbarAction
+import de.baumann.browser.view.toolbaricons.ToolbarAction.*
+import de.baumann.browser.view.toolbaricons.ToolbarActionInfo
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -47,14 +51,14 @@ class ComposeToolbarViewController(
     }
 
     private val readerToolbarActions: List<ToolbarAction> = listOf(
-            ToolbarAction.RotateScreen,
-            ToolbarAction.FullScreen,
-            ToolbarAction.BoldFont,
-            ToolbarAction.Font,
-            ToolbarAction.Touch,
-            ToolbarAction.TabCount,
-            ToolbarAction.Settings,
-            ToolbarAction.CloseTab,
+            RotateScreen,
+            FullScreen,
+            BoldFont,
+            Font,
+            Touch,
+            TabCount,
+            Settings,
+            CloseTab,
     )
 
     fun setEpubReaderMode() {
@@ -68,18 +72,26 @@ class ComposeToolbarViewController(
 
         composeView.setContent {
             AppCompatTheme {
-                ComposedToolbar(iconEnums,
+                ComposedToolbar(iconEnums.toToolbarActionInfoList(),
                     title = title,
                     tabCount = tabCount,
-                    enableTouch =  config.enableTouchTurn,
                     isIncognito = config.isIncognitoMode,
-                    isDesktopMode = config.desktop,
-                    isBoldFont = config.boldFontStyle,
-                    isLoading = isLoading,
                     isReader = isReader,
                     onClick = onItemClick,
                     onLongClick = onItemLongClick
                 )
+            }
+        }
+    }
+
+    private fun List<ToolbarAction>.toToolbarActionInfoList(): List<ToolbarActionInfo>  {
+        return this.map { toolbarAction ->
+            when(toolbarAction) {
+                BoldFont -> ToolbarActionInfo(toolbarAction, config.boldFontStyle)
+                Refresh -> ToolbarActionInfo(toolbarAction,isLoading)
+                Desktop -> ToolbarActionInfo(toolbarAction, config.desktop)
+                Touch -> ToolbarActionInfo(toolbarAction, config.enableTouchTurn)
+                else -> ToolbarActionInfo(toolbarAction, false)
             }
         }
     }
