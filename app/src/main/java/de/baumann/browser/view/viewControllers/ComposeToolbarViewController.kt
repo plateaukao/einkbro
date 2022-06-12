@@ -2,6 +2,7 @@ package de.baumann.browser.view.viewControllers
 
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.platform.ComposeView
 import com.google.accompanist.appcompattheme.AppCompatTheme
 import de.baumann.browser.preference.ConfigManager
@@ -30,11 +31,17 @@ class ComposeToolbarViewController(
     fun hide() = toggleIconsOnOmnibox(false)
 
     fun updateTabCount(text: String) {
+        if (tabCount == text) return
+
         tabCount = text
+        updateIcons()
     }
 
     fun updateRefresh(isLoadingWeb: Boolean) {
+        if (isLoadingWeb == isLoading) return
+
         isLoading = isLoadingWeb
+        updateIcons()
     }
 
     private val readerToolbarActions: List<ToolbarAction> = listOf(
@@ -78,6 +85,8 @@ class ComposeToolbarViewController(
     }
 
     fun updateTitle(title: String) {
+        if (this.title == title) return
+
         this.title = title
         updateIcons()
     }

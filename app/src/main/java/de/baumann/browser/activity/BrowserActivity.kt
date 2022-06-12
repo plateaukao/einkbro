@@ -1226,7 +1226,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
         val subScript = browserContainer.size()
         val superScript = browserContainer.indexOf(currentAlbumController) + 1
         composeToolbarViewController.updateTabCount(createWebViewCountString(superScript, subScript))
-        composeToolbarViewController.updateIcons()
     }
 
     private fun updateAlbum(url: String?) {
