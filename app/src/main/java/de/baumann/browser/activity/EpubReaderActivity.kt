@@ -8,6 +8,7 @@ import de.baumann.browser.epub.EpubReaderListener
 import de.baumann.browser.epub.EpubReaderView
 import de.baumann.browser.unit.BrowserUnit
 import de.baumann.browser.view.NinjaWebView
+import de.baumann.browser.view.toolbaricons.ToolbarAction
 import kotlinx.coroutines.launch
 
 class EpubReaderActivity: BrowserActivity() {
@@ -20,18 +21,19 @@ class EpubReaderActivity: BrowserActivity() {
     }
 
     private fun initUI() {
-        // TODO: compose
-//        with (binding.omniboxTabcount) {
-//            text = ""
-//            setBackgroundResource(R.drawable.ic_toc)
-//            setOnClickListener { epubReader.showTocDialog() }
-//        }
-
         composeToolbarViewController.setEpubReaderMode()
         hideOverview()
     }
 
-    override fun dispatchIntent(intent: Intent) {
+    override fun onToolActionClick(toolbarAction: ToolbarAction) {
+        if (toolbarAction == ToolbarAction.TabCount) {
+            epubReader.showTocDialog()
+            return
+        }
+        super.onToolActionClick(toolbarAction)
+    }
+
+        override fun dispatchIntent(intent: Intent) {
         val epubUri= intent.data ?: return
         val shouldGotoLastChapter = intent.getBooleanExtra(ARG_TO_LAST_CHAPTER, false)
 

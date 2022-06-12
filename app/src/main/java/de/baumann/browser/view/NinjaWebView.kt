@@ -441,11 +441,10 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
     // only works in isReadModeOn
     suspend fun getRawText() = suspendCoroutine<String> { continuation ->
         if (!isReaderModeOn) {
-            injectMozReaderModeJs(false)
-            evaluateJavascript(getReaderModeBodyTextJs) { text -> continuation.resume(text.substring(1, text.length - 2)) }
+            evaluateMozReaderModeJs {
+                evaluateJavascript(getReaderModeBodyTextJs) { text -> continuation.resume(text.substring(1, text.length - 2)) }
+            }
         } else {
-            //if (!isReaderModeOn) continuation.resume("")
-
             evaluateJavascript(
                     "(function() { return document.getElementsByTagName('html')[0].innerText; })();"
             ) { text ->
@@ -483,9 +482,10 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
         isReaderModeOn = !isReaderModeOn
         if (isReaderModeOn) {
             //injectMozReaderModeJs(isVertical)
-            evaluateMozReaderModeJs(isVertical)
-            val getRawTextJs = if (getRawTextAction != null) " return document.getElementsByTagName('html')[0].innerText; " else ""
-            evaluateJavascript("(function() { $replaceWithReaderModeBodyJs $getRawTextJs })();", getRawTextAction)
+            evaluateMozReaderModeJs(isVertical) {
+                val getRawTextJs = if (getRawTextAction != null) " return document.getElementsByTagName('html')[0].innerText; " else ""
+                evaluateJavascript("(function() { $replaceWithReaderModeBodyJs $getRawTextJs })();", getRawTextAction)
+            }
         } else {
             disableReaderMode(isVertical)
         }
@@ -510,7 +510,7 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
                 "})()", null)
     }
 
-    private fun evaluateMozReaderModeJs(isVertical: Boolean = false) {
+    private fun evaluateMozReaderModeJs(isVertical: Boolean = false, postAction: (()->Unit)? = null) {
         val cssByteArray = getByteArrayFromAsset(if (isVertical) "verticalReaderview.css" else "readerview.css")
         injectCss(cssByteArray)
         if (isVertical) injectCss(verticalLayoutCss.toByteArray())
@@ -518,6 +518,7 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
         val jsString = getStringFromAsset("MozReadability.js")
         evaluateJavascript(jsString) {
             evaluateJavascript("javascript:(function() { window.scrollTo(0, 0); })()", null)
+            postAction?.invoke()
         }
     }
 

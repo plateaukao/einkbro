@@ -152,7 +152,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
         }
     }
 
-    private fun onToolActionClick(toolbarAction: ToolbarAction) {
+    protected open fun onToolActionClick(toolbarAction: ToolbarAction) {
         when(toolbarAction) {
             ToolbarAction.Title -> focusOnInput()
             ToolbarAction.Back -> if (ninjaWebView.canGoBack()) {
