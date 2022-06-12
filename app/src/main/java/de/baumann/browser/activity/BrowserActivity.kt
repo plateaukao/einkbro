@@ -843,10 +843,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
             false
         })
 
-        binding.omniboxInput.onFocusChangeListener = OnFocusChangeListener { _, _ ->
+        binding.omniboxInput.onFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
             if (!this::ninjaWebView.isInitialized) return@OnFocusChangeListener
 
-            if (binding.omniboxInput.hasFocus()) {
+            if (hasFocus) {
                 if (ninjaWebView.url?.startsWith("data:") != true) {
                     binding.omniboxInput.setText(ninjaWebView.url)
                     binding.omniboxInput.setSelection(0, binding.omniboxInput.text.toString().length)
@@ -1327,6 +1327,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
     // to keep track of whether data is changed for auto completion
     private var isAutoCompleteOutdated = true
     private fun focusOnInput() {
+        binding.omniboxInput.isFocusable = true
         composeToolbarViewController.hide()
         binding.omniboxInput.requestFocus()
         binding.omniboxInput.selectAll()
@@ -1410,7 +1411,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
         }
 
         // prevent inputBox to get the focus
-        binding.omniboxInput.isEnabled = false
+        binding.omniboxInput.isFocusable = false
 
         (window.decorView as FrameLayout).removeView(fullscreenHolder)
         customView?.keepScreenOn = false
@@ -1425,8 +1426,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
         }
         requestedOrientation = originalOrientation
 
-        // re-enable inputBox after fullscreen view is removed.
-        binding.omniboxInput.isEnabled = true
         return true
     }
 

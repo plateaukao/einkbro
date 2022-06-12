@@ -49,8 +49,9 @@ fun ComposedToolbar(
                 Title ->
                     Text(
                         modifier = Modifier
-                            .padding(horizontal = 3.dp)
-                            .weight(1F),
+                            .padding(horizontal = 1.dp)
+                            .weight(1F)
+                            .clickable { onClick(toolbarAction) },
                         text = title
                     )
                 BoldFont ->
