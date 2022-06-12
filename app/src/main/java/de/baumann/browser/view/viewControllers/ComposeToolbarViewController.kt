@@ -24,6 +24,8 @@ class ComposeToolbarViewController(
 
     private var isLoading: Boolean = false
 
+    private var isReader: Boolean = false
+
     fun isDisplayed(): Boolean = composeView.visibility == VISIBLE
 
     fun show() = toggleIconsOnOmnibox(true)
@@ -56,12 +58,13 @@ class ComposeToolbarViewController(
     )
 
     fun setEpubReaderMode() {
-        updateIcons(readerToolbarActions)
+        isReader = true
+        updateIcons()
     }
 
-    fun updateIcons(list: List<ToolbarAction>? = null) {
-        val iconEnums = list ?: config.toolbarActions
-        if (iconEnums.isNullOrEmpty()) return
+    fun updateIcons() {
+        val iconEnums = if(isReader) readerToolbarActions else config.toolbarActions
+        if (iconEnums.isEmpty()) return
 
         composeView.setContent {
             AppCompatTheme {
@@ -73,6 +76,7 @@ class ComposeToolbarViewController(
                     isDesktopMode = config.desktop,
                     isBoldFont = config.boldFontStyle,
                     isLoading = isLoading,
+                    isReader = isReader,
                     onClick = onItemClick,
                     onLongClick = onItemLongClick
                 )

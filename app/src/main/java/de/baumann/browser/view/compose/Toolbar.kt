@@ -33,6 +33,7 @@ fun ComposedToolbar(
     isDesktopMode: Boolean,
     isBoldFont: Boolean,
     isLoading: Boolean,
+    isReader: Boolean,
     onClick: (ToolbarAction)->Unit,
     onLongClick:((ToolbarAction)->Unit)? = null,
 ) {
@@ -85,12 +86,19 @@ fun ComposedToolbar(
                         onLongClick = { onLongClick?.invoke(toolbarAction) }
                     )
                 TabCount ->
+                    if (!isReader)
                     TabCountIcon(
                         isIncognito = isIncognito,
                         count = tabCount,
                         onClick = { onClick(toolbarAction) },
                         onLongClick = { onLongClick?.invoke(toolbarAction) }
                     )
+                    else
+                        ToolbarIcon(
+                            iconResId = R.drawable.ic_toc,
+                            onClick = { onClick(toolbarAction) },
+                            onLongClick = { onLongClick?.invoke(toolbarAction) }
+                        )
                 else ->
                     ToolbarIcon(
                         iconResId = toolbarAction.iconResId,
@@ -190,7 +198,8 @@ fun previewToolbar() {
             isDesktopMode = true,
             isBoldFont = true,
             isLoading = false,
-            {_-> },
+            isReader = true,
+            { },
         )
     }
 }
