@@ -130,7 +130,7 @@ private fun MenuItem(
     Column(
         modifier = Modifier
             .width(width)
-            .height(68.dp)
+            .wrapContentHeight()
             .clickable { onClicked() },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -145,12 +145,13 @@ private fun MenuItem(
         Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(32.dp)
+                .height(24.dp)
                 .padding(2.dp)
                 .offset(y = (-5).dp),
             text = stringResource(id = titleResId),
             textAlign = TextAlign.Center,
             maxLines = 2,
+            lineHeight = fontSize,
             fontSize = fontSize,
             color = MaterialTheme.colors.onBackground
         )
