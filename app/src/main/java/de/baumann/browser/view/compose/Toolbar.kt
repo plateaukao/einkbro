@@ -37,7 +37,9 @@ fun ComposedToolbar(
     Row(
         modifier = Modifier
             .height(50.dp)
-            .background(MaterialTheme.colors.background),
+            .background(MaterialTheme.colors.background)
+            .horizontalScroll(rememberScrollState(), reverseScrolling = true) // default on right side
+            .clickable (enabled = false) {}, // these two lines prevent row having click action
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.End
     ) {
