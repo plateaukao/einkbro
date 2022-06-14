@@ -87,7 +87,6 @@ dependencies {
 
     implementation "androidx.room:room-runtime:2.4.2"
     implementation "androidx.room:room-ktx:2.4.2"
-    implementation 'com.google.android.gms:play-services-tasks:18.0.1'
     implementation 'androidx.compose.ui:ui:1.1.1'
     kapt 'org.xerial:sqlite-jdbc:3.36.0.2'
     kapt "androidx.room:room-compiler:2.4.2"
@@ -115,15 +114,16 @@ dependencies {
     // Integration with activities
     implementation 'androidx.activity:activity-compose:1.4.0'
     // Compose Material Design
-    implementation 'androidx.compose.material:material:1.2.0-beta02'
+    implementation 'androidx.compose.material:material:1.2.0-beta03'
     // Animations
-    implementation 'androidx.compose.animation:animation:1.2.0-beta02'
+    implementation 'androidx.compose.animation:animation:1.2.0-beta03'
     // Tooling support (Previews, etc.)
-    implementation 'androidx.compose.ui:ui-tooling:1.2.0-beta02'
+    debugImplementation 'androidx.compose.ui:ui-tooling:1.2.0-beta03'
+    implementation "androidx.compose.ui:ui-tooling-preview:1.2.0-beta03"
     // Integration with ViewModels
     implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1'
     // UI Tests
-    androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.2.0-beta02'
+    androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.2.0-beta03'
     // When using a AppCompat theme
     implementation "com.google.accompanist:accompanist-appcompat-theme:0.16.0"
     //
