@@ -1,7 +1,6 @@
 package de.baumann.browser.view.viewControllers
 
-import android.view.View.GONE
-import android.view.View.VISIBLE
+import android.view.View.*
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.toMutableStateList
@@ -97,7 +96,7 @@ class ComposeToolbarViewController(
     }
 
     private fun toggleIconsOnOmnibox(shouldShow: Boolean) {
-        composeView.visibility = if (shouldShow) VISIBLE else GONE
+        composeView.visibility = if (shouldShow) VISIBLE else INVISIBLE
     }
 
     fun updateTitle(title: String) {
