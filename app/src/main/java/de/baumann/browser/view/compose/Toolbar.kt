@@ -49,9 +49,10 @@ fun ComposedToolbar(
                     Text(
                         modifier = Modifier
                             .padding(horizontal = 1.dp)
-                            .weight(1F)
+                            .widthIn(max = 300.dp)
                             .clickable { onClick(toolbarAction) },
-                        text = title
+                        text = title,
+                        maxLines = 2
                     )
                 TabCount ->
                     if (!isReader) TabCountIcon(
