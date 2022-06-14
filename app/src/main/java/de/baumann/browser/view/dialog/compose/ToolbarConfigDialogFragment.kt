@@ -27,7 +27,7 @@ import org.burnoutcrew.reorderable.detectReorderAfterLongPress
 import org.burnoutcrew.reorderable.rememberReorderableLazyListState
 import org.burnoutcrew.reorderable.reorderable
 
-class ToolbarConfigDialogFragment(): ComposeDialogFragment(){
+class ToolbarConfigDialogFragment: ComposeDialogFragment(){
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         setupDialog()
 
@@ -48,13 +48,24 @@ class ToolbarConfigDialogFragment(): ComposeDialogFragment(){
                                 val actionInfos = rememberList.toMutableList()
                                 val actionInfo = actionInfos.first { it.toolbarAction == action }
                                 actionInfo.isOn = !actionInfo.isOn
+                                if (actionInfo.isOn) {
+                                    val toIndex = actionInfos.indexOfFirst { !it.isOn }
+                                    val fromIndex = actionInfos.indexOf(actionInfo)
+                                    if (toIndex != -1 && toIndex < fromIndex)
+                                        actionInfos.apply { add(toIndex, removeAt(fromIndex)) }
+                                } else {
+                                    val toIndex = actionInfos.indexOfLast { it.isOn }
+                                    val fromIndex = actionInfos.indexOf(actionInfo)
+                                    if (toIndex != -1 && toIndex > fromIndex)
+                                        actionInfos.apply { add(toIndex, removeAt(fromIndex)) }
+                                }
                                 rememberList = actionInfos
                             },
                             onItemMoved = { from, to ->
                                 rememberList = rememberList.toMutableList().apply { add(to, removeAt(from)) }
                             }
                         )
-                        //HorizontalSeparator()
+                        HorizontalSeparator()
                         DialogButtonBar(
                             dismissAction = { dialog?.dismiss() },
                             okAction = {
@@ -128,12 +139,15 @@ fun ToolbarToggleItem(
     Row(
         verticalAlignment = Alignment.CenterVertically
     ) {
+        val shouldEnableCheckClick = info.toolbarAction != ToolbarAction.Settings
         Surface(modifier = Modifier.weight(1F)){
             ToggleItem(
                 state = info.isOn,
                 titleResId = info.toolbarAction.titleResId,
                 iconResId = info.toolbarAction.iconResId,
-                onClicked = { onItemClicked(info.toolbarAction) }
+                isEnabled = shouldEnableCheckClick,
+                // settings should not be clickable, and always there
+                onClicked = { if (info.toolbarAction != ToolbarAction.Settings) onItemClicked(info.toolbarAction) }
             )
         }
         Icon(
