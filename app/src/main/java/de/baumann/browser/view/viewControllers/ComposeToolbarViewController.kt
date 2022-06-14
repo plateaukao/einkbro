@@ -1,9 +1,6 @@
 package de.baumann.browser.view.viewControllers
 
 import android.view.View.*
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.platform.ComposeView
 import com.google.accompanist.appcompattheme.AppCompatTheme
 import de.baumann.browser.preference.ConfigManager

@@ -42,10 +42,6 @@ class FastToggleDialogFragment(
             }
         }
     }
-
-    override fun show(manager: FragmentManager, tag: String?) {
-        super.show(manager, tag)
-    }
 }
 
 @Composable
@@ -98,7 +94,8 @@ fun ToggleItem(
     state: Boolean,
     titleResId: Int,
     iconResId: Int,
-    onClicked: (Boolean)-> Unit
+    isEnabled: Boolean = true,
+    onClicked: (Boolean)-> Unit,
 ) {
     var currentState by remember { mutableStateOf(state) }
 
@@ -109,13 +106,13 @@ fun ToggleItem(
             .padding(8.dp)
             .clickable {
                 currentState = !currentState
-                onClicked(currentState)
+                if (isEnabled) { onClicked(currentState) }
             },
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Checkbox(checked = currentState, onCheckedChange = { _ ->
+        Checkbox(checked = currentState, enabled = isEnabled, onCheckedChange = {
             currentState = !currentState
-            onClicked(currentState)
+            if (isEnabled) { onClicked(currentState) }
         })
 
         Icon(
