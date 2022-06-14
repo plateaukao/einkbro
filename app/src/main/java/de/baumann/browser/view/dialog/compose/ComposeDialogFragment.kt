@@ -45,7 +45,7 @@ fun HorizontalSeparator() {
     Spacer(
         modifier = Modifier
             .fillMaxWidth()
-            .height(0.5.dp)
+            .height(1.dp)
             .background(color = MaterialTheme.colors.onBackground)
     )
 }
