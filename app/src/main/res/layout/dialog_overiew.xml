@@ -41,8 +41,8 @@
                 android:orientation="vertical" />
         </LinearLayout>
     </ScrollView>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/home_list_2"
+    <androidx.compose.ui.platform.ComposeView
+        android:id="@+id/history_list"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constrainedHeight="true"
@@ -50,11 +50,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:background="@drawable/top_border_bg"
-        android:paddingTop="56dp"
-        android:divider="@null"
-        android:dividerHeight="0dp"
-        android:fastScrollEnabled="true"
-        android:stackFromBottom="true"
         android:visibility="gone" />
 
     <LinearLayout

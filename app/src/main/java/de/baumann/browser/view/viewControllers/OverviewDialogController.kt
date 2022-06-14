@@ -9,11 +9,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.*
 import android.widget.LinearLayout
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.accompanist.appcompattheme.AppCompatTheme
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.DialogMenuContextListBinding
 import de.baumann.browser.Ninja.databinding.DialogMenuOverviewBinding
@@ -22,12 +23,11 @@ import de.baumann.browser.activity.ExtraBrowserActivity
 import de.baumann.browser.database.*
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.unit.BrowserUnit
-import de.baumann.browser.unit.HelperUnit
 import de.baumann.browser.unit.ViewUnit
 import de.baumann.browser.view.NinjaToast
 import de.baumann.browser.view.adapter.RecordAdapter
+import de.baumann.browser.view.compose.BrowseHistoryList
 import de.baumann.browser.view.dialog.DialogManager
-import de.baumann.browser.view.dialog.TextInputDialog
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -45,20 +45,13 @@ class OverviewDialogController(
 ) : KoinComponent {
     private val config: ConfigManager by inject()
     private val dialogManager: DialogManager = DialogManager(context as Activity)
+    private val bookmarkManager: BookmarkManager by inject()
 
-    private val recyclerView = binding.homeList2
+    private val historyList = binding.historyList
 
     private var overViewTab: OverviewTab = OverviewTab.TabPreview
 
     private val lifecycleScope = (context as LifecycleOwner).lifecycleScope
-
-    private val narrowLayoutManager = LinearLayoutManager(context).apply {
-        reverseLayout = true
-    }
-
-    private val wideLayoutManager = GridLayoutManager(context, 2).apply {
-        reverseLayout = true
-    }
 
     init {
         initViews()
@@ -89,14 +82,15 @@ class OverviewDialogController(
         if (config.isToolbarOnTop) {
             binding.homeButtons.moveToTop()
             binding.overviewPreviewContainer.moveToBelowButtons()
-            binding.homeList2.moveToBelowButtons()
+            binding.historyList.moveToBelowButtons()
         } else {
             binding.homeButtons.moveToBottom()
             binding.overviewPreviewContainer.moveToAboveButtons()
-            binding.homeList2.moveToAboveButtons()
+            binding.historyList.moveToAboveButtons()
         }
-        narrowLayoutManager.reverseLayout = !config.isToolbarOnTop
-        wideLayoutManager.reverseLayout = !config.isToolbarOnTop
+
+//        narrowLayoutManager.reverseLayout = !config.isToolbarOnTop
+//        wideLayoutManager.reverseLayout = !config.isToolbarOnTop
     }
 
     private fun View.moveToTop() {
@@ -139,9 +133,6 @@ class OverviewDialogController(
 
         binding.root.setOnClickListener { hide() }
 
-        // allow scrolling in listView without closing the bottomSheetDialog
-        recyclerView.layoutManager = narrowLayoutManager
-
         binding.openMenu.setOnClickListener { openSubMenu() }
         binding.openTabButton.setOnClickListener { openHomePage() }
         binding.openHistoryButton.setOnClickListener { openHistoryPage() }
@@ -178,43 +169,53 @@ class OverviewDialogController(
         binding.root.visibility = VISIBLE
 
         binding.overviewPreview.visibility = INVISIBLE
-        recyclerView.visibility = VISIBLE
+        historyList.visibility = VISIBLE
         toggleOverviewFocus(binding.openHistoryView)
 
         overViewTab = OverviewTab.History
 
         lifecycleScope.launch {
-            val list = recordDb.listEntries(false, amount)
-            adapter = RecordAdapter(
-                    list.toMutableList(),
-                    { position ->
-                        val record = list[position]
-                        gotoUrlAction(record.url)
-                        if (record.type == RecordType.Bookmark) {
-                            config.addRecentBookmark(Bookmark(record.title?:"no title", record.url))
+            val shouldReverse = !config.isToolbarOnTop
+            val finalList = getLatestRecords(amount, shouldReverse)
+            historyList.setContent {
+                val list = remember { mutableStateOf(finalList) }
+                list.value = finalList
+                AppCompatTheme {
+                    BrowseHistoryList(
+                        records = list.value,
+                        shouldReverse,
+                        isWideLayout(),
+                        onClick = { position ->
+                            val record = list.value[position]
+                            gotoUrlAction(record.url)
+                            if (record.type == RecordType.Bookmark) {
+                                config.addRecentBookmark(Bookmark(record.title?:"no title", record.url))
+                            }
+                            hide()
+                        },
+                        onLongClick = { position ->
+                            val record = list.value[position]
+                            showHistoryContextMenu(record.url, position)
                         }
-                        hide()
-                    },
-                    { position ->
-                        showHistoryContextMenu(
-                                list[position].title ?: "",
-                                list[position].url,
-                                position
-                        )
-                    }
-            )
-            recyclerView.adapter = adapter
+                    )
+                }
+            }
         }
     }
 
-    private fun shouldShowWideList(): Boolean =
+    private suspend fun getLatestRecords(amount: Int, shouldReverse: Boolean): List<Record> {
+        val originalList = recordDb.listEntries(false, amount)
+        return if (!shouldReverse) originalList.reversed() else originalList
+    }
+
+    private fun isWideLayout(): Boolean =
         ViewUnit.isLandscape(context) || ViewUnit.isTablet(context)
 
     private fun openHomePage() {
         updateLayout()
         binding.overviewPreview.visibility = VISIBLE
-        recyclerView.visibility = GONE
-        recyclerView.layoutManager = if (shouldShowWideList()) wideLayoutManager else narrowLayoutManager
+        historyList.visibility = GONE
+        //historyList.layoutManager = if (shouldShowWideList()) wideLayoutManager else narrowLayoutManager
         toggleOverviewFocus(binding.openTabView)
         overViewTab = OverviewTab.TabPreview
     }
@@ -252,7 +253,6 @@ class OverviewDialogController(
                     when (overViewTab) {
                         OverviewTab.History -> {
                             BrowserUnit.clearHistory(context)
-                            (recyclerView.adapter as RecordAdapter).clear()
                             hide()
                             onHistoryChanged()
                         }
@@ -263,7 +263,6 @@ class OverviewDialogController(
     }
 
     private fun showHistoryContextMenu(
-            title: String,
             url: String,
             location: Int
     ) {

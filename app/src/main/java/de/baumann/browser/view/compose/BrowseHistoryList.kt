@@ -1,10 +1,10 @@
 package de.baumann.browser.view.compose
 
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.runtime.Composable
 import de.baumann.browser.database.Record
 import androidx.compose.material.Text
@@ -20,11 +20,19 @@ import java.util.*
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun BrowseHistoryList(records: List<Record>, onClick: (Int)->Unit, onLongClick: (Int)->Unit) {
-    LazyColumn {
-        items(records.size) { index ->
+fun BrowseHistoryList(
+    records: List<Record>,
+    shouldReverse: Boolean,
+    isWideLayout: Boolean,
+    onClick: (Int)->Unit, onLongClick: (Int)->Unit
+) {
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(if (isWideLayout) 2 else 1),
+        reverseLayout = shouldReverse
+    ){
+        itemsIndexed(records) { index, record ->
             RecordItem(
-                record = records[index],
+                record = record,
                 modifier = Modifier.combinedClickable (
                     onClick = { onClick(index) },
                     onLongClick = { onLongClick(index) }
@@ -47,7 +55,7 @@ fun RecordItem(
         Text(
             modifier = Modifier.weight(1F).align(Alignment.CenterVertically),
             text = record.title ?: "Unknown",
-            fontSize = 21.sp,
+            fontSize = 18.sp,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
         )
@@ -79,6 +87,6 @@ private fun previewHistoryList() {
         Record(title = "Hello 3", url = "123", time = System.currentTimeMillis()),
     )
     AppCompatTheme {
-        BrowseHistoryList(records = list, {}, {})
+        BrowseHistoryList(records = list, shouldReverse = true, isWideLayout = true, onClick = {}, onLongClick = {})
     }
 }
