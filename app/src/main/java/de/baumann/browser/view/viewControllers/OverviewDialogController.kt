@@ -25,7 +25,6 @@ import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.unit.BrowserUnit
 import de.baumann.browser.unit.ViewUnit
 import de.baumann.browser.view.NinjaToast
-import de.baumann.browser.view.adapter.RecordAdapter
 import de.baumann.browser.view.compose.BrowseHistoryList
 import de.baumann.browser.view.dialog.DialogManager
 import kotlinx.coroutines.launch
@@ -88,9 +87,6 @@ class OverviewDialogController(
             binding.overviewPreviewContainer.moveToAboveButtons()
             binding.historyList.moveToAboveButtons()
         }
-
-//        narrowLayoutManager.reverseLayout = !config.isToolbarOnTop
-//        wideLayoutManager.reverseLayout = !config.isToolbarOnTop
     }
 
     private fun View.moveToTop() {
@@ -163,7 +159,6 @@ class OverviewDialogController(
         binding.root.visibility = GONE
     }
 
-    private var adapter: RecordAdapter? = null
     fun openHistoryPage(amount: Int = 0) {
         updateLayout()
         binding.root.visibility = VISIBLE
@@ -174,6 +169,10 @@ class OverviewDialogController(
 
         overViewTab = OverviewTab.History
 
+        refreshHistoryList(amount)
+    }
+
+    private fun refreshHistoryList(amount: Int = 0) {
         lifecycleScope.launch {
             val shouldReverse = !config.isToolbarOnTop
             val finalList = getLatestRecords(amount, shouldReverse)
@@ -185,17 +184,19 @@ class OverviewDialogController(
                         records = list.value,
                         shouldReverse,
                         isWideLayout(),
+                        bookmarkManager,
                         onClick = { position ->
                             val record = list.value[position]
                             gotoUrlAction(record.url)
                             if (record.type == RecordType.Bookmark) {
-                                config.addRecentBookmark(Bookmark(record.title?:"no title", record.url))
+                                config.addRecentBookmark(Bookmark(record.title
+                                    ?: "no title", record.url))
                             }
                             hide()
                         },
                         onLongClick = { position ->
                             val record = list.value[position]
-                            showHistoryContextMenu(record.url, position)
+                            showHistoryContextMenu(record)
                         }
                     )
                 }
@@ -215,7 +216,6 @@ class OverviewDialogController(
         updateLayout()
         binding.overviewPreview.visibility = VISIBLE
         historyList.visibility = GONE
-        //historyList.layoutManager = if (shouldShowWideList()) wideLayoutManager else narrowLayoutManager
         toggleOverviewFocus(binding.openTabView)
         overViewTab = OverviewTab.TabPreview
     }
@@ -262,10 +262,7 @@ class OverviewDialogController(
         )
     }
 
-    private fun showHistoryContextMenu(
-            url: String,
-            location: Int
-    ) {
+    private fun showHistoryContextMenu(record: Record) {
         val dialogView = DialogMenuContextListBinding.inflate(LayoutInflater.from(context))
         val dialog = dialogManager.showOptionDialog(dialogView.root)
 
@@ -273,35 +270,34 @@ class OverviewDialogController(
             menuContextListEdit.visibility = GONE
             menuContextListNewTab.setOnClickListener {
                 dialog.dismissWithAction {
-                    addTabAction(context.getString(R.string.app_name), url, false)
+                    addTabAction(context.getString(R.string.app_name), record.url, false)
                     NinjaToast.show(context, context.getString(R.string.toast_new_tab_successful))
                 }
             }
             menuContextListSplitScreen.setOnClickListener {
-                dialog.dismissWithAction { splitScreenAction(url) }
+                dialog.dismissWithAction { splitScreenAction(record.url) }
                 hide()
             }
             menuContextListNewTabOpen.setOnClickListener {
                 dialog.dismissWithAction {
-                    addTabAction(context.getString(R.string.app_name), url, true)
+                    addTabAction(context.getString(R.string.app_name), record.url, true)
                     hide()
                 }
             }
             menuContextListDelete.setOnClickListener {
-                dialog.dismissWithAction { deleteHistory(location) }
+                dialog.dismissWithAction { deleteHistory(record) }
             }
         }
     }
 
-    private fun deleteHistory(location: Int) {
-        val record = adapter?.getItemAt(location) ?: return
+    private fun deleteHistory(record: Record) {
         RecordDb(context).apply {
             open(true)
             deleteHistoryItem(record)
             close()
         }
-        adapter?.removeAt(location)
         onHistoryChanged()
+        refreshHistoryList()
     }
 
     private fun launchNewBrowser() {
