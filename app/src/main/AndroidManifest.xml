@@ -120,12 +120,12 @@
                 <data
                     android:scheme="file"
                     android:pathPattern=".*\\.epub"
-                    android:mimeType="*/*"
+                    android:mimeType="application/epub+zip"
                     />
                 <data
                     android:scheme="content"
                     android:pathPattern=".*\\.epub"
-                    android:mimeType="*/*"
+                    android:mimeType="application/epub+zip"
                     />
             </intent-filter>
         </activity>

@@ -182,9 +182,9 @@ fun DialogPanel(
     content: @Composable() () -> Unit
 ) {
     Column(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth().wrapContentHeight()
     ) {
-        Box(Modifier.weight(1F)) {
+        Box(Modifier.wrapContentHeight()) {
             content()
         }
         HorizontalSeparator()
@@ -198,7 +198,7 @@ fun DialogPanel(
                     action =  { upParentAction(folder) }
                 )
             } else {
-                Spacer(modifier = Modifier.size(30.dp))
+                Spacer(modifier = Modifier.size(36.dp))
             }
             Text(
                 folder.title,
@@ -206,14 +206,15 @@ fun DialogPanel(
                     .weight(1F)
                     .padding(horizontal = 5.dp)
                     .align(Alignment.CenterVertically)
+                    .clickable { if (folder.id != 0)  upParentAction(folder) }
             )
             ActionIcon(
-                modifier = Modifier.align(Alignment.CenterVertically),
+                modifier = Modifier.align(Alignment.CenterVertically).padding(horizontal = 5.dp),
                 iconResId = R.drawable.ic_add_folder,
                 action =  { createFolderAction(folder) }
             )
             ActionIcon(
-                modifier = Modifier.align(Alignment.CenterVertically),
+                modifier = Modifier.align(Alignment.CenterVertically).padding(horizontal = 5.dp),
                 iconResId = R.drawable.icon_arrow_down_gest,
                 action =  closeAction
             )
@@ -233,6 +234,7 @@ fun BookmarkList(
     onBookmarkLongClick: OnBookmarkLongClick,
 ) {
     LazyVerticalGrid(
+        modifier = Modifier.wrapContentHeight(),
         columns = GridCells.Fixed(if (isWideLayout) 2 else 1),
         reverseLayout = shouldReverse
     ){
@@ -244,7 +246,10 @@ fun BookmarkList(
                     onClick = { onBookmarkClick(bookmark) },
                     onLongClick = { onBookmarkLongClick(bookmark) }
                 ),
-                iconClick = { if (!bookmark.isDirectory) onBookmarkIconClick(bookmark) else onBookmarkClick(bookmark) }
+                iconClick = {
+                    if (!bookmark.isDirectory) onBookmarkIconClick(bookmark)
+                    else onBookmarkClick(bookmark)
+                }
             )
         }
     }
@@ -267,7 +272,7 @@ private fun BookmarkItem(
             Image(
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
-                    .size(30.dp)
+                    .size(36.dp)
                     .padding(end = 5.dp).clickable { iconClick() },
                 bitmap = bitmap.asImageBitmap(),
                 contentDescription = null,
@@ -295,7 +300,7 @@ private fun BookmarkItem(
 private fun ActionIcon(modifier: Modifier, iconResId: Int, action: ()->Unit) {
     Icon(
         modifier = modifier
-            .size(30.dp)
+            .size(36.dp)
             .padding(end = 5.dp)
             .clickable { action() },
         painter = painterResource(id = iconResId),
