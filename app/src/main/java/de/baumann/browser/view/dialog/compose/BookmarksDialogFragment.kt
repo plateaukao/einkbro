@@ -1,6 +1,5 @@
 package de.baumann.browser.view.dialog.compose
 
-import android.app.Activity
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -57,7 +56,7 @@ class BookmarksDialogFragment(
 
     private lateinit var composeView: ComposeView
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         setupDialog()
 
         composeView = ComposeView(requireContext())
@@ -179,18 +178,19 @@ fun DialogPanel(
     upParentAction: (Bookmark)->Unit,
     createFolderAction: (Bookmark)->Unit,
     closeAction: ()->Unit,
-    content: @Composable() () -> Unit
+    content: @Composable () -> Unit
 ) {
     Column(
-        modifier = Modifier.fillMaxWidth().wrapContentHeight()
+        modifier = Modifier
+            .fillMaxWidth()
     ) {
-        Box(Modifier.wrapContentHeight()) {
+        Box(Modifier.weight(1F, fill = false)) {
             content()
         }
         HorizontalSeparator()
         Row(modifier = Modifier
             .fillMaxWidth()
-            .padding(5.dp)) {
+            .padding(8.dp)) {
             if (folder.id != 0) {
                 ActionIcon(
                     modifier = Modifier.align(Alignment.CenterVertically),
@@ -206,15 +206,19 @@ fun DialogPanel(
                     .weight(1F)
                     .padding(horizontal = 5.dp)
                     .align(Alignment.CenterVertically)
-                    .clickable { if (folder.id != 0)  upParentAction(folder) }
+                    .clickable { if (folder.id != 0) upParentAction(folder) }
             )
             ActionIcon(
-                modifier = Modifier.align(Alignment.CenterVertically).padding(horizontal = 5.dp),
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .padding(horizontal = 5.dp),
                 iconResId = R.drawable.ic_add_folder,
                 action =  { createFolderAction(folder) }
             )
             ActionIcon(
-                modifier = Modifier.align(Alignment.CenterVertically).padding(horizontal = 5.dp),
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .padding(horizontal = 5.dp),
                 iconResId = R.drawable.icon_arrow_down_gest,
                 action =  closeAction
             )
@@ -265,7 +269,7 @@ private fun BookmarkItem(
     Row(
         modifier = modifier
             .height(54.dp)
-            .padding(5.dp),
+            .padding(8.dp),
         horizontalArrangement = Arrangement.Center
     ) {
         if (bitmap!= null) {
@@ -273,7 +277,8 @@ private fun BookmarkItem(
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
                     .size(36.dp)
-                    .padding(end = 5.dp).clickable { iconClick() },
+                    .padding(end = 5.dp)
+                    .clickable { iconClick() },
                 bitmap = bitmap.asImageBitmap(),
                 contentDescription = null,
             )
@@ -316,8 +321,8 @@ private fun PreviewBookmarkList() {
         BookmarkList(
             bookmarks = listOf(Bookmark("test 1","https://www.google.com", false)),
             null,
-            true,
-            true,
+            isWideLayout = true,
+            shouldReverse = true,
             {},
             {},
             {}
