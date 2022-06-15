@@ -25,7 +25,7 @@ import de.baumann.browser.view.dialog.compose.MenuItemType.*
 class MenuDialogFragment(
     private val itemClicked: (MenuItemType) -> Unit
 ): ComposeDialogFragment(){
-    lateinit var composeView: ComposeView
+    private lateinit var composeView: ComposeView
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         setupDialog()
 

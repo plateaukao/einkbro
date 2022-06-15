@@ -52,7 +52,7 @@ fun BrowseHistoryList(
 }
 
 @Composable
-fun RecordItem(
+private fun RecordItem(
     modifier: Modifier,
     bitmap: Bitmap? = null,
     record: Record
