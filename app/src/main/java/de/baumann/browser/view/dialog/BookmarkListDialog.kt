@@ -68,16 +68,8 @@ class BookmarkListDialog(
                 window?.setBackgroundDrawableResource(R.drawable.background_with_border_margin)
                 setOnDismissListener { updateContentJob?.cancel() ; updateContentJob = null }
                 show()
-                //window?.setLayout((getScreenWidth() * .9).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
             }
         }
-    }
-
-    fun getScreenWidth(): Int {
-        val activity = context as Activity
-        val size = Point()
-        activity.windowManager.defaultDisplay.getSize(size)
-        return size.x
     }
 
     private fun initViews(binding: DialogBookmarksBinding) {
