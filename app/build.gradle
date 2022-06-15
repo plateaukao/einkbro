@@ -49,12 +49,13 @@ android {
     }
 
     packagingOptions {
-        pickFirst 'META-INF/AL2.0'
-        pickFirst 'META-INF/LGPL2.1'
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion '1.2.0-beta02'
+        kotlinCompilerExtensionVersion '1.2.0-beta03'
     }
 
     lint {
@@ -65,9 +66,7 @@ android {
 
 dependencies {
     implementation 'com.google.android.material:material:1.6.1'
-    implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.preference:preference-ktx:1.2.0'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.21"
 
     // epublib
     implementation("com.positiondev.epublib:epublib-core:3.1") {
@@ -87,11 +86,9 @@ dependencies {
 
     implementation "androidx.room:room-runtime:2.4.2"
     implementation "androidx.room:room-ktx:2.4.2"
-    implementation 'androidx.compose.ui:ui:1.1.1'
     kapt 'org.xerial:sqlite-jdbc:3.36.0.2'
     kapt "androidx.room:room-compiler:2.4.2"
 
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1'
 
     // for dark mode
@@ -111,22 +108,15 @@ dependencies {
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
 
     // compose
-    // Integration with activities
-    implementation 'androidx.activity:activity-compose:1.4.0'
     // Compose Material Design
     implementation 'androidx.compose.material:material:1.2.0-beta03'
-    // Animations
-    implementation 'androidx.compose.animation:animation:1.2.0-beta03'
     // Tooling support (Previews, etc.)
     debugImplementation 'androidx.compose.ui:ui-tooling:1.2.0-beta03'
     implementation "androidx.compose.ui:ui-tooling-preview:1.2.0-beta03"
-    // Integration with ViewModels
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1'
     // UI Tests
     androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.2.0-beta03'
     // When using a AppCompat theme
     implementation "com.google.accompanist:accompanist-appcompat-theme:0.16.0"
-    //
 
     // reorder lazylist
     implementation "org.burnoutcrew.composereorderable:reorderable:0.9.0"
