@@ -5,9 +5,11 @@ import android.content.SharedPreferences
 import android.graphics.Color
 import android.view.MotionEvent
 import android.view.View
+import androidx.appcompat.widget.ViewUtils
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.preference.TouchAreaType
+import de.baumann.browser.unit.ViewUnit
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.util.*
@@ -63,7 +65,8 @@ class TouchAreaViewController(
                 dY = view.y - event.rawY
             }
             MotionEvent.ACTION_MOVE -> {
-                val currentViewY = event.rawY - dY - view.height
+                // need to consider whether top part height is occupied by toolbar
+                val currentViewY = event.rawY - dY - view.height - (if (config.isToolbarOnTop) ViewUnit.dpToPixel(rootView.context, 50) else 0).toInt()
                 val customizeY = currentViewY + view.height / 2
                 updateTouchAreaCustomizeY(customizeY.toInt())
             }

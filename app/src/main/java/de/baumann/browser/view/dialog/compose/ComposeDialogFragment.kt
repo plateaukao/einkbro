@@ -2,7 +2,6 @@ package de.baumann.browser.view.dialog.compose
 
 import android.app.Dialog
 import android.view.Gravity
-import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.compose.foundation.background
@@ -14,7 +13,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.fragment.app.DialogFragment
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.preference.ConfigManager
 import org.koin.core.component.KoinComponent
@@ -25,8 +23,8 @@ open class ComposeDialogFragment: AppCompatDialogFragment(), KoinComponent {
 
     protected fun setupDialog() {
         dialog?.apply {
-            setStyle(STYLE_NO_TITLE, R.style.ComposeDialog)
-            requestWindowFeature(Window.FEATURE_NO_TITLE)
+            setStyle(STYLE_NO_FRAME, R.style.ComposeDialog)
+            //requestWindowFeature(Window.FEATURE_NO_TITLE)
             window?.setGravity((if (config.isToolbarOnTop) Gravity.CENTER else Gravity.BOTTOM) or Gravity.END)
             window?.setBackgroundDrawableResource(R.drawable.background_with_border_margin)
             window?.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
