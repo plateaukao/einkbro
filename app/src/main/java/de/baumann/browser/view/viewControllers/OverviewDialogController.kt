@@ -136,7 +136,7 @@ class OverviewDialogController(
         binding.tabPlusBottom.setOnLongClickListener{ launchNewBrowser() ; hide() ; true}
 
         binding.buttonCloseOverview.setOnClickListener { hide() }
-        showCurrentTabInOverview()
+        openHomePage()
 
     }
 
@@ -145,13 +145,6 @@ class OverviewDialogController(
         val dialog = dialogManager.showOptionDialog(dialogView.root)
         with(dialogView) {
             tvDelete.setOnClickListener { dialog.dismissWithAction { deleteAllItems() } }
-        }
-    }
-
-    private fun showCurrentTabInOverview() {
-        when (config.overviewTab) {
-            OverviewTab.TabPreview -> openHomePage()
-            OverviewTab.History -> openHistoryPage()
         }
     }
 
