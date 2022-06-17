@@ -52,7 +52,7 @@ class UiSettingsFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeL
 
     override fun onSharedPreferenceChanged(sp: SharedPreferences, key: String) {
         when (key) {
-            "nav_position", "start_tab" -> config.restartChanged = true
+            "nav_position" -> config.restartChanged = true
         }
     }
 }

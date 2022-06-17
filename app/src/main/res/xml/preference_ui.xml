@@ -72,19 +72,6 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/setting_overView">
-
-        <ListPreference
-            android:title="@string/setting_overView"
-            android:icon="@drawable/icon_preview"
-            android:summary="@string/setting_summary_tab"
-            android:key="start_tab"
-            android:defaultValue="0"
-            android:entries="@array/setting_entries_tab"
-            android:entryValues="@array/setting_values_tab" />
-
-    </PreferenceCategory>
-
     <PreferenceCategory android:title="@string/setting_title_behavior">
 
         <CheckBoxPreference android:key="sp_shouldSaveTabs"

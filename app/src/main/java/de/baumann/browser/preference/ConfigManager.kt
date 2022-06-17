@@ -278,20 +278,6 @@ class ConfigManager(
             sp.edit { putBoolean(K_SHOW_RECENT_BOOKMARKS, value) }
         }
 
-    var overviewTab: OverviewTab
-        get() = when (sp.getString(K_START_TAB, "0")) {
-            "0" -> OverviewTab.TabPreview
-            "4" -> OverviewTab.History
-            else -> OverviewTab.TabPreview
-        }
-        set(value) {
-            val tabString = when (value) {
-                OverviewTab.TabPreview -> "0"
-                OverviewTab.History -> "4"
-            }
-            sp.edit { putString(K_START_TAB, tabString) }
-        }
-
     var favoriteUrl: String
         get() = sp.getString(K_FAVORITE_URL, Constants.DEFAULT_HOME_URL)
                 ?: Constants.DEFAULT_HOME_URL
@@ -478,7 +464,6 @@ class ConfigManager(
         const val K_ENABLE_TOUCH = "sp_enable_touch"
         const val K_TOUCH_HINT = "sp_touch_area_hint"
         const val K_SCREENSHOT = "screenshot"
-        const val K_START_TAB = "start_tab"
         const val K_KEEP_AWAKE = "sp_screen_awake"
         const val K_DESKTOP = "sp_desktop"
         const val K_TRANSLATE_LANGUAGE = "sp_translate_language"
