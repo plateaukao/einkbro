@@ -15,7 +15,7 @@ enum class ToolbarAction(
     PageDown(iconResId = R.drawable.ic_page_down, titleResId = R.string.page_down),
     TabCount(iconResId = R.drawable.icon_preview, titleResId = R.string.tab_preview),
     Font(iconResId = R.drawable.icon_size, titleResId = R.string.font_size),
-    Settings(iconResId = R.drawable.icon_settings, titleResId = R.string.settings),
+    Settings(iconResId = R.drawable.ic_menu, titleResId = R.string.settings),
     Bookmark(iconResId = R.drawable.ic_bookmarks, titleResId = R.string.bookmarks),
     IconSetting(iconResId = R.drawable.ic_toolbar, titleResId = R.string.toolbars),
     VerticalLayout(iconResId = R.drawable.ic_vertical_read, titleResId = R.string.vertical_read),

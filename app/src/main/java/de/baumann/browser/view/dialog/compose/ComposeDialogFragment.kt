@@ -27,7 +27,7 @@ open class ComposeDialogFragment: AppCompatDialogFragment(), KoinComponent {
         dialog?.apply {
             setStyle(STYLE_NO_TITLE, R.style.ComposeDialog)
             requestWindowFeature(Window.FEATURE_NO_TITLE)
-            window?.setGravity((if (config.isToolbarOnTop) Gravity.CENTER else Gravity.BOTTOM) or Gravity.RIGHT)
+            window?.setGravity((if (config.isToolbarOnTop) Gravity.CENTER else Gravity.BOTTOM) or Gravity.END)
             window?.setBackgroundDrawableResource(R.drawable.background_with_border_margin)
             window?.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
         }
