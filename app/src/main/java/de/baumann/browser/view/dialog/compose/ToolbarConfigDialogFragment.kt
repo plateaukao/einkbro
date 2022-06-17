@@ -34,13 +34,16 @@ class ToolbarConfigDialogFragment: ComposeDialogFragment(){
         return ComposeView(requireContext()).apply {
             setContent {
                 AppCompatTheme {
-                    Column(horizontalAlignment = Alignment.End) {
+                    Column(
+                        Modifier.width(IntrinsicSize.Max),
+                        horizontalAlignment = Alignment.End,
+                    ) {
                         val actionInfoList = getCurrentActionList()
                         var rememberList by remember { mutableStateOf(actionInfoList) }
 
                         ToolbarList(
                             Modifier
-                                .heightIn(100.dp, 600.dp)
+                                .weight(1F, fill = false)
                                 .width(300.dp)
                                 .padding(2.dp), // for round corner spaces
                             rememberList,

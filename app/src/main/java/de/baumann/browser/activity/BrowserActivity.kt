@@ -55,6 +55,7 @@ import de.baumann.browser.unit.*
 import de.baumann.browser.unit.BrowserUnit.downloadFileId
 import de.baumann.browser.unit.HelperUnit.toNormalScheme
 import de.baumann.browser.unit.ViewUnit.dp
+import de.baumann.browser.unit.ViewUnit.hideKeyboard
 import de.baumann.browser.util.Constants
 import de.baumann.browser.util.DebugT
 import de.baumann.browser.view.*
@@ -443,56 +444,54 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         when (keyCode) {
-            KeyEvent.KEYCODE_DPAD_DOWN -> {
-                if (config.useUpDownPageTurn) {
-                    ninjaWebView.pageDownWithNoAnimation()
-                }
-            }
-            KeyEvent.KEYCODE_DPAD_UP -> {
-                if (config.useUpDownPageTurn) {
-                    ninjaWebView.pageUpWithNoAnimation()
-                }
-            }
-            KeyEvent.KEYCODE_VOLUME_DOWN -> {
-                return if (config.volumePageTurn) {
-                    ninjaWebView.pageDownWithNoAnimation()
-                    true
-                } else {
-                    false
-                }
-            }
-            KeyEvent.KEYCODE_VOLUME_UP -> {
-                return if (config.volumePageTurn) {
-                    ninjaWebView.pageUpWithNoAnimation()
-                    true
-                } else {
-                    false
-                }
-            }
+            KeyEvent.KEYCODE_DPAD_DOWN -> { if (config.useUpDownPageTurn)  ninjaWebView.pageDownWithNoAnimation() }
+            KeyEvent.KEYCODE_DPAD_UP -> { if (config.useUpDownPageTurn)  ninjaWebView.pageUpWithNoAnimation() }
+            KeyEvent.KEYCODE_VOLUME_DOWN -> { return handleVolumeDownKey() }
+            KeyEvent.KEYCODE_VOLUME_UP -> { return handleVolumeUpKey() }
             KeyEvent.KEYCODE_MENU -> { showMenuDialog() ; return true }
-            KeyEvent.KEYCODE_BACK -> {
-                hideKeyboard()
-                if (overviewDialogController.isVisible()) {
-                    hideOverview()
-                    return true
-                }
-                if (fullscreenHolder != null || customView != null || videoView != null) {
-                    return onHideCustomView()
-                } else if (!binding.appBar.isVisible && sp.getBoolean("sp_toolbarShow", true)) {
-                    showToolbar()
-                } else if (!composeToolbarViewController.isDisplayed()) {
-                    composeToolbarViewController.show()
-                } else {
-                    if (ninjaWebView.canGoBack()) {
-                        ninjaWebView.goBack()
-                    } else {
-                        removeAlbum(currentAlbumController!!)
-                    }
-                }
-                return true
-            }
+            KeyEvent.KEYCODE_BACK -> { return handleBackKey() }
         }
         return false
+    }
+
+    private fun handleVolumeDownKey(): Boolean {
+        return if (config.volumePageTurn) {
+            ninjaWebView.pageDownWithNoAnimation()
+            true
+        } else {
+            false
+        }
+    }
+
+    private fun handleVolumeUpKey(): Boolean {
+        return if (config.volumePageTurn) {
+            ninjaWebView.pageUpWithNoAnimation()
+            true
+        } else {
+            false
+        }
+    }
+
+    private fun handleBackKey(): Boolean {
+        hideKeyboard()
+        if (overviewDialogController.isVisible()) {
+            hideOverview()
+            return true
+        }
+        if (fullscreenHolder != null || customView != null || videoView != null) {
+            return onHideCustomView()
+        } else if (!binding.appBar.isVisible && sp.getBoolean("sp_toolbarShow", true)) {
+            showToolbar()
+        } else if (!composeToolbarViewController.isDisplayed()) {
+            composeToolbarViewController.show()
+        } else {
+            if (ninjaWebView.canGoBack()) {
+                ninjaWebView.goBack()
+            } else {
+                removeAlbum(currentAlbumController!!)
+            }
+        }
+        return true
     }
 
     override fun showAlbum(controller: AlbumController) {
@@ -1001,7 +1000,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
             CloseTab -> removeAlbum(currentAlbumController!!)
             PageUp -> ninjaWebView.pageUpWithNoAnimation()
             PageDown -> ninjaWebView.pageDownWithNoAnimation()
-            GestureType.Bookmark -> openBookmarkPage()
+            Bookmark -> openBookmarkPage()
+            Back -> handleBackKey()
+            Fullscreen -> fullscreen()
         }
     }
 
@@ -1024,14 +1025,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
 
     private fun openHistoryPage(amount: Int = 0) = overviewDialogController.openHistoryPage(amount)
 
-//    private fun openBookmarkPage() = BookmarkListDialog(
-//            this,
-//            lifecycleScope,
-//            bookmarkViewModel,
-//            gotoUrlAction = { url -> updateAlbum(url) },
-//            addTabAction = { title, url, isForeground -> addAlbum(title, url, isForeground) },
-//            splitScreenAction = { url -> toggleSplitScreen(url) }
-//    ).show()
     private fun openBookmarkPage() = BookmarksDialogFragment(
         lifecycleScope,
         bookmarkViewModel,
@@ -1177,6 +1170,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
             showAlbum(webView)
             if (url.isNotEmpty() && url != BrowserUnit.URL_ABOUT_BLANK) {
                 webView.loadUrl(url)
+            } else if (url == BrowserUnit.URL_ABOUT_BLANK) {
             } else if (config.showRecentBookmarks) {
                 showRecentlyUsedBookmarks(webView)
             }
@@ -1318,11 +1312,13 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
         if (progress < BrowserUnit.PROGRESS_MAX) {
             updateRefresh(true)
             progressBar.visibility = VISIBLE
-        } else {
+        } else { // web page loading complete
             updateRefresh(false)
             progressBar.visibility = GONE
 
             scrollChange()
+
+            updateSavedAlbumInfo()
         }
     }
 
