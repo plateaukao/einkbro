@@ -123,7 +123,7 @@
     <string name="setting_overView">畫面預覽</string>
     <string name="setting_gestures">手勢</string>
     <string name="setting_gestures_use_title">使用手勢</string>
-    <string name="setting_gestures_use_summary">在工具列或浮動按鈕上使用手勢</string>
+    <string name="setting_gestures_use_summary">在浮動按鈕上使用手勢</string>
     <!-- gestures -->
     <string name="setting_title_toolbar">工具列</string>
     <string name="setting_gesture_up">往上滑</string>
