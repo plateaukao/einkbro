@@ -151,7 +151,7 @@
 
     <string name="setting_gestures">手势</string>
     <string name="setting_gestures_use_title">使用手势</string>
-    <string name="setting_gestures_use_summary">在工具栏和 \"导航按钮\" 上使用手势。</string>
+    <string name="setting_gestures_use_summary">在 \"导航按钮\" 上使用手势。</string>
 
     <string name="setting_title_saveTabs">保存标签页</string>
     <string name="setting_summary_saveTabs">保存标签页，便于下次使用浏览器时重新打开保存的网址。</string>
