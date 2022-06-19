@@ -28,17 +28,11 @@ import de.baumann.browser.preference.ConfigManager
 class FastToggleDialogFragment(
     val extraAction: () -> Unit
 ): ComposeDialogFragment(){
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        setupDialog()
-
-        return ComposeView(requireContext()).apply {
-            setContent {
-                AppCompatTheme {
-                    FastToggleItemList(config) { needExtraAction ->
-                        if (needExtraAction) extraAction()
-                        dialog?.dismiss()
-                    }
-                }
+    override fun setupComposeView() = composeView.setContent {
+        AppCompatTheme {
+            FastToggleItemList(config) { needExtraAction ->
+                if (needExtraAction) extraAction()
+                dialog?.dismiss()
             }
         }
     }
