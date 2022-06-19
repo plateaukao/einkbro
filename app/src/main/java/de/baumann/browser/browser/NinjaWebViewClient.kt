@@ -48,7 +48,7 @@ class NinjaWebViewClient(
     private val config: ConfigManager by inject()
     private val adBlock: AdBlock by inject()
     private val cookie: Cookie by inject()
-    private val dialogManager: DialogManager by inject()
+    private val dialogManager: DialogManager by lazy { DialogManager(context as Activity) }
 
     private val white: Boolean = false
     private val webContentPostProcessor = WebContentPostProcessor()
