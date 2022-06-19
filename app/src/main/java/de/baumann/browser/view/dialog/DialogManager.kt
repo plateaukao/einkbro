@@ -221,6 +221,7 @@ class DialogManager(
     fun showOkCancelDialog(
         title: String? = null,
         messageResId: Int? = null,
+        message: String? = null,
         view: View? = null,
         okAction: () -> Unit,
         cancelAction: (() -> Unit)? = null,
@@ -233,6 +234,7 @@ class DialogManager(
                     title?.let { title -> setTitle(title) }
                     view?.let { setView(it) }
                     messageResId?.let { setMessage(messageResId) }
+                    message?.let { setMessage(message) }
                     if (showNegativeButton) {
                         setNegativeButton(android.R.string.cancel) { _, _ -> cancelAction?.invoke() }
                     }
