@@ -36,6 +36,7 @@ import java.io.ByteArrayInputStream
 import java.io.IOException
 import android.webkit.WebResourceResponse
 import de.baumann.browser.preference.FontType
+import de.baumann.browser.view.dialog.DialogManager
 import nl.siegmann.epublib.domain.Book
 
 class NinjaWebViewClient(
@@ -47,6 +48,8 @@ class NinjaWebViewClient(
     private val config: ConfigManager by inject()
     private val adBlock: AdBlock by inject()
     private val cookie: Cookie by inject()
+    private val dialogManager: DialogManager by inject()
+
     private val white: Boolean = false
     private val webContentPostProcessor = WebContentPostProcessor()
     private var hasAdBlock: Boolean = true
@@ -258,34 +261,22 @@ class NinjaWebViewClient(
     }
 
     override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {
-        /*
-        var message = "\"SSL Certificate error.\""
+        var message = """"SSL Certificate error.""""
         when (error.primaryError) {
-            SslError.SSL_UNTRUSTED -> message = "\"Certificate authority is not trusted.\""
-            SslError.SSL_EXPIRED -> message = "\"Certificate has expired.\""
-            SslError.SSL_IDMISMATCH -> message = "\"Certificate Hostname mismatch.\""
-            SslError.SSL_NOTYETVALID -> message = "\"Certificate is not yet valid.\""
-            SslError.SSL_DATE_INVALID -> message = "\"Certificate date is invalid.\""
-            SslError.SSL_INVALID -> message = "\"Certificate is invalid.\""
+            SslError.SSL_UNTRUSTED -> message = """"Certificate authority is not trusted.""""
+            SslError.SSL_EXPIRED -> message = """"Certificate has expired.""""
+            SslError.SSL_IDMISMATCH -> message = """"Certificate Hostname mismatch.""""
+            SslError.SSL_NOTYETVALID -> message = """"Certificate is not yet valid.""""
+            SslError.SSL_DATE_INVALID -> message = """"Certificate date is invalid.""""
+            SslError.SSL_INVALID -> message = """"Certificate is invalid.""""
         }
 
         val text = """$message - ${context.getString(R.string.dialog_content_ssl_error)}"""
-        val dialog = BottomSheetDialog(context)
-        val dialogView = View.inflate(context, R.layout.dialog_action, null)
-
-        dialogView.findViewById<TextView>(R.id.dialog_text).text = text
-        dialogView.findViewById<Button>(R.id.action_ok).setOnClickListener {
-            handler.proceed()
-            dialog.cancel()
-        }
-        dialogView.findViewById<Button>(R.id.action_cancel).setOnClickListener {
-            handler.cancel()
-            dialog.cancel()
-        }
-        dialog.setContentView(dialogView)
-        dialog.show()
-
-        HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
-         */
+        dialogManager.showOkCancelDialog(
+            message = text,
+            showInCenter = true,
+            okAction = { handler.proceed() },
+            cancelAction = { handler.cancel() }
+        )
     }
 }
