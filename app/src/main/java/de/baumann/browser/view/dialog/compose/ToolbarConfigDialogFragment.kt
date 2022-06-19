@@ -28,55 +28,49 @@ import org.burnoutcrew.reorderable.rememberReorderableLazyListState
 import org.burnoutcrew.reorderable.reorderable
 
 class ToolbarConfigDialogFragment: ComposeDialogFragment(){
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        setupDialog()
+    override fun setupComposeView() = composeView.setContent {
+        AppCompatTheme {
+            Column(
+                Modifier.width(IntrinsicSize.Max),
+                horizontalAlignment = Alignment.End,
+            ) {
+                val actionInfoList = getCurrentActionList()
+                var rememberList by remember { mutableStateOf(actionInfoList) }
 
-        return ComposeView(requireContext()).apply {
-            setContent {
-                AppCompatTheme {
-                    Column(
-                        Modifier.width(IntrinsicSize.Max),
-                        horizontalAlignment = Alignment.End,
-                    ) {
-                        val actionInfoList = getCurrentActionList()
-                        var rememberList by remember { mutableStateOf(actionInfoList) }
-
-                        ToolbarList(
-                            Modifier
-                                .weight(1F, fill = false)
-                                .width(300.dp)
-                                .padding(2.dp), // for round corner spaces
-                            rememberList,
-                            onItemClicked = { action ->
-                                val actionInfos = rememberList.toMutableList()
-                                val actionInfo = actionInfos.first { it.toolbarAction == action }
-                                actionInfo.isOn = !actionInfo.isOn
-                                if (actionInfo.isOn) {
-                                    val toIndex = actionInfos.indexOfFirst { !it.isOn }
-                                    val fromIndex = actionInfos.indexOf(actionInfo)
-                                    if (toIndex != -1 && toIndex < fromIndex)
-                                        actionInfos.apply { add(toIndex, removeAt(fromIndex)) }
-                                } else {
-                                    val toIndex = actionInfos.indexOfLast { it.isOn }
-                                    val fromIndex = actionInfos.indexOf(actionInfo)
-                                    if (toIndex != -1 && toIndex > fromIndex)
-                                        actionInfos.apply { add(toIndex, removeAt(fromIndex)) }
-                                }
-                                rememberList = actionInfos
-                            },
-                            onItemMoved = { from, to ->
-                                rememberList = rememberList.toMutableList().apply { add(to, removeAt(from)) }
-                            }
-                        )
-                        HorizontalSeparator()
-                        DialogButtonBar(
-                            dismissAction = { dialog?.dismiss() },
-                            okAction = {
-                                config.toolbarActions = rememberList.filter { it.isOn }.map { it.toolbarAction }
-                            }
-                        )
+                ToolbarList(
+                    Modifier
+                        .weight(1F, fill = false)
+                        .width(300.dp)
+                        .padding(2.dp), // for round corner spaces
+                    rememberList,
+                    onItemClicked = { action ->
+                        val actionInfos = rememberList.toMutableList()
+                        val actionInfo = actionInfos.first { it.toolbarAction == action }
+                        actionInfo.isOn = !actionInfo.isOn
+                        if (actionInfo.isOn) {
+                            val toIndex = actionInfos.indexOfFirst { !it.isOn }
+                            val fromIndex = actionInfos.indexOf(actionInfo)
+                            if (toIndex != -1 && toIndex < fromIndex)
+                                actionInfos.apply { add(toIndex, removeAt(fromIndex)) }
+                        } else {
+                            val toIndex = actionInfos.indexOfLast { it.isOn }
+                            val fromIndex = actionInfos.indexOf(actionInfo)
+                            if (toIndex != -1 && toIndex > fromIndex)
+                                actionInfos.apply { add(toIndex, removeAt(fromIndex)) }
+                        }
+                        rememberList = actionInfos
+                    },
+                    onItemMoved = { from, to ->
+                        rememberList = rememberList.toMutableList().apply { add(to, removeAt(from)) }
                     }
-                }
+                )
+                HorizontalSeparator()
+                DialogButtonBar(
+                    dismissAction = { dialog?.dismiss() },
+                    okAction = {
+                        config.toolbarActions = rememberList.filter { it.isOn }.map { it.toolbarAction }
+                    }
+                )
             }
         }
     }

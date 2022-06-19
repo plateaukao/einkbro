@@ -27,18 +27,11 @@ import de.baumann.browser.view.dialog.compose.MenuItemType.*
 class MenuDialogFragment(
     private val itemClicked: (MenuItemType) -> Unit
 ): ComposeDialogFragment(){
-    private lateinit var composeView: ComposeView
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        setupDialog()
-
-        return ComposeView(requireContext()).apply {
-            setContent {
-                AppCompatTheme {
-                    MenuItems(config.whiteBackground, config.boldFontStyle) { item ->
-                        dialog?.dismiss()
-                        itemClicked(item)
-                    }
-                }
+    override fun setupComposeView() = composeView.setContent {
+        AppCompatTheme {
+            MenuItems(config.whiteBackground, config.boldFontStyle) { item ->
+                dialog?.dismiss()
+                itemClicked(item)
             }
         }
     }

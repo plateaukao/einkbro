@@ -54,17 +54,7 @@ class BookmarksDialogFragment(
     private val bookmarkManager: BookmarkManager by inject()
     private val dialogManager: DialogManager by lazy { DialogManager(requireActivity()) }
 
-    private lateinit var composeView: ComposeView
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        setupDialog()
-
-        composeView = ComposeView(requireContext())
-        folderStack.push(Bookmark(getString(R.string.bookmarks), ""))
-        updateBookmarksContent()
-
-        return composeView
-    }
+    override fun setupComposeView() = updateBookmarksContent()
 
     override fun onDestroy() {
         updateContentJob?.cancel()
@@ -74,6 +64,8 @@ class BookmarksDialogFragment(
     private var updateContentJob: Job? = null
     private val folderStack: Stack<Bookmark> = Stack()
     private fun updateBookmarksContent() {
+        if (folderStack.isEmpty()) folderStack.push(Bookmark(getString(R.string.bookmarks), ""))
+
         val currentFolder = folderStack.peek()
         updateContentJob?.cancel()
         updateContentJob = lifecycleScope.launch {
