@@ -25,6 +25,5 @@
             android:id="@+id/content_frame"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view3"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
