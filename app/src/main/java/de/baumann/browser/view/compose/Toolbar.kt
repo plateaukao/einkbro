@@ -63,6 +63,7 @@ fun ComposedToolbar(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ToolbarIcon(
     toolbarActionInfo: ToolbarActionInfo,
@@ -85,6 +86,7 @@ fun ToolbarIcon(
     )
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun TabCountIcon(
     isIncognito: Boolean,
@@ -92,7 +94,11 @@ private fun TabCountIcon(
     onClick: ()->Unit,
     onLongClick:(()->Unit)? = null,
 ) {
-    val thickness = if (isIncognito) 3.dp else 1.dp
+    val border = if (isIncognito)
+        Modifier.dashedBorder(1.dp, 7.dp, color = MaterialTheme.colors.onBackground)
+    else
+        Modifier.border(1.dp, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
+
     Box(
         modifier = Modifier.height(46.dp).width(46.dp)
             .combinedClickable(
@@ -105,11 +111,7 @@ private fun TabCountIcon(
             modifier = Modifier
                 .height(28.dp)
                 .width(28.dp)
-                .border(
-                    width = thickness,
-                    color = MaterialTheme.colors.onBackground,
-                    RoundedCornerShape(7.dp)
-                )
+                .then(border)
                 .padding(top = 2.dp),
             text = count,
             textAlign = TextAlign.Center,
@@ -121,7 +123,7 @@ private fun TabCountIcon(
 
 @Preview
 @Composable
-fun previewTabCount() {
+fun PreviewTabCount() {
     AppCompatTheme {
         TabCountIcon(false, "3", {}, {})
     }
@@ -129,7 +131,15 @@ fun previewTabCount() {
 
 @Preview
 @Composable
-fun previewToolbar() {
+fun PreviewTabCountIncognito() {
+    AppCompatTheme {
+        TabCountIcon(true, "3", {}, {})
+    }
+}
+
+@Preview
+@Composable
+fun PreviewToolbar() {
     AppCompatTheme {
         ComposedToolbar(
             toolbarActionInfos = ToolbarAction.values().map {ToolbarActionInfo(it, false)},
