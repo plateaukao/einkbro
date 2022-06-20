@@ -37,7 +37,7 @@
     <string name="menu_shareClipboard">Copy to clipboard</string>
 
     <string name="menu_other_searchSite">Search on site</string>
-    <string name="menu_other_info">About \"EinkBro Browser\"</string>
+    <string name="menu_other_info">About EinkBro</string>
 
     <!-- Dialog -->
     <string name="dialog_title_hint">Title:</string>
@@ -378,4 +378,5 @@
     <string name="setting_title_background_loading">Loading non-active tabs</string>
     <string name="setting_summary_background_loading">When tab is not activated, still loading the cotent in background</string>
     <string name="dialog_content_ssl_error">The certificate of the site is not trusted. Proceed anyway?</string>
+    <string name="setting_title_search">Search</string>
 </resources>

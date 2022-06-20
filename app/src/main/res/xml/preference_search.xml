@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory>
+        <ListPreference
+            android:icon="@drawable/icon_search"
+            android:key="@string/sp_search_engine"
+            android:defaultValue="5"
+            android:title="@string/setting_title_search_engine"
+            android:entries="@array/setting_entries_search_engine"
+            android:entryValues="@array/setting_values_search_engine"/>
+
+        <EditTextPreference
+            android:defaultValue="https://www.google.com/search?q="
+            android:key="sp_search_engine_custom"
+            android:title="@string/setting_title_searchEngine"
+            android:icon="@drawable/icon_edit"/>
+
+        <EditTextPreference
+            android:defaultValue=""
+            android:key="sp_process_text_custom"
+            android:title="@string/setting_title_process_text"
+            android:icon="@drawable/icon_edit"/>
+    </PreferenceCategory>
+</PreferenceScreen>

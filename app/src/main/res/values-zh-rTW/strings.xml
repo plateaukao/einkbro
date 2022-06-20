@@ -29,7 +29,7 @@
     <string name="menu_save_pdf">存成 PDF</string>
     <string name="menu_shareClipboard">複製網址</string>
     <string name="menu_other_searchSite">網頁內\n搜尋</string>
-    <string name="menu_other_info">關於 \"EinkBro 瀏覽器\"</string>
+    <string name="menu_other_info">關於 EinkBro</string>
     <!-- Dialog -->
     <string name="dialog_title_hint">標題:</string>
     <string name="dialog_url_hint">網址:</string>

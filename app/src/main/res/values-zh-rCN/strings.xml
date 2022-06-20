@@ -37,7 +37,7 @@
     <string name="menu_shareClipboard">复制到剪贴板</string>
 
     <string name="menu_other_searchSite">页面中\n搜索</string>
-    <string name="menu_other_info">关于 \"EinkBro浏览器\"</string>
+    <string name="menu_other_info">关于 EinkBro</string>
 
     <!-- Dialog -->
     <string name="dialog_title_hint">标题:</string>

@@ -200,8 +200,11 @@ class ConfigManager(
             sp.edit { putInt(K_TOUCH_AREA_OFFSET, value) }
         }
 
-    val customUserAgent: String
+    var customUserAgent: String
         get() = sp.getString(K_CUSTOM_USER_AGENT, "") ?: ""
+        set(value) {
+            sp.edit { putString(K_CUSTOM_USER_AGENT, value) }
+        }
 
     val customProcessTextUrl: String
         get() = sp.getString(K_CUSTOM_PROCESS_TEXT_URL, "") ?: ""

@@ -1,5 +1,6 @@
 package de.baumann.browser.view.dialog.compose
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -70,33 +71,31 @@ class BookmarksDialogFragment(
         updateContentJob?.cancel()
         updateContentJob = lifecycleScope.launch {
             bookmarkViewModel.bookmarksByParent(currentFolder.id).collect { bookmarks ->
-                composeView.apply {
-                    setContent {
-                        AppCompatTheme {
-                            DialogPanel(
-                                folder = currentFolder,
-                                upParentAction = { gotoParentFolder() },
-                                createFolderAction = { createBookmarkFolder(it) },
-                                closeAction = { dialog?.dismiss() }) {
-                                BookmarkList(
-                                    bookmarks = bookmarks,
-                                    bookmarkManager = bookmarkManager,
-                                    isWideLayout = isWideLayout(),
-                                    shouldReverse = !config.isToolbarOnTop,
-                                    onBookmarkClick = {
-                                        if (!it.isDirectory) {
-                                            gotoUrlAction(it.url)
-                                            config.addRecentBookmark(it)
-                                            dialog?.dismiss()
-                                        } else {
-                                            folderStack.push(it)
-                                            updateBookmarksContent()
-                                        }
-                                    },
-                                    onBookmarkIconClick = { if (!it.isDirectory) addTabAction(it.title, it.url, true) ; dialog?.dismiss() },
-                                    onBookmarkLongClick = { showBookmarkContextMenu(it) }
-                                )
-                            }
+                composeView.setContent {
+                    AppCompatTheme {
+                        DialogPanel(
+                            folder = currentFolder,
+                            upParentAction = { gotoParentFolder() },
+                            createFolderAction = { createBookmarkFolder(it) },
+                            closeAction = { dialog?.dismiss() }) {
+                            BookmarkList(
+                                bookmarks = bookmarks,
+                                bookmarkManager = bookmarkManager,
+                                isWideLayout = ViewUnit.isWideLayout(requireContext()),
+                                shouldReverse = !config.isToolbarOnTop,
+                                onBookmarkClick = {
+                                    if (!it.isDirectory) {
+                                        gotoUrlAction(it.url)
+                                        config.addRecentBookmark(it)
+                                        dialog?.dismiss()
+                                    } else {
+                                        folderStack.push(it)
+                                        updateBookmarksContent()
+                                    }
+                                },
+                                onBookmarkIconClick = { if (!it.isDirectory) addTabAction(it.title, it.url, true) ; dialog?.dismiss() },
+                                onBookmarkLongClick = { showBookmarkContextMenu(it) }
+                            )
                         }
                     }
                 }
@@ -117,9 +116,6 @@ class BookmarksDialogFragment(
             folderName?.let { bookmarkManager.insertDirectory(it, bookmark.id) }
         }
     }
-
-    private fun isWideLayout(): Boolean =
-        ViewUnit.isLandscape(requireContext()) || ViewUnit.isTablet(requireContext())
 
     private fun showBookmarkContextMenu(bookmark: Bookmark) {
         val dialogView = DialogMenuContextListBinding.inflate(LayoutInflater.from(requireContext()))
