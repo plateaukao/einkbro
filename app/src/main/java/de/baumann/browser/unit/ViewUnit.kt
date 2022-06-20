@@ -87,6 +87,9 @@ object ViewUnit {
         return dp * (metrics.densityDpi / 160f)
     }
 
+
+    fun isWideLayout(context: Context): Boolean = isLandscape(context) || isTablet(context)
+
     fun Int.dp(context: Context): Int {
         val metrics = context.resources.displayMetrics
         return (this * (metrics.densityDpi / 160f)).toInt()
