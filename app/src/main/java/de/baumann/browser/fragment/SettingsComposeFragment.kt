@@ -64,7 +64,8 @@ class SettingsComposeFragment: Fragment(), KoinComponent {
             AppCompatTheme {
                 SettingsMainContent(
                     SettingItem.values().toList(),
-                    ViewUnit.isWideLayout(requireContext()),
+                    //ViewUnit.isWideLayout(requireContext()),
+                    true,
                     onItemClick = { handleSettingItem(it) },
                     version = version,
                     onVersionClick = {}
