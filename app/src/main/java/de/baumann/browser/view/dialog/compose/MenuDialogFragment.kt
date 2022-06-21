@@ -124,7 +124,7 @@ private fun MenuItem(
     Column(
         modifier = Modifier
             .width(width)
-            .wrapContentHeight()
+            .height(70.dp)
             .clickable { onClicked() },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -154,7 +154,7 @@ private fun MenuItem(
 
 @Preview
 @Composable
-private fun previewItem() {
+private fun PreviewItem() {
     MyTheme {
         Column {
             MenuItem(R.string.title_appData, R.drawable.ic_copy) {}
@@ -165,7 +165,7 @@ private fun previewItem() {
 
 @Preview
 @Composable
-private fun previewMenuItems() {
+private fun PreviewMenuItems() {
     MyTheme {
         MenuItems(hasWhiteBkd = false, boldFont = false, {})
     }
