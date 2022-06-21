@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -30,7 +31,7 @@ abstract class ComposeDialogFragment: AppCompatDialogFragment(), KoinComponent {
         return super.onCreateDialog(savedInstanceState)
     }
 
-    protected fun setupDialog() {
+    private fun setupDialog() {
         dialog?.apply {
             window?.setGravity((if (config.isToolbarOnTop) Gravity.CENTER else Gravity.BOTTOM) or Gravity.END)
             window?.setBackgroundDrawableResource(R.drawable.background_with_border_margin)
@@ -52,20 +53,9 @@ abstract class ComposeDialogFragment: AppCompatDialogFragment(), KoinComponent {
 
 }
 
-fun Dialog.runClickAndDismiss(config: ConfigManager?, action: ()-> Unit) {
-    config ?: return
-    action()
-    dismiss()
-}
-
 @Composable
 fun HorizontalSeparator() {
-    Spacer(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(1.dp)
-            .background(color = MaterialTheme.colors.onBackground)
-    )
+    Divider(thickness = 1.dp, color = MaterialTheme.colors.onBackground)
 }
 
 @Composable
