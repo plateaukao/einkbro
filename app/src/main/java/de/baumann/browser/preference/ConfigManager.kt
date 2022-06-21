@@ -28,6 +28,10 @@ class ConfigManager(
         sp.registerOnSharedPreferenceChangeListener(listener)
     }
 
+    fun unregisterOnSharedPreferenceChangeListener(listener: SharedPreferences.OnSharedPreferenceChangeListener) {
+        sp.unregisterOnSharedPreferenceChangeListener(listener)
+    }
+
     var enableWebBkgndLoad: Boolean
         get() = sp.getBoolean(K_BKGND_LOAD, true)
         set(value) {
