@@ -26,7 +26,7 @@ class EpubReaderActivity: BrowserActivity() {
     }
 
     override fun onToolActionClick(toolbarAction: ToolbarAction) {
-        if (toolbarAction == ToolbarAction.TabCount) {
+        if (toolbarAction == ToolbarAction.TOC) {
             epubReader.showTocDialog()
             return
         }

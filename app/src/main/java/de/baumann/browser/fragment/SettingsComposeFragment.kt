@@ -47,7 +47,6 @@ import de.baumann.browser.Ninja.R
 import de.baumann.browser.activity.BrowserActivity
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.unit.HelperUnit
-import de.baumann.browser.unit.ViewUnit
 import de.baumann.browser.view.dialog.PrinterDocumentPaperSizeDialog
 import de.baumann.browser.view.dialog.TextInputDialog
 import kotlinx.coroutines.launch

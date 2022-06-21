@@ -52,7 +52,7 @@ class ComposeToolbarViewController(
             BoldFont,
             Font,
             Touch,
-            TabCount,
+            TOC,
             Settings,
             CloseTab,
     )
@@ -72,7 +72,6 @@ class ComposeToolbarViewController(
                     title = title,
                     tabCount = tabCount,
                     isIncognito = config.isIncognitoMode,
-                    isReader = isReader,
                     onClick = onItemClick,
                     onLongClick = onItemLongClick
                 )
