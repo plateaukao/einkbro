@@ -109,14 +109,14 @@ dependencies {
 
     // compose
     // Compose Material Design
-    implementation 'androidx.compose.material:material:1.2.0-beta03'
+    implementation 'androidx.compose.material:material:1.2.0-rc01'
     // Tooling support (Previews, etc.)
-    debugImplementation 'androidx.compose.ui:ui-tooling:1.2.0-beta03'
-    implementation "androidx.compose.ui:ui-tooling-preview:1.2.0-beta03"
+    debugImplementation 'androidx.compose.ui:ui-tooling:1.2.0-rc01'
+    implementation "androidx.compose.ui:ui-tooling-preview:1.2.0-rc01"
     // UI Tests
-    androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.2.0-beta03'
+    androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.2.0-rc01'
     // When using a AppCompat theme
-    implementation "com.google.accompanist:accompanist-appcompat-theme:0.16.0"
+    //implementation "com.google.accompanist:accompanist-appcompat-theme:0.16.0"
 
     // reorder lazylist
     implementation "org.burnoutcrew.composereorderable:reorderable:0.9.0"

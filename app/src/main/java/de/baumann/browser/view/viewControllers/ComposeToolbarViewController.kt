@@ -1,10 +1,11 @@
 package de.baumann.browser.view.viewControllers
 
 import android.view.View.*
+import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.platform.ComposeView
-import com.google.accompanist.appcompattheme.AppCompatTheme
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.view.compose.ComposedToolbar
+import de.baumann.browser.view.compose.MyTheme
 import de.baumann.browser.view.toolbaricons.ToolbarAction
 import de.baumann.browser.view.toolbaricons.ToolbarAction.*
 import de.baumann.browser.view.toolbaricons.ToolbarActionInfo
@@ -67,7 +68,7 @@ class ComposeToolbarViewController(
         if (iconEnums.isEmpty()) return
 
         composeView.setContent {
-            AppCompatTheme {
+            MyTheme {
                 ComposedToolbar(iconEnums.toToolbarActionInfoList(),
                     title = title,
                     tabCount = tabCount,

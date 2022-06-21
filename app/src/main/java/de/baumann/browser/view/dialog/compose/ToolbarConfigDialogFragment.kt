@@ -14,14 +14,12 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.appcompattheme.AppCompatTheme
 import de.baumann.browser.Ninja.R
+import de.baumann.browser.view.compose.MyTheme
 import de.baumann.browser.view.dialog.compose.OrderDirection.*
 import de.baumann.browser.view.toolbaricons.ToolbarAction
 import org.burnoutcrew.reorderable.ReorderableItem
@@ -31,7 +29,7 @@ import org.burnoutcrew.reorderable.reorderable
 
 class ToolbarConfigDialogFragment: ComposeDialogFragment(){
     override fun setupComposeView() = composeView.setContent {
-        AppCompatTheme {
+        MyTheme {
             Column(
                 Modifier.width(IntrinsicSize.Max),
                 horizontalAlignment = Alignment.End,
@@ -107,7 +105,7 @@ private fun ToolbarList(
                 Column(
                     modifier = Modifier
                         .border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(3.dp))
-                        .background(MaterialTheme.colors.surface)
+                        .background(MaterialTheme.colors.background)
                 ) {
                     ToolbarToggleItem(
                         info = info,
@@ -140,7 +138,7 @@ fun ToolbarToggleItem(
         verticalAlignment = Alignment.CenterVertically
     ) {
         val shouldEnableCheckClick = info.toolbarAction != ToolbarAction.Settings
-        Surface(modifier = Modifier.weight(1F)){
+        Surface(modifier = Modifier.weight(1F), color = MaterialTheme.colors.background){
             ToggleItem(
                 state = info.isOn,
                 titleResId = info.toolbarAction.titleResId,
@@ -194,7 +192,7 @@ class ToolbarActionItemInfo(val toolbarAction: ToolbarAction, var isOn: Boolean)
 @Preview
 @Composable
 private fun previewToolBar() {
-    AppCompatTheme {
+    MyTheme {
         Column (horizontalAlignment = Alignment.End){
             ToolbarList(
                 Modifier
