@@ -39,19 +39,26 @@ class FontSettingsFragment : PreferenceFragmentCompat(), OnSharedPreferenceChang
             }
         }
 
-        config.registerOnSharedPreferenceChangeListener { _, key ->
-            when (key) {
-                ConfigManager.K_CUSTOM_FONT ->
-                    findPreference<Preference>(ConfigManager.K_CUSTOM_FONT)?.apply {
-                        summary = config.customFontInfo?.name ?: "not configured"
-                    }
-                ConfigManager.K_FONT_TYPE ->
-                    findPreference<Preference>("settings_font_type")?.apply {
-                        summary = getString(config.fontType.resId)
-                    }
-            }
+        config.registerOnSharedPreferenceChangeListener(preferenceListener)
+    }
+
+    private val preferenceListener = OnSharedPreferenceChangeListener { _, key ->
+        when (key) {
+            ConfigManager.K_CUSTOM_FONT ->
+                findPreference<Preference>(ConfigManager.K_CUSTOM_FONT)?.apply {
+                    summary = config.customFontInfo?.name ?: "not configured"
+                }
+            ConfigManager.K_FONT_TYPE ->
+                findPreference<Preference>("settings_font_type")?.apply {
+                    summary = getString(config.fontType.resId)
+                }
         }
     }
 
     override fun onSharedPreferenceChanged(sp: SharedPreferences, key: String) { }
+
+    override fun onDestroy() {
+        config.unregisterOnSharedPreferenceChangeListener(preferenceListener)
+        super.onDestroy()
+    }
 }
