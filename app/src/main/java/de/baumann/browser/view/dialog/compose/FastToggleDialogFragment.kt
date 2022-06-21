@@ -14,22 +14,20 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.fragment.app.FragmentManager
-import com.google.accompanist.appcompattheme.AppCompatTheme
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.preference.ConfigManager
+import de.baumann.browser.view.compose.MyTheme
 
 class FastToggleDialogFragment(
     val extraAction: () -> Unit
 ): ComposeDialogFragment(){
     override fun setupComposeView() = composeView.setContent {
-        AppCompatTheme {
+        MyTheme {
             FastToggleItemList(config) { needExtraAction ->
                 if (needExtraAction) extraAction()
                 dialog?.dismiss()
@@ -102,7 +100,7 @@ fun ToggleItem(
                 currentState = !currentState
                 if (isEnabled) { onClicked(currentState) }
             },
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Checkbox(checked = currentState, enabled = isEnabled, onCheckedChange = {
             currentState = !currentState
@@ -129,7 +127,7 @@ fun ToggleItem(
 @Preview
 @Composable
 private fun previewItem() {
-    AppCompatTheme {
+    MyTheme {
         ToggleItem(true, R.string.title, R.drawable.ic_location) {}
     }
 }
@@ -137,7 +135,7 @@ private fun previewItem() {
 @Preview
 @Composable
 private fun previewItemList() {
-    AppCompatTheme {
+    MyTheme {
         FastToggleItemList(onClicked = {})
     }
 }

@@ -19,16 +19,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.fragment.app.FragmentManager
-import com.google.accompanist.appcompattheme.AppCompatTheme
 import de.baumann.browser.Ninja.R
+import de.baumann.browser.view.compose.MyTheme
 import de.baumann.browser.view.dialog.compose.MenuItemType.*
 
 class MenuDialogFragment(
     private val itemClicked: (MenuItemType) -> Unit
 ): ComposeDialogFragment(){
     override fun setupComposeView() = composeView.setContent {
-        AppCompatTheme {
+        MyTheme {
             MenuItems(config.whiteBackground, config.boldFontStyle) { item ->
                 dialog?.dismiss()
                 itemClicked(item)
@@ -156,7 +155,7 @@ private fun MenuItem(
 @Preview
 @Composable
 private fun previewItem() {
-    AppCompatTheme {
+    MyTheme {
         Column {
             MenuItem(R.string.title_appData, R.drawable.ic_copy) {}
             MenuItem(R.string.title, R.drawable.ic_location) {}
@@ -167,7 +166,7 @@ private fun previewItem() {
 @Preview
 @Composable
 private fun previewMenuItems() {
-    AppCompatTheme {
+    MyTheme {
         MenuItems(hasWhiteBkd = false, boldFont = false, {})
     }
 }

@@ -14,7 +14,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.google.accompanist.appcompattheme.AppCompatTheme
 import de.baumann.browser.view.toolbaricons.ToolbarAction
 import de.baumann.browser.view.toolbaricons.ToolbarAction.*
 import de.baumann.browser.view.toolbaricons.ToolbarActionInfo
@@ -81,7 +80,7 @@ fun ToolbarIcon(
             .padding(12.dp),
         painter = painterResource(id = toolbarActionInfo.getCurrentResId()),
         contentDescription = null,
-        tint = MaterialTheme.colors.onSurface
+        tint = MaterialTheme.colors.onBackground
     )
 }
 
@@ -123,7 +122,7 @@ private fun TabCountIcon(
 @Preview
 @Composable
 fun PreviewTabCount() {
-    AppCompatTheme {
+    MyTheme {
         TabCountIcon(false, "3", {}, {})
     }
 }
@@ -131,7 +130,7 @@ fun PreviewTabCount() {
 @Preview
 @Composable
 fun PreviewTabCountIncognito() {
-    AppCompatTheme {
+    MyTheme {
         TabCountIcon(true, "3", {}, {})
     }
 }
@@ -139,7 +138,7 @@ fun PreviewTabCountIncognito() {
 @Preview
 @Composable
 fun PreviewToolbar() {
-    AppCompatTheme {
+    MyTheme {
         ComposedToolbar(
             toolbarActionInfos = ToolbarAction.values().map {ToolbarActionInfo(it, false)},
             "hihi",

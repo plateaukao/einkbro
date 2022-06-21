@@ -26,13 +26,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LifecycleCoroutineScope
-import com.google.accompanist.appcompattheme.AppCompatTheme
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.DialogMenuContextListBinding
 import de.baumann.browser.database.Bookmark
 import de.baumann.browser.database.BookmarkManager
 import de.baumann.browser.unit.ViewUnit
 import de.baumann.browser.view.NinjaToast
+import de.baumann.browser.view.compose.MyTheme
 import de.baumann.browser.view.dialog.BookmarkEditDialog
 import de.baumann.browser.view.dialog.DialogManager
 import de.baumann.browser.view.dialog.dismissWithAction
@@ -70,7 +70,7 @@ class BookmarksDialogFragment(
         updateContentJob = lifecycleScope.launch {
             bookmarkViewModel.bookmarksByParent(currentFolder.id).collect { bookmarks ->
                 composeView.setContent {
-                    AppCompatTheme {
+                    MyTheme {
                         DialogPanel(
                             folder = currentFolder,
                             upParentAction = { gotoParentFolder() },
@@ -192,7 +192,8 @@ fun DialogPanel(
                     .weight(1F)
                     .padding(horizontal = 5.dp)
                     .align(Alignment.CenterVertically)
-                    .clickable { if (folder.id != 0) upParentAction(folder) }
+                    .clickable { if (folder.id != 0) upParentAction(folder) },
+                color = MaterialTheme.colors.onBackground
             )
             ActionIcon(
                 modifier = Modifier
@@ -293,6 +294,7 @@ private fun BookmarkItem(
             fontSize = 18.sp,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
+            color = MaterialTheme.colors.onBackground,
         )
     }
 }
@@ -313,7 +315,7 @@ private fun ActionIcon(modifier: Modifier, iconResId: Int, action: ()->Unit) {
 @Preview
 @Composable
 private fun PreviewBookmarkList() {
-    AppCompatTheme {
+    MyTheme {
         BookmarkList(
             bookmarks = listOf(Bookmark("test 1","https://www.google.com", false)),
             null,
