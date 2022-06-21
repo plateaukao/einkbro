@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.*
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -101,10 +103,10 @@ private fun ToolbarList(
     ) {
         items(infos, { it.hashCode() }) { info ->
             ReorderableItem(state, key = info.hashCode()) { isDragging ->
-                val elevation = animateDpAsState(if (isDragging) 16.dp else 0.dp)
+                val borderWidth = if (isDragging) 1.5.dp else -1.dp
                 Column(
                     modifier = Modifier
-                        .shadow(elevation.value)
+                        .border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(3.dp))
                         .background(MaterialTheme.colors.surface)
                 ) {
                     ToolbarToggleItem(
