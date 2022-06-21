@@ -29,7 +29,7 @@
     <string name="menu_save_pdf">Guardar como PDF</string>
     <string name="menu_shareClipboard">Copiar para a área de transferência</string>
     <string name="menu_other_searchSite">Pesquisar no site</string>
-    <string name="menu_other_info">Acerca de \"EinkBro Browser\"</string>
+    <string name="menu_other_info">Acerca de EinkBro</string>
     <!-- Dialog -->
     <string name="dialog_title_hint">Título:</string>
     <string name="dialog_url_hint">URL:</string>

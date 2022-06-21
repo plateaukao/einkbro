@@ -110,10 +110,10 @@
 
     <!-- browser clear -->
     <string name="data_summary">All files will be exported to the \"Android/data/de.baumann.browser/files/browser_backup/\"
-        directory of your sd-card. This directory will be DELETED, if you uninstall \"EinkBro Browser\". So make a backup regularly on a save
+        directory of your sd-card. This directory will be DELETED, if you uninstall EinkBro. So make a backup regularly on a save
         place.</string>
     <string name="clear_title_quit">Clear when application exits</string>
-    <string name="clear_summary_quit">Every time you quit \"EinkBro Browser\" all above checked data will be deleted.</string>
+    <string name="clear_summary_quit">Every time you quit EinkBro all above checked data will be deleted.</string>
     <string name="clear_title_cache">Clear Cache</string>
     <string name="clear_title_cookie">Clear Cookies</string>
     <string name="clear_title_history">Clear History</string>
@@ -223,7 +223,7 @@
     <string name="toast_error">Uuups. Something went wrong.</string>
     <string name="toast_edit_successful">Successfully saved</string>
     <string name="toast_webview_forward">Can\'t load next site</string>
-    <string name="toast_restart">You must restart \"EinkBro Browser\" to apply changes. Close now?</string>
+    <string name="toast_restart">You must restart EinkBro to apply changes. Close now?</string>
     <string name="toast_close_tab">Do you want to close current tab?</string>
     <string name="toast_downloadComplete">Download complete. Open file?</string>
     <string name="toast_backup">Backup data? This will overwrite the old backup.</string>
@@ -242,7 +242,7 @@
 
     <string name="changelog_dialog">
 
-        &lt;b>On the following sites you have access to all important information about \"EinkBro Browser\".
+        &lt;b>On the following sites you have access to all important information about EinkBro.
         &lt;br>&lt;br>
 
         \u25AA &lt;i>New releases:&lt;/i> https://github.com/plateaukao/browser/releases&lt;br>&lt;br>

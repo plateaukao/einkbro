@@ -28,7 +28,7 @@
     <string name="menu_save_pdf">Сохранить в PDF</string>
     <string name="menu_shareClipboard">Копировать в буфер</string>
     <string name="menu_other_searchSite">Поиск по сайту</string>
-    <string name="menu_other_info">О программе \"EinkBro Browser\"</string>
+    <string name="menu_other_info">О программе EinkBro</string>
     <!-- Dialog -->
     <string name="dialog_title_hint">Заголовок:</string>
     <string name="dialog_url_hint">Url:</string>
@@ -78,9 +78,9 @@
     <string name="setting_summary_history">Сохраните историю посещаемых веб-сайтов.</string>
     <!-- browser clear -->
     <string name="data_summary">Все файлы будут экспортированы в каталог Вашей SD-карты: Android/data/de.baumann.browser/files/browser_backup/\".
-Этот каталог будет УДАЛЕН, если Вы удалите \"EinkBro Browser\". Поэтому регулярно делайте резервные копии..</string>
+Этот каталог будет УДАЛЕН, если Вы удалите EinkBro. Поэтому регулярно делайте резервные копии..</string>
     <string name="clear_title_quit">Очистить при выходе из приложения</string>
-    <string name="clear_summary_quit">Каждый раз при выходе из \"EinkBro Browser\" все вышеперечисленные проверенные данные будут удаляться.</string>
+    <string name="clear_summary_quit">Каждый раз при выходе из EinkBro все вышеперечисленные проверенные данные будут удаляться.</string>
     <string name="clear_title_cache">Очистить кэш</string>
     <string name="clear_title_cookie">Очистить куки</string>
     <string name="clear_title_history">Очистить историю</string>
@@ -106,7 +106,7 @@
     <string name="setting_summary_nav_pos_right">Справа</string>
     <string name="setting_summary_nav_pos_left">Cлева</string>
     <string name="setting_summary_nav_pos_center">По центру</string>
-    <string name="setting_summary_tab">Что должно отображаться при запуске \"EinkBro Browser\"? Начальная страница, закладки, …</string>
+    <string name="setting_summary_tab">Что должно отображаться при запуске EinkBro? Начальная страница, закладки, …</string>
     <string name="setting_title_confirm_tab_close">Подтвердить закрытие вкладки</string>
     <string name="setting_summary_confirm_tab_close">Диалоговое окно подтверждения при закрытии вкладки.</string>
     <string name="setting_overView">Обзор</string>
@@ -160,7 +160,7 @@
     <string name="toast_error">Что-то пошло не так.</string>
     <string name="toast_edit_successful">Успешно сохранено</string>
     <string name="toast_webview_forward">Не удается загрузить следующий сайт</string>
-    <string name="toast_restart">Чтобы применить изменения, необходимо перезапустить \"EinkBro Browser\". Закрыть сейчас?</string>
+    <string name="toast_restart">Чтобы применить изменения, необходимо перезапустить EinkBro. Закрыть сейчас?</string>
     <string name="toast_close_tab">Хотите закрыть текущую вкладку?</string>
     <string name="toast_downloadComplete">Загрузка завершена. Открыть файловый менеджер?</string>
     <string name="toast_backup">Сохранить данные? Это перезапишет старую резервную копию.</string>

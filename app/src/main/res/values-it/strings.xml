@@ -29,7 +29,7 @@
     <string name="menu_save_pdf">Salva come PDF</string>
     <string name="menu_shareClipboard">Copia negli Appunti</string>
     <string name="menu_other_searchSite">Cerca nel sito</string>
-    <string name="menu_other_info">Info su \"EinkBro Browser\"</string>
+    <string name="menu_other_info">Info su EinkBro</string>
     <!-- Dialog -->
     <string name="dialog_title_hint">Titolo:</string>
     <string name="dialog_url_hint">Url:</string>
@@ -79,10 +79,10 @@
     <string name="setting_summary_history">Salva la cronologia dei site web visitati.</string>
     <!-- browser clear -->
     <string name="data_summary">Tutti i file saranno esportati nella cartella \"Android/data/de.baumann.browser/files/browser_backup/\"
-        della tua sd-card. Questa directory sarà ELIMINATA se si disinstalla \"EinkBro Browser\". Quindi è consigliato di fare un backup regolarmente in un posto
+        della tua sd-card. Questa directory sarà ELIMINATA se si disinstalla EinkBro. Quindi è consigliato di fare un backup regolarmente in un posto
         sicuro.</string>
     <string name="clear_title_quit">Cancella quando si chiude l\'applicazione</string>
-    <string name="clear_summary_quit">Ogni volta che si esce da \"EinkBro Browser\" tutti i dati selezionati sopra vengono cancellati.</string>
+    <string name="clear_summary_quit">Ogni volta che si esce da EinkBro tutti i dati selezionati sopra vengono cancellati.</string>
     <string name="clear_title_cache">Elimina Cache</string>
     <string name="clear_title_cookie">Elimina Cookies</string>
     <string name="clear_title_history">Elimina Cronologia</string>
@@ -108,7 +108,7 @@
     <string name="setting_summary_nav_pos_right">Destra</string>
     <string name="setting_summary_nav_pos_left">Sinistra</string>
     <string name="setting_summary_nav_pos_center">Centro</string>
-    <string name="setting_summary_tab">Cosa deve essere mostrato all\' apertura di \"EinkBro Browser\"? Pagina iniziale, i tuoi segnalibri, …</string>
+    <string name="setting_summary_tab">Cosa deve essere mostrato all\' apertura di EinkBro? Pagina iniziale, i tuoi segnalibri, …</string>
     <string name="setting_title_confirm_tab_close">Confermare la chiusura delle schede</string>
     <string name="setting_summary_confirm_tab_close">Finestra di conferma per la chiusura delle schede.</string>
     <string name="setting_overView">Panoramica</string>
@@ -162,7 +162,7 @@
     <string name="toast_error">Uuups. Qualcosa è andato storto</string>
     <string name="toast_edit_successful">Salvato con successo</string>
     <string name="toast_webview_forward">Non è possibile caricare il sito successivo</string>
-    <string name="toast_restart">Per applicare le modifiche è necessario riavviare \"EinkBro Browser\". Chiudere ora?</string>
+    <string name="toast_restart">Per applicare le modifiche è necessario riavviare EinkBro. Chiudere ora?</string>
     <string name="toast_close_tab">Vuoi chiudere la scheda corrente?</string>
     <string name="toast_downloadComplete">Download completato. Aprire File Manager?</string>
     <string name="toast_backup">Backup dei dati? Questo sovrascriverà il backup precedente.</string>
