@@ -37,7 +37,6 @@ class MenuDialogFragment(
 }
 
 enum class MenuItemType {
-    Canceled,
     QuickToggle, OpenHome, CloseTab, Quit,
     SplitScreen, Translate, VerticalRead, ReaderMode, TouchSetting, ToolbarSetting,
     ReceiveData, SendLink, ShareLink, OpenWith, CopyLink, Shortcut,

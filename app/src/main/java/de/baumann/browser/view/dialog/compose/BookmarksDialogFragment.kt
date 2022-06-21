@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -173,7 +174,7 @@ fun DialogPanel(
         Box(Modifier.weight(1F, fill = false)) {
             content()
         }
-        HorizontalSeparator()
+        Divider(thickness = 1.dp, color = MaterialTheme.colors.onBackground)
         Row(modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)) {

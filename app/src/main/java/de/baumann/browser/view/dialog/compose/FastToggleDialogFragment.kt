@@ -58,7 +58,7 @@ fun FastToggleItemList(config: ConfigManager? = null, onClicked: ((Boolean) -> U
             onClicked(false)
         }
 
-        Spacer(modifier = Modifier.height(1.dp).fillMaxWidth().background(color = MaterialTheme.colors.onPrimary))
+        Divider(thickness = 1.dp, color = MaterialTheme.colors.onBackground)
 
         ToggleItem(state = config?.shareLocation ?: false, titleResId = R.string.location, iconResId=R.drawable.ic_location) {
             config?.let { it.shareLocation= it.shareLocation.not() }

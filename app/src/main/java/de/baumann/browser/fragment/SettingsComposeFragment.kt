@@ -62,7 +62,7 @@ class SettingsComposeFragment: Fragment(), KoinComponent {
         composeView.setContent {
             MyTheme {
                 SettingsMainContent(
-                    SettingItem.values().toList(),
+                    SettingItemType.values().toList(),
                     //ViewUnit.isWideLayout(requireContext()),
                     true,
                     onItemClick = { handleSettingItem(it) },
@@ -74,19 +74,19 @@ class SettingsComposeFragment: Fragment(), KoinComponent {
         return composeView
     }
 
-    private fun handleSettingItem(setting: SettingItem) {
+    private fun handleSettingItem(setting: SettingItemType) {
         when(setting) {
-            SettingItem.Ui -> showFragment(UiSettingsFragment())
-            SettingItem.Font -> showFragment(FontSettingsFragment())
-            SettingItem.Gesture -> showFragment(FragmentSettingsGesture())
-            SettingItem.Backup -> showFragment(DataSettingsFragment())
-            SettingItem.PdfSize -> PrinterDocumentPaperSizeDialog(requireContext()).show()
-            SettingItem.StartControl -> showFragment(StartSettingsFragment())
-            SettingItem.ClearControl -> showFragment(ClearDataFragment())
-            SettingItem.Search -> showFragment(SearchSettingsFragment())
-            SettingItem.UserAgent -> lifecycleScope.launch { updateUserAgent() }
-            SettingItem.License -> showLicenseList()
-            SettingItem.About -> showAboutDialog()
+            SettingItemType.Ui -> showFragment(UiSettingsFragment())
+            SettingItemType.Font -> showFragment(FontSettingsFragment())
+            SettingItemType.Gesture -> showFragment(FragmentSettingsGesture())
+            SettingItemType.Backup -> showFragment(DataSettingsFragment())
+            SettingItemType.PdfSize -> PrinterDocumentPaperSizeDialog(requireContext()).show()
+            SettingItemType.StartControl -> showFragment(StartSettingsFragment())
+            SettingItemType.ClearControl -> showFragment(ClearDataFragment())
+            SettingItemType.Search -> showFragment(SearchSettingsFragment())
+            SettingItemType.UserAgent -> lifecycleScope.launch { updateUserAgent() }
+            SettingItemType.License -> showLicenseList()
+            SettingItemType.About -> showAboutDialog()
         }
     }
 
@@ -135,9 +135,9 @@ class SettingsComposeFragment: Fragment(), KoinComponent {
 
 @Composable
 private fun SettingsMainContent(
-    settings: List<SettingItem>,
+    settings: List<SettingItemType>,
     isWideLayout: Boolean,
-    onItemClick: (SettingItem)->Unit,
+    onItemClick: (SettingItemType)->Unit,
     version: String,
     onVersionClick:()->Unit,
 ) {
@@ -158,8 +158,8 @@ private fun SettingsMainContent(
 
 @Composable
 private fun SettingItem(
-    setting: SettingItem,
-    onItemClick: (SettingItem)->Unit
+    setting: SettingItemType,
+    onItemClick: (SettingItemType)->Unit
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val pressed by interactionSource.collectIsPressedAsState()
@@ -222,7 +222,7 @@ private fun VersionItem(
     }
 }
 
-private enum class SettingItem(val titleResId: Int, val iconId: Int) {
+private enum class SettingItemType(val titleResId: Int, val iconId: Int) {
     Ui(R.string.setting_title_ui, R.drawable.icon_ui),
     Font(R.string.setting_title_font, R.drawable.icon_size),
     Gesture(R.string.setting_gestures, R.drawable.gesture_tap),
@@ -295,6 +295,6 @@ class MyLinkMovementMethod() : LinkMovementMethod() {
 @Composable
 fun PreviewSettingsMainContent() {
     MyTheme {
-        SettingsMainContent(SettingItem.values().toList(), isWideLayout = true, onItemClick = {}, version = "v1.2.3", {})
+        SettingsMainContent(SettingItemType.values().toList(), isWideLayout = true, onItemClick = {}, version = "v1.2.3", {})
     }
 }
