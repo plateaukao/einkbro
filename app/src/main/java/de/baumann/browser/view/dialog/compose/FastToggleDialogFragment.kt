@@ -7,13 +7,11 @@ import android.view.ViewGroup
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Checkbox
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -102,10 +100,19 @@ fun ToggleItem(
             },
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Checkbox(checked = currentState, enabled = isEnabled, onCheckedChange = {
-            currentState = !currentState
-            if (isEnabled) { onClicked(currentState) }
-        })
+        Checkbox(
+            checked = currentState,
+            enabled = isEnabled,
+            colors = CheckboxDefaults.colors(
+                checkedColor = MaterialTheme.colors.onBackground,
+                uncheckedColor = MaterialTheme.colors.onBackground,
+                checkmarkColor = MaterialTheme.colors.background,
+            ),
+            onCheckedChange = {
+                currentState = !currentState
+                if (isEnabled) { onClicked(currentState) }
+            }
+        )
 
         Icon(
             painter = painterResource(id = iconResId), contentDescription = null,
