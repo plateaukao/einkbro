@@ -22,7 +22,7 @@ class SettingsActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportFragmentManager
             .beginTransaction() //.replace(R.id.content_frame, new SettingsFragment())
-            .replace(R.id.content_frame, SettingsComposeFragment())
+            .add(R.id.content_frame, SettingsComposeFragment())
             .commit()
     }
 
