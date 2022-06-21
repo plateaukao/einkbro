@@ -189,6 +189,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
                 focusOnInput()
             }
             ToolbarAction.Desktop -> config.desktop = !config.desktop
+            else -> {}
         }
     }
 

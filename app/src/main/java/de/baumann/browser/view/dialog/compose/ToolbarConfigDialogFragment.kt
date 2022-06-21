@@ -1,25 +1,22 @@
 package de.baumann.browser.view.dialog.compose
 
-import android.os.Bundle
-import android.view.*
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.appcompattheme.AppCompatTheme
 import de.baumann.browser.Ninja.R
+import de.baumann.browser.view.compose.MyTheme
 import de.baumann.browser.view.dialog.compose.OrderDirection.*
 import de.baumann.browser.view.toolbaricons.ToolbarAction
 import org.burnoutcrew.reorderable.ReorderableItem
@@ -28,58 +25,60 @@ import org.burnoutcrew.reorderable.rememberReorderableLazyListState
 import org.burnoutcrew.reorderable.reorderable
 
 class ToolbarConfigDialogFragment: ComposeDialogFragment(){
-    override fun setupComposeView() = composeView.setContent {
-        AppCompatTheme {
-            Column(
-                Modifier.width(IntrinsicSize.Max),
-                horizontalAlignment = Alignment.End,
-            ) {
-                val actionInfoList = getCurrentActionList()
-                var rememberList by remember { mutableStateOf(actionInfoList) }
+    override fun setupComposeView() {
+        val actionInfoList = getCurrentActionList()
+        composeView.setContent {
+            MyTheme {
+                Column(
+                    Modifier.width(IntrinsicSize.Max),
+                    horizontalAlignment = Alignment.End,
+                ) {
+                    var rememberList by remember { mutableStateOf(actionInfoList) }
 
-                ToolbarList(
-                    Modifier
-                        .weight(1F, fill = false)
-                        .width(300.dp)
-                        .padding(2.dp), // for round corner spaces
-                    rememberList,
-                    onItemClicked = { action ->
-                        val actionInfos = rememberList.toMutableList()
-                        val actionInfo = actionInfos.first { it.toolbarAction == action }
-                        actionInfo.isOn = !actionInfo.isOn
-                        if (actionInfo.isOn) {
-                            val toIndex = actionInfos.indexOfFirst { !it.isOn }
-                            val fromIndex = actionInfos.indexOf(actionInfo)
-                            if (toIndex != -1 && toIndex < fromIndex)
-                                actionInfos.apply { add(toIndex, removeAt(fromIndex)) }
-                        } else {
-                            val toIndex = actionInfos.indexOfLast { it.isOn }
-                            val fromIndex = actionInfos.indexOf(actionInfo)
-                            if (toIndex != -1 && toIndex > fromIndex)
-                                actionInfos.apply { add(toIndex, removeAt(fromIndex)) }
+                    ToolbarList(
+                        Modifier
+                            .weight(1F, fill = false)
+                            .width(300.dp)
+                            .padding(2.dp), // for round corner spaces
+                        rememberList,
+                        onItemClicked = { action ->
+                            val actionInfos = rememberList.toMutableList()
+                            val actionInfo = actionInfos.first { it.toolbarAction == action }
+                            actionInfo.isOn = !actionInfo.isOn
+                            if (actionInfo.isOn) {
+                                val toIndex = actionInfos.indexOfFirst { !it.isOn }
+                                val fromIndex = actionInfos.indexOf(actionInfo)
+                                if (toIndex != -1 && toIndex < fromIndex)
+                                    actionInfos.apply { add(toIndex, removeAt(fromIndex)) }
+                            } else {
+                                val toIndex = actionInfos.indexOfLast { it.isOn }
+                                val fromIndex = actionInfos.indexOf(actionInfo)
+                                if (toIndex != -1 && toIndex > fromIndex)
+                                    actionInfos.apply { add(toIndex, removeAt(fromIndex)) }
+                            }
+                            rememberList = actionInfos
+                        },
+                        onItemMoved = { from, to ->
+                            rememberList = rememberList.toMutableList().apply { add(to, removeAt(from)) }
                         }
-                        rememberList = actionInfos
-                    },
-                    onItemMoved = { from, to ->
-                        rememberList = rememberList.toMutableList().apply { add(to, removeAt(from)) }
-                    }
-                )
-                HorizontalSeparator()
-                DialogButtonBar(
-                    dismissAction = { dialog?.dismiss() },
-                    okAction = {
-                        config.toolbarActions = rememberList.filter { it.isOn }.map { it.toolbarAction }
-                    }
-                )
+                    )
+                    HorizontalSeparator()
+                    DialogButtonBar(
+                        dismissAction = { dialog?.dismiss() },
+                        okAction = {
+                            config.toolbarActions = rememberList.filter { it.isOn }.map { it.toolbarAction }
+                        }
+                    )
+                }
             }
         }
     }
 
     private fun getCurrentActionList(): List<ToolbarActionItemInfo> =
         config.toolbarActions.map { ToolbarActionItemInfo(it, true) } +
-        ToolbarAction.values().filterNot { config.toolbarActions.contains(it) }.map { ToolbarActionItemInfo(it, false) }
+            // need to filter only addable actions here
+        ToolbarAction.values().filter { it.isAddable }.filterNot { config.toolbarActions.contains(it) }.map { ToolbarActionItemInfo(it, false) }
 }
-
 
 @Composable
 private fun ToolbarList(
@@ -100,11 +99,11 @@ private fun ToolbarList(
     ) {
         items(infos, { it.hashCode() }) { info ->
             ReorderableItem(state, key = info.hashCode()) { isDragging ->
-                val elevation = animateDpAsState(if (isDragging) 16.dp else 0.dp)
+                val borderWidth = if (isDragging) 1.5.dp else -1.dp
                 Column(
                     modifier = Modifier
-                        .shadow(elevation.value)
-                        .background(MaterialTheme.colors.surface)
+                        .border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(3.dp))
+                        .background(MaterialTheme.colors.background)
                 ) {
                     ToolbarToggleItem(
                         info = info,
@@ -137,7 +136,7 @@ fun ToolbarToggleItem(
         verticalAlignment = Alignment.CenterVertically
     ) {
         val shouldEnableCheckClick = info.toolbarAction != ToolbarAction.Settings
-        Surface(modifier = Modifier.weight(1F)){
+        Surface(modifier = Modifier.weight(1F), color = MaterialTheme.colors.background){
             ToggleItem(
                 state = info.isOn,
                 titleResId = info.toolbarAction.titleResId,
@@ -191,7 +190,7 @@ class ToolbarActionItemInfo(val toolbarAction: ToolbarAction, var isOn: Boolean)
 @Preview
 @Composable
 private fun previewToolBar() {
-    AppCompatTheme {
+    MyTheme {
         Column (horizontalAlignment = Alignment.End){
             ToolbarList(
                 Modifier

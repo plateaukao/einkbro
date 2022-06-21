@@ -368,4 +368,5 @@
     <string name="setting_summary_background_loading">标签页未激活时，仍在后台加载内容</string>
     <string name="dialog_content_ssl_error">该网站凭证不受信任，是否继续？</string>
     <string name="setting_title_search">搜索</string>
+    <string name="dialog_toc_title">目录</string>
 </resources>

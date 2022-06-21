@@ -39,7 +39,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import com.google.accompanist.appcompattheme.AppCompatTheme
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import de.baumann.browser.Ninja.BuildConfig
@@ -47,7 +46,7 @@ import de.baumann.browser.Ninja.R
 import de.baumann.browser.activity.BrowserActivity
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.unit.HelperUnit
-import de.baumann.browser.unit.ViewUnit
+import de.baumann.browser.view.compose.MyTheme
 import de.baumann.browser.view.dialog.PrinterDocumentPaperSizeDialog
 import de.baumann.browser.view.dialog.TextInputDialog
 import kotlinx.coroutines.launch
@@ -61,7 +60,7 @@ class SettingsComposeFragment: Fragment(), KoinComponent {
         val composeView = ComposeView(requireContext())
         val version = "Daniel Kao, v" + BuildConfig.VERSION_NAME
         composeView.setContent {
-            AppCompatTheme {
+            MyTheme {
                 SettingsMainContent(
                     SettingItem.values().toList(),
                     //ViewUnit.isWideLayout(requireContext()),
@@ -295,7 +294,7 @@ class MyLinkMovementMethod() : LinkMovementMethod() {
 @Preview
 @Composable
 fun PreviewSettingsMainContent() {
-    AppCompatTheme {
+    MyTheme {
         SettingsMainContent(SettingItem.values().toList(), isWideLayout = true, onItemClick = {}, version = "v1.2.3", {})
     }
 }

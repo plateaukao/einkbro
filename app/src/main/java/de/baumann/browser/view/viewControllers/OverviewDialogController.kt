@@ -9,12 +9,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.*
 import android.widget.LinearLayout
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
-import com.google.accompanist.appcompattheme.AppCompatTheme
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.DialogMenuContextListBinding
 import de.baumann.browser.Ninja.databinding.DialogMenuOverviewBinding
@@ -26,6 +26,7 @@ import de.baumann.browser.unit.BrowserUnit
 import de.baumann.browser.unit.ViewUnit
 import de.baumann.browser.view.NinjaToast
 import de.baumann.browser.view.compose.BrowseHistoryList
+import de.baumann.browser.view.compose.MyTheme
 import de.baumann.browser.view.dialog.DialogManager
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
@@ -172,7 +173,7 @@ class OverviewDialogController(
             historyList.setContent {
                 val list = remember { mutableStateOf(finalList) }
                 list.value = finalList
-                AppCompatTheme {
+                MyTheme {
                     BrowseHistoryList(
                         records = list.value,
                         shouldReverse,

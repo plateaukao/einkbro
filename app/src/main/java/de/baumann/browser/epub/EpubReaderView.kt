@@ -384,7 +384,7 @@ elements[i].style.color='white';
         try {
             val items = chapterList.map { it.name }.toTypedArray()
             AlertDialog.Builder(context, R.style.TouchAreaDialog)
-                    .setTitle("Select Chapter")
+                    .setTitle(context.getString(R.string.dialog_toc_title))
                     .setItems(items) { _, item ->
                         gotoPosition(item, 0f)
                         listener.onChapterChangeListener(item)

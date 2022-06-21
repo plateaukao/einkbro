@@ -19,7 +19,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.google.accompanist.appcompattheme.AppCompatTheme
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.database.BookmarkManager
 import java.text.SimpleDateFormat
@@ -86,12 +85,14 @@ private fun RecordItem(
             fontSize = 18.sp,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
+            color = MaterialTheme.colors.onBackground,
         )
         Text(
             modifier = Modifier
                 .wrapContentSize()
                 .align(Alignment.CenterVertically),
-            text = timeString
+            text = timeString,
+            color = MaterialTheme.colors.onBackground,
         )
     }
 }
@@ -99,7 +100,7 @@ private fun RecordItem(
 @Preview
 @Composable
 private fun previewItem() {
-    AppCompatTheme {
+    MyTheme {
         RecordItem(
             modifier = Modifier,
             record = Record(title = "Hello", url = "123", time = System.currentTimeMillis())
@@ -116,7 +117,7 @@ private fun previewHistoryList() {
         Record(title = "Hello 2", url = "123", time = System.currentTimeMillis()),
         Record(title = "Hello 3", url = "123", time = System.currentTimeMillis()),
     )
-    AppCompatTheme {
+    MyTheme {
         BrowseHistoryList(records = list, shouldReverse = true, isWideLayout = true, onClick = {}, onLongClick = {})
     }
 }

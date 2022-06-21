@@ -98,7 +98,7 @@
     <string name="clear_summary_deleteDatabase">刪除整個資料庫(Startpage, bookmarks, history and all whitelists).</string>
     <!-- App setting -->
     <string name="setting_title_ui">操作行為/介面</string>
-    <string name="setting_title_data">備份</string>
+    <string name="setting_title_data">備份/還原</string>
     <string name="setting_title_fav">我的首頁</string>
     <string name="setting_title_searchEngine">設定搜尋引擎</string>
     <string name="setting_title_userAgent">自訂 user agent</string>
@@ -191,7 +191,7 @@
     <string name="desktop_mode">桌面版網站</string>
     <string name="setting_title_page_left_value">翻頁時保留的畫面長度</string>
     <string name="setting_summary_page_left_value">翻頁時，可保留部分畫面內容，請設定要保留的長度。如不需要可以設為 0</string>
-    <string name="setting_title_pdf_paper_size">設定PDF紙張大小</string>
+    <string name="setting_title_pdf_paper_size">PDF紙張大小</string>
     <string name="vertical_read">直排閱讀</string>
     <string name="reader_mode">閱讀模式</string>
     <string name="touch_area_setting">翻頁設定</string>
@@ -270,4 +270,5 @@
     <string name="setting_title_background_loading">載入其他分頁內容</string>
     <string name="setting_summary_background_loading">分頁未顯示時，依然在背景載入</string>
     <string name="dialog_content_ssl_error">The certificate of the site is not trusted. Proceed anyway?</string>
+    <string name="dialog_toc_title">目錄</string>
 </resources>
