@@ -29,7 +29,7 @@
     <string name="menu_save_pdf">Enregistrer en PDF</string>
     <string name="menu_shareClipboard">Copy to clipboard</string>
     <string name="menu_other_searchSite">Rechercher sur le site</string>
-    <string name="menu_other_info">About \"EinkBro Browser\"</string>
+    <string name="menu_other_info">About EinkBro</string>
     <!-- Dialog -->
     <string name="dialog_title_hint">Titre:</string>
     <string name="dialog_url_hint">Url:</string>
@@ -87,10 +87,10 @@
     <string name="setting_summary_history">Sauvegarder l\'historique des sites visités.</string>
     <!-- browser clear -->
     <string name="data_summary">All files will be exported to the \"Android/data/de.baumann.browser/files/browser_backup/\"
-        directory of your sd-card. This directory will be DELETED, if you uninstall \"EinkBro Browser\". So make a backup regularly on a save
+        directory of your sd-card. This directory will be DELETED, if you uninstall EinkBro. So make a backup regularly on a save
         place.</string>
     <string name="clear_title_quit">Effacer à la fermeture</string>
-    <string name="clear_summary_quit">Chaque fois que vous quittez \"EinkBro Browser\" toutes les données cochées ci-dessus seront supprimées.</string>
+    <string name="clear_summary_quit">Chaque fois que vous quittez EinkBro toutes les données cochées ci-dessus seront supprimées.</string>
     <string name="clear_title_cache">Vider le cache</string>
     <string name="clear_title_cookie">Effacer les cookies</string>
     <string name="clear_title_history">Effacer l’historique</string>
@@ -171,7 +171,7 @@
     <string name="toast_error">Oups. Quelque chose a mal tourné.</string>
     <string name="toast_edit_successful">Enregistré avec succès</string>
     <string name="toast_webview_forward">Impossible de charger le site</string>
-    <string name="toast_restart">Vous devez redémarrer \"EinkBro Browser\" pour appliquer les modifications. Fermer maintenant?</string>
+    <string name="toast_restart">Vous devez redémarrer EinkBro pour appliquer les modifications. Fermer maintenant?</string>
     <string name="toast_close_tab">Voulez-vous fermer l’onglet actuel?</string>
     <string name="toast_downloadComplete">Téléchargement fini. Ouvrir le gestionnaire de fichiers?</string>
     <string name="toast_backup">Données de sauvegarde? Cela écrasera l\'ancienne sauvegarde.</string>

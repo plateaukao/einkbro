@@ -29,7 +29,7 @@
     <string name="menu_save_pdf">Zachowaj jako PDF</string>
     <string name="menu_shareClipboard">Copy to clipboard</string>
     <string name="menu_other_searchSite">Wyszukaj na tej stronie</string>
-    <string name="menu_other_info">About \"EinkBro Browser\"</string>
+    <string name="menu_other_info">About EinkBro</string>
     <!-- Dialog -->
     <string name="dialog_title_hint">Tytuł:</string>
     <string name="dialog_url_hint">Url:</string>
@@ -80,10 +80,10 @@
     <string name="setting_summary_history">Zezwól na zapisywanie historii odwiedzanych witryn.</string>
     <!-- browser clear -->
     <string name="data_summary">All files will be exported to the \"Android/data/de.baumann.browser/files/browser_backup/\"
-        directory of your sd-card. This directory will be DELETED, if you uninstall \"EinkBro Browser\". So make a backup regularly on a save
+        directory of your sd-card. This directory will be DELETED, if you uninstall EinkBro. So make a backup regularly on a save
         place.</string>
     <string name="clear_title_quit">Wymaż na zamknięciu</string>
-    <string name="clear_summary_quit">Za każdym razem, gdy zamkniesz \"EinkBro Browser\" wszystkie zaznaczone powyżej dane zostaną wymazane.</string>
+    <string name="clear_summary_quit">Za każdym razem, gdy zamkniesz EinkBro wszystkie zaznaczone powyżej dane zostaną wymazane.</string>
     <string name="clear_title_cache">Wymaż dane podręczne</string>
     <string name="clear_title_cookie">Wymaż ciasteczka</string>
     <string name="clear_title_history">Wymaż historie</string>

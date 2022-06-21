@@ -86,10 +86,10 @@
     <string name="setting_summary_history">儲存瀏覽過的網頁記錄</string>
     <!-- browser clear -->
     <string name="data_summary">All files will be exported to the \"Android/data/de.baumann.browser/files/browser_backup/\"
-        directory of your sd-card. This directory will be DELETED, if you uninstall \"EinkBro Browser\". So make a backup regularly on a save
+        directory of your sd-card. This directory will be DELETED, if you uninstall EinkBro. So make a backup regularly on a save
         place.</string>
     <string name="clear_title_quit">Clear when application exits</string>
-    <string name="clear_summary_quit">Every time you quit \"EinkBro Browser\" all above checked data will be deleted.</string>
+    <string name="clear_summary_quit">Every time you quit EinkBro all above checked data will be deleted.</string>
     <string name="clear_title_cache">清除快取</string>
     <string name="clear_title_cookie">清除 Cookies</string>
     <string name="clear_title_history">清除瀏覽記錄</string>
@@ -171,7 +171,7 @@
     <string name="toast_error">Uuups. Something went wrong.</string>
     <string name="toast_edit_successful">Successfully saved</string>
     <string name="toast_webview_forward">Can\'t load next site</string>
-    <string name="toast_restart">You must restart \"EinkBro Browser\" to apply changes. Close now?</string>
+    <string name="toast_restart">You must restart EinkBro to apply changes. Close now?</string>
     <string name="toast_close_tab">Do you want to close current tab?</string>
     <string name="toast_downloadComplete">下載完成，開啟檔案？</string>
     <string name="toast_backup">Backup data? This will overwrite the old backup.</string>

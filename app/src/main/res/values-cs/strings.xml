@@ -29,7 +29,7 @@
     <string name="menu_save_pdf">Uložit jako PDF</string>
     <string name="menu_shareClipboard">Kopírovat do schránky</string>
     <string name="menu_other_searchSite">Hledat na stránce</string>
-    <string name="menu_other_info">O aplikaci \"EinkBro Browser\"</string>
+    <string name="menu_other_info">O aplikaci EinkBro</string>
     <!-- Dialog -->
     <string name="dialog_title_hint">Název:</string>
     <string name="dialog_url_hint">URL:</string>

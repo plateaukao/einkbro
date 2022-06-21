@@ -29,7 +29,7 @@
     <string name="menu_save_pdf">Opslaan als PDF-bestand</string>
     <string name="menu_shareClipboard">Copy to clipboard</string>
     <string name="menu_other_searchSite">Website doorzoeken</string>
-    <string name="menu_other_info">About \"EinkBro Browser\"</string>
+    <string name="menu_other_info">About EinkBro</string>
     <!-- Dialog -->
     <string name="dialog_title_hint">Titel:</string>
     <string name="dialog_url_hint">Url:</string>
@@ -86,7 +86,7 @@
     <string name="setting_summary_history">Geschiedenis opslaan van bezochte websites.</string>
     <!-- browser clear -->
     <string name="data_summary">All files will be exported to the \"Android/data/de.baumann.browser/files/browser_backup/\"
-        directory of your sd-card. This directory will be DELETED, if you uninstall \"EinkBro Browser\". So make a backup regularly on a save
+        directory of your sd-card. This directory will be DELETED, if you uninstall EinkBro. So make a backup regularly on a save
         place.</string>
     <string name="clear_title_quit">Wissen bij afsluiten</string>
     <string name="clear_summary_quit">Elke keer als je \"EinkBro-browser\" afsluit, dan worden alle hierboven aangevinkte gegevens gewist.</string>
