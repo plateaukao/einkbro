@@ -26,7 +26,6 @@ fun ComposedToolbar(
     title: String,
     tabCount: String,
     isIncognito: Boolean,
-    isReader: Boolean,
     onClick: (ToolbarAction)->Unit,
     onLongClick:((ToolbarAction)->Unit)? = null,
 ) {
@@ -51,12 +50,12 @@ fun ComposedToolbar(
                         maxLines = 2
                     )
                 TabCount ->
-                    if (!isReader) TabCountIcon(
+                    TabCountIcon(
                         isIncognito = isIncognito,
                         count = tabCount,
                         onClick = { onClick(toolbarAction) },
                         onLongClick = { onLongClick?.invoke(toolbarAction) }
-                    ) else ToolbarIcon(toolbarActionInfo, onClick, onLongClick)
+                    )
                 else -> ToolbarIcon(toolbarActionInfo, onClick, onLongClick)
             }
         }
@@ -146,7 +145,6 @@ fun PreviewToolbar() {
             "hihi",
             tabCount = "1",
             isIncognito = true,
-            isReader = true,
             { },
         )
     }

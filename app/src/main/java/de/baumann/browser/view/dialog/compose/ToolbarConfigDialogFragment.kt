@@ -77,7 +77,8 @@ class ToolbarConfigDialogFragment: ComposeDialogFragment(){
 
     private fun getCurrentActionList(): List<ToolbarActionItemInfo> =
         config.toolbarActions.map { ToolbarActionItemInfo(it, true) } +
-        ToolbarAction.values().filterNot { config.toolbarActions.contains(it) }.map { ToolbarActionItemInfo(it, false) }
+            // need to filter only addable actions here
+        ToolbarAction.values().filter { it.isAddable }.filterNot { config.toolbarActions.contains(it) }.map { ToolbarActionItemInfo(it, false) }
 }
 
 

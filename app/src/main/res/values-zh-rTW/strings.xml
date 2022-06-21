@@ -270,4 +270,5 @@
     <string name="setting_title_background_loading">載入其他分頁內容</string>
     <string name="setting_summary_background_loading">分頁未顯示時，依然在背景載入</string>
     <string name="dialog_content_ssl_error">The certificate of the site is not trusted. Proceed anyway?</string>
+    <string name="dialog_toc_title">目錄</string>
 </resources>

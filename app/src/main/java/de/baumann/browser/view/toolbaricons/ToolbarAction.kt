@@ -6,6 +6,7 @@ enum class ToolbarAction(
     val iconResId: Int = 0,
     val titleResId: Int,
     val iconActiveInfo: IconActiveInfo = IconActiveInfo(isActivable = false),
+    val isAddable: Boolean = true,
 ) {
     Title(iconResId = R.drawable.icon_info, titleResId = R.string.toolbar_title), // 0
     Back(iconResId = R.drawable.icon_arrow_left_gest, titleResId = R.string.back),
@@ -30,7 +31,8 @@ enum class ToolbarAction(
     CloseTab(iconResId = R.drawable.icon_close, titleResId = R.string.close_tab),
     InputUrl(iconResId = R.drawable.ic_input_url, titleResId = R.string.input_url),
     NewTab(iconResId = R.drawable.icon_plus, titleResId = R.string.open_new_tab),
-    Desktop(iconResId = R.drawable.icon_desktop, titleResId = R.string.desktop_mode, iconActiveInfo = IconActiveInfo(true,  R.drawable.icon_desktop_activate,  R.drawable.icon_desktop));
+    Desktop(iconResId = R.drawable.icon_desktop, titleResId = R.string.desktop_mode, iconActiveInfo = IconActiveInfo(true,  R.drawable.icon_desktop_activate,  R.drawable.icon_desktop)),
+    TOC(iconResId = R.drawable.ic_toc, titleResId = R.string.title_in_toc, isAddable = false);
 
     companion object {
         fun fromOrdinal(value: Int) = values().first { it.ordinal == value }
