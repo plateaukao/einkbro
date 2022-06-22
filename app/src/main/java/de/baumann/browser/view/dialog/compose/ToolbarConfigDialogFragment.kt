@@ -133,7 +133,7 @@ fun ToolbarToggleItem(
     onDirectionClicked: (OrderDirection)-> Unit
 ) {
     Row(
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         val shouldEnableCheckClick = info.toolbarAction != ToolbarAction.Settings
         Surface(modifier = Modifier.weight(1F), color = MaterialTheme.colors.background){

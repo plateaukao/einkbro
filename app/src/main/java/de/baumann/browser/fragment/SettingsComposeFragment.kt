@@ -20,6 +20,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -39,14 +40,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import de.baumann.browser.Ninja.BuildConfig
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.activity.BrowserActivity
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.unit.HelperUnit
 import de.baumann.browser.view.compose.MyTheme
+import de.baumann.browser.view.dialog.DialogManager
 import de.baumann.browser.view.dialog.PrinterDocumentPaperSizeDialog
 import de.baumann.browser.view.dialog.TextInputDialog
 import kotlinx.coroutines.launch
@@ -55,16 +55,15 @@ import org.koin.core.component.inject
 
 class SettingsComposeFragment: Fragment(), KoinComponent {
     private val config: ConfigManager by inject()
+    private val dialogManager: DialogManager by lazy { DialogManager(requireActivity()) }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val composeView = ComposeView(requireContext())
         val version = "Daniel Kao, v" + BuildConfig.VERSION_NAME
         composeView.setContent {
             MyTheme {
                 SettingsMainContent(
-                    SettingItemType.values().toList(),
-                    //ViewUnit.isWideLayout(requireContext()),
-                    true,
+                    FirstLayerSettingItem.values().toList(),
                     onItemClick = { handleSettingItem(it) },
                     version = version,
                     onVersionClick = {}
@@ -74,19 +73,18 @@ class SettingsComposeFragment: Fragment(), KoinComponent {
         return composeView
     }
 
-    private fun handleSettingItem(setting: SettingItemType) {
+    private fun handleSettingItem(setting: FirstLayerSettingItem) {
         when(setting) {
-            SettingItemType.Ui -> showFragment(UiSettingsFragment())
-            SettingItemType.Font -> showFragment(FontSettingsFragment())
-            SettingItemType.Gesture -> showFragment(FragmentSettingsGesture())
-            SettingItemType.Backup -> showFragment(DataSettingsFragment())
-            SettingItemType.PdfSize -> PrinterDocumentPaperSizeDialog(requireContext()).show()
-            SettingItemType.StartControl -> showFragment(StartSettingsFragment())
-            SettingItemType.ClearControl -> showFragment(ClearDataFragment())
-            SettingItemType.Search -> showFragment(SearchSettingsFragment())
-            SettingItemType.UserAgent -> lifecycleScope.launch { updateUserAgent() }
-            SettingItemType.License -> showLicenseList()
-            SettingItemType.About -> showAboutDialog()
+            FirstLayerSettingItem.Ui -> showFragment(UiSettingsFragment())
+            FirstLayerSettingItem.Font -> showFragment(FontSettingsFragment())
+            FirstLayerSettingItem.Gesture -> showFragment(FragmentSettingsGesture())
+            FirstLayerSettingItem.Backup -> showFragment(DataSettingsFragment())
+            FirstLayerSettingItem.PdfSize -> PrinterDocumentPaperSizeDialog(requireContext()).show()
+            FirstLayerSettingItem.StartControl -> showFragment(StartSettingsFragment())
+            FirstLayerSettingItem.ClearControl -> showFragment(ClearDataFragment())
+            FirstLayerSettingItem.Search -> showFragment(SearchSettingsFragment())
+            FirstLayerSettingItem.UserAgent -> lifecycleScope.launch { updateUserAgent() }
+            FirstLayerSettingItem.About -> showFragment(AboutSettingComposeFragment())
         }
     }
 
@@ -95,29 +93,6 @@ class SettingsComposeFragment: Fragment(), KoinComponent {
             .beginTransaction()
             .replace(R.id.content_frame, fragment)
             .commit()
-    }
-
-    @SuppressLint("CutPasteId")
-    private fun showAboutDialog() {
-        val dialogView = View.inflate(requireActivity(), R.layout.dialog_text, null).apply {
-            findViewById<TextView>(R.id.dialog_title).text = getString(R.string.menu_other_info)
-            findViewById<TextView>(R.id.dialog_text).text = HelperUnit.textSpannable(getString(R.string.changelog_dialog))
-            findViewById<TextView>(R.id.dialog_text).movementMethod = MyLinkMovementMethod.getInstance()
-        }
-
-        val dialog = BottomSheetDialog(requireActivity()).apply {
-            setContentView(dialogView)
-            show()
-        }
-        HelperUnit.setBottomSheetBehavior(dialog, dialogView, BottomSheetBehavior.STATE_EXPANDED)
-    }
-
-    private fun showLicenseList() {
-        val intent = Intent(requireContext(), BrowserActivity::class.java).apply {
-            data = Uri.parse("https://github.com/plateaukao/browser/blob/main/CONTRIBUTORS.md")
-            action = Intent.ACTION_VIEW
-        }
-        requireActivity().startActivity(intent)
     }
 
     private suspend fun updateUserAgent() {
@@ -134,11 +109,10 @@ class SettingsComposeFragment: Fragment(), KoinComponent {
 }
 
 @Composable
-private fun SettingsMainContent(
-    settings: List<SettingItemType>,
-    isWideLayout: Boolean,
-    onItemClick: (SettingItemType)->Unit,
-    version: String,
+fun <T: SettingItemInterface> SettingsMainContent(
+    settings: List<T>,
+    onItemClick: (T)->Unit,
+    version: String? = null,
     onVersionClick:()->Unit,
 ) {
     LazyVerticalGrid(
@@ -147,19 +121,23 @@ private fun SettingsMainContent(
             .padding(10.dp),
         verticalArrangement = Arrangement.spacedBy(7.dp),
         horizontalArrangement = Arrangement.spacedBy(7.dp),
-        columns = GridCells.Fixed(if (isWideLayout) 2 else 1),
+        columns = GridCells.Fixed(2),
     ){
-        itemsIndexed(settings) { _, setting ->
+        itemsIndexed(settings) { _: Int, setting: T ->
             SettingItem(setting, onItemClick)
         }
-        item { VersionItem(version = version, onItemClick = onVersionClick) }
+        if (version != null) {
+            item(span = {GridItemSpan(2)}) {
+                VersionItem(version = version, onItemClick = onVersionClick)
+            }
+        }
     }
 }
 
 @Composable
-private fun SettingItem(
-    setting: SettingItemType,
-    onItemClick: (SettingItemType)->Unit
+private fun <T: SettingItemInterface> SettingItem(
+    setting: T,
+    onItemClick: (T)->Unit
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val pressed by interactionSource.collectIsPressedAsState()
@@ -211,7 +189,8 @@ private fun VersionItem(
                 indication = null,
                 interactionSource = interactionSource,
             ) { onItemClick() },
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
     ) {
         Text(
             modifier = Modifier.wrapContentWidth().padding(horizontal = 15.dp),
@@ -222,7 +201,15 @@ private fun VersionItem(
     }
 }
 
-private enum class SettingItemType(val titleResId: Int, val iconId: Int) {
+interface SettingItemInterface {
+    val titleResId: Int
+    val iconId: Int
+}
+
+private enum class FirstLayerSettingItem(
+    override val titleResId: Int,
+    override val iconId: Int
+): SettingItemInterface {
     Ui(R.string.setting_title_ui, R.drawable.icon_ui),
     Font(R.string.setting_title_font, R.drawable.icon_size),
     Gesture(R.string.setting_gestures, R.drawable.gesture_tap),
@@ -232,69 +219,13 @@ private enum class SettingItemType(val titleResId: Int, val iconId: Int) {
     ClearControl(R.string.setting_title_clear_control, R.drawable.icon_delete),
     Search(R.string.setting_title_search, R.drawable.icon_search),
     UserAgent(R.string.setting_title_userAgent, R.drawable.icon_useragent),
-    License(R.string.setting_title_license, R.drawable.icon_copyright),
     About(R.string.menu_other_info, R.drawable.icon_info),
-}
-
-class MyLinkMovementMethod() : LinkMovementMethod() {
-    override fun onTouchEvent(textView: TextView, buffer: Spannable, event: MotionEvent): Boolean {
-        // Get the event action
-        var action = event.action
-
-        // If action has finished
-        if (action == MotionEvent.ACTION_UP) {
-            // Locate the area that was pressed
-            var x = event.x.toInt()
-            var y = event.y.toInt()
-            x -= textView.totalPaddingLeft
-            y -= textView.totalPaddingTop
-            x += textView.scrollX
-            y += textView.scrollY
-
-            // Locate the URL text
-            val layout: Layout = textView.layout
-            val line: Int = layout.getLineForVertical(y)
-            val off: Int = layout.getOffsetForHorizontal(line, x.toFloat())
-
-            // Find the URL that was pressed
-            val link = buffer.getSpans(off, off, URLSpan::class.java)
-            // If we've found a URL
-            if (link.isNotEmpty()) {
-                // Find the URL
-                val url = link[0].url
-                // If it's a valid URL
-                if (url.contains("https") or
-                    url.contains("tel") or
-                    url.contains("mailto") or
-                    url.contains("http") or
-                    url.contains("https") or
-                    url.contains("www")
-                ) {
-                    val intent = Intent(textView.context, BrowserActivity::class.java).apply {
-                        data = Uri.parse(url)
-                    }
-                    intent.action = Intent.ACTION_VIEW
-                    textView.context.startActivity(intent)
-                }
-                return true
-            }
-        }
-        return super.onTouchEvent(textView, buffer, event)
-    }
-
-    companion object {
-        // A new LinkMovementMethod
-        private val myLinkMovementMethod = MyLinkMovementMethod()
-        fun getInstance(): MovementMethod {
-            return myLinkMovementMethod
-        }
-    }
 }
 
 @Preview
 @Composable
 fun PreviewSettingsMainContent() {
     MyTheme {
-        SettingsMainContent(SettingItemType.values().toList(), isWideLayout = true, onItemClick = {}, version = "v1.2.3", {})
+        SettingsMainContent(FirstLayerSettingItem.values().toList(), onItemClick = {}, version = "v1.2.3", {})
     }
 }
