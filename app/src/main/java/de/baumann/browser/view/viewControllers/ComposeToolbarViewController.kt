@@ -1,7 +1,10 @@
 package de.baumann.browser.view.viewControllers
 
+import android.content.Context
+import android.util.AttributeSet
 import android.view.View.*
-import androidx.compose.material.MaterialTheme
+import androidx.compose.runtime.*
+import androidx.compose.ui.platform.AbstractComposeView
 import androidx.compose.ui.platform.ComposeView
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.view.compose.ComposedToolbar
@@ -13,31 +16,45 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 class ComposeToolbarViewController(
-    private val composeView: ComposeView,
-    private val onItemClick: (ToolbarAction)->Unit,
-    private val onItemLongClick: (ToolbarAction)->Unit,
+    private val toolbarComposeView: ToolbarComposeView,
+    private val onIconClick: (ToolbarAction)->Unit,
+    private val onIconLongClick: (ToolbarAction)->Unit,
 ): KoinComponent {
     private val config: ConfigManager by inject()
 
-    private var title: String = ""
-
-    private var tabCount: String = ""
+    private val readerToolbarActions: List<ToolbarAction> = listOf(
+        RotateScreen,
+        FullScreen,
+        BoldFont,
+        Font,
+        Touch,
+        TOC,
+        Settings,
+        CloseTab,
+    )
 
     private var isLoading: Boolean = false
 
     private var isReader: Boolean = false
 
-    fun isDisplayed(): Boolean = composeView.visibility == VISIBLE
+    init {
+        toolbarComposeView.apply {
+            val iconEnums = if(isReader) readerToolbarActions else config.toolbarActions
+            toolbarActionInfoList = iconEnums.toToolbarActionInfoList()
+
+            onItemClick = onIconClick
+            onItemLongClick = onIconLongClick
+        }
+    }
+
+    fun isDisplayed(): Boolean = toolbarComposeView.visibility == VISIBLE
 
     fun show() = toggleIconsOnOmnibox(true)
 
     fun hide() = toggleIconsOnOmnibox(false)
 
     fun updateTabCount(text: String) {
-        if (tabCount == text) return
-
-        tabCount = text
-        updateIcons()
+        toolbarComposeView.tabCount = text
     }
 
     fun updateRefresh(isLoadingWeb: Boolean) {
@@ -46,18 +63,6 @@ class ComposeToolbarViewController(
         isLoading = isLoadingWeb
         updateIcons()
     }
-
-    private val readerToolbarActions: List<ToolbarAction> = listOf(
-            RotateScreen,
-            FullScreen,
-            BoldFont,
-            Font,
-            Touch,
-            TOC,
-            Settings,
-            CloseTab,
-    )
-
     fun setEpubReaderMode() {
         isReader = true
         updateIcons()
@@ -65,19 +70,8 @@ class ComposeToolbarViewController(
 
     fun updateIcons() {
         val iconEnums = if(isReader) readerToolbarActions else config.toolbarActions
-        if (iconEnums.isEmpty()) return
-
-        composeView.setContent {
-            MyTheme {
-                ComposedToolbar(iconEnums.toToolbarActionInfoList(),
-                    title = title,
-                    tabCount = tabCount,
-                    isIncognito = config.isIncognitoMode,
-                    onClick = onItemClick,
-                    onLongClick = onItemLongClick
-                )
-            }
-        }
+        toolbarComposeView.toolbarActionInfoList = iconEnums.toToolbarActionInfoList()
+        toolbarComposeView.isIncognito = config.isIncognitoMode
     }
 
     private fun List<ToolbarAction>.toToolbarActionInfoList(): List<ToolbarActionInfo>  {
@@ -93,13 +87,37 @@ class ComposeToolbarViewController(
     }
 
     private fun toggleIconsOnOmnibox(shouldShow: Boolean) {
-        composeView.visibility = if (shouldShow) VISIBLE else INVISIBLE
+        toolbarComposeView.visibility = if (shouldShow) VISIBLE else INVISIBLE
     }
 
     fun updateTitle(title: String) {
-        if (this.title == title) return
+        toolbarComposeView.title = title
+    }
+}
 
-        this.title = title
-        updateIcons()
+class ToolbarComposeView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyle: Int = 0,
+): AbstractComposeView(context, attrs, defStyle) {
+
+    var toolbarActionInfoList: List<ToolbarActionInfo> by mutableStateOf(emptyList())
+    var title by mutableStateOf("")
+    var tabCount by mutableStateOf("")
+    var isIncognito by mutableStateOf(false)
+    var onItemClick by mutableStateOf<(ToolbarAction)->Unit>({})
+    var onItemLongClick by mutableStateOf<(ToolbarAction)->Unit>({})
+
+    @Composable
+    override fun Content() {
+        MyTheme {
+            ComposedToolbar(toolbarActionInfoList,
+                title = title,
+                tabCount = tabCount,
+                isIncognito = isIncognito,
+                onClick = onItemClick,
+                onLongClick = onItemLongClick
+            )
+        }
     }
 }
