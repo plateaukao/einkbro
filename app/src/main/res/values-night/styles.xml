@@ -9,6 +9,8 @@
         <item name="android:textColorPrimary">@android:color/darker_gray</item>
         <item name="android:colorAccent">@color/lightGray</item>
         <item name="colorControlNormal">@color/lightGray</item>
+        <item name="colorPrimary">@android:color/black</item>
+        <item name="colorOnPrimary">@android:color/white</item>
         <item name="backgroundColor">@android:color/black</item>
         <item name="background">@android:color/black</item>
         <item name="android:selectableItemBackground">@drawable/item_bg_selector</item>
@@ -23,6 +25,14 @@
         <item name="android:backgroundDimAmount">0</item>
         <item name="android:windowAnimationStyle">@null</item>
         <item name="android:windowBackground">@drawable/backgound_with_border</item>
+        <item name="buttonBarPositiveButtonStyle">@style/MyButtonStyle</item>
+        <item name="buttonBarNegativeButtonStyle">@style/MyButtonStyle</item>
     </style>
+
+    <style name="MyButtonStyle" parent="@style/Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/lightGray</item>
+        <item name="backgroundTint">@android:color/black</item>
+    </style>
+
 
 </resources>
