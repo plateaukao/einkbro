@@ -1,19 +1,9 @@
 package de.baumann.browser.fragment
 
-import android.annotation.SuppressLint
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.text.Layout
-import android.text.Spannable
-import android.text.method.LinkMovementMethod
-import android.text.method.MovementMethod
-import android.text.style.URLSpan
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -42,11 +32,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import de.baumann.browser.Ninja.BuildConfig
 import de.baumann.browser.Ninja.R
-import de.baumann.browser.activity.BrowserActivity
 import de.baumann.browser.preference.ConfigManager
-import de.baumann.browser.unit.HelperUnit
 import de.baumann.browser.view.compose.MyTheme
-import de.baumann.browser.view.dialog.DialogManager
 import de.baumann.browser.view.dialog.PrinterDocumentPaperSizeDialog
 import de.baumann.browser.view.dialog.TextInputDialog
 import kotlinx.coroutines.launch
@@ -55,7 +42,6 @@ import org.koin.core.component.inject
 
 class SettingsComposeFragment: Fragment(), KoinComponent {
     private val config: ConfigManager by inject()
-    private val dialogManager: DialogManager by lazy { DialogManager(requireActivity()) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val composeView = ComposeView(requireContext())

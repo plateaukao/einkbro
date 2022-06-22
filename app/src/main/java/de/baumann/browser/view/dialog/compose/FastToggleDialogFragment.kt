@@ -114,13 +114,15 @@ fun ToggleItem(
             }
         )
 
-        Icon(
-            painter = painterResource(id = iconResId), contentDescription = null,
-            modifier = Modifier
-                .padding(horizontal = 6.dp)
-                .fillMaxHeight(),
-            tint = MaterialTheme.colors.onBackground
-        )
+        if (iconResId > 0) {
+            Icon(
+                painter = painterResource(id = iconResId), contentDescription = null,
+                modifier = Modifier
+                    .padding(horizontal = 6.dp)
+                    .fillMaxHeight(),
+                tint = MaterialTheme.colors.onBackground
+            )
+        }
         Spacer(modifier = Modifier.width(6.dp).fillMaxHeight())
         Text(
             modifier = Modifier.wrapContentWidth(),

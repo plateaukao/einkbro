@@ -141,7 +141,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
         when(toolbarAction) {
             ToolbarAction.Back -> openHistoryPage(5)
             ToolbarAction.Refresh -> fullscreen()
-            ToolbarAction.Touch -> TouchAreaDialog(this).show()
+            //ToolbarAction.Touch -> TouchAreaDialog(this).show()
+            ToolbarAction.Touch -> TouchAreaDialogFragment({}).show(supportFragmentManager, "TouchAreaDialog")
             ToolbarAction.PageUp -> ninjaWebView.jumpToTop()
             ToolbarAction.PageDown -> ninjaWebView.jumpToBottom()
             ToolbarAction.TabCount -> config.isIncognitoMode = !config.isIncognitoMode
@@ -1677,7 +1678,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
            Translate -> showTranslation()
            VerticalRead -> ninjaWebView.toggleVerticalRead()
            ReaderMode -> ninjaWebView.toggleReaderMode()
-           TouchSetting -> TouchAreaDialog(this).show()
+           TouchSetting -> TouchAreaDialogFragment({}).show(supportFragmentManager, "TouchAreaDialog")
            ToolbarSetting -> ToolbarConfigDialogFragment().show(supportFragmentManager, "toolbar_config")
 
            ReceiveData -> showReceiveDataDialog()
