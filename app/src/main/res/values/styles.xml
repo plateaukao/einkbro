@@ -8,6 +8,8 @@
         <item name="dragIcon">@drawable/ic_drag</item>
         <item name="android:textColor">@android:color/black</item>
         <item name="android:textColorPrimary">@android:color/black</item>
+        <item name="colorPrimary">@android:color/white</item>
+        <item name="colorOnPrimary">@android:color/black</item>
         <item name="colorControlNormal">@android:color/black</item>
         <item name="android:colorAccent">@android:color/black</item>
         <item name="backgroundColor">@android:color/white</item>
@@ -26,6 +28,13 @@
         <item name="android:windowAnimationStyle">@style/MyAnimation.Window</item>
         <item name="android:windowBackground">@drawable/backgound_with_border</item>
         <item name="android:windowContentOverlay">@null</item>
+        <item name="buttonBarPositiveButtonStyle">@style/MyButtonStyle</item>
+        <item name="buttonBarNegativeButtonStyle">@style/MyButtonStyle</item>
+    </style>
+
+    <style name="MyButtonStyle" parent="@style/Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="backgroundTint">@android:color/black</item>
     </style>
 
     <style name="MyAnimation.Window" parent="@android:style/Animation.Activity">
