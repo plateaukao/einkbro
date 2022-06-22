@@ -271,4 +271,8 @@
     <string name="setting_summary_background_loading">分頁未顯示時，依然在背景載入</string>
     <string name="dialog_content_ssl_error">The certificate of the site is not trusted. Proceed anyway?</string>
     <string name="dialog_toc_title">目錄</string>
+    <string name="latest_release">Latest Release</string>
+    <string name="facebook_groups">Facebook Groups</string>
+    <string name="medium_articles">Medium Articles</string>
+    <string name="contributors">Contributors</string>
 </resources>

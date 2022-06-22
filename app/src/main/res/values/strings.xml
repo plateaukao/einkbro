@@ -235,56 +235,6 @@
     <string name="whitelist_add">Add</string>
 
 
-    <!-- Dialog help -->
-
-
-    <!-- Dialog changelog -->
-
-    <string name="changelog_dialog">
-
-        &lt;b>On the following sites you have access to all important information about EinkBro.
-        &lt;br>&lt;br>
-
-        \u25AA &lt;i>New releases:&lt;/i> https://github.com/plateaukao/browser/releases&lt;br>&lt;br>
-        \u25AA &lt;i>Project site:&lt;/i> https://github.com/plateaukao/browser&lt;br>&lt;br>
-        \u25AA &lt;i>Facebook Page:&lt;/i> https://www.facebook.com/einkbro&lt;br>&lt;br>
-        \u25AA &lt;i>Changelog:&lt;/i> https://github.com/plateaukao/browser/blob/main/CHANGELOG.md&lt;br>&lt;br>
-    </string>
-
-
-    <!-- License changelog -->
-
-    <string name="license_title">Copyright © 2021 by Daniel Kao, <br/> 2017  by Gaukler Faun</string>
-    <string name="license_dialog"><![CDATA[
-        <i>For more information visit the project site on Github: https://github.com/plateaukao/browser</i><br><br>
-
-        This program is free software: you can redistribute it and/or modify
-        it under the terms of the GNU General Public License as published by
-        the Free Software Foundation, either version 3 of the License, or
-        (at your option) any later version.
-
-        This program is distributed in the hope that it will be useful,
-        but WITHOUT ANY WARRANTY; without even the implied warranty of
-        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-        GNU General Public License for more details.
-
-        You should have received a copy of the GNU General Public License
-        along with this program.  If not, see http://www.gnu.org/licenses.<br><br>
-
-        <i>Following open source libraries or projects are used within this software:</i><br><br><br>
-
-        <b>Material Design Icons</b><br>
-        SIL Open Font License, Version 1.1.<br>
-        Templarian<br>
-        <i>https://github.com/Templarian/MaterialDesign</i><br><br>
-
-        <b>Ninja</b><br>
-        Apache License Version 2.0<br>
-        Matthew Lee<br>
-        <i>http://git.io/vUrEh</i><br><br>
-
-    ]]>
-    </string>
     <string name="setting_summary_desktop">Support desktop mode of web site</string>
     <string name="history">History</string>
     <string name="location">Location</string>
@@ -380,4 +330,10 @@
     <string name="dialog_content_ssl_error">The certificate of the site is not trusted. Proceed anyway?</string>
     <string name="setting_title_search">Search</string>
     <string name="dialog_toc_title">Table of Contents</string>
+    <string name="latest_release">Latest Release</string>
+    <string name="project_site">Project Site</string>
+    <string name="facebook_groups">Facebook Groups</string>
+    <string name="changelogs">Change Logs</string>
+    <string name="medium_articles">Medium Articles</string>
+    <string name="contributors">Contributors</string>
 </resources>

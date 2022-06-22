@@ -14,6 +14,7 @@ import android.webkit.URLUtil
 import android.webkit.WebView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.net.toUri
+import androidx.core.view.setPadding
 import androidx.documentfile.provider.DocumentFile
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.DialogEditExtensionBinding
@@ -129,7 +130,7 @@ class DialogManager(
         return if (sizeInMB > 1) "%.1fMB".format(sizeInMB) else "${sizeInKB}KB"
     }
 
-    fun showSavePdfDialog(
+    private fun showSavePdfDialog(
         url: String,
         savePdf: (String, String) -> Unit,
     ) {
@@ -239,10 +240,10 @@ class DialogManager(
                         setNegativeButton(android.R.string.cancel) { _, _ -> cancelAction?.invoke() }
                     }
                 }
-                .create().apply {
-                    window?.setGravity(if (config.isToolbarOnTop || showInCenter) Gravity.CENTER else Gravity.BOTTOM)
-                    window?.setBackgroundDrawableResource(R.drawable.background_with_border_margin)
-                }
+            .create().apply {
+                window?.setGravity(if (config.isToolbarOnTop || showInCenter) Gravity.CENTER else Gravity.BOTTOM)
+                window?.setBackgroundDrawableResource(R.drawable.background_with_border_margin)
+            }
         dialog.show()
         return dialog
     }
