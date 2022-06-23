@@ -64,7 +64,9 @@ fun TouchAreaContent(
 ) {
     Column(Modifier.width(300.dp)) {
         Text(
-            modifier = Modifier.padding(6.dp).fillMaxWidth(),
+            modifier = Modifier
+                .padding(6.dp)
+                .fillMaxWidth(),
             text = "Touch Area",
             color = MaterialTheme.colors.onBackground,
             style = MaterialTheme.typography.h6,
@@ -86,6 +88,7 @@ fun TouchAreaContent(
         ToggleItem(state = switchTouchArea, titleResId = R.string.switch_touch_area_action, iconResId = -1, onClicked ={ onSwitchAreaClick() } )
 
         Spacer(modifier = Modifier.height(10.dp))
+        HorizontalSeparator()
 
         Row(modifier = Modifier
             .fillMaxWidth()
