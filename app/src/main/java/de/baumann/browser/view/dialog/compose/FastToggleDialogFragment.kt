@@ -135,7 +135,7 @@ fun ToggleItem(
 
 @Preview
 @Composable
-private fun previewItem() {
+private fun PreviewItem() {
     MyTheme {
         ToggleItem(true, R.string.title, R.drawable.ic_location) {}
     }
@@ -143,7 +143,7 @@ private fun previewItem() {
 
 @Preview
 @Composable
-private fun previewItemList() {
+private fun PreviewItemList() {
     MyTheme {
         FastToggleItemList(onClicked = {})
     }
