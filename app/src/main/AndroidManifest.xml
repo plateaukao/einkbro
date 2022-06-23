@@ -133,6 +133,7 @@
         <activity
             android:name="de.baumann.browser.activity.SettingsActivity"
             android:parentActivityName="de.baumann.browser.activity.BrowserActivity"
+            android:configChanges="orientation|keyboard|keyboardHidden|screenSize|uiMode|screenLayout|smallestScreenSize"
             android:label="@string/setting_label" />
         <activity
             android:name="de.baumann.browser.activity.Whitelist_AdBlock"
