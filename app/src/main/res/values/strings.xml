@@ -336,4 +336,6 @@
     <string name="changelogs">Change Logs</string>
     <string name="medium_articles">Medium Articles</string>
     <string name="contributors">Contributors</string>
+    <string name="turn_on">On</string>
+    <string name="turn_off">Off</string>
 </resources>

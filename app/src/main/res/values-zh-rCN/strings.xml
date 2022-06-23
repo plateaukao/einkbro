@@ -340,4 +340,6 @@
     <string name="facebook_groups">Facebook Groups</string>
     <string name="medium_articles">Medium Articles</string>
     <string name="contributors">Contributors</string>
+    <string name="turn_on">On</string>
+    <string name="turn_off">Off</string>
 </resources>

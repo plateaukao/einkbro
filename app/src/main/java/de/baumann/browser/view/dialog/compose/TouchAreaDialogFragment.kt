@@ -2,6 +2,7 @@ package de.baumann.browser.view.dialog.compose
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
@@ -25,9 +26,7 @@ import de.baumann.browser.preference.TouchAreaType
 import de.baumann.browser.preference.TouchAreaType.*
 import org.koin.core.component.KoinComponent
 
-class TouchAreaDialogFragment (
-    val extraAction: () -> Unit
-): ComposeDialogFragment(), KoinComponent {
+class TouchAreaDialogFragment : ComposeDialogFragment(), KoinComponent {
     override fun setupComposeView() = composeView.setContent {
         val touchAreaType  = remember { mutableStateOf(config.touchAreaType) }
         MyTheme {
@@ -63,19 +62,19 @@ fun TouchAreaContent(
     onHideWhenTypeClick: () -> Unit = {},
     onSwitchAreaClick: () -> Unit = {},
 ) {
-    Column(Modifier.wrapContentWidth()) {
+    Column(Modifier.width(300.dp)) {
         Text(
-            modifier = Modifier.padding(6.dp),
+            modifier = Modifier.padding(6.dp).fillMaxWidth(),
             text = "Touch Area",
             color = MaterialTheme.colors.onBackground,
             style = MaterialTheme.typography.h6,
             textAlign = TextAlign.Center,
         )
-        Row(horizontalArrangement = Arrangement.SpaceAround) {
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround) {
             TouchAreaItem(state = touchAreaType == Left, titleResId = R.string.touch_left_side, iconResId = R.drawable.ic_touch_left) { onTouchTypeClick(Left) }
             TouchAreaItem(state = touchAreaType == Right, titleResId = R.string.touch_right_side, iconResId = R.drawable.ic_touch_right) { onTouchTypeClick(Right) }
         }
-        Row(horizontalArrangement = Arrangement.SpaceAround) {
+        Row(Modifier.fillMaxWidth( ), horizontalArrangement = Arrangement.SpaceAround) {
             TouchAreaItem(state = touchAreaType == MiddleLeftRight, titleResId = R.string.middle, iconResId = R.drawable.ic_touch_middle_left_right) { onTouchTypeClick(MiddleLeftRight) }
             TouchAreaItem(state = touchAreaType == BottomLeftRight, titleResId = R.string.bottom, iconResId = R.drawable.ic_touch_left_right) { onTouchTypeClick(BottomLeftRight) }
         }
@@ -89,6 +88,7 @@ fun TouchAreaContent(
         Spacer(modifier = Modifier.height(10.dp))
 
         Row(modifier = Modifier
+            .fillMaxWidth()
             .wrapContentHeight(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.End
@@ -96,13 +96,13 @@ fun TouchAreaContent(
             TextButton(
                 modifier = Modifier.wrapContentWidth(),
                 onClick = offAction) {
-                Text(stringResource(id = R.string.off), color = MaterialTheme.colors.onBackground)
+                Text(stringResource(id = R.string.turn_off), color = MaterialTheme.colors.onBackground)
             }
             VerticalSeparator()
             TextButton(
                 modifier = Modifier.wrapContentWidth(),
                 onClick = onAction) {
-                Text(stringResource(id = R.string.on), color = MaterialTheme.colors.onBackground)
+                Text(stringResource(id = R.string.turn_on), color = MaterialTheme.colors.onBackground)
             }
         }
     }
@@ -115,13 +115,19 @@ fun TouchAreaItem(
     iconResId: Int,
     onClicked: () -> Unit
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
     val borderWidth = if (state) 2.dp else -1.dp
     Column (
         modifier = Modifier
-            .clickable { onClicked() }
             .padding(15.dp)
-            .border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp)),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
+            .clickable(
+                indication = null,
+                interactionSource = interactionSource) {
+                onClicked()
+            },
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
     ){
         Icon(
             painter = painterResource(id = iconResId),
@@ -140,7 +146,11 @@ fun TouchAreaItem(
     }
 }
 
-@Preview
+@Preview(
+    name  = "default",
+    showSystemUi = true,
+    showBackground = true, device = "spec:shape=Normal,width=1080,height=2340,unit=px,dpi=440",
+)
 @Composable
 fun PreviewTouchAreaContent() {
     MaterialTheme {
