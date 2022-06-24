@@ -269,12 +269,13 @@
     <string name="menu_receive">接收資料</string>
     <string name="setting_title_background_loading">載入其他分頁內容</string>
     <string name="setting_summary_background_loading">分頁未顯示時，依然在背景載入</string>
-    <string name="dialog_content_ssl_error">The certificate of the site is not trusted. Proceed anyway?</string>
+    <string name="dialog_content_ssl_error">該網站的憑證不可靠。 還是要顯示嗎？</string>
     <string name="dialog_toc_title">目錄</string>
-    <string name="latest_release">Latest Release</string>
-    <string name="facebook_groups">Facebook Groups</string>
-    <string name="medium_articles">Medium Articles</string>
-    <string name="contributors">Contributors</string>
-    <string name="turn_on">On</string>
-    <string name="turn_off">Off</string>
+    <string name="latest_release">最新版本</string>
+    <string name="facebook_groups">Facebook 粉絲頁</string>
+    <string name="medium_articles">相關文章</string>
+    <string name="contributors">貢獻者們</string>
+    <string name="turn_on">開啟</string>
+    <string name="turn_off">關閉</string>
+    <string name="title_touch_area">點擊翻頁區域設定</string>
 </resources>
