@@ -68,7 +68,7 @@ fun TouchAreaContent(
             modifier = Modifier
                 .padding(6.dp)
                 .fillMaxWidth(),
-            text = "Touch Area",
+            text = stringResource(R.string.title_touch_area),
             color = MaterialTheme.colors.onBackground,
             style = MaterialTheme.typography.h6,
             textAlign = TextAlign.Center,
