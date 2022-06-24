@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -119,11 +120,10 @@ fun TouchAreaItem(
     onClicked: () -> Unit
 ) {
     val interactionSource = remember { MutableInteractionSource() }
-    val borderWidth = if (state) 2.dp else -1.dp
+    val borderWidth = if (state) 4.dp else -1.dp
     Column (
         modifier = Modifier
             .padding(15.dp)
-            .border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
             .clickable(
                 indication = null,
                 interactionSource = interactionSource) {
@@ -135,16 +135,15 @@ fun TouchAreaItem(
         Icon(
             painter = painterResource(id = iconResId),
             contentDescription = null,
-            modifier = Modifier
-                .size(90.dp)
-                .padding(top = 10.dp),
-        tint = MaterialTheme.colors.onBackground
+            modifier = Modifier .border(borderWidth, MaterialTheme.colors.onBackground),
+            tint = MaterialTheme.colors.onBackground
         )
         Text(
-            modifier = Modifier.padding(bottom = 10.dp),
+            modifier = Modifier.padding(top = 10.dp),
             text = stringResource(id = titleResId),
             fontSize = 13.sp,
-            color = MaterialTheme.colors.onBackground
+            color = MaterialTheme.colors.onBackground,
+            fontWeight = if (state) FontWeight.Bold else FontWeight.Normal,
         )
     }
 }
