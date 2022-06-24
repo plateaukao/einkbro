@@ -62,6 +62,7 @@ import de.baumann.browser.view.GestureType.CloseTab
 import de.baumann.browser.view.adapter.CompleteAdapter
 import de.baumann.browser.view.compose.ComposedSearchBar
 import de.baumann.browser.view.compose.MyTheme
+import de.baumann.browser.view.compose.SearchBarView
 import de.baumann.browser.view.dialog.*
 import de.baumann.browser.view.dialog.compose.*
 import de.baumann.browser.view.dialog.compose.MenuItemType.*
@@ -89,7 +90,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
 
     // Layouts
     private lateinit var mainToolbar: RelativeLayout
-    private lateinit var searchPanel: ComposeView
+    private lateinit var searchPanel: SearchBarView
     private lateinit var mainContentLayout: FrameLayout
     private lateinit var subContainer: RelativeLayout
 
@@ -1035,15 +1036,11 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
 
     private fun initSearchPanel() {
         searchPanel = binding.mainSearchPanel
-        searchPanel.setContent {
-            MyTheme {
-                ComposedSearchBar(
-                    onTextChanged = { (currentAlbumController as NinjaWebView?)?.findAllAsync(it) },
-                    onCloseClick = { hideSearchPanel() },
-                    onUpClick = { searchUp(it) },
-                    onDownClick = { searchDown(it) },
-                )
-            }
+        searchPanel.apply {
+            onTextChanged = { (currentAlbumController as NinjaWebView?)?.findAllAsync(it) }
+            onCloseClick = { hideSearchPanel() }
+            onUpClick = { searchUp(it) }
+            onDownClick = { searchDown(it) }
         }
     }
 
@@ -1573,7 +1570,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
     private fun showToolbar() {
         if (!searchOnSite) {
             fabImageButtonNav.visibility = INVISIBLE
-            searchPanel.visibility = GONE
+            searchPanel.visibility = INVISIBLE
             mainToolbar.visibility = VISIBLE
             binding.appBar.visibility = VISIBLE
             composeToolbarViewController.show()
@@ -1585,7 +1582,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
     private fun fullscreen() {
         if (!searchOnSite) {
             if (config.fabPosition != FabPosition.NotShow) { fabImageButtonNav.visibility = VISIBLE }
-            searchPanel.visibility = GONE
+            searchPanel.visibility = INVISIBLE
             binding.appBar.visibility = GONE
             hideStatusBar()
         }
@@ -1619,6 +1616,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
         fabImageButtonNav.visibility = INVISIBLE
         mainToolbar.visibility = GONE
         searchPanel.visibility = VISIBLE
+        searchPanel.getFocus()
         binding.appBar.visibility = VISIBLE
         showKeyboard()
     }
