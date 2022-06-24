@@ -1,21 +1,32 @@
 package de.baumann.browser.view.compose
 
+import android.app.Activity
+import android.content.Context
+import android.util.AttributeSet
+import android.view.inputmethod.InputMethodManager
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.platform.AbstractComposeView
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import de.baumann.browser.Ninja.R
+import de.baumann.browser.unit.ViewUnit
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ComposedSearchBar(
+    focusRequester: FocusRequester,
     onTextChanged:(String)->Unit,
     onCloseClick: ()->Unit,
     onUpClick: (String)->Unit,
@@ -30,16 +41,15 @@ fun ComposedSearchBar(
         horizontalArrangement = Arrangement.End
     ) {
         val text = remember { mutableStateOf("") }
+        val keyboardController = LocalSoftwareKeyboardController.current
 
-        val focusRequester = remember { FocusRequester() }
         SearchInput(
             modifier = Modifier
                 .weight(1f)
-                .focusRequester(focusRequester)
-                .clickable {
-                    focusRequester.requestFocus()
+                .onFocusChanged { focusState ->
+                    if (focusState.hasFocus) keyboardController?.show()
                 }
-                .focusable(),
+                .focusRequester(focusRequester),
             text = text,
             onValueChanged = onTextChanged,
         )
@@ -90,6 +100,37 @@ fun SearchBarIcon(
     )
 }
 
+class SearchBarView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyle: Int = 0,
+): AbstractComposeView(context, attrs, defStyle) {
+
+    var onTextChanged by mutableStateOf<(String)->Unit>({})
+    var onCloseClick by mutableStateOf({})
+    var onUpClick by mutableStateOf<(String)->Unit>({})
+    var onDownClick by mutableStateOf<(String)->Unit>({})
+    var focusRequester by mutableStateOf(FocusRequester())
+
+    @Composable
+    override fun Content() {
+        MyTheme {
+            ComposedSearchBar(
+                focusRequester = focusRequester,
+                onTextChanged = onTextChanged,
+                onCloseClick = onCloseClick,
+                onUpClick = onUpClick,
+                onDownClick = onDownClick,
+            )
+        }
+    }
+
+    fun getFocus() {
+        focusRequester.requestFocus()
+        postDelayed({ ViewUnit.showKeyboard(context as Activity) }, 400)
+    }
+}
+
 @Preview
 @Composable
 fun PreviewSearchBar() {
@@ -98,7 +139,8 @@ fun PreviewSearchBar() {
             onTextChanged = {},
             onCloseClick = {},
             onUpClick = {},
-            onDownClick = {}
+            onDownClick = {},
+            focusRequester = FocusRequester(),
         )
     }
 }

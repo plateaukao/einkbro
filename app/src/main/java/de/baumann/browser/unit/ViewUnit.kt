@@ -120,7 +120,8 @@ object ViewUnit {
     fun showKeyboard(activity: Activity) {
         val imm = activity.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
         activity.runOnUiThread {
-            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
+            val view = activity.currentFocus ?: return@runOnUiThread
+            imm.showSoftInput(view, 0)
         }
     }
 
