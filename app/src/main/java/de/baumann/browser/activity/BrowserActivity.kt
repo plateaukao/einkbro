@@ -18,8 +18,6 @@ import android.os.Bundle
 import android.os.Environment
 import android.print.PrintAttributes
 import android.print.PrintManager
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.*
 import android.view.KeyEvent.ACTION_DOWN
@@ -34,6 +32,7 @@ import android.widget.*
 import android.widget.TextView.OnEditorActionListener
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.viewModels
+import androidx.compose.ui.platform.ComposeView
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentActivity
@@ -55,13 +54,14 @@ import de.baumann.browser.unit.*
 import de.baumann.browser.unit.BrowserUnit.downloadFileId
 import de.baumann.browser.unit.HelperUnit.toNormalScheme
 import de.baumann.browser.unit.ViewUnit.dp
-import de.baumann.browser.unit.ViewUnit.hideKeyboard
 import de.baumann.browser.util.Constants
 import de.baumann.browser.util.DebugT
 import de.baumann.browser.view.*
 import de.baumann.browser.view.GestureType.*
 import de.baumann.browser.view.GestureType.CloseTab
 import de.baumann.browser.view.adapter.CompleteAdapter
+import de.baumann.browser.view.compose.ComposedSearchBar
+import de.baumann.browser.view.compose.MyTheme
 import de.baumann.browser.view.dialog.*
 import de.baumann.browser.view.dialog.compose.*
 import de.baumann.browser.view.dialog.compose.MenuItemType.*
@@ -81,7 +81,6 @@ import kotlin.system.exitProcess
 open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListener {
     private lateinit var fabImageButtonNav: ImageButton
     private lateinit var progressBar: ProgressBar
-    private lateinit var searchBox: EditText
     protected lateinit var ninjaWebView: NinjaWebView
 
     private var bottomSheetDialog: Dialog? = null
@@ -90,7 +89,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
 
     // Layouts
     private lateinit var mainToolbar: RelativeLayout
-    private lateinit var searchPanel: ViewGroup
+    private lateinit var searchPanel: ComposeView
     private lateinit var mainContentLayout: FrameLayout
     private lateinit var subContainer: RelativeLayout
 
@@ -1036,38 +1035,20 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
 
     private fun initSearchPanel() {
         searchPanel = binding.mainSearchPanel
-        searchBox = binding.mainSearchBox
-        searchBox.addTextChangedListener(searchBoxTextChangeListener)
-        searchBox.setOnEditorActionListener(searchBoxEditorActionListener)
-        binding.mainSearchUp.setOnClickListener { searchUp() }
-        binding.mainSearchDown.setOnClickListener { searchDown() }
-        binding.mainSearchCancel.setOnClickListener { hideSearchPanel() }
-    }
-
-    private val searchBoxEditorActionListener = object : OnEditorActionListener {
-        override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
-            if (actionId != EditorInfo.IME_ACTION_DONE) {
-                return false
+        searchPanel.setContent {
+            MyTheme {
+                ComposedSearchBar(
+                    onTextChanged = { (currentAlbumController as NinjaWebView?)?.findAllAsync(it) },
+                    onCloseClick = { hideSearchPanel() },
+                    onUpClick = { searchUp(it) },
+                    onDownClick = { searchDown(it) },
+                )
             }
-            if (searchBox.text.toString().isEmpty()) {
-                NinjaToast.show(this@BrowserActivity, getString(R.string.toast_input_empty))
-                return true
-            }
-            return false
         }
     }
 
-    private val searchBoxTextChangeListener = object : TextWatcher {
-        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-        override fun afterTextChanged(s: Editable) {
-            (currentAlbumController as NinjaWebView?)?.findAllAsync(s.toString())
-        }
-    }
-
-    private fun searchUp() {
-        val query = searchBox.text.toString()
-        if (query.isEmpty()) {
+    private fun searchUp(text: String) {
+        if (text.isEmpty()) {
             NinjaToast.show(this, getString(R.string.toast_input_empty))
             return
         }
@@ -1075,9 +1056,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
         (currentAlbumController as NinjaWebView).findNext(false)
     }
 
-    private fun searchDown() {
-        val query = searchBox.text.toString()
-        if (query.isEmpty()) {
+    private fun searchDown(text: String) {
+        if (text.isEmpty()) {
             NinjaToast.show(this, getString(R.string.toast_input_empty))
             return
         }
@@ -1602,7 +1582,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
         }
     }
 
-    @SuppressLint("RestrictedApi")
     private fun fullscreen() {
         if (!searchOnSite) {
             if (config.fabPosition != FabPosition.NotShow) { fabImageButtonNav.visibility = VISIBLE }
@@ -1614,7 +1593,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
 
     private fun hideSearchPanel() {
         searchOnSite = false
-        searchBox.setText("")
+        hideKeyboard()
         showToolbar()
     }
 
@@ -1635,14 +1614,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
         }
     }
 
-    @SuppressLint("RestrictedApi")
     private fun showSearchPanel() {
         searchOnSite = true
         fabImageButtonNav.visibility = INVISIBLE
         mainToolbar.visibility = GONE
         searchPanel.visibility = VISIBLE
         binding.appBar.visibility = VISIBLE
-        searchBox.requestFocus()
         showKeyboard()
     }
 
