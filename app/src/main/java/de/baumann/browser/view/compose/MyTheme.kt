@@ -19,10 +19,18 @@ fun MyTheme(
 }
 
 private val DarkColors = darkColors(
+    primary = Color.Gray,
+    onPrimary = Color.Black,
+    surface = Color.Black,
+    onSurface = Color.Gray,
     background = Color.Black,
     onBackground = Color.Gray,
 )
 private val LightColors = lightColors(
+    primary = Color.Black,
+    onPrimary = Color.White,
+    surface = Color.White,
+    onSurface = Color.Black,
     background = Color.White,
     onBackground = Color.Black,
 )
