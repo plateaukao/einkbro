@@ -179,8 +179,7 @@ class OverviewDialogController(
                         shouldReverse,
                         isWideLayout(),
                         bookmarkManager,
-                        onClick = { position ->
-                            val record = list.value[position]
+                        onClick = { record ->
                             gotoUrlAction(record.url)
                             if (record.type == RecordType.Bookmark) {
                                 config.addRecentBookmark(Bookmark(record.title
@@ -188,10 +187,7 @@ class OverviewDialogController(
                             }
                             hide()
                         },
-                        onLongClick = { position ->
-                            val record = list.value[position]
-                            showHistoryContextMenu(record)
-                        }
+                        onLongClick = ::showHistoryContextMenu
                     )
                 }
             }
