@@ -6,27 +6,20 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
-import android.view.View
 import android.view.View.*
-import android.widget.LinearLayout
-import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.constraintlayout.widget.ConstraintSet
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.DialogMenuContextListBinding
-import de.baumann.browser.Ninja.databinding.DialogMenuOverviewBinding
-import de.baumann.browser.Ninja.databinding.DialogOveriewBinding
 import de.baumann.browser.activity.ExtraBrowserActivity
 import de.baumann.browser.database.*
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.unit.BrowserUnit
 import de.baumann.browser.unit.ViewUnit
+import de.baumann.browser.view.Album
 import de.baumann.browser.view.NinjaToast
-import de.baumann.browser.view.compose.BrowseHistoryList
-import de.baumann.browser.view.compose.MyTheme
+import de.baumann.browser.view.compose.HistoryAndTabsView
 import de.baumann.browser.view.dialog.DialogManager
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
@@ -34,135 +27,72 @@ import org.koin.core.component.inject
 
 
 class OverviewDialogController(
-        private val context: Context,
-        private val binding: DialogOveriewBinding,
-        private val recordDb: RecordDb,
-        private val gotoUrlAction: (String) -> Unit,
-        private val addTabAction: (String, String, Boolean) -> Unit,
-        private val onHistoryChanged: () -> Unit,
-        private val splitScreenAction: (String) -> Unit,
-        private val addEmptyTabAction: () -> Unit,
+    private val context: Context,
+    private val composeView: HistoryAndTabsView,
+    private val recordDb: RecordDb,
+    private val gotoUrlAction: (String) -> Unit,
+    private val addTabAction: (String, String, Boolean) -> Unit,
+    private val addIncognitoTabAction: () -> Unit,
+    private val onHistoryChanged: () -> Unit,
+    private val splitScreenAction: (String) -> Unit,
+    private val addEmptyTabAction: () -> Unit,
 ) : KoinComponent {
     private val config: ConfigManager by inject()
     private val dialogManager: DialogManager = DialogManager(context as Activity)
-    private val bookmarkManager: BookmarkManager by inject()
-
-    private val historyList = binding.historyList
-
-    private var overViewTab: OverviewTab = OverviewTab.TabPreview
 
     private val lifecycleScope = (context as LifecycleOwner).lifecycleScope
 
-    init {
-        initViews()
+    private val currentRecordList = mutableListOf<Record>()
+    private val currentAlbumList = mutableListOf<Album>()
+
+    fun addTabPreview(album: Album, index: Int) = currentAlbumList.add(index, album)
+
+    fun removeTabView(album: Album) {
+        currentAlbumList.remove(album)
     }
 
-    fun addTabPreview(view: View, index: Int) {
-        binding.tabContainer.addView(
-                view,
-                index,
-                LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT)
-        )
-    }
+    fun isVisible() = composeView.visibility == VISIBLE
 
-    fun removeTabView(view: View) {
-        binding.tabContainer.removeView(view)
-    }
-
-    fun isVisible() = binding.root.visibility == VISIBLE
     fun show() {
-        updateLayout()
-        binding.root.visibility = VISIBLE
+        composeView.visibility = VISIBLE
         openHomePage()
     }
 
-    private fun updateLayout() {
-        if (config.isToolbarOnTop) {
-            binding.homeButtons.moveToTop()
-            binding.overviewPreviewContainer.moveToBelowButtons()
-            binding.historyList.moveToBelowButtons()
-        } else {
-            binding.homeButtons.moveToBottom()
-            binding.overviewPreviewContainer.moveToAboveButtons()
-            binding.historyList.moveToAboveButtons()
-        }
-    }
+    private fun initViews(showHistory: Boolean = false) {
+        with (composeView) {
+            isHistoryOpen = showHistory
+            shouldReverse = !config.isToolbarOnTop
+            shouldShowTwoColumns = isWideLayout()
+            albumList = mutableStateOf(currentAlbumList)
+            onTabIconClick = { openHomePage() }
+            onTabClick = { hide() ; it.show() }
+            onTabLongClick = { it.remove() }
 
-    private fun View.moveToTop() {
-        val constraintSet = ConstraintSet().apply {
-            clone(binding.root)
-            clear(id, ConstraintSet.BOTTOM)
-            connect(id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
-        }
-        constraintSet.applyTo(binding.root)
-    }
-
-    private fun View.moveToBelowButtons() {
-        val constraintSet = ConstraintSet().apply {
-            clone(binding.root)
-            clear(id, ConstraintSet.BOTTOM)
-            connect(id, ConstraintSet.TOP, binding.homeButtons.id, ConstraintSet.BOTTOM)
-        }
-        constraintSet.applyTo(binding.root)
-    }
-
-    private fun View.moveToAboveButtons() {
-        val constraintSet = ConstraintSet().apply {
-            clone(binding.root)
-            clear(id, ConstraintSet.TOP)
-            connect(id, ConstraintSet.BOTTOM, binding.homeButtons.id, ConstraintSet.TOP)
-        }
-        constraintSet.applyTo(binding.root)
-    }
-
-    private fun View.moveToBottom() {
-        val constraintSet = ConstraintSet().apply {
-            clone(binding.root)
-            clear(id, ConstraintSet.TOP)
-            connect(id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
-        }
-        constraintSet.applyTo(binding.root)
-    }
-
-    private fun initViews() {
-
-        binding.root.setOnClickListener { hide() }
-
-        binding.openMenu.setOnClickListener { openSubMenu() }
-        binding.openTabButton.setOnClickListener { openHomePage() }
-        binding.openHistoryButton.setOnClickListener { openHistoryPage() }
-        binding.tabPlusBottom.setOnClickListener { addEmptyTabAction() ; hide() }
-        binding.tabPlusBottom.setOnLongClickListener{ launchNewBrowser() ; hide() ; true}
-
-        binding.buttonCloseOverview.setOnClickListener { hide() }
-        openHomePage()
-
-    }
-
-    private fun openSubMenu() {
-        val dialogView = DialogMenuOverviewBinding.inflate(LayoutInflater.from(context))
-        val dialog = dialogManager.showOptionDialog(dialogView.root)
-        with(dialogView) {
-            tvDelete.setOnClickListener { dialog.dismissWithAction { deleteAllItems() } }
+            recordList = currentRecordList
+            onHistoryIconClick = { openHistoryPage() }
+            onHistoryItemClick = { record ->
+                gotoUrlAction(record.url)
+                if (record.type == RecordType.Bookmark) {
+                    config.addRecentBookmark(Bookmark(record.title
+                        ?: "no title", record.url))
+                }
+                hide()
+            }
+            onHistoryItemLongClick = { showHistoryContextMenu(it) }
+            addIncognitoTab = addIncognitoTabAction
+            addTab = { hide() ; addEmptyTabAction() }
+            closePanel = { hide() }
+            onDeleteAction = { hide() ; deleteAllItems() }
+            launchNewBrowserAction = { hide() ; launchNewBrowser() }
         }
     }
 
     fun hide() {
-        binding.root.visibility = GONE
+        composeView.visibility = GONE
     }
 
     fun openHistoryPage(amount: Int = 0) {
-        updateLayout()
-        binding.root.visibility = VISIBLE
-
-        binding.overviewPreview.visibility = INVISIBLE
-        historyList.visibility = VISIBLE
-        toggleOverviewFocus(binding.openHistoryView)
-
-        overViewTab = OverviewTab.History
-
+        composeView.visibility = VISIBLE
         refreshHistoryList(amount)
     }
 
@@ -170,27 +100,9 @@ class OverviewDialogController(
         lifecycleScope.launch {
             val shouldReverse = !config.isToolbarOnTop
             val finalList = getLatestRecords(amount, shouldReverse)
-            historyList.setContent {
-                val list = remember { mutableStateOf(finalList) }
-                list.value = finalList
-                MyTheme {
-                    BrowseHistoryList(
-                        records = list.value,
-                        shouldReverse,
-                        isWideLayout(),
-                        bookmarkManager,
-                        onClick = { record ->
-                            gotoUrlAction(record.url)
-                            if (record.type == RecordType.Bookmark) {
-                                config.addRecentBookmark(Bookmark(record.title
-                                    ?: "no title", record.url))
-                            }
-                            hide()
-                        },
-                        onLongClick = ::showHistoryContextMenu
-                    )
-                }
-            }
+            currentRecordList.clear()
+            currentRecordList.addAll(finalList)
+            initViews(showHistory = true)
         }
     }
 
@@ -203,53 +115,18 @@ class OverviewDialogController(
         ViewUnit.isLandscape(context) || ViewUnit.isTablet(context)
 
     private fun openHomePage() {
-        updateLayout()
-        binding.overviewPreview.visibility = VISIBLE
-        historyList.visibility = GONE
-        toggleOverviewFocus(binding.openTabView)
-        overViewTab = OverviewTab.TabPreview
-    }
-
-    private fun toggleOverviewFocus(view: View) {
-        with(binding) {
-            when(view) {
-                openTabView -> {
-                    openTabLayout.visibility = VISIBLE
-                    openTabView.visibility = VISIBLE
-
-                    openHistoryLayout.visibility = VISIBLE
-                    tabPlusIncognito.visibility = VISIBLE
-                    tabPlusBottom.visibility = VISIBLE
-                    openMenu.visibility = INVISIBLE
-                }
-                openHistoryView -> {
-                    openHistoryLayout.visibility = VISIBLE
-                    openHistoryView.visibility = VISIBLE
-                    tabPlusIncognito.visibility = GONE
-                    tabPlusBottom.visibility = GONE
-                    openMenu.visibility = VISIBLE
-                }
-            }
-            openTabView.visibility = if (binding.openTabView == view) VISIBLE else INVISIBLE
-            openHistoryView.visibility = if (binding.openHistoryView == view) VISIBLE else INVISIBLE
-        }
+        initViews(showHistory = false)
     }
 
 
     private fun deleteAllItems() {
         dialogManager.showOkCancelDialog(
-                messageResId = R.string.hint_database,
-                okAction = {
-                    when (overViewTab) {
-                        OverviewTab.History -> {
-                            BrowserUnit.clearHistory(context)
-                            hide()
-                            onHistoryChanged()
-                        }
-                        else -> { }
-                    }
-                }
-        )
+            messageResId = R.string.clear_title_history,
+            okAction = {
+                BrowserUnit.clearHistory(context)
+                hide()
+                onHistoryChanged()
+            })
     }
 
     private fun showHistoryContextMenu(record: Record) {
@@ -306,8 +183,4 @@ class OverviewDialogController(
 private fun Dialog.dismissWithAction(action: () -> Unit) {
     dismiss()
     action()
-}
-
-enum class OverviewTab {
-    TabPreview, History
 }

@@ -1,11 +1,11 @@
 package de.baumann.browser.browser;
 
-import android.view.View;
+import de.baumann.browser.view.Album;
 
 @SuppressWarnings("unused")
 public interface AlbumController {
 
-    View getAlbumView();
+    Album getAlbum();
 
     String getAlbumTitle();
 

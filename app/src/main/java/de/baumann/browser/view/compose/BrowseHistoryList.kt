@@ -27,15 +27,17 @@ import java.util.*
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun BrowseHistoryList(
+    modifier: Modifier,
     records: List<Record>,
     shouldReverse: Boolean,
-    shouleShowTwoColumns: Boolean,
+    shouldShowTwoColumns: Boolean,
     bookmarkManager: BookmarkManager? = null,
     onClick: (Record)->Unit,
     onLongClick: (Record)->Unit
 ) {
     LazyVerticalGrid(
-        columns = GridCells.Fixed(if (shouleShowTwoColumns) 2 else 1),
+        modifier = modifier,
+        columns = GridCells.Fixed(if (shouldShowTwoColumns) 2 else 1),
         reverseLayout = shouldReverse
     ){
         itemsIndexed(records) { index, record ->
@@ -66,13 +68,19 @@ private fun RecordItem(
     ) {
         if (bitmap!= null) {
             Image(
-                modifier = Modifier.align(Alignment.CenterVertically).size(30.dp).padding(end = 5.dp),
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .size(30.dp)
+                    .padding(end = 5.dp),
                 bitmap = bitmap.asImageBitmap(),
                 contentDescription = null,
             )
         } else {
             Icon(
-                modifier = Modifier.align(Alignment.CenterVertically).size(30.dp).padding(end = 5.dp),
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .size(30.dp)
+                    .padding(end = 5.dp),
                 painter = painterResource(id = R.drawable.ic_history),
                 contentDescription = null,
                 tint = MaterialTheme.colors.onBackground
@@ -119,6 +127,6 @@ private fun previewHistoryList() {
         Record(title = "Hello 3", url = "123", time = System.currentTimeMillis()),
     )
     MyTheme {
-        BrowseHistoryList(records = list, shouldReverse = true, shouleShowTwoColumns = true, onClick = {}, onLongClick = {})
+        BrowseHistoryList(modifier = Modifier, records = list, shouldReverse = true, shouldShowTwoColumns = true, onClick = {}, onLongClick = {})
     }
 }

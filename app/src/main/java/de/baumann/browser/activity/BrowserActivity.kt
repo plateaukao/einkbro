@@ -32,7 +32,6 @@ import android.widget.*
 import android.widget.TextView.OnEditorActionListener
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.viewModels
-import androidx.compose.ui.platform.ComposeView
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentActivity
@@ -60,8 +59,6 @@ import de.baumann.browser.view.*
 import de.baumann.browser.view.GestureType.*
 import de.baumann.browser.view.GestureType.CloseTab
 import de.baumann.browser.view.adapter.CompleteAdapter
-import de.baumann.browser.view.compose.ComposedSearchBar
-import de.baumann.browser.view.compose.MyTheme
 import de.baumann.browser.view.compose.SearchBarView
 import de.baumann.browser.view.dialog.*
 import de.baumann.browser.view.dialog.compose.*
@@ -84,7 +81,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
     private lateinit var progressBar: ProgressBar
     protected lateinit var ninjaWebView: NinjaWebView
 
-    private var bottomSheetDialog: Dialog? = null
     private var videoView: VideoView? = null
     private var customView: View? = null
 
@@ -545,10 +541,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
 
     override fun hideOverview() = overviewDialogController.hide()
 
-    private fun hideBottomSheetDialog() {
-        bottomSheetDialog?.cancel()
-    }
-
     @SuppressLint("RestrictedApi")
     override fun onClick(v: View) {
         ninjaWebView = currentAlbumController as NinjaWebView
@@ -558,7 +550,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
         } catch (e: Exception) {
             e.printStackTrace()
         }
-        hideBottomSheetDialog()
         when (v.id) {
             R.id.omnibox_input_clear -> binding.omniboxInput.text.clear()
             R.id.omnibox_input_paste -> {
@@ -567,11 +558,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
                 binding.omniboxInput.setSelection(copiedString.length)
             }
             R.id.omnibox_input_close -> showToolbar()
-            R.id.tab_plus_incognito -> {
-                hideOverview()
-                addAlbum(getString(R.string.app_name), "", incognito = true)
-                focusOnInput()
-            }
             R.id.menu_save_file -> showPdfFilePicker()
 
             else -> { }
@@ -1013,14 +999,18 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
 
     private fun initOverview() {
         overviewDialogController = OverviewDialogController(
-                this,
-                binding.layoutOverview,
-                recordDb,
-                gotoUrlAction = { url -> updateAlbum(url) },
-                addTabAction = { title, url, isForeground -> addAlbum(title, url, isForeground) },
-                onHistoryChanged = { isAutoCompleteOutdated = true },
-                splitScreenAction = { url -> toggleSplitScreen(url) },
-                addEmptyTabAction = { addAlbum(getString(R.string.app_name), "") ; focusOnInput() }
+            this,
+            binding.layoutOverview,
+            recordDb,
+            gotoUrlAction = { url -> updateAlbum(url) },
+            addTabAction = { title, url, isForeground -> addAlbum(title, url, isForeground) },
+            addIncognitoTabAction = {
+                hideOverview()
+                addAlbum(getString(R.string.app_name), "", incognito = true)
+                focusOnInput() },
+            onHistoryChanged = { isAutoCompleteOutdated = true },
+            splitScreenAction = { url -> toggleSplitScreen(url) },
+            addEmptyTabAction = { addAlbum(getString(R.string.app_name), "") ; focusOnInput() }
         )
     }
 
@@ -1123,14 +1113,14 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
             newWebView.setAlbumCover(it)
         }
 
-        val albumView = newWebView.albumView
+        val album = newWebView.album
         if (currentAlbumController != null) {
             val index = browserContainer.indexOf(currentAlbumController) + 1
             browserContainer.add(newWebView, index)
-            overviewDialogController.addTabPreview(albumView, index)
+            overviewDialogController.addTabPreview(album, index)
         } else {
             browserContainer.add(newWebView)
-            overviewDialogController.addTabPreview(albumView, browserContainer.size() - 1)
+            overviewDialogController.addTabPreview(album, browserContainer.size() - 1)
         }
     }
 
@@ -1228,7 +1218,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
             finish()
         } else {
             closeTabConfirmation {
-                overviewDialogController.removeTabView(controller.albumView)
+                overviewDialogController.removeTabView(controller.album)
                 val removeIndex = browserContainer.indexOf(controller)
                 val currentIndex = browserContainer.indexOf(currentAlbumController)
                 browserContainer.remove(controller)
