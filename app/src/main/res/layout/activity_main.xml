@@ -117,9 +117,8 @@
         android:layout_height="1px"
         android:background="@android:color/darker_gray" />
 
-    <include
+    <de.baumann.browser.view.compose.HistoryAndTabsView
         android:id="@+id/layout_overview"
-        layout="@layout/dialog_overiew"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"

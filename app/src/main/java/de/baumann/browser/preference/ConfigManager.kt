@@ -13,7 +13,6 @@ import de.baumann.browser.util.Constants
 import de.baumann.browser.util.TranslationLanguage
 import de.baumann.browser.view.Orientation
 import de.baumann.browser.view.toolbaricons.ToolbarAction
-import de.baumann.browser.view.viewControllers.OverviewTab
 import org.koin.core.component.KoinComponent
 import java.lang.Exception
 import java.util.*

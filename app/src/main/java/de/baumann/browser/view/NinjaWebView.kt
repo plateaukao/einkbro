@@ -11,7 +11,6 @@ import android.os.Build
 import android.print.PrintDocumentAdapter
 import android.util.Base64
 import android.view.KeyEvent
-import android.view.View
 import android.webkit.CookieManager
 import android.webkit.WebSettings
 import android.webkit.WebView
@@ -290,8 +289,6 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
         super.loadUrl(BrowserUnit.queryWrapper(context, processedUrl), requestHeaders)
     }
 
-    override fun getAlbumView(): View = album.albumView
-
     fun setAlbumCover(bitmap: Bitmap) = album.setAlbumCover(bitmap)
     fun setAlbumCoverAndSyncDb(bitmap: Bitmap) {
         setAlbumCover(bitmap)
@@ -308,6 +305,8 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
         this.compress(Bitmap.CompressFormat.PNG, 0, stream)
         return stream.toByteArray()
     }
+
+    override fun getAlbum(): Album = album
 
     override fun getAlbumTitle(): String = album.albumTitle
 
