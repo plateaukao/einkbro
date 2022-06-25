@@ -29,12 +29,13 @@ import java.util.*
 fun BrowseHistoryList(
     records: List<Record>,
     shouldReverse: Boolean,
-    isWideLayout: Boolean,
+    shouleShowTwoColumns: Boolean,
     bookmarkManager: BookmarkManager? = null,
-    onClick: (Int)->Unit, onLongClick: (Int)->Unit
+    onClick: (Record)->Unit,
+    onLongClick: (Record)->Unit
 ) {
     LazyVerticalGrid(
-        columns = GridCells.Fixed(if (isWideLayout) 2 else 1),
+        columns = GridCells.Fixed(if (shouleShowTwoColumns) 2 else 1),
         reverseLayout = shouldReverse
     ){
         itemsIndexed(records) { index, record ->
@@ -42,8 +43,8 @@ fun BrowseHistoryList(
                 record = record,
                 bitmap =  bookmarkManager?.findFaviconBy(record.url)?.getBitmap(),
                 modifier = Modifier.combinedClickable (
-                    onClick = { onClick(index) },
-                    onLongClick = { onLongClick(index) }
+                    onClick = { onClick(record) },
+                    onLongClick = { onLongClick(record) }
                 )
             )
         }
@@ -118,6 +119,6 @@ private fun previewHistoryList() {
         Record(title = "Hello 3", url = "123", time = System.currentTimeMillis()),
     )
     MyTheme {
-        BrowseHistoryList(records = list, shouldReverse = true, isWideLayout = true, onClick = {}, onLongClick = {})
+        BrowseHistoryList(records = list, shouldReverse = true, shouleShowTwoColumns = true, onClick = {}, onLongClick = {})
     }
 }

@@ -301,18 +301,18 @@ private fun BookmarkItem(
 }
 
 @Composable
-private fun ActionIcon(modifier: Modifier, iconResId: Int, action: ()->Unit) {
+fun ActionIcon(modifier: Modifier, iconResId: Int, action: (()->Unit)? = null) {
     Icon(
         modifier = modifier
             .size(36.dp)
             .padding(end = 5.dp)
-            .clickable { action() },
+            .clickable { action?.invoke() },
         painter = painterResource(id = iconResId),
         contentDescription = null,
         tint = MaterialTheme.colors.onBackground
     )
-
 }
+
 @Preview
 @Composable
 private fun PreviewBookmarkList() {
