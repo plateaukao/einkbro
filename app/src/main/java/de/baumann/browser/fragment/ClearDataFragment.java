@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -14,7 +15,13 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import de.baumann.browser.Ninja.R;
 import de.baumann.browser.unit.HelperUnit;
 
-public class ClearDataFragment extends PreferenceFragmentCompat {
+public class ClearDataFragment extends PreferenceFragmentCompat implements FragmentTitleInterface {
+
+    @NonNull
+    @Override
+    public int getTitleId() {
+        return R.string.setting_title_clear_control;
+    }
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {

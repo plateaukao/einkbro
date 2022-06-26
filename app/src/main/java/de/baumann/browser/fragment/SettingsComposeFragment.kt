@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.preference.PreferenceFragmentCompat
 import de.baumann.browser.Ninja.BuildConfig
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.preference.ConfigManager
@@ -78,7 +79,9 @@ class SettingsComposeFragment: Fragment(), KoinComponent {
         parentFragmentManager
             .beginTransaction()
             .replace(R.id.content_frame, fragment)
+            .addToBackStack(null)
             .commit()
+        activity?.setTitle((fragment as FragmentTitleInterface).getTitleId())
     }
 
     private suspend fun updateUserAgent() {

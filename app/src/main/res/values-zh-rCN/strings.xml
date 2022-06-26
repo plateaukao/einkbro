@@ -343,4 +343,5 @@
     <string name="turn_on">On</string>
     <string name="turn_off">Off</string>
     <string name="title_touch_area">Touch Area</string>
+    <string name="title_about">About</string>
 </resources>

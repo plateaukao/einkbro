@@ -14,10 +14,12 @@ import de.baumann.browser.view.dialog.DialogManager
 import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
 
-class FontSettingsFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeListener, KoinComponent {
+class FontSettingsFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeListener, KoinComponent, FragmentTitleInterface {
     private val config: ConfigManager by inject()
     private val dialogManager: DialogManager by lazy { DialogManager(requireActivity()) }
     private lateinit var resultLauncher: ActivityResultLauncher<Intent>
+
+    override fun getTitleId() = R.string.setting_title_font
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preference_font, rootKey)

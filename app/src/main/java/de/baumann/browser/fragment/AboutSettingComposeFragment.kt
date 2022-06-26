@@ -13,7 +13,9 @@ import de.baumann.browser.Ninja.R
 import de.baumann.browser.activity.BrowserActivity
 import de.baumann.browser.view.compose.MyTheme
 
-class AboutSettingComposeFragment : Fragment() {
+class AboutSettingComposeFragment : Fragment(), FragmentTitleInterface {
+
+    override fun getTitleId(): Int = R.string.title_about
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return ComposeView(requireContext())

@@ -8,7 +8,10 @@ import android.content.SharedPreferences
 import androidx.preference.ListPreference
 import de.baumann.browser.view.GestureType
 
-class FragmentSettingsGesture : PreferenceFragmentCompat(), OnSharedPreferenceChangeListener {
+class FragmentSettingsGesture : PreferenceFragmentCompat(), OnSharedPreferenceChangeListener, FragmentTitleInterface {
+
+    override fun getTitleId() = R.string.setting_gestures
+
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preference_gesture, rootKey)
 
