@@ -43,8 +43,10 @@ import java.util.*
 import javax.xml.parsers.DocumentBuilderFactory
 import javax.xml.parsers.ParserConfigurationException
 
-class DataSettingsFragment : PreferenceFragmentCompat(), KoinComponent {
+class DataSettingsFragment : PreferenceFragmentCompat(), KoinComponent, FragmentTitleInterface {
     private val manager: BookmarkManager by inject()
+
+    override fun getTitleId() = R.string.setting_title_data
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {

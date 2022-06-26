@@ -21,14 +21,23 @@ class SettingsActivity : AppCompatActivity() {
         supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportFragmentManager
-            .beginTransaction() //.replace(R.id.content_frame, new SettingsFragment())
+            .beginTransaction()
             .replace(R.id.content_frame, SettingsComposeFragment())
+            .addToBackStack(null)
             .commit()
     }
 
     override fun onOptionsItemSelected(menuItem: MenuItem): Boolean {
         if (menuItem.itemId == android.R.id.home) {
-            finish()
+            if (supportFragmentManager.backStackEntryCount > 1) {
+                supportFragmentManager.popBackStack()
+            } else {
+                finish()
+            }
+            //set correct title
+            if (supportFragmentManager.backStackEntryCount == 2) {
+                setTitle(R.string.settings)
+            }
         }
         return true
     }

@@ -14,8 +14,11 @@ import de.baumann.browser.view.dialog.PrinterDocumentPaperSizeDialog
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class UiSettingsFragment : PreferenceFragmentCompat(), OnSharedPreferenceChangeListener, KoinComponent {
+class UiSettingsFragment
+    : PreferenceFragmentCompat(), OnSharedPreferenceChangeListener, KoinComponent, FragmentTitleInterface {
     private val config: ConfigManager by inject()
+
+    override fun getTitleId() = R.string.setting_title_ui
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preference_ui, rootKey)

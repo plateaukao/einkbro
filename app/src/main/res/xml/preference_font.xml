@@ -3,32 +3,29 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:klyph="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory android:title="@string/setting_title_font">
+    <ListPreference
+        android:defaultValue="100"
+        android:entries="@array/setting_entries_font"
+        android:entryValues="@array/setting_values_font"
+        android:icon="@drawable/icon_size"
+        android:key="sp_fontSize"
+        android:summary="@string/setting_summary_font_size"
+        android:title="@string/setting_title_font_size" />
 
-        <ListPreference
-            android:icon="@drawable/icon_size"
-            android:key="sp_fontSize"
-            android:defaultValue="100"
-            android:title="@string/setting_title_font_size"
-            android:summary="@string/setting_summary_font_size"
-            android:entries="@array/setting_entries_font"
-            android:entryValues="@array/setting_values_font"/>
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:icon="@drawable/ic_bold_font"
+        android:key="sp_bold_font"
+        android:summary="@string/setting_summary_bold_font"
+        android:title="@string/bold_font" />
 
-        <CheckBoxPreference android:key="sp_bold_font"
-            android:icon="@drawable/ic_bold_font"
-            android:defaultValue="false"
-            android:title="@string/bold_font"
-            android:summary="@string/setting_summary_bold_font"/>
+    <Preference
+        android:key="settings_font_type"
+        android:title="@string/font_type" />
 
-        <Preference android:key="settings_font_type"
-            android:title="@string/font_type" />
-
-        <Preference android:key="sp_custom_font"
-            android:icon="@drawable/icon_info"
-            android:defaultValue=""
-            android:title="@string/font_custom"/>
-
-    </PreferenceCategory>
-
-
+    <Preference
+        android:defaultValue=""
+        android:icon="@drawable/icon_info"
+        android:key="sp_custom_font"
+        android:title="@string/font_custom" />
 </PreferenceScreen>
