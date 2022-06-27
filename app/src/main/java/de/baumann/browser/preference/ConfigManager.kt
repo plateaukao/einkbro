@@ -16,7 +16,8 @@ import de.baumann.browser.view.toolbaricons.ToolbarAction
 import org.koin.core.component.KoinComponent
 import java.lang.Exception
 import java.util.*
-import kotlin.reflect.KMutableProperty0
+import kotlin.properties.ReadWriteProperty
+import kotlin.reflect.KProperty
 
 class ConfigManager(
     private val context: Context,
@@ -31,71 +32,26 @@ class ConfigManager(
         sp.unregisterOnSharedPreferenceChangeListener(listener)
     }
 
-    var enableWebBkgndLoad: Boolean
-        get() = sp.getBoolean(K_BKGND_LOAD, true)
-        set(value) {
-            sp.edit { putBoolean(K_BKGND_LOAD, value)}
-        }
-
-    var enableJavascript: Boolean
-        get() = sp.getBoolean(K_JAVASCRIPT, false)
-        set(value) {
-            sp.edit { putBoolean(K_JAVASCRIPT, value) }
-        }
-
-    var isToolbarOnTop: Boolean
-        get() = sp.getBoolean(K_TOOLBAR_TOP, false)
-        set(value) {
-            sp.edit { putBoolean(K_TOOLBAR_TOP, value) }
-        }
-
-    var enableViBinding: Boolean
-        get() = sp.getBoolean(K_VI_BINDING, false)
-        set(value) {
-            sp.edit { putBoolean(K_VI_BINDING, value) }
-        }
-
-    var isMultitouchEnabled: Boolean
-        get() = sp.getBoolean(K_MULTITOUCH, false)
-        set(value) {
-            sp.edit { putBoolean(K_MULTITOUCH, value) }
-        }
-
-    var whiteBackground: Boolean
-        get() = sp.getBoolean(K_WHITE_BACKGROUND, false)
-        set(value) {
-            sp.edit { putBoolean(K_WHITE_BACKGROUND, value) }
-        }
-
-    var useUpDownPageTurn: Boolean
-        get() = sp.getBoolean(K_UPDOWN_PAGE_TURN, false)
-        set(value) {
-            sp.edit { putBoolean(K_UPDOWN_PAGE_TURN, value) }
-        }
-
-    var touchAreaHint: Boolean
-        get() = sp.getBoolean(K_TOUCH_HINT, true)
-        set(value) {
-            sp.edit { putBoolean(K_TOUCH_HINT, value) }
-        }
-
-    var volumePageTurn: Boolean
-        get() = sp.getBoolean(K_VOLUME_PAGE_TURN, true)
-        set(value) {
-            sp.edit { putBoolean(K_VOLUME_PAGE_TURN, value) }
-        }
-
-    var boldFontStyle: Boolean
-        get() = sp.getBoolean(K_BOLD_FONT, false)
-        set(value) {
-            sp.edit { putBoolean(K_BOLD_FONT, value) }
-        }
-
-    var shouldSaveTabs: Boolean
-        get() = sp.getBoolean(K_SHOULD_SAVE_TABS, false)
-        set(value) {
-            sp.edit { putBoolean(K_SHOULD_SAVE_TABS, value) }
-        }
+    var enableWebBkgndLoad by BooleanPreference(sp, K_BKGND_LOAD, true)
+    var enableJavascript by BooleanPreference(sp, K_JAVASCRIPT, true)
+    val isToolbarOnTop by BooleanPreference(sp, K_TOOLBAR_TOP, false)
+    var enableViBinding by BooleanPreference(sp, K_VI_BINDING, false)
+    var isMultitouchEnabled by BooleanPreference(sp, K_MULTITOUCH, false)
+    var whiteBackground by BooleanPreference(sp, K_WHITE_BACKGROUND, false)
+    var useUpDownPageTurn by BooleanPreference(sp, K_UPDOWN_PAGE_TURN, false)
+    var touchAreaHint by BooleanPreference(sp, K_TOUCH_HINT, true)
+    var volumePageTurn by BooleanPreference(sp, K_VOLUME_PAGE_TURN, true)
+    var boldFontStyle by BooleanPreference(sp, K_BOLD_FONT, false)
+    var shouldSaveTabs by BooleanPreference(sp, K_SHOULD_SAVE_TABS, false)
+    var adBlock by BooleanPreference(sp, K_ADBLOCK, true)
+    var cookies by BooleanPreference(sp, K_COOKIES, true)
+    var saveHistory by BooleanPreference(sp, K_SAVE_HISTORY, true)
+    var shareLocation by BooleanPreference(sp, K_SHARE_LOCATION, false)
+    var enableTouchTurn by BooleanPreference(sp, K_ENABLE_TOUCH, false)
+    var keepAwake by BooleanPreference(sp, K_KEEP_AWAKE, false)
+    var desktop by BooleanPreference(sp, K_DESKTOP, false)
+    var continueMedia by BooleanPreference(sp, K_MEDIA_CONTINUE, false)
+    var restartChanged by BooleanPreference(sp, K_RESTART_CHANGED, false)
 
     var isIncognitoMode: Boolean
         get() = sp.getBoolean(K_IS_INCOGNITO_MODE, false)
@@ -103,66 +59,6 @@ class ConfigManager(
             cookies = !value
             saveHistory = !value
             sp.edit { putBoolean(K_IS_INCOGNITO_MODE, value) }
-        }
-
-    var shouldInvert: Boolean
-        get() = sp.getBoolean(K_SHOULD_INVERT, false)
-        set(value) {
-            sp.edit { putBoolean(K_SHOULD_INVERT, value) }
-        }
-
-    var adBlock: Boolean
-        get() = sp.getBoolean(K_ADBLOCK, true)
-        set(value) {
-            sp.edit { putBoolean(K_ADBLOCK, value) }
-        }
-
-    var cookies: Boolean
-        get() = sp.getBoolean(K_COOKIES, true)
-        set(value) {
-            sp.edit { putBoolean(K_COOKIES, value) }
-        }
-
-    var saveHistory: Boolean
-        get() = sp.getBoolean(K_SAVE_HISTORY, true)
-        set(value) {
-            sp.edit { putBoolean(K_SAVE_HISTORY, value) }
-        }
-
-    var shareLocation: Boolean
-        get() = sp.getBoolean(K_SHARE_LOCATION, false)
-        set(value) {
-            sp.edit { putBoolean(K_SHARE_LOCATION, value) }
-        }
-
-    var enableTouchTurn: Boolean
-        get() = sp.getBoolean(K_ENABLE_TOUCH, false)
-        set(value) {
-            sp.edit { putBoolean(K_ENABLE_TOUCH, value) }
-        }
-
-    var keepAwake: Boolean
-        get() = sp.getBoolean(K_KEEP_AWAKE, false)
-        set(value) {
-            sp.edit { putBoolean(K_KEEP_AWAKE, value) }
-        }
-
-    var desktop: Boolean
-        get() = sp.getBoolean(K_DESKTOP, false)
-        set(value) {
-            sp.edit { putBoolean(K_DESKTOP, value) }
-        }
-
-    var continueMedia: Boolean
-        get() = sp.getBoolean(K_MEDIA_CONTINUE, false)
-        set(value) {
-            sp.edit { putBoolean(K_MEDIA_CONTINUE, value) }
-        }
-
-    var restartChanged: Boolean
-        get() = sp.getBoolean(K_RESTART_CHANGED, false)
-        set(value) {
-            sp.edit { putBoolean(K_RESTART_CHANGED, value) }
         }
 
     fun maybeInitPreference() {
@@ -242,47 +138,13 @@ class ConfigManager(
             sp.edit { putInt(K_TRANSLATE_ORIENTATION, value.ordinal) }
         }
 
-    var translationPanelSwitched: Boolean
-        get() = sp.getBoolean(K_TRANSLATE_PANEL_SWITCHED, false)
-        set(value) {
-            sp.edit { putBoolean(K_TRANSLATE_PANEL_SWITCHED, value) }
-        }
-
-    var translationScrollSync: Boolean
-        get() = sp.getBoolean(K_TRANSLATE_SCROLL_SYNC, false)
-        set(value) {
-            sp.edit { putBoolean(K_TRANSLATE_SCROLL_SYNC, value) }
-        }
-
-    var twoPanelLinkHere: Boolean
-        get() = sp.getBoolean(K_TWO_PANE_LINK_HERE, false)
-        set(value) {
-            sp.edit { putBoolean(K_TWO_PANE_LINK_HERE, value) }
-        }
-
-    var switchTouchAreaAction: Boolean
-        get() = sp.getBoolean(K_TOUCH_AREA_ACTION_SWITCH, false)
-        set(value) {
-            sp.edit { putBoolean(K_TOUCH_AREA_ACTION_SWITCH, value) }
-        }
-
-    var hideTouchAreaWhenInput: Boolean
-        get() = sp.getBoolean(K_TOUCH_AREA_HIDE_WHEN_INPUT, false)
-        set(value) {
-            sp.edit { putBoolean(K_TOUCH_AREA_HIDE_WHEN_INPUT, value) }
-        }
-
-    var customFontChanged: Boolean
-        get() = sp.getBoolean(K_CUSTOM_FONT_CHANGED, false)
-        set(value) {
-            sp.edit { putBoolean(K_CUSTOM_FONT_CHANGED, value) }
-        }
-
-    var showRecentBookmarks: Boolean
-        get() = sp.getBoolean(K_SHOW_RECENT_BOOKMARKS, false)
-        set(value) {
-            sp.edit { putBoolean(K_SHOW_RECENT_BOOKMARKS, value) }
-        }
+    var translationPanelSwitched by BooleanPreference(sp, K_TRANSLATE_PANEL_SWITCHED, false)
+    var translationScrollSync  by BooleanPreference(sp, K_TRANSLATE_SCROLL_SYNC, false)
+    var twoPanelLinkHere by BooleanPreference(sp, K_TWO_PANE_LINK_HERE, false)
+    var switchTouchAreaAction by BooleanPreference(sp, K_TOUCH_AREA_ACTION_SWITCH, false)
+    var hideTouchAreaWhenInput by BooleanPreference(sp, K_TOUCH_AREA_HIDE_WHEN_INPUT, false)
+    var customFontChanged by BooleanPreference(sp, K_CUSTOM_FONT_CHANGED, false)
+    var showRecentBookmarks by BooleanPreference(sp, K_SHOW_RECENT_BOOKMARKS, false)
 
     var favoriteUrl: String
         get() = sp.getString(K_FAVORITE_URL, Constants.DEFAULT_HOME_URL)
@@ -465,7 +327,6 @@ class ConfigManager(
         const val K_ADBLOCK = "SP_AD_BLOCK_9"
         const val K_SAVE_HISTORY = "saveHistory"
         const val K_COOKIES = "SP_COOKIES_9"
-        const val K_SHOULD_INVERT = "sp_invert"
         const val K_TRANSLATION_MODE = "sp_translation_mode"
         const val K_ENABLE_TOUCH = "sp_enable_touch"
         const val K_TOUCH_HINT = "sp_touch_area_hint"
@@ -524,7 +385,25 @@ class ConfigManager(
     fun removeSavedEpubFile(epubFileInfo: EpubFileInfo) {
         savedEpubFileInfos = savedEpubFileInfos.toMutableList().apply { remove(epubFileInfo) }
     }
+
+    class BooleanPreference(
+        private val sharedPreferences: SharedPreferences,
+        private val key: String,
+        private val defaultValue: Boolean = false
+    ) : ReadWriteProperty<Any, Boolean> {
+
+        override fun getValue(thisRef: Any, property: KProperty<*>): Boolean =
+            sharedPreferences.getBoolean(key, defaultValue)
+
+        override fun setValue(thisRef: Any, property: KProperty<*>, value: Boolean) =
+            sharedPreferences.edit() { putBoolean(key, value) }
+
+        fun toggle() = sharedPreferences.edit() {
+            putBoolean(key, !sharedPreferences.getBoolean(key, defaultValue))
+        }
+    }
 }
+
 
 enum class PaperSize(val sizeString: String, val mediaSize: PrintAttributes.MediaSize) {
     ISO_13("A4 (13\")", PrintAttributes.MediaSize.ISO_A4),
@@ -594,4 +473,3 @@ private fun String.toCustomFontInfo(): CustomFontInfo? {
     return CustomFontInfo(segments[0], segments[1])
 }
 
-fun KMutableProperty0<Boolean>.toggle(): Boolean = get().not().apply(setter)
