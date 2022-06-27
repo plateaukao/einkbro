@@ -5,7 +5,6 @@ import android.util.AttributeSet
 import android.view.View.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.AbstractComposeView
-import androidx.compose.ui.platform.ComposeView
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.view.compose.ComposedToolbar
 import de.baumann.browser.view.compose.MyTheme

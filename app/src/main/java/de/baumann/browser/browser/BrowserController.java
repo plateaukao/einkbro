@@ -7,7 +7,6 @@ import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 
 public interface BrowserController {
-    void updateAutoComplete();
     void updateProgress(int progress);
     void updateTitle(String title);
     void addNewTab(String url);
