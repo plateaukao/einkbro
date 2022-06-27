@@ -414,13 +414,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
     private fun showFileListConfirmDialog() {
         dialogManager.showOkCancelDialog(
                 messageResId = R.string.toast_downloadComplete,
-                okAction = {
-                    startActivity(
-                            Intent(ACTION_VIEW_DOWNLOADS).apply {
-                                flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                            }
-                    )
-                }
+                okAction = { BrowserUnit.openDownloadFolder(this@BrowserActivity) }
         )
     }
 
@@ -1662,7 +1656,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController, OnClickListe
            WhiteBknd -> config.whiteBackground = !config.whiteBackground
            BoldFont -> config.boldFontStyle = !config.boldFontStyle
            Search -> showSearchPanel()
-           Download -> startActivity(Intent(ACTION_VIEW_DOWNLOADS))
+           Download -> BrowserUnit.openDownloadFolder(this)
            Settings -> startActivity(Intent(this,  SettingsActivity::class.java))
        }
    }

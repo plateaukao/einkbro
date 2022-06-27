@@ -77,6 +77,14 @@ object BrowserUnit: KoinComponent {
 
     val cookie: Cookie by inject()
 
+    fun openDownloadFolder(activity: Activity) {
+        val uri = Uri.parse(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString());
+        val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
+            setDataAndType(uri, "resource/folder");
+        }
+        activity.startActivity(Intent.createChooser(intent, activity.getString(R.string.dialog_title_download)))
+    }
+
     @JvmStatic
     fun isURL(url: String?): Boolean {
         var url = url ?: return false
