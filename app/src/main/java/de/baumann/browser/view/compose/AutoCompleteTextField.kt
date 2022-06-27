@@ -3,9 +3,10 @@ package de.baumann.browser.view.compose
 import android.app.Activity
 import android.content.Context
 import android.util.AttributeSet
-import android.view.inputmethod.InputMethodManager
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -18,6 +19,7 @@ import androidx.compose.ui.platform.AbstractComposeView
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import de.baumann.browser.Ninja.R
@@ -25,12 +27,14 @@ import de.baumann.browser.unit.ViewUnit
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun ComposedSearchBar(
+fun AutoCompleteTextField(
     focusRequester: FocusRequester,
+    hasCopiedText: Boolean = false,
     onTextChanged:(String)->Unit,
-    onCloseClick: ()->Unit,
-    onUpClick: (String)->Unit,
-    onDownClick: (String)->Unit,
+    onTextSubmit:(String)->Unit,
+    onPasteClick: ()->Unit,
+    onClearClick: ()->Unit,
+    onDownClick: ()->Unit,
 ) {
     Row(
         modifier = Modifier
@@ -43,7 +47,7 @@ fun ComposedSearchBar(
         val text = remember { mutableStateOf("") }
         val keyboardController = LocalSoftwareKeyboardController.current
 
-        SearchInput(
+        TextInput(
             modifier = Modifier
                 .weight(1f)
                 .onFocusChanged { focusState ->
@@ -52,19 +56,23 @@ fun ComposedSearchBar(
                 .focusRequester(focusRequester),
             text = text,
             onValueChanged = onTextChanged,
+            onValueSubmit = onTextSubmit,
         )
 
-        SearchBarIcon(iconResId = R.drawable.icon_close, onClick = { text.value = "" ; onCloseClick() })
-        SearchBarIcon(iconResId = R.drawable.icon_arrow_down_gest, onClick = { onDownClick(text.value) })
-        SearchBarIcon(iconResId = R.drawable.icon_arrow_up_gest, onClick = { onUpClick(text.value) })
+        if (hasCopiedText) {
+            TextBarIcon(iconResId = R.drawable.ic_paste, onClick = onPasteClick)
+        }
+        TextBarIcon(iconResId = R.drawable.close_circle, onClick = onClearClick)
+        TextBarIcon(iconResId = R.drawable.icon_arrow_down_gest, onClick = onDownClick)
     }
 }
 
 @Composable
-fun SearchInput(
+fun TextInput(
     modifier: Modifier,
     text: MutableState<String>,
     onValueChanged: (String)->Unit,
+    onValueSubmit: (String)->Unit,
 ) {
     TextField(
         value = text.value,
@@ -74,17 +82,22 @@ fun SearchInput(
             backgroundColor = MaterialTheme.colors.background,
         ),
         placeholder = {
-            Text(stringResource(R.string.search_hint), color = MaterialTheme.colors.onBackground)
+            Text(stringResource(R.string.main_omnibox_input_hint), color = MaterialTheme.colors.onBackground)
         },
         onValueChange = {
             text.value = it
             onValueChanged(it)
         },
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+        keyboardActions = KeyboardActions(
+            onDone = { onValueSubmit(text.value) },
+        ),
+
     )
 }
 
 @Composable
-fun SearchBarIcon(
+fun TextBarIcon(
     iconResId: Int,
     onClick: ()->Unit,
 ) {
@@ -100,7 +113,7 @@ fun SearchBarIcon(
     )
 }
 
-class SearchBarView @JvmOverloads constructor(
+class TextBarView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyle: Int = 0,
@@ -133,12 +146,13 @@ class SearchBarView @JvmOverloads constructor(
 
 @Preview
 @Composable
-fun PreviewSearchBar() {
+fun PreviewTextBar() {
     MyTheme {
-        ComposedSearchBar(
+        AutoCompleteTextField(
             onTextChanged = {},
-            onCloseClick = {},
-            onUpClick = {},
+            onTextSubmit = {},
+            onPasteClick = {},
+            onClearClick = {},
             onDownClick = {},
             focusRequester = FocusRequester(),
         )
