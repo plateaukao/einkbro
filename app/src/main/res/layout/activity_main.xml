@@ -18,59 +18,33 @@
             android:id="@+id/main_toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-            <ImageButton
-                android:id="@+id/omnibox_input_close"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentEnd="true"
-                android:background="@color/color_transparent"
-                android:onClick="onClick"
-                android:padding="8dp"
-                android:src="@drawable/icon_arrow_down_gest"
-                android:tint="?attr/colorControlNormal" />
-
-            <ImageButton
-                android:id="@+id/omnibox_input_paste"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_toLeftOf="@+id/omnibox_input_close"
-                android:background="@color/color_transparent"
-                android:onClick="onClick"
-                android:padding="8dp"
-                android:src="@drawable/ic_paste"
-                android:tint="?attr/colorControlNormal" />
-
-            <ImageButton
-                android:id="@+id/omnibox_input_clear"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_toLeftOf="@+id/omnibox_input_paste"
-                android:background="@color/color_transparent"
-                android:onClick="onClick"
-                android:padding="8dp"
-                android:src="@drawable/close_circle"
-                android:tint="?attr/colorControlNormal" />
-
-            <AutoCompleteTextView
-                android:id="@+id/omnibox_input"
+            <androidx.compose.ui.platform.ComposeView
+                android:id="@+id/input_url"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_alignParentStart="true"
                 android:layout_marginStart="8dp"
-                android:layout_toLeftOf="@+id/omnibox_input_clear"
-                android:completionThreshold="0"
-                android:ellipsize="end"
-                android:hint="@string/main_omnibox_input_hint"
-                android:imeOptions="actionDone"
-                android:includeFontPadding="false"
-                android:inputType="textUri"
-                android:maxLines="1"
-                android:textColorHint="@color/lightGray"
-                android:popupElevation="0dp"
-                android:selectAllOnFocus="true"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textCursorDrawable="@null" />
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"/>
+
+<!--            <AutoCompleteTextView-->
+<!--                android:id="@+id/omnibox_input"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_alignParentStart="true"-->
+<!--                android:layout_marginStart="8dp"-->
+<!--                android:layout_toLeftOf="@+id/omnibox_input_clear"-->
+<!--                android:completionThreshold="0"-->
+<!--                android:ellipsize="end"-->
+<!--                android:hint="@string/main_omnibox_input_hint"-->
+<!--                android:imeOptions="actionDone"-->
+<!--                android:includeFontPadding="false"-->
+<!--                android:inputType="textUri"-->
+<!--                android:maxLines="1"-->
+<!--                android:textColorHint="@color/lightGray"-->
+<!--                android:popupElevation="0dp"-->
+<!--                android:selectAllOnFocus="true"-->
+<!--                android:textAppearance="?android:attr/textAppearanceMedium"-->
+<!--                android:textCursorDrawable="@null" />-->
 
             <de.baumann.browser.view.viewControllers.ToolbarComposeView
                 android:id="@+id/compose_icon_bar"

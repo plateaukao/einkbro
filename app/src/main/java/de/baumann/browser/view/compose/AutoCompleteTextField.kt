@@ -3,6 +3,7 @@ package de.baumann.browser.view.compose
 import android.app.Activity
 import android.content.Context
 import android.util.AttributeSet
+import android.view.KeyEvent.KEYCODE_ENTER
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
@@ -15,11 +16,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.platform.AbstractComposeView
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import de.baumann.browser.Ninja.R
@@ -29,11 +33,10 @@ import de.baumann.browser.unit.ViewUnit
 @Composable
 fun AutoCompleteTextField(
     focusRequester: FocusRequester,
+    text: MutableState<TextFieldValue>,
     hasCopiedText: Boolean = false,
-    onTextChanged:(String)->Unit,
     onTextSubmit:(String)->Unit,
     onPasteClick: ()->Unit,
-    onClearClick: ()->Unit,
     onDownClick: ()->Unit,
 ) {
     Row(
@@ -44,7 +47,6 @@ fun AutoCompleteTextField(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.End
     ) {
-        val text = remember { mutableStateOf("") }
         val keyboardController = LocalSoftwareKeyboardController.current
 
         TextInput(
@@ -54,15 +56,14 @@ fun AutoCompleteTextField(
                     if (focusState.hasFocus) keyboardController?.show()
                 }
                 .focusRequester(focusRequester),
-            text = text,
-            onValueChanged = onTextChanged,
+            state = text,
             onValueSubmit = onTextSubmit,
         )
 
         if (hasCopiedText) {
             TextBarIcon(iconResId = R.drawable.ic_paste, onClick = onPasteClick)
         }
-        TextBarIcon(iconResId = R.drawable.close_circle, onClick = onClearClick)
+        TextBarIcon(iconResId = R.drawable.close_circle, onClick = { text.value = TextFieldValue("") })
         TextBarIcon(iconResId = R.drawable.icon_arrow_down_gest, onClick = onDownClick)
     }
 }
@@ -70,13 +71,25 @@ fun AutoCompleteTextField(
 @Composable
 fun TextInput(
     modifier: Modifier,
-    text: MutableState<String>,
-    onValueChanged: (String)->Unit,
+    state: MutableState<TextFieldValue>,
     onValueSubmit: (String)->Unit,
 ) {
     TextField(
-        value = text.value,
-        modifier = modifier.padding(horizontal = 5.dp),
+        value = state.value,
+        modifier = modifier.padding(horizontal = 5.dp).onKeyEvent {
+            if (it.nativeKeyEvent.keyCode == KEYCODE_ENTER) {
+                onValueSubmit(state.value.text)
+                true
+            }
+            false
+        }.onFocusChanged { focusState ->
+            if (focusState.isFocused) {
+                val text = state.value.text
+                state.value = state.value.copy(
+                    selection = TextRange(0, text.length)
+                )
+            }
+        },
         colors = TextFieldDefaults.textFieldColors(
             textColor = MaterialTheme.colors.onBackground,
             backgroundColor = MaterialTheme.colors.background,
@@ -84,13 +97,10 @@ fun TextInput(
         placeholder = {
             Text(stringResource(R.string.main_omnibox_input_hint), color = MaterialTheme.colors.onBackground)
         },
-        onValueChange = {
-            text.value = it
-            onValueChanged(it)
-        },
+        onValueChange = { state.value = it },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
         keyboardActions = KeyboardActions(
-            onDone = { onValueSubmit(text.value) },
+            onDone = { onValueSubmit(state.value.text) },
         ),
 
     )
@@ -149,10 +159,9 @@ class TextBarView @JvmOverloads constructor(
 fun PreviewTextBar() {
     MyTheme {
         AutoCompleteTextField(
-            onTextChanged = {},
+            text= mutableStateOf(TextFieldValue("")),
             onTextSubmit = {},
             onPasteClick = {},
-            onClearClick = {},
             onDownClick = {},
             focusRequester = FocusRequester(),
         )
