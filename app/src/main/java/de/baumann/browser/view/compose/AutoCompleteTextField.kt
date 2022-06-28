@@ -101,10 +101,9 @@ fun AutoCompleteTextField(
 
     Column(
         Modifier.background(MaterialTheme.colors.background),
-        verticalArrangement = Arrangement.Bottom
+        verticalArrangement = if (shouldReverse) Arrangement.Bottom else Arrangement.Top
     ) {
         if (shouldReverse) {
-            HorizontalSeparator()
             BrowseHistoryList(
                 modifier = Modifier.weight(1F, fill = false),
                 records = recordList.value,
@@ -117,9 +116,7 @@ fun AutoCompleteTextField(
             )
         }
 
-        HorizontalSeparator()
         TextInputBar(requester, text, onTextSubmit, hasCopiedText, onPasteClick, onDownClick)
-        HorizontalSeparator()
 
         if (!shouldReverse) {
             BrowseHistoryList(
@@ -132,7 +129,6 @@ fun AutoCompleteTextField(
                 onClick = { onRecordClick(it); focusRequester.freeFocus() },
                 onLongClick = {}
             )
-            HorizontalSeparator()
         }
     }
 }

@@ -309,7 +309,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private fun initInputBar() {
         binding.inputUrl.apply {
-            bookmarkManager = bookmarkManager
             focusRequester = FocusRequester()
             onTextSubmit = { updateAlbum(it.trim()); showToolbar() }
             onPasteClick = { updateAlbum(getClipboardText()); showToolbar() }
@@ -319,6 +318,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 showToolbar()
             }
         }
+        binding.inputUrl.bookmarkManager = bookmarkManager
     }
 
     private fun listenKeyboardShowHide() {
@@ -782,6 +782,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         } else {
             moveAppbarToBottom()
         }
+        binding.inputUrl.shouldReverse = config.isToolbarOnTop
     }
 
     private fun moveAppbarToBottom() {
