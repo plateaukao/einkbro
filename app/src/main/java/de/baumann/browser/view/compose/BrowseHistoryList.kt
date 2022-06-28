@@ -69,7 +69,10 @@ private fun RecordItem(
     bitmap: Bitmap? = null,
     record: Record
 ) {
-    val timeString = SimpleDateFormat("MMM dd", Locale.getDefault()).format(record.time)
+    val timeString =
+        if (record.type == RecordType.History) SimpleDateFormat("MMM dd", Locale.getDefault()).format(record.time)
+        else ""
+
     Row(
         modifier = modifier
             .height(54.dp)
