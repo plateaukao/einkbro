@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.database.BookmarkManager
+import de.baumann.browser.database.RecordType
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -29,22 +30,31 @@ import java.util.*
 fun BrowseHistoryList(
     modifier: Modifier,
     records: List<Record>,
+    filteredText: String? = null,
     shouldReverse: Boolean,
     shouldShowTwoColumns: Boolean,
     bookmarkManager: BookmarkManager? = null,
-    onClick: (Record)->Unit,
-    onLongClick: (Record)->Unit
+    onClick: (Record) -> Unit,
+    onLongClick: (Record) -> Unit
 ) {
     LazyVerticalGrid(
         modifier = modifier,
         columns = GridCells.Fixed(if (shouldShowTwoColumns) 2 else 1),
         reverseLayout = shouldReverse
-    ){
-        itemsIndexed(records) { index, record ->
+    ) {
+        val filteredRecords = if (filteredText != null) records.filter {
+            it.title?.contains(
+                filteredText,
+                true
+            ) == true
+        }
+        else records
+
+        itemsIndexed(filteredRecords) { index, record ->
             RecordItem(
                 record = record,
-                bitmap =  bookmarkManager?.findFaviconBy(record.url)?.getBitmap(),
-                modifier = Modifier.combinedClickable (
+                bitmap = bookmarkManager?.findFaviconBy(record.url)?.getBitmap(),
+                modifier = Modifier.combinedClickable(
                     onClick = { onClick(record) },
                     onLongClick = { onLongClick(record) }
                 )
@@ -66,7 +76,17 @@ private fun RecordItem(
             .padding(5.dp),
         horizontalArrangement = Arrangement.Center
     ) {
-        if (bitmap!= null) {
+        if (record.type == RecordType.Bookmark) {
+            Icon(
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .size(30.dp)
+                    .padding(end = 5.dp),
+                painter = painterResource(id = R.drawable.icon_bookmark),
+                contentDescription = null,
+                tint = MaterialTheme.colors.onBackground
+            )
+        } else if (bitmap != null) {
             Image(
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
@@ -122,11 +142,21 @@ private fun previewItem() {
 @Composable
 private fun previewHistoryList() {
     val list = listOf(
-        Record(title = "Hello aaa aaa aaa aa aa aaa aa a aa a a a aa a a a a a a a a a aa a a ", url = "123", time = System.currentTimeMillis()),
+        Record(
+            title = "Hello aaa aaa aaa aa aa aaa aa a aa a a a aa a a a a a a a a a aa a a ",
+            url = "123",
+            time = System.currentTimeMillis()
+        ),
         Record(title = "Hello 2", url = "123", time = System.currentTimeMillis()),
         Record(title = "Hello 3", url = "123", time = System.currentTimeMillis()),
     )
     MyTheme {
-        BrowseHistoryList(modifier = Modifier, records = list, shouldReverse = true, shouldShowTwoColumns = true, onClick = {}, onLongClick = {})
+        BrowseHistoryList(
+            modifier = Modifier,
+            records = list,
+            shouldReverse = true,
+            shouldShowTwoColumns = true,
+            onClick = {},
+            onLongClick = {})
     }
 }

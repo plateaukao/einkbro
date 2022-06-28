@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,51 +10,18 @@
         android:id="@+id/appBar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/appbar_height"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:minHeight="50dp">
+        android:minHeight="50dp"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-        <RelativeLayout
-            android:id="@+id/main_toolbar"
+        <de.baumann.browser.view.viewControllers.ToolbarComposeView
+            android:id="@+id/compose_icon_bar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <androidx.compose.ui.platform.ComposeView
-                android:id="@+id/input_url"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="8dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentEnd="true"/>
-
-<!--            <AutoCompleteTextView-->
-<!--                android:id="@+id/omnibox_input"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_alignParentStart="true"-->
-<!--                android:layout_marginStart="8dp"-->
-<!--                android:layout_toLeftOf="@+id/omnibox_input_clear"-->
-<!--                android:completionThreshold="0"-->
-<!--                android:ellipsize="end"-->
-<!--                android:hint="@string/main_omnibox_input_hint"-->
-<!--                android:imeOptions="actionDone"-->
-<!--                android:includeFontPadding="false"-->
-<!--                android:inputType="textUri"-->
-<!--                android:maxLines="1"-->
-<!--                android:textColorHint="@color/lightGray"-->
-<!--                android:popupElevation="0dp"-->
-<!--                android:selectAllOnFocus="true"-->
-<!--                android:textAppearance="?android:attr/textAppearanceMedium"-->
-<!--                android:textCursorDrawable="@null" />-->
-
-            <de.baumann.browser.view.viewControllers.ToolbarComposeView
-                android:id="@+id/compose_icon_bar"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </RelativeLayout>
+            android:layout_height="match_parent" />
 
         <de.baumann.browser.view.compose.SearchBarView
             android:id="@+id/main_search_panel"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
     </FrameLayout>
 
     <!--    xmlns:pane="http://schemas.android.com/apk/res/info.plateaukao.einkbro.debug"-->
@@ -64,9 +30,9 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/appBar"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         pane:drag_resize="false"
         pane:orientation="horizontal"
         pane:show_second_pane="false">
@@ -84,21 +50,30 @@
             android:layout_height="match_parent" />
     </de.baumann.browser.view.TwoPaneLayout>
 
+    <de.baumann.browser.view.compose.AutoCompleteTextComposeView
+        android:id="@+id/input_url"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="8dp" />
+
     <View
         android:id="@+id/content_separator"
         android:layout_width="match_parent"
-        app:layout_constraintBottom_toTopOf="@+id/appBar"
         android:layout_height="1px"
-        android:background="@android:color/darker_gray" />
+        android:background="@android:color/darker_gray"
+        app:layout_constraintBottom_toTopOf="@+id/appBar" />
 
     <de.baumann.browser.view.compose.HistoryAndTabsView
         android:id="@+id/layout_overview"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:visibility="invisible" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

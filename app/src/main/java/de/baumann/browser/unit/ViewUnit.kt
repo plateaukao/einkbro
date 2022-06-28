@@ -59,12 +59,12 @@ object ViewUnit {
 
     @JvmStatic
     fun isLandscape(context: Context): Boolean =
-            context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+        context.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
     @JvmStatic
     fun isTablet(context: Context): Boolean =
-            (context.resources.configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK) >=
-                    Configuration.SCREENLAYOUT_SIZE_LARGE
+        (context.resources.configuration.screenLayout and Configuration.SCREENLAYOUT_SIZE_MASK) >=
+                Configuration.SCREENLAYOUT_SIZE_LARGE
 
     @JvmStatic
     fun getDensity(context: Context): Float {
@@ -110,18 +110,23 @@ object ViewUnit {
     }
 
     fun hideKeyboard(activity: Activity) {
-        val imm = activity.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
-        val view = activity.currentFocus ?: return
-        view.post {
-            imm.hideSoftInputFromWindow(view.windowToken, 0)
+        val imm =
+            activity.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
+        activity.runOnUiThread {
+            imm.hideSoftInputFromWindow(activity.window.decorView.windowToken, 0)
         }
     }
 
     fun showKeyboard(activity: Activity) {
-        val imm = activity.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
+        val imm =
+            activity.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE) as InputMethodManager
         activity.runOnUiThread {
-            val view = activity.currentFocus ?: return@runOnUiThread
-            imm.showSoftInput(view, 0)
+            imm.toggleSoftInput(
+                InputMethodManager.SHOW_FORCED,
+                InputMethodManager.HIDE_IMPLICIT_ONLY
+            )
+            //val view = activity.currentFocus ?: return@runOnUiThread
+            //imm.showSoftInput(view, 0)
         }
     }
 
@@ -151,7 +156,8 @@ object ViewUnit {
         if (!isEnabled && !isMultiWindowEnabled(activity)) return
 
         val intent = Intent().apply {
-            action = if (isEnabled) "com.onyx.action.START_MULTI_WINDOW" else "com.onyx.action.QUIT_MULTI_WINDOW"
+            action =
+                if (isEnabled) "com.onyx.action.START_MULTI_WINDOW" else "com.onyx.action.QUIT_MULTI_WINDOW"
         }
         activity.sendBroadcast(intent)
     }

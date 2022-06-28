@@ -33,6 +33,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
@@ -69,6 +70,7 @@ import de.baumann.browser.view.viewControllers.*
 import de.baumann.browser.viewmodel.BookmarkViewModel
 import de.baumann.browser.viewmodel.BookmarkViewModelFactory
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import kotlin.math.floor
@@ -86,7 +88,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private var customView: View? = null
 
     // Layouts
-    private lateinit var mainToolbar: RelativeLayout
     private lateinit var searchPanel: SearchBarView
     private lateinit var mainContentLayout: FrameLayout
     private lateinit var subContainer: RelativeLayout
@@ -264,6 +265,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         updateAppbarPosition()
         initToolbar()
         initSearchPanel()
+        initInputBar()
         initOverview()
         initTouchArea()
 
@@ -303,6 +305,20 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
         customFontResultLauncher = BrowserUnit.registerCustomFontSelectionResult(this)
         bookmarkManager.init()
+    }
+
+    private fun initInputBar() {
+        binding.inputUrl.apply {
+            bookmarkManager = bookmarkManager
+            focusRequester = FocusRequester()
+            onTextSubmit = { updateAlbum(it.trim()); showToolbar() }
+            onPasteClick = { updateAlbum(getClipboardText()); showToolbar() }
+            onDownClick = { showToolbar() }
+            onRecordClick = {
+                updateAlbum(it.url)
+                showToolbar()
+            }
+        }
     }
 
     private fun listenKeyboardShowHide() {
@@ -833,7 +849,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun initToolbar() {
-        mainToolbar = findViewById(R.id.main_toolbar)
         progressBar = findViewById(R.id.main_progress_bar)
         if (config.darkMode == DarkMode.FORCE_ON) {
             val nightModeFlags: Int =
@@ -1318,33 +1333,31 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     private var inputTextOrUrl = mutableStateOf(TextFieldValue(""))
-    private var focusRequester by mutableStateOf(FocusRequester())
+    private var focusRequester = FocusRequester()
     private fun focusOnInput() {
         composeToolbarViewController.hide()
 
-        if (ninjaWebView.url?.startsWith("data:") != true) {
+        val textOrUrl = if (ninjaWebView.url?.startsWith("data:") != true) {
             val url = ninjaWebView.url ?: ""
-            inputTextOrUrl.value = TextFieldValue(url, selection = TextRange(0, url.length))
+            TextFieldValue(url, selection = TextRange(0, url.length))
         } else {
-            inputTextOrUrl.value = TextFieldValue("")
+            TextFieldValue("")
         }
 
-        binding.inputUrl.setContent {
-            MyTheme {
-                AutoCompleteTextField(
-                    text = inputTextOrUrl,
-                    focusRequester = focusRequester,
-                    hasCopiedText = getClipboardText().isNotEmpty() ,
-                    onTextSubmit = { updateAlbum(it.trim()) ; showToolbar() },
-                    onPasteClick = { updateAlbum(getClipboardText()) ; showToolbar() },
-                    onDownClick = { showToolbar() },
-                )
-            }
+        binding.inputUrl.apply {
+            inputTextOrUrl.value = textOrUrl
+            isWideLayout = ViewUnit.isWideLayout(this@BrowserActivity)
+            shouldReverse = !config.isToolbarOnTop
+            hasCopiedText = getClipboardText().isNotEmpty()
+            lifecycleScope.launch { binding.inputUrl.recordList.value = recordDb.listEntries(true) }
         }
+
 
         composeToolbarViewController.hide()
+        binding.appBar.visibility = INVISIBLE
         binding.inputUrl.visibility = VISIBLE
         showKeyboard()
+        binding.inputUrl.getFocus()
     }
 
     private fun getClipboardText(): String =
@@ -1604,7 +1617,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         if (!searchOnSite) {
             fabImageButtonNav.visibility = INVISIBLE
             searchPanel.visibility = INVISIBLE
-            mainToolbar.visibility = VISIBLE
             binding.appBar.visibility = VISIBLE
             binding.inputUrl.visibility = INVISIBLE
             composeToolbarViewController.show()
@@ -1650,7 +1662,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private fun showSearchPanel() {
         searchOnSite = true
         fabImageButtonNav.visibility = INVISIBLE
-        mainToolbar.visibility = GONE
         searchPanel.visibility = VISIBLE
         searchPanel.getFocus()
         binding.appBar.visibility = VISIBLE
