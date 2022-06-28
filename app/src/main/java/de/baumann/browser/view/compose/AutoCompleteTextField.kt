@@ -68,8 +68,8 @@ class AutoCompleteTextComposeView @JvmOverloads constructor(
                 isWideLayout = isWideLayout,
                 shouldReverse = shouldReverse,
                 hasCopiedText = hasCopiedText,
-                onTextSubmit = {},
-                onPasteClick = {},
+                onTextSubmit = onTextSubmit,
+                onPasteClick = onPasteClick,
                 onDownClick = onDownClick,
                 onRecordClick = onRecordClick,
             )

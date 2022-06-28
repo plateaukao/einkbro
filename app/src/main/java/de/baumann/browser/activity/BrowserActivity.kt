@@ -546,26 +546,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         updateTitle()
     }
 
-//    override fun updateAutoComplete() {
-//        lifecycleScope.launch {
-//            val activity = this@BrowserActivity
-//            val list = recordDb.listEntries(true)
-//
-//            val adapter = CompleteAdapter(activity, R.layout.complete_item, list) { record ->
-//                updateAlbum(record.url)
-//                hideKeyboard()
-//                binding.omniboxInput.clearFocus()
-//                showToolbar()
-//            }
-//
-//            with(binding.omniboxInput) {
-//                setAdapter(adapter)
-//                threshold = 1
-//                dropDownWidth = ViewUnit.getWindowWidth(activity)
-//            }
-//        }
-//    }
-
     fun openFilePicker() = BrowserUnit.openFontFilePicker(customFontResultLauncher)
 
     private fun showOverview() = overviewDialogController.show()
