@@ -70,21 +70,27 @@ class OverviewDialogController(
 
             recordList = currentRecordList
             onHistoryIconClick = { openHistoryPage() }
-            onHistoryItemClick = { record ->
-                gotoUrlAction(record.url)
-                if (record.type == RecordType.Bookmark) {
-                    config.addRecentBookmark(Bookmark(record.title
-                        ?: "no title", record.url))
-                }
-                hide()
-            }
-            onHistoryItemLongClick = { showHistoryContextMenu(it) }
+            onHistoryItemClick = { clickHisotryItem(it) }
+            onHistoryItemLongClick = { longClickHistoryItem(it) }
             addIncognitoTab = addIncognitoTabAction
             addTab = { hide() ; addEmptyTabAction() }
             closePanel = { hide() }
             onDeleteAction = { hide() ; deleteAllItems() }
             launchNewBrowserAction = { hide() ; launchNewBrowser() }
         }
+    }
+
+    fun clickHisotryItem(record: Record) {
+        gotoUrlAction(record.url)
+        if (record.type == RecordType.Bookmark) {
+            config.addRecentBookmark(Bookmark(record.title
+                ?: "no title", record.url))
+        }
+        hide()
+    }
+
+    fun longClickHistoryItem(record: Record) {
+        showHistoryContextMenu(record)
     }
 
     fun hide() {
