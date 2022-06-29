@@ -7,11 +7,6 @@ import android.util.AttributeSet
 import android.view.KeyEvent.KEYCODE_ENTER
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.itemsIndexed
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -22,10 +17,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.onKeyEvent
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.AbstractComposeView
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
@@ -37,7 +31,6 @@ import de.baumann.browser.Ninja.R
 import de.baumann.browser.database.BookmarkManager
 import de.baumann.browser.database.Record
 import de.baumann.browser.unit.ViewUnit
-import de.baumann.browser.view.dialog.compose.HorizontalSeparator
 
 class AutoCompleteTextComposeView @JvmOverloads constructor(
     context: Context,
@@ -52,7 +45,7 @@ class AutoCompleteTextComposeView @JvmOverloads constructor(
     var shouldReverse by mutableStateOf(true)
     var hasCopiedText by mutableStateOf(false)
 
-    var onDownClick: () -> Unit = {}
+    var closeAction: () -> Unit = {}
     var onTextSubmit: (String) -> Unit = {}
     var onPasteClick: () -> Unit = {}
     var onRecordClick: (Record) -> Unit = {}
@@ -70,7 +63,7 @@ class AutoCompleteTextComposeView @JvmOverloads constructor(
                 hasCopiedText = hasCopiedText,
                 onTextSubmit = onTextSubmit,
                 onPasteClick = onPasteClick,
-                onDownClick = onDownClick,
+                closeAction = closeAction,
                 onRecordClick = onRecordClick,
             )
         }
@@ -94,7 +87,7 @@ fun AutoCompleteTextField(
     hasCopiedText: Boolean = false,
     onTextSubmit: (String) -> Unit,
     onPasteClick: () -> Unit,
-    onDownClick: () -> Unit,
+    closeAction: () -> Unit,
     onRecordClick: (Record) -> Unit,
 ) {
     val requester = remember { focusRequester }
@@ -109,12 +102,17 @@ fun AutoCompleteTextField(
     }
 
     Column(
-        Modifier.background(MaterialTheme.colors.background),
+        Modifier
+            .background(Color.Transparent)
+            .clickable { closeAction() }
+            .focusRequester(requester),
         verticalArrangement = if (shouldReverse) Arrangement.Bottom else Arrangement.Top
     ) {
         if (shouldReverse) {
             BrowseHistoryList(
-                modifier = Modifier.weight(1F, fill = false),
+                modifier = Modifier
+                    .weight(1F, fill = false)
+                    .background(MaterialTheme.colors.background),
                 records = filteredRecordList,
                 bookmarkManager = bookmarkManager,
                 shouldReverse = shouldReverse,
@@ -124,12 +122,14 @@ fun AutoCompleteTextField(
             )
         }
 
-        TextInputBar(requester, text, onTextSubmit, hasCopiedText, onPasteClick, onDownClick)
+        TextInputBar(requester, text, onTextSubmit, hasCopiedText, onPasteClick, closeAction)
 
         if (!shouldReverse) {
             BrowseHistoryList(
-                modifier = Modifier.weight(1F, fill = false),
-                records = recordList.value,
+                modifier = Modifier
+                    .weight(1F, fill = false)
+                    .background(MaterialTheme.colors.background),
+                records = filteredRecordList,
                 bookmarkManager = bookmarkManager,
                 shouldReverse = shouldReverse,
                 shouldShowTwoColumns = isWideLayout,
@@ -244,7 +244,7 @@ fun PreviewTextBar() {
             text = mutableStateOf(TextFieldValue("")),
             onTextSubmit = {},
             onPasteClick = {},
-            onDownClick = {},
+            closeAction = {},
             focusRequester = FocusRequester(),
             recordList = mutableStateOf(listOf<Record>()),
             onRecordClick = {},

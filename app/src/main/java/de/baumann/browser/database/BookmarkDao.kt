@@ -27,7 +27,7 @@ val MIGRATION_1_2: Migration = object : Migration(1, 2) {
 }
 
 @Dao
-interface  FaviconDao {
+interface FaviconDao {
     @Query("SELECT * FROM favicons")
     suspend fun getAllFavicons(): List<FaviconInfo>
 
@@ -81,8 +81,8 @@ class BookmarkManager(private val context: Context) : KoinComponent {
     val config: ConfigManager by inject()
 
     val database = Room.databaseBuilder(context, AppDatabase::class.java, "einkbro_db")
-            .addMigrations(MIGRATION_1_2)
-            .build()
+        .addMigrations(MIGRATION_1_2)
+        .build()
 
     val bookmarkDao = database.bookmarkDao()
 
@@ -97,8 +97,8 @@ class BookmarkManager(private val context: Context) : KoinComponent {
         cursor.moveToFirst()
         while (!cursor.isAfterLast) {
             insert(
-                    title = cursor.getString(1),
-                    url = cursor.getString(2),
+                title = cursor.getString(1),
+                url = cursor.getString(2),
             )
             cursor.moveToNext()
         }
@@ -127,16 +127,17 @@ class BookmarkManager(private val context: Context) : KoinComponent {
 
     fun findFaviconBy(url: String): FaviconInfo? {
         val host = Uri.parse(url).host ?: return null
-        return faviconInfos.firstOrNull { it.domain == host}
+        return faviconInfos.firstOrNull { it.domain == host }
     }
 
     suspend fun deleteFavicon(faviconInfo: FaviconInfo) = faviconDao.delete(faviconInfo)
 
     suspend fun getAllBookmarks(): List<Bookmark> = bookmarkDao.getAllBookmarks()
 
-    suspend fun getAllBookmarksOnly(): List<Bookmark> = bookmarkDao.getAllBookmarks()
+    suspend fun getAllBookmarksOnly(): List<Bookmark> = bookmarkDao.getAllBookmarksOnly()
 
-    suspend fun getBookmarks(parentId: Int = 0): List<Bookmark> = bookmarkDao.getBookmarksByParent(parentId)
+    suspend fun getBookmarks(parentId: Int = 0): List<Bookmark> =
+        bookmarkDao.getBookmarksByParent(parentId)
 
     suspend fun getBookmarksByParent(parent: Int) = bookmarkDao.getBookmarksByParent(parent)
 
@@ -158,12 +159,12 @@ class BookmarkManager(private val context: Context) : KoinComponent {
 
     suspend fun insertDirectory(title: String, parentId: Int = 0) {
         bookmarkDao.insert(
-                Bookmark(
-                        title = title,
-                        url = "",
-                        isDirectory = true,
-                        parent = parentId,
-                )
+            Bookmark(
+                title = title,
+                url = "",
+                isDirectory = true,
+                parent = parentId,
+            )
         )
     }
 
