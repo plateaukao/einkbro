@@ -33,7 +33,6 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.constraintlayout.widget.ConstraintSet
-import androidx.core.view.get
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
@@ -59,8 +58,6 @@ import de.baumann.browser.util.DebugT
 import de.baumann.browser.view.*
 import de.baumann.browser.view.GestureType.*
 import de.baumann.browser.view.GestureType.CloseTab
-import de.baumann.browser.view.compose.AutoCompleteTextField
-import de.baumann.browser.view.compose.MyTheme
 import de.baumann.browser.view.compose.SearchBarView
 import de.baumann.browser.view.dialog.*
 import de.baumann.browser.view.dialog.compose.*
@@ -70,7 +67,6 @@ import de.baumann.browser.view.viewControllers.*
 import de.baumann.browser.viewmodel.BookmarkViewModel
 import de.baumann.browser.viewmodel.BookmarkViewModelFactory
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import kotlin.math.floor
@@ -312,7 +308,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             focusRequester = FocusRequester()
             onTextSubmit = { updateAlbum(it.trim()); showToolbar() }
             onPasteClick = { updateAlbum(getClipboardText()); showToolbar() }
-            onDownClick = { showToolbar() }
+            closeAction = { showToolbar() }
             onRecordClick = {
                 updateAlbum(it.url)
                 showToolbar()
@@ -776,6 +772,13 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 0
             )
             connect(
+                binding.inputUrl.id,
+                ConstraintSet.BOTTOM,
+                ConstraintSet.PARENT_ID,
+                ConstraintSet.BOTTOM,
+                0
+            )
+            connect(
                 binding.twoPanelLayout.id,
                 ConstraintSet.TOP,
                 ConstraintSet.PARENT_ID,
@@ -803,6 +806,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         val constraintSet = ConstraintSet().apply {
             clone(binding.root)
             clear(binding.appBar.id, ConstraintSet.BOTTOM)
+            clear(binding.inputUrl.id, ConstraintSet.BOTTOM)
 
             connect(
                 binding.twoPanelLayout.id,
