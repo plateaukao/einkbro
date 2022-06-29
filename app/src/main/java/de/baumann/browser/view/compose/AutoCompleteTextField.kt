@@ -98,6 +98,15 @@ fun AutoCompleteTextField(
     onRecordClick: (Record) -> Unit,
 ) {
     val requester = remember { focusRequester }
+    val filteredRecordList = if (text.value.text.isEmpty()) {
+        recordList.value
+    } else {
+        val list = recordList.value.filter {
+            it.title?.contains(text.value.text, ignoreCase = true) == true
+                    || it.url.contains(text.value.text, ignoreCase = true)
+        }
+        if (list.isNotEmpty()) list else recordList.value
+    }
 
     Column(
         Modifier.background(MaterialTheme.colors.background),
@@ -106,8 +115,7 @@ fun AutoCompleteTextField(
         if (shouldReverse) {
             BrowseHistoryList(
                 modifier = Modifier.weight(1F, fill = false),
-                records = recordList.value,
-                filteredText = text.value.text,
+                records = filteredRecordList,
                 bookmarkManager = bookmarkManager,
                 shouldReverse = shouldReverse,
                 shouldShowTwoColumns = isWideLayout,
@@ -122,7 +130,6 @@ fun AutoCompleteTextField(
             BrowseHistoryList(
                 modifier = Modifier.weight(1F, fill = false),
                 records = recordList.value,
-                filteredText = text.value.text,
                 bookmarkManager = bookmarkManager,
                 shouldReverse = shouldReverse,
                 shouldShowTwoColumns = isWideLayout,

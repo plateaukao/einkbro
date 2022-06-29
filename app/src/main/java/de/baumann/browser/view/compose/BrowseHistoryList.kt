@@ -30,7 +30,6 @@ import java.util.*
 fun BrowseHistoryList(
     modifier: Modifier,
     records: List<Record>,
-    filteredText: String? = null,
     shouldReverse: Boolean,
     shouldShowTwoColumns: Boolean,
     bookmarkManager: BookmarkManager? = null,
@@ -42,15 +41,7 @@ fun BrowseHistoryList(
         columns = GridCells.Fixed(if (shouldShowTwoColumns) 2 else 1),
         reverseLayout = shouldReverse
     ) {
-        val filteredRecords = if (filteredText != null) records.filter {
-            it.title?.contains(
-                filteredText,
-                true
-            ) == true
-        }
-        else records
-
-        itemsIndexed(filteredRecords) { index, record ->
+        itemsIndexed(records) { index, record ->
             RecordItem(
                 record = record,
                 bitmap = bookmarkManager?.findFaviconBy(record.url)?.getBitmap(),
