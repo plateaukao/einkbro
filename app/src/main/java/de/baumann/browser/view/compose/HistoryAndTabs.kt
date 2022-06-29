@@ -239,13 +239,13 @@ private fun TabItem(
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
                     .size(36.dp)
-                    .padding(end = 5.dp),
+                    .padding(start = 2.dp, end = 5.dp),
                 bitmap = tabInfo.favicon.asImageBitmap(),
                 contentDescription = null,
             )
         } else {
             ActionIcon(
-                modifier = Modifier.align(Alignment.CenterVertically),
+                modifier = Modifier.align(Alignment.CenterVertically).padding(start = 2.dp),
                 iconResId = R.drawable.icon_earth,
             )
         }
