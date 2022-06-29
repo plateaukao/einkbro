@@ -28,22 +28,24 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(menuItem: MenuItem): Boolean {
-        if (menuItem.itemId == android.R.id.home) {
-            if (supportFragmentManager.backStackEntryCount > 1) {
-                supportFragmentManager.popBackStack()
-            } else {
-                finish()
-            }
-            //set correct title
-            if (supportFragmentManager.backStackEntryCount == 2) {
-                setTitle(R.string.settings)
-            }
-        }
+        if (menuItem.itemId == android.R.id.home) onBackPressed()
         return true
     }
 
     override fun onResume() {
         super.onResume()
         overridePendingTransition(0, 0)
+    }
+
+    override fun onBackPressed() {
+        if (supportFragmentManager.backStackEntryCount > 1) {
+            supportFragmentManager.popBackStack()
+        } else {
+            finish()
+        }
+        //set correct title
+        if (supportFragmentManager.backStackEntryCount == 2) {
+            setTitle(R.string.settings)
+        }
     }
 }
