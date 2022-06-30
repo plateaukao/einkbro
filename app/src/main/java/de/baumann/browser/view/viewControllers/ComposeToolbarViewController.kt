@@ -104,8 +104,8 @@ class ToolbarComposeView @JvmOverloads constructor(
     var title by mutableStateOf("")
     var tabCount by mutableStateOf("")
     var isIncognito by mutableStateOf(false)
-    var onItemClick by mutableStateOf<(ToolbarAction)->Unit>({})
-    var onItemLongClick by mutableStateOf<(ToolbarAction)->Unit>({})
+    var onItemClick: (ToolbarAction)-> Unit = {}
+    var onItemLongClick: (ToolbarAction)->Unit = {}
 
     @Composable
     override fun Content() {

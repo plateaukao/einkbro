@@ -106,10 +106,10 @@ class SearchBarView @JvmOverloads constructor(
     defStyle: Int = 0,
 ): AbstractComposeView(context, attrs, defStyle) {
 
-    var onTextChanged by mutableStateOf<(String)->Unit>({})
-    var onCloseClick by mutableStateOf({})
-    var onUpClick by mutableStateOf<(String)->Unit>({})
-    var onDownClick by mutableStateOf<(String)->Unit>({})
+    var onTextChanged: (String)->Unit = {}
+    var onCloseClick: ()->Unit = {}
+    var onUpClick: (String)->Unit = {}
+    var onDownClick: (String)->Unit = {}
     var focusRequester by mutableStateOf(FocusRequester())
 
     @Composable
