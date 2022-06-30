@@ -40,7 +40,7 @@ class HistoryAndTabsView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyle: Int = 0,
-): AbstractComposeView(context, attrs, defStyle), KoinComponent {
+) : AbstractComposeView(context, attrs, defStyle), KoinComponent {
     private val bookmarkManager: BookmarkManager by inject()
 
     var albumList = mutableStateOf(listOf<Album>())
@@ -48,20 +48,20 @@ class HistoryAndTabsView @JvmOverloads constructor(
     var shouldReverse by mutableStateOf(true)
     var shouldShowTwoColumns by mutableStateOf(false)
 
-    var onTabIconClick by mutableStateOf({})
-    var onTabClick by mutableStateOf<(Album)->Unit>({})
-    var onTabLongClick by mutableStateOf<(Album)->Unit>({})
+    var onTabIconClick: () -> Unit = {}
+    var onTabClick: (Album) -> Unit = {}
+    var onTabLongClick: (Album) -> Unit = {}
 
     var recordList: List<Record> by mutableStateOf(emptyList())
-    var onHistoryIconClick by mutableStateOf({})
-    var onHistoryItemClick by mutableStateOf<(Record)->Unit>({})
-    var onHistoryItemLongClick by mutableStateOf<(Record)->Unit>({})
+    var onHistoryIconClick: () -> Unit = {}
+    var onHistoryItemClick: (Record) -> Unit = {}
+    var onHistoryItemLongClick: (Record) -> Unit = {}
 
-    var addIncognitoTab by mutableStateOf({})
-    var addTab by mutableStateOf({})
-    var closePanel by mutableStateOf({})
-    var onDeleteAction by mutableStateOf({})
-    var launchNewBrowserAction by mutableStateOf({})
+    var addIncognitoTab: () -> Unit = {}
+    var addTab: () -> Unit = {}
+    var closePanel: () -> Unit = {}
+    var onDeleteAction: () -> Unit = {}
+    var launchNewBrowserAction: () -> Unit = {}
 
     @Composable
     override fun Content() {
@@ -119,7 +119,8 @@ fun HistoryAndTabs(
             .fillMaxHeight()
             .clickable(
                 interactionSource = interactionSource,
-                indication = null) { closePanel() },
+                indication = null
+            ) { closePanel() },
         verticalArrangement = if (shouldReverse) Arrangement.Bottom else Arrangement.Top,
     ) {
         val isBarOnTop = !shouldReverse
@@ -127,8 +128,20 @@ fun HistoryAndTabs(
         if (!isBarOnTop) {
             HorizontalSeparator()
             MainContent(
-                modifier = Modifier.Companion.weight(1f, false).background(MaterialTheme.colors.background),
-                isHistoryOpen, shouldShowTwoColumns, shouldReverse, albumList, onTabClick, onTabLongClick, bookmarkManager, records, onHistoryItemClick, onHistoryItemLongClick)
+                modifier = Modifier.Companion
+                    .weight(1f, false)
+                    .background(MaterialTheme.colors.background),
+                isHistoryOpen,
+                shouldShowTwoColumns,
+                shouldReverse,
+                albumList,
+                onTabClick,
+                onTabLongClick,
+                bookmarkManager,
+                records,
+                onHistoryItemClick,
+                onHistoryItemLongClick
+            )
             HorizontalSeparator()
         }
 
@@ -146,15 +159,39 @@ fun HistoryAndTabs(
         if (isBarOnTop) {
             HorizontalSeparator()
             MainContent(
-                modifier = Modifier.Companion.weight(1f, false).background(MaterialTheme.colors.background),
-                isHistoryOpen, shouldShowTwoColumns, shouldReverse, albumList, onTabClick, onTabLongClick, bookmarkManager, records, onHistoryItemClick, onHistoryItemLongClick)
+                modifier = Modifier.Companion
+                    .weight(1f, false)
+                    .background(MaterialTheme.colors.background),
+                isHistoryOpen,
+                shouldShowTwoColumns,
+                shouldReverse,
+                albumList,
+                onTabClick,
+                onTabLongClick,
+                bookmarkManager,
+                records,
+                onHistoryItemClick,
+                onHistoryItemLongClick
+            )
             HorizontalSeparator()
         }
     }
 }
 
 @Composable
-private fun MainContent(modifier: Modifier, isHistoryOpen: Boolean, shouldShowTwoColumns: Boolean, shouldReverse: Boolean, albumList: MutableState<List<Album>>, onTabClick: (Album) -> Unit, onTabLongClick: (Album) -> Unit, bookmarkManager: BookmarkManager?, records: List<Record>, onHistoryItemClick: (Record) -> Unit, onHistoryItemLongClick: (Record) -> Unit) {
+private fun MainContent(
+    modifier: Modifier,
+    isHistoryOpen: Boolean,
+    shouldShowTwoColumns: Boolean,
+    shouldReverse: Boolean,
+    albumList: MutableState<List<Album>>,
+    onTabClick: (Album) -> Unit,
+    onTabLongClick: (Album) -> Unit,
+    bookmarkManager: BookmarkManager?,
+    records: List<Record>,
+    onHistoryItemClick: (Record) -> Unit,
+    onHistoryItemLongClick: (Record) -> Unit
+) {
     if (!isHistoryOpen) {
         PreviewTabs(
             modifier = modifier,
@@ -193,13 +230,13 @@ fun PreviewTabs(
         modifier = modifier,
         columns = GridCells.Fixed(if (shouldShowTwoColumns) 2 else 1),
         reverseLayout = shouldReverse
-    ){
+    ) {
         itemsIndexed(albumList.value) { _, album ->
             val interactionSource = remember { MutableInteractionSource() }
             val isPressed by interactionSource.collectIsPressedAsState()
 
             TabItem(
-                modifier = Modifier.combinedClickable (
+                modifier = Modifier.combinedClickable(
                     interactionSource = interactionSource,
                     indication = null,
                     onClick = { onClick(album) },
@@ -245,7 +282,9 @@ private fun TabItem(
             )
         } else {
             ActionIcon(
-                modifier = Modifier.align(Alignment.CenterVertically).padding(start = 2.dp),
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .padding(start = 2.dp),
                 iconResId = R.drawable.icon_earth,
             )
         }
@@ -269,7 +308,12 @@ private fun TabItem(
     }
 }
 
-data class TabInfo(val focused: Boolean, val url: String, val title: String, val favicon: Bitmap? = null)
+data class TabInfo(
+    val focused: Boolean,
+    val url: String,
+    val title: String,
+    val favicon: Bitmap? = null
+)
 
 @Composable
 fun ButtonBarLayout(
@@ -282,28 +326,36 @@ fun ButtonBarLayout(
     onDeleteAction: () -> Unit,
     launchNewBrowserAction: () -> Unit,
 ) {
-    Row (
+    Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(50.dp)
             .background(MaterialTheme.colors.background)
-            .horizontalScroll(rememberScrollState(), reverseScrolling = true) // default on right side
+            .horizontalScroll(
+                rememberScrollState(),
+                reverseScrolling = true
+            ) // default on right side
             .clickable(enabled = false) {}, // these two lines prevent row having click action
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.End
-        ){
-        val historyResId = if (isHistoryOpen) R.drawable.ic_history_activated else R.drawable.ic_history
-        val tabResId = if (!isHistoryOpen) R.drawable.ic_tab_plus_activated else R.drawable.icon_tab_plus
+    ) {
+        val historyResId =
+            if (isHistoryOpen) R.drawable.ic_history_activated else R.drawable.ic_history
+        val tabResId =
+            if (!isHistoryOpen) R.drawable.ic_tab_plus_activated else R.drawable.icon_tab_plus
 
         if (isHistoryOpen) {
             ButtonIcon(iconResId = R.drawable.icon_delete, onClick = onDeleteAction)
         }
         ButtonIcon(iconResId = R.drawable.ic_incognito, onClick = addIncognitoTab)
         ButtonIcon(iconResId = historyResId, onClick = toggleHistory)
-        ButtonIcon(iconResId = tabResId, onClick = togglePreview )
-        ButtonIcon(iconResId = R.drawable.icon_plus, onClick = addTab, onLongClick = launchNewBrowserAction)
+        ButtonIcon(iconResId = tabResId, onClick = togglePreview)
+        ButtonIcon(
+            iconResId = R.drawable.icon_plus,
+            onClick = addTab,
+            onLongClick = launchNewBrowserAction
+        )
         ButtonIcon(iconResId = R.drawable.icon_arrow_down_gest, onClick = closePanel)
-
     }
 }
 
@@ -311,8 +363,8 @@ fun ButtonBarLayout(
 @Composable
 fun ButtonIcon(
     iconResId: Int,
-    onClick: ()->Unit,
-    onLongClick:(()->Unit)? = null,
+    onClick: () -> Unit,
+    onLongClick: (() -> Unit)? = null,
 ) {
     Icon(
         modifier = Modifier
@@ -334,7 +386,11 @@ fun ButtonIcon(
 @Composable
 fun PreviewHistoryAndTabs() {
     val recordList = listOf(
-        Record(title = "Hello aaa aaa aaa aa aa aaa aa a aa a a a aa a a a a a a a a a aa a a ", url = "123", time = System.currentTimeMillis()),
+        Record(
+            title = "Hello aaa aaa aaa aa aa aaa aa a aa a a a aa a a a a a a a a a aa a a ",
+            url = "123",
+            time = System.currentTimeMillis()
+        ),
         Record(title = "Hello 2", url = "123", time = System.currentTimeMillis()),
         Record(title = "Hello 3", url = "123", time = System.currentTimeMillis()),
     )

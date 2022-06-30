@@ -146,6 +146,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             ToolbarAction.Settings -> showFastToggleDialog()
             ToolbarAction.Bookmark -> saveBookmark()
             ToolbarAction.Translation -> showTranslationConfigDialog()
+            ToolbarAction.NewTab -> launchNewBrowser()
             else -> {}
         }
     }
