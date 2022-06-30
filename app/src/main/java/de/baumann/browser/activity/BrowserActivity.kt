@@ -190,6 +190,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 focusOnInput()
             }
             ToolbarAction.Desktop -> config.desktop = !config.desktop
+            ToolbarAction.Search -> showSearchPanel()
             else -> {}
         }
     }
@@ -1623,6 +1624,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     private fun hideSearchPanel() {
+        ninjaWebView.clearMatches()
         searchOnSite = false
         hideKeyboard()
         showToolbar()

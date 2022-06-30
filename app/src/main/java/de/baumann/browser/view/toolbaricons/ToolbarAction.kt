@@ -32,7 +32,8 @@ enum class ToolbarAction(
     InputUrl(iconResId = R.drawable.ic_input_url, titleResId = R.string.input_url),
     NewTab(iconResId = R.drawable.icon_plus, titleResId = R.string.open_new_tab),
     Desktop(iconResId = R.drawable.icon_desktop, titleResId = R.string.desktop_mode, iconActiveInfo = IconActiveInfo(true,  R.drawable.icon_desktop_activate,  R.drawable.icon_desktop)),
-    TOC(iconResId = R.drawable.ic_toc, titleResId = R.string.title_in_toc, isAddable = false);
+    TOC(iconResId = R.drawable.ic_toc, titleResId = R.string.title_in_toc, isAddable = false),
+    Search(iconResId = R.drawable.icon_search, titleResId = R.string.setting_title_search);
 
     companion object {
         fun fromOrdinal(value: Int) = values().first { it.ordinal == value }
