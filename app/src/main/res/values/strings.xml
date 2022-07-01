@@ -340,4 +340,6 @@
     <string name="turn_off">Off</string>
     <string name="title_touch_area">Touch Area</string>
     <string name="title_about">About</string>
+    <string name="setting_title_auto_fill_form">Auto fill form data</string>
+    <string name="setting_summary_auto_fill_form">Auto fill form data if enabled.</string>
 </resources>

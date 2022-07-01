@@ -193,6 +193,12 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
             setGeolocationEnabled(sp.getBoolean(context!!.getString(R.string.sp_location), false))
             mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
             setRenderPriority(WebSettings.RenderPriority.HIGH)
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                importantForAutofill = if (config.autoFillForm) IMPORTANT_FOR_AUTOFILL_YES else IMPORTANT_FOR_AUTOFILL_NO
+            } else {
+                saveFormData = config.autoFillForm
+            }
         }
         webViewClient.enableAdBlock(sp.getBoolean(context!!.getString(R.string.sp_ad_block), true))
 
