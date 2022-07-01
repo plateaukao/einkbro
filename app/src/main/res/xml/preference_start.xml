@@ -16,6 +16,12 @@
         android:title="@string/setting_title_save_data"
         android:summary="@string/setting_summary_save_data"/>
 
+    <CheckBoxPreference android:key="sp_auto_fill"
+        android:icon="@drawable/ic_save_data"
+        android:defaultValue="true"
+        android:title="@string/setting_title_auto_fill_form"
+        android:summary="@string/setting_summary_auto_fill_form"/>
+
     <CheckBoxPreference android:key="saveHistory"
         android:icon="@drawable/icon_history"
         android:defaultValue="true"
