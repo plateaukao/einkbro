@@ -3,10 +3,14 @@ package de.baumann.browser.view.dialog.compose
 import android.os.Build
 import android.os.Bundle
 import android.view.*
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -25,7 +29,7 @@ import de.baumann.browser.view.dialog.compose.MenuItemType.*
 
 class MenuDialogFragment(
     private val itemClicked: (MenuItemType) -> Unit
-): ComposeDialogFragment(){
+) : ComposeDialogFragment() {
     override fun setupComposeView() = composeView.setContent {
         MyTheme {
             MenuItems(config.whiteBackground, config.boldFontStyle) { item ->
@@ -45,35 +49,53 @@ enum class MenuItemType {
 }
 
 @Composable
-private fun MenuItems(hasWhiteBkd: Boolean, boldFont: Boolean, onClicked: (MenuItemType)-> Unit) {
-    Column (
-        modifier = Modifier.wrapContentHeight().width(IntrinsicSize.Max),
+private fun MenuItems(hasWhiteBkd: Boolean, boldFont: Boolean, onClicked: (MenuItemType) -> Unit) {
+    Column(
+        modifier = Modifier
+            .wrapContentHeight()
+            .width(IntrinsicSize.Max),
         horizontalAlignment = Alignment.End
-   ) {
+    ) {
         Row(
-            modifier = Modifier.width(IntrinsicSize.Max).horizontalScroll(rememberScrollState()),
+            modifier = Modifier
+                .width(IntrinsicSize.Max)
+                .horizontalScroll(rememberScrollState()),
             horizontalArrangement = Arrangement.End
         ) {
-            MenuItem(R.string.menu_quickToggle, R.drawable.ic_quick_toggle) { onClicked (QuickToggle) }
+            MenuItem(
+                R.string.menu_quickToggle,
+                R.drawable.ic_quick_toggle
+            ) { onClicked(QuickToggle) }
             MenuItem(R.string.menu_openFav, R.drawable.ic_home) { onClicked(OpenHome) }
             MenuItem(R.string.menu_closeTab, R.drawable.icon_close) { onClicked(CloseTab) }
             MenuItem(R.string.menu_quit, R.drawable.icon_exit) { onClicked(Quit) }
         }
         HorizontalSeparator()
         Row(
-            modifier = Modifier.wrapContentWidth().horizontalScroll(rememberScrollState()),
+            modifier = Modifier
+                .wrapContentWidth()
+                .horizontalScroll(rememberScrollState()),
             horizontalArrangement = Arrangement.End
         ) {
             MenuItem(R.string.split_screen, R.drawable.ic_split_screen) { onClicked(SplitScreen) }
             MenuItem(R.string.translate, R.drawable.ic_translate) { onClicked(Translate) }
-            MenuItem(R.string.vertical_read, R.drawable.ic_vertical_read) { onClicked(VerticalRead) }
+            MenuItem(
+                R.string.vertical_read,
+                R.drawable.ic_vertical_read
+            ) { onClicked(VerticalRead) }
             MenuItem(R.string.reader_mode, R.drawable.ic_reader) { onClicked(ReaderMode) }
-            MenuItem(R.string.touch_area_setting, R.drawable.ic_touch_disabled) { onClicked(TouchSetting) }
+            MenuItem(R.string.touch_area_setting, R.drawable.ic_touch_disabled) {
+                onClicked(
+                    TouchSetting
+                )
+            }
             MenuItem(R.string.toolbar_setting, R.drawable.ic_toolbar) { onClicked(ToolbarSetting) }
         }
         HorizontalSeparator()
         Row(
-            modifier = Modifier.wrapContentWidth().horizontalScroll(rememberScrollState()),
+            modifier = Modifier
+                .wrapContentWidth()
+                .horizontalScroll(rememberScrollState()),
             horizontalArrangement = Arrangement.End
         ) {
             MenuItem(R.string.menu_receive, R.drawable.ic_receive) { onClicked(ReceiveData) }
@@ -85,22 +107,30 @@ private fun MenuItems(hasWhiteBkd: Boolean, boldFont: Boolean, onClicked: (MenuI
         }
         HorizontalSeparator()
         Row(
-            modifier = Modifier.wrapContentWidth().horizontalScroll(rememberScrollState()),
+            modifier = Modifier
+                .wrapContentWidth()
+                .horizontalScroll(rememberScrollState()),
             horizontalArrangement = Arrangement.End
         ) {
             MenuItem(R.string.menu_fav, R.drawable.ic_home) { onClicked(SetHome) }
-            MenuItem(R.string.menu_save_bookmark, R.drawable.ic_bookmark) { onClicked(SaveBookmark) }
+            MenuItem(
+                R.string.menu_save_bookmark,
+                R.drawable.ic_bookmark
+            ) { onClicked(SaveBookmark) }
             MenuItem(R.string.menu_open_epub, R.drawable.ic_open_epub) { onClicked(OpenEpub) }
             MenuItem(R.string.menu_save_epub, R.drawable.ic_book) { onClicked(SaveEpub) }
             MenuItem(R.string.menu_save_pdf, R.drawable.ic_pdf) { onClicked(SavePdf) }
         }
         HorizontalSeparator()
         Row(
-            modifier = Modifier.wrapContentWidth().horizontalScroll(rememberScrollState()),
+            modifier = Modifier
+                .wrapContentWidth()
+                .horizontalScroll(rememberScrollState()),
             horizontalArrangement = Arrangement.End
         ) {
             MenuItem(R.string.font_size, R.drawable.icon_size) { onClicked(FontSize) }
-            val whiteRes = if (hasWhiteBkd) R.drawable.ic_white_background_active else R.drawable.ic_white_background
+            val whiteRes =
+                if (hasWhiteBkd) R.drawable.ic_white_background_active else R.drawable.ic_white_background
             MenuItem(R.string.white_background, whiteRes) { onClicked(WhiteBknd) }
             val boldRes = if (boldFont) R.drawable.ic_bold_font_active else R.drawable.ic_bold_font
             MenuItem(R.string.bold_font, boldRes) { onClicked(BoldFont) }
@@ -115,8 +145,12 @@ private fun MenuItems(hasWhiteBkd: Boolean, boldFont: Boolean, onClicked: (MenuI
 private fun MenuItem(
     titleResId: Int,
     iconResId: Int,
-    onClicked: ()-> Unit
+    onClicked: () -> Unit
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val pressed by interactionSource.collectIsPressedAsState()
+    val borderWidth = if (pressed) 0.5.dp else -1.dp
+
     val configuration = LocalConfiguration.current
     val width = if (configuration.screenWidthDp > 500) 55.dp else 45.dp
     val fontSize = if (configuration.screenWidthDp > 500) 10.sp else 8.sp
@@ -124,7 +158,11 @@ private fun MenuItem(
         modifier = Modifier
             .width(width)
             .height(70.dp)
-            .clickable { onClicked() },
+            .border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
+            .clickable(
+                indication = null,
+                interactionSource = interactionSource,
+            ) { onClicked() },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Icon(
@@ -138,8 +176,7 @@ private fun MenuItem(
         Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(24.dp)
-                .padding(2.dp)
+                .height(31.dp)
                 .offset(y = (-5).dp),
             text = stringResource(id = titleResId),
             textAlign = TextAlign.Center,

@@ -3,12 +3,17 @@
 package de.baumann.browser.view.compose
 
 import androidx.compose.foundation.*
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,20 +30,23 @@ fun ComposedToolbar(
     title: String,
     tabCount: String,
     isIncognito: Boolean,
-    onClick: (ToolbarAction)->Unit,
-    onLongClick:((ToolbarAction)->Unit)? = null,
+    onClick: (ToolbarAction) -> Unit,
+    onLongClick: ((ToolbarAction) -> Unit)? = null,
 ) {
     Row(
         modifier = Modifier
             .height(50.dp)
             .background(MaterialTheme.colors.background)
-            .horizontalScroll(rememberScrollState(), reverseScrolling = true) // default on right side
-            .clickable (enabled = false) {}, // these two lines prevent row having click action
+            .horizontalScroll(
+                rememberScrollState(),
+                reverseScrolling = true
+            ) // default on right side
+            .clickable(enabled = false) {}, // these two lines prevent row having click action
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.End
     ) {
         toolbarActionInfos.forEach { toolbarActionInfo ->
-            when(val toolbarAction = toolbarActionInfo.toolbarAction) {
+            when (val toolbarAction = toolbarActionInfo.toolbarAction) {
                 Title ->
                     Text(
                         modifier = Modifier
@@ -65,19 +73,27 @@ fun ComposedToolbar(
 @Composable
 fun ToolbarIcon(
     toolbarActionInfo: ToolbarActionInfo,
-    onClick: (ToolbarAction)->Unit,
-    onLongClick:((ToolbarAction)->Unit)? = null,
+    onClick: (ToolbarAction) -> Unit,
+    onLongClick: ((ToolbarAction) -> Unit)? = null,
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val pressed by interactionSource.collectIsPressedAsState()
+    val borderWidth = if (pressed) 0.5.dp else -1.dp
+
     val toolbarAction = toolbarActionInfo.toolbarAction
     Icon(
         modifier = Modifier
             .fillMaxHeight()
             .width(46.dp)
+            .padding(6.dp)
+            .border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
             .combinedClickable(
+                indication = null,
+                interactionSource = interactionSource,
                 onClick = { onClick(toolbarAction) },
                 onLongClick = { onLongClick?.invoke(toolbarAction) }
             )
-            .padding(12.dp),
+            .padding(6.dp),
         painter = painterResource(id = toolbarActionInfo.getCurrentResId()),
         contentDescription = null,
         tint = MaterialTheme.colors.onBackground
@@ -89,8 +105,8 @@ fun ToolbarIcon(
 private fun TabCountIcon(
     isIncognito: Boolean,
     count: String,
-    onClick: ()->Unit,
-    onLongClick:(()->Unit)? = null,
+    onClick: () -> Unit,
+    onLongClick: (() -> Unit)? = null,
 ) {
     val border = if (isIncognito)
         Modifier.dashedBorder(1.dp, 7.dp, color = MaterialTheme.colors.onBackground)
@@ -98,7 +114,9 @@ private fun TabCountIcon(
         Modifier.border(1.dp, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
 
     Box(
-        modifier = Modifier.height(46.dp).width(46.dp)
+        modifier = Modifier
+            .height(46.dp)
+            .width(46.dp)
             .combinedClickable(
                 onClick = onClick,
                 onLongClick = onLongClick
@@ -140,7 +158,7 @@ fun PreviewTabCountIncognito() {
 fun PreviewToolbar() {
     MyTheme {
         ComposedToolbar(
-            toolbarActionInfos = ToolbarAction.values().map {ToolbarActionInfo(it, false)},
+            toolbarActionInfos = ToolbarAction.values().map { ToolbarActionInfo(it, false) },
             "hihi",
             tabCount = "1",
             isIncognito = true,
