@@ -86,6 +86,12 @@
             android:title="@string/setting_title_background_loading"
             android:summary="@string/setting_summary_background_loading"/>
 
+        <CheckBoxPreference android:key="sp_trim_input_url"
+            android:icon="@drawable/icon_edit"
+            android:defaultValue="false"
+            android:title="@string/setting_title_trim_input_url"
+            android:summary="@string/setting_summary_trim_input_url"/>
+
         <CheckBoxPreference
             android:defaultValue="false"
             android:icon="@drawable/ic_eye"

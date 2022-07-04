@@ -41,7 +41,7 @@ import java.net.URLEncoder
 import java.util.*
 import java.util.regex.Pattern
 
-object BrowserUnit: KoinComponent {
+object BrowserUnit : KoinComponent {
     const val PROGRESS_MAX = 100
     const val SUFFIX_PNG = ".png"
     private const val SUFFIX_TXT = ".txt"
@@ -67,8 +67,8 @@ object BrowserUnit: KoinComponent {
     const val URL_SCHEME_INTENT = "intent://"
     private const val URL_PREFIX_GOOGLE_PLAY = "www.google.com/url?q="
     private const val URL_SUFFIX_GOOGLE_PLAY = "&sa"
-    val UA_DESKTOP_PREFIX = "Mozilla/5.0 (X11; Linux "+ System.getProperty("os.arch") +")"
-    val UA_MOBILE_PREFIX = "Mozilla/5.0 (Linux; Android "+ Build.VERSION.RELEASE + ")"
+    val UA_DESKTOP_PREFIX = "Mozilla/5.0 (X11; Linux " + System.getProperty("os.arch") + ")"
+    val UA_MOBILE_PREFIX = "Mozilla/5.0 (Linux; Android " + Build.VERSION.RELEASE + ")"
 
     private val sp: SharedPreferences by inject()
     private val adBlock: AdBlock by inject()
@@ -96,16 +96,16 @@ object BrowserUnit: KoinComponent {
             return true
         }
         val regex = ("^((ftp|http|https|intent)?://)" // support scheme
-                + "?(([0-9a-z_!~*'().&=+$%-]+: )?[0-9a-z_!~*'().&=+$%-]+@)?" // ftp的user@
-                + "(([0-9]{1,3}\\.){3}[0-9]{1,3}" // IP形式的URL -> 199.194.52.184
-                + "|" // 允许IP和DOMAIN（域名）
-                + "(.)*" // 域名 -> www.
-                // + "([0-9a-z_!~*'()-]+\\.)*"                               // 域名 -> www.
-                + "([0-9a-z][0-9a-z-]{0,61})?[0-9a-z]\\." // 二级域名
-                + "[a-z]{2,6})" // first level domain -> .com or .museum
-                + "(:[0-9]{1,4})?" // 端口 -> :80
-                + "((/?)|" // a slash isn't required if there is no file name
-                + "(/[0-9a-z_!~*'().;?:@&=+$,%#-]+)+/?)$")
+            + "?(([0-9a-z_!~*'().&=+$%-]+: )?[0-9a-z_!~*'().&=+$%-]+@)?" // ftp的user@
+            + "(([0-9]{1,3}\\.){3}[0-9]{1,3}" // IP形式的URL -> 199.194.52.184
+            + "|" // 允许IP和DOMAIN（域名）
+            + "(.)*" // 域名 -> www.
+            // + "([0-9a-z_!~*'()-]+\\.)*"                               // 域名 -> www.
+            + "([0-9a-z][0-9a-z-]{0,61})?[0-9a-z]\\." // 二级域名
+            + "[a-z]{2,6})" // first level domain -> .com or .museum
+            + "(:[0-9]{1,4})?" // 端口 -> :80
+            + "((/?)|" // a slash isn't required if there is no file name
+            + "(/[0-9a-z_!~*'().;?:@&=+$,%#-]+)+/?)$")
         val pattern = Pattern.compile(regex)
         val isMatch = pattern.matcher(url).matches()
         return if (isMatch) true else try {
@@ -127,16 +127,17 @@ object BrowserUnit: KoinComponent {
             query = query.substring(start, end)
         }
 
-        // -- start: remove prefix non-url part
-        var foundIndex = query.indexOf(URL_SCHEME_HTTPS)
-        if (foundIndex > 0) {
-            query = query.substring(foundIndex)
+        // remove prefix non-url part
+        if (config.shouldTrimInputUrl) {
+            var foundIndex = query.indexOf(URL_SCHEME_HTTPS)
+            if (foundIndex > 0) {
+                query = query.substring(foundIndex)
+            }
+            foundIndex = query.indexOf(URL_SCHEME_HTTP)
+            if (foundIndex > 0) {
+                query = query.substring(foundIndex)
+            }
         }
-        foundIndex = query.indexOf(URL_SCHEME_HTTP)
-        if (foundIndex > 0) {
-            query = query.substring(foundIndex)
-        }
-        // -- end: remove prefix non-url part
 
         if (isURL(query) && !query.contains(" ")) {
             if (query.startsWith(URL_SCHEME_ABOUT) || query.startsWith(URL_SCHEME_MAIL_TO)) {
@@ -409,14 +410,14 @@ object BrowserUnit: KoinComponent {
     }
 
     fun registerCustomFontSelectionResult(fragment: Fragment): ActivityResultLauncher<Intent> =
-            fragment.registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-                handleFontSelectionResult(fragment.requireContext(), it)
-            }
+        fragment.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            handleFontSelectionResult(fragment.requireContext(), it)
+        }
 
     fun registerCustomFontSelectionResult(activity: ComponentActivity): ActivityResultLauncher<Intent> =
-            activity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-                handleFontSelectionResult(activity, it)
-            }
+        activity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            handleFontSelectionResult(activity, it)
+        }
 
     private fun handleFontSelectionResult(context: Context, activityResult: ActivityResult) {
         if (activityResult.data == null) return

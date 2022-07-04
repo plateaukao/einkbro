@@ -286,8 +286,6 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
             postDelayed( { if (progress < FAKE_PRE_PROGRESS) update(FAKE_PRE_PROGRESS) }, 200)
         }
 
-        settings.cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
-
         if (browserController?.loadInSecondPane(processedUrl) == true) {
             return
         }
