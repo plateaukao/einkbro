@@ -53,6 +53,7 @@ class ConfigManager(
     var continueMedia by BooleanPreference(sp, K_MEDIA_CONTINUE, false)
     var restartChanged by BooleanPreference(sp, K_RESTART_CHANGED, false)
     var autoFillForm by BooleanPreference(sp, K_AUTO_FILL, true)
+    var shouldTrimInputUrl by BooleanPreference(sp, K_TRIM_INPUT_URL, false)
 
     var isIncognitoMode: Boolean
         get() = sp.getBoolean(K_IS_INCOGNITO_MODE, false)
@@ -363,6 +364,7 @@ class ConfigManager(
         const val K_BKGND_LOAD = "sp_background_loading"
         const val K_SHARE_LOCATION = "SP_LOCATION_9"
         const val K_AUTO_FILL = "sp_auto_fill"
+        const val K_TRIM_INPUT_URL = "sp_trim_input_url"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
         private const val RECENT_BOOKMARKS_SEPARATOR = "::::"
