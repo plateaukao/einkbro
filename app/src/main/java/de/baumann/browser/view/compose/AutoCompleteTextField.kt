@@ -7,6 +7,7 @@ import android.util.AttributeSet
 import android.view.KeyEvent.KEYCODE_ENTER
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -18,11 +19,13 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.platform.AbstractComposeView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
@@ -96,7 +99,7 @@ fun AutoCompleteTextField(
     } else {
         val list = recordList.value.filter {
             it.title?.contains(text.value.text, ignoreCase = true) == true
-                    || it.url.contains(text.value.text, ignoreCase = true)
+                || it.url.contains(text.value.text, ignoreCase = true)
         }
         if (list.isNotEmpty()) list else recordList.value
     }
@@ -141,7 +144,6 @@ fun AutoCompleteTextField(
 }
 
 @Composable
-@OptIn(ExperimentalComposeUiApi::class)
 private fun TextInputBar(
     focusRequester: FocusRequester,
     text: MutableState<TextFieldValue>,
@@ -183,39 +185,41 @@ fun TextInput(
     state: MutableState<TextFieldValue>,
     onValueSubmit: (String) -> Unit,
 ) {
-    TextField(
-        value = state.value,
-        modifier = modifier
-            .focusRequester(focusRequester)
-            .onKeyEvent {
-                if (it.nativeKeyEvent.keyCode == KEYCODE_ENTER) {
-                    onValueSubmit(state.value.text)
-                    true
+    Box(modifier = modifier.padding(start = 5.dp)) {
+        BasicTextField(
+            value = state.value,
+            singleLine = true,
+            modifier = modifier
+                .fillMaxWidth()
+                .focusRequester(focusRequester)
+                .onKeyEvent {
+                    if (it.nativeKeyEvent.keyCode == KEYCODE_ENTER) {
+                        onValueSubmit(state.value.text)
+                        true
+                    }
+                    false
                 }
-                false
-            }
-            .onFocusChanged { focusState ->
-                if (focusState.isFocused) {
-                    val text = state.value.text
-                    state.value = state.value.copy(
-                        selection = TextRange(0, text.length)
-                    )
-                }
-            },
-        colors = TextFieldDefaults.textFieldColors(
-            textColor = MaterialTheme.colors.onBackground,
-            backgroundColor = MaterialTheme.colors.background,
-        ),
-        placeholder = {
+                .onFocusChanged { focusState ->
+                    if (focusState.isFocused) {
+                        val text = state.value.text
+                        state.value = state.value.copy(
+                            selection = TextRange(0, text.length)
+                        )
+                    }
+                },
+            textStyle = TextStyle.Default.copy(color = MaterialTheme.colors.onBackground),
+            cursorBrush = SolidColor(MaterialTheme.colors.onBackground),
+            onValueChange = { state.value = it },
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+            keyboardActions = KeyboardActions(onDone = { onValueSubmit(state.value.text) }),
+        )
+        if (state.value.text.isEmpty()) {
             Text(
                 stringResource(R.string.main_omnibox_input_hint),
                 color = MaterialTheme.colors.onBackground
             )
-        },
-        onValueChange = { state.value = it },
-        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-        keyboardActions = KeyboardActions(onDone = { onValueSubmit(state.value.text) }),
-    )
+        }
+    }
 }
 
 @Composable
