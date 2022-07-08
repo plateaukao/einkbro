@@ -101,10 +101,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         val title = webView.title
         val url = webView.url
         return (title == null || title.isEmpty()
-                || url == null || url.isEmpty()
-                || url.startsWith(BrowserUnit.URL_SCHEME_ABOUT)
-                || url.startsWith(BrowserUnit.URL_SCHEME_MAIL_TO)
-                || url.startsWith(BrowserUnit.URL_SCHEME_INTENT))
+            || url == null || url.isEmpty()
+            || url.startsWith(BrowserUnit.URL_SCHEME_ABOUT)
+            || url.startsWith(BrowserUnit.URL_SCHEME_MAIL_TO)
+            || url.startsWith(BrowserUnit.URL_SCHEME_INTENT))
     }
 
     private var originalOrientation = 0
@@ -142,7 +142,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             ToolbarAction.PageUp -> ninjaWebView.jumpToTop()
             ToolbarAction.PageDown -> ninjaWebView.jumpToBottom()
             ToolbarAction.TabCount -> config.isIncognitoMode = !config.isIncognitoMode
-            ToolbarAction.Font -> dialogManager.showFontTypeDialog()
             ToolbarAction.Settings -> showFastToggleDialog()
             ToolbarAction.Bookmark -> saveBookmark()
             ToolbarAction.Translation -> showTranslationConfigDialog()
@@ -544,7 +543,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         updateTitle()
     }
 
-    fun openFilePicker() = BrowserUnit.openFontFilePicker(customFontResultLauncher)
+    fun openCustomFontPicker() = BrowserUnit.openFontFilePicker(customFontResultLauncher)
 
     private fun showOverview() = overviewDialogController.show()
 
@@ -606,7 +605,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     // Methods
-    private fun showFontSizeChangeDialog() = dialogManager.showFontSizeChangeDialog()
+    //private fun showFontSizeChangeDialog() = dialogManager.showFontSizeChangeDialog()
+    private fun showFontSizeChangeDialog() = FontDialogFragment { openCustomFontPicker() }.show(supportFragmentManager, "font_dialog")
 
     private fun changeFontSize(size: Int) {
         config.fontSize = size
