@@ -3,10 +3,8 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:klyph="http://schemas.android.com/apk/res-auto">
 
-    <ListPreference
+    <Preference
         android:defaultValue="100"
-        android:entries="@array/setting_entries_font"
-        android:entryValues="@array/setting_values_font"
         android:icon="@drawable/icon_size"
         android:key="sp_fontSize"
         android:summary="@string/setting_summary_font_size"

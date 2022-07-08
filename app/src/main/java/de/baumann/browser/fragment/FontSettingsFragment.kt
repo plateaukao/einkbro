@@ -11,6 +11,7 @@ import de.baumann.browser.Ninja.R
 import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.unit.BrowserUnit
 import de.baumann.browser.view.dialog.DialogManager
+import de.baumann.browser.view.dialog.compose.FontDialogFragment
 import org.koin.android.ext.android.inject
 import org.koin.core.component.KoinComponent
 
@@ -36,7 +37,19 @@ class FontSettingsFragment : PreferenceFragmentCompat(), OnSharedPreferenceChang
         findPreference<Preference>("settings_font_type")?.apply {
             summary = getString(config.fontType.resId)
             onPreferenceClickListener = Preference.OnPreferenceClickListener {
-                dialogManager.showFontTypeDialog()
+                FontDialogFragment {
+                    BrowserUnit.openFontFilePicker(resultLauncher)
+                }.show(requireActivity().supportFragmentManager, "font_type")
+                true
+            }
+        }
+
+        findPreference<Preference>("sp_fontSize")?.apply {
+            summary = config.fontSize.toString() + "%"
+            onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                FontDialogFragment {
+                    BrowserUnit.openFontFilePicker(resultLauncher)
+                }.show(requireActivity().supportFragmentManager, "font_type")
                 true
             }
         }
@@ -54,10 +67,14 @@ class FontSettingsFragment : PreferenceFragmentCompat(), OnSharedPreferenceChang
                 findPreference<Preference>("settings_font_type")?.apply {
                     summary = getString(config.fontType.resId)
                 }
+            ConfigManager.K_FONT_SIZE ->
+                findPreference<Preference>("sp_fontSize")?.apply {
+                    summary = config.fontSize.toString() + "%"
+                }
         }
     }
 
-    override fun onSharedPreferenceChanged(sp: SharedPreferences, key: String) { }
+    override fun onSharedPreferenceChanged(sp: SharedPreferences, key: String) {}
 
     override fun onDestroy() {
         config.unregisterOnSharedPreferenceChangeListener(preferenceListener)

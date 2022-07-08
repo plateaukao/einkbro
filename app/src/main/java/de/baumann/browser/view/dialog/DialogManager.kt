@@ -9,23 +9,18 @@ import android.os.Message
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.webkit.URLUtil
 import android.webkit.WebView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.net.toUri
-import androidx.core.view.setPadding
 import androidx.documentfile.provider.DocumentFile
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.Ninja.databinding.DialogEditExtensionBinding
 import de.baumann.browser.Ninja.databinding.DialogMenuContextLinkBinding
 import de.baumann.browser.Ninja.databinding.DialogSavedEpubListBinding
 import de.baumann.browser.Ninja.databinding.ListItemEpubFileBinding
-import de.baumann.browser.activity.BrowserActivity
 import de.baumann.browser.preference.ConfigManager
-import de.baumann.browser.preference.FontType
 import de.baumann.browser.unit.*
-import de.baumann.browser.unit.ViewUnit.dp
 import de.baumann.browser.view.NinjaToast
 import de.baumann.browser.view.NinjaWebView
 import org.koin.core.component.KoinComponent
@@ -37,45 +32,6 @@ class DialogManager(
 ): KoinComponent {
     private val config: ConfigManager by inject()
     private val inflater = LayoutInflater.from(activity)
-
-    fun showFontSizeChangeDialog() {
-        val fontArray = activity.resources.getStringArray(R.array.setting_entries_font)
-        val valueArray = activity.resources.getStringArray(R.array.setting_values_font)
-        val selected = valueArray.indexOf(config.fontSize.toString())
-
-        AlertDialog.Builder(activity, R.style.TouchAreaDialog).apply{
-            setTitle("Font Size")
-            setSingleChoiceItems(fontArray, selected) { dialog, which ->
-                config.fontSize = valueArray[which].toInt()
-                dialog.dismiss()
-            }
-        }.create().also {
-            it.show()
-            it.window?.setLayout(200.dp(activity), ViewGroup.LayoutParams.WRAP_CONTENT)
-        }
-    }
-
-    fun showFontTypeDialog() {
-        val typeArray = FontType.values().map { activity.getString(it.resId) }.toTypedArray()
-        val valueArray = FontType.values().map { it.ordinal }.toTypedArray()
-        val selected = valueArray.indexOf(config.fontType.ordinal)
-
-        AlertDialog.Builder(activity, R.style.TouchAreaDialog).apply{
-            setTitle(R.string.font_type)
-            setSingleChoiceItems(typeArray, selected) { dialog, which ->
-                config.fontType = FontType.values()[which]
-                dialog.dismiss()
-            }
-            setPositiveButton(android.R.string.cancel) { dialog, _-> dialog.dismiss() }
-            setNegativeButton(context.getString(R.string.edit_custom_font)) { dialog, _ ->
-                (activity as? BrowserActivity)?.openFilePicker()
-                dialog.dismiss()
-            }
-        }.create().also {
-            it.show()
-            it.window?.setLayout(350.dp(activity), ViewGroup.LayoutParams.WRAP_CONTENT)
-        }
-    }
 
     fun showSaveEpubDialog(shouldAddNewEpub: Boolean = true, onNextAction: (Uri?) -> Unit) {
         val binding = DialogSavedEpubListBinding.inflate(inflater)
