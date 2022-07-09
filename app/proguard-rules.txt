@@ -1,6 +1,5 @@
--dontwarn org.xmlpull.v1.XmlPullParser
--dontwarn org.xmlpull.v1.XmlSerializer
--keep class org.xmlpull.v1.* {*;}
+-dontwarn org.xmlpull.v1.**
+-keep class org.xmlpull.v1.** {*;}
 
 -assumenosideeffects class android.util.Log {
     public static boolean isLoggable(java.lang.String, int);
