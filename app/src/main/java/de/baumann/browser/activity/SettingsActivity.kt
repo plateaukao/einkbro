@@ -20,11 +20,6 @@ class SettingsActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.content_frame, SettingsComposeFragment())
-            .addToBackStack(null)
-            .commit()
     }
 
     override fun onOptionsItemSelected(menuItem: MenuItem): Boolean {
