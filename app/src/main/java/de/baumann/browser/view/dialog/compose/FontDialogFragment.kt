@@ -1,6 +1,7 @@
 package de.baumann.browser.view.dialog.compose
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
@@ -65,7 +66,9 @@ private fun MainFontDialog(
     okAction: () -> Unit,
 ) {
     Column(
-        modifier = Modifier.padding(8.dp)
+        modifier = Modifier
+            .padding(top = 8.dp, start = 8.dp, end = 8.dp)
+            .width(IntrinsicSize.Max)
     ) {
         Text(
             stringResource(id = R.string.font_size),
@@ -79,7 +82,7 @@ private fun MainFontDialog(
                 val isSelect = selectedFontSizeValue == fontSize
                 SelectableText(
                     modifier = Modifier
-                        .padding(horizontal = 1.dp, vertical = 6.dp),
+                        .padding(horizontal = 1.dp, vertical = 3.dp),
                     selected = isSelect,
                     text = "$fontSize%",
                 ) {
@@ -92,7 +95,7 @@ private fun MainFontDialog(
                 val isSelect = selectedFontSizeValue == fontSize
                 SelectableText(
                     modifier = Modifier
-                        .padding(horizontal = 1.dp, vertical = 6.dp),
+                        .padding(horizontal = 1.dp, vertical = 3.dp),
                     selected = isSelect,
                     text = "$fontSize%",
                 ) {
@@ -111,7 +114,7 @@ private fun MainFontDialog(
             FontType.values().map { fontType ->
                 val isSelect = fontType == selectedFontType
                 SelectableText(
-                    modifier = Modifier.padding(horizontal = 1.dp, vertical = 6.dp),
+                    modifier = Modifier.padding(horizontal = 1.dp, vertical = 5.dp),
                     selected = isSelect,
                     text = stringResource(id = fontType.resId),
                 ) {
@@ -119,7 +122,6 @@ private fun MainFontDialog(
                 }
             }
         }
-        HorizontalSeparator()
         FontDialogButtonBar(
             okAction = okAction,
             editFontAction = onFontCustomizeClick
@@ -129,34 +131,34 @@ private fun MainFontDialog(
 
 @Composable
 fun FontDialogButtonBar(
-    modifier: Modifier = Modifier,
     okAction: () -> Unit,
     editFontAction: () -> Unit
 ) {
-    Row(
-        modifier = modifier
-            .wrapContentHeight()
-            .fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.End
-    ) {
-        TextButton(
-            modifier = Modifier.wrapContentWidth(),
-            onClick = editFontAction
+    Column {
+       HorizontalSeparator()
+        Row(
+            modifier = Modifier.wrapContentHeight().fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.End
         ) {
-            Text(stringResource(id = R.string.edit_custom_font), color = MaterialTheme.colors.onBackground)
-        }
-        VerticalSeparator()
-        TextButton(
-            modifier = Modifier.wrapContentWidth(),
-            onClick =okAction
-        ) {
-            Text(stringResource(id = android.R.string.ok), color = MaterialTheme.colors.onBackground)
+            TextButton(
+                modifier = Modifier.wrapContentWidth(),
+                onClick = editFontAction
+            ) {
+                Text(stringResource(id = R.string.edit_custom_font), color = MaterialTheme.colors.onBackground)
+            }
+            VerticalSeparator()
+            TextButton(
+                modifier = Modifier.wrapContentWidth(),
+                onClick =okAction
+            ) {
+                Text(stringResource(id = android.R.string.ok), color = MaterialTheme.colors.onBackground)
+            }
         }
     }
 }
 
-@Preview
+@Preview(widthDp = 600)
 @Composable
 fun PreviewMainFontDialog() {
     MyTheme {

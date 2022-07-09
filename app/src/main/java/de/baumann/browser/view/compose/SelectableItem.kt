@@ -27,9 +27,10 @@ fun SelectableText(
     Text(
         text = text,
         color = MaterialTheme.colors.onBackground,
+        style = MaterialTheme.typography.button,
         modifier = modifier
             .border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
-            .padding(horizontal = 6.dp, vertical = 3.dp)
+            .padding(horizontal = 6.dp, vertical = 6.dp)
             .clickable(
                 indication = null,
                 interactionSource = interactionSource,
