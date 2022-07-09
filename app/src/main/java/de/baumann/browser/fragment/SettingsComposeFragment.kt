@@ -1,5 +1,6 @@
 package de.baumann.browser.fragment
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -26,6 +27,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.UiMode
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
@@ -214,6 +216,14 @@ private enum class FirstLayerSettingItem(
 @Preview
 @Composable
 fun PreviewSettingsMainContent() {
+    MyTheme {
+        SettingsMainContent(FirstLayerSettingItem.values().toList(), onItemClick = {}, version = "v1.2.3", {})
+    }
+}
+
+@Preview(uiMode = UI_MODE_NIGHT_YES)
+@Composable
+fun PreviewNightSettingsMainContent() {
     MyTheme {
         SettingsMainContent(FirstLayerSettingItem.values().toList(), onItemClick = {}, version = "v1.2.3", {})
     }

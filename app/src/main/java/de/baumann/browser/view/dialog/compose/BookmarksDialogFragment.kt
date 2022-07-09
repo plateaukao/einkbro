@@ -34,6 +34,7 @@ import de.baumann.browser.database.BookmarkManager
 import de.baumann.browser.unit.ViewUnit
 import de.baumann.browser.view.NinjaToast
 import de.baumann.browser.view.compose.MyTheme
+import de.baumann.browser.view.compose.NormalTextModifier
 import de.baumann.browser.view.dialog.BookmarkEditDialog
 import de.baumann.browser.view.dialog.DialogManager
 import de.baumann.browser.view.dialog.dismissWithAction
@@ -77,24 +78,28 @@ class BookmarksDialogFragment(
                             upParentAction = { gotoParentFolder() },
                             createFolderAction = { createBookmarkFolder(it) },
                             closeAction = { dialog?.dismiss() }) {
-                            BookmarkList(
-                                bookmarks = bookmarks,
-                                bookmarkManager = bookmarkManager,
-                                isWideLayout = ViewUnit.isWideLayout(requireContext()),
-                                shouldReverse = !config.isToolbarOnTop,
-                                onBookmarkClick = {
-                                    if (!it.isDirectory) {
-                                        gotoUrlAction(it.url)
-                                        config.addRecentBookmark(it)
-                                        dialog?.dismiss()
-                                    } else {
-                                        folderStack.push(it)
-                                        updateBookmarksContent()
-                                    }
-                                },
-                                onBookmarkIconClick = { if (!it.isDirectory) addTabAction(it.title, it.url, true) ; dialog?.dismiss() },
-                                onBookmarkLongClick = { showBookmarkContextMenu(it) }
-                            )
+                            if (bookmarks.isEmpty()) {
+                                Text(modifier = NormalTextModifier, text = getString(R.string.no_bookmarks), color = MaterialTheme.colors.onBackground)
+                            } else {
+                                BookmarkList(
+                                    bookmarks = bookmarks,
+                                    bookmarkManager = bookmarkManager,
+                                    isWideLayout = ViewUnit.isWideLayout(requireContext()),
+                                    shouldReverse = !config.isToolbarOnTop,
+                                    onBookmarkClick = {
+                                        if (!it.isDirectory) {
+                                            gotoUrlAction(it.url)
+                                            config.addRecentBookmark(it)
+                                            dialog?.dismiss()
+                                        } else {
+                                            folderStack.push(it)
+                                            updateBookmarksContent()
+                                        }
+                                    },
+                                    onBookmarkIconClick = { if (!it.isDirectory) addTabAction(it.title, it.url, true); dialog?.dismiss() },
+                                    onBookmarkLongClick = { showBookmarkContextMenu(it) }
+                                )
+                            }
                         }
                     }
                 }

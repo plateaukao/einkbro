@@ -1,11 +1,15 @@
 package de.baumann.browser.view.compose
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Typography
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 
 @Composable
 fun MyTheme(
@@ -14,13 +18,17 @@ fun MyTheme(
 ) {
     MaterialTheme(
         colors = if (darkTheme) DarkColors else LightColors,
-        content = content
+        content = content,
     )
 }
 
+val NormalTextModifier = Modifier.padding(6.dp)
+
 private val DarkColors = darkColors(
     primary = Color.Gray,
-    onPrimary = Color.Black,
+    onPrimary = Color.White,
+    secondary = Color.Gray,
+    onSecondary = Color.White,
     surface = Color.Black,
     onSurface = Color.Gray,
     background = Color.Black,
