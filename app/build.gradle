@@ -109,10 +109,10 @@ dependencies {
 
     // compose
     // Compose Material Design
-    implementation 'androidx.compose.material:material:1.2.0-rc01'
+    implementation 'androidx.compose.material:material:1.3.0-alpha01'
     // Tooling support (Previews, etc.)
-    debugImplementation 'androidx.compose.ui:ui-tooling:1.2.0-rc01'
-    implementation "androidx.compose.ui:ui-tooling-preview:1.2.0-rc01"
+    debugImplementation 'androidx.compose.ui:ui-tooling:1.3.0-alpha01'
+    implementation "androidx.compose.ui:ui-tooling-preview:1.3.0-alpha01"
     // UI Tests
     androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.2.0-rc01'
     // When using a AppCompat theme
