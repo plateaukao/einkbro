@@ -50,7 +50,7 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
     protected val webViewClient: NinjaWebViewClient
     private val webChromeClient: NinjaWebChromeClient
     private val downloadListener: NinjaDownloadListener = NinjaDownloadListener(context)
-    private var clickHandler: NinjaClickHandler? = null
+    private val clickHandler: NinjaClickHandler
 
     var shouldHideTranslateContext: Boolean = false
     protected var isEpubReaderMode = false
@@ -294,7 +294,7 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
     }
 
     fun setAlbumCover(bitmap: Bitmap) = album.setAlbumCover(bitmap)
-    fun setAlbumCoverAndSyncDb(bitmap: Bitmap) {
+    private fun setAlbumCoverAndSyncDb(bitmap: Bitmap) {
         setAlbumCover(bitmap)
 
         if (originalUrl == null) return
@@ -388,7 +388,7 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
         get() = progress >= BrowserUnit.PROGRESS_MAX
 
     fun onLongPress() {
-        val click = clickHandler!!.obtainMessage()
+        val click = clickHandler.obtainMessage()
         click.target = clickHandler
         requestFocusNodeHref(click)
     }

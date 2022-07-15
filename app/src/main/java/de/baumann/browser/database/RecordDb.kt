@@ -30,9 +30,12 @@ class RecordDb(context: Context?): KoinComponent {
     suspend fun addHistory(record: Record) {
         if (record.url.startsWith("data:")) return
 
-        val bookmarks = bookmarkManager.findBy(record.url)
-        if (bookmarks.isNotEmpty()) {
-            config.addRecentBookmark(bookmarks.first())
+        // optimize loading page speed. when no showing recent bookmarks don't update it.
+        if (config.showRecentBookmarks) {
+            val bookmarks = bookmarkManager.findBy(record.url)
+            if (bookmarks.isNotEmpty()) {
+                config.addRecentBookmark(bookmarks.first())
+            }
         }
 
         database.transaction {
@@ -71,7 +74,7 @@ class RecordDb(context: Context?): KoinComponent {
         database.insert(table, null, values)
     }
 
-    fun checkHistory(url: String?): Boolean {
+    private fun checkHistory(url: String?): Boolean {
         if (url == null || url.trim { it <= ' ' }.isEmpty()) {
             return false
         }

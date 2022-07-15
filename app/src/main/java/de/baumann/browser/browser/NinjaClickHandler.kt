@@ -7,6 +7,6 @@ import de.baumann.browser.view.NinjaWebView
 class NinjaClickHandler(private val webView: NinjaWebView) : Handler() {
     override fun handleMessage(message: Message) {
         super.handleMessage(message)
-        webView.browserController?.onLongPress(message.data.getString("url"))
+        webView.browserController?.onLongPress(message)
     }
 }
