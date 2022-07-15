@@ -15,6 +15,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.os.Message
 import android.print.PrintAttributes
 import android.print.PrintManager
 import android.util.Log
@@ -1561,24 +1562,20 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         )
     }
 
-    override fun onLongPress(url: String?) {
-        val nonNullUrl = url ?: return
-        val hitTestResult = ninjaWebView.hitTestResult
-
+    override fun onLongPress(message: Message) {
         dialogManager.showContextMenuLinkDialog(
             ninjaWebView,
-            nonNullUrl,
-            hitTestResult,
-            newTabInBkndAction = { title -> addAlbum(title, nonNullUrl, false) },
-            splitScreenAction = { toggleSplitScreen(nonNullUrl) },
+            message,
+            newTabInBkndAction = { title, url -> addAlbum(title, url, false) },
+            splitScreenAction = { toggleSplitScreen(it) },
             shareAction = {
                 if (prepareRecord()) NinjaToast.show(this, getString(R.string.toast_share_failed))
-                else IntentUnit.share(this, "", url)
+                else IntentUnit.share(this, "", it)
             },
-            saveBookmarkAction = { title -> saveBookmark(nonNullUrl, title = title) },
-            newTabAction = { title -> addAlbum(title, nonNullUrl) },
-            safeFileAction = { url, fileName -> saveFile(url, fileName) },
-            confirmAdSiteAddition = { confirmAdSiteAddition(hitTestResult.extra ?: "") }
+            saveBookmarkAction = { title, url -> saveBookmark(url, title = title) },
+            newTabAction = { title, url -> addAlbum(title, url) },
+            saveFileAction = { url, fileName -> saveFile(url, fileName) },
+            confirmAdSiteAddition = { confirmAdSiteAddition(it) }
         )
     }
 

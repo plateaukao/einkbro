@@ -32,10 +32,9 @@
         <item name="buttonBarNegativeButtonStyle">@style/MyButtonStyle</item>
     </style>
 
-    <style name="MyButtonStyle" parent="Widget.MaterialComponents.Button.OutlinedButton">
-        <item name="strokeColor">@android:color/black</item>
-        <item name="strokeWidth">0dp</item>
+    <style name="MyButtonStyle" parent="@style/Widget.MaterialComponents.Button.TextButton.Dialog">
         <item name="android:textColor">@android:color/black</item>
+        <item name="backgroundTint">@android:color/white</item>
     </style>
 
     <style name="MyAnimation.Window" parent="@android:style/Animation.Activity">

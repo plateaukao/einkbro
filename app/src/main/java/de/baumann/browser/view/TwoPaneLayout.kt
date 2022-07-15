@@ -39,9 +39,6 @@ class TwoPaneLayout : FrameLayout {
     private var panel2: View? = null
     private var subPanel: View? = null
 
-    init {
-    }
-
     var shouldShowSecondPane = false
         set(value) {
             field = value

@@ -1,6 +1,7 @@
 package de.baumann.browser.browser;
 
 import android.net.Uri;
+import android.os.Message;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.ValueCallback;
@@ -14,7 +15,7 @@ public interface BrowserController {
     void removeAlbum(AlbumController albumController);
     void showFileChooser(ValueCallback<Uri[]> filePathCallback);
     void onShowCustomView(View view, WebChromeClient.CustomViewCallback callback);
-    void onLongPress(String url);
+    void onLongPress(Message message);
     void hideOverview ();
     void addHistory(String title, String url);
     boolean onHideCustomView();
