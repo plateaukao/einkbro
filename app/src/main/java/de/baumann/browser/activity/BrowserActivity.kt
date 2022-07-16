@@ -303,7 +303,18 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         orientation = resources.configuration.orientation
 
         customFontResultLauncher = BrowserUnit.registerCustomFontSelectionResult(this)
-        saveImageFilePickerLauncher = BrowserUnit.registerSaveImageFilePickerResult(this)
+        saveImageFilePickerLauncher = BrowserUnit.registerSaveImageFilePickerResult(this) {uri ->
+            // action to show the downloaded image
+            val fileIntent = Intent(ACTION_VIEW).apply {
+                data = uri
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+            dialogManager.showOkCancelDialog(
+                messageResId = R.string.toast_downloadComplete,
+                okAction = { startActivity(fileIntent) }
+            )
+        }
 
         bookmarkManager.init()
     }
@@ -366,11 +377,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             return
         }
 
-        if (requestCode == WRITE_PDF_REQUEST_CODE && resultCode == RESULT_OK) {
-            data?.data?.let { printPDF() }
-
-            return
-        }
         if (requestCode == GRANT_PERMISSION_REQUEST_CODE && resultCode == RESULT_OK) {
             val uri = data?.data ?: return
             val takeFlags: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION
@@ -620,15 +626,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private fun decreaseFontSize() {
         if (config.fontSize > 50) changeFontSize(config.fontSize - 20)
-    }
-
-    private fun showPdfFilePicker() {
-        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
-            addCategory(Intent.CATEGORY_OPENABLE)
-            type = Constants.MIME_TYPE_PDF
-            putExtra(Intent.EXTRA_TITLE, "einkbro.pdf")
-        }
-        startActivityForResult(intent, WRITE_PDF_REQUEST_CODE)
     }
 
     private fun maybeInitTwoPaneController() {
@@ -1821,7 +1818,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         private const val TAG = "BrowserActivity"
         private const val INPUT_FILE_REQUEST_CODE = 1
         const val WRITE_EPUB_REQUEST_CODE = 2
-        private const val WRITE_PDF_REQUEST_CODE = 3
         const val GRANT_PERMISSION_REQUEST_CODE = 4
         private const val K_SHOULD_LOAD_TAB_STATE = "k_should_load_tab_state"
     }
