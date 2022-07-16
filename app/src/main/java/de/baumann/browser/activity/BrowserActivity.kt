@@ -227,6 +227,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private val recordDb: RecordDb by lazy { RecordDb(this).apply { open(false) } }
 
     private lateinit var customFontResultLauncher: ActivityResultLauncher<Intent>
+    private lateinit var saveImageFilePickerLauncher: ActivityResultLauncher<Intent>
 
     // Classes
     private inner class VideoCompletionListener : OnCompletionListener,
@@ -302,6 +303,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         orientation = resources.configuration.orientation
 
         customFontResultLauncher = BrowserUnit.registerCustomFontSelectionResult(this)
+        saveImageFilePickerLauncher = BrowserUnit.registerSaveImageFilePickerResult(this)
+
         bookmarkManager.init()
     }
 
@@ -544,7 +547,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         updateTitle()
     }
 
-    fun openCustomFontPicker() = BrowserUnit.openFontFilePicker(customFontResultLauncher)
+    private fun openCustomFontPicker() = BrowserUnit.openFontFilePicker(customFontResultLauncher)
 
     private fun showOverview() = overviewDialogController.show()
 
@@ -1580,6 +1583,16 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     private fun saveFile(url: String, fileName: String) {
+        // handle data url case
+        if (url.startsWith("data:image")) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                BrowserUnit.saveImageFromUrl(url, saveImageFilePickerLauncher)
+            } else {
+                NinjaToast.show(this, "Not supported dataUrl")
+            }
+            return
+        }
+
         if (HelperUnit.needGrantStoragePermission(this)) {
             return
         }

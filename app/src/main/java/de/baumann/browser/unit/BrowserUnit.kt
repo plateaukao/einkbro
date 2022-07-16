@@ -18,6 +18,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
@@ -77,6 +78,16 @@ object BrowserUnit : KoinComponent {
 
     val cookie: Cookie by inject()
 
+    fun dataUrlToMimeType(dataUrl: String): String =
+        dataUrl.substring(dataUrl.indexOf("/") + 1, dataUrl.indexOf(";"))
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun dataUrlToStream(dataUrl: String): InputStream {
+        val data = dataUrl.split(",")
+        val base64 = data[1]
+        val imageBytes = Base64.getDecoder().decode(base64)
+        return ByteArrayInputStream(imageBytes)
+    }
+
     fun openDownloadFolder(activity: Activity) {
         val uri = Uri.parse(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString());
         val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
@@ -84,6 +95,16 @@ object BrowserUnit : KoinComponent {
         }
         activity.startActivity(Intent.createChooser(intent, activity.getString(R.string.dialog_title_download)))
     }
+    fun saveImage(context: Context, inputStream: InputStream, uri: Uri) {
+        try {
+            context.contentResolver.openOutputStream(uri).use {
+                it?.write(inputStream.readBytes())
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+    }
+
 
     @JvmStatic
     fun isURL(url: String?): Boolean {
@@ -409,6 +430,31 @@ object BrowserUnit : KoinComponent {
         resultLauncher.launch(intent)
     }
 
+    private var tempImageInputStream: InputStream? = null
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun saveImageFromUrl(url: String, resultLauncher: ActivityResultLauncher<Intent>) {
+        val fileFormat = dataUrlToMimeType(url)
+        tempImageInputStream = dataUrlToStream(url)
+        val type = when (fileFormat.lowercase()) {
+            "png" -> "image/png"
+            "jpg" -> "image/jpeg"
+            "jpeg" -> "image/jpeg"
+            "gif" -> "image/gif"
+            "webp" -> "image/webp"
+            else -> "image/jpeg"
+        }
+
+        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
+        intent.type = type
+        intent.putExtra(Intent.EXTRA_TITLE, "download.$fileFormat")
+        intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+
+        resultLauncher.launch(intent)
+    }
+
+
     fun registerCustomFontSelectionResult(fragment: Fragment): ActivityResultLauncher<Intent> =
         fragment.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             handleFontSelectionResult(fragment.requireContext(), it)
@@ -428,6 +474,19 @@ object BrowserUnit : KoinComponent {
 
         val file = File(uri.path)
         config.customFontInfo = CustomFontInfo(file.name, uri.toString())
+    }
+
+    fun registerSaveImageFilePickerResult(activity: ComponentActivity): ActivityResultLauncher<Intent> =
+        activity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            handleSaveImageFilePickerResult(activity, it)
+        }
+
+    private fun handleSaveImageFilePickerResult(activity: ComponentActivity, activityResult: ActivityResult) {
+        val uri = activityResult.data?.data ?: return
+        // SAVE IMAGE
+        tempImageInputStream?.let { saveImage(activity, it, uri) }
+        tempImageInputStream?.close()
+        tempImageInputStream = null
     }
 
     fun getRecentBookmarksContent(): String {

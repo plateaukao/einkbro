@@ -165,8 +165,8 @@ class DialogManager(
         dialogView.contextLinkNewTabOpen.setOnClickListener { dialog.dismissWithAction { newTabAction(titleText, nonNullUrl) } }
         dialogView.menuSaveFile.setOnClickListener {
             dialog.dismissWithAction {
-                if (nonNullUrl.startsWith("data:")) {
-                    NinjaToast.showShort(activity, "Not supported for data:image urld")
+                if (nonNullUrl.startsWith("data:image")) {
+                    saveFileAction(nonNullUrl, "")
                 } else {
                     if (listOf(WebView.HitTestResult.IMAGE_TYPE,
                             WebView.HitTestResult.IMAGE_ANCHOR_TYPE,
