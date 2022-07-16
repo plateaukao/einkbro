@@ -33,7 +33,10 @@ import de.baumann.browser.unit.HelperUnit.needGrantStoragePermission
 import de.baumann.browser.util.Constants
 import de.baumann.browser.view.NinjaToast.showShort
 import de.baumann.browser.view.dialog.TextInputDialog
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.*
@@ -95,13 +98,14 @@ object BrowserUnit : KoinComponent {
         }
         activity.startActivity(Intent.createChooser(intent, activity.getString(R.string.dialog_title_download)))
     }
-    fun saveImage(context: Context, inputStream: InputStream, uri: Uri) {
-        try {
-            context.contentResolver.openOutputStream(uri).use {
-                it?.write(inputStream.readBytes())
+    private fun saveImage(context: Context, inputStream: InputStream, uri: Uri, postAction: (Uri) -> Unit) {
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                context.contentResolver.openOutputStream(uri).use { it?.write(inputStream.readBytes()) }
+                withContext(Dispatchers.Main) { postAction(uri) }
+            } catch (e: IOException) {
+                e.printStackTrace()
             }
-        } catch (e: IOException) {
-            e.printStackTrace()
         }
     }
 
@@ -476,15 +480,15 @@ object BrowserUnit : KoinComponent {
         config.customFontInfo = CustomFontInfo(file.name, uri.toString())
     }
 
-    fun registerSaveImageFilePickerResult(activity: ComponentActivity): ActivityResultLauncher<Intent> =
+    fun registerSaveImageFilePickerResult(activity: ComponentActivity, postAction: (Uri)-> Unit): ActivityResultLauncher<Intent> =
         activity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            handleSaveImageFilePickerResult(activity, it)
+            handleSaveImageFilePickerResult(activity, it, postAction)
         }
 
-    private fun handleSaveImageFilePickerResult(activity: ComponentActivity, activityResult: ActivityResult) {
+    private fun handleSaveImageFilePickerResult(activity: ComponentActivity, activityResult: ActivityResult, postAction: (Uri)-> Unit) {
         val uri = activityResult.data?.data ?: return
         // SAVE IMAGE
-        tempImageInputStream?.let { saveImage(activity, it, uri) }
+        tempImageInputStream?.let { saveImage(activity, it, uri, postAction) }
         tempImageInputStream?.close()
         tempImageInputStream = null
     }
