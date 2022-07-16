@@ -439,7 +439,7 @@ object BrowserUnit : KoinComponent {
     fun saveImageFromUrl(url: String, resultLauncher: ActivityResultLauncher<Intent>) {
         val fileFormat = dataUrlToMimeType(url)
         tempImageInputStream = dataUrlToStream(url)
-        val type = when (fileFormat.lowercase()) {
+        val mimeType = when (fileFormat.lowercase()) {
             "png" -> "image/png"
             "jpg" -> "image/jpeg"
             "jpeg" -> "image/jpeg"
@@ -448,12 +448,13 @@ object BrowserUnit : KoinComponent {
             else -> "image/jpeg"
         }
 
-        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
-        intent.addCategory(Intent.CATEGORY_OPENABLE)
-        intent.type = type
-        intent.putExtra(Intent.EXTRA_TITLE, "download.$fileFormat")
-        intent.addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = mimeType
+            putExtra(Intent.EXTRA_TITLE, "download.$fileFormat")
+            addFlags(Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION)
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
 
         resultLauncher.launch(intent)
     }
@@ -470,7 +471,7 @@ object BrowserUnit : KoinComponent {
         }
 
     private fun handleFontSelectionResult(context: Context, activityResult: ActivityResult) {
-        if (activityResult.data == null) return
+        if (activityResult.data == null || activityResult.resultCode != Activity.RESULT_OK) return
         val uri = activityResult.data?.data ?: return
 
         val takeFlags: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION
@@ -485,7 +486,12 @@ object BrowserUnit : KoinComponent {
             handleSaveImageFilePickerResult(activity, it, postAction)
         }
 
-    private fun handleSaveImageFilePickerResult(activity: ComponentActivity, activityResult: ActivityResult, postAction: (Uri)-> Unit) {
+    private fun handleSaveImageFilePickerResult(
+        activity: ComponentActivity,
+        activityResult: ActivityResult,
+        postAction: (Uri)-> Unit
+    ) {
+        if (activityResult.data == null || activityResult.resultCode != Activity.RESULT_OK) return
         val uri = activityResult.data?.data ?: return
         // SAVE IMAGE
         tempImageInputStream?.let { saveImage(activity, it, uri, postAction) }
