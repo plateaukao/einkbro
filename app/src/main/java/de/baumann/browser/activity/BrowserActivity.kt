@@ -54,7 +54,6 @@ import de.baumann.browser.unit.*
 import de.baumann.browser.unit.BrowserUnit.downloadFileId
 import de.baumann.browser.unit.HelperUnit.toNormalScheme
 import de.baumann.browser.unit.ViewUnit.dp
-import de.baumann.browser.util.Constants
 import de.baumann.browser.util.DebugT
 import de.baumann.browser.view.*
 import de.baumann.browser.view.GestureType.*
@@ -114,7 +113,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private var currentAlbumController: AlbumController? = null
     private var filePathCallback: ValueCallback<Array<Uri>>? = null
 
-    protected lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
 
     private val bookmarkManager: BookmarkManager by inject()
 
@@ -226,8 +225,21 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private val recordDb: RecordDb by lazy { RecordDb(this).apply { open(false) } }
 
-    private lateinit var customFontResultLauncher: ActivityResultLauncher<Intent>
-    private lateinit var saveImageFilePickerLauncher: ActivityResultLauncher<Intent>
+    private val customFontResultLauncher: ActivityResultLauncher<Intent> =
+        BrowserUnit.registerCustomFontSelectionResult(this)
+    private val saveImageFilePickerLauncher: ActivityResultLauncher<Intent> =
+        BrowserUnit.registerSaveImageFilePickerResult(this) {uri ->
+        // action to show the downloaded image
+        val fileIntent = Intent(ACTION_VIEW).apply {
+            data = uri
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+        dialogManager.showOkCancelDialog(
+            messageResId = R.string.toast_downloadComplete,
+            okAction = { startActivity(fileIntent) }
+        )
+    }
 
     // Classes
     private inner class VideoCompletionListener : OnCompletionListener,
@@ -301,20 +313,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         listenKeyboardShowHide()
 
         orientation = resources.configuration.orientation
-
-        customFontResultLauncher = BrowserUnit.registerCustomFontSelectionResult(this)
-        saveImageFilePickerLauncher = BrowserUnit.registerSaveImageFilePickerResult(this) {uri ->
-            // action to show the downloaded image
-            val fileIntent = Intent(ACTION_VIEW).apply {
-                data = uri
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            }
-            dialogManager.showOkCancelDialog(
-                messageResId = R.string.toast_downloadComplete,
-                okAction = { startActivity(fileIntent) }
-            )
-        }
 
         bookmarkManager.init()
     }
