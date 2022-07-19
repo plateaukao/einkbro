@@ -13,9 +13,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -23,6 +24,8 @@ import de.baumann.browser.view.toolbaricons.ToolbarAction
 import de.baumann.browser.view.toolbaricons.ToolbarAction.*
 import de.baumann.browser.view.toolbaricons.ToolbarActionInfo
 
+
+private val toolbarIconWidth = 46.dp
 
 @Composable
 fun ComposedToolbar(
@@ -33,26 +36,32 @@ fun ComposedToolbar(
     onClick: (ToolbarAction) -> Unit,
     onLongClick: ((ToolbarAction) -> Unit)? = null,
 ) {
+    val screenWidth = LocalConfiguration.current.screenWidthDp
+    val shouldTitleWidthFixed =  toolbarActionInfos.size * 46 > screenWidth
     Row(
         modifier = Modifier
             .height(50.dp)
             .background(MaterialTheme.colors.background)
-            .horizontalScroll(rememberScrollState(), reverseScrolling = true) // default on right side
+            .conditional(shouldTitleWidthFixed) { horizontalScroll(rememberScrollState(), reverseScrolling = true) }
             .clickable { onClick(Title) }, // these two lines prevent row having click action
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.End
     ) {
         toolbarActionInfos.forEach { toolbarActionInfo ->
             when (val toolbarAction = toolbarActionInfo.toolbarAction) {
-                Title ->
+                Title -> {
+                    val titleModifier = Modifier
+                        .padding(horizontal = 1.dp)
+                        .then(if (shouldTitleWidthFixed) Modifier.widthIn(max = 300.dp) else Modifier.weight(1F))
+                        .clickable { onClick(toolbarAction) }
                     Text(
-                        modifier = Modifier
-                            .padding(horizontal = 1.dp)
-                            .widthIn(max = 300.dp)
-                            .clickable { onClick(toolbarAction) },
+                        modifier = titleModifier,
                         text = title,
-                        maxLines = 2
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        textAlign = TextAlign.End,
                     )
+                }
                 TabCount ->
                     TabCountIcon(
                         isIncognito = isIncognito,
@@ -81,7 +90,7 @@ fun ToolbarIcon(
     Icon(
         modifier = Modifier
             .fillMaxHeight()
-            .width(46.dp)
+            .width(toolbarIconWidth)
             .padding(6.dp)
             .border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
             .combinedClickable(
@@ -112,8 +121,8 @@ private fun TabCountIcon(
 
     Box(
         modifier = Modifier
-            .height(46.dp)
-            .width(46.dp)
+            .height(toolbarIconWidth)
+            .width(toolbarIconWidth)
             .combinedClickable(
                 onClick = onClick,
                 onLongClick = onLongClick
@@ -131,6 +140,14 @@ private fun TabCountIcon(
             fontSize = 16.sp,
             color = MaterialTheme.colors.onBackground,
         )
+    }
+}
+
+private inline fun Modifier.conditional(condition : Boolean, modifier : Modifier.() -> Modifier) : Modifier {
+    return if (condition) {
+        modifier.invoke(this)
+    } else {
+        this
     }
 }
 
@@ -157,6 +174,26 @@ fun PreviewToolbar() {
         ComposedToolbar(
             toolbarActionInfos = ToolbarAction.values().map { ToolbarActionInfo(it, false) },
             "hihi",
+            tabCount = "1",
+            isIncognito = true,
+            { },
+        )
+    }
+}
+
+@Preview
+@Composable
+fun PreviewToolbarLongTitle() {
+    MyTheme {
+        ComposedToolbar(
+            toolbarActionInfos = listOf(
+                ToolbarActionInfo(Desktop, false),
+                ToolbarActionInfo(TabCount, false),
+                ToolbarActionInfo(Title, false),
+                ToolbarActionInfo(Desktop, false),
+                ToolbarActionInfo(Desktop, false),
+            ),
+            "hi hihi hihi hihi hihi hihi hihihihih ihih 1 2 3 456789",
             tabCount = "1",
             isIncognito = true,
             { },
