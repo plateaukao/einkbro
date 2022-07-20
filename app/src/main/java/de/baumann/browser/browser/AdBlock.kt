@@ -6,7 +6,6 @@ import de.baumann.browser.unit.RecordUnit
 import android.annotation.SuppressLint
 import android.content.Context
 import de.baumann.browser.preference.ConfigManager
-import de.baumann.browser.util.DebugT
 import android.util.Log
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -72,7 +71,6 @@ class AdBlock(private val context: Context): KoinComponent {
 
     private fun loadHosts(context: Context) {
         val thread = Thread {
-            val debugT = DebugT("loadHosts")
             val manager = context.assets
             try {
                 val reader = BufferedReader(InputStreamReader(manager.open(FILE)))
@@ -83,7 +81,6 @@ class AdBlock(private val context: Context): KoinComponent {
             } catch (i: IOException) {
                 Log.w("browser", "Error loading hosts", i)
             }
-            debugT.printTime()
         }
         thread.start()
     }
