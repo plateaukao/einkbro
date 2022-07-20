@@ -41,5 +41,6 @@ class EinkBroApplication : Application() {
         }
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+
     }
 }

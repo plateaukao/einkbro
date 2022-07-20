@@ -33,13 +33,13 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (supportFragmentManager.backStackEntryCount > 1) {
+        if (supportFragmentManager.backStackEntryCount >= 1) {
             supportFragmentManager.popBackStack()
         } else {
             finish()
         }
         //set correct title
-        if (supportFragmentManager.backStackEntryCount == 2) {
+        if (supportFragmentManager.backStackEntryCount == 1) {
             setTitle(R.string.settings)
         }
     }
