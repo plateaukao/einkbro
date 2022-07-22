@@ -351,4 +351,6 @@
     <string name="setting_title_trim_input_url">剪裁输入文本内容</string>
     <string name="setting_summary_trim_input_url">移除输入内容中的非http前缀文本</string>
     <string name="no_bookmarks">Long press bookmarks icon to add some bookmarks.</string>
+    <string name="always_enable_zoom">Always enable content zooming</string>
+    <string name="setting_summary_enable_zoom">Force some website content to be zoomable</string>
 </resources>

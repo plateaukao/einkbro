@@ -278,10 +278,12 @@
     <string name="turn_on">開啟</string>
     <string name="turn_off">關閉</string>
     <string name="title_touch_area">點擊翻頁區域設定</string>
-    <string name="title_about">About</string>
-    <string name="setting_title_auto_fill_form">Auto fill form data</string>
-    <string name="setting_summary_auto_fill_form">Auto fill form data if enabled.</string>
-    <string name="setting_title_trim_input_url">Trim input text content</string>
-    <string name="setting_summary_trim_input_url">Remove non-http prefix text in input content</string>
-    <string name="no_bookmarks">Long press bookmarks icon to add some bookmarks.</string>
+    <string name="title_about">關於 EinkBro</string>
+    <string name="setting_title_auto_fill_form">自動填入表格</string>
+    <string name="setting_summary_auto_fill_form">當開啟時，會自動填入表格資料</string>
+    <string name="setting_title_trim_input_url">去除輸入字串中的非網址部分</string>
+    <string name="setting_summary_trim_input_url">當輸入字串有非網址部分時，會自動移除</string>
+    <string name="no_bookmarks">長按書籤按鈕以新增書籤</string>
+    <string name="always_enable_zoom">總是啟用網頁放大功能</string>
+    <string name="setting_summary_enable_zoom">強制部分無法放大的網頁可以放大</string>
 </resources>

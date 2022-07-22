@@ -13,31 +13,25 @@ import android.view.View
 import android.webkit.*
 import android.widget.Button
 import android.widget.TextView
+import androidx.core.net.toUri
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.preference.ConfigManager
+import de.baumann.browser.preference.FontType
 import de.baumann.browser.unit.BrowserUnit
 import de.baumann.browser.unit.HelperUnit
 import de.baumann.browser.unit.IntentUnit
+import de.baumann.browser.util.DebugT
 import de.baumann.browser.view.NinjaToast
 import de.baumann.browser.view.NinjaWebView
-import java.io.InputStream
-import java.net.URISyntaxException
-import kotlin.collections.HashMap
-
-import android.util.Base64
-import androidx.core.net.toUri
-import de.baumann.browser.util.DebugT
 import de.baumann.browser.view.dTLoadUrl
+import de.baumann.browser.view.dialog.DialogManager
+import nl.siegmann.epublib.domain.Book
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.ByteArrayInputStream
 import java.io.IOException
-import android.webkit.WebResourceResponse
-import de.baumann.browser.preference.FontType
-import de.baumann.browser.view.dialog.DialogManager
-import nl.siegmann.epublib.domain.Book
 
 class NinjaWebViewClient(
         private val ninjaWebView: NinjaWebView,
