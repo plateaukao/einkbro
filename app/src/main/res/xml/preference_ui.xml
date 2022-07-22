@@ -27,6 +27,12 @@
             android:title="@string/desktop_mode"
             android:summary="@string/setting_summary_desktop"/>
 
+        <CheckBoxPreference android:key="sp_enable_zoom"
+            android:icon="@drawable/ic_enable_zoom"
+            android:defaultValue="false"
+            android:title="@string/always_enable_zoom"
+            android:summary="@string/setting_summary_enable_zoom"/>
+
         <CheckBoxPreference android:key="sp_new_tab_recent_bookmarks"
             android:icon="@drawable/ic_bookmarks"
             android:defaultValue="false"

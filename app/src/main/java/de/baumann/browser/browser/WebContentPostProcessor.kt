@@ -1,8 +1,13 @@
 package de.baumann.browser.browser
 
+import de.baumann.browser.preference.ConfigManager
 import de.baumann.browser.view.NinjaWebView
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-class WebContentPostProcessor {
+class WebContentPostProcessor:KoinComponent {
+    private val configManager: ConfigManager by inject()
+
     fun postProcess(ninjaWebView: NinjaWebView, url: String) {
         if (url.startsWith("data:text/html")) return
 
@@ -13,9 +18,14 @@ class WebContentPostProcessor {
                 ninjaWebView.evaluateJavascript(script, null)
             }
         }
+
+        if (configManager.enableZoom) {
+            ninjaWebView.evaluateJavascript(enableZoomJs, null)
+        }
     }
 
     companion object {
+        private const val enableZoomJs = "javascript:document.getElementsByName('viewport')[0].setAttribute('content', 'initial-scale=1.0,maximum-scale=10.0');"
         private const val facebookHideSponsoredPostsJs = """
             javascript:(function() {
               var posts = [].filter.call(document.getElementsByTagName('article'), el => el.attributes['data-store'].value.indexOf('is_sponsored.1') >= 0 || el.getElementsByTagName('header')[0].innerText == 'Suggested for you'); 
