@@ -57,9 +57,9 @@ fun ComposedToolbar(
                     Text(
                         modifier = titleModifier,
                         text = title,
+                        color = MaterialTheme.colors.onBackground,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
-                        textAlign = TextAlign.End,
                     )
                 }
                 TabCount ->
