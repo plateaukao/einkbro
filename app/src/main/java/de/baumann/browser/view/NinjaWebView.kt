@@ -180,7 +180,8 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
             setAppCacheEnabled(true)
             setAppCachePath("");
             setAppCacheMaxSize(30 * 1024 * 1024)
-            cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
+            // don't load cache by default, so that it won't cause some issues
+            //cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
             textZoom = config.fontSize
             allowFileAccessFromFileURLs = sp.getBoolean("sp_remote", true)
             allowUniversalAccessFromFileURLs = sp.getBoolean("sp_remote", true)
