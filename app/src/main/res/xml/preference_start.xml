@@ -17,7 +17,7 @@
         android:summary="@string/setting_summary_save_data"/>
 
     <CheckBoxPreference android:key="sp_auto_fill"
-        android:icon="@drawable/ic_save_data"
+        android:icon="@drawable/ic_input_url"
         android:defaultValue="true"
         android:title="@string/setting_title_auto_fill_form"
         android:summary="@string/setting_summary_auto_fill_form"/>
@@ -27,6 +27,12 @@
         android:defaultValue="true"
         android:title="@string/setting_title_history"
         android:summary="@string/setting_summary_history"/>
+
+    <CheckBoxPreference android:key="sp_debug_webview"
+        android:icon="@drawable/ic_eye"
+        android:defaultValue="false"
+        android:title="@string/setting_title_debug"
+        android:summary="@string/setting_summary_debug"/>
 
     <CheckBoxPreference android:key="sp_remote"
         android:icon="@drawable/icon_remote"

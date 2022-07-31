@@ -286,4 +286,6 @@
     <string name="no_bookmarks">長按書籤按鈕以新增書籤</string>
     <string name="always_enable_zoom">總是啟用網頁放大功能</string>
     <string name="setting_summary_enable_zoom">強制部分無法放大的網頁可以放大</string>
+    <string name="setting_title_debug">Debug WebView</string>
+    <string name="setting_summary_debug">Enable this option to be able to debug WebView</string>
 </resources>
