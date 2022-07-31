@@ -125,9 +125,10 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun initWebView() {
-        if (BuildConfig.DEBUG) {
+        if (BuildConfig.DEBUG || config.debugWebView) {
             setWebContentsDebuggingEnabled(true)
         }
+
         setWebViewClient(webViewClient)
         setWebChromeClient(webChromeClient)
         setDownloadListener(downloadListener)

@@ -144,6 +144,7 @@ class ConfigManager(
     var hideTouchAreaWhenInput by BooleanPreference(sp, K_TOUCH_AREA_HIDE_WHEN_INPUT, false)
     var customFontChanged by BooleanPreference(sp, K_CUSTOM_FONT_CHANGED, false)
     var showRecentBookmarks by BooleanPreference(sp, K_SHOW_RECENT_BOOKMARKS, false)
+    var debugWebView by BooleanPreference(sp, K_DEBUG_WEBVIEW, false)
 
     var favoriteUrl: String
         get() = sp.getString(K_FAVORITE_URL, Constants.DEFAULT_HOME_URL)
@@ -363,6 +364,7 @@ class ConfigManager(
         const val K_AUTO_FILL = "sp_auto_fill"
         const val K_TRIM_INPUT_URL = "sp_trim_input_url"
         const val K_ENABLE_ZOOM = "sp_enable_zoom"
+        const val K_DEBUG_WEBVIEW = "sp_debug_webview"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
         private const val RECENT_BOOKMARKS_SEPARATOR = "::::"
