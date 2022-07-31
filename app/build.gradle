@@ -10,8 +10,8 @@ android {
         applicationId "info.plateaukao.einkbro"
         minSdkVersion 21
         targetSdkVersion 32
-        versionCode 90401
-        versionName "9.4.1"
+        versionCode 90500
+        versionName "9.5.0"
         vectorDrawables.useSupportLibrary = true
 
         javaCompileOptions {
@@ -84,12 +84,12 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.4.2'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
-    implementation "androidx.room:room-runtime:2.4.2"
-    implementation "androidx.room:room-ktx:2.4.2"
+    implementation "androidx.room:room-runtime:2.4.3"
+    implementation "androidx.room:room-ktx:2.4.3"
     kapt 'org.xerial:sqlite-jdbc:3.36.0.2'
-    kapt "androidx.room:room-compiler:2.4.2"
+    kapt "androidx.room:room-compiler:2.4.3"
 
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
 
     // for dark mode
     implementation 'androidx.webkit:webkit:1.4.0'
@@ -102,19 +102,19 @@ dependencies {
     // Android
     implementation "io.insert-koin:koin-android-compat:$koin_version"
 
-    implementation 'androidx.activity:activity-ktx:1.4.0'
+    implementation 'androidx.activity:activity-ktx:1.5.1'
 
     // memory leak detection
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
 
     // compose
     // Compose Material Design
-    implementation 'androidx.compose.material:material:1.3.0-alpha01'
+    implementation 'androidx.compose.material:material:1.3.0-alpha02'
     // Tooling support (Previews, etc.)
-    debugImplementation 'androidx.compose.ui:ui-tooling:1.3.0-alpha01'
-    implementation "androidx.compose.ui:ui-tooling-preview:1.3.0-alpha01"
+    debugImplementation 'androidx.compose.ui:ui-tooling:1.3.0-alpha02'
+    implementation "androidx.compose.ui:ui-tooling-preview:1.3.0-alpha02"
     // UI Tests
-    androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.2.0-rc01'
+    androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.3.0-alpha02'
 
     // reorder lazylist
     implementation "org.burnoutcrew.composereorderable:reorderable:0.9.0"
