@@ -14,7 +14,7 @@
     <string name="main_omnibox_input_hint">Search or type URL</string>
     <string name="menu_open_with">Open link with …</string>
     <string name="menu_quit">Quit</string>
-    <string name="menu_openFav">Open Favorite</string>
+    <string name="menu_openFav">Open start site</string>
     <string name="menu_delete">Delete</string>
     <string name="menu_delete_list">Delete list</string>
     <string name="menu_edit">Edit</string>
