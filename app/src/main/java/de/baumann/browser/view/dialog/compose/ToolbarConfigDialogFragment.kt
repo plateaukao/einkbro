@@ -17,12 +17,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import de.baumann.browser.Ninja.R
 import de.baumann.browser.view.compose.MyTheme
-import de.baumann.browser.view.dialog.compose.OrderDirection.*
 import de.baumann.browser.view.toolbaricons.ToolbarAction
-import org.burnoutcrew.reorderable.ReorderableItem
-import org.burnoutcrew.reorderable.detectReorderAfterLongPress
-import org.burnoutcrew.reorderable.rememberReorderableLazyListState
-import org.burnoutcrew.reorderable.reorderable
+import org.burnoutcrew.reorderable.*
 
 class ToolbarConfigDialogFragment: ComposeDialogFragment(){
     override fun setupComposeView() {
@@ -93,9 +89,7 @@ private fun ToolbarList(
 
     LazyColumn(
         state = state.listState,
-        modifier = modifier
-            .reorderable(state)
-            .detectReorderAfterLongPress(state)
+        modifier = modifier.reorderable(state)
     ) {
         items(infos, { it.hashCode() }) { info ->
             ReorderableItem(state, key = info.hashCode()) { isDragging ->
@@ -108,15 +102,7 @@ private fun ToolbarList(
                     ToolbarToggleItem(
                         info = info,
                         onItemClicked = onItemClicked,
-                        onDirectionClicked = { direction ->
-                            val index = infos.indexOf(info)
-                            when {
-                                direction == Up && index != 0 ->
-                                    onItemMoved(index, index -1 )
-                                direction == Down && index < infos.size -1 ->
-                                    onItemMoved(index, index + 1 )
-                            }
-                        }
+                        dragModifier = Modifier.detectReorder(state)
                     )
                 }
             }
@@ -124,13 +110,11 @@ private fun ToolbarList(
     }
 }
 
-enum class OrderDirection { Up, Down}
-
 @Composable
 fun ToolbarToggleItem(
     info: ToolbarActionItemInfo,
     onItemClicked: (ToolbarAction)->Unit,
-    onDirectionClicked: (OrderDirection)-> Unit
+    dragModifier: Modifier,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -147,18 +131,8 @@ fun ToolbarToggleItem(
             )
         }
         Icon(
-            painter = painterResource(id = R.drawable.icon_arrow_up_gest), contentDescription = null,
-            modifier = Modifier
-                .fillMaxHeight()
-                .clickable { onDirectionClicked(Up) },
-            tint = MaterialTheme.colors.onBackground
-        )
-        Icon(
-            painter = painterResource(id = R.drawable.icon_arrow_down_gest), contentDescription = null,
-            modifier = Modifier
-                .padding(horizontal = 6.dp)
-                .fillMaxHeight()
-                .clickable { onDirectionClicked(Down) },
+            painter = painterResource(id = R.drawable.ic_drag), contentDescription = null,
+            modifier = dragModifier.padding(horizontal = 8.dp).fillMaxHeight(),
             tint = MaterialTheme.colors.onBackground
         )
     }
