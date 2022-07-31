@@ -28,7 +28,7 @@ class WebContentPostProcessor:KoinComponent {
         private const val enableZoomJs = "javascript:document.getElementsByName('viewport')[0].setAttribute('content', 'initial-scale=1.0,maximum-scale=10.0');"
         private const val facebookHideSponsoredPostsJs = """
             javascript:(function() {
-              var posts = [].filter.call(document.getElementsByTagName('article'), el => el.attributes['data-store'].value.indexOf('is_sponsored.1') >= 0 || el.getElementsByTagName('header')[0].innerText == 'Suggested for you'); 
+              var posts = [].filter.call(document.getElementsByTagName('article'), el => (el.attributes['data-ft'] != null && el.attributes['data-ft'].value.indexOf('is_sponsored') >= 0) || el.getElementsByTagName('header')[0].innerText == 'Suggested for you'); 
               while(posts.length > 0) { posts.pop().style.display = "none"; }
               
               var ads = Array.from(document.getElementsByClassName("bg-s3")).filter(e => e.innerText.indexOf("Sponsored") != -1);
@@ -37,7 +37,7 @@ class WebContentPostProcessor:KoinComponent {
               ads.forEach(el => {el.nextSibling.nextSibling.nextSibling.nextSibling.style.display="none"});
               
             var qcleanObserver = new window.MutationObserver(function(mutation, observer){ 
-              var posts = [].filter.call(document.getElementsByTagName('article'), el => el.attributes['data-ft'].value.indexOf('is_sponsored') >= 0 || el.getElementsByTagName('header')[0].innerText == 'Suggested for you'); 
+              var posts = [].filter.call(document.getElementsByTagName('article'), el => (el.attributes['data-ft'] != null && el.attributes['data-ft'].value.indexOf('is_sponsored') >= 0) || el.getElementsByTagName('header')[0].innerText == 'Suggested for you'); 
               while(posts.length > 0) { posts.pop().style.display = "none"; }
               
               var ads = Array.from(document.getElementsByClassName("bg-s3")).filter(e => e.innerText.indexOf("Sponsored") != -1);
