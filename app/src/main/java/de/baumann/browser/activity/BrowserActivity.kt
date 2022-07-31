@@ -1001,6 +1001,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             Bookmark -> openBookmarkPage()
             Back -> handleBackKey()
             Fullscreen -> fullscreen()
+            Refresh -> ninjaWebView.reload()
         }
     }
 

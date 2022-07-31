@@ -71,10 +71,6 @@ class ConfigManager(
             }
             sp.edit {
                 putString("saved_key_ok", "yes")
-                putString("setting_gesture_tb_up", "08")
-                putString("setting_gesture_tb_down", "01")
-                putString("setting_gesture_tb_left", "07")
-                putString("setting_gesture_tb_right", "06")
                 putString("setting_gesture_nav_up", "04")
                 putString("setting_gesture_nav_down", "05")
                 putString("setting_gesture_nav_left", "03")

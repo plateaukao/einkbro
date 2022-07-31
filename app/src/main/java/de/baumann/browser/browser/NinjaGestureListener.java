@@ -9,10 +9,6 @@ public class NinjaGestureListener extends GestureDetector.SimpleOnGestureListene
     private NinjaWebView webView;
     private boolean longPress = true;
 
-    public NinjaGestureListener() {
-        super();
-    }
-
     public NinjaGestureListener(NinjaWebView webView) {
         super();
         this.webView = webView;
