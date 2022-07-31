@@ -20,11 +20,6 @@ class FragmentSettingsGesture : PreferenceFragmentCompat(), OnSharedPreferenceCh
         findPreference<ListPreference>("setting_multitouch_left")?.setGestureEntries()
         findPreference<ListPreference>("setting_multitouch_right")?.setGestureEntries()
 
-        findPreference<ListPreference>("setting_gesture_tb_up")?.setGestureEntries()
-        findPreference<ListPreference>("setting_gesture_tb_down")?.setGestureEntries()
-        findPreference<ListPreference>("setting_gesture_tb_left")?.setGestureEntries()
-        findPreference<ListPreference>("setting_gesture_tb_right")?.setGestureEntries()
-
         findPreference<ListPreference>("setting_gesture_nav_up")?.setGestureEntries()
         findPreference<ListPreference>("setting_gesture_nav_down")?.setGestureEntries()
         findPreference<ListPreference>("setting_gesture_nav_left")?.setGestureEntries()
@@ -48,7 +43,6 @@ class FragmentSettingsGesture : PreferenceFragmentCompat(), OnSharedPreferenceCh
     }
 
     private fun ListPreference.setGestureEntries() {
-        val context = context ?: return
         entries = GestureType.values().map { context.getString(it.resId) }.toTypedArray()
         entryValues = GestureType.values().map { it.value }.toTypedArray()
     }

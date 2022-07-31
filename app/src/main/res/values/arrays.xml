@@ -44,13 +44,6 @@
         <item>3</item>
     </string-array>
 
-    <!-- Gestures -->
-    <string-array name="setting_entries_gestures">
-    </string-array>
-
-    <string-array name="setting_values_gestures">
-    </string-array>
-
     <!-- Dark mode -->
     <string-array name="setting_entries_dark_mode">
         <item>Follow System</item>

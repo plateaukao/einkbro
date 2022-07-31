@@ -266,8 +266,8 @@
     <string name="setting_title_export_bookmarks">export bookmarks</string>
     <string name="setting_title_import_bookmarks">import bookmarks</string>
     <string name="setting_title_incognito">Incognito Mode</string>
-    <string name="back">back</string>
-    <string name="refresh">refresh</string>
+    <string name="back">Back</string>
+    <string name="refresh">Refresh</string>
     <string name="touch_turn_page">Touch turn page</string>
     <string name="tab_preview">Tab preview</string>
     <string name="font_size">Font Size</string>

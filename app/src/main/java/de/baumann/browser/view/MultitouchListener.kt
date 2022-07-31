@@ -3,7 +3,6 @@ package de.baumann.browser.view
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Point
-import android.util.Log
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
@@ -18,7 +17,7 @@ import kotlin.math.max
 
 open class MultitouchListener(
     context: Context,
-    webView: NinjaWebView,
+    private val webView: NinjaWebView,
     private val touchCount: Int = 2
 ) : View.OnTouchListener, KoinComponent {
 
