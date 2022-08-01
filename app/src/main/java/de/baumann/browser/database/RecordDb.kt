@@ -39,9 +39,10 @@ class RecordDb(context: Context?): KoinComponent {
         }
 
         database.transaction {
-            if (checkHistory(record.url)) {
-                deleteHistoryItemByURL(record.url)
-            }
+            // FIXME: there's no index for the table, so don't check url existence. just add it
+//            if (checkHistory(record.url)) {
+//                deleteHistoryItemByURL(record.url)
+//            }
 
             internalAddHistory(record)
             purgeOldHistoryItem(14)
@@ -117,15 +118,20 @@ class RecordDb(context: Context?): KoinComponent {
         return false
     }
 
-    fun deleteHistoryItemByURL(domain: String?) {
+    private fun deleteHistoryItemByURL(domain: String?) {
         if (domain == null || domain.trim { it <= ' ' }.isEmpty()) {
             return
         }
         database.execSQL("DELETE FROM " + RecordUnit.TABLE_HISTORY + " WHERE " + RecordUnit.COLUMN_URL + " = " + "\"" + domain.trim { it <= ' ' } + "\"")
     }
 
-    fun purgeOldHistoryItem(days: Int) {
-        val tsBefore = System.currentTimeMillis() - (1000 * 60 * 60 * 24) * days
+    private fun purgeOldHistoryItem(days: Int) {
+        val currentTimestamp = System.currentTimeMillis()
+        // if it's purged within two days, don't do it again
+        if (currentTimestamp - config.purgeHistoryTimestamp < (1000 * 60 * 60 * 24 * 2)) return
+
+        config.purgeHistoryTimestamp = currentTimestamp
+        val tsBefore = currentTimestamp - (1000 * 60 * 60 * 24) * days
         val sql = "DELETE FROM ${RecordUnit.TABLE_HISTORY} WHERE ${RecordUnit.COLUMN_TIME} <= $tsBefore"
         database.execSQL(sql)
     }

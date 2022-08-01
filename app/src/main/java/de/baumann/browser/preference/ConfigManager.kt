@@ -257,6 +257,10 @@ class ConfigManager(
             }
         }
 
+    var purgeHistoryTimestamp: Long
+        get() = sp.getLong(K_HISTORY_PURGE_TS, 0L)
+        set(value) = sp.edit { putLong(K_HISTORY_PURGE_TS, value) }
+
     var currentAlbumIndex: Int
         get() = sp.getInt(K_SAVED_ALBUM_INDEX, 0)
         set(value) {
@@ -365,6 +369,7 @@ class ConfigManager(
         const val K_TRIM_INPUT_URL = "sp_trim_input_url"
         const val K_ENABLE_ZOOM = "sp_enable_zoom"
         const val K_DEBUG_WEBVIEW = "sp_debug_webview"
+        const val K_HISTORY_PURGE_TS = "sp_history_purge_ts"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
         private const val RECENT_BOOKMARKS_SEPARATOR = "::::"

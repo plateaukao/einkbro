@@ -92,7 +92,10 @@ private fun ToolbarList(
         modifier = modifier.reorderable(state)
     ) {
         items(infos, { it.hashCode() }) { info ->
-            ReorderableItem(state, key = info.hashCode()) { isDragging ->
+            ReorderableItem(
+                state,
+                key = info.hashCode(),
+            ) { isDragging ->
                 val borderWidth = if (isDragging) 1.5.dp else -1.dp
                 Column(
                     modifier = Modifier

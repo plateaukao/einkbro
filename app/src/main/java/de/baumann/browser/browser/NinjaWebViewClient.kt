@@ -25,7 +25,6 @@ import de.baumann.browser.unit.IntentUnit
 import de.baumann.browser.util.DebugT
 import de.baumann.browser.view.NinjaToast
 import de.baumann.browser.view.NinjaWebView
-import de.baumann.browser.view.dTLoadUrl
 import de.baumann.browser.view.dialog.DialogManager
 import nl.siegmann.epublib.domain.Book
 import org.koin.core.component.KoinComponent
@@ -75,8 +74,6 @@ class NinjaWebViewClient(
                 url != BrowserUnit.URL_ABOUT_BLANK) {
             addHistoryAction(ninjaWebView.albumTitle, url)
         }
-        dTLoadUrl?.printTime()
-        dTLoadUrl = null
     }
 
     private fun isTranslationDomain(url: String): Boolean {
@@ -92,11 +89,6 @@ class NinjaWebViewClient(
             handleUri(view, request.url)
 
     private fun handleUri(webView: WebView, uri: Uri): Boolean {
-        if (dTLoadUrl != null) {
-            dTLoadUrl?.printPath(uri.toString())
-        } else {
-            dTLoadUrl = DebugT("loadUrl:${uri}")
-        }
         val url = uri.toString()
         if (url.startsWith("http")) {
             webView.loadUrl(url, ninjaWebView.requestHeaders)
