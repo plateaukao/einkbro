@@ -37,7 +37,7 @@ fun ComposedToolbar(
     onLongClick: ((ToolbarAction) -> Unit)? = null,
 ) {
     val screenWidth = LocalConfiguration.current.screenWidthDp
-    val shouldTitleWidthFixed =  toolbarActionInfos.size * 46 > screenWidth
+    val shouldTitleWidthFixed =  toolbarActionInfos.filter { it.toolbarAction != Title }.size * 46 > screenWidth
     Row(
         modifier = Modifier
             .height(50.dp)
