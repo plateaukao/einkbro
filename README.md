@@ -75,6 +75,6 @@ This browser is called EinkBro. It's designed to fit Eink devices' needs; no unn
 - open links in other apps (for example YouTube)
 
 ### Nightly build
-https://nightly.link/plateaukao/browser/workflows/buid-app-workflow.yaml/main/app-release.apk.zip
+https://nightly.link/plateaukao/einkbro/workflows/buid-app-workflow.yaml/main/app-release.apk.zip
 
 <div>App icon is made by <a href="https://www.flaticon.com/authors/turkkub" title="turkkub">turkkub</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
