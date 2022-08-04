@@ -92,7 +92,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     // Others
     private var title: String? = null
-    private var url: String? = null
     private var downloadReceiver: BroadcastReceiver? = null
     private val sp: SharedPreferences by inject()
     private val config: ConfigManager by inject()
@@ -197,9 +196,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private fun refreshAction() {
         if (ninjaWebView.isLoadFinish && ninjaWebView.url?.isNotEmpty() == true) {
             ninjaWebView.reload()
-        } else if (url == null) {
-            val text = getString(R.string.toast_load_error) + ": " + url
-            NinjaToast.show(this, text)
         } else {
             ninjaWebView.stopLoading()
         }
