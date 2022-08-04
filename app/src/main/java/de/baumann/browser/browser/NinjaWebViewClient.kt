@@ -1,4 +1,4 @@
-package de.baumann.browser.browser
+package info.plateaukao.einkbro.browser
 
 import android.annotation.TargetApi
 import android.app.Activity
@@ -16,16 +16,15 @@ import android.widget.TextView
 import androidx.core.net.toUri
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import de.baumann.browser.Ninja.R
-import de.baumann.browser.preference.ConfigManager
-import de.baumann.browser.preference.FontType
-import de.baumann.browser.unit.BrowserUnit
-import de.baumann.browser.unit.HelperUnit
-import de.baumann.browser.unit.IntentUnit
-import de.baumann.browser.util.DebugT
-import de.baumann.browser.view.NinjaToast
-import de.baumann.browser.view.NinjaWebView
-import de.baumann.browser.view.dialog.DialogManager
+import info.plateaukao.einkbro.R
+import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.preference.FontType
+import info.plateaukao.einkbro.unit.BrowserUnit
+import info.plateaukao.einkbro.unit.HelperUnit
+import info.plateaukao.einkbro.unit.IntentUnit
+import info.plateaukao.einkbro.view.NinjaToast
+import info.plateaukao.einkbro.view.NinjaWebView
+import info.plateaukao.einkbro.view.dialog.DialogManager
 import nl.siegmann.epublib.domain.Book
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject

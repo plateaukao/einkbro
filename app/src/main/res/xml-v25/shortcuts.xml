@@ -10,7 +10,7 @@
         <intent
             android:action="sc_bookmark"
             android:targetPackage="info.plateaukao.einkbro"
-            android:targetClass="de.baumann.browser.activity.BrowserActivity" />
+            android:targetClass="info.plateaukao.einkbro.activity.BrowserActivity" />
         <categories android:name="android.shortcut.conversation" />
     </shortcut>
 
@@ -24,7 +24,7 @@
         <intent
             android:action="sc_history"
             android:targetPackage="info.plateaukao.einkbro"
-            android:targetClass="de.baumann.browser.activity.BrowserActivity" />
+            android:targetClass="info.plateaukao.einkbro.activity.BrowserActivity" />
         <categories android:name="android.shortcut.conversation" />
     </shortcut>
 
@@ -37,7 +37,7 @@
         <intent
             android:action="sc_home"
             android:targetPackage="info.plateaukao.einkbro"
-            android:targetClass="de.baumann.browser.activity.BrowserActivity" />
+            android:targetClass="info.plateaukao.einkbro.activity.BrowserActivity" />
         <categories android:name="android.shortcut.conversation" />
     </shortcut>
 </shortcuts>

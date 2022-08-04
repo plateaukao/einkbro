@@ -79,7 +79,7 @@ Dies zu deaktivieren ist sicherer, schneller und spart Datenvolumen. Manche Inha
     <string name="setting_title_history">Verlauf</string>
     <string name="setting_summary_history">Speichere den Verlauf der besuchten Websites.</string>
     <!-- browser clear -->
-    <string name="data_summary">Alle Dateien werden in das Verzeichnis \"Android/data/de.baumann.browser/files/browser_backup/\" deiner SD-Karte exportiert. Dieses Verzeichnis wird GELÖSCHT, wenn du EinkBro deinstallierst. Mache also regelmäßig eine Sicherung an einer sicheren Stelle.</string>
+    <string name="data_summary">Alle Dateien werden in das Verzeichnis \"Android/data/info.plateaukao.einkbro/files/browser_backup/\" deiner SD-Karte exportiert. Dieses Verzeichnis wird GELÖSCHT, wenn du EinkBro deinstallierst. Mache also regelmäßig eine Sicherung an einer sicheren Stelle.</string>
     <string name="clear_title_quit">Bereinigen, wenn die Anwendung schließt</string>
     <string name="clear_summary_quit">Jedesmal, wenn du EinkBro schließt, werden alle oben ausgewählte Daten gelöscht.</string>
     <string name="clear_title_cache">Cache löschen</string>

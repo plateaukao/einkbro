@@ -82,7 +82,7 @@
     <string name="setting_title_history">Historie</string>
     <string name="setting_summary_history">Uložit historii navštívených stránek.</string>
     <!-- browser clear -->
-    <string name="data_summary">Všechny soubory budou exportovány do adresáře „Android/data/de.baumann.browser/files/browser_backup/“
+    <string name="data_summary">Všechny soubory budou exportovány do adresáře „Android/data/info.plateaukao.einkbro/files/browser_backup/“
         na vaší SD kartě. Tento adresář bude SMAZÁN, když odinstalujetel „EinkBro Browser“. Proto si vytvořte zálohu na bezpečném
         místě.</string>
     <string name="clear_title_quit">Vymazat při ukončení aplikace</string>

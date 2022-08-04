@@ -84,7 +84,7 @@
     <string name="setting_title_history">履歴</string>
     <string name="setting_summary_history">閲覧したウェブサイトの履歴を保存</string>
     <!-- browser clear -->
-    <string name="data_summary">All files will be exported to the \"Android/data/de.baumann.browser/files/browser_backup/\"
+    <string name="data_summary">All files will be exported to the \"Android/data/info.plateaukao.einkbro/files/browser_backup/\"
         directory of your sd-card. This directory will be DELETED, if you uninstall EinkBro. So make a backup regularly on a save
         place.</string>
     <string name="clear_title_quit">アプリ終了時に消去</string>

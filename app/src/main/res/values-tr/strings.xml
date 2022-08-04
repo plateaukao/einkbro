@@ -86,7 +86,7 @@
     <string name="setting_title_history">Geçmiş</string>
     <string name="setting_summary_history">Ziyaret edilen web sitelerinin geçmişini kaydedin.</string>
     <!-- browser clear -->
-    <string name="data_summary">Tüm dosyalar SD kartınızın \"Android/data/de.baumann.browser/files/browser_backup/\"
+    <string name="data_summary">Tüm dosyalar SD kartınızın \"Android/data/info.plateaukao.einkbro/files/browser_backup/\"
         dizinine aktarılacaktır. Eğer EinkBroı kaldırırsanız dizin SİLİNECEKTİR. Bu yüzden düzenli olarak bir yere yedekleme
         alın.</string>
     <string name="clear_title_quit">Uygulamadan çıkışta temizle</string>

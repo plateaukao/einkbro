@@ -77,7 +77,7 @@
     <string name="setting_title_history">Historial</string>
     <string name="setting_summary_history">Guardar el historial de sitios web visitados.</string>
     <!-- browser clear -->
-    <string name="data_summary">Todos los archivos se exportarán al directorio \"Android/data/de.baumann.browser/files/browser_backup/\".
+    <string name="data_summary">Todos los archivos se exportarán al directorio \"Android/data/info.plateaukao.einkbro/files/browser_backup/\".
 Si desinstala la aplicación, el mismo será eliminado. Por tanto se recomienda realizar copias de seguridad de este directorio.</string>
     <string name="clear_title_quit">Limpiar al salir de la aplicación</string>
     <string name="clear_summary_quit">Cada vez quesalga del \"Navegador EinkBro\", se borrarán todos los ítems tildados anteriormente.</string>

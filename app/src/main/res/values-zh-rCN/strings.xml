@@ -102,7 +102,7 @@
 
 
     <!-- browser clear -->
-    <string name="data_summary">所有文件都将导出到您的SD卡目录: \"Android/data/de.baumann.browser/files/browser_backup/\" 如果您卸载 \"EinkBro浏览器\"，此目录将被删除。所以最好将文件备份到安全的地方。</string>
+    <string name="data_summary">所有文件都将导出到您的SD卡目录: \"Android/data/info.plateaukao.einkbro/files/browser_backup/\" 如果您卸载 \"EinkBro浏览器\"，此目录将被删除。所以最好将文件备份到安全的地方。</string>
     <string name="clear_title_quit">应用程序退出时进行清除</string>
     <string name="clear_summary_quit">每次退出 \"EinkBro浏览器\" 时，上述所有勾选的数据都将被删除。</string>
     <string name="clear_title_cache">清除缓存</string>
