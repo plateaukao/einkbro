@@ -13,19 +13,19 @@
         android:minHeight="50dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <de.baumann.browser.view.viewControllers.ToolbarComposeView
+        <info.plateaukao.einkbro.view.viewControllers.ToolbarComposeView
             android:id="@+id/compose_icon_bar"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <de.baumann.browser.view.compose.SearchBarView
+        <info.plateaukao.einkbro.view.compose.SearchBarView
             android:id="@+id/main_search_panel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </FrameLayout>
 
     <!--    xmlns:pane="http://schemas.android.com/apk/res/info.plateaukao.einkbro.debug"-->
-    <de.baumann.browser.view.TwoPaneLayout xmlns:pane="http://schemas.android.com/apk/res/info.plateaukao.einkbro"
+    <info.plateaukao.einkbro.view.TwoPaneLayout xmlns:pane="http://schemas.android.com/apk/res/info.plateaukao.einkbro"
         android:id="@+id/two_panel_layout"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -48,9 +48,9 @@
             layout="@layout/translation_panel"
             android:layout_width="0dp"
             android:layout_height="match_parent" />
-    </de.baumann.browser.view.TwoPaneLayout>
+    </info.plateaukao.einkbro.view.TwoPaneLayout>
 
-    <de.baumann.browser.view.compose.AutoCompleteTextComposeView
+    <info.plateaukao.einkbro.view.compose.AutoCompleteTextComposeView
         android:id="@+id/input_url"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -65,7 +65,7 @@
         android:background="@android:color/darker_gray"
         app:layout_constraintBottom_toTopOf="@+id/appBar" />
 
-    <de.baumann.browser.view.compose.HistoryAndTabsView
+    <info.plateaukao.einkbro.view.compose.HistoryAndTabsView
         android:id="@+id/layout_overview"
         android:layout_width="0dp"
         android:layout_height="0dp"

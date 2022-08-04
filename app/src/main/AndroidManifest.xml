@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="de.baumann.browser.Ninja" >
+    package="info.plateaukao.einkbro" >
 
     <queries>
         <package android:name="info.plateaukao.naverdict" />
@@ -25,7 +25,7 @@
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
 
     <application
-        android:name="de.baumann.browser.EinkBroApplication"
+        android:name="info.plateaukao.einkbro.EinkBroApplication"
         android:allowBackup="true"
         android:fullBackupContent="@xml/backup_descriptor"
         android:hardwareAccelerated="true"
@@ -39,13 +39,13 @@
         android:theme="@style/AppTheme"
         tools:ignore="UnusedAttribute" >
         <activity
-            android:name="de.baumann.browser.activity.ExtraBrowserActivity"
+            android:name="info.plateaukao.einkbro.activity.ExtraBrowserActivity"
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize|uiMode|screenLayout|smallestScreenSize"
             android:label="@string/app_name"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden" /> <!-- BrowserActivity -->
         <activity
-            android:name="de.baumann.browser.activity.BrowserActivity"
+            android:name="info.plateaukao.einkbro.activity.BrowserActivity"
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize|uiMode|screenLayout|smallestScreenSize"
             android:exported="true"
             android:label="@string/app_name"
@@ -110,7 +110,7 @@
                 android:resource="@xml/shortcuts" />
         </activity>
         <activity
-            android:name="de.baumann.browser.activity.EpubReaderActivity"
+            android:name="info.plateaukao.einkbro.activity.EpubReaderActivity"
             android:exported="true"
             android:theme="@style/AppTheme">
             <intent-filter>
@@ -131,25 +131,25 @@
         </activity>
         <!-- Settings -->
         <activity
-            android:name="de.baumann.browser.activity.SettingsActivity"
-            android:parentActivityName="de.baumann.browser.activity.BrowserActivity"
+            android:name="info.plateaukao.einkbro.activity.SettingsActivity"
+            android:parentActivityName="info.plateaukao.einkbro.activity.BrowserActivity"
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize|uiMode|screenLayout|smallestScreenSize"
             android:label="@string/setting_label" />
         <activity
-            android:name="de.baumann.browser.activity.Whitelist_AdBlock"
+            android:name="info.plateaukao.einkbro.activity.Whitelist_AdBlock"
             android:label="@string/setting_title_whitelist" />
         <activity
-            android:name="de.baumann.browser.activity.Whitelist_Javascript"
+            android:name="info.plateaukao.einkbro.activity.Whitelist_Javascript"
             android:label="@string/setting_title_whitelistJS" />
         <activity
-            android:name="de.baumann.browser.activity.Whitelist_Cookie"
+            android:name="info.plateaukao.einkbro.activity.Whitelist_Cookie"
             android:label="@string/setting_title_whitelistCookie" />
         <activity
-            android:name="de.baumann.browser.activity.Settings_ClearActivity"
+            android:name="info.plateaukao.einkbro.activity.Settings_ClearActivity"
             android:label="@string/setting_title_clear_control" />
 
         <service
-            android:name="de.baumann.browser.service.ClearService"
+            android:name="info.plateaukao.einkbro.service.ClearService"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name" /> <!-- android:authorities="info.plateaukao.einkbro.debug.fileprovider" -->
         <provider

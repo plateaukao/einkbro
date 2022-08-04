@@ -78,7 +78,7 @@
     <string name="setting_title_history">Cronologia</string>
     <string name="setting_summary_history">Salva la cronologia dei site web visitati.</string>
     <!-- browser clear -->
-    <string name="data_summary">Tutti i file saranno esportati nella cartella \"Android/data/de.baumann.browser/files/browser_backup/\"
+    <string name="data_summary">Tutti i file saranno esportati nella cartella \"Android/data/info.plateaukao.einkbro/files/browser_backup/\"
         della tua sd-card. Questa directory sarà ELIMINATA se si disinstalla EinkBro. Quindi è consigliato di fare un backup regolarmente in un posto
         sicuro.</string>
     <string name="clear_title_quit">Cancella quando si chiude l\'applicazione</string>

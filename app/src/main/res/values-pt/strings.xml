@@ -78,7 +78,7 @@
     <string name="setting_title_history">Histórico</string>
     <string name="setting_summary_history">Guardar histórico dos sites visitados.</string>
     <!-- browser clear -->
-    <string name="data_summary">Todos os ficheiros serão exportados para o diretório \"Android/data/de.baumann.browser/files/browser_backup/\" do seu cartão SD. Este diretório será apagado se desinstalar a aplicação. Aconselhamos que efetue regularmente os backups para outro diretório.</string>
+    <string name="data_summary">Todos os ficheiros serão exportados para o diretório \"Android/data/info.plateaukao.einkbro/files/browser_backup/\" do seu cartão SD. Este diretório será apagado se desinstalar a aplicação. Aconselhamos que efetue regularmente os backups para outro diretório.</string>
     <string name="clear_title_quit">Limpar ao sair da aplicação</string>
     <string name="clear_summary_quit">Sempre que sair da aplicação, os dados assinalados serão apagados.</string>
     <string name="clear_title_cache">Limpar cache</string>

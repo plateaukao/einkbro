@@ -77,7 +77,7 @@
     <string name="setting_title_history">История</string>
     <string name="setting_summary_history">Сохраните историю посещаемых веб-сайтов.</string>
     <!-- browser clear -->
-    <string name="data_summary">Все файлы будут экспортированы в каталог Вашей SD-карты: Android/data/de.baumann.browser/files/browser_backup/\".
+    <string name="data_summary">Все файлы будут экспортированы в каталог Вашей SD-карты: Android/data/info.plateaukao.einkbro/files/browser_backup/\".
 Этот каталог будет УДАЛЕН, если Вы удалите EinkBro. Поэтому регулярно делайте резервные копии..</string>
     <string name="clear_title_quit">Очистить при выходе из приложения</string>
     <string name="clear_summary_quit">Каждый раз при выходе из EinkBro все вышеперечисленные проверенные данные будут удаляться.</string>

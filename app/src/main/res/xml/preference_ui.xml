@@ -5,7 +5,7 @@
 
     <PreferenceCategory android:title="@string/setting_title_theme">
 
-        <de.baumann.browser.preference.IntegerEditTextPreference
+        <info.plateaukao.einkbro.preference.IntegerEditTextPreference
             android:defaultValue="80"
             android:key="sp_page_turn_left_value"
             android:title="@string/setting_title_page_left_value"
