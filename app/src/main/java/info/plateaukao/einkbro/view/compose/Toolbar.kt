@@ -51,7 +51,7 @@ fun ComposedToolbar(
             when (val toolbarAction = toolbarActionInfo.toolbarAction) {
                 Title -> {
                     val titleModifier = Modifier
-                        .padding(horizontal = 1.dp)
+                        .padding(start = 10.dp, end = 1.dp)
                         .then(if (shouldTitleWidthFixed) Modifier.widthIn(max = 300.dp) else Modifier.weight(1F))
                         .clickable { onClick(toolbarAction) }
                     Text(
