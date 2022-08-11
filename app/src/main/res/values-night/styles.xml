@@ -3,7 +3,7 @@
 <resources>
 
     <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
-        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14</item>
+<!--        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14</item>-->
         <item name="dragIcon">@drawable/ic_drag</item>
         <item name="android:textColor">@color/lightGray</item>
         <item name="android:textColorPrimary">@android:color/darker_gray</item>
@@ -17,9 +17,9 @@
     </style>
 
     <!-- remove preference activity background color -->
-    <style name="PreferenceThemeOverlay.v14">
-        <item name="android:windowBackground">@null</item>
-    </style>
+<!--    <style name="PreferenceThemeOverlay.v14">-->
+<!--        <item name="android:windowBackground">@null</item>-->
+<!--    </style>-->
 
     <style name="TouchAreaDialog" parent="Theme.MaterialComponents.DayNight.Dialog.Alert">
         <item name="android:backgroundDimAmount">0</item>
