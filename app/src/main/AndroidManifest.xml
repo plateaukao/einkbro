@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="info.plateaukao.einkbro" >
+    xmlns:tools="http://schemas.android.com/tools">
 
     <queries>
         <package android:name="info.plateaukao.naverdict" />
@@ -35,9 +34,9 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme"
-        tools:ignore="UnusedAttribute" >
+        android:usesCleartextTraffic="true"
+        tools:ignore="UnusedAttribute">
         <activity
             android:name="info.plateaukao.einkbro.activity.ExtraBrowserActivity"
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize|uiMode|screenLayout|smallestScreenSize"
@@ -45,13 +44,13 @@
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden" /> <!-- BrowserActivity -->
         <activity
-            android:name="info.plateaukao.einkbro.activity.BrowserActivity"
+            android:name="info.plateaukao.einkbro.activity.EinkBroActivity"
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize|uiMode|screenLayout|smallestScreenSize"
             android:exported="true"
             android:label="@string/app_name"
             android:launchMode="singleInstance"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -63,7 +62,7 @@
                 <data android:scheme="einkbro" />
                 <data android:scheme="einkbros" />
             </intent-filter>
-            <intent-filter android:icon="@mipmap/ic_launcher" >
+            <intent-filter android:icon="@mipmap/ic_launcher">
                 <action android:name="android.intent.action.SEND" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -94,7 +93,72 @@
             </intent-filter>
             <intent-filter
                 android:order="1"
-                android:priority="1" >
+                android:priority="1">
+                <action android:name="android.intent.action.PROCESS_TEXT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
+        </activity>
+        <activity
+            android:name="info.plateaukao.einkbro.activity.BrowserActivity"
+            android:configChanges="orientation|keyboard|keyboardHidden|screenSize|uiMode|screenLayout|smallestScreenSize"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:launchMode="singleInstance"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+                <data android:scheme="einkbro" />
+                <data android:scheme="einkbros" />
+            </intent-filter>
+            <intent-filter android:icon="@mipmap/ic_launcher">
+                <action android:name="android.intent.action.SEND" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.WEB_SEARCH" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.LAUNCHER" />
+
+                <action android:name="sc_startPage" />
+                <action android:name="sc_bookmark" />
+                <action android:name="sc_history" />
+                <action android:name="notification" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="colordict.intent.action.SEARCH" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="colordict.intent.action.PICK_RESULT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter
+                android:order="1"
+                android:priority="1">
                 <action android:name="android.intent.action.PROCESS_TEXT" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -114,27 +178,27 @@
             android:exported="true"
             android:theme="@style/AppTheme">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
                 <data
-                    android:scheme="file"
-                    android:pathPattern=".*\\.epub"
                     android:mimeType="application/epub+zip"
-                    />
+                    android:pathPattern=".*\\.epub"
+                    android:scheme="file" />
                 <data
-                    android:scheme="content"
-                    android:pathPattern=".*\\.epub"
                     android:mimeType="application/epub+zip"
-                    />
+                    android:pathPattern=".*\\.epub"
+                    android:scheme="content" />
             </intent-filter>
         </activity>
         <!-- Settings -->
         <activity
             android:name="info.plateaukao.einkbro.activity.SettingsActivity"
-            android:parentActivityName="info.plateaukao.einkbro.activity.BrowserActivity"
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize|uiMode|screenLayout|smallestScreenSize"
-            android:label="@string/setting_label" />
+            android:label="@string/setting_label"
+            android:parentActivityName="info.plateaukao.einkbro.activity.BrowserActivity" />
         <activity
             android:name="info.plateaukao.einkbro.activity.Whitelist_AdBlock"
             android:label="@string/setting_title_whitelist" />
@@ -156,7 +220,7 @@
             android:name="androidx.core.content.FileProvider"
             android:authorities="info.plateaukao.einkbro.fileprovider"
             android:exported="false"
-            android:grantUriPermissions="true" >
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />

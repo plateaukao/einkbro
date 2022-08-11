@@ -100,10 +100,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         val title = webView.title
         val url = webView.url
         return (title == null || title.isEmpty()
-            || url == null || url.isEmpty()
-            || url.startsWith(BrowserUnit.URL_SCHEME_ABOUT)
-            || url.startsWith(BrowserUnit.URL_SCHEME_MAIL_TO)
-            || url.startsWith(BrowserUnit.URL_SCHEME_INTENT))
+                || url == null || url.isEmpty()
+                || url.startsWith(BrowserUnit.URL_SCHEME_ABOUT)
+                || url.startsWith(BrowserUnit.URL_SCHEME_MAIL_TO)
+                || url.startsWith(BrowserUnit.URL_SCHEME_INTENT))
     }
 
     private var originalOrientation = 0
@@ -224,18 +224,18 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private val customFontResultLauncher: ActivityResultLauncher<Intent> =
         BrowserUnit.registerCustomFontSelectionResult(this)
     private val saveImageFilePickerLauncher: ActivityResultLauncher<Intent> =
-        BrowserUnit.registerSaveImageFilePickerResult(this) {uri ->
-        // action to show the downloaded image
-        val fileIntent = Intent(ACTION_VIEW).apply {
-            data = uri
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        BrowserUnit.registerSaveImageFilePickerResult(this) { uri ->
+            // action to show the downloaded image
+            val fileIntent = Intent(ACTION_VIEW).apply {
+                data = uri
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+            dialogManager.showOkCancelDialog(
+                messageResId = R.string.toast_downloadComplete,
+                okAction = { startActivity(fileIntent) }
+            )
         }
-        dialogManager.showOkCancelDialog(
-            messageResId = R.string.toast_downloadComplete,
-            okAction = { startActivity(fileIntent) }
-        )
-    }
 
     // Classes
     private inner class VideoCompletionListener : OnCompletionListener,
@@ -610,7 +610,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     // Methods
     //private fun showFontSizeChangeDialog() = dialogManager.showFontSizeChangeDialog()
-    private fun showFontSizeChangeDialog() = FontDialogFragment { openCustomFontPicker() }.show(supportFragmentManager, "font_dialog")
+    private fun showFontSizeChangeDialog() =
+        FontDialogFragment { openCustomFontPicker() }.show(supportFragmentManager, "font_dialog")
 
     private fun changeFontSize(size: Int) {
         config.fontSize = size

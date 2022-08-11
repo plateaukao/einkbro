@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<info.plateaukao.einkbro.view.TwoPaneLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:pane="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/two_panel_layout"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    pane:drag_resize="false"
+    pane:orientation="horizontal"
+    pane:show_second_pane="false">
+
+    <include
+        android:id="@+id/activity_main_content"
+        layout="@layout/activity_main_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <include
+        android:id="@+id/sub_container"
+        layout="@layout/translation_panel"
+        android:layout_width="0dp"
+        android:layout_height="match_parent" />
+</info.plateaukao.einkbro.view.TwoPaneLayout>

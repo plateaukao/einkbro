@@ -25,7 +25,8 @@
     </FrameLayout>
 
     <!--    xmlns:pane="http://schemas.android.com/apk/res/info.plateaukao.einkbro.debug"-->
-    <info.plateaukao.einkbro.view.TwoPaneLayout xmlns:pane="http://schemas.android.com/apk/res/info.plateaukao.einkbro"
+    <info.plateaukao.einkbro.view.TwoPaneLayout
+        xmlns:pane="http://schemas.android.com/apk/res/info.plateaukao.einkbro"
         android:id="@+id/two_panel_layout"
         android:layout_width="0dp"
         android:layout_height="0dp"

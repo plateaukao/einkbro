@@ -178,9 +178,9 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
         updateDesktopMode()
 
         with(settings) {
-            setAppCacheEnabled(true)
-            setAppCachePath("");
-            setAppCacheMaxSize(30 * 1024 * 1024)
+            //setAppCacheEnabled(true)
+            //setAppCachePath("");
+            //setAppCacheMaxSize(30 * 1024 * 1024)
             // don't load cache by default, so that it won't cause some issues
             //cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
             textZoom = config.fontSize
