@@ -4,7 +4,7 @@ import android.util.Log
 import info.plateaukao.einkbro.BuildConfig
 
 class DebugT(private val tag: String) {
-    private val currentTimeInMilli = System.currentTimeMillis()
+    private val startTimeMillis = System.currentTimeMillis()
     init {
         if (BuildConfig.DEBUG) {
             Log.d(TAG, "[debugT][$tag]: start")
@@ -14,14 +14,14 @@ class DebugT(private val tag: String) {
     fun printPath(intermediateTag: String) {
         if (BuildConfig.DEBUG) {
             val newTime = System.currentTimeMillis()
-            Log.d(TAG, "[debugT][$tag][$intermediateTag]: ${(newTime - currentTimeInMilli)}")
+            Log.d(TAG, "[debugT][$tag][$intermediateTag]: ${(newTime - startTimeMillis)}")
         }
     }
 
     fun printTime() {
         if (BuildConfig.DEBUG) {
             val newTime = System.currentTimeMillis()
-            Log.d(TAG, "[debugT][$tag]: ${(newTime - currentTimeInMilli)}")
+            Log.d(TAG, "[debugT][$tag]: ${(newTime - startTimeMillis)}")
         }
     }
 
