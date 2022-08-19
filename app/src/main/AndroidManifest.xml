@@ -41,14 +41,13 @@
         <activity
             android:name="info.plateaukao.einkbro.activity.ExtraBrowserActivity"
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize|uiMode|screenLayout|smallestScreenSize"
-            android:label="@string/app_name"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" /> <!-- BrowserActivity -->
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
+        <!-- BrowserActivity -->
         <activity
             android:name="info.plateaukao.einkbro.activity.BrowserActivity"
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize|uiMode|screenLayout|smallestScreenSize"
             android:exported="true"
-            android:label="@string/app_name"
             android:launchMode="singleInstance"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
