@@ -2293,7 +2293,7 @@ function createHtmlBody(article) {
         <div>
           <div>${safeReadingTime}</div>
         </div>
-        <hr>
+        <hr/>
         <div class="content">
           <div class="mozac-readerview-content">${article.content}</div>
         </div>
