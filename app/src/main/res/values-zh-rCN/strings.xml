@@ -287,7 +287,7 @@
     <string name="translate">翻译</string>
     <string name="toolbar_title">标题</string>
     <string name="setting_title_screen_awake">保持屏幕唤醒状态</string>
-    <string name="setting_summary_screen_awake">保持屏幕始终处于唤醒状态</string>
+    <string name="setting_summary_screen_awake">屏幕始终处于唤醒状态</string>
     <string name="middle">中间</string>
     <string name="bottom">底部</string>
     <string name="input_url">输入网址</string>
@@ -350,9 +350,9 @@
     <string name="setting_summary_auto_fill_form">如果启用，则自动填充表单数据。</string>
     <string name="setting_title_trim_input_url">剪裁输入文本内容</string>
     <string name="setting_summary_trim_input_url">移除输入内容中的非http前缀文本</string>
-    <string name="no_bookmarks">Long press bookmarks icon to add some bookmarks.</string>
-    <string name="always_enable_zoom">Always enable content zooming</string>
-    <string name="setting_summary_enable_zoom">Force some website content to be zoomable</string>
-    <string name="setting_title_debug">Debug WebView</string>
-    <string name="setting_summary_debug">Enable this option to be able to debug WebView</string>
+    <string name="no_bookmarks">长按书签图标添加一些书签。</string>
+    <string name="always_enable_zoom">内容缩放</string>
+    <string name="setting_summary_enable_zoom">强制某些网站内容可缩放</string>
+    <string name="setting_title_debug">调试网页视图</string>
+    <string name="setting_summary_debug">启用此选项可以调试网页视图</string>
 </resources>
