@@ -92,7 +92,10 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
                 (if (config.whiteBackground) whiteBackgroundCss else "") +
                 (if (config.fontType == FontType.CUSTOM) customFontCss else "") +
                 // all css are purgsed by epublib. need to add it back if it's epub reader mode
-                if (isEpubReaderMode) String(getByteArrayFromAsset("readerview.css"), Charsets.UTF_8) else ""
+                if (isEpubReaderMode) String(
+                    getByteArrayFromAsset("readerview.css"),
+                    Charsets.UTF_8
+                ) else ""
         injectCss(cssStyle.toByteArray())
     }
 
@@ -115,7 +118,8 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
 
     init {
         isForeground = false
-        webViewClient = NinjaWebViewClient(this) { title, url -> browserController?.addHistory(title, url) }
+        webViewClient =
+            NinjaWebViewClient(this) { title, url -> browserController?.addHistory(title, url) }
         webChromeClient = NinjaWebChromeClient(this) { setAlbumCoverAndSyncDb(it) }
         clickHandler = NinjaClickHandler(this)
         initWebView()
@@ -143,15 +147,15 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
 
         if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK_STRATEGY)) {
             WebSettingsCompat.setForceDarkStrategy(
-                    settings,
-                    WebSettingsCompat.DARK_STRATEGY_PREFER_WEB_THEME_OVER_USER_AGENT_DARKENING
+                settings,
+                WebSettingsCompat.DARK_STRATEGY_PREFER_WEB_THEME_OVER_USER_AGENT_DARKENING
             )
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             val nightModeFlags = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
             if (nightModeFlags == Configuration.UI_MODE_NIGHT_YES ||
-                    config.darkMode == DarkMode.FORCE_ON
+                config.darkMode == DarkMode.FORCE_ON
             ) {
                 settings.forceDark = WebSettings.FORCE_DARK_ON
                 // when in dark mode, the default background color will be the activity background
@@ -190,14 +194,21 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
             databaseEnabled = true
             blockNetworkImage = !sp.getBoolean(context!!.getString(R.string.sp_images), true)
             javaScriptEnabled = sp.getBoolean(context!!.getString(R.string.sp_javascript), true)
-            javaScriptCanOpenWindowsAutomatically = sp.getBoolean(context!!.getString(R.string.sp_javascript), true)
-            setSupportMultipleWindows(sp.getBoolean(context!!.getString(R.string.sp_javascript), true))
+            javaScriptCanOpenWindowsAutomatically =
+                sp.getBoolean(context!!.getString(R.string.sp_javascript), true)
+            setSupportMultipleWindows(
+                sp.getBoolean(
+                    context!!.getString(R.string.sp_javascript),
+                    true
+                )
+            )
             setGeolocationEnabled(sp.getBoolean(context!!.getString(R.string.sp_location), false))
             mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
             setRenderPriority(WebSettings.RenderPriority.HIGH)
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                importantForAutofill = if (config.autoFillForm) IMPORTANT_FOR_AUTOFILL_YES else IMPORTANT_FOR_AUTOFILL_NO
+                importantForAutofill =
+                    if (config.autoFillForm) IMPORTANT_FOR_AUTOFILL_YES else IMPORTANT_FOR_AUTOFILL_NO
             } else {
                 saveFormData = config.autoFillForm
             }
@@ -209,21 +220,25 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
 
     fun updateDesktopMode() {
         val defaultUserAgentString = WebSettings.getDefaultUserAgent(context).replace("wv", "")
-        val prefix: String = defaultUserAgentString.substring(0, defaultUserAgentString.indexOf(")") + 1)
+        val prefix: String =
+            defaultUserAgentString.substring(0, defaultUserAgentString.indexOf(")") + 1)
 
         val isDesktopMode = config.desktop
         try {
             when {
                 isDesktopMode ->
-                    settings.userAgentString = defaultUserAgentString.replace(prefix, BrowserUnit.UA_DESKTOP_PREFIX)
+                    settings.userAgentString =
+                        defaultUserAgentString.replace(prefix, BrowserUnit.UA_DESKTOP_PREFIX)
                 config.customUserAgent.isNotBlank() ->
                     settings.userAgentString = config.customUserAgent
                 else ->
-                    settings.userAgentString = defaultUserAgentString.replace(prefix, BrowserUnit.UA_MOBILE_PREFIX)
+                    settings.userAgentString =
+                        defaultUserAgentString.replace(prefix, BrowserUnit.UA_MOBILE_PREFIX)
             }
-        } catch (e: Exception) { }
+        } catch (e: Exception) {
+        }
 
-            settings.useWideViewPort = isDesktopMode
+        settings.useWideViewPort = isDesktopMode
         settings.loadWithOverviewMode = isDesktopMode
     }
 
@@ -251,7 +266,9 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
     /* continue playing if preference is set */
     override fun onWindowVisibilityChanged(visibility: Int) {
         if (config.continueMedia) {
-            if (visibility != GONE && visibility != INVISIBLE) super.onWindowVisibilityChanged(VISIBLE)
+            if (visibility != GONE && visibility != INVISIBLE) super.onWindowVisibilityChanged(
+                VISIBLE
+            )
         } else {
             super.onWindowVisibilityChanged(visibility)
         }
@@ -285,14 +302,15 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
         albumTitle = ""
         // show progress right away
         if (url.startsWith("https")) {
-            postDelayed( { if (progress < FAKE_PRE_PROGRESS) update(FAKE_PRE_PROGRESS) }, 200)
+            postDelayed({ if (progress < FAKE_PRE_PROGRESS) update(FAKE_PRE_PROGRESS) }, 200)
         }
 
         if (browserController?.loadInSecondPane(processedUrl) == true) {
             return
         }
 
-        super.loadUrl(BrowserUnit.queryWrapper(context, processedUrl), requestHeaders)
+        val strippedUrl = BrowserUnit.stripUrlQuery(processedUrl)
+        super.loadUrl(BrowserUnit.queryWrapper(context, strippedUrl), requestHeaders)
     }
 
     fun setAlbumCover(bitmap: Bitmap) = album.setAlbumCover(bitmap)
@@ -336,7 +354,7 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
             toggleCookieSupport(true)
         }
 
-        if (!album.isLoaded && initAlbumUrl.isNotEmpty()){
+        if (!album.isLoaded && initAlbumUrl.isNotEmpty()) {
             loadUrl(initAlbumUrl)
         }
 
@@ -381,7 +399,10 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
         super.destroy()
     }
 
-    fun createPrintDocumentAdapter(documentName: String, onFinish: () -> Unit): PrintDocumentAdapter {
+    fun createPrintDocumentAdapter(
+        documentName: String,
+        onFinish: () -> Unit
+    ): PrintDocumentAdapter {
         val superAdapter = super.createPrintDocumentAdapter(documentName)
         return PdfDocumentAdapter(documentName, superAdapter, onFinish)
     }
@@ -431,14 +452,24 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
             injectMozReaderModeJs(false)
             evaluateJavascript(getReaderModeBodyHtmlJs) { html ->
                 val processedHtml = StringEscapeUtils.unescapeJava(html)
-                continuation.resume(processedHtml.substring(1, processedHtml.length - 1)) // handle prefix/postfix "
+                continuation.resume(
+                    processedHtml.substring(
+                        1,
+                        processedHtml.length - 1
+                    )
+                ) // handle prefix/postfix "
             }
         } else {
             evaluateJavascript(
-                    "(function() { return ('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>'); })();"
+                "(function() { return ('<html>'+document.getElementsByTagName('html')[0].innerHTML+'</html>'); })();"
             ) { html ->
                 val processedHtml = StringEscapeUtils.unescapeJava(html)
-                continuation.resume(processedHtml.substring(1, processedHtml.length - 1)) // handle prefix/postfix "
+                continuation.resume(
+                    processedHtml.substring(
+                        1,
+                        processedHtml.length - 1
+                    )
+                ) // handle prefix/postfix "
             }
         }
     }
@@ -447,11 +478,18 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
     suspend fun getRawText() = suspendCoroutine<String> { continuation ->
         if (!isReaderModeOn) {
             evaluateMozReaderModeJs {
-                evaluateJavascript(getReaderModeBodyTextJs) { text -> continuation.resume(text.substring(1, text.length - 2)) }
+                evaluateJavascript(getReaderModeBodyTextJs) { text ->
+                    continuation.resume(
+                        text.substring(
+                            1,
+                            text.length - 2
+                        )
+                    )
+                }
             }
         } else {
             evaluateJavascript(
-                    "(function() { return document.getElementsByTagName('html')[0].innerText; })();"
+                "(function() { return document.getElementsByTagName('html')[0].innerText; })();"
             ) { text ->
                 val processedText = if (text.startsWith("\"") && text.endsWith("\"")) {
                     text.substring(1, text.length - 2)
@@ -483,13 +521,20 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
     }
 
     var isReaderModeOn = false
-    fun toggleReaderMode(isVertical: Boolean = false, getRawTextAction: ((String) -> Unit)? = null) {
+    fun toggleReaderMode(
+        isVertical: Boolean = false,
+        getRawTextAction: ((String) -> Unit)? = null
+    ) {
         isReaderModeOn = !isReaderModeOn
         if (isReaderModeOn) {
             //injectMozReaderModeJs(isVertical)
             evaluateMozReaderModeJs(isVertical) {
-                val getRawTextJs = if (getRawTextAction != null) " return document.getElementsByTagName('html')[0].innerText; " else ""
-                evaluateJavascript("(function() { $replaceWithReaderModeBodyJs $getRawTextJs })();", getRawTextAction)
+                val getRawTextJs =
+                    if (getRawTextAction != null) " return document.getElementsByTagName('html')[0].innerText; " else ""
+                evaluateJavascript(
+                    "(function() { $replaceWithReaderModeBodyJs $getRawTextJs })();",
+                    getRawTextAction
+                )
             }
         } else {
             disableReaderMode(isVertical)
@@ -507,16 +552,22 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
             ""
         }
 
-        evaluateJavascript("javascript:(function() {" +
-                "document.body.innerHTML = document.innerHTMLCache;" +
-                "document.body.classList.remove(\"mozac-readerview-body\");" +
-                verticalCssString +
-                "window.scrollTo(0, 0);" +
-                "})()", null)
+        evaluateJavascript(
+            "javascript:(function() {" +
+                    "document.body.innerHTML = document.innerHTMLCache;" +
+                    "document.body.classList.remove(\"mozac-readerview-body\");" +
+                    verticalCssString +
+                    "window.scrollTo(0, 0);" +
+                    "})()", null
+        )
     }
 
-    private fun evaluateMozReaderModeJs(isVertical: Boolean = false, postAction: (()->Unit)? = null) {
-        val cssByteArray = getByteArrayFromAsset(if (isVertical) "verticalReaderview.css" else "readerview.css")
+    private fun evaluateMozReaderModeJs(
+        isVertical: Boolean = false,
+        postAction: (() -> Unit)? = null
+    ) {
+        val cssByteArray =
+            getByteArrayFromAsset(if (isVertical) "verticalReaderview.css" else "readerview.css")
         injectCss(cssByteArray)
         if (isVertical) injectCss(verticalLayoutCss.toByteArray())
 
@@ -530,7 +581,8 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
     private fun injectMozReaderModeJs(isVertical: Boolean = false) {
         try {
             val buffer = getByteArrayFromAsset("MozReadability.js")
-            val cssBuffer = getByteArrayFromAsset(if (isVertical) "verticalReaderview.css" else "readerview.css")
+            val cssBuffer =
+                getByteArrayFromAsset(if (isVertical) "verticalReaderview.css" else "readerview.css")
 
             val verticalCssString = if (isVertical) {
                 "var style = document.createElement('style');" +
@@ -545,19 +597,21 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
             // String-ify the script byte-array using BASE64 encoding !!!
             val encodedJs = Base64.encodeToString(buffer, Base64.NO_WRAP)
             val encodedCss = Base64.encodeToString(cssBuffer, Base64.NO_WRAP)
-            evaluateJavascript("javascript:(function() {" +
-                    "var parent = document.getElementsByTagName('head').item(0);" +
-                    "var script = document.createElement('script');" +
-                    "script.type = 'text/javascript';" +
-                    "script.innerHTML = window.atob('" + encodedJs + "');" +
-                    "parent.appendChild(script);" +
-                    "var style = document.createElement('style');" +
-                    "style.type = 'text/css';" +
-                    "style.innerHTML = window.atob('" + encodedCss + "');" +
-                    "parent.appendChild(style);" +
-                    verticalCssString +
-                    "window.scrollTo(0, 0);" +
-                    "})()", null)
+            evaluateJavascript(
+                "javascript:(function() {" +
+                        "var parent = document.getElementsByTagName('head').item(0);" +
+                        "var script = document.createElement('script');" +
+                        "script.type = 'text/javascript';" +
+                        "script.innerHTML = window.atob('" + encodedJs + "');" +
+                        "parent.appendChild(script);" +
+                        "var style = document.createElement('style');" +
+                        "style.type = 'text/css';" +
+                        "style.innerHTML = window.atob('" + encodedCss + "');" +
+                        "parent.appendChild(style);" +
+                        verticalCssString +
+                        "window.scrollTo(0, 0);" +
+                        "})()", null
+            )
 
         } catch (e: IOException) {
             // TODO Auto-generated catch block
@@ -598,13 +652,15 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
     private fun injectCss(bytes: ByteArray) {
         try {
             val encoded = Base64.encodeToString(bytes, Base64.NO_WRAP)
-            loadUrl("javascript:(function() {" +
-                    "var parent = document.getElementsByTagName('head').item(0);" +
-                    "var style = document.createElement('style');" +
-                    "style.type = 'text/css';" +
-                    "style.innerHTML = window.atob('" + encoded + "');" +
-                    "parent.appendChild(style)" +
-                    "})()")
+            loadUrl(
+                "javascript:(function() {" +
+                        "var parent = document.getElementsByTagName('head').item(0);" +
+                        "var style = document.createElement('style');" +
+                        "style.type = 'text/css';" +
+                        "style.innerHTML = window.atob('" + encoded + "');" +
+                        "parent.appendChild(style)" +
+                        "})()"
+            )
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -618,7 +674,7 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
         private const val FAKE_PRE_PROGRESS = 5
 
         private const val secondPart =
-                """setTimeout(
+            """setTimeout(
                     function() { 
                           var css=document.createElement('style');
                           css.type='text/css';
@@ -632,7 +688,7 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
                     1000);"""
 
         private const val injectGoogleTranslateV2Js =
-                    "!function(){!function(){function e(){window.setTimeout(function(){window[t].showBanner(!0)},10)}function n(){return new google.translate.TranslateElement({autoDisplay:!1,floatPosition:0,multilanguagePage:!0,pageLanguage:'auto'})}var t=(document.documentElement.lang,'TE_7777'),o='TECB_7777';if(window[t])e();else if(!window.google||!google.translate||!google.translate.TranslateElement){window[o]||(window[o]=function(){window[t]=n(),e()});var a=document.createElement('script');a.src='https://translate.google.com/translate_a/element.js?cb='+encodeURIComponent(o)+'&client=tee',document.getElementsByTagName('head')[0].appendChild(a);$secondPart}}()}();"
+            "!function(){!function(){function e(){window.setTimeout(function(){window[t].showBanner(!0)},10)}function n(){return new google.translate.TranslateElement({autoDisplay:!1,floatPosition:0,multilanguagePage:!0,pageLanguage:'auto'})}var t=(document.documentElement.lang,'TE_7777'),o='TECB_7777';if(window[t])e();else if(!window.google||!google.translate||!google.translate.TranslateElement){window[o]||(window[o]=function(){window[t]=n(),e()});var a=document.createElement('script');a.src='https://translate.google.com/translate_a/element.js?cb='+encodeURIComponent(o)+'&client=tee',document.getElementsByTagName('head')[0].appendChild(a);$secondPart}}()}();"
 
         private const val hidePTranslateContext = """
             javascript:(function() {
@@ -719,18 +775,18 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
                 "}\n"
 
         private const val notoSansSerifFontCss =
-                "@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400&display=swap');" +
-                "@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400&display=swap');" +
-                "@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400&display=swap');" +
-                "@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400&display=swap');" +
-                "body {\n" +
-                "font-family: 'Noto Serif TC', 'Noto Serif JP', 'Noto Serif KR', 'Noto Serif SC', serif !important;\n" +
-                //"font-family: serif !important;\n" +
-                "}\n"
+            "@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400&display=swap');" +
+                    "@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400&display=swap');" +
+                    "@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400&display=swap');" +
+                    "@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400&display=swap');" +
+                    "body {\n" +
+                    "font-family: 'Noto Serif TC', 'Noto Serif JP', 'Noto Serif KR', 'Noto Serif SC', serif !important;\n" +
+                    //"font-family: serif !important;\n" +
+                    "}\n"
         private const val serifFontCss =
-                        "body {\n" +
-                        "font-family: serif !important;\n" +
-                        "}\n"
+            "body {\n" +
+                    "font-family: serif !important;\n" +
+                    "}\n"
 
         private const val customFontCss = """
             @font-face {
