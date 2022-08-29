@@ -32,8 +32,8 @@ import java.io.ByteArrayInputStream
 import java.io.IOException
 
 class NinjaWebViewClient(
-        private val ninjaWebView: NinjaWebView,
-        private val addHistoryAction: (String, String) -> Unit
+    private val ninjaWebView: NinjaWebView,
+    private val addHistoryAction: (String, String) -> Unit
 ) : WebViewClient(), KoinComponent {
     private val context: Context = ninjaWebView.context
     private val sp: SharedPreferences by inject()
@@ -53,8 +53,9 @@ class NinjaWebViewClient(
 
     override fun onPageFinished(view: WebView, url: String) {
         if (config.boldFontStyle ||
-                config.fontType != FontType.SYSTEM_DEFAULT ||
-                config.whiteBackground) {
+            config.fontType != FontType.SYSTEM_DEFAULT ||
+            config.whiteBackground
+        ) {
             ninjaWebView.updateCssStyle()
         }
 
@@ -68,9 +69,10 @@ class NinjaWebViewClient(
 
         // skip translation pages
         if (config.saveHistory &&
-                !ninjaWebView.incognito &&
-                !isTranslationDomain(url) &&
-                url != BrowserUnit.URL_ABOUT_BLANK) {
+            !ninjaWebView.incognito &&
+            !isTranslationDomain(url) &&
+            url != BrowserUnit.URL_ABOUT_BLANK
+        ) {
             addHistoryAction(ninjaWebView.albumTitle, url)
         }
     }
@@ -81,11 +83,11 @@ class NinjaWebViewClient(
     }
 
     override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean =
-            handleUri(view, Uri.parse(url))
+        handleUri(view, Uri.parse(url))
 
     @TargetApi(Build.VERSION_CODES.N)
     override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean =
-            handleUri(view, request.url)
+        handleUri(view, request.url)
 
     private fun handleUri(webView: WebView, uri: Uri): Boolean {
         val url = uri.toString()
@@ -100,7 +102,8 @@ class NinjaWebViewClient(
             try {
                 context.startActivity(browseIntent)
                 return true
-            } catch(e: Exception) { }
+            } catch (e: Exception) {
+            }
         }
         if (url.startsWith("intent:")) {
             try {
@@ -151,13 +154,13 @@ class NinjaWebViewClient(
     }
 
     private val adTxtResponse: WebResourceResponse = WebResourceResponse(
-            BrowserUnit.MIME_TYPE_TEXT_PLAIN,
-            BrowserUnit.URL_ENCODING,
-            ByteArrayInputStream("".toByteArray())
+        BrowserUnit.MIME_TYPE_TEXT_PLAIN,
+        BrowserUnit.URL_ENCODING,
+        ByteArrayInputStream("".toByteArray())
     )
 
     override fun shouldInterceptRequest(view: WebView, url: String): WebResourceResponse? {
-        if (hasAdBlock && !white && adBlock.isAd(url))  {
+        if (hasAdBlock && !white && adBlock.isAd(url)) {
             return adTxtResponse
         }
 
@@ -178,7 +181,10 @@ class NinjaWebViewClient(
         return super.shouldInterceptRequest(view, url)
     }
 
-    override fun shouldInterceptRequest(view: WebView, request: WebResourceRequest): WebResourceResponse? {
+    override fun shouldInterceptRequest(
+        view: WebView,
+        request: WebResourceRequest
+    ): WebResourceResponse? {
         if (hasAdBlock && !white && adBlock.isAd(request.url.toString())) {
             return adTxtResponse
         }
@@ -205,7 +211,11 @@ class NinjaWebViewClient(
 
         if (request.url.scheme == "img") {
             val resource = currentBook.resources.getByHref(request.url.host.toString())
-            return WebResourceResponse(resource.mediaType.name, "UTF-8", ByteArrayInputStream(resource.data))
+            return WebResourceResponse(
+                resource.mediaType.name,
+                "UTF-8",
+                ByteArrayInputStream(resource.data)
+            )
         }
         return null
     }
@@ -215,7 +225,7 @@ class NinjaWebViewClient(
             val uri = config.customFontInfo?.url?.toUri() ?: return null
 
             try {
-                val inputStream= context.contentResolver.openInputStream(uri)
+                val inputStream = context.contentResolver.openInputStream(uri)
                 return WebResourceResponse("application/x-font-ttf", "UTF-8", inputStream)
             } catch (e: IOException) {
                 e.printStackTrace()
@@ -227,11 +237,12 @@ class NinjaWebViewClient(
     }
 
     override fun onFormResubmission(view: WebView, doNotResend: Message, resend: Message) {
-        val holder = IntentUnit.context as? Activity ?: return
+        val holder = view.context as? Activity ?: return
         val dialog = BottomSheetDialog(holder)
         val dialogView = View.inflate(holder, R.layout.dialog_action, null)
 
-        dialogView.findViewById<TextView>(R.id.dialog_text).setText(R.string.dialog_content_resubmission)
+        dialogView.findViewById<TextView>(R.id.dialog_text)
+            .setText(R.string.dialog_content_resubmission)
         dialogView.findViewById<Button>(R.id.action_ok).setOnClickListener {
             resend.sendToTarget()
             dialog.cancel()

@@ -37,6 +37,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.json.JSONArray
+import org.json.JSONException
+import org.json.JSONObject
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.*
@@ -78,11 +81,13 @@ object BrowserUnit : KoinComponent {
     private val adBlock: AdBlock by inject()
     private val js: Javascript by inject()
     private val config: ConfigManager by inject()
-
     val cookie: Cookie by inject()
 
-    fun dataUrlToMimeType(dataUrl: String): String =
+    private val neatUrlConfigs: List<String> = parseNeatUrlConfigs()
+
+    private fun dataUrlToMimeType(dataUrl: String): String =
         dataUrl.substring(dataUrl.indexOf("/") + 1, dataUrl.indexOf(";"))
+
     @RequiresApi(Build.VERSION_CODES.O)
     fun dataUrlToStream(dataUrl: String): InputStream {
         val data = dataUrl.split(",")
@@ -92,16 +97,31 @@ object BrowserUnit : KoinComponent {
     }
 
     fun openDownloadFolder(activity: Activity) {
-        val uri = Uri.parse(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString());
+        val uri = Uri.parse(
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                .toString()
+        );
         val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
             setDataAndType(uri, "resource/folder");
         }
-        activity.startActivity(Intent.createChooser(intent, activity.getString(R.string.dialog_title_download)))
+        activity.startActivity(
+            Intent.createChooser(
+                intent,
+                activity.getString(R.string.dialog_title_download)
+            )
+        )
     }
-    private fun saveImage(context: Context, inputStream: InputStream, uri: Uri, postAction: (Uri) -> Unit) {
+
+    private fun saveImage(
+        context: Context,
+        inputStream: InputStream,
+        uri: Uri,
+        postAction: (Uri) -> Unit
+    ) {
         GlobalScope.launch(Dispatchers.IO) {
             try {
-                context.contentResolver.openOutputStream(uri).use { it?.write(inputStream.readBytes()) }
+                context.contentResolver.openOutputStream(uri)
+                    .use { it?.write(inputStream.readBytes()) }
                 withContext(Dispatchers.Main) { postAction(uri) }
             } catch (e: IOException) {
                 e.printStackTrace()
@@ -121,16 +141,16 @@ object BrowserUnit : KoinComponent {
             return true
         }
         val regex = ("^((ftp|http|https|intent)?://)" // support scheme
-            + "?(([0-9a-z_!~*'().&=+$%-]+: )?[0-9a-z_!~*'().&=+$%-]+@)?" // ftp的user@
-            + "(([0-9]{1,3}\\.){3}[0-9]{1,3}" // IP形式的URL -> 199.194.52.184
-            + "|" // 允许IP和DOMAIN（域名）
-            + "(.)*" // 域名 -> www.
-            // + "([0-9a-z_!~*'()-]+\\.)*"                               // 域名 -> www.
-            + "([0-9a-z][0-9a-z-]{0,61})?[0-9a-z]\\." // 二级域名
-            + "[a-z]{2,6})" // first level domain -> .com or .museum
-            + "(:[0-9]{1,4})?" // 端口 -> :80
-            + "((/?)|" // a slash isn't required if there is no file name
-            + "(/[0-9a-z_!~*'().;?:@&=+$,%#-]+)+/?)$")
+                + "?(([0-9a-z_!~*'().&=+$%-]+: )?[0-9a-z_!~*'().&=+$%-]+@)?" // ftp的user@
+                + "(([0-9]{1,3}\\.){3}[0-9]{1,3}" // IP形式的URL -> 199.194.52.184
+                + "|" // 允许IP和DOMAIN（域名）
+                + "(.)*" // 域名 -> www.
+                // + "([0-9a-z_!~*'()-]+\\.)*"                               // 域名 -> www.
+                + "([0-9a-z][0-9a-z-]{0,61})?[0-9a-z]\\." // 二级域名
+                + "[a-z]{2,6})" // first level domain -> .com or .museum
+                + "(:[0-9]{1,4})?" // 端口 -> :80
+                + "((/?)|" // a slash isn't required if there is no file name
+                + "(/[0-9a-z_!~*'().;?:@&=+$,%#-]+)+/?)$")
         val pattern = Pattern.compile(regex)
         val isMatch = pattern.matcher(url).matches()
         return if (isMatch) true else try {
@@ -247,7 +267,12 @@ object BrowserUnit : KoinComponent {
     }
 
     var downloadFileId = -1L
-    private fun internalDownload(activity: Activity, url: String, mimeType: String, filename: String) {
+    private fun internalDownload(
+        activity: Activity,
+        url: String,
+        mimeType: String,
+        filename: String
+    ) {
         val cookie = CookieManager.getInstance().getCookie(url)
         val request = DownloadManager.Request(Uri.parse(url)).apply {
             addRequestHeader("Cookie", cookie)
@@ -435,6 +460,7 @@ object BrowserUnit : KoinComponent {
     }
 
     private var tempImageInputStream: InputStream? = null
+
     @RequiresApi(Build.VERSION_CODES.O)
     fun saveImageFromUrl(url: String, resultLauncher: ActivityResultLauncher<Intent>) {
         val fileFormat = dataUrlToMimeType(url)
@@ -481,15 +507,63 @@ object BrowserUnit : KoinComponent {
         config.customFontInfo = CustomFontInfo(file.name, uri.toString())
     }
 
-    fun registerSaveImageFilePickerResult(activity: ComponentActivity, postAction: (Uri)-> Unit): ActivityResultLauncher<Intent> =
+    fun registerSaveImageFilePickerResult(
+        activity: ComponentActivity,
+        postAction: (Uri) -> Unit
+    ): ActivityResultLauncher<Intent> =
         activity.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             handleSaveImageFilePickerResult(activity, it, postAction)
         }
 
+    fun stripUrlQuery(url: String): String {
+        val uri = Uri.parse(url)
+        val params = uri.queryParameterNames
+        val uriBuilder = uri.buildUpon().clearQuery()
+        for (param in params) {
+            if (!matchNeatUrlConfig(uri.host, param)) {
+                uriBuilder.appendQueryParameter(param, uri.getQueryParameter(param))
+            }
+        }
+        return uriBuilder.build().toString()
+    }
+
+    private fun matchNeatUrlConfig(host: String?, param: String): Boolean {
+        neatUrlConfigs.forEach { paramConfig ->
+            if (paramConfig.contains("@")) {
+                val paramConfigs = paramConfig.split("@")
+                if (paramConfigs.size != 2) return false
+                if (paramConfigs[0] == host && param == paramConfigs[1]) return true
+            } else if (paramConfig.endsWith("*")) {
+                if (param.startsWith(paramConfig.substring(0, paramConfig.length - 1))) return true
+            } else if (paramConfig.startsWith("*")) {
+                if (param.endsWith(paramConfig.substring(1, paramConfig.length))) return true
+            } else if (paramConfig == param) {
+                return true
+            }
+        }
+
+        return false
+    }
+
+    internal data class NeatUrlConfig(val name: String, val params: List<String>)
+
+    @Suppress("UNCHECKED_CAST")
+    private fun parseNeatUrlConfigs(): List<String> {
+        val configArray = JSONObject(Constants.NEAT_URL_DATA)
+            .getJSONArray("categories")
+
+        return (0 until configArray.length()).map { index ->
+            val config = configArray.getJSONObject(index)
+            val paramsArray = config.getJSONArray("params")
+            (0 until paramsArray.length()).map { s -> paramsArray.getString(s) }
+        }.flatten()
+    }
+
+
     private fun handleSaveImageFilePickerResult(
         activity: ComponentActivity,
         activityResult: ActivityResult,
-        postAction: (Uri)-> Unit
+        postAction: (Uri) -> Unit
     ) {
         if (activityResult.data == null || activityResult.resultCode != Activity.RESULT_OK) return
         val uri = activityResult.data?.data ?: return
