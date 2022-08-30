@@ -37,8 +37,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.json.JSONArray
-import org.json.JSONException
 import org.json.JSONObject
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -516,32 +514,54 @@ object BrowserUnit : KoinComponent {
         }
 
     fun stripUrlQuery(url: String): String {
+        var strippedCount = 0
         val uri = Uri.parse(url)
         val params = uri.queryParameterNames
         val uriBuilder = uri.buildUpon().clearQuery()
         for (param in params) {
-            if (!matchNeatUrlConfig(uri.host, param)) {
+            if (!matchNeatUrlConfig(uri.host ?: "", param)) {
                 uriBuilder.appendQueryParameter(param, uri.getQueryParameter(param))
+            } else {
+                strippedCount++
             }
+        }
+        if (strippedCount > 0) {
+            Log.d("strippedCount", "$strippedCount")
         }
         return uriBuilder.build().toString()
     }
 
-    private fun matchNeatUrlConfig(host: String?, param: String): Boolean {
+    private fun matchNeatUrlConfig(host: String, param: String): Boolean {
         neatUrlConfigs.forEach { paramConfig ->
+            // handle host part
             if (paramConfig.contains("@")) {
                 val paramConfigs = paramConfig.split("@")
-                if (paramConfigs.size != 2) return false
-                if (paramConfigs[0] == host && param == paramConfigs[1]) return true
-            } else if (paramConfig.endsWith("*")) {
-                if (param.startsWith(paramConfig.substring(0, paramConfig.length - 1))) return true
-            } else if (paramConfig.startsWith("*")) {
-                if (param.endsWith(paramConfig.substring(1, paramConfig.length))) return true
-            } else if (paramConfig == param) {
-                return true
+                if (paramConfigs.size == 2) {
+                    val paramValue = paramConfigs[0]
+                    val hostValue = paramConfigs[1]
+                    val modifiedHost = host.replace("www.", "")
+                    if (matchStarString(hostValue, modifiedHost) &&
+                        matchStarString(paramValue, param)
+                    ) {
+                        return true
+                    }
+                }
             }
-        }
 
+            // handle normal param part
+            if (matchStarString(paramConfig, param)) return true
+        }
+        return false
+    }
+
+    private fun matchStarString(config: String, param: String): Boolean {
+        if (config.endsWith("*")) {
+            if (param.startsWith(config.substring(0, config.length - 1))) return true
+        } else if (config.startsWith("*")) {
+            if (param.endsWith(config.substring(1, config.length))) return true
+        } else if (config == param) {
+            return true
+        }
         return false
     }
 

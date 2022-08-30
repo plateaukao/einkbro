@@ -62,6 +62,7 @@ android {
         checkReleaseBuilds false
         disable 'MissingTranslation'
     }
+    namespace 'info.plateaukao.einkbro'
 }
 
 dependencies {

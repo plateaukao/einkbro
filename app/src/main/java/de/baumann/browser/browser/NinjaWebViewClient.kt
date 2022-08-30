@@ -178,7 +178,8 @@ class NinjaWebViewClient(
         val fontResponse = processCustomFontRequest(Uri.parse(url))
         if (fontResponse != null) return fontResponse
 
-        return super.shouldInterceptRequest(view, url)
+        val strippedUrl = BrowserUnit.stripUrlQuery(url)
+        return super.shouldInterceptRequest(view, strippedUrl)
     }
 
     override fun shouldInterceptRequest(
