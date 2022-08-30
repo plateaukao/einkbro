@@ -514,6 +514,8 @@ object BrowserUnit : KoinComponent {
         }
 
     fun stripUrlQuery(url: String): String {
+        if (!config.shouldPruneQueryParameters) return url
+
         var strippedCount = 0
         val uri = Uri.parse(url)
         val params = uri.queryParameterNames

@@ -349,4 +349,6 @@
     <string name="setting_summary_enable_zoom">Force some website content to be zoomable</string>
     <string name="setting_title_debug">Debug WebView</string>
     <string name="setting_summary_debug">Enable this option to be able to debug WebView</string>
+    <string name="setting_title_prune_query_parameter">Prune tracking query parameters in url</string>
+    <string name="setting_summary_prune_query_parameter">query parameters like utm_medium, utm_source, etc will be removed from url.</string>
 </resources>

@@ -7,122 +7,138 @@
 
         <info.plateaukao.einkbro.preference.IntegerEditTextPreference
             android:defaultValue="80"
+            android:icon="@drawable/ic_page_height"
             android:key="sp_page_turn_left_value"
-            android:title="@string/setting_title_page_left_value"
             android:summary="@string/setting_summary_page_left_value"
-            android:icon="@drawable/ic_page_height"/>
+            android:title="@string/setting_title_page_left_value" />
 
         <ListPreference
+            android:defaultValue="0"
+            android:entries="@array/setting_entries_dark_mode"
+            android:entryValues="@array/setting_values_dark_mode"
             android:icon="@drawable/ic_dark_mode"
             android:key="sp_dark_mode"
-            android:defaultValue="0"
-            android:title="@string/dark_mode"
             android:summary="@string/setting_summary_dark_mode"
-            android:entries="@array/setting_entries_dark_mode"
-            android:entryValues="@array/setting_values_dark_mode"/>
+            android:title="@string/dark_mode" />
 
-        <CheckBoxPreference android:key="sp_desktop"
+        <CheckBoxPreference
+            android:defaultValue="false"
             android:icon="@drawable/icon_desktop"
-            android:defaultValue="false"
-            android:title="@string/desktop_mode"
-            android:summary="@string/setting_summary_desktop"/>
+            android:key="sp_desktop"
+            android:summary="@string/setting_summary_desktop"
+            android:title="@string/desktop_mode" />
 
-        <CheckBoxPreference android:key="sp_enable_zoom"
+        <CheckBoxPreference
+            android:defaultValue="false"
             android:icon="@drawable/ic_enable_zoom"
-            android:defaultValue="false"
-            android:title="@string/always_enable_zoom"
-            android:summary="@string/setting_summary_enable_zoom"/>
+            android:key="sp_enable_zoom"
+            android:summary="@string/setting_summary_enable_zoom"
+            android:title="@string/always_enable_zoom" />
 
-        <CheckBoxPreference android:key="sp_new_tab_recent_bookmarks"
-            android:icon="@drawable/ic_bookmarks"
+        <CheckBoxPreference
             android:defaultValue="false"
-            android:title="@string/setting_recent_bookmarks"
-            android:summary="@string/setting_summary_recent_bookmarks"/>
-        <Preference
-            android:key="sp_clear_recent_bookmarks"
             android:icon="@drawable/ic_bookmarks"
-            android:title="@string/setting_clear_recent_bookmarks"
-            android:summary="@string/setting_summary_clear_recent_bookmarks"/>
+            android:key="sp_new_tab_recent_bookmarks"
+            android:summary="@string/setting_summary_recent_bookmarks"
+            android:title="@string/setting_recent_bookmarks" />
+        <Preference
+            android:icon="@drawable/ic_bookmarks"
+            android:key="sp_clear_recent_bookmarks"
+            android:summary="@string/setting_summary_clear_recent_bookmarks"
+            android:title="@string/setting_clear_recent_bookmarks" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/setting_title_toolbar">
 
         <CheckBoxPreference
-            android:key="sp_toolbar_top"
-            android:icon="@drawable/ic_page_height"
             android:defaultValue="false"
-            android:title="@string/setting_title_toolbar_top"
-            android:summary="@string/setting_summary_toolbar_top"/>
+            android:icon="@drawable/ic_page_height"
+            android:key="sp_toolbar_top"
+            android:summary="@string/setting_summary_toolbar_top"
+            android:title="@string/setting_title_toolbar_top" />
 
         <CheckBoxPreference
-            android:key="hideToolbar"
-            android:icon="@drawable/icon_fullscreen"
             android:defaultValue="false"
-            android:title="@string/setting_title_hideToolbar"
-            android:summary="@string/setting_summary_hide"/>
+            android:icon="@drawable/icon_fullscreen"
+            android:key="hideToolbar"
+            android:summary="@string/setting_summary_hide"
+            android:title="@string/setting_title_hideToolbar" />
 
-        <CheckBoxPreference android:key="sp_toolbarShow"
-            android:icon="@drawable/icon_show"
+        <CheckBoxPreference
             android:defaultValue="true"
-            android:title="@string/setting_title_toolbarShow"
-            android:summary="@string/setting_summary_toolbarShow"/>
+            android:icon="@drawable/icon_show"
+            android:key="sp_toolbarShow"
+            android:summary="@string/setting_summary_toolbarShow"
+            android:title="@string/setting_title_toolbarShow" />
 
         <ListPreference
-            android:title="@string/setting_title_nav_pos"
-            android:icon="@drawable/icon_arrow_expand"
-            android:summary="@string/setting_summary_nav_pos"
-            android:key="nav_position"
             android:defaultValue="0"
             android:entries="@array/setting_entries_nav_pos"
-            android:entryValues="@array/setting_values_nav_pos" />
+            android:entryValues="@array/setting_values_nav_pos"
+            android:icon="@drawable/icon_arrow_expand"
+            android:key="nav_position"
+            android:summary="@string/setting_summary_nav_pos"
+            android:title="@string/setting_title_nav_pos" />
 
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/setting_title_behavior">
 
-        <CheckBoxPreference android:key="sp_shouldSaveTabs"
-            android:icon="@drawable/icon_tab_plus"
+        <CheckBoxPreference
             android:defaultValue="false"
-            android:title="@string/setting_title_saveTabs"
-            android:summary="@string/setting_summary_saveTabs"/>
-
-        <CheckBoxPreference android:key="sp_background_loading"
             android:icon="@drawable/icon_tab_plus"
+            android:key="sp_shouldSaveTabs"
+            android:summary="@string/setting_summary_saveTabs"
+            android:title="@string/setting_title_saveTabs" />
+
+        <CheckBoxPreference
             android:defaultValue="true"
-            android:title="@string/setting_title_background_loading"
-            android:summary="@string/setting_summary_background_loading"/>
+            android:icon="@drawable/icon_tab_plus"
+            android:key="sp_background_loading"
+            android:summary="@string/setting_summary_background_loading"
+            android:title="@string/setting_title_background_loading" />
 
-        <CheckBoxPreference android:key="sp_trim_input_url"
-            android:icon="@drawable/icon_edit"
+        <CheckBoxPreference
             android:defaultValue="false"
-            android:title="@string/setting_title_trim_input_url"
-            android:summary="@string/setting_summary_trim_input_url"/>
+            android:icon="@drawable/icon_edit"
+            android:key="sp_trim_input_url"
+            android:summary="@string/setting_summary_trim_input_url"
+            android:title="@string/setting_title_trim_input_url" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:icon="@drawable/ic_filter"
+            android:key="sp_prune_query_parameter"
+            android:summary="@string/setting_summary_prune_query_parameter"
+            android:title="@string/setting_title_prune_query_parameter" />
 
         <CheckBoxPreference
             android:defaultValue="false"
             android:icon="@drawable/ic_eye"
             android:key="sp_screen_awake"
-            android:title="@string/setting_title_screen_awake"
-            android:summary="@string/setting_summary_screen_awake" />
+            android:summary="@string/setting_summary_screen_awake"
+            android:title="@string/setting_title_screen_awake" />
 
         <CheckBoxPreference
             android:defaultValue="false"
             android:icon="@drawable/icon_close"
             android:key="sp_close_tab_confirm"
-            android:title="@string/setting_title_confirm_tab_close"
-            android:summary="@string/setting_summary_confirm_tab_close" />
+            android:summary="@string/setting_summary_confirm_tab_close"
+            android:title="@string/setting_title_confirm_tab_close" />
 
-        <CheckBoxPreference android:key="sp_enable_vi_binding"
+        <CheckBoxPreference
+            android:defaultValue="false"
             android:icon="@drawable/ic_keyboard"
-            android:defaultValue="false"
-            android:title="@string/setting_title_vi_binding"
-            android:summary="@string/setting_summary_vi_binding"/>
+            android:key="sp_enable_vi_binding"
+            android:summary="@string/setting_summary_vi_binding"
+            android:title="@string/setting_title_vi_binding" />
 
-        <CheckBoxPreference android:key="sp_useUpDownForPageTurn"
-            android:icon="@drawable/ic_page_down"
+        <CheckBoxPreference
             android:defaultValue="false"
-            android:title="@string/setting_title_useUpDown"
-            android:summary="@string/setting_summary_ususeUpDowneUpDown"/>
+            android:icon="@drawable/ic_page_down"
+            android:key="sp_useUpDownForPageTurn"
+            android:summary="@string/setting_summary_ususeUpDowneUpDown"
+            android:title="@string/setting_title_useUpDown" />
 
     </PreferenceCategory>
 
