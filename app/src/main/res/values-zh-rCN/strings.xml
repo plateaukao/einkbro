@@ -355,4 +355,5 @@
     <string name="setting_summary_enable_zoom">强制某些网站内容可缩放</string>
     <string name="setting_title_debug">调试网页视图</string>
     <string name="setting_summary_debug">启用此选项可以调试网页视图</string>
+    <string name="setting_title_prune_query_parameter">Prune tracking query parameters in url</string>
 </resources>

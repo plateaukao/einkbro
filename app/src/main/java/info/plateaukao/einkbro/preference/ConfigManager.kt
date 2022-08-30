@@ -55,6 +55,7 @@ class ConfigManager(
     var autoFillForm by BooleanPreference(sp, K_AUTO_FILL, true)
     var shouldTrimInputUrl by BooleanPreference(sp, K_TRIM_INPUT_URL, false)
     var enableZoom by BooleanPreference(sp, K_ENABLE_ZOOM, false)
+    var shouldPruneQueryParameters by BooleanPreference(sp, K_PRUNE_QUERY_PARAMETERS, false)
 
     var isIncognitoMode: Boolean
         get() = sp.getBoolean(K_IS_INCOGNITO_MODE, false)
@@ -126,19 +127,25 @@ class ConfigManager(
         }
 
     var translationLanguage: TranslationLanguage
-        get() = TranslationLanguage.values()[sp.getInt(K_TRANSLATE_LANGUAGE, getDefaultTranslationLanguage().ordinal)]
+        get() = TranslationLanguage.values()[sp.getInt(
+            K_TRANSLATE_LANGUAGE,
+            getDefaultTranslationLanguage().ordinal
+        )]
         set(value) {
             sp.edit { putInt(K_TRANSLATE_LANGUAGE, value.ordinal) }
         }
 
     var translationOrientation: Orientation
-        get() = Orientation.values()[sp.getInt(K_TRANSLATE_ORIENTATION, Orientation.Horizontal.ordinal)]
+        get() = Orientation.values()[sp.getInt(
+            K_TRANSLATE_ORIENTATION,
+            Orientation.Horizontal.ordinal
+        )]
         set(value) {
             sp.edit { putInt(K_TRANSLATE_ORIENTATION, value.ordinal) }
         }
 
     var translationPanelSwitched by BooleanPreference(sp, K_TRANSLATE_PANEL_SWITCHED, false)
-    var translationScrollSync  by BooleanPreference(sp, K_TRANSLATE_SCROLL_SYNC, false)
+    var translationScrollSync by BooleanPreference(sp, K_TRANSLATE_SCROLL_SYNC, false)
     var twoPanelLinkHere by BooleanPreference(sp, K_TWO_PANE_LINK_HERE, false)
     var switchTouchAreaAction by BooleanPreference(sp, K_TOUCH_AREA_ACTION_SWITCH, false)
     var hideTouchAreaWhenInput by BooleanPreference(sp, K_TOUCH_AREA_HIDE_WHEN_INPUT, false)
@@ -148,20 +155,23 @@ class ConfigManager(
 
     var favoriteUrl: String
         get() = sp.getString(K_FAVORITE_URL, Constants.DEFAULT_HOME_URL)
-                ?: Constants.DEFAULT_HOME_URL
+            ?: Constants.DEFAULT_HOME_URL
         set(value) {
             sp.edit { putString(K_FAVORITE_URL, value) }
         }
 
     var toolbarActions: List<ToolbarAction>
         get() {
-            val key = if (ViewUnit.isLandscape(context)) K_TOOLBAR_ICONS_FOR_LARGE else K_TOOLBAR_ICONS
-            val iconListString = sp.getString(key, sp.getString(K_TOOLBAR_ICONS, getDefaultIconStrings())) ?: ""
+            val key =
+                if (ViewUnit.isLandscape(context)) K_TOOLBAR_ICONS_FOR_LARGE else K_TOOLBAR_ICONS
+            val iconListString =
+                sp.getString(key, sp.getString(K_TOOLBAR_ICONS, getDefaultIconStrings())) ?: ""
             return iconStringToEnumList(iconListString)
         }
         set(value) {
             sp.edit {
-                val key = if (ViewUnit.isLandscape(context)) K_TOOLBAR_ICONS_FOR_LARGE else K_TOOLBAR_ICONS
+                val key =
+                    if (ViewUnit.isLandscape(context)) K_TOOLBAR_ICONS_FOR_LARGE else K_TOOLBAR_ICONS
                 putString(key, value.map { it.ordinal }.joinToString(","))
             }
         }
@@ -182,8 +192,8 @@ class ConfigManager(
 
             return try {
                 string.split(RECENT_BOOKMARKS_SEPARATOR)
-                        .mapNotNull { it.toRecentBookmark() }
-                        .sortedByDescending { it.count }
+                    .mapNotNull { it.toRecentBookmark() }
+                    .sortedByDescending { it.count }
             } catch (exception: Exception) {
                 sp.edit { remove(K_RECENT_BOOKMARKS) }
                 emptyList()
@@ -200,8 +210,8 @@ class ConfigManager(
                 } else {
                     // check if the new value the same as the old one
                     putString(
-                            K_RECENT_BOOKMARKS,
-                            value.joinToString(RECENT_BOOKMARKS_SEPARATOR) { it.toSerializedString() }
+                        K_RECENT_BOOKMARKS,
+                        value.joinToString(RECENT_BOOKMARKS_SEPARATOR) { it.toSerializedString() }
                     )
                 }
             }
@@ -211,7 +221,7 @@ class ConfigManager(
         var newList = recentBookmarks.toMutableList()
         val sameItem = newList.firstOrNull { it.url == bookmark.url }
         if (sameItem != null) {
-            sameItem.count ++
+            sameItem.count++
         } else {
             newList.add(RecentBookmark(bookmark.title, bookmark.url, 1))
         }
@@ -250,8 +260,8 @@ class ConfigManager(
                 } else {
                     // check if the new value the same as the old one
                     putString(
-                            K_SAVED_ALBUM_INFO,
-                            value.joinToString(ALBUM_INFO_SEPARATOR) { it.toSerializedString() }
+                        K_SAVED_ALBUM_INFO,
+                        value.joinToString(ALBUM_INFO_SEPARATOR) { it.toSerializedString() }
                     )
                 }
             }
@@ -287,9 +297,9 @@ class ConfigManager(
 
     var savedEpubFileInfos: List<EpubFileInfo>
         get() = sp.getString(K_SAVED_EPUBS, "")?.toEpubFileInfoList() ?: mutableListOf()
-        set(value) = sp.edit { putString(K_SAVED_EPUBS, toEpubFileInfosString(value))}
+        set(value) = sp.edit { putString(K_SAVED_EPUBS, toEpubFileInfosString(value)) }
 
-    var darkMode:DarkMode
+    var darkMode: DarkMode
         get() = DarkMode.values()[sp.getString(K_DARK_MODE, "0")?.toInt() ?: 0]
         set(value) = sp.edit { putString(K_DARK_MODE, value.ordinal.toString()) }
 
@@ -309,9 +319,9 @@ class ConfigManager(
     }
 
     private fun getDefaultIconStrings(): String =
-            ToolbarAction.defaultActions.joinToString(",") { action ->
-                action.ordinal.toString()
-            }
+        ToolbarAction.defaultActions.joinToString(",") { action ->
+            action.ordinal.toString()
+        }
 
     companion object {
         const val K_TOUCH_AREA_TYPE = "sp_touch_area_type"
@@ -370,6 +380,7 @@ class ConfigManager(
         const val K_ENABLE_ZOOM = "sp_enable_zoom"
         const val K_DEBUG_WEBVIEW = "sp_debug_webview"
         const val K_HISTORY_PURGE_TS = "sp_history_purge_ts"
+        const val K_PRUNE_QUERY_PARAMETERS = "sp_prune_query_parameter"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
         private const val RECENT_BOOKMARKS_SEPARATOR = "::::"
@@ -379,13 +390,13 @@ class ConfigManager(
     }
 
     private fun String.toEpubFileInfoList(): MutableList<EpubFileInfo> =
-            if (this.isEmpty() || this == EPUB_FILE_INFO_SEPARATOR) mutableListOf()
-            else this.split(EPUB_FILE_INFO_SEPARATOR).map { fileString ->
-                EpubFileInfo.fromString(fileString)
-            }.toMutableList()
+        if (this.isEmpty() || this == EPUB_FILE_INFO_SEPARATOR) mutableListOf()
+        else this.split(EPUB_FILE_INFO_SEPARATOR).map { fileString ->
+            EpubFileInfo.fromString(fileString)
+        }.toMutableList()
 
     private fun toEpubFileInfosString(list: List<EpubFileInfo>): String =
-            list.joinToString(separator = EPUB_FILE_INFO_SEPARATOR) { it.toPrefString() }
+        list.joinToString(separator = EPUB_FILE_INFO_SEPARATOR) { it.toPrefString() }
 
     fun addSavedEpubFile(epubFileInfo: EpubFileInfo) {
         savedEpubFileInfos = savedEpubFileInfos.toMutableList().apply { add(epubFileInfo) }
