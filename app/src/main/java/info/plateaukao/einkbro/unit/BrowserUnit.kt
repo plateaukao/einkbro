@@ -518,7 +518,11 @@ object BrowserUnit : KoinComponent {
 
         var strippedCount = 0
         val uri = Uri.parse(url)
+        if (uri.authority == null) return url
+
         val params = uri.queryParameterNames
+        if (params.isEmpty()) return url
+
         val uriBuilder = uri.buildUpon().clearQuery()
         for (param in params) {
             if (!matchNeatUrlConfig(uri.host ?: "", param)) {
