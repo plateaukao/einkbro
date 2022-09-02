@@ -516,25 +516,29 @@ object BrowserUnit : KoinComponent {
     fun stripUrlQuery(url: String): String {
         if (!config.shouldPruneQueryParameters) return url
 
-        var strippedCount = 0
-        val uri = Uri.parse(url)
-        if (uri.authority == null) return url
+        try {
+            var strippedCount = 0
+            val uri = Uri.parse(url)
+            if (uri.authority == null) return url
 
-        val params = uri.queryParameterNames
-        if (params.isEmpty()) return url
+            val params = uri.queryParameterNames
+            if (params.isEmpty()) return url
 
-        val uriBuilder = uri.buildUpon().clearQuery()
-        for (param in params) {
-            if (!matchNeatUrlConfig(uri.host ?: "", param)) {
-                uriBuilder.appendQueryParameter(param, uri.getQueryParameter(param))
-            } else {
-                strippedCount++
+            val uriBuilder = uri.buildUpon().clearQuery()
+            for (param in params) {
+                if (!matchNeatUrlConfig(uri.host ?: "", param)) {
+                    uriBuilder.appendQueryParameter(param, uri.getQueryParameter(param))
+                } else {
+                    strippedCount++
+                }
             }
+            if (strippedCount > 0) {
+                Log.d("strippedCount", "$strippedCount")
+            }
+            return uriBuilder.build().toString()
+        } catch (e: Exception) {
+            return url
         }
-        if (strippedCount > 0) {
-            Log.d("strippedCount", "$strippedCount")
-        }
-        return uriBuilder.build().toString()
     }
 
     private fun matchNeatUrlConfig(host: String, param: String): Boolean {
