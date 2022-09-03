@@ -126,7 +126,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         ComposeToolbarViewController(
             binding.composeIconBar,
             this::onToolActionClick,
-            this::onToolActionLongClick
+            this::onToolActionLongClick,
+            onTabClick = { it.show() },
+            onTabLongClick = { it.remove() },
         )
     }
 
@@ -1134,6 +1136,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             browserContainer.add(newWebView)
             overviewDialogController.addTabPreview(album, browserContainer.size() - 1)
         }
+        composeToolbarViewController.updateTabView(overviewDialogController.currentAlbumList)
     }
 
     private fun loadUrlInWebView(foreground: Boolean, webView: NinjaWebView, url: String) {

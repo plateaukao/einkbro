@@ -8,9 +8,7 @@ import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
@@ -20,6 +18,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import info.plateaukao.einkbro.view.Album
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.*
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarActionInfo
@@ -29,6 +28,47 @@ private val toolbarIconWidth = 46.dp
 
 @Composable
 fun ComposedToolbar(
+    showTabs: Boolean,
+    toolbarActionInfos: List<ToolbarActionInfo>,
+    title: String,
+    tabCount: String,
+    isIncognito: Boolean,
+    onIconClick: (ToolbarAction) -> Unit,
+    onIconLongClick: ((ToolbarAction) -> Unit)? = null,
+    albumList: MutableState<List<Album>>,
+    onAlbumClick: (Album) -> Unit,
+    onAlbumLongClick: (Album) -> Unit,
+) {
+    val height = if (showTabs) 100.dp else 50.dp
+    Column(
+        modifier = Modifier
+            .height(height)
+            .background(MaterialTheme.colors.background)
+    ) {
+        if (showTabs) {
+            PreviewTabs(
+                Modifier
+                    .height(50.dp)
+                    .fillMaxWidth(),
+                albumList = remember { albumList },
+                onClick = onAlbumClick,
+                closeAction = onAlbumLongClick,
+                showHorizontal = true
+            )
+        }
+        ComposedIconBar(
+            toolbarActionInfos = toolbarActionInfos,
+            title = title,
+            tabCount = tabCount,
+            isIncognito = isIncognito,
+            onClick = onIconClick,
+            onLongClick = onIconLongClick,
+        )
+    }
+}
+
+@Composable
+fun ComposedIconBar(
     toolbarActionInfos: List<ToolbarActionInfo>,
     title: String,
     tabCount: String,
@@ -37,12 +77,18 @@ fun ComposedToolbar(
     onLongClick: ((ToolbarAction) -> Unit)? = null,
 ) {
     val screenWidth = LocalConfiguration.current.screenWidthDp
-    val shouldTitleWidthFixed =  toolbarActionInfos.filter { it.toolbarAction != Title }.size * 46 > screenWidth
+    val shouldTitleWidthFixed =
+        toolbarActionInfos.filter { it.toolbarAction != Title }.size * 46 > screenWidth
     Row(
         modifier = Modifier
             .height(50.dp)
             .background(MaterialTheme.colors.background)
-            .conditional(shouldTitleWidthFixed) { horizontalScroll(rememberScrollState(), reverseScrolling = true) }
+            .conditional(shouldTitleWidthFixed) {
+                horizontalScroll(
+                    rememberScrollState(),
+                    reverseScrolling = true
+                )
+            }
             .clickable { onClick(Title) }, // these two lines prevent row having click action
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.End
@@ -52,7 +98,11 @@ fun ComposedToolbar(
                 Title -> {
                     val titleModifier = Modifier
                         .padding(start = 10.dp, end = 1.dp)
-                        .then(if (shouldTitleWidthFixed) Modifier.widthIn(max = 300.dp) else Modifier.weight(1F))
+                        .then(
+                            if (shouldTitleWidthFixed) Modifier.widthIn(max = 300.dp) else Modifier.weight(
+                                1F
+                            )
+                        )
                         .clickable { onClick(toolbarAction) }
                     Text(
                         modifier = titleModifier,
@@ -143,7 +193,10 @@ private fun TabCountIcon(
     }
 }
 
-private inline fun Modifier.conditional(condition : Boolean, modifier : Modifier.() -> Modifier) : Modifier {
+private inline fun Modifier.conditional(
+    condition: Boolean,
+    modifier: Modifier.() -> Modifier
+): Modifier {
     return if (condition) {
         modifier.invoke(this)
     } else {
@@ -171,7 +224,7 @@ fun PreviewTabCountIncognito() {
 @Composable
 fun PreviewToolbar() {
     MyTheme {
-        ComposedToolbar(
+        ComposedIconBar(
             toolbarActionInfos = ToolbarAction.values().map { ToolbarActionInfo(it, false) },
             "hihi",
             tabCount = "1",
@@ -185,7 +238,7 @@ fun PreviewToolbar() {
 @Composable
 fun PreviewToolbarLongTitle() {
     MyTheme {
-        ComposedToolbar(
+        ComposedIconBar(
             toolbarActionInfos = listOf(
                 ToolbarActionInfo(Desktop, false),
                 ToolbarActionInfo(TabCount, false),

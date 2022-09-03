@@ -6,6 +6,7 @@ import android.view.View.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.AbstractComposeView
 import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.view.Album
 import info.plateaukao.einkbro.view.compose.ComposedToolbar
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction
@@ -16,9 +17,11 @@ import org.koin.core.component.inject
 
 class ComposeToolbarViewController(
     private val toolbarComposeView: ToolbarComposeView,
-    private val onIconClick: (ToolbarAction)->Unit,
-    private val onIconLongClick: (ToolbarAction)->Unit,
-): KoinComponent {
+    private val onIconClick: (ToolbarAction) -> Unit,
+    private val onIconLongClick: (ToolbarAction) -> Unit,
+    private val onTabClick: (Album) -> Unit,
+    private val onTabLongClick: (Album) -> Unit,
+) : KoinComponent {
     private val config: ConfigManager by inject()
 
     private val readerToolbarActions: List<ToolbarAction> = listOf(
@@ -36,14 +39,25 @@ class ComposeToolbarViewController(
 
     private var isReader: Boolean = false
 
+    private val currentAlbumList = mutableListOf<Album>()
+
+    private val albumsState = mutableStateOf(currentAlbumList.toList())
+
+    fun updateTabView(albumList: List<Album>) {
+        albumsState.value = albumList.toList()
+    }
+
     init {
         toolbarComposeView.apply {
-            val iconEnums = if(isReader) readerToolbarActions else config.toolbarActions
+            val iconEnums = if (isReader) readerToolbarActions else config.toolbarActions
             toolbarActionInfoList = iconEnums.toToolbarActionInfoList()
 
             onItemClick = onIconClick
             onItemLongClick = onIconLongClick
+            albumList = albumsState
         }
+        toolbarComposeView.onTabClick = onTabClick
+        toolbarComposeView.onTabLongClick = onTabLongClick
     }
 
     fun isDisplayed(): Boolean = toolbarComposeView.visibility == VISIBLE
@@ -62,22 +76,23 @@ class ComposeToolbarViewController(
         isLoading = isLoadingWeb
         updateIcons()
     }
+
     fun setEpubReaderMode() {
         isReader = true
         updateIcons()
     }
 
     fun updateIcons() {
-        val iconEnums = if(isReader) readerToolbarActions else config.toolbarActions
+        val iconEnums = if (isReader) readerToolbarActions else config.toolbarActions
         toolbarComposeView.toolbarActionInfoList = iconEnums.toToolbarActionInfoList()
         toolbarComposeView.isIncognito = config.isIncognitoMode
     }
 
-    private fun List<ToolbarAction>.toToolbarActionInfoList(): List<ToolbarActionInfo>  {
+    private fun List<ToolbarAction>.toToolbarActionInfoList(): List<ToolbarActionInfo> {
         return this.map { toolbarAction ->
-            when(toolbarAction) {
+            when (toolbarAction) {
                 BoldFont -> ToolbarActionInfo(toolbarAction, config.boldFontStyle)
-                Refresh -> ToolbarActionInfo(toolbarAction,isLoading)
+                Refresh -> ToolbarActionInfo(toolbarAction, isLoading)
                 Desktop -> ToolbarActionInfo(toolbarAction, config.desktop)
                 Touch -> ToolbarActionInfo(toolbarAction, config.enableTouchTurn)
                 else -> ToolbarActionInfo(toolbarAction, false)
@@ -98,24 +113,33 @@ class ToolbarComposeView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyle: Int = 0,
-): AbstractComposeView(context, attrs, defStyle) {
+) : AbstractComposeView(context, attrs, defStyle) {
 
     var toolbarActionInfoList: List<ToolbarActionInfo> by mutableStateOf(emptyList())
     var title by mutableStateOf("")
     var tabCount by mutableStateOf("")
     var isIncognito by mutableStateOf(false)
-    var onItemClick: (ToolbarAction)-> Unit = {}
-    var onItemLongClick: (ToolbarAction)->Unit = {}
+    var onItemClick: (ToolbarAction) -> Unit = {}
+    var onItemLongClick: (ToolbarAction) -> Unit = {}
+    var onTabClick: (Album) -> Unit = {}
+    var onTabLongClick: (Album) -> Unit = {}
+
+    var albumList = mutableStateOf(listOf<Album>())
 
     @Composable
     override fun Content() {
         MyTheme {
-            ComposedToolbar(toolbarActionInfoList,
+            ComposedToolbar(
+                showTabs = true,
+                toolbarActionInfoList,
                 title = title,
                 tabCount = tabCount,
                 isIncognito = isIncognito,
-                onClick = onItemClick,
-                onLongClick = onItemLongClick
+                onIconClick = onItemClick,
+                onIconLongClick = onItemLongClick,
+                albumList = albumList,
+                onAlbumClick = onTabClick,
+                onAlbumLongClick = onTabLongClick,
             )
         }
     }
