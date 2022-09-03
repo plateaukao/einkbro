@@ -28,7 +28,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.min
 import androidx.compose.ui.unit.sp
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.database.BookmarkManager
@@ -74,7 +73,7 @@ class HistoryAndTabsView @JvmOverloads constructor(
             HistoryAndTabs(
                 bookmarkManager = bookmarkManager,
                 isHistoryOpen = isHistoryOpen,
-                shouldReverse = shouldReverse,
+                shouldReverseHistory = shouldReverse,
                 shouldShowTwoColumns = shouldShowTwoColumns,
                 albumList = albumList,
                 focusedAlbumIndex = focusedAlbumIndex,
@@ -101,7 +100,7 @@ fun HistoryAndTabs(
     bookmarkManager: BookmarkManager? = null,
     isHistoryOpen: Boolean = false,
     shouldShowTwoColumns: Boolean = false,
-    shouldReverse: Boolean = false,
+    shouldReverseHistory: Boolean = false,
 
     albumList: MutableState<List<Album>>,
     focusedAlbumIndex: MutableState<Int>,
@@ -121,6 +120,7 @@ fun HistoryAndTabs(
     launchNewBrowserAction: () -> Unit,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
+    val isBarOnTop = !shouldReverseHistory
     Column(
         Modifier
             .fillMaxHeight()
@@ -128,61 +128,49 @@ fun HistoryAndTabs(
                 interactionSource = interactionSource,
                 indication = null
             ) { closePanel() },
-        verticalArrangement = if (shouldReverse) Arrangement.Bottom else Arrangement.Top,
+        verticalArrangement = if (isBarOnTop) Arrangement.Top else Arrangement.Bottom,
     ) {
-        val isBarOnTop = !shouldReverse
-
-        if (!isBarOnTop) {
-            HorizontalSeparator()
-            MainContent(
-                modifier = Modifier.Companion
-                    .weight(1f, false)
-                    .background(MaterialTheme.colors.background),
-                isHistoryOpen,
-                shouldShowTwoColumns,
-                shouldReverse,
-                albumList,
-                focusedAlbumIndex,
-                onTabClick,
-                onTabLongClick,
-                bookmarkManager,
-                records,
-                onHistoryItemClick,
-                onHistoryItemLongClick
+        if (isBarOnTop) {
+            ButtonBarLayout(
+                isHistoryOpen = isHistoryOpen,
+                addIncognitoTab = addIncognitoTab,
+                addTab = addTab,
+                closePanel = closePanel,
+                toggleHistory = { onHistoryIconClick() },
+                togglePreview = { onTabIconClick() },
+                onDeleteAction = onDeleteAction,
+                launchNewBrowserAction = launchNewBrowserAction,
             )
             HorizontalSeparator()
         }
-
-        ButtonBarLayout(
-            isHistoryOpen = isHistoryOpen,
-            addIncognitoTab = addIncognitoTab,
-            addTab = addTab,
-            closePanel = closePanel,
-            toggleHistory = { onHistoryIconClick() },
-            togglePreview = { onTabIconClick() },
-            onDeleteAction = onDeleteAction,
-            launchNewBrowserAction = launchNewBrowserAction,
+        MainContent(
+            modifier = Modifier.Companion
+                .weight(1f, false)
+                .background(MaterialTheme.colors.background),
+            isHistoryOpen,
+            shouldShowTwoColumns,
+            shouldReverseHistory,
+            albumList,
+            focusedAlbumIndex,
+            onTabClick,
+            onTabLongClick,
+            bookmarkManager,
+            records,
+            onHistoryItemClick,
+            onHistoryItemLongClick
         )
-
-        if (isBarOnTop) {
+        if (!isBarOnTop) {
             HorizontalSeparator()
-            MainContent(
-                modifier = Modifier.Companion
-                    .weight(1f, false)
-                    .background(MaterialTheme.colors.background),
-                isHistoryOpen,
-                shouldShowTwoColumns,
-                shouldReverse,
-                albumList,
-                focusedAlbumIndex,
-                onTabClick,
-                onTabLongClick,
-                bookmarkManager,
-                records,
-                onHistoryItemClick,
-                onHistoryItemLongClick
+            ButtonBarLayout(
+                isHistoryOpen = isHistoryOpen,
+                addIncognitoTab = addIncognitoTab,
+                addTab = addTab,
+                closePanel = closePanel,
+                toggleHistory = { onHistoryIconClick() },
+                togglePreview = { onTabIconClick() },
+                onDeleteAction = onDeleteAction,
+                launchNewBrowserAction = launchNewBrowserAction,
             )
-            HorizontalSeparator()
         }
     }
 }
@@ -279,7 +267,8 @@ fun PreviewTabs(
                             indication = null,
                             onClick = { onClick(album) },
                             onLongClick = {
-                                albumList.value = albumList.value.toMutableList().apply { remove(album) }
+                                albumList.value =
+                                    albumList.value.toMutableList().apply { remove(album) }
                                 closeAction(album)
                             }
                         ),
@@ -444,7 +433,7 @@ fun PreviewHistoryAndTabs() {
     HistoryAndTabs(
         isHistoryOpen = true,
         shouldShowTwoColumns = false,
-        shouldReverse = false,
+        shouldReverseHistory = false,
         albumList = albumList,
         focusedAlbumIndex = mutableStateOf(1),
         onTabIconClick = {},
