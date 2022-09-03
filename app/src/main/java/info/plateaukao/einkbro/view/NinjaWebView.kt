@@ -72,7 +72,7 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
 
     constructor(context: Context?, browserController: BrowserController?) : super(context!!) {
         this.browserController = browserController
-        album = Album(context, this, browserController)
+        album = Album(this, browserController)
         initAlbum()
     }
 
