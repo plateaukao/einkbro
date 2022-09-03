@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -22,10 +23,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.AbstractComposeView
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.min
 import androidx.compose.ui.unit.sp
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.database.BookmarkManager
@@ -35,6 +38,7 @@ import info.plateaukao.einkbro.view.dialog.compose.ActionIcon
 import info.plateaukao.einkbro.view.dialog.compose.HorizontalSeparator
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import kotlin.math.max
 
 class HistoryAndTabsView @JvmOverloads constructor(
     context: Context,
@@ -236,11 +240,18 @@ fun PreviewTabs(
     showHorizontal: Boolean = false
 ) {
     if (showHorizontal) {
-        LazyRow(modifier = modifier) {
-            items(albumList.value.size, { it.hashCode() }) { albumIndex ->
-                val album = albumList.value[albumIndex]
-                val interactionSource = remember { MutableInteractionSource() }
+        val maxItemWidth = 200
+        val screenWidth = LocalConfiguration.current.screenWidthDp
+        val itemWidth =
+            if (albumList.value.size * 200 > screenWidth) max(
+                screenWidth / albumList.value.size,
+                50
+            )
+            else maxItemWidth
 
+        LazyRow(modifier = modifier) {
+            itemsIndexed(albumList.value) { albumIndex, album ->
+                val interactionSource = remember { MutableInteractionSource() }
                 TabItem(
                     modifier = Modifier
                         .combinedClickable(
@@ -250,18 +261,14 @@ fun PreviewTabs(
                                 onClick(album)
                             },
                             onLongClick = {
-                                albumList.value =
-                                    albumList.value
-                                        .toMutableList()
-                                        .apply { remove(album) }
                                 closeAction(album)
                             }
                         )
-                        .width(200.dp),
+                        .width(itemWidth.dp),
                     focused = focusedAlbumIndex.value == albumIndex,
+                    showCloseButton = false,
                     album = album
                 ) {
-                    albumList.value = albumList.value.toMutableList().apply { remove(album) }
                     closeAction(album)
                 }
             }
@@ -305,6 +312,7 @@ private fun TabItem(
     modifier: Modifier,
     album: Album,
     focused: Boolean = false,
+    showCloseButton: Boolean = true,
     closeAction: () -> Unit,
 ) {
     val tabInfo = album.toTabInfo()
@@ -314,7 +322,8 @@ private fun TabItem(
         modifier = modifier
             .height(54.dp)
             .padding(4.dp)
-            .border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp)),
+            .border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
+            .padding(4.dp),
         horizontalArrangement = Arrangement.Center
     ) {
         if (tabInfo.favicon != null) {
@@ -346,11 +355,13 @@ private fun TabItem(
             color = MaterialTheme.colors.onBackground,
         )
 
-        ActionIcon(
-            modifier = Modifier.align(Alignment.CenterVertically),
-            iconResId = R.drawable.icon_close,
-            action = closeAction,
-        )
+        if (showCloseButton || focused) {
+            ActionIcon(
+                modifier = Modifier.align(Alignment.CenterVertically),
+                iconResId = R.drawable.icon_close,
+                action = closeAction,
+            )
+        }
     }
 }
 

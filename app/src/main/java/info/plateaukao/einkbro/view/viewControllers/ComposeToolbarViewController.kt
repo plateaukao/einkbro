@@ -43,6 +43,10 @@ class ComposeToolbarViewController(
 
     private val albumsState = mutableStateOf(currentAlbumList.toList())
 
+    fun showTabbar(shouldShow: Boolean) {
+        toolbarComposeView.shouldShowTabs = shouldShow
+    }
+
     fun updateTabView(albumList: List<Album>) {
         albumsState.value = albumList.toList()
         toolbarComposeView.focusedAlbumIndex.value =
@@ -54,6 +58,7 @@ class ComposeToolbarViewController(
             val iconEnums = if (isReader) readerToolbarActions else config.toolbarActions
             toolbarActionInfoList = iconEnums.toToolbarActionInfoList()
 
+            shouldShowTabs = config.shouldShowTabBar
             onItemClick = onIconClick
             onItemLongClick = onIconLongClick
             albumList = albumsState
@@ -120,6 +125,7 @@ class ToolbarComposeView @JvmOverloads constructor(
 ) : AbstractComposeView(context, attrs, defStyle) {
 
     var toolbarActionInfoList: List<ToolbarActionInfo> by mutableStateOf(emptyList())
+    var shouldShowTabs by mutableStateOf(false)
     var title by mutableStateOf("")
     var tabCount by mutableStateOf("")
     var isIncognito by mutableStateOf(false)
@@ -135,7 +141,7 @@ class ToolbarComposeView @JvmOverloads constructor(
     override fun Content() {
         MyTheme {
             ComposedToolbar(
-                showTabs = true,
+                showTabs = shouldShowTabs,
                 toolbarActionInfoList,
                 title = title,
                 tabCount = tabCount,

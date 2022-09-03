@@ -548,7 +548,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         updateTitle()
 
         overviewDialogController.updateTabView()
-        composeToolbarViewController.updateTabView(overviewDialogController.currentAlbumList)
+        updateTabBar()
     }
 
     private fun openCustomFontPicker() = BrowserUnit.openFontFilePicker(customFontResultLauncher)
@@ -874,6 +874,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 ConfigManager.K_TOOLBAR_ICONS -> {
                     composeToolbarViewController.updateIcons()
                 }
+                ConfigManager.K_SHOW_TAB_BAR -> {
+                    composeToolbarViewController.showTabbar(config.shouldShowTabBar)
+                }
                 ConfigManager.K_FONT_TYPE -> {
                     if (config.fontType == FontType.SYSTEM_DEFAULT) {
                         ninjaWebView.reload()
@@ -1139,7 +1142,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             browserContainer.add(newWebView)
             overviewDialogController.addTabPreview(album, browserContainer.size() - 1)
         }
-        composeToolbarViewController.updateTabView(overviewDialogController.currentAlbumList)
+        updateTabBar()
     }
 
     private fun loadUrlInWebView(foreground: Boolean, webView: NinjaWebView, url: String) {
@@ -1257,8 +1260,13 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     showAlbum(browserContainer[newIndex])
                 }
                 updateWebViewCount()
+                updateTabBar()
             }
         }
+    }
+
+    private fun updateTabBar() {
+        composeToolbarViewController.updateTabView(overviewDialogController.currentAlbumList)
     }
 
     private fun updateTitle() {
@@ -1531,6 +1539,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         } else {
             false
         }
+
+    override fun updateTabs() {
+        updateTabBar()
+    }
 
     private fun confirmAdSiteAddition(url: String) {
         val host = Uri.parse(url).host ?: ""

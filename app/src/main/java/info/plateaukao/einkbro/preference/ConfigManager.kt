@@ -152,6 +152,7 @@ class ConfigManager(
     var customFontChanged by BooleanPreference(sp, K_CUSTOM_FONT_CHANGED, false)
     var showRecentBookmarks by BooleanPreference(sp, K_SHOW_RECENT_BOOKMARKS, false)
     var debugWebView by BooleanPreference(sp, K_DEBUG_WEBVIEW, false)
+    var shouldShowTabBar by BooleanPreference(sp, K_SHOW_TAB_BAR, false)
 
     var favoriteUrl: String
         get() = sp.getString(K_FAVORITE_URL, Constants.DEFAULT_HOME_URL)
@@ -381,6 +382,7 @@ class ConfigManager(
         const val K_DEBUG_WEBVIEW = "sp_debug_webview"
         const val K_HISTORY_PURGE_TS = "sp_history_purge_ts"
         const val K_PRUNE_QUERY_PARAMETERS = "sp_prune_query_parameter"
+        const val K_SHOW_TAB_BAR = "sp_show_tab_bar"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
         private const val RECENT_BOOKMARKS_SEPARATOR = "::::"
