@@ -43,7 +43,7 @@ class OverviewDialogController(
     private val lifecycleScope = (context as LifecycleOwner).lifecycleScope
 
     private val currentRecordList = mutableListOf<Record>()
-    private val currentAlbumList = mutableListOf<Album>()
+    val currentAlbumList = mutableListOf<Album>()
 
     fun addTabPreview(album: Album, index: Int) = currentAlbumList.add(index, album)
 

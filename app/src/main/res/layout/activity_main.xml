@@ -10,14 +10,13 @@
     <FrameLayout
         android:id="@+id/appBar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/appbar_height"
-        android:minHeight="50dp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <info.plateaukao.einkbro.view.viewControllers.ToolbarComposeView
             android:id="@+id/compose_icon_bar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content" />
 
         <info.plateaukao.einkbro.view.compose.SearchBarView
             android:id="@+id/main_search_panel"
