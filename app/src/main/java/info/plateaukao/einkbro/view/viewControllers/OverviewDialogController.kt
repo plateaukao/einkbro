@@ -59,13 +59,13 @@ class OverviewDialogController(
     }
 
     private fun initViews(showHistory: Boolean = false) {
-        with (composeView) {
+        with(composeView) {
             isHistoryOpen = showHistory
             shouldReverse = !config.isToolbarOnTop
             shouldShowTwoColumns = isWideLayout()
             albumList = mutableStateOf(currentAlbumList)
             onTabIconClick = { openHomePage() }
-            onTabClick = { hide() ; it.show() }
+            onTabClick = { hide(); it.show() }
             onTabLongClick = { it.remove() }
 
             recordList = currentRecordList
@@ -73,18 +73,22 @@ class OverviewDialogController(
             onHistoryItemClick = { clickHisotryItem(it) }
             onHistoryItemLongClick = { longClickHistoryItem(it) }
             addIncognitoTab = addIncognitoTabAction
-            addTab = { hide() ; addEmptyTabAction() }
+            addTab = { hide(); addEmptyTabAction() }
             closePanel = { hide() }
-            onDeleteAction = { hide() ; deleteAllItems() }
-            launchNewBrowserAction = { hide() ; launchNewBrowser() }
+            onDeleteAction = { hide(); deleteAllItems() }
+            launchNewBrowserAction = { hide(); launchNewBrowser() }
         }
     }
 
     fun clickHisotryItem(record: Record) {
         gotoUrlAction(record.url)
         if (record.type == RecordType.Bookmark) {
-            config.addRecentBookmark(Bookmark(record.title
-                ?: "no title", record.url))
+            config.addRecentBookmark(
+                Bookmark(
+                    record.title
+                        ?: "no title", record.url
+                )
+            )
         }
         hide()
     }
@@ -139,7 +143,7 @@ class OverviewDialogController(
         val dialogView = DialogMenuContextListBinding.inflate(LayoutInflater.from(context))
         val dialog = dialogManager.showOptionDialog(dialogView.root)
 
-        with (dialogView) {
+        with(dialogView) {
             menuContextListEdit.visibility = GONE
             menuContextListNewTab.setOnClickListener {
                 dialog.dismissWithAction {
@@ -182,6 +186,10 @@ class OverviewDialogController(
         }
 
         context.startActivity(intent)
+    }
+
+    fun updateTabView() {
+        composeView.focusedAlbumIndex.value = currentAlbumList.indexOfFirst { it.isActivated }
     }
 
 }

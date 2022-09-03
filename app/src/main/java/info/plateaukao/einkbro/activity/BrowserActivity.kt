@@ -541,12 +541,14 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
         updateSavedAlbumInfo()
         updateWebViewCount()
-        composeToolbarViewController.updateTabView(overviewDialogController.currentAlbumList)
 
         progressBar.visibility = GONE
         ninjaWebView = controller as NinjaWebView
 
         updateTitle()
+
+        overviewDialogController.updateTabView()
+        composeToolbarViewController.updateTabView(overviewDialogController.currentAlbumList)
     }
 
     private fun openCustomFontPicker() = BrowserUnit.openFontFilePicker(customFontResultLauncher)

@@ -45,6 +45,8 @@ class ComposeToolbarViewController(
 
     fun updateTabView(albumList: List<Album>) {
         albumsState.value = albumList.toList()
+        toolbarComposeView.focusedAlbumIndex.value =
+            albumsState.value.indexOfFirst { it.isActivated }
     }
 
     init {
@@ -55,7 +57,9 @@ class ComposeToolbarViewController(
             onItemClick = onIconClick
             onItemLongClick = onIconLongClick
             albumList = albumsState
+            focusedAlbumIndex.value = albumsState.value.indexOfFirst { it.isActivated }
         }
+
         toolbarComposeView.onTabClick = onTabClick
         toolbarComposeView.onTabLongClick = onTabLongClick
     }
@@ -125,6 +129,7 @@ class ToolbarComposeView @JvmOverloads constructor(
     var onTabLongClick: (Album) -> Unit = {}
 
     var albumList = mutableStateOf(listOf<Album>())
+    var focusedAlbumIndex = mutableStateOf(0)
 
     @Composable
     override fun Content() {
@@ -138,6 +143,7 @@ class ToolbarComposeView @JvmOverloads constructor(
                 onIconClick = onItemClick,
                 onIconLongClick = onItemLongClick,
                 albumList = albumList,
+                focusedAlbumIndex = focusedAlbumIndex,
                 onAlbumClick = onTabClick,
                 onAlbumLongClick = onTabLongClick,
             )
