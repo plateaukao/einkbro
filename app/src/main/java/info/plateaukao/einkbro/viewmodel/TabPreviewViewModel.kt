@@ -13,7 +13,9 @@ class TabPreviewViewModel() : ViewModel() {
     val tabs: List<TabInfo>
         get() = _tabs
 
-    fun addTab(tab: TabInfo) = _tabs.add(tab)
+    fun addTab(tab: TabInfo): Boolean {
+        return _tabs.add(tab)
+    }
 
     fun removeTab(tab: TabInfo) = _tabs.remove(tab)
 

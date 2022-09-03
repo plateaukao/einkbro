@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import info.plateaukao.einkbro.view.Album
+import info.plateaukao.einkbro.view.dialog.compose.HorizontalSeparator
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction.*
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarActionInfo
@@ -36,6 +37,7 @@ fun ComposedToolbar(
     onIconClick: (ToolbarAction) -> Unit,
     onIconLongClick: ((ToolbarAction) -> Unit)? = null,
     albumList: MutableState<List<Album>>,
+    focusedAlbumIndex: MutableState<Int>,
     onAlbumClick: (Album) -> Unit,
     onAlbumLongClick: (Album) -> Unit,
 ) {
@@ -50,11 +52,14 @@ fun ComposedToolbar(
                 Modifier
                     .height(50.dp)
                     .fillMaxWidth(),
-                albumList = remember { albumList },
+                albumList = albumList,
+                focusedAlbumIndex = focusedAlbumIndex,
+                shouldReverse = false,
                 onClick = onAlbumClick,
                 closeAction = onAlbumLongClick,
                 showHorizontal = true
             )
+            HorizontalSeparator()
         }
         ComposedIconBar(
             toolbarActionInfos = toolbarActionInfos,

@@ -8,12 +8,9 @@ import android.graphics.Bitmap
 import android.util.AttributeSet
 import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -47,6 +44,7 @@ class HistoryAndTabsView @JvmOverloads constructor(
     private val bookmarkManager: BookmarkManager by inject()
 
     var albumList = mutableStateOf(listOf<Album>())
+    var focusedAlbumIndex = mutableStateOf(0)
     var isHistoryOpen by mutableStateOf(false)
     var shouldReverse by mutableStateOf(true)
     var shouldShowTwoColumns by mutableStateOf(false)
@@ -75,6 +73,7 @@ class HistoryAndTabsView @JvmOverloads constructor(
                 shouldReverse = shouldReverse,
                 shouldShowTwoColumns = shouldShowTwoColumns,
                 albumList = albumList,
+                focusedAlbumIndex = focusedAlbumIndex,
                 onTabIconClick = onTabIconClick,
                 onTabClick = onTabClick,
                 onTabLongClick = onTabLongClick,
@@ -101,6 +100,7 @@ fun HistoryAndTabs(
     shouldReverse: Boolean = false,
 
     albumList: MutableState<List<Album>>,
+    focusedAlbumIndex: MutableState<Int>,
     onTabIconClick: () -> Unit,
     onTabClick: (Album) -> Unit,
     onTabLongClick: (Album) -> Unit,
@@ -138,6 +138,7 @@ fun HistoryAndTabs(
                 shouldShowTwoColumns,
                 shouldReverse,
                 albumList,
+                focusedAlbumIndex,
                 onTabClick,
                 onTabLongClick,
                 bookmarkManager,
@@ -169,6 +170,7 @@ fun HistoryAndTabs(
                 shouldShowTwoColumns,
                 shouldReverse,
                 albumList,
+                focusedAlbumIndex,
                 onTabClick,
                 onTabLongClick,
                 bookmarkManager,
@@ -188,6 +190,7 @@ private fun MainContent(
     shouldShowTwoColumns: Boolean,
     shouldReverse: Boolean,
     albumList: MutableState<List<Album>>,
+    focusedAlbumIndex: MutableState<Int>,
     onTabClick: (Album) -> Unit,
     onTabLongClick: (Album) -> Unit,
     bookmarkManager: BookmarkManager?,
@@ -199,8 +202,9 @@ private fun MainContent(
         PreviewTabs(
             modifier = modifier,
             shouldShowTwoColumns = shouldShowTwoColumns,
-            shouldReverse = shouldReverse,
+            shouldReverse = false,
             albumList = albumList,
+            focusedAlbumIndex = focusedAlbumIndex,
             onClick = onTabClick,
             closeAction = onTabLongClick,
         )
@@ -226,6 +230,7 @@ fun PreviewTabs(
     shouldShowTwoColumns: Boolean = false,
     shouldReverse: Boolean = false,
     albumList: MutableState<List<Album>>,
+    focusedAlbumIndex: MutableState<Int>,
     onClick: (Album) -> Unit,
     closeAction: (Album) -> Unit,
     showHorizontal: Boolean = false
@@ -235,14 +240,15 @@ fun PreviewTabs(
             items(albumList.value.size, { it.hashCode() }) { albumIndex ->
                 val album = albumList.value[albumIndex]
                 val interactionSource = remember { MutableInteractionSource() }
-                val isPressed by interactionSource.collectIsPressedAsState()
 
                 TabItem(
                     modifier = Modifier
                         .combinedClickable(
                             interactionSource = interactionSource,
                             indication = null,
-                            onClick = { onClick(album) },
+                            onClick = {
+                                onClick(album)
+                            },
                             onLongClick = {
                                 albumList.value =
                                     albumList.value
@@ -251,9 +257,9 @@ fun PreviewTabs(
                                 closeAction(album)
                             }
                         )
-                        .width(100.dp),
-                    isPressed = isPressed,
-                    tabInfo = album.toTabInfo(),
+                        .width(200.dp),
+                    focused = focusedAlbumIndex.value == albumIndex,
+                    album = album
                 ) {
                     albumList.value = albumList.value.toMutableList().apply { remove(album) }
                     closeAction(album)
@@ -266,9 +272,8 @@ fun PreviewTabs(
             columns = GridCells.Fixed(if (shouldShowTwoColumns) 2 else 1),
             reverseLayout = shouldReverse
         ) {
-            itemsIndexed(albumList.value) { _, album ->
+            itemsIndexed(albumList.value) { index, album ->
                 val interactionSource = remember { MutableInteractionSource() }
-                val isPressed by interactionSource.collectIsPressedAsState()
 
                 TabItem(
                     modifier = Modifier
@@ -284,8 +289,8 @@ fun PreviewTabs(
                                 closeAction(album)
                             }
                         ),
-                    isPressed = isPressed,
-                    tabInfo = album.toTabInfo(),
+                    focused = focusedAlbumIndex.value == index,
+                    album = album
                 ) {
                     albumList.value = albumList.value.toMutableList().apply { remove(album) }
                     closeAction(album)
@@ -298,11 +303,12 @@ fun PreviewTabs(
 @Composable
 private fun TabItem(
     modifier: Modifier,
-    isPressed: Boolean = false,
-    tabInfo: TabInfo,
+    album: Album,
+    focused: Boolean = false,
     closeAction: () -> Unit,
 ) {
-    val borderWidth = if (isPressed || tabInfo.focused) 1.dp else -1.dp
+    val tabInfo = album.toTabInfo()
+    val borderWidth = if (focused) 1.dp else -1.dp
 
     Row(
         modifier = modifier
@@ -349,7 +355,6 @@ private fun TabItem(
 }
 
 data class TabInfo(
-    val focused: Boolean,
     val url: String,
     val title: String,
     val favicon: Bitmap? = null
@@ -443,6 +448,7 @@ fun PreviewHistoryAndTabs() {
         shouldShowTwoColumns = false,
         shouldReverse = false,
         albumList = albumList,
+        focusedAlbumIndex = mutableStateOf(1),
         onTabIconClick = {},
         onTabClick = {},
         onTabLongClick = {},
@@ -461,7 +467,6 @@ fun PreviewHistoryAndTabs() {
 
 private fun Album.toTabInfo(): TabInfo =
     TabInfo(
-        focused = this.isActivated,
         title = this.albumTitle,
         url = this.getUrl(),
         favicon = this.getAlbumBitmap(),
