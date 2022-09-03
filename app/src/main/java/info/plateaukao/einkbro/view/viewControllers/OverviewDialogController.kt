@@ -45,7 +45,9 @@ class OverviewDialogController(
     private val currentRecordList = mutableListOf<Record>()
     val currentAlbumList = mutableListOf<Album>()
 
-    fun addTabPreview(album: Album, index: Int) = currentAlbumList.add(index, album)
+    fun addTabPreview(album: Album, index: Int) {
+        currentAlbumList.add(index, album)
+    }
 
     fun removeTabView(album: Album) {
         currentAlbumList.remove(album)

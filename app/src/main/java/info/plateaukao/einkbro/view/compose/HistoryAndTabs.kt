@@ -206,7 +206,6 @@ private fun MainContent(
         PreviewTabs(
             modifier = modifier,
             shouldShowTwoColumns = shouldShowTwoColumns,
-            shouldReverse = false,
             albumList = albumList,
             focusedAlbumIndex = focusedAlbumIndex,
             onClick = onTabClick,
@@ -232,7 +231,6 @@ private fun MainContent(
 fun PreviewTabs(
     modifier: Modifier = Modifier,
     shouldShowTwoColumns: Boolean = false,
-    shouldReverse: Boolean = false,
     albumList: MutableState<List<Album>>,
     focusedAlbumIndex: MutableState<Int>,
     onClick: (Album) -> Unit,
@@ -257,31 +255,23 @@ fun PreviewTabs(
                         .combinedClickable(
                             interactionSource = interactionSource,
                             indication = null,
-                            onClick = {
-                                onClick(album)
-                            },
-                            onLongClick = {
-                                closeAction(album)
-                            }
+                            onClick = { onClick(album) },
+                            onLongClick = { closeAction(album) }
                         )
                         .width(itemWidth.dp),
                     focused = focusedAlbumIndex.value == albumIndex,
                     showCloseButton = false,
                     album = album
-                ) {
-                    closeAction(album)
-                }
+                ) { closeAction(album) }
             }
         }
     } else {
         LazyVerticalGrid(
             modifier = modifier,
             columns = GridCells.Fixed(if (shouldShowTwoColumns) 2 else 1),
-            reverseLayout = shouldReverse
         ) {
             itemsIndexed(albumList.value) { index, album ->
                 val interactionSource = remember { MutableInteractionSource() }
-
                 TabItem(
                     modifier = Modifier
                         .combinedClickable(
@@ -289,10 +279,7 @@ fun PreviewTabs(
                             indication = null,
                             onClick = { onClick(album) },
                             onLongClick = {
-                                albumList.value =
-                                    albumList.value
-                                        .toMutableList()
-                                        .apply { remove(album) }
+                                albumList.value = albumList.value.toMutableList().apply { remove(album) }
                                 closeAction(album)
                             }
                         ),

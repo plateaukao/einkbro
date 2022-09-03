@@ -66,7 +66,6 @@ class NinjaWebChromeClient(
         val defaultUserAgent = webSettings.userAgentString
 
         webSettings.userAgentString = defaultUserAgent.replace("wv", "")
-        webSettings.setAppCacheEnabled(true)
         webSettings.cacheMode = WebSettings.LOAD_DEFAULT
         webSettings.allowFileAccessFromFileURLs = true
         webSettings.allowUniversalAccessFromFileURLs = true

@@ -547,7 +547,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
         updateTitle()
 
-        overviewDialogController.updateTabView()
         updateTabBar()
     }
 
@@ -1266,6 +1265,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     private fun updateTabBar() {
+        overviewDialogController.updateTabView()
         composeToolbarViewController.updateTabView(overviewDialogController.currentAlbumList)
     }
 
