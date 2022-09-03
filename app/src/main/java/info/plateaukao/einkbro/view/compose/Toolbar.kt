@@ -54,7 +54,6 @@ fun ComposedToolbar(
                     .fillMaxWidth(),
                 albumList = albumList,
                 focusedAlbumIndex = focusedAlbumIndex,
-                shouldReverse = false,
                 onClick = onAlbumClick,
                 closeAction = onAlbumLongClick,
                 showHorizontal = true
