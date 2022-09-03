@@ -21,4 +21,6 @@ public interface BrowserController {
     boolean onHideCustomView();
     boolean handleKeyEvent(KeyEvent event);
     boolean loadInSecondPane(String url);
+
+    void updateTabs();
 }

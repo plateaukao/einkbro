@@ -80,6 +80,14 @@
             android:summary="@string/setting_summary_nav_pos"
             android:title="@string/setting_title_nav_pos" />
 
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:icon="@drawable/icon_tab_plus"
+            android:key="sp_show_tab_bar"
+            android:summary="@string/setting_summary_show_tab_bar"
+            android:title="@string/setting_title_show_tab_bar" />
+
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/setting_title_behavior">
