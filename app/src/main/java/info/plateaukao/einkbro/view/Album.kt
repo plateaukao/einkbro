@@ -10,34 +10,16 @@ import info.plateaukao.einkbro.browser.AlbumController
 import info.plateaukao.einkbro.browser.BrowserController
 
 class Album(
-    context: Context,
     private val albumController: AlbumController,
     private var browserController: BrowserController?
 ) {
-    private val binding: AlbumBinding = AlbumBinding.inflate(LayoutInflater.from(context))
-
     var isLoaded = false
 
-    var albumTitle: String
-        get() = binding.albumTitle.text.toString()
-        set(value) {
-            binding.albumTitle.text = value
-        }
+    var albumTitle: String = ""
 
-    init {
-        binding.root.setOnClickListener {
-        }
-        binding.root.setOnLongClickListener {
-            true
-        }
+    var bitmap: Bitmap? = null
 
-        binding.albumTitle.text = context.getString(R.string.app_name)
-        binding.albumClose.setOnClickListener {
-            browserController?.removeAlbum(
-                albumController
-            )
-        }
-    }
+    var isActivated = false
 
     fun show() {
         browserController?.showAlbum(albumController)
@@ -49,14 +31,17 @@ class Album(
 
     fun getUrl(): String = albumController.albumUrl
 
-    fun setAlbumCover(bitmap: Bitmap?) =
-        binding.albumCover.setImageBitmap(bitmap)
+    fun setAlbumCover(bitmap: Bitmap?) {
+        this.bitmap = bitmap
+    }
 
-    fun getAlbumBitmap(): Bitmap? = binding.albumCover.drawable?.toBitmap()
+    fun getAlbumBitmap(): Bitmap? = bitmap
 
-    fun isActivated() = binding.root.isSelected
+    fun activate() {
+        isActivated = true
+    }
 
-    fun activate() { binding.root.isSelected = true }
-
-    fun deactivate() { binding.root.isSelected = false }
+    fun deactivate() {
+        isActivated = false
+    }
 }

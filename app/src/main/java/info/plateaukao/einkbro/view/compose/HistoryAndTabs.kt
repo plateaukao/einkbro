@@ -461,7 +461,7 @@ fun PreviewHistoryAndTabs() {
 
 private fun Album.toTabInfo(): TabInfo =
     TabInfo(
-        focused = this.isActivated(),
+        focused = this.isActivated,
         title = this.albumTitle,
         url = this.getUrl(),
         favicon = this.getAlbumBitmap(),
