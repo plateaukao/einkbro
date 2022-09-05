@@ -3,6 +3,7 @@ package info.plateaukao.einkbro.view.dialog.compose
 import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.View
+import android.view.animation.Animation
 import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState

@@ -45,7 +45,8 @@ fun ComposedToolbar(
     Column(
         modifier = Modifier
             .height(height)
-            .background(MaterialTheme.colors.background)
+            .background(MaterialTheme.colors.background),
+        horizontalAlignment = Alignment.End
     ) {
         if (showTabs) {
             PreviewTabs(
@@ -250,7 +251,7 @@ fun PreviewToolbarLongTitle() {
                 ToolbarActionInfo(Desktop, false),
                 ToolbarActionInfo(Desktop, false),
             ),
-            "hi hihi hihi hihi hihi hihi hihihihih ihih 1 2 3 456789",
+            "hi 1 2 3 456789",
             tabCount = "1",
             isIncognito = true,
             { },

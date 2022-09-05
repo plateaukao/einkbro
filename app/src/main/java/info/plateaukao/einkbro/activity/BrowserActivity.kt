@@ -1032,13 +1032,16 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private fun openHistoryPage(amount: Int = 0) = overviewDialogController.openHistoryPage(amount)
 
-    private fun openBookmarkPage() = BookmarksDialogFragment(
-        lifecycleScope,
-        bookmarkViewModel,
-        gotoUrlAction = { url -> updateAlbum(url) },
-        addTabAction = { title, url, isForeground -> addAlbum(title, url, isForeground) },
-        splitScreenAction = { url -> toggleSplitScreen(url) }
-    ).show(supportFragmentManager, "bookmarks dialog")
+    private val bookmarksFragment by lazy {
+        BookmarksDialogFragment(
+            lifecycleScope,
+            bookmarkViewModel,
+            gotoUrlAction = { url -> updateAlbum(url) },
+            addTabAction = { title, url, isForeground -> addAlbum(title, url, isForeground) },
+            splitScreenAction = { url -> toggleSplitScreen(url) }
+        )
+    }
+    private fun openBookmarkPage() = bookmarksFragment.show(supportFragmentManager, "bookmarks dialog")
 
     private fun initSearchPanel() {
         searchPanel = binding.mainSearchPanel

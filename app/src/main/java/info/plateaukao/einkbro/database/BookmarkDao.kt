@@ -118,7 +118,7 @@ class BookmarkManager(private val context: Context) : KoinComponent {
 
     private val faviconInfos: MutableList<FaviconInfo> = mutableListOf()
 
-    suspend fun getAllFavicons(): List<FaviconInfo> = faviconDao.getAllFavicons()
+    private suspend fun getAllFavicons(): List<FaviconInfo> = faviconDao.getAllFavicons()
 
     suspend fun insertFavicon(faviconInfo: FaviconInfo) {
         faviconDao.insert(faviconInfo)
