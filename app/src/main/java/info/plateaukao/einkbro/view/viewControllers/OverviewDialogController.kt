@@ -72,7 +72,7 @@ class OverviewDialogController(
 
             recordList = currentRecordList
             onHistoryIconClick = { openHistoryPage() }
-            onHistoryItemClick = { clickHisotryItem(it) }
+            onHistoryItemClick = { clickHistoryItem(it) }
             onHistoryItemLongClick = { longClickHistoryItem(it) }
             addIncognitoTab = addIncognitoTabAction
             addTab = { hide(); addEmptyTabAction() }
@@ -82,7 +82,7 @@ class OverviewDialogController(
         }
     }
 
-    fun clickHisotryItem(record: Record) {
+    private fun clickHistoryItem(record: Record) {
         gotoUrlAction(record.url)
         if (record.type == RecordType.Bookmark) {
             config.addRecentBookmark(
@@ -193,7 +193,6 @@ class OverviewDialogController(
     fun updateTabView() {
         composeView.focusedAlbumIndex.value = currentAlbumList.indexOfFirst { it.isActivated }
     }
-
 }
 
 private fun Dialog.dismissWithAction(action: () -> Unit) {

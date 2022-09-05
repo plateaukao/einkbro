@@ -7,20 +7,34 @@ import android.view.View;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 
+import info.plateaukao.einkbro.view.Album;
+
 public interface BrowserController {
     void updateProgress(int progress);
+
     void updateTitle(String title);
+
     void addNewTab(String url);
+
     void showAlbum(AlbumController albumController);
+
     void removeAlbum(AlbumController albumController);
+
     void showFileChooser(ValueCallback<Uri[]> filePathCallback);
+
     void onShowCustomView(View view, WebChromeClient.CustomViewCallback callback);
+
     void onLongPress(Message message);
-    void hideOverview ();
+
+    void hideOverview();
+
     void addHistory(String title, String url);
+
     boolean onHideCustomView();
+
     boolean handleKeyEvent(KeyEvent event);
+
     boolean loadInSecondPane(String url);
 
-    void updateTabs();
+    //void updateTabs(Album album);
 }

@@ -53,7 +53,7 @@ fun ComposedToolbar(
                 Modifier
                     .height(50.dp)
                     .fillMaxWidth(),
-                albumList = albumList,
+                albumList = albumList.value,
                 focusedAlbumIndex = focusedAlbumIndex,
                 onClick = onAlbumClick,
                 closeAction = onAlbumLongClick,
