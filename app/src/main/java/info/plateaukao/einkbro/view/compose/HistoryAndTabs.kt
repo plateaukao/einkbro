@@ -330,7 +330,7 @@ private fun TabItem(
             text = tabInfo.title,
             fontSize = 18.sp,
             maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
+            overflow = TextOverflow.Clip,
             color = MaterialTheme.colors.onBackground,
         )
 
