@@ -14,6 +14,7 @@
         <item name="android:colorAccent">@android:color/black</item>
         <item name="backgroundColor">@android:color/white</item>
         <item name="android:selectableItemBackground">@drawable/item_bg_selector</item>
+        <item name="android:windowAnimationStyle">@null</item>
     </style>
 
     <!-- remove preference activity background color -->
