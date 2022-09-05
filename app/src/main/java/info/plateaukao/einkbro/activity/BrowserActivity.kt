@@ -1041,7 +1041,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             splitScreenAction = { url -> toggleSplitScreen(url) }
         )
     }
-    private fun openBookmarkPage() = bookmarksFragment.show(supportFragmentManager, "bookmarks dialog")
+
+    private fun openBookmarkPage() =
+        bookmarksFragment.show(supportFragmentManager, "bookmarks dialog")
 
     private fun initSearchPanel() {
         searchPanel = binding.mainSearchPanel
@@ -1543,9 +1545,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             false
         }
 
-    override fun updateTabs() {
-        updateTabBar()
-    }
+//    override fun updateTabs() {
+//        updateTabBar()
+//    }
 
     private fun confirmAdSiteAddition(url: String) {
         val host = Uri.parse(url).host ?: ""

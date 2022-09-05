@@ -39,9 +39,7 @@ class ComposeToolbarViewController(
 
     private var isReader: Boolean = false
 
-    private val currentAlbumList = mutableListOf<Album>()
-
-    private val albumsState = mutableStateOf(currentAlbumList.toList())
+    private val albumsState = mutableStateOf(listOf<Album>())
 
     fun showTabbar(shouldShow: Boolean) {
         toolbarComposeView.shouldShowTabs = shouldShow

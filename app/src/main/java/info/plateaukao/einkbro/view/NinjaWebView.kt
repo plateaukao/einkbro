@@ -44,9 +44,11 @@ import kotlin.math.max
 import kotlin.math.min
 
 
-open class NinjaWebView : WebView, AlbumController, KoinComponent {
+open class NinjaWebView(context: Context?, var browserController: BrowserController?) : WebView(
+    context!!
+), AlbumController, KoinComponent {
     private var onScrollChangeListener: OnScrollChangeListener? = null
-    private val album: Album
+    private val album: Album = Album(this, browserController)
     protected val webViewClient: NinjaWebViewClient
     private val webChromeClient: NinjaWebChromeClient
     private val downloadListener: NinjaDownloadListener = NinjaDownloadListener(context)
@@ -67,14 +69,6 @@ open class NinjaWebView : WebView, AlbumController, KoinComponent {
 
     var isForeground = false
         private set
-
-    var browserController: BrowserController? = null
-
-    constructor(context: Context?, browserController: BrowserController?) : super(context!!) {
-        this.browserController = browserController
-        album = Album(this, browserController)
-        initAlbum()
-    }
 
     override fun onScrollChanged(l: Int, t: Int, old_l: Int, old_t: Int) {
         super.onScrollChanged(l, t, old_l, old_t)
@@ -840,6 +834,10 @@ input[type=button]: focus,input[type=submit]: focus,input[type=reset]: focus,inp
                 "input[type=button]: focus,input[type=submit]: focus,input[type=reset]: focus,input[type=image]: focus, input[type=button]: hover,input[type=submit]: hover,input[type=reset]: hover,input[type=image]: hover {\n" +
                 "\tfont-weight:700 !important;\n" +
                 "}\n"
+    }
+
+    init {
+        initAlbum()
     }
 }
 
