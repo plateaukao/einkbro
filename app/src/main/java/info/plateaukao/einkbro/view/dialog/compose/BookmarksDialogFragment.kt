@@ -57,8 +57,10 @@ class BookmarksDialogFragment(
     private val bookmarkManager: BookmarkManager by inject()
     private val dialogManager: DialogManager by lazy { DialogManager(requireActivity()) }
 
+    private lateinit var bookmarksUpdateJob: Job
+
     override fun setupComposeView() {
-        lifecycleScope.launch {
+        bookmarksUpdateJob = lifecycleScope.launch {
             bookmarkViewModel.uiState.collect { bookmarks ->
                 composeView.setContent {
                     MyTheme {
@@ -103,6 +105,11 @@ class BookmarksDialogFragment(
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        bookmarksUpdateJob.cancel()
+        super.onDestroy()
     }
 
     private fun createBookmarkFolder(bookmark: Bookmark) {

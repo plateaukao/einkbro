@@ -529,11 +529,20 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             if (currentAlbumController == controller) {
                 return
             }
-
             currentAlbumController?.deactivate()
         }
 
-        mainContentLayout.removeAllViews()
+        // remove current view from the container first
+        val controllerView = controller as View
+        if (mainContentLayout.childCount > 0) {
+            for (i in 0 until mainContentLayout.childCount) {
+                if (mainContentLayout.getChildAt(i) == controllerView) {
+                    mainContentLayout.removeView(controllerView)
+                    break
+                }
+            }
+        }
+
         mainContentLayout.addView(controller as View)
 
         currentAlbumController = controller
