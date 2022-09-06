@@ -355,7 +355,8 @@
     <string name="setting_summary_enable_zoom">强制某些网站内容可缩放</string>
     <string name="setting_title_debug">调试网页视图</string>
     <string name="setting_summary_debug">启用此选项可以调试网页视图</string>
-    <string name="setting_title_prune_query_parameter">Prune tracking query parameters in url</string>
-    <string name="setting_title_show_tab_bar">Show tab bar</string>
-    <string name="setting_summary_show_tab_bar">Always show tab bar above toolbar</string>
+    <string name="setting_title_prune_query_parameter">精简URL中的跟踪查询参数</string>
+    <string name="setting_summary_prune_query_parameter">诸如 utm_medium、utm_source 等查询参数将从URL中移除。</string>
+    <string name="setting_title_show_tab_bar">显示标签栏</string>
+    <string name="setting_summary_show_tab_bar">始终在工具栏上方显示标签栏</string>
 </resources>
