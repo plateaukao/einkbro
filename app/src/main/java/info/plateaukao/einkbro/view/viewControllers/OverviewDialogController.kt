@@ -95,7 +95,7 @@ class OverviewDialogController(
         hide()
     }
 
-    fun longClickHistoryItem(record: Record) {
+    private fun longClickHistoryItem(record: Record) {
         showHistoryContextMenu(record)
     }
 
