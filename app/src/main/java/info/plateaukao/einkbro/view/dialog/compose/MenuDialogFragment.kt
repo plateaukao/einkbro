@@ -74,6 +74,7 @@ private fun MenuItems(hasWhiteBkd: Boolean, boldFont: Boolean, onClicked: (MenuI
                 .horizontalScroll(rememberScrollState()),
             horizontalArrangement = Arrangement.End
         ) {
+            MenuItem(R.string.toolbar_setting, R.drawable.ic_toolbar) { onClicked(ToolbarSetting) }
             MenuItem(R.string.split_screen, R.drawable.ic_split_screen) { onClicked(SplitScreen) }
             MenuItem(R.string.translate, R.drawable.ic_translate) { onClicked(Translate) }
             MenuItem(
@@ -86,7 +87,6 @@ private fun MenuItems(hasWhiteBkd: Boolean, boldFont: Boolean, onClicked: (MenuI
                     TouchSetting
                 )
             }
-            MenuItem(R.string.toolbar_setting, R.drawable.ic_toolbar) { onClicked(ToolbarSetting) }
         }
         HorizontalSeparator()
         Row(
@@ -95,12 +95,12 @@ private fun MenuItems(hasWhiteBkd: Boolean, boldFont: Boolean, onClicked: (MenuI
                 .horizontalScroll(rememberScrollState()),
             horizontalArrangement = Arrangement.End
         ) {
+            MenuItem(R.string.menu_sc, R.drawable.link_plus) { onClicked(Shortcut) }
             MenuItem(R.string.menu_receive, R.drawable.ic_receive) { onClicked(ReceiveData) }
             MenuItem(R.string.menu_send_link, R.drawable.ic_send) { onClicked(SendLink) }
-            MenuItem(R.string.menu_share_link, R.drawable.icon_menu_share) { onClicked(ShareLink) }
             MenuItem(R.string.menu_open_with, R.drawable.icon_exit) { onClicked(OpenWith) }
             MenuItem(R.string.copy_link, R.drawable.ic_copy) { onClicked(CopyLink) }
-            MenuItem(R.string.menu_sc, R.drawable.link_plus) { onClicked(Shortcut) }
+            MenuItem(R.string.menu_share_link, R.drawable.icon_menu_share) { onClicked(ShareLink) }
         }
         HorizontalSeparator()
         Row(
@@ -125,14 +125,14 @@ private fun MenuItems(hasWhiteBkd: Boolean, boldFont: Boolean, onClicked: (MenuI
                 .horizontalScroll(rememberScrollState()),
             horizontalArrangement = Arrangement.End
         ) {
-            MenuItem(R.string.font_size, R.drawable.icon_size) { onClicked(FontSize) }
+            MenuItem(R.string.menu_download, R.drawable.icon_download) { onClicked(Download) }
+            MenuItem(R.string.menu_other_searchSite, R.drawable.icon_search) { onClicked(Search) }
             val whiteRes =
                 if (hasWhiteBkd) R.drawable.ic_white_background_active else R.drawable.ic_white_background
             MenuItem(R.string.white_background, whiteRes) { onClicked(WhiteBknd) }
             val boldRes = if (boldFont) R.drawable.ic_bold_font_active else R.drawable.ic_bold_font
             MenuItem(R.string.bold_font, boldRes) { onClicked(BoldFont) }
-            MenuItem(R.string.menu_other_searchSite, R.drawable.icon_search) { onClicked(Search) }
-            MenuItem(R.string.menu_download, R.drawable.icon_download) { onClicked(Download) }
+            MenuItem(R.string.font_size, R.drawable.icon_size) { onClicked(FontSize) }
             MenuItem(R.string.settings, R.drawable.icon_settings) { onClicked(Settings) }
         }
     }
