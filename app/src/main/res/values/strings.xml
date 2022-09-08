@@ -326,7 +326,7 @@
     <string name="menu_receive">Receive data</string>
     <string name="copy_link">Copy link</string>
     <string name="setting_title_background_loading">Loading non-active tabs</string>
-    <string name="setting_summary_background_loading">When tab is not activated, still loading the cotent in background</string>
+    <string name="setting_summary_background_loading">When tab is not activated, still loading the content in background</string>
     <string name="dialog_content_ssl_error">The certificate of the site is not trusted. Proceed anyway?</string>
     <string name="setting_title_search">Search</string>
     <string name="dialog_toc_title">Table of Contents</string>
