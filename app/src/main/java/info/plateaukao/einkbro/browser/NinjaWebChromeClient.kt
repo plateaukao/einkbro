@@ -114,6 +114,15 @@ class NinjaWebChromeClient(
         return true
     }
 
+    override fun onPermissionRequest(request: PermissionRequest?) {
+        if (request?.resources?.contains("android.webkit.resource.AUDIO_CAPTURE") == true) {
+            HelperUnit.grantPermissionsMicrophone(ninjaWebView.context as Activity)
+            request.grant(request.resources)
+        } else {
+            super.onPermissionRequest(request)
+        }
+    }
+
     override fun onGeolocationPermissionsShowPrompt(origin: String, callback: GeolocationPermissions.Callback) {
         val activity = ninjaWebView.context as Activity
         HelperUnit.grantPermissionsLoc(activity)
