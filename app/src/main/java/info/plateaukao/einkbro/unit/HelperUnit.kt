@@ -66,6 +66,16 @@ object HelperUnit {
     }
 
     @JvmStatic
+    fun grantPermissionsMicrophone(activity: Activity) {
+        if (Build.VERSION.SDK_INT >= 23) {
+            val hasRecordAudioPermission = activity.checkSelfPermission(Manifest.permission.RECORD_AUDIO)
+            if (hasRecordAudioPermission != PackageManager.PERMISSION_GRANTED) {
+                activity.requestPermissions( arrayOf(Manifest.permission.RECORD_AUDIO), REQUEST_CODE_ASK_PERMISSIONS_1 )
+            }
+        }
+    }
+
+    @JvmStatic
     fun grantPermissionsLoc(activity: Activity) {
         if (Build.VERSION.SDK_INT >= 23) {
             val hasAccessFineLocation = activity.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
