@@ -359,4 +359,5 @@
     <string name="setting_summary_prune_query_parameter">诸如 utm_medium、utm_source 等查询参数将从URL中移除。</string>
     <string name="setting_title_show_tab_bar">显示标签栏</string>
     <string name="setting_summary_show_tab_bar">始终在工具栏上方显示标签栏</string>
+    <string name="error_download_link_invalid">Download link is not valid.</string>
 </resources>

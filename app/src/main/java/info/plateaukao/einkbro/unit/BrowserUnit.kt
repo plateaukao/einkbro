@@ -31,6 +31,7 @@ import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.CustomFontInfo
 import info.plateaukao.einkbro.unit.HelperUnit.needGrantStoragePermission
 import info.plateaukao.einkbro.util.Constants
+import info.plateaukao.einkbro.view.NinjaToast.show
 import info.plateaukao.einkbro.view.NinjaToast.showShort
 import info.plateaukao.einkbro.view.dialog.TextInputDialog
 import kotlinx.coroutines.Dispatchers
@@ -272,6 +273,10 @@ object BrowserUnit : KoinComponent {
         filename: String
     ) {
         val cookie = CookieManager.getInstance().getCookie(url)
+        if (Uri.parse(url).host == null) {
+            showShort(activity, R.string.error_download_link_invalid)
+            return
+        }
         val request = DownloadManager.Request(Uri.parse(url)).apply {
             addRequestHeader("Cookie", cookie)
             setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
