@@ -191,8 +191,16 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             }
             ToolbarAction.Desktop -> config.desktop = !config.desktop
             ToolbarAction.Search -> showSearchPanel()
+            ToolbarAction.DuplicateTab -> duplicateTab()
             else -> {}
         }
+    }
+
+    private fun duplicateTab() {
+        val webView = currentAlbumController as NinjaWebView
+        val title = webView.title ?: ""
+        val url = webView.url ?: return
+        addAlbum(title, url, true)
     }
 
     private fun refreshAction() {

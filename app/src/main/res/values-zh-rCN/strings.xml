@@ -360,4 +360,5 @@
     <string name="setting_title_show_tab_bar">显示标签栏</string>
     <string name="setting_summary_show_tab_bar">始终在工具栏上方显示标签栏</string>
     <string name="error_download_link_invalid">Download link is not valid.</string>
+    <string name="duplicate_tab">Duplicate tab</string>
 </resources>
