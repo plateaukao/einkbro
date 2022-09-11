@@ -34,6 +34,7 @@ import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.database.Record
 import info.plateaukao.einkbro.unit.ViewUnit
+import info.plateaukao.einkbro.view.dialog.compose.HorizontalSeparator
 
 class AutoCompleteTextComposeView @JvmOverloads constructor(
     context: Context,
@@ -99,7 +100,7 @@ fun AutoCompleteTextField(
     } else {
         val list = recordList.value.filter {
             it.title?.contains(text.value.text, ignoreCase = true) == true
-                || it.url.contains(text.value.text, ignoreCase = true)
+                    || it.url.contains(text.value.text, ignoreCase = true)
         }
         if (list.isNotEmpty()) list else recordList.value
     }
@@ -112,6 +113,7 @@ fun AutoCompleteTextField(
         verticalArrangement = if (shouldReverse) Arrangement.Bottom else Arrangement.Top
     ) {
         if (shouldReverse) {
+            HorizontalSeparator()
             BrowseHistoryList(
                 modifier = Modifier
                     .weight(1F, fill = false)
@@ -123,11 +125,13 @@ fun AutoCompleteTextField(
                 onClick = onRecordClick,
                 onLongClick = {}
             )
+            HorizontalSeparator()
         }
 
         TextInputBar(requester, text, onTextSubmit, hasCopiedText, onPasteClick, closeAction)
 
         if (!shouldReverse) {
+            HorizontalSeparator()
             BrowseHistoryList(
                 modifier = Modifier
                     .weight(1F, fill = false)
@@ -139,6 +143,7 @@ fun AutoCompleteTextField(
                 onClick = { onRecordClick(it); focusRequester.freeFocus() },
                 onLongClick = {}
             )
+            HorizontalSeparator()
         }
     }
 }

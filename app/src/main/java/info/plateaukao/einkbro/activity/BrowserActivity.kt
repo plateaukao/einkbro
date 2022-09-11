@@ -1362,6 +1362,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
         composeToolbarViewController.hide()
         binding.appBar.visibility = INVISIBLE
+        binding.contentSeparator.visibility = INVISIBLE
         binding.inputUrl.visibility = VISIBLE
         showKeyboard()
         binding.inputUrl.getFocus()
@@ -1635,6 +1636,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             fabImageButtonNav.visibility = INVISIBLE
             searchPanel.visibility = INVISIBLE
             binding.appBar.visibility = VISIBLE
+            binding.contentSeparator.visibility = VISIBLE
             binding.inputUrl.visibility = INVISIBLE
             composeToolbarViewController.show()
             hideKeyboard()
@@ -1649,6 +1651,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             }
             searchPanel.visibility = INVISIBLE
             binding.appBar.visibility = GONE
+            binding.contentSeparator.visibility = GONE
             hideStatusBar()
         }
     }
@@ -1683,6 +1686,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         searchPanel.visibility = VISIBLE
         searchPanel.getFocus()
         binding.appBar.visibility = VISIBLE
+        binding.contentSeparator.visibility = VISIBLE
         showKeyboard()
     }
 
