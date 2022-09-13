@@ -13,7 +13,9 @@ import android.view.View
 import android.webkit.*
 import android.widget.Button
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.core.net.toUri
+import androidx.fragment.app.FragmentActivity
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import info.plateaukao.einkbro.R
@@ -21,10 +23,10 @@ import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.FontType
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.HelperUnit
-import info.plateaukao.einkbro.unit.IntentUnit
 import info.plateaukao.einkbro.view.NinjaToast
 import info.plateaukao.einkbro.view.NinjaWebView
 import info.plateaukao.einkbro.view.dialog.DialogManager
+import info.plateaukao.einkbro.view.dialog.compose.AuthenticationDialogFragment
 import nl.siegmann.epublib.domain.Book
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -158,6 +160,31 @@ class NinjaWebViewClient(
         BrowserUnit.URL_ENCODING,
         ByteArrayInputStream("".toByteArray())
     )
+
+    override fun onReceivedHttpAuthRequest(
+        view: WebView?,
+        handler: HttpAuthHandler?,
+        host: String?,
+        realm: String?
+    ) {
+        AuthenticationDialogFragment { username, password ->
+            handler?.proceed(username, password)
+        }.show((context as FragmentActivity).supportFragmentManager, "AuthenticationDialog")
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    override fun onReceivedError(
+        view: WebView?,
+        request: WebResourceRequest?,
+        error: WebResourceError?
+    ) {
+        // if https is not available, try http
+        if (error?.description == "net::ERR_SSL_PROTOCOL_ERROR" && request != null) {
+            ninjaWebView.loadUrl(request.url.buildUpon().scheme("http").build().toString())
+        } else {
+            NinjaToast.showShort(context, "onReceivedError:${error?.description}")
+        }
+    }
 
     override fun shouldInterceptRequest(view: WebView, url: String): WebResourceResponse? {
         if (hasAdBlock && !white && adBlock.isAd(url)) {

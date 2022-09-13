@@ -293,4 +293,7 @@
     <string name="setting_summary_show_tab_bar">Always show tab bar above toolbar</string>
     <string name="error_download_link_invalid">Download link is not valid.</string>
     <string name="duplicate_tab">Duplicate tab</string>
+    <string name="password">Password</string>
+    <string name="user_name">Username</string>
+    <string name="authentication">Authentication</string>
 </resources>

@@ -1261,8 +1261,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     override fun removeAlbum(controller: AlbumController) {
-        updateSavedAlbumInfo()
-
         if (browserContainer.size() <= 1) {
             finish()
         } else {
@@ -1280,6 +1278,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 updateTabBar()
             }
         }
+        updateSavedAlbumInfo()
     }
 
     private fun updateTabBar() {
