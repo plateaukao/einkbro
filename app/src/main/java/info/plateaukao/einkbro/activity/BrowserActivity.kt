@@ -1015,7 +1015,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 addAlbum(getString(R.string.app_name), "", true)
                 focusOnInput()
             }
-            CloseTab -> removeAlbum(currentAlbumController!!)
+            CloseTab -> runOnUiThread { removeAlbum(currentAlbumController!!) }
             PageUp -> ninjaWebView.pageUpWithNoAnimation()
             PageDown -> ninjaWebView.pageDownWithNoAnimation()
             Bookmark -> openBookmarkPage()
