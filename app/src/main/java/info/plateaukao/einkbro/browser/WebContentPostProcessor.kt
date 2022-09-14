@@ -132,11 +132,30 @@ document.addEventListener('scroll', () => getAds().forEach(hideAd));
             document.querySelector(".btn-content button.cancel").click();
         """
 
+        private const val redditJs = """
+            javascript:(function() {
+            var posts = [].filter.call(document.getElementsByTagName('article'), el => (
+               (el.getElementsByTagName('a')[0].getAttribute('rel') != null && el.getElementsByTagName('a')[0].getAttribute('rel').indexOf('sponsored') >= 0)));
+               
+            while(posts.length > 0) { posts.pop().style.display = "none"; }
+              
+            var qcleanObserver = new window.MutationObserver(function(mutation, observer){ 
+            var posts = [].filter.call(document.getElementsByTagName('article'), el => (
+               (el.getElementsByTagName('a')[0].getAttribute('rel') != null && el.getElementsByTagName('a')[0].getAttribute('rel').indexOf('sponsored') >= 0)));
+               
+            while(posts.length > 0) { posts.pop().style.display = "none"; }
+            });
+            
+            qcleanObserver.observe(document, { subtree: true, childList: true });
+            })()
+        """
+
         val urlScriptMap = mapOf(
             "facebook.com" to facebookHideSponsoredPostsJs,
             "zhihu.com" to zhihuDisablePopupJs,
             "jianshu.com" to jianshuJs,
             "twitter.com" to twitterJs,
+            "reddit.com" to redditJs,
         )
     }
 }
