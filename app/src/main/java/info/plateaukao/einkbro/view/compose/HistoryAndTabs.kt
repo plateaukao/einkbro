@@ -150,7 +150,7 @@ fun HistoryAndTabs(
             isHistoryOpen,
             shouldShowTwoColumns,
             shouldReverseHistory,
-            albumList,
+            albumList.value,
             focusedAlbumIndex,
             onTabClick,
             onTabLongClick,
@@ -181,7 +181,7 @@ private fun MainContent(
     isHistoryOpen: Boolean,
     shouldShowTwoColumns: Boolean,
     shouldReverse: Boolean,
-    albumList: MutableState<List<Album>>,
+    albumList: List<Album>,
     focusedAlbumIndex: MutableState<Int>,
     onTabClick: (Album) -> Unit,
     onTabLongClick: (Album) -> Unit,
@@ -194,11 +194,11 @@ private fun MainContent(
         PreviewTabs(
             modifier = modifier,
             shouldShowTwoColumns = shouldShowTwoColumns,
-            albumList = albumList.value,
+            albumList = albumList,
             focusedAlbumIndex = focusedAlbumIndex,
             onClick = onTabClick,
             closeAction = {
-                albumList.value = albumList.value.toMutableList().apply { remove(it) }
+                //albumList.value = albumList.value.toMutableList().apply { remove(it) }
                 onTabLongClick.invoke(it)
             }
         )

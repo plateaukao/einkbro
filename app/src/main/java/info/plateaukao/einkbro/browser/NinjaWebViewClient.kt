@@ -9,6 +9,7 @@ import android.net.Uri
 import android.net.http.SslError
 import android.os.Build
 import android.os.Message
+import android.util.Log
 import android.view.View
 import android.webkit.*
 import android.widget.Button
@@ -182,7 +183,8 @@ class NinjaWebViewClient(
         if (error?.description == "net::ERR_SSL_PROTOCOL_ERROR" && request != null) {
             ninjaWebView.loadUrl(request.url.buildUpon().scheme("http").build().toString())
         } else {
-            NinjaToast.showShort(context, "onReceivedError:${error?.description}")
+//            NinjaToast.showShort(context, "onReceivedError:${request?.url} / ${error?.description}")
+            Log.e("NinjaWebViewClient", "onReceivedError:${request?.url} / ${error?.description}")
         }
     }
 
