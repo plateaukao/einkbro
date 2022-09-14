@@ -1282,8 +1282,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     private fun updateTabBar() {
-        overviewDialogController.updateTabView()
-        composeToolbarViewController.updateTabView(overviewDialogController.currentAlbumList)
+        composeToolbarViewController.updateTabView(overviewDialogController.currentAlbumList.toList())
     }
 
     private fun updateTitle() {
@@ -1557,10 +1556,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         } else {
             false
         }
-
-//    override fun updateTabs() {
-//        updateTabBar()
-//    }
 
     private fun confirmAdSiteAddition(url: String) {
         val host = Uri.parse(url).host ?: ""
