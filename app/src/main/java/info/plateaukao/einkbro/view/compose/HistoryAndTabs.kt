@@ -47,7 +47,6 @@ class HistoryAndTabsView @JvmOverloads constructor(
     private val bookmarkManager: BookmarkManager by inject()
 
     var albumList = mutableStateOf(listOf<Album>())
-    var focusedAlbumIndex = mutableStateOf(0)
     var isHistoryOpen by mutableStateOf(false)
     var shouldReverse by mutableStateOf(true)
     var shouldShowTwoColumns by mutableStateOf(false)
@@ -76,7 +75,6 @@ class HistoryAndTabsView @JvmOverloads constructor(
                 shouldReverseHistory = shouldReverse,
                 shouldShowTwoColumns = shouldShowTwoColumns,
                 albumList = albumList,
-                focusedAlbumIndex = focusedAlbumIndex,
                 onTabIconClick = onTabIconClick,
                 onTabClick = onTabClick,
                 onTabLongClick = onTabLongClick,
@@ -103,7 +101,6 @@ fun HistoryAndTabs(
     shouldReverseHistory: Boolean = false,
 
     albumList: MutableState<List<Album>>,
-    focusedAlbumIndex: MutableState<Int>,
     onTabIconClick: () -> Unit,
     onTabClick: (Album) -> Unit,
     onTabLongClick: (Album) -> Unit,
@@ -150,8 +147,7 @@ fun HistoryAndTabs(
             isHistoryOpen,
             shouldShowTwoColumns,
             shouldReverseHistory,
-            albumList.value,
-            focusedAlbumIndex,
+            albumList,
             onTabClick,
             onTabLongClick,
             bookmarkManager,
@@ -181,8 +177,7 @@ private fun MainContent(
     isHistoryOpen: Boolean,
     shouldShowTwoColumns: Boolean,
     shouldReverse: Boolean,
-    albumList: List<Album>,
-    focusedAlbumIndex: MutableState<Int>,
+    albumList: MutableState<List<Album>>,
     onTabClick: (Album) -> Unit,
     onTabLongClick: (Album) -> Unit,
     bookmarkManager: BookmarkManager?,
@@ -194,11 +189,9 @@ private fun MainContent(
         PreviewTabs(
             modifier = modifier,
             shouldShowTwoColumns = shouldShowTwoColumns,
-            albumList = albumList,
-            focusedAlbumIndex = focusedAlbumIndex,
+            albumList = albumList.value,
             onClick = onTabClick,
             closeAction = {
-                //albumList.value = albumList.value.toMutableList().apply { remove(it) }
                 onTabLongClick.invoke(it)
             }
         )
@@ -223,7 +216,6 @@ fun PreviewTabs(
     modifier: Modifier = Modifier,
     shouldShowTwoColumns: Boolean = false,
     albumList: List<Album>,
-    focusedAlbumIndex: MutableState<Int>,
     onClick: (Album) -> Unit,
     closeAction: (Album) -> Unit,
     showHorizontal: Boolean = false
@@ -239,7 +231,8 @@ fun PreviewTabs(
             else maxItemWidth
 
         LazyRow(modifier = modifier) {
-            itemsIndexed(albumList) { albumIndex, album ->
+            items(albumList.size) { index ->
+                val album = albumList[index]
                 val interactionSource = remember { MutableInteractionSource() }
                 TabItem(
                     modifier = Modifier
@@ -250,7 +243,6 @@ fun PreviewTabs(
                             onLongClick = { closeAction(album) }
                         )
                         .width(itemWidth.dp),
-                    focused = focusedAlbumIndex.value == albumIndex,
                     showCloseButton = false,
                     album = album
                 ) { closeAction(album) }
@@ -261,7 +253,8 @@ fun PreviewTabs(
             modifier = modifier,
             columns = GridCells.Fixed(if (shouldShowTwoColumns) 2 else 1),
         ) {
-            itemsIndexed(albumList) { index, album ->
+            items(albumList.size) { index ->
+                val album = albumList[index]
                 val interactionSource = remember { MutableInteractionSource() }
                 TabItem(
                     modifier = Modifier
@@ -270,15 +263,11 @@ fun PreviewTabs(
                             indication = null,
                             onClick = { onClick(album) },
                             onLongClick = {
-//                                albumList.value =
-//                                    albumList.value.toMutableList().apply { remove(album) }
                                 closeAction(album)
                             }
                         ),
-                    focused = focusedAlbumIndex.value == index,
                     album = album
                 ) {
-                    //albumList.value = albumList.value.toMutableList().apply { remove(album) }
                     closeAction(album)
                 }
             }
@@ -290,12 +279,11 @@ fun PreviewTabs(
 private fun TabItem(
     modifier: Modifier,
     album: Album,
-    focused: Boolean = false,
     showCloseButton: Boolean = true,
     closeAction: () -> Unit,
 ) {
     val tabInfo = album.toTabInfo()
-    val borderWidth = if (focused) 1.dp else -1.dp
+    val borderWidth = if (album.isActivated) 1.dp else -1.dp
 
     Row(
         modifier = modifier
@@ -334,7 +322,7 @@ private fun TabItem(
             color = MaterialTheme.colors.onBackground,
         )
 
-        if (showCloseButton || focused) {
+        if (showCloseButton || album.isActivated) {
             ActionIcon(
                 modifier = Modifier.align(Alignment.CenterVertically),
                 iconResId = R.drawable.icon_close,
@@ -438,7 +426,6 @@ fun PreviewHistoryAndTabs() {
         shouldShowTwoColumns = false,
         shouldReverseHistory = false,
         albumList = albumList,
-        focusedAlbumIndex = mutableStateOf(1),
         onTabIconClick = {},
         onTabClick = {},
         onTabLongClick = {},

@@ -43,14 +43,19 @@ class OverviewDialogController(
     private val lifecycleScope = (context as LifecycleOwner).lifecycleScope
 
     private val currentRecordList = mutableListOf<Record>()
+
+    private val albumsState = mutableStateOf(listOf<Album>())
+
     val currentAlbumList = mutableListOf<Album>()
 
     fun addTabPreview(album: Album, index: Int) {
         currentAlbumList.add(index, album)
+        albumsState.value = currentAlbumList.toList()
     }
 
     fun removeTabView(album: Album) {
         currentAlbumList.remove(album)
+        albumsState.value = currentAlbumList.toList()
     }
 
     fun isVisible() = composeView.visibility == VISIBLE
@@ -65,7 +70,7 @@ class OverviewDialogController(
             isHistoryOpen = showHistory
             shouldReverse = !config.isToolbarOnTop
             shouldShowTwoColumns = isWideLayout()
-            albumList = mutableStateOf(currentAlbumList)
+            albumList = albumsState
             onTabIconClick = { openHomePage() }
             onTabClick = { hide(); it.show() }
             onTabLongClick = { it.remove() }
@@ -191,7 +196,7 @@ class OverviewDialogController(
     }
 
     fun updateTabView() {
-        composeView.focusedAlbumIndex.value = currentAlbumList.indexOfFirst { it.isActivated }
+        composeView.albumList.value = currentAlbumList.toList()
     }
 }
 

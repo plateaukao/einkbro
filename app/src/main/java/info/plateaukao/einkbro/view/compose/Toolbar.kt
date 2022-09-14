@@ -37,7 +37,6 @@ fun ComposedToolbar(
     onIconClick: (ToolbarAction) -> Unit,
     onIconLongClick: ((ToolbarAction) -> Unit)? = null,
     albumList: MutableState<List<Album>>,
-    focusedAlbumIndex: MutableState<Int>,
     onAlbumClick: (Album) -> Unit,
     onAlbumLongClick: (Album) -> Unit,
 ) {
@@ -54,7 +53,6 @@ fun ComposedToolbar(
                     .height(50.dp)
                     .fillMaxWidth(),
                 albumList = albumList.value,
-                focusedAlbumIndex = focusedAlbumIndex,
                 onClick = onAlbumClick,
                 closeAction = onAlbumLongClick,
                 showHorizontal = true
