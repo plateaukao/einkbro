@@ -5,7 +5,7 @@ import info.plateaukao.einkbro.view.NinjaWebView
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class WebContentPostProcessor:KoinComponent {
+class WebContentPostProcessor : KoinComponent {
     private val configManager: ConfigManager by inject()
 
     fun postProcess(ninjaWebView: NinjaWebView, url: String) {
@@ -71,10 +71,15 @@ new PerformanceObserver((entryList) => {
 document.addEventListener('scroll', () => getAds().forEach(hideAd));
             })()
         """
-        private const val enableZoomJs = "javascript:document.getElementsByName('viewport')[0].setAttribute('content', 'initial-scale=1,maximum-scale=10.0');"
+        private const val enableZoomJs =
+            "javascript:document.getElementsByName('viewport')[0].setAttribute('content', 'initial-scale=1,maximum-scale=10.0');"
         private const val facebookHideSponsoredPostsJs = """
             javascript:(function() {
-              var posts = [].filter.call(document.getElementsByTagName('article'), el => (el.attributes['data-ft'] != null && el.attributes['data-ft'].value.indexOf('is_sponsored') >= 0) || el.getElementsByTagName('header')[0].innerText == 'Suggested for you'); 
+            var posts = [].filter.call(document.getElementsByTagName('article'), el => (
+                  (el.attributes['data-store'] != null && el.attributes['data-store'].value.indexOf('is_sponsored.1') >= 0) || 
+                  (el.attributes['data-ft'] != null && el.attributes['data-ft'].value.indexOf('is_sponsored') >= 0) || 
+                  (el.attributes['data-xt-vimp'] != null && el.attributes['data-xt-vimp'].value.indexOf('is_sponsored') >= 0) || 
+                  (el.getElementsByTagName('header')[0] != null  && el.getElementsByTagName('header')[0].innerText == 'Suggested for you')));
               while(posts.length > 0) { posts.pop().style.display = "none"; }
               
               var ads = Array.from(document.getElementsByClassName("bg-s3")).filter(e => e.innerText.indexOf("Sponsored") != -1);
@@ -83,7 +88,11 @@ document.addEventListener('scroll', () => getAds().forEach(hideAd));
               ads.forEach(el => {el.nextSibling.nextSibling.nextSibling.nextSibling.style.display="none"});
               
             var qcleanObserver = new window.MutationObserver(function(mutation, observer){ 
-              var posts = [].filter.call(document.getElementsByTagName('article'), el => (el.attributes['data-ft'] != null && el.attributes['data-ft'].value.indexOf('is_sponsored') >= 0) || el.getElementsByTagName('header')[0].innerText == 'Suggested for you'); 
+            var posts = [].filter.call(document.getElementsByTagName('article'), el => (
+                  (el.attributes['data-store'] != null && el.attributes['data-store'].value.indexOf('is_sponsored.1') >= 0) || 
+                  (el.attributes['data-ft'] != null && el.attributes['data-ft'].value.indexOf('is_sponsored') >= 0) || 
+                  (el.attributes['data-xt-vimp'] != null && el.attributes['data-xt-vimp'].value.indexOf('is_sponsored') >= 0) || 
+                  (el.getElementsByTagName('header')[0] != null  && el.getElementsByTagName('header')[0].innerText == 'Suggested for you')));
               while(posts.length > 0) { posts.pop().style.display = "none"; }
               
               var ads = Array.from(document.getElementsByClassName("bg-s3")).filter(e => e.innerText.indexOf("Sponsored") != -1);
@@ -124,10 +133,10 @@ document.addEventListener('scroll', () => getAds().forEach(hideAd));
         """
 
         val urlScriptMap = mapOf(
-                "facebook.com" to facebookHideSponsoredPostsJs,
-                "zhihu.com" to zhihuDisablePopupJs,
-                "jianshu.com" to jianshuJs,
-                "twitter.com" to twitterJs,
+            "facebook.com" to facebookHideSponsoredPostsJs,
+            "zhihu.com" to zhihuDisablePopupJs,
+            "jianshu.com" to jianshuJs,
+            "twitter.com" to twitterJs,
         )
     }
 }

@@ -303,11 +303,13 @@ private fun TabItem(
                 contentDescription = null,
             )
         } else {
-            ActionIcon(
-                modifier = Modifier
-                    .align(Alignment.CenterVertically)
-                    .padding(start = 2.dp),
-                iconResId = R.drawable.icon_earth,
+            Icon(
+                modifier = modifier
+                    .size(36.dp)
+                    .padding(end = 5.dp),
+                painter = painterResource(id = R.drawable.icon_earth),
+                contentDescription = null,
+                tint = MaterialTheme.colors.onBackground
             )
         }
 
