@@ -304,7 +304,7 @@ private fun TabItem(
             )
         } else {
             Icon(
-                modifier = modifier
+                modifier = Modifier
                     .size(36.dp)
                     .padding(end = 5.dp),
                 painter = painterResource(id = R.drawable.icon_earth),

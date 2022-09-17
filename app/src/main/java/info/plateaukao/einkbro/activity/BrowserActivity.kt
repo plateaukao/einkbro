@@ -320,7 +320,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
         orientation = resources.configuration.orientation
 
-        bookmarkManager.init()
     }
 
     private fun initInputBar() {
@@ -564,6 +563,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
         updateTitle()
 
+        updateTabBar()
+    }
+
+    override fun onUpdateAlbum(album: Album?) {
         updateTabBar()
     }
 
@@ -1282,7 +1285,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     private fun updateTabBar() {
-        composeToolbarViewController.updateTabView(overviewDialogController.currentAlbumList.toList())
+        if (config.shouldShowTabBar) {
+            composeToolbarViewController.updateTabView(overviewDialogController.currentAlbumList.toList())
+        }
     }
 
     private fun updateTitle() {
