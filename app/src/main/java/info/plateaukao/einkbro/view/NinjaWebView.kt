@@ -242,6 +242,9 @@ open class NinjaWebView(context: Context?, var browserController: BrowserControl
 
     private fun initAlbum() {
         album.albumTitle = context!!.getString(R.string.app_name)
+        bookmarkManager.findFaviconBy(albumUrl)?.getBitmap()?.let {
+            setAlbumCover(it)
+        }
     }
 
     val requestHeaders: HashMap<String, String>
@@ -268,6 +271,10 @@ open class NinjaWebView(context: Context?, var browserController: BrowserControl
     override fun loadUrl(url: String, additionalHttpHeaders: MutableMap<String, String>) {
         if (browserController?.loadInSecondPane(url) == true) {
             return
+        }
+
+        bookmarkManager.findFaviconBy(url)?.getBitmap()?.let {
+            setAlbumCover(it)
         }
 
         super.loadUrl(url, additionalHttpHeaders)

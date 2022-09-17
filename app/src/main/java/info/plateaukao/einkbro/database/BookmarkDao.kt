@@ -108,11 +108,9 @@ class BookmarkManager(private val context: Context) : KoinComponent {
         config.dbVersion = 1
     }
 
-    private var isInitialized: Boolean = false
-    fun init() {
+    init {
         GlobalScope.launch(Dispatchers.IO) {
             faviconInfos.addAll(getAllFavicons())
-            isInitialized = true
         }
     }
 

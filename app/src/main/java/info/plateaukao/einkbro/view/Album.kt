@@ -28,6 +28,7 @@ data class Album(
 
     fun setAlbumCover(bitmap: Bitmap?) {
         this.bitmap = bitmap
+        browserController?.onUpdateAlbum(this)
     }
 
     fun getAlbumBitmap(): Bitmap? = bitmap
