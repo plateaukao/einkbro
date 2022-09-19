@@ -8,6 +8,7 @@ This browser is called EinkBro. It's designed to fit Eink devices' needs; no unn
 [<img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
      alt="Get it on Google Play"
      height="80">](https://play.google.com/store/apps/details?id=info.plateaukao.einkbro)     
+#### [Nightly build](https://nightly.link/plateaukao/einkbro/workflows/buid-app-workflow.yaml/main/app-release.apk.zip)
 
 |Main Screen|Menu Items|Toolbar Configuration|
 |----|----|----|
@@ -73,8 +74,5 @@ This browser is called EinkBro. It's designed to fit Eink devices' needs; no unn
 - screenshots of the whole website
 - share/save as PDF
 - open links in other apps (for example YouTube)
-
-### Nightly build
-https://nightly.link/plateaukao/einkbro/workflows/buid-app-workflow.yaml/main/app-release.apk.zip
 
 <div>App icon is made by <a href="https://www.flaticon.com/authors/turkkub" title="turkkub">turkkub</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
