@@ -34,6 +34,13 @@ class BookmarkViewModel(private val bookmarkDao: BookmarkDao) : ViewModel() {
     val currentFolder: Bookmark
         get() = folderStack.peek()
 
+    fun toRootFolder() {
+        while (folderStack.size > 1) {
+            folderStack.pop()
+        }
+        updateUiState()
+    }
+
     fun outOfFolder() {
         if (folderStack.size > 1) {
             folderStack.pop()

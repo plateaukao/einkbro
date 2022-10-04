@@ -109,6 +109,7 @@ class BookmarksDialogFragment(
 
     override fun onDestroy() {
         bookmarksUpdateJob.cancel()
+        bookmarkViewModel.toRootFolder()
         super.onDestroy()
     }
 
