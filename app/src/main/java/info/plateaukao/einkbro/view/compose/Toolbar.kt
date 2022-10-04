@@ -18,6 +18,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.view.Album
 import info.plateaukao.einkbro.view.dialog.compose.HorizontalSeparator
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction
@@ -100,7 +101,7 @@ fun ComposedIconBar(
             when (val toolbarAction = toolbarActionInfo.toolbarAction) {
                 Title -> {
                     val titleModifier = Modifier
-                        .padding(start = 10.dp, end = 1.dp)
+                        .padding(start = 3.dp, end = 1.dp)
                         .then(
                             if (shouldTitleWidthFixed) Modifier.widthIn(max = 300.dp) else Modifier.weight(
                                 1F
@@ -111,10 +112,15 @@ fun ComposedIconBar(
                         modifier = titleModifier,
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        if (!shouldTitleWidthFixed) ToolbarIcon(
-                            toolbarActionInfo = ToolbarActionInfo(
-                                InputUrl
-                            ), onClick = { onClick(toolbarAction) })
+                        if (!shouldTitleWidthFixed)
+                            Icon(
+                                modifier = Modifier
+                                    .padding(horizontal = 2.dp)
+                                    .size(20.dp),
+                                painter = painterResource(id = R.drawable.ic_input_url),
+                                contentDescription = null,
+                                tint = MaterialTheme.colors.onBackground
+                            )
                         Text(
                             text = title,
                             color = MaterialTheme.colors.onBackground,
