@@ -81,7 +81,7 @@ fun ComposedIconBar(
 ) {
     val screenWidth = LocalConfiguration.current.screenWidthDp
     val shouldTitleWidthFixed =
-        toolbarActionInfos.filter { it.toolbarAction != Title }.size * 46 > screenWidth
+        (toolbarActionInfos.filter { it.toolbarAction != Title }.size + 1) * 46 > screenWidth
     Row(
         modifier = Modifier
             .height(50.dp)
@@ -107,14 +107,23 @@ fun ComposedIconBar(
                             )
                         )
                         .clickable { onClick(toolbarAction) }
-                    Text(
+                    Row(
                         modifier = titleModifier,
-                        text = title,
-                        color = MaterialTheme.colors.onBackground,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        if (!shouldTitleWidthFixed) ToolbarIcon(
+                            toolbarActionInfo = ToolbarActionInfo(
+                                InputUrl
+                            ), onClick = { onClick(toolbarAction) })
+                        Text(
+                            text = title,
+                            color = MaterialTheme.colors.onBackground,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                    }
                 }
+
                 TabCount ->
                     TabCountIcon(
                         isIncognito = isIncognito,
@@ -122,6 +131,7 @@ fun ComposedIconBar(
                         onClick = { onClick(toolbarAction) },
                         onLongClick = { onLongClick?.invoke(toolbarAction) }
                     )
+
                 else -> ToolbarIcon(toolbarActionInfo, onClick, onLongClick)
             }
         }
