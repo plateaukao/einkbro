@@ -454,6 +454,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     override fun onDestroy() {
+        customFontResultLauncher.unregister()
+
         updateSavedAlbumInfo()
 
         if (sp.getBoolean(getString(R.string.sp_clear_quit), false)) {
