@@ -77,6 +77,8 @@ class FontSettingsFragment : PreferenceFragmentCompat(), OnSharedPreferenceChang
     override fun onSharedPreferenceChanged(sp: SharedPreferences, key: String) {}
 
     override fun onDestroy() {
+        resultLauncher.unregister()
+
         config.unregisterOnSharedPreferenceChangeListener(preferenceListener)
         super.onDestroy()
     }
