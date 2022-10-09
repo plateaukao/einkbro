@@ -292,7 +292,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
                 val downloadManager = getSystemService(DOWNLOAD_SERVICE) as DownloadManager
                 val mostRecentDownload: Uri =
-                    downloadManager.getUriForDownloadedFile(downloadFileId)
+                    downloadManager.getUriForDownloadedFile(downloadFileId) ?: return
                 val mimeType: String = downloadManager.getMimeTypeForDownloadedFile(downloadFileId)
                 val fileIntent = Intent(ACTION_VIEW).apply {
                     setDataAndType(mostRecentDownload, mimeType)
