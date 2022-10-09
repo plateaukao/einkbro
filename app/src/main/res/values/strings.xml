@@ -358,4 +358,5 @@
     <string name="password">Password</string>
     <string name="user_name">Username</string>
     <string name="authentication">Authentication</string>
+    <string name="twitter">Twitter</string>
 </resources>
