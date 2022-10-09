@@ -289,6 +289,9 @@ object BrowserUnit : KoinComponent {
         showShort(activity, R.string.toast_start_download)
     }
 
+    // get final redirected url
+
+
     @JvmStatic
     fun exportWhitelist(context: Context, i: Int): String? {
         val action = RecordDb(context)

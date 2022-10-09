@@ -12,8 +12,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.itemsIndexed
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -222,11 +220,11 @@ fun PreviewTabs(
 ) {
     if (showHorizontal) {
         val maxItemWidth = 200
-        val screenWidth = LocalConfiguration.current.screenWidthDp
+        val barWidth = LocalConfiguration.current.screenWidthDp - 50 // 50 is the plus button width
         val itemWidth =
-            if (albumList.size * 200 > screenWidth) max(
-                screenWidth / albumList.size,
-                50
+            if (albumList.size * 200 > barWidth) max(
+                barWidth / albumList.size,
+                80
             )
             else maxItemWidth
 

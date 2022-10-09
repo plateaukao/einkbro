@@ -49,15 +49,24 @@ fun ComposedToolbar(
         horizontalAlignment = Alignment.End
     ) {
         if (showTabs) {
-            PreviewTabs(
+            Row(
                 Modifier
                     .height(50.dp)
-                    .fillMaxWidth(),
-                albumList = albumList.value,
-                onClick = onAlbumClick,
-                closeAction = onAlbumLongClick,
-                showHorizontal = true
-            )
+                    .fillMaxWidth()
+            ) {
+                PreviewTabs(
+                    Modifier.weight(1f),
+                    albumList = albumList.value,
+                    onClick = onAlbumClick,
+                    closeAction = onAlbumLongClick,
+                    showHorizontal = true
+                )
+                ButtonIcon(
+                    iconResId = R.drawable.icon_plus,
+                    onClick = { onIconClick(NewTab) },
+                    onLongClick = { onIconLongClick?.invoke(NewTab) },
+                )
+            }
             HorizontalSeparator()
         }
         ComposedIconBar(
