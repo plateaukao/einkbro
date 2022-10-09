@@ -16,7 +16,11 @@ class AboutSettingComposeFragment : Fragment(), FragmentTitleInterface {
 
     override fun getTitleId(): Int = R.string.title_about
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         return ComposeView(requireContext())
             .apply {
                 setContent {
@@ -46,11 +50,23 @@ private enum class AboutSettingItem(
     override val titleResId: Int,
     override val iconId: Int,
     val url: String,
-): SettingItemInterface {
+) : SettingItemInterface {
     ProjectSite(R.string.project_site, R.drawable.ic_home, "https://github.com/plateaukao/browser"),
-    LatestRelease(R.string.latest_release, R.drawable.icon_earth, "https://github.com/plateaukao/browser/releases"),
-    Facebook(R.string.facebook_groups, R.drawable.icon_earth, "https://www.facebook.com/einkbro"),
-    ChangeLogs(R.string.changelogs, R.drawable.icon_earth, "https://github.com/plateaukao/browser/blob/main/CHANGELOG.md"),
-    Contributors(R.string.contributors, R.drawable.icon_copyright, "https://github.com/plateaukao/browser/blob/main/CONTRIBUTORS.md"),
+    LatestRelease(
+        R.string.latest_release,
+        R.drawable.icon_earth,
+        "https://github.com/plateaukao/browser/releases"
+    ),
+    Facebook(R.string.twitter, R.drawable.icon_earth, "https://twitter.com/einkbro"),
+    ChangeLogs(
+        R.string.changelogs,
+        R.drawable.icon_earth,
+        "https://github.com/plateaukao/browser/blob/main/CHANGELOG.md"
+    ),
+    Contributors(
+        R.string.contributors,
+        R.drawable.icon_copyright,
+        "https://github.com/plateaukao/browser/blob/main/CONTRIBUTORS.md"
+    ),
     Medium(R.string.medium_articles, R.drawable.ic_reader, "https://medium.com/einkbro")
 }
