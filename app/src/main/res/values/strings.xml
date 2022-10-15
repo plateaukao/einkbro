@@ -359,4 +359,5 @@
     <string name="user_name">Username</string>
     <string name="authentication">Authentication</string>
     <string name="twitter">Twitter</string>
+    <string name="setting_title_edit_homepage">Edit Home Url</string>
 </resources>
