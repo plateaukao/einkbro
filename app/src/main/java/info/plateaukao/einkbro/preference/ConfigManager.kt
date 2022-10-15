@@ -150,7 +150,6 @@ class ConfigManager(
     var switchTouchAreaAction by BooleanPreference(sp, K_TOUCH_AREA_ACTION_SWITCH, false)
     var hideTouchAreaWhenInput by BooleanPreference(sp, K_TOUCH_AREA_HIDE_WHEN_INPUT, false)
     var customFontChanged by BooleanPreference(sp, K_CUSTOM_FONT_CHANGED, false)
-    var showRecentBookmarks by BooleanPreference(sp, K_SHOW_RECENT_BOOKMARKS, false)
     var debugWebView by BooleanPreference(sp, K_DEBUG_WEBVIEW, false)
     var shouldShowTabBar by BooleanPreference(sp, K_SHOW_TAB_BAR, false)
 
@@ -304,6 +303,10 @@ class ConfigManager(
         get() = DarkMode.values()[sp.getString(K_DARK_MODE, "0")?.toInt() ?: 0]
         set(value) = sp.edit { putString(K_DARK_MODE, value.ordinal.toString()) }
 
+    var newTabBehavior: NewTabBehavior
+        get() = NewTabBehavior.values()[sp.getString(K_NEW_TAB_BEHAVIOR, "0")?.toInt() ?: 0]
+        set(value) = sp.edit { putString(K_NEW_TAB_BEHAVIOR, value.ordinal.toString()) }
+
     private fun iconStringToEnumList(iconListString: String): List<ToolbarAction> {
         if (iconListString.isBlank()) return listOf()
 
@@ -371,7 +374,6 @@ class ConfigManager(
         const val K_VI_BINDING = "sp_enable_vi_binding"
         const val K_MEDIA_CONTINUE = "sp_media_continue"
         const val K_RECENT_BOOKMARKS = "sp_recent_bookmarks"
-        const val K_SHOW_RECENT_BOOKMARKS = "sp_new_tab_recent_bookmarks"
         const val K_RESTART_CHANGED = "restart_changed"
         const val K_JAVASCRIPT = "SP_JAVASCRIPT_9"
         const val K_BKGND_LOAD = "sp_background_loading"
@@ -383,6 +385,7 @@ class ConfigManager(
         const val K_HISTORY_PURGE_TS = "sp_history_purge_ts"
         const val K_PRUNE_QUERY_PARAMETERS = "sp_prune_query_parameter"
         const val K_SHOW_TAB_BAR = "sp_show_tab_bar"
+        const val K_NEW_TAB_BEHAVIOR = "sp_plus_behavior"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
         private const val RECENT_BOOKMARKS_SEPARATOR = "::::"
@@ -457,6 +460,10 @@ enum class FontType(val resId: Int) {
 
 enum class DarkMode {
     SYSTEM, FORCE_ON, DISABLED
+}
+
+enum class NewTabBehavior {
+    START_INPUT, SHOW_HOME, SHOW_RECENT_BOOKMARKS
 }
 
 data class AlbumInfo(

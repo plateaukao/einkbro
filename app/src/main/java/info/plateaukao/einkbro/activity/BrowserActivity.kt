@@ -140,6 +140,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 supportFragmentManager,
                 "TouchAreaDialog"
             )
+
             ToolbarAction.PageUp -> ninjaWebView.jumpToTop()
             ToolbarAction.PageDown -> ninjaWebView.jumpToBottom()
             ToolbarAction.TabCount -> config.isIncognitoMode = !config.isIncognitoMode
@@ -159,6 +160,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             } else {
                 NinjaToast.show(this, getString(R.string.no_previous_page))
             }
+
             ToolbarAction.Refresh -> refreshAction()
             ToolbarAction.Touch -> toggleTouchTurnPageFeature()
             ToolbarAction.PageUp -> ninjaWebView.pageUpWithNoAnimation()
@@ -166,6 +168,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 keepToolbar = true
                 ninjaWebView.pageDownWithNoAnimation()
             }
+
             ToolbarAction.TabCount -> showOverview()
             ToolbarAction.Font -> showFontSizeChangeDialog()
             ToolbarAction.Settings -> showMenuDialog()
@@ -174,6 +177,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 supportFragmentManager,
                 "toolbar_config"
             )
+
             ToolbarAction.VerticalLayout -> ninjaWebView.toggleVerticalRead()
             ToolbarAction.ReaderMode -> ninjaWebView.toggleReaderMode()
             ToolbarAction.BoldFont -> config.boldFontStyle = !config.boldFontStyle
@@ -185,14 +189,29 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             ToolbarAction.Translation -> showTranslation()
             ToolbarAction.CloseTab -> removeAlbum(currentAlbumController!!)
             ToolbarAction.InputUrl -> focusOnInput()
-            ToolbarAction.NewTab -> {
-                addAlbum(getString(R.string.app_name), "", true)
-                focusOnInput()
-            }
+            ToolbarAction.NewTab -> newATab()
             ToolbarAction.Desktop -> config.desktop = !config.desktop
             ToolbarAction.Search -> showSearchPanel()
             ToolbarAction.DuplicateTab -> duplicateTab()
             else -> {}
+        }
+    }
+
+    private fun newATab() {
+        when (config.newTabBehavior) {
+            NewTabBehavior.START_INPUT -> {
+                addAlbum(getString(R.string.app_name), "", true)
+                focusOnInput()
+            }
+
+            NewTabBehavior.SHOW_HOME -> {
+                addAlbum("", config.favoriteUrl, true)
+            }
+
+            NewTabBehavior.SHOW_RECENT_BOOKMARKS -> {
+                addAlbum("", "", true)
+                showRecentlyUsedBookmarks(ninjaWebView)
+            }
         }
     }
 
@@ -474,18 +493,23 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             KeyEvent.KEYCODE_DPAD_DOWN -> {
                 if (config.useUpDownPageTurn) ninjaWebView.pageDownWithNoAnimation()
             }
+
             KeyEvent.KEYCODE_DPAD_UP -> {
                 if (config.useUpDownPageTurn) ninjaWebView.pageUpWithNoAnimation()
             }
+
             KeyEvent.KEYCODE_VOLUME_DOWN -> {
                 return handleVolumeDownKey()
             }
+
             KeyEvent.KEYCODE_VOLUME_UP -> {
                 return handleVolumeUpKey()
             }
+
             KeyEvent.KEYCODE_MENU -> {
                 showMenuDialog(); return true
             }
+
             KeyEvent.KEYCODE_BACK -> {
                 return handleBackKey()
             }
@@ -723,6 +747,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     }
                 }
             }
+
             ACTION_VIEW -> {
                 // if webview for that url already exists, show the original tab, otherwise, create new
                 val viewUri = intent.data?.toNormalScheme() ?: Uri.parse(config.favoriteUrl)
@@ -734,21 +759,27 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     getUrlMatchedBrowser(url)?.let { showAlbum(it) } ?: addAlbum(url = url)
                 }
             }
+
             Intent.ACTION_WEB_SEARCH -> addAlbum(
                 url = intent.getStringExtra(SearchManager.QUERY) ?: ""
             )
+
             "sc_history" -> {
                 addAlbum(); openHistoryPage()
             }
+
             "sc_home" -> {
                 addAlbum(config.favoriteUrl)
             }
+
             "sc_bookmark" -> {
                 addAlbum(); openBookmarkPage()
             }
+
             Intent.ACTION_SEND -> {
                 addAlbum(url = intent.getStringExtra(Intent.EXTRA_TEXT) ?: "")
             }
+
             Intent.ACTION_PROCESS_TEXT -> {
                 val text = intent.getStringExtra(Intent.EXTRA_PROCESS_TEXT) ?: return
                 val url = config.customProcessTextUrl + text
@@ -758,6 +789,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     addAlbum(url = url)
                 }
             }
+
             "colordict.intent.action.PICK_RESULT",
             "colordict.intent.action.SEARCH" -> {
                 val text = intent.getStringExtra("EXTRA_QUERY") ?: return
@@ -768,6 +800,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     addAlbum(url = url)
                 }
             }
+
             else -> {
                 addAlbum()
             }
@@ -895,9 +928,11 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 ConfigManager.K_TOOLBAR_ICONS -> {
                     composeToolbarViewController.updateIcons()
                 }
+
                 ConfigManager.K_SHOW_TAB_BAR -> {
                     composeToolbarViewController.showTabbar(config.shouldShowTabBar)
                 }
+
                 ConfigManager.K_FONT_TYPE -> {
                     if (config.fontType == FontType.SYSTEM_DEFAULT) {
                         ninjaWebView.reload()
@@ -905,9 +940,11 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                         ninjaWebView.updateCssStyle()
                     }
                 }
+
                 ConfigManager.K_FONT_SIZE -> {
                     ninjaWebView.settings.textZoom = config.fontSize
                 }
+
                 ConfigManager.K_BOLD_FONT -> {
                     composeToolbarViewController.updateIcons()
                     if (config.boldFontStyle) {
@@ -916,6 +953,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                         ninjaWebView.reload()
                     }
                 }
+
                 ConfigManager.K_WHITE_BACKGROUND -> {
                     if (config.whiteBackground) {
                         ninjaWebView.updateCssStyle()
@@ -923,11 +961,13 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                         ninjaWebView.reload()
                     }
                 }
+
                 ConfigManager.K_CUSTOM_FONT -> {
                     if (config.fontType == FontType.CUSTOM) {
                         ninjaWebView.updateCssStyle()
                     }
                 }
+
                 ConfigManager.K_IS_INCOGNITO_MODE -> {
                     ninjaWebView.incognito = config.isIncognitoMode
                     composeToolbarViewController.updateIcons()
@@ -936,6 +976,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                         "Incognito mode is " + if (config.isIncognitoMode) "enabled." else "disabled."
                     )
                 }
+
                 ConfigManager.K_KEEP_AWAKE -> {
                     if (config.keepAwake) {
                         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
@@ -943,11 +984,13 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                         window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
                     }
                 }
+
                 ConfigManager.K_DESKTOP -> {
                     ninjaWebView.updateDesktopMode()
                     ninjaWebView.reload()
                     composeToolbarViewController.updateIcons()
                 }
+
                 ConfigManager.K_DARK_MODE -> config.restartChanged = true
                 ConfigManager.K_TOOLBAR_TOP -> updateAppbarPosition()
             }
@@ -966,18 +1009,21 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     addRule(RelativeLayout.ALIGN_BOTTOM, R.id.main_content)
                 }
             }
+
             FabPosition.Right -> {
                 fabImageButtonNav.layoutParams = params.apply {
                     addRule(RelativeLayout.ALIGN_PARENT_RIGHT)
                     addRule(RelativeLayout.ALIGN_BOTTOM, R.id.main_content)
                 }
             }
+
             FabPosition.Center -> {
                 fabImageButtonNav.layoutParams = params.apply {
                     addRule(RelativeLayout.CENTER_HORIZONTAL)
                     addRule(RelativeLayout.ALIGN_BOTTOM, R.id.main_content)
                 }
             }
+
             FabPosition.NotShow -> {}
         }
 
@@ -1000,26 +1046,31 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             } else {
                 NinjaToast.show(this, R.string.toast_webview_forward)
             }
+
             Backward -> if (ninjaWebView.canGoBack()) {
                 ninjaWebView.goBack()
             } else {
                 NinjaToast.show(this, getString(R.string.no_previous_page))
             }
+
             ScrollToTop -> ninjaWebView.jumpToTop()
             ScrollToBottom -> ninjaWebView.pageDownWithNoAnimation()
             ToLeftTab -> {
                 controller = nextAlbumController(false)
                 showAlbum(controller!!)
             }
+
             ToRightTab -> {
                 controller = nextAlbumController(true)
                 showAlbum(controller!!)
             }
+
             Overview -> showOverview()
             OpenNewTab -> {
                 addAlbum(getString(R.string.app_name), "", true)
                 focusOnInput()
             }
+
             CloseTab -> runOnUiThread { removeAlbum(currentAlbumController!!) }
             PageUp -> ninjaWebView.pageUpWithNoAnimation()
             PageDown -> ninjaWebView.pageDownWithNoAnimation()
@@ -1182,8 +1233,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             if (url.isNotEmpty() && url != BrowserUnit.URL_ABOUT_BLANK) {
                 webView.loadUrl(url)
             } else if (url == BrowserUnit.URL_ABOUT_BLANK) {
-            } else if (config.showRecentBookmarks) {
-                showRecentlyUsedBookmarks(webView)
             }
         }
     }
@@ -1483,6 +1532,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     ninjaWebView.pageDownWithNoAnimation()
                     return true
                 }
+
                 KeyEvent.KEYCODE_DPAD_UP -> {
                     ninjaWebView.pageUpWithNoAnimation()
                     return true
@@ -1498,10 +1548,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     val controller = nextAlbumController(true) ?: return true
                     showAlbum(controller)
                 }
+
                 KeyEvent.KEYCODE_K -> {
                     val controller = nextAlbumController(false) ?: return true
                     showAlbum(controller)
                 }
+
                 KeyEvent.KEYCODE_G -> ninjaWebView.jumpToBottom()
                 else -> return false
             }
@@ -1516,6 +1568,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                         focusOnInput()
                     }
                 }
+
                 KeyEvent.KEYCODE_J -> ninjaWebView.pageDownWithNoAnimation()
                 KeyEvent.KEYCODE_K -> ninjaWebView.pageUpWithNoAnimation()
                 KeyEvent.KEYCODE_H -> ninjaWebView.goBack()
@@ -1526,6 +1579,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     addAlbum(getString(R.string.app_name), "", true)
                     focusOnInput()
                 }
+
                 KeyEvent.KEYCODE_SLASH -> showSearchPanel()
                 KeyEvent.KEYCODE_G -> {
                     previousKeyEvent = when {
@@ -1535,18 +1589,22 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                             ninjaWebView.jumpToTop()
                             null
                         }
+
                         else -> null
                     }
                 }
+
                 KeyEvent.KEYCODE_V -> {
                     previousKeyEvent = if (previousKeyEvent == null) event else null
                 }
+
                 KeyEvent.KEYCODE_I -> {
                     if (previousKeyEvent?.keyCode == KeyEvent.KEYCODE_V) {
                         increaseFontSize()
                         previousKeyEvent = null
                     }
                 }
+
                 else -> return false
             }
         }
@@ -1728,6 +1786,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     "https://github.com/plateaukao/browser"
                 )
             )
+
             MenuItemType.CloseTab -> currentAlbumController?.let { removeAlbum(it) }
             Quit -> finishAndRemoveTask()
 
@@ -1739,6 +1798,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 supportFragmentManager,
                 "TouchAreaDialog"
             )
+
             ToolbarSetting -> ToolbarConfigDialogFragment().show(
                 supportFragmentManager,
                 "toolbar_config"
@@ -1752,6 +1812,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 ninjaWebView.url,
                 getString(R.string.menu_open_with)
             )
+
             CopyLink -> ShareUtil.copyToClipboard(this, ninjaWebView.url ?: "")
             Shortcut -> HelperUnit.createShortcut(
                 this,
