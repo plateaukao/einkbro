@@ -360,4 +360,6 @@
     <string name="authentication">Authentication</string>
     <string name="twitter">Twitter</string>
     <string name="setting_title_edit_homepage">Edit Home Url</string>
+    <string name="setting_summary_plus_behavior">When adding a new tab, what should be displayed.</string>
+    <string name="setting_title_plus_behavior">New tab behavior</string>
 </resources>

@@ -11,7 +11,7 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.util.*
 
-class RecordDb(context: Context?): KoinComponent {
+class RecordDb(context: Context?) : KoinComponent {
     private lateinit var database: SQLiteDatabase
     private val helper: RecordHelper = RecordHelper(context)
     private val bookmarkManager: BookmarkManager by inject()
@@ -29,11 +29,9 @@ class RecordDb(context: Context?): KoinComponent {
         if (record.url.startsWith("data:")) return
 
         // optimize loading page speed. when no showing recent bookmarks don't update it.
-        if (config.showRecentBookmarks) {
-            val bookmarks = bookmarkManager.findBy(record.url)
-            if (bookmarks.isNotEmpty()) {
-                config.addRecentBookmark(bookmarks.first())
-            }
+        val bookmarks = bookmarkManager.findBy(record.url)
+        if (bookmarks.isNotEmpty()) {
+            config.addRecentBookmark(bookmarks.first())
         }
 
         database.transaction {
@@ -130,7 +128,8 @@ class RecordDb(context: Context?): KoinComponent {
 
         config.purgeHistoryTimestamp = currentTimestamp
         val tsBefore = currentTimestamp - (1000 * 60 * 60 * 24) * days
-        val sql = "DELETE FROM ${RecordUnit.TABLE_HISTORY} WHERE ${RecordUnit.COLUMN_TIME} <= $tsBefore"
+        val sql =
+            "DELETE FROM ${RecordUnit.TABLE_HISTORY} WHERE ${RecordUnit.COLUMN_TIME} <= $tsBefore"
         database.execSQL(sql)
     }
 

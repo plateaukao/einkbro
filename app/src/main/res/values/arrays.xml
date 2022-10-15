@@ -57,6 +57,19 @@
         <item>2</item>
     </string-array>
 
+    <!-- New Tab Behavior -->
+    <string-array name="setting_entries_plus_behavior">
+        <item>@string/plus_start_input_url</item>
+        <item>@string/plus_show_homepage</item>
+        <item>@string/plus_show_bookmarks</item>
+    </string-array>
+
+    <string-array name="setting_values_plus_behavior">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </string-array>
+
     <!-- General -->
     <string name="sp_ad_block">SP_AD_BLOCK_9</string>
     <string name="sp_cookies">SP_COOKIES_9</string>
@@ -71,5 +84,8 @@
     <string name="sp_clear_cache">SP_CLEAR_CACHE_9</string>
     <string name="sp_clear_cookie">SP_CLEAR_COOKIE_9</string>
     <string name="sp_clear_history">SP_CLEAR_HISTORY_9</string>
+    <string name="plus_start_input_url">Start Input Url</string>
+    <string name="plus_show_homepage">Show Home</string>
+    <string name="plus_show_bookmarks">Show Recent Bookmarks</string>
 
 </resources>

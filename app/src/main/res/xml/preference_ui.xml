@@ -35,12 +35,15 @@
             android:summary="@string/setting_summary_enable_zoom"
             android:title="@string/always_enable_zoom" />
 
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:icon="@drawable/ic_bookmarks"
-            android:key="sp_new_tab_recent_bookmarks"
-            android:summary="@string/setting_summary_recent_bookmarks"
-            android:title="@string/setting_recent_bookmarks" />
+        <ListPreference
+            android:defaultValue="0"
+            android:entries="@array/setting_entries_plus_behavior"
+            android:entryValues="@array/setting_values_plus_behavior"
+            android:icon="@drawable/icon_plus"
+            android:key="sp_plus_behavior"
+            android:summary="@string/setting_summary_plus_behavior"
+            android:title="@string/setting_title_plus_behavior" />
+
         <Preference
             android:icon="@drawable/ic_bookmarks"
             android:key="sp_clear_recent_bookmarks"
