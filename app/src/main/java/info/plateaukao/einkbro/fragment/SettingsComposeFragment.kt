@@ -41,19 +41,20 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class SettingsComposeFragment: Fragment(), KoinComponent {
+class SettingsComposeFragment : Fragment(), KoinComponent {
     private val config: ConfigManager by inject()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         val composeView = ComposeView(requireContext())
-        val version = "Daniel Kao, v" + BuildConfig.VERSION_NAME
         composeView.setContent {
             MyTheme {
                 SettingsMainContent(
                     FirstLayerSettingItem.values().toList(),
                     onItemClick = { handleSettingItem(it) },
-                    version = version,
-                    onVersionClick = {}
                 )
             }
         }
@@ -61,7 +62,7 @@ class SettingsComposeFragment: Fragment(), KoinComponent {
     }
 
     private fun handleSettingItem(setting: FirstLayerSettingItem) {
-        when(setting) {
+        when (setting) {
             FirstLayerSettingItem.Ui -> showFragment(UiSettingsFragment())
             FirstLayerSettingItem.Font -> showFragment(FontSettingsFragment())
             FirstLayerSettingItem.Gesture -> showFragment(FragmentSettingsGesture())
@@ -71,6 +72,7 @@ class SettingsComposeFragment: Fragment(), KoinComponent {
             FirstLayerSettingItem.ClearControl -> showFragment(ClearDataFragment())
             FirstLayerSettingItem.Search -> showFragment(SearchSettingsFragment())
             FirstLayerSettingItem.UserAgent -> lifecycleScope.launch { updateUserAgent() }
+            FirstLayerSettingItem.Homepage -> lifecycleScope.launch() { updateHomepage() }
             FirstLayerSettingItem.About -> showFragment(AboutSettingComposeFragment())
         }
     }
@@ -86,23 +88,32 @@ class SettingsComposeFragment: Fragment(), KoinComponent {
 
     private suspend fun updateUserAgent() {
         val newValue = TextInputDialog(
-                requireContext(),
-                getString(R.string.setting_title_userAgent),
-                "",
-                config.customUserAgent
-            ).show()
+            requireContext(),
+            getString(R.string.setting_title_userAgent),
+            "",
+            config.customUserAgent
+        ).show()
 
         newValue?.let { config.customUserAgent = it }
+    }
+
+    private suspend fun updateHomepage() {
+        val newValue = TextInputDialog(
+            requireContext(),
+            getString(R.string.setting_title_edit_homepage),
+            "",
+            config.favoriteUrl
+        ).show()
+
+        newValue?.let { config.favoriteUrl = it }
     }
 
 }
 
 @Composable
-fun <T: SettingItemInterface> SettingsMainContent(
+fun <T : SettingItemInterface> SettingsMainContent(
     settings: List<T>,
-    onItemClick: (T)->Unit,
-    version: String? = null,
-    onVersionClick:()->Unit,
+    onItemClick: (T) -> Unit,
 ) {
     LazyVerticalGrid(
         modifier = Modifier
@@ -111,22 +122,25 @@ fun <T: SettingItemInterface> SettingsMainContent(
         verticalArrangement = Arrangement.spacedBy(7.dp),
         horizontalArrangement = Arrangement.spacedBy(7.dp),
         columns = GridCells.Fixed(2),
-    ){
-        itemsIndexed(settings) { _: Int, setting: T ->
-            SettingItem(setting, onItemClick)
-        }
-        if (version != null) {
-            item(span = {GridItemSpan(2)}) {
-                VersionItem(version = version, onItemClick = onVersionClick)
+    ) {
+        settings.forEach { setting ->
+            if (setting == FirstLayerSettingItem.About) {
+                item(span = { GridItemSpan(2) }) {
+                    VersionItem(
+                        setting as FirstLayerSettingItem,
+                        onItemClick = { onItemClick(setting) })
+                }
+            } else {
+                item { SettingItem(setting, onItemClick) }
             }
         }
     }
 }
 
 @Composable
-private fun <T: SettingItemInterface> SettingItem(
+private fun <T : SettingItemInterface> SettingItem(
     setting: T,
-    onItemClick: (T)->Unit
+    onItemClick: (T) -> Unit
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val pressed by interactionSource.collectIsPressedAsState()
@@ -149,9 +163,11 @@ private fun <T: SettingItemInterface> SettingItem(
                 .fillMaxHeight(),
             tint = MaterialTheme.colors.onBackground
         )
-        Spacer(modifier = Modifier
-            .width(6.dp)
-            .fillMaxHeight())
+        Spacer(
+            modifier = Modifier
+                .width(6.dp)
+                .fillMaxHeight()
+        )
         Text(
             modifier = Modifier.wrapContentWidth(),
             text = stringResource(id = setting.titleResId),
@@ -163,9 +179,11 @@ private fun <T: SettingItemInterface> SettingItem(
 
 @Composable
 private fun VersionItem(
-    version: String,
-    onItemClick: ()->Unit
+    setting: FirstLayerSettingItem,
+    onItemClick: () -> Unit
 ) {
+    val version = """v${BuildConfig.VERSION_NAME}"""
+
     val interactionSource = remember { MutableInteractionSource() }
     val pressed by interactionSource.collectIsPressedAsState()
     val borderWidth = if (pressed) 3.dp else 1.dp
@@ -182,8 +200,10 @@ private fun VersionItem(
         horizontalArrangement = Arrangement.Center
     ) {
         Text(
-            modifier = Modifier.wrapContentWidth().padding(horizontal = 15.dp),
-            text = version,
+            modifier = Modifier
+                .wrapContentWidth()
+                .padding(horizontal = 15.dp),
+            text = stringResource(id = setting.titleResId) + " " + version,
             fontSize = 16.sp,
             color = MaterialTheme.colors.onBackground
         )
@@ -198,7 +218,7 @@ interface SettingItemInterface {
 private enum class FirstLayerSettingItem(
     override val titleResId: Int,
     override val iconId: Int
-): SettingItemInterface {
+) : SettingItemInterface {
     Ui(R.string.setting_title_ui, R.drawable.icon_ui),
     Font(R.string.setting_title_font, R.drawable.icon_size),
     Gesture(R.string.setting_gestures, R.drawable.gesture_tap),
@@ -208,6 +228,7 @@ private enum class FirstLayerSettingItem(
     ClearControl(R.string.setting_title_clear_control, R.drawable.icon_delete),
     Search(R.string.setting_title_search, R.drawable.icon_search),
     UserAgent(R.string.setting_title_userAgent, R.drawable.icon_useragent),
+    Homepage(R.string.setting_title_edit_homepage, R.drawable.icon_edit),
     About(R.string.menu_other_info, R.drawable.icon_info),
 }
 
@@ -215,7 +236,10 @@ private enum class FirstLayerSettingItem(
 @Composable
 fun PreviewSettingsMainContent() {
     MyTheme {
-        SettingsMainContent(FirstLayerSettingItem.values().toList(), onItemClick = {}, version = "v1.2.3", {})
+        SettingsMainContent(
+            FirstLayerSettingItem.values().toList(),
+            onItemClick = {}
+        )
     }
 }
 
@@ -223,6 +247,9 @@ fun PreviewSettingsMainContent() {
 @Composable
 fun PreviewNightSettingsMainContent() {
     MyTheme {
-        SettingsMainContent(FirstLayerSettingItem.values().toList(), onItemClick = {}, version = "v1.2.3", {})
+        SettingsMainContent(
+            FirstLayerSettingItem.values().toList(),
+            onItemClick = {},
+        )
     }
 }

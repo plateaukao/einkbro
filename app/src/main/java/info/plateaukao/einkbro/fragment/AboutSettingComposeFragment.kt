@@ -28,7 +28,6 @@ class AboutSettingComposeFragment : Fragment(), FragmentTitleInterface {
                         SettingsMainContent(
                             AboutSettingItem.values().toList(),
                             onItemClick = { handleLink(it.url) },
-                            onVersionClick = {}
                         )
                     }
                 }
