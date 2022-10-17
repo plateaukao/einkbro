@@ -155,6 +155,12 @@ open class NinjaWebView(context: Context?, var browserController: BrowserControl
                 // when in dark mode, the default background color will be the activity background
                 setBackgroundColor(Color.parseColor("#000000"))
             }
+
+        }
+        if (WebViewFeature.isFeatureSupported(WebViewFeature.ALGORITHMIC_DARKENING)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                WebSettingsCompat.setAlgorithmicDarkeningAllowed(settings, true)
+            }
         }
     }
 
@@ -193,7 +199,12 @@ open class NinjaWebView(context: Context?, var browserController: BrowserControl
                     true
                 )
             )
-            setGeolocationEnabled(sp.getBoolean(context!!.getString(R.string.sp_location), false))
+            setGeolocationEnabled(
+                sp.getBoolean(
+                    context!!.getString(R.string.sp_location),
+                    false
+                )
+            )
             mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
             setRenderPriority(WebSettings.RenderPriority.HIGH)
 
@@ -204,7 +215,12 @@ open class NinjaWebView(context: Context?, var browserController: BrowserControl
                 saveFormData = config.autoFillForm
             }
         }
-        webViewClient.enableAdBlock(sp.getBoolean(context!!.getString(R.string.sp_ad_block), true))
+        webViewClient.enableAdBlock(
+            sp.getBoolean(
+                context!!.getString(R.string.sp_ad_block),
+                true
+            )
+        )
 
         toggleCookieSupport(config.cookies)
     }
@@ -220,8 +236,10 @@ open class NinjaWebView(context: Context?, var browserController: BrowserControl
                 isDesktopMode ->
                     settings.userAgentString =
                         defaultUserAgentString.replace(prefix, BrowserUnit.UA_DESKTOP_PREFIX)
+
                 config.customUserAgent.isNotBlank() ->
                     settings.userAgentString = config.customUserAgent
+
                 else ->
                     settings.userAgentString =
                         defaultUserAgentString.replace(prefix, BrowserUnit.UA_MOBILE_PREFIX)
@@ -621,10 +639,13 @@ open class NinjaWebView(context: Context?, var browserController: BrowserControl
         when (config.translationMode) {
             TranslationMode.GOOGLE ->
                 evaluateJavascript(hideGTranslateContext, null)
+
             TranslationMode.GOOGLE_URL ->
                 evaluateJavascript(hideGUrlTranslateContext, null)
+
             TranslationMode.PAPAGO ->
                 evaluateJavascript(hidePTranslateContext, null)
+
             else -> Unit
         }
     }
