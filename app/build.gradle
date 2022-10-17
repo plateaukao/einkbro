@@ -93,7 +93,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
 
     // for dark mode
-    implementation 'androidx.webkit:webkit:1.5.0'
+    implementation 'androidx.webkit:webkit:1.4.0'
 
     def koin_version = "3.1.2"
     // Koin core features
