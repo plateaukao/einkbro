@@ -170,7 +170,7 @@
     <string name="switch_to_left_tab">切换到左标签页</string>
     <string name="switch_to_right_tab">切换到右标签页</string>
     <string name="show_overview">显示概览 </string>
-    <string name="open_new_tab">打开新标签页</string>
+    <string name="open_new_tab">新建标签页</string>
     <string name="close_tab">关闭标签页</string>
     <string name="page_up">上一页</string>
     <string name="page_down">下一页</string>
@@ -359,11 +359,12 @@
     <string name="setting_summary_prune_query_parameter">诸如 utm_medium、utm_source 等查询参数将从URL中移除。</string>
     <string name="setting_title_show_tab_bar">显示标签栏</string>
     <string name="setting_summary_show_tab_bar">始终在工具栏上方显示标签栏</string>
-    <string name="error_download_link_invalid">Download link is not valid.</string>
-    <string name="duplicate_tab">Duplicate tab</string>
-    <string name="password">Password</string>
-    <string name="user_name">Username</string>
-    <string name="authentication">Authentication</string>
-    <string name="setting_title_edit_homepage">Edit Home Url</string>
-    <string name="setting_summary_plus_behavior">When adding a new tab, what should be displayed.</string>
+    <string name="error_download_link_invalid">下载链接无效。</string>
+    <string name="duplicate_tab">复制标签页</string>
+    <string name="password">密码</string>
+    <string name="user_name">用户名</string>
+    <string name="authentication">身份验证</string>
+    <string name="setting_title_edit_homepage">编辑主页URL</string>
+    <string name="setting_title_plus_behavior">新建标签页行为</string>
+    <string name="setting_summary_plus_behavior">添加新标签页时，应显示的内容。</string>
 </resources>
