@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="plus_start_input_url">Show Input area</string>
-    <string name="plus_show_homepage">Show Home</string>
-    <string name="plus_show_bookmarks">Show Recent Bookmarks</string>
+    <string name="plus_start_input_url">显示输入区</string>
+    <string name="plus_show_homepage">显示主页</string>
+    <string name="plus_show_bookmarks">显示最近书签</string>
 </resources>
