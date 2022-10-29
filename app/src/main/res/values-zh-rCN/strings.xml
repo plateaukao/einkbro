@@ -367,4 +367,5 @@
     <string name="setting_title_edit_homepage">编辑主页URL</string>
     <string name="setting_title_plus_behavior">新建标签页行为</string>
     <string name="setting_summary_plus_behavior">添加新标签页时，应显示的内容。</string>
+    <string name="setting_title_translated_langs">Preferred Translated Languages</string>
 </resources>

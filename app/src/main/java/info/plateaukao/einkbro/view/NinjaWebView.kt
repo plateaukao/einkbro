@@ -686,8 +686,15 @@ open class NinjaWebView(context: Context?, var browserController: BrowserControl
     }
 
     fun addGoogleTranslation() {
-        evaluateJavascript(injectGoogleTranslateV2Js, null)
+        val str = injectGoogleTranslateV2Js()
+        evaluateJavascript(str, null)
     }
+
+    private fun injectGoogleTranslateV2Js(): String =
+        String.format(injectGoogleTranslateV2JsFormat,
+            if (config.preferredTranslateLanguageString.isNotEmpty())"includedLanguages: '${config.preferredTranslateLanguageString}',"
+            else ""
+        )
 
     companion object {
         private const val FAKE_PRE_PROGRESS = 5
@@ -706,8 +713,18 @@ open class NinjaWebView(context: Context?, var browserController: BrowserControl
                     }, 
                     1000);"""
 
-        private const val injectGoogleTranslateV2Js =
-            "!function(){!function(){function e(){window.setTimeout(function(){window[t].showBanner(!0)},10)}function n(){return new google.translate.TranslateElement({autoDisplay:!1,floatPosition:0,multilanguagePage:!0,pageLanguage:'auto'})}var t=(document.documentElement.lang,'TE_7777'),o='TECB_7777';if(window[t])e();else if(!window.google||!google.translate||!google.translate.TranslateElement){window[o]||(window[o]=function(){window[t]=n(),e()});var a=document.createElement('script');a.src='https://translate.google.com/translate_a/element.js?cb='+encodeURIComponent(o)+'&client=tee',document.getElementsByTagName('head')[0].appendChild(a);$secondPart}}()}();"
+        private const val injectGoogleTranslateV2JsFormat =
+            "!function(){!function(){function e(){" +
+                "window.setTimeout(" +
+                  "function(){window[t].showBanner(!0)},10)}" +
+                  "function n(){" +
+                    "return new google.translate.TranslateElement({" +
+                            "autoDisplay:!1,floatPosition:0,%s pageLanguage:'auto'" +
+                  "})}" +
+                  "var t=(document.documentElement.lang,'TE_7777'),o='TECB_7777';" +
+                  "if(window[t])e();" +
+                    "else if(!window.google||!google.translate||!google.translate.TranslateElement){window[o]||(window[o]=function(){window[t]=n(),e()});" +
+                  "var a=document.createElement('script');a.src='https://translate.google.com/translate_a/element.js?cb='+encodeURIComponent(o)+'&client=tee',document.getElementsByTagName('head')[0].appendChild(a);$secondPart}}()}();"
 
         private const val hidePTranslateContext = """
             javascript:(function() {
