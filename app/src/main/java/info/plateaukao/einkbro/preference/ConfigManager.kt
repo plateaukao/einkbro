@@ -56,6 +56,15 @@ class ConfigManager(
     var shouldTrimInputUrl by BooleanPreference(sp, K_TRIM_INPUT_URL, false)
     var enableZoom by BooleanPreference(sp, K_ENABLE_ZOOM, false)
     var shouldPruneQueryParameters by BooleanPreference(sp, K_PRUNE_QUERY_PARAMETERS, false)
+    var translationPanelSwitched by BooleanPreference(sp, K_TRANSLATE_PANEL_SWITCHED, false)
+    var translationScrollSync by BooleanPreference(sp, K_TRANSLATE_SCROLL_SYNC, false)
+    var twoPanelLinkHere by BooleanPreference(sp, K_TWO_PANE_LINK_HERE, false)
+    var switchTouchAreaAction by BooleanPreference(sp, K_TOUCH_AREA_ACTION_SWITCH, false)
+    var hideTouchAreaWhenInput by BooleanPreference(sp, K_TOUCH_AREA_HIDE_WHEN_INPUT, false)
+    var customFontChanged by BooleanPreference(sp, K_CUSTOM_FONT_CHANGED, false)
+    var debugWebView by BooleanPreference(sp, K_DEBUG_WEBVIEW, false)
+    var shouldShowTabBar by BooleanPreference(sp, K_SHOW_TAB_BAR, false)
+
 
     var isIncognitoMode: Boolean
         get() = sp.getBoolean(K_IS_INCOGNITO_MODE, false)
@@ -108,6 +117,12 @@ class ConfigManager(
     val customProcessTextUrl: String
         get() = sp.getString(K_CUSTOM_PROCESS_TEXT_URL, "") ?: ""
 
+    var preferredTranslateLanguageString: String
+        get() = sp.getString(K_TRANSLATED_LANGS, "") ?: ""
+        set(value) {
+            sp.edit { putString(K_TRANSLATED_LANGS, value) }
+        }
+
     var fabPosition: FabPosition
         get() = FabPosition.values()[sp.getString(K_NAV_POSITION, "0")?.toInt() ?: 0]
         set(value) {
@@ -143,15 +158,6 @@ class ConfigManager(
         set(value) {
             sp.edit { putInt(K_TRANSLATE_ORIENTATION, value.ordinal) }
         }
-
-    var translationPanelSwitched by BooleanPreference(sp, K_TRANSLATE_PANEL_SWITCHED, false)
-    var translationScrollSync by BooleanPreference(sp, K_TRANSLATE_SCROLL_SYNC, false)
-    var twoPanelLinkHere by BooleanPreference(sp, K_TWO_PANE_LINK_HERE, false)
-    var switchTouchAreaAction by BooleanPreference(sp, K_TOUCH_AREA_ACTION_SWITCH, false)
-    var hideTouchAreaWhenInput by BooleanPreference(sp, K_TOUCH_AREA_HIDE_WHEN_INPUT, false)
-    var customFontChanged by BooleanPreference(sp, K_CUSTOM_FONT_CHANGED, false)
-    var debugWebView by BooleanPreference(sp, K_DEBUG_WEBVIEW, false)
-    var shouldShowTabBar by BooleanPreference(sp, K_SHOW_TAB_BAR, false)
 
     var favoriteUrl: String
         get() = sp.getString(K_FAVORITE_URL, Constants.DEFAULT_HOME_URL)
@@ -386,6 +392,7 @@ class ConfigManager(
         const val K_PRUNE_QUERY_PARAMETERS = "sp_prune_query_parameter"
         const val K_SHOW_TAB_BAR = "sp_show_tab_bar"
         const val K_NEW_TAB_BEHAVIOR = "sp_plus_behavior"
+        const val K_TRANSLATED_LANGS = "sp_translated_langs"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
         private const val RECENT_BOOKMARKS_SEPARATOR = "::::"
