@@ -155,7 +155,7 @@
             android:defaultValue=""
             android:icon="@drawable/ic_translate"
             android:key="sp_translated_langs"
-            android:summary="Customize the languages for translation (e.g.: en,fr,zh-TW,zh-CN)"
+            android:summary="@string/setting_summary_translated_langs"
             android:title="@string/setting_title_translated_langs" />
 
     </PreferenceCategory>
