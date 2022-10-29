@@ -200,16 +200,16 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private fun newATab() {
         when (config.newTabBehavior) {
             NewTabBehavior.START_INPUT -> {
-                addAlbum(getString(R.string.app_name), "", true)
+                addAlbum(getString(R.string.app_name), "")
                 focusOnInput()
             }
 
             NewTabBehavior.SHOW_HOME -> {
-                addAlbum("", config.favoriteUrl, true)
+                addAlbum("", config.favoriteUrl)
             }
 
             NewTabBehavior.SHOW_RECENT_BOOKMARKS -> {
-                addAlbum("", "", true)
+                addAlbum("", "")
                 showRecentlyUsedBookmarks(ninjaWebView)
             }
         }
@@ -219,7 +219,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         val webView = currentAlbumController as NinjaWebView
         val title = webView.title ?: ""
         val url = webView.url ?: return
-        addAlbum(title, url, true)
+        addAlbum(title, url)
     }
 
     private fun refreshAction() {
@@ -448,6 +448,11 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 okAction = { ninjaWebView.reload() }
             )
             config.customFontChanged = false
+        }
+        if (!config.continueMedia) {
+            if (this::ninjaWebView.isInitialized) {
+                ninjaWebView.resumeTimers()
+            }
         }
     }
 
@@ -1576,7 +1581,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 KeyEvent.KEYCODE_R -> showTranslation()
                 KeyEvent.KEYCODE_D -> removeAlbum(currentAlbumController!!)
                 KeyEvent.KEYCODE_T -> {
-                    addAlbum(getString(R.string.app_name), "", true)
+                    addAlbum(getString(R.string.app_name), "")
                     focusOnInput()
                 }
 
@@ -1903,6 +1908,11 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         super.onPause()
         mActionMode?.finish()
         mActionMode = null
+        if (!config.continueMedia) {
+            if (this::ninjaWebView.isInitialized) {
+                ninjaWebView.pauseTimers()
+            }
+        }
     }
 
     override fun onActionModeFinished(mode: ActionMode?) {
