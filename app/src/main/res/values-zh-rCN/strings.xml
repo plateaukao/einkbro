@@ -115,7 +115,7 @@
 
 
     <!-- App setting -->
-    <string name="setting_title_ui">用户界面/操作习惯</string>
+    <string name="setting_title_ui">用户界面\n操作习惯</string>
     <string name="setting_title_data">备份</string>
 
     <string name="setting_title_fav">我的主页</string>

@@ -362,5 +362,6 @@
     <string name="setting_title_edit_homepage">Edit Home Url</string>
     <string name="setting_summary_plus_behavior">When adding a new tab, what should be displayed.</string>
     <string name="setting_title_plus_behavior">New tab behavior</string>
+    <string name="setting_summary_translated_langs">Customize the languages for translation (e.g.: en,fr,zh-TW,zh-CN)</string>
     <string name="setting_title_translated_langs">Preferred Translated Languages</string>
 </resources>

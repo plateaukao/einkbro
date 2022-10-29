@@ -298,5 +298,6 @@
     <string name="authentication">認證</string>
     <string name="setting_title_edit_homepage">編輯首頁網址</string>
     <string name="setting_summary_plus_behavior">新增分頁時的行為</string>
-    <string name="setting_title_translated_langs">Preferred Translated Languages</string>
+    <string name="setting_summary_translated_langs">自訂 Google 翻譯時的語言(例如: en,fr,zh-TW,zh-CN)</string>
+    <string name="setting_title_translated_langs">自訂翻譯的語言</string>
 </resources>
