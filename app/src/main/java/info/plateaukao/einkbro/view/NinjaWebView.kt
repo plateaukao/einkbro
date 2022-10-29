@@ -386,12 +386,12 @@ open class NinjaWebView(context: Context?, var browserController: BrowserControl
 
     override fun pauseWebView() {
         onPause()
-        pauseTimers()
+        //pauseTimers()
     }
 
     override fun resumeWebView() {
         onResume()
-        resumeTimers()
+        //resumeTimers()
     }
 
     fun update(progress: Int) {
