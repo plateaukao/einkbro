@@ -151,6 +151,7 @@
     <string name="setting_summary_nav_pos_left">Left</string>
     <string name="setting_summary_nav_pos_center">Center</string>
     <string name="setting_summary_nav_pos_not_show">Not Show</string>
+    <string name="setting_summary_nav_pos_custom">Custom</string>
 
     <string name="setting_summary_tab">What should be shown at the start of the \"Overview\"? The Start Page, you bookmarks, …</string>
 

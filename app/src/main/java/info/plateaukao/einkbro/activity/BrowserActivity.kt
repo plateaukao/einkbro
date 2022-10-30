@@ -76,7 +76,6 @@ import kotlin.system.exitProcess
 
 
 open class BrowserActivity : FragmentActivity(), BrowserController {
-    private lateinit var fabImageButtonNav: ImageButton
     private lateinit var progressBar: ProgressBar
     protected lateinit var ninjaWebView: NinjaWebView
 
@@ -656,9 +655,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     private fun updateTouchView() {
-        val fabResourceId =
-            if (config.enableTouchTurn) R.drawable.icon_overflow_fab else R.drawable.ic_touch_disabled
-        fabImageButtonNav.setImageResource(fabResourceId)
+        fabImageViewController.updateImage()
         composeToolbarViewController.updateIcons()
     }
 
@@ -911,7 +908,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 override fun onSwipeRight() = performGesture("setting_gesture_nav_right")
                 override fun onSwipeLeft() = performGesture("setting_gesture_nav_left")
             }
-            fabImageButtonNav.setOnTouchListener(onNavButtonTouchListener)
+            fabImageViewController.defaultTouchListener = onNavButtonTouchListener
         }
 
         composeToolbarViewController.updateIcons()
@@ -1001,43 +998,13 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             }
         }
 
+    private lateinit var fabImageViewController: FabImageViewController
     private fun initFAB() {
-        fabImageButtonNav = findViewById(R.id.fab_imageButtonNav)
-        val params = RelativeLayout.LayoutParams(
-            fabImageButtonNav.layoutParams.width,
-            fabImageButtonNav.layoutParams.height
+        fabImageViewController = FabImageViewController(
+            findViewById(R.id.fab_imageButtonNav),
+            this::showToolbar,
+            this::showFastToggleDialog
         )
-        when (config.fabPosition) {
-            FabPosition.Left -> {
-                fabImageButtonNav.layoutParams = params.apply {
-                    addRule(RelativeLayout.ALIGN_PARENT_LEFT)
-                    addRule(RelativeLayout.ALIGN_BOTTOM, R.id.main_content)
-                }
-            }
-
-            FabPosition.Right -> {
-                fabImageButtonNav.layoutParams = params.apply {
-                    addRule(RelativeLayout.ALIGN_PARENT_RIGHT)
-                    addRule(RelativeLayout.ALIGN_BOTTOM, R.id.main_content)
-                }
-            }
-
-            FabPosition.Center -> {
-                fabImageButtonNav.layoutParams = params.apply {
-                    addRule(RelativeLayout.CENTER_HORIZONTAL)
-                    addRule(RelativeLayout.ALIGN_BOTTOM, R.id.main_content)
-                }
-            }
-
-            FabPosition.NotShow -> {}
-        }
-
-        ViewUnit.expandViewTouchArea(fabImageButtonNav, 20.dp(this))
-        fabImageButtonNav.setOnClickListener { showToolbar() }
-        fabImageButtonNav.setOnLongClickListener {
-            showFastToggleDialog()
-            false
-        }
     }
 
     private fun performGesture(gestureString: String) {
@@ -1705,7 +1672,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     @SuppressLint("RestrictedApi")
     private fun showToolbar() {
         if (!searchOnSite) {
-            fabImageButtonNav.visibility = INVISIBLE
+            fabImageViewController.hide()
             searchPanel.visibility = INVISIBLE
             binding.appBar.visibility = VISIBLE
             binding.contentSeparator.visibility = VISIBLE
@@ -1719,7 +1686,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private fun fullscreen() {
         if (!searchOnSite) {
             if (config.fabPosition != FabPosition.NotShow) {
-                fabImageButtonNav.visibility = VISIBLE
+                fabImageViewController.show()
             }
             searchPanel.visibility = INVISIBLE
             binding.appBar.visibility = GONE
@@ -1754,7 +1721,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private fun showSearchPanel() {
         searchOnSite = true
-        fabImageButtonNav.visibility = INVISIBLE
+        fabImageViewController.hide()
         searchPanel.visibility = VISIBLE
         searchPanel.getFocus()
         binding.appBar.visibility = VISIBLE
