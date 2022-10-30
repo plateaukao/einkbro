@@ -35,6 +35,7 @@
         <item>@string/setting_summary_nav_pos_left</item>
         <item>@string/setting_summary_nav_pos_center</item>
         <item>@string/setting_summary_nav_pos_not_show</item>
+        <item>@string/setting_summary_nav_pos_custom</item>
     </string-array>
 
     <string-array name="setting_values_nav_pos">
@@ -42,6 +43,7 @@
         <item>1</item>
         <item>2</item>
         <item>3</item>
+        <item>4</item>
     </string-array>
 
     <!-- Dark mode -->

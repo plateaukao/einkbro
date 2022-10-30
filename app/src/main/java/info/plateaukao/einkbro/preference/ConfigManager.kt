@@ -2,6 +2,7 @@ package info.plateaukao.einkbro.preference
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Point
 import android.os.Build
 import android.print.PrintAttributes
 import androidx.core.content.edit
@@ -313,6 +314,16 @@ class ConfigManager(
         get() = NewTabBehavior.values()[sp.getString(K_NEW_TAB_BEHAVIOR, "0")?.toInt() ?: 0]
         set(value) = sp.edit { putString(K_NEW_TAB_BEHAVIOR, value.ordinal.toString()) }
 
+    var fabCustomPosition: Point
+        get() {
+            val str = sp.getString(K_FAB_POSITION, "") ?: ""
+            return if (str.isBlank()) Point(0, 0)
+            else Point(str.split(",").first().toInt(), str.split(",").last().toInt())
+        }
+        set(value) {
+            sp.edit { putString(K_FAB_POSITION, "${value.x},${value.y}") }
+        }
+
     private fun iconStringToEnumList(iconListString: String): List<ToolbarAction> {
         if (iconListString.isBlank()) return listOf()
 
@@ -393,6 +404,7 @@ class ConfigManager(
         const val K_SHOW_TAB_BAR = "sp_show_tab_bar"
         const val K_NEW_TAB_BEHAVIOR = "sp_plus_behavior"
         const val K_TRANSLATED_LANGS = "sp_translated_langs"
+        const val K_FAB_POSITION = "sp_fab_position"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
         private const val RECENT_BOOKMARKS_SEPARATOR = "::::"
@@ -445,7 +457,7 @@ enum class PaperSize(val sizeString: String, val mediaSize: PrintAttributes.Medi
 }
 
 enum class FabPosition {
-    Right, Left, Center, NotShow
+    Right, Left, Center, NotShow, Custom
 }
 
 enum class TranslationMode(val label: String) {
