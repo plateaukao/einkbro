@@ -71,31 +71,26 @@ class FabImageViewController(
 
         ViewUnit.expandViewTouchArea(imageView, 20.dp(imageView.context))
         setClickActions()
-        if (config.fabPosition == FabPosition.Custom) {
-            imageView.setOnTouchListener { v, event ->
-                if (event.action == MotionEvent.ACTION_UP) {
-                    imageView.scaleX = 1.0f
-                    imageView.scaleY = 1.0f
-                }
-                false
-            }
-        } else {
+        if (config.fabPosition != FabPosition.Custom) {
             imageView.setOnTouchListener(defaultTouchListener)
         }
+        updateImage()
     }
 
     fun show() {
         imageView.visibility = View.VISIBLE
     }
+
     fun hide() {
         imageView.visibility = View.INVISIBLE
     }
 
     fun updateImage() {
         val fabResourceId =
-            if (config.enableTouchTurn) R.drawable.icon_overflow_fab else R.drawable.ic_touch_disabled
+            if (config.enableTouchTurn) R.drawable.ic_touch_disabled else R.drawable.icon_overflow_fab
         imageView.setImageResource(fabResourceId)
     }
+
     private fun setClickActions() {
         imageView.setOnClickListener { clickAction() }
         imageView.setOnLongClickListener {
@@ -110,30 +105,23 @@ class FabImageViewController(
         }
     }
 
+    private var isDragging = false
     private fun customOnTouch(view: View, event: MotionEvent): Boolean {
         var dY = 0F
         var dX = 0F
         when (event.actionMasked) {
-            MotionEvent.ACTION_DOWN -> {
-                dY = view.y - event.rawY
-                dX = view.x - event.rawX
-            }
-
             MotionEvent.ACTION_MOVE -> {
+                if (!isDragging) {
+                    isDragging = true
+                    dY = view.y - event.rawY
+                    dX = view.x - event.rawX
+                    return true
+                }
+
                 // need to consider whether top part height is occupied by toolbar
-                val currentViewY =
-                    event.rawY - dY - view.height - (if (config.isToolbarOnTop) ViewUnit.dpToPixel(
-                        imageView.context,
-                        50
-                    ) else 0).toInt()
-                val currentViewX =
-                    event.rawX - dX - view.width - (if (config.isToolbarOnTop) ViewUnit.dpToPixel(
-                        imageView.context,
-                        50
-                    ) else 0).toInt()
-                val customizeY = currentViewY + view.height / 2
-                val customizeX = currentViewX + view.width / 2
-                updateFabImageCustomizePosition(customizeX.toInt(), customizeY.toInt())
+                val currentViewY = event.rawY + dY - imageView.height * 2 / 3
+                val currentViewX = event.rawX + dX - imageView.width * 2 / 3
+                updateFabImageCustomizePosition(currentViewX.toInt(), currentViewY.toInt())
             }
 
             MotionEvent.ACTION_UP -> {
@@ -141,6 +129,7 @@ class FabImageViewController(
                 imageView.scaleY = 1.0f
                 imageView.setOnTouchListener(defaultTouchListener)
                 setClickActions()
+                isDragging = false
             }
         }
         return true
