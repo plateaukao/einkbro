@@ -106,22 +106,12 @@ class FabImageViewController(
         }
     }
 
-    private var isDragging = false
     private fun customOnTouch(view: View, event: MotionEvent): Boolean {
-        var dY = 0F
-        var dX = 0F
         when (event.actionMasked) {
             MotionEvent.ACTION_MOVE -> {
-                if (!isDragging) {
-                    isDragging = true
-                    dY = view.y - event.rawY
-                    dX = view.x - event.rawX
-                    return true
-                }
-
                 // need to consider whether top part height is occupied by toolbar
-                val currentViewY = event.rawY + dY - imageView.height * 2 / 3
-                val currentViewX = event.rawX + dX - imageView.width * 2 / 3
+                val currentViewY = event.rawY - imageView.height * 2 / 3
+                val currentViewX = event.rawX - imageView.width * 2 / 3
                 updateFabImageCustomizePosition(currentViewX.toInt(), currentViewY.toInt())
             }
 
@@ -130,7 +120,6 @@ class FabImageViewController(
                 imageView.scaleY = 1.0f
                 imageView.setOnTouchListener(defaultTouchListener)
                 setClickActions()
-                isDragging = false
             }
         }
         return true
