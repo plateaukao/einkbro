@@ -300,4 +300,5 @@
     <string name="setting_summary_plus_behavior">新增分頁時的行為</string>
     <string name="setting_summary_translated_langs">自訂 Google 翻譯時的語言(例如: en,fr,zh-TW,zh-CN)</string>
     <string name="setting_title_translated_langs">自訂翻譯的語言</string>
+    <string name="menu">功能選單</string>
 </resources>
