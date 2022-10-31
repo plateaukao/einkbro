@@ -26,6 +26,7 @@ class FabImageViewController(
     var defaultTouchListener: OnTouchListener? = null
 
     init {
+        imageView.alpha = 0.6f
         val params = RelativeLayout.LayoutParams(
             imageView.layoutParams.width,
             imageView.layoutParams.height
@@ -34,7 +35,7 @@ class FabImageViewController(
         when (config.fabPosition) {
             FabPosition.Custom -> {
                 imageView.layoutParams = params.apply {
-                    addRule(RelativeLayout.ALIGN_PARENT_LEFT)
+                    addRule(RelativeLayout.CENTER_HORIZONTAL)
                     addRule(RelativeLayout.ALIGN_BOTTOM, R.id.main_content)
                 }
                 if (config.fabCustomPosition.x != 0 && config.fabCustomPosition.y != 0) {
