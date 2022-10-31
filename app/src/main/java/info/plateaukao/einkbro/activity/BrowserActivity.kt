@@ -58,6 +58,7 @@ import info.plateaukao.einkbro.util.DebugT
 import info.plateaukao.einkbro.view.*
 import info.plateaukao.einkbro.view.GestureType.*
 import info.plateaukao.einkbro.view.GestureType.CloseTab
+import info.plateaukao.einkbro.view.GestureType.Menu
 import info.plateaukao.einkbro.view.compose.SearchBarView
 import info.plateaukao.einkbro.view.dialog.*
 import info.plateaukao.einkbro.view.dialog.compose.*
@@ -99,10 +100,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         val title = webView.title
         val url = webView.url
         return (title == null || title.isEmpty()
-                || url == null || url.isEmpty()
-                || url.startsWith(BrowserUnit.URL_SCHEME_ABOUT)
-                || url.startsWith(BrowserUnit.URL_SCHEME_MAIL_TO)
-                || url.startsWith(BrowserUnit.URL_SCHEME_INTENT))
+            || url == null || url.isEmpty()
+            || url.startsWith(BrowserUnit.URL_SCHEME_ABOUT)
+            || url.startsWith(BrowserUnit.URL_SCHEME_MAIL_TO)
+            || url.startsWith(BrowserUnit.URL_SCHEME_INTENT))
     }
 
     private var originalOrientation = 0
@@ -1050,6 +1051,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             Back -> handleBackKey()
             Fullscreen -> fullscreen()
             Refresh -> ninjaWebView.reload()
+            Menu -> showMenuDialog()
         }
     }
 
