@@ -26,7 +26,7 @@ class FabImageViewController(
     var defaultTouchListener: OnTouchListener? = null
 
     init {
-        imageView.alpha = 0.6f
+        imageView.alpha = 0.5f
         val params = RelativeLayout.LayoutParams(
             imageView.layoutParams.width,
             imageView.layoutParams.height
@@ -72,9 +72,7 @@ class FabImageViewController(
 
         ViewUnit.expandViewTouchArea(imageView, 20.dp(imageView.context))
         setClickActions()
-        if (config.fabPosition != FabPosition.Custom) {
-            imageView.setOnTouchListener(defaultTouchListener)
-        }
+        imageView.setOnTouchListener(defaultTouchListener)
         updateImage()
     }
 
