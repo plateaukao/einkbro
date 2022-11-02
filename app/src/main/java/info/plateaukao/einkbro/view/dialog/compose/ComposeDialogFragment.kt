@@ -23,7 +23,6 @@ abstract class ComposeDialogFragment: AppCompatDialogFragment(), KoinComponent {
     protected val config: ConfigManager by inject()
     protected lateinit var composeView: ComposeView
 
-
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         setStyle(STYLE_NO_FRAME, 0)
         return super.onCreateDialog(savedInstanceState)

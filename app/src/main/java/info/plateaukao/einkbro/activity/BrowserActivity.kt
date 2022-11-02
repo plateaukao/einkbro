@@ -91,10 +91,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private var fullscreenHolder: FrameLayout? = null
 
     // Others
-    private var title: String? = null
     private var downloadReceiver: BroadcastReceiver? = null
     private val sp: SharedPreferences by inject()
     private val config: ConfigManager by inject()
+
     private fun prepareRecord(): Boolean {
         val webView = currentAlbumController as NinjaWebView
         val title = webView.title
@@ -131,6 +131,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             onTabLongClick = { it.remove() },
         )
     }
+
 
     private fun onToolActionLongClick(toolbarAction: ToolbarAction) {
         when (toolbarAction) {
@@ -280,7 +281,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     // Overrides
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+        // workaround for crash issue
+        // Caused by java.lang.NoSuchMethodException:
+        super.onCreate(null)
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         lifecycleScope.launch {
@@ -338,7 +341,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         listenKeyboardShowHide()
 
         orientation = resources.configuration.orientation
-
     }
 
     private fun initInputBar() {
