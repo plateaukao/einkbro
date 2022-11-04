@@ -5,8 +5,8 @@ import android.graphics.Point
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnTouchListener
-import android.widget.ImageView
 import android.widget.RelativeLayout
+import android.widget.TextView
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.FabPosition
@@ -17,7 +17,7 @@ import org.koin.core.component.inject
 
 @SuppressLint("ClickableViewAccessibility")
 class FabImageViewController(
-    private val imageView: ImageView,
+    private val textView: TextView,
     private val clickAction: () -> Unit,
     private val longClickAction: () -> Unit,
 ) : KoinComponent {
@@ -26,42 +26,42 @@ class FabImageViewController(
     var defaultTouchListener: OnTouchListener? = null
 
     init {
-        imageView.alpha = 0.5f
+        textView.alpha = 0.5f
         val params = RelativeLayout.LayoutParams(
-            imageView.layoutParams.width,
-            imageView.layoutParams.height
+            textView.layoutParams.width,
+            textView.layoutParams.height
         )
 
         when (config.fabPosition) {
             FabPosition.Custom -> {
-                imageView.layoutParams = params.apply {
+                textView.layoutParams = params.apply {
                     addRule(RelativeLayout.CENTER_HORIZONTAL)
                     addRule(RelativeLayout.ALIGN_BOTTOM, R.id.main_content)
                 }
                 if (config.fabCustomPosition.x != 0 && config.fabCustomPosition.y != 0) {
-                    imageView.post {
-                        imageView.x = config.fabCustomPosition.x.toFloat()
-                        imageView.y = config.fabCustomPosition.y.toFloat()
+                    textView.post {
+                        textView.x = config.fabCustomPosition.x.toFloat()
+                        textView.y = config.fabCustomPosition.y.toFloat()
                     }
                 }
             }
 
             FabPosition.Left -> {
-                imageView.layoutParams = params.apply {
+                textView.layoutParams = params.apply {
                     addRule(RelativeLayout.ALIGN_PARENT_LEFT)
                     addRule(RelativeLayout.ALIGN_BOTTOM, R.id.main_content)
                 }
             }
 
             FabPosition.Right -> {
-                imageView.layoutParams = params.apply {
+                textView.layoutParams = params.apply {
                     addRule(RelativeLayout.ALIGN_PARENT_RIGHT)
                     addRule(RelativeLayout.ALIGN_BOTTOM, R.id.main_content)
                 }
             }
 
             FabPosition.Center -> {
-                imageView.layoutParams = params.apply {
+                textView.layoutParams = params.apply {
                     addRule(RelativeLayout.CENTER_HORIZONTAL)
                     addRule(RelativeLayout.ALIGN_BOTTOM, R.id.main_content)
                 }
@@ -70,33 +70,37 @@ class FabImageViewController(
             FabPosition.NotShow -> {}
         }
 
-        ViewUnit.expandViewTouchArea(imageView, 20.dp(imageView.context))
+        ViewUnit.expandViewTouchArea(textView, 20.dp(textView.context))
         setClickActions()
-        imageView.setOnTouchListener(defaultTouchListener)
+        textView.setOnTouchListener(defaultTouchListener)
         updateImage()
     }
 
     fun show() {
-        imageView.visibility = View.VISIBLE
+        textView.visibility = View.VISIBLE
     }
 
     fun hide() {
-        imageView.visibility = View.INVISIBLE
+        textView.visibility = View.INVISIBLE
     }
 
     fun updateImage() {
         val fabResourceId =
             if (config.enableTouchTurn) R.drawable.ic_touch_disabled else R.drawable.icon_overflow_fab
-        imageView.setImageResource(fabResourceId)
+        //textView.setImageResource(fabResourceId)
+    }
+
+    fun updateTabCount(countString: String) {
+        textView.text = countString
     }
 
     private fun setClickActions() {
-        imageView.setOnClickListener { clickAction() }
-        imageView.setOnLongClickListener {
+        textView.setOnClickListener { clickAction() }
+        textView.setOnLongClickListener {
             if (config.fabPosition == FabPosition.Custom) {
-                imageView.scaleX = 2.0f
-                imageView.scaleY = 2.0f
-                imageView.setOnTouchListener { view, event -> customOnTouch(view, event) }
+                textView.scaleX = 2.0f
+                textView.scaleY = 2.0f
+                textView.setOnTouchListener { view, event -> customOnTouch(view, event) }
             } else {
                 longClickAction()
             }
@@ -108,15 +112,15 @@ class FabImageViewController(
         when (event.actionMasked) {
             MotionEvent.ACTION_MOVE -> {
                 // need to consider whether top part height is occupied by toolbar
-                val currentViewY = event.rawY - imageView.height * 2 / 3
-                val currentViewX = event.rawX - imageView.width * 2 / 3
+                val currentViewY = event.rawY - textView.height * 2 / 3
+                val currentViewX = event.rawX - textView.width * 2 / 3
                 updateFabImageCustomizePosition(currentViewX.toInt(), currentViewY.toInt())
             }
 
             MotionEvent.ACTION_UP -> {
-                imageView.scaleX = 1.0f
-                imageView.scaleY = 1.0f
-                imageView.setOnTouchListener(defaultTouchListener)
+                textView.scaleX = 1.0f
+                textView.scaleY = 1.0f
+                textView.setOnTouchListener(defaultTouchListener)
                 setClickActions()
             }
         }
@@ -124,8 +128,8 @@ class FabImageViewController(
     }
 
     private fun updateFabImageCustomizePosition(x: Int, y: Int) {
-        imageView.x = x.toFloat()
-        imageView.y = y.toFloat()
+        textView.x = x.toFloat()
+        textView.y = y.toFloat()
         config.fabCustomPosition = Point(x, y)
     }
 }
