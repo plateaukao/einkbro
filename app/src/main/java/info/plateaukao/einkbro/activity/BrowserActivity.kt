@@ -53,7 +53,6 @@ import info.plateaukao.einkbro.task.SaveScreenshotTask
 import info.plateaukao.einkbro.unit.*
 import info.plateaukao.einkbro.unit.BrowserUnit.downloadFileId
 import info.plateaukao.einkbro.unit.HelperUnit.toNormalScheme
-import info.plateaukao.einkbro.unit.ViewUnit.dp
 import info.plateaukao.einkbro.util.DebugT
 import info.plateaukao.einkbro.view.*
 import info.plateaukao.einkbro.view.GestureType.*
@@ -1263,12 +1262,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private fun updateWebViewCount() {
         val subScript = browserContainer.size()
         val superScript = browserContainer.indexOf(currentAlbumController) + 1
-        composeToolbarViewController.updateTabCount(
-            createWebViewCountString(
-                superScript,
-                subScript
-            )
-        )
+        val countString = createWebViewCountString(superScript, subScript)
+        composeToolbarViewController.updateTabCount(countString)
+        fabImageViewController.updateTabCount(countString)
     }
 
     private fun updateAlbum(url: String?) {

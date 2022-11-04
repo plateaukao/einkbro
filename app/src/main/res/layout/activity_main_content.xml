@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:showIn="@layout/activity_main">
-    <FrameLayout android:id="@+id/main_content"
+
+    <FrameLayout
+        android:id="@+id/main_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/backgroundColor"/>
+        android:background="?attr/backgroundColor" />
 
     <View
         android:id="@+id/touch_area_middle_left"
@@ -19,54 +20,59 @@
         android:layout_marginLeft="-1dp"
         android:background="@drawable/touch_area_border"
         android:visibility="invisible" />
-    <View android:id="@+id/touch_area_bottom_left"
+
+    <View
+        android:id="@+id/touch_area_bottom_left"
         android:layout_width="150dp"
         android:layout_height="250dp"
+        android:layout_alignParentBottom="true"
         android:layout_marginLeft="-2dp"
         android:layout_marginBottom="-2dp"
-        android:visibility="invisible"
         android:background="@drawable/touch_area_border"
-        android:layout_alignParentBottom="true"
-        />
-    <View android:id="@+id/touch_area_middle_right"
-        android:layout_alignParentRight="true"
+        android:visibility="invisible" />
+
+    <View
+        android:id="@+id/touch_area_middle_right"
         android:layout_width="150dp"
         android:layout_height="250dp"
-        android:layout_marginRight="-2dp"
-        android:visibility="invisible"
-        android:background="@drawable/touch_area_border"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        />
+        android:layout_marginRight="-2dp"
+        android:background="@drawable/touch_area_border"
+        android:visibility="invisible" />
+
     <View
         android:id="@+id/touch_area_middle_drag"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginTop="-20dp"
-        android:layout_marginLeft="-20dp"
-        android:background="@android:color/transparent"
-        android:layout_alignTop="@+id/touch_area_middle_right"
         android:layout_alignLeft="@+id/touch_area_middle_right"
+        android:layout_alignTop="@+id/touch_area_middle_right"
+        android:layout_marginLeft="-20dp"
+        android:layout_marginTop="-20dp"
+        android:background="@android:color/transparent"
         android:visibility="invisible" />
-    <View android:id="@+id/touch_area_bottom_right"
-        android:layout_alignParentRight="true"
+
+    <View
+        android:id="@+id/touch_area_bottom_right"
         android:layout_width="150dp"
         android:layout_height="250dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
         android:layout_marginRight="-2dp"
         android:layout_marginBottom="-2dp"
-        android:visibility="invisible"
         android:background="@drawable/touch_area_border"
-        android:layout_alignParentBottom="true"
-        />
+        android:visibility="invisible" />
+
     <View
         android:id="@+id/touch_area_bottom_drag"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginTop="-20dp"
-        android:layout_marginLeft="-20dp"
-        android:background="@android:color/transparent"
-        android:layout_alignTop="@+id/touch_area_bottom_right"
         android:layout_alignLeft="@+id/touch_area_middle_right"
+        android:layout_alignTop="@+id/touch_area_bottom_right"
+        android:layout_marginLeft="-20dp"
+        android:layout_marginTop="-20dp"
+        android:background="@android:color/transparent"
         android:visibility="invisible" />
 
     <View
@@ -79,53 +85,58 @@
         android:layout_marginBottom="150dp"
         android:background="@drawable/touch_area_border"
         android:visibility="invisible" />
-    <View android:id="@+id/touch_area_right_2"
-        android:layout_alignParentRight="true"
+
+    <View
+        android:id="@+id/touch_area_right_2"
         android:layout_width="150dp"
         android:layout_height="150dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
         android:layout_marginRight="-1dp"
         android:layout_marginBottom="-2dp"
-        android:visibility="invisible"
         android:background="@drawable/touch_area_border"
-        android:layout_alignParentBottom="true"
-        />
+        android:visibility="invisible" />
+
     <View
         android:id="@+id/touch_area_right_drag"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginTop="-20dp"
-        android:layout_marginLeft="-20dp"
-        android:background="@android:color/transparent"
-        android:layout_alignTop="@+id/touch_area_right_1"
         android:layout_alignLeft="@+id/touch_area_right_1"
+        android:layout_alignTop="@+id/touch_area_right_1"
+        android:layout_marginLeft="-20dp"
+        android:layout_marginTop="-20dp"
+        android:background="@android:color/transparent"
         android:visibility="invisible" />
-    <View android:id="@+id/touch_area_left_1"
+
+    <View
+        android:id="@+id/touch_area_left_1"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_marginBottom="150dp"
-        android:layout_marginLeft="-1dp"
-        android:visibility="invisible"
-        android:background="@drawable/touch_area_border"
         android:layout_alignParentBottom="true"
-        />
-    <View android:id="@+id/touch_area_left_2"
+        android:layout_marginLeft="-1dp"
+        android:layout_marginBottom="150dp"
+        android:background="@drawable/touch_area_border"
+        android:visibility="invisible" />
+
+    <View
+        android:id="@+id/touch_area_left_2"
         android:layout_width="150dp"
         android:layout_height="150dp"
+        android:layout_alignParentBottom="true"
         android:layout_marginLeft="-1dp"
         android:layout_marginBottom="-2dp"
-        android:visibility="invisible"
         android:background="@drawable/touch_area_border"
-        android:layout_alignParentBottom="true"
-        />
+        android:visibility="invisible" />
+
     <View
         android:id="@+id/touch_area_left_drag"
         android:layout_width="40dp"
         android:layout_height="40dp"
+        android:layout_alignTop="@+id/touch_area_left_1"
+        android:layout_alignRight="@+id/touch_area_left_1"
         android:layout_marginTop="-20dp"
         android:layout_marginRight="-20dp"
         android:background="@android:color/transparent"
-        android:layout_alignTop="@+id/touch_area_left_1"
-        android:layout_alignRight="@+id/touch_area_left_1"
         android:visibility="invisible" />
 
     <ProgressBar
@@ -138,14 +149,20 @@
         android:progressTint="?attr/colorControlNormal"
         tools:progress="30" />
 
-    <ImageButton
+    <TextView
         android:id="@+id/fab_imageButtonNav"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_alignBottom="@+id/main_content"
         android:layout_alignParentEnd="true"
         android:background="@drawable/roundcorner"
-        android:elevation="0dp"
+        android:gravity="center"
+        android:shadowColor="@android:color/white"
+        android:shadowDx="1.5"
+        android:shadowDy="1.3"
+        android:shadowRadius="1.6"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="22sp"
         android:tint="@android:color/darker_gray"
         android:visibility="gone"
         app:borderWidth="1dp"
