@@ -78,6 +78,9 @@ class FabImageViewController(
 
     fun show() {
         textView.visibility = View.VISIBLE
+        // don't know why sometimes the fab gesture is not working.
+        // set it again when showing it
+        textView.setOnTouchListener(defaultTouchListener)
     }
 
     fun hide() {

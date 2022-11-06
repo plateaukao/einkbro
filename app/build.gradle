@@ -10,8 +10,8 @@ android {
         applicationId "info.plateaukao.einkbro"
         minSdkVersion 21
         targetSdkVersion 33
-        versionCode 91102
-        versionName "9.11.2"
+        versionCode 91300
+        versionName "9.13.0"
         vectorDrawables.useSupportLibrary = true
 
         javaCompileOptions {
@@ -87,7 +87,6 @@ dependencies {
 
     implementation "androidx.room:room-runtime:2.4.3"
     implementation "androidx.room:room-ktx:2.4.3"
-    kapt 'org.xerial:sqlite-jdbc:3.36.0.2'
     kapt "androidx.room:room-compiler:2.4.3"
 
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
