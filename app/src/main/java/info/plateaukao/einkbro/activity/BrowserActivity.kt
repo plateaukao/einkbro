@@ -323,7 +323,14 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 downloadFileId = -1L
                 dialogManager.showOkCancelDialog(
                     messageResId = R.string.toast_downloadComplete,
-                    okAction = { startActivity(fileIntent) }
+                    okAction = {
+                        try {
+                            startActivity(fileIntent)
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            NinjaToast.show(this@BrowserActivity, R.string.toast_error)
+                        }
+                    }
                 )
             }
         }
