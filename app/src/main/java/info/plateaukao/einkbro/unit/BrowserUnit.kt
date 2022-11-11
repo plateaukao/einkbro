@@ -11,9 +11,18 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.util.Log
 import android.webkit.CookieManager
 import android.webkit.URLUtil
+import android.webkit.WebView
+import android.webkit.WebView.HitTestResult.ANCHOR_TYPE
+import android.webkit.WebView.HitTestResult.IMAGE_ANCHOR_TYPE
+import android.webkit.WebView.HitTestResult.IMAGE_TYPE
+import android.webkit.WebView.HitTestResult.SRC_ANCHOR_TYPE
+import android.webkit.WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE
 import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
@@ -109,6 +118,37 @@ object BrowserUnit : KoinComponent {
                 activity.getString(R.string.dialog_title_download)
             )
         )
+    }
+
+    fun getWebViewLinkImageUrl(webView: WebView, message: Message): String {
+        val hitTestResult = webView.hitTestResult
+        return hitTestResult.extra ?: message.data.getString("src") ?: ""
+    }
+    fun getWebViewLinkUrl(webView: WebView, message: Message): String {
+        val hitTestResult = webView.hitTestResult
+
+        if (!listOf(IMAGE_TYPE,
+                IMAGE_ANCHOR_TYPE,
+                SRC_ANCHOR_TYPE,
+                SRC_IMAGE_ANCHOR_TYPE,
+                ANCHOR_TYPE)
+                .contains(hitTestResult.type)) return ""
+
+        val linkUrl = message.data.getString("url")
+        val imgUrl = message.data.getString("src")
+        return linkUrl ?: imgUrl ?: return ""
+    }
+
+    fun getWebViewLinkTitle(webView: WebView, action: (String)->Unit) {
+        val newMessage = Message().apply {
+            target = object : Handler(Looper.getMainLooper()) {
+                override fun handleMessage(msg: Message) {
+                    val titleText = msg.data.getString("title")?.replace("\n", "")?.trim() ?: ""
+                    action(titleText)
+                }
+            }
+        }
+        webView.requestFocusNodeHref(newMessage)
     }
 
     private fun saveImage(

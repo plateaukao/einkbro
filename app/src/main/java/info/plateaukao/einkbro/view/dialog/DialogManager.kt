@@ -86,7 +86,7 @@ class DialogManager(
         return if (sizeInMB > 1) "%.1fMB".format(sizeInMB) else "${sizeInKB}KB"
     }
 
-    private fun showSaveFileDialog(
+    fun showSaveFileDialog(
         url: String,
         saveFile: (String, String) -> Unit,
     ) {
