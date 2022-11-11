@@ -50,7 +50,7 @@
 
         <CheckBoxPreference
             android:key="@string/sp_ad_block"
-            android:icon="@drawable/icon_block"
+            android:icon="@drawable/ic_block"
             android:defaultValue="true"
             android:title="@string/setting_title_adblock"
             android:summary="@string/setting_summary_adblock"/>

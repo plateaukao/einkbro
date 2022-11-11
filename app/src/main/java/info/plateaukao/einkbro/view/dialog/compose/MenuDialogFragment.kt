@@ -139,7 +139,7 @@ private fun MenuItems(hasWhiteBkd: Boolean, boldFont: Boolean, onClicked: (MenuI
 }
 
 @Composable
-private fun MenuItem(
+fun MenuItem(
     titleResId: Int,
     iconResId: Int,
     onClicked: () -> Unit

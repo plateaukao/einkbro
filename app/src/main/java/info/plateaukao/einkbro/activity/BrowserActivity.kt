@@ -15,6 +15,8 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.os.Handler
+import android.os.Looper
 import android.os.Message
 import android.print.PrintAttributes
 import android.print.PrintManager
@@ -25,6 +27,7 @@ import android.view.View.*
 import android.webkit.CookieManager
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient.CustomViewCallback
+import android.webkit.WebView
 import android.webkit.WebView.HitTestResult
 import android.widget.*
 import androidx.activity.result.ActivityResultLauncher
@@ -1633,23 +1636,47 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     override fun onLongPress(message: Message) {
-        dialogManager.showContextMenuLinkDialog(
-            ninjaWebView,
-            message,
-            newTabInBkndAction = { title, url -> addAlbum(title, url, false) },
-            splitScreenAction = { toggleSplitScreen(it) },
-            shareAction = {
-                if (prepareRecord()) NinjaToast.show(this, getString(R.string.toast_share_failed))
-                else IntentUnit.share(this, "", it)
-            },
-            saveBookmarkAction = { title, url -> saveBookmark(url, title = title) },
-            newTabAction = { title, url -> addAlbum(title, url) },
-            saveFileAction = { url, fileName -> saveFile(url, fileName) },
-            confirmAdSiteAddition = { confirmAdSiteAddition(it) }
-        )
+        val url = BrowserUnit.getWebViewLinkUrl(ninjaWebView, message).ifBlank { return }
+        val linkImageUrl = BrowserUnit.getWebViewLinkImageUrl(ninjaWebView, message)
+        BrowserUnit.getWebViewLinkTitle(ninjaWebView) { linkTitle ->
+            val titleText = linkTitle.ifBlank { url }.toString()
+            ContextMenuDialogFragment(url, linkImageUrl.isBlank()) {
+                this@BrowserActivity.handleContextMenuItem(it, titleText, url, linkImageUrl)
+            }.show(supportFragmentManager, "contextMenu")
+        }
     }
 
-    private fun saveFile(url: String, fileName: String) {
+    private fun handleContextMenuItem(contextMenuItemType: ContextMenuItemType, title: String, url: String, imageUrl: String) {
+        when (contextMenuItemType) {
+            ContextMenuItemType.NewTabForeground -> addAlbum(title, url)
+            ContextMenuItemType.NewTabBackground -> addAlbum(title, url, false)
+            ContextMenuItemType.ShareLink -> {
+                if (prepareRecord()) NinjaToast.show(this, getString(R.string.toast_share_failed))
+                else IntentUnit.share(this, title, url)
+            }
+
+            ContextMenuItemType.CopyLink -> ShareUtil.copyToClipboard(this, url)
+            ContextMenuItemType.CopyText -> ShareUtil.copyToClipboard(this, title)
+            ContextMenuItemType.OpenWith -> HelperUnit.showBrowserChooser(this, url, getString(R.string.menu_open_with))
+            ContextMenuItemType.SaveBookmark -> saveBookmark(url, title)
+            ContextMenuItemType.SplitScreen -> toggleSplitScreen(url)
+            ContextMenuItemType.AdBlock -> confirmAdSiteAddition(imageUrl)
+            ContextMenuItemType.SaveAs -> {
+                if (url.startsWith("data:image")) {
+                    saveFile(url)
+                } else {
+                    if (imageUrl.isNotBlank()) {
+                        dialogManager.showSaveFileDialog(url = imageUrl, saveFile = this::saveFile)
+                    } else {
+                        dialogManager.showSaveFileDialog(url = url, saveFile = this::saveFile)
+                    }
+                }
+            }
+
+        }
+    }
+
+    private fun saveFile(url: String, fileName: String = "") {
         // handle data url case
         if (url.startsWith("data:image")) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
