@@ -23,6 +23,7 @@ abstract class ComposeDialogFragment: AppCompatDialogFragment(), KoinComponent {
     protected val config: ConfigManager by inject()
     protected lateinit var composeView: ComposeView
 
+    protected var shouldShowInCenter: Boolean = false
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         setStyle(STYLE_NO_FRAME, 0)
         return super.onCreateDialog(savedInstanceState)
@@ -30,7 +31,9 @@ abstract class ComposeDialogFragment: AppCompatDialogFragment(), KoinComponent {
 
     private fun setupDialog() {
         dialog?.apply {
-            window?.setGravity((if (config.isToolbarOnTop) Gravity.CENTER else Gravity.BOTTOM) or Gravity.END)
+            if (!shouldShowInCenter) {
+                window?.setGravity((if (config.isToolbarOnTop) Gravity.CENTER else Gravity.BOTTOM) or Gravity.END)
+            }
             window?.setBackgroundDrawableResource(R.drawable.background_with_border_margin)
             window?.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
             setCanceledOnTouchOutside(true)

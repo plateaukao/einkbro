@@ -142,19 +142,25 @@ private fun MenuItems(hasWhiteBkd: Boolean, boldFont: Boolean, onClicked: (MenuI
 fun MenuItem(
     titleResId: Int,
     iconResId: Int,
-    onClicked: () -> Unit
+    isLargeType: Boolean = false,
+    onClicked: () -> Unit = {},
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val pressed by interactionSource.collectIsPressedAsState()
-    val borderWidth = if (pressed) 0.5.dp else -1.dp
+    val borderWidth = if (pressed) 0.5.dp else (-1).dp
 
     val configuration = LocalConfiguration.current
-    val width = if (configuration.screenWidthDp > 500) 55.dp else 45.dp
+    val width = when {
+        isLargeType -> 62.dp
+        configuration.screenWidthDp > 500 -> 55.dp
+        else -> 45.dp
+    }
+
     val fontSize = if (configuration.screenWidthDp > 500) 10.sp else 8.sp
     Column(
         modifier = Modifier
             .width(width)
-            .height(70.dp)
+            .height(if (isLargeType) 80.dp else 70.dp)
             .border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
             .clickable(
                 indication = null,
@@ -165,8 +171,7 @@ fun MenuItem(
         Icon(
             painter = painterResource(id = iconResId), contentDescription = null,
             modifier = Modifier
-                .width(44.dp)
-                .height(44.dp)
+                .size(if (isLargeType) 55.dp else 44.dp)
                 .padding(horizontal = 6.dp),
             tint = MaterialTheme.colors.onBackground
         )
