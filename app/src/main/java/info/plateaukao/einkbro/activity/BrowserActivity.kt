@@ -1640,7 +1640,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         val linkImageUrl = BrowserUnit.getWebViewLinkImageUrl(ninjaWebView, message)
         BrowserUnit.getWebViewLinkTitle(ninjaWebView) { linkTitle ->
             val titleText = linkTitle.ifBlank { url }.toString()
-            ContextMenuDialogFragment(url, linkImageUrl.isBlank()) {
+            ContextMenuDialogFragment(url, linkImageUrl.isNotBlank()) {
                 this@BrowserActivity.handleContextMenuItem(it, titleText, url, linkImageUrl)
             }.show(supportFragmentManager, "contextMenu")
         }
