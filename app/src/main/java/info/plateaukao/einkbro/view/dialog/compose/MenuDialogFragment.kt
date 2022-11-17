@@ -151,7 +151,7 @@ fun MenuItem(
 
     val configuration = LocalConfiguration.current
     val width = when {
-        isLargeType -> 62.dp
+        isLargeType -> if (configuration.screenWidthDp > 500) 62.dp else 50.dp
         configuration.screenWidthDp > 500 -> 55.dp
         else -> 45.dp
     }
