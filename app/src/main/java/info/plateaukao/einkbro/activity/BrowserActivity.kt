@@ -15,8 +15,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
-import android.os.Handler
-import android.os.Looper
 import android.os.Message
 import android.print.PrintAttributes
 import android.print.PrintManager
@@ -27,7 +25,6 @@ import android.view.View.*
 import android.webkit.CookieManager
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient.CustomViewCallback
-import android.webkit.WebView
 import android.webkit.WebView.HitTestResult
 import android.widget.*
 import androidx.activity.result.ActivityResultLauncher
@@ -52,6 +49,7 @@ import info.plateaukao.einkbro.epub.EpubManager
 import info.plateaukao.einkbro.preference.*
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.service.ClearService
+import info.plateaukao.einkbro.service.TtsManager
 import info.plateaukao.einkbro.task.SaveScreenshotTask
 import info.plateaukao.einkbro.unit.*
 import info.plateaukao.einkbro.unit.BrowserUnit.downloadFileId
@@ -96,6 +94,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     private var downloadReceiver: BroadcastReceiver? = null
     private val sp: SharedPreferences by inject()
     private val config: ConfigManager by inject()
+    private val ttsManager: TtsManager by inject()
 
     private fun prepareRecord(): Boolean {
         val webView = currentAlbumController as NinjaWebView
@@ -489,6 +488,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     override fun onDestroy() {
+        ttsManager.stopReading()
+
         customFontResultLauncher.unregister()
 
         updateSavedAlbumInfo()
@@ -1771,6 +1772,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
     }
 
+    private fun readArticle() {
+        lifecycleScope.launch {
+            ttsManager.readText(ninjaWebView.getRawText())
+        }
+    }
+
     private fun openSavedEpub() = if (config.savedEpubFileInfos.isEmpty()) {
         NinjaToast.show(this, "no saved epub!")
     } else {
@@ -1785,6 +1792,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private fun handleMenuItem(menuItemType: MenuItemType) {
         when (menuItemType) {
+            Tts -> toggleTtsRead()
             QuickToggle -> showFastToggleDialog()
             OpenHome -> updateAlbum(
                 sp.getString(
@@ -1792,7 +1800,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     "https://github.com/plateaukao/browser"
                 )
             )
-
             MenuItemType.CloseTab -> currentAlbumController?.let { removeAlbum(it) }
             Quit -> finishAndRemoveTask()
 
@@ -1839,6 +1846,14 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             Search -> showSearchPanel()
             Download -> BrowserUnit.openDownloadFolder(this)
             Settings -> startActivity(Intent(this, SettingsActivity::class.java))
+        }
+    }
+
+    private fun toggleTtsRead() {
+        if (ttsManager.isSpeaking()) {
+            ttsManager.stopReading()
+        } else {
+            readArticle()
         }
     }
 

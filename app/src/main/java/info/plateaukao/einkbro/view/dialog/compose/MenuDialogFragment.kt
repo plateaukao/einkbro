@@ -21,15 +21,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import info.plateaukao.einkbro.R
+import info.plateaukao.einkbro.service.TtsManager
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.dialog.compose.MenuItemType.*
+import org.koin.android.ext.android.inject
 
 class MenuDialogFragment(
     private val itemClicked: (MenuItemType) -> Unit
 ) : ComposeDialogFragment() {
+    private val ttsManager: TtsManager by inject()
+
     override fun setupComposeView() = composeView.setContent {
         MyTheme {
-            MenuItems(config.whiteBackground, config.boldFontStyle) { item ->
+            MenuItems(config.whiteBackground, config.boldFontStyle, ttsManager.isSpeaking()) { item ->
                 dialog?.dismiss()
                 itemClicked(item)
             }
@@ -38,7 +42,7 @@ class MenuDialogFragment(
 }
 
 enum class MenuItemType {
-    QuickToggle, OpenHome, CloseTab, Quit,
+    Tts, QuickToggle, OpenHome, CloseTab, Quit,
     SplitScreen, Translate, VerticalRead, ReaderMode, TouchSetting, ToolbarSetting,
     ReceiveData, SendLink, ShareLink, OpenWith, CopyLink, Shortcut,
     SetHome, SaveBookmark, OpenEpub, SaveEpub, SavePdf,
@@ -46,7 +50,12 @@ enum class MenuItemType {
 }
 
 @Composable
-private fun MenuItems(hasWhiteBkd: Boolean, boldFont: Boolean, onClicked: (MenuItemType) -> Unit) {
+private fun MenuItems(
+    hasWhiteBkd: Boolean,
+    boldFont: Boolean,
+    isSpeaking: Boolean,
+    onClicked: (MenuItemType) -> Unit
+) {
     Column(
         modifier = Modifier
             .wrapContentHeight()
@@ -59,6 +68,8 @@ private fun MenuItems(hasWhiteBkd: Boolean, boldFont: Boolean, onClicked: (MenuI
                 .horizontalScroll(rememberScrollState()),
             horizontalArrangement = Arrangement.End
         ) {
+            val ttsRes = if (isSpeaking) R.drawable.ic_stop else R.drawable.ic_tts
+            MenuItem(R.string.menu_tts, ttsRes) { onClicked(Tts) }
             MenuItem(
                 R.string.menu_quickToggle,
                 R.drawable.ic_quick_toggle
@@ -205,6 +216,6 @@ private fun PreviewItem() {
 @Composable
 private fun PreviewMenuItems() {
     MyTheme {
-        MenuItems(hasWhiteBkd = false, boldFont = false, {})
+        MenuItems(hasWhiteBkd = false, boldFont = false, false) {}
     }
 }
