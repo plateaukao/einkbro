@@ -9,6 +9,7 @@ import info.plateaukao.einkbro.browser.Cookie
 import info.plateaukao.einkbro.browser.Javascript
 import info.plateaukao.einkbro.database.BookmarkManager
 import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.service.TtsManager
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext.startKoin
 import org.koin.dsl.module
@@ -23,13 +24,18 @@ class EinkBroApplication : Application() {
         ConfigManager(applicationContext, sp)
     }
 
-    val myModule = module {
+    private val ttsManager: TtsManager by lazy {
+        TtsManager(applicationContext)
+    }
+
+    private val myModule = module {
         single { config }
         single { sp }
         single { BookmarkManager(androidContext()) }
         single { AdBlock(androidContext())}
         single { Javascript(androidContext())}
         single { Cookie(androidContext()) }
+        single { ttsManager }
     }
 
     override fun onCreate() {
@@ -41,6 +47,10 @@ class EinkBroApplication : Application() {
         }
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+    }
 
+    override fun onTerminate() {
+        super.onTerminate()
+        ttsManager.release()
     }
 }
