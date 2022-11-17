@@ -1,3 +1,89 @@
+### 9.13.0
+* Enhance context menu UI when long pressing a link
+
+<img src=https://user-images.githubusercontent.com/4084738/202330956-4e0805b2-dbe0-420b-9d94-0c978fa58f2a.png width=400>
+
+### 9.12.0
+* UI: show tab count in floating button
+* Support devices that does not have microphone or gps
+
+### 9.11.0
+* Fix: after opening new tab, the javascript on current tab may not work
+* Feature: add a new mode for Floating button, so that it's possible to customize its position
+* Feature: support opening Menu as gesture action.
+
+### 9.10.0
+* Add + button on Tab bar
+* Support editing homepage url in Settings
+* Support new tab behavior: focus on url, show recent bookmarks, show homepage
+* Fix dark mode issues on some devices
+
+### 9.9.0
+* Add a pen icon in front of web title, so that new users know where to touch for editing url.
+* Remove font configurstion button from default toolbar and put "add tab" icon instead.
+* fix: go to bookmark root folder after any bookmark item is clicked.
+
+![image](https://user-images.githubusercontent.com/4084738/194693275-46a51cb6-63f0-43ef-ba9c-c9f76f8e4fe2.png)
+
+### 9.8.0
+* support microphone permission request, when web content need to record audio
+* support basic username / password authentication
+* add a button to duplicate current tab
+* fix download crash issue
+
+### 9.7.0
+* support stripping url tracking parameters
+* fixed tab bar support. can be turned on in Settings > Behavior/UI
+* enhance menu icon ordering
+
+### 9.6.0
+* Fix title width
+* Enhance text input: make sure text area can be displayed.
+https://stackoverflow.com/a/21860837/1265915
+
+### 9.5.0
+* enable website zooming
+* fix toolbar title color in dark mode
+* use drag handle in toolbar configuration
+* enhance facebook browsing
+* enhance twitter browsing
+* add refresh action in gesture configuration
+* now it's possible to turn on WebView debug in settings > start controls
+
+### 9.4.0
+* combine font size and font type dialog
+* add bookmark adding hint when it's empty
+* save image when long pressed on images
+
+<img src=https://user-images.githubusercontent.com/4084738/179558766-d06ad7aa-7651-4c8f-8c2f-b0cf39d719d2.png width=300 />
+
+### 9.3.0
+* UI: rewrite touch area config dialog
+* UI: rewrite search bar
+* UI: rewrite menu dialog
+* UI: rewrite input url bar
+* Setting: add an option to disable auto fill form
+* Setting: add an option to auto trim input url
+
+### 9.2.0
+* fix dialog shadow
+* add SSL exception handling dialog
+* enhance incognito mode icon effect
+* refactor setting UI, touch area dialog to compose
+
+### 9.1.0
+## Apk size for this version is much larger, due to adopting Jetpack Compose
+
+It'll be easier to add new features in the future; however, the size increase sucks.
+
+## Changes
+* a lot of code refactoring to adopt Jetpack Compose for existing dialogs
+* add copy link in context menu
+* add an option to disable loading background tab in Settings / Behavior
+* fix: keyboard shortcut for font size change
+* now Reader Mode should be available for more websites!
+* toolbar is scrollable again!   
+
 ### 9.0.0
 #### Feature
 * Add javascript toggle in Quick Toggle setting screen
