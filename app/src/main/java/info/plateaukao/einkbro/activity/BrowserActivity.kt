@@ -1773,8 +1773,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     private fun readArticle() {
-        lifecycleScope.launch {
-            ttsManager.readText(ninjaWebView.getRawText())
+        TtsLanguageDialog(this).show { ttsLanguage ->
+            lifecycleScope.launch {
+                ttsManager.readText(ttsLanguage, ninjaWebView.getRawText())
+            }
         }
     }
 

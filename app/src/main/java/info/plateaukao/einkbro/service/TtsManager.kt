@@ -17,10 +17,11 @@ class TtsManager(
         }
     }
 
-    fun readText(text: String) {
+    fun readText(locale: Locale, text: String) {
         if (tts.isSpeaking) {
             tts.stop()
         }
+        tts.language = locale
 
         text.chunked(TextToSpeech.getMaxSpeechInputLength())
             .forEach { chunk ->
