@@ -111,12 +111,13 @@
     <string name="setting_summary_toolbarShow">Pressing back will make the toolbar visible, before going back in history.</string>
     <string name="setting_title_toolbarShow">First toolbar</string>
     <string name="setting_title_nav">浮動按鈕</string>
-    <string name="setting_title_nav_pos">位置</string>
+    <string name="setting_title_nav_pos">浮動按鈕位置</string>
     <string name="setting_summary_nav_pos">設定浮動按鍵出現的位置</string>
     <string name="setting_summary_nav_pos_right">右</string>
     <string name="setting_summary_nav_pos_left">左</string>
     <string name="setting_summary_nav_pos_center">中間</string>
     <string name="setting_summary_nav_pos_not_show">不顯示</string>
+    <string name="setting_summary_nav_pos_custom">自訂位置</string>
     <string name="setting_summary_tab">點擊分頁數字時，預設開啟的畫面</string>
     <string name="setting_title_confirm_tab_close">確認關閉分頁</string>
     <string name="setting_summary_confirm_tab_close">關閉分頁前，顯示對話框</string>

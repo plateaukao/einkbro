@@ -145,7 +145,7 @@
     <string name="setting_title_toolbarShow">First toolbar</string>
 
     <string name="setting_title_nav">Navigation button</string>
-    <string name="setting_title_nav_pos">Position</string>
+    <string name="setting_title_nav_pos">Floating Button Position</string>
     <string name="setting_summary_nav_pos">Decide where the \"Navigation Button\" will be placed.</string>
     <string name="setting_summary_nav_pos_right">Right</string>
     <string name="setting_summary_nav_pos_left">Left</string>
@@ -310,7 +310,7 @@
     <string name="setting_title_font">Font</string>
     <string name="font_type">Font Type</string>
     <string name="menu_quickToggle">Quick Toggle</string>
-    <string name="setting_title_toolbar_top">Toolbar position</string>
+    <string name="setting_title_toolbar_top">Toolbar position on Top</string>
     <string name="setting_summary_toolbar_top">Show toolbar on top of screen.</string>
     <string name="setting_title_vi_binding">VI key binding</string>
     <string name="setting_summary_vi_binding">enable VI key bindings for eaiser keyboard navigation.</string>
