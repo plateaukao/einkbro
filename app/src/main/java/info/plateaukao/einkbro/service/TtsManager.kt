@@ -23,7 +23,8 @@ class TtsManager(
         }
         tts.language = locale
 
-        text.chunked(TextToSpeech.getMaxSpeechInputLength())
+        text.replace("\\n", "").replace("\\\"", "")
+            .chunked(TextToSpeech.getMaxSpeechInputLength())
             .forEach { chunk ->
                 if (tts.isSpeaking)
                     tts.speak(chunk, TextToSpeech.QUEUE_ADD, null, null)
