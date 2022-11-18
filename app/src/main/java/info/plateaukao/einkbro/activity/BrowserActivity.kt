@@ -101,10 +101,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         val title = webView.title
         val url = webView.url
         return (title == null || title.isEmpty()
-            || url == null || url.isEmpty()
-            || url.startsWith(BrowserUnit.URL_SCHEME_ABOUT)
-            || url.startsWith(BrowserUnit.URL_SCHEME_MAIL_TO)
-            || url.startsWith(BrowserUnit.URL_SCHEME_INTENT))
+                || url == null || url.isEmpty()
+                || url.startsWith(BrowserUnit.URL_SCHEME_ABOUT)
+                || url.startsWith(BrowserUnit.URL_SCHEME_MAIL_TO)
+                || url.startsWith(BrowserUnit.URL_SCHEME_INTENT))
     }
 
     private var originalOrientation = 0
@@ -300,6 +300,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         setContentView(binding.root)
         config.maybeInitPreference()
 
+        orientation = resources.configuration.orientation
+
         mainContentLayout = findViewById(R.id.main_content)
         subContainer = findViewById(R.id.sub_container)
         updateAppbarPosition()
@@ -348,7 +350,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
         listenKeyboardShowHide()
 
-        orientation = resources.configuration.orientation
     }
 
     private fun initInputBar() {
@@ -390,6 +391,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         if (newConfig.orientation != orientation) {
             composeToolbarViewController.updateIcons()
             orientation = newConfig.orientation
+
+            if (config.fabPosition == FabPosition.Custom) {
+                fabImageViewController.updateImagePosition(orientation)
+            }
         }
     }
 
@@ -668,7 +673,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     private fun updateTouchView() {
-        fabImageViewController.updateImage()
         composeToolbarViewController.updateIcons()
     }
 
@@ -1008,12 +1012,15 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
                 ConfigManager.K_DARK_MODE -> config.restartChanged = true
                 ConfigManager.K_TOOLBAR_TOP -> updateAppbarPosition()
+
+                ConfigManager.K_NAV_POSITION -> fabImageViewController.initialize()
             }
         }
 
     private lateinit var fabImageViewController: FabImageViewController
     private fun initFAB() {
         fabImageViewController = FabImageViewController(
+            orientation,
             findViewById(R.id.fab_imageButtonNav),
             this::showToolbar,
             this::showFastToggleDialog
@@ -1647,7 +1654,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
     }
 
-    private fun handleContextMenuItem(contextMenuItemType: ContextMenuItemType, title: String, url: String, imageUrl: String) {
+    private fun handleContextMenuItem(
+        contextMenuItemType: ContextMenuItemType,
+        title: String,
+        url: String,
+        imageUrl: String
+    ) {
         when (contextMenuItemType) {
             ContextMenuItemType.NewTabForeground -> addAlbum(title, url)
             ContextMenuItemType.NewTabBackground -> addAlbum(title, url, false)
@@ -1658,7 +1670,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
             ContextMenuItemType.CopyLink -> ShareUtil.copyToClipboard(this, url)
             ContextMenuItemType.CopyText -> ShareUtil.copyToClipboard(this, title)
-            ContextMenuItemType.OpenWith -> HelperUnit.showBrowserChooser(this, url, getString(R.string.menu_open_with))
+            ContextMenuItemType.OpenWith -> HelperUnit.showBrowserChooser(
+                this,
+                url,
+                getString(R.string.menu_open_with)
+            )
+
             ContextMenuItemType.SaveBookmark -> saveBookmark(url, title)
             ContextMenuItemType.SplitScreen -> toggleSplitScreen(url)
             ContextMenuItemType.AdBlock -> confirmAdSiteAddition(imageUrl)
@@ -1802,6 +1819,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     "https://github.com/plateaukao/browser"
                 )
             )
+
             MenuItemType.CloseTab -> currentAlbumController?.let { removeAlbum(it) }
             Quit -> finishAndRemoveTask()
 

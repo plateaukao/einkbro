@@ -1,7 +1,9 @@
 package info.plateaukao.einkbro.view.viewControllers
 
 import android.annotation.SuppressLint
+import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.graphics.Point
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnTouchListener
@@ -17,6 +19,7 @@ import org.koin.core.component.inject
 
 @SuppressLint("ClickableViewAccessibility")
 class FabImageViewController(
+    private var orientation: Int,
     private val textView: TextView,
     private val clickAction: () -> Unit,
     private val longClickAction: () -> Unit,
@@ -26,6 +29,9 @@ class FabImageViewController(
     var defaultTouchListener: OnTouchListener? = null
 
     init {
+        initialize()
+    }
+    fun initialize() {
         textView.alpha = 0.5f
         val params = RelativeLayout.LayoutParams(
             textView.layoutParams.width,
@@ -37,12 +43,6 @@ class FabImageViewController(
                 textView.layoutParams = params.apply {
                     addRule(RelativeLayout.CENTER_HORIZONTAL)
                     addRule(RelativeLayout.ALIGN_BOTTOM, R.id.main_content)
-                }
-                if (config.fabCustomPosition.x != 0 && config.fabCustomPosition.y != 0) {
-                    textView.post {
-                        textView.x = config.fabCustomPosition.x.toFloat()
-                        textView.y = config.fabCustomPosition.y.toFloat()
-                    }
                 }
             }
 
@@ -73,7 +73,7 @@ class FabImageViewController(
         ViewUnit.expandViewTouchArea(textView, 20.dp(textView.context))
         setClickActions()
         textView.setOnTouchListener(defaultTouchListener)
-        updateImage()
+        updateImagePosition(orientation)
     }
 
     fun show() {
@@ -87,10 +87,37 @@ class FabImageViewController(
         textView.visibility = View.INVISIBLE
     }
 
-    fun updateImage() {
-        val fabResourceId =
-            if (config.enableTouchTurn) R.drawable.ic_touch_disabled else R.drawable.icon_overflow_fab
-        //textView.setImageResource(fabResourceId)
+    fun updateImagePosition(orientation: Int) {
+        this.orientation = orientation
+        if (config.fabPosition != FabPosition.Custom) {
+            return
+        }
+
+        textView.postDelayed({
+            val currentFabCustomPosition =
+                if (orientation == ORIENTATION_PORTRAIT) config.fabCustomPosition else config.fabCustomPositionLandscape
+
+            if (currentFabCustomPosition.x != 0 && currentFabCustomPosition.y != 0) {
+                textView.post {
+                    textView.x = currentFabCustomPosition.x.toFloat()
+                    textView.y = currentFabCustomPosition.y.toFloat()
+                }
+            }
+
+            val parentX = (textView.parent as View).x
+            val parentY = (textView.parent as View).y
+            val maxWidth = (textView.parent as View).width
+            val maxHeight = (textView.parent as View).height
+            if (textView.x < 0) textView.x = 0f
+            if (textView.y < 0) textView.y = 0f
+
+            if (textView.x + textView.width > maxWidth) {
+                textView.x = maxWidth - textView.width.toFloat()
+            }
+            if (textView.y + textView.height > maxHeight) {
+                textView.y = maxHeight - textView.height.toFloat()
+            }
+        }, 1000L)
     }
 
     fun updateTabCount(countString: String) {
@@ -133,6 +160,10 @@ class FabImageViewController(
     private fun updateFabImageCustomizePosition(x: Int, y: Int) {
         textView.x = x.toFloat()
         textView.y = y.toFloat()
-        config.fabCustomPosition = Point(x, y)
+        if (orientation == ORIENTATION_PORTRAIT) {
+            config.fabCustomPosition = Point(x, y)
+        } else {
+            config.fabCustomPositionLandscape = Point(x, y)
+        }
     }
 }
