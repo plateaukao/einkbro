@@ -324,6 +324,16 @@ class ConfigManager(
             sp.edit { putString(K_FAB_POSITION, "${value.x},${value.y}") }
         }
 
+    var fabCustomPositionLandscape: Point
+        get() {
+            val str = sp.getString(K_FAB_POSITION_LAND, "") ?: ""
+            return if (str.isBlank()) Point(0, 0)
+            else Point(str.split(",").first().toInt(), str.split(",").last().toInt())
+        }
+        set(value) {
+            sp.edit { putString(K_FAB_POSITION_LAND, "${value.x},${value.y}") }
+        }
+
     private fun iconStringToEnumList(iconListString: String): List<ToolbarAction> {
         if (iconListString.isBlank()) return listOf()
 
@@ -405,6 +415,7 @@ class ConfigManager(
         const val K_NEW_TAB_BEHAVIOR = "sp_plus_behavior"
         const val K_TRANSLATED_LANGS = "sp_translated_langs"
         const val K_FAB_POSITION = "sp_fab_position"
+        const val K_FAB_POSITION_LAND = "sp_fab_position_land"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
         private const val RECENT_BOOKMARKS_SEPARATOR = "::::"
