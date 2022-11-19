@@ -368,4 +368,5 @@
     <string name="menu">Menu</string>
     <string name="copy_text">copy text</string>
     <string name="menu_tts">Read content</string>
+    <string name="read_speed">Read Speed</string>
 </resources>

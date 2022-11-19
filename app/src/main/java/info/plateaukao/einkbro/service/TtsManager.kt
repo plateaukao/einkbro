@@ -1,21 +1,28 @@
 package info.plateaukao.einkbro.service
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.speech.tts.TextToSpeech
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
+import info.plateaukao.einkbro.preference.ConfigManager
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import java.util.Locale
 
 class TtsManager(
     private val context: Context
-) {
+): KoinComponent {
+    private val config: ConfigManager by inject()
+
     val tts: TextToSpeech by lazy {
         TextToSpeech(context) {
             if (it == TextToSpeech.SUCCESS) {
                 tts.language = Locale.getDefault()
+                tts.setSpeechRate(config.ttsSpeedValue/100f)
             }
         }
     }
+
+    fun setSpeechRate(rate: Float): Int = tts.setSpeechRate(rate)
 
     fun readText(locale: Locale, text: String) {
         if (tts.isSpeaking) {

@@ -62,7 +62,17 @@ enum class ToolbarAction(
     ),
     TOC(iconResId = R.drawable.ic_toc, titleResId = R.string.title_in_toc, isAddable = false),
     Search(iconResId = R.drawable.icon_search, titleResId = R.string.setting_title_search),
-    DuplicateTab(iconResId = R.drawable.ic_copy, titleResId = R.string.duplicate_tab);
+    DuplicateTab(iconResId = R.drawable.ic_copy, titleResId = R.string.duplicate_tab),
+    Tts(
+        iconResId = R.drawable.ic_tts,
+        titleResId = R.string.menu_tts,
+        iconActiveInfo = IconActiveInfo(
+            true,
+            R.drawable.ic_stop,
+            R.drawable.ic_tts
+        )
+    );
+
 
     companion object {
         fun fromOrdinal(value: Int) = values().first { it.ordinal == value }

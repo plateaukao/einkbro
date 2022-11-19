@@ -68,6 +68,7 @@ import info.plateaukao.einkbro.view.viewControllers.*
 import info.plateaukao.einkbro.viewmodel.BookmarkViewModel
 import info.plateaukao.einkbro.viewmodel.BookmarkViewModelFactory
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import kotlin.math.floor
@@ -101,10 +102,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         val title = webView.title
         val url = webView.url
         return (title == null || title.isEmpty()
-                || url == null || url.isEmpty()
-                || url.startsWith(BrowserUnit.URL_SCHEME_ABOUT)
-                || url.startsWith(BrowserUnit.URL_SCHEME_MAIL_TO)
-                || url.startsWith(BrowserUnit.URL_SCHEME_INTENT))
+            || url == null || url.isEmpty()
+            || url.startsWith(BrowserUnit.URL_SCHEME_ABOUT)
+            || url.startsWith(BrowserUnit.URL_SCHEME_MAIL_TO)
+            || url.startsWith(BrowserUnit.URL_SCHEME_INTENT))
     }
 
     private var originalOrientation = 0
@@ -150,6 +151,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             ToolbarAction.Bookmark -> saveBookmark()
             ToolbarAction.Translation -> showTranslationConfigDialog()
             ToolbarAction.NewTab -> launchNewBrowser()
+            ToolbarAction.Tts -> TtsSettingDialogFragment().show(supportFragmentManager, "TtsSettingDialog")
             else -> {}
         }
     }
@@ -195,6 +197,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             ToolbarAction.Desktop -> config.desktop = !config.desktop
             ToolbarAction.Search -> showSearchPanel()
             ToolbarAction.DuplicateTab -> duplicateTab()
+            ToolbarAction.Tts -> toggleTtsRead()
             else -> {}
         }
     }
@@ -1014,6 +1017,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 ConfigManager.K_TOOLBAR_TOP -> updateAppbarPosition()
 
                 ConfigManager.K_NAV_POSITION -> fabImageViewController.initialize()
+                ConfigManager.K_TTS_SPEED_VALUE ->
+                    ttsManager.setSpeechRate(config.ttsSpeedValue / 100f)
             }
         }
 
@@ -1793,6 +1798,14 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         TtsLanguageDialog(this).show { ttsLanguage ->
             lifecycleScope.launch {
                 ttsManager.readText(ttsLanguage, ninjaWebView.getRawText())
+                delay(2000)
+                // TODO: use real status to do update
+                // wait for tts preparation
+                composeToolbarViewController.updateIcons()
+
+                if (ttsManager.isSpeaking()) {
+                    speakingCompleteDetector()
+                }
             }
         }
     }
@@ -1874,6 +1887,17 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             ttsManager.stopReading()
         } else {
             readArticle()
+        }
+    }
+
+    private fun speakingCompleteDetector() {
+        lifecycleScope.launch {
+            while (ttsManager.isSpeaking()) {
+                delay(1000L)
+                if (!ttsManager.isSpeaking()) {
+                    composeToolbarViewController.updateIcons()
+                }
+            }
         }
     }
 

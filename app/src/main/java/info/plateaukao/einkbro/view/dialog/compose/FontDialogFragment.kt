@@ -134,9 +134,11 @@ fun FontDialogButtonBar(
     editFontAction: () -> Unit
 ) {
     Column {
-       HorizontalSeparator()
+        HorizontalSeparator()
         Row(
-            modifier = Modifier.wrapContentHeight().fillMaxWidth(),
+            modifier = Modifier
+                .wrapContentHeight()
+                .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.End
         ) {
@@ -149,7 +151,7 @@ fun FontDialogButtonBar(
             VerticalSeparator()
             TextButton(
                 modifier = Modifier.wrapContentWidth(),
-                onClick =okAction
+                onClick = okAction
             ) {
                 Text(stringResource(id = android.R.string.ok), color = MaterialTheme.colors.onBackground)
             }
@@ -161,6 +163,13 @@ fun FontDialogButtonBar(
 @Composable
 fun PreviewMainFontDialog() {
     MyTheme {
-        MainFontDialog(125, FontType.CUSTOM, {}, {}, {}, {})
+        MainFontDialog(
+            selectedFontSizeValue = 100,
+            selectedFontType = FontType.SYSTEM_DEFAULT,
+            onFontSizeClick = {},
+            onFontTypeClick = {},
+            onFontCustomizeClick = {},
+            okAction = {},
+        )
     }
 }

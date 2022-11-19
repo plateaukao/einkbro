@@ -6,6 +6,7 @@ import android.view.View.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.AbstractComposeView
 import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.service.TtsManager
 import info.plateaukao.einkbro.view.Album
 import info.plateaukao.einkbro.view.compose.ComposedToolbar
 import info.plateaukao.einkbro.view.compose.MyTheme
@@ -19,10 +20,11 @@ class ComposeToolbarViewController(
     private val toolbarComposeView: ToolbarComposeView,
     private val onIconClick: (ToolbarAction) -> Unit,
     private val onIconLongClick: (ToolbarAction) -> Unit,
-    private val onTabClick: (Album) -> Unit,
-    private val onTabLongClick: (Album) -> Unit,
+    onTabClick: (Album) -> Unit,
+    onTabLongClick: (Album) -> Unit,
 ) : KoinComponent {
     private val config: ConfigManager by inject()
+    private val ttsManager: TtsManager by inject()
 
     private val readerToolbarActions: List<ToolbarAction> = listOf(
         RotateScreen,
@@ -86,8 +88,13 @@ class ComposeToolbarViewController(
         updateIcons()
     }
 
-    fun updateIcons() {
+    fun updateIcons(actionToUpdate: ToolbarAction? = null) {
         val iconEnums = if (isReader) readerToolbarActions else config.toolbarActions
+        // only update specific icon is specified.
+        if (actionToUpdate != null && !iconEnums.contains(actionToUpdate)) {
+            return
+        }
+
         toolbarComposeView.toolbarActionInfoList = iconEnums.toToolbarActionInfoList()
         toolbarComposeView.isIncognito = config.isIncognitoMode
     }
@@ -99,6 +106,7 @@ class ComposeToolbarViewController(
                 Refresh -> ToolbarActionInfo(toolbarAction, isLoading)
                 Desktop -> ToolbarActionInfo(toolbarAction, config.desktop)
                 Touch -> ToolbarActionInfo(toolbarAction, config.enableTouchTurn)
+                Tts -> ToolbarActionInfo(toolbarAction, ttsManager.isSpeaking())
                 else -> ToolbarActionInfo(toolbarAction, false)
             }
         }
