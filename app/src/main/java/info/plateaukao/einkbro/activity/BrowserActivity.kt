@@ -37,6 +37,7 @@ import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
+import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.browser.AlbumController
 import info.plateaukao.einkbro.browser.BrowserContainer
 import info.plateaukao.einkbro.browser.BrowserController
@@ -47,7 +48,6 @@ import info.plateaukao.einkbro.database.RecordDb
 import info.plateaukao.einkbro.databinding.ActivityMainBinding
 import info.plateaukao.einkbro.epub.EpubManager
 import info.plateaukao.einkbro.preference.*
-import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.service.ClearService
 import info.plateaukao.einkbro.service.TtsManager
 import info.plateaukao.einkbro.task.SaveScreenshotTask
@@ -151,8 +151,21 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             ToolbarAction.Bookmark -> saveBookmark()
             ToolbarAction.Translation -> showTranslationConfigDialog()
             ToolbarAction.NewTab -> launchNewBrowser()
-            ToolbarAction.Tts -> TtsSettingDialogFragment().show(supportFragmentManager, "TtsSettingDialog")
+            ToolbarAction.Tts -> TtsSettingDialogFragment(
+                this::gotoSystemTtsSettings
+            ).show(supportFragmentManager, "TtsSettingDialog")
             else -> {}
+        }
+    }
+
+    private fun gotoSystemTtsSettings() {
+        val intent = Intent().apply {
+            action = "com.android.settings.TTS_SETTINGS"
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }
+        try {
+            startActivity(intent)
+        } catch (e: Exception) {
         }
     }
 
