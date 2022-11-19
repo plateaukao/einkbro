@@ -103,6 +103,11 @@ class ConfigManager(
         set(value) {
             sp.edit { putString(K_FONT_SIZE, value.toString()) }
         }
+    var ttsSpeedValue: Int
+        get() = sp.getString(K_TTS_SPEED_VALUE, "100")?.toInt() ?: 100
+        set(value) {
+            sp.edit { putString(K_TTS_SPEED_VALUE, value.toString()) }
+        }
     var touchAreaCustomizeY: Int
         get() = sp.getInt(K_TOUCH_AREA_OFFSET, 0)
         set(value) {
@@ -362,6 +367,7 @@ class ConfigManager(
         const val K_FONT_STYLE_SERIF = "sp_font_style_serif"
         const val K_NAV_POSITION = "nav_position"
         const val K_FONT_SIZE = "sp_fontSize"
+        const val K_TTS_SPEED_VALUE = "sp_tts_speed"
         const val K_FAVORITE_URL = "favoriteURL"
         const val K_VOLUME_PAGE_TURN = "volume_page_turn"
         const val K_SHOULD_SAVE_TABS = "sp_shouldSaveTabs"
