@@ -16,7 +16,9 @@ import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.compose.SelectableText
 
-class TtsSettingDialogFragment : ComposeDialogFragment() {
+class TtsSettingDialogFragment(
+    private val gotoSettingAction: () -> Unit
+) : ComposeDialogFragment() {
     override fun setupComposeView() {
         composeView.setContent {
             MyTheme {
@@ -24,6 +26,7 @@ class TtsSettingDialogFragment : ComposeDialogFragment() {
                     selectedSpeedValue = config.ttsSpeedValue,
                     onSpeedValueClick = { config.ttsSpeedValue = it; dismiss() },
                     okAction = { dismiss() },
+                    gotoSettingAction = gotoSettingAction
                 )
             }
         }
@@ -47,6 +50,7 @@ private val speedRateValueList2 = listOf(
 private fun MainTtsSettingDialog(
     selectedSpeedValue: Int,
     onSpeedValueClick: (Int) -> Unit,
+    gotoSettingAction: () -> Unit,
     okAction: () -> Unit,
 ) {
     Column(
@@ -107,6 +111,7 @@ private fun MainTtsSettingDialog(
 //            }
 //        }
         TtsDialogButtonBar(
+            gotoSettingAction = gotoSettingAction,
             okAction = okAction,
         )
     }
@@ -114,6 +119,7 @@ private fun MainTtsSettingDialog(
 
 @Composable
 fun TtsDialogButtonBar(
+    gotoSettingAction: () -> Unit,
     okAction: () -> Unit,
 ) {
     Column {
@@ -127,9 +133,16 @@ fun TtsDialogButtonBar(
         ) {
             TextButton(
                 modifier = Modifier.wrapContentWidth(),
+                onClick = gotoSettingAction
+            ) {
+                Text(stringResource(id = R.string.settings), color = MaterialTheme.colors.onBackground)
+            }
+            VerticalSeparator()
+            TextButton(
+                modifier = Modifier.wrapContentWidth(),
                 onClick = okAction
             ) {
-                Text(stringResource(id = android.R.string.ok), color = MaterialTheme.colors.onBackground)
+                Text(stringResource(id = android.R.string.cancel), color = MaterialTheme.colors.onBackground)
             }
         }
     }
@@ -143,6 +156,7 @@ fun PreviewMainTtsDialog() {
             selectedSpeedValue = 100,
             onSpeedValueClick = {},
             okAction = {},
+            gotoSettingAction = {},
         )
     }
 }
