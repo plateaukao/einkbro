@@ -35,8 +35,9 @@ class TtsManager(
             .forEach { chunk ->
                 if (tts.isSpeaking)
                     tts.speak(chunk, TextToSpeech.QUEUE_ADD, null, null)
-                else
+                else {
                     tts.speak(chunk, TextToSpeech.QUEUE_FLUSH, null, null)
+                }
             }
     }
 

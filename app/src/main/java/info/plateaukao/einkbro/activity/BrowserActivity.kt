@@ -166,6 +166,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         try {
             startActivity(intent)
         } catch (e: Exception) {
+            NinjaToast.show(this, "No Text to Speech settings found")
         }
     }
 
