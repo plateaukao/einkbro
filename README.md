@@ -11,8 +11,6 @@ This browser is called EinkBro. It's designed to fit Eink devices' needs; no unn
      
 [<img src="https://badgen.net/github/release/plateaukao/einkbro">](https://github.com/plateaukao/einkbro/releases)   [<img src="https://badgen.net/badge/download/snapshot_zip/green">](https://nightly.link/plateaukao/einkbro/workflows/buid-app-workflow.yaml/main/app-release.apk.zip)   
 
-#### [Nightly build]()
-
 |Main Screen|Menu Items|Toolbar Configuration|
 |----|----|----|
 |<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1_1.png" width="200"/>|<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1_3.png" width="200"/>|<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1_4.png" width="200"/>|
