@@ -368,9 +368,10 @@
     <string name="setting_title_edit_homepage">编辑主页URL</string>
     <string name="setting_title_plus_behavior">新建标签页行为</string>
     <string name="setting_summary_plus_behavior">添加新标签页时，应显示的内容。</string>
-    <string name="setting_title_translated_langs">Preferred Translated Languages</string>
-    <string name="menu">Menu</string>
-    <string name="copy_text">copy text</string>
-    <string name="menu_tts">Read content</string>
-    <string name="read_speed">Read Speed</string>
+    <string name="setting_title_translated_langs">首选翻译语言</string>
+    <string name="setting_summary_translated_langs">自定义翻译语言 (例如: en,fr,zh-TW,zh-CN)</string>
+    <string name="menu">菜单</string>
+    <string name="copy_text">复制文本</string>
+    <string name="menu_tts">阅读内容</string>
+    <string name="read_speed">读取速度</string>
 </resources>
