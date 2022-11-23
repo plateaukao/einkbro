@@ -12,7 +12,7 @@ import org.json.JSONObject
 import org.koin.core.component.KoinComponent
 import java.net.*
 
-object ShareUtil: KoinComponent {
+object ShareUtil : KoinComponent {
     private const val multicastIp = "239.10.10.100"
     private const val multicastPort = 54545
     private const val broadcastIntervalInMilli = 1000L
@@ -21,7 +21,8 @@ object ShareUtil: KoinComponent {
     private var socket: MulticastSocket? = null
 
     fun copyToClipboard(context: Context, url: String) {
-        val clipboard = context.getSystemService(AppCompatActivity.CLIPBOARD_SERVICE) as ClipboardManager
+        val clipboard =
+            context.getSystemService(AppCompatActivity.CLIPBOARD_SERVICE) as ClipboardManager
         val clip = ClipData.newPlainText("text", url)
         clipboard.setPrimaryClip(clip)
         NinjaToast.show(context, R.string.toast_copy_successful)
@@ -29,11 +30,15 @@ object ShareUtil: KoinComponent {
 
     fun startBroadcastingUrl(lifecycleCoroutineScope: LifecycleCoroutineScope, url: String) {
         broadcastJob = lifecycleCoroutineScope.launch(Dispatchers.IO) {
-            socket = MulticastSocket(multicastPort).apply { joinGroup(group) }
-            val bytes = url.toByteArray()
-            while(true) {
-                socket?.send(DatagramPacket(bytes, bytes.size, group, multicastPort))
-                delay(broadcastIntervalInMilli) // 1 second
+            try {
+                socket = MulticastSocket(multicastPort).apply { joinGroup(group) }
+                val bytes = url.toByteArray()
+                while (true) {
+                    socket?.send(DatagramPacket(bytes, bytes.size, group, multicastPort))
+                    delay(broadcastIntervalInMilli) // 1 second
+                }
+            } catch (exception: Exception) {
+                exception.printStackTrace()
             }
         }
     }
@@ -46,12 +51,15 @@ object ShareUtil: KoinComponent {
         broadcastJob = null
     }
 
-    fun startReceiving(lifecycleCoroutineScope: LifecycleCoroutineScope, receivedAction: (String) -> Unit) {
+    fun startReceiving(
+        lifecycleCoroutineScope: LifecycleCoroutineScope,
+        receivedAction: (String) -> Unit
+    ) {
         val receiveData = ByteArray(4096)
         val receivePacket = DatagramPacket(receiveData, receiveData.size)
         broadcastJob = lifecycleCoroutineScope.launch(Dispatchers.IO) {
-            socket = MulticastSocket(multicastPort).apply { joinGroup(group) }
             try {
+                socket = MulticastSocket(multicastPort).apply { joinGroup(group) }
                 socket?.receive(receivePacket)
             } catch (exception: SocketException) {
                 // closed before receiving data

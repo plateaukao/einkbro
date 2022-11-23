@@ -6,6 +6,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.LifecycleCoroutineScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.unit.ShareUtil
+import info.plateaukao.einkbro.view.NinjaToast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -19,6 +20,7 @@ class ReceiveDataDialog(
             setPositiveButton(R.string.done) { _, _ -> ShareUtil.stopBroadcast() }
             setTitle(R.string.menu_receive)
         }.show()
+
         ShareUtil.startReceiving(lifecycleCoroutineScope) {
             lifecycleCoroutineScope.launch(Dispatchers.Main) {
                 dialog.dismiss()

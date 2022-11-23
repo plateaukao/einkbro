@@ -374,4 +374,5 @@
     <string name="copy_text">复制文本</string>
     <string name="menu_tts">阅读内容</string>
     <string name="read_speed">读取速度</string>
+    <string name="toast_receive_link_failed">Receiving link failed.</string>
 </resources>
