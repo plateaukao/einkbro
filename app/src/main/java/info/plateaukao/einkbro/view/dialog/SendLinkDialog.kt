@@ -6,6 +6,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.LifecycleCoroutineScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.unit.ShareUtil
+import info.plateaukao.einkbro.view.NinjaToast
 
 class SendLinkDialog(
     private val context: Context,
@@ -13,6 +14,7 @@ class SendLinkDialog(
 ) {
     fun show(url: String) {
         ShareUtil.startBroadcastingUrl(lifecycleCoroutineScope, url)
+
         AlertDialog.Builder(context, R.style.TouchAreaDialog).apply {
             setView(ProgressBar(context))
             setNeutralButton(R.string.done) { _, _ -> ShareUtil.stopBroadcast() }
