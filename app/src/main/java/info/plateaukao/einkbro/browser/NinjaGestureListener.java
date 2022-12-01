@@ -21,7 +21,7 @@ public class NinjaGestureListener extends GestureDetector.SimpleOnGestureListene
     @Override
     public void onLongPress(MotionEvent e) {
         if (longPress) {
-            webView.onLongPress();
+            webView.onLongPress(e);
         }
     }
 

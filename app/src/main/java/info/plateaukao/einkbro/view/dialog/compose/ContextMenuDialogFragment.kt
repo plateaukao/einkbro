@@ -1,15 +1,19 @@
 package info.plateaukao.einkbro.view.dialog.compose
 
+import android.graphics.Point
+import android.os.Bundle
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -21,12 +25,23 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.view.compose.MyTheme
-import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.*
+import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.AdBlock
+import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.CopyLink
+import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.CopyText
+import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.NewTabBackground
+import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.NewTabForeground
+import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.OpenWith
+import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.SaveAs
+import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.SaveBookmark
+import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.ShareLink
+import info.plateaukao.einkbro.view.dialog.compose.ContextMenuItemType.SplitScreen
 import java.net.URLDecoder
+
 
 class ContextMenuDialogFragment(
     private val url: String,
     private val shouldShowAdBlock: Boolean,
+    private val anchorPoint: Point,
     private val itemClicked: (ContextMenuItemType) -> Unit
 ) : ComposeDialogFragment() {
 
@@ -41,6 +56,28 @@ class ContextMenuDialogFragment(
                 itemClicked(item)
             }
         }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        val view = super.onCreateView(inflater, container, savedInstanceState)
+        setupDialogPosition(anchorPoint)
+        return view
+    }
+
+    private fun setupDialogPosition(position: Point) {
+        val window = dialog?.window ?: return
+        window.setGravity(Gravity.TOP or Gravity.LEFT)
+
+
+        val params = window.attributes.apply {
+            x = position.x
+            y = position.y
+        }
+        window.attributes = params
     }
 }
 
@@ -70,11 +107,27 @@ private fun ContextMenuItems(
                 .horizontalScroll(rememberScrollState()),
 //            horizontalArrangement = Arrangement.End
         ) {
-            ContextMenuItem(R.string.split_screen, R.drawable.ic_split_screen) { onClicked(SplitScreen) }
-            ContextMenuItem(R.string.menu_share_link, R.drawable.icon_menu_share) { onClicked(ShareLink) }
+            ContextMenuItem(R.string.split_screen, R.drawable.ic_split_screen) {
+                onClicked(
+                    SplitScreen
+                )
+            }
+            ContextMenuItem(R.string.menu_share_link, R.drawable.icon_menu_share) {
+                onClicked(
+                    ShareLink
+                )
+            }
             ContextMenuItem(R.string.menu_open_with, R.drawable.icon_exit) { onClicked(OpenWith) }
-            ContextMenuItem(R.string.main_menu_new_tabOpen, R.drawable.icon_tab_plus) { onClicked(NewTabForeground) }
-            ContextMenuItem(R.string.main_menu_new_tab, R.drawable.icon_tab_unselected) { onClicked(NewTabBackground) }
+            ContextMenuItem(R.string.main_menu_new_tabOpen, R.drawable.icon_tab_plus) {
+                onClicked(
+                    NewTabForeground
+                )
+            }
+            ContextMenuItem(R.string.main_menu_new_tab, R.drawable.icon_tab_unselected) {
+                onClicked(
+                    NewTabBackground
+                )
+            }
         }
         HorizontalSeparator()
         Row(
@@ -83,12 +136,20 @@ private fun ContextMenuItems(
                 .horizontalScroll(rememberScrollState()),
             horizontalArrangement = Arrangement.Center
         ) {
-            ContextMenuItem(R.string.menu_save_bookmark, R.drawable.ic_bookmark) { onClicked(SaveBookmark) }
+            ContextMenuItem(R.string.menu_save_bookmark, R.drawable.ic_bookmark) {
+                onClicked(
+                    SaveBookmark
+                )
+            }
             ContextMenuItem(R.string.menu_save_as, R.drawable.icon_menu_save) { onClicked(SaveAs) }
             ContextMenuItem(R.string.copy_link, R.drawable.ic_copy) { onClicked(CopyLink) }
             ContextMenuItem(R.string.copy_text, R.drawable.ic_copy) { onClicked(CopyText) }
             if (shouldShowAdBlock) {
-                ContextMenuItem(R.string.setting_title_adblock, R.drawable.ic_block) { onClicked(AdBlock) }
+                ContextMenuItem(R.string.setting_title_adblock, R.drawable.ic_block) {
+                    onClicked(
+                        AdBlock
+                    )
+                }
             }
         }
     }

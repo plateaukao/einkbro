@@ -8,6 +8,7 @@ import android.content.*
 import android.content.Intent.ACTION_VIEW
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
+import android.graphics.Point
 import android.graphics.PorterDuff
 import android.media.MediaPlayer
 import android.media.MediaPlayer.OnCompletionListener
@@ -102,10 +103,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         val title = webView.title
         val url = webView.url
         return (title == null || title.isEmpty()
-            || url == null || url.isEmpty()
-            || url.startsWith(BrowserUnit.URL_SCHEME_ABOUT)
-            || url.startsWith(BrowserUnit.URL_SCHEME_MAIL_TO)
-            || url.startsWith(BrowserUnit.URL_SCHEME_INTENT))
+                || url == null || url.isEmpty()
+                || url.startsWith(BrowserUnit.URL_SCHEME_ABOUT)
+                || url.startsWith(BrowserUnit.URL_SCHEME_MAIL_TO)
+                || url.startsWith(BrowserUnit.URL_SCHEME_INTENT))
     }
 
     private var originalOrientation = 0
@@ -154,6 +155,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             ToolbarAction.Tts -> TtsSettingDialogFragment(
                 this::gotoSystemTtsSettings
             ).show(supportFragmentManager, "TtsSettingDialog")
+
             else -> {}
         }
     }
@@ -1662,12 +1664,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         )
     }
 
-    override fun onLongPress(message: Message) {
+    override fun onLongPress(message: Message, event: MotionEvent) {
         val url = BrowserUnit.getWebViewLinkUrl(ninjaWebView, message).ifBlank { return }
         val linkImageUrl = BrowserUnit.getWebViewLinkImageUrl(ninjaWebView, message)
         BrowserUnit.getWebViewLinkTitle(ninjaWebView) { linkTitle ->
             val titleText = linkTitle.ifBlank { url }.toString()
-            ContextMenuDialogFragment(url, linkImageUrl.isNotBlank()) {
+            ContextMenuDialogFragment(url, linkImageUrl.isNotBlank(), Point(event.x.toInt(), event.y.toInt())) {
                 this@BrowserActivity.handleContextMenuItem(it, titleText, url, linkImageUrl)
             }.show(supportFragmentManager, "contextMenu")
         }

@@ -3,6 +3,7 @@ package info.plateaukao.einkbro.browser;
 import android.net.Uri;
 import android.os.Message;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
@@ -26,7 +27,7 @@ public interface BrowserController {
 
     void onShowCustomView(View view, WebChromeClient.CustomViewCallback callback);
 
-    void onLongPress(Message message);
+    void onLongPress(Message message, MotionEvent event);
 
     void hideOverview();
 
