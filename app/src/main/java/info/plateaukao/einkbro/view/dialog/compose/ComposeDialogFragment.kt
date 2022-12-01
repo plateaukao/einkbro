@@ -1,8 +1,13 @@
 package info.plateaukao.einkbro.view.dialog.compose
 
 import android.app.Dialog
+import android.graphics.Point
 import android.os.Bundle
-import android.view.*
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer
@@ -18,6 +23,7 @@ import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ConfigManager
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+
 
 abstract class ComposeDialogFragment: AppCompatDialogFragment(), KoinComponent {
     protected val config: ConfigManager by inject()

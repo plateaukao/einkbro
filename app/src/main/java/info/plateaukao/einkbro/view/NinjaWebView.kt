@@ -11,6 +11,7 @@ import android.os.Build
 import android.print.PrintDocumentAdapter
 import android.util.Base64
 import android.view.KeyEvent
+import android.view.MotionEvent
 import android.webkit.CookieManager
 import android.webkit.WebSettings
 import android.webkit.WebView
@@ -426,8 +427,9 @@ open class NinjaWebView(context: Context?, var browserController: BrowserControl
     val isLoadFinish: Boolean
         get() = progress >= BrowserUnit.PROGRESS_MAX
 
-    fun onLongPress() {
+    fun onLongPress(event: MotionEvent) {
         val click = clickHandler.obtainMessage()
+        clickHandler.currentMotionEvent = event
         click.target = clickHandler
         requestFocusNodeHref(click)
     }
