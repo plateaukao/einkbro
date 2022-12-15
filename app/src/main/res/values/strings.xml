@@ -124,7 +124,7 @@
 
 
     <!-- App setting -->
-    <string name="setting_title_ui">Behavior/UI</string>
+    <string name="setting_title_ui">UI</string>
     <string name="setting_title_data">Backup</string>
 
     <string name="setting_title_fav">Favorite</string>
