@@ -310,7 +310,7 @@
     <string name="setting_title_font">Font</string>
     <string name="font_type">Font Type</string>
     <string name="menu_quickToggle">Quick Toggle</string>
-    <string name="setting_title_toolbar_top">Toolbar position on Top</string>
+    <string name="setting_title_toolbar_top">Toolbar on Top</string>
     <string name="setting_summary_toolbar_top">Show toolbar on top of screen.</string>
     <string name="setting_title_vi_binding">VI key binding</string>
     <string name="setting_summary_vi_binding">enable VI key bindings for eaiser keyboard navigation.</string>

@@ -35,7 +35,7 @@ class ConfigManager(
 
     var enableWebBkgndLoad by BooleanPreference(sp, K_BKGND_LOAD, true)
     var enableJavascript by BooleanPreference(sp, K_JAVASCRIPT, true)
-    val isToolbarOnTop by BooleanPreference(sp, K_TOOLBAR_TOP, false)
+    var isToolbarOnTop by BooleanPreference(sp, K_TOOLBAR_TOP, false)
     var enableViBinding by BooleanPreference(sp, K_VI_BINDING, false)
     var isMultitouchEnabled by BooleanPreference(sp, K_MULTITOUCH, false)
     var whiteBackground by BooleanPreference(sp, K_WHITE_BACKGROUND, false)
@@ -66,6 +66,8 @@ class ConfigManager(
     var debugWebView by BooleanPreference(sp, K_DEBUG_WEBVIEW, false)
     var shouldShowTabBar by BooleanPreference(sp, K_SHOW_TAB_BAR, false)
     var confirmTabClose by BooleanPreference(sp, K_CONFIRM_TAB_CLOSE, false)
+    var shouldHideToolbar by BooleanPreference(sp, K_HIDE_TOOLBAR, false)
+    var showToolbarFirst by BooleanPreference(sp, K_SHOW_TOOLBAR_FIRST, true)
 
 
     var isIncognitoMode: Boolean
@@ -424,6 +426,8 @@ class ConfigManager(
         const val K_FAB_POSITION = "sp_fab_position"
         const val K_FAB_POSITION_LAND = "sp_fab_position_land"
         const val K_CONFIRM_TAB_CLOSE = "sp_close_tab_confirm"
+        const val K_HIDE_TOOLBAR = "hideToolbar"
+        const val K_SHOW_TOOLBAR_FIRST = "sp_toolbarShow"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
         private const val RECENT_BOOKMARKS_SEPARATOR = "::::"

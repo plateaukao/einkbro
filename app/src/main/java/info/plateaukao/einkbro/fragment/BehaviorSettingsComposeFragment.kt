@@ -11,9 +11,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -31,14 +29,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
-import info.plateaukao.einkbro.BuildConfig
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.view.compose.MyTheme
-import info.plateaukao.einkbro.view.dialog.PrinterDocumentPaperSizeDialog
-import info.plateaukao.einkbro.view.dialog.TextInputDialog
-import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -122,7 +115,7 @@ private fun BehaviorSettingsMainContent(settings: List<BooleanSettingItem>) {
             .padding(10.dp),
         verticalArrangement = Arrangement.spacedBy(7.dp),
         horizontalArrangement = Arrangement.spacedBy(7.dp),
-        columns = GridCells.Fixed(2),
+        columns = GridCells.Fixed(1),
     ) {
         settings.forEach { setting ->
             item { SettingItem(setting) }
@@ -131,7 +124,7 @@ private fun BehaviorSettingsMainContent(settings: List<BooleanSettingItem>) {
 }
 
 @Composable
-private fun SettingItem(setting: BooleanSettingItem) {
+fun SettingItem(setting: BooleanSettingItem) {
     val interactionSource = remember { MutableInteractionSource() }
     val pressed by interactionSource.collectIsPressedAsState()
     val checked = remember { mutableStateOf(setting.booleanPreference) }
@@ -139,7 +132,7 @@ private fun SettingItem(setting: BooleanSettingItem) {
     Row(
         modifier = Modifier
             .width(IntrinsicSize.Max)
-            .height(60.dp)
+            .height(80.dp)
             .border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
             .clickable(
                 indication = null,
@@ -172,7 +165,7 @@ private fun SettingItem(setting: BooleanSettingItem) {
 }
 
 
-private class BooleanSettingItem(
+class BooleanSettingItem(
     override val titleResId: Int,
     override val iconId: Int,
     val booleanPreference: Boolean,

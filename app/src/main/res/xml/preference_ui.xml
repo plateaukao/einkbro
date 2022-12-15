@@ -3,8 +3,6 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:klyph="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory android:title="@string/setting_title_theme">
-
         <info.plateaukao.einkbro.preference.IntegerEditTextPreference
             android:defaultValue="80"
             android:icon="@drawable/ic_page_height"
@@ -49,30 +47,7 @@
             android:key="sp_clear_recent_bookmarks"
             android:summary="@string/setting_summary_clear_recent_bookmarks"
             android:title="@string/setting_clear_recent_bookmarks" />
-    </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/setting_title_toolbar">
-
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:icon="@drawable/ic_page_height"
-            android:key="sp_toolbar_top"
-            android:summary="@string/setting_summary_toolbar_top"
-            android:title="@string/setting_title_toolbar_top" />
-
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:icon="@drawable/icon_fullscreen"
-            android:key="hideToolbar"
-            android:summary="@string/setting_summary_hide"
-            android:title="@string/setting_title_hideToolbar" />
-
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:icon="@drawable/icon_show"
-            android:key="sp_toolbarShow"
-            android:summary="@string/setting_summary_toolbarShow"
-            android:title="@string/setting_title_toolbarShow" />
 
         <ListPreference
             android:defaultValue="0"
@@ -83,20 +58,11 @@
             android:summary="@string/setting_summary_nav_pos"
             android:title="@string/setting_title_nav_pos" />
 
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:icon="@drawable/icon_tab_plus"
-            android:key="sp_show_tab_bar"
-            android:summary="@string/setting_summary_show_tab_bar"
-            android:title="@string/setting_title_show_tab_bar" />
-
         <EditTextPreference
             android:defaultValue=""
             android:icon="@drawable/ic_translate"
             android:key="sp_translated_langs"
             android:summary="@string/setting_summary_translated_langs"
             android:title="@string/setting_title_translated_langs" />
-
-    </PreferenceCategory>
 
 </PreferenceScreen>
