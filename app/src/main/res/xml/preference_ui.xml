@@ -90,67 +90,6 @@
             android:summary="@string/setting_summary_show_tab_bar"
             android:title="@string/setting_title_show_tab_bar" />
 
-
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="@string/setting_title_behavior">
-
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:icon="@drawable/icon_tab_plus"
-            android:key="sp_shouldSaveTabs"
-            android:summary="@string/setting_summary_saveTabs"
-            android:title="@string/setting_title_saveTabs" />
-
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:icon="@drawable/icon_tab_plus"
-            android:key="sp_background_loading"
-            android:summary="@string/setting_summary_background_loading"
-            android:title="@string/setting_title_background_loading" />
-
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:icon="@drawable/icon_edit"
-            android:key="sp_trim_input_url"
-            android:summary="@string/setting_summary_trim_input_url"
-            android:title="@string/setting_title_trim_input_url" />
-
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:icon="@drawable/ic_filter"
-            android:key="sp_prune_query_parameter"
-            android:summary="@string/setting_summary_prune_query_parameter"
-            android:title="@string/setting_title_prune_query_parameter" />
-
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:icon="@drawable/ic_eye"
-            android:key="sp_screen_awake"
-            android:summary="@string/setting_summary_screen_awake"
-            android:title="@string/setting_title_screen_awake" />
-
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:icon="@drawable/icon_close"
-            android:key="sp_close_tab_confirm"
-            android:summary="@string/setting_summary_confirm_tab_close"
-            android:title="@string/setting_title_confirm_tab_close" />
-
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:icon="@drawable/ic_keyboard"
-            android:key="sp_enable_vi_binding"
-            android:summary="@string/setting_summary_vi_binding"
-            android:title="@string/setting_title_vi_binding" />
-
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:icon="@drawable/ic_page_down"
-            android:key="sp_useUpDownForPageTurn"
-            android:summary="@string/setting_summary_ususeUpDowneUpDown"
-            android:title="@string/setting_title_useUpDown" />
-
         <EditTextPreference
             android:defaultValue=""
             android:icon="@drawable/ic_translate"
@@ -159,6 +98,5 @@
             android:title="@string/setting_title_translated_langs" />
 
     </PreferenceCategory>
-
 
 </PreferenceScreen>

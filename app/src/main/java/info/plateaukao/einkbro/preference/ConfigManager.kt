@@ -65,6 +65,7 @@ class ConfigManager(
     var customFontChanged by BooleanPreference(sp, K_CUSTOM_FONT_CHANGED, false)
     var debugWebView by BooleanPreference(sp, K_DEBUG_WEBVIEW, false)
     var shouldShowTabBar by BooleanPreference(sp, K_SHOW_TAB_BAR, false)
+    var confirmTabClose by BooleanPreference(sp, K_CONFIRM_TAB_CLOSE, false)
 
 
     var isIncognitoMode: Boolean
@@ -422,6 +423,7 @@ class ConfigManager(
         const val K_TRANSLATED_LANGS = "sp_translated_langs"
         const val K_FAB_POSITION = "sp_fab_position"
         const val K_FAB_POSITION_LAND = "sp_fab_position_land"
+        const val K_CONFIRM_TAB_CLOSE = "sp_close_tab_confirm"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
         private const val RECENT_BOOKMARKS_SEPARATOR = "::::"

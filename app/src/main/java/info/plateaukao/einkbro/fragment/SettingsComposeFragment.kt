@@ -64,6 +64,7 @@ class SettingsComposeFragment : Fragment(), KoinComponent {
     private fun handleSettingItem(setting: FirstLayerSettingItem) {
         when (setting) {
             FirstLayerSettingItem.Ui -> showFragment(UiSettingsFragment())
+            FirstLayerSettingItem.Behavior -> showFragment(BehaviorSettingsComposeFragment())
             FirstLayerSettingItem.Font -> showFragment(FontSettingsFragment())
             FirstLayerSettingItem.Gesture -> showFragment(FragmentSettingsGesture())
             FirstLayerSettingItem.Backup -> showFragment(DataSettingsFragment())
@@ -220,6 +221,7 @@ private enum class FirstLayerSettingItem(
     override val iconId: Int
 ) : SettingItemInterface {
     Ui(R.string.setting_title_ui, R.drawable.icon_ui),
+    Behavior(R.string.setting_title_behavior, R.drawable.icon_ui),
     Font(R.string.setting_title_font, R.drawable.icon_size),
     Gesture(R.string.setting_gestures, R.drawable.gesture_tap),
     Backup(R.string.setting_title_data, R.drawable.icon_backup),
