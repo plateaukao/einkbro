@@ -104,12 +104,11 @@
     <string name="setting_title_userAgent">自訂 user agent</string>
     <!-- App behavior -->
     <string name="setting_title_hideToolbar">隱藏工具列</string>
-    <string name="setting_summary_hide">Use the whole screen when scrolling through websites. If you press the back button you will
-    leave fullscreen mode.</string>
-    <string name="setting_title_theme">UI</string>
-    <string name="setting_title_behavior">Behavior</string>
-    <string name="setting_summary_toolbarShow">Pressing back will make the toolbar visible, before going back in history.</string>
-    <string name="setting_title_toolbarShow">First toolbar</string>
+    <string name="setting_summary_hide">向下捲動畫面時，會隱藏工具列。按返回鍵復原</string>
+    <string name="setting_title_theme">介面調整</string>
+    <string name="setting_title_behavior">操作行為</string>
+    <string name="setting_summary_toolbarShow">全螢幕下，按下返回鍵會先顯示工具列</string>
+    <string name="setting_title_toolbarShow">先顯示工具列</string>
     <string name="setting_title_nav">浮動按鈕</string>
     <string name="setting_title_nav_pos">浮動按鈕位置</string>
     <string name="setting_summary_nav_pos">設定浮動按鍵出現的位置</string>
@@ -302,8 +301,8 @@
     <string name="setting_summary_translated_langs">自訂 Google 翻譯時的語言(例如: en,fr,zh-TW,zh-CN)</string>
     <string name="setting_title_translated_langs">自訂翻譯的語言</string>
     <string name="menu">功能選單</string>
-    <string name="copy_text">copy text</string>
-    <string name="menu_tts">Read content</string>
-    <string name="read_speed">Read Speed</string>
-    <string name="toast_receive_link_failed">Receiving link failed.</string>
+    <string name="copy_text">複製字串</string>
+    <string name="menu_tts">朗讀內容</string>
+    <string name="read_speed">朗讀速度</string>
+    <string name="toast_receive_link_failed">接收連結失敗</string>
 </resources>
