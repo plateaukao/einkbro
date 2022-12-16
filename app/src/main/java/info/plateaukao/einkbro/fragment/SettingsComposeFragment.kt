@@ -221,7 +221,7 @@ private enum class FirstLayerSettingItem(
     override val titleResId: Int,
     override val iconId: Int
 ) : SettingItemInterface {
-    Ui(R.string.setting_title_ui, R.drawable.icon_ui),
+    Ui(R.string.setting_title_ui, R.drawable.ic_phone),
     Toolbar(R.string.setting_title_toolbar, R.drawable.ic_toolbar),
     Behavior(R.string.setting_title_behavior, R.drawable.icon_ui),
     Font(R.string.setting_title_font, R.drawable.icon_size),
