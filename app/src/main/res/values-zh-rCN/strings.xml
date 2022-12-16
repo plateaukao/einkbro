@@ -293,7 +293,7 @@
     <string name="bottom">底部</string>
     <string name="input_url">输入网址</string>
     <string name="setting_title_useUpDown">使用向上/向下方向键</string>
-    <string name="setting_summary_ususeUpDowneUpDown">使用向上/向下方向键翻页，适用于蓝牙设备。</string>
+    <string name="setting_summary_useUpDownKey">使用向上/向下方向键翻页，适用于蓝牙设备。</string>
     <string name="setting_title_process_text">自定义外部搜索网址</string>
     <string name="split_screen">分屏</string>
     <string name="dark_mode">夜间模式</string>
