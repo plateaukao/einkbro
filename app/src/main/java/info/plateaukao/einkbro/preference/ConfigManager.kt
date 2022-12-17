@@ -18,6 +18,7 @@ import org.koin.core.component.KoinComponent
 import java.lang.Exception
 import java.util.*
 import kotlin.properties.ReadWriteProperty
+import kotlin.reflect.KMutableProperty0
 import kotlin.reflect.KProperty
 
 class ConfigManager(
@@ -544,3 +545,4 @@ private fun String.toCustomFontInfo(): CustomFontInfo? {
     return CustomFontInfo(segments[0], segments[1])
 }
 
+fun KMutableProperty0<Boolean>.toggle() = set(!get())

@@ -147,7 +147,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
             ToolbarAction.PageUp -> ninjaWebView.jumpToTop()
             ToolbarAction.PageDown -> ninjaWebView.jumpToBottom()
-            ToolbarAction.TabCount -> config.isIncognitoMode = !config.isIncognitoMode
+            ToolbarAction.TabCount -> config::isIncognitoMode.toggle()
             ToolbarAction.Settings -> showFastToggleDialog()
             ToolbarAction.Bookmark -> saveBookmark()
             ToolbarAction.Translation -> showTranslationConfigDialog()
@@ -200,7 +200,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
             ToolbarAction.VerticalLayout -> ninjaWebView.toggleVerticalRead()
             ToolbarAction.ReaderMode -> ninjaWebView.toggleReaderMode()
-            ToolbarAction.BoldFont -> config.boldFontStyle = !config.boldFontStyle
+            ToolbarAction.BoldFont -> config::boldFontStyle.toggle()
             ToolbarAction.IncreaseFont -> increaseFontSize()
             ToolbarAction.DecreaseFont -> decreaseFontSize()
             ToolbarAction.FullScreen -> fullscreen()
@@ -210,7 +210,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             ToolbarAction.CloseTab -> removeAlbum(currentAlbumController!!)
             ToolbarAction.InputUrl -> focusOnInput()
             ToolbarAction.NewTab -> newATab()
-            ToolbarAction.Desktop -> config.desktop = !config.desktop
+            ToolbarAction.Desktop -> config::desktop.toggle()
             ToolbarAction.Search -> showSearchPanel()
             ToolbarAction.DuplicateTab -> duplicateTab()
             ToolbarAction.Tts -> toggleTtsRead()
@@ -687,7 +687,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
     }
 
     private fun toggleTouchTurnPageFeature() {
-        config.enableTouchTurn = !config.enableTouchTurn
+        config::enableTouchTurn.toggle()
         updateTouchView()
     }
 
@@ -1669,7 +1669,11 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         val linkImageUrl = BrowserUnit.getWebViewLinkImageUrl(ninjaWebView, message)
         BrowserUnit.getWebViewLinkTitle(ninjaWebView) { linkTitle ->
             val titleText = linkTitle.ifBlank { url }.toString()
-            ContextMenuDialogFragment(url, linkImageUrl.isNotBlank(), Point(event.x.toInt(), event.y.toInt())) {
+            ContextMenuDialogFragment(
+                url,
+                linkImageUrl.isNotBlank(),
+                Point(event.x.toInt(), event.y.toInt())
+            ) {
                 this@BrowserActivity.handleContextMenuItem(it, titleText, url, linkImageUrl)
             }.show(supportFragmentManager, "contextMenu")
         }
@@ -1890,8 +1894,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             SavePdf -> printPDF()
 
             FontSize -> showFontSizeChangeDialog()
-            WhiteBknd -> config.whiteBackground = !config.whiteBackground
-            BoldFont -> config.boldFontStyle = !config.boldFontStyle
+            WhiteBknd -> config::whiteBackground.toggle()
+            BoldFont -> config::boldFontStyle.toggle()
             Search -> showSearchPanel()
             Download -> BrowserUnit.openDownloadFolder(this)
             Settings -> startActivity(Intent(this, SettingsActivity::class.java))
