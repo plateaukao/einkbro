@@ -48,27 +48,27 @@ class ToolbarSettingsComposeFragment : Fragment(), KoinComponent, FragmentTitleI
         BooleanSettingItem(
             R.string.setting_title_toolbar_top,
             R.drawable.ic_page_height,
-            config.isToolbarOnTop,
+            config::isToolbarOnTop,
             R.string.setting_summary_toolbar_top,
-        ) { config.isToolbarOnTop = !config.isToolbarOnTop },
+        ),
         BooleanSettingItem(
             R.string.setting_title_hideToolbar,
             R.drawable.icon_fullscreen,
-            config.shouldHideToolbar,
+            config::shouldHideToolbar,
             R.string.setting_summary_hide,
-        ) { config.shouldHideToolbar = !config.shouldHideToolbar },
+        ),
         BooleanSettingItem(
             R.string.setting_title_toolbarShow,
             R.drawable.icon_show,
-            config.showToolbarFirst,
+            config::showToolbarFirst,
             R.string.setting_summary_toolbarShow,
-        ) { config.showToolbarFirst = !config.showToolbarFirst },
+        ),
         BooleanSettingItem(
             R.string.setting_title_show_tab_bar,
             R.drawable.icon_tab_plus,
-            config.shouldShowTabBar,
+            config::shouldShowTabBar,
             R.string.setting_summary_show_tab_bar,
-        ) { config.shouldShowTabBar = !config.shouldShowTabBar },
+        ),
     )
 
     override fun getTitleId(): Int = R.string.setting_title_toolbar

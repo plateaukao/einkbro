@@ -24,6 +24,7 @@ import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.preference.TouchAreaType
 import info.plateaukao.einkbro.preference.TouchAreaType.*
+import info.plateaukao.einkbro.preference.toggle
 import org.koin.core.component.KoinComponent
 
 class TouchAreaDialogFragment : ComposeDialogFragment(), KoinComponent {
@@ -41,9 +42,9 @@ class TouchAreaDialogFragment : ComposeDialogFragment(), KoinComponent {
                 showHint = config.touchAreaHint,
                 hideTouchWhenType = config.hideTouchAreaWhenInput,
                 switchTouchArea = config.switchTouchAreaAction,
-                onShowHintClick = { config.touchAreaHint = !config.touchAreaHint },
-                onHideWhenTypeClick = { config.hideTouchAreaWhenInput = !config.hideTouchAreaWhenInput },
-                onSwitchAreaClick = { config.switchTouchAreaAction = !config.switchTouchAreaAction },
+                onShowHintClick = { config::touchAreaHint.toggle() },
+                onHideWhenTypeClick = { config::hideTouchAreaWhenInput.toggle() },
+                onSwitchAreaClick = { config::switchTouchAreaAction.toggle() },
             )
         }
     }
