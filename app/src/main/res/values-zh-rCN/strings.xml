@@ -141,7 +141,7 @@
     <string name="setting_summary_nav_pos_left">左对齐</string>
     <string name="setting_summary_nav_pos_center">居中</string>
     <string name="setting_summary_nav_pos_not_show">不显示</string>
-    <string name="setting_summary_nav_pos_custom">自訂</string>
+    <string name="setting_summary_nav_pos_custom">自定义</string>
 
     <string name="setting_summary_tab">设置 \"概览\" 启动时应显示的内容，包括开始页、您的书签等</string>
 
@@ -374,5 +374,6 @@
     <string name="copy_text">复制文本</string>
     <string name="menu_tts">阅读内容</string>
     <string name="read_speed">读取速度</string>
-    <string name="toast_receive_link_failed">Receiving link failed.</string>
+    <string name="toast_send_link_failed">发送链接失败</string>
+    <string name="toast_receive_link_failed">接收链接失败。</string>
 </resources>
