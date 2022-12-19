@@ -35,39 +35,30 @@ class ToolbarSettingsComposeFragment : Fragment(), KoinComponent, FragmentTitleI
         return composeView
     }
 
-    private fun showFragment(fragment: Fragment) {
-        parentFragmentManager
-            .beginTransaction()
-            .replace(R.id.content_frame, fragment)
-            .addToBackStack(null)
-            .commit()
-        activity?.setTitle((fragment as FragmentTitleInterface).getTitleId())
-    }
-
     private val toolbarSettingItems = listOf(
         BooleanSettingItem(
             R.string.setting_title_toolbar_top,
             R.drawable.ic_page_height,
-            config::isToolbarOnTop,
             R.string.setting_summary_toolbar_top,
+            config::isToolbarOnTop,
         ),
         BooleanSettingItem(
             R.string.setting_title_hideToolbar,
             R.drawable.icon_fullscreen,
-            config::shouldHideToolbar,
             R.string.setting_summary_hide,
+            config::shouldHideToolbar,
         ),
         BooleanSettingItem(
             R.string.setting_title_toolbarShow,
             R.drawable.icon_show,
-            config::showToolbarFirst,
             R.string.setting_summary_toolbarShow,
+            config::showToolbarFirst,
         ),
         BooleanSettingItem(
             R.string.setting_title_show_tab_bar,
             R.drawable.icon_tab_plus,
-            config::shouldShowTabBar,
             R.string.setting_summary_show_tab_bar,
+            config::shouldShowTabBar,
         ),
     )
 
@@ -85,7 +76,7 @@ private fun ToolbarSettingsMainContent(settings: List<BooleanSettingItem>) {
         columns = GridCells.Fixed(1),
     ) {
         settings.forEach { setting ->
-            item { SettingItem(setting, true) }
+            item { BooleanSettingItemUi(setting, true) }
         }
     }
 }

@@ -63,7 +63,7 @@ class SettingsComposeFragment : Fragment(), KoinComponent {
 
     private fun handleSettingItem(setting: FirstLayerSettingItem) {
         when (setting) {
-            FirstLayerSettingItem.Ui -> showFragment(UiSettingsFragment())
+            FirstLayerSettingItem.Ui -> showFragment(UISettingsComposeFragment())
             FirstLayerSettingItem.Toolbar -> showFragment(ToolbarSettingsComposeFragment())
             FirstLayerSettingItem.Behavior -> showFragment(BehaviorSettingsComposeFragment())
             FirstLayerSettingItem.Font -> showFragment(FontSettingsFragment())
@@ -214,12 +214,14 @@ private fun VersionItem(
 
 interface SettingItemInterface {
     val titleResId: Int
+    val summaryResId: Int
     val iconId: Int
 }
 
 private enum class FirstLayerSettingItem(
     override val titleResId: Int,
-    override val iconId: Int
+    override val iconId: Int,
+    override val summaryResId: Int = 0,
 ) : SettingItemInterface {
     Ui(R.string.setting_title_ui, R.drawable.ic_phone),
     Toolbar(R.string.setting_title_toolbar, R.drawable.ic_toolbar),
