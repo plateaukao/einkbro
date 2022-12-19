@@ -81,17 +81,6 @@ class UISettingsComposeFragment : Fragment(), KoinComponent, FragmentTitleInterf
             )
         ),
         ListSettingItem(
-            R.string.setting_title_plus_behavior,
-            R.drawable.icon_plus,
-            R.string.setting_summary_plus_behavior,
-            config::newTabBehavior,
-            listOf(
-                R.string.plus_start_input_url,
-                R.string.plus_show_homepage,
-                R.string.plus_show_bookmarks,
-            )
-        ),
-        ListSettingItem(
             R.string.setting_title_nav_pos,
             R.drawable.icon_arrow_expand,
             R.string.setting_summary_nav_pos,
@@ -103,10 +92,28 @@ class UISettingsComposeFragment : Fragment(), KoinComponent, FragmentTitleInterf
                 R.string.setting_summary_nav_pos_not_show,
                 R.string.setting_summary_nav_pos_custom,
             )
-        )
+        ),
+        ListSettingItem(
+            R.string.setting_title_plus_behavior,
+            R.drawable.icon_plus,
+            R.string.setting_summary_plus_behavior,
+            config::newTabBehavior,
+            listOf(
+                R.string.plus_start_input_url,
+                R.string.plus_show_homepage,
+                R.string.plus_show_bookmarks,
+            )
+        ),
+        ActionSettingItem(
+            R.string.setting_clear_recent_bookmarks,
+            R.drawable.ic_bookmarks,
+            R.string.setting_summary_clear_recent_bookmarks,
+        ) {
+            config.clearRecentBookmarks()
+        },
     )
 
-    override fun getTitleId(): Int = R.string.setting_title_toolbar
+    override fun getTitleId(): Int = R.string.setting_title_ui
 }
 
 @Composable
@@ -128,6 +135,10 @@ private fun UiSettingsMainContent(
         settings.forEach { setting ->
             item {
                 when (setting) {
+                    is ActionSettingItem -> SettingItemUi(setting, showSummary = showSummary) {
+                        setting.action()
+                    }
+
                     is BooleanSettingItem -> BooleanSettingItemUi(setting, showSummary)
                     is ValueSettingItem<*> -> ValueSettingItemUi(
                         setting,
@@ -214,4 +225,11 @@ class ListSettingItem<T : Enum<T>>(
     override val summaryResId: Int = 0,
     var config: KMutableProperty0<T>,
     val options: List<Int>,
+) : SettingItemInterface
+
+class ActionSettingItem(
+    override val titleResId: Int,
+    override val iconId: Int,
+    override val summaryResId: Int = 0,
+    val action: () -> Unit,
 ) : SettingItemInterface
