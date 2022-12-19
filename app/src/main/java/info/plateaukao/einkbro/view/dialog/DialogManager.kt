@@ -179,6 +179,18 @@ class DialogManager(
             activity.getString(descriptionId),
             defaultValue.toString()
         ).show()
+
+    suspend fun getSelectedOption(
+        titleId: Int,
+        listSettings: List<Int>,
+        defaultValue: Int,
+    ): Int? =
+        ListSettingDialog(
+            activity,
+            titleId,
+            listSettings,
+            defaultValue
+        ).show()
 }
 
 fun Dialog.dismissWithAction(action: () -> Unit) {

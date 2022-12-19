@@ -48,9 +48,9 @@
 
     <!-- Dark mode -->
     <string-array name="setting_entries_dark_mode">
-        <item>Follow System</item>
-        <item>Force On</item>
-        <item>Disabled</item>
+        <item>@string/dark_mode_follow_system</item>
+        <item>@string/dark_mode_force_on</item>
+        <item>@string/dark_mode_disabled</item>
     </string-array>
 
     <string-array name="setting_values_dark_mode">
@@ -89,5 +89,8 @@
     <string name="plus_start_input_url">Start Input Url</string>
     <string name="plus_show_homepage">Show Home</string>
     <string name="plus_show_bookmarks">Show Recent Bookmarks</string>
+    <string name="dark_mode_follow_system">Follow System</string>
+    <string name="dark_mode_force_on">Force On</string>
+    <string name="dark_mode_disabled">Disabled</string>
 
 </resources>

@@ -67,6 +67,28 @@ class UISettingsComposeFragment : Fragment(), KoinComponent, FragmentTitleInterf
             R.string.setting_summary_translated_langs,
             config::preferredTranslateLanguageString
         ),
+        ListSettingItem(
+            R.string.dark_mode,
+            R.drawable.ic_dark_mode,
+            R.string.setting_summary_dark_mode,
+            config::darkMode,
+            listOf(
+                R.string.dark_mode_follow_system,
+                R.string.dark_mode_force_on,
+                R.string.dark_mode_disabled,
+            )
+        ),
+        ListSettingItem(
+            R.string.setting_title_plus_behavior,
+            R.drawable.icon_plus,
+            R.string.setting_summary_plus_behavior,
+            config::newTabBehavior,
+            listOf(
+                R.string.plus_start_input_url,
+                R.string.plus_show_homepage,
+                R.string.plus_show_bookmarks,
+            )
+        )
     )
 
     override fun getTitleId(): Int = R.string.setting_title_toolbar
@@ -90,6 +112,7 @@ private fun UiSettingsMainContent(
                 when (setting) {
                     is BooleanSettingItem -> BooleanSettingItemUi(setting, true)
                     is ValueSettingItem<*> -> ValueSettingItemUi(setting, dialogManager)
+                    is ListSettingItem<*> -> ListSettingItemUi(setting = setting, dialogManager)
                 }
             }
         }
@@ -124,4 +147,33 @@ class ValueSettingItem<T>(
     override val iconId: Int,
     override val summaryResId: Int = 0,
     var config: KMutableProperty0<T>,
+) : SettingItemInterface
+
+@Composable
+fun <T : Enum<T>> ListSettingItemUi(
+    setting: ListSettingItem<T>,
+    dialogManager: DialogManager,
+    showSummary: Boolean = false,
+) {
+    val coroutineScope = rememberCoroutineScope()
+    SettingItemUi(setting = setting, showSummary = showSummary) {
+        coroutineScope.launch {
+            val selectedIndex = dialogManager.getSelectedOption(
+                setting.titleResId,
+                setting.options,
+                setting.config.get().ordinal
+            ) ?: return@launch
+            setting.config.get().javaClass.enumConstants?.let {
+                setting.config.set(it[selectedIndex])
+            }
+        }
+    }
+}
+
+class ListSettingItem<T : Enum<T>>(
+    override val titleResId: Int,
+    override val iconId: Int,
+    override val summaryResId: Int = 0,
+    var config: KMutableProperty0<T>,
+    val options: List<Int>,
 ) : SettingItemInterface
