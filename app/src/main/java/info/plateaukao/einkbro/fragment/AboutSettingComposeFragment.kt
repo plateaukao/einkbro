@@ -49,6 +49,7 @@ private enum class AboutSettingItem(
     override val titleResId: Int,
     override val iconId: Int,
     val url: String,
+    override val summaryResId: Int = 0,
 ) : SettingItemInterface {
     ProjectSite(R.string.project_site, R.drawable.ic_home, "https://github.com/plateaukao/browser"),
     LatestRelease(

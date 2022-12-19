@@ -1,6 +1,5 @@
 package info.plateaukao.einkbro.fragment
 
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -26,7 +25,6 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
@@ -56,63 +54,54 @@ class BehaviorSettingsComposeFragment : Fragment(), KoinComponent, FragmentTitle
         return composeView
     }
 
-    private fun showFragment(fragment: Fragment) {
-        parentFragmentManager
-            .beginTransaction()
-            .replace(R.id.content_frame, fragment)
-            .addToBackStack(null)
-            .commit()
-        activity?.setTitle((fragment as FragmentTitleInterface).getTitleId())
-    }
-
     private val behaviorSettingItems = listOf(
         BooleanSettingItem(
             R.string.setting_title_saveTabs,
             R.drawable.icon_tab_plus,
-            config::shouldSaveTabs,
             R.string.setting_summary_saveTabs,
+            config::shouldSaveTabs,
         ),
         BooleanSettingItem(
             R.string.setting_title_background_loading,
             R.drawable.icon_tab_plus,
-            config::enableWebBkgndLoad,
             R.string.setting_summary_background_loading,
+            config::enableWebBkgndLoad,
         ),
         BooleanSettingItem(
             R.string.setting_title_trim_input_url,
             R.drawable.icon_edit,
-            config::shouldTrimInputUrl,
             R.string.setting_summary_trim_input_url,
+            config::shouldTrimInputUrl,
         ),
         BooleanSettingItem(
             R.string.setting_title_prune_query_parameter,
             R.drawable.ic_filter,
-            config::shouldPruneQueryParameters,
             R.string.setting_summary_prune_query_parameter,
+            config::shouldPruneQueryParameters,
         ),
         BooleanSettingItem(
             R.string.setting_title_screen_awake,
             R.drawable.ic_eye,
-            config::keepAwake,
             R.string.setting_summary_screen_awake,
+            config::keepAwake,
         ),
         BooleanSettingItem(
             R.string.setting_title_confirm_tab_close,
             R.drawable.icon_close,
-            config::confirmTabClose,
             R.string.setting_summary_confirm_tab_close,
+            config::confirmTabClose,
         ),
         BooleanSettingItem(
             R.string.setting_title_vi_binding,
             R.drawable.ic_keyboard,
-            config::enableViBinding,
             R.string.setting_summary_vi_binding,
+            config::enableViBinding,
         ),
         BooleanSettingItem(
             R.string.setting_title_useUpDown,
             R.drawable.ic_page_down,
-            config::useUpDownPageTurn,
             R.string.setting_summary_useUpDownKey,
+            config::useUpDownPageTurn,
         ),
     )
 
@@ -132,17 +121,21 @@ private fun BehaviorSettingsMainContent(settings: List<BooleanSettingItem>) {
         columns = GridCells.Fixed(2),
     ) {
         settings.forEach { setting ->
-            item { SettingItem(setting, showSummary) }
+            item { BooleanSettingItemUi(setting, showSummary) }
         }
     }
 }
 
 @Composable
-fun SettingItem(setting: BooleanSettingItem, showSummary: Boolean = false) {
+fun SettingItemUi(
+    setting: SettingItemInterface,
+    showSummary: Boolean = false,
+    isChecked: Boolean = false,
+    onClick: (() -> Unit)? = null
+) {
     val interactionSource = remember { MutableInteractionSource() }
     val pressed by interactionSource.collectIsPressedAsState()
-    val checked = remember { mutableStateOf(setting.booleanPreference.get()) }
-    val borderWidth = if (checked.value || pressed) 3.dp else 1.dp
+    val borderWidth = if (isChecked || pressed) 3.dp else 1.dp
     val height = if (showSummary) 80.dp else 70.dp
     Row(
         modifier = Modifier
@@ -152,11 +145,7 @@ fun SettingItem(setting: BooleanSettingItem, showSummary: Boolean = false) {
             .clickable(
                 indication = null,
                 interactionSource = interactionSource,
-            ) {
-                checked.value = !checked.value
-                setting.booleanPreference.toggle()
-                setting.onClick()
-            },
+            ) { onClick?.invoke() },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
@@ -195,11 +184,24 @@ fun SettingItem(setting: BooleanSettingItem, showSummary: Boolean = false) {
     }
 }
 
+@Composable
+fun BooleanSettingItemUi(
+    setting: BooleanSettingItem,
+    showSummary: Boolean = false
+) {
+    val checked = remember { mutableStateOf(setting.booleanPreference.get()) }
+    SettingItemUi(setting = setting, showSummary = showSummary, checked.value) {
+        checked.value = !checked.value
+        setting.booleanPreference.toggle()
+        setting.onClick()
+    }
+
+}
 
 class BooleanSettingItem(
     override val titleResId: Int,
     override val iconId: Int,
+    override val summaryResId: Int = 0,
     val booleanPreference: KMutableProperty0<Boolean>,
-    val summaryResId: Int = 0,
     val onClick: () -> Unit = {},
 ) : SettingItemInterface

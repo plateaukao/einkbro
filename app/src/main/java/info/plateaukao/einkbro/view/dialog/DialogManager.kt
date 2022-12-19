@@ -167,6 +167,18 @@ class DialogManager(
             activity.getString(R.string.folder_name_description),
             ""
         ).show()
+
+    suspend fun <T> getTextInput(
+        titleId: Int,
+        descriptionId: Int,
+        defaultValue: T,
+    ): String? =
+        TextInputDialog(
+            activity,
+            activity.getString(titleId),
+            activity.getString(descriptionId),
+            defaultValue.toString()
+        ).show()
 }
 
 fun Dialog.dismissWithAction(action: () -> Unit) {
