@@ -139,7 +139,7 @@ fun SettingItemUi(
     val height = if (showSummary) 80.dp else 70.dp
     Row(
         modifier = Modifier
-            .width(IntrinsicSize.Max)
+            .fillMaxWidth()
             .height(height)
             .border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
             .clickable(
@@ -190,12 +190,26 @@ fun BooleanSettingItemUi(
     showSummary: Boolean = false
 ) {
     val checked = remember { mutableStateOf(setting.booleanPreference.get()) }
-    SettingItemUi(setting = setting, showSummary = showSummary, checked.value) {
-        checked.value = !checked.value
-        setting.booleanPreference.toggle()
-        setting.onClick()
-    }
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+    ) {
+        SettingItemUi(setting = setting, showSummary = showSummary, checked.value) {
+            checked.value = !checked.value
+            setting.booleanPreference.toggle()
+        }
 
+        if (checked.value)
+            Icon(
+                painter = painterResource(id = R.drawable.ic_check), contentDescription = null,
+                modifier = Modifier
+                    .padding(horizontal = 10.dp)
+                    .align(Alignment.TopEnd)
+                    .fillMaxHeight(),
+                tint = MaterialTheme.colors.onBackground
+            )
+    }
 }
 
 class BooleanSettingItem(
@@ -203,5 +217,4 @@ class BooleanSettingItem(
     override val iconId: Int,
     override val summaryResId: Int = 0,
     val booleanPreference: KMutableProperty0<Boolean>,
-    val onClick: () -> Unit = {},
 ) : SettingItemInterface
