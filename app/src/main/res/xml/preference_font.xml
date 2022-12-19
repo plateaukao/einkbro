@@ -10,13 +10,6 @@
         android:summary="@string/setting_summary_font_size"
         android:title="@string/setting_title_font_size" />
 
-    <CheckBoxPreference
-        android:defaultValue="false"
-        android:icon="@drawable/ic_bold_font"
-        android:key="sp_bold_font"
-        android:summary="@string/setting_summary_bold_font"
-        android:title="@string/bold_font" />
-
     <Preference
         android:key="settings_font_type"
         android:title="@string/font_type" />
