@@ -13,10 +13,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import kotlinx.coroutines.launch
@@ -88,6 +90,19 @@ class UISettingsComposeFragment : Fragment(), KoinComponent, FragmentTitleInterf
                 R.string.plus_show_homepage,
                 R.string.plus_show_bookmarks,
             )
+        ),
+        ListSettingItem(
+            R.string.setting_title_nav_pos,
+            R.drawable.icon_arrow_expand,
+            R.string.setting_summary_nav_pos,
+            config::fabPosition,
+            listOf(
+                R.string.setting_summary_nav_pos_right,
+                R.string.setting_summary_nav_pos_left,
+                R.string.setting_summary_nav_pos_center,
+                R.string.setting_summary_nav_pos_not_show,
+                R.string.setting_summary_nav_pos_custom,
+            )
         )
     )
 
@@ -99,20 +114,32 @@ private fun UiSettingsMainContent(
     settings: List<SettingItemInterface>,
     dialogManager: DialogManager
 ) {
+    val context = LocalContext.current
+    val showSummary = ViewUnit.isWideLayout(context)
+    val columnCount = if (showSummary) 2 else 1
     LazyVerticalGrid(
         modifier = Modifier
             .wrapContentHeight()
             .padding(10.dp),
         verticalArrangement = Arrangement.spacedBy(7.dp),
         horizontalArrangement = Arrangement.spacedBy(7.dp),
-        columns = GridCells.Fixed(1),
+        columns = GridCells.Fixed(columnCount),
     ) {
         settings.forEach { setting ->
             item {
                 when (setting) {
-                    is BooleanSettingItem -> BooleanSettingItemUi(setting, true)
-                    is ValueSettingItem<*> -> ValueSettingItemUi(setting, dialogManager)
-                    is ListSettingItem<*> -> ListSettingItemUi(setting = setting, dialogManager)
+                    is BooleanSettingItem -> BooleanSettingItemUi(setting, showSummary)
+                    is ValueSettingItem<*> -> ValueSettingItemUi(
+                        setting,
+                        dialogManager,
+                        showSummary
+                    )
+
+                    is ListSettingItem<*> -> ListSettingItemUi(
+                        setting = setting,
+                        dialogManager,
+                        showSummary
+                    )
                 }
             }
         }
@@ -126,7 +153,12 @@ fun <T> ValueSettingItemUi(
     showSummary: Boolean = false,
 ) {
     val coroutineScope = rememberCoroutineScope()
-    SettingItemUi(setting = setting, showSummary = showSummary) {
+    SettingItemUi(
+        setting = setting,
+        showSummary = showSummary,
+        extraTitlePostfix = ": ${setting.config.get()}",
+
+        ) {
         coroutineScope.launch {
             val value = dialogManager.getTextInput(
                 setting.titleResId,
@@ -155,8 +187,14 @@ fun <T : Enum<T>> ListSettingItemUi(
     dialogManager: DialogManager,
     showSummary: Boolean = false,
 ) {
+    val context = LocalContext.current
+    val currentValueString = context.getString(setting.options[setting.config.get().ordinal])
     val coroutineScope = rememberCoroutineScope()
-    SettingItemUi(setting = setting, showSummary = showSummary) {
+    SettingItemUi(
+        setting = setting,
+        showSummary = showSummary,
+        extraTitlePostfix = ": $currentValueString"
+    ) {
         coroutineScope.launch {
             val selectedIndex = dialogManager.getSelectedOption(
                 setting.titleResId,

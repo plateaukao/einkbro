@@ -3,26 +3,20 @@ package info.plateaukao.einkbro.view.dialog
 import android.app.Activity
 import android.app.Dialog
 import android.net.Uri
-import android.os.Handler
-import android.os.Looper
-import android.os.Message
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.webkit.URLUtil
-import android.webkit.WebView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.databinding.DialogEditExtensionBinding
-import info.plateaukao.einkbro.databinding.DialogMenuContextLinkBinding
 import info.plateaukao.einkbro.databinding.DialogSavedEpubListBinding
 import info.plateaukao.einkbro.databinding.ListItemEpubFileBinding
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.unit.*
 import info.plateaukao.einkbro.view.NinjaToast
-import info.plateaukao.einkbro.view.NinjaWebView
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
