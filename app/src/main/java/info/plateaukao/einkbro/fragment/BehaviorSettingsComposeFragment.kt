@@ -131,6 +131,7 @@ fun SettingItemUi(
     setting: SettingItemInterface,
     showSummary: Boolean = false,
     isChecked: Boolean = false,
+    extraTitlePostfix: String = "",
     onClick: (() -> Unit)? = null
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -163,7 +164,7 @@ fun SettingItemUi(
         Column {
             Text(
                 modifier = Modifier.wrapContentWidth(),
-                text = stringResource(id = setting.titleResId),
+                text = stringResource(id = setting.titleResId) + extraTitlePostfix,
                 fontSize = 16.sp,
                 color = MaterialTheme.colors.onBackground
             )
