@@ -1,16 +1,10 @@
 package info.plateaukao.einkbro.fragment
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -21,20 +15,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.fragment.app.Fragment
-import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.toggle
-import info.plateaukao.einkbro.unit.ViewUnit
-import info.plateaukao.einkbro.view.compose.MyTheme
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 import kotlin.reflect.KMutableProperty0
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import androidx.compose.runtime.rememberCoroutineScope
@@ -156,13 +143,6 @@ fun <T> ValueSettingItemUi(
     }
 }
 
-class ValueSettingItem<T>(
-    override val titleResId: Int,
-    override val iconId: Int,
-    override val summaryResId: Int = 0,
-    var config: KMutableProperty0<T>,
-) : SettingItemInterface
-
 @Composable
 fun <T : Enum<T>> ListSettingItemUi(
     setting: ListSettingItem<T>,
@@ -191,7 +171,7 @@ fun <T : Enum<T>> ListSettingItemUi(
 }
 
 @Composable
-fun <T : SettingItemInterface> SettingItem(
+fun <T : SettingItemInterface> SettingItemUi(
     setting: T,
     onItemClick: (T) -> Unit
 ) {
@@ -231,8 +211,8 @@ fun <T : SettingItemInterface> SettingItem(
 }
 
 @Composable
-fun VersionItem(
-    setting: FirstLayerSettingItem,
+fun VersionItemUi(
+    setting: SettingItemInterface,
     onItemClick: () -> Unit
 ) {
     val version = """v${BuildConfig.VERSION_NAME}"""

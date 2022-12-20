@@ -10,30 +10,24 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
-import info.plateaukao.einkbro.R
-import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.dialog.DialogManager
-import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
-import kotlin.reflect.KMutableProperty0
 import android.content.Intent
 import android.content.Intent.EXTRA_TEXT
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import info.plateaukao.einkbro.activity.BrowserActivity
 
 class UISettingsComposeFragment(
     private val titleResId: Int,
     private val settingItems: List<SettingItemInterface>
 ) : Fragment(), KoinComponent, FragmentTitleInterface {
-    private val config: ConfigManager by inject()
     private val dialogManager: DialogManager by lazy { DialogManager(requireActivity()) }
 
     override fun onCreateView(
@@ -65,14 +59,15 @@ class UISettingsComposeFragment(
 }
 
 @Composable
-private fun SettingsMainContent(
+fun SettingsMainContent(
     settings: List<SettingItemInterface>,
     dialogManager: DialogManager,
-    linkAction: (String) -> Unit
+    linkAction: (String) -> Unit,
+    defaultGridSize: Int = 1,
 ) {
     val context = LocalContext.current
     val showSummary = ViewUnit.isWideLayout(context)
-    val columnCount = if (showSummary) 2 else 1
+    val columnCount = if (showSummary || defaultGridSize == 2) 2 else 1
     LazyVerticalGrid(
         modifier = Modifier
             .wrapContentHeight()
@@ -82,26 +77,16 @@ private fun SettingsMainContent(
         columns = GridCells.Fixed(columnCount),
     ) {
         settings.forEach { setting ->
-            item {
+            item(span = { GridItemSpan(setting.span) }) {
                 when (setting) {
-                    is ActionSettingItem -> SettingItemUi(setting, showSummary = showSummary) {
-                        setting.action()
-                    }
-
+                    is ActionSettingItem -> SettingItemUi(setting, showSummary = showSummary) { setting.action() }
                     is BooleanSettingItem -> BooleanSettingItemUi(setting, showSummary)
-                    is ValueSettingItem<*> -> ValueSettingItemUi(
+                    is ValueSettingItem<*> -> ValueSettingItemUi(setting, dialogManager, showSummary)
+                    is ListSettingItem<*> -> ListSettingItemUi(setting, dialogManager, showSummary)
+                    is LinkSettingItem -> SettingItemUi<LinkSettingItem>(setting) { linkAction(it.url) }
+                    is VersionSettingItem -> VersionItemUi(
                         setting,
-                        dialogManager,
-                        showSummary
-                    )
-
-                    is ListSettingItem<*> -> ListSettingItemUi(
-                        setting = setting,
-                        dialogManager,
-                        showSummary
-                    )
-
-                    is AboutSettingItem -> SettingItem(setting, { linkAction(it.url) })
+                        onItemClick = { (setting as ActionSettingItem).action() })
                 }
             }
         }
