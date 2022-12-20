@@ -70,7 +70,7 @@ fun SettingItemUi(
                 fontSize = 16.sp,
                 color = MaterialTheme.colors.onBackground
             )
-            if (showSummary) {
+            if (showSummary && setting.summaryResId != 0) {
                 Spacer(
                     modifier = Modifier
                         .height(5.dp)
