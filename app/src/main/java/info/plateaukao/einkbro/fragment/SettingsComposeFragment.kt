@@ -267,6 +267,6 @@ class SettingsComposeFragment : Fragment(), KoinComponent {
     )
 
     private fun createAboutFragment() = UISettingsComposeFragment(
-        R.string.title_about, LinkSettingItem.values().toList()
+        R.string.title_about, LinkSettingItem.values().toList(), 2
     )
 }

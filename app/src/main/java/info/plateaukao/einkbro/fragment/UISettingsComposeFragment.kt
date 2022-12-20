@@ -26,7 +26,8 @@ import info.plateaukao.einkbro.activity.BrowserActivity
 
 class UISettingsComposeFragment(
     private val titleResId: Int,
-    private val settingItems: List<SettingItemInterface>
+    private val settingItems: List<SettingItemInterface>,
+    private val defaultGridSize: Int = 1
 ) : Fragment(), KoinComponent, FragmentTitleInterface {
     private val dialogManager: DialogManager by lazy { DialogManager(requireActivity()) }
 
@@ -38,7 +39,7 @@ class UISettingsComposeFragment(
         val composeView = ComposeView(requireContext())
         composeView.setContent {
             MyTheme {
-                SettingsMainContent(settingItems, dialogManager, this::handleLink)
+                SettingsMainContent(settingItems, dialogManager, this::handleLink, defaultGridSize)
             }
         }
         return composeView
@@ -84,9 +85,7 @@ fun SettingsMainContent(
                     is ValueSettingItem<*> -> ValueSettingItemUi(setting, dialogManager, showSummary)
                     is ListSettingItem<*> -> ListSettingItemUi(setting, dialogManager, showSummary)
                     is LinkSettingItem -> SettingItemUi<LinkSettingItem>(setting) { linkAction(it.url) }
-                    is VersionSettingItem -> VersionItemUi(
-                        setting,
-                        onItemClick = { (setting as ActionSettingItem).action() })
+                    is VersionSettingItem -> VersionItemUi(setting) { setting.action() }
                 }
             }
         }
