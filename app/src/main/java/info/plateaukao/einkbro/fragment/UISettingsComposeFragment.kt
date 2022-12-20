@@ -25,8 +25,14 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import kotlin.reflect.KMutableProperty0
+import android.content.Intent
+import android.content.Intent.EXTRA_TEXT
+import info.plateaukao.einkbro.activity.BrowserActivity
 
-class UISettingsComposeFragment : Fragment(), KoinComponent, FragmentTitleInterface {
+class UISettingsComposeFragment(
+    private val titleResId: Int,
+    private val settingItems: List<SettingItemInterface>
+) : Fragment(), KoinComponent, FragmentTitleInterface {
     private val config: ConfigManager by inject()
     private val dialogManager: DialogManager by lazy { DialogManager(requireActivity()) }
 
@@ -38,88 +44,31 @@ class UISettingsComposeFragment : Fragment(), KoinComponent, FragmentTitleInterf
         val composeView = ComposeView(requireContext())
         composeView.setContent {
             MyTheme {
-                UiSettingsMainContent(uiSettingItems, dialogManager)
+                SettingsMainContent(settingItems, dialogManager, this::handleLink)
             }
         }
         return composeView
     }
 
-    private val uiSettingItems = listOf(
-        BooleanSettingItem(
-            R.string.desktop_mode,
-            R.drawable.icon_desktop,
-            R.string.setting_summary_desktop,
-            config::desktop,
-        ),
-        BooleanSettingItem(
-            R.string.always_enable_zoom,
-            R.drawable.ic_enable_zoom,
-            R.string.setting_summary_enable_zoom,
-            config::enableZoom,
-        ),
-        ValueSettingItem(
-            R.string.setting_title_page_left_value,
-            R.drawable.ic_page_height,
-            R.string.setting_summary_page_left_value,
-            config::pageReservedOffset
-        ),
-        ValueSettingItem(
-            R.string.setting_title_translated_langs,
-            R.drawable.ic_translate,
-            R.string.setting_summary_translated_langs,
-            config::preferredTranslateLanguageString
-        ),
-        ListSettingItem(
-            R.string.dark_mode,
-            R.drawable.ic_dark_mode,
-            R.string.setting_summary_dark_mode,
-            config::darkMode,
-            listOf(
-                R.string.dark_mode_follow_system,
-                R.string.dark_mode_force_on,
-                R.string.dark_mode_disabled,
-            )
-        ),
-        ListSettingItem(
-            R.string.setting_title_nav_pos,
-            R.drawable.icon_arrow_expand,
-            R.string.setting_summary_nav_pos,
-            config::fabPosition,
-            listOf(
-                R.string.setting_summary_nav_pos_right,
-                R.string.setting_summary_nav_pos_left,
-                R.string.setting_summary_nav_pos_center,
-                R.string.setting_summary_nav_pos_not_show,
-                R.string.setting_summary_nav_pos_custom,
-            )
-        ),
-        ListSettingItem(
-            R.string.setting_title_plus_behavior,
-            R.drawable.icon_plus,
-            R.string.setting_summary_plus_behavior,
-            config::newTabBehavior,
-            listOf(
-                R.string.plus_start_input_url,
-                R.string.plus_show_homepage,
-                R.string.plus_show_bookmarks,
-            )
-        ),
-        ActionSettingItem(
-            R.string.setting_clear_recent_bookmarks,
-            R.drawable.ic_bookmarks,
-            R.string.setting_summary_clear_recent_bookmarks,
-        ) {
-            config.clearRecentBookmarks()
-        },
-    )
+    private fun handleLink(url: String) {
+        requireContext().startActivity(
+            Intent(requireContext(), BrowserActivity::class.java).apply {
+                action = Intent.ACTION_SEND
+                putExtra(EXTRA_TEXT, url)
+            }
+        )
+        requireActivity().finish()
+    }
 
-    override fun getTitleId(): Int = R.string.setting_title_ui
+
+    override fun getTitleId(): Int = titleResId
 }
 
 @Composable
-private fun UiSettingsMainContent(
+private fun SettingsMainContent(
     settings: List<SettingItemInterface>,
-    dialogManager: DialogManager
+    dialogManager: DialogManager,
+    linkAction: (String) -> Unit
 ) {
     val context = LocalContext.current
     val showSummary = ViewUnit.isWideLayout(context)
@@ -151,85 +100,11 @@ private fun UiSettingsMainContent(
                         dialogManager,
                         showSummary
                     )
+
+                    is AboutSettingItem -> SettingItem(setting, { linkAction(it.url) })
                 }
             }
         }
     }
 }
 
-@Composable
-fun <T> ValueSettingItemUi(
-    setting: ValueSettingItem<T>,
-    dialogManager: DialogManager,
-    showSummary: Boolean = false,
-) {
-    val coroutineScope = rememberCoroutineScope()
-    SettingItemUi(
-        setting = setting,
-        showSummary = showSummary,
-        extraTitlePostfix = ": ${setting.config.get()}",
-
-        ) {
-        coroutineScope.launch {
-            val value = dialogManager.getTextInput(
-                setting.titleResId,
-                setting.summaryResId,
-                setting.config.get()
-            ) ?: return@launch
-            if (setting.config.get() is Int) {
-                setting.config.set(value.toInt() as T)
-            } else {
-                setting.config.set(value as T)
-            }
-        }
-    }
-}
-
-class ValueSettingItem<T>(
-    override val titleResId: Int,
-    override val iconId: Int,
-    override val summaryResId: Int = 0,
-    var config: KMutableProperty0<T>,
-) : SettingItemInterface
-
-@Composable
-fun <T : Enum<T>> ListSettingItemUi(
-    setting: ListSettingItem<T>,
-    dialogManager: DialogManager,
-    showSummary: Boolean = false,
-) {
-    val context = LocalContext.current
-    val currentValueString = context.getString(setting.options[setting.config.get().ordinal])
-    val coroutineScope = rememberCoroutineScope()
-    SettingItemUi(
-        setting = setting,
-        showSummary = showSummary,
-        extraTitlePostfix = ": $currentValueString"
-    ) {
-        coroutineScope.launch {
-            val selectedIndex = dialogManager.getSelectedOption(
-                setting.titleResId,
-                setting.options,
-                setting.config.get().ordinal
-            ) ?: return@launch
-            setting.config.get().javaClass.enumConstants?.let {
-                setting.config.set(it[selectedIndex])
-            }
-        }
-    }
-}
-
-class ListSettingItem<T : Enum<T>>(
-    override val titleResId: Int,
-    override val iconId: Int,
-    override val summaryResId: Int = 0,
-    var config: KMutableProperty0<T>,
-    val options: List<Int>,
-) : SettingItemInterface
-
-class ActionSettingItem(
-    override val titleResId: Int,
-    override val iconId: Int,
-    override val summaryResId: Int = 0,
-    val action: () -> Unit,
-) : SettingItemInterface
