@@ -63,9 +63,9 @@ class SettingsComposeFragment : Fragment(), KoinComponent {
 
     private fun handleSettingItem(setting: FirstLayerSettingItem) {
         when (setting) {
-            FirstLayerSettingItem.Ui -> showFragment(UISettingsComposeFragment())
-            FirstLayerSettingItem.Toolbar -> showFragment(ToolbarSettingsComposeFragment())
-            FirstLayerSettingItem.Behavior -> showFragment(BehaviorSettingsComposeFragment())
+            FirstLayerSettingItem.Ui -> showFragment(createUiSettingFragment())
+            FirstLayerSettingItem.Toolbar -> showFragment(createToolbarSettingFragment())
+            FirstLayerSettingItem.Behavior -> showFragment(createBehaviorSettingFragment())
             FirstLayerSettingItem.Font -> showFragment(FontSettingsFragment())
             FirstLayerSettingItem.Gesture -> showFragment(FragmentSettingsGesture())
             FirstLayerSettingItem.Backup -> showFragment(DataSettingsFragment())
@@ -75,7 +75,7 @@ class SettingsComposeFragment : Fragment(), KoinComponent {
             FirstLayerSettingItem.Search -> showFragment(SearchSettingsFragment())
             FirstLayerSettingItem.UserAgent -> lifecycleScope.launch { updateUserAgent() }
             FirstLayerSettingItem.Homepage -> lifecycleScope.launch() { updateHomepage() }
-            FirstLayerSettingItem.About -> showFragment(AboutSettingComposeFragment())
+            FirstLayerSettingItem.About -> showFragment(createAboutFragment())
         }
     }
 
@@ -110,6 +110,169 @@ class SettingsComposeFragment : Fragment(), KoinComponent {
         newValue?.let { config.favoriteUrl = it }
     }
 
+    private fun createUiSettingFragment() = UISettingsComposeFragment(
+        R.string.setting_title_ui, uiSettingItems
+    )
+
+    private val uiSettingItems = listOf(
+        BooleanSettingItem(
+            R.string.desktop_mode,
+            R.drawable.icon_desktop,
+            R.string.setting_summary_desktop,
+            config::desktop,
+        ),
+        BooleanSettingItem(
+            R.string.always_enable_zoom,
+            R.drawable.ic_enable_zoom,
+            R.string.setting_summary_enable_zoom,
+            config::enableZoom,
+        ),
+        ValueSettingItem(
+            R.string.setting_title_page_left_value,
+            R.drawable.ic_page_height,
+            R.string.setting_summary_page_left_value,
+            config::pageReservedOffset
+        ),
+        ValueSettingItem(
+            R.string.setting_title_translated_langs,
+            R.drawable.ic_translate,
+            R.string.setting_summary_translated_langs,
+            config::preferredTranslateLanguageString
+        ),
+        ListSettingItem(
+            R.string.dark_mode,
+            R.drawable.ic_dark_mode,
+            R.string.setting_summary_dark_mode,
+            config::darkMode,
+            listOf(
+                R.string.dark_mode_follow_system,
+                R.string.dark_mode_force_on,
+                R.string.dark_mode_disabled,
+            )
+        ),
+        ListSettingItem(
+            R.string.setting_title_nav_pos,
+            R.drawable.icon_arrow_expand,
+            R.string.setting_summary_nav_pos,
+            config::fabPosition,
+            listOf(
+                R.string.setting_summary_nav_pos_right,
+                R.string.setting_summary_nav_pos_left,
+                R.string.setting_summary_nav_pos_center,
+                R.string.setting_summary_nav_pos_not_show,
+                R.string.setting_summary_nav_pos_custom,
+            )
+        ),
+        ListSettingItem(
+            R.string.setting_title_plus_behavior,
+            R.drawable.icon_plus,
+            R.string.setting_summary_plus_behavior,
+            config::newTabBehavior,
+            listOf(
+                R.string.plus_start_input_url,
+                R.string.plus_show_homepage,
+                R.string.plus_show_bookmarks,
+            )
+        ),
+        ActionSettingItem(
+            R.string.setting_clear_recent_bookmarks,
+            R.drawable.ic_bookmarks,
+            R.string.setting_summary_clear_recent_bookmarks,
+        ) {
+            config.clearRecentBookmarks()
+        },
+    )
+
+    private fun createBehaviorSettingFragment() = UISettingsComposeFragment(
+        R.string.setting_title_behavior, behaviorSettingItems
+    )
+
+    private val behaviorSettingItems = listOf(
+        BooleanSettingItem(
+            R.string.setting_title_saveTabs,
+            R.drawable.icon_tab_plus,
+            R.string.setting_summary_saveTabs,
+            config::shouldSaveTabs,
+        ),
+        BooleanSettingItem(
+            R.string.setting_title_background_loading,
+            R.drawable.icon_tab_plus,
+            R.string.setting_summary_background_loading,
+            config::enableWebBkgndLoad,
+        ),
+        BooleanSettingItem(
+            R.string.setting_title_trim_input_url,
+            R.drawable.icon_edit,
+            R.string.setting_summary_trim_input_url,
+            config::shouldTrimInputUrl,
+        ),
+        BooleanSettingItem(
+            R.string.setting_title_prune_query_parameter,
+            R.drawable.ic_filter,
+            R.string.setting_summary_prune_query_parameter,
+            config::shouldPruneQueryParameters,
+        ),
+        BooleanSettingItem(
+            R.string.setting_title_screen_awake,
+            R.drawable.ic_eye,
+            R.string.setting_summary_screen_awake,
+            config::keepAwake,
+        ),
+        BooleanSettingItem(
+            R.string.setting_title_confirm_tab_close,
+            R.drawable.icon_close,
+            R.string.setting_summary_confirm_tab_close,
+            config::confirmTabClose,
+        ),
+        BooleanSettingItem(
+            R.string.setting_title_vi_binding,
+            R.drawable.ic_keyboard,
+            R.string.setting_summary_vi_binding,
+            config::enableViBinding,
+        ),
+        BooleanSettingItem(
+            R.string.setting_title_useUpDown,
+            R.drawable.ic_page_down,
+            R.string.setting_summary_useUpDownKey,
+            config::useUpDownPageTurn,
+        ),
+    )
+
+    private fun createToolbarSettingFragment() = UISettingsComposeFragment(
+        R.string.setting_title_toolbar, toolbarSettingItems
+    )
+
+
+    private val toolbarSettingItems = listOf(
+        BooleanSettingItem(
+            R.string.setting_title_toolbar_top,
+            R.drawable.ic_page_height,
+            R.string.setting_summary_toolbar_top,
+            config::isToolbarOnTop,
+        ),
+        BooleanSettingItem(
+            R.string.setting_title_hideToolbar,
+            R.drawable.icon_fullscreen,
+            R.string.setting_summary_hide,
+            config::shouldHideToolbar,
+        ),
+        BooleanSettingItem(
+            R.string.setting_title_toolbarShow,
+            R.drawable.icon_show,
+            R.string.setting_summary_toolbarShow,
+            config::showToolbarFirst,
+        ),
+        BooleanSettingItem(
+            R.string.setting_title_show_tab_bar,
+            R.drawable.icon_tab_plus,
+            R.string.setting_summary_show_tab_bar,
+            config::shouldShowTabBar,
+        ),
+    )
+
+    private fun createAboutFragment() = UISettingsComposeFragment(
+        R.string.title_about, AboutSettingItem.values().toList()
+    )
 }
 
 @Composable
@@ -139,86 +302,8 @@ fun <T : SettingItemInterface> SettingsMainContent(
     }
 }
 
-@Composable
-private fun <T : SettingItemInterface> SettingItem(
-    setting: T,
-    onItemClick: (T) -> Unit
-) {
-    val interactionSource = remember { MutableInteractionSource() }
-    val pressed by interactionSource.collectIsPressedAsState()
-    val borderWidth = if (pressed) 3.dp else 1.dp
-    Row(
-        modifier = Modifier
-            .width(IntrinsicSize.Max)
-            .height(60.dp)
-            .border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
-            .clickable(
-                indication = null,
-                interactionSource = interactionSource,
-            ) { onItemClick(setting) },
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(
-            painter = painterResource(id = setting.iconId), contentDescription = null,
-            modifier = Modifier
-                .padding(horizontal = 6.dp)
-                .fillMaxHeight(),
-            tint = MaterialTheme.colors.onBackground
-        )
-        Spacer(
-            modifier = Modifier
-                .width(6.dp)
-                .fillMaxHeight()
-        )
-        Text(
-            modifier = Modifier.wrapContentWidth(),
-            text = stringResource(id = setting.titleResId),
-            fontSize = 16.sp,
-            color = MaterialTheme.colors.onBackground
-        )
-    }
-}
 
-@Composable
-private fun VersionItem(
-    setting: FirstLayerSettingItem,
-    onItemClick: () -> Unit
-) {
-    val version = """v${BuildConfig.VERSION_NAME}"""
-
-    val interactionSource = remember { MutableInteractionSource() }
-    val pressed by interactionSource.collectIsPressedAsState()
-    val borderWidth = if (pressed) 3.dp else 1.dp
-    Row(
-        modifier = Modifier
-            .width(IntrinsicSize.Max)
-            .height(60.dp)
-            .border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
-            .clickable(
-                indication = null,
-                interactionSource = interactionSource,
-            ) { onItemClick() },
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
-    ) {
-        Text(
-            modifier = Modifier
-                .wrapContentWidth()
-                .padding(horizontal = 15.dp),
-            text = stringResource(id = setting.titleResId) + " " + version,
-            fontSize = 16.sp,
-            color = MaterialTheme.colors.onBackground
-        )
-    }
-}
-
-interface SettingItemInterface {
-    val titleResId: Int
-    val summaryResId: Int
-    val iconId: Int
-}
-
-private enum class FirstLayerSettingItem(
+enum class FirstLayerSettingItem(
     override val titleResId: Int,
     override val iconId: Int,
     override val summaryResId: Int = 0,

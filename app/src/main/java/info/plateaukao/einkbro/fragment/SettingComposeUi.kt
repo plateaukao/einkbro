@@ -36,95 +36,10 @@ import info.plateaukao.einkbro.view.compose.MyTheme
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import kotlin.reflect.KMutableProperty0
-
-class BehaviorSettingsComposeFragment : Fragment(), KoinComponent, FragmentTitleInterface {
-    private val config: ConfigManager by inject()
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        val composeView = ComposeView(requireContext())
-        composeView.setContent {
-            MyTheme {
-                BehaviorSettingsMainContent(behaviorSettingItems)
-            }
-        }
-        return composeView
-    }
-
-    private val behaviorSettingItems = listOf(
-        BooleanSettingItem(
-            R.string.setting_title_saveTabs,
-            R.drawable.icon_tab_plus,
-            R.string.setting_summary_saveTabs,
-            config::shouldSaveTabs,
-        ),
-        BooleanSettingItem(
-            R.string.setting_title_background_loading,
-            R.drawable.icon_tab_plus,
-            R.string.setting_summary_background_loading,
-            config::enableWebBkgndLoad,
-        ),
-        BooleanSettingItem(
-            R.string.setting_title_trim_input_url,
-            R.drawable.icon_edit,
-            R.string.setting_summary_trim_input_url,
-            config::shouldTrimInputUrl,
-        ),
-        BooleanSettingItem(
-            R.string.setting_title_prune_query_parameter,
-            R.drawable.ic_filter,
-            R.string.setting_summary_prune_query_parameter,
-            config::shouldPruneQueryParameters,
-        ),
-        BooleanSettingItem(
-            R.string.setting_title_screen_awake,
-            R.drawable.ic_eye,
-            R.string.setting_summary_screen_awake,
-            config::keepAwake,
-        ),
-        BooleanSettingItem(
-            R.string.setting_title_confirm_tab_close,
-            R.drawable.icon_close,
-            R.string.setting_summary_confirm_tab_close,
-            config::confirmTabClose,
-        ),
-        BooleanSettingItem(
-            R.string.setting_title_vi_binding,
-            R.drawable.ic_keyboard,
-            R.string.setting_summary_vi_binding,
-            config::enableViBinding,
-        ),
-        BooleanSettingItem(
-            R.string.setting_title_useUpDown,
-            R.drawable.ic_page_down,
-            R.string.setting_summary_useUpDownKey,
-            config::useUpDownPageTurn,
-        ),
-    )
-
-    override fun getTitleId(): Int = R.string.setting_title_behavior
-}
-
-@Composable
-private fun BehaviorSettingsMainContent(settings: List<BooleanSettingItem>) {
-    val context = LocalContext.current
-    val showSummary = ViewUnit.isWideLayout(context)
-    LazyVerticalGrid(
-        modifier = Modifier
-            .wrapContentHeight()
-            .padding(10.dp),
-        verticalArrangement = Arrangement.spacedBy(7.dp),
-        horizontalArrangement = Arrangement.spacedBy(7.dp),
-        columns = GridCells.Fixed(2),
-    ) {
-        settings.forEach { setting ->
-            item { BooleanSettingItemUi(setting, showSummary) }
-        }
-    }
-}
+import info.plateaukao.einkbro.view.dialog.DialogManager
+import androidx.compose.runtime.rememberCoroutineScope
+import kotlinx.coroutines.launch
+import info.plateaukao.einkbro.BuildConfig
 
 @Composable
 fun SettingItemUi(
@@ -213,9 +128,138 @@ fun BooleanSettingItemUi(
     }
 }
 
-class BooleanSettingItem(
+@Composable
+fun <T> ValueSettingItemUi(
+    setting: ValueSettingItem<T>,
+    dialogManager: DialogManager,
+    showSummary: Boolean = false,
+) {
+    val coroutineScope = rememberCoroutineScope()
+    SettingItemUi(
+        setting = setting,
+        showSummary = showSummary,
+        extraTitlePostfix = ": ${setting.config.get()}",
+
+        ) {
+        coroutineScope.launch {
+            val value = dialogManager.getTextInput(
+                setting.titleResId,
+                setting.summaryResId,
+                setting.config.get()
+            ) ?: return@launch
+            if (setting.config.get() is Int) {
+                setting.config.set(value.toInt() as T)
+            } else {
+                setting.config.set(value as T)
+            }
+        }
+    }
+}
+
+class ValueSettingItem<T>(
     override val titleResId: Int,
     override val iconId: Int,
     override val summaryResId: Int = 0,
-    val booleanPreference: KMutableProperty0<Boolean>,
+    var config: KMutableProperty0<T>,
 ) : SettingItemInterface
+
+@Composable
+fun <T : Enum<T>> ListSettingItemUi(
+    setting: ListSettingItem<T>,
+    dialogManager: DialogManager,
+    showSummary: Boolean = false,
+) {
+    val context = LocalContext.current
+    val currentValueString = context.getString(setting.options[setting.config.get().ordinal])
+    val coroutineScope = rememberCoroutineScope()
+    SettingItemUi(
+        setting = setting,
+        showSummary = showSummary,
+        extraTitlePostfix = ": $currentValueString"
+    ) {
+        coroutineScope.launch {
+            val selectedIndex = dialogManager.getSelectedOption(
+                setting.titleResId,
+                setting.options,
+                setting.config.get().ordinal
+            ) ?: return@launch
+            setting.config.get().javaClass.enumConstants?.let {
+                setting.config.set(it[selectedIndex])
+            }
+        }
+    }
+}
+
+@Composable
+fun <T : SettingItemInterface> SettingItem(
+    setting: T,
+    onItemClick: (T) -> Unit
+) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val pressed by interactionSource.collectIsPressedAsState()
+    val borderWidth = if (pressed) 3.dp else 1.dp
+    Row(
+        modifier = Modifier
+            .width(IntrinsicSize.Max)
+            .height(60.dp)
+            .border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
+            .clickable(
+                indication = null,
+                interactionSource = interactionSource,
+            ) { onItemClick(setting) },
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            painter = painterResource(id = setting.iconId), contentDescription = null,
+            modifier = Modifier
+                .padding(horizontal = 6.dp)
+                .fillMaxHeight(),
+            tint = MaterialTheme.colors.onBackground
+        )
+        Spacer(
+            modifier = Modifier
+                .width(6.dp)
+                .fillMaxHeight()
+        )
+        Text(
+            modifier = Modifier.wrapContentWidth(),
+            text = stringResource(id = setting.titleResId),
+            fontSize = 16.sp,
+            color = MaterialTheme.colors.onBackground
+        )
+    }
+}
+
+@Composable
+fun VersionItem(
+    setting: FirstLayerSettingItem,
+    onItemClick: () -> Unit
+) {
+    val version = """v${BuildConfig.VERSION_NAME}"""
+
+    val interactionSource = remember { MutableInteractionSource() }
+    val pressed by interactionSource.collectIsPressedAsState()
+    val borderWidth = if (pressed) 3.dp else 1.dp
+    Row(
+        modifier = Modifier
+            .width(IntrinsicSize.Max)
+            .height(60.dp)
+            .border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
+            .clickable(
+                indication = null,
+                interactionSource = interactionSource,
+            ) { onItemClick() },
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
+    ) {
+        Text(
+            modifier = Modifier
+                .wrapContentWidth()
+                .padding(horizontal = 15.dp),
+            text = stringResource(id = setting.titleResId) + " " + version,
+            fontSize = 16.sp,
+            color = MaterialTheme.colors.onBackground
+        )
+    }
+}
+
