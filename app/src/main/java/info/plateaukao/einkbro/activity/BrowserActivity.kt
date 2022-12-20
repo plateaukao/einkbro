@@ -156,6 +156,8 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                 this::gotoSystemTtsSettings
             ).show(supportFragmentManager, "TtsSettingDialog")
 
+            ToolbarAction.Font -> ninjaWebView.toggleReaderMode()
+
             else -> {}
         }
     }
