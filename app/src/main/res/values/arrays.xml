@@ -29,49 +29,6 @@
         <item>8</item>
     </string-array>
 
-    <!-- User agent -->
-    <string-array name="setting_entries_nav_pos">
-        <item>@string/setting_summary_nav_pos_right</item>
-        <item>@string/setting_summary_nav_pos_left</item>
-        <item>@string/setting_summary_nav_pos_center</item>
-        <item>@string/setting_summary_nav_pos_not_show</item>
-        <item>@string/setting_summary_nav_pos_custom</item>
-    </string-array>
-
-    <string-array name="setting_values_nav_pos">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-    </string-array>
-
-    <!-- Dark mode -->
-    <string-array name="setting_entries_dark_mode">
-        <item>@string/dark_mode_follow_system</item>
-        <item>@string/dark_mode_force_on</item>
-        <item>@string/dark_mode_disabled</item>
-    </string-array>
-
-    <string-array name="setting_values_dark_mode">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-    </string-array>
-
-    <!-- New Tab Behavior -->
-    <string-array name="setting_entries_plus_behavior">
-        <item>@string/plus_start_input_url</item>
-        <item>@string/plus_show_homepage</item>
-        <item>@string/plus_show_bookmarks</item>
-    </string-array>
-
-    <string-array name="setting_values_plus_behavior">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-    </string-array>
-
     <!-- General -->
     <string name="sp_ad_block">SP_AD_BLOCK_9</string>
     <string name="sp_cookies">SP_COOKIES_9</string>

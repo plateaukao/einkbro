@@ -22,11 +22,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.toggle
-import kotlin.reflect.KMutableProperty0
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import androidx.compose.runtime.rememberCoroutineScope
 import kotlinx.coroutines.launch
-import info.plateaukao.einkbro.BuildConfig
 
 @Composable
 fun SettingItemUi(
@@ -146,7 +144,7 @@ fun <T> ValueSettingItemUi(
 
 @Composable
 fun <T : Enum<T>> ListSettingItemUi(
-    setting: ListSettingItem<T>,
+    setting: ListSettingWithEnumItem<T>,
     dialogManager: DialogManager,
     showSummary: Boolean = false,
 ) {
@@ -168,6 +166,34 @@ fun <T : Enum<T>> ListSettingItemUi(
             setting.config.get().javaClass.enumConstants?.let {
                 setting.config.set(it[selectedIndex])
             }
+            currentValueString.value = context.getString(setting.options[selectedIndex])
+        }
+    }
+}
+
+@Composable
+fun ListSettingWithStringItemUi(
+    setting: ListSettingWithStringItem,
+    dialogManager: DialogManager,
+    showSummary: Boolean = false,
+) {
+    val context = LocalContext.current
+    val currentIndex = setting.config.get().toInt()
+    var currentValueString =
+        remember { mutableStateOf(context.getString(setting.options[currentIndex])) }
+    val coroutineScope = rememberCoroutineScope()
+    SettingItemUi(
+        setting = setting,
+        showSummary = showSummary,
+        extraTitlePostfix = ": ${currentValueString.value}"
+    ) {
+        coroutineScope.launch {
+            val selectedIndex = dialogManager.getSelectedOption(
+                setting.titleResId,
+                setting.options,
+                currentIndex
+            ) ?: return@launch
+            setting.config.set(selectedIndex.toString())
             currentValueString.value = context.getString(setting.options[selectedIndex])
         }
     }

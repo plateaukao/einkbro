@@ -84,7 +84,8 @@ fun SettingsMainContent(
                     is ActionSettingItem -> SettingItemUi(setting, showSummary = showSummary) { setting.action() }
                     is BooleanSettingItem -> BooleanSettingItemUi(setting, showSummary)
                     is ValueSettingItem<*> -> ValueSettingItemUi(setting, dialogManager, showSummary)
-                    is ListSettingItem<*> -> ListSettingItemUi(setting, dialogManager, showSummary)
+                    is ListSettingWithEnumItem<*> -> ListSettingItemUi(setting, dialogManager, showSummary)
+                    is ListSettingWithStringItem -> ListSettingWithStringItemUi(setting, dialogManager, showSummary)
                     is LinkSettingItem -> SettingItemUi(setting) { linkAction(setting.url) }
                     is VersionSettingItem -> {
                         val version = " v${BuildConfig.VERSION_NAME}"

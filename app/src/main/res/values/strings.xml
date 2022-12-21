@@ -371,4 +371,7 @@
     <string name="read_speed">Read Speed</string>
     <string name="toast_send_link_failed">Sending link failed</string>
     <string name="toast_receive_link_failed">Receiving link failed.</string>
+    <string name="setting_summary_search_engine">Choose a search engine</string>
+    <string name="setting_summary_custom_process_text_url">When you select text in another app, you can search it in the browser with this url prefix.</string>
+    <string name="not_supported">Not supported.</string>
 </resources>

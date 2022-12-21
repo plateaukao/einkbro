@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.R
+import info.plateaukao.einkbro.unit.BackupUnit
 import info.plateaukao.einkbro.view.GestureType
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.dialog.DialogManager
@@ -18,9 +19,10 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class SettingsComposeFragment : Fragment(), KoinComponent {
+class MainSettingsFragment : Fragment(), KoinComponent {
     private val config: ConfigManager by inject()
     private val dialogManager: DialogManager by lazy { DialogManager(requireActivity()) }
+    private val backupUnit: BackupUnit by lazy { BackupUnit(requireContext(), requireActivity()) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,7 +49,11 @@ class SettingsComposeFragment : Fragment(), KoinComponent {
         ActionSettingItem(R.string.setting_gestures, R.drawable.gesture_tap) {
             showFragment(createGestureSettingFragment())
         },
-        ActionSettingItem(R.string.setting_title_data, R.drawable.icon_backup) { showFragment(DataSettingsFragment()) },
+        ActionSettingItem(R.string.setting_title_data, R.drawable.icon_backup) {
+            showFragment(
+                createBackupSettingsFragment()
+            )
+        },
         ActionSettingItem(
             R.string.setting_title_pdf_paper_size,
             R.drawable.ic_pdf
@@ -61,7 +67,7 @@ class SettingsComposeFragment : Fragment(), KoinComponent {
             R.drawable.icon_delete
         ) { showFragment(ClearDataFragment()) },
         ActionSettingItem(R.string.setting_title_search, R.drawable.icon_search) {
-            showFragment(SearchSettingsFragment())
+            showFragment(createSearchSettingsFragment())
         },
         ActionSettingItem(
             R.string.setting_title_userAgent,
@@ -70,7 +76,7 @@ class SettingsComposeFragment : Fragment(), KoinComponent {
         ActionSettingItem(
             R.string.setting_title_edit_homepage,
             R.drawable.icon_edit
-        ) { lifecycleScope.launch() { updateHomepage() } },
+        ) { lifecycleScope.launch { updateHomepage() } },
         VersionSettingItem(R.string.menu_other_info, R.drawable.icon_info, { showFragment(createAboutFragment()) }),
     )
 
@@ -134,7 +140,7 @@ class SettingsComposeFragment : Fragment(), KoinComponent {
             R.string.setting_summary_translated_langs,
             config::preferredTranslateLanguageString
         ),
-        ListSettingItem(
+        ListSettingWithEnumItem(
             R.string.dark_mode,
             R.drawable.ic_dark_mode,
             R.string.setting_summary_dark_mode,
@@ -145,7 +151,7 @@ class SettingsComposeFragment : Fragment(), KoinComponent {
                 R.string.dark_mode_disabled,
             )
         ),
-        ListSettingItem(
+        ListSettingWithEnumItem(
             R.string.setting_title_nav_pos,
             R.drawable.icon_arrow_expand,
             R.string.setting_summary_nav_pos,
@@ -158,7 +164,7 @@ class SettingsComposeFragment : Fragment(), KoinComponent {
                 R.string.setting_summary_nav_pos_custom,
             )
         ),
-        ListSettingItem(
+        ListSettingWithEnumItem(
             R.string.setting_title_plus_behavior,
             R.drawable.icon_plus,
             R.string.setting_summary_plus_behavior,
@@ -276,25 +282,25 @@ class SettingsComposeFragment : Fragment(), KoinComponent {
             config::isMultitouchEnabled,
             span = 2,
         ),
-        ListSettingItem(
+        ListSettingWithEnumItem(
             R.string.setting_gesture_up,
             R.drawable.icon_arrow_up_gest,
             config = config::multitouchUp,
             options = GestureType.values().map { it.resId },
         ),
-        ListSettingItem(
+        ListSettingWithEnumItem(
             R.string.setting_gesture_down,
             R.drawable.icon_arrow_down_gest,
             config = config::multitouchDown,
             options = GestureType.values().map { it.resId },
         ),
-        ListSettingItem(
+        ListSettingWithEnumItem(
             R.string.setting_gesture_left,
             R.drawable.icon_arrow_left_gest,
             config = config::multitouchLeft,
             options = GestureType.values().map { it.resId },
         ),
-        ListSettingItem(
+        ListSettingWithEnumItem(
             R.string.setting_gesture_right,
             R.drawable.icon_arrow_right_gest,
             config = config::multitouchRight,
@@ -307,25 +313,25 @@ class SettingsComposeFragment : Fragment(), KoinComponent {
             config::enableNavButtonGesture,
             span = 2,
         ),
-        ListSettingItem(
+        ListSettingWithEnumItem(
             R.string.setting_gesture_up,
             R.drawable.icon_arrow_up_gest,
             config = config::navGestureUp,
             options = GestureType.values().map { it.resId },
         ),
-        ListSettingItem(
+        ListSettingWithEnumItem(
             R.string.setting_gesture_down,
             R.drawable.icon_arrow_down_gest,
             config = config::navGestureDown,
             options = GestureType.values().map { it.resId },
         ),
-        ListSettingItem(
+        ListSettingWithEnumItem(
             R.string.setting_gesture_left,
             R.drawable.icon_arrow_left_gest,
             config = config::navGestureLeft,
             options = GestureType.values().map { it.resId },
         ),
-        ListSettingItem(
+        ListSettingWithEnumItem(
             R.string.setting_gesture_right,
             R.drawable.icon_arrow_right_gest,
             config = config::navGestureRight,
@@ -335,5 +341,64 @@ class SettingsComposeFragment : Fragment(), KoinComponent {
 
     private fun createAboutFragment() = UISettingsComposeFragment(
         R.string.title_about, LinkSettingItem.values().toList(), 2
+    )
+
+    private fun createSearchSettingsFragment() = UISettingsComposeFragment(
+        R.string.setting_title_search, searchSettingItems
+    )
+
+    private val searchSettingItems = listOf(
+        ListSettingWithStringItem(
+            R.string.setting_title_search_engine,
+            R.drawable.icon_search,
+            config = config::searchEngine,
+            options = listOf(
+                R.string.setting_summary_search_engine_startpage,
+                R.string.setting_summary_search_engine_startpage_de,
+                R.string.setting_summary_search_engine_baidu,
+                R.string.setting_summary_search_engine_bing,
+                R.string.setting_summary_search_engine_duckduckgo,
+                R.string.setting_summary_search_engine_google,
+                R.string.setting_summary_search_engine_searx,
+                R.string.setting_summary_search_engine_qwant,
+                R.string.setting_summary_search_engine_ecosia,
+                R.string.setting_title_searchEngine,
+            )
+        ),
+        ValueSettingItem(
+            R.string.setting_title_searchEngine,
+            R.drawable.icon_edit,
+            R.string.setting_summary_search_engine,
+            config = config::searchEngineUrl,
+        ),
+        ValueSettingItem(
+            R.string.setting_title_process_text,
+            R.drawable.icon_edit,
+            R.string.setting_summary_custom_process_text_url,
+            config = config::processTextUrl,
+        )
+    )
+
+    private fun createBackupSettingsFragment() = UISettingsComposeFragment(
+        R.string.setting_title_data, dataSettingItems
+    )
+
+    private val dataSettingItems = listOf(
+        ActionSettingItem(
+            R.string.setting_title_export_appData,
+            R.drawable.icon_export,
+        ) { backupUnit.backup() },
+        ActionSettingItem(
+            R.string.setting_title_import_appData,
+            R.drawable.icon_import,
+        ) { backupUnit.restore() },
+        ActionSettingItem(
+            R.string.setting_title_export_bookmarks,
+            R.drawable.icon_bookmark,
+        ) { dialogManager.showBookmarkFilePicker() },
+        ActionSettingItem(
+            R.string.setting_title_import_bookmarks,
+            R.drawable.ic_bookmark,
+        ) { dialogManager.showImportBookmarkFilePicker() },
     )
 }

@@ -2,6 +2,7 @@ package info.plateaukao.einkbro.view.dialog
 
 import android.app.Activity
 import android.app.Dialog
+import android.content.Intent
 import android.net.Uri
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -16,6 +17,7 @@ import info.plateaukao.einkbro.databinding.DialogSavedEpubListBinding
 import info.plateaukao.einkbro.databinding.ListItemEpubFileBinding
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.unit.*
+import info.plateaukao.einkbro.util.Constants
 import info.plateaukao.einkbro.view.NinjaToast
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -185,6 +187,26 @@ class DialogManager(
             listSettings,
             defaultValue
         ).show()
+
+    fun showBookmarkFilePicker() {
+        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT)
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
+        intent.type = Constants.MIME_TYPE_TEXT
+        intent.putExtra(Intent.EXTRA_TITLE, "bookmark.txt")
+        activity.startActivityForResult(intent, EXPORT_BOOKMARKS_REQUEST_CODE)
+    }
+
+    fun showImportBookmarkFilePicker() {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
+        intent.type = Constants.MIME_TYPE_ANY
+        activity.startActivityForResult(intent, IMPORT_BOOKMARKS_REQUEST_CODE)
+    }
+
+    companion object {
+        const val EXPORT_BOOKMARKS_REQUEST_CODE = 2345
+        const val IMPORT_BOOKMARKS_REQUEST_CODE = 2346
+    }
 }
 
 fun Dialog.dismissWithAction(action: () -> Unit) {

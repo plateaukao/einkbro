@@ -72,7 +72,6 @@ class ConfigManager(
     var showToolbarFirst by BooleanPreference(sp, K_SHOW_TOOLBAR_FIRST, true)
     var enableNavButtonGesture by BooleanPreference(sp, K_NAV_BUTTON_GESTURE, false)
 
-
     var isIncognitoMode: Boolean
         get() = sp.getBoolean(K_IS_INCOGNITO_MODE, false)
         set(value) {
@@ -117,6 +116,10 @@ class ConfigManager(
     var customUserAgent by StringPreference(sp, K_CUSTOM_USER_AGENT)
     val customProcessTextUrl by StringPreference(sp, K_CUSTOM_PROCESS_TEXT_URL)
     var preferredTranslateLanguageString by StringPreference(sp, K_TRANSLATED_LANGS)
+    var searchEngine by StringPreference(sp, K_SEARCH_ENGINE, "5")
+    var searchEngineUrl by StringPreference(sp, K_SEARCH_ENGINE_URL, "https://www.google.com/search?q=%s")
+    var processTextUrl by StringPreference(sp, K_CUSTOM_PROCESS_TEXT_URL, "")
+
     var multitouchUp by GestureTypePreference(sp, K_MULTITOUCH_UP)
     var multitouchDown by GestureTypePreference(sp, K_MULTITOUCH_DOWN)
     var multitouchLeft by GestureTypePreference(sp, K_MULTITOUCH_LEFT)
@@ -416,6 +419,8 @@ class ConfigManager(
         const val K_HIDE_TOOLBAR = "hideToolbar"
         const val K_SHOW_TOOLBAR_FIRST = "sp_toolbarShow"
         const val K_NAV_BUTTON_GESTURE = "sp_gestures_use"
+        const val K_SEARCH_ENGINE = "SP_SEARCH_ENGINE_9"
+        const val K_SEARCH_ENGINE_URL = "sp_search_engine_custom"
 
         const val K_MULTITOUCH_UP = "sp_multitouch_up"
         const val K_MULTITOUCH_DOWN = "sp_multitouch_down"

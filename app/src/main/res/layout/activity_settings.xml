@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="?attr/colorPrimary"
     android:fitsSystemWindows="true">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -25,6 +26,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
-        android:name="info.plateaukao.einkbro.fragment.SettingsComposeFragment"/>
+        android:name="info.plateaukao.einkbro.fragment.MainSettingsFragment"/>
 
 </LinearLayout>
