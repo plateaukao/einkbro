@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.R
+import info.plateaukao.einkbro.view.GestureType
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import info.plateaukao.einkbro.view.dialog.PrinterDocumentPaperSizeDialog
@@ -43,9 +44,8 @@ class SettingsComposeFragment : Fragment(), KoinComponent {
         ActionSettingItem(R.string.setting_title_behavior, R.drawable.icon_ui) {
             showFragment(createBehaviorSettingFragment())
         },
-        ActionSettingItem(R.string.setting_title_font, R.drawable.icon_size) { showFragment(FontSettingsFragment()) },
         ActionSettingItem(R.string.setting_gestures, R.drawable.gesture_tap) {
-            showFragment(FragmentSettingsGesture())
+            showFragment(createGestureSettingFragment())
         },
         ActionSettingItem(R.string.setting_title_data, R.drawable.icon_backup) { showFragment(DataSettingsFragment()) },
         ActionSettingItem(
@@ -71,9 +71,7 @@ class SettingsComposeFragment : Fragment(), KoinComponent {
             R.string.setting_title_edit_homepage,
             R.drawable.icon_edit
         ) { lifecycleScope.launch() { updateHomepage() } },
-        VersionSettingItem(R.string.title_about, R.drawable.icon_info) {
-            showFragment(createAboutFragment())
-        },
+        VersionSettingItem(R.string.menu_other_info, R.drawable.icon_info, { showFragment(createAboutFragment()) }),
     )
 
     private fun showFragment(fragment: Fragment) {
@@ -263,6 +261,75 @@ class SettingsComposeFragment : Fragment(), KoinComponent {
             R.drawable.icon_tab_plus,
             R.string.setting_summary_show_tab_bar,
             config::shouldShowTabBar,
+        ),
+    )
+
+    private fun createGestureSettingFragment() = UISettingsComposeFragment(
+        R.string.setting_gestures, gestureSettingItems
+    )
+
+    private val gestureSettingItems = listOf(
+        BooleanSettingItem(
+            R.string.setting_multitouch_use_title,
+            R.drawable.ic_touch_disabled,
+            R.string.setting_multitouch_use_summary,
+            config::isMultitouchEnabled,
+            span = 2,
+        ),
+        ListSettingItem(
+            R.string.setting_gesture_up,
+            R.drawable.icon_arrow_up_gest,
+            config = config::multitouchUp,
+            options = GestureType.values().map { it.resId },
+        ),
+        ListSettingItem(
+            R.string.setting_gesture_down,
+            R.drawable.icon_arrow_down_gest,
+            config = config::multitouchDown,
+            options = GestureType.values().map { it.resId },
+        ),
+        ListSettingItem(
+            R.string.setting_gesture_left,
+            R.drawable.icon_arrow_left_gest,
+            config = config::multitouchLeft,
+            options = GestureType.values().map { it.resId },
+        ),
+        ListSettingItem(
+            R.string.setting_gesture_right,
+            R.drawable.icon_arrow_right_gest,
+            config = config::multitouchRight,
+            options = GestureType.values().map { it.resId },
+        ),
+        BooleanSettingItem(
+            R.string.setting_title_hideToolbar,
+            R.drawable.ic_touch_disabled,
+            R.string.setting_summary_hide,
+            config::enableNavButtonGesture,
+            span = 2,
+        ),
+        ListSettingItem(
+            R.string.setting_gesture_up,
+            R.drawable.icon_arrow_up_gest,
+            config = config::navGestureUp,
+            options = GestureType.values().map { it.resId },
+        ),
+        ListSettingItem(
+            R.string.setting_gesture_down,
+            R.drawable.icon_arrow_down_gest,
+            config = config::navGestureDown,
+            options = GestureType.values().map { it.resId },
+        ),
+        ListSettingItem(
+            R.string.setting_gesture_left,
+            R.drawable.icon_arrow_left_gest,
+            config = config::navGestureLeft,
+            options = GestureType.values().map { it.resId },
+        ),
+        ListSettingItem(
+            R.string.setting_gesture_right,
+            R.drawable.icon_arrow_right_gest,
+            config = config::navGestureRight,
+            options = GestureType.values().map { it.resId },
         ),
     )
 

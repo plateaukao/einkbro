@@ -22,6 +22,7 @@ import org.koin.core.component.KoinComponent
 import android.content.Intent
 import android.content.Intent.EXTRA_TEXT
 import androidx.compose.foundation.lazy.grid.GridItemSpan
+import info.plateaukao.einkbro.BuildConfig
 import info.plateaukao.einkbro.activity.BrowserActivity
 
 class UISettingsComposeFragment(
@@ -84,8 +85,11 @@ fun SettingsMainContent(
                     is BooleanSettingItem -> BooleanSettingItemUi(setting, showSummary)
                     is ValueSettingItem<*> -> ValueSettingItemUi(setting, dialogManager, showSummary)
                     is ListSettingItem<*> -> ListSettingItemUi(setting, dialogManager, showSummary)
-                    is LinkSettingItem -> SettingItemUi<LinkSettingItem>(setting) { linkAction(it.url) }
-                    is VersionSettingItem -> VersionItemUi(setting) { setting.action() }
+                    is LinkSettingItem -> SettingItemUi(setting) { linkAction(setting.url) }
+                    is VersionSettingItem -> {
+                        val version = " v${BuildConfig.VERSION_NAME}"
+                        SettingItemUi(setting, showSummary, extraTitlePostfix = version) { setting.action() }
+                    }
                 }
             }
         }

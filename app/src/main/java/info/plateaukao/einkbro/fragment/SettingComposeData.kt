@@ -38,9 +38,9 @@ open class ActionSettingItem(
 class VersionSettingItem(
     override val titleResId: Int,
     override val iconId: Int,
-    override val summaryResId: Int = 0,
-    override val span: Int = 2,
     val action: () -> Unit,
+    override val summaryResId: Int = 0,
+    override val span: Int = 1,
 ) : SettingItemInterface
 
 class ValueSettingItem<T>(
