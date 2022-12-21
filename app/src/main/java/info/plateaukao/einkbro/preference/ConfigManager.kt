@@ -12,6 +12,7 @@ import info.plateaukao.einkbro.epub.EpubFileInfo
 import info.plateaukao.einkbro.unit.ViewUnit
 import info.plateaukao.einkbro.util.Constants
 import info.plateaukao.einkbro.util.TranslationLanguage
+import info.plateaukao.einkbro.view.GestureType
 import info.plateaukao.einkbro.view.Orientation
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction
 import org.koin.core.component.KoinComponent
@@ -69,6 +70,7 @@ class ConfigManager(
     var confirmTabClose by BooleanPreference(sp, K_CONFIRM_TAB_CLOSE, false)
     var shouldHideToolbar by BooleanPreference(sp, K_HIDE_TOOLBAR, false)
     var showToolbarFirst by BooleanPreference(sp, K_SHOW_TOOLBAR_FIRST, true)
+    var enableNavButtonGesture by BooleanPreference(sp, K_NAV_BUTTON_GESTURE, false)
 
 
     var isIncognitoMode: Boolean
@@ -96,42 +98,33 @@ class ConfigManager(
 
     }
 
-    var pageReservedOffset: Int
-        get() = sp.getInt("sp_page_turn_left_value", 80)
-        set(value) {
-            sp.edit { putInt("sp_page_turn_left_value", value) }
-        }
+    var pageReservedOffset: Int by IntPreference(sp, "sp_page_turn_left_value", 80)
 
     var fontSize: Int
         get() = sp.getString(K_FONT_SIZE, "100")?.toInt() ?: 100
         set(value) {
             sp.edit { putString(K_FONT_SIZE, value.toString()) }
         }
+
     var ttsSpeedValue: Int
         get() = sp.getString(K_TTS_SPEED_VALUE, "100")?.toInt() ?: 100
         set(value) {
             sp.edit { putString(K_TTS_SPEED_VALUE, value.toString()) }
         }
-    var touchAreaCustomizeY: Int
-        get() = sp.getInt(K_TOUCH_AREA_OFFSET, 0)
-        set(value) {
-            sp.edit { putInt(K_TOUCH_AREA_OFFSET, value) }
-        }
 
-    var customUserAgent: String
-        get() = sp.getString(K_CUSTOM_USER_AGENT, "") ?: ""
-        set(value) {
-            sp.edit { putString(K_CUSTOM_USER_AGENT, value) }
-        }
+    var touchAreaCustomizeY by IntPreference(sp, K_TOUCH_AREA_OFFSET, 0)
 
-    val customProcessTextUrl: String
-        get() = sp.getString(K_CUSTOM_PROCESS_TEXT_URL, "") ?: ""
-
-    var preferredTranslateLanguageString: String
-        get() = sp.getString(K_TRANSLATED_LANGS, "") ?: ""
-        set(value) {
-            sp.edit { putString(K_TRANSLATED_LANGS, value) }
-        }
+    var customUserAgent by StringPreference(sp, K_CUSTOM_USER_AGENT)
+    val customProcessTextUrl by StringPreference(sp, K_CUSTOM_PROCESS_TEXT_URL)
+    var preferredTranslateLanguageString by StringPreference(sp, K_TRANSLATED_LANGS)
+    var multitouchUp by GestureTypePreference(sp, K_MULTITOUCH_UP)
+    var multitouchDown by GestureTypePreference(sp, K_MULTITOUCH_DOWN)
+    var multitouchLeft by GestureTypePreference(sp, K_MULTITOUCH_LEFT)
+    var multitouchRight by GestureTypePreference(sp, K_MULTITOUCH_RIGHT)
+    var navGestureUp by GestureTypePreference(sp, K_GESTURE_NAV_UP)
+    var navGestureDown by GestureTypePreference(sp, K_GESTURE_NAV_DOWN)
+    var navGestureLeft by GestureTypePreference(sp, K_GESTURE_NAV_LEFT)
+    var navGestureRight by GestureTypePreference(sp, K_GESTURE_NAV_RIGHT)
 
     var fabPosition: FabPosition
         get() = FabPosition.values()[sp.getString(K_NAV_POSITION, "0")?.toInt() ?: 0]
@@ -169,12 +162,7 @@ class ConfigManager(
             sp.edit { putInt(K_TRANSLATE_ORIENTATION, value.ordinal) }
         }
 
-    var favoriteUrl: String
-        get() = sp.getString(K_FAVORITE_URL, Constants.DEFAULT_HOME_URL)
-            ?: Constants.DEFAULT_HOME_URL
-        set(value) {
-            sp.edit { putString(K_FAVORITE_URL, value) }
-        }
+    var favoriteUrl by StringPreference(sp, K_FAVORITE_URL, Constants.DEFAULT_HOME_URL)
 
     var toolbarActions: List<ToolbarAction>
         get() {
@@ -295,9 +283,7 @@ class ConfigManager(
             sp.edit { putInt(K_SAVED_ALBUM_INDEX, value) }
         }
 
-    var dbVersion: Int
-        get() = sp.getInt(K_DB_VERSION, 0)
-        set(value) = sp.edit { putInt(K_DB_VERSION, value) }
+    var dbVersion: Int by IntPreference(sp, K_DB_VERSION, 0)
 
     var fontType: FontType
         get() = FontType.values()[sp.getInt(K_FONT_TYPE, 0)]
@@ -429,6 +415,17 @@ class ConfigManager(
         const val K_CONFIRM_TAB_CLOSE = "sp_close_tab_confirm"
         const val K_HIDE_TOOLBAR = "hideToolbar"
         const val K_SHOW_TOOLBAR_FIRST = "sp_toolbarShow"
+        const val K_NAV_BUTTON_GESTURE = "sp_gestures_use"
+
+        const val K_MULTITOUCH_UP = "sp_multitouch_up"
+        const val K_MULTITOUCH_DOWN = "sp_multitouch_down"
+        const val K_MULTITOUCH_LEFT = "sp_multitouch_left"
+        const val K_MULTITOUCH_RIGHT = "sp_multitouch_right"
+
+        const val K_GESTURE_NAV_UP = "setting_gesture_nav_up"
+        const val K_GESTURE_NAV_DOWN = "sp_multitouch_down"
+        const val K_GESTURE_NAV_LEFT = "sp_multitouch_left"
+        const val K_GESTURE_NAV_RIGHT = "sp_multitouch_right"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
         private const val RECENT_BOOKMARKS_SEPARATOR = "::::"
@@ -454,22 +451,61 @@ class ConfigManager(
         savedEpubFileInfos = savedEpubFileInfos.toMutableList().apply { remove(epubFileInfo) }
     }
 
-    class BooleanPreference(
-        private val sharedPreferences: SharedPreferences,
-        private val key: String,
-        private val defaultValue: Boolean = false
-    ) : ReadWriteProperty<Any, Boolean> {
+}
 
-        override fun getValue(thisRef: Any, property: KProperty<*>): Boolean =
-            sharedPreferences.getBoolean(key, defaultValue)
+class BooleanPreference(
+    private val sharedPreferences: SharedPreferences,
+    private val key: String,
+    private val defaultValue: Boolean = false
+) : ReadWriteProperty<Any, Boolean> {
 
-        override fun setValue(thisRef: Any, property: KProperty<*>, value: Boolean) =
-            sharedPreferences.edit() { putBoolean(key, value) }
+    override fun getValue(thisRef: Any, property: KProperty<*>): Boolean =
+        sharedPreferences.getBoolean(key, defaultValue)
 
-        fun toggle() = sharedPreferences.edit() {
-            putBoolean(key, !sharedPreferences.getBoolean(key, defaultValue))
-        }
+    override fun setValue(thisRef: Any, property: KProperty<*>, value: Boolean) =
+        sharedPreferences.edit { putBoolean(key, value) }
+
+    fun toggle() = sharedPreferences.edit {
+        putBoolean(key, !sharedPreferences.getBoolean(key, defaultValue))
     }
+}
+
+class IntPreference(
+    private val sharedPreferences: SharedPreferences,
+    private val key: String,
+    private val defaultValue: Int = 0
+) : ReadWriteProperty<Any, Int> {
+
+    override fun getValue(thisRef: Any, property: KProperty<*>): Int =
+        sharedPreferences.getInt(key, defaultValue)
+
+    override fun setValue(thisRef: Any, property: KProperty<*>, value: Int) =
+        sharedPreferences.edit { putInt(key, value) }
+}
+
+class StringPreference(
+    private val sharedPreferences: SharedPreferences,
+    private val key: String,
+    private val defaultValue: String = ""
+) : ReadWriteProperty<Any, String> {
+
+    override fun getValue(thisRef: Any, property: KProperty<*>): String =
+        sharedPreferences.getString(key, defaultValue) ?: defaultValue
+
+    override fun setValue(thisRef: Any, property: KProperty<*>, value: String) =
+        sharedPreferences.edit { putString(key, value) }
+}
+
+class GestureTypePreference(
+    private val sharedPreferences: SharedPreferences,
+    private val key: String,
+) : ReadWriteProperty<Any, GestureType> {
+
+    override fun getValue(thisRef: Any, property: KProperty<*>): GestureType =
+        GestureType.from(sharedPreferences.getString(key, "01") ?: "01")
+
+    override fun setValue(thisRef: Any, property: KProperty<*>, value: GestureType) =
+        sharedPreferences.edit { putString(key, value.value) }
 }
 
 

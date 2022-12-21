@@ -122,12 +122,12 @@ fun <T> ValueSettingItemUi(
     showSummary: Boolean = false,
 ) {
     val coroutineScope = rememberCoroutineScope()
+    val currentValue = remember { mutableStateOf(setting.config.get()) }
     SettingItemUi(
         setting = setting,
         showSummary = showSummary,
-        extraTitlePostfix = ": ${setting.config.get()}",
-
-        ) {
+        extraTitlePostfix = ": ${currentValue.value}",
+    ) {
         coroutineScope.launch {
             val value = dialogManager.getTextInput(
                 setting.titleResId,
@@ -139,6 +139,7 @@ fun <T> ValueSettingItemUi(
             } else {
                 setting.config.set(value as T)
             }
+            currentValue.value = value as T
         }
     }
 }
@@ -150,12 +151,13 @@ fun <T : Enum<T>> ListSettingItemUi(
     showSummary: Boolean = false,
 ) {
     val context = LocalContext.current
-    val currentValueString = context.getString(setting.options[setting.config.get().ordinal])
+    var currentValueString =
+        remember { mutableStateOf(context.getString(setting.options[setting.config.get().ordinal])) }
     val coroutineScope = rememberCoroutineScope()
     SettingItemUi(
         setting = setting,
         showSummary = showSummary,
-        extraTitlePostfix = ": $currentValueString"
+        extraTitlePostfix = ": ${currentValueString.value}"
     ) {
         coroutineScope.launch {
             val selectedIndex = dialogManager.getSelectedOption(
@@ -166,80 +168,7 @@ fun <T : Enum<T>> ListSettingItemUi(
             setting.config.get().javaClass.enumConstants?.let {
                 setting.config.set(it[selectedIndex])
             }
+            currentValueString.value = context.getString(setting.options[selectedIndex])
         }
     }
 }
-
-@Composable
-fun <T : SettingItemInterface> SettingItemUi(
-    setting: T,
-    onItemClick: (T) -> Unit
-) {
-    val interactionSource = remember { MutableInteractionSource() }
-    val pressed by interactionSource.collectIsPressedAsState()
-    val borderWidth = if (pressed) 3.dp else 1.dp
-    Row(
-        modifier = Modifier
-            .width(IntrinsicSize.Max)
-            .height(60.dp)
-            .border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
-            .clickable(
-                indication = null,
-                interactionSource = interactionSource,
-            ) { onItemClick(setting) },
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(
-            painter = painterResource(id = setting.iconId), contentDescription = null,
-            modifier = Modifier
-                .padding(horizontal = 6.dp)
-                .fillMaxHeight(),
-            tint = MaterialTheme.colors.onBackground
-        )
-        Spacer(
-            modifier = Modifier
-                .width(6.dp)
-                .fillMaxHeight()
-        )
-        Text(
-            modifier = Modifier.wrapContentWidth(),
-            text = stringResource(id = setting.titleResId),
-            fontSize = 16.sp,
-            color = MaterialTheme.colors.onBackground
-        )
-    }
-}
-
-@Composable
-fun VersionItemUi(
-    setting: SettingItemInterface,
-    onItemClick: () -> Unit
-) {
-    val version = """v${BuildConfig.VERSION_NAME}"""
-
-    val interactionSource = remember { MutableInteractionSource() }
-    val pressed by interactionSource.collectIsPressedAsState()
-    val borderWidth = if (pressed) 3.dp else 1.dp
-    Row(
-        modifier = Modifier
-            .width(IntrinsicSize.Max)
-            .height(60.dp)
-            .border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
-            .clickable(
-                indication = null,
-                interactionSource = interactionSource,
-            ) { onItemClick() },
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
-    ) {
-        Text(
-            modifier = Modifier
-                .wrapContentWidth()
-                .padding(horizontal = 15.dp),
-            text = stringResource(id = setting.titleResId) + " " + version,
-            fontSize = 16.sp,
-            color = MaterialTheme.colors.onBackground
-        )
-    }
-}
-
