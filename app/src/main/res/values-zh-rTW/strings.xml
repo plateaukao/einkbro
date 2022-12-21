@@ -305,4 +305,7 @@
     <string name="menu_tts">朗讀內容</string>
     <string name="read_speed">朗讀速度</string>
     <string name="toast_receive_link_failed">接收連結失敗</string>
+    <string name="setting_summary_search_engine">Choose a search engine</string>
+    <string name="setting_summary_custom_process_text_url">When you select text in another app, you can search it in the browser with this url prefix.</string>
+    <string name="not_supported">Not supported.</string>
 </resources>

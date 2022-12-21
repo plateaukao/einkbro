@@ -18,11 +18,20 @@ class BooleanSettingItem(
     override val span: Int = 1,
 ) : SettingItemInterface
 
-class ListSettingItem<T : Enum<T>>(
+class ListSettingWithEnumItem<T : Enum<T>>(
     override val titleResId: Int,
     override val iconId: Int,
     override val summaryResId: Int = 0,
     var config: KMutableProperty0<T>,
+    val options: List<Int>,
+    override val span: Int = 1,
+) : SettingItemInterface
+
+class ListSettingWithStringItem(
+    override val titleResId: Int,
+    override val iconId: Int,
+    override val summaryResId: Int = 0,
+    var config: KMutableProperty0<String>,
     val options: List<Int>,
     override val span: Int = 1,
 ) : SettingItemInterface
