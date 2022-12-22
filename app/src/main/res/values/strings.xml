@@ -374,4 +374,11 @@
     <string name="setting_summary_search_engine">Choose a search engine</string>
     <string name="setting_summary_custom_process_text_url">When you select text in another app, you can search it in the browser with this url prefix.</string>
     <string name="not_supported">Not supported.</string>
+
+    <string name="plus_start_input_url">Start Input Url</string>
+    <string name="plus_show_homepage">Show Home</string>
+    <string name="plus_show_bookmarks">Show Recent Bookmarks</string>
+    <string name="dark_mode_follow_system">Follow System</string>
+    <string name="dark_mode_force_on">Force On</string>
+    <string name="dark_mode_disabled">Disabled</string>
 </resources>
