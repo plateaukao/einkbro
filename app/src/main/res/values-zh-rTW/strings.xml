@@ -165,12 +165,12 @@
     <string name="toast_load_error">Can\'t load this URL</string>
     <string name="toast_new_tab_successful">Successfully opened in a new tab</string>
     <string name="toast_share_failed">Can\'t share this page</string>
-    <string name="toast_start_download">Starting download</string>
-    <string name="toast_wait_a_minute">Please wait for a moment</string>
-    <string name="toast_error">Uuups. Something went wrong.</string>
-    <string name="toast_edit_successful">Successfully saved</string>
+    <string name="toast_start_download">開始下載</string>
+    <string name="toast_wait_a_minute">請等一下</string>
+    <string name="toast_error">啊，出錯了！</string>
+    <string name="toast_edit_successful">成功儲存</string>
     <string name="toast_webview_forward">Can\'t load next site</string>
-    <string name="toast_restart">You must restart EinkBro to apply changes. Close now?</string>
+    <string name="toast_restart">需重開 App 才能生效，是否重開？</string>
     <string name="toast_close_tab">Do you want to close current tab?</string>
     <string name="toast_downloadComplete">下載完成，開啟檔案？</string>
     <string name="toast_backup">Backup data? This will overwrite the old backup.</string>
@@ -304,14 +304,16 @@
     <string name="menu_tts">朗讀內容</string>
     <string name="read_speed">朗讀速度</string>
     <string name="toast_receive_link_failed">接收連結失敗</string>
-    <string name="setting_summary_search_engine">Choose a search engine</string>
-    <string name="setting_summary_custom_process_text_url">When you select text in another app, you can search it in the browser with this url prefix.</string>
-    <string name="not_supported">Not supported.</string>
+    <string name="setting_summary_search_engine">選擇搜尋引擎</string>
+    <string name="setting_summary_custom_process_text_url">從外部 App 分享到 EinkBro 時，可以設定開啟的網頁，用來查詢用</string>
+    <string name="not_supported">不支援</string>
 
     <string name="plus_start_input_url">開始輸入網址</string>
     <string name="plus_show_homepage">顯示首頁</string>
     <string name="plus_show_bookmarks">顯示最近使用的書籤</string>
-    <string name="dark_mode_follow_system">Follow System</string>
-    <string name="dark_mode_force_on">Force On</string>
-    <string name="dark_mode_disabled">Disabled</string>
+    <string name="dark_mode_follow_system">跟隨系統設定</string>
+    <string name="dark_mode_force_on">強制開啟</string>
+    <string name="dark_mode_disabled">關閉</string>
+
+    <string name="changelogs">最新功能介紹</string>
 </resources>
