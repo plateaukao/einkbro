@@ -77,7 +77,7 @@ interface BookmarkDao {
     suspend fun deleteAll()
 }
 
-class BookmarkManager(private val context: Context) : KoinComponent {
+class BookmarkManager(context: Context) : KoinComponent {
     val config: ConfigManager by inject()
 
     val database = Room.databaseBuilder(context, AppDatabase::class.java, "einkbro_db")
@@ -87,26 +87,6 @@ class BookmarkManager(private val context: Context) : KoinComponent {
     val bookmarkDao = database.bookmarkDao()
 
     val faviconDao = database.faviconDao()
-
-    suspend fun migrateOldData() {
-        if (config.dbVersion != 0) return
-
-        //add bookmarks
-        val db = BookmarkList(context).apply { open() }
-        val cursor = db.fetchAllData(context)
-        cursor.moveToFirst()
-        while (!cursor.isAfterLast) {
-            insert(
-                title = cursor.getString(1),
-                url = cursor.getString(2),
-            )
-            cursor.moveToNext()
-        }
-        cursor.close()
-        db.close()
-
-        config.dbVersion = 1
-    }
 
     init {
         GlobalScope.launch(Dispatchers.IO) {

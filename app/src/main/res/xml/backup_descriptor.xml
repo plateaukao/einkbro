@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <full-backup-content>
-    <!-- TODO Remove the following "exclude" elements to make them a part of the auto backup -->
     <include
         domain="database"
-        path="pass_DB_v01.db" />
-    <include
-        domain="database"
-        path="files_DB_v01.db" />
+        path="einkbro_db" />
     <include
         domain="database"
         path="Ninja4.db" />
-    <!-- Exclude specific shared preferences that contain GCM registration Id -->
 </full-backup-content>

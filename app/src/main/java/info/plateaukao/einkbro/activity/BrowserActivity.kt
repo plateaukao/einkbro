@@ -308,10 +308,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         super.onCreate(null)
         binding = ActivityMainBinding.inflate(layoutInflater)
 
-        lifecycleScope.launch {
-            bookmarkManager.migrateOldData()
-        }
-
         savedInstanceState?.let {
             shouldLoadTabState = it.getBoolean(K_SHOULD_LOAD_TAB_STATE)
         }
