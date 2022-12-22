@@ -311,9 +311,9 @@ class MainSettingsFragment : Fragment(), KoinComponent {
             options = GestureType.values().map { it.resId },
         ),
         BooleanSettingItem(
-            R.string.setting_title_hideToolbar,
+            R.string.setting_gestures_use_title,
             R.drawable.ic_touch_disabled,
-            R.string.setting_summary_hide,
+            R.string.setting_gestures_use_summary,
             config::enableNavButtonGesture,
             span = 2,
         ),
