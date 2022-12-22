@@ -443,9 +443,9 @@ class ConfigManager(
         const val K_MULTITOUCH_RIGHT = "sp_multitouch_right"
 
         const val K_GESTURE_NAV_UP = "setting_gesture_nav_up"
-        const val K_GESTURE_NAV_DOWN = "sp_multitouch_down"
-        const val K_GESTURE_NAV_LEFT = "sp_multitouch_left"
-        const val K_GESTURE_NAV_RIGHT = "sp_multitouch_right"
+        const val K_GESTURE_NAV_DOWN = "setting_gesture_nav_down"
+        const val K_GESTURE_NAV_LEFT = "setting_gesture_nav_left"
+        const val K_GESTURE_NAV_RIGHT = "setting_gesture_nav_right"
 
         private const val ALBUM_INFO_SEPARATOR = "::::"
         private const val RECENT_BOOKMARKS_SEPARATOR = "::::"
