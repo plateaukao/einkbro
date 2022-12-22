@@ -1,8 +1,10 @@
 package info.plateaukao.einkbro.view.dialog
 
 import android.content.Context
+import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import info.plateaukao.einkbro.R
+import info.plateaukao.einkbro.unit.ViewUnit.dp
 import org.koin.core.component.KoinComponent
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -26,6 +28,9 @@ class ListSettingDialog(
                 dialog.dismiss()
                 continuation.resume(selectedIndex)
             }
-        }.show()
+        }.create().also {
+            it.show()
+            it.window?.setLayout(300.dp(context), ViewGroup.LayoutParams.WRAP_CONTENT)
+        }
     }
 }
