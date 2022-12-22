@@ -40,7 +40,6 @@ import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.preference.CustomFontInfo
 import info.plateaukao.einkbro.unit.HelperUnit.needGrantStoragePermission
 import info.plateaukao.einkbro.util.Constants
-import info.plateaukao.einkbro.view.NinjaToast.show
 import info.plateaukao.einkbro.view.NinjaToast.showShort
 import info.plateaukao.einkbro.view.dialog.TextInputDialog
 import kotlinx.coroutines.Dispatchers
@@ -124,22 +123,26 @@ object BrowserUnit : KoinComponent {
         val hitTestResult = webView.hitTestResult
         return hitTestResult.extra ?: message.data.getString("src") ?: ""
     }
+
     fun getWebViewLinkUrl(webView: WebView, message: Message): String {
         val hitTestResult = webView.hitTestResult
 
-        if (!listOf(IMAGE_TYPE,
+        if (!listOf(
+                IMAGE_TYPE,
                 IMAGE_ANCHOR_TYPE,
                 SRC_ANCHOR_TYPE,
                 SRC_IMAGE_ANCHOR_TYPE,
-                ANCHOR_TYPE)
-                .contains(hitTestResult.type)) return ""
+                ANCHOR_TYPE
+            )
+                .contains(hitTestResult.type)
+        ) return ""
 
         val linkUrl = message.data.getString("url")
         val imgUrl = message.data.getString("src")
         return linkUrl ?: imgUrl ?: return ""
     }
 
-    fun getWebViewLinkTitle(webView: WebView, action: (String)->Unit) {
+    fun getWebViewLinkTitle(webView: WebView, action: (String) -> Unit) {
         val newMessage = Message().apply {
             target = object : Handler(Looper.getMainLooper()) {
                 override fun handleMessage(msg: Message) {
@@ -238,23 +241,14 @@ object BrowserUnit : KoinComponent {
         } catch (u: UnsupportedEncodingException) {
             Log.w("browser", "Unsupported Encoding Exception")
         }
-        val custom = sp.getString("sp_search_engine_custom", SEARCH_ENGINE_GOOGLE)
-        val i = Integer.valueOf(
-            Objects.requireNonNull(
-                sp.getString(
-                    context.getString(R.string.sp_search_engine),
-                    "5"
-                )
-            )
-        )
-        return when (i) {
+        return when (config.searchEngine.toInt()) {
             0 -> SEARCH_ENGINE_STARTPAGE + query
             1 -> SEARCH_ENGINE_STARTPAGE_DE + query
             2 -> SEARCH_ENGINE_BAIDU + query
             3 -> SEARCH_ENGINE_BING + query
             6 -> SEARCH_ENGINE_SEARX + query
             7 -> SEARCH_ENGINE_QWANT + query
-            8 -> custom + query
+            8 -> config.searchEngineUrl + query
             9 -> SEARCH_ENGINE_ECOSIA + query
             5 -> SEARCH_ENGINE_GOOGLE + query
             4 -> SEARCH_ENGINE_DUCKDUCKGO + query

@@ -186,26 +186,15 @@ open class NinjaWebView(context: Context?, var browserController: BrowserControl
             // don't load cache by default, so that it won't cause some issues
             //cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
             textZoom = config.fontSize
-            allowFileAccessFromFileURLs = sp.getBoolean("sp_remote", true)
-            allowUniversalAccessFromFileURLs = sp.getBoolean("sp_remote", true)
-            domStorageEnabled = sp.getBoolean("sp_remote", true)
+            allowFileAccessFromFileURLs = config.enableRemoteAccess
+            allowUniversalAccessFromFileURLs = config.enableRemoteAccess
+            domStorageEnabled = config.enableRemoteAccess
             databaseEnabled = true
-            blockNetworkImage = !sp.getBoolean(context!!.getString(R.string.sp_images), true)
-            javaScriptEnabled = sp.getBoolean(context!!.getString(R.string.sp_javascript), true)
-            javaScriptCanOpenWindowsAutomatically =
-                sp.getBoolean(context!!.getString(R.string.sp_javascript), true)
-            setSupportMultipleWindows(
-                sp.getBoolean(
-                    context!!.getString(R.string.sp_javascript),
-                    true
-                )
-            )
-            setGeolocationEnabled(
-                sp.getBoolean(
-                    context!!.getString(R.string.sp_location),
-                    false
-                )
-            )
+            blockNetworkImage = !config.enableImages
+            javaScriptEnabled = config.enableJavascript
+            javaScriptCanOpenWindowsAutomatically = config.enableJavascript
+            setSupportMultipleWindows(config.enableJavascript)
+            setGeolocationEnabled(config.shareLocation)
             mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
             setRenderPriority(WebSettings.RenderPriority.HIGH)
 
@@ -216,12 +205,7 @@ open class NinjaWebView(context: Context?, var browserController: BrowserControl
                 saveFormData = config.autoFillForm
             }
         }
-        webViewClient.enableAdBlock(
-            sp.getBoolean(
-                context!!.getString(R.string.sp_ad_block),
-                true
-            )
-        )
+        webViewClient.enableAdBlock(config.adBlock)
 
         toggleCookieSupport(config.cookies)
     }
@@ -270,9 +254,7 @@ open class NinjaWebView(context: Context?, var browserController: BrowserControl
         get() {
             val requestHeaders = HashMap<String, String>()
             requestHeaders["DNT"] = "1"
-            if (sp.getBoolean(context!!.getString(R.string.sp_savedata), false)) {
-                requestHeaders["Save-Data"] = "on"
-            }
+            requestHeaders["Save-Data"] = "on"
             return requestHeaders
         }
 

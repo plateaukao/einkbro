@@ -193,7 +193,7 @@ class NinjaWebViewClient(
             return adTxtResponse
         }
 
-        if (!sp.getBoolean(context.getString(R.string.sp_cookies), true)) {
+        if (!config.cookies) {
             if (cookie.isWhite(url)) {
                 val manager = CookieManager.getInstance()
                 manager.getCookie(url)
@@ -219,7 +219,7 @@ class NinjaWebViewClient(
             return adTxtResponse
         }
 
-        if (!sp.getBoolean(context.getString(R.string.sp_cookies), true)) {
+        if (!config.cookies) {
             if (cookie.isWhite(request.url.toString())) {
                 val manager = CookieManager.getInstance()
                 manager.getCookie(request.url.toString())

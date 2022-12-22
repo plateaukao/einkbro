@@ -1,5 +1,6 @@
 package info.plateaukao.einkbro.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.R
+import info.plateaukao.einkbro.activity.Whitelist_AdBlock
+import info.plateaukao.einkbro.activity.Whitelist_Cookie
+import info.plateaukao.einkbro.activity.Whitelist_Javascript
 import info.plateaukao.einkbro.unit.BackupUnit
 import info.plateaukao.einkbro.view.GestureType
 import info.plateaukao.einkbro.view.compose.MyTheme
@@ -61,7 +65,7 @@ class MainSettingsFragment : Fragment(), KoinComponent {
         ActionSettingItem(
             R.string.setting_title_start_control,
             R.drawable.icon_earth
-        ) { showFragment(StartSettingsFragment()) },
+        ) { showFragment(createStartSettingFragment()) },
         ActionSettingItem(
             R.string.setting_title_clear_control,
             R.drawable.icon_delete
@@ -444,5 +448,81 @@ class MainSettingsFragment : Fragment(), KoinComponent {
             config.restartChanged = true
             requireActivity().finish()
         }
+    )
+
+    private fun createStartSettingFragment() = UISettingsComposeFragment(
+        R.string.setting_title_start_control, startSettingItems
+    )
+
+    private val startSettingItems = listOf(
+        BooleanSettingItem(
+            R.string.setting_title_images,
+            R.drawable.icon_image,
+            R.string.setting_summary_images,
+            config::enableImages
+        ),
+        BooleanSettingItem(
+            R.string.setting_title_auto_fill_form,
+            R.drawable.ic_input_url,
+            R.string.setting_summary_auto_fill_form,
+            config::autoFillForm
+        ),
+        BooleanSettingItem(
+            R.string.setting_title_history,
+            R.drawable.icon_history,
+            R.string.setting_summary_history,
+            config::saveHistory
+        ),
+        BooleanSettingItem(
+            R.string.setting_title_debug,
+            R.drawable.ic_eye,
+            R.string.setting_summary_debug,
+            config::debugWebView
+        ),
+        BooleanSettingItem(
+            R.string.setting_title_remote,
+            R.drawable.icon_remote,
+            R.string.setting_summary_remote,
+            config::enableRemoteAccess
+        ),
+        BooleanSettingItem(
+            R.string.setting_title_location,
+            R.drawable.ic_location,
+            R.string.setting_summary_location,
+            config::shareLocation
+        ),
+        BooleanSettingItem(
+            R.string.setting_title_adblock,
+            R.drawable.ic_block,
+            R.string.setting_summary_adblock,
+            config::adBlock
+        ),
+        ActionSettingItem(
+            R.string.setting_title_whitelist,
+            R.drawable.icon_list,
+            R.string.setting_summary_whitelist,
+        ) { requireActivity().startActivity(Intent(activity, Whitelist_AdBlock::class.java)) },
+        BooleanSettingItem(
+            R.string.setting_title_javascript,
+            R.drawable.icon_java,
+            R.string.setting_summary_javascript,
+            config::enableJavascript
+        ),
+        ActionSettingItem(
+            R.string.setting_title_whitelistJS,
+            R.drawable.icon_list,
+            R.string.setting_summary_whitelistJS,
+        ) { requireActivity().startActivity(Intent(activity, Whitelist_Javascript::class.java)) },
+        BooleanSettingItem(
+            R.string.setting_title_cookie,
+            R.drawable.icon_cookie,
+            R.string.setting_summary_cookie,
+            config::cookies
+        ),
+        ActionSettingItem(
+            R.string.setting_title_whitelistCookie,
+            R.drawable.icon_list,
+            R.string.setting_summary_whitelistCookie,
+        ) { requireActivity().startActivity(Intent(activity, Whitelist_Cookie::class.java)) },
     )
 }

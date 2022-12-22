@@ -45,7 +45,7 @@ class ConfigManager(
     var touchAreaHint by BooleanPreference(sp, K_TOUCH_HINT, true)
     var volumePageTurn by BooleanPreference(sp, K_VOLUME_PAGE_TURN, true)
     var boldFontStyle by BooleanPreference(sp, K_BOLD_FONT, false)
-    var shouldSaveTabs by BooleanPreference(sp, K_SHOULD_SAVE_TABS, false)
+    var shouldSaveTabs by BooleanPreference(sp, K_SHOULD_SAVE_TABS, true)
     var adBlock by BooleanPreference(sp, K_ADBLOCK, true)
     var cookies by BooleanPreference(sp, K_COOKIES, true)
     var saveHistory by BooleanPreference(sp, K_SAVE_HISTORY, true)
@@ -76,6 +76,8 @@ class ConfigManager(
     var clearCookies by BooleanPreference(sp, K_CLEAR_COOKIES, false)
     var clearHistory by BooleanPreference(sp, K_CLEAR_HISTORY, false)
     var clearWhenQuit by BooleanPreference(sp, K_CLEAR_WHEN_QUIT, false)
+    var enableRemoteAccess by BooleanPreference(sp, K_ENABLE_REMOTE_ACCESS, true)
+    var enableImages by BooleanPreference(sp, K_ENABLE_IMAGES, true)
 
     var isIncognitoMode: Boolean
         get() = sp.getBoolean(K_IS_INCOGNITO_MODE, false)
@@ -426,6 +428,8 @@ class ConfigManager(
         const val K_NAV_BUTTON_GESTURE = "sp_gestures_use"
         const val K_SEARCH_ENGINE = "SP_SEARCH_ENGINE_9"
         const val K_SEARCH_ENGINE_URL = "sp_search_engine_custom"
+        const val K_ENABLE_REMOTE_ACCESS = "sp_remote"
+        const val K_ENABLE_IMAGES = "SP_IMAGES_9"
 
         const val K_CLEAR_CACHE = "SP_CLEAR_CACHE_9"
         const val K_CLEAR_HISTORY = "SP_CLEAR_HISTORY_9"
