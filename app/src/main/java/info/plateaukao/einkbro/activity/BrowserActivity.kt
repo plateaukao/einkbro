@@ -520,7 +520,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
         updateSavedAlbumInfo()
 
-        if (sp.getBoolean(getString(R.string.sp_clear_quit), false)) {
+        if (config.clearWhenQuit) {
             val toClearService = Intent(this, ClearService::class.java)
             startService(toClearService)
         }

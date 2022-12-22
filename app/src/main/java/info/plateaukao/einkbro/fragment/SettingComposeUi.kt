@@ -90,7 +90,7 @@ fun BooleanSettingItemUi(
     setting: BooleanSettingItem,
     showSummary: Boolean = false
 ) {
-    val checked = remember { mutableStateOf(setting.booleanPreference.get()) }
+    val checked = remember { mutableStateOf(setting.config.get()) }
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -98,7 +98,7 @@ fun BooleanSettingItemUi(
     ) {
         SettingItemUi(setting = setting, showSummary = showSummary, checked.value) {
             checked.value = !checked.value
-            setting.booleanPreference.toggle()
+            setting.config.toggle()
         }
 
         if (checked.value)

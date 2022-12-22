@@ -71,6 +71,11 @@ class ConfigManager(
     var shouldHideToolbar by BooleanPreference(sp, K_HIDE_TOOLBAR, false)
     var showToolbarFirst by BooleanPreference(sp, K_SHOW_TOOLBAR_FIRST, true)
     var enableNavButtonGesture by BooleanPreference(sp, K_NAV_BUTTON_GESTURE, false)
+    var clearCache by BooleanPreference(sp, K_CLEAR_CACHE, false)
+    var clearIndexedDB by BooleanPreference(sp, K_CLEAR_INDEXEDDB, false)
+    var clearCookies by BooleanPreference(sp, K_CLEAR_COOKIES, false)
+    var clearHistory by BooleanPreference(sp, K_CLEAR_HISTORY, false)
+    var clearWhenQuit by BooleanPreference(sp, K_CLEAR_WHEN_QUIT, false)
 
     var isIncognitoMode: Boolean
         get() = sp.getBoolean(K_IS_INCOGNITO_MODE, false)
@@ -421,6 +426,12 @@ class ConfigManager(
         const val K_NAV_BUTTON_GESTURE = "sp_gestures_use"
         const val K_SEARCH_ENGINE = "SP_SEARCH_ENGINE_9"
         const val K_SEARCH_ENGINE_URL = "sp_search_engine_custom"
+
+        const val K_CLEAR_CACHE = "SP_CLEAR_CACHE_9"
+        const val K_CLEAR_HISTORY = "SP_CLEAR_HISTORY_9"
+        const val K_CLEAR_COOKIES = "SP_CLEAR_COOKIE_9"
+        const val K_CLEAR_INDEXEDDB = "sp_clear_Indexeddb"
+        const val K_CLEAR_WHEN_QUIT = "SP_CLEAR_QUIT_9"
 
         const val K_MULTITOUCH_UP = "sp_multitouch_up"
         const val K_MULTITOUCH_DOWN = "sp_multitouch_down"
