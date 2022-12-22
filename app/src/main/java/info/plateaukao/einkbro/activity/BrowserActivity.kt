@@ -315,7 +315,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         config.restartChanged = false
         HelperUnit.applyTheme(this)
         setContentView(binding.root)
-        config.maybeInitPreference()
 
         orientation = resources.configuration.orientation
 

@@ -87,23 +87,6 @@ class ConfigManager(
             sp.edit { putBoolean(K_IS_INCOGNITO_MODE, value) }
         }
 
-    fun maybeInitPreference() {
-        if (sp.getString("saved_key_ok", "no") == "no") {
-            if (Locale.getDefault().country == "CN") {
-                sp.edit().putString("SP_SEARCH_ENGINE_9", "2").apply()
-            }
-            sp.edit {
-                putString("saved_key_ok", "yes")
-                putString("setting_gesture_nav_up", "04")
-                putString("setting_gesture_nav_down", "05")
-                putString("setting_gesture_nav_left", "03")
-                putString("setting_gesture_nav_right", "02")
-                putBoolean("SP_LOCATION_9", false)
-            }
-        }
-
-    }
-
     var pageReservedOffset: Int by IntPreference(sp, "sp_page_turn_left_value", 80)
 
     var fontSize: Int
@@ -123,7 +106,7 @@ class ConfigManager(
     var customUserAgent by StringPreference(sp, K_CUSTOM_USER_AGENT)
     val customProcessTextUrl by StringPreference(sp, K_CUSTOM_PROCESS_TEXT_URL)
     var preferredTranslateLanguageString by StringPreference(sp, K_TRANSLATED_LANGS)
-    var searchEngine by StringPreference(sp, K_SEARCH_ENGINE, "5")
+    var searchEngine by StringPreference(sp, K_SEARCH_ENGINE, if (Locale.getDefault().country == "CN") "2" else "5")
     var searchEngineUrl by StringPreference(sp, K_SEARCH_ENGINE_URL, "https://www.google.com/search?q=%s")
     var processTextUrl by StringPreference(sp, K_CUSTOM_PROCESS_TEXT_URL, "")
 
