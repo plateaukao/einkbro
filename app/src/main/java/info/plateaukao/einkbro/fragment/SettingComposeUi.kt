@@ -32,21 +32,24 @@ fun SettingItemUi(
     showSummary: Boolean = false,
     isChecked: Boolean = false,
     extraTitlePostfix: String = "",
+    showBorder: Boolean = false,
     onClick: (() -> Unit)? = null
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val pressed by interactionSource.collectIsPressedAsState()
     val borderWidth = if (isChecked || pressed) 3.dp else 1.dp
     val height = if (showSummary) 80.dp else 70.dp
+    var modifier = Modifier
+        .fillMaxWidth()
+        .height(height)
+        .clickable(
+            indication = null,
+            interactionSource = interactionSource,
+        ) { onClick?.invoke() }
+    if (showBorder) modifier = modifier.border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
+
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(height)
-            .border(borderWidth, MaterialTheme.colors.onBackground, RoundedCornerShape(7.dp))
-            .clickable(
-                indication = null,
-                interactionSource = interactionSource,
-            ) { onClick?.invoke() },
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
@@ -88,7 +91,8 @@ fun SettingItemUi(
 @Composable
 fun BooleanSettingItemUi(
     setting: BooleanSettingItem,
-    showSummary: Boolean = false
+    showSummary: Boolean = false,
+    showBorder: Boolean = false,
 ) {
     val checked = remember { mutableStateOf(setting.config.get()) }
     Box(
@@ -96,20 +100,24 @@ fun BooleanSettingItemUi(
             .fillMaxWidth()
             .wrapContentHeight()
     ) {
-        SettingItemUi(setting = setting, showSummary = showSummary, checked.value) {
+        SettingItemUi(
+            setting = setting, showSummary = showSummary, checked.value,
+            showBorder = showBorder
+        ) {
             checked.value = !checked.value
             setting.config.toggle()
         }
 
-        if (checked.value)
+        if (checked.value) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_check), contentDescription = null,
                 modifier = Modifier
-                    .padding(horizontal = 10.dp)
-                    .align(Alignment.TopEnd)
+                    .padding(horizontal = 5.dp)
+                    .align(if (showBorder) Alignment.TopEnd else Alignment.CenterEnd)
                     .fillMaxHeight(),
                 tint = MaterialTheme.colors.onBackground
             )
+        }
     }
 }
 
@@ -118,6 +126,7 @@ fun <T> ValueSettingItemUi(
     setting: ValueSettingItem<T>,
     dialogManager: DialogManager,
     showSummary: Boolean = false,
+    showBorder: Boolean = false,
 ) {
     val coroutineScope = rememberCoroutineScope()
     val currentValue = remember { mutableStateOf(setting.config.get()) }
@@ -125,6 +134,7 @@ fun <T> ValueSettingItemUi(
         setting = setting,
         showSummary = showSummary,
         extraTitlePostfix = ": ${currentValue.value}",
+        showBorder = showBorder,
     ) {
         coroutineScope.launch {
             val value = dialogManager.getTextInput(
@@ -147,6 +157,7 @@ fun <T : Enum<T>> ListSettingItemUi(
     setting: ListSettingWithEnumItem<T>,
     dialogManager: DialogManager,
     showSummary: Boolean = false,
+    showBorder: Boolean = false,
 ) {
     val context = LocalContext.current
     var currentValueString =
@@ -155,7 +166,8 @@ fun <T : Enum<T>> ListSettingItemUi(
     SettingItemUi(
         setting = setting,
         showSummary = showSummary,
-        extraTitlePostfix = ": ${currentValueString.value}"
+        extraTitlePostfix = ": ${currentValueString.value}",
+        showBorder = showBorder,
     ) {
         coroutineScope.launch {
             val selectedIndex = dialogManager.getSelectedOption(
@@ -176,6 +188,7 @@ fun ListSettingWithStringItemUi(
     setting: ListSettingWithStringItem,
     dialogManager: DialogManager,
     showSummary: Boolean = false,
+    showBorder: Boolean = false,
 ) {
     val context = LocalContext.current
     val currentIndex = setting.config.get().toInt()
@@ -185,7 +198,8 @@ fun ListSettingWithStringItemUi(
     SettingItemUi(
         setting = setting,
         showSummary = showSummary,
-        extraTitlePostfix = ": ${currentValueString.value}"
+        extraTitlePostfix = ": ${currentValueString.value}",
+        showBorder = showBorder,
     ) {
         coroutineScope.launch {
             val selectedIndex = dialogManager.getSelectedOption(

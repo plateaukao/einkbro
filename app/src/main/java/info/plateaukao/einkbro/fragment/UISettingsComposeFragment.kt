@@ -56,7 +56,6 @@ class UISettingsComposeFragment(
         requireActivity().finish()
     }
 
-
     override fun getTitleId(): Int = titleResId
 }
 
@@ -78,18 +77,25 @@ fun SettingsMainContent(
         horizontalArrangement = Arrangement.spacedBy(7.dp),
         columns = GridCells.Fixed(columnCount),
     ) {
+        val showBorder = columnCount == 2
         settings.forEach { setting ->
             item(span = { GridItemSpan(setting.span) }) {
                 when (setting) {
-                    is ActionSettingItem -> SettingItemUi(setting, showSummary = showSummary) { setting.action() }
-                    is BooleanSettingItem -> BooleanSettingItemUi(setting, showSummary)
-                    is ValueSettingItem<*> -> ValueSettingItemUi(setting, dialogManager, showSummary)
-                    is ListSettingWithEnumItem<*> -> ListSettingItemUi(setting, dialogManager, showSummary)
-                    is ListSettingWithStringItem -> ListSettingWithStringItemUi(setting, dialogManager, showSummary)
-                    is LinkSettingItem -> SettingItemUi(setting) { linkAction(setting.url) }
+                    is ActionSettingItem ->
+                        SettingItemUi(setting, showSummary, showBorder = showBorder) { setting.action() }
+                    is BooleanSettingItem ->
+                        BooleanSettingItemUi(setting, showSummary, showBorder)
+                    is ValueSettingItem<*> ->
+                        ValueSettingItemUi(setting, dialogManager, showSummary, showBorder)
+                    is ListSettingWithEnumItem<*> ->
+                        ListSettingItemUi(setting, dialogManager, showSummary, showBorder)
+                    is ListSettingWithStringItem ->
+                        ListSettingWithStringItemUi(setting, dialogManager, showSummary, showBorder)
+                    is LinkSettingItem ->
+                        SettingItemUi(setting, showBorder = showBorder) { linkAction(setting.url) }
                     is VersionSettingItem -> {
                         val version = " v${BuildConfig.VERSION_NAME}"
-                        SettingItemUi(setting, showSummary, extraTitlePostfix = version) { setting.action() }
+                        SettingItemUi(setting, showSummary, false, version, showBorder) { setting.action() }
                     }
                 }
             }
