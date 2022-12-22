@@ -935,12 +935,12 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             }
         }
         initFAB()
-        if (sp.getBoolean("sp_gestures_use", true)) {
+        if (config.enableNavButtonGesture) {
             val onNavButtonTouchListener = object : SwipeTouchListener(this) {
-                override fun onSwipeTop() = performGesture("setting_gesture_nav_up")
-                override fun onSwipeBottom() = performGesture("setting_gesture_nav_down")
-                override fun onSwipeRight() = performGesture("setting_gesture_nav_right")
-                override fun onSwipeLeft() = performGesture("setting_gesture_nav_left")
+                override fun onSwipeTop() = performGesture(ConfigManager.K_GESTURE_NAV_UP)
+                override fun onSwipeBottom() = performGesture(ConfigManager.K_GESTURE_NAV_DOWN)
+                override fun onSwipeRight() = performGesture(ConfigManager.K_GESTURE_NAV_RIGHT)
+                override fun onSwipeLeft() = performGesture(ConfigManager.K_GESTURE_NAV_LEFT)
             }
             fabImageViewController.defaultTouchListener = onNavButtonTouchListener
         }
