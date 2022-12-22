@@ -65,7 +65,7 @@ class MainSettingsFragment : Fragment(), KoinComponent {
         ActionSettingItem(
             R.string.setting_title_clear_control,
             R.drawable.icon_delete
-        ) { showFragment(ClearDataFragment()) },
+        ) { showFragment(createClearDataFragment()) },
         ActionSettingItem(R.string.setting_title_search, R.drawable.icon_search) {
             showFragment(createSearchSettingsFragment())
         },
@@ -400,5 +400,49 @@ class MainSettingsFragment : Fragment(), KoinComponent {
             R.string.setting_title_import_bookmarks,
             R.drawable.ic_bookmark,
         ) { dialogManager.showImportBookmarkFilePicker() },
+    )
+
+    private fun createClearDataFragment() = UISettingsComposeFragment(
+        R.string.setting_title_clear_control, clearDataSettingItems
+    )
+
+    private val clearDataSettingItems = listOf(
+        BooleanSettingItem(
+            R.string.clear_title_cache,
+            R.drawable.ic_save_data,
+            config = config::clearCache,
+        ),
+        BooleanSettingItem(
+            R.string.clear_title_history,
+            R.drawable.icon_history,
+            config = config::clearHistory,
+        ),
+        BooleanSettingItem(
+            R.string.clear_title_indexedDB,
+            R.drawable.icon_delete,
+            config = config::clearIndexedDB,
+        ),
+        BooleanSettingItem(
+            R.string.clear_title_cookie,
+            R.drawable.icon_cookie,
+            R.string.setting_summary_cookie_delete,
+            config::clearCookies
+        ),
+        BooleanSettingItem(
+            R.string.clear_title_quit,
+            R.drawable.icon_exit,
+            R.string.clear_summary_quit,
+            config::clearWhenQuit
+        ),
+        ActionSettingItem(
+            R.string.clear_title_deleteDatabase,
+            R.drawable.icon_delete,
+            R.string.clear_summary_deleteDatabase,
+        ) {
+            requireActivity().deleteDatabase("Ninja4.db");
+            requireActivity().deleteDatabase("pass_DB_v01.db");
+            config.restartChanged = true
+            requireActivity().finish()
+        }
     )
 }

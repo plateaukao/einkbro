@@ -14,7 +14,7 @@ class BooleanSettingItem(
     override val titleResId: Int,
     override val iconId: Int,
     override val summaryResId: Int = 0,
-    val booleanPreference: KMutableProperty0<Boolean>,
+    val config: KMutableProperty0<Boolean>,
     override val span: Int = 1,
 ) : SettingItemInterface
 
