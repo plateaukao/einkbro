@@ -67,8 +67,7 @@ fun SettingsMainContent(
     defaultGridSize: Int = 1,
 ) {
     val context = LocalContext.current
-    val showSummary = ViewUnit.isWideLayout(context)
-    val columnCount = if (showSummary || defaultGridSize == 2) 2 else 1
+    val columnCount = if (ViewUnit.isWideLayout(context) || defaultGridSize == 2) 2 else 1
     LazyVerticalGrid(
         modifier = Modifier
             .wrapContentHeight()
@@ -81,21 +80,15 @@ fun SettingsMainContent(
         settings.forEach { setting ->
             item(span = { GridItemSpan(setting.span) }) {
                 when (setting) {
-                    is ActionSettingItem ->
-                        SettingItemUi(setting, showSummary, showBorder = showBorder) { setting.action() }
-                    is BooleanSettingItem ->
-                        BooleanSettingItemUi(setting, showSummary, showBorder)
-                    is ValueSettingItem<*> ->
-                        ValueSettingItemUi(setting, dialogManager, showSummary, showBorder)
-                    is ListSettingWithEnumItem<*> ->
-                        ListSettingItemUi(setting, dialogManager, showSummary, showBorder)
-                    is ListSettingWithStringItem ->
-                        ListSettingWithStringItemUi(setting, dialogManager, showSummary, showBorder)
-                    is LinkSettingItem ->
-                        SettingItemUi(setting, showBorder = showBorder) { linkAction(setting.url) }
+                    is ActionSettingItem -> SettingItemUi(setting, showBorder = showBorder) { setting.action() }
+                    is BooleanSettingItem -> BooleanSettingItemUi(setting, showBorder)
+                    is ValueSettingItem<*> -> ValueSettingItemUi(setting, dialogManager, showBorder)
+                    is ListSettingWithEnumItem<*> -> ListSettingItemUi(setting, dialogManager, showBorder)
+                    is ListSettingWithStringItem -> ListSettingWithStringItemUi(setting, dialogManager, showBorder)
+                    is LinkSettingItem -> SettingItemUi(setting, showBorder = showBorder) { linkAction(setting.url) }
                     is VersionSettingItem -> {
                         val version = " v${BuildConfig.VERSION_NAME}"
-                        SettingItemUi(setting, showSummary, false, version, showBorder) { setting.action() }
+                        SettingItemUi(setting, false, version, showBorder) { setting.action() }
                     }
                 }
             }

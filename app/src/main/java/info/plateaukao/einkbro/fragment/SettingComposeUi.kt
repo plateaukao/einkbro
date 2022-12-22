@@ -29,7 +29,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun SettingItemUi(
     setting: SettingItemInterface,
-    showSummary: Boolean = false,
     isChecked: Boolean = false,
     extraTitlePostfix: String = "",
     showBorder: Boolean = false,
@@ -38,7 +37,7 @@ fun SettingItemUi(
     val interactionSource = remember { MutableInteractionSource() }
     val pressed by interactionSource.collectIsPressedAsState()
     val borderWidth = if (isChecked || pressed) 3.dp else 1.dp
-    val height = if (showSummary) 80.dp else 70.dp
+    val height = 80.dp
     var modifier = Modifier
         .fillMaxWidth()
         .height(height)
@@ -71,7 +70,7 @@ fun SettingItemUi(
                 fontSize = 16.sp,
                 color = MaterialTheme.colors.onBackground
             )
-            if (showSummary && setting.summaryResId != 0) {
+            if (setting.summaryResId != 0) {
                 Spacer(
                     modifier = Modifier
                         .height(5.dp)
@@ -91,7 +90,6 @@ fun SettingItemUi(
 @Composable
 fun BooleanSettingItemUi(
     setting: BooleanSettingItem,
-    showSummary: Boolean = false,
     showBorder: Boolean = false,
 ) {
     val checked = remember { mutableStateOf(setting.config.get()) }
@@ -101,7 +99,7 @@ fun BooleanSettingItemUi(
             .wrapContentHeight()
     ) {
         SettingItemUi(
-            setting = setting, showSummary = showSummary, checked.value,
+            setting = setting, checked.value,
             showBorder = showBorder
         ) {
             checked.value = !checked.value
@@ -125,14 +123,12 @@ fun BooleanSettingItemUi(
 fun <T> ValueSettingItemUi(
     setting: ValueSettingItem<T>,
     dialogManager: DialogManager,
-    showSummary: Boolean = false,
     showBorder: Boolean = false,
 ) {
     val coroutineScope = rememberCoroutineScope()
     val currentValue = remember { mutableStateOf(setting.config.get()) }
     SettingItemUi(
         setting = setting,
-        showSummary = showSummary,
         extraTitlePostfix = ": ${currentValue.value}",
         showBorder = showBorder,
     ) {
@@ -156,7 +152,6 @@ fun <T> ValueSettingItemUi(
 fun <T : Enum<T>> ListSettingItemUi(
     setting: ListSettingWithEnumItem<T>,
     dialogManager: DialogManager,
-    showSummary: Boolean = false,
     showBorder: Boolean = false,
 ) {
     val context = LocalContext.current
@@ -165,7 +160,6 @@ fun <T : Enum<T>> ListSettingItemUi(
     val coroutineScope = rememberCoroutineScope()
     SettingItemUi(
         setting = setting,
-        showSummary = showSummary,
         extraTitlePostfix = ": ${currentValueString.value}",
         showBorder = showBorder,
     ) {
@@ -187,7 +181,6 @@ fun <T : Enum<T>> ListSettingItemUi(
 fun ListSettingWithStringItemUi(
     setting: ListSettingWithStringItem,
     dialogManager: DialogManager,
-    showSummary: Boolean = false,
     showBorder: Boolean = false,
 ) {
     val context = LocalContext.current
@@ -197,7 +190,6 @@ fun ListSettingWithStringItemUi(
     val coroutineScope = rememberCoroutineScope()
     SettingItemUi(
         setting = setting,
-        showSummary = showSummary,
         extraTitlePostfix = ": ${currentValueString.value}",
         showBorder = showBorder,
     ) {
