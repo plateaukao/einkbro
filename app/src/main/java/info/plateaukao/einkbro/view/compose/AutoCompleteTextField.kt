@@ -79,7 +79,6 @@ class AutoCompleteTextComposeView @JvmOverloads constructor(
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun AutoCompleteTextField(
     focusRequester: FocusRequester,
@@ -255,7 +254,7 @@ fun PreviewTextBar() {
             onPasteClick = {},
             closeAction = {},
             focusRequester = FocusRequester(),
-            recordList = mutableStateOf(listOf<Record>()),
+            recordList = mutableStateOf(listOf()),
             onRecordClick = {},
         )
     }

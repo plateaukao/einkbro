@@ -6,6 +6,7 @@ import android.app.DownloadManager.*
 import android.app.SearchManager
 import android.content.*
 import android.content.Intent.ACTION_VIEW
+import android.content.Intent.FLAG_ACTIVITY_NO_ANIMATION
 import android.content.pm.ActivityInfo
 import android.content.res.Configuration
 import android.graphics.Point
@@ -1895,7 +1896,9 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             BoldFont -> config::boldFontStyle.toggle()
             Search -> showSearchPanel()
             Download -> BrowserUnit.openDownloadFolder(this)
-            Settings -> startActivity(Intent(this, SettingActivity::class.java))
+            Settings -> startActivity(Intent(this, SettingActivity::class.java).apply {
+                addFlags(FLAG_ACTIVITY_NO_ANIMATION)
+            })
         }
     }
 

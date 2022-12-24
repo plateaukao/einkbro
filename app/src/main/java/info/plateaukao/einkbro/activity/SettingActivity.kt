@@ -20,8 +20,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.activity.SettingRoute.*
-import info.plateaukao.einkbro.setting.*
 import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.setting.*
 import info.plateaukao.einkbro.unit.BackupUnit
 import info.plateaukao.einkbro.view.GestureType
 import info.plateaukao.einkbro.view.compose.MyTheme
@@ -50,8 +50,10 @@ class SettingActivity : ComponentActivity(), KoinComponent {
                     topBar = {
                         EinkBroAppBar(
                             currentScreen = currentScreen,
-                            canNavigateBack = navController.previousBackStackEntry != null,
-                            navigateUp = { navController.navigateUp() }
+                            navigateUp = {
+                                if (navController.previousBackStackEntry != null) navController.navigateUp()
+                                else finish()
+                            }
                         )
                     }
                 ) { innerPadding ->
@@ -97,6 +99,12 @@ class SettingActivity : ComponentActivity(), KoinComponent {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        overridePendingTransition(0, 0)
+    }
+
     private fun handleLink(url: String) {
         startActivity(
             Intent(this, BrowserActivity::class.java).apply {
@@ -105,6 +113,7 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             }
         )
         finish()
+        overridePendingTransition(0, 0)
     }
 
     private val mainSettings = listOf(
@@ -462,8 +471,8 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.drawable.icon_delete,
             R.string.clear_summary_deleteDatabase,
         ) {
-            deleteDatabase("Ninja4.db");
-            deleteDatabase("pass_DB_v01.db");
+            deleteDatabase("Ninja4.db")
+            deleteDatabase("pass_DB_v01.db")
             config.restartChanged = true
             finish()
         }
@@ -559,20 +568,17 @@ enum class SettingRoute(@StringRes val titleId: Int) {
 @Composable
 fun EinkBroAppBar(
     currentScreen: SettingRoute,
-    canNavigateBack: Boolean,
     navigateUp: () -> Unit,
 ) {
     TopAppBar(
         title = { Text(stringResource(currentScreen.titleId), color = MaterialTheme.colors.onPrimary) },
         navigationIcon = {
-            if (canNavigateBack) {
-                IconButton(onClick = navigateUp) {
-                    Icon(
-                        tint = MaterialTheme.colors.onPrimary,
-                        imageVector = Icons.Filled.ArrowBack,
-                        contentDescription = stringResource(R.string.back)
-                    )
-                }
+            IconButton(onClick = navigateUp) {
+                Icon(
+                    tint = MaterialTheme.colors.onPrimary,
+                    imageVector = Icons.Filled.ArrowBack,
+                    contentDescription = stringResource(R.string.back)
+                )
             }
         }
     )

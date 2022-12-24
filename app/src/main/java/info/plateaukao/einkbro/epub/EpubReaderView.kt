@@ -8,7 +8,9 @@ import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.util.Log
 import android.util.TypedValue
-import android.view.*
+import android.view.ActionMode
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.browser.BrowserController
@@ -20,7 +22,9 @@ import nl.siegmann.epublib.domain.Book
 import nl.siegmann.epublib.domain.Spine
 import nl.siegmann.epublib.domain.TOCReference
 import nl.siegmann.epublib.epub.EpubReader
-import java.io.*
+import java.io.BufferedReader
+import java.io.File
+import java.io.InputStreamReader
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
@@ -54,19 +58,23 @@ class EpubReaderView(
         set(value) {
             field = value
             if (webTheme == WebThemeType.LIGHT) {
-                processJavascript("""var elements = document.getElementsByTagName('*');
+                processJavascript(
+                    """var elements = document.getElementsByTagName('*');
 for (var i = 0; i < elements.length; i++) {
  if(elements[i].tagName!="SPAN")
   elements[i].style.backgroundColor='white';
  elements[i].style.color='black';
-}""")
+}"""
+                )
             } else {
-                processJavascript("""var elements = document.getElementsByTagName('*');
+                processJavascript(
+                    """var elements = document.getElementsByTagName('*');
 for (var i = 0; i < elements.length; i++) {
  if(elements[i].tagName!="SPAN")
   elements[i].style.backgroundColor='black';
 elements[i].style.color='white';
-}""")
+}"""
+                )
             }
         }
 
@@ -91,7 +99,7 @@ elements[i].style.color='white';
         }
 
         override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
-            when(item.itemId) {
+            when (item.itemId) {
                 R.id.menu_copy -> copySelection()
                 R.id.menu_highlight -> annotateSelection(AnnotateType.HIGHLIGHT)
                 R.id.menu_underline -> annotateSelection(AnnotateType.UNDERLINE)
@@ -171,7 +179,7 @@ elements[i].style.color='white';
     }
 
     private fun processJavascript(js: String) {
-            evaluateJavascript("(function(){$js})()") { }
+        evaluateJavascript("(function(){$js})()") { }
     }
 
     fun annotate(jsonData: String, annotateType: AnnotateType, hashcolor: String) {
@@ -236,7 +244,7 @@ elements[i].style.color='white';
         processJavascript(js)
     }
 
-    fun processTextSelection(postAction: (()->Unit)?) {
+    fun processTextSelection(postAction: (() -> Unit)?) {
         val js = """	var sel = window.getSelection();
 	var jsonData ={};
 	if(!sel.isCollapsed) {
@@ -257,13 +265,14 @@ elements[i].style.color='white';
 		jsonData['status'] = 0;
 	}
 	return (JSON.stringify(jsonData));"""
-        evaluateJavascript("(function(){$js})()" ) { value ->
+        evaluateJavascript("(function(){$js})()") { value ->
             val parseJson = value.substring(1, value.length - 1)
-                    .replace("\\\\\"".toRegex(), "\"")
-                    .replace("\\\\\\\\\"".toRegex(), "\\\\\"")
-                    .replace("\\\\\\\"".toRegex(), "\\\\\"")
-                    .replace("\\\\\\\\\\\"".toRegex(), "\\\\\"")
-            selectedTextInfo = SelectedTextInfo.from(parseJson, chapterNumber, value) ?: return@evaluateJavascript // TODO: show error
+                .replace("\\\\\"".toRegex(), "\"")
+                .replace("\\\\\\\\\"".toRegex(), "\\\\\"")
+                .replace("\\\\\\\"".toRegex(), "\\\\\"")
+                .replace("\\\\\\\\\\\"".toRegex(), "\\\\\"")
+            selectedTextInfo =
+                SelectedTextInfo.from(parseJson, chapterNumber, value) ?: return@evaluateJavascript // TODO: show error
             postAction?.invoke()
             exitSelectionMode()
         }
@@ -338,10 +347,11 @@ elements[i].style.color='white';
                     e.printStackTrace()
                 }
                 chapterList.add(
-                        Chapter(
-                                if (spine.getResource(i).title != null) spine.getResource(i).title else chapterNumber.toString(),
-                                builder.toString(),
-                                spine.getResource(i).href)
+                    Chapter(
+                        if (spine.getResource(i).title != null) spine.getResource(i).title else chapterNumber.toString(),
+                        builder.toString(),
+                        spine.getResource(i).href
+                    )
                 )
                 chapterNumber++
             }
@@ -384,20 +394,21 @@ elements[i].style.color='white';
         try {
             val items = chapterList.map { it.name }.toTypedArray()
             AlertDialog.Builder(context, R.style.TouchAreaDialog)
-                    .setTitle(context.getString(R.string.dialog_toc_title))
-                    .setItems(items) { _, item ->
-                        gotoPosition(item, 0f)
-                        listener.onChapterChangeListener(item)
-                    }.create().apply {
-                        with(listView) {
-                            divider = ColorDrawable(Color.GRAY)
-                            dividerHeight = 1
-                            setFooterDividersEnabled(false)
-                            overscrollFooter = ColorDrawable(Color.TRANSPARENT)
-                        }
+                .setTitle(context.getString(R.string.dialog_toc_title))
+                .setItems(items) { _, item ->
+                    gotoPosition(item, 0f)
+                    listener.onChapterChangeListener(item)
+                }.create().apply {
+                    with(listView) {
+                        divider = ColorDrawable(Color.GRAY)
+                        dividerHeight = 1
+                        setFooterDividersEnabled(false)
+                        overscrollFooter = ColorDrawable(Color.TRANSPARENT)
                     }
-                    .show()
-        } catch (e: Exception) { }
+                }
+                .show()
+        } catch (e: Exception) {
+        }
     }
 
     override fun pageDownWithNoAnimation() {
@@ -447,19 +458,19 @@ elements[i].style.color='white';
 
     fun nextPage() {
         if (loading) return
-            val pageHeight = this.height - 50
-            val totalHeight = getTotalContentHeight()
-            if (totalHeight > this.scrollY + this.height) {
-                loading = true
-                progress = (this.scrollY + pageHeight).toFloat() / totalHeight
-                pageNumber = ((this.scrollY + pageHeight) / pageHeight)
-                scrollY = pageNumber * pageHeight
-                listener.onPageChangeListener(this.chapterNumber, this.pageNumber, getProgressStart(), getProgressEnd())
-                Log.d("EpubReaderProgress", progress.toString() + " " + pageHeight + " " + this.scrollY + " " + totalHeight)
-                loading = false
-            } else {
-                nextChapter()
-            }
+        val pageHeight = this.height - 50
+        val totalHeight = getTotalContentHeight()
+        if (totalHeight > this.scrollY + this.height) {
+            loading = true
+            progress = (this.scrollY + pageHeight).toFloat() / totalHeight
+            pageNumber = ((this.scrollY + pageHeight) / pageHeight)
+            scrollY = pageNumber * pageHeight
+            listener.onPageChangeListener(this.chapterNumber, this.pageNumber, getProgressStart(), getProgressEnd())
+            Log.d("EpubReaderProgress", progress.toString() + " " + pageHeight + " " + this.scrollY + " " + totalHeight)
+            loading = false
+        } else {
+            nextChapter()
+        }
     }
 
     fun previousPage() {
@@ -512,7 +523,7 @@ elements[i].style.color='white';
     fun getChapterContent(): String = chapterList[chapterNumber].content
 
     private fun getTotalContentHeight(): Int =
-            (this.contentHeight * resources.displayMetrics.density).toInt()
+        (this.contentHeight * resources.displayMetrics.density).toInt()
 
     fun getPageHeight(): Int = height - 50
 
@@ -528,9 +539,9 @@ elements[i].style.color='white';
     }
 
     private fun dpToPixel(dp: Int): Int = TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DIP,
-            dp.toFloat(),
-            context.resources.displayMetrics
+        TypedValue.COMPLEX_UNIT_DIP,
+        dp.toFloat(),
+        context.resources.displayMetrics
     ).roundToInt()
 
     companion object {

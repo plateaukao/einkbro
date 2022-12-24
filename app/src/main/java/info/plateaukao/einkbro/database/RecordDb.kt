@@ -9,7 +9,6 @@ import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.unit.RecordUnit
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.util.*
 
 class RecordDb(context: Context?) : KoinComponent {
     private lateinit var database: SQLiteDatabase
@@ -71,27 +70,6 @@ class RecordDb(context: Context?) : KoinComponent {
         database.insert(table, null, values)
     }
 
-    private fun checkHistory(url: String?): Boolean {
-        if (url == null || url.trim { it <= ' ' }.isEmpty()) {
-            return false
-        }
-
-        val cursor = database.query(
-            RecordUnit.TABLE_HISTORY,
-            arrayOf(RecordUnit.COLUMN_URL),
-            RecordUnit.COLUMN_URL + "=?",
-            arrayOf(url.trim { it <= ' ' }),
-            null,
-            null,
-            null
-        )
-        if (cursor != null) {
-            val result = cursor.moveToFirst()
-            cursor.close()
-            return result
-        }
-        return false
-    }
 
     fun checkDomain(domain: String?, table: String?): Boolean {
         if (domain == null || domain.trim { it <= ' ' }.isEmpty()) {
@@ -112,13 +90,6 @@ class RecordDb(context: Context?) : KoinComponent {
             return result
         }
         return false
-    }
-
-    private fun deleteHistoryItemByURL(domain: String?) {
-        if (domain == null || domain.trim { it <= ' ' }.isEmpty()) {
-            return
-        }
-        database.execSQL("DELETE FROM " + RecordUnit.TABLE_HISTORY + " WHERE " + RecordUnit.COLUMN_URL + " = " + "\"" + domain.trim { it <= ' ' } + "\"")
     }
 
     private fun purgeOldHistoryItem(days: Int) {

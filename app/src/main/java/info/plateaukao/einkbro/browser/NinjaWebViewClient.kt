@@ -4,7 +4,6 @@ import android.annotation.TargetApi
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.net.Uri
 import android.net.http.SslError
 import android.os.Build
@@ -39,7 +38,6 @@ class NinjaWebViewClient(
     private val addHistoryAction: (String, String) -> Unit
 ) : WebViewClient(), KoinComponent {
     private val context: Context = ninjaWebView.context
-    private val sp: SharedPreferences by inject()
     private val config: ConfigManager by inject()
     private val adBlock: AdBlock by inject()
     private val cookie: Cookie by inject()

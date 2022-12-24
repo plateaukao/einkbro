@@ -1,12 +1,11 @@
 package info.plateaukao.einkbro.service
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.speech.tts.TextToSpeech
 import info.plateaukao.einkbro.preference.ConfigManager
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.util.Locale
+import java.util.*
 
 class TtsManager(
     private val context: Context

@@ -1,9 +1,8 @@
 package info.plateaukao.einkbro.unit
 
+import android.content.Context
 import android.content.Intent
 import info.plateaukao.einkbro.R
-import android.annotation.SuppressLint
-import android.content.Context
 
 object IntentUnit {
     fun share(context: Context, title: String?, url: String?) {

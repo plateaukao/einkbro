@@ -16,7 +16,6 @@ import info.plateaukao.einkbro.view.GestureType
 import info.plateaukao.einkbro.view.Orientation
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction
 import org.koin.core.component.KoinComponent
-import java.lang.Exception
 import java.util.*
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KMutableProperty0
@@ -276,8 +275,6 @@ class ConfigManager(
             sp.edit { putInt(K_SAVED_ALBUM_INDEX, value) }
         }
 
-    var dbVersion: Int by IntPreference(sp, K_DB_VERSION, 0)
-
     var fontType: FontType
         get() = FontType.values()[sp.getInt(K_FONT_TYPE, 0)]
         set(value) = sp.edit { putInt(K_FONT_TYPE, value.ordinal) }
@@ -347,7 +344,6 @@ class ConfigManager(
         const val K_TOOLBAR_ICONS = "sp_toolbar_icons"
         const val K_TOOLBAR_ICONS_FOR_LARGE = "sp_toolbar_icons_for_large"
         const val K_BOLD_FONT = "sp_bold_font"
-        const val K_FONT_STYLE_SERIF = "sp_font_style_serif"
         const val K_NAV_POSITION = "nav_position"
         const val K_FONT_SIZE = "sp_fontSize"
         const val K_TTS_SPEED_VALUE = "sp_tts_speed"
@@ -364,7 +360,6 @@ class ConfigManager(
         const val K_TRANSLATION_MODE = "sp_translation_mode"
         const val K_ENABLE_TOUCH = "sp_enable_touch"
         const val K_TOUCH_HINT = "sp_touch_area_hint"
-        const val K_SCREENSHOT = "screenshot"
         const val K_KEEP_AWAKE = "sp_screen_awake"
         const val K_DESKTOP = "sp_desktop"
         const val K_TRANSLATE_LANGUAGE = "sp_translate_language"
