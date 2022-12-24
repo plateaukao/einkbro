@@ -1,18 +1,27 @@
-package info.plateaukao.einkbro.fragment
+package info.plateaukao.einkbro.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.compose.ui.platform.ComposeView
-import androidx.fragment.app.Fragment
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.lifecycleScope
-import info.plateaukao.einkbro.preference.ConfigManager
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import info.plateaukao.einkbro.R
-import info.plateaukao.einkbro.activity.Whitelist_AdBlock
-import info.plateaukao.einkbro.activity.Whitelist_Cookie
-import info.plateaukao.einkbro.activity.Whitelist_Javascript
+import info.plateaukao.einkbro.activity.SettingRoute.*
+import info.plateaukao.einkbro.setting.*
+import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.unit.BackupUnit
 import info.plateaukao.einkbro.view.GestureType
 import info.plateaukao.einkbro.view.compose.MyTheme
@@ -23,56 +32,107 @@ import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class MainSettingsFragment : Fragment(), KoinComponent {
+class SettingActivity : ComponentActivity(), KoinComponent {
     private val config: ConfigManager by inject()
-    private val dialogManager: DialogManager by lazy { DialogManager(requireActivity()) }
-    private val backupUnit: BackupUnit by lazy { BackupUnit(requireContext(), requireActivity()) }
+    private val dialogManager: DialogManager by lazy { DialogManager(this) }
+    private val backupUnit: BackupUnit by lazy { BackupUnit(this, this) }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        val composeView = ComposeView(requireContext())
-        composeView.setContent {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            val navController: NavHostController = rememberNavController()
             MyTheme {
-                SettingsMainContent(mainSettings, dialogManager, {}, 2)
+
+                val backStackEntry = navController.currentBackStackEntryAsState()
+                val currentScreen = valueOf(backStackEntry?.value?.destination?.route ?: Main.name)
+
+                Scaffold(
+                    topBar = {
+                        EinkBroAppBar(
+                            currentScreen = currentScreen,
+                            canNavigateBack = navController.previousBackStackEntry != null,
+                            navigateUp = { navController.navigateUp() }
+                        )
+                    }
+                ) { innerPadding ->
+                    NavHost(
+                        navController = navController,
+                        startDestination = Main.name,
+                        modifier = Modifier.padding(innerPadding)
+                    ) {
+                        val action = this@SettingActivity::handleLink
+                        composable(Main.name) {
+                            SettingScreen(navController, mainSettings, dialogManager, action, 2)
+                        }
+                        composable(Ui.name) {
+                            SettingScreen(navController, uiSettingItems, dialogManager, action, 1)
+                        }
+                        composable(Toolbar.name) {
+                            SettingScreen(navController, toolbarSettingItems, dialogManager, action, 1)
+                        }
+                        composable(Behavior.name) {
+                            SettingScreen(navController, behaviorSettingItems, dialogManager, action, 1)
+                        }
+                        composable(Gesture.name) {
+                            SettingScreen(navController, gestureSettingItems, dialogManager, action, 1)
+                        }
+                        composable(Backup.name) {
+                            SettingScreen(navController, dataSettingItems, dialogManager, action, 1)
+                        }
+                        composable(StartControl.name) {
+                            SettingScreen(navController, startSettingItems, dialogManager, action, 1)
+                        }
+                        composable(DataControl.name) {
+                            SettingScreen(navController, clearDataSettingItems, dialogManager, action, 1)
+                        }
+                        composable(Search.name) {
+                            SettingScreen(navController, searchSettingItems, dialogManager, action, 1)
+                        }
+                        composable(About.name) {
+                            SettingScreen(navController, LinkSettingItem.values().toList(), dialogManager, action, 2)
+                        }
+                    }
+                }
             }
         }
-        return composeView
+    }
+
+    private fun handleLink(url: String) {
+        startActivity(
+            Intent(this, BrowserActivity::class.java).apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, url)
+            }
+        )
+        finish()
     }
 
     private val mainSettings = listOf(
-        ActionSettingItem(R.string.setting_title_ui, R.drawable.ic_phone) { showFragment(createUiSettingFragment()) },
-        ActionSettingItem(R.string.setting_title_toolbar, R.drawable.ic_toolbar) {
-            showFragment(createToolbarSettingFragment())
+        NavigateSettingItem(R.string.setting_title_ui, R.drawable.ic_phone, destination = Ui),
+        NavigateSettingItem(
+            R.string.setting_title_toolbar,
+            R.drawable.ic_toolbar,
+            destination = Toolbar
+        ),
+        NavigateSettingItem(R.string.setting_title_behavior, R.drawable.icon_ui, destination = Behavior),
+        NavigateSettingItem(R.string.setting_gestures, R.drawable.gesture_tap, destination = Gesture),
+        NavigateSettingItem(R.string.setting_title_data, R.drawable.icon_backup, destination = Backup),
+        ActionSettingItem(R.string.setting_title_pdf_paper_size, R.drawable.ic_pdf) {
+            PrinterDocumentPaperSizeDialog(
+                this
+            ).show()
         },
-        ActionSettingItem(R.string.setting_title_behavior, R.drawable.icon_ui) {
-            showFragment(createBehaviorSettingFragment())
-        },
-        ActionSettingItem(R.string.setting_gestures, R.drawable.gesture_tap) {
-            showFragment(createGestureSettingFragment())
-        },
-        ActionSettingItem(R.string.setting_title_data, R.drawable.icon_backup) {
-            showFragment(
-                createBackupSettingsFragment()
-            )
-        },
-        ActionSettingItem(
-            R.string.setting_title_pdf_paper_size,
-            R.drawable.ic_pdf
-        ) { PrinterDocumentPaperSizeDialog(requireContext()).show() },
-        ActionSettingItem(
+        NavigateSettingItem(
             R.string.setting_title_start_control,
-            R.drawable.icon_earth
-        ) { showFragment(createStartSettingFragment()) },
-        ActionSettingItem(
+            R.drawable.icon_earth,
+            destination = StartControl
+        ),
+        NavigateSettingItem(
             R.string.setting_title_clear_control,
-            R.drawable.icon_delete
-        ) { showFragment(createClearDataFragment()) },
-        ActionSettingItem(R.string.setting_title_search, R.drawable.icon_search) {
-            showFragment(createSearchSettingsFragment())
-        },
+            R.drawable.icon_delete,
+            destination = DataControl
+        ),
+        NavigateSettingItem(R.string.setting_title_search, R.drawable.icon_search, destination = Search),
         ActionSettingItem(
             R.string.setting_title_userAgent,
             R.drawable.icon_useragent
@@ -81,21 +141,12 @@ class MainSettingsFragment : Fragment(), KoinComponent {
             R.string.setting_title_edit_homepage,
             R.drawable.icon_edit
         ) { lifecycleScope.launch { updateHomepage() } },
-        VersionSettingItem(R.string.menu_other_info, R.drawable.icon_info, { showFragment(createAboutFragment()) }),
+        VersionSettingItem(R.string.menu_other_info, R.drawable.icon_info, destination = About),
     )
-
-    private fun showFragment(fragment: Fragment) {
-        parentFragmentManager
-            .beginTransaction()
-            .replace(R.id.content_frame, fragment)
-            .addToBackStack(null)
-            .commit()
-        activity?.setTitle((fragment as FragmentTitleInterface).getTitleId())
-    }
 
     private suspend fun updateUserAgent() {
         val newValue = TextInputDialog(
-            requireContext(),
+            this,
             getString(R.string.setting_title_userAgent),
             "",
             config.customUserAgent
@@ -106,7 +157,7 @@ class MainSettingsFragment : Fragment(), KoinComponent {
 
     private suspend fun updateHomepage() {
         val newValue = TextInputDialog(
-            requireContext(),
+            this,
             getString(R.string.setting_title_edit_homepage),
             "",
             config.favoriteUrl
@@ -114,10 +165,6 @@ class MainSettingsFragment : Fragment(), KoinComponent {
 
         newValue?.let { config.favoriteUrl = it }
     }
-
-    private fun createUiSettingFragment() = UISettingsComposeFragment(
-        R.string.setting_title_ui, uiSettingItems
-    )
 
     private val uiSettingItems = listOf(
         BooleanSettingItem(
@@ -188,10 +235,6 @@ class MainSettingsFragment : Fragment(), KoinComponent {
         },
     )
 
-    private fun createBehaviorSettingFragment() = UISettingsComposeFragment(
-        R.string.setting_title_behavior, behaviorSettingItems
-    )
-
     private val behaviorSettingItems = listOf(
         BooleanSettingItem(
             R.string.setting_title_saveTabs,
@@ -243,10 +286,6 @@ class MainSettingsFragment : Fragment(), KoinComponent {
         ),
     )
 
-    private fun createToolbarSettingFragment() = UISettingsComposeFragment(
-        R.string.setting_title_toolbar, toolbarSettingItems
-    )
-
     private val toolbarSettingItems = listOf(
         BooleanSettingItem(
             R.string.setting_title_toolbar_top,
@@ -272,10 +311,6 @@ class MainSettingsFragment : Fragment(), KoinComponent {
             R.string.setting_summary_show_tab_bar,
             config::shouldShowTabBar,
         ),
-    )
-
-    private fun createGestureSettingFragment() = UISettingsComposeFragment(
-        R.string.setting_gestures, gestureSettingItems
     )
 
     private val gestureSettingItems = listOf(
@@ -343,14 +378,6 @@ class MainSettingsFragment : Fragment(), KoinComponent {
         ),
     )
 
-    private fun createAboutFragment() = UISettingsComposeFragment(
-        R.string.title_about, LinkSettingItem.values().toList(), 2
-    )
-
-    private fun createSearchSettingsFragment() = UISettingsComposeFragment(
-        R.string.setting_title_search, searchSettingItems
-    )
-
     private val searchSettingItems = listOf(
         ListSettingWithStringItem(
             R.string.setting_title_search_engine,
@@ -383,10 +410,6 @@ class MainSettingsFragment : Fragment(), KoinComponent {
         )
     )
 
-    private fun createBackupSettingsFragment() = UISettingsComposeFragment(
-        R.string.setting_title_data, dataSettingItems
-    )
-
     private val dataSettingItems = listOf(
         ActionSettingItem(
             R.string.setting_title_export_appData,
@@ -404,10 +427,6 @@ class MainSettingsFragment : Fragment(), KoinComponent {
             R.string.setting_title_import_bookmarks,
             R.drawable.ic_bookmark,
         ) { dialogManager.showImportBookmarkFilePicker() },
-    )
-
-    private fun createClearDataFragment() = UISettingsComposeFragment(
-        R.string.setting_title_clear_control, clearDataSettingItems
     )
 
     private val clearDataSettingItems = listOf(
@@ -443,15 +462,11 @@ class MainSettingsFragment : Fragment(), KoinComponent {
             R.drawable.icon_delete,
             R.string.clear_summary_deleteDatabase,
         ) {
-            requireActivity().deleteDatabase("Ninja4.db");
-            requireActivity().deleteDatabase("pass_DB_v01.db");
+            deleteDatabase("Ninja4.db");
+            deleteDatabase("pass_DB_v01.db");
             config.restartChanged = true
-            requireActivity().finish()
+            finish()
         }
-    )
-
-    private fun createStartSettingFragment() = UISettingsComposeFragment(
-        R.string.setting_title_start_control, startSettingItems
     )
 
     private val startSettingItems = listOf(
@@ -501,7 +516,7 @@ class MainSettingsFragment : Fragment(), KoinComponent {
             R.string.setting_title_whitelist,
             R.drawable.icon_list,
             R.string.setting_summary_whitelist,
-        ) { requireActivity().startActivity(Intent(activity, Whitelist_AdBlock::class.java)) },
+        ) { startActivity(Intent(this, Whitelist_AdBlock::class.java)) },
         BooleanSettingItem(
             R.string.setting_title_javascript,
             R.drawable.icon_java,
@@ -512,7 +527,7 @@ class MainSettingsFragment : Fragment(), KoinComponent {
             R.string.setting_title_whitelistJS,
             R.drawable.icon_list,
             R.string.setting_summary_whitelistJS,
-        ) { requireActivity().startActivity(Intent(activity, Whitelist_Javascript::class.java)) },
+        ) { startActivity(Intent(this, Whitelist_Javascript::class.java)) },
         BooleanSettingItem(
             R.string.setting_title_cookie,
             R.drawable.icon_cookie,
@@ -523,6 +538,47 @@ class MainSettingsFragment : Fragment(), KoinComponent {
             R.string.setting_title_whitelistCookie,
             R.drawable.icon_list,
             R.string.setting_summary_whitelistCookie,
-        ) { requireActivity().startActivity(Intent(activity, Whitelist_Cookie::class.java)) },
+        ) { startActivity(Intent(this, Whitelist_Cookie::class.java)) },
     )
+
+}
+
+enum class SettingRoute(@StringRes val titleId: Int) {
+    Main(R.string.settings),
+    Ui(R.string.setting_title_ui),
+    Toolbar(R.string.setting_title_toolbar),
+    Behavior(R.string.setting_title_behavior),
+    Gesture(R.string.setting_gestures),
+    Backup(R.string.setting_title_data),
+    StartControl(R.string.setting_title_start_control),
+    DataControl(R.string.setting_title_clear_control),
+    Search(R.string.setting_title_search),
+    About(R.string.title_about);
+}
+
+@Composable
+fun EinkBroAppBar(
+    currentScreen: SettingRoute,
+    canNavigateBack: Boolean,
+    navigateUp: () -> Unit,
+) {
+    TopAppBar(
+        title = { Text(stringResource(currentScreen.titleId), color = MaterialTheme.colors.onPrimary) },
+        navigationIcon = {
+            if (canNavigateBack) {
+                IconButton(onClick = navigateUp) {
+                    Icon(
+                        tint = MaterialTheme.colors.onPrimary,
+                        imageVector = Icons.Filled.ArrowBack,
+                        contentDescription = stringResource(R.string.back)
+                    )
+                }
+            }
+        }
+    )
+}
+
+@Composable
+fun MyText(textId: Int) {
+    Text(stringResource(textId), color = MaterialTheme.colors.onBackground)
 }

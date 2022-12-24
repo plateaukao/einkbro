@@ -467,10 +467,6 @@ class BooleanPreference(
 
     override fun setValue(thisRef: Any, property: KProperty<*>, value: Boolean) =
         sharedPreferences.edit { putBoolean(key, value) }
-
-    fun toggle() = sharedPreferences.edit {
-        putBoolean(key, !sharedPreferences.getBoolean(key, defaultValue))
-    }
 }
 
 class IntPreference(

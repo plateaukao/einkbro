@@ -1,10 +1,13 @@
-package info.plateaukao.einkbro.fragment
+package info.plateaukao.einkbro.setting
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -24,6 +27,9 @@ import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.preference.toggle
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.navigation.NavHostController
+import info.plateaukao.einkbro.BuildConfig
+import info.plateaukao.einkbro.unit.ViewUnit
 import kotlinx.coroutines.launch
 
 @Composable
@@ -201,6 +207,51 @@ fun ListSettingWithStringItemUi(
             ) ?: return@launch
             setting.config.set(selectedIndex.toString())
             currentValueString.value = context.getString(setting.options[selectedIndex])
+        }
+    }
+}
+
+@Composable
+fun SettingScreen(
+    navController: NavHostController,
+    settings: List<SettingItemInterface>,
+    dialogManager: DialogManager,
+    linkAction: (String) -> Unit,
+    defaultGridSize: Int = 1,
+) {
+    val context = LocalContext.current
+    val columnCount = if (ViewUnit.isWideLayout(context) || defaultGridSize == 2) 2 else 1
+    LazyVerticalGrid(
+        modifier = Modifier
+            .wrapContentHeight()
+            .padding(10.dp),
+        verticalArrangement = Arrangement.spacedBy(7.dp),
+        horizontalArrangement = Arrangement.spacedBy(7.dp),
+        columns = GridCells.Fixed(columnCount),
+    ) {
+        val showBorder = columnCount == 2
+        settings.forEach { setting ->
+            item(span = { GridItemSpan(setting.span) }) {
+                when (setting) {
+                    is NavigateSettingItem -> SettingItemUi(setting, showBorder = showBorder) {
+                        navController.navigate(
+                            setting.destination.name
+                        )
+                    }
+                    is ActionSettingItem -> SettingItemUi(setting, showBorder = showBorder) { setting.action() }
+                    is BooleanSettingItem -> BooleanSettingItemUi(setting, showBorder)
+                    is ValueSettingItem<*> -> ValueSettingItemUi(setting, dialogManager, showBorder)
+                    is ListSettingWithEnumItem<*> -> ListSettingItemUi(setting, dialogManager, showBorder)
+                    is ListSettingWithStringItem -> ListSettingWithStringItemUi(setting, dialogManager, showBorder)
+                    is LinkSettingItem -> SettingItemUi(setting, showBorder = showBorder) { linkAction(setting.url) }
+                    is VersionSettingItem -> {
+                        val version = " v${BuildConfig.VERSION_NAME}"
+                        SettingItemUi(setting, false, version, showBorder) {
+                            navController.navigate(setting.destination.name)
+                        }
+                    }
+                }
+            }
         }
     }
 }

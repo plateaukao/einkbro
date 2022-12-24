@@ -1,7 +1,8 @@
-package info.plateaukao.einkbro.fragment
+package info.plateaukao.einkbro.setting
 
 import kotlin.reflect.KMutableProperty0
 import info.plateaukao.einkbro.R
+import info.plateaukao.einkbro.activity.SettingRoute
 
 interface SettingItemInterface {
     val titleResId: Int
@@ -44,12 +45,20 @@ open class ActionSettingItem(
     open val action: () -> Unit,
 ) : SettingItemInterface
 
+open class NavigateSettingItem(
+    override val titleResId: Int,
+    override val iconId: Int,
+    override val summaryResId: Int = 0,
+    override val span: Int = 1,
+    val destination: SettingRoute
+) : SettingItemInterface
+
 class VersionSettingItem(
     override val titleResId: Int,
     override val iconId: Int,
-    val action: () -> Unit,
     override val summaryResId: Int = 0,
     override val span: Int = 1,
+    val destination: SettingRoute,
 ) : SettingItemInterface
 
 class ValueSettingItem<T>(

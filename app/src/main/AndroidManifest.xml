@@ -16,10 +16,13 @@
     </queries> <!-- Permission -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <!-- https://developer.android.com/guide/topics/manifest/uses-feature-element#permissions -->
-    <uses-feature android:name="android.hardware.location" android:required="false" />
-    <uses-feature android:name="android.hardware.location.gps" android:required="false" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- https://developer.android.com/guide/topics/manifest/uses-feature-element#permissions -->
+    <uses-feature
+        android:name="android.hardware.location"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.location.gps"
+        android:required="false" />
 
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <uses-permission
@@ -31,7 +34,11 @@
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-    <uses-feature android:name="android.hardware.microphone" android:required="false" />
+
+    <uses-feature
+        android:name="android.hardware.microphone"
+        android:required="false" />
+
     <uses-permission android:name="android.permission.AUDIO_CAPTURE" />
 
     <application
@@ -45,22 +52,30 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme"
-        tools:ignore="UnusedAttribute" >
+        android:usesCleartextTraffic="true"
+        tools:ignore="UnusedAttribute">
+        <activity
+            android:name="info.plateaukao.einkbro.activity.SettingActivity"
+            android:exported="false"
+            android:label="@string/title_activity_setting"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <activity
             android:name="info.plateaukao.einkbro.activity.ExtraBrowserActivity"
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize|uiMode|screenLayout|smallestScreenSize"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
-        <!-- BrowserActivity -->
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" /> <!-- BrowserActivity -->
         <activity
             android:name="info.plateaukao.einkbro.activity.BrowserActivity"
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize|uiMode|screenLayout|smallestScreenSize"
             android:exported="true"
             android:launchMode="singleInstance"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -72,7 +87,7 @@
                 <data android:scheme="einkbro" />
                 <data android:scheme="einkbros" />
             </intent-filter>
-            <intent-filter android:icon="@mipmap/ic_launcher" >
+            <intent-filter android:icon="@mipmap/ic_launcher">
                 <action android:name="android.intent.action.SEND" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -103,7 +118,7 @@
             </intent-filter>
             <intent-filter
                 android:order="1"
-                android:priority="1" >
+                android:priority="1">
                 <action android:name="android.intent.action.PROCESS_TEXT" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -123,27 +138,26 @@
             android:exported="true"
             android:theme="@style/AppTheme">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
                 <data
-                    android:scheme="file"
-                    android:pathPattern=".*\\.epub"
                     android:mimeType="application/epub+zip"
-                    />
+                    android:pathPattern=".*\\.epub"
+                    android:scheme="file" />
                 <data
-                    android:scheme="content"
-                    android:pathPattern=".*\\.epub"
                     android:mimeType="application/epub+zip"
-                    />
+                    android:pathPattern=".*\\.epub"
+                    android:scheme="content" />
             </intent-filter>
-        </activity>
-        <!-- Settings -->
+        </activity> <!-- Settings -->
         <activity
             android:name="info.plateaukao.einkbro.activity.SettingsActivity"
-            android:parentActivityName="info.plateaukao.einkbro.activity.BrowserActivity"
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize|uiMode|screenLayout|smallestScreenSize"
-            android:label="@string/setting_label" />
+            android:label="@string/setting_label"
+            android:parentActivityName="info.plateaukao.einkbro.activity.BrowserActivity" />
         <activity
             android:name="info.plateaukao.einkbro.activity.Whitelist_AdBlock"
             android:label="@string/setting_title_whitelist" />
@@ -162,7 +176,7 @@
             android:name="androidx.core.content.FileProvider"
             android:authorities="info.plateaukao.einkbro.fileprovider"
             android:exported="false"
-            android:grantUriPermissions="true" >
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />

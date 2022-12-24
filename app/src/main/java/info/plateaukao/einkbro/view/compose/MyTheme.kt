@@ -24,8 +24,8 @@ fun MyTheme(
 val NormalTextModifier = Modifier.padding(6.dp)
 
 private val DarkColors = darkColors(
-    primary = Color.Gray,
-    onPrimary = Color.White,
+    primary = Color.Black,
+    onPrimary = Color.Gray,
     secondary = Color.Gray,
     onSecondary = Color.White,
     surface = Color.Black,
