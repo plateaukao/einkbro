@@ -1,13 +1,8 @@
 package info.plateaukao.einkbro.view.dialog.compose
 
 import android.app.Dialog
-import android.graphics.Point
 import android.os.Bundle
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
+import android.view.*
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer

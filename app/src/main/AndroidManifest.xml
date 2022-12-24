@@ -154,11 +154,6 @@
             </intent-filter>
         </activity> <!-- Settings -->
         <activity
-            android:name="info.plateaukao.einkbro.activity.SettingsActivity"
-            android:configChanges="orientation|keyboard|keyboardHidden|screenSize|uiMode|screenLayout|smallestScreenSize"
-            android:label="@string/setting_label"
-            android:parentActivityName="info.plateaukao.einkbro.activity.BrowserActivity" />
-        <activity
             android:name="info.plateaukao.einkbro.activity.Whitelist_AdBlock"
             android:label="@string/setting_title_whitelist" />
         <activity

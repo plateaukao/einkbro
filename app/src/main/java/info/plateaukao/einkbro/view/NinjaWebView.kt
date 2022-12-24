@@ -2,7 +2,6 @@ package info.plateaukao.einkbro.view
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.Color
@@ -58,7 +57,6 @@ open class NinjaWebView(context: Context?, var browserController: BrowserControl
     var shouldHideTranslateContext: Boolean = false
     protected var isEpubReaderMode = false
 
-    private val sp: SharedPreferences by inject()
     private val config: ConfigManager by inject()
     private val bookmarkManager: BookmarkManager by inject()
 

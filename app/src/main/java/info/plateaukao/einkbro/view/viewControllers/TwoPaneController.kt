@@ -29,7 +29,7 @@ import info.plateaukao.einkbro.view.TwoPaneLayout
 import info.plateaukao.einkbro.view.dialog.TranslationLanguageDialog
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.lang.Math.*
+import java.lang.Math.abs
 
 class TwoPaneController(
     private val activity: Activity,
@@ -359,16 +359,6 @@ class TwoPaneController(
             .appendQueryParameter("_x_tr_pto", "ajax,elem") // target language
             .build()
         return newUri.toString()
-    }
-
-    private fun oldBuildGUrlTranslateUrl(url: String): String {
-        val uri =
-            Uri.Builder().scheme("https").authority("translate.google.com").appendPath("translate")
-                .appendQueryParameter("u", url)
-                .appendQueryParameter("sl", "auto") // source language
-                .appendQueryParameter("tl", "jp") // target language
-                .build()
-        return uri.toString()
     }
 
     private fun buildGTranslateUrl(text: String): String {

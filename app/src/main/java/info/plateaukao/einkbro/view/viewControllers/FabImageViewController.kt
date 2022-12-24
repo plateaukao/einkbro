@@ -3,7 +3,6 @@ package info.plateaukao.einkbro.view.viewControllers
 import android.annotation.SuppressLint
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.graphics.Point
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnTouchListener
