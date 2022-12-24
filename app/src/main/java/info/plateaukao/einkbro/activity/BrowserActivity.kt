@@ -1895,7 +1895,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
             BoldFont -> config::boldFontStyle.toggle()
             Search -> showSearchPanel()
             Download -> BrowserUnit.openDownloadFolder(this)
-            Settings -> startActivity(Intent(this, SettingsActivity::class.java))
+            Settings -> startActivity(Intent(this, SettingActivity::class.java))
         }
     }
 

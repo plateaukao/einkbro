@@ -381,4 +381,5 @@
     <string name="dark_mode_follow_system">Follow System</string>
     <string name="dark_mode_force_on">Force On</string>
     <string name="dark_mode_disabled">Disabled</string>
+    <string name="title_activity_setting">SettingActivity</string>
 </resources>
