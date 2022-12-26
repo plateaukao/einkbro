@@ -1265,10 +1265,10 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private fun createMultiTouchTouchListener(ninjaWebView: NinjaWebView): MultitouchListener =
         object : MultitouchListener(this@BrowserActivity, ninjaWebView) {
-            override fun onSwipeTop() = performGesture("setting_multitouch_up")
-            override fun onSwipeBottom() = performGesture("setting_multitouch_down")
-            override fun onSwipeRight() = performGesture("setting_multitouch_right")
-            override fun onSwipeLeft() = performGesture("setting_multitouch_left")
+            override fun onSwipeTop() = performGesture(ConfigManager.K_MULTITOUCH_UP)
+            override fun onSwipeBottom() = performGesture(ConfigManager.K_MULTITOUCH_DOWN)
+            override fun onSwipeRight() = performGesture(ConfigManager.K_MULTITOUCH_RIGHT)
+            override fun onSwipeLeft() = performGesture(ConfigManager.K_MULTITOUCH_LEFT)
         }
 
     private fun updateSavedAlbumInfo() {
