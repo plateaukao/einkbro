@@ -3,6 +3,7 @@ package info.plateaukao.einkbro.activity
 import android.annotation.SuppressLint
 import android.app.DownloadManager
 import android.app.DownloadManager.*
+import android.app.PictureInPictureParams
 import android.app.SearchManager
 import android.content.*
 import android.content.Intent.ACTION_VIEW
@@ -31,6 +32,7 @@ import android.webkit.WebView.HitTestResult
 import android.widget.*
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.*
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.text.TextRange
@@ -367,6 +369,24 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
         listenKeyboardShowHide()
 
+    }
+
+    override fun onUserLeaveHint() {
+        super.onUserLeaveHint()
+
+        if (isMeetPipCriteria()) {
+            enterPipMode()
+        }
+    }
+
+    private fun isMeetPipCriteria() = config.enableVideoPip &&
+                fullscreenHolder != null &&
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun enterPipMode() {
+        val params = PictureInPictureParams.Builder().build();
+        enterPictureInPictureMode(params)
     }
 
     private fun initInputBar() {
@@ -1988,7 +2008,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         super.onPause()
         mActionMode?.finish()
         mActionMode = null
-        if (!config.continueMedia) {
+        if (!config.continueMedia && !isMeetPipCriteria()) {
             if (this::ninjaWebView.isInitialized) {
                 ninjaWebView.pauseTimers()
             }

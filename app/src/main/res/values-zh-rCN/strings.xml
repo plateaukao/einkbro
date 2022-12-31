@@ -386,4 +386,8 @@
     <string name="dark_mode_follow_system">Follow System</string>
     <string name="dark_mode_force_on">Force On</string>
     <string name="dark_mode_disabled">Disabled</string>
+    <string name="setting_title_video_auto_fullscreen">Enable Video Play in Fullscreen</string>
+    <string name="setting_summary_video_auto_fullscreen">When video starts playing, auto resize to fullscreen.</string>
+    <string name="setting_title_video_pip">Show Video in Small Window</string>
+    <string name="setting_summary_video_pip">When playing video in fullscreen and leave, show small window to continue play.</string>
 </resources>

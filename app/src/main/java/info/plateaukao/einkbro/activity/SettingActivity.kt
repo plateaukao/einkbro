@@ -6,7 +6,12 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.*
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
@@ -19,9 +24,27 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import info.plateaukao.einkbro.R
-import info.plateaukao.einkbro.activity.SettingRoute.*
+import info.plateaukao.einkbro.activity.SettingRoute.About
+import info.plateaukao.einkbro.activity.SettingRoute.Backup
+import info.plateaukao.einkbro.activity.SettingRoute.Behavior
+import info.plateaukao.einkbro.activity.SettingRoute.DataControl
+import info.plateaukao.einkbro.activity.SettingRoute.Gesture
+import info.plateaukao.einkbro.activity.SettingRoute.Main
+import info.plateaukao.einkbro.activity.SettingRoute.Search
+import info.plateaukao.einkbro.activity.SettingRoute.StartControl
+import info.plateaukao.einkbro.activity.SettingRoute.Toolbar
+import info.plateaukao.einkbro.activity.SettingRoute.Ui
+import info.plateaukao.einkbro.activity.SettingRoute.valueOf
 import info.plateaukao.einkbro.preference.ConfigManager
-import info.plateaukao.einkbro.setting.*
+import info.plateaukao.einkbro.setting.ActionSettingItem
+import info.plateaukao.einkbro.setting.BooleanSettingItem
+import info.plateaukao.einkbro.setting.LinkSettingItem
+import info.plateaukao.einkbro.setting.ListSettingWithEnumItem
+import info.plateaukao.einkbro.setting.ListSettingWithStringItem
+import info.plateaukao.einkbro.setting.NavigateSettingItem
+import info.plateaukao.einkbro.setting.SettingScreen
+import info.plateaukao.einkbro.setting.ValueSettingItem
+import info.plateaukao.einkbro.setting.VersionSettingItem
 import info.plateaukao.einkbro.unit.BackupUnit
 import info.plateaukao.einkbro.view.GestureType
 import info.plateaukao.einkbro.view.compose.MyTheme
@@ -268,6 +291,18 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.drawable.ic_filter,
             R.string.setting_summary_prune_query_parameter,
             config::shouldPruneQueryParameters,
+        ),
+        BooleanSettingItem(
+            R.string.setting_title_video_auto_fullscreen,
+            R.drawable.ic_video,
+            R.string.setting_summary_video_auto_fullscreen,
+            config::enableVideoAutoFullscreen,
+        ),
+        BooleanSettingItem(
+            R.string.setting_title_video_pip,
+            R.drawable.ic_video,
+            R.string.setting_summary_video_pip,
+            config::enableVideoPip,
         ),
         BooleanSettingItem(
             R.string.setting_title_screen_awake,

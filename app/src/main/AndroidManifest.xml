@@ -75,6 +75,7 @@
             android:exported="true"
             android:launchMode="singleInstance"
             android:theme="@style/AppTheme"
+            android:supportsPictureInPicture="true"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
