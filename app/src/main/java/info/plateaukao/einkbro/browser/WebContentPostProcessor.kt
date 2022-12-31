@@ -22,6 +22,10 @@ class WebContentPostProcessor : KoinComponent {
         if (configManager.enableZoom) {
             ninjaWebView.evaluateJavascript(enableZoomJs, null)
         }
+
+        if (configManager.enableVideoAutoFullscreen) {
+            ninjaWebView.evaluateJavascript(videoAutoFullscreen, null)
+        }
     }
 
     companion object {
@@ -147,6 +151,19 @@ document.addEventListener('scroll', () => getAds().forEach(hideAd));
             });
             
             qcleanObserver.observe(document, { subtree: true, childList: true });
+            })()
+        """
+
+        private const val videoAutoFullscreen = """
+            javascript:(function() {
+            var element = document.querySelector("video");
+            element.addEventListener("playing", function() {
+                if (element.requestFullscreen) {
+                    element.requestFullscreen();
+                } else if (element.webkitRequestFullscreen) {
+                    element.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+                }
+            }, false);
             })()
         """
 

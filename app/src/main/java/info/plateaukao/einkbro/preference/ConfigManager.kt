@@ -16,7 +16,7 @@ import info.plateaukao.einkbro.view.GestureType
 import info.plateaukao.einkbro.view.Orientation
 import info.plateaukao.einkbro.view.toolbaricons.ToolbarAction
 import org.koin.core.component.KoinComponent
-import java.util.*
+import java.util.Locale
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KMutableProperty0
 import kotlin.reflect.KProperty
@@ -77,6 +77,8 @@ class ConfigManager(
     var clearWhenQuit by BooleanPreference(sp, K_CLEAR_WHEN_QUIT, false)
     var enableRemoteAccess by BooleanPreference(sp, K_ENABLE_REMOTE_ACCESS, true)
     var enableImages by BooleanPreference(sp, K_ENABLE_IMAGES, true)
+    var enableVideoAutoFullscreen by BooleanPreference(sp, K_ENABLE_VIDEO_AUTO_FULLSCREEN, false)
+    var enableVideoPip by BooleanPreference(sp, K_ENABLE_VIDEO_PIP, false)
 
     var isIncognitoMode: Boolean
         get() = sp.getBoolean(K_IS_INCOGNITO_MODE, false)
@@ -408,6 +410,8 @@ class ConfigManager(
         const val K_SEARCH_ENGINE_URL = "sp_search_engine_custom"
         const val K_ENABLE_REMOTE_ACCESS = "sp_remote"
         const val K_ENABLE_IMAGES = "SP_IMAGES_9"
+        const val K_ENABLE_VIDEO_AUTO_FULLSCREEN = "sp_video_auto_fullscreen"
+        const val K_ENABLE_VIDEO_PIP = "sp_video_auto_pip"
 
         const val K_CLEAR_CACHE = "SP_CLEAR_CACHE_9"
         const val K_CLEAR_HISTORY = "SP_CLEAR_HISTORY_9"
