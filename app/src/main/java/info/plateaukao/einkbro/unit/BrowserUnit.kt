@@ -248,8 +248,8 @@ object BrowserUnit : KoinComponent {
             3 -> SEARCH_ENGINE_BING + query
             6 -> SEARCH_ENGINE_SEARX + query
             7 -> SEARCH_ENGINE_QWANT + query
-            8 -> config.searchEngineUrl + query
-            9 -> SEARCH_ENGINE_ECOSIA + query
+            8 -> SEARCH_ENGINE_ECOSIA + query
+            9 -> config.searchEngineUrl + query
             5 -> SEARCH_ENGINE_GOOGLE + query
             4 -> SEARCH_ENGINE_DUCKDUCKGO + query
             else -> SEARCH_ENGINE_GOOGLE + query
