@@ -34,9 +34,8 @@ import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.browser.AdBlock
 import info.plateaukao.einkbro.browser.Cookie
+import info.plateaukao.einkbro.browser.DomainInterface
 import info.plateaukao.einkbro.browser.Javascript
-import info.plateaukao.einkbro.database.RecordDb
-import info.plateaukao.einkbro.unit.RecordUnit
 import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import kotlinx.coroutines.launch
@@ -45,7 +44,7 @@ import org.koin.core.component.inject
 
 class WhiteListActivity : ComponentActivity(), KoinComponent {
 
-    private lateinit var whitelistType: WhiteListTypeInterface
+    private lateinit var whitelistType: BaseWhiteListType
     private val dialogManager: DialogManager by lazy { DialogManager(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,7 +52,7 @@ class WhiteListActivity : ComponentActivity(), KoinComponent {
 
         whitelistType = getWhitelistType()
         setContent {
-            val whitelist = remember { mutableStateOf(whitelistType.getList()) }
+            val whitelist = remember { mutableStateOf(whitelistType.getDomains()) }
             MyTheme {
                 Scaffold(
                     topBar = {
@@ -85,7 +84,7 @@ class WhiteListActivity : ComponentActivity(), KoinComponent {
                                     )
                                 }
                                 IconButton(onClick = {
-                                    whitelistType.addDomain { whitelist.value += it }
+                                    whitelistType.addDomain(lifecycleScope, dialogManager) { whitelist.value += it }
                                 }) {
                                     Icon(
                                         tint = MaterialTheme.colors.onPrimary,
@@ -107,10 +106,10 @@ class WhiteListActivity : ComponentActivity(), KoinComponent {
         }
     }
 
-    private fun getWhitelistType(): WhiteListTypeInterface = when (intent.getSerializableExtra(TYPE) as WhiteListType) {
-        WhiteListType.Adblock -> WhiteListTypeInterfaceAdblock(lifecycleScope, dialogManager)
-        WhiteListType.Javascript -> WhiteListTypeInterfaceJavascript(lifecycleScope, dialogManager)
-        WhiteListType.Cookie -> WhiteListTypeInterfaceCookie(lifecycleScope, dialogManager)
+    private fun getWhitelistType(): BaseWhiteListType = when (intent.getSerializableExtra(TYPE) as WhiteListType) {
+        WhiteListType.Adblock -> WhiteListTypeAdblock()
+        WhiteListType.Javascript -> BaseWhiteListTypeJavascript()
+        WhiteListType.Cookie -> BaseWhiteListTypeCookie()
     }
 
     companion object {
@@ -179,97 +178,44 @@ fun WhiteListContent(
     }
 }
 
-interface WhiteListTypeInterface {
-    val titleId: Int
-    fun getList(): List<String>
-    fun addDomain(postAction: (String) -> Unit)
-    fun deleteDomain(domain: String)
-    fun deleteAllDomains()
+abstract class BaseWhiteListType {
+    abstract val titleId: Int
+    abstract val domainHandler: DomainInterface
+    fun getDomains(): List<String> = domainHandler.getDomains()
+    fun addDomain(
+        lifecycleScope: LifecycleCoroutineScope,
+        dialogManager: DialogManager,
+        postAction: (String) -> Unit
+    ) {
+        lifecycleScope.launch {
+            val value = dialogManager.getTextInput(
+                R.string.whitelist_add, titleId, ""
+            ) ?: return@launch
+            if (value.isNotBlank()) {
+                domainHandler.addDomain(value.trim());
+                postAction(value.trim())
+            }
+        }
+    }
+
+    fun deleteDomain(domain: String) = domainHandler.deleteDomain(domain)
+    fun deleteAllDomains() = domainHandler.deleteAllDomains()
 }
 
-class WhiteListTypeInterfaceAdblock(
-    private val lifecycleScope: LifecycleCoroutineScope,
-    private val dialogManager: DialogManager,
-) : WhiteListTypeInterface, KoinComponent {
+class WhiteListTypeAdblock : BaseWhiteListType(), KoinComponent {
     override val titleId: Int = R.string.setting_title_whitelist
     private val adBlock: AdBlock by inject()
-    private val recordDb: RecordDb by inject()
-    override fun getList(): List<String> = recordDb.listDomains(RecordUnit.TABLE_WHITELIST)
-
-    override fun addDomain(postAction: (String) -> Unit) {
-        lifecycleScope.launch {
-            val value = dialogManager.getTextInput(
-                R.string.whitelist_add, R.string.setting_title_whitelist, ""
-            ) ?: return@launch
-            if (value.isNotBlank()) {
-                adBlock.addDomain(value.trim());
-                postAction(value.trim())
-            }
-        }
-    }
-
-    override fun deleteDomain(domain: String) = adBlock.removeDomain(domain)
-
-    override fun deleteAllDomains() {
-        dialogManager.showOkCancelDialog(
-            messageResId = R.string.hint_database,
-            okAction = {
-                adBlock.clearDomains()
-            },
-            cancelAction = {}
-        )
-    }
+    override val domainHandler: DomainInterface by lazy { adBlock }
 }
 
-class WhiteListTypeInterfaceJavascript(
-    private val lifecycleScope: LifecycleCoroutineScope,
-    private val dialogManager: DialogManager,
-) : WhiteListTypeInterface, KoinComponent {
+class BaseWhiteListTypeJavascript : BaseWhiteListType(), KoinComponent {
     override val titleId: Int = R.string.setting_title_whitelistJS
     private val javascript: Javascript by inject()
-    private val recordDb: RecordDb by inject()
-    override fun getList(): List<String> = recordDb.listDomains(RecordUnit.TABLE_JAVASCRIPT)
-
-    override fun addDomain(postAction: (String) -> Unit) {
-        lifecycleScope.launch {
-            val value = dialogManager.getTextInput(
-                R.string.whitelist_add, R.string.setting_title_whitelistJS, ""
-            ) ?: return@launch
-            if (value.isNotBlank()) {
-                javascript.addDomain(value.trim());
-                postAction(value.trim())
-            }
-        }
-    }
-
-    override fun deleteDomain(domain: String) = javascript.removeDomain(domain)
-
-    override fun deleteAllDomains() = javascript.clearDomains()
-
+    override val domainHandler: DomainInterface by lazy { javascript }
 }
 
-class WhiteListTypeInterfaceCookie(
-    private val lifecycleScope: LifecycleCoroutineScope,
-    private val dialogManager: DialogManager,
-) : WhiteListTypeInterface, KoinComponent {
+class BaseWhiteListTypeCookie : BaseWhiteListType(), KoinComponent {
     override val titleId: Int = R.string.setting_title_whitelistCookie
     private val cookie: Cookie by inject()
-    private val recordDb: RecordDb by inject()
-    override fun getList(): List<String> = recordDb.listDomains(RecordUnit.TABLE_COOKIE)
-
-    override fun addDomain(postAction: (String) -> Unit) {
-        lifecycleScope.launch {
-            val value = dialogManager.getTextInput(
-                R.string.whitelist_add, R.string.setting_title_whitelistCookie, ""
-            ) ?: return@launch
-            if (value.isNotBlank()) {
-                cookie.addDomain(value.trim());
-                postAction(value.trim())
-            }
-        }
-    }
-
-    override fun deleteDomain(domain: String) = cookie.removeDomain(domain)
-
-    override fun deleteAllDomains() = cookie.clearDomains()
+    override val domainHandler: DomainInterface by lazy { cookie }
 }
