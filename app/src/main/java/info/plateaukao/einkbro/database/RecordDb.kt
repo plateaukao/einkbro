@@ -120,16 +120,8 @@ class RecordDb(context: Context?) : KoinComponent {
         database.execSQL("DELETE FROM " + RecordUnit.TABLE_HISTORY)
     }
 
-    fun clearDomains() {
-        database.execSQL("DELETE FROM " + RecordUnit.TABLE_WHITELIST)
-    }
-
-    fun clearDomainsJS() {
-        database.execSQL("DELETE FROM " + RecordUnit.TABLE_JAVASCRIPT)
-    }
-
-    fun clearDomainsCookie() {
-        database.execSQL("DELETE FROM " + RecordUnit.TABLE_COOKIE)
+    fun deleteAllDomains(dbTable: String) {
+        database.execSQL("DELETE FROM $dbTable")
     }
 
     private fun getRecord(cursor: Cursor, type: RecordType = RecordType.History): Record {

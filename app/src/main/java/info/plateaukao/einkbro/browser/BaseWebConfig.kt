@@ -15,13 +15,39 @@ import java.net.URI
 import java.net.URISyntaxException
 import java.util.*
 
-class AdBlock(private val context: Context): KoinComponent {
+class AdBlock(context: Context) : BaseWebConfig(context) {
+    override val dbTable: String = RecordUnit.TABLE_WHITELIST
+    init { loadHosts("hosts.txt") }
+}
+
+class Javascript(context: Context) : BaseWebConfig(context) {
+    override val dbTable: String = RecordUnit.TABLE_JAVASCRIPT
+    init { loadHosts("javaHosts.txt") }
+}
+
+class Cookie(context: Context) : BaseWebConfig(context) {
+    override val dbTable: String = RecordUnit.TABLE_COOKIE
+    init { loadHosts("cookieHosts.txt") }
+}
+
+abstract class BaseWebConfig(private val context: Context) : KoinComponent, DomainInterface {
     private val config: ConfigManager by inject()
     private val recordDb: RecordDb by inject()
+    private val hosts: MutableSet<String> = HashSet()
+    private val whitelist: MutableList<String> = ArrayList()
 
-    fun isWhite(url: String?): Boolean {
+    @SuppressLint("ConstantLocale")
+    private val locale = Locale.getDefault()
+
+    abstract val dbTable: String
+
+    init {
+        loadDomains()
+    }
+
+    fun isWhite(url: String): Boolean {
         for (domain in whitelist) {
-            if (url != null && url.contains(domain!!)) {
+            if (url.contains(domain)) {
                 return true
             }
         }
@@ -41,26 +67,28 @@ class AdBlock(private val context: Context): KoinComponent {
         return config.adSites.any { url.contains(it, true) }
     }
 
-    fun addDomain(domain: String?) {
-        recordDb.addDomain(domain, RecordUnit.TABLE_WHITELIST)
+    override fun getDomains() = recordDb.listDomains(dbTable)
+
+    override fun addDomain(domain: String) {
+        recordDb.addDomain(domain, dbTable)
         whitelist.add(domain)
     }
 
-    fun removeDomain(domain: String?) {
-        recordDb.deleteDomain(domain, RecordUnit.TABLE_WHITELIST)
+    override fun deleteDomain(domain: String) {
+        recordDb.deleteDomain(domain, dbTable)
         whitelist.remove(domain)
     }
 
-    fun clearDomains() {
-        recordDb.clearDomains()
+    override fun deleteAllDomains() {
+        recordDb.deleteAllDomains(dbTable)
         whitelist.clear()
     }
 
-    private fun loadHosts(context: Context) {
+    protected fun loadHosts(filename: String) {
         val thread = Thread {
             val manager = context.assets
             try {
-                val reader = BufferedReader(InputStreamReader(manager.open(FILE)))
+                val reader = BufferedReader(InputStreamReader(manager.open(filename)))
                 var line: String?
                 while (reader.readLine().also { line = it } != null) {
                     line?.let { hosts.add(it.lowercase(locale)) }
@@ -78,32 +106,15 @@ class AdBlock(private val context: Context): KoinComponent {
         whitelist.addAll(recordDb.listDomains(RecordUnit.TABLE_WHITELIST))
     }
 
-    companion object {
-        private const val FILE = "hosts.txt"
-        private val hosts: MutableSet<String> = HashSet()
-        private val whitelist: MutableList<String?> = ArrayList()
-
-        @SuppressLint("ConstantLocale")
-        private val locale = Locale.getDefault()
-
-        @Throws(URISyntaxException::class)
-        private fun getDomain(url: String): String {
-            var url = url
-            url = url.lowercase(locale)
-            val index = url.indexOf('/', 8) // -> http://(7) and https://(8)
-            if (index != -1) {
-                url = url.substring(0, index)
-            }
-            val uri = URI(url)
-            val domain = uri.host ?: return url
-            return if (domain.startsWith("www.")) domain.substring(4) else domain
+    @Throws(URISyntaxException::class)
+    private fun getDomain(url: String): String {
+        var url = url.lowercase(locale)
+        val index = url.indexOf('/', 8) // -> http://(7) and https://(8)
+        if (index != -1) {
+            url = url.substring(0, index)
         }
-    }
-
-    init {
-        if (hosts.isEmpty()) {
-            loadHosts(context)
-        }
-        loadDomains()
+        val uri = URI(url)
+        val domain = uri.host ?: return url
+        return if (domain.startsWith("www.")) domain.substring(4) else domain
     }
 }

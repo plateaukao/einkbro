@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.DownloadManager
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.pm.ShortcutManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -84,7 +83,6 @@ object BrowserUnit : KoinComponent {
     val UA_DESKTOP_PREFIX = "Mozilla/5.0 (X11; Linux " + System.getProperty("os.arch") + ")"
     val UA_MOBILE_PREFIX = "Mozilla/5.0 (Linux; Android " + Build.VERSION.RELEASE + ")"
 
-    private val sp: SharedPreferences by inject()
     private val recordDb: RecordDb by inject()
     private val adBlock: AdBlock by inject()
     private val js: Javascript by inject()
@@ -336,10 +334,12 @@ object BrowserUnit : KoinComponent {
                 list = recordDb.listDomains(RecordUnit.TABLE_WHITELIST)
                 filename = context.getString(R.string.export_whitelistAdBlock)
             }
+
             1 -> {
                 list = recordDb.listDomains(RecordUnit.TABLE_JAVASCRIPT)
                 filename = context.getString(R.string.export_whitelistJS)
             }
+
             else -> {
                 list = recordDb.listDomains(RecordUnit.TABLE_COOKIE)
                 filename = context.getString(R.string.export_whitelistCookie)
@@ -364,11 +364,10 @@ object BrowserUnit : KoinComponent {
     fun importWhitelist(context: Context, i: Int): Int {
         var count = 0
         try {
-            val filename: String
-            when (i) {
-                0 -> filename = context.getString(R.string.export_whitelistAdBlock)
-                1 -> filename = context.getString(R.string.export_whitelistJS)
-                else -> filename = context.getString(R.string.export_whitelistAdBlock)
+            val filename = when (i) {
+                0 -> context.getString(R.string.export_whitelistAdBlock)
+                1 -> context.getString(R.string.export_whitelistJS)
+                else -> context.getString(R.string.export_whitelistAdBlock)
             }
             val file =
                 File(context.getExternalFilesDir(null), "browser_backup//$filename$SUFFIX_TXT")
@@ -377,15 +376,17 @@ object BrowserUnit : KoinComponent {
             while (reader.readLine().also { line = it } != null) {
                 when (i) {
                     0 -> if (!recordDb.checkDomain(line, RecordUnit.TABLE_WHITELIST)) {
-                        adBlock.addDomain(line)
+                        adBlock.addDomain(line!!)
                         count++
                     }
+
                     1 -> if (!recordDb.checkDomain(line, RecordUnit.TABLE_JAVASCRIPT)) {
-                        js.addDomain(line)
+                        js.addDomain(line!!)
                         count++
                     }
+
                     else -> if (!recordDb.checkDomain(line, RecordUnit.COLUMN_DOMAIN)) {
-                        cookie.addDomain(line)
+                        cookie.addDomain(line!!)
                         count++
                     }
                 }
@@ -419,12 +420,13 @@ object BrowserUnit : KoinComponent {
 
     @JvmStatic
     fun clearHistory(context: Context) {
-        recordDb.clearHistory()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
-            val shortcutManager = context.getSystemService(
-                ShortcutManager::class.java
-            )
-            Objects.requireNonNull(shortcutManager).removeAllDynamicShortcuts()
+        with(RecordDb(context)) {
+            clearHistory()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+                val shortcutManager = context.getSystemService(ShortcutManager::class.java)
+                Objects.requireNonNull(shortcutManager).removeAllDynamicShortcuts()
+            }
+            close()
         }
     }
 
