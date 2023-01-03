@@ -6,14 +6,18 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
-import android.view.View.*
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
-import info.plateaukao.einkbro.databinding.DialogMenuContextListBinding
 import info.plateaukao.einkbro.activity.ExtraBrowserActivity
-import info.plateaukao.einkbro.database.*
+import info.plateaukao.einkbro.database.Bookmark
+import info.plateaukao.einkbro.database.Record
+import info.plateaukao.einkbro.database.RecordDb
+import info.plateaukao.einkbro.database.RecordType
+import info.plateaukao.einkbro.databinding.DialogMenuContextListBinding
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.unit.BrowserUnit
 import info.plateaukao.einkbro.unit.ViewUnit
@@ -29,7 +33,6 @@ import org.koin.core.component.inject
 class OverviewDialogController(
     private val context: Context,
     private val composeView: HistoryAndTabsView,
-    private val recordDb: RecordDb,
     private val gotoUrlAction: (String) -> Unit,
     private val addTabAction: (String, String, Boolean) -> Unit,
     private val addIncognitoTabAction: () -> Unit,
@@ -38,6 +41,7 @@ class OverviewDialogController(
     private val addEmptyTabAction: () -> Unit,
 ) : KoinComponent {
     private val config: ConfigManager by inject()
+    private val recordDb: RecordDb by inject()
     private val dialogManager: DialogManager = DialogManager(context as Activity)
 
     private val lifecycleScope = (context as LifecycleOwner).lifecycleScope
@@ -175,11 +179,7 @@ class OverviewDialogController(
     }
 
     private fun deleteHistory(record: Record) {
-        RecordDb(context).apply {
-            open(true)
-            deleteHistoryItem(record)
-            close()
-        }
+        recordDb.deleteHistoryItem(record)
         onHistoryChanged()
         refreshHistoryList()
     }

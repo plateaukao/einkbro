@@ -85,6 +85,7 @@ object BrowserUnit : KoinComponent {
     val UA_MOBILE_PREFIX = "Mozilla/5.0 (Linux; Android " + Build.VERSION.RELEASE + ")"
 
     private val sp: SharedPreferences by inject()
+    private val recordDb: RecordDb by inject()
     private val adBlock: AdBlock by inject()
     private val js: Javascript by inject()
     private val config: ConfigManager by inject()
@@ -328,25 +329,22 @@ object BrowserUnit : KoinComponent {
 
     @JvmStatic
     fun exportWhitelist(context: Context, i: Int): String? {
-        val action = RecordDb(context)
         val list: List<String>
         val filename: String
-        action.open(false)
         when (i) {
             0 -> {
-                list = action.listDomains(RecordUnit.TABLE_WHITELIST)
+                list = recordDb.listDomains(RecordUnit.TABLE_WHITELIST)
                 filename = context.getString(R.string.export_whitelistAdBlock)
             }
             1 -> {
-                list = action.listDomains(RecordUnit.TABLE_JAVASCRIPT)
+                list = recordDb.listDomains(RecordUnit.TABLE_JAVASCRIPT)
                 filename = context.getString(R.string.export_whitelistJS)
             }
             else -> {
-                list = action.listDomains(RecordUnit.TABLE_COOKIE)
+                list = recordDb.listDomains(RecordUnit.TABLE_COOKIE)
                 filename = context.getString(R.string.export_whitelistCookie)
             }
         }
-        action.close()
         val file =
             File(context.getExternalFilesDir(null), "browser_backup//$filename$SUFFIX_TXT")
         return try {
@@ -374,40 +372,32 @@ object BrowserUnit : KoinComponent {
             }
             val file =
                 File(context.getExternalFilesDir(null), "browser_backup//$filename$SUFFIX_TXT")
-            val action = RecordDb(context)
-            action.open(true)
             val reader = BufferedReader(FileReader(file))
             var line: String?
             while (reader.readLine().also { line = it } != null) {
                 when (i) {
-                    0 -> if (!action.checkDomain(line, RecordUnit.TABLE_WHITELIST)) {
+                    0 -> if (!recordDb.checkDomain(line, RecordUnit.TABLE_WHITELIST)) {
                         adBlock.addDomain(line)
                         count++
                     }
-                    1 -> if (!action.checkDomain(line, RecordUnit.TABLE_JAVASCRIPT)) {
+                    1 -> if (!recordDb.checkDomain(line, RecordUnit.TABLE_JAVASCRIPT)) {
                         js.addDomain(line)
                         count++
                     }
-                    else -> if (!action.checkDomain(line, RecordUnit.COLUMN_DOMAIN)) {
+                    else -> if (!recordDb.checkDomain(line, RecordUnit.COLUMN_DOMAIN)) {
                         cookie.addDomain(line)
                         count++
                     }
                 }
             }
             reader.close()
-            action.close()
         } catch (e: Exception) {
             Log.w("browser", "Error reading file", e)
         }
         return count
     }
 
-    fun clearHome(context: Context?) {
-        val action = RecordDb(context)
-        action.open(true)
-        action.clearHome()
-        action.close()
-    }
+    fun clearHome(context: Context?) = recordDb.clearHome()
 
     @JvmStatic
     fun clearCache(context: Context) {
@@ -430,10 +420,7 @@ object BrowserUnit : KoinComponent {
 
     @JvmStatic
     fun clearHistory(context: Context) {
-        val action = RecordDb(context)
-        action.open(true)
-        action.clearHistory()
-        action.close()
+        recordDb.clearHistory()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
             val shortcutManager = context.getSystemService(
                 ShortcutManager::class.java

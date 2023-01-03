@@ -1,12 +1,11 @@
 package info.plateaukao.einkbro.browser
 
-import kotlin.jvm.Synchronized
-import info.plateaukao.einkbro.database.RecordDb
-import info.plateaukao.einkbro.unit.RecordUnit
 import android.annotation.SuppressLint
 import android.content.Context
-import info.plateaukao.einkbro.preference.ConfigManager
 import android.util.Log
+import info.plateaukao.einkbro.database.RecordDb
+import info.plateaukao.einkbro.preference.ConfigManager
+import info.plateaukao.einkbro.unit.RecordUnit
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.io.BufferedReader
@@ -15,10 +14,10 @@ import java.io.InputStreamReader
 import java.net.URI
 import java.net.URISyntaxException
 import java.util.*
-import kotlin.Throws
 
 class AdBlock(private val context: Context): KoinComponent {
     private val config: ConfigManager by inject()
+    private val recordDb: RecordDb by inject()
 
     fun isWhite(url: String?): Boolean {
         for (domain in whitelist) {
@@ -43,29 +42,17 @@ class AdBlock(private val context: Context): KoinComponent {
     }
 
     fun addDomain(domain: String?) {
-        with(RecordDb(context)) {
-            open(true)
-            addDomain(domain, RecordUnit.TABLE_WHITELIST)
-            close()
-        }
+        recordDb.addDomain(domain, RecordUnit.TABLE_WHITELIST)
         whitelist.add(domain)
     }
 
     fun removeDomain(domain: String?) {
-        with(RecordDb(context)) {
-            open(true)
-            deleteDomain(domain, RecordUnit.TABLE_WHITELIST)
-            close()
-        }
+        recordDb.deleteDomain(domain, RecordUnit.TABLE_WHITELIST)
         whitelist.remove(domain)
     }
 
     fun clearDomains() {
-        with(RecordDb(context)) {
-            open(true)
-            clearDomains()
-            close()
-        }
+        recordDb.clearDomains()
         whitelist.clear()
     }
 
@@ -85,6 +72,11 @@ class AdBlock(private val context: Context): KoinComponent {
         thread.start()
     }
 
+    @Synchronized
+    private fun loadDomains() {
+        whitelist.clear()
+        whitelist.addAll(recordDb.listDomains(RecordUnit.TABLE_WHITELIST))
+    }
 
     companion object {
         private const val FILE = "hosts.txt"
@@ -93,14 +85,6 @@ class AdBlock(private val context: Context): KoinComponent {
 
         @SuppressLint("ConstantLocale")
         private val locale = Locale.getDefault()
-        @Synchronized
-        private fun loadDomains(context: Context) {
-            val action = RecordDb(context)
-            action.open(false)
-            whitelist.clear()
-            whitelist.addAll(action.listDomains(RecordUnit.TABLE_WHITELIST))
-            action.close()
-        }
 
         @Throws(URISyntaxException::class)
         private fun getDomain(url: String): String {
@@ -120,6 +104,6 @@ class AdBlock(private val context: Context): KoinComponent {
         if (hosts.isEmpty()) {
             loadHosts(context)
         }
-        loadDomains(context)
+        loadDomains()
     }
 }
