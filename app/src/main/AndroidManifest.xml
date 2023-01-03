@@ -74,8 +74,8 @@
             android:configChanges="orientation|keyboard|keyboardHidden|screenSize|uiMode|screenLayout|smallestScreenSize"
             android:exported="true"
             android:launchMode="singleInstance"
-            android:theme="@style/AppTheme"
             android:supportsPictureInPicture="true"
+            android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -154,6 +154,9 @@
                     android:scheme="content" />
             </intent-filter>
         </activity> <!-- Settings -->
+        <activity
+            android:name="info.plateaukao.einkbro.activity.WhiteListActivity"
+            android:label="@string/setting_title_whitelist" />
         <activity
             android:name="info.plateaukao.einkbro.activity.Whitelist_AdBlock"
             android:label="@string/setting_title_whitelist" />
