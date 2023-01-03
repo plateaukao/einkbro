@@ -560,7 +560,7 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.string.setting_title_whitelist,
             R.drawable.icon_list,
             R.string.setting_summary_whitelist,
-        ) { startActivity(Intent(this, Whitelist_AdBlock::class.java)) },
+        ) { startActivity(Intent(this, WhiteListActivity::class.java)) },
         BooleanSettingItem(
             R.string.setting_title_javascript,
             R.drawable.icon_java,
