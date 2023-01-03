@@ -11,14 +11,12 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
 class RecordDb(context: Context?) : KoinComponent {
-    private lateinit var database: SQLiteDatabase
     private val helper: RecordHelper = RecordHelper(context)
+    private val database: SQLiteDatabase by lazy { helper.writableDatabase }
     private val bookmarkManager: BookmarkManager by inject()
     private val config: ConfigManager by inject()
 
-    fun open(rw: Boolean) {
-        database = if (rw) helper.writableDatabase else helper.readableDatabase
-    }
+    fun open(rw: Boolean) {}
 
     fun close() {
         helper.close()

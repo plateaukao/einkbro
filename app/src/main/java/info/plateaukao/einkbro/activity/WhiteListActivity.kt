@@ -18,10 +18,14 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.lifecycleScope
 import info.plateaukao.einkbro.R
 import info.plateaukao.einkbro.browser.AdBlock
@@ -31,18 +35,19 @@ import info.plateaukao.einkbro.view.compose.MyTheme
 import info.plateaukao.einkbro.view.dialog.DialogManager
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 class WhiteListActivity : ComponentActivity(), KoinComponent {
-    private val dialogManager by lazy { DialogManager(this) }
 
-    private val recordDb: RecordDb by lazy {
-        RecordDb(this).apply { open(false) }
-    }
-    private val list: MutableList<String> by lazy { recordDb.listDomains(RecordUnit.TABLE_WHITELIST).toMutableList() }
+    private lateinit var whitelistType: WhiteListType
+    private val dialogManager: DialogManager by lazy { DialogManager(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        whitelistType = WhiteListTypeAdblock(lifecycleScope, dialogManager)
         setContent {
+            val whitelist = remember { mutableStateOf(whitelistType.getList()) }
             MyTheme {
                 Scaffold(
                     topBar = {
@@ -63,14 +68,19 @@ class WhiteListActivity : ComponentActivity(), KoinComponent {
                                 }
                             },
                             actions = {
-                                IconButton(onClick = { deleteAllDomains() }) {
+                                IconButton(onClick = {
+                                    whitelistType.deleteAllDomains()
+                                    whitelist.value = emptyList()
+                                }) {
                                     Icon(
                                         tint = MaterialTheme.colors.onPrimary,
                                         imageVector = Icons.Filled.Delete,
                                         contentDescription = stringResource(R.string.menu_delete)
                                     )
                                 }
-                                IconButton(onClick = { addDomain() }) {
+                                IconButton(onClick = {
+                                    whitelistType.addDomain { whitelist.value += it }
+                                }) {
                                     Icon(
                                         tint = MaterialTheme.colors.onPrimary,
                                         imageVector = Icons.Filled.Add,
@@ -83,52 +93,36 @@ class WhiteListActivity : ComponentActivity(), KoinComponent {
                 ) { innerPadding ->
                     WhiteListContent(
                         modifier = Modifier.padding(innerPadding),
-                        list,
-                        this::deleteDomain
+                        whitelist,
+                        whitelistType::deleteDomain
                     )
                 }
             }
         }
     }
-
-    private fun addDomain() {
-        lifecycleScope.launch {
-            val value = dialogManager.getTextInput(
-                R.string.whitelist_add, R.string.whitelist_add, ""
-            ) ?: return@launch
-            if (value.isNotBlank()) {
-                AdBlock(this@WhiteListActivity).addDomain(value.trim());
-            }
-        }
-    }
-
-    private fun deleteDomain(domain: String) {
-        recordDb.deleteDomain(RecordUnit.TABLE_WHITELIST, domain)
-    }
-
-    private fun deleteAllDomains() {
-        AdBlock(this).clearDomains()
-        list.clear()
-    }
 }
+
 
 @Composable
 fun WhiteListContent(
     modifier: Modifier = Modifier,
-    list: List<String>,
+    list: MutableState<List<String>>,
     deleteAction: (String) -> Unit = {}
 ) {
     LazyColumn(
         modifier = modifier,
         content = {
-            items(list.size) { index ->
-                val itemText = list[index]
+            items(list.value.size) { index ->
+                val itemText = list.value[index]
                 Row(
                     Modifier.padding(16.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(modifier = Modifier.weight(1f), text = itemText)
-                    IconButton(onClick = { deleteAction(itemText) }) {
+                    IconButton(onClick = {
+                        deleteAction(itemText)
+                        list.value = list.value.filter { it != itemText }
+                    }) {
                         Icon(
                             tint = MaterialTheme.colors.onBackground,
                             imageVector = Icons.Filled.Close,
@@ -139,4 +133,39 @@ fun WhiteListContent(
             }
         }
     )
+}
+
+interface WhiteListType {
+    val titleId: Int
+    fun getList(): List<String>
+    fun addDomain(postAction: (String) -> Unit)
+    fun deleteDomain(domain: String)
+    fun deleteAllDomains()
+}
+
+class WhiteListTypeAdblock(
+    private val lifecycleScope: LifecycleCoroutineScope,
+    private val dialogManager: DialogManager,
+) : WhiteListType, KoinComponent {
+    override val titleId: Int = R.string.setting_title_whitelist
+    private val adBlock: AdBlock by inject()
+    private val recordDb: RecordDb by inject()
+    override fun getList(): List<String> = recordDb.listDomains(RecordUnit.TABLE_WHITELIST)
+
+    override fun addDomain(postAction: (String) -> Unit) {
+        lifecycleScope.launch {
+            val value = dialogManager.getTextInput(
+                R.string.whitelist_add, R.string.whitelist_add, ""
+            ) ?: return@launch
+            if (value.isNotBlank()) {
+                adBlock.addDomain(value.trim());
+                postAction(value.trim())
+            }
+        }
+    }
+
+    override fun deleteDomain(domain: String) = adBlock.removeDomain(domain)
+
+    override fun deleteAllDomains() = adBlock.clearDomains()
+
 }

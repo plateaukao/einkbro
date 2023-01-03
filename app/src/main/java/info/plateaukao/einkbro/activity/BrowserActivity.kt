@@ -273,7 +273,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
 
     private val dialogManager: DialogManager by lazy { DialogManager(this) }
 
-    private val recordDb: RecordDb by lazy { RecordDb(this).apply { open(false) } }
+    private val recordDb: RecordDb by inject()
 
     private val customFontResultLauncher: ActivityResultLauncher<Intent> =
         BrowserUnit.registerCustomFontSelectionResult(this)
@@ -1120,7 +1120,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         overviewDialogController = OverviewDialogController(
             this,
             binding.layoutOverview,
-            recordDb,
             gotoUrlAction = { url -> updateAlbum(url) },
             addTabAction = { title, url, isForeground -> addAlbum(title, url, isForeground) },
             addIncognitoTabAction = {

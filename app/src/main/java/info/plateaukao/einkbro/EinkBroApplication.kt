@@ -8,6 +8,7 @@ import info.plateaukao.einkbro.browser.AdBlock
 import info.plateaukao.einkbro.browser.Cookie
 import info.plateaukao.einkbro.browser.Javascript
 import info.plateaukao.einkbro.database.BookmarkManager
+import info.plateaukao.einkbro.database.RecordDb
 import info.plateaukao.einkbro.preference.ConfigManager
 import info.plateaukao.einkbro.service.TtsManager
 import org.koin.android.ext.koin.androidContext
@@ -32,8 +33,9 @@ class EinkBroApplication : Application() {
         single { config }
         single { sp }
         single { BookmarkManager(androidContext()) }
-        single { AdBlock(androidContext())}
-        single { Javascript(androidContext())}
+        single { RecordDb(androidContext()) }
+        single { AdBlock(androidContext()) }
+        single { Javascript(androidContext()) }
         single { Cookie(androidContext()) }
         single { ttsManager }
     }
