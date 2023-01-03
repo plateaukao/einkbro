@@ -560,7 +560,7 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.string.setting_title_whitelist,
             R.drawable.icon_list,
             R.string.setting_summary_whitelist,
-        ) { startActivity(Intent(this, WhiteListActivity::class.java)) },
+        ) { startActivity(WhiteListActivity.createIntent(this, WhiteListType.Adblock)) },
         BooleanSettingItem(
             R.string.setting_title_javascript,
             R.drawable.icon_java,
@@ -571,7 +571,7 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.string.setting_title_whitelistJS,
             R.drawable.icon_list,
             R.string.setting_summary_whitelistJS,
-        ) { startActivity(Intent(this, Whitelist_Javascript::class.java)) },
+        ) { startActivity(WhiteListActivity.createIntent(this, WhiteListType.Javascript)) },
         BooleanSettingItem(
             R.string.setting_title_cookie,
             R.drawable.icon_cookie,
@@ -582,7 +582,7 @@ class SettingActivity : ComponentActivity(), KoinComponent {
             R.string.setting_title_whitelistCookie,
             R.drawable.icon_list,
             R.string.setting_summary_whitelistCookie,
-        ) { startActivity(Intent(this, Whitelist_Cookie::class.java)) },
+        ) { startActivity(WhiteListActivity.createIntent(this, WhiteListType.Cookie)) },
     )
 
 }

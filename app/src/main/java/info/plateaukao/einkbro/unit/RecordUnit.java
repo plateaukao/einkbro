@@ -7,14 +7,11 @@ public class RecordUnit {
     public static final String TABLE_WHITELIST = "WHITELIST";
     public static final String TABLE_JAVASCRIPT = "JAVASCRIPT";
     public static final String TABLE_COOKIE = "COOKIE";
-    public static final String TABLE_GRID = "GRID";
 
     public static final String COLUMN_TITLE = "TITLE";
     public static final String COLUMN_URL = "URL";
     public static final String COLUMN_TIME = "TIME";
     public static final String COLUMN_DOMAIN = "DOMAIN";
-    public static final String COLUMN_FILENAME = "FILENAME";
-    public static final String COLUMN_ORDINAL = "ORDINAL";
 
     public static final String CREATE_HISTORY = "CREATE TABLE "
             + TABLE_HISTORY
@@ -42,14 +39,6 @@ public class RecordUnit {
             + " " + COLUMN_DOMAIN + " text"
             + ")";
 
-    public static final String CREATE_GRID = "CREATE TABLE "
-            + TABLE_GRID
-            + " ("
-            + " " + COLUMN_TITLE + " text,"
-            + " " + COLUMN_URL + " text,"
-            + " " + COLUMN_FILENAME + " text,"
-            + " " + COLUMN_ORDINAL + " integer"
-            + ")";
 
     private static Record holder;
     public static Record getHolder() {
