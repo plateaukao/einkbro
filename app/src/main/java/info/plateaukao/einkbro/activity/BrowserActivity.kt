@@ -955,7 +955,7 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
         }
         initFAB()
         if (config.enableNavButtonGesture) {
-            val onNavButtonTouchListener = object : SwipeTouchListener(this) {
+            val onNavButtonTouchListener = object : SwipeTouchListener(this@BrowserActivity) {
                 override fun onSwipeTop() = performGesture(ConfigManager.K_GESTURE_NAV_UP)
                 override fun onSwipeBottom() = performGesture(ConfigManager.K_GESTURE_NAV_DOWN)
                 override fun onSwipeRight() = performGesture(ConfigManager.K_GESTURE_NAV_RIGHT)
@@ -1732,7 +1732,6 @@ open class BrowserActivity : FragmentActivity(), BrowserController {
                     }
                 }
             }
-
         }
     }
 
